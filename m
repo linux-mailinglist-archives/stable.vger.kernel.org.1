@@ -1,185 +1,248 @@
-Return-Path: <stable+bounces-232595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMg6FbxIzGmmSAYAu9opvQ
-	(envelope-from <stable+bounces-232595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:20:44 +0200
+	id OL3QKsxLzGkRSQYAu9opvQ
+	(envelope-from <stable+bounces-232596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:33:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC13E3725D8
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:20:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 111EA3726B4
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 00:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46B923046E93
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:18:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68B4D303D720
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9494B45BD67;
-	Tue, 31 Mar 2026 22:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A8D4657DA;
+	Tue, 31 Mar 2026 22:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="esdDgrvC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPJLo7hB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2499B346AD7;
-	Tue, 31 Mar 2026 22:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919D02AD0C;
+	Tue, 31 Mar 2026 22:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774995526; cv=none; b=RlnuqnyJ2GJBTcSFdnkiTRmXrIRdASoB4nhAB9joxovC6HyRrpzogoUkfO6JvIotAJ5QdEwem24p0ckLlc3wscm2lWck0ei9TOlorOMT6j67sdgsXGPYebBbtfPAjHEwB+H0gDWH8SkMPZLG0/DazGS+hCyc5XYHCl8pkslW0TY=
+	t=1774996383; cv=none; b=NO4M8Ul7GeFvJkUiEiQ3pEhkQGE4+wZWqlblRjPvy9fvDxmXqPS2IvmoCT4We0niODRSeyQFerrZIoYH6PduoCGxQydN2PTpNPQqunQKWeiSu4Iy9kbLOtAzOGvCSDGUsCF7qA4REfmwi+WKF+somqJSMquPXEWsPJBAHyhfMEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774995526; c=relaxed/simple;
-	bh=wUdaIIELWJl+i7uH46Ifi81pzzNyIffVW8w36LxytFw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=D4MHjfXv1Dz5MRusVQ+5TKkZrDk1FK3iVf8+bSkTQTN9mLuR8Yd5XFqVQoLpaQnWA2e6LNjRkvV+pZcTE+Bnu2cEEn5rZYztv7AwCyo/Wysl5YkI/6QKLMekBoRBlVDndnXuty1hrDOYWw7LqKiGNHGazT6cEBv40j9gPvPt3l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=esdDgrvC; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774995525; x=1806531525;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wUdaIIELWJl+i7uH46Ifi81pzzNyIffVW8w36LxytFw=;
-  b=esdDgrvCmxvga0NPVS0jm53qJelONBCjpCSjoRI9b6pywYs84qGgXmo+
-   3JVt6aqTSArztaZr64bpk6SEDfGNK54pQTnbmSFFj/4RuvwC637Ql3zXW
-   yLjlDYoufuptKoGXh3brDvMW/7vBZjtzmonH0/zfPPBzYT4fmEllQYn07
-   rLLY/WcKSsDGQzdVPkU7xdPBFo70jsGrThoXa/un3t3VO2jXivG/mE9sx
-   dV0gCx4jqgR68DTF6VQ8ckS80beDqTYejKF+TS7SlaF5w4GJQK1HpbluH
-   Xs5Sqb8PLQ6UmuWqFwL2lVSj2LOB9A6bD4QLMAvL/g8bB66yjVpE0R4BB
-   Q==;
-X-CSE-ConnectionGUID: lMH+abpSRUCBRLgEixH7Ug==
-X-CSE-MsgGUID: 4DRMpt7XTTCOLNYD6V8oRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="87416319"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="87416319"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 15:18:44 -0700
-X-CSE-ConnectionGUID: auU7s6NqTF+xcTm0JNyBkA==
-X-CSE-MsgGUID: thBuCzoaRAiTE/lR+URFNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="225668430"
-Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 15:18:45 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: Carlos Santa <carlos.santa@intel.com>,
-	Ryan Neph <ryanneph@google.com>,
-	stable@vger.kernel.org,
-	Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH] workqueue: Add pool_workqueue to pending_pwqs list when unplugging multiple inactive works
-Date: Tue, 31 Mar 2026 15:18:39 -0700
-Message-Id: <20260331221839.1033423-1-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1774996383; c=relaxed/simple;
+	bh=LkMbAeNrKXrVLWtbFWfSKgqsM55HOGlNN/2+zvY35zY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sf+5sJuglHYWjEVSOWupjPWZcdmEE1daO8j9muSNaLcVq3j9OvrVqafARBmRrsLu+OaEXOQg528Zfuvv5bE/uyHy3W1MBdzAjU+pPZqRlsfxXJqxZZUDnN6DizmZUve8ZqHClaAO5gY24G3yqHrGU9xm/cVb9D38GHUzpFdlV/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPJLo7hB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08140C19423;
+	Tue, 31 Mar 2026 22:33:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774996383;
+	bh=LkMbAeNrKXrVLWtbFWfSKgqsM55HOGlNN/2+zvY35zY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uPJLo7hBkoErMGbSATr3OJJHLcUOfduOG/dUVHzbmjmq2L6sb1WXqF5ty7S8v3O9T
+	 Jurah+oiFniMibb2xoKM8BrP7RUog7qTv3dgtbEasXrEDDMUUZdDDH3jmHB1FpghzG
+	 53TkY8Mm1e+GPWrkCP6MQLLvYLcfB4//4tcUDhZXWtM3P9uagKbgrRAbLcBZgCdtrv
+	 y/FCWoY3ona9Ib3IkDcHl9ZB9epaelx5e2Tx9NPSSJqO5XTou0dGxak+Ueacv6tLYz
+	 QFuo2LwRyjXSxqYlSKxr/QsOm1wRfZLMRH3++X554fDaEdj0MYHOIFO24ijEZb0Upv
+	 0U0XyxEf+psdQ==
+Date: Tue, 31 Mar 2026 17:32:59 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Tj <tj.iam.tj@proton.me>
+Cc: bjorn.andersson@oss.qualcomm.com, gregkh@linuxfoundation.org, 
+	krzk@kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-sound@vger.kernel.org, srini@kernel.org, stable@vger.kernel.org, vkoul@kernel.org, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH 1/7] slimbus: qcom-ngd-ctrl: Fix up platform_driver
+ registration
+Message-ID: <acxH3-eTkh2bR_OE@baldur>
+References: <2e06ae01-6af9-4de7-be27-e439dc365d9b@proton.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+In-Reply-To: <2e06ae01-6af9-4de7-be27-e439dc365d9b@proton.me>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,google.com,vger.kernel.org,kernel.org,gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-232596-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232595-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.brost@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_PROHIBIT(0.00)[0.0.0.0:email];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AC13E3725D8
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[171c0000:email,0.0.0.1:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 111EA3726B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In unplug_oldest_pwq(), the first inactive pool_workqueue is activated
-correctly. However, if multiple inactive works exist on the same
-pool_workqueue, subsequent works fail to activate because
-wq_node_nr_active.pending_pwqs is empty â€” the list insertion is skipped
-when the pool_workqueue is plugged.
+On Fri, Mar 13, 2026 at 12:36:54PM +0000, Tj wrote:
+> Following up on the registration problems on recommendation of Konrad 
+> Dybcio.
+> 
+> I previously reported a hang during driver registration due to lock 
+> contention. Konrad pointed me to this thread. Earlier, I had fixed the 
+> issue myself and whilst doing it saw that order of registration is 
+> important - ctrl must be last otherwise it causes:
+> 
 
-Fix this by checking for additional inactive works in
-unplug_oldest_pwq() and updating wq_node_nr_active.pending_pwqs
-accordingly.
+I've not seen that issue in my testing, but in the event that
+qcom_slim_ngd_ctrl_probe() is being called before qcom_slim_ngd_driver
+is registered we might complete the qcom_slim_ngd_ctrl_probe() with an
+incomplete ngd instance - as qcom_slim_ngd_probe() has yet to execute.
 
-Cc: Carlos Santa <carlos.santa@intel.com>
-Cc: Ryan Neph <ryanneph@google.com>
-Cc: stable@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: linux-kernel@vger.kernel.org
-Fixes: 4c065dbce1e8 ("workqueue: Enable unbound cpumask update on ordered workqueues")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+I can flip the two platform_driver_register() calls around just to
+remove/reduce the likelyhood for this to happen.
 
----
 
-This bug was first reported by Google, where the Xe driver appeared to
-hang due to a fencing signal not completing. We traced the issue to work
-items not being scheduled, and it can be trivially reproduced on drm-tip
-with the following commands:
+I think the correct solution here is to not have a separate
+platform_driver for the inner device. I did some more work towards that,
+but think it would be good to land this portion first.
 
-shell0:
-for i in {1..100}; do echo "Run $i"; xe_exec_threads --r \
-threads-rebind-bindexecqueue; done
+> qcom,slim-ngd-ctrl 171c0000.slim-ngd: Failed to create device link 
+> (0x180) with supplier 34000000.pinctrl for 
+> /soc@0/slim-ngd@171c0000/slim@1/codec@1,0
+> 
 
-shell1:
-for i in {1..1000}; do echo "toggle $i"; echo f > \
-/sys/devices/virtual/workqueue/cpumask; echo ff > \
-/sys/devices/virtual/workqueue/cpumask; echo fff > \
-/sys/devices/virtual/workqueue/cpumask ; echo ffff > \
-/sys/devices/virtual/workqueue/cpumask; sleep .1; done
----
- kernel/workqueue.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+I don't think I've seen this in my testing.
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index b77119d71641..b2cdb44ccb56 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -1849,8 +1849,20 @@ static void unplug_oldest_pwq(struct workqueue_struct *wq)
- 	raw_spin_lock_irq(&pwq->pool->lock);
- 	if (pwq->plugged) {
- 		pwq->plugged = false;
--		if (pwq_activate_first_inactive(pwq, true))
-+		if (pwq_activate_first_inactive(pwq, true)) {
-+			if (!list_empty(&pwq->inactive_works)) {
-+				struct worker_pool *pool = pwq->pool;
-+				struct wq_node_nr_active *nna =
-+					wq_node_nr_active(wq, pool->node);
-+
-+				raw_spin_lock(&nna->lock);
-+				if (list_empty(&pwq->pending_node))
-+					list_add_tail(&pwq->pending_node,
-+						      &nna->pending_pwqs);
-+				raw_spin_unlock(&nna->lock);
-+			}
- 			kick_pool(pwq->pool);
-+		}
- 	}
- 	raw_spin_unlock_irq(&pwq->pool->lock);
- }
--- 
-2.34.1
+> so I'd be surprised if Patch 1 works (not had chance to test the patch 
+> series as yet).
 
+It works on my machine<tm>, but the rest of the series is required as
+well.
+
+Regards,
+Bjorn
+
+> 
+> With my local patch the result is:
+> 
+> qcom,slim-ngd-ctrl 171c0000.slim-ngd: SLIM SAT: Rcvd master capability
+> qcom,slim-ngd-ctrl 171c0000.slim-ngd: SLIM controller Registered
+> 
+> ---
+>      slimbus: ngd: fix lock hang on probe
+> 
+>      Module contains two platform_drivers. The initial probe calls
+>      platform_register_driver() with the second struct platform_driver.
+> 
+>      This caused a hung task due to mutex lock in __driver_attach():
+> 
+>      INFO: task swapper/0:1 blocked for more than 1232 seconds.
+>                 Not tainted 7.0.0.-rc2-sdm845 #89
+>      task:swapper/0    state:D pid:1 tgid:1 ppid:0 task_flags:0x0140 
+> flags:0x00000010
+>      Call trace:
+>      __switch_to_0x104/0x1c8 (T)
+>      __schedule+0x438/0x1168
+>      schedule+0x3c/0x120
+>      schedule_preempt_disabled+0x2c/0x50
+>      __mutex_lock.constprop.0+0x3d0/0x938
+>      __mutex_lock_slowpath+0x1c/0x30
+>      __driver_attach+0x38/0x280
+>      bus_for_each_dev+0x80/0xc8
+>      driver_attach+0x2c/0x40
+>      bus_add_driver+0x128/0x258
+>      driver_register+0x68/0x138
+>      __platform_driver_register+0x2c/0x40
+>      qcom_slim_ngd_ctrl_probe+0x1f4/0x400
+>      platform_probe+0x64/0xa8
+>      really_probe+0xc8/0x3f0
+>      __driver_probe_device+0x88/0x190
+>      driver_probe_device+0x44/0x120
+>      __driver_attach+0x138/0x280
+>      bus_for_each_dev+0x80/0xc8
+>      driver_attach+0x2c/0x40
+>      bus_add_driver+0x128/0x258
+>      driver_register+0x68/0x138
+>      __platform_driver_register+0x2c/0x40
+>      qcom_slim_ngd_ctrl_driver_init+0x24/0x38
+>      do_one_initcall+0x60/0x450
+>      kernel_init_freeable+0x23c/0x630
+>      kernel_init+0x2c/0x1f8
+>      ret_from_fork+0x10/0x20
+>      INFO: task swapper/0:1 is blocked on a mutex likely owned by task
+>      swapper/0:1.
+> 
+>      Showing all locks held in the system:
+>      2 locks held by swapper/0/1:
+>       #0: ffff000080ff80f8 (&dev->mutex){....}-{4:4}, at:
+>           __driver_attach+0x19c/0x2c0
+>       #1: ffff000080ff80f8 (&dev->mutex){....}-{4:4}, at:
+>           __driver_attach+0x38/0x2c0
+>      1 lock held by khungtaskd/73:
+>       #0: ffffbc5dfc38f1d8 (rcu_read_lock){....}-{1:3}, at:
+>           debug_show_all_locks+0x18/0x1f0
+> 
+>      After this fix:
+> 
+>      qcom,slim-ngd-ctrl 171c0000.slim-ngd: SLIM SAT: Rcvd master capability
+>      qcom,slim-ngd-ctrl 171c0000.slim-ngd: SLIM controller Registered
+> 
+> diff --git a/drivers/slimbus/qcom-ngd-ctrl.c 
+> b/drivers/slimbus/qcom-ngd-ctrl.c
+> index 9aa7218b4e8d2..abdd4ad57f2d2 100644
+> --- a/drivers/slimbus/qcom-ngd-ctrl.c
+> +++ b/drivers/slimbus/qcom-ngd-ctrl.c
+> @@ -1664,7 +1664,6 @@ static int qcom_slim_ngd_ctrl_probe(struct 
+> platform_device *pdev)
+>                  goto err_pdr_lookup;
+>          }
+> 
+> -       platform_driver_register(&qcom_slim_ngd_driver);
+>          return of_qcom_slim_ngd_register(dev, ctrl);
+> 
+>   err_pdr_alloc:
+> @@ -1754,6 +1753,23 @@ static struct platform_driver 
+> qcom_slim_ngd_driver = {
+>          },
+>   };
+> 
+> -module_platform_driver(qcom_slim_ngd_ctrl_driver);
+> +static struct platform_driver * const qcom_slim_ngd_drivers[] = {
+> +       /* Order here is important; ctrl last */
+> +       &qcom_slim_ngd_driver,
+> +       &qcom_slim_ngd_ctrl_driver,
+> +};
+> +
+> +static int __init qcom_slim_ngd_init(void)
+> +{
+> +       return platform_register_drivers(qcom_slim_ngd_drivers, 
+> ARRAY_SIZE(qcom_slim_ngd_drivers));
+> +}
+> +module_init(qcom_slim_ngd_init);
+> +
+> +static void __exit qcom_slim_ngd_exit(void)
+> +{
+> +       return platform_unregister_drivers(qcom_slim_ngd_drivers, 
+> ARRAY_SIZE(qcom_slim_ngd_drivers));
+> +}
+> +module_exit(qcom_slim_ngd_exit);
+> +
+>   MODULE_LICENSE("GPL v2");
+>   MODULE_DESCRIPTION("Qualcomm SLIMBus NGD controller");
+> 
+> 
 
