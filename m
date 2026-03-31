@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-232162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPlxKAkFzGnPNQYAu9opvQ
-	(envelope-from <stable+bounces-232162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:53 +0200
+	id cBPcExH9y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-231938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E0136EE17
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51EE136D870
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37C26315C003
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0D8C230CA424
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E18425CD6;
-	Tue, 31 Mar 2026 16:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB6A3F7A8B;
+	Tue, 31 Mar 2026 16:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktJlR2T+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJGR2AcP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25430421EE4;
-	Tue, 31 Mar 2026 16:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38D82C15BB;
+	Tue, 31 Mar 2026 16:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976037; cv=none; b=cW55qRRrRyPIM0ZoOHpN5ifWOqrcgaOVQsX0Sx4mA1iDGjwPkdmaaAi1Rarpj7+1/O6PybBr+f16YLPj7l+9zKSgJkll5mosx8/r7tQrvuiMaD45+4N9PrHGR3si/vLkrlArc0d9yw4N0QuR3lAkiP241NI4npQShl9bDy01qfE=
+	t=1774975454; cv=none; b=ZpZMHyF1d4QOl1afNdtOx+W2whrYxI7Svg5sgWNCIEAFjzXRStbkLuhmSYIFgTsF9RSIkf2LTnJfW8rBRwXbpBYjl7ZXTrqbYDF+cdiSNClDDvFTxRrHTLRzeizX1kPAeQlZij4B3tPJSzFYyDO0rhqJ718tQ63cbCXfVv0vfx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976037; c=relaxed/simple;
-	bh=swD8lb4zec28pCEqvHnQAvdCfZ2tqTG84Th0NR1rmOk=;
+	s=arc-20240116; t=1774975454; c=relaxed/simple;
+	bh=s2HL3gVf2WfM3JaZZu+/RcjrMTnoeYkUhj6vZK61oGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukrmuiJU+jEYUBEgyti3I4TMa8KLj0zCag1YvNruZfBLNtZTpl6nNjzwHQjwJ/y2qntTOqTl5Aiph6/+GCowz+Img4SNPSlPvNyEgnDa+vP5eOLs7Dp4LFF35Re9rqE6VGA3E0lkJ6EryKeGsmr5Z2o+ImPqFeIPxdFQGZHkjxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktJlR2T+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B165AC19423;
-	Tue, 31 Mar 2026 16:53:56 +0000 (UTC)
+	 MIME-Version; b=l84ZuSgYsjEF0AHh61ZdcglizT64Lstr67sMtGH0y6R2nnwRMH0O5wqBGJuIlCdB1ACxUgyASwYOLr8eHy9hcR0lyfGHHakRSWbKUwX1E09nAoE665LCCvr4krCyuVcxF8ERppxBzdilIp3TosynrxIBKpCd+k/KK8++6ZbVs2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJGR2AcP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A12CC19423;
+	Tue, 31 Mar 2026 16:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976037;
-	bh=swD8lb4zec28pCEqvHnQAvdCfZ2tqTG84Th0NR1rmOk=;
+	s=korg; t=1774975454;
+	bh=s2HL3gVf2WfM3JaZZu+/RcjrMTnoeYkUhj6vZK61oGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktJlR2T+gu+SieqsbKqL2baHgzmFeecUjKb3IVBePWR9w8e8vzWl/MHm11FeXcg4w
-	 0D0X5wUbyqbV+fza34u80/CQMVPFZQCfRDisYgevcCiS3t2jBs95aN5g5fCKzQfhOI
-	 +0lQwk/YpC8bpgceUgqRYLs60r6Q3vI4tAmN6oIc=
+	b=mJGR2AcPg989oPnbYrcYHAbpKS+EuvQIDe11ySZSLeoE3y8KOYlm8W1C7BB8YF+pD
+	 cwG1fTr9hdAnMk0SME4XM9rnijoPOY7DLL/gQt3iQHe/5cekkbvWQvQ+bqUBu4OsXA
+	 3ccXfcKDkiesznMNRoWdJwipKwd9VC0rd2jnmFNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Durrer <anthonydev@fastmail.com>,
-	Simon Weber <simon.weber.39@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>,
+	syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com,
+	syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org
-Subject: [PATCH 6.12 183/244] ext4: fix journal credit check when setting fscrypt context
+Subject: [PATCH 6.19 300/342] ext4: avoid infinite loops caused by residual data
 Date: Tue, 31 Mar 2026 18:22:13 +0200
-Message-ID: <20260331161748.516981785@linuxfoundation.org>
+Message-ID: <20260331161809.969382558@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,90 +73,113 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232162-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231938-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,fastmail.com,gmail.com,kernel.org,mit.edu];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,suse.cz,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.989];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,512459401510e2a9a39f,1659aaaaa8d9d11265d7];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,fastmail.com:email]
-X-Rspamd-Queue-Id: D0E0136EE17
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.cz:email,syzkaller.appspot.com:url,msgid.link:url,qq.com:email,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 51EE136D870
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Weber <simon.weber.39@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit b1d682f1990c19fb1d5b97d13266210457092bcd upstream.
+commit 5422fe71d26d42af6c454ca9527faaad4e677d6c upstream.
 
-Fix an issue arising when ext4 features has_journal, ea_inode, and encrypt
-are activated simultaneously, leading to ENOSPC when creating an encrypted
-file.
+On the mkdir/mknod path, when mapping logical blocks to physical blocks,
+if inserting a new extent into the extent tree fails (in this example,
+because the file system disabled the huge file feature when marking the
+inode as dirty), ext4_ext_map_blocks() only calls ext4_free_blocks() to
+reclaim the physical block without deleting the corresponding data in
+the extent tree. This causes subsequent mkdir operations to reference
+the previously reclaimed physical block number again, even though this
+physical block is already being used by the xattr block. Therefore, a
+situation arises where both the directory and xattr are using the same
+buffer head block in memory simultaneously.
 
-Fix by passing XATTR_CREATE flag to xattr_set_handle function if a handle
-is specified, i.e., when the function is called in the control flow of
-creating a new inode. This aligns the number of jbd2 credits set_handle
-checks for with the number allocated for creating a new inode.
+The above causes ext4_xattr_block_set() to enter an infinite loop about
+"inserted" and cannot release the inode lock, ultimately leading to the
+143s blocking problem mentioned in [1].
 
-ext4_set_context must not be called with a non-null handle (fs_data) if
-fscrypt context xattr is not guaranteed to not exist yet. The only other
-usage of this function currently is when handling the ioctl
-FS_IOC_SET_ENCRYPTION_POLICY, which calls it with fs_data=NULL.
+If the metadata is corrupted, then trying to remove some extent space
+can do even more harm. Also in case EXT4_GET_BLOCKS_DELALLOC_RESERVE
+was passed, remove space wrongly update quota information.
+Jan Kara suggests distinguishing between two cases:
 
-Fixes: c1a5d5f6ab21eb7e ("ext4: improve journal credit handling in set xattr paths")
+1) The error is ENOSPC or EDQUOT - in this case the filesystem is fully
+consistent and we must maintain its consistency including all the
+accounting. However these errors can happen only early before we've
+inserted the extent into the extent tree. So current code works correctly
+for this case.
 
-Co-developed-by: Anthony Durrer <anthonydev@fastmail.com>
-Signed-off-by: Anthony Durrer <anthonydev@fastmail.com>
-Signed-off-by: Simon Weber <simon.weber.39@gmail.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://patch.msgid.link/20260207100148.724275-4-simon.weber.39@gmail.com
+2) Some other error - this means metadata is corrupted. We should strive to
+do as few modifications as possible to limit damage. So I'd just skip
+freeing of allocated blocks.
+
+[1]
+INFO: task syz.0.17:5995 blocked for more than 143 seconds.
+Call Trace:
+ inode_lock_nested include/linux/fs.h:1073 [inline]
+ __start_dirop fs/namei.c:2923 [inline]
+ start_dirop fs/namei.c:2934 [inline]
+
+Reported-by: syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1659aaaaa8d9d11265d7
+Tested-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Reported-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=512459401510e2a9a39f
+Tested-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Tested-by: syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/tencent_43696283A68450B761D76866C6F360E36705@qq.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/crypto.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/ext4/extents.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/crypto.c
-+++ b/fs/ext4/crypto.c
-@@ -163,10 +163,17 @@ static int ext4_set_context(struct inode
- 	 */
- 
- 	if (handle) {
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4461,9 +4461,13 @@ got_allocated_blocks:
+ 	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
+ 	if (IS_ERR(path)) {
+ 		err = PTR_ERR(path);
+-		if (allocated_clusters) {
 +		/*
-+		 * Since the inode is new it is ok to pass the
-+		 * XATTR_CREATE flag. This is necessary to match the
-+		 * remaining journal credits check in the set_handle
-+		 * function with the credits allocated for the new
-+		 * inode.
++		 * Gracefully handle out of space conditions. If the filesystem
++		 * is inconsistent, we'll just leak allocated blocks to avoid
++		 * causing even more damage.
 +		 */
- 		res = ext4_xattr_set_handle(handle, inode,
- 					    EXT4_XATTR_INDEX_ENCRYPTION,
- 					    EXT4_XATTR_NAME_ENCRYPTION_CONTEXT,
--					    ctx, len, 0);
-+					    ctx, len, XATTR_CREATE);
- 		if (!res) {
- 			ext4_set_inode_flag(inode, EXT4_INODE_ENCRYPT);
- 			ext4_clear_inode_state(inode,
++		if (allocated_clusters && (err == -EDQUOT || err == -ENOSPC)) {
+ 			int fb_flags = 0;
+-
+ 			/*
+ 			 * free data blocks we just allocated.
+ 			 * not a good idea to call discard here directly,
 
 
 
