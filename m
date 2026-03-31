@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-232152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHy5DpgEzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:00 +0200
+	id cEigH8P+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08A736ED15
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0761236DD22
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A3D73280E61
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEF2A3180AD0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8563C426684;
-	Tue, 31 Mar 2026 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D70541C30C;
+	Tue, 31 Mar 2026 16:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5dn+eDU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Opk9Yp0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483ED3FADEE;
-	Tue, 31 Mar 2026 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEAB36AB47;
+	Tue, 31 Mar 2026 16:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976011; cv=none; b=Mtsb8hCkfgoX4xjgKpNalI4rJVb916FwyY8Szf8kCjBltLHtvRPKQ9Cej0zeBRyaUCEmKAYodk57cw9sb0pNDi4owa4p293Os5a7y3JC3qcrzwaUluzyA6zSQwY8wxuRUZ2QDlyS9GjuGPLRanSl1MV5WZQWUPl02+jH9yBB0xY=
+	t=1774974576; cv=none; b=WfV2ehpZgkMur2dLredJSxDbt2k00/IfN0aKmKx+uDTOkmK16zy3MrW2RN2GGELoYkeu1n2XmVfuHjsXdh5294tNEYaBrqKO7mRlm9eplyDYpvXhr0GpDApOmWtMJ2kOzyxpPjVAtURVoRuu8NE0qCUxphmHleMgnevSJT3rTCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976011; c=relaxed/simple;
-	bh=uU+/zfRozswNHWg4i1vdA3gaBt6aCwDy2ORbXXQs7p8=;
+	s=arc-20240116; t=1774974576; c=relaxed/simple;
+	bh=kHwKBqjZi1xGB5fL+LrrFJsJywfmfOahe5cOM+gQkAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxihhQXLKfOzB+XAvYeNRArlWlTKg5r6GoHYr00prLYgh0QXBgKmZRGv552K9uVTXA3ximjIX72qr9sqXbCiWa6Fzh2aJwKmm4f/bOyoLR1zwXOREqTU3QolwXj5WgSU1ZgXAY86I7kKI9hca22R8grpZITAvKgngr2FuXt7n98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5dn+eDU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D205EC19423;
-	Tue, 31 Mar 2026 16:53:30 +0000 (UTC)
+	 MIME-Version; b=RJvmlQkbn8k6siyVSnkL738mWbLpaOFWRdgJcQwFyhv8R2l2bCUL0hCLoi/K0wRozXb0Ye2FaDFlypNevfxlAJYmIoeIeTm52+WqmMZ84GFBqqU9hcd8url6IPh7Chmb2inSP1xoLkn+8nAzgbMGZ1E1Z7B+BfyQ/XJQR7wNmb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Opk9Yp0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50D8C19423;
+	Tue, 31 Mar 2026 16:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976011;
-	bh=uU+/zfRozswNHWg4i1vdA3gaBt6aCwDy2ORbXXQs7p8=;
+	s=korg; t=1774974576;
+	bh=kHwKBqjZi1xGB5fL+LrrFJsJywfmfOahe5cOM+gQkAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5dn+eDUsTwNnbipJfCsgpqCm/8VWJ+ZnM/DN56XTDJ/18+X48m9nmocA3ZavvF/X
-	 JpXSkMhLQK0MGTNDmQ1JZ/xeP8KCHvWCAM7Z1gcSO7BInQ+PnexZzqaXaQ1lkguKqH
-	 B7ubTavV+1ydKvOM9R9MH/HujvnMpD8B3RdEMmBo=
+	b=Opk9Yp0bDTtcxnDQI6/JheuIEoK1LuV35/h8wX5pRA5PzwnvMSQzomfPmn2A9HDGh
+	 SVjjv/LHR2m+N5VkgUtcfF3ExYc9xYcxwXxkVgplbfFRVAnU9AtTNvi9eTp8ANNazm
+	 ogMeWVYpbH6v24gnCdFhtxibdgnPpXL6CqtAtygE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 171/244] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
-Date: Tue, 31 Mar 2026 18:22:01 +0200
-Message-ID: <20260331161748.075431590@linuxfoundation.org>
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 138/175] ext4: fix use-after-free in update_super_work when racing with umount
+Date: Tue, 31 Mar 2026 18:22:02 +0200
+Message-ID: <20260331161734.856583806@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +67,151 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232152-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-231595-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,suse.cz,shopee.com,gmail.com,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email,msgid.link:url,tuxon.dev:email,nxp.com:email]
-X-Rspamd-Queue-Id: A08A736ED15
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,msgid.link:url,shopee.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0761236DD22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-commit 89a8567d84bde88cb7cdbbac2ab2299c4f991490 upstream.
+commit d15e4b0a418537aafa56b2cb80d44add83e83697 upstream.
 
-Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
-CHCTRL register. To avoid concurrency issues when configuring
-functionalities exposed by this registers, take the virtual channel lock.
-All other CHCTRL updates were already protected by the same lock.
+Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
+filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
+to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
+reads during unmount. However, this introduced a use-after-free because
+update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
+accesses the kobject's kernfs_node after it has been freed by kobject_del()
+in ext4_unregister_sysfs():
 
-Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
-accessing CHCTRL registers but this does not ensure race-free access.
-Remove the local IRQ disable/enable code as well.
+  update_super_work                ext4_put_super
+  -----------------                --------------
+                                   ext4_unregister_sysfs(sb)
+                                     kobject_del(&sbi->s_kobj)
+                                       __kobject_del()
+                                         sysfs_remove_dir()
+                                           kobj->sd = NULL
+                                         sysfs_put(sd)
+                                           kernfs_put()  // RCU free
+  ext4_notify_error_sysfs(sbi)
+    sysfs_notify(&sbi->s_kobj)
+      kn = kobj->sd              // stale pointer
+      kernfs_get(kn)             // UAF on freed kernfs_node
+                                   ext4_journal_destroy()
+                                     flush_work(&sbi->s_sb_upd_work)
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
-Cc: stable@vger.kernel.org
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Instead of reordering the teardown sequence, fix this by making
+ext4_notify_error_sysfs() detect that sysfs has already been torn down
+by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
+in that case. A dedicated mutex (s_error_notify_mutex) serializes
+ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
+to prevent TOCTOU races where the kobject could be deleted between the
+state_in_sysfs check and the sysfs_notify() call.
+
+Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/sh/rz-dmac.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/ext4/ext4.h  |    1 +
+ fs/ext4/super.c |    1 +
+ fs/ext4/sysfs.c |   10 +++++++++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -286,13 +286,10 @@ static void rz_dmac_disable_hw(struct rz
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1535,6 +1535,7 @@ struct ext4_sb_info {
+ 	struct proc_dir_entry *s_proc;
+ 	struct kobject s_kobj;
+ 	struct completion s_kobj_unregister;
++	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
+ 	struct super_block *s_sb;
+ 	struct buffer_head *s_mmp_bh;
+ 
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5344,6 +5344,7 @@ static int __ext4_fill_super(struct fs_c
+ 
+ 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
+ 	spin_lock_init(&sbi->s_error_lock);
++	mutex_init(&sbi->s_error_notify_mutex);
+ 	INIT_WORK(&sbi->s_sb_upd_work, update_super_work);
+ 
+ 	err = ext4_group_desc_init(sb, es, logical_sb_block, &first_not_zeroed);
+--- a/fs/ext4/sysfs.c
++++ b/fs/ext4/sysfs.c
+@@ -529,7 +529,10 @@ static const struct kobj_type ext4_feat_
+ 
+ void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
  {
- 	struct dma_chan *chan = &channel->vc.chan;
- 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
--	unsigned long flags;
- 
- 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
- 
--	local_irq_save(flags);
- 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
--	local_irq_restore(flags);
+-	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
++	mutex_lock(&sbi->s_error_notify_mutex);
++	if (sbi->s_kobj.state_in_sysfs)
++		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
++	mutex_unlock(&sbi->s_error_notify_mutex);
  }
  
- static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
-@@ -545,8 +542,8 @@ static int rz_dmac_terminate_all(struct
- 	unsigned int i;
- 	LIST_HEAD(head);
+ static struct kobject *ext4_root;
+@@ -542,8 +545,10 @@ int ext4_register_sysfs(struct super_blo
+ 	int err;
  
--	rz_dmac_disable_hw(channel);
- 	spin_lock_irqsave(&channel->vc.lock, flags);
-+	rz_dmac_disable_hw(channel);
- 	for (i = 0; i < DMAC_NR_LMDESC; i++)
- 		lmdesc[i].header = 0;
+ 	init_completion(&sbi->s_kobj_unregister);
++	mutex_lock(&sbi->s_error_notify_mutex);
+ 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
+ 				   "%s", sb->s_id);
++	mutex_unlock(&sbi->s_error_notify_mutex);
+ 	if (err) {
+ 		kobject_put(&sbi->s_kobj);
+ 		wait_for_completion(&sbi->s_kobj_unregister);
+@@ -576,7 +581,10 @@ void ext4_unregister_sysfs(struct super_
  
-@@ -677,7 +674,9 @@ static void rz_dmac_irq_handle_channel(s
- 	if (chstat & CHSTAT_ER) {
- 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
- 			channel->index, chstat);
--		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
+ 	if (sbi->s_proc)
+ 		remove_proc_subtree(sb->s_id, ext4_proc_root);
 +
-+		scoped_guard(spinlock_irqsave, &channel->vc.lock)
-+			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
- 		goto done;
- 	}
++	mutex_lock(&sbi->s_error_notify_mutex);
+ 	kobject_del(&sbi->s_kobj);
++	mutex_unlock(&sbi->s_error_notify_mutex);
+ }
  
+ int __init ext4_init_sysfs(void)
 
 
 
