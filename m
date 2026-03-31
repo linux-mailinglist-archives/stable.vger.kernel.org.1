@@ -1,160 +1,270 @@
-Return-Path: <stable+bounces-232577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HUgEaY2zGn7RQYAu9opvQ
-	(envelope-from <stable+bounces-232577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:03:34 +0200
+	id aL0SBNg3zGn7RQYAu9opvQ
+	(envelope-from <stable+bounces-232578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:08:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F0D37151C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:03:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D05F37161C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B2E4305E402
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:03:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 28B8C3034DED
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F763F787D;
-	Tue, 31 Mar 2026 21:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BAD3FFAD0;
+	Tue, 31 Mar 2026 21:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQXq8Cf0"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="uChPHJWK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022090.outbound.protection.outlook.com [52.101.96.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4882F9C37
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 21:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774991002; cv=none; b=dXvQ+dln2tAYnUxzPAmGzdBOcRUyTciR246nuy9Ld60ihJfNBHEdAI39JKXrD1gfI9JoMJpHcdTSFOFUeQmQZmBT2JTZzn5bEbc4vEDR6tAEekDm/z2g8Qj0kJJJ6FMKveuTWxIaMc+X++31Ggga/s6Zl/EpCQQ+/S6rAVZcWU8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774991002; c=relaxed/simple;
-	bh=Gt3u96Z/RHWT4uSpKJTe+1AoRa/kukWjUHnXg95ZC44=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s5UbnyaxIb88rghXEiLQSa6QzEnScTTIbkqgstQ0N38I/7Kvgc2I3DfMuQ0QS7TjjfmJnZlateugrIZ2W9d7ajWH/VZGRoLouWp7hm/kyQvvPkKKFySxEPM+FtyIYgsdjrb3bRQHluQWl+M+NfCQLl+NR8UsOgmg14SyDCQyx6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQXq8Cf0; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d55b97f358so3821133a34.3
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 14:03:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1774990999; x=1775595799; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=d1ynKJA2ZMz+n9z+laV/KWasvwjgNqFlNU3zkpu9Lp8=;
-        b=LQXq8Cf0o00ceLn+KhlYJuoQKNomXwMZlpaNyT1a5kr04yAs1ojNUz4Ix7ndT1exW3
-         DSeLgdM+jBgEsMBxJHpt0jveGjtSVVFv2YuJmDQD4S8+FJJlFuGbxlOLRDV3u7XO/J0J
-         gpp7z7gkb7Y2anhLCogPVzyqBpmUuX8uSUxW4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774990999; x=1775595799;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d1ynKJA2ZMz+n9z+laV/KWasvwjgNqFlNU3zkpu9Lp8=;
-        b=KN50I7c7WSk71+NlACQzAg9G0KKgvVzL0PiSkP5vVZtY4jNaKODY1D0k2D3jEwiUzQ
-         pAaOqdQXcJSDkuUCcSBj1tAn+RZoG3GCqUzwmSKIgnP0eDYV0OxM+fmQoJTwTiLzVuoG
-         SL24powJCZiznM6acALlk645vfJMAEZPJwGwn8DeKm/OQUF1beYwiy4vfTSi9vIWF907
-         xhAuYRj9f3C3lb002EoRTYxKtynT4/466NmwTr3x0YViyqdw7ahGFmAgA+2qFceeO1uX
-         WBzWVBDOO6gBMUHFHk1OtfP+DRnT7sRQvu350HYayysKIauEhYGsKVxfWU06Dylo3Vvy
-         Yc8Q==
-X-Gm-Message-State: AOJu0YyJlxxFy43z2xyDOrGXHKm3qW8peHIMV41bt/CzIsFEhPe+dm3z
-	CdibXwCMonsI5enLMmoWTovbrwYkBaCVE17Ct0WQBPBbXC2J/woXqQHWNJMC46u1bcK/ScBI4Xy
-	sTbnnaMo=
-X-Gm-Gg: ATEYQzwVBa0T4Ra1emn/EBhvQohiwpbvjOxRx8xPA1mySNdihcmYa5cSbGUTkCotR03
-	70bHVggVu4JIWRuY2hxqtWX8fSG87kLKzfcl27+WRsxBMziEB5Ja4Xs2UVToW/Jp6WbepzXfOK0
-	jEsbEVVR5+e4bntS51M3MefcYH8kvSoW0EGVEOuM2ndSRGngQSjkBneHzemJFVs9hYUoKm+CNn1
-	Bz/fqacBdXlDCk3549Gy8E+P+K+y510xbA0K8Iy2nhn7Erth/lTdDY8lr+4ty1pZIc+9HzqIcWp
-	1NVfVVvDYqUIhrcXDkGxyPtt3tAEcY6uum4s1Y4jJZWAN0R56MYSrB0KwFoOTrG9kwthbN/MInc
-	CfwdO/q7z/BvNEGOox8D1WBW+2Iy6FX0wAUeMLNSuIics+lgP7ijLMYdCQb8HLSNdVJ6I38mPD5
-	L8ieKb9rCR+DC9hi0t6mOr3TsJXyXyN0xVo5U=
-X-Received: by 2002:a05:6830:67f6:b0:7d7:fba1:c767 with SMTP id 46e09a7af769-7db9942cec5mr900953a34.32.1774990999564;
-        Tue, 31 Mar 2026 14:03:19 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7da0a7b45basm9162649a34.17.2026.03.31.14.03.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Mar 2026 14:03:19 -0700 (PDT)
-Message-ID: <0bcaa85a-7b7d-4295-9b48-afd983e7641a@linuxfoundation.org>
-Date: Tue, 31 Mar 2026 15:03:17 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D173E3D6CBE;
+	Tue, 31 Mar 2026 21:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.90
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774991247; cv=fail; b=uLOmqbTn62oh1ODXiJrH+sYNkElVIloLsL9MDMYEF0r3/61kDeZIHbRiyeG8DIM734KiqdTrwWNrIicxy3ZqcVU/DVKgY74LVDPyzzaWhjziXqnDSiFMFiqpTIB5Sphe13DRM2oC5TiiGs3o3VZ+msu+pZHpzNGffJFt9aHw3G0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774991247; c=relaxed/simple;
+	bh=1lgLWVwflkyNUhGkpR8atonESCL4oUa1kdXPm6ZVzEs=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=apKypRt6Uxqh39sfI9cKoZFiK66h25Gyier/hkmpy6x21qW8Q3EWNYGV2rDH+1101DwUovTs6v6nQIZ+LaFHXn85J9Kylvv2aXlYCXJjLV/Blcf3fvoCgkC7TFfronJ/8Qg+0Cz9/2WOivrXiGd+Ctwa38oa8bOCIMVQxvLbCNU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=uChPHJWK; arc=fail smtp.client-ip=52.101.96.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zNtpWrE2Jp5/nURel55JIS45pUHbH278z37tC7nbPQsNvTwp+gehyR9JWsHMGn1hCg0xo5foT9p5DrXX1bmgo1jeibx1J8W0QauI+hYtoYAv02Ip+Jl8zd1SfXwgxBJxbICwE9YigN+HoLE5/kexcc4e06Xtx9X8tBk69mx3+Y96/XvgQDBeZ8qRVBUDflKFH/hmMjceNxU+SgFwnZ6D1T3/xnw+XKf2xnfzBTO/fSC42An4QpY5RSsAtV+F/JD+SGfvmSIsESpgUOwRPW26Tr79F5WBh862X5hwzXC6JttGKGXmR+nuV2OiUOYZ4RbBL1peEej8O8Hp3tPotRIZ3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DokolR/ibShIit6LbJGIvre8QW66yAyZmVL3+hvZdAE=;
+ b=i2hd6aQEIDMA6XDxPvGLdnHq36Reh/1KFzJ566yH9qB7cp7g75Zw1ZqXNV92bcYcmhfHrRzgIvI2PABXB9tApiFNxeGc2CYLqul/mDgwe36asnLkPe7/Hsw6w+I9eIwplpyDG1NRfWUT6JS2oGi70k3aKYPi6RE7MADm6Lb93yu0xjp4exHEpHgrCUnZuGjVt4c4d3bqW9OqBcssrwzyTVGEGLGIuNdC9+LNA2PAOT//YO2PH2X3lyhkvWIVe7Bu3ZhuSbUq1BS86m4UAphw9Rt6KuFzxUOv1OlWW9nSgK0TIXQt4afPytLU8o5rCvFFIi5WOTpK1IZDxFjNgrWAVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DokolR/ibShIit6LbJGIvre8QW66yAyZmVL3+hvZdAE=;
+ b=uChPHJWKbh/Pwkn1h4HwmRy41ZKFxhjdPeF4Lix0gjhY14oxFB2+KeQfOtwSWnBq1qDS6QSIoyb0NIPy0aeNhSa+V/8AChrLrdVYRfyq1jWazJ/kLr2KSAj0edvHc2gn3TvguyprtAgbgkiEsKx0hEuwC1uHDD766FgrQ6XHF38=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO6P265MB6523.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d2::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Tue, 31 Mar
+ 2026 21:07:22 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
+ 21:07:22 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 31 Mar 2026 22:07:21 +0100
+Message-Id: <DHH9VRFULJST.383BKVSWUTZ3E@garyguo.net>
+Subject: Re: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
+From: "Gary Guo" <gary@garyguo.net>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez"
+ <da.gomez@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Nathan
+ Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
+Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>, "Aaron
+ Tomlin" <atomlin@atomlin.com>, <linux-modules@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
+ <stable@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260331205849.498295-1-ojeda@kernel.org>
+In-Reply-To: <20260331205849.498295-1-ojeda@kernel.org>
+X-ClientProxiedBy: LO4P302CA0028.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c1::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mqueue: Fix incorrectly named file
-To: Simon Liebold <simonlie@amazon.de>, Shuah Khan <shuah@kernel.org>,
- Simon Liebold <lieboldsimonpaul@gmail.com>, Kees Cook <kees@kernel.org>,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- SeongJae Park <sj@kernel.org>
-Cc: stable@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260312140200.2224850-1-simonlie@amazon.de>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20260312140200.2224850-1-simonlie@amazon.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6523:EE_
+X-MS-Office365-Filtering-Correlation-Id: 49a31d52-e810-4f7a-0034-08de8f698073
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016|13003099007|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	K5XfsQjqhol89hoj2E6rgN4/2zLUxyDB9lXBtsfEV39XfbPxTJGS+1Far1jv13wf6Z9D9e9BnJKlsIIk1Z7Is0W9FlF4AupUU0yXU52EulhP4i2B9uxVhDuDDj3H/ER0n1KHXgFvXhUEJByTaKqKKoeeH6Be87udRspn6mHEtTYATNgK98BKwjqJr3xqs6xqE5F2hPMuxa28AAA4S+zSoxDrfkeB8hCoDKHqkt+DqB1LdagFLS4MDBbkbif0bG/20i7gYBNVELYxuN9Ddy7KjupLWFz1ezSc0pBS7MFm7oMstKVXRoVkxJuOW1aOAw14TnQOEfcJq0DAVm4hbkLq8me7LzylSWOyPIehSlLLGFenuq4A49Myh2p5BxXeL2eYHT2J/RhCpKJrSYBy44j7QaaaAXSiaHuJBeiZxMErp14T+zcGTDvEW0Tg7fN9upFSJBJhEAwi+aoIshGq7eSYEgkeYQdDPOmvDRYmYOwXVyn7rcCePE/4nrUjpP9qz6B6f3YtHF6PJfghdVWP7BKwEdB50Y+08MlKRcqZ2yRc257y/yU2Y+gGWyR9bnRjx2IYA9QJetkaEPPPSbcQpGYYjIkEi1ior/ap0tJgpk8OYNmYJdVWmKrgak51bplW4Z2qvLXf+RK7fVFfwdKJrE0C1xnlU0DLqpgPG1vaCYZnWDYH5+LrZj2mQ0cFT78CxbFw
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016)(13003099007)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?clZWQXU1RTRiQmN6TjYvbEpaWmVDZGNQai9PZ2ZYOTBVQmE5SlErRUp3Z3hX?=
+ =?utf-8?B?KzJLV1VwNGtHcTh2VE51YkpjWmsyZnR5cjgzSDNaZFFCd3VmRU4rOTZRYW13?=
+ =?utf-8?B?MXlKM3pPTEV5T2ZZK3VyTXZ4OG9BUWV3czNTMEhTalYzamdyb3dpbGhQVHZk?=
+ =?utf-8?B?N3p2aTRsMFFudFFqNTFpYVMrMFcxR0pVL1F3U285VHc2b1ZiMXMycm5HTWlt?=
+ =?utf-8?B?NTltcjJvR25TUllHZ2xBbkUrWmRsanZ1VGorSk9DQmlNUWVTcm9lYTJ1QWYz?=
+ =?utf-8?B?eGVmeTNKQWl6RHFtWGFjYmlreGhjWndNSWhsdWx0TlRVNGlxQjE2TlZKTUVp?=
+ =?utf-8?B?OTNGTWJwTUlPQkVuZDNnWjlJbmwxZXNhY1p0TTI1ZlUrdXJlQlpnOEJTdGVT?=
+ =?utf-8?B?eVdtRjdrejRSdkxYVWJMeU8xMU1hcERxMVR3UnhsSng0ZVdNSWNQVU1wc29x?=
+ =?utf-8?B?ZndVNFpnUTNvUytZZWl6eUF0RnQ0NVR6VmordzdsTFNOcEpJSUFrOVlpejNn?=
+ =?utf-8?B?b2lhMlFwKzFKNkpvQ2ROMGlFYnZIKzJrMzFlNDgxY0NITnAyNkxPVUQ1M0Zx?=
+ =?utf-8?B?WU80a3lGZWFPWUlNa0pzSUR3Zmx2WHpTTEZ2TXpwK1ZKbjFOdGtPaTFnbDJX?=
+ =?utf-8?B?RWZWRWRIY2xVenZVYktxZU9sTXJVQ3pwZlFkbUI2QUMxZjlQMjVibGpxbW42?=
+ =?utf-8?B?QjdJbkJxQnM2UWpJUG43ZlVFVEVlR0VwUzBXUXd5NWRGc1ZPc21JSUt4R0Vh?=
+ =?utf-8?B?bGtLSkg3SVRmcnZSdUN4bjhYb2ZEa0lZb0RzMk1Nc0JOZVdJUFhqbGxlRTY2?=
+ =?utf-8?B?NS9kbVYxSXcrV3IyRWRSekZmK0lSUmovSGxrRzV3NHpqVksraWFJVmpHZUpE?=
+ =?utf-8?B?RUxFQzZQWWlLS2ZSZlRRb2lXUmI4aVUvVklNbmxPL1lJYXE5bVZ1SzhLTTA4?=
+ =?utf-8?B?U0QvVFlGT2hrdTR1R1VpTHF4THBVK1Y0akZBNGNTYjEzTVdOeldFRUZvd0cx?=
+ =?utf-8?B?eHhsK1JUUjYzSVZVaDJmNG9LQWVGL2ZPc3QwQVp5V3BXL3JONkZBajhyWTd0?=
+ =?utf-8?B?c0hwaUJQeDNnR1dIbTczNDBxN2J4MVFXWG53RU5UOFN0RlBTUkt2KzVOVTMw?=
+ =?utf-8?B?cGhIdXNYOGEyL3ZENklPTnJ6MlRFS3FoYjVTQkdjNG5lUzZGamFPcmF2VHNs?=
+ =?utf-8?B?NHR5WndDTnhXbkxjeGhTd3RkTE56Wmx6R0tBQVpacHg5M1VwODRncTN0TVZP?=
+ =?utf-8?B?SS91K2hZU2dPUTkxRm0zVkV2dWp2eVZVQ2hlVUdtaXVjOXJOUmxvcXVZWjJP?=
+ =?utf-8?B?NW03bkJtK3ZGSlF1cEszYnhiVVRTRGR2TnhNMVRNbmoraDhidDUyVUQxeUpy?=
+ =?utf-8?B?V0Rydk5hR0MyL2ZzWEFWWURwc3lCV3JSM1NiSFdRNGUwTmVRbEJTZ3hGRUxi?=
+ =?utf-8?B?ZjYybUpFYXAxcHpZekVKYkEwd0FtMDV1QVUxMVhIaDdQMFdhTHVSNDFOcmlL?=
+ =?utf-8?B?bmxZYVpoNVhLN2lnMkhDa3c1ZGhTQzE5MklTYWorbW1TdVAyb3ErUlRkeW1z?=
+ =?utf-8?B?ODZoRGhyRWVvdUlzUGR1ZVRwWWIyd1g0Y3lHL0Q2VHE3RUtkaTcvL0Q4NUc4?=
+ =?utf-8?B?dWFSVDhtSkdpYzVDcUF1Z3RoN29CSnZpK0p0WGJMVlpkbVdDSEVxWENsSFhI?=
+ =?utf-8?B?Umt1dFI0c25JdTNXck9lakV2eDl2SEJvQ1Q4a1ZYZ2pKcTJZS0V4YXMrald6?=
+ =?utf-8?B?MTcvRUZvWDFWYUNwdjBnLzlaSEFLa0VqY0taNFlLR2RFVjJZOHd6MnRxRWxO?=
+ =?utf-8?B?M1VnclRhQWxpSFpuRmhud042bWZGMDlFY0lVNWRGL2ZNanB4bEtqYy9qUUZO?=
+ =?utf-8?B?eFAzK1JMczRZQklyZHFGK2MwZ2U3UXZXRnk3cC9ZQklRL0tiaFQ2U3kzQ00z?=
+ =?utf-8?B?RXc3bkdjNmw2RVpTYzF5dHY5Sk9jUm9sZ0dxZ3MrOGw3QldrUFFGcXBGUkpm?=
+ =?utf-8?B?WkJUOUFqbnVEaFQyeGlVNkRMcUNPeGVhbElBLytLVzlsRDNZeTlienRzcXUr?=
+ =?utf-8?B?YXg2TUxxU1ZKZUxFemxjQXgyMmZ4aEVCcmV4WDRqTmxjTlFpTGIzMzA5N3NP?=
+ =?utf-8?B?SHIybXdSZDlhYzMwYUZ3RVhJN2ptbHA0UThYS2pYaUE3V0djUG9sWFZHeFBa?=
+ =?utf-8?B?eEc3c2tPeE92SDVwT3FLWmFMOFNta2FZTXlzcm1GZ09vVE13djhkQW80TGZn?=
+ =?utf-8?B?WWhOdlkyTmJENW5NNWVMVnFQRTMvcGMrTE1vRFNrY0JweE9vWS9nd3pjdFQ1?=
+ =?utf-8?B?WE5pNU56d3NRL0t3blpCSUd1WS9yeDNNeGNxZmovNUpWMGVSVmk2Zz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49a31d52-e810-4f7a-0034-08de8f698073
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 21:07:22.3497
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /Cmrp8+DabVTOQPULJCY12r8/jK7qyz7OxIYMx0Kp+A5FfVIt/9hZ9rlnJXsyaRM8Yy/ndGeBWG+dgcWavEqjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6523
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[garyguo.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_DKIM_ALLOW(-0.20)[garyguo.net:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-232577-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[amazon.de,kernel.org,gmail.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-232578-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,atomlin.com];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gary@garyguo.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[garyguo.net:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F0F0D37151C
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,rust-lang.github.io:url,garyguo.net:dkim,garyguo.net:mid]
+X-Rspamd-Queue-Id: 0D05F37161C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/12/26 08:02, Simon Liebold wrote:
-> Commit 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
-> intended to increase the timeout for mq_perf_tests from the default
-> kselftest limit of 45 seconds to 180 seconds.
-> 
-> Unfortunately, the file storing this information was incorrectly named
-> `setting` instead of `settings`, causing the kselftest runner not to
-> pick up the limit and keep using the default 45 seconds limit.
-> 
-> Fix this by renaming it to `settings` to ensure that the kselftest
-> runner uses the increased timeout of 180 seconds for this test.
-> 
-> Fixes: 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
-> Cc: <stable@vger.kernel.org> # 5.10.y
-> Signed-off-by: Simon Liebold <simonlie@amazon.de>
+On Tue Mar 31, 2026 at 9:58 PM BST, Miguel Ojeda wrote:
+> Clippy in Rust 1.88.0 (only) reports [1]:
+>
+>     warning: variables can be used directly in the `format!` string
+>        --> rust/macros/module.rs:112:23
+>         |
+>     112 |         let content =3D format!("{param}:{content}", param =3D =
+param, content =3D content);
+>         |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^
+>         |
+>         =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/master/index.html#uninlined_format_args
+>         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
+y::all`
+>         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
+ined_format_args)]`
+>     help: change this to
+>         |
+>     112 -         let content =3D format!("{param}:{content}", param =3D =
+param, content =3D content);
+>     112 +         let content =3D format!("{param}:{content}");
+>
+>     warning: variables can be used directly in the `format!` string
+>        --> rust/macros/module.rs:198:14
+>         |
+>     198 |         t =3D> panic!("Unsupported parameter type {}", t),
+>         |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>         |
+>         =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/master/index.html#uninlined_format_args
+>         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
+y::all`
+>         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
+ined_format_args)]`
+>     help: change this to
+>         |
+>     198 -         t =3D> panic!("Unsupported parameter type {}", t),
+>     198 +         t =3D> panic!("Unsupported parameter type {t}"),
+>         |
+>
+> The reason it only triggers in that version is that the lint was moved
+> from `pedantic` to `style` in Rust 1.88.0 and then back to `pedantic`
+> in Rust 1.89.0 [2][3].
+>
+> In the first case, the suggestion is fair and a pure simplification, thus
+> we will clean it up separately.
+>
+> To keep the behavior the same across all versions, and since the lint
+> does not work for all macros (e.g. custom ones like `pr_info!`), disable
+> it globally.
+
+Does it produce a false positive, or it's a false negative? If it's the lat=
+ter,
+I think we don't need to disable the lint.
+
+Best,
+Gary
+
+>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72=3DdrAtf3y_DZ-2o4jb6A=
+z9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com/ [1]
+> Link: https://github.com/rust-lang/rust-clippy/pull/15287 [2]
+> Link: https://github.com/rust-lang/rust-clippy/issues/15151 [3]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
->   tools/testing/selftests/mqueue/{setting => settings} | 0
->   1 file changed, 0 insertions(+), 0 deletions(-)
->   rename tools/testing/selftests/mqueue/{setting => settings} (100%)
-> 
-> diff --git a/tools/testing/selftests/mqueue/setting b/tools/testing/selftests/mqueue/settings
-> similarity index 100%
-> rename from tools/testing/selftests/mqueue/setting
-> rename to tools/testing/selftests/mqueue/settings
-> 
-> base-commit: 5ee8dbf54602dc340d6235b1d6aa17c0f283f48c
+>  Makefile | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Makefile b/Makefile
+> index 1a219bf1c771..a63684c36d60 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -494,6 +494,7 @@ export rust_common_flags :=3D --edition=3D2021 \
+>  			    -Wclippy::ptr_cast_constness \
+>  			    -Wclippy::ref_as_ptr \
+>  			    -Wclippy::undocumented_unsafe_blocks \
+> +			    -Aclippy::uninlined_format_args \
+>  			    -Wclippy::unnecessary_safety_comment \
+>  			    -Wclippy::unnecessary_safety_doc \
+>  			    -Wrustdoc::missing_crate_level_docs \
 
-Applied to linux-kseftest next for Linux 7.1-rc1
-
-thanks,
--- Shuah
 
