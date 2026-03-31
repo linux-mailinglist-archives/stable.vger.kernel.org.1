@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-231600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGppNV74y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:50 +0200
+	id UO0zIHL9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6927C36CE0A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2AA36D9AF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AD08305DB9D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68DD3319E37D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10743E3D82;
-	Tue, 31 Mar 2026 16:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443A133F38A;
+	Tue, 31 Mar 2026 16:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fL7Qfx8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgWWbn5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DDF2EE262;
-	Tue, 31 Mar 2026 16:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086AA262A6;
+	Tue, 31 Mar 2026 16:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974589; cv=none; b=JD+IseKJiqG4t4K8VtBWdU25/JYU5mqp+JbhEb5dxFUL+csuqoH83JfpjNWdcwcnD6+HNLtWXD9NQ19rKEmmI7H157eMC4aIbEnScz1w7jMSgFVZyaxBuL9GN/HdP2T619vkMa6P2kPY4SFeBesMEVfuX2b+oK3Lc5UIPkdsAH4=
+	t=1774975437; cv=none; b=FH89bgIC+e0Pi1BuEY0WfW4YNmUjEpFWbu76EiuT91dU/E8X36FR5jfZpArNbiWA7/xHaSgm1BxkEYaOY6pwULQ/RuBl9qek/jmZXCu/TJZsG1UqCC7dW4CPMZ7oi4uaY0WPmBloV/M4pXS4iU07yYDmfnAcSMU1aGl0Uzh5sY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974589; c=relaxed/simple;
-	bh=SF/DYD4tj5b2bYY6LkLmD5JTR7v9Mt55QMgTUwjml1M=;
+	s=arc-20240116; t=1774975437; c=relaxed/simple;
+	bh=radaiP4MUySj87U/BPcsF+JeGszWqUVfaGwzPdJ2hII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlfI1XT3TgLyliXv3f3KXzo26K5Ov7x8kp1FTWUk1d9LD5k8bH9aH2WzhxIe6gbCFRDUqrqkw5PbLIcMbMKo73EhJMr2ZiTVpcVd872TXDyuw1egmf1y/OPsh0nloQ4ysfckesXQOU6hXR1NdJoeOn8Bc88qWkVu7/WKq+SQ74Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fL7Qfx8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD51DC19423;
-	Tue, 31 Mar 2026 16:29:48 +0000 (UTC)
+	 MIME-Version; b=QB/8fmIgCkCwvip2NYjejpLA5MNfJZDsgb6JUcR1T+W3j2FMhhmJM4fD6SUEe/fZ6kowSmyEYeVBghcLT6ZaAZ65BtZwzoR64Eiq7v8NKeJeuCLdt1S+llyj8T8pz76cVK+o7AkAmbb800Oo4o8Rs4lL7GpGskGdE3J9fvWq8C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgWWbn5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971E1C19423;
+	Tue, 31 Mar 2026 16:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974589;
-	bh=SF/DYD4tj5b2bYY6LkLmD5JTR7v9Mt55QMgTUwjml1M=;
+	s=korg; t=1774975436;
+	bh=radaiP4MUySj87U/BPcsF+JeGszWqUVfaGwzPdJ2hII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fL7Qfx8Xnr8vP4ZhP+N83DdmV/zHxcLAq0Lc4Jboe6Ybgo42N7rRw8rAL5UraCpyr
-	 GQX2GpQT08JThyl3zF7X+esbKIgdsaOPagBInI8/BV5cPdYwTY2/E0FcrH13c4T2bW
-	 3A69ZqIomIh7giEM9T8PIcJA/t4963toihrm/rVA=
+	b=LgWWbn5CPJjhqIvybSrAfOnYZouAKyR04oxKC2Zl3mWyZe0BcQReiZbjKvEgD685K
+	 fn2pb3bEFsXZ0dwfVbs7zxRPrWLOSvHuonwk7qxjK/eaI/VYAHoy93nyFRUbd/icWb
+	 AuHBqIlIj2mxjnUrjC89XeecSg3t52A15rzJoC7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 142/175] arm64: dts: imx8mn-tqma8mqnl: fix LDO5 power off
-Date: Tue, 31 Mar 2026 18:22:06 +0200
-Message-ID: <20260331161735.001631954@linuxfoundation.org>
+	Free Ekanayaka <free.ekanayaka@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.19 294/342] ext4: fix fsync(2) for nojournal mode
+Date: Tue, 31 Mar 2026 18:22:07 +0200
+Message-ID: <20260331161809.755947707@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,149 +66,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231600-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231931-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,huawei.com,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6927C36CE0A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EF2AA36D9AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 8adc841d43ebceabec996c9dcff6e82d3e585268 upstream.
+commit 1308255bbf8452762f89f44f7447ce137ecdbcff upstream.
 
-Fix SD card removal caused by automatic LDO5 power off after boot
+When inode metadata is changed, we sometimes just call
+ext4_mark_inode_dirty() to track modified metadata. This copies inode
+metadata into block buffer which is enough when we are journalling
+metadata. However when we are running in nojournal mode we currently
+fail to write the dirtied inode buffer during fsync(2) because the inode
+is not marked as dirty. Use explicit ext4_write_inode() call to make
+sure the inode table buffer is written to the disk. This is a band aid
+solution but proper solution requires a much larger rewrite including
+changes in metadata bh tracking infrastructure.
 
-To prevent this, add vqmmc regulator for USDHC, using a GPIO-controlled
-regulator that is supplied by LDO5. Since this is implemented on SoM but
-used on baseboards with SD-card interface, implement the functionality
-on SoM part and optionally enable it on baseboards if needed.
-
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Reported-by: Free Ekanayaka <free.ekanayaka@gmail.com>
+Link: https://lore.kernel.org/all/87il8nhxdm.fsf@x1.mail-host-address-is-not-set/
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20260216164848.3074-4-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts |   13 ++++----
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi       |   22 ++++++++++++++
- 2 files changed, 29 insertions(+), 6 deletions(-)
+ fs/ext4/fsync.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-@@ -63,6 +63,10 @@
- 	};
- };
- 
-+&reg_usdhc2_vqmmc {
-+	status = "okay";
-+};
-+
- &sai3 {
- 	assigned-clocks = <&clk IMX8MN_CLK_SAI3>;
- 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
-@@ -207,8 +211,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-@@ -217,8 +220,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-@@ -227,8 +229,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-@@ -30,6 +30,20 @@
- 		regulator-max-microvolt = <3300000>;
- 	};
- 
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usdhc2_vqmmc>;
-+		regulator-name = "V_SD2";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 0x1>,
-+			 <3300000 0x0>;
-+		vin-supply = <&ldo5_reg>;
-+		status = "disabled";
+--- a/fs/ext4/fsync.c
++++ b/fs/ext4/fsync.c
+@@ -83,11 +83,23 @@ static int ext4_fsync_nojournal(struct f
+ 				int datasync, bool *needs_barrier)
+ {
+ 	struct inode *inode = file->f_inode;
++	struct writeback_control wbc = {
++		.sync_mode = WB_SYNC_ALL,
++		.nr_to_write = 0,
 +	};
-+
- 	reserved-memory {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-@@ -219,6 +233,10 @@
- 	};
- };
+ 	int ret;
  
-+&usdhc2 {
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
-+};
+ 	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
+-	if (!ret)
+-		ret = ext4_sync_parent(inode);
++	if (ret)
++		return ret;
 +
- &usdhc3 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
- 	pinctrl-0 = <&pinctrl_usdhc3>;
-@@ -273,6 +291,10 @@
- 		fsl,pins = <MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x84>;
- 	};
++	/* Force writeout of inode table buffer to disk */
++	ret = ext4_write_inode(inode, &wbc);
++	if (ret)
++		return ret;
++
++	ret = ext4_sync_parent(inode);
++
+ 	if (test_opt(inode->i_sb, BARRIER))
+ 		*needs_barrier = true;
  
-+	pinctrl_reg_usdhc2_vqmmc: regusdhc2vqmmcgrp {
-+		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO04_GPIO1_IO4		0xc0>;
-+	};
-+
- 	pinctrl_usdhc3: usdhc3grp {
- 		fsl,pins = <MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x1d4>,
- 			   <MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d2>,
 
 
 
