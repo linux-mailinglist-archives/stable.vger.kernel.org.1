@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-232439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAidNrwAzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:32 +0200
+	id QEF9Bj38y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A6336E373
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3F636D5C1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0BE830929CC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE364307CE92
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892083009D4;
-	Tue, 31 Mar 2026 17:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182BB3F8E04;
+	Tue, 31 Mar 2026 16:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBhVwMgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuTilZNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0382FE042;
-	Tue, 31 Mar 2026 17:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA4A3EF0A2;
+	Tue, 31 Mar 2026 16:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976750; cv=none; b=oliX/oVZ44Vx1JvwPcw7NGIlVA9JrNYC2lt9wvO63p/J4ZlZlxYkCIEtMPzWRC4eq+e1TtFHjZKW1OJ+UaXB3uAVOjtlw0f9zOvAko+BPcByyrYzsRFJ0WqmPc3KOPHYSRrExuUHCmfw3k7lyLv06xl2DtXS1g3Ae9g5786rcmQ=
+	t=1774975411; cv=none; b=TiK9Clg88L4HwqpZTXz82S4kRYoHsWrMy1HODLg8z8gFFt7YQJAPG49AyuBsmXhSd/vtgzsWC6zXMBNFIkjl8UzDrTaDUhXaP0WoECKYax7jMoWFfxEYWLGBnNMWBObsjUk3BbzrgR4JODrIasr8415bu88A3INv/hPUbi33YN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976750; c=relaxed/simple;
-	bh=IG8hYLJOXVqzFYDwohPeWYVJ8Hjk8rTWArBYcKRMa9U=;
+	s=arc-20240116; t=1774975411; c=relaxed/simple;
+	bh=sUYWN1E9YxDQK7l/t6kovxoG9fy1xvJ107fkPAzBPyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1C8Wv8MgkNVgkqBq3SV/1abu+LdzDJX8PKYkYux8EIpPCugbV6DGucCWy25dxlvzwzYiroli5LtOQEVnnVP91PtcnqcTPj+KtnGZKXfoeYvvMh6LN2wIFStp15jjJGKt+0St4nroFEaMLdMbXhPvf74KdgvYphACgfzKCxk1TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBhVwMgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58C4C19423;
-	Tue, 31 Mar 2026 17:05:49 +0000 (UTC)
+	 MIME-Version; b=fQxY04PV7jZOUcHKyBQkORlSHTj9mAK+SYxN9LNTcCg/ADPYSVCUWEw6kcPVrYGve+FPO/07ry31Y8b2kOc3TPfjCuOeKvJOqPgbESoHk/48Wn6m/qbQkuOZ/Jhperp5qBg28vnkkrfATMSuCRV3wPSWKfUn3FZg0+UytoEpNJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuTilZNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85B7C19423;
+	Tue, 31 Mar 2026 16:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976750;
-	bh=IG8hYLJOXVqzFYDwohPeWYVJ8Hjk8rTWArBYcKRMa9U=;
+	s=korg; t=1774975411;
+	bh=sUYWN1E9YxDQK7l/t6kovxoG9fy1xvJ107fkPAzBPyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBhVwMgk+g/fFUZ6xzeGR05cRx1diPJBEVizH5D8GpP8rmkoClgiTfkgPvv1cDvxB
-	 2lmRBBYRduiCMDmpBrbwKktuoGYnu+PgDltVG1utdNGgugVIVIFIzoY/nbb4sRbhWk
-	 ecK5/rJZqg07NheY+rsB0XWMt0yoSbVvi02FmzAM=
+	b=CuTilZNA3oXN1kNvQnaXnIomB2lCVFipiukSfqcZRat+e7QM+VOWSDhAgiAoS7Gar
+	 HFa3EEhDVw+yL0kR+ORPe7ZsGZxIUNhtbT54DZTh26etk2dsvHtFyvagzgyXD2pywc
+	 Y0WXQjYFY78Ln0CHysBu6R8P2VvGydRqUTsGX3fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.18 214/309] phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4
-Date: Tue, 31 Mar 2026 18:21:57 +0200
-Message-ID: <20260331161801.324205240@linuxfoundation.org>
+	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
+	Yuto Ohnuki <ytohnuki@amazon.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.19 285/342] xfs: avoid dereferencing log items after push callbacks
+Date: Tue, 31 Mar 2026 18:21:58 +0200
+Message-ID: <20260331161809.427224663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +65,202 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-231921-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232439-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: 94A6336E373
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AB3F636D5C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-commit 81af9e40e2e4e1aa95f09fb34811760be6742c58 upstream.
+commit 79ef34ec0554ec04bdbafafbc9836423734e1bd6 upstream.
 
-According to internal documentation, on SM8650, when the PHY is configured
-in Gear 4, the QPHY_V6_PCS_UFS_PLL_CNTL register needs to have the same
-value as for Gear 5.
+After xfsaild_push_item() calls iop_push(), the log item may have been
+freed if the AIL lock was dropped during the push. Background inode
+reclaim or the dquot shrinker can free the log item while the AIL lock
+is not held, and the tracepoints in the switch statement dereference
+the log item after iop_push() returns.
 
-At the moment, there is no board that comes with a UFS 3.x device, so
-this issue doesn't show up, but with the new Eliza SoC, which uses the
-same init sequence as SM8650, on the MTP board, the link startup fails
-with the current Gear 4 PCS table.
+Fix this by capturing the log item type, flags, and LSN before calling
+xfsaild_push_item(), and introducing a new xfs_ail_push_class trace
+event class that takes these pre-captured values and the ailp pointer
+instead of the log item pointer.
 
-So fix that by moving the entry into the PCS generic table instead,
-while keeping the value from Gear 5 configuration.
-
-Cc: stable@vger.kernel.org # v6.10
-Fixes: b9251e64a96f ("phy: qcom: qmp-ufs: update SM8650 tables for Gear 4 & 5")
-Suggested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Link: https://patch.msgid.link/20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
+Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
+Cc: stable@vger.kernel.org # v5.9
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-ufs.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/xfs/xfs_trace.h     |   36 ++++++++++++++++++++++++++++++++----
+ fs/xfs/xfs_trans_ail.c |   26 +++++++++++++++++++-------
+ 2 files changed, 51 insertions(+), 11 deletions(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-@@ -928,6 +928,7 @@ static const struct qmp_phy_init_tbl sm8
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0xc1),
-+	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
-@@ -937,13 +938,11 @@ static const struct qmp_phy_init_tbl sm8
- };
+--- a/fs/xfs/xfs_trace.h
++++ b/fs/xfs/xfs_trace.h
+@@ -56,6 +56,7 @@
+ #include <linux/tracepoint.h>
  
- static const struct qmp_phy_init_tbl sm8650_ufsphy_g4_pcs[] = {
--	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x13),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x04),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x04),
- };
+ struct xfs_agf;
++struct xfs_ail;
+ struct xfs_alloc_arg;
+ struct xfs_attr_list_context;
+ struct xfs_buf_log_item;
+@@ -1647,16 +1648,43 @@ TRACE_EVENT(xfs_log_force,
+ DEFINE_EVENT(xfs_log_item_class, name, \
+ 	TP_PROTO(struct xfs_log_item *lip), \
+ 	TP_ARGS(lip))
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_push);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_pinned);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_locked);
+-DEFINE_LOG_ITEM_EVENT(xfs_ail_flushing);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_mark);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_skip);
+ DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_unpin);
+ DEFINE_LOG_ITEM_EVENT(xlog_ail_insert_abort);
+ DEFINE_LOG_ITEM_EVENT(xfs_trans_free_abort);
  
- static const struct qmp_phy_init_tbl sm8650_ufsphy_g5_pcs[] = {
--	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x05),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x05),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HS_G5_SYNC_LENGTH_CAPABILITY, 0x4d),
++DECLARE_EVENT_CLASS(xfs_ail_push_class,
++	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn),
++	TP_ARGS(ailp, type, flags, lsn),
++	TP_STRUCT__entry(
++		__field(dev_t, dev)
++		__field(uint, type)
++		__field(unsigned long, flags)
++		__field(xfs_lsn_t, lsn)
++	),
++	TP_fast_assign(
++		__entry->dev = ailp->ail_log->l_mp->m_super->s_dev;
++		__entry->type = type;
++		__entry->flags = flags;
++		__entry->lsn = lsn;
++	),
++	TP_printk("dev %d:%d lsn %d/%d type %s flags %s",
++		  MAJOR(__entry->dev), MINOR(__entry->dev),
++		  CYCLE_LSN(__entry->lsn), BLOCK_LSN(__entry->lsn),
++		  __print_symbolic(__entry->type, XFS_LI_TYPE_DESC),
++		  __print_flags(__entry->flags, "|", XFS_LI_FLAGS))
++)
++
++#define DEFINE_AIL_PUSH_EVENT(name) \
++DEFINE_EVENT(xfs_ail_push_class, name, \
++	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn), \
++	TP_ARGS(ailp, type, flags, lsn))
++DEFINE_AIL_PUSH_EVENT(xfs_ail_push);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_pinned);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_locked);
++DEFINE_AIL_PUSH_EVENT(xfs_ail_flushing);
++
+ DECLARE_EVENT_CLASS(xfs_ail_class,
+ 	TP_PROTO(struct xfs_log_item *lip, xfs_lsn_t old_lsn, xfs_lsn_t new_lsn),
+ 	TP_ARGS(lip, old_lsn, new_lsn),
+--- a/fs/xfs/xfs_trans_ail.c
++++ b/fs/xfs/xfs_trans_ail.c
+@@ -365,6 +365,12 @@ xfsaild_resubmit_item(
+ 	return XFS_ITEM_SUCCESS;
+ }
+ 
++/*
++ * Push a single log item from the AIL.
++ *
++ * @lip may have been released and freed by the time this function returns,
++ * so callers must not dereference the log item afterwards.
++ */
+ static inline uint
+ xfsaild_push_item(
+ 	struct xfs_ail		*ailp,
+@@ -505,7 +511,10 @@ xfsaild_push(
+ 
+ 	lsn = lip->li_lsn;
+ 	while ((XFS_LSN_CMP(lip->li_lsn, ailp->ail_target) <= 0)) {
+-		int	lock_result;
++		int		lock_result;
++		uint		type = lip->li_type;
++		unsigned long	flags = lip->li_flags;
++		xfs_lsn_t	item_lsn = lip->li_lsn;
+ 
+ 		if (test_bit(XFS_LI_FLUSHING, &lip->li_flags))
+ 			goto next_item;
+@@ -514,14 +523,17 @@ xfsaild_push(
+ 		 * Note that iop_push may unlock and reacquire the AIL lock.  We
+ 		 * rely on the AIL cursor implementation to be able to deal with
+ 		 * the dropped lock.
++		 *
++		 * The log item may have been freed by the push, so it must not
++		 * be accessed or dereferenced below this line.
+ 		 */
+ 		lock_result = xfsaild_push_item(ailp, lip);
+ 		switch (lock_result) {
+ 		case XFS_ITEM_SUCCESS:
+ 			XFS_STATS_INC(mp, xs_push_ail_success);
+-			trace_xfs_ail_push(lip);
++			trace_xfs_ail_push(ailp, type, flags, item_lsn);
+ 
+-			ailp->ail_last_pushed_lsn = lsn;
++			ailp->ail_last_pushed_lsn = item_lsn;
+ 			break;
+ 
+ 		case XFS_ITEM_FLUSHING:
+@@ -537,22 +549,22 @@ xfsaild_push(
+ 			 * AIL is being flushed.
+ 			 */
+ 			XFS_STATS_INC(mp, xs_push_ail_flushing);
+-			trace_xfs_ail_flushing(lip);
++			trace_xfs_ail_flushing(ailp, type, flags, item_lsn);
+ 
+ 			flushing++;
+-			ailp->ail_last_pushed_lsn = lsn;
++			ailp->ail_last_pushed_lsn = item_lsn;
+ 			break;
+ 
+ 		case XFS_ITEM_PINNED:
+ 			XFS_STATS_INC(mp, xs_push_ail_pinned);
+-			trace_xfs_ail_pinned(lip);
++			trace_xfs_ail_pinned(ailp, type, flags, item_lsn);
+ 
+ 			stuck++;
+ 			ailp->ail_log_flush++;
+ 			break;
+ 		case XFS_ITEM_LOCKED:
+ 			XFS_STATS_INC(mp, xs_push_ail_locked);
+-			trace_xfs_ail_locked(lip);
++			trace_xfs_ail_locked(ailp, type, flags, item_lsn);
+ 
+ 			stuck++;
+ 			break;
 
 
 
