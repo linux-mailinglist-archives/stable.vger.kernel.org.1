@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EztBqn+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:41 +0200
+	id IKKoNREBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918D336DCE1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D1336E4C0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFED630D29DA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F24F314A5E6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB49423A97;
-	Tue, 31 Mar 2026 16:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF25E3009D4;
+	Tue, 31 Mar 2026 17:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQuw2Iep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfDWEtz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A95423A89;
-	Tue, 31 Mar 2026 16:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39682E1C7C;
+	Tue, 31 Mar 2026 17:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974537; cv=none; b=a/kqe9hIORQz33FDiFqzdAgLjVHSXTp23lgop/kyub9MkxzpNQRrKYAg+SFGkL5rWBKsQZlnDC64edAfurLSMnkpQ4CBpsgkJIHwzew5oFwCYrgPXTmD+zv1L975m7egh12hmAr/Y3Lm9sWaF2ifnc06R7IFRMe5iZ8wUY4tQl8=
+	t=1774976812; cv=none; b=slOqgtsZw9FN+hXZf95LVoPYgjvu3FqqoK2vQPZaZ2Z8LGjJqSliwrVNbtHH01FgjzVx4hDW2JdsU3HKfpr/e5ncII3MPl/1ddT0sHkOJc9v1v8k7eddiD7C/Dj5cj5Wy+wteWIcgPqGg1GgTHnrqZRQgYTMTPF0uvcpSWcd3hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974537; c=relaxed/simple;
-	bh=rFxcuNiZQkHDIYf56I/OOe/DZKx11M/76ppyCoulcas=;
+	s=arc-20240116; t=1774976812; c=relaxed/simple;
+	bh=0DicTGyqi8afbEBPi3ma76ixjf2NlU7YDJfVFVuR0r4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5XTXpm4KzxCNN6VZW3bzznb11foVQIM8hgw8qjRm/qfAqrczB0N7jN0jizwj76UQi7H1ZcI9LYx2xXIQmjxh1hLn/S2k8BcXjat6xHwnClck8ml29hlLY9WGJBEBY2XkLZnZXT0CJIBoQeon5xyzSAxClSDObnCcrXb8vDuRNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQuw2Iep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3413C19423;
-	Tue, 31 Mar 2026 16:28:56 +0000 (UTC)
+	 MIME-Version; b=Q4akQ5nJIeNCTh2wIx9rkjoAanLYOCy3Z2tyR2GFfl5TssPo8zlVR13Hs+Byivc2JH/JpqWBbFi2AQtfdA8LA+EyWMbc9RRJuxyEfD3qOVKHUISKRYX3Nf3FTFapfxbsQ2zIzes3kNVE7oMDvHAxtpdIOqmLJ9cIWhrRp393h5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfDWEtz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47983C19423;
+	Tue, 31 Mar 2026 17:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974537;
-	bh=rFxcuNiZQkHDIYf56I/OOe/DZKx11M/76ppyCoulcas=;
+	s=korg; t=1774976812;
+	bh=0DicTGyqi8afbEBPi3ma76ixjf2NlU7YDJfVFVuR0r4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQuw2IepyM1rRfwRsMlALo1brMFFg5F+Otu7xWrG4g8C8jsvKxSYkIpd7JZyG2We2
-	 vL/eLDdR+2VP48SnolisJ+C869G05WWQ3ipOs1dhsIwPZqNx5K9AB1XrwwhWqf5bJi
-	 P5M8HPpukP9zDdlAZCOi9Cnx/WzU2qbjW0TN/FR4=
+	b=JfDWEtz455+ApCwQFtVW9euG7DCLknU27QG7GZN7TV+THOMD+5ujkifDxewTjzaJw
+	 L873sOBfrb2D/YejEE2sGg9M0ubaAr+VceQbAAfJSn97jK5TqqgfLte8vJkOuYkN1B
+	 WIXVfZnClI2Mo8XoYShnDIPRE+UOm+Uqyfpg6YjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 124/175] dmaengine: sh: rz-dmac: Protect the driver specific lists
+	Paul Moses <p@1g4.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.18 205/309] xfrm: iptfs: only publish mode_data after clone setup
 Date: Tue, 31 Mar 2026 18:21:48 +0200
-Message-ID: <20260331161734.336263127@linuxfoundation.org>
+Message-ID: <20260331161800.998279607@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,146 +77,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231580-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232463-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tuxon.dev:email]
-X-Rspamd-Queue-Id: 918D336DCE1
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,secunet.com:email,1g4.org:email]
+X-Rspamd-Queue-Id: 74D1336E4C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Paul Moses <p@1g4.org>
 
-commit abb863e6213dc41a58ef8bb3289b7e77460dabf3 upstream.
+commit d849a2f7309fc0616e79d13b008b0a47e0458b6e upstream.
 
-The driver lists (ld_free, ld_queue) are used in
-rz_dmac_free_chan_resources(), rz_dmac_terminate_all(),
-rz_dmac_issue_pending(), and rz_dmac_irq_handler_thread(), all under
-the virtual channel lock. Take the same lock in rz_dmac_prep_slave_sg()
-and rz_dmac_prep_dma_memcpy() as well to avoid concurrency issues, since
-these functions also check whether the lists are empty and update or
-remove list entries.
+iptfs_clone_state() stores x->mode_data before allocating the reorder
+window. If that allocation fails, the code frees the cloned state and
+returns -ENOMEM, leaving x->mode_data pointing at freed memory.
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+The xfrm clone unwind later runs destroy_state() through x->mode_data,
+so the failed clone path tears down IPTFS state that clone_state()
+already freed.
+
+Keep the cloned IPTFS state private until all allocations succeed so
+failed clones leave x->mode_data unset. The destroy path already
+handles a NULL mode_data pointer.
+
+Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received packets")
 Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20260316133252.240348-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Paul Moses <p@1g4.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/sh/rz-dmac.c |   63 ++++++++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 28 deletions(-)
+ net/xfrm/xfrm_iptfs.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -10,6 +10,7 @@
-  */
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2664,9 +2664,6 @@ static int iptfs_clone_state(struct xfrm
+ 	if (!xtfs)
+ 		return -ENOMEM;
  
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
- #include <linux/interrupt.h>
-@@ -424,6 +425,7 @@ static int rz_dmac_alloc_chan_resources(
- 		if (!desc)
- 			break;
- 
-+		/* No need to lock. This is called only for the 1st client. */
- 		list_add_tail(&desc->node, &channel->ld_free);
- 		channel->descs_allocated++;
- 	}
-@@ -479,18 +481,21 @@ rz_dmac_prep_dma_memcpy(struct dma_chan
- 	dev_dbg(dmac->dev, "%s channel: %d src=0x%pad dst=0x%pad len=%zu\n",
- 		__func__, channel->index, &src, &dest, len);
- 
--	if (list_empty(&channel->ld_free))
--		return NULL;
-+	scoped_guard(spinlock_irqsave, &channel->vc.lock) {
-+		if (list_empty(&channel->ld_free))
-+			return NULL;
-+
-+		desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
-+
-+		desc->type = RZ_DMAC_DESC_MEMCPY;
-+		desc->src = src;
-+		desc->dest = dest;
-+		desc->len = len;
-+		desc->direction = DMA_MEM_TO_MEM;
- 
--	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
+-	x->mode_data = xtfs;
+-	xtfs->x = x;
 -
--	desc->type = RZ_DMAC_DESC_MEMCPY;
--	desc->src = src;
--	desc->dest = dest;
--	desc->len = len;
--	desc->direction = DMA_MEM_TO_MEM;
-+		list_move_tail(channel->ld_free.next, &channel->ld_queue);
-+	}
- 
--	list_move_tail(channel->ld_free.next, &channel->ld_queue);
- 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
- }
- 
-@@ -506,27 +511,29 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
- 	int dma_length = 0;
- 	int i = 0;
- 
--	if (list_empty(&channel->ld_free))
--		return NULL;
--
--	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
-+	scoped_guard(spinlock_irqsave, &channel->vc.lock) {
-+		if (list_empty(&channel->ld_free))
-+			return NULL;
-+
-+		desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
-+
-+		for_each_sg(sgl, sg, sg_len, i)
-+			dma_length += sg_dma_len(sg);
-+
-+		desc->type = RZ_DMAC_DESC_SLAVE_SG;
-+		desc->sg = sgl;
-+		desc->sgcount = sg_len;
-+		desc->len = dma_length;
-+		desc->direction = direction;
-+
-+		if (direction == DMA_DEV_TO_MEM)
-+			desc->src = channel->src_per_address;
-+		else
-+			desc->dest = channel->dst_per_address;
- 
--	for_each_sg(sgl, sg, sg_len, i) {
--		dma_length += sg_dma_len(sg);
-+		list_move_tail(channel->ld_free.next, &channel->ld_queue);
+ 	xtfs->ra_newskb = NULL;
+ 	if (xtfs->cfg.reorder_win_size) {
+ 		xtfs->w_saved = kcalloc(xtfs->cfg.reorder_win_size,
+@@ -2677,6 +2674,9 @@ static int iptfs_clone_state(struct xfrm
+ 		}
  	}
  
--	desc->type = RZ_DMAC_DESC_SLAVE_SG;
--	desc->sg = sgl;
--	desc->sgcount = sg_len;
--	desc->len = dma_length;
--	desc->direction = direction;
--
--	if (direction == DMA_DEV_TO_MEM)
--		desc->src = channel->src_per_address;
--	else
--		desc->dest = channel->dst_per_address;
--
--	list_move_tail(channel->ld_free.next, &channel->ld_queue);
- 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
++	x->mode_data = xtfs;
++	xtfs->x = x;
++
+ 	return 0;
  }
  
 
