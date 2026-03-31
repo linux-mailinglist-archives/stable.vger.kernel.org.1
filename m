@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-232492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uH3IGmUIzGlaNgYAu9opvQ
-	(envelope-from <stable+bounces-232492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:46:13 +0200
+	id QJVdCaL/y2koNQYAu9opvQ
+	(envelope-from <stable+bounces-232230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CEE36F49A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:46:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E573336DF9F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3592630FF290
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:08:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8C18330783A5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A7630C632;
-	Tue, 31 Mar 2026 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C734441B373;
+	Tue, 31 Mar 2026 16:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MP5rqqB/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAD5mc8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03EE30BB80;
-	Tue, 31 Mar 2026 17:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2593F7867;
+	Tue, 31 Mar 2026 16:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976888; cv=none; b=dD6hALlKoXXVKwgX6TtrJa2w4gcMO7zQladL/uraEKpHpgXoNaqi6xO+yHU22YyIBkJ4XcZp0MMCDh8IR5vVG/QsRT50jTlNJptjd6zyxqpEJes3vRwH7WQIP+IwIXjL0Li/80cemGW/8eyPscnfdLse4ux6/dmMbrqXb9JA49Y=
+	t=1774976212; cv=none; b=CX6K6n67ulJmC+TyDqF6psoLrJHMtEi9/7PaIiHNorNOAShlwqFmoOAXKxVj+8yX6j1QO6lTtFlVM8+YYARTOKCe8WJ/5d5BoHBhyHYYuHRtSQdFk5C4gYPcFwe2nIMtMFmngevOo5qHpmeJx6Roh+uMtAOVscBjFeGLHO2818I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976888; c=relaxed/simple;
-	bh=/Bl5WalQmxCzan3RmHCd6IQXpjszLSXjqIJ7a0MzFuw=;
+	s=arc-20240116; t=1774976212; c=relaxed/simple;
+	bh=kE25zzWLVyt8nhsSz6b8g2IAg5Y7wW4Lfi8A9beY4gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQrCPeYO835qpiSz/qck1BpXPp+wbSEPe6frSEFp/Jk0YbhMDsKOQCcbj80liHo9ACYm6KwXXO25mJmYPZr5g8VHp8enWS0oBeMquh3/CXaQFSczeBWl24wrlfrF4bdzVbd8FcGAHRUeWGCPbUpaw9zcJn/chhxmLEXgLk6oGcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MP5rqqB/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AA5C19423;
-	Tue, 31 Mar 2026 17:08:07 +0000 (UTC)
+	 MIME-Version; b=YgyikD53eDyiVyEt+4pBNhOvVLLL1fLSw1WdI94BVjVCaYZcUdmxorbjij1ey0egPQCZCjVFiCDgF9GefHCsy1YhKqbI4Vcybb0rLHelwIthk5xaWlrPqKihbtxphfl0x45fpw+i+6Kuqcb/oMqBRjbjvllS1a4Q7ntEZjh/m+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAD5mc8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB3EC19423;
+	Tue, 31 Mar 2026 16:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976887;
-	bh=/Bl5WalQmxCzan3RmHCd6IQXpjszLSXjqIJ7a0MzFuw=;
+	s=korg; t=1774976212;
+	bh=kE25zzWLVyt8nhsSz6b8g2IAg5Y7wW4Lfi8A9beY4gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MP5rqqB/3PPQS6SueHOf4nmmH1lxKgEkEAgRT6EhseJ/Qf/buSFN0DOo4XCuFkcAX
-	 2HoL/HmVAJGVh+/PDkPK0VR85MMq0mFFvDLbVmx5xtqwDEoUkDfdHBY4kweo6gLpJl
-	 gGC/ZcELEOqz15giYg1fakuSfSm9X7RfU/SA7ELM=
+	b=kAD5mc8v7ru9Io9dMLFfno40FSp/jX1QsxchjJdmZcgcAixf3BoPav4l7l0XMELav
+	 yCObqbx9gaOQM/8ATplK1zyfWl3IMSljdcSIh9/QAvHkUvDnNPc2Exd0DcMayJN/lp
+	 pEwDMDy7FWDNRjCs3BExLHM3ShSQOw3H539HC83o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.18 265/309] ext4: avoid allocate block from corrupted group in ext4_mb_find_by_goal()
+	Aaron Ma <aaron.ma@canonical.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH 6.12 218/244] ice: Fix PTP NULL pointer dereference during VSI rebuild
 Date: Tue, 31 Mar 2026 18:22:48 +0200
-Message-ID: <20260331161803.319052032@linuxfoundation.org>
+Message-ID: <20260331161749.816532483@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,130 +65,165 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232492-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,dilger.ca,suse.cz,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232230-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.cz:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,dilger.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B3CEE36F49A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email,intel.com:email]
+X-Rspamd-Queue-Id: E573336DF9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Aaron Ma <aaron.ma@canonical.com>
 
-commit 46066e3a06647c5b186cc6334409722622d05c44 upstream.
+[ Upstream commit fc6f36eaaedcf4b81af6fe1a568f018ffd530660 ]
 
-There's issue as follows:
-...
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Fix race condition where PTP periodic work runs while VSI is being
+rebuilt, accessing NULL vsi->rx_rings.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+The sequence was:
+1. ice_ptp_prepare_for_reset() cancels PTP work
+2. ice_ptp_rebuild() immediately queues PTP work
+3. VSI rebuild happens AFTER ice_ptp_rebuild()
+4. PTP work runs and accesses NULL vsi->rx_rings
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Fix: Keep PTP work cancelled during rebuild, only queue it after
+VSI rebuild completes in ice_rebuild().
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Added ice_ptp_queue_work() helper function to encapsulate the logic
+for queuing PTP work, ensuring it's only queued when PTP is supported
+and the state is ICE_PTP_READY.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2243 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Error log:
+[  121.392544] ice 0000:60:00.1: PTP reset successful
+[  121.392692] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  121.392712] #PF: supervisor read access in kernel mode
+[  121.392720] #PF: error_code(0x0000) - not-present page
+[  121.392727] PGD 0
+[  121.392734] Oops: Oops: 0000 [#1] SMP NOPTI
+[  121.392746] CPU: 8 UID: 0 PID: 1005 Comm: ice-ptp-0000:60 Tainted: G S                  6.19.0-rc6+ #4 PREEMPT(voluntary)
+[  121.392761] Tainted: [S]=CPU_OUT_OF_SPEC
+[  121.392773] RIP: 0010:ice_ptp_update_cached_phctime+0xbf/0x150 [ice]
+[  121.393042] Call Trace:
+[  121.393047]  <TASK>
+[  121.393055]  ice_ptp_periodic_work+0x69/0x180 [ice]
+[  121.393202]  kthread_worker_fn+0xa2/0x260
+[  121.393216]  ? __pfx_ice_ptp_periodic_work+0x10/0x10 [ice]
+[  121.393359]  ? __pfx_kthread_worker_fn+0x10/0x10
+[  121.393371]  kthread+0x10d/0x230
+[  121.393382]  ? __pfx_kthread+0x10/0x10
+[  121.393393]  ret_from_fork+0x273/0x2b0
+[  121.393407]  ? __pfx_kthread+0x10/0x10
+[  121.393417]  ret_from_fork_asm+0x1a/0x30
+[  121.393432]  </TASK>
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2239 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
-
-EXT4-fs (mmcblk0p1): error count since last fsck: 1
-EXT4-fs (mmcblk0p1): initial error at time 1765597433: ext4_mb_generate_buddy:760
-EXT4-fs (mmcblk0p1): last error at time 1765597433: ext4_mb_generate_buddy:760
-...
-
-According to the log analysis, blocks are always requested from the
-corrupted block group. This may happen as follows:
-ext4_mb_find_by_goal
-  ext4_mb_load_buddy
-   ext4_mb_load_buddy_gfp
-     ext4_mb_init_cache
-      ext4_read_block_bitmap_nowait
-      ext4_wait_block_bitmap
-       ext4_validate_block_bitmap
-        if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
-         return -EFSCORRUPTED; // There's no logs.
- if (err)
-  return err;  // Will return error
-ext4_lock_group(ac->ac_sb, group);
-  if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) // Unreachable
-   goto out;
-
-After commit 9008a58e5dce ("ext4: make the bitmap read routines return
-real error codes") merged, Commit 163a203ddb36 ("ext4: mark block group
-as corrupt on block bitmap error") is no real solution for allocating
-blocks from corrupted block groups. This is because if
-'EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)' is true, then
-'ext4_mb_load_buddy()' may return an error. This means that the block
-allocation will fail.
-Therefore, check block group if corrupted when ext4_mb_load_buddy()
-returns error.
-
-Fixes: 163a203ddb36 ("ext4: mark block group as corrupt on block bitmap error")
-Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260302134619.3145520-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: 803bef817807d ("ice: factor out ice_ptp_rebuild_owner()")
+Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+(cherry picked from commit fc6f36eaaedcf4b81af6fe1a568f018ffd530660)
+[Harshit: Backported to 6.12.y, ice_ptp_prepare_rebuild_sec() is not
+present in 6.12.y]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c |    3 +++
+ drivers/net/ethernet/intel/ice/ice_ptp.c  |   17 ++++++++++++++---
+ drivers/net/ethernet/intel/ice/ice_ptp.h  |    5 +++++
+ 3 files changed, 22 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2440,8 +2440,12 @@ int ext4_mb_find_by_goal(struct ext4_all
- 		return 0;
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -7792,6 +7792,9 @@ static void ice_rebuild(struct ice_pf *p
  
- 	err = ext4_mb_load_buddy(ac->ac_sb, group, e4b);
--	if (err)
-+	if (err) {
-+		if (EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info) &&
-+		    !(ac->ac_flags & EXT4_MB_HINT_GOAL_ONLY))
-+			return 0;
- 		return err;
-+	}
+ 	/* Restore timestamp mode settings after VSI rebuild */
+ 	ice_ptp_restore_timestamp_mode(pf);
++
++	/* Start PTP periodic work after VSI is fully rebuilt */
++	ice_ptp_queue_work(pf);
+ 	return;
  
- 	ext4_lock_group(ac->ac_sb, group);
- 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
+ err_vsi_rebuild:
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -2754,6 +2754,20 @@ static void ice_ptp_periodic_work(struct
+ }
+ 
+ /**
++ * ice_ptp_queue_work - Queue PTP periodic work for a PF
++ * @pf: Board private structure
++ *
++ * Helper function to queue PTP periodic work after VSI rebuild completes.
++ * This ensures that PTP work only runs when VSI structures are ready.
++ */
++void ice_ptp_queue_work(struct ice_pf *pf)
++{
++	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) &&
++	    pf->ptp.state == ICE_PTP_READY)
++		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work, 0);
++}
++
++/**
+  * ice_ptp_prepare_for_reset - Prepare PTP for reset
+  * @pf: Board private structure
+  * @reset_type: the reset type being performed
+@@ -2888,9 +2902,6 @@ void ice_ptp_rebuild(struct ice_pf *pf,
+ 
+ 	ptp->state = ICE_PTP_READY;
+ 
+-	/* Start periodic work going */
+-	kthread_queue_delayed_work(ptp->kworker, &ptp->work, 0);
+-
+ 	dev_info(ice_pf_to_dev(pf), "PTP reset successful\n");
+ 	return;
+ 
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
+@@ -333,6 +333,7 @@ void ice_ptp_prepare_for_reset(struct ic
+ void ice_ptp_init(struct ice_pf *pf);
+ void ice_ptp_release(struct ice_pf *pf);
+ void ice_ptp_link_change(struct ice_pf *pf, bool linkup);
++void ice_ptp_queue_work(struct ice_pf *pf);
+ #else /* IS_ENABLED(CONFIG_PTP_1588_CLOCK) */
+ static inline int ice_ptp_set_ts_config(struct ice_pf *pf, struct ifreq *ifr)
+ {
+@@ -384,6 +385,10 @@ static inline void ice_ptp_link_change(s
+ {
+ }
+ 
++static inline void ice_ptp_queue_work(struct ice_pf *pf)
++{
++}
++
+ static inline int ice_ptp_clock_index(struct ice_pf *pf)
+ {
+ 	return -1;
 
 
 
