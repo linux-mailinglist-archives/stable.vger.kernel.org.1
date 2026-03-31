@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-231987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMggNTn9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:33 +0200
+	id UJtUAVH9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE8E36D90B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F48736D94A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A0CC30FEB9F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2F8EA30FCC29
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3F8423149;
-	Tue, 31 Mar 2026 16:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E8F423A9A;
+	Tue, 31 Mar 2026 16:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jov641W1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFLtUGMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F9C317166;
-	Tue, 31 Mar 2026 16:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965B2413258;
+	Tue, 31 Mar 2026 16:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975582; cv=none; b=pM/EeiBIcmy75F/S1TqO/7/wWMcTHppWxW6jP963FuuiAkKXxijKRPaCdkZxmCoFvM8NMUDAWb7YdRJlbSYorGVsT6OaAH9sAHPOzwxcwvaCKRqvXfZxA5hm8liFAMqRQpeeBb/MEkres8Es9gWzLfZqL+6D+TYiPw4QM9vB+jg=
+	t=1774975572; cv=none; b=SnCdwdEmwgMXE87++zUIBKBVmalhzSTxxhvM5V0yamy3z2Mb69b+YMh50sX17d2EayYppR0GszvaryV0t3Bsk/m2m3LSvoMuyv3/r1GYKpkAFI+ooF/wzwTg2nWTznhfpfX+zj3OFtscer5W+j/E/Y3i6ce7i4Z7iYFLTG8pXEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975582; c=relaxed/simple;
-	bh=zWmfolDiKaRDoB0/qYyJN1mJbKSfdpYycPXtgaZVKr0=;
+	s=arc-20240116; t=1774975572; c=relaxed/simple;
+	bh=1Ah35xL37FCMc6YMpXZh8dgW4dsycvN78TJzOX/QgAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sm9NNuPEtH9GHHUoWj2YCVVROwxWTyIWHAjXHC21RlxFwQYc2W5fLrg2Tczw5ew0K2KsjtoEAsPfb3rZr524qBF96Dw1nBm1ELKFBfZAhhT2ub7a36aio7gwLJq7BbQ3LtFfYkLFmj2qwW7tJDYLKhQ3/rR8Z6Tp2Dg2b3UZL2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jov641W1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD3CC19423;
-	Tue, 31 Mar 2026 16:46:22 +0000 (UTC)
+	 MIME-Version; b=rFrAmTYguz/0C0Gy9r6jSYy7/wfWOhWLSLu0Xltu1ed4/JHscFxf84PwAXwTyINfwRwwvvWAdOsAlfMSMesnQeUqAuHK2U3NPsS1S0DebQgAYda0YOL/0spM6nP8FOxcJgR+IFE84HsIed7i2X6cRimb6B3FDY5JT/ZxMRDGaqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFLtUGMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2F7C19423;
+	Tue, 31 Mar 2026 16:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975582;
-	bh=zWmfolDiKaRDoB0/qYyJN1mJbKSfdpYycPXtgaZVKr0=;
+	s=korg; t=1774975572;
+	bh=1Ah35xL37FCMc6YMpXZh8dgW4dsycvN78TJzOX/QgAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jov641W1bg1mqFRwk48iZ6BOZvobLhCTXSM51mU8N8YAvsj6upuhizlxTSYy6FDeD
-	 ZmcFCHrJVzWJnWA3ysnJ/FCHEPjQrIDAY6nyPwIBLSkSWOD6LJEa9iYZ9XE2C94y1x
-	 vu6XOJfiI1srQKCI0ar2vLm+tWwymeVztbjJX5Zk=
+	b=HFLtUGMw0fXV5QYcdPrLrbtI5kK9rkom8eATiYboYvJJq9DlRBEUfDqqtNBUi1KIn
+	 qsdchKnv9TA1Ql7W8oxHDOjDtfhcqYl9VzBiQoWrofrVZM8qSuoe8k4UrxcI8KeXwJ
+	 yowJq4Uc4k6SHCXZ9Fd8rOvyja0MxIHP/4G52aMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao-Yu Yang <naup96721@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 338/342] futex: Fix UaF between futex_key_to_node_opt() and vma_replace_policy()
-Date: Tue, 31 Mar 2026 18:22:51 +0200
-Message-ID: <20260331161811.337733893@linuxfoundation.org>
+Subject: [PATCH 6.19 339/342] ext4: introduce EXPORT_SYMBOL_FOR_EXT4_TEST() helper
+Date: Tue, 31 Mar 2026 18:22:52 +0200
+Message-ID: <20260331161811.373384737@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -75,26 +74,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,infradead.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231987-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231983-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7CE8E36D90B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9F48736D94A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,97 +100,38 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Hao-Yu Yang <naup96721@gmail.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 190a8c48ff623c3d67cb295b4536a660db2012aa ]
+[ Upstream commit 49504a512587147dd6da3b4b08832ccc157b97dc ]
 
-During futex_key_to_node_opt() execution, vma->vm_policy is read under
-speculative mmap lock and RCU. Concurrently, mbind() may call
-vma_replace_policy() which frees the old mempolicy immediately via
-kmem_cache_free().
+Introduce EXPORT_SYMBOL_FOR_EXT4_TEST() helper for kuint test.
 
-This creates a race where __futex_key_to_node() dereferences a freed
-mempolicy pointer, causing a use-after-free read of mpol->mode.
-
-[  151.412631] BUG: KASAN: slab-use-after-free in __futex_key_to_node (kernel/futex/core.c:349)
-[  151.414046] Read of size 2 at addr ffff888001c49634 by task e/87
-
-[  151.415969] Call Trace:
-
-[  151.416732]  __asan_load2 (mm/kasan/generic.c:271)
-[  151.416777]  __futex_key_to_node (kernel/futex/core.c:349)
-[  151.416822]  get_futex_key (kernel/futex/core.c:374 kernel/futex/core.c:386 kernel/futex/core.c:593)
-
-Fix by adding rcu to __mpol_put().
-
-Fixes: c042c505210d ("futex: Implement FUTEX2_MPOL")
-Reported-by: Hao-Yu Yang <naup96721@gmail.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Hao-Yu Yang <naup96721@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Link: https://patch.msgid.link/20260324174418.GB1850007@noisy.programming.kicks-ass.net
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260314075258.1317579-2-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 519b76ac0b31 ("ext4: fix mballoc-test.c is not compiled when EXT4_KUNIT_TESTS=M")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mempolicy.h |  1 +
- kernel/futex/core.c       |  2 +-
- mm/mempolicy.c            | 10 ++++++++--
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ fs/ext4/ext4.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
-index 0fe96f3ab3ef0..65c732d440d2f 100644
---- a/include/linux/mempolicy.h
-+++ b/include/linux/mempolicy.h
-@@ -55,6 +55,7 @@ struct mempolicy {
- 		nodemask_t cpuset_mems_allowed;	/* relative to these nodes */
- 		nodemask_t user_nodemask;	/* nodemask passed by user */
- 	} w;
-+	struct rcu_head rcu;
- };
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index d4a98ff58076f..f1c476303f3a9 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3953,6 +3953,11 @@ static inline bool ext4_inode_can_atomic_write(struct inode *inode)
+ extern int ext4_block_write_begin(handle_t *handle, struct folio *folio,
+ 				  loff_t pos, unsigned len,
+ 				  get_block_t *get_block);
++
++#if IS_ENABLED(CONFIG_EXT4_KUNIT_TESTS)
++#define EXPORT_SYMBOL_FOR_EXT4_TEST(sym) \
++	EXPORT_SYMBOL_FOR_MODULES(sym, "ext4-test")
++#endif
+ #endif	/* __KERNEL__ */
  
- /*
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index cf7e610eac429..31e83a09789e0 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm_struct *mm, unsigned long addr)
- 	if (!vma)
- 		return FUTEX_NO_NODE;
- 
--	mpol = vma_policy(vma);
-+	mpol = READ_ONCE(vma->vm_policy);
- 	if (!mpol)
- 		return FUTEX_NO_NODE;
- 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 68a98ba578821..74ebf38a7db1a 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -488,7 +488,13 @@ void __mpol_put(struct mempolicy *pol)
- {
- 	if (!atomic_dec_and_test(&pol->refcnt))
- 		return;
--	kmem_cache_free(policy_cache, pol);
-+	/*
-+	 * Required to allow mmap_lock_speculative*() access, see for example
-+	 * futex_key_to_node_opt(). All accesses are serialized by mmap_lock,
-+	 * however the speculative lock section unbound by the normal lock
-+	 * boundaries, requiring RCU freeing.
-+	 */
-+	kfree_rcu(pol, rcu);
- }
- EXPORT_SYMBOL_FOR_MODULES(__mpol_put, "kvm");
- 
-@@ -1021,7 +1027,7 @@ static int vma_replace_policy(struct vm_area_struct *vma,
- 	}
- 
- 	old = vma->vm_policy;
--	vma->vm_policy = new; /* protected by mmap_lock */
-+	WRITE_ONCE(vma->vm_policy, new); /* protected by mmap_lock */
- 	mpol_put(old);
- 
- 	return 0;
+ #define EFSBADCRC	EBADMSG		/* Bad CRC detected */
 -- 
 2.53.0
 
