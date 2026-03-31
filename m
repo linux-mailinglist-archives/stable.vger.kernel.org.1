@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFZEJ9QAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:56 +0200
+	id UHN8M5AIzGlaNgYAu9opvQ
+	(envelope-from <stable+bounces-232497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:46:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B0D36E3BF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1658C36F4EE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7B8AD30B98A3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3644304A6F4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D10533120E;
-	Tue, 31 Mar 2026 16:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1311A317715;
+	Tue, 31 Mar 2026 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE0iVP3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kSAnypk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47B32D1F40;
-	Tue, 31 Mar 2026 16:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B636730FF20;
+	Tue, 31 Mar 2026 17:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975559; cv=none; b=oTZ+2oCjY7YtLjTo8K2wZKPd0qaKWP1hfa6qCWAdHku50qaO6h0Wit3On9D9L0UxrV1UAw+YnaOrcFwRwhaeOR2HKZJxXuiBV+Lo1KMp8SvL2MiOU2Dw3QLP20CH74nF+ssuZh0hUwdO6LH15eirVpkG+YfIBpSPj6VdSqygu5w=
+	t=1774976900; cv=none; b=JUrEBCf/KFKG3W70SAMT4grDtR4vDZxyo+wXaWXcgfVWswVWMTR94gq/f0EV3sUyoSleLBH2DwayxthnDHAfsEX25THEhgeOqaUJnp6CBzxOJjEeFEr6togQBYxWvqiUO7n8cDJRZamy+84hyLyWe9RVF96t2bft4CNoJuTi1CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975559; c=relaxed/simple;
-	bh=I63BtbCOi/ifswt9KArcTr9k4OuzOXSl+aVP6TllJRY=;
+	s=arc-20240116; t=1774976900; c=relaxed/simple;
+	bh=6wUs0/PZoxBNbFbmQRCTdiOiivNfC3wDd+9wQ7ObKSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHFnlufqtFaITxk7UwXTA4Z9AuSz6y2Y/OMHLVToiI0Ya6OEQ8vYQ9v/V79opb0E1DzywRaESMHXYaRIvbNyK0SMAYCmOVkSXJAHqZCsLYvtMJd5wamAMrKhIh9Wzi8s7XoT8oXoEd1i8utp9/adRpK4wU+T0BKB+U1dbCwxFAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE0iVP3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFD4C19423;
-	Tue, 31 Mar 2026 16:45:59 +0000 (UTC)
+	 MIME-Version; b=SH/aN/+SvQXQarxKcZzKdLJzfLjq16owr70DXrwEKiIZnFEZAWAddEJrvSjsELslhDmdhNlFxQZXpKSK/sC3WSLI1lfCA+yrSBJM9h6U329mpw6xCnx6wWWav+twjM9oEkS7RJxMXhiN3stWNmuzTv1KYvHs2rJ1FyVrpNJr2ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kSAnypk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B8AC19423;
+	Tue, 31 Mar 2026 17:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975559;
-	bh=I63BtbCOi/ifswt9KArcTr9k4OuzOXSl+aVP6TllJRY=;
+	s=korg; t=1774976900;
+	bh=6wUs0/PZoxBNbFbmQRCTdiOiivNfC3wDd+9wQ7ObKSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fE0iVP3Wq8ZVd1Rek3vSVbZ6Ma7950zIwhROXRcgeD/SHVK5J8jhvbUPM5o/KVJ8a
-	 2nJ8OhewinZrnIPq8y9uaqCNIQERE3sGhoAoOcM+OEQRLu4UKYK9HWYJJL5otM5jFM
-	 /0B1I4aATnSiPuTv6tsls4KHmdVBuDfwLxAwJVqw=
+	b=2kSAnypk84J+aqKMlt6auOeFO9ztDvDS/L0MrmwRpC1eILyuAMfA3xcK6Ugogn3DL
+	 ycisgxDmsvtWhIN5y4CfiejWVUek9QKFFP9aXGWttBFCKXZu0zzN/cft6cOqbtDSEK
+	 aEnSsyklI6Xut+eP4X534GvrFglOgWlI4F5NZHQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.19 308/342] arm64: dts: imx8mn-tqma8mqnl: fix LDO5 power off
+	Li Jun <lijun01@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.18 238/309] LoongArch: Fix missing NULL checks for kstrdup()
 Date: Tue, 31 Mar 2026 18:22:21 +0200
-Message-ID: <20260331161810.257723444@linuxfoundation.org>
+Message-ID: <20260331161802.337584551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231978-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232497-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,126 +86,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C8B0D36E3BF
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,loongson.cn:email]
+X-Rspamd-Queue-Id: 1658C36F4EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+From: Li Jun <lijun01@kylinos.cn>
 
-commit 8adc841d43ebceabec996c9dcff6e82d3e585268 upstream.
+commit 3a28daa9b7d7c2ddf2c722e9e95d7e0928bf0cd1 upstream.
 
-Fix SD card removal caused by automatic LDO5 power off after boot
+1. Replace "of_find_node_by_path("/")" with "of_root" to avoid multiple
+calls to "of_node_put()".
 
-To prevent this, add vqmmc regulator for USDHC, using a GPIO-controlled
-regulator that is supplied by LDO5. Since this is implemented on SoM but
-used on baseboards with SD-card interface, implement the functionality
-on SoM part and optionally enable it on baseboards if needed.
+2. Fix a potential kernel oops during early boot when memory allocation
+fails while parsing CPU model from device tree.
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Jun <lijun01@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts |   13 ++++----
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi       |   22 ++++++++++++++
- 2 files changed, 29 insertions(+), 6 deletions(-)
+ arch/loongarch/kernel/env.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-@@ -69,6 +69,10 @@
- 	samsung,esc-clock-frequency = <20000000>;
- };
+--- a/arch/loongarch/kernel/env.c
++++ b/arch/loongarch/kernel/env.c
+@@ -42,16 +42,15 @@ static int __init init_cpu_fullname(void
+ 	int cpu, ret;
+ 	char *cpuname;
+ 	const char *model;
+-	struct device_node *root;
  
-+&reg_usdhc2_vqmmc {
-+	status = "okay";
-+};
-+
- &sai3 {
- 	assigned-clocks = <&clk IMX8MN_CLK_SAI3>;
- 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
-@@ -216,8 +220,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
+ 	/* Parsing cpuname from DTS model property */
+-	root = of_find_node_by_path("/");
+-	ret = of_property_read_string(root, "model", &model);
++	ret = of_property_read_string(of_root, "model", &model);
+ 	if (ret == 0) {
+ 		cpuname = kstrdup(model, GFP_KERNEL);
++		if (!cpuname)
++			return -ENOMEM;
+ 		loongson_sysconf.cpuname = strsep(&cpuname, " ");
+ 	}
+-	of_node_put(root);
  
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-@@ -226,8 +229,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-@@ -236,8 +238,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-@@ -30,6 +30,20 @@
- 		regulator-max-microvolt = <3300000>;
- 	};
- 
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usdhc2_vqmmc>;
-+		regulator-name = "V_SD2";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 0x1>,
-+			 <3300000 0x0>;
-+		vin-supply = <&ldo5_reg>;
-+		status = "disabled";
-+	};
-+
- 	reserved-memory {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-@@ -233,6 +247,10 @@
- 	vddio-supply = <&ldo3_reg>;
- };
- 
-+&usdhc2 {
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
-+};
-+
- &usdhc3 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
- 	pinctrl-0 = <&pinctrl_usdhc3>;
-@@ -287,6 +305,10 @@
- 		fsl,pins = <MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x84>;
- 	};
- 
-+	pinctrl_reg_usdhc2_vqmmc: regusdhc2vqmmcgrp {
-+		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO04_GPIO1_IO4		0xc0>;
-+	};
-+
- 	pinctrl_usdhc3: usdhc3grp {
- 		fsl,pins = <MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x1d4>,
- 			   <MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d2>,
+ 	if (loongson_sysconf.cpuname && !strncmp(loongson_sysconf.cpuname, "Loongson", 8)) {
+ 		for (cpu = 0; cpu < NR_CPUS; cpu++)
 
 
 
