@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-232020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOOrHPYBzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232020-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:46 +0200
+	id +PfmD0n2y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0068936E764
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E49136CA04
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EA88314FB04
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2106230C4DCA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA734425CD0;
-	Tue, 31 Mar 2026 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C16F3EF0A2;
+	Tue, 31 Mar 2026 16:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPa0Bqzh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3vOQNXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A0F425CC4;
-	Tue, 31 Mar 2026 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43013E3C5C;
+	Tue, 31 Mar 2026 16:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975668; cv=none; b=Xl1wb3RvFnShaqEhLN6dFZhVV5zUvsDGZ1WPe9+SmONpyoAziScmOfYODTnLMKgEnfnZqequ3ktH6SAKlz5qFi6Vqf7znJPGZg9141D1KMsskE5RQh6kdbOwZOAj7zHLJj1Xezwba022YN0Ap6GQtj0lCisYdhFQu4z/XMbfZbc=
+	t=1774974323; cv=none; b=lf+sfkanu2xnahqb6XSQwh6CkAGaHcryUsaeflv2idTbZqK10wayUv85F1uAsviM262B5xDtTN+05EDhJJ72yn31fAGV+tHpgXqOJ8L3YolbSyTjoY5vI1ZKGD4w5jAVmf1HGFdEZrwm4wF1HP8KM+iZkaBCwgjUl7f3uc9T2NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975668; c=relaxed/simple;
-	bh=ssJMroQg5UBya26BjXtSYaoOlqBxPypeSBaB/gZUylE=;
+	s=arc-20240116; t=1774974323; c=relaxed/simple;
+	bh=kGCUZHf4I3tGaQoYvXysJ6sr+TpH1a46vn1Ye4dNTnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lnqslqFzni4CZ58GVn2erun+yIUeSkLqHps8altJmpRQDYnHjs9aFwD+fz7Jp44k0s37NWavupTdeBUFh+bRRXTQ6ylMbSOI2zM1ht/+nw9gGZotWKlQ+nw1snWlVreEAwKswgSabFltM21fNt+w4T7waIKnLk0+DqdWxeTUgPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPa0Bqzh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00360C19423;
-	Tue, 31 Mar 2026 16:47:47 +0000 (UTC)
+	 MIME-Version; b=BMmjVr9UBbmuQdhoy8SfcWWRB4+EzEyzTfT0tDqnDB/RMdYZEvwJca72LfwSfTOF7QP4zbe4BsapGWM96C4bSQYZYj/U/W/XOIm+9T03eC5dz3WTf8IX0Z7ulXsOZ0CwzOb35TgNjf6s4R+iFsKMtwCJavHAFSfzNE3Q2ZXrv50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3vOQNXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3650DC19423;
+	Tue, 31 Mar 2026 16:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975668;
-	bh=ssJMroQg5UBya26BjXtSYaoOlqBxPypeSBaB/gZUylE=;
+	s=korg; t=1774974322;
+	bh=kGCUZHf4I3tGaQoYvXysJ6sr+TpH1a46vn1Ye4dNTnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPa0Bqzhp+0QsaCMrUndIPELY9Of60WmtHmUA9depBdae3CXWyTSF/2SgMsBcuWGD
-	 n7JGetMpd3O0bkSqYhAeg1Cvzd48xVYcRi4OyDBYVdQjaMrsc/jK7HBkKpmrqeLMaq
-	 pzUIhGB/YUMyeh5lKxSrdpEWWpvLXBT4OnH2IRpo=
+	b=D3vOQNXDbIIwL4clFqcW+pGqUa0n4nDAGenbmj6XY+2n5Hw+3O9bQoXtDvW/7E3ra
+	 EJ3XrurqxQ/fduAvLnMWYMD1gj8UV7uB6uCaB6jgouVfh+/EoE8vhvDyRWeGbNgUqq
+	 TE3HtbBtBZuhC9FHNS3bPSnJtdyG2rF8u4Nz67aE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Gregory Bell <grbell@redhat.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/244] nvmet: move async event work off nvmet-wq
-Date: Tue, 31 Mar 2026 18:19:51 +0200
-Message-ID: <20260331161743.216096150@linuxfoundation.org>
+Subject: [PATCH 6.6 008/175] bpf: Release module BTF IDR before module unload
+Date: Tue, 31 Mar 2026 18:19:52 +0200
+Message-ID: <20260331161730.089623166@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,207 +71,158 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,etsalapatis.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-231496-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232020-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,lst.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0068936E764
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8E49136CA04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 2922e3507f6d5caa7f1d07f145e186fc6f317a4e ]
+[ Upstream commit 146bd2a87a65aa407bb17fac70d8d583d19aba06 ]
 
-For target nvmet_ctrl_free() flushes ctrl->async_event_work.
-If nvmet_ctrl_free() runs on nvmet-wq, the flush re-enters workqueue
-completion for the same worker:-
+Gregory reported in [0] that the global_map_resize test when run in
+repeatedly ends up failing during program load. This stems from the fact
+that BTF reference has not dropped to zero after the previous run's
+module is unloaded, and the older module's BTF is still discoverable and
+visible. Later, in libbpf, load_module_btfs() will find the ID for this
+stale BTF, open its fd, and then it will be used during program load
+where later steps taking module reference using btf_try_get_module()
+fail since the underlying module for the BTF is gone.
 
-A. Async event work queued on nvmet-wq (prior to disconnect):
-  nvmet_execute_async_event()
-     queue_work(nvmet_wq, &ctrl->async_event_work)
+Logically, once a module is unloaded, it's associated BTF artifacts
+should become hidden. The BTF object inside the kernel may still remain
+alive as long its reference counts are alive, but it should no longer be
+discoverable.
 
-  nvmet_add_async_event()
-     queue_work(nvmet_wq, &ctrl->async_event_work)
+To fix this, let us call btf_free_id() from the MODULE_STATE_GOING case
+for the module unload to free the BTF associated IDR entry, and disable
+its discovery once module unload returns to user space. If a race
+happens during unload, the outcome is non-deterministic anyway. However,
+user space should be able to rely on the guarantee that once it has
+synchronously established a successful module unload, no more stale
+artifacts associated with this module can be obtained subsequently.
 
-B. Full pre-work chain (RDMA CM path):
-  nvmet_rdma_cm_handler()
-     nvmet_rdma_queue_disconnect()
-       __nvmet_rdma_queue_disconnect()
-         queue_work(nvmet_wq, &queue->release_work)
-           process_one_work()
-             lock((wq_completion)nvmet-wq)  <--------- 1st
-             nvmet_rdma_release_queue_work()
+Note that we must be careful to not invoke btf_free_id() in btf_put()
+when btf_is_module() is true now. There could be a window where the
+module unload drops a non-terminal reference, frees the IDR, but the
+same ID gets reused and the second unconditional btf_free_id() ends up
+releasing an unrelated entry.
 
-C. Recursive path (same worker):
-  nvmet_rdma_release_queue_work()
-     nvmet_rdma_free_queue()
-       nvmet_sq_destroy()
-         nvmet_ctrl_put()
-           nvmet_ctrl_free()
-             flush_work(&ctrl->async_event_work)
-               __flush_work()
-                 touch_wq_lockdep_map()
-                 lock((wq_completion)nvmet-wq) <--------- 2nd
+To avoid a special case for btf_is_module() case, set btf->id to zero to
+make btf_free_id() idempotent, such that we can unconditionally invoke it
+from btf_put(), and also from the MODULE_STATE_GOING case. Since zero is
+an invalid IDR, the idr_remove() should be a noop.
 
-Lockdep splat:
+Note that we can be sure that by the time we reach final btf_put() for
+btf_is_module() case, the btf_free_id() is already done, since the
+module itself holds the BTF reference, and it will call this function
+for the BTF before dropping its own reference.
 
-  ============================================
-  WARNING: possible recursive locking detected
-  6.19.0-rc3nvme+ #14 Tainted: G                 N
-  --------------------------------------------
-  kworker/u192:42/44933 is trying to acquire lock:
-  ffff888118a00948 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: touch_wq_lockdep_map+0x26/0x90
+  [0]: https://lore.kernel.org/bpf/cover.1773170190.git.grbell@redhat.com
 
-  but task is already holding lock:
-  ffff888118a00948 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x53e/0x660
-
-  3 locks held by kworker/u192:42/44933:
-   #0: ffff888118a00948 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x53e/0x660
-   #1: ffffc9000e6cbe28 ((work_completion)(&queue->release_work)){+.+.}-{0:0}, at: process_one_work+0x1c5/0x660
-   #2: ffffffff82d4db60 (rcu_read_lock){....}-{1:3}, at: __flush_work+0x62/0x530
-
-  Workqueue: nvmet-wq nvmet_rdma_release_queue_work [nvmet_rdma]
-  Call Trace:
-   __flush_work+0x268/0x530
-   nvmet_ctrl_free+0x140/0x310 [nvmet]
-   nvmet_cq_put+0x74/0x90 [nvmet]
-   nvmet_rdma_free_queue+0x23/0xe0 [nvmet_rdma]
-   nvmet_rdma_release_queue_work+0x19/0x50 [nvmet_rdma]
-   process_one_work+0x206/0x660
-   worker_thread+0x184/0x320
-   kthread+0x10c/0x240
-   ret_from_fork+0x319/0x390
-
-Move async event work to a dedicated nvmet-aen-wq to avoid reentrant
-flush on nvmet-wq.
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 36e68442d1af ("bpf: Load and verify kernel module BTFs")
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Suggested-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reported-by: Gregory Bell <grbell@redhat.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20260312205307.1346991-1-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/admin-cmd.c |  2 +-
- drivers/nvme/target/core.c      | 14 ++++++++++++--
- drivers/nvme/target/nvmet.h     |  1 +
- drivers/nvme/target/rdma.c      |  1 +
- 4 files changed, 15 insertions(+), 3 deletions(-)
+ kernel/bpf/btf.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
-index 081f0473cd9ea..72e31ef1f2f06 100644
---- a/drivers/nvme/target/admin-cmd.c
-+++ b/drivers/nvme/target/admin-cmd.c
-@@ -985,7 +985,7 @@ void nvmet_execute_async_event(struct nvmet_req *req)
- 	ctrl->async_event_cmds[ctrl->nr_async_event_cmds++] = req;
- 	mutex_unlock(&ctrl->lock);
- 
--	queue_work(nvmet_wq, &ctrl->async_event_work);
-+	queue_work(nvmet_aen_wq, &ctrl->async_event_work);
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 14361b3b9edd0..1ace7faa59cfd 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -1636,7 +1636,16 @@ static void btf_free_id(struct btf *btf)
+ 	 * of the _bh() version.
+ 	 */
+ 	spin_lock_irqsave(&btf_idr_lock, flags);
+-	idr_remove(&btf_idr, btf->id);
++	if (btf->id) {
++		idr_remove(&btf_idr, btf->id);
++		/*
++		 * Clear the id here to make this function idempotent, since it will get
++		 * called a couple of times for module BTFs: on module unload, and then
++		 * the final btf_put(). btf_alloc_id() starts IDs with 1, so we can use
++		 * 0 as sentinel value.
++		 */
++		WRITE_ONCE(btf->id, 0);
++	}
+ 	spin_unlock_irqrestore(&btf_idr_lock, flags);
  }
  
- void nvmet_execute_keep_alive(struct nvmet_req *req)
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 710e74d3ec3e9..be9a7e8b547ac 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -26,6 +26,8 @@ static DEFINE_IDA(cntlid_ida);
- 
- struct workqueue_struct *nvmet_wq;
- EXPORT_SYMBOL_GPL(nvmet_wq);
-+struct workqueue_struct *nvmet_aen_wq;
-+EXPORT_SYMBOL_GPL(nvmet_aen_wq);
- 
- /*
-  * This read/write semaphore is used to synchronize access to configuration
-@@ -205,7 +207,7 @@ void nvmet_add_async_event(struct nvmet_ctrl *ctrl, u8 event_type,
- 	list_add_tail(&aen->entry, &ctrl->async_events);
- 	mutex_unlock(&ctrl->lock);
- 
--	queue_work(nvmet_wq, &ctrl->async_event_work);
-+	queue_work(nvmet_aen_wq, &ctrl->async_event_work);
- }
- 
- static void nvmet_add_to_changed_ns_log(struct nvmet_ctrl *ctrl, __le32 nsid)
-@@ -1714,9 +1716,14 @@ static int __init nvmet_init(void)
- 	if (!nvmet_wq)
- 		goto out_free_buffered_work_queue;
- 
-+	nvmet_aen_wq = alloc_workqueue("nvmet-aen-wq",
-+			WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
-+	if (!nvmet_aen_wq)
-+		goto out_free_nvmet_work_queue;
-+
- 	error = nvmet_init_debugfs();
- 	if (error)
--		goto out_free_nvmet_work_queue;
-+		goto out_free_nvmet_aen_work_queue;
- 
- 	error = nvmet_init_discovery();
- 	if (error)
-@@ -1732,6 +1739,8 @@ static int __init nvmet_init(void)
- 	nvmet_exit_discovery();
- out_exit_debugfs:
- 	nvmet_exit_debugfs();
-+out_free_nvmet_aen_work_queue:
-+	destroy_workqueue(nvmet_aen_wq);
- out_free_nvmet_work_queue:
- 	destroy_workqueue(nvmet_wq);
- out_free_buffered_work_queue:
-@@ -1749,6 +1758,7 @@ static void __exit nvmet_exit(void)
- 	nvmet_exit_discovery();
- 	nvmet_exit_debugfs();
- 	ida_destroy(&cntlid_ida);
-+	destroy_workqueue(nvmet_aen_wq);
- 	destroy_workqueue(nvmet_wq);
- 	destroy_workqueue(buffered_io_wq);
- 	destroy_workqueue(zbd_wq);
-diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
-index 3062562c096a1..31a422a3f85b8 100644
---- a/drivers/nvme/target/nvmet.h
-+++ b/drivers/nvme/target/nvmet.h
-@@ -419,6 +419,7 @@ extern struct kmem_cache *nvmet_bvec_cache;
- extern struct workqueue_struct *buffered_io_wq;
- extern struct workqueue_struct *zbd_wq;
- extern struct workqueue_struct *nvmet_wq;
-+extern struct workqueue_struct *nvmet_aen_wq;
- 
- static inline void nvmet_set_result(struct nvmet_req *req, u32 result)
+@@ -7158,7 +7167,7 @@ static void bpf_btf_show_fdinfo(struct seq_file *m, struct file *filp)
  {
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index 2a4536ef61848..ef55a63848b4c 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -2086,6 +2086,7 @@ static void nvmet_rdma_remove_one(struct ib_device *ib_device, void *client_data
- 	mutex_unlock(&nvmet_rdma_queue_mutex);
+ 	const struct btf *btf = filp->private_data;
  
- 	flush_workqueue(nvmet_wq);
-+	flush_workqueue(nvmet_aen_wq);
+-	seq_printf(m, "btf_id:\t%u\n", btf->id);
++	seq_printf(m, "btf_id:\t%u\n", READ_ONCE(btf->id));
+ }
+ #endif
+ 
+@@ -7250,7 +7259,7 @@ int btf_get_info_by_fd(const struct btf *btf,
+ 	if (copy_from_user(&info, uinfo, info_copy))
+ 		return -EFAULT;
+ 
+-	info.id = btf->id;
++	info.id = READ_ONCE(btf->id);
+ 	ubtf = u64_to_user_ptr(info.btf);
+ 	btf_copy = min_t(u32, btf->data_size, info.btf_size);
+ 	if (copy_to_user(ubtf, btf->data, btf_copy))
+@@ -7313,7 +7322,7 @@ int btf_get_fd_by_id(u32 id)
+ 
+ u32 btf_obj_id(const struct btf *btf)
+ {
+-	return btf->id;
++	return READ_ONCE(btf->id);
  }
  
- static struct ib_client nvmet_rdma_ib_client = {
+ bool btf_is_kernel(const struct btf *btf)
+@@ -7445,6 +7454,13 @@ static int btf_module_notify(struct notifier_block *nb, unsigned long op,
+ 			if (btf_mod->module != module)
+ 				continue;
+ 
++			/*
++			 * For modules, we do the freeing of BTF IDR as soon as
++			 * module goes away to disable BTF discovery, since the
++			 * btf_try_get_module() on such BTFs will fail. This may
++			 * be called again on btf_put(), but it's ok to do so.
++			 */
++			btf_free_id(btf_mod->btf);
+ 			list_del(&btf_mod->list);
+ 			if (btf_mod->sysfs_attr)
+ 				sysfs_remove_bin_file(btf_kobj, btf_mod->sysfs_attr);
 -- 
 2.51.0
 
