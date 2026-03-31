@@ -1,177 +1,160 @@
-Return-Path: <stable+bounces-232576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEZyCSE3zGn7RQYAu9opvQ
-	(envelope-from <stable+bounces-232576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:05:37 +0200
+	id 4HUgEaY2zGn7RQYAu9opvQ
+	(envelope-from <stable+bounces-232577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:03:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C0E3715A2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:05:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F0D37151C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 23:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68B8630A303E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:59:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B2E4305E402
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CFC3E0239;
-	Tue, 31 Mar 2026 20:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F763F787D;
+	Tue, 31 Mar 2026 21:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4qmfuVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQXq8Cf0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6AD3DE426;
-	Tue, 31 Mar 2026 20:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4882F9C37
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 21:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774990741; cv=none; b=DcTln6Y+yFGcr27Bmw7yMOt1fDRVTHw4Nbd94k5aHMJEZXPBBe/oCi8E6b6LRVcKC9nkiGqwnCK/kQCbHrzSEI6CPkmlcf4MGG23mQyvbKKKFkB5vS8K+CIojiFlM9bpFW0tj7YyRTGi8i21+/xese6bjUaJC6G2A/hrNYqDrz4=
+	t=1774991002; cv=none; b=dXvQ+dln2tAYnUxzPAmGzdBOcRUyTciR246nuy9Ld60ihJfNBHEdAI39JKXrD1gfI9JoMJpHcdTSFOFUeQmQZmBT2JTZzn5bEbc4vEDR6tAEekDm/z2g8Qj0kJJJ6FMKveuTWxIaMc+X++31Ggga/s6Zl/EpCQQ+/S6rAVZcWU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774990741; c=relaxed/simple;
-	bh=5fplL4+Tm6PvFoUMJgwNlIR3UOqxZ9EQUjoJoz+iP5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BhBokcToAB/amD7uWGm7H5GzcPeF/bB6wChLOK0OXVf9EFBqKcWpEpFYn4+SBI9C5NsXWCI/u8CDhmvLo4i/RjSQ5z4WfNYq/AgNZUty+knZXcjKqslh1uvS2w0M5WvfVS9HvsSbH2NQJuVyQSkAC/Fmefb4EGSLitBp6WbrmjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4qmfuVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D488C19423;
-	Tue, 31 Mar 2026 20:58:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774990741;
-	bh=5fplL4+Tm6PvFoUMJgwNlIR3UOqxZ9EQUjoJoz+iP5o=;
-	h=From:To:Cc:Subject:Date:From;
-	b=e4qmfuVGC3qvezjik2MvQQtseCgg5cofWC1cJ9fAMwTMNitvMkLCHcuWprkIRkAqM
-	 S5rTDFS3DFo8B90D8hy0XZe8/+k1EzgyuTgFKFRyiukO8Qpg50gdW3lCaEVVzmwrO3
-	 n8ib5yJblRW0u7HP1qssGVSFdlDUD4IS7oL7CYuO/xYncwl59LZf0Bql/YsxVK7URH
-	 pQVKrRtYqCGAg73e9UZ1+OdsokoW74YA5DwOMagyq5NFc75VaCVXHBrQKbRWQT9kuh
-	 YGlVCZ0mP5QSyISMMjD7Mg2b0jQk0dxOXDE2fM6ggWyRKHgJ9McUpLGhfuC9vC9UOA
-	 +m6PpEmh6u3xw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
-Date: Tue, 31 Mar 2026 22:58:48 +0200
-Message-ID: <20260331205849.498295-1-ojeda@kernel.org>
+	s=arc-20240116; t=1774991002; c=relaxed/simple;
+	bh=Gt3u96Z/RHWT4uSpKJTe+1AoRa/kukWjUHnXg95ZC44=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s5UbnyaxIb88rghXEiLQSa6QzEnScTTIbkqgstQ0N38I/7Kvgc2I3DfMuQ0QS7TjjfmJnZlateugrIZ2W9d7ajWH/VZGRoLouWp7hm/kyQvvPkKKFySxEPM+FtyIYgsdjrb3bRQHluQWl+M+NfCQLl+NR8UsOgmg14SyDCQyx6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQXq8Cf0; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d55b97f358so3821133a34.3
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 14:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1774990999; x=1775595799; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=d1ynKJA2ZMz+n9z+laV/KWasvwjgNqFlNU3zkpu9Lp8=;
+        b=LQXq8Cf0o00ceLn+KhlYJuoQKNomXwMZlpaNyT1a5kr04yAs1ojNUz4Ix7ndT1exW3
+         DSeLgdM+jBgEsMBxJHpt0jveGjtSVVFv2YuJmDQD4S8+FJJlFuGbxlOLRDV3u7XO/J0J
+         gpp7z7gkb7Y2anhLCogPVzyqBpmUuX8uSUxW4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774990999; x=1775595799;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d1ynKJA2ZMz+n9z+laV/KWasvwjgNqFlNU3zkpu9Lp8=;
+        b=KN50I7c7WSk71+NlACQzAg9G0KKgvVzL0PiSkP5vVZtY4jNaKODY1D0k2D3jEwiUzQ
+         pAaOqdQXcJSDkuUCcSBj1tAn+RZoG3GCqUzwmSKIgnP0eDYV0OxM+fmQoJTwTiLzVuoG
+         SL24powJCZiznM6acALlk645vfJMAEZPJwGwn8DeKm/OQUF1beYwiy4vfTSi9vIWF907
+         xhAuYRj9f3C3lb002EoRTYxKtynT4/466NmwTr3x0YViyqdw7ahGFmAgA+2qFceeO1uX
+         WBzWVBDOO6gBMUHFHk1OtfP+DRnT7sRQvu350HYayysKIauEhYGsKVxfWU06Dylo3Vvy
+         Yc8Q==
+X-Gm-Message-State: AOJu0YyJlxxFy43z2xyDOrGXHKm3qW8peHIMV41bt/CzIsFEhPe+dm3z
+	CdibXwCMonsI5enLMmoWTovbrwYkBaCVE17Ct0WQBPBbXC2J/woXqQHWNJMC46u1bcK/ScBI4Xy
+	sTbnnaMo=
+X-Gm-Gg: ATEYQzwVBa0T4Ra1emn/EBhvQohiwpbvjOxRx8xPA1mySNdihcmYa5cSbGUTkCotR03
+	70bHVggVu4JIWRuY2hxqtWX8fSG87kLKzfcl27+WRsxBMziEB5Ja4Xs2UVToW/Jp6WbepzXfOK0
+	jEsbEVVR5+e4bntS51M3MefcYH8kvSoW0EGVEOuM2ndSRGngQSjkBneHzemJFVs9hYUoKm+CNn1
+	Bz/fqacBdXlDCk3549Gy8E+P+K+y510xbA0K8Iy2nhn7Erth/lTdDY8lr+4ty1pZIc+9HzqIcWp
+	1NVfVVvDYqUIhrcXDkGxyPtt3tAEcY6uum4s1Y4jJZWAN0R56MYSrB0KwFoOTrG9kwthbN/MInc
+	CfwdO/q7z/BvNEGOox8D1WBW+2Iy6FX0wAUeMLNSuIics+lgP7ijLMYdCQb8HLSNdVJ6I38mPD5
+	L8ieKb9rCR+DC9hi0t6mOr3TsJXyXyN0xVo5U=
+X-Received: by 2002:a05:6830:67f6:b0:7d7:fba1:c767 with SMTP id 46e09a7af769-7db9942cec5mr900953a34.32.1774990999564;
+        Tue, 31 Mar 2026 14:03:19 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7da0a7b45basm9162649a34.17.2026.03.31.14.03.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 14:03:19 -0700 (PDT)
+Message-ID: <0bcaa85a-7b7d-4295-9b48-afd983e7641a@linuxfoundation.org>
+Date: Tue, 31 Mar 2026 15:03:17 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mqueue: Fix incorrectly named file
+To: Simon Liebold <simonlie@amazon.de>, Shuah Khan <shuah@kernel.org>,
+ Simon Liebold <lieboldsimonpaul@gmail.com>, Kees Cook <kees@kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ SeongJae Park <sj@kernel.org>
+Cc: stable@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+References: <20260312140200.2224850-1-simonlie@amazon.de>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20260312140200.2224850-1-simonlie@amazon.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,atomlin.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232576-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-232577-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[amazon.de,kernel.org,gmail.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rust-lang.github.io:url]
-X-Rspamd-Queue-Id: B8C0E3715A2
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F0F0D37151C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Clippy in Rust 1.88.0 (only) reports [1]:
+On 3/12/26 08:02, Simon Liebold wrote:
+> Commit 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
+> intended to increase the timeout for mq_perf_tests from the default
+> kselftest limit of 45 seconds to 180 seconds.
+> 
+> Unfortunately, the file storing this information was incorrectly named
+> `setting` instead of `settings`, causing the kselftest runner not to
+> pick up the limit and keep using the default 45 seconds limit.
+> 
+> Fix this by renaming it to `settings` to ensure that the kselftest
+> runner uses the increased timeout of 180 seconds for this test.
+> 
+> Fixes: 85506aca2eb4 ("selftests/mqueue: Set timeout to 180 seconds")
+> Cc: <stable@vger.kernel.org> # 5.10.y
+> Signed-off-by: Simon Liebold <simonlie@amazon.de>
+> ---
+>   tools/testing/selftests/mqueue/{setting => settings} | 0
+>   1 file changed, 0 insertions(+), 0 deletions(-)
+>   rename tools/testing/selftests/mqueue/{setting => settings} (100%)
+> 
+> diff --git a/tools/testing/selftests/mqueue/setting b/tools/testing/selftests/mqueue/settings
+> similarity index 100%
+> rename from tools/testing/selftests/mqueue/setting
+> rename to tools/testing/selftests/mqueue/settings
+> 
+> base-commit: 5ee8dbf54602dc340d6235b1d6aa17c0f283f48c
 
-    warning: variables can be used directly in the `format!` string
-       --> rust/macros/module.rs:112:23
-        |
-    112 |         let content = format!("{param}:{content}", param = param, content = content);
-        |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-        = note: `-W clippy::uninlined-format-args` implied by `-W clippy::all`
-        = help: to override `-W clippy::all` add `#[allow(clippy::uninlined_format_args)]`
-    help: change this to
-        |
-    112 -         let content = format!("{param}:{content}", param = param, content = content);
-    112 +         let content = format!("{param}:{content}");
+Applied to linux-kseftest next for Linux 7.1-rc1
 
-    warning: variables can be used directly in the `format!` string
-       --> rust/macros/module.rs:198:14
-        |
-    198 |         t => panic!("Unsupported parameter type {}", t),
-        |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-        = note: `-W clippy::uninlined-format-args` implied by `-W clippy::all`
-        = help: to override `-W clippy::all` add `#[allow(clippy::uninlined_format_args)]`
-    help: change this to
-        |
-    198 -         t => panic!("Unsupported parameter type {}", t),
-    198 +         t => panic!("Unsupported parameter type {t}"),
-        |
-
-The reason it only triggers in that version is that the lint was moved
-from `pedantic` to `style` in Rust 1.88.0 and then back to `pedantic`
-in Rust 1.89.0 [2][3].
-
-In the first case, the suggestion is fair and a pure simplification, thus
-we will clean it up separately.
-
-To keep the behavior the same across all versions, and since the lint
-does not work for all macros (e.g. custom ones like `pr_info!`), disable
-it globally.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://lore.kernel.org/rust-for-linux/CANiq72=drAtf3y_DZ-2o4jb6Az9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com/ [1]
-Link: https://github.com/rust-lang/rust-clippy/pull/15287 [2]
-Link: https://github.com/rust-lang/rust-clippy/issues/15151 [3]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Makefile b/Makefile
-index 1a219bf1c771..a63684c36d60 100644
---- a/Makefile
-+++ b/Makefile
-@@ -494,6 +494,7 @@ export rust_common_flags := --edition=2021 \
- 			    -Wclippy::ptr_cast_constness \
- 			    -Wclippy::ref_as_ptr \
- 			    -Wclippy::undocumented_unsafe_blocks \
-+			    -Aclippy::uninlined_format_args \
- 			    -Wclippy::unnecessary_safety_comment \
- 			    -Wclippy::unnecessary_safety_doc \
- 			    -Wrustdoc::missing_crate_level_docs \
--- 
-2.53.0
-
+thanks,
+-- Shuah
 
