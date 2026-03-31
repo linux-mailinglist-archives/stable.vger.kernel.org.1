@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-231523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPofMMr2y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:06 +0200
+	id IA/jECUEzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:28:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249FE36CAEA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:31:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CF036EC15
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D99630E7671
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 007D73189114
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E123E3C40;
-	Tue, 31 Mar 2026 16:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E723C423A9F;
+	Tue, 31 Mar 2026 16:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR2xCMWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJeJAViz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5CE401A2C;
-	Tue, 31 Mar 2026 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB364266A6;
+	Tue, 31 Mar 2026 16:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974389; cv=none; b=YKbkQ1jK098N3hUaR6xQsf8Pw8dsxxuQXxi2mPO/fPShwYKnROh2cWodJIK28zC4zrvDjYqxeQBDOjgpmbNZDSbsM6EVX0m/cGVxWszauMDKRg2y3oU5Z2TfA3EzCPGexjZayxoslf8R0Tjb8x+X0Syc3DQ1IE26k/DaD0/hU8Q=
+	t=1774975826; cv=none; b=P+jDdcz7ocZBNu0x5Q9OPcjMEw41iNl/0CxhWvsNl90MR3d/3Ty2wIFfUyJGRTIZ0rMDyv3uDyhqt5rUsIfGhAmXdBlF7aMmyVPmLvE4/VFf1/ndVBok4bfFRCJqat8vFmSEodpN13ECIAv/0gjRux8vgiKjIG8ASsMJkvkSQvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974389; c=relaxed/simple;
-	bh=Gna5beid00FQYg4U/fsZZP0WXaaHLAcEcFjyCEqzFzU=;
+	s=arc-20240116; t=1774975826; c=relaxed/simple;
+	bh=Npy/8NZQwlBTQiDNd+vUbgvA13i2HQdVKYgkaM63e5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HzEz2kuz47m4rcDDPHn+Y5TvSI6u/astS+cSxK+XWsCWzZP/lJp93/h16kZ7vcKSptuAemIP0u24X0ttr6yd6wprXct904dHXDrSRHvRYIZkkitWbSwkdTHTEYRc3/znxa0tz6h/Xdil5n9daTu2zLMLdHoW/plQ8IM1UkJurJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR2xCMWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660C3C19424;
-	Tue, 31 Mar 2026 16:26:29 +0000 (UTC)
+	 MIME-Version; b=HqpHiWIv+morePFclGt0Y3jhoR/a30PC8r0G6a7JMTazWuwmGuMHpqnrBQNii9UnOdLJllHWfIHIhkE/qe7dWHk5lKg8u0BsjAQDjeRccOht9dqxTGWIctMoP56FjyOsvqw3y+f2CoGhSz+rvrrpCzVO68t8W/BaDEM6i3nZz5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJeJAViz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CF3C2BCB4;
+	Tue, 31 Mar 2026 16:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974389;
-	bh=Gna5beid00FQYg4U/fsZZP0WXaaHLAcEcFjyCEqzFzU=;
+	s=korg; t=1774975826;
+	bh=Npy/8NZQwlBTQiDNd+vUbgvA13i2HQdVKYgkaM63e5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KR2xCMWtNXQ2+B0eHvMdYe+TifFFAIs6myYVd7tjZhJkyAwzOZbaAEatikrhdr7SQ
-	 8Qj8I4YovAd0QKEkh+cfElIyOFRvLsZBdhaS9nxCRd3IKQN/WVenFA7iiXwiMhXMNr
-	 vZTaBGTGLKg3VM9fOB9j+0ggnq1/tlGk/IBG/0pw=
+	b=mJeJAVizwup9ceqgGSjYJd4luhjnLMgFEyew3qUveGyP0zUi+Dp8ffwr0YTGI97/i
+	 jlEzSSJCtn4f/f6Fa9MW6vINmuf8PJT5z7iqd7QW3u03s1QUulwQSmy+6TnO6QRni+
+	 BSqiTuUL+VHgB4Z2+rIsu/U6phhRWYg6KaneajOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/175] Bluetooth: L2CAP: Fix ERTM re-init and zero pdu_len infinite loop
+Subject: [PATCH 6.12 100/244] netfilter: ip6t_rt: reject oversized addrnr in rt_mt6_check()
 Date: Tue, 31 Mar 2026 18:20:50 +0200
-Message-ID: <20260331161732.206807852@linuxfoundation.org>
+Message-ID: <20260331161745.367108901@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,20 +75,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231523-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232081-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,86 +97,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 249FE36CAEA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,strlen.de:email,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
+X-Rspamd-Queue-Id: 46CF036EC15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Ren Wei <n05ec@lzu.edu.cn>
 
-[ Upstream commit 25f420a0d4cfd61d3d23ec4b9c56d9f443d91377 ]
+[ Upstream commit 9d3f027327c2fa265f7f85ead41294792c3296ed ]
 
-l2cap_config_req() processes CONFIG_REQ for channels in BT_CONNECTED
-state to support L2CAP reconfiguration (e.g. MTU changes). However,
-since both CONF_INPUT_DONE and CONF_OUTPUT_DONE are already set from
-the initial configuration, the reconfiguration path falls through to
-l2cap_ertm_init(), which re-initializes tx_q, srej_q, srej_list, and
-retrans_list without freeing the previous allocations and sets
-chan->sdu to NULL without freeing the existing skb. This leaks all
-previously allocated ERTM resources.
+Reject rt match rules whose addrnr exceeds IP6T_RT_HOPS.
 
-Additionally, l2cap_parse_conf_req() does not validate the minimum
-value of remote_mps derived from the RFC max_pdu_size option. A zero
-value propagates to l2cap_segment_sdu() where pdu_len becomes zero,
-causing the while loop to never terminate since len is never
-decremented, exhausting all available memory.
+rt_mt6() expects addrnr to stay within the bounds of rtinfo->addrs[].
+Validate addrnr during rule installation so malformed rules are rejected
+before the match logic can use an out-of-range value.
 
-Fix the double-init by skipping l2cap_ertm_init() and
-l2cap_chan_ready() when the channel is already in BT_CONNECTED state,
-while still allowing the reconfiguration parameters to be updated
-through l2cap_parse_conf_req(). Also add a pdu_len zero check in
-l2cap_segment_sdu() as a safeguard.
-
-Fixes: 96298f640104 ("Bluetooth: L2CAP: handle l2cap config request during open state")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ net/ipv6/netfilter/ip6t_rt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 47625ea36106f..3da3e9fddd049 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -2383,6 +2383,9 @@ static int l2cap_segment_sdu(struct l2cap_chan *chan,
- 	/* Remote device may have requested smaller PDUs */
- 	pdu_len = min_t(size_t, pdu_len, chan->remote_mps);
- 
-+	if (!pdu_len)
-+		return -EINVAL;
-+
- 	if (len <= pdu_len) {
- 		sar = L2CAP_SAR_UNSEGMENTED;
- 		sdu_len = 0;
-@@ -4281,14 +4284,16 @@ static inline int l2cap_config_req(struct l2cap_conn *conn,
- 	if (test_bit(CONF_INPUT_DONE, &chan->conf_state)) {
- 		set_default_fcs(chan);
- 
--		if (chan->mode == L2CAP_MODE_ERTM ||
--		    chan->mode == L2CAP_MODE_STREAMING)
--			err = l2cap_ertm_init(chan);
-+		if (chan->state != BT_CONNECTED) {
-+			if (chan->mode == L2CAP_MODE_ERTM ||
-+			    chan->mode == L2CAP_MODE_STREAMING)
-+				err = l2cap_ertm_init(chan);
- 
--		if (err < 0)
--			l2cap_send_disconn_req(chan, -err);
--		else
--			l2cap_chan_ready(chan);
-+			if (err < 0)
-+				l2cap_send_disconn_req(chan, -err);
-+			else
-+				l2cap_chan_ready(chan);
-+		}
- 
- 		goto unlock;
+diff --git a/net/ipv6/netfilter/ip6t_rt.c b/net/ipv6/netfilter/ip6t_rt.c
+index 4ad8b2032f1f9..5561bd9cea818 100644
+--- a/net/ipv6/netfilter/ip6t_rt.c
++++ b/net/ipv6/netfilter/ip6t_rt.c
+@@ -157,6 +157,10 @@ static int rt_mt6_check(const struct xt_mtchk_param *par)
+ 		pr_debug("unknown flags %X\n", rtinfo->invflags);
+ 		return -EINVAL;
  	}
++	if (rtinfo->addrnr > IP6T_RT_HOPS) {
++		pr_debug("too many addresses specified\n");
++		return -EINVAL;
++	}
+ 	if ((rtinfo->flags & (IP6T_RT_RES | IP6T_RT_FST_MASK)) &&
+ 	    (!(rtinfo->flags & IP6T_RT_TYP) ||
+ 	     (rtinfo->rt_type != 0) ||
 -- 
 2.51.0
 
