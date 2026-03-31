@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231754-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDkrKyz/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:52 +0200
+	id 8I81O3f6y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231754-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528F436DE56
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F9D36D214
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1279130C14A5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14C493192A7C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309AB425CD6;
-	Tue, 31 Mar 2026 16:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7659E3E559E;
+	Tue, 31 Mar 2026 16:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSAm72jI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dg2jvSCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7791423A9B;
-	Tue, 31 Mar 2026 16:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A703E3C5C;
+	Tue, 31 Mar 2026 16:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976365; cv=none; b=tnMhMlKetzde52Moa9WeEmi77ksvosugcht7/F7Hb4DPXop/0V0fbEUkO2k2hIiPNypSfQ/hP58LH+57G80PXePyB7D78vJsvwrw35VvKzcWH4Wuy6rB/WSdDxrIa/8U+UL91nKRRzlE9a8ez3T4CTnxa3mkbU/Xt4qARoYgALM=
+	t=1774974982; cv=none; b=HFb1U8piFyaWBYKzrqDXlzUpU5LLiPd2HmVuU/I1ojJd/jC0Li48wH3TGT6XVeNFrJmBMrfrdTz0GxrI658WyH/+LNyj2WC7FDClQl58CHDnHmtFRSYiJwsgFhSRBm7dUfMZL7/JKrCNHgK5SKkl8sTJu5Xt2LuyNneMuBxuMpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976365; c=relaxed/simple;
-	bh=iMT3rwbCNcoleWwrLLbYHTrKTPy8nsn7RhJ37ochWD4=;
+	s=arc-20240116; t=1774974982; c=relaxed/simple;
+	bh=YSgoWowNgIHB6tra2a/sfkiw+uWpIUcvIiWKqnohBzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+/O3YppFEEvSdTLn7Hps5Aofwwb69FP0djNvGTJT70hZ/IgHlFxeZCuJx0bjNY9aY2pyqgFxCO8NLTeEVrmOjXGR+Lzjmk1FDR2VTW1l5+35BWRlf5GgWesh2M9A4Ivvcjo5YFWZQqJvI306Sn2a6KZ69V5u7CGEKNiuTX5JV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSAm72jI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F072C19423;
-	Tue, 31 Mar 2026 16:59:24 +0000 (UTC)
+	 MIME-Version; b=T8m2aSispQREKJzFoWbbgiImsuGUocDNk5U3A+ihbp1OFpJnx2AY+JfcrpVv+E5v97Plep158INQh5XfBTJ4SYC7ZD04BdZMArWM4C3RgUXVsx1WVSaZu2qflvacJSpLdYEFQXxyogfxQV/vuiGtv/ZAuBXwHva2Hv4COJFm0UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg2jvSCt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C192BC19423;
+	Tue, 31 Mar 2026 16:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976364;
-	bh=iMT3rwbCNcoleWwrLLbYHTrKTPy8nsn7RhJ37ochWD4=;
+	s=korg; t=1774974982;
+	bh=YSgoWowNgIHB6tra2a/sfkiw+uWpIUcvIiWKqnohBzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSAm72jItbyoyWT8WcSsBtnOWEznWEoHKHAM1p8aSv6EJbiQsX/0JPK5oEJQ6FEgs
-	 +qSQ5eF0vutXy1J7oSS8/d99nWARCoMTUSXWocLM4seqdtRbwKqXgAbh710iq9MtUx
-	 FHdr9vyg3TRd5TS1UL6+K8+/cM5NjpSP8bu/6vQI=
+	b=dg2jvSCtIf7CHgO5JJ3OdGrT6D9FbHKKahRAbrW/1P7i2EhmkiD+QiklG1EYFGFD4
+	 GmRPgSpaeVZ1WVaw7UjCRgTnew0mTFlVg7Tjtsq9EYPuHyoQbTzGLXbBtuJf0zeilN
+	 BMRho8O9QKvcFmDaTyNycao2lYxl6AOKIPBz1gHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/309] nvme-pci: cap queue creation to used queues
+Subject: [PATCH 6.19 091/342] can: statistics: add missing atomic access in hot path
 Date: Tue, 31 Mar 2026 18:18:44 +0200
-Message-ID: <20260331161754.259839133@linuxfoundation.org>
+Message-ID: <20260331161802.369568810@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +68,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232289-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231754-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,samsung.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 528F436DE56
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,hartkopp.net:email]
+X-Rspamd-Queue-Id: 46F9D36D214
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
+[ Upstream commit 46eee1661aa9b49966e6c43d07126fe408edda57 ]
 
-If the user reduces the special queue count at runtime and resets the
-controller, we need to reduce the number of queues and interrupts
-requested accordingly rather than start with the pre-allocated queue
-count.
+Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+fixed a KCSAN issue in can_receive() but missed to convert the 'matches'
+variable used in can_rcv_filter().
 
-Tested-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260318173413.28235-1-socketcan@hartkopp.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/can/af_can.c | 4 ++--
+ net/can/af_can.h | 2 +-
+ net/can/proc.c   | 3 ++-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 9987b711091f0..4459687eb7bb6 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2707,7 +2707,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	dev->nr_write_queues = write_queues;
- 	dev->nr_poll_queues = poll_queues;
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index 770173d8db428..a624c04ed5c63 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -469,7 +469,7 @@ int can_rx_register(struct net *net, struct net_device *dev, canid_t can_id,
  
--	nr_io_queues = dev->nr_allocated_queues - 1;
-+	/*
-+	 * The initial number of allocated queue slots may be too large if the
-+	 * user reduced the special queue parameters. Cap the value to the
-+	 * number we need for this round.
-+	 */
-+	nr_io_queues = min(nvme_max_io_queues(dev),
-+			   dev->nr_allocated_queues - 1);
- 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
- 	if (result < 0)
- 		return result;
+ 	rcv->can_id = can_id;
+ 	rcv->mask = mask;
+-	rcv->matches = 0;
++	atomic_long_set(&rcv->matches, 0);
+ 	rcv->func = func;
+ 	rcv->data = data;
+ 	rcv->ident = ident;
+@@ -573,7 +573,7 @@ EXPORT_SYMBOL(can_rx_unregister);
+ static inline void deliver(struct sk_buff *skb, struct receiver *rcv)
+ {
+ 	rcv->func(skb, rcv->data);
+-	rcv->matches++;
++	atomic_long_inc(&rcv->matches);
+ }
+ 
+ static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buff *skb)
+diff --git a/net/can/af_can.h b/net/can/af_can.h
+index 22f3352c77fec..87887014f5628 100644
+--- a/net/can/af_can.h
++++ b/net/can/af_can.h
+@@ -52,7 +52,7 @@ struct receiver {
+ 	struct hlist_node list;
+ 	canid_t can_id;
+ 	canid_t mask;
+-	unsigned long matches;
++	atomic_long_t matches;
+ 	void (*func)(struct sk_buff *skb, void *data);
+ 	void *data;
+ 	char *ident;
+diff --git a/net/can/proc.c b/net/can/proc.c
+index 0938bf7dd646a..de4d05ae34597 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -196,7 +196,8 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
+ 			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
+ 
+ 		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
+-				r->func, r->data, r->matches, r->ident);
++			   r->func, r->data, atomic_long_read(&r->matches),
++			   r->ident);
+ 	}
+ }
+ 
 -- 
 2.51.0
 
