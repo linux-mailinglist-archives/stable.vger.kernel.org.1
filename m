@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHDQEV8EzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232123-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:29:03 +0200
+	id MMCvAHkGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6DC436EC70
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:29:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5F336F097
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 903A6320CD97
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9367E32BA243
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35F1427A1B;
-	Tue, 31 Mar 2026 16:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BDA3016EE;
+	Tue, 31 Mar 2026 17:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrt5onGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tswI0yD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EDD4279EA;
-	Tue, 31 Mar 2026 16:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ED22F5491;
+	Tue, 31 Mar 2026 17:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975935; cv=none; b=T9O677ojeWsWDUEZTLuH9ruIeuiBfh/bYx9tlaC6sq5B0xP4eDCDvJOdRsW5DjeK2RzsN0J/ahLYruYytKyc5VxYUONd+mBcW8fz+elFarTBH6bJdSpLXqswBfrQuBKS0Ke5qrNymc0MeIZhBERxlJUUS2bkhXOV7GM+E5gnQt0=
+	t=1774976605; cv=none; b=mVNnN5U8H2fShvH2NGTkSgM8DJGBYbCCw8VMDnipICpj+mNuSCmiKB1FhoIh+UJFx1ugsfZ6j8vEPZHe1HSGcCj3/Qtot0OT8sy4vK31kAMDCcto2A7eqypE9F5D7xVB5wbfhZd0SRrdfCA6AdCP7px4gvvwwg20yZKXO/AB+yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975935; c=relaxed/simple;
-	bh=NApUHE1KWfQ7i1VW+c50HphCGsliw+F3RfukGylOF9E=;
+	s=arc-20240116; t=1774976605; c=relaxed/simple;
+	bh=P96xGp/f9sXj47ZIxzHHcIv90pVsAi0mECLhbwexjzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxVIXLgthHdVRnEj4LTNCuchgjY/AtPvLkAWQJ6G3KjcblRYylMk6hGn+zACpzY0ah4BowT33V+W/CwI/Gxcw7cVMvwQLYp0y8vdCL+OAy0gAWonpaHRjczTTJ1f8a82z4k/SBYy3stpQxaA3sH1gxVUs9PbaZnJTGHPRYJtdfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrt5onGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDF0C19423;
-	Tue, 31 Mar 2026 16:52:14 +0000 (UTC)
+	 MIME-Version; b=djqTy1PuNhehY5Pm43AvH6r47h/jWPyl2A4nHc5SorAziwu5xH3Ug2vcQ1E/94kpOZmqpgQWE1cZEcnsXkJL04LG2PC7k9/UWOqqVxEmRl49JPHFK/fYn3tUJso37ZryO/vaqpPLKW08aAjFSgz/+tRlgFMa0sRtjZYyEuLQzxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tswI0yD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD66C19423;
+	Tue, 31 Mar 2026 17:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975935;
-	bh=NApUHE1KWfQ7i1VW+c50HphCGsliw+F3RfukGylOF9E=;
+	s=korg; t=1774976605;
+	bh=P96xGp/f9sXj47ZIxzHHcIv90pVsAi0mECLhbwexjzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrt5onGvjqTYJDnfbIGt9wkETZ02QU63zLfCLRJMpjmFyAVDMOtNP9j/kiGyi+mRs
-	 wLuaa0752nYxDgVmSDH58UrlEJA1svxL2DbCl5KBdlF/naOP1HRRyWhuv7MEp5cmh0
-	 IND3FgZDb9LEQNuHTYRp/YPFlC/LcLq2G9Oq6h7w=
+	b=tswI0yD0M5GVbuagoTHiUnqBRNSTdTLkA0kqQ/QFarTw6BZBaPkAumK/IGdRcRGWQ
+	 oLnqZ8BznIr/aDyPe+5xglGLt6v74TttxaujHaelPiOW24/QdaEXzwteXssbNzBTsm
+	 fp6CKNC2EGVW9OVztwUfufdgpvUvGLfesqEH7RC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/244] RDMA/irdma: Remove a NOP wait_event() in irdma_modify_qp_roce()
+Subject: [PATCH 6.18 157/309] ASoC: Intel: catpt: Fix the device initialization
 Date: Tue, 31 Mar 2026 18:21:00 +0200
-Message-ID: <20260331161745.729652557@linuxfoundation.org>
+Message-ID: <20260331161759.247515983@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +69,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232383-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232123-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: B6DC436EC70
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7D5F336F097
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 5e8f0239731a83753473b7aa91bda67bbdff5053 ]
+[ Upstream commit 5a184f1cb43a8e035251c635f5c47da5dc3e3049 ]
 
-Remove a NOP wait_event() in irdma_modify_qp_roce() which is relevant
-for iWARP and likely a copy and paste artifact for RoCEv2. The wait event
-is for sending a reset on a TCP connection, after the reset has been
-requested in irdma_modify_qp(), which occurs only in iWarp mode.
+The DMA mask shall be coerced before any buffer allocations for the
+device are done.  At the same time explain why DMA mask of 31 bits is
+used in the first place.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 7a10b66a5df9 ("ASoC: Intel: catpt: Device driver lifecycle")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260320101217.1243688-1-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/intel/catpt/device.c | 10 +++++++++-
+ sound/soc/intel/catpt/dsp.c    |  3 ---
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 90d2c36928c1e..5db64fae45515 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -1364,8 +1364,6 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
- 			roce_info->rd_en = true;
- 	}
+diff --git a/sound/soc/intel/catpt/device.c b/sound/soc/intel/catpt/device.c
+index faa916f400693..00e544e043591 100644
+--- a/sound/soc/intel/catpt/device.c
++++ b/sound/soc/intel/catpt/device.c
+@@ -271,7 +271,15 @@ static int catpt_acpi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(cdev->pci_ba))
+ 		return PTR_ERR(cdev->pci_ba);
  
--	wait_event(iwqp->mod_qp_waitq, !atomic_read(&iwqp->hw_mod_qp_pend));
--
- 	ibdev_dbg(&iwdev->ibdev,
- 		  "VERBS: caller: %pS qp_id=%d to_ibqpstate=%d ibqpstate=%d irdma_qpstate=%d attr_mask=0x%x\n",
- 		  __builtin_return_address(0), ibqp->qp_num, attr->qp_state,
+-	/* alloc buffer for storing DRAM context during dx transitions */
++	/*
++	 * As per design HOST is responsible for preserving firmware's runtime
++	 * context during D0 -> D3 -> D0 transitions.  Addresses used for DMA
++	 * to/from HOST memory shall be outside the reserved range of 0xFFFxxxxx.
++	 */
++	ret = dma_coerce_mask_and_coherent(cdev->dev, DMA_BIT_MASK(31));
++	if (ret)
++		return ret;
++
+ 	cdev->dxbuf_vaddr = dmam_alloc_coherent(dev, catpt_dram_size(cdev),
+ 						&cdev->dxbuf_paddr, GFP_KERNEL);
+ 	if (!cdev->dxbuf_vaddr)
+diff --git a/sound/soc/intel/catpt/dsp.c b/sound/soc/intel/catpt/dsp.c
+index 008a20a2acbda..677f348909c8f 100644
+--- a/sound/soc/intel/catpt/dsp.c
++++ b/sound/soc/intel/catpt/dsp.c
+@@ -125,9 +125,6 @@ int catpt_dmac_probe(struct catpt_dev *cdev)
+ 	dmac->dev = cdev->dev;
+ 	dmac->irq = cdev->irq;
+ 
+-	ret = dma_coerce_mask_and_coherent(cdev->dev, DMA_BIT_MASK(31));
+-	if (ret)
+-		return ret;
+ 	/*
+ 	 * Caller is responsible for putting device in D0 to allow
+ 	 * for I/O and memory access before probing DW.
 -- 
 2.53.0
 
