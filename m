@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-232444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHbJLv8AzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-232444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:39 +0200
+	id eOoLBS34y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4495136E469
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC2C36CD58
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9BFE13143A86
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79065315FD15
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E385C3009D4;
-	Tue, 31 Mar 2026 17:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A4F423A91;
+	Tue, 31 Mar 2026 16:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FePhX5Gd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcFnyZdu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B253033C9;
-	Tue, 31 Mar 2026 17:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3577B423A7D;
+	Tue, 31 Mar 2026 16:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976763; cv=none; b=J2TRxKqtbNeHGOa2AsQTGFT0CysF1LFZCpEDe8tsXqwg92bUfeSjR0IO6T0WX3rONgFeWtBYCjkIBsZPE7m/hqKBh8lwxlGnhTQHhRadVL6n1da4yNs+/X7iDinEgpDAaqNBWaZVsYDQpkqMDRou1unI2owhDcyNkLmh1HzznAU=
+	t=1774974527; cv=none; b=Hkh/Sc79D1UrM2r5d8RCMoMjF6nWY6vVaG3CeYZCmInFnnunKbUbsDY9GWVLP02yNW2g/a5TiTQXu/c5TQ+Edt2AXSOQOxYNusjKkZYw1PR2Bv+gbBoDwxxhSro/h5hN8PeauLWyR6NPizO0vLLJVNOy3q5LmcMY+vfqjygK8SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976763; c=relaxed/simple;
-	bh=S+yh2XhfuvBOS5JEM2aMJ/k/rc/yT9iW5xZfp1id3/w=;
+	s=arc-20240116; t=1774974527; c=relaxed/simple;
+	bh=RtCQGGuOGHAURJgf8ciCfbNol7BpQKLivDZ7yHJqLKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdZnSCUdVwLU2KpCUKQZx3glg8NqROQ3vka1ZSa77Fxsoy2D9XdY/6MekM6OsLTULinR4dfn2HB8Geb8xBKRPV6pO1LqEcObsHUxgyR7NnNY784ckjkqokGS5BDYmsND+fCpm3maLxwtHaRk4wc4fJ8gN//LCcAOKZrC/1lIEmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FePhX5Gd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BBAC19424;
-	Tue, 31 Mar 2026 17:06:02 +0000 (UTC)
+	 MIME-Version; b=eXquR9joEIhhiYeIxNe8cCIVJjFfhKptcN10GUM0tQWMmRWKgDhUIInvplT+nD6jaGIP3iwgc5soEiaO6bP8lUTXb9+QYBZY4vBFsRoip0V9MR7WGaSY1V/eEPaGQylc5HuLDh+8Y0lp7inAtmL16cQM7FsFn4JXNLkpSSpKTi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcFnyZdu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E2DC19423;
+	Tue, 31 Mar 2026 16:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976763;
-	bh=S+yh2XhfuvBOS5JEM2aMJ/k/rc/yT9iW5xZfp1id3/w=;
+	s=korg; t=1774974526;
+	bh=RtCQGGuOGHAURJgf8ciCfbNol7BpQKLivDZ7yHJqLKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FePhX5GdbZZ2nQ0sqNxMWOV39KKLnfaBDzM61PATbUkRtcx3aCWIX+XIVYWLHyiGT
-	 +xU2GXxmJj1LKBMbW1imgEop8Qle39joeOOVLuj2D6wvgYxklwT1IR50RoQ5sOuWJS
-	 uQdAYnFLo7y7YxJWpsTjPRW4sV7cRpGCB5TxAgr8=
+	b=XcFnyZdujHLEb1qDedwlLtOMjfddhdV9kISnMQ0cBFiev5mWtW/Mx3u97TfqX6r9T
+	 QlfDeOm3MNr447rncEbnjnGUd3g2JdzeSNxfIMgzajhM1Zu4Ryr59SkT1QWM2CvvUg
+	 M1J9Yh9uMmNxQ8r29uluDzKibrNKjc5lFg+TBCKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 201/309] hwmon: (peci/cputemp) Fix crit_hyst returning delta instead of absolute temperature
+	Kevin Hao <haokexin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 120/175] net: macb: Use dev_consume_skb_any() to free TX SKBs
 Date: Tue, 31 Mar 2026 18:21:44 +0200
-Message-ID: <20260331161800.851325101@linuxfoundation.org>
+Message-ID: <20260331161734.189115869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +66,108 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231576-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232444-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,roeck-us.net:email,juniper.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4495136E469
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8AC2C36CD58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit 0adc752b4f7d82af7bd14f7cad3091b3b5d702ba upstream.
+commit 647b8a2fe474474704110db6bd07f7a139e621eb upstream.
 
-The hwmon sysfs ABI expects tempN_crit_hyst to report the temperature at
-which the critical condition clears, not the hysteresis delta from the
-critical limit.
+The napi_consume_skb() function is not intended to be called in an IRQ
+disabled context. However, after commit 6bc8a5098bf4 ("net: macb: Fix
+tx_ptr_lock locking"), the freeing of TX SKBs is performed with IRQs
+disabled. To resolve the following call trace, use dev_consume_skb_any()
+for freeing TX SKBs:
+   WARNING: kernel/softirq.c:430 at __local_bh_enable_ip+0x174/0x188, CPU#0: ksoftirqd/0/15
+   Modules linked in:
+   CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted 7.0.0-rc4-next-20260319-yocto-standard-dirty #37 PREEMPT
+   Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+   pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+   pc : __local_bh_enable_ip+0x174/0x188
+   lr : local_bh_enable+0x24/0x38
+   sp : ffff800082b3bb10
+   x29: ffff800082b3bb10 x28: ffff0008031f3c00 x27: 000000000011ede0
+   x26: ffff000800a7ff00 x25: ffff800083937ce8 x24: 0000000000017a80
+   x23: ffff000803243a78 x22: 0000000000000040 x21: 0000000000000000
+   x20: ffff000800394c80 x19: 0000000000000200 x18: 0000000000000001
+   x17: 0000000000000001 x16: ffff000803240000 x15: 0000000000000000
+   x14: ffffffffffffffff x13: 0000000000000028 x12: ffff000800395650
+   x11: ffff8000821d1528 x10: ffff800081c2bc08 x9 : ffff800081c1e258
+   x8 : 0000000100000301 x7 : ffff8000810426ec x6 : 0000000000000000
+   x5 : 0000000000000001 x4 : 0000000000000001 x3 : 0000000000000000
+   x2 : 0000000000000008 x1 : 0000000000000200 x0 : ffff8000810428dc
+   Call trace:
+    __local_bh_enable_ip+0x174/0x188 (P)
+    local_bh_enable+0x24/0x38
+    skb_attempt_defer_free+0x190/0x1d8
+    napi_consume_skb+0x58/0x108
+    macb_tx_poll+0x1a4/0x558
+    __napi_poll+0x50/0x198
+    net_rx_action+0x1f4/0x3d8
+    handle_softirqs+0x16c/0x560
+    run_ksoftirqd+0x44/0x80
+    smpboot_thread_fn+0x1d8/0x338
+    kthread+0x120/0x150
+    ret_from_fork+0x10/0x20
+   irq event stamp: 29751
+   hardirqs last  enabled at (29750): [<ffff8000813be184>] _raw_spin_unlock_irqrestore+0x44/0x88
+   hardirqs last disabled at (29751): [<ffff8000813bdf60>] _raw_spin_lock_irqsave+0x38/0x98
+   softirqs last  enabled at (29150): [<ffff8000800f1aec>] handle_softirqs+0x504/0x560
+   softirqs last disabled at (29153): [<ffff8000800f2fec>] run_ksoftirqd+0x44/0x80
 
-The peci cputemp driver currently returns tjmax - tcontrol for
-crit_hyst_type, which is the hysteresis margin rather than the
-corresponding absolute temperature.
-
-Return tcontrol directly, and update the documentation accordingly.
-
-Fixes: bf3608f338e9 ("hwmon: peci: Add cputemp driver")
+Fixes: 6bc8a5098bf4 ("net: macb: Fix tx_ptr_lock locking")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260323002352.93417-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260321-macb-tx-v1-1-b383a58dd4e6@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/hwmon/peci-cputemp.rst |   10 ++++++----
- drivers/hwmon/peci/cputemp.c         |    2 +-
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/hwmon/peci-cputemp.rst
-+++ b/Documentation/hwmon/peci-cputemp.rst
-@@ -51,8 +51,9 @@ temp1_max		Provides thermal control temp
- temp1_crit		Provides shutdown temperature of the CPU package which
- 			is also known as the maximum processor junction
- 			temperature, Tjmax or Tprochot.
--temp1_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
--			the CPU package.
-+temp1_crit_hyst		Provides the hysteresis temperature of the CPU
-+			package. Returns Tcontrol, the temperature at which
-+			the critical condition clears.
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1129,7 +1129,7 @@ static void macb_tx_unmap(struct macb *b
+ 	}
  
- temp2_label		"DTS"
- temp2_input		Provides current temperature of the CPU package scaled
-@@ -62,8 +63,9 @@ temp2_max		Provides thermal control temp
- temp2_crit		Provides shutdown temperature of the CPU package which
- 			is also known as the maximum processor junction
- 			temperature, Tjmax or Tprochot.
--temp2_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
--			the CPU package.
-+temp2_crit_hyst		Provides the hysteresis temperature of the CPU
-+			package. Returns Tcontrol, the temperature at which
-+			the critical condition clears.
- 
- temp3_label		"Tcontrol"
- temp3_input		Provides current Tcontrol temperature of the CPU
---- a/drivers/hwmon/peci/cputemp.c
-+++ b/drivers/hwmon/peci/cputemp.c
-@@ -133,7 +133,7 @@ static int get_temp_target(struct peci_c
- 		*val = priv->temp.target.tjmax;
- 		break;
- 	case crit_hyst_type:
--		*val = priv->temp.target.tjmax - priv->temp.target.tcontrol;
-+		*val = priv->temp.target.tcontrol;
- 		break;
- 	default:
- 		ret = -EOPNOTSUPP;
+ 	if (tx_skb->skb) {
+-		napi_consume_skb(tx_skb->skb, budget);
++		dev_consume_skb_any(tx_skb->skb);
+ 		tx_skb->skb = NULL;
+ 	}
+ }
 
 
 
