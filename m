@@ -1,199 +1,184 @@
-Return-Path: <stable+bounces-232551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJNDNX4JzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:50:54 +0200
+	id IAMxLg8LzGnGNgYAu9opvQ
+	(envelope-from <stable+bounces-232553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:57:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC20E36F651
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D00AD36F880
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C3CDE3150ABE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:24:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2FAB630BE1AE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4913644AF;
-	Tue, 31 Mar 2026 17:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8159A43CEC0;
+	Tue, 31 Mar 2026 17:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="IJk5PdDu"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="WDzivK/a"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C585A369997;
-	Tue, 31 Mar 2026 17:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3071243635C;
+	Tue, 31 Mar 2026 17:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774977812; cv=none; b=O4LdrQx6/OtEJ2MS3ncSSC6MSjAl0Jm+TUVJSdim1D6/KsZGwYEjIJB9twaMzBQ0i16i9j2P/eFati36u7azkGq3KeNKFMtr/dN7jpBh5Pt5KRjlEXAnYIk7laX/IHAEsF+wvWOP5iXuHlYrYjGl58GpCCVv1jcUljn1y2k6AzY=
+	t=1774978305; cv=none; b=sY1vweNPCLT15i8FzG/TNOazxAqoI+s3IODawlGqYcbjE9hPjK/z6eAyIoAh8FSayiZ+9cDTrKN90aKC06YG9wbn9unVwORbp/rfuNoMx3ymD7h39P9+cj93NOTqO8Eu98lzRGvkPcL1VmAo6FFudfzLStqq7Y+gjFq+ia7UBiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774977812; c=relaxed/simple;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g1sWIK3s/LhDjeXOuBEuVVVQ4QcabVRVSZu3pL/f10doeGQbQvUa1kI4pS6UUPD0g6mc/W6Ufo6v5O33m9UgM2OgEqO8d7Gh0MWImV6P3HTvQ29y7APwQctIlrnoCmoYU+pGkqJugDPnK2Wzz2qsWV+rYVAoff90guVIaWeay0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=IJk5PdDu; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1774977782; x=1775582582; i=rwarsow@gmx.de;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=IJk5PdDukhiM8ugTD2Kqt/CVeHVLIMt2bGOdURt5Sb7IlYBmkYQ96T6ofPtm6G/m
-	 mGR3h176TxQJTZS7NQJiLKpZ5i/xDx0tBsAANJKzLDWh7SgsM77nkJN2TX7G2EkGn
-	 oq7Dh3+TT8kKl4A/PpxO64vc93//EcmuSgHwu4GxScEvG8tn/XIs5Rt7M9apsaEaP
-	 SY5tkGMHMci2Nk4Sb8rXQZgsHedsb+T38ncaANsi+J3v/ruuyq362k9nH8x5EWizX
-	 1VsRzfsX7xS3A5cjZIHzPemHUBu4ucw0lSkd7tvHNosAfEBd2wTz3n1RoBoSLmy+q
-	 960SfZbq/ZqeqstwiQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mr9Bu-1vlGbI02Vi-00iXgj; Tue, 31
- Mar 2026 19:23:02 +0200
-Message-ID: <a111bf2e-7c4c-4047-86a0-34590fc571ed@gmx.de>
-Date: Tue, 31 Mar 2026 19:23:00 +0200
+	s=arc-20240116; t=1774978305; c=relaxed/simple;
+	bh=3i1Gq4JAIizBknxjSLlecxNj8YdouZQOldf/Gi8SPcc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uI2WBVD1KNj/vbWPOt8JZdWy1rES0FBPi4tnEWCPjHrzq+upMhOBFbT8Hn5pL0uUW9iz98AFvjVbiqTVIPCTdyUQt3VLIVJZFvYpCk32uiZnjAywTHiQjzgStwt7DukC5Xk5ARGF/9TEUdbbGB9K8gwv23WpnwYMa/uA95+wD+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=WDzivK/a; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C85B1D31;
+	Tue, 31 Mar 2026 10:31:36 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BDE373F915;
+	Tue, 31 Mar 2026 10:31:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774978302; bh=3i1Gq4JAIizBknxjSLlecxNj8YdouZQOldf/Gi8SPcc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WDzivK/ay0BT4/Mfila47ssOCUKcoC8mcE1OJ3YzJDm9s79Zs686E4kzJf4HRuKB6
+	 lpHJ/DyPCzQqdZR0SBq1PcmDDq9UF0avGeThJW47JsQ4fAL+D9oqkCMCvB+7zuGSCf
+	 u5jO9aDk1QLnYCQi+3kmjhvfmGJUmFBpQyUk3kzE=
+Date: Tue, 31 Mar 2026 18:31:33 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Will Deacon <will@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Kees Cook <kees@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+	Sean Christopherson <seanjc@google.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Zheyun Shen <szy0127@sjtu.edu.cn>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Xin Li <xin@zytor.com>, "Ahmed S . Darwish" <darwi@linutronix.de>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Besar Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>,
+	Wei Huang <wei.huang2@amd.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	punit.agrawal@oss.qualcomm.com, guohanjun@huawei.com,
+	suzuki.poulose@arm.com, ryan.roberts@arm.com,
+	chenl311@chinatelecom.cn, masahiroy@kernel.org,
+	wangyuquan1236@phytium.com.cn, anshuman.khandual@arm.com,
+	heinrich.schuchardt@canonical.com, Eric.VanTassell@amd.com,
+	wangzhou1@hisilicon.com, wanghuiqiang@huawei.com,
+	liuyonglong@huawei.com, linux-pci@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org, xen-devel@lists.xenproject.org,
+	linux-acpi@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v10 0/8] ACPI: Unify CPU UID interface and fix ARM64 TPH
+ steer-tag issue
+Message-ID: <acwE9V-r63-W2wby@arm.com>
+References: <20260320031737.35048-1-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260331161758.909578033@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:XtmfCsky1woUr/rpelTerwoVMpBQamPQeAL9rXjdEkdMP0KM6O3
- z9A8wC4QElL6On05eBOEa3sE/Nn4mjV5XgAUSMkUeikqDeDF3r/fU4Oyexkc5hrwl+EEi5y
- 5JT335LPAdscUNKoCCo5JdAHbpVQC79QWHvELmBhg99pofe034gUhwXPQgRr7ZvmEMaLzSj
- ystMQkdPSzHgUTUVH0W9Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:yYZ3xq9H2lo=;WReig8UXA5LDWqMp4LUDW6yanJY
- 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
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260320031737.35048-1-fengchengwen@huawei.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232551-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232553-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.de:dkim,gmx.de:email,gmx.de:mid]
-X-Rspamd-Queue-Id: DC20E36F651
+	RCPT_COUNT_GT_50(0.00)[59];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arm.com:dkim,arm.com:email,arm.com:mid]
+X-Rspamd-Queue-Id: D00AD36F880
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi
+On Fri, Mar 20, 2026 at 11:17:29AM +0800, Chengwen Feng wrote:
+> This patchset unifies ACPI Processor UID retrieval across
+> arm64/loongarch/riscv/x86 via acpi_get_cpu_uid() (with input validation)
+> and fixes ARM64 CPU steer-tag retrieval failure in PCI/TPH:
+> 
+> 1-4: Add acpi_get_cpu_uid() for arm64/loongarch/riscv/x86 (update
+>      respective users)
+> 5: Centralize acpi_get_cpu_uid() declaration in include/linux/acpi.h
+> 6: Clean up perf/arm_cspmu
+> 7: Clean up ACPI/PPTT and remove unused get_acpi_id_for_cpu()
+> 8: Pass ACPI Processor UID to Cache Locality _DSM
+> 
+> The interface refactor ensures consistent CPU UID retrieval across
+> architectures (no functional changes for valid inputs) and provides the
+> unified interface required for the ARM64 TPH fix.
+> 
+> ---
+> Changes in v10:
+> - Refine commit header&log according to Punit's and Bjorn's review
+> - Split perf/arm_cspmu as a separate commit which address Punit's
+>   review
+> 
+> Changes in v9:
+> - Address Bjorn's review: split commits to each platform so that make
+>   them easy to review
+> 
+> Changes in v8:
+> - Moving arm64's get_cpu_for_acpi_id() to kernel/acpi.c which address
+>   Jeremy's review
+> 
+> Chengwen Feng (8):
+>   arm64: acpi: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+>   LoongArch: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+>   RISC-V: ACPI: Add acpi_get_cpu_uid() for unified ACPI CPU UID
+>     retrieval
+>   x86/acpi: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+>   ACPI: Centralize acpi_get_cpu_uid() declaration in
+>     include/linux/acpi.h
+>   perf: arm_cspmu: Switch to acpi_get_cpu_uid() from
+>     get_acpi_id_for_cpu()
+>   ACPI: PPTT: Use acpi_get_cpu_uid() and remove get_acpi_id_for_cpu()
+>   PCI/TPH: Pass ACPI Processor UID to Cache Locality _DSM
+> 
+>  Documentation/PCI/tph.rst          |  4 +--
+>  arch/arm64/include/asm/acpi.h      | 17 +---------
+>  arch/arm64/kernel/acpi.c           | 30 ++++++++++++++++++
 
-no regressions here on x86_64 (Intel 11th Gen. CPU)
+For the arm64 bits:
 
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 
