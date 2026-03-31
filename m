@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDJXEKT+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:36 +0200
+	id QNpwOMP7y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E166136DCCB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2E636D494
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 12A66307CE9A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7F72A31273A3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF450427A1F;
-	Tue, 31 Mar 2026 16:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5822EE262;
+	Tue, 31 Mar 2026 16:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNaDbL6y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1NM3U+8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8357F42B756;
-	Tue, 31 Mar 2026 16:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87362426D05;
+	Tue, 31 Mar 2026 16:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975940; cv=none; b=QEq4WKiSKp1kHp+l0xIKZeOjzCj+h8eqYycLuRSHGmZjNidB3NTNuF6SyrFyVB0DOoZZPdpQs+vrXrzzdk4GiagMR685a0JAvDQkejZLBXpX2YA+Mu/O+1kxK2gbmnGYYVhh/hoYDNn7MOHOXHelLukgN7ADG21voVgMHIg6lvU=
+	t=1774975244; cv=none; b=oKzd0fc5BsjzFAzM8DNSiCttCA3mHOJYYTFZ21zK5TBbaGoWv5/DLkTe6dRCpuSJFQCo8YudeHeIaOZ3BY+x/aG9rWIBpU6NTv/QYzZptIIAncyIbDqiexEnRE4mi5veKSPq4XTuuK4eSEwLDrAsN0qNPT3aDNZ2liSQsrVQwc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975940; c=relaxed/simple;
-	bh=H8UasX4+Eex1RHITByJfODaCNcwi9cjLb5awb3vg+dA=;
+	s=arc-20240116; t=1774975244; c=relaxed/simple;
+	bh=O2DCWoNExcme8r7QMDUg8zAyYTCBWOtMpep/m6OMboE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cX7uSep+rKIRXwhCEpm4ERYEuZ+0V2EEHxhfbCelcF1Wi+cIkWQeNIPNexzz+O+gkiihZiMSkD7LMnAD/92c1Zrxd02OHvSqeGsMglP3Ez8fKoNxtb5Lln9FxuRF578k7hXU0GI2jdrIq9ZVepn50rxXnb4+xi6hg7P1AcejOlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNaDbL6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CE0C19423;
-	Tue, 31 Mar 2026 16:52:19 +0000 (UTC)
+	 MIME-Version; b=ZM4TJrw0EUKpsXUSYhRsYTUf8dSmXuMlWVOZbRkLf5Z72DsIqLcOG6hIE32XwYNgxtWj66aqkEzmGkiFL49Iu9LkEhMJsJ0bva8/Zytqgk6jfVzrOU4gq9De0iViP0o7/61qE5HvWr3yEet6GI3lO7hFsY0wpV/dNl5y3AQwsbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1NM3U+8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D547C19423;
+	Tue, 31 Mar 2026 16:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975940;
-	bh=H8UasX4+Eex1RHITByJfODaCNcwi9cjLb5awb3vg+dA=;
+	s=korg; t=1774975244;
+	bh=O2DCWoNExcme8r7QMDUg8zAyYTCBWOtMpep/m6OMboE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNaDbL6y2NDahyPjIRuRtZmMSmgbJg5q0v8+7lk7KIhwiUjR5s9zcMpohQ+2oMkm8
-	 G0hSMTnu5uyLGjWIZYDAt6QQVAPUV9iKF6tB29x9Ok9hfxisR8w6huOMzinfeXXYNc
-	 TH/+ytyQgOkPD4jXgYiwr/4RkRRFkZEG4iKdqKxQ=
+	b=c1NM3U+8cwbisLLjQQlM5rB3R0CEtvT5f49ynQH9l2loXlQieHV9auEt/VHqHhbEN
+	 f2B+VqHBUndwkdiiUBzcKouVEy1Ni2qzhILEYZP/wJStnj+opdYS8H3nXkNeXCbQCN
+	 YilDqB6/av8yo4S42KJ7D+HoIBt6iTC4V2nsM2pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/244] netfilter: nf_conntrack_sip: fix use of uninitialized rtp_addr in process_sdp
+	Erin Park <erin.park@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.19 219/342] thermal: intel: int340x: soc_slider: Set offset only for balanced mode
 Date: Tue, 31 Mar 2026 18:20:52 +0200
-Message-ID: <20260331161745.440026692@linuxfoundation.org>
+Message-ID: <20260331161807.033730469@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,120 +73,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232125-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-231855-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,asu.edu:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
-X-Rspamd-Queue-Id: E166136DCCB
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8F2E636D494
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 6a2b724460cb67caed500c508c2ae5cf012e4db4 ]
+commit 7dfe9846016b15816e287a4650be1ff1b48c5ab4 upstream.
 
-process_sdp() declares union nf_inet_addr rtp_addr on the stack and
-passes it to the nf_nat_sip sdp_session hook after walking the SDP
-media descriptions. However rtp_addr is only initialized inside the
-media loop when a recognized media type with a non-zero port is found.
+The slider offset can be set via debugfs for balanced mode. The offset
+should be only applicable in balanced mode. For other modes, it should
+be 0 when writing to MMIO offset,
 
-If the SDP body contains no m= lines, only inactive media sections
-(m=audio 0 ...) or only unrecognized media types, rtp_addr is never
-assigned. Despite that, the function still calls hooks->sdp_session()
-with &rtp_addr, causing nf_nat_sdp_session() to format the stale stack
-value as an IP address and rewrite the SDP session owner and connection
-lines with it.
-
-With CONFIG_INIT_STACK_ALL_ZERO (default on most distributions) this
-results in the session-level o= and c= addresses being rewritten to
-0.0.0.0 for inactive SDP sessions. Without stack auto-init the
-rewritten address is whatever happened to be on the stack.
-
-Fix this by pre-initializing rtp_addr from the session-level connection
-address (caddr) when available, and tracking via a have_rtp_addr flag
-whether any valid address was established. Skip the sdp_session hook
-entirely when no valid address exists.
-
-Fixes: 4ab9e64e5e3c ("[NETFILTER]: nf_nat_sip: split up SDP mangling")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8306bcaba06d ("thermal: intel: int340x: Add module parameter to change slider offset")
+Tested-by: Erin Park <erin.park@intel.com>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: 6.18+ <stable@vger.kernel.org> # 6.18+
+[ rjw: Subject and changelog tweaks ]
+Link: https://patch.msgid.link/20260324172346.3317145-1-srinivas.pandruvada@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_sip.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 657839a58782a..84334537c6067 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1040,6 +1040,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 	unsigned int port;
- 	const struct sdp_media_type *t;
- 	int ret = NF_ACCEPT;
-+	bool have_rtp_addr = false;
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.c
+@@ -176,15 +176,21 @@ static inline void write_soc_slider(stru
  
- 	hooks = rcu_dereference(nf_nat_sip_hooks);
+ static void set_soc_power_profile(struct proc_thermal_device *proc_priv, int slider)
+ {
++	u8 offset;
+ 	u64 val;
  
-@@ -1056,8 +1057,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 	caddr_len = 0;
- 	if (ct_sip_parse_sdp_addr(ct, *dptr, sdpoff, *datalen,
- 				  SDP_HDR_CONNECTION, SDP_HDR_MEDIA,
--				  &matchoff, &matchlen, &caddr) > 0)
-+				  &matchoff, &matchlen, &caddr) > 0) {
- 		caddr_len = matchlen;
-+		memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
-+		have_rtp_addr = true;
-+	}
+ 	val = read_soc_slider(proc_priv);
+ 	val &= ~SLIDER_MASK;
+ 	val |= FIELD_PREP(SLIDER_MASK, slider) | BIT(SLIDER_ENABLE_BIT);
  
- 	mediaoff = sdpoff;
- 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
-@@ -1091,9 +1095,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 					  &matchoff, &matchlen, &maddr) > 0) {
- 			maddr_len = matchlen;
- 			memcpy(&rtp_addr, &maddr, sizeof(rtp_addr));
--		} else if (caddr_len)
-+			have_rtp_addr = true;
-+		} else if (caddr_len) {
- 			memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
--		else {
-+			have_rtp_addr = true;
-+		} else {
- 			nf_ct_helper_log(skb, ct, "cannot parse SDP message");
- 			return NF_DROP;
- 		}
-@@ -1125,7 +1131,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
++	if (slider == SOC_SLIDER_VALUE_MINIMUM || slider == SOC_SLIDER_VALUE_MAXIMUM)
++		offset = 0;
++	else
++		offset = slider_offset;
++
+ 	/* Set the slider offset from module params */
+ 	val &= ~SLIDER_OFFSET_MASK;
+-	val |= FIELD_PREP(SLIDER_OFFSET_MASK, slider_offset);
++	val |= FIELD_PREP(SLIDER_OFFSET_MASK, offset);
  
- 	/* Update session connection and owner addresses */
- 	hooks = rcu_dereference(nf_nat_sip_hooks);
--	if (hooks && ct->status & IPS_NAT_MASK)
-+	if (hooks && ct->status & IPS_NAT_MASK && have_rtp_addr)
- 		ret = hooks->sdp_session(skb, protoff, dataoff,
- 					 dptr, datalen, sdpoff,
- 					 &rtp_addr);
--- 
-2.51.0
-
+ 	write_soc_slider(proc_priv, val);
+ }
 
 
 
