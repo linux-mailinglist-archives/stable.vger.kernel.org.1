@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wA3dDlr8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:50 +0200
+	id ALZ8CWX9y2nqNAYAu9opvQ
+	(envelope-from <stable+bounces-232089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FEB36D629
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043DB36D989
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 627A531168AA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC76F307B346
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9033342EEA2;
-	Tue, 31 Mar 2026 16:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A55D423149;
+	Tue, 31 Mar 2026 16:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWDVSJ4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grQAQsqq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5381D42B756;
-	Tue, 31 Mar 2026 16:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8693DE431;
+	Tue, 31 Mar 2026 16:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975151; cv=none; b=bOhNAOu5Gr6lnjuv2v6w04HX4c/Zla4pZrp8oD5Yyyl7ei9CR02YheRJ0BCttBksUqZn68MWQ+22W7LoH9u4MXcCyX9K8Ht84iBCExw7+vgy6vxPjQGZU7kngt2kN5HGWUMLjH3z+QB7kucylUOr1iBAvoWh8sr62d5HRepi2ok=
+	t=1774975847; cv=none; b=tgiv7tE39zmm+/sZbT0v5aJPpRj1Eynbxpb++ArZYBOUXnMmW8wWS2z45TI8jV58nEmnJIhjSB94pvFABzcSdmaf+sWeRG8/uQPQdSVbqeD8e0Jw2OG9OlXBP+MsmKDbC87Eav4JFSyZnvqdgrHkEdrl0bbCzVpB35lhgvMtqvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975151; c=relaxed/simple;
-	bh=Y5RFvPUwii6gSBEF/aZr2+JxJSfoCkeWfWMrFt+6o1g=;
+	s=arc-20240116; t=1774975847; c=relaxed/simple;
+	bh=NCffRoAeQ819NXnPXpyBZiLIaSzNX4Imn7dwIUfzxYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KY5a8fC+0WAni31eikFDWCDUcK3oJTgfTynEzcFM2P/EhLV1ZYOV7leLmaYebrUO4x1BLsbYJ2gvMyKDaeoIRJBiFW34xu8c6lDd9ujMu4Ees+behDdpIesaxlFRnVfGs0yp2iyqXxdopaA+pTxXbWCo8G2qc5qF4g9cBTZs+LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWDVSJ4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02B3C19423;
-	Tue, 31 Mar 2026 16:39:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Br82pkB8+fR0qr6W0Xe7YZ/i4ME4owWN0w5bA19Z5zAnkavp6ez3SxKaeKhWYy2KB4ZMOxeMsRNfV1TSqYYtvDAoL9OuBhtsEFMq5YL4+Z7dJA+/vhj/GNiCe8gFzhTqt72xRcX8VIfSgslV7nQI9lYjr9Xdo4rjSZY682oTnHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grQAQsqq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E502AC19423;
+	Tue, 31 Mar 2026 16:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975151;
-	bh=Y5RFvPUwii6gSBEF/aZr2+JxJSfoCkeWfWMrFt+6o1g=;
+	s=korg; t=1774975847;
+	bh=NCffRoAeQ819NXnPXpyBZiLIaSzNX4Imn7dwIUfzxYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWDVSJ4iFbARsLnbHAAvGOHl7uxd9NjUPK715TEuSLU3NsEFBhVvBlPlmmqAX8Srh
-	 6j4JQNZoOhzLmMna/IVNsceblDvYVBqY8aVK8mPtaCxBuhhtJFu8V6chFyaxmX84nH
-	 pafitQrI6hBCacJUiDoenaBcbrS/YYtmi1gHr86s=
+	b=grQAQsqq1m/vRK+Tu6JjEx1rPdh09NejanZVOdxscGu2Eu5hw28sj3KPbe1LXz+IY
+	 bTFqgmT+3aO0FWpZFmIlwLMLbn4PAORtDCMkZrfAb+HO32hC3ngfA1PorU7FQ5poVj
+	 QrgH20GidCRo0BVehN+/t7BRVvEPJaZkFCGIsSHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Minxi Hou <mhou@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 183/342] hwmon: (adm1177) fix sysfs ABI violation and current unit conversion
-Date: Tue, 31 Mar 2026 18:20:16 +0200
-Message-ID: <20260331161805.736520303@linuxfoundation.org>
+Subject: [PATCH 6.12 067/244] net: openvswitch: Avoid releasing netdev before teardown completes
+Date: Tue, 31 Mar 2026 18:20:17 +0200
+Message-ID: <20260331161744.162042230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,12 +69,12 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231819-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232089-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -83,201 +83,142 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email]
-X-Rspamd-Queue-Id: A1FEB36D629
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 043DB36D989
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit bf08749a6abb6d1959bfdc0edc32c640df407558 ]
+[ Upstream commit 7c770dadfda5cbbde6aa3c4363ed513f1d212bf8 ]
 
-The adm1177 driver exposes the current alert threshold through
-hwmon_curr_max_alarm. This violates the hwmon sysfs ABI, where
-*_alarm attributes are read-only status flags and writable thresholds
-must use currN_max.
+The patch cited in the Fixes tag below changed the teardown code for
+OVS ports to no longer unconditionally take the RTNL. After this change,
+the netdev_destroy() callback can proceed immediately to the call_rcu()
+invocation if the IFF_OVS_DATAPATH flag is already cleared on the
+netdev.
 
-The driver also stores the threshold internally in microamps, while
-currN_max is defined in milliamps. Convert the threshold accordingly
-on both the read and write paths.
+The ovs_netdev_detach_dev() function clears the flag before completing
+the unregistration, and if it gets preempted after clearing the flag (as
+can happen on an -rt kernel), netdev_destroy() can complete and the
+device can be freed before the unregistration completes. This leads to a
+splat like:
 
-Widen the cached threshold and related calculations to 64 bits so
-that small shunt resistor values do not cause truncation or overflow.
-Also use 64-bit arithmetic for the mA/uA conversions, clamp writes
-to the range the hardware can represent, and propagate failures from
-adm1177_write_alert_thr() instead of silently ignoring them.
+[  998.393867] Oops: general protection fault, probably for non-canonical address 0xff00000001000239: 0000 [#1] SMP PTI
+[  998.393877] CPU: 42 UID: 0 PID: 55177 Comm: ip Kdump: loaded Not tainted 6.12.0-211.1.1.el10_2.x86_64+rt #1 PREEMPT_RT
+[  998.393886] Hardware name: Dell Inc. PowerEdge R740/0JMK61, BIOS 2.24.0 03/27/2025
+[  998.393889] RIP: 0010:dev_set_promiscuity+0x8d/0xa0
+[  998.393901] Code: 00 00 75 d8 48 8b 53 08 48 83 ba b0 02 00 00 00 75 ca 48 83 c4 08 5b c3 cc cc cc cc 48 83 bf 48 09 00 00 00 75 91 48 8b 47 08 <48> 83 b8 b0 02 00 00 00 74 97 eb 81 0f 1f 80 00 00 00 00 90 90 90
+[  998.393906] RSP: 0018:ffffce5864a5f6a0 EFLAGS: 00010246
+[  998.393912] RAX: ff00000000ffff89 RBX: ffff894d0adf5a05 RCX: 0000000000000000
+[  998.393917] RDX: 0000000000000000 RSI: 00000000ffffffff RDI: ffff894d0adf5a05
+[  998.393921] RBP: ffff894d19252000 R08: ffff894d19252000 R09: 0000000000000000
+[  998.393924] R10: ffff894d19252000 R11: ffff894d192521b8 R12: 0000000000000006
+[  998.393927] R13: ffffce5864a5f738 R14: 00000000ffffffe2 R15: 0000000000000000
+[  998.393931] FS:  00007fad61971800(0000) GS:ffff894cc0140000(0000) knlGS:0000000000000000
+[  998.393936] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  998.393940] CR2: 000055df0a2a6e40 CR3: 000000011c7fe003 CR4: 00000000007726f0
+[  998.393944] PKRU: 55555554
+[  998.393946] Call Trace:
+[  998.393949]  <TASK>
+[  998.393952]  ? show_trace_log_lvl+0x1b0/0x2f0
+[  998.393961]  ? show_trace_log_lvl+0x1b0/0x2f0
+[  998.393975]  ? dp_device_event+0x41/0x80 [openvswitch]
+[  998.394009]  ? __die_body.cold+0x8/0x12
+[  998.394016]  ? die_addr+0x3c/0x60
+[  998.394027]  ? exc_general_protection+0x16d/0x390
+[  998.394042]  ? asm_exc_general_protection+0x26/0x30
+[  998.394058]  ? dev_set_promiscuity+0x8d/0xa0
+[  998.394066]  ? ovs_netdev_detach_dev+0x3a/0x80 [openvswitch]
+[  998.394092]  dp_device_event+0x41/0x80 [openvswitch]
+[  998.394102]  notifier_call_chain+0x5a/0xd0
+[  998.394106]  unregister_netdevice_many_notify+0x51b/0xa60
+[  998.394110]  rtnl_dellink+0x169/0x3e0
+[  998.394121]  ? rt_mutex_slowlock.constprop.0+0x95/0xd0
+[  998.394125]  rtnetlink_rcv_msg+0x142/0x3f0
+[  998.394128]  ? avc_has_perm_noaudit+0x69/0xf0
+[  998.394130]  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+[  998.394132]  netlink_rcv_skb+0x50/0x100
+[  998.394138]  netlink_unicast+0x292/0x3f0
+[  998.394141]  netlink_sendmsg+0x21b/0x470
+[  998.394145]  ____sys_sendmsg+0x39d/0x3d0
+[  998.394149]  ___sys_sendmsg+0x9a/0xe0
+[  998.394156]  __sys_sendmsg+0x7a/0xd0
+[  998.394160]  do_syscall_64+0x7f/0x170
+[  998.394162]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  998.394165] RIP: 0033:0x7fad61bf4724
+[  998.394188] Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d c5 e9 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
+[  998.394189] RSP: 002b:00007ffd7e2f7cb8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[  998.394191] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007fad61bf4724
+[  998.394193] RDX: 0000000000000000 RSI: 00007ffd7e2f7d20 RDI: 0000000000000003
+[  998.394194] RBP: 00007ffd7e2f7d90 R08: 0000000000000010 R09: 000000000000003f
+[  998.394195] R10: 000055df11558010 R11: 0000000000000202 R12: 00007ffd7e2f8380
+[  998.394196] R13: 0000000069b233d7 R14: 000055df0a256040 R15: 0000000000000000
+[  998.394200]  </TASK>
 
-Update the hwmon documentation to reflect the attribute rename and
-the correct units returned by the driver.
+To fix this, reorder the operations in ovs_netdev_detach_dev() to only
+clear the flag after completing the other operations, and introduce an
+smp_wmb() to make the ordering requirement explicit. The smp_wmb() is
+paired with a full smp_mb() in netdev_destroy() to make sure the
+call_rcu() invocation does not happen before the unregister operations
+are visible.
 
-Fixes: 09b08ac9e8d5 ("hwmon: (adm1177) Add ADM1177 Hot Swap Controller and Digital Power Monitor driver")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20260325051246.28262-1-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: Minxi Hou <mhou@redhat.com>
+Tested-by: Minxi Hou <mhou@redhat.com>
+Fixes: 549822767630 ("net: openvswitch: Avoid needlessly taking the RTNL on vport destroy")
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20260318155554.1133405-1-toke@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/hwmon/adm1177.rst |  8 ++---
- drivers/hwmon/adm1177.c         | 54 +++++++++++++++++++--------------
- 2 files changed, 35 insertions(+), 27 deletions(-)
+ net/openvswitch/vport-netdev.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/hwmon/adm1177.rst b/Documentation/hwmon/adm1177.rst
-index 1c85a2af92bf7..375f6d6e03a7d 100644
---- a/Documentation/hwmon/adm1177.rst
-+++ b/Documentation/hwmon/adm1177.rst
-@@ -27,10 +27,10 @@ for details.
- Sysfs entries
- -------------
- 
--The following attributes are supported. Current maxim attribute
-+The following attributes are supported. Current maximum attribute
- is read-write, all other attributes are read-only.
- 
--in0_input		Measured voltage in microvolts.
-+in0_input		Measured voltage in millivolts.
- 
--curr1_input		Measured current in microamperes.
--curr1_max_alarm		Overcurrent alarm in microamperes.
-+curr1_input		Measured current in milliamperes.
-+curr1_max		Overcurrent shutdown threshold in milliamperes.
-diff --git a/drivers/hwmon/adm1177.c b/drivers/hwmon/adm1177.c
-index 8b2c965480e3f..7888afe8dafd6 100644
---- a/drivers/hwmon/adm1177.c
-+++ b/drivers/hwmon/adm1177.c
-@@ -10,6 +10,8 @@
- #include <linux/hwmon.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
-+#include <linux/math64.h>
-+#include <linux/minmax.h>
- #include <linux/module.h>
- #include <linux/regulator/consumer.h>
- 
-@@ -33,7 +35,7 @@
- struct adm1177_state {
- 	struct i2c_client	*client;
- 	u32			r_sense_uohm;
--	u32			alert_threshold_ua;
-+	u64			alert_threshold_ua;
- 	bool			vrange_high;
- };
- 
-@@ -48,7 +50,7 @@ static int adm1177_write_cmd(struct adm1177_state *st, u8 cmd)
+diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
+index 6574f9bcdc026..c688dee96503f 100644
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -151,11 +151,15 @@ static void vport_netdev_free(struct rcu_head *rcu)
+ void ovs_netdev_detach_dev(struct vport *vport)
+ {
+ 	ASSERT_RTNL();
+-	vport->dev->priv_flags &= ~IFF_OVS_DATAPATH;
+ 	netdev_rx_handler_unregister(vport->dev);
+ 	netdev_upper_dev_unlink(vport->dev,
+ 				netdev_master_upper_dev_get(vport->dev));
+ 	dev_set_promiscuity(vport->dev, -1);
++
++	/* paired with smp_mb() in netdev_destroy() */
++	smp_wmb();
++
++	vport->dev->priv_flags &= ~IFF_OVS_DATAPATH;
  }
  
- static int adm1177_write_alert_thr(struct adm1177_state *st,
--				   u32 alert_threshold_ua)
-+				   u64 alert_threshold_ua)
- {
- 	u64 val;
- 	int ret;
-@@ -91,8 +93,8 @@ static int adm1177_read(struct device *dev, enum hwmon_sensor_types type,
- 			*val = div_u64((105840000ull * dummy),
- 				       4096 * st->r_sense_uohm);
- 			return 0;
--		case hwmon_curr_max_alarm:
--			*val = st->alert_threshold_ua;
-+		case hwmon_curr_max:
-+			*val = div_u64(st->alert_threshold_ua, 1000);
- 			return 0;
- 		default:
- 			return -EOPNOTSUPP;
-@@ -126,9 +128,10 @@ static int adm1177_write(struct device *dev, enum hwmon_sensor_types type,
- 	switch (type) {
- 	case hwmon_curr:
- 		switch (attr) {
--		case hwmon_curr_max_alarm:
--			adm1177_write_alert_thr(st, val);
--			return 0;
-+		case hwmon_curr_max:
-+			val = clamp_val(val, 0,
-+					div_u64(105840000ULL, st->r_sense_uohm));
-+			return adm1177_write_alert_thr(st, (u64)val * 1000);
- 		default:
- 			return -EOPNOTSUPP;
- 		}
-@@ -156,7 +159,7 @@ static umode_t adm1177_is_visible(const void *data,
- 			if (st->r_sense_uohm)
- 				return 0444;
- 			return 0;
--		case hwmon_curr_max_alarm:
-+		case hwmon_curr_max:
- 			if (st->r_sense_uohm)
- 				return 0644;
- 			return 0;
-@@ -170,7 +173,7 @@ static umode_t adm1177_is_visible(const void *data,
- 
- static const struct hwmon_channel_info * const adm1177_info[] = {
- 	HWMON_CHANNEL_INFO(curr,
--			   HWMON_C_INPUT | HWMON_C_MAX_ALARM),
-+			   HWMON_C_INPUT | HWMON_C_MAX),
- 	HWMON_CHANNEL_INFO(in,
- 			   HWMON_I_INPUT),
- 	NULL
-@@ -192,7 +195,8 @@ static int adm1177_probe(struct i2c_client *client)
- 	struct device *dev = &client->dev;
- 	struct device *hwmon_dev;
- 	struct adm1177_state *st;
--	u32 alert_threshold_ua;
-+	u64 alert_threshold_ua;
-+	u32 prop;
- 	int ret;
- 
- 	st = devm_kzalloc(dev, sizeof(*st), GFP_KERNEL);
-@@ -208,22 +212,26 @@ static int adm1177_probe(struct i2c_client *client)
- 	if (device_property_read_u32(dev, "shunt-resistor-micro-ohms",
- 				     &st->r_sense_uohm))
- 		st->r_sense_uohm = 0;
--	if (device_property_read_u32(dev, "adi,shutdown-threshold-microamp",
--				     &alert_threshold_ua)) {
--		if (st->r_sense_uohm)
--			/*
--			 * set maximum default value from datasheet based on
--			 * shunt-resistor
--			 */
--			alert_threshold_ua = div_u64(105840000000,
--						     st->r_sense_uohm);
--		else
--			alert_threshold_ua = 0;
-+	if (!device_property_read_u32(dev, "adi,shutdown-threshold-microamp",
-+				      &prop)) {
-+		alert_threshold_ua = prop;
-+	} else if (st->r_sense_uohm) {
-+		/*
-+		 * set maximum default value from datasheet based on
-+		 * shunt-resistor
-+		 */
-+		alert_threshold_ua = div_u64(105840000000ULL,
-+					     st->r_sense_uohm);
-+	} else {
-+		alert_threshold_ua = 0;
+ static void netdev_destroy(struct vport *vport)
+@@ -174,6 +178,9 @@ static void netdev_destroy(struct vport *vport)
+ 		rtnl_unlock();
  	}
- 	st->vrange_high = device_property_read_bool(dev,
- 						    "adi,vrange-high-enable");
--	if (alert_threshold_ua && st->r_sense_uohm)
--		adm1177_write_alert_thr(st, alert_threshold_ua);
-+	if (alert_threshold_ua && st->r_sense_uohm) {
-+		ret = adm1177_write_alert_thr(st, alert_threshold_ua);
-+		if (ret)
-+			return ret;
-+	}
  
- 	ret = adm1177_write_cmd(st, ADM1177_CMD_V_CONT |
- 				    ADM1177_CMD_I_CONT |
++	/* paired with smp_wmb() in ovs_netdev_detach_dev() */
++	smp_mb();
++
+ 	call_rcu(&vport->rcu, vport_netdev_free);
+ }
+ 
 -- 
-2.53.0
+2.51.0
 
 
 
