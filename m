@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kM3JKF73y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:34 +0200
+	id UIvZDjH+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C9636CC1A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A6736DB63
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2588330416FF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E8D9730B894B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5773FAE08;
-	Tue, 31 Mar 2026 16:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C5E426694;
+	Tue, 31 Mar 2026 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ypn4hkkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jyps+xhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECEC3EE1DD;
-	Tue, 31 Mar 2026 16:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F2F425CF0;
+	Tue, 31 Mar 2026 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974444; cv=none; b=unfrShkvRxF/LJCLoAfqc0+qEzJHCK/hLCEbPEINM1IbnmpDLqnI3eUlt/Vk+CREXOMGnxBDDORNRWyvr/mMc0vyPa6ne+waOXVC6QMrSBwqBRPKBO2Ud5rjC7NfTDJSAkLkdFyGzOX5Tmtbb676oqPUs9j6Viw9cXNqJpCK/6s=
+	t=1774975881; cv=none; b=OYXS81sCFnH0JyldPbbJcXGYC2UIOCp9ntqYw70ldgION/bbu3uNoEgjhHt+/Tx9zFlSPDCvNShp1JZP3RuB+5ogoB8ARXNtEhUi1+B9ovlv1qxziqkOxIYzasdMLLgseIRslJd/YJjmVCCT/u1dHpKHHz+8CGGE5v/6+NwVKAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974444; c=relaxed/simple;
-	bh=IqV27wpJtb4BxgZpg0cmK8ghGXM/MRJUIeLhbBzdp5g=;
+	s=arc-20240116; t=1774975881; c=relaxed/simple;
+	bh=ZiV4h1TlozlSy1L2SqNNAAK5QqvnserBvE93dQSU2jY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AybiFvs6HgKIp6hd4C2Af3C4103aiqPzluPRXCli51sezhUDEt+KteFRJo0Gf5Q3olMM8YWl8tFJdOV9FtGVO06MFqBC1Nw53Abf52hifVMa8Y36pgQcy7nSOkZpU3WWXwkr8fwgMegtZ08hYA92PyFA7GwUKqGU+0cxaDI5x9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ypn4hkkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0DDC19423;
-	Tue, 31 Mar 2026 16:27:23 +0000 (UTC)
+	 MIME-Version; b=kkGcEjmckFYf2KPixePxUcKqB48dHRWoFcFXybjzAy69qXV31v9E1ehbvrs5ZXn9/JmCUfsBxUTMxQkEB18/X6XikKjH4UnvgL6fODjfC7qKlRUgSizsfAJLdsC3Y9anOP2yxF+lSaSwuFI02o2AfcWwWWy57YQDHcoSDq5AVkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jyps+xhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ED0C19423;
+	Tue, 31 Mar 2026 16:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974443;
-	bh=IqV27wpJtb4BxgZpg0cmK8ghGXM/MRJUIeLhbBzdp5g=;
+	s=korg; t=1774975880;
+	bh=ZiV4h1TlozlSy1L2SqNNAAK5QqvnserBvE93dQSU2jY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ypn4hkkql4IL5TaZROGoSmMUirJ8occ7pBXp/tHkMhyaYprArX3+TIo7KojkKLntO
-	 avoY9I+d3PWbvtTLlTiQ9GgrUmmGtrldgVxvlFBptoNcPEYTHPJtuE1W7ZGuOvUwC2
-	 bJ1ewhh2oNfPvH1FMpNQZmBSeZfHGgEMiYr4F7Zo=
+	b=Jyps+xhzGpc8luXsmr0MWLfdQ7iRmfsU4clIwEM9s5TtfpcoZAvW8n8TyxNUvgj6s
+	 hWPWJXSn8onzr0JZhS31n83I3xxS1eMKwPQAtbM0gdioU84hsmdgS1TACXWFREdsgJ
+	 CXxhEh+t/8P4FsSjbr1tlQjxJf/xuPPUlA1E7ysc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alberto Garcia <berto@igalia.com>,
-	Brian Geffon <bgeffon@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Yussuf Khalil <dev@pp3345.net>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/175] PM: hibernate: Drain trailing zero pages on userspace restore
+Subject: [PATCH 6.12 122/244] drm/amd/display: Do not skip unrelated mode changes in DSC validation
 Date: Tue, 31 Mar 2026 18:21:12 +0200
-Message-ID: <20260331161733.004095465@linuxfoundation.org>
+Message-ID: <20260331161746.167292884@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231544-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232102-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,76 +86,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,igalia.com:email]
-X-Rspamd-Queue-Id: 21C9636CC1A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pp3345.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: D0A6736DB63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alberto Garcia <berto@igalia.com>
+From: Yussuf Khalil <dev@pp3345.net>
 
-[ Upstream commit 734eba62cd32cb9ceffa09e57cdc03d761528525 ]
+[ Upstream commit aed3d041ab061ec8a64f50a3edda0f4db7280025 ]
 
-Commit 005e8dddd497 ("PM: hibernate: don't store zero pages in the
-image file") added an optimization to skip zero-filled pages in the
-hibernation image. On restore, zero pages are handled internally by
-snapshot_write_next() in a loop that processes them without returning
-to the caller.
+Starting with commit 17ce8a6907f7 ("drm/amd/display: Add dsc pre-validation in
+atomic check"), amdgpu resets the CRTC state mode_changed flag to false when
+recomputing the DSC configuration results in no timing change for a particular
+stream.
 
-With the userspace restore interface, writing the last non-zero page
-to /dev/snapshot is followed by the SNAPSHOT_ATOMIC_RESTORE ioctl. At
-this point there are no more calls to snapshot_write_next() so any
-trailing zero pages are not processed, snapshot_image_loaded() fails
-because handle->cur is smaller than expected, the ioctl returns -EPERM
-and the image is not restored.
+However, this is incorrect in scenarios where a change in MST/DSC configuration
+happens in the same KMS commit as another (unrelated) mode change. For example,
+the integrated panel of a laptop may be configured differently (e.g., HDR
+enabled/disabled) depending on whether external screens are attached. In this
+case, plugging in external DP-MST screens may result in the mode_changed flag
+being dropped incorrectly for the integrated panel if its DSC configuration
+did not change during precomputation in pre_validate_dsc().
 
-The in-kernel restore path is not affected by this because the loop in
-load_image() in swap.c calls snapshot_write_next() until it returns 0.
-It is this final call that drains any trailing zero pages.
+At this point, however, dm_update_crtc_state() has already created new streams
+for CRTCs with DSC-independent mode changes. In turn,
+amdgpu_dm_commit_streams() will never release the old stream, resulting in a
+memory leak. amdgpu_dm_atomic_commit_tail() will never acquire a reference to
+the new stream either, which manifests as a use-after-free when the stream gets
+disabled later on:
 
-Fixed by calling snapshot_write_next() in snapshot_write_finalize(),
-giving the kernel the chance to drain any trailing zero pages.
+BUG: KASAN: use-after-free in dc_stream_release+0x25/0x90 [amdgpu]
+Write of size 4 at addr ffff88813d836524 by task kworker/9:9/29977
 
-Fixes: 005e8dddd497 ("PM: hibernate: don't store zero pages in the image file")
-Signed-off-by: Alberto Garcia <berto@igalia.com>
-Acked-by: Brian Geffon <bgeffon@google.com>
-Link: https://patch.msgid.link/ef5a7c5e3e3dbd17dcb20efaa0c53a47a23498bb.1773075892.git.berto@igalia.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Workqueue: events drm_mode_rmfb_work_fn
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6e/0xa0
+ print_address_description.constprop.0+0x88/0x320
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ print_report+0xfc/0x1ff
+ ? srso_alias_return_thunk+0x5/0xfbef5
+ ? __virt_addr_valid+0x225/0x4e0
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ kasan_report+0xe1/0x180
+ ? dc_stream_release+0x25/0x90 [amdgpu]
+ kasan_check_range+0x125/0x200
+ dc_stream_release+0x25/0x90 [amdgpu]
+ dc_state_destruct+0x14d/0x5c0 [amdgpu]
+ dc_state_release.part.0+0x4e/0x130 [amdgpu]
+ dm_atomic_destroy_state+0x3f/0x70 [amdgpu]
+ drm_atomic_state_default_clear+0x8ee/0xf30
+ ? drm_mode_object_put.part.0+0xb1/0x130
+ __drm_atomic_state_free+0x15c/0x2d0
+ atomic_remove_fb+0x67e/0x980
+
+Since there is no reliable way of figuring out whether a CRTC has unrelated
+mode changes pending at the time of DSC validation, remember the value of the
+mode_changed flag from before the point where a CRTC was marked as potentially
+affected by a change in DSC configuration. Reset the mode_changed flag to this
+earlier value instead in pre_validate_dsc().
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5004
+Fixes: 17ce8a6907f7 ("drm/amd/display: Add dsc pre-validation in atomic check")
+Signed-off-by: Yussuf Khalil <dev@pp3345.net>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit cc7c7121ae082b7b82891baa7280f1ff2608f22b)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/snapshot.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           | 5 +++++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h           | 1 +
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 4 +++-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index ea52417375a4e..c3ad93fc24e64 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -2866,6 +2866,17 @@ int snapshot_write_finalize(struct snapshot_handle *handle)
- {
- 	int error;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index e092d2372a4e6..1ed631006e63f 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -11722,6 +11722,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
+ 	}
  
-+	/*
-+	 * Call snapshot_write_next() to drain any trailing zero pages,
-+	 * but make sure we're in the data page region first.
-+	 * This function can return PAGE_SIZE if the kernel was expecting
-+	 * another copy page. Return -ENODATA in that situation.
-+	 */
-+	if (handle->cur > nr_meta_pages + 1) {
-+		error = snapshot_write_next(handle);
-+		if (error)
-+			return error > 0 ? -ENODATA : error;
-+	}
- 	copy_last_highmem_page();
- 	error = hibernate_restore_protect_page(handle->buffer);
- 	/* Do that only if we have loaded the image entirely */
+ 	if (dc_resource_is_dsc_encoding_supported(dc)) {
++		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
++			dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
++			dm_new_crtc_state->mode_changed_independent_from_dsc = new_crtc_state->mode_changed;
++		}
++
+ 		for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
+ 			if (drm_atomic_crtc_needs_modeset(new_crtc_state)) {
+ 				ret = add_affected_mst_dsc_crtcs(state, crtc);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 2c0e1180706fa..9682c190e9524 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -881,6 +881,7 @@ struct dm_crtc_state {
+ 
+ 	bool freesync_vrr_info_changed;
+ 
++	bool mode_changed_independent_from_dsc;
+ 	bool dsc_force_changed;
+ 	bool vrr_supported;
+ 	struct mod_freesync_config freesync_config;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index a2a70c1e9afdc..9a3deb26149d8 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1703,9 +1703,11 @@ int pre_validate_dsc(struct drm_atomic_state *state,
+ 			int ind = find_crtc_index_in_state_by_stream(state, stream);
+ 
+ 			if (ind >= 0) {
++				struct dm_crtc_state *dm_new_crtc_state = to_dm_crtc_state(state->crtcs[ind].new_state);
++
+ 				DRM_INFO_ONCE("%s:%d MST_DSC no mode changed for stream 0x%p\n",
+ 						__func__, __LINE__, stream);
+-				state->crtcs[ind].new_state->mode_changed = 0;
++				dm_new_crtc_state->base.mode_changed = dm_new_crtc_state->mode_changed_independent_from_dsc;
+ 			}
+ 		}
+ 	}
 -- 
 2.53.0
 
