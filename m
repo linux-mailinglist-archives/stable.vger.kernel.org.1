@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-232138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +O1lCff9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:43 +0200
+	id OCxjGjn4y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D27336DABD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D258536CD7F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C79DB321E1F6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC5823167342
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676CE426EBF;
-	Tue, 31 Mar 2026 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF30423A89;
+	Tue, 31 Mar 2026 16:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEMk8LnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejAp+5im"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3E2426D2B;
-	Tue, 31 Mar 2026 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B724A423A78;
+	Tue, 31 Mar 2026 16:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975974; cv=none; b=Ovi8jOvaIdzsY/oy1jiY7XbqjjoW7a7Y3d8RtWnAQTk2bXOYzwAN2JXBcFVWTkDHyP2Y0H4Veq4lW8Icr55QAysMzZL8nFV3j3sjH7Ymqo7UaQ/dvXPri0wvMmQJpqqax5HTzD7/7TXHl4omrNf50S3w+yl+7ujn7JOhJR1oxP8=
+	t=1774974539; cv=none; b=BCtVzd2Rgl3MAcaAR/DL2RgLr/4uxKEm+o6PcE/MDMvKwmuJHiLXNn7p4b3F5UJV1cpFUdWMouo1UUiX/yB2l5YYSV7xTzb6n38JQXLWQGO10CJBqlq26Uwx20Dp6HG0mPQPWnCV7fJHO1UYijcKxzF/C6UVgQB4tHLqRbH5rbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975974; c=relaxed/simple;
-	bh=M8ZBvAIdyhGxpMlPsdIOgzVF2WzpkW/WWjojvVmShIU=;
+	s=arc-20240116; t=1774974539; c=relaxed/simple;
+	bh=mbvLKj+kv5VFNz2jx3I9zkW1jxHwoUVm1O05QlkhDBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBh9kVV3GsqQaIGOGld9v1D4DJVOGDTJo+oYoyOx0viyN4qiQlinANPsFGGM5gGpInjU/NoFZChM6McB85VfJwPSzV+TUlEdQKl8zgPmbjU5d0iGEWGHBkqc5pBOvAN9btPCV00TEXFUU09Yvu1bNNTKTje0HLNnPrJf7QDx4WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEMk8LnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D76C19423;
-	Tue, 31 Mar 2026 16:52:53 +0000 (UTC)
+	 MIME-Version; b=eXaEPjqaK4roSXzA3aRz4ksFUHhg1YY6G08ncBSgsAYepamKY+FufAlSbrSPye8IIzWVZF39hvsQ+o4mbsZbDuYf/eyX8J/82MjX4u6DYArfa4bTT+G5HupkS7cbXdanJYJI2q8Y+mr+36Nc9FO1F58nI9sK3Biwz2TCdaTh/gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejAp+5im; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCD5C19423;
+	Tue, 31 Mar 2026 16:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975974;
-	bh=M8ZBvAIdyhGxpMlPsdIOgzVF2WzpkW/WWjojvVmShIU=;
+	s=korg; t=1774974539;
+	bh=mbvLKj+kv5VFNz2jx3I9zkW1jxHwoUVm1O05QlkhDBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEMk8LnBCbKmJvYSfE/IltAy3aMV3v3mbHw50X7f1WhqO8WrsuN/qa3di8NTl1GpH
-	 vLHrxCbyJ4fxJ3XISkfCLW5EKaONRZEGlqSidP4V1AbS4Q6Z7Aw52NDvc7PsKYEeri
-	 i3KsCs1Hr+DZ+4c2Z2LuSPdlBKHFqvwFO2Tcoe+g=
+	b=ejAp+5imbQbcV1inOK0geG+5kecjYTC4/Z+mUhsFfL9yn+BrBXj7aWkDF5+QKLGy4
+	 F82JIrEL8OyNwfglkpZVqxL18XugOh0cDK0APirrt3jDHF/p3K3Yc+3gi1/PgnTBn9
+	 jzrEUeLf/Q8GENa1XRaJ+DDBaE+e5cRg9++fnIh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 158/244] phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4
-Date: Tue, 31 Mar 2026 18:21:48 +0200
-Message-ID: <20260331161747.600066780@linuxfoundation.org>
+Subject: [PATCH 6.6 125/175] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
+Date: Tue, 31 Mar 2026 18:21:49 +0200
+Message-ID: <20260331161734.372990682@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232138-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231581-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,72 +88,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email]
-X-Rspamd-Queue-Id: 9D27336DABD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tuxon.dev:email,nxp.com:email]
+X-Rspamd-Queue-Id: D258536CD7F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-commit 81af9e40e2e4e1aa95f09fb34811760be6742c58 upstream.
+commit 89a8567d84bde88cb7cdbbac2ab2299c4f991490 upstream.
 
-According to internal documentation, on SM8650, when the PHY is configured
-in Gear 4, the QPHY_V6_PCS_UFS_PLL_CNTL register needs to have the same
-value as for Gear 5.
+Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
+CHCTRL register. To avoid concurrency issues when configuring
+functionalities exposed by this registers, take the virtual channel lock.
+All other CHCTRL updates were already protected by the same lock.
 
-At the moment, there is no board that comes with a UFS 3.x device, so
-this issue doesn't show up, but with the new Eliza SoC, which uses the
-same init sequence as SM8650, on the MTP board, the link startup fails
-with the current Gear 4 PCS table.
+Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
+accessing CHCTRL registers but this does not ensure race-free access.
+Remove the local IRQ disable/enable code as well.
 
-So fix that by moving the entry into the PCS generic table instead,
-while keeping the value from Gear 5 configuration.
-
-Cc: stable@vger.kernel.org # v6.10
-Fixes: b9251e64a96f ("phy: qcom: qmp-ufs: update SM8650 tables for Gear 4 & 5")
-Suggested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Link: https://patch.msgid.link/20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Cc: stable@vger.kernel.org
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-ufs.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dma/sh/rz-dmac.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-@@ -927,6 +927,7 @@ static const struct qmp_phy_init_tbl sm8
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0xc1),
-+	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
-@@ -936,13 +937,11 @@ static const struct qmp_phy_init_tbl sm8
- };
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -286,13 +286,10 @@ static void rz_dmac_disable_hw(struct rz
+ {
+ 	struct dma_chan *chan = &channel->vc.chan;
+ 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
+-	unsigned long flags;
  
- static const struct qmp_phy_init_tbl sm8650_ufsphy_g4_pcs[] = {
--	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x13),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x04),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x04),
- };
+ 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
  
- static const struct qmp_phy_init_tbl sm8650_ufsphy_g5_pcs[] = {
--	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x05),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x05),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HS_G5_SYNC_LENGTH_CAPABILITY, 0x4d),
+-	local_irq_save(flags);
+ 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
+-	local_irq_restore(flags);
+ }
+ 
+ static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
+@@ -545,8 +542,8 @@ static int rz_dmac_terminate_all(struct
+ 	unsigned int i;
+ 	LIST_HEAD(head);
+ 
+-	rz_dmac_disable_hw(channel);
+ 	spin_lock_irqsave(&channel->vc.lock, flags);
++	rz_dmac_disable_hw(channel);
+ 	for (i = 0; i < DMAC_NR_LMDESC; i++)
+ 		lmdesc[i].header = 0;
+ 
+@@ -674,7 +671,9 @@ static void rz_dmac_irq_handle_channel(s
+ 	if (chstat & CHSTAT_ER) {
+ 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
+ 			channel->index, chstat);
+-		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
++
++		scoped_guard(spinlock_irqsave, &channel->vc.lock)
++			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
+ 		goto done;
+ 	}
+ 
 
 
 
