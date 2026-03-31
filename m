@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-232555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBkWGncOzGmHNwYAu9opvQ
-	(envelope-from <stable+bounces-232555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:12:07 +0200
+	id qGuGGu8OzGnGNgYAu9opvQ
+	(envelope-from <stable+bounces-232554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:14:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6248A36FC7A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A948836FD0F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6D6E5307072D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:57:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 29BDD306CF22
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3849644A71B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B4B449EB8;
 	Tue, 31 Mar 2026 17:57:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCC33E95B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F83333B6E3;
 	Tue, 31 Mar 2026 17:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774979840; cv=none; b=hEy1+TJ01FvK0eK/B2Sre4/KkmRc4WUGiIcN6Vvc6dXIdFZZ+K38V4r2th2YdEx6XHQsrQqyr7YJcFtsu6k488Zp/Q64GzM+X1YHZQdRL//ePq6/+qwkYENIjjQUFytUDPmO5Y+6K0j4cUxdjBox3FVSaslYyFLgILrT1AJh+i0=
+	t=1774979839; cv=none; b=CkewO/pjAxEMp3m/pR0NJt4/L6ibt/wVsfeNIEJYBMrszc6rIzbxzyP9BA+iZjVGeWk01zaYDseBea6BWHMT1dwmNa/kdkZ9s82yynK4fqzM0VuJKARKVo6cQ1tc1coCL2CPgnMIlt4CgA42V7eMNxtDMdTfbVUn3BxTM1iCKyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774979840; c=relaxed/simple;
-	bh=RuWCEzqLii74sI1YSSDvwlhCBvb1Uf2iaKG1Hp8YNvU=;
+	s=arc-20240116; t=1774979839; c=relaxed/simple;
+	bh=0dXOCc2EyLPPDQsyb8K7thSsKu2KeZEGb65KV4d/SRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKZZEax1cIjU7nqmco9eWt9HaNUPRWMaTAmAO+N/kHwCPG1RpX/UWlpBZqwElCYjf4X9kJ+47SvEWU14EU0gw+cIgrbsOADluV4k7kI8sZB/IsVMMwGZFd8Lyl37Gm56GyBREd79Avkc9/ZwGwdOBGirVMgOHFPYi7dFwOdqxF8=
+	 MIME-Version; b=GlXHzIZO0/EwASvfCvIMBY3cwXlSC2I7uU6C8T3iGqA2vV+mAV+++6wcnKw4KQpLe3iHuT31TrqS5rfWd8aA0KffF6YMvDq5T+M9utoQhfjnOu5mIP7m8cCjVZPfpDUt1p8JxHlaSVTJzkT2l5O0dEynmZx29S2BPHzN2pBijVM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [223.166.95.230])
-	by APP-01 (Coremail) with SMTP id qwCowABH8GvrCsxpCP3GCw--.20050S3;
-	Wed, 01 Apr 2026 01:57:00 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowABH8GvrCsxpCP3GCw--.20050S4;
+	Wed, 01 Apr 2026 01:57:01 +0800 (CST)
 From: Han Gao <gaohan@iscas.ac.cn>
 To: Bjorn Helgaas <bhelgaas@google.com>,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
@@ -55,9 +55,9 @@ Cc: linux-pci@vger.kernel.org,
 	Vivian Wang <wangruikang@iscas.ac.cn>,
 	Yao Zi <me@ziyao.cc>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] PCI: Add per-device flag to disable native PCIe port services
-Date: Wed,  1 Apr 2026 01:56:57 +0800
-Message-ID: <20260331175658.1015829-2-gaohan@iscas.ac.cn>
+Subject: [PATCH 2/2] PCI: Add quirk to disable PCIe port services on Sophgo SG2042
+Date: Wed,  1 Apr 2026 01:56:58 +0800
+Message-ID: <20260331175658.1015829-3-gaohan@iscas.ac.cn>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260331175658.1015829-1-gaohan@iscas.ac.cn>
 References: <20260331175658.1015829-1-gaohan@iscas.ac.cn>
@@ -68,25 +68,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABH8GvrCsxpCP3GCw--.20050S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7tw43CFWrXr1rKw4UAw4fXwb_yoW8AFykpF
-	WvkFykKrWrKFyUWw4qy3W3Ca4rWan8ZrWSkrWUWwnxuFWayryrZF9rtFyaqrsxGFW0vFy5
-	GrZxGry5CF47ZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQ2b7Iv0xC_KF4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-	8067AKxVWUGwA2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF
-	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcV
-	CY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE
-	c7CjxVAFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzV
-	Aqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S
-	6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxw
-	ACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjTRwL0rUUUUU
-X-CM-SenderInfo: xjdrxt3q6l2u1dvotugofq/1tbiBg0DDGnL4iiZtwAAsC
+X-CM-TRANSID:qwCowABH8GvrCsxpCP3GCw--.20050S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr4fXw1rAr17XrykAr48tFb_yoW8uw17pF
+	s8GF9ayr4FgFyUGw4kZw1kuF9xua1vy34FkrZ3Wa9IvF1ay3s5XFsrtr9IyF47WFsrXFW5
+	Xwn8Cws8Wa4DWFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmI14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
+	8EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1U
+	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
+	v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
+	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
+	IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
+	6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+	CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+	0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
+	IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnI
+	WIevJa73UjIFyTuYvjTRNiSHDUUUU
+X-CM-SenderInfo: xjdrxt3q6l2u1dvotugofq/1tbiDAgDDGnL4tWXegAAsz
 X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -98,7 +98,7 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-232555-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232554-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -110,59 +110,65 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gaohan@iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,lists.infradead.org,gmail.com,iscas.ac.cn,ziyao.cc];
-	NEURAL_HAM(-0.00)[-0.786];
+	NEURAL_HAM(-0.00)[-0.799];
 	TAGGED_RCPT(0.00)[stable];
 	R_DKIM_NA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: 6248A36FC7A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A948836FD0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add PCI_DEV_FLAGS_NO_PORT_SERVICES to allow quirks to prevent the PCIe
-port service driver from probing specific devices. This provides a
-per-device equivalent of the global pcie_ports=compat kernel parameter.
+SG2042's PCIe root ports [1f1c:2042] fail to deliver MSI interrupts to
+downstream devices when native port services are enabled. Devices under
+an affected root port receive zero interrupts despite successful vector
+allocation, causing driver timeouts (e.g. amdgpu fence fallback timer
+expired on all rings).
 
-Some platforms have PCIe root ports that break MSI delivery to downstream
-devices when native port services (AER, PME, bwctrl, etc.) are active.
-The existing pci_host_bridge native_* flags do not cover all services
-(notably bwctrl), so a mechanism to skip port driver probing entirely
-on a per-device basis is needed.
+Set PCI_DEV_FLAGS_NO_PORT_SERVICES on SG2042 root ports to prevent the
+port service driver from probing, restoring correct MSI delivery.
 
+Fixes: 1c72774df028 ("PCI: sg2042: Add Sophgo SG2042 PCIe driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Han Gao <gaohan@iscas.ac.cn>
 ---
- drivers/pci/pcie/portdrv.c | 3 +++
- include/linux/pci.h        | 2 ++
- 2 files changed, 5 insertions(+)
+ drivers/pci/quirks.c    | 12 ++++++++++++
+ include/linux/pci_ids.h |  2 ++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
-index 2d6aa488fe7b..3386818d200d 100644
---- a/drivers/pci/pcie/portdrv.c
-+++ b/drivers/pci/pcie/portdrv.c
-@@ -685,6 +685,9 @@ static const struct dev_pm_ops pcie_portdrv_pm_ops = {
- static int pcie_portdrv_probe(struct pci_dev *dev,
- 					const struct pci_device_id *id)
- {
-+	if (dev->dev_flags & PCI_DEV_FLAGS_NO_PORT_SERVICES)
-+		return -ENODEV;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 48946cca4be7..bbde482ff7cb 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6380,3 +6380,15 @@ static void pci_mask_replay_timer_timeout(struct pci_dev *pdev)
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9750, pci_mask_replay_timer_timeout);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9755, pci_mask_replay_timer_timeout);
+ #endif
 +
- 	int type = pci_pcie_type(dev);
- 	int status;
++/*
++ * SG2042's PCIe root ports do not correctly deliver MSI interrupts to
++ * downstream devices when native PCIe port services are enabled. All
++ * services including bwctrl must be disabled, equivalent to pcie_ports=compat.
++ */
++static void quirk_sg2042_no_port_services(struct pci_dev *dev)
++{
++	pci_info(dev, "SG2042: disabling native PCIe port services\n");
++	dev->dev_flags |= PCI_DEV_FLAGS_NO_PORT_SERVICES;
++}
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SOPHGO, 0x2042, quirk_sg2042_no_port_services);
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 406abf629be2..9663be526dd0 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2630,6 +2630,8 @@
  
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 1c270f1d5123..e038fe14ef78 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -253,6 +253,8 @@ enum pci_dev_flags {
- 	 * integrated with the downstream devices and doesn't use real PCI.
- 	 */
- 	PCI_DEV_FLAGS_PCI_BRIDGE_NO_ALIAS = (__force pci_dev_flags_t) (1 << 14),
-+	/* Do not use native PCIe port services (equivalent to pcie_ports=compat) */
-+	PCI_DEV_FLAGS_NO_PORT_SERVICES = (__force pci_dev_flags_t) (1 << 15),
- };
+ #define PCI_VENDOR_ID_CXL		0x1e98
  
- enum pci_irq_reroute_variant {
++#define PCI_VENDOR_ID_SOPHGO		0x1f1c
++
+ #define PCI_VENDOR_ID_TEHUTI		0x1fc9
+ #define PCI_DEVICE_ID_TEHUTI_3009	0x3009
+ #define PCI_DEVICE_ID_TEHUTI_3010	0x3010
 -- 
 2.47.3
 
