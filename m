@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKscJnj/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:08 +0200
+	id YMduAHD6y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E1A36DEFD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B0536D205
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:46:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 822D830470B2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B12813192026
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E042423A9D;
-	Tue, 31 Mar 2026 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E08423149;
+	Tue, 31 Mar 2026 16:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBLnUyjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ffd5iA8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3899423A62;
-	Tue, 31 Mar 2026 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00B92EE262;
+	Tue, 31 Mar 2026 16:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976311; cv=none; b=iagoRiJrmC9JSYHO4R6kxZIaVRK8TlNgT8Kvo3ajIHTGk2kSTUzC+pd8paoYzrAa+PxIh4ppPPFYggl6ClOjLCuDaSRAZfN1U/coyA7GyS3AmzGh1CExCRExmHfx7BJN9JHKXXviKZYXn0O7AqdNsWOgSKH0r+GMXPg+EkCQ/JA=
+	t=1774974971; cv=none; b=QpCsFEcOxwg+XaZH9A7ZzJef0AuR5Y04TFM2GeROxrpI3PO34HV+gK1yBfXeYooqDzlNALw1bG8I3L0Fe51Jf7V92WiZmdG5xhM3q4Cdrx/vJBiK1e690Ro7rG6zzHmc1MI/uPRpGm0wFfCXBfyVL/SHtSYDWkcS4Gdpz24cczM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976311; c=relaxed/simple;
-	bh=SFmPzGYxJHLMZwOyI5PjA45mY0ngOJuC0KOli78D+f8=;
+	s=arc-20240116; t=1774974971; c=relaxed/simple;
+	bh=DsjPwArU9Uf2hkDzyCZAU0Ssjs0sioo4semtGJM3fzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbXhlzQ0q7x+4gz4dOjIua9OHKN9GoiS480ejCdBx52I/e4Mp+yJChYG0E9IWGoJoAVkQ8pzUGY5fidsDcsruZu11b4aRl6xM8+n1XbrwlZvxtbtBxXLExO72hMCz5pdXsfAU5nbbYBIqIW4YhLvKQKEYXvWVoNPVg2MNSSBfSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBLnUyjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF51C19423;
-	Tue, 31 Mar 2026 16:58:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PYS4foVPnCz3RKytU/f6w1WuyB7+jcjUtsVlsD0LDIiLvYLbqNlcrZDHugxzG5QZAxYtTvTdbV55VZ3ObweM7b6oy42oE7Vw3QYlT6p4UaTB0bfqPXasol8cRMHx3SZMVcFUQcTaIld3CmQB60E1LQMKPnQQeVizrC2CgGPDaG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ffd5iA8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5731EC19423;
+	Tue, 31 Mar 2026 16:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976310;
-	bh=SFmPzGYxJHLMZwOyI5PjA45mY0ngOJuC0KOli78D+f8=;
+	s=korg; t=1774974971;
+	bh=DsjPwArU9Uf2hkDzyCZAU0Ssjs0sioo4semtGJM3fzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBLnUyjWSUzHLunALnGLiqGBqqIavu1nU6Tf7/QLC8XjS6jmOU+6aHMUc3Pon3TUl
-	 NP/G5YnIfRZta5qxELkOWFekD68bNDEP7DK0ePzmV5r8iA14uSG2N26WYwdAPoRt9g
-	 /Ncx+W/L9faOiaMns8Gsaj9c5vW7LfclwzvurIkU=
+	b=Ffd5iA8k4bBjrrToV0bQ1Bq+NA1qqRSPxWXUYBsD/4X9RNmazHs2WIsxfrPKrs16b
+	 8k8HdVzvPzxK2coDlevyAclDDuYdc0QOHV3UC/OWXjQWfrTn0BXuQLOYgIdl0m5cmD
+	 02YW09Fbsv39eB4n0u2WkMIqPRiWn0mkfRS2ct3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fuchs <fuchsfl@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	David McFarland <corngood@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 043/309] scsi: devinfo: Add BLIST_SKIP_IO_HINTS for Iomega ZIP
-Date: Tue, 31 Mar 2026 18:19:06 +0200
-Message-ID: <20260331161755.070717479@linuxfoundation.org>
+Subject: [PATCH 6.19 114/342] platform/x86: intel-hid: disable wakeup_mode during hibernation
+Date: Tue, 31 Mar 2026 18:19:07 +0200
+Message-ID: <20260331161803.205603057@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232268-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231750-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 61E1A36DEFD
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 51B0536D205
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fuchs <fuchsfl@gmail.com>
+From: David McFarland <corngood@gmail.com>
 
-[ Upstream commit 80bf3b28d32b431f84f244a8469488eb6d96afbb ]
+[ Upstream commit e02ea3ae8ee40d5835a845884c7b161a27c10bcb ]
 
-The Iomega ZIP 100 (Z100P2) can't process IO Advice Hints Grouping mode
-page query. It immediately switches to the status phase 0xb8 after
-receiving the subpage code 0x05 of MODE_SENSE_10 command, which fails
-imm_out() and turns into DID_ERROR of this command, which leads to unusable
-device. This was tested with an Iomega ZIP 100 (Z100P2) connected with a
-StarTech PEX1P2 AX99100 PCIe parallel port card.
+Add a freeze handler which clears wakeup_mode. This fixes aborted hibernation on
+Dell Precision 3880.
 
-Prior to this fix, Test Unit Ready fails and the drive can't be used:
-        IMM: returned SCSI status b8
-        sd 7:0:6:0: [sdh] Test Unit Ready failed: Result: hostbyte=0x01 driverbyte=DRIVER_OK
+  Wakeup event detected during hibernation, rolling back
 
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
-Link: https://patch.msgid.link/20260227181823.892932-1-fuchsfl@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This system sends power button events during hibernation, even when triggered by
+software.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218634
+Fixes: 0c4cae1bc00d ("PM: hibernate: Avoid missing wakeup events during hibernation")
+Signed-off-by: David McFarland <corngood@gmail.com>
+Link: https://patch.msgid.link/20260205231629.1336348-1-corngood@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_devinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/hid.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_devinfo.c b/drivers/scsi/scsi_devinfo.c
-index 78346b2b69c91..c51146882a1fa 100644
---- a/drivers/scsi/scsi_devinfo.c
-+++ b/drivers/scsi/scsi_devinfo.c
-@@ -190,7 +190,7 @@ static struct {
- 	{"IBM", "2076", NULL, BLIST_NO_VPD_SIZE},
- 	{"IBM", "2105", NULL, BLIST_RETRY_HWERROR},
- 	{"iomega", "jaz 1GB", "J.86", BLIST_NOTQ | BLIST_NOLUN},
--	{"IOMEGA", "ZIP", NULL, BLIST_NOTQ | BLIST_NOLUN},
-+	{"IOMEGA", "ZIP", NULL, BLIST_NOTQ | BLIST_NOLUN | BLIST_SKIP_IO_HINTS},
- 	{"IOMEGA", "Io20S         *F", NULL, BLIST_KEY},
- 	{"INSITE", "Floptical   F*8I", NULL, BLIST_KEY},
- 	{"INSITE", "I325VM", NULL, BLIST_KEY},
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index f2b309f6e458a..c5e80887d0cb0 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -432,6 +432,14 @@ static int intel_hid_pl_suspend_handler(struct device *device)
+ 	return 0;
+ }
+ 
++static int intel_hid_pl_freeze_handler(struct device *device)
++{
++	struct intel_hid_priv *priv = dev_get_drvdata(device);
++
++	priv->wakeup_mode = false;
++	return intel_hid_pl_suspend_handler(device);
++}
++
+ static int intel_hid_pl_resume_handler(struct device *device)
+ {
+ 	intel_hid_pm_complete(device);
+@@ -446,7 +454,7 @@ static int intel_hid_pl_resume_handler(struct device *device)
+ static const struct dev_pm_ops intel_hid_pl_pm_ops = {
+ 	.prepare = intel_hid_pm_prepare,
+ 	.complete = intel_hid_pm_complete,
+-	.freeze  = intel_hid_pl_suspend_handler,
++	.freeze  = intel_hid_pl_freeze_handler,
+ 	.thaw  = intel_hid_pl_resume_handler,
+ 	.restore  = intel_hid_pl_resume_handler,
+ 	.suspend  = intel_hid_pl_suspend_handler,
 -- 
 2.51.0
 
