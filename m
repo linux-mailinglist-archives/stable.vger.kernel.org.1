@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-231822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFp5OJ37y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:41 +0200
+	id 4ChOCH4DzGmPNQYAu9opvQ
+	(envelope-from <stable+bounces-232066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD0636D442
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7687936EAB0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D975D30B2991
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D130131A009B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB2B42B749;
-	Tue, 31 Mar 2026 16:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EE73F8E04;
+	Tue, 31 Mar 2026 16:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpEzt8qI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRDtbaVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C1A427A1B;
-	Tue, 31 Mar 2026 16:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBDB2C15B2;
+	Tue, 31 Mar 2026 16:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975159; cv=none; b=J5gdp032p0iLhhbgTy5ZVt6LkpnhIfE6FYp8gkpq1JtylPhJlx8vqp2zA8q4RV5Ph9HfAwMK8DW/Kdw53HkE7r+kJQf+km1V7cHT28xnvWUwW1kbpY286YbLDa+MRxJdphTPNC4o8IwGzx9GU0Ygdxu1C3IacHeaq6kyyXgW3OY=
+	t=1774975788; cv=none; b=X/JWRIAdDJdyDmtUnUQL5W4R21emIp0HN8VkW9bqLTXbPhy45Qh0IzKzT0iKNP54NALcdSPShHXjVgYNgQnSGE9dbfW6cLKKXzjHSa0DLpU6zTx54G3MGQIaqnV0504QilkHF8gwdNeOqvnFcYD+IE9XZSd6oqmsFHqVsC+lipg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975159; c=relaxed/simple;
-	bh=5qHAMyPk6NPK5FaXUzXBRC/NlRtxfuBLC8mTtreFi1E=;
+	s=arc-20240116; t=1774975788; c=relaxed/simple;
+	bh=Bo+6YlrdnryGMCwVmcGVKfOl/PchQMVuYaA5NkCyqXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3LHKlLF4wiBOzOkPT1VyYf0JPqwsooBstzxzh8JrX+cT5lCdu0kYy0qZucvQlI52oZuoqxCWjkQ+3w6Cj1K6KKKRo1urlzFPdUHOpdyNWtEoNF9QA96vJYRu4bftQ2RS/5dRl1oxtb5O/MSsRsWcP6uFUgI3yVk+Wnt4g8zqMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpEzt8qI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF44C19423;
-	Tue, 31 Mar 2026 16:39:18 +0000 (UTC)
+	 MIME-Version; b=JgZ+vUZSgKIUs6Kcgle7nTcuU5u+aZ3QEP5Wqc2VymYnFTtlr9tjZwL5DpW5kgUgazGUSvizPR9gUncUGfzg3ptYoebRHBmBVVyaGhGKuXZ3OqIjuISx22l3XscOg9MizpdLUMz4psXnQhji+l18tEGXkbL1ybX4C1KBbcaCT6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRDtbaVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FB2C19423;
+	Tue, 31 Mar 2026 16:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975159;
-	bh=5qHAMyPk6NPK5FaXUzXBRC/NlRtxfuBLC8mTtreFi1E=;
+	s=korg; t=1774975787;
+	bh=Bo+6YlrdnryGMCwVmcGVKfOl/PchQMVuYaA5NkCyqXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpEzt8qIL1JwM653zjlCWTFCv1EF2lTotIAJezwWOQ8ollcZSDKep/Ad6VTtHMLh1
-	 WZ2KtYj67QrE2iXgsr9roQl+ANDx/duOHbZgEk4JgQWESQi3fx6BBuZENuxoNWybDa
-	 zvouB9r5Ne5lGoTeNq5p/IZWSUcA+HGyUDNidA+8=
+	b=oRDtbaVtbZelGZi0aBTegH8/IjrcErPX+7KDubtJ7FG1ouW2qXL0kEApTL73mj7FL
+	 TrbflUARGDfqUTtgKub849fSKXAPO5uKYgF8qyUiyLMQAf8gNbOGFMkRXc/mR5j66z
+	 lfihK4dFJRroWOISG8CAkjl+g6gJDL5rF4KteOVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 186/342] hwmon: (pmbus) Introduce the concept of "write-only" attributes
+Subject: [PATCH 6.12 069/244] openvswitch: validate MPLS set/set_masked payload length
 Date: Tue, 31 Mar 2026 18:20:19 +0200
-Message-ID: <20260331161805.845589012@linuxfoundation.org>
+Message-ID: <20260331161744.236234917@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,217 +73,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,ovn.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232066-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231822-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email]
-X-Rspamd-Queue-Id: 8AD0636D442
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,ovn.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 7687936EAB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit cd658475e7694d58e1c40dabc1dacf8431ccedb2 ]
+[ Upstream commit 546b68ac893595877ffbd7751e5c55fd1c43ede6 ]
 
-Attributes intended to clear sensor history are intended to be writeable
-only. Reading those attributes today results in reporting more or less
-random values. To avoid ABI surprises, have those attributes explicitly
-return 0 when reading.
+validate_set() accepted OVS_KEY_ATTR_MPLS as variable-sized payload for
+SET/SET_MASKED actions. In action handling, OVS expects fixed-size
+MPLS key data (struct ovs_key_mpls).
 
-Fixes: 787c095edaa9d ("hwmon: (pmbus/core) Add support for rated attributes")
-Reviewed-by: Sanman Pradhan <psanman@juniper.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Use the already normalized key_len (masked case included) and reject
+non-matching MPLS action key sizes.
+
+Reject invalid MPLS action payload lengths early.
+
+Fixes: fbdcdd78da7c ("Change in Openvswitch to support MPLS label depth of 3 in ingress direction")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Link: https://patch.msgid.link/20260319080228.3423307-1-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ net/openvswitch/flow_netlink.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index ecd1dddcbe0ff..cbc36f0ba4bf9 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -1209,6 +1209,12 @@ static ssize_t pmbus_show_boolean(struct device *dev,
- 	return sysfs_emit(buf, "%d\n", val);
- }
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 7d5490ea23e1d..3d2dbe963813d 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2953,6 +2953,8 @@ static int validate_set(const struct nlattr *a,
+ 	case OVS_KEY_ATTR_MPLS:
+ 		if (!eth_p_mpls(eth_type))
+ 			return -EINVAL;
++		if (key_len != sizeof(struct ovs_key_mpls))
++			return -EINVAL;
+ 		break;
  
-+static ssize_t pmbus_show_zero(struct device *dev,
-+			       struct device_attribute *devattr, char *buf)
-+{
-+	return sysfs_emit(buf, "0\n");
-+}
-+
- static ssize_t pmbus_show_sensor(struct device *dev,
- 				 struct device_attribute *devattr, char *buf)
- {
-@@ -1407,7 +1413,7 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
- 					     int reg,
- 					     enum pmbus_sensor_classes class,
- 					     bool update, bool readonly,
--					     bool convert)
-+					     bool writeonly, bool convert)
- {
- 	struct pmbus_sensor *sensor;
- 	struct device_attribute *a;
-@@ -1436,7 +1442,8 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
- 	sensor->data = -ENODATA;
- 	pmbus_dev_attr_init(a, sensor->name,
- 			    readonly ? 0444 : 0644,
--			    pmbus_show_sensor, pmbus_set_sensor);
-+			    writeonly ? pmbus_show_zero : pmbus_show_sensor,
-+			    pmbus_set_sensor);
- 
- 	if (pmbus_add_attribute(data, &a->attr))
- 		return NULL;
-@@ -1496,6 +1503,7 @@ struct pmbus_limit_attr {
- 	u16 reg;		/* Limit register */
- 	u16 sbit;		/* Alarm attribute status bit */
- 	bool readonly:1;	/* True if the attribute is read-only */
-+	bool writeonly:1;	/* True if the attribute is write-only */
- 	bool update:1;		/* True if register needs updates */
- 	bool low:1;		/* True if low limit; for limits with compare functions only */
- 	const char *attr;	/* Attribute name */
-@@ -1545,7 +1553,7 @@ static int pmbus_add_limit_attrs(struct i2c_client *client,
- 			curr = pmbus_add_sensor(data, name, l->attr, index,
- 						page, 0xff, l->reg, attr->class,
- 						attr->update || l->update,
--						l->readonly, true);
-+						l->readonly, l->writeonly, true);
- 			if (!curr)
- 				return -ENOMEM;
- 			if (l->sbit && (info->func[page] & attr->sfunc)) {
-@@ -1585,7 +1593,7 @@ static int pmbus_add_sensor_attrs_one(struct i2c_client *client,
- 			return ret;
- 	}
- 	base = pmbus_add_sensor(data, name, "input", index, page, phase,
--				attr->reg, attr->class, true, true, true);
-+				attr->reg, attr->class, true, true, false, true);
- 	if (!base)
- 		return -ENOMEM;
- 	/* No limit and alarm attributes for phase specific sensors */
-@@ -1722,6 +1730,7 @@ static const struct pmbus_limit_attr vin_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_VIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_VIN_MIN,
-@@ -1796,6 +1805,7 @@ static const struct pmbus_limit_attr vout_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_VOUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_VOUT_MIN,
-@@ -1877,6 +1887,7 @@ static const struct pmbus_limit_attr iin_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_IIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_IIN_MAX,
-@@ -1918,6 +1929,7 @@ static const struct pmbus_limit_attr iout_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_IOUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_IOUT_MAX,
-@@ -1976,6 +1988,7 @@ static const struct pmbus_limit_attr pin_limit_attrs[] = {
- 		.attr = "input_highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_PIN_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_PIN_MAX,
-@@ -2017,6 +2030,7 @@ static const struct pmbus_limit_attr pout_limit_attrs[] = {
- 		.attr = "input_highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_POUT_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_POUT_MAX,
-@@ -2088,6 +2102,7 @@ static const struct pmbus_limit_attr temp_limit_attrs[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_TEMP_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_1,
-@@ -2133,6 +2148,7 @@ static const struct pmbus_limit_attr temp_limit_attrs2[] = {
- 		.attr = "highest",
- 	}, {
- 		.reg = PMBUS_VIRT_RESET_TEMP2_HISTORY,
-+		.writeonly = true,
- 		.attr = "reset_history",
- 	}, {
- 		.reg = PMBUS_MFR_MAX_TEMP_2,
-@@ -2250,7 +2266,7 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
- 
- 	sensor = pmbus_add_sensor(data, "fan", "target", index, page,
- 				  0xff, PMBUS_VIRT_FAN_TARGET_1 + id, PSC_FAN,
--				  false, false, true);
-+				  false, false, false, true);
- 
- 	if (!sensor)
- 		return -ENOMEM;
-@@ -2261,14 +2277,14 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
- 
- 	sensor = pmbus_add_sensor(data, "pwm", NULL, index, page,
- 				  0xff, PMBUS_VIRT_PWM_1 + id, PSC_PWM,
--				  false, false, true);
-+				  false, false, false, true);
- 
- 	if (!sensor)
- 		return -ENOMEM;
- 
- 	sensor = pmbus_add_sensor(data, "pwm", "enable", index, page,
- 				  0xff, PMBUS_VIRT_PWM_ENABLE_1 + id, PSC_PWM,
--				  true, false, false);
-+				  true, false, false, false);
- 
- 	if (!sensor)
- 		return -ENOMEM;
-@@ -2310,7 +2326,7 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
- 
- 			if (pmbus_add_sensor(data, "fan", "input", index,
- 					     page, 0xff, pmbus_fan_registers[f],
--					     PSC_FAN, true, true, true) == NULL)
-+					     PSC_FAN, true, true, false, true) == NULL)
- 				return -ENOMEM;
- 
- 			/* Fan control */
+ 	case OVS_KEY_ATTR_SCTP:
 -- 
-2.53.0
+2.51.0
 
 
 
