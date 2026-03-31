@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-231550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPkCBZ/3y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:39 +0200
+	id oPLJLxgEzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:27:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6542336CC63
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2139B36EBF8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76720312B1E1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3DCD3279198
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DA93FF8A7;
-	Tue, 31 Mar 2026 16:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21773423A9A;
+	Tue, 31 Mar 2026 16:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZqUNkGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUgdQH5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965363EE1DD;
-	Tue, 31 Mar 2026 16:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CCB3DE431;
+	Tue, 31 Mar 2026 16:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974459; cv=none; b=NfsYfcN2wvW+xnJPpHY+YPynku+S8lPvVKP++7xJsiX6DuiJTkm5nPfEw5mXcOPBia3Q77Ji51+JEX4TA0vY4ukxFPzBEiZLMugfm9RNXlFOSXnjXTOsB3mN2X7JKrtICU/Zm7ge1q/Wsy/ul/O4K9z8QzPJkZvrtypL2glyYnI=
+	t=1774975893; cv=none; b=Q9hX6eIhWG+A/c4TA7kqsa2rl1ikP3jEhdJGptRVYMBoA2ynJilH1Peb31OG1+qHYRtetcPAveuoYSAc7zcq2gq6sJuZKXTsFCGiRKmtgEOzqmF5xkhfCiZyL92+z/pwzkHOtb/LE6V69RgrXPU1cPKxqtGUHshBljx2ttVygLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974459; c=relaxed/simple;
-	bh=Ycy4heOfnZvBAmKYzMJlAZKA/ZOE8Qyt3PRcFyy08IM=;
+	s=arc-20240116; t=1774975893; c=relaxed/simple;
+	bh=Eg6hMMAi0trLHJGjok19s/vS8MreqYo36eKhq1B+oTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NUHYOyHX+WzHE3lvXmGknfwTDBL2kurVtLaQOjV4CdnHO2b83xi9ZNEqT4y99g8N4xEoM2Bf7c3OCPvc2SZLREXidJ1qJJsRzx3Ii7L4qPETuhN5a1wg9FpMEtHEbiEpUbmwCowPS770JkyzscKBTlnKON7+Z+w4F3MzKQNn250=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZqUNkGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB1EC19423;
-	Tue, 31 Mar 2026 16:27:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mhOv9yYgRc1gMRQ7RaDe5Tis7V49dZCPlW3dhLSjqO06voxeIhvZxYBSTBr3qQP28r789V0Hyt8wxzZHEsuLkkvcWAKu4GvXoDXP6NCpknOngEdxuopnnWvdntd1HOoFMm/YehTDLG3IXDgN79WUoReDWF2MPVRuAby3oQAi2RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUgdQH5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE5BC19423;
+	Tue, 31 Mar 2026 16:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974459;
-	bh=Ycy4heOfnZvBAmKYzMJlAZKA/ZOE8Qyt3PRcFyy08IM=;
+	s=korg; t=1774975893;
+	bh=Eg6hMMAi0trLHJGjok19s/vS8MreqYo36eKhq1B+oTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZqUNkGdpo1Huq0RxTQQp4l/7kmjIUk9YFxpNOCtz8usw0PhYOYt12tQS0CX0zfzf
-	 m0bXv1ZkPsPKlFQ5jwS5HgNc6nct8TVuXotF2iJOjFg4GOv75BLT0qVxI+3qaEMi+3
-	 csoGnSbb1WjsmEbyQ6QPklObssI4AI1qJNqU3zbc=
+	b=IUgdQH5SdU7/gjsyl7gGw/WbmQAcWBNrx534XnaL5UuPCpPd4pQaEGBGpqmqOyAfp
+	 rJ4oX7btfaFJ8hiosExIsVZdtRKiJFbjn5uVq3NVV6zi8283GFtfKT+nQJMz/3XmXn
+	 fA4r9iW1pr1oED+WXgYnLONzigV43XBbjwS3RUZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/175] hwmon: (adm1177) fix sysfs ABI violation and current unit conversion
+Subject: [PATCH 6.12 127/244] hwmon: (adm1177) fix sysfs ABI violation and current unit conversion
 Date: Tue, 31 Mar 2026 18:21:17 +0200
-Message-ID: <20260331161733.187584640@linuxfoundation.org>
+Message-ID: <20260331161746.347082061@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231550-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232107-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.991];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
@@ -91,12 +91,12 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email]
-X-Rspamd-Queue-Id: 6542336CC63
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email]
+X-Rspamd-Queue-Id: 2139B36EBF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -153,7 +153,7 @@ index 1c85a2af92bf7..375f6d6e03a7d 100644
 +curr1_input		Measured current in milliamperes.
 +curr1_max		Overcurrent shutdown threshold in milliamperes.
 diff --git a/drivers/hwmon/adm1177.c b/drivers/hwmon/adm1177.c
-index 60a893f271597..7581fd2456f9b 100644
+index 8b2c965480e3f..7888afe8dafd6 100644
 --- a/drivers/hwmon/adm1177.c
 +++ b/drivers/hwmon/adm1177.c
 @@ -10,6 +10,8 @@
