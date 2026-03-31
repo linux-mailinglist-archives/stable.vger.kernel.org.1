@@ -1,240 +1,283 @@
-Return-Path: <stable+bounces-231435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB8UCjXby2lHMAYAu9opvQ
-	(envelope-from <stable+bounces-231435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:33:25 +0200
+	id CIYrKErdy2lHMAYAu9opvQ
+	(envelope-from <stable+bounces-231436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA20A36B059
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:33:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F21B36B1CB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51451304023F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:31:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3125330062C1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C513FB7D3;
-	Tue, 31 Mar 2026 14:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731FA3F7875;
+	Tue, 31 Mar 2026 14:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jy2z2PY+"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="coTAnRI0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1D53FB7D6
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 14:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2EE370D64;
+	Tue, 31 Mar 2026 14:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774967492; cv=none; b=ERM1WPhYyFoDgv78lG95zXr4bnc3pshUJTBwJZsQ5+EUDiDp2zsO0oQDhUSNHSU+TJJ+39o0KIg0/EqYlG/hOSEf7quCj79xHsX9sbeD+C7bx6M7oPoY0Btd3HrOsSZnhzPsmwzTiQP2/+VdeGWE/DQbmESaEOvoB96MY7YqPlc=
+	t=1774967724; cv=none; b=Pn1BK7Ypd9d29NkXU4n+xYjrgZCQbTMkwF4yAfy8YbmESq9wo7L4FVlNlH27VMgMMs2AOk5WfRaRPdA5XnQi1juF3DRFaP3P8Y47XXgGovSjFr2jhNSidZq9+Yf6D/0RmXoe3wj/YTG6IN50cs4QXbv6eBJZDH5FPh4oZDhKZZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774967492; c=relaxed/simple;
-	bh=vtMeWO1wnH9OBnXZkkGK63LtEHGZBKYWVPd+4AvWkTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TwMheVg3Ml2CqFr+CgoSRq7jnkm69SmTRSi6kTKlctBzYwwGLusG4YmEoSmRSeslw4n/xLmJ8ezJKBeSF0oOua29bOMnK2JB/71/i5vRZGYbSpELLzxaFl3Hu6Z/3hAUn8EC9/u5Wl3qnnsde3hknLPDoBZu7EiiFXiORQBNzBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jy2z2PY+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BADC2BCB1;
-	Tue, 31 Mar 2026 14:31:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774967492;
-	bh=vtMeWO1wnH9OBnXZkkGK63LtEHGZBKYWVPd+4AvWkTQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jy2z2PY+ZAr0oRFmSnkmWFdDaVVZRmrs+XR/Gl5/+W1G959oo71a8WQ6p/1YCz2wm
-	 rmvPrbMkhOoxbx0Z2o/Ll/CaXBJ2HEArAd+fQczu72/sosfqKGwXDn/bfbVc5v/z/6
-	 QATkHUS8k+W6k/50DFFGoLG4glkqb+1YKS0BvEmyIg3MX8Kp14D1/Dhz7uY1iuHC7x
-	 wHS8MbA6J1jrVVYSi1ZhkKbHNxwSQso49/qEBmvKVlOTA/MV9IvDfZs6gGOWC8nlGj
-	 zgzMe8crmFGtbUncGNtlu+afIMM+0c17XDIEKwOiXB0USKpPpZ3FqfltHz8/EB9bPX
-	 KoFt3UIT90Xvw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Josef Bacik <josef@toxicpanda.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y] scsi: target: tcm_loop: Drain commands in target_reset handler
-Date: Tue, 31 Mar 2026 10:31:29 -0400
-Message-ID: <20260331143129.2479621-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033009-gusty-fax-ff6f@gregkh>
-References: <2026033009-gusty-fax-ff6f@gregkh>
+	s=arc-20240116; t=1774967724; c=relaxed/simple;
+	bh=Grl7oKLDID+CLf3qslXdDCfSH7IfOizXAxEjYRkXgHo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tgRufbdlNwjE9/VpySm+cw/qNR0Tb4rofNtf6USm4F9yLN+c6KPwEAvAXZAW01GTAMRGimMQRC20ABVna7hoA9+uMhuc41w5+8oULzz+B3BtYqlqAjbmAu2zUUhcqs9F76gRDFQVGfb85FN05WpFPU963ghHoBk2G6s+fQqOKmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=coTAnRI0; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 40A96497F;
+	Tue, 31 Mar 2026 07:35:16 -0700 (PDT)
+Received: from [10.57.17.66] (unknown [10.57.17.66])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C02E3F641;
+	Tue, 31 Mar 2026 07:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774967722; bh=Grl7oKLDID+CLf3qslXdDCfSH7IfOizXAxEjYRkXgHo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=coTAnRI0mY/4Z0D72BMbvQXEdeNWe1no5kS7ITjGugJlwOGUnlQQW7AqPOXZTKoEh
+	 G8XJCiNFU8cctBKsg7IF6aLoW2OuUN2IMlOJ2RKv6ICjIeVId3wSCvrtiH2U9CdQhW
+	 fKbdVTdi7he6PopG3lXGd/jjggoZk92QOs9uqaCo=
+Message-ID: <d3f6cf8c-3bfe-41a6-86ce-e6515aa5ef96@arm.com>
+Date: Tue, 31 Mar 2026 15:35:18 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] arm64: mm: Fix rodata=full block mapping support
+ for realm guests
+Content-Language: en-GB
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Yang Shi <yang@os.amperecomputing.com>, Jinjiang Tu <tujinjiang@huawei.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260330161705.3349825-1-ryan.roberts@arm.com>
+ <20260330161705.3349825-2-ryan.roberts@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260330161705.3349825-2-ryan.roberts@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231435-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[stable.vger.kernel.org:query timed out];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231436-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[suzuki.poulose@arm.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toxicpanda.com:email]
-X-Rspamd-Queue-Id: CA20A36B059
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:dkim,arm.com:email,arm.com:mid,huawei.com:email]
+X-Rspamd-Queue-Id: 1F21B36B1CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Josef Bacik <josef@toxicpanda.com>
+On 30/03/2026 17:17, Ryan Roberts wrote:
+> Commit a166563e7ec37 ("arm64: mm: support large block mapping when
+> rodata=full") enabled the linear map to be mapped by block/cont while
+> still allowing granular permission changes on BBML2_NOABORT systems by
+> lazily splitting the live mappings. This mechanism was intended to be
+> usable by realm guests since they need to dynamically share dma buffers
+> with the host by "decrypting" them - which for Arm CCA, means marking
+> them as shared in the page tables.
+> 
+> However, it turns out that the mechanism was failing for realm guests
+> because realms need to share their dma buffers (via
+> __set_memory_enc_dec()) much earlier during boot than
+> split_kernel_leaf_mapping() was able to handle. The report linked below
+> showed that GIC's ITS was one such user. But during the investigation I
+> found other callsites that could not meet the
+> split_kernel_leaf_mapping() constraints.
+> 
+> The problem is that we block map the linear map based on the boot CPU
+> supporting BBML2_NOABORT, then check that all the other CPUs support it
+> too when finalizing the caps. If they don't, then we stop_machine() and
+> split to ptes. For safety, split_kernel_leaf_mapping() previously
+> wouldn't permit splitting until after the caps were finalized. That
+> ensured that if any secondary cpus were running that didn't support
+> BBML2_NOABORT, we wouldn't risk breaking them.
+> 
+> I've fix this problem by reducing the black-out window where we refuse
+> to split; there are now 2 windows. The first is from T0 until the page
+> allocator is inititialized. Splitting allocates memory for the page
+> allocator so it must be in use. The second covers the period between
+> starting to online the secondary cpus until the system caps are
+> finalized (this is a very small window).
+> 
+> All of the problematic callers are calling __set_memory_enc_dec() before
+> the secondary cpus come online, so this solves the problem. However, one
+> of these callers, swiotlb_update_mem_attributes(), was trying to split
+> before the page allocator was initialized. So I have moved this call
+> from arch_mm_preinit() to mem_init(), which solves the ordering issue.
+> 
+> I've added warnings and return an error if any attempt is made to split
+> in the black-out windows.
+> 
+> Note there are other issues which prevent booting all the way to user
+> space, which will be fixed in subsequent patches.
+> 
+> Reported-by: Jinjiang Tu <tujinjiang@huawei.com>
+> Closes: https://lore.kernel.org/all/0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com/
+> Fixes: a166563e7ec37 ("arm64: mm: support large block mapping when rodata=full")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
-[ Upstream commit 1333eee56cdf3f0cf67c6ab4114c2c9e0a952026 ]
+I have tested with a hacked cpufeature code to enable BBML2_NOABORT
+for FVP MIDRs.
 
-tcm_loop_target_reset() violates the SCSI EH contract: it returns SUCCESS
-without draining any in-flight commands.  The SCSI EH documentation
-(scsi_eh.rst) requires that when a reset handler returns SUCCESS the driver
-has made lower layers "forget about timed out scmds" and is ready for new
-commands.  Every other SCSI LLD (virtio_scsi, mpt3sas, ipr, scsi_debug,
-mpi3mr) enforces this by draining or completing outstanding commands before
-returning SUCCESS.
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Tested-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-Because tcm_loop_target_reset() doesn't drain, the SCSI EH reuses in-flight
-scsi_cmnd structures for recovery commands (e.g. TUR) while the target core
-still has async completion work queued for the old se_cmd.  The memset in
-queuecommand zeroes se_lun and lun_ref_active, causing
-transport_lun_remove_cmd() to skip its percpu_ref_put().  The leaked LUN
-reference prevents transport_clear_lun_ref() from completing, hanging
-configfs LUN unlink forever in D-state:
+Suzuki
 
-  INFO: task rm:264 blocked for more than 122 seconds.
-  rm              D    0   264    258 0x00004000
-  Call Trace:
-   __schedule+0x3d0/0x8e0
-   schedule+0x36/0xf0
-   transport_clear_lun_ref+0x78/0x90 [target_core_mod]
-   core_tpg_remove_lun+0x28/0xb0 [target_core_mod]
-   target_fabric_port_unlink+0x50/0x60 [target_core_mod]
-   configfs_unlink+0x156/0x1f0 [configfs]
-   vfs_unlink+0x109/0x290
-   do_unlinkat+0x1d5/0x2d0
-
-Fix this by making tcm_loop_target_reset() actually drain commands:
-
- 1. Issue TMR_LUN_RESET via tcm_loop_issue_tmr() to drain all commands that
-    the target core knows about (those not yet CMD_T_COMPLETE).
-
- 2. Use blk_mq_tagset_busy_iter() to iterate all started requests and
-    flush_work() on each se_cmd — this drains any deferred completion work
-    for commands that already had CMD_T_COMPLETE set before the TMR (which
-    the TMR skips via __target_check_io_state()).  This is the same pattern
-    used by mpi3mr, scsi_debug, and libsas to drain outstanding commands
-    during reset.
-
-Fixes: e0eb5d38b732 ("scsi: target: tcm_loop: Use block cmd allocator for se_cmds")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Link: https://patch.msgid.link/27011aa34c8f6b1b94d2e3cf5655b6d037f53428.1773706803.git.josef@toxicpanda.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/target/loopback/tcm_loop.c | 52 ++++++++++++++++++++++++++----
- 1 file changed, 46 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
-index 01a8e349dc4d1..156f934049f19 100644
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -26,6 +26,7 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/configfs.h>
-+#include <linux/blk-mq.h>
- #include <scsi/scsi.h>
- #include <scsi/scsi_tcq.h>
- #include <scsi/scsi_host.h>
-@@ -268,15 +269,27 @@ static int tcm_loop_device_reset(struct scsi_cmnd *sc)
- 	return (ret == TMR_FUNCTION_COMPLETE) ? SUCCESS : FAILED;
- }
- 
-+static bool tcm_loop_flush_work_iter(struct request *rq, void *data)
-+{
-+	struct scsi_cmnd *sc = blk_mq_rq_to_pdu(rq);
-+	struct tcm_loop_cmd *tl_cmd = scsi_cmd_priv(sc);
-+	struct se_cmd *se_cmd = &tl_cmd->tl_se_cmd;
-+
-+	flush_work(&se_cmd->work);
-+	return true;
-+}
-+
- static int tcm_loop_target_reset(struct scsi_cmnd *sc)
- {
- 	struct tcm_loop_hba *tl_hba;
- 	struct tcm_loop_tpg *tl_tpg;
-+	struct Scsi_Host *sh = sc->device->host;
-+	int ret;
- 
- 	/*
- 	 * Locate the tcm_loop_hba_t pointer
- 	 */
--	tl_hba = *(struct tcm_loop_hba **)shost_priv(sc->device->host);
-+	tl_hba = *(struct tcm_loop_hba **)shost_priv(sh);
- 	if (!tl_hba) {
- 		pr_err("Unable to perform device reset without active I_T Nexus\n");
- 		return FAILED;
-@@ -285,11 +298,38 @@ static int tcm_loop_target_reset(struct scsi_cmnd *sc)
- 	 * Locate the tl_tpg pointer from TargetID in sc->device->id
- 	 */
- 	tl_tpg = &tl_hba->tl_hba_tpgs[sc->device->id];
--	if (tl_tpg) {
--		tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
--		return SUCCESS;
--	}
--	return FAILED;
-+	if (!tl_tpg)
-+		return FAILED;
-+
-+	/*
-+	 * Issue a LUN_RESET to drain all commands that the target core
-+	 * knows about.  This handles commands not yet marked CMD_T_COMPLETE.
-+	 */
-+	ret = tcm_loop_issue_tmr(tl_tpg, sc->device->lun, 0, TMR_LUN_RESET);
-+	if (ret != TMR_FUNCTION_COMPLETE)
-+		return FAILED;
-+
-+	/*
-+	 * Flush any deferred target core completion work that may still be
-+	 * queued.  Commands that already had CMD_T_COMPLETE set before the TMR
-+	 * are skipped by the TMR drain, but their async completion work
-+	 * (transport_lun_remove_cmd → percpu_ref_put, release_cmd → scsi_done)
-+	 * may still be pending in target_completion_wq.
-+	 *
-+	 * The SCSI EH will reuse in-flight scsi_cmnd structures for recovery
-+	 * commands (e.g. TUR) immediately after this handler returns SUCCESS —
-+	 * if deferred work is still pending, the memset in queuecommand would
-+	 * zero the se_cmd while the work accesses it, leaking the LUN
-+	 * percpu_ref and hanging configfs unlink forever.
-+	 *
-+	 * Use blk_mq_tagset_busy_iter() to find all started requests and
-+	 * flush_work() on each — the same pattern used by mpi3mr, scsi_debug,
-+	 * and other SCSI drivers to drain outstanding commands during reset.
-+	 */
-+	blk_mq_tagset_busy_iter(&sh->tag_set, tcm_loop_flush_work_iter, NULL);
-+
-+	tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
-+	return SUCCESS;
- }
- 
- static const struct scsi_host_template tcm_loop_driver_template = {
--- 
-2.53.0
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> ---
+>   arch/arm64/include/asm/mmu.h |  2 ++
+>   arch/arm64/mm/init.c         |  9 +++++++-
+>   arch/arm64/mm/mmu.c          | 45 +++++++++++++++++++++++++-----------
+>   3 files changed, 42 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/mmu.h b/arch/arm64/include/asm/mmu.h
+> index 137a173df1ff8..472610433aaea 100644
+> --- a/arch/arm64/include/asm/mmu.h
+> +++ b/arch/arm64/include/asm/mmu.h
+> @@ -112,5 +112,7 @@ void kpti_install_ng_mappings(void);
+>   static inline void kpti_install_ng_mappings(void) {}
+>   #endif
+>   
+> +extern bool page_alloc_available;
+> +
+>   #endif	/* !__ASSEMBLER__ */
+>   #endif
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 96711b8578fd0..b9b248d24fd10 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -350,7 +350,6 @@ void __init arch_mm_preinit(void)
+>   	}
+>   
+>   	swiotlb_init(swiotlb, flags);
+> -	swiotlb_update_mem_attributes();
+>   
+>   	/*
+>   	 * Check boundaries twice: Some fundamental inconsistencies can be
+> @@ -377,6 +376,14 @@ void __init arch_mm_preinit(void)
+>   	}
+>   }
+>   
+> +bool page_alloc_available __ro_after_init;
+> +
+> +void __init mem_init(void)
+> +{
+> +	page_alloc_available = true;
+> +	swiotlb_update_mem_attributes();
+> +}
+> +
+>   void free_initmem(void)
+>   {
+>   	void *lm_init_begin = lm_alias(__init_begin);
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index a6a00accf4f93..223947487a223 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -768,30 +768,51 @@ static inline bool force_pte_mapping(void)
+>   }
+>   
+>   static DEFINE_MUTEX(pgtable_split_lock);
+> +static bool linear_map_requires_bbml2;
+>   
+>   int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
+>   {
+>   	int ret;
+>   
+> -	/*
+> -	 * !BBML2_NOABORT systems should not be trying to change permissions on
+> -	 * anything that is not pte-mapped in the first place. Just return early
+> -	 * and let the permission change code raise a warning if not already
+> -	 * pte-mapped.
+> -	 */
+> -	if (!system_supports_bbml2_noabort())
+> -		return 0;
+> -
+>   	/*
+>   	 * If the region is within a pte-mapped area, there is no need to try to
+>   	 * split. Additionally, CONFIG_DEBUG_PAGEALLOC and CONFIG_KFENCE may
+>   	 * change permissions from atomic context so for those cases (which are
+>   	 * always pte-mapped), we must not go any further because taking the
+> -	 * mutex below may sleep.
+> +	 * mutex below may sleep. Do not call force_pte_mapping() here because
+> +	 * it could return a confusing result if called from a secondary cpu
+> +	 * prior to finalizing caps. Instead, linear_map_requires_bbml2 gives us
+> +	 * what we need.
+>   	 */
+> -	if (force_pte_mapping() || is_kfence_address((void *)start))
+> +	if (!linear_map_requires_bbml2 || is_kfence_address((void *)start))
+>   		return 0;
+>   
+> +	if (!system_supports_bbml2_noabort()) {
+> +		/*
+> +		 * !BBML2_NOABORT systems should not be trying to change
+> +		 * permissions on anything that is not pte-mapped in the first
+> +		 * place. Just return early and let the permission change code
+> +		 * raise a warning if not already pte-mapped.
+> +		 */
+> +		if (system_capabilities_finalized())
+> +			return 0;
+> +
+> +		/*
+> +		 * Boot-time: split_kernel_leaf_mapping_locked() allocates from
+> +		 * page allocator. Can't split until it's available.
+> +		 */
+> +		if (WARN_ON(!page_alloc_available))
+> +			return -EBUSY;
+> +
+> +		/*
+> +		 * Boot-time: Started secondary cpus but don't know if they
+> +		 * support BBML2_NOABORT yet. Can't allow splitting in this
+> +		 * window in case they don't.
+> +		 */
+> +		if (WARN_ON(num_online_cpus() > 1))
+> +			return -EBUSY;
+> +	}
+> +
+>   	/*
+>   	 * Ensure start and end are at least page-aligned since this is the
+>   	 * finest granularity we can split to.
+> @@ -891,8 +912,6 @@ static int range_split_to_ptes(unsigned long start, unsigned long end, gfp_t gfp
+>   	return ret;
+>   }
+>   
+> -static bool linear_map_requires_bbml2 __initdata;
+> -
+>   u32 idmap_kpti_bbml2_flag;
+>   
+>   static void __init init_idmap_kpti_bbml2_flag(void)
 
 
