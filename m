@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-231986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PxtKd/8y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-231986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:03 +0200
+	id QMteMXQBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A5636D7A2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AE236E5EE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4968430ED0CC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D89D301BAB0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8103341B342;
-	Tue, 31 Mar 2026 16:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECE7314D37;
+	Tue, 31 Mar 2026 17:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4W+LeFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opzR69Qb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447EF2D1F40;
-	Tue, 31 Mar 2026 16:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE1530CD85;
+	Tue, 31 Mar 2026 17:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975580; cv=none; b=eawPTaaHZPaOmYJLcNiz9tWM1wp7h0xvclbKEW5MsTkZvCbaxSePmrtmeCKPNq3gpMpcnifa2zVAfzQVfjaewtLaR5V6vyje4qrKrkTfYMkHu+Si5jb//h9iGAIPtVea4O+FTnpQT1o8IL5i0Oc1Revmcc16UpBmOfNlqTGQhUc=
+	t=1774976975; cv=none; b=F6JBq55hL8ckwjyEMfOjxm6X3spYrO31eettuU04iazOs0fKuVxUSKzinnkj3PGYtqLyRq0Jm2Ks30TGmmtwwsv0Cjy+b75umalB5ufaQYoWiIbGL3+N6MwImJgKtpSsjV3iO/SaYAFv7PXO25RMKsSWJsuBNgMUFB8l3wlDKlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975580; c=relaxed/simple;
-	bh=nLmBnW+UmEfcR6CBA2Upb98vMlojPg0FsaoAI50v1Ew=;
+	s=arc-20240116; t=1774976975; c=relaxed/simple;
+	bh=KFSLVEDk7hOo6KsDvnZQHazMc709cv6ccLANUIZIeTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jf2mAUnLvVvu/OQIGgF4TlvEAC62Dm70RyKGp0wj3ilkVTAhQI2M1v858ulKncfzjAD3z/cIVgPuKJR94QLI40ZdRmQ/OnIpt5VE1r3Nh80OGmDrTxZmxDz25KRAh4w+ZAjkClwafMP/pOqQ2P/H4aQ58KM5yskBIePm9Xtj5H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4W+LeFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE32EC19423;
-	Tue, 31 Mar 2026 16:46:19 +0000 (UTC)
+	 MIME-Version; b=SLS6QV3CxxapPJrmV623t9yB2yjvHzuTOjTlf1JViXMKUynSYALJUra9KzAREQBXUU9cK/4w17zm6CCxn9M5bKu3qJiMGEpPLfmzddKBGGPd0pC/h47M7aCgUKOv+iMRPUIx5Y+llKTOfVGP0kH8uIitd9o6Rm8AH4NFtCxz7Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opzR69Qb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653B7C19423;
+	Tue, 31 Mar 2026 17:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975580;
-	bh=nLmBnW+UmEfcR6CBA2Upb98vMlojPg0FsaoAI50v1Ew=;
+	s=korg; t=1774976975;
+	bh=KFSLVEDk7hOo6KsDvnZQHazMc709cv6ccLANUIZIeTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4W+LeFIwisFLupPFMDu4JSxTe3bAMoFK+Isnsuz7WsMdvDcEx/OuotgvD1DpHV1a
-	 7D+hwKFhQnv1agOC0QyCR7AxgDVczZG/YG/v6TjbxhlLwaxQ3gdVtfDGHlOG8ZzigB
-	 aetqcWca+fMsOtSiFkoY/veVTYke5kPGl4YUutO0=
+	b=opzR69QbNlCPja4Snkgd4bz1WqcAU6Is9PXsVwiCkOmlJFGRWfpZcxI4WfD5ZUema
+	 PvsVb8GHNqts4wLAAd6rSu+7CiSIeaUP/Y1UKsivpNye6mvarP1rgMA+IiZD00hTWj
+	 V5VHxgDLHhpysfnndcSTrX7jhp4M7VjxQnR+Yn+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Christian Eggers <ceggers@arri.de>
-Subject: [PATCH 6.19 342/342] Bluetooth: L2CAP: Fix regressions caused by reusing ident
-Date: Tue, 31 Mar 2026 18:22:55 +0200
-Message-ID: <20260331161811.482525451@linuxfoundation.org>
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.18 273/309] powerpc64/bpf: do not increment tailcall count when prog is NULL
+Date: Tue, 31 Mar 2026 18:22:56 +0200
+Message-ID: <20260331161803.610489715@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,103 +78,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231986-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232526-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 46A5636D7A2
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 96AE236E5EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
 
-commit 761fb8ec8778f0caf2bba5a41e3cff1ea86974f3 upstream.
+commit 521bd39d9d28ce54cbfec7f9b89c94ad4fdb8350 upstream.
 
-This attempt to fix regressions caused by reusing ident which apparently
-is not handled well on certain stacks causing the stack to not respond to
-requests, so instead of simple returning the first unallocated id this
-stores the last used tx_ident and then attempt to use the next until all
-available ids are exausted and then cycle starting over to 1.
+Do not increment tailcall count, if tailcall did not succeed due to
+missing BPF program.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221120
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221177
-Fixes: 6c3ea155e5ee ("Bluetooth: L2CAP: Fix not tracking outstanding TX ident")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Christian Eggers <ceggers@arri.de>
+Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
+Cc: stable@vger.kernel.org
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260303181031.390073-2-hbathini@linux.ibm.com
+[ Conflict due to missing feature commit 2ed2d8f6fb38 ("powerpc64/bpf:
+  Support tailcalls with subprogs") resolved accordingly. ]
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/l2cap.h |    1 +
- net/bluetooth/l2cap_core.c    |   29 ++++++++++++++++++++++++++---
- 2 files changed, 27 insertions(+), 3 deletions(-)
+ arch/powerpc/net/bpf_jit_comp64.c |   23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/include/net/bluetooth/l2cap.h
-+++ b/include/net/bluetooth/l2cap.h
-@@ -658,6 +658,7 @@ struct l2cap_conn {
- 	struct sk_buff		*rx_skb;
- 	__u32			rx_len;
- 	struct ida		tx_ida;
-+	__u8			tx_ident;
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -430,27 +430,32 @@ static int bpf_jit_emit_tail_call(u32 *i
  
- 	struct sk_buff_head	pending_rx;
- 	struct work_struct	pending_rx_work;
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -926,16 +926,39 @@ int l2cap_chan_check_security(struct l2c
- 
- static int l2cap_get_ident(struct l2cap_conn *conn)
- {
-+	u8 max;
-+	int ident;
-+
- 	/* LE link does not support tools like l2ping so use the full range */
- 	if (conn->hcon->type == LE_LINK)
--		return ida_alloc_range(&conn->tx_ida, 1, 255, GFP_ATOMIC);
--
-+		max = 255;
- 	/* Get next available identificator.
- 	 *    1 - 128 are used by kernel.
- 	 *  129 - 199 are reserved.
- 	 *  200 - 254 are used by utilities like l2ping, etc.
+ 	/*
+ 	 * tail_call_cnt++;
++	 * Writeback this updated value only if tailcall succeeds.
  	 */
--	return ida_alloc_range(&conn->tx_ida, 1, 128, GFP_ATOMIC);
-+	else
-+		max = 128;
-+
-+	/* Allocate ident using min as last used + 1 (cyclic) */
-+	ident = ida_alloc_range(&conn->tx_ida, READ_ONCE(conn->tx_ident) + 1,
-+				max, GFP_ATOMIC);
-+	/* Force min 1 to start over */
-+	if (ident <= 0) {
-+		ident = ida_alloc_range(&conn->tx_ida, 1, max, GFP_ATOMIC);
-+		if (ident <= 0) {
-+			/* If all idents are in use, log an error, this is
-+			 * extremely unlikely to happen and would indicate a bug
-+			 * in the code that idents are not being freed properly.
-+			 */
-+			BT_ERR("Unable to allocate ident: %d", ident);
-+			return 0;
-+		}
-+	}
-+
-+	WRITE_ONCE(conn->tx_ident, ident);
-+
-+	return ident;
- }
+ 	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), 1));
+-	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
  
- static void l2cap_send_acl(struct l2cap_conn *conn, struct sk_buff *skb,
+ 	/* prog = array->ptrs[index]; */
+-	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_1), b2p_index, 8));
+-	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), b2p_bpf_array));
+-	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_array, ptrs)));
++	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_2), b2p_index, 8));
++	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2), b2p_bpf_array));
++	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			offsetof(struct bpf_array, ptrs)));
+ 
+ 	/*
+ 	 * if (prog == NULL)
+ 	 *   goto out;
+ 	 */
+-	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_1), 0));
++	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_2), 0));
+ 	PPC_BCC_SHORT(COND_EQ, out);
+ 
+ 	/* goto *(prog->bpf_func + prologue_size); */
+-	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_prog, bpf_func)));
+-	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1),
+-			FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
+-	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_1)));
++	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			offsetof(struct bpf_prog, bpf_func)));
++	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			  FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
++	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_2)));
++
++	/* Writeback updated tailcall count */
++	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
+ 
+ 	/* tear down stack, restore NVRs, ... */
+ 	bpf_jit_emit_common_epilogue(image, ctx);
 
 
 
