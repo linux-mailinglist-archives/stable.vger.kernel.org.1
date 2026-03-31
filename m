@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-231638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJ0SAGv4y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231638-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:03 +0200
+	id +C1tDXQBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEE736CE19
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53AD36E5E7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49F1B308EF27
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE7E330BD49A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A54423A74;
-	Tue, 31 Mar 2026 16:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081893019D6;
+	Tue, 31 Mar 2026 17:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sXSqP9zm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gE7lry6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5BA41C30C;
-	Tue, 31 Mar 2026 16:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF41C2E1C7C;
+	Tue, 31 Mar 2026 17:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974682; cv=none; b=UeMS0eWvPlqhLhQ0bgvtGn0t/sTeLuUwUGobsFGFvZ7GEbWvypPBQO5Rs84HU0R6a2CWKBPLGTnfofv3fya5J1rYrM/QuCtyAdTmg/E4X80r68EmziMzIkEOL2S/0rvspM1G5wSj5obAQxftwhPf/TqU7IFzDIYClcaFMa1Cu+I=
+	t=1774976799; cv=none; b=IjdQz2wJiQ1i0u4iLVSaoDQ+mTTjcrN+OPscawJHXsf1cENgkaYs1LJQRNXkCeFbF/sLBPdgwqMpdqWV6Rpym7/FjIVDHhMF2jjtL50SGhomkjToVPAG9XY5aHWPH6loTzM31b4BusRRfiIjXzgyJ4PBjhfbE/CI+GpfGX10tek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974682; c=relaxed/simple;
-	bh=fsc3siuiIXW//9+MzhWv/5max0tjwTva1qTA8Encaiw=;
+	s=arc-20240116; t=1774976799; c=relaxed/simple;
+	bh=0s/MftozvmBMPFMX/HAkKmReMhGQ88WrZSwUXjgT2YY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jq7ugdo8qxY5TupIsdkYILNnfM3amat1cuiD3DBPkwR1yuOvtzOax7F4R6SDGuHBETL+32BMFqII9S7aXJ7C6nQd/TxU8pjB8Bnvi2FaZhW36XZv02Kzf4X0ikiTDtQCKLRwhecUUHfrsJOJZbp3AQbOaPRF7Rvc/WUYms6Q0aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sXSqP9zm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C48C19424;
-	Tue, 31 Mar 2026 16:31:22 +0000 (UTC)
+	 MIME-Version; b=rXseu/4FcJhDfSpqIHEmz+B7YJBZCa7LnOdZbjKRZgYqO7IPtP/U5TjhIe5KaZAhMqvKUYWkbXFzWV4m6+Q4nGjHc0zi81ICAHrKA/DglUaKOPnWVH7Jw6ipfBZ/oo9Fu8znlMBYs9vM9SPWnextm5wtKZqQG3xRv91ELCy28Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gE7lry6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BB2C19423;
+	Tue, 31 Mar 2026 17:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974682;
-	bh=fsc3siuiIXW//9+MzhWv/5max0tjwTva1qTA8Encaiw=;
+	s=korg; t=1774976799;
+	bh=0s/MftozvmBMPFMX/HAkKmReMhGQ88WrZSwUXjgT2YY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sXSqP9zmsUD/hHYOBgYxzvQdCAN3LUZMJ1o6UBBPI0geABhR0LzEMIoJccp4QXwZV
-	 2VKArzRv7vuR73e2OEj2D1qUcQMHJvZcWwuhAF0LHHSbaWBNi/1Qg1dhwpkcdDP429
-	 IDd6VpCpg/ZLktWsUae3a1aLqaoGjxATS/mRBquY=
+	b=0gE7lry6PMppuTRuBNdaY1s7TD/L4N7T8TMeZqV8WTXduWqb/G5EPxu31q28AH94Y
+	 dTe69trrc6t1/uLRtHIMN/p5898ylu/NcjzgvHrWWjtfNQdEgedZcXi2xJY+juu+hh
+	 PoOg6CKRLU4qmC9iPP1DQTzy/nRwVe8o58oHK1sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <p.yadav@ti.com>,
-	Michael Walle <michael@walle.cc>,
-	Luke Wang <ziniu.wang_1@nxp.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Liyin Zhang <liyin.zhang.cn@windriver.com>
-Subject: [PATCH 6.6 150/175] mtd: spi-nor: core: avoid odd length/address reads on 8D-8D-8D mode
+	Frank Li <Frank.Li@nxp.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.18 231/309] dmaengine: sh: rz-dmac: Protect the driver specific lists
 Date: Tue, 31 Mar 2026 18:22:14 +0200
-Message-ID: <20260331161735.302050711@linuxfoundation.org>
+Message-ID: <20260331161802.083713955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,164 +68,158 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231638-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232458-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ti.com:email]
-X-Rspamd-Queue-Id: 8DEE736CE19
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tuxon.dev:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,renesas.com:email]
+X-Rspamd-Queue-Id: A53AD36E5E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav <p.yadav@ti.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-[ Upstream commit f156b23df6a84efb2f6686156be94d4988568954 ]
+commit abb863e6213dc41a58ef8bb3289b7e77460dabf3 upstream.
 
-On Octal DTR capable flashes like Micron Xcella reads cannot start or
-end at an odd address in Octal DTR mode. Extra bytes need to be read at
-the start or end to make sure both the start address and length remain
-even.
+The driver lists (ld_free, ld_queue) are used in
+rz_dmac_free_chan_resources(), rz_dmac_terminate_all(),
+rz_dmac_issue_pending(), and rz_dmac_irq_handler_thread(), all under
+the virtual channel lock. Take the same lock in rz_dmac_prep_slave_sg()
+and rz_dmac_prep_dma_memcpy() as well to avoid concurrency issues, since
+these functions also check whether the lists are empty and update or
+remove list entries.
 
-To avoid allocating too much extra memory, thereby putting unnecessary
-memory pressure on the system, the temporary buffer containing the extra
-padding bytes is capped at PAGE_SIZE bytes. The rest of the 2-byte
-aligned part should be read directly in the main buffer.
-
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
-Reviewed-by: Michael Walle <michael@walle.cc>
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Link: https://lore.kernel.org/r/20250708091646.292-1-ziniu.wang_1@nxp.com
-[ Resolve conflict in drivers/mtd/spi-nor/core.c.
-  In spi_nor_read(), 6.6.y contains a spi_nor_convert_addr() call
-  before spi_nor_read_data(), introduced by 364995962803 ("mtd:
-  spi-nor: Add a ->convert_addr() method"), which does not exist in
-  mainline. This call is specific to Xilinx S3AN flashes, which use a
-  non-standard address format. In mainline, S3AN flash support was
-  removed entirely, and the corresponding spi_nor_convert_addr() call
-  was dropped by 9539d12d9f52 ("mtd: spi-nor: get rid of non-power-of-2
-  page size handling"). Keep the existing spi_nor_convert_addr() call
-  and insert the new spi_nor_octal_dtr_read() branch after it. ]
-Signed-off-by: Liyin Zhang <liyin.zhang.cn@windriver.com>
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20260316133252.240348-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/core.c |   76 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 75 insertions(+), 1 deletion(-)
+ drivers/dma/sh/rz-dmac.c |   63 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 35 insertions(+), 28 deletions(-)
 
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -2082,6 +2082,76 @@ static const struct flash_info *spi_nor_
- 	return info;
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -10,6 +10,7 @@
+  */
+ 
+ #include <linux/bitfield.h>
++#include <linux/cleanup.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
+ #include <linux/interrupt.h>
+@@ -448,6 +449,7 @@ static int rz_dmac_alloc_chan_resources(
+ 		if (!desc)
+ 			break;
+ 
++		/* No need to lock. This is called only for the 1st client. */
+ 		list_add_tail(&desc->node, &channel->ld_free);
+ 		channel->descs_allocated++;
+ 	}
+@@ -503,18 +505,21 @@ rz_dmac_prep_dma_memcpy(struct dma_chan
+ 	dev_dbg(dmac->dev, "%s channel: %d src=0x%pad dst=0x%pad len=%zu\n",
+ 		__func__, channel->index, &src, &dest, len);
+ 
+-	if (list_empty(&channel->ld_free))
+-		return NULL;
++	scoped_guard(spinlock_irqsave, &channel->vc.lock) {
++		if (list_empty(&channel->ld_free))
++			return NULL;
++
++		desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
++
++		desc->type = RZ_DMAC_DESC_MEMCPY;
++		desc->src = src;
++		desc->dest = dest;
++		desc->len = len;
++		desc->direction = DMA_MEM_TO_MEM;
+ 
+-	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
+-
+-	desc->type = RZ_DMAC_DESC_MEMCPY;
+-	desc->src = src;
+-	desc->dest = dest;
+-	desc->len = len;
+-	desc->direction = DMA_MEM_TO_MEM;
++		list_move_tail(channel->ld_free.next, &channel->ld_queue);
++	}
+ 
+-	list_move_tail(channel->ld_free.next, &channel->ld_queue);
+ 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
  }
  
-+/*
-+ * On Octal DTR capable flashes, reads cannot start or end at an odd
-+ * address in Octal DTR mode. Extra bytes need to be read at the start
-+ * or end to make sure both the start address and length remain even.
-+ */
-+static int spi_nor_octal_dtr_read(struct spi_nor *nor, loff_t from, size_t len,
-+				  u_char *buf)
-+{
-+	u_char *tmp_buf;
-+	size_t tmp_len;
-+	loff_t start, end;
-+	int ret, bytes_read;
-+
-+	if (IS_ALIGNED(from, 2) && IS_ALIGNED(len, 2))
-+		return spi_nor_read_data(nor, from, len, buf);
-+	else if (IS_ALIGNED(from, 2) && len > PAGE_SIZE)
-+		return spi_nor_read_data(nor, from, round_down(len, PAGE_SIZE),
-+					 buf);
-+
-+	tmp_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!tmp_buf)
-+		return -ENOMEM;
-+
-+	start = round_down(from, 2);
-+	end = round_up(from + len, 2);
-+
-+	/*
-+	 * Avoid allocating too much memory. The requested read length might be
-+	 * quite large. Allocating a buffer just as large (slightly bigger, in
-+	 * fact) would put unnecessary memory pressure on the system.
-+	 *
-+	 * For example if the read is from 3 to 1M, then this will read from 2
-+	 * to 4098. The reads from 4098 to 1M will then not need a temporary
-+	 * buffer so they can proceed as normal.
-+	 */
-+	tmp_len = min_t(size_t, end - start, PAGE_SIZE);
-+
-+	ret = spi_nor_read_data(nor, start, tmp_len, tmp_buf);
-+	if (ret == 0) {
-+		ret = -EIO;
-+		goto out;
-+	}
-+	if (ret < 0)
-+		goto out;
-+
-+	/*
-+	 * More bytes are read than actually requested, but that number can't be
-+	 * reported to the calling function or it will confuse its calculations.
-+	 * Calculate how many of the _requested_ bytes were read.
-+	 */
-+	bytes_read = ret;
-+
-+	if (from != start)
-+		ret -= from - start;
-+
-+	/*
-+	 * Only account for extra bytes at the end if they were actually read.
-+	 * For example, if the total length was truncated because of temporary
-+	 * buffer size limit then the adjustment for the extra bytes at the end
-+	 * is not needed.
-+	 */
-+	if (start + bytes_read == end)
-+		ret -= end - (from + len);
-+
-+	memcpy(buf, tmp_buf + (from - start), ret);
-+out:
-+	kfree(tmp_buf);
-+	return ret;
-+}
-+
- static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
- 			size_t *retlen, u_char *buf)
- {
-@@ -2101,7 +2171,11 @@ static int spi_nor_read(struct mtd_info
+@@ -530,27 +535,29 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
+ 	int dma_length = 0;
+ 	int i = 0;
  
- 		addr = spi_nor_convert_addr(nor, addr);
- 
--		ret = spi_nor_read_data(nor, addr, len, buf);
-+		if (nor->read_proto == SNOR_PROTO_8_8_8_DTR)
-+			ret = spi_nor_octal_dtr_read(nor, addr, len, buf);
+-	if (list_empty(&channel->ld_free))
+-		return NULL;
+-
+-	desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
++	scoped_guard(spinlock_irqsave, &channel->vc.lock) {
++		if (list_empty(&channel->ld_free))
++			return NULL;
++
++		desc = list_first_entry(&channel->ld_free, struct rz_dmac_desc, node);
++
++		for_each_sg(sgl, sg, sg_len, i)
++			dma_length += sg_dma_len(sg);
++
++		desc->type = RZ_DMAC_DESC_SLAVE_SG;
++		desc->sg = sgl;
++		desc->sgcount = sg_len;
++		desc->len = dma_length;
++		desc->direction = direction;
++
++		if (direction == DMA_DEV_TO_MEM)
++			desc->src = channel->src_per_address;
 +		else
-+			ret = spi_nor_read_data(nor, addr, len, buf);
-+
- 		if (ret == 0) {
- 			/* We shouldn't see 0-length reads */
- 			ret = -EIO;
++			desc->dest = channel->dst_per_address;
+ 
+-	for_each_sg(sgl, sg, sg_len, i) {
+-		dma_length += sg_dma_len(sg);
++		list_move_tail(channel->ld_free.next, &channel->ld_queue);
+ 	}
+ 
+-	desc->type = RZ_DMAC_DESC_SLAVE_SG;
+-	desc->sg = sgl;
+-	desc->sgcount = sg_len;
+-	desc->len = dma_length;
+-	desc->direction = direction;
+-
+-	if (direction == DMA_DEV_TO_MEM)
+-		desc->src = channel->src_per_address;
+-	else
+-		desc->dest = channel->dst_per_address;
+-
+-	list_move_tail(channel->ld_free.next, &channel->ld_queue);
+ 	return vchan_tx_prep(&channel->vc, &desc->vd, flags);
+ }
+ 
 
 
 
