@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-232153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEEqFhL+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:10 +0200
+	id mIq1LEH/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82A436DAF9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B5C36DE97
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 496A932828A8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3E1FF30ACD0B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3AE42668F;
-	Tue, 31 Mar 2026 16:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43902423A7C;
+	Tue, 31 Mar 2026 16:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivNjs2d/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPY00zcN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52D0425CD4;
-	Tue, 31 Mar 2026 16:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0611B423A89;
+	Tue, 31 Mar 2026 16:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976013; cv=none; b=OnmkGGB76+df2y8S9tgglAyRw7NkbTLvuxurQsrvdsdAD5f/nIEuOxeJYEOGO7ZBaBaxqIm6aYVnbU83vpU9sPU7SiEWqCsTY72tQoGJgCThqJboxd6qds/B/8IRimUyAwNk7IUMRSCjoL3xNYeG4KgizoDdAQwhH8nBVr08Yuo=
+	t=1774976125; cv=none; b=Q+j2aiy8L2OQ0SvC34G/eSoyfLk3ag5bwfAZvDqnJQFBlCqjpwywOewN5+D9rslbEzzQTnPmkxz+oEwCrCmrFohsTe12xIGrb1xjPz2IPBPrcrm7q1Jqv+kQpGFvA+qXJs9+sN7S7TRTTOKjMLkUjdqyEsRss7tcIQ/g3xjztq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976013; c=relaxed/simple;
-	bh=kgUKUvhlJftUzun5mpgDiGvInCVCJoRyvrqt7xVJMxE=;
+	s=arc-20240116; t=1774976125; c=relaxed/simple;
+	bh=hDtnEAoj1DfLSCBxm7FyAmm37kh9Ha2AXOVuw8tGP+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=coAzZPKttDtZMD4YxhshikGuLA//V5aBglexcCAUn9PzgrhFhP2cnVivu9/NPcl1hBVVM+G3FnPSPzBcj2+Zyzmsi+VgRyFf3ucDG87KG+CoAJ9HQwaPIXMpgnaA6/5Z9xDUCd/rbCeOHSl9LNfTtfCmMm2Q2voufmSQK7BCIxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivNjs2d/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A130C2BCB1;
-	Tue, 31 Mar 2026 16:53:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RZ4cDgp4NeVD1aosA5kK+L05rxtSptVI9aMj9Dv6orLy8e//IYJkS07ghmNRl9b4HhHn2fV3OIEWueKA+HiTt8mrInzFt2zxR864/tOaXXZZg/YKAPLPEqdHi5b5rQ0o16LStu3R3FIQMZRZQFkVkT90xmzx9XG7JXo7CovBZds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPY00zcN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F0CC19423;
+	Tue, 31 Mar 2026 16:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976013;
-	bh=kgUKUvhlJftUzun5mpgDiGvInCVCJoRyvrqt7xVJMxE=;
+	s=korg; t=1774976124;
+	bh=hDtnEAoj1DfLSCBxm7FyAmm37kh9Ha2AXOVuw8tGP+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivNjs2d/KWjvIXr0Zr/BmtlRb1jcqngKZ+weVLq2HdXtuDoU5JTPgdVFuYanccRpH
-	 UgnyjvNyNvnoCy3m80bPBptZqq165eEzYVQtEhm9+rG6sJ/XbtAFtLiHCuMtumq4GW
-	 E7hEKTMSY5tWLWWuz+G5JZy6xD7CZ+2JCWbLlFOY=
+	b=RPY00zcNp9+7c4A7XnpuDc+2SLXcmauJhZ/j7Xt9gA4Rz7V/g9jBAbIAA1g27hO/M
+	 AYcSrptpz4OJw0TNCUfaFw0bJi5HBjbroGynawL5MbqzklYd3T13Fx2aRVW0DoJX6Y
+	 480oiVJdSJiFluwQlGJU3lDDas6qw0Dd0ZB0uTrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 172/244] drm/amdgpu: prevent immediate PASID reuse case
-Date: Tue, 31 Mar 2026 18:22:02 +0200
-Message-ID: <20260331161748.111698852@linuxfoundation.org>
+	Uma Shankar <uma.shankar@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.12 173/244] drm/i915/dp_tunnel: Fix error handling when clearing stream BW in atomic state
+Date: Tue, 31 Mar 2026 18:22:03 +0200
+Message-ID: <20260331161748.147451621@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
 References: <20260331161741.651718120@linuxfoundation.org>
@@ -68,30 +70,30 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232196-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232153-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: D82A436DAF9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,msgid.link:url,gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 78B5C36DE97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,130 +101,129 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit 14b81abe7bdc25f8097906fc2f91276ffedb2d26 upstream.
+commit 77fcf58df15edcf3f5b5421f24814fb72796def9 upstream.
 
-PASID resue could cause interrupt issue when process
-immediately runs into hw state left by previous
-process exited with the same PASID, it's possible that
-page faults are still pending in the IH ring buffer when
-the process exits and frees up its PASID. To prevent the
-case, it uses idr cyclic allocator same as kernel pid's.
+Clearing the DP tunnel stream BW in the atomic state involves getting
+the tunnel group state, which can fail. Handle the error accordingly.
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8f1de51f49be692de137c8525106e0fce2d1912d)
-Cc: stable@vger.kernel.org
+This fixes at least one issue where drm_dp_tunnel_atomic_set_stream_bw()
+failed to get the tunnel group state returning -EDEADLK, which wasn't
+handled. This lead to the ctx->contended warn later in modeset_lock()
+while taking a WW mutex for another object in the same atomic state, and
+thus within the same already contended WW context.
+
+Moving intel_crtc_state_alloc() later would avoid freeing saved_state on
+the error path; this stable patch leaves that simplification for a
+follow-up.
+
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.9+
+Fixes: a4efae87ecb2 ("drm/i915/dp: Compute DP tunnel BW during encoder state computation")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7617
+Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patch.msgid.link/20260320092900.13210-1-imre.deak@intel.com
+(cherry picked from commit fb69d0076e687421188bc8103ab0e8e5825b1df1)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |   45 ++++++++++++++++++++++----------
- drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h |    1 
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c  |    1 
- 3 files changed, 34 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c   |    8 +++++++-
+ drivers/gpu/drm/i915/display/intel_dp_tunnel.c |   20 ++++++++++++++------
+ drivers/gpu/drm/i915/display/intel_dp_tunnel.h |   11 +++++++----
+ 3 files changed, 28 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-@@ -35,10 +35,13 @@
-  * PASIDs are global address space identifiers that can be shared
-  * between the GPU, an IOMMU and the driver. VMs on different devices
-  * may use the same PASID if they share the same address
-- * space. Therefore PASIDs are allocated using a global IDA. VMs are
-- * looked up from the PASID per amdgpu_device.
-+ * space. Therefore PASIDs are allocated using IDR cyclic allocator
-+ * (similar to kernel PID allocation) which naturally delays reuse.
-+ * VMs are looked up from the PASID per amdgpu_device.
-  */
--static DEFINE_IDA(amdgpu_pasid_ida);
-+
-+static DEFINE_IDR(amdgpu_pasid_idr);
-+static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -4588,6 +4588,7 @@ intel_crtc_prepare_cleared_state(struct
+ 		intel_atomic_get_new_crtc_state(state, crtc);
+ 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+ 	struct intel_crtc_state *saved_state;
++	int err;
  
- /* Helper to free pasid from a fence callback */
- struct amdgpu_pasid_cb {
-@@ -50,8 +53,8 @@ struct amdgpu_pasid_cb {
-  * amdgpu_pasid_alloc - Allocate a PASID
-  * @bits: Maximum width of the PASID in bits, must be at least 1
+ 	saved_state = intel_crtc_state_alloc(crtc);
+ 	if (!saved_state)
+@@ -4596,7 +4597,12 @@ intel_crtc_prepare_cleared_state(struct
+ 	/* free the old crtc_state->hw members */
+ 	intel_crtc_free_hw_state(crtc_state);
+ 
+-	intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
++	err = intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
++	if (err) {
++		kfree(saved_state);
++
++		return err;
++	}
+ 
+ 	/* FIXME: before the switch to atomic started, a new pipe_config was
+ 	 * kzalloc'd. Code that depends on any field being zero should be
+--- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
+@@ -622,19 +622,27 @@ int intel_dp_tunnel_atomic_compute_strea
   *
-- * Allocates a PASID of the given width while keeping smaller PASIDs
-- * available if possible.
-+ * Uses kernel's IDR cyclic allocator (same as PID allocation).
-+ * Allocates sequentially with automatic wrap-around.
-  *
-  * Returns a positive integer on success. Returns %-EINVAL if bits==0.
-  * Returns %-ENOSPC if no PASID was available. Returns %-ENOMEM on
-@@ -59,14 +62,15 @@ struct amdgpu_pasid_cb {
-  */
- int amdgpu_pasid_alloc(unsigned int bits)
- {
--	int pasid = -EINVAL;
-+	int pasid;
- 
--	for (bits = min(bits, 31U); bits > 0; bits--) {
--		pasid = ida_alloc_range(&amdgpu_pasid_ida, 1U << (bits - 1),
--					(1U << bits) - 1, GFP_KERNEL);
--		if (pasid != -ENOSPC)
--			break;
--	}
-+	if (bits == 0)
-+		return -EINVAL;
-+
-+	spin_lock(&amdgpu_pasid_idr_lock);
-+	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
-+				 1U << bits, GFP_KERNEL);
-+	spin_unlock(&amdgpu_pasid_idr_lock);
- 
- 	if (pasid >= 0)
- 		trace_amdgpu_pasid_allocated(pasid);
-@@ -81,7 +85,10 @@ int amdgpu_pasid_alloc(unsigned int bits
- void amdgpu_pasid_free(u32 pasid)
- {
- 	trace_amdgpu_pasid_freed(pasid);
--	ida_free(&amdgpu_pasid_ida, pasid);
-+
-+	spin_lock(&amdgpu_pasid_idr_lock);
-+	idr_remove(&amdgpu_pasid_idr, pasid);
-+	spin_unlock(&amdgpu_pasid_idr_lock);
- }
- 
- static void amdgpu_pasid_free_cb(struct dma_fence *fence,
-@@ -635,3 +642,15 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_
- 		}
- 	}
- }
-+
-+/**
-+ * amdgpu_pasid_mgr_cleanup - cleanup PASID manager
+  * Clear any DP tunnel stream BW requirement set by
+  * intel_dp_tunnel_atomic_compute_stream_bw().
 + *
-+ * Cleanup the IDR allocator.
-+ */
-+void amdgpu_pasid_mgr_cleanup(void)
-+{
-+	spin_lock(&amdgpu_pasid_idr_lock);
-+	idr_destroy(&amdgpu_pasid_idr);
-+	spin_unlock(&amdgpu_pasid_idr_lock);
-+}
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
-@@ -75,6 +75,7 @@ int amdgpu_pasid_alloc(unsigned int bits
- void amdgpu_pasid_free(u32 pasid);
- void amdgpu_pasid_free_delayed(struct dma_resv *resv,
- 			       u32 pasid);
-+void amdgpu_pasid_mgr_cleanup(void);
++ * Returns 0 in case of success, a negative error code otherwise.
+  */
+-void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+-					    struct intel_crtc_state *crtc_state)
++int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
++					   struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
++	int err;
  
- bool amdgpu_vmid_had_gpu_reset(struct amdgpu_device *adev,
- 			       struct amdgpu_vmid *id);
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2721,6 +2721,7 @@ void amdgpu_vm_manager_fini(struct amdgp
- 	xa_destroy(&adev->vm_manager.pasids);
+ 	if (!crtc_state->dp_tunnel_ref.tunnel)
+-		return;
++		return 0;
++
++	err = drm_dp_tunnel_atomic_set_stream_bw(&state->base,
++						 crtc_state->dp_tunnel_ref.tunnel,
++						 crtc->pipe, 0);
++	if (err)
++		return err;
  
- 	amdgpu_vmid_mgr_fini(adev);
-+	amdgpu_pasid_mgr_cleanup();
+-	drm_dp_tunnel_atomic_set_stream_bw(&state->base,
+-					   crtc_state->dp_tunnel_ref.tunnel,
+-					   crtc->pipe, 0);
+ 	drm_dp_tunnel_ref_put(&crtc_state->dp_tunnel_ref);
++
++	return 0;
  }
  
  /**
+--- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
++++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
+@@ -39,8 +39,8 @@ int intel_dp_tunnel_atomic_compute_strea
+ 					     struct intel_dp *intel_dp,
+ 					     const struct intel_connector *connector,
+ 					     struct intel_crtc_state *crtc_state);
+-void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+-					    struct intel_crtc_state *crtc_state);
++int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
++					   struct intel_crtc_state *crtc_state);
+ 
+ int intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
+ 					      struct intel_crtc *crtc);
+@@ -87,9 +87,12 @@ intel_dp_tunnel_atomic_compute_stream_bw
+ 	return 0;
+ }
+ 
+-static inline void
++static inline int
+ intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+-				       struct intel_crtc_state *crtc_state) {}
++				       struct intel_crtc_state *crtc_state)
++{
++	return 0;
++}
+ 
+ static inline int
+ intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
 
 
 
