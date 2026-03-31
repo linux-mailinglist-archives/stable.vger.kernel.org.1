@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6F3YGEr+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:06 +0200
+	id gLIyLJL5y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:42:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE5536DBC4
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8794136D01E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F410306FE56
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3078030575AD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCF8413225;
-	Tue, 31 Mar 2026 16:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B32C3FA5E6;
+	Tue, 31 Mar 2026 16:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0dmgX38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8Mi0Hmh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505773DFC7E;
-	Tue, 31 Mar 2026 16:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D91F3F7887;
+	Tue, 31 Mar 2026 16:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976269; cv=none; b=PhMsB6QfD0b4iWV+/3MWMe/ClfS8qgZ7xewd26oYvVbc0dNXmNTQXkLThzxScmJ1tPVlEVESafmSdGuxeDXpjs04I8ZlrasD50w6lU4abcWDFUMzFlzbucNaHXwNJf5UTsS3L5IiYt/Kpo6OS/B8DZc4axtu3a3zN1qVflXAbAQ=
+	t=1774974879; cv=none; b=tanxml21zt/UdKB5P6PQoeJFypSRxIxi+fxV8Nrt0aeqPTR1/dkKXbAVa1Zy9FtLIV0cwEAvntNnGDOxjWH3YB3MwLv0eaplmW03J0LNRIWs2bKtIn7zhacZ4+f9+d7mp/K7eT0bdRacuyDnC+rq0oL8naoNIz2bZysAdGh1UK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976269; c=relaxed/simple;
-	bh=FmKfWkvcNw7jdwHBqN+0M++xCmWvjGjkLY0uZT/Oyzo=;
+	s=arc-20240116; t=1774974879; c=relaxed/simple;
+	bh=NdiY8vZb0O4eOTsWesjSilOXbHhP3V+EtcPKwGT10MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjD1SlzjP0W39SCAYJZetgIilGrLCzWCad+UnVZde9BHZ4fAm3hIGPaXZF1u5DL7S72quyAS25ya7LBqgT+aWTQFrAZWWoQ9yszo/tGXj4UZDR3bI1WcIssesJK56biCbGdAb4G/ajBgCbSQdgq7S4mSkvN5pCw0RblGzZW3KDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0dmgX38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6F4C2BCB1;
-	Tue, 31 Mar 2026 16:57:48 +0000 (UTC)
+	 MIME-Version; b=LmRo073H8WUstaWKenvm47UDTSdPxTE4SkidZKI4fYPO7OmLQ0zzUSeIk4KWkGflJ1AXeE9M0E0iSHMsMfNq2k41ZwphGg6cEYKi8iBZvSbvC18K2RxfV1XCfEDtDkpfto5aPb1kxzEb3Vzf2nvgxU82u53mFEGDvpy5X/qZtFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8Mi0Hmh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CA7C19423;
+	Tue, 31 Mar 2026 16:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976269;
-	bh=FmKfWkvcNw7jdwHBqN+0M++xCmWvjGjkLY0uZT/Oyzo=;
+	s=korg; t=1774974879;
+	bh=NdiY8vZb0O4eOTsWesjSilOXbHhP3V+EtcPKwGT10MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n0dmgX38Yfvl52y5UbBJ+i6NJK/D4JpA19ok9vHZ+MaSi7BBXcRF3bw6nRf4pmzmf
-	 TJnTDwykxTB9SI+uES/fCeL9IHn7NSSQXfM266gKZAPXmW8SfEo6QYh58XAzSnhre5
-	 n/WxhhTPWWl3/zPsL4U9fK3FondKI/jDOhI/kuDw=
+	b=D8Mi0Hmh7e3ZETpHZiH4RZV/j+CebA4h+by1qxVDykGQeNbp38R8zcy0W6lZ9k3hC
+	 wV9HT2UeSlfwaixwlYvDaUqydwSwbTswd48Tdvq7F9kdVShIU2H+M8kq7R1kTwwiY6
+	 2qC1wAtS55jzejf4ONsmWLoGEO4gRdMRLb4UO2rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 009/309] sh: platform_early: remove pdev->driver_override check
+Subject: [PATCH 6.19 079/342] xfrm: fix the condition on x->pcpu_num in xfrm_sa_len
 Date: Tue, 31 Mar 2026 18:18:32 +0200
-Message-ID: <20260331161753.819969845@linuxfoundation.org>
+Message-ID: <20260331161801.797378487@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +65,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232252-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231714-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,glider.be:email]
-X-Rspamd-Queue-Id: DDE5536DBC4
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,secunet.com:email,queasysnail.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8794136D01E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit c5f60e3f07b6609562d21efda878e83ce8860728 ]
+[ Upstream commit b57defcf8f109da5ba9cf59b2a736606faf3d846 ]
 
-In commit 507fd01d5333 ("drivers: move the early platform device support to
-arch/sh") platform_match() was copied over to the sh platform_early
-code, accidentally including the driver_override check.
+pcpu_num = 0 is a valid value. The marker for "unset pcpu_num" which
+makes copy_to_user_state_extra not add the XFRMA_SA_PCPU attribute is
+UINT_MAX.
 
-This check does not make sense for platform_early, as sysfs is not even
-available in first place at this point in the boot process, hence remove
-the check.
-
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Fixes: 507fd01d5333 ("drivers: move the early platform device support to arch/sh")
-Link: https://lore.kernel.org/all/DH4M3DJ4P58T.1BGVAVXN71Z09@kernel.org/
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/drivers/platform_early.c | 4 ----
- 1 file changed, 4 deletions(-)
+ net/xfrm/xfrm_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sh/drivers/platform_early.c b/arch/sh/drivers/platform_early.c
-index 143747c45206f..48ddbc547bd9a 100644
---- a/arch/sh/drivers/platform_early.c
-+++ b/arch/sh/drivers/platform_early.c
-@@ -26,10 +26,6 @@ static int platform_match(struct device *dev, struct device_driver *drv)
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct platform_driver *pdrv = to_platform_driver(drv);
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 3e6477c6082e7..4dd8341225bce 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3676,7 +3676,7 @@ static inline unsigned int xfrm_sa_len(struct xfrm_state *x)
+ 	}
+ 	if (x->if_id)
+ 		l += nla_total_size(sizeof(x->if_id));
+-	if (x->pcpu_num)
++	if (x->pcpu_num != UINT_MAX)
+ 		l += nla_total_size(sizeof(x->pcpu_num));
  
--	/* When driver_override is set, only bind to the matching driver */
--	if (pdev->driver_override)
--		return !strcmp(pdev->driver_override, drv->name);
--
- 	/* Then try to match against the id table */
- 	if (pdrv->id_table)
- 		return platform_match_id(pdrv->id_table, pdev) != NULL;
+ 	/* Must count x->lastused as it may become non-zero behind our back. */
 -- 
 2.51.0
 
