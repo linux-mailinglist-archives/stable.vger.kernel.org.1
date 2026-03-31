@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-232195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKZiIAT/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:12 +0200
+	id EK/nMI4HzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2479036DDF6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D362836F2BD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3B6533086510
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2CFC6313C1ED
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A4C423A61;
-	Tue, 31 Mar 2026 16:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6965302163;
+	Tue, 31 Mar 2026 17:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZX3lyL+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VatQ+MRT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CF23F7867;
-	Tue, 31 Mar 2026 16:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D1E2FDC5E;
+	Tue, 31 Mar 2026 17:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976122; cv=none; b=qt12Ula3YyboRIoS6RL1LvFW7Alm0KtObjVcO87lRM4W3IvXTweH07Xk/+k4uvX63+vfYacjPybIM6YPq/MirheO/t/9gpCC5u7G8oW2BEY2/uH40SrmfP4t7kO7SjARWkhSRdubsSqdnuraokCe0QJamNu9H1DXuXcACOjJnhs=
+	t=1774976794; cv=none; b=ERxV0tHpbp/rm2WWzFESfQnhAwHpNzsPHqdELwgz819znalk04kID0l+DGIL879vfAO5gzqNF8Fex/KqEldGt2a3Ye5OO7axOCI0aIvIm5zZoRaCafI/DG4IBtmGaoL+ofMd8tamY71gQJeeXXPY6EpoZ+uqsdUyeeSEm6pcAgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976122; c=relaxed/simple;
-	bh=PFmrcSKv1bYE9YZk6OJBYyBTC2GcEgSBYuVzD3pBrO8=;
+	s=arc-20240116; t=1774976794; c=relaxed/simple;
+	bh=YbENCAdOQa2VtMyhTKhW+g/GD15Td8gec94NIap0ebM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F65eN/fadLL93aSdILhjGBeBMNgVmmsRzRQOFv52xa1OuxGpk2MhN4qPFHRqAJ2t2I4RmAdAiH3xa3kS9gjrFa+DsU/6cJmUhIUj3puWTR2i0ta9++s2yjbbKPOzMKBbkpQj8h1Y0sUnXLLfX13jw85wJCScmeu3A8nhBBHdIn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZX3lyL+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB7EC19423;
-	Tue, 31 Mar 2026 16:55:21 +0000 (UTC)
+	 MIME-Version; b=QhmbEbraPyLRsiFWdVi4oiuJme9N+iCBYRdvNttjNbgBFMDmZd1+xag9F8M36QqbaU1hJsj+w6hUnpjjapNF/vPwWvKfVEeFr5ntvsgkf2htsLXlVUA428YF2lhPX+4mwJ3RHs7UR7ytOuw3Sv+Df5AqPMl+Ub+/5TgIoN4Nv3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VatQ+MRT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E492C19423;
+	Tue, 31 Mar 2026 17:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976122;
-	bh=PFmrcSKv1bYE9YZk6OJBYyBTC2GcEgSBYuVzD3pBrO8=;
+	s=korg; t=1774976794;
+	bh=YbENCAdOQa2VtMyhTKhW+g/GD15Td8gec94NIap0ebM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZX3lyL+eF1rCW9yrSJQm9EWCMvIXPTROHRbgE/NVdpFmpY5QrnP4Job39nAcDbtwm
-	 w7w6qLlB1+VMwb/fpyuTBfuwvNPz4FKqCQxouNR8U5O/TEjFDxZsTavLIS2wWbPdyc
-	 qS7BrWuqQ8+AWkYrra+vM96Pr4urxF8fiucu8Ebs=
+	b=VatQ+MRTJiLOr6mIJHdulv3xqOJFmW2dvElwQyAw+oRejP9VxDTPNcGIUItYsaGVj
+	 N/gUCg+Pl+EtZNDVBFPlmU15W4oAQHdM09qiNlX+po0VzN5pP0xy5L2daA0YWJv9jZ
+	 jRgZlakulv/6KMVKplg16laoOXDgWQdwmK0Wkq5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	rostedt@goodmis.org,
-	david.laight.linux@gmail.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 182/244] xfs: remove file_path tracepoint data
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.18 229/309] i2c: imx: ensure no clock is generated after last read
 Date: Tue, 31 Mar 2026 18:22:12 +0200
-Message-ID: <20260331161748.479827830@linuxfoundation.org>
+Message-ID: <20260331161802.009654847@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,129 +63,167 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232195-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,gmail.com,kernel.org,redhat.com,lst.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232456-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lst.de:email]
-X-Rspamd-Queue-Id: 2479036DDF6
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,0.0.0.0:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D362836F2BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit e31c53a8060e134111ed095783fee0aa0c43b080 upstream.
+commit 13101db735bdb29c5f60e95fb578690bd178b30f upstream.
 
-The xfile/xmbuf shmem file descriptions are no longer as detailed as
-they were when online fsck was first merged, because moving to static
-strings in commit 60382993a2e180 ("xfs: get rid of the
-xchk_xfile_*_descr calls") removed a memory allocation and hence a
-source of failure.
+When reading from the I2DR register, right after releasing the bus by
+clearing MSTA and MTX, the I2C controller might still generate an
+additional clock cycle which can cause devices to misbehave. Ensure to
+only read from I2DR after the bus is not busy anymore. Because this
+requires polling, the read of the last byte is moved outside of the
+interrupt handler.
 
-However this makes encoding the description in the tracepoints sort of a
-waste of memory.  David Laight also points out that file_path doesn't
-zero the whole buffer which causes exposure of stale trace bytes, and
-Steven Rostedt wonders why we're not using a dynamic array for the file
-path.
+An example for such a failing transfer is this:
+i2ctransfer -y -a 0 w1@0x00 0x02 r1
+Error: Sending messages failed: Connection timed out
+It does not happen with every device because not all devices react to
+the additional clock cycle.
 
-I don't think this is worth fixing, so let's just rip it out.
-
-Cc: rostedt@goodmis.org
-Cc: david.laight.linux@gmail.com
-Link: https://lore.kernel.org/linux-xfs/20260323172204.work.979-kees@kernel.org/
-Cc: stable@vger.kernel.org # v6.11
-Fixes: 19ebc8f84ea12e ("xfs: fix file_path handling in tracepoints")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Fixes: 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma mode")
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260218150940.131354-3-eichest@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/trace.h |   12 ++----------
- fs/xfs/xfs_trace.h   |   11 ++---------
- 2 files changed, 4 insertions(+), 19 deletions(-)
+ drivers/i2c/busses/i2c-imx.c |   51 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 32 insertions(+), 19 deletions(-)
 
---- a/fs/xfs/scrub/trace.h
-+++ b/fs/xfs/scrub/trace.h
-@@ -959,20 +959,12 @@ TRACE_EVENT(xfile_create,
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
- 		__field(unsigned long, ino)
--		__array(char, pathname, MAXNAMELEN)
- 	),
- 	TP_fast_assign(
--		char		*path;
--
- 		__entry->ino = file_inode(xf->file)->i_ino;
--		path = file_path(xf->file, __entry->pathname, MAXNAMELEN);
--		if (IS_ERR(path))
--			strncpy(__entry->pathname, "(unknown)",
--					sizeof(__entry->pathname));
- 	),
--	TP_printk("xfino 0x%lx path '%s'",
--		  __entry->ino,
--		  __entry->pathname)
-+	TP_printk("xfino 0x%lx",
-+		  __entry->ino)
- );
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1018,8 +1018,9 @@ static inline int i2c_imx_isr_read(struc
+ 	return 0;
+ }
  
- TRACE_EVENT(xfile_destroy,
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -4710,23 +4710,16 @@ TRACE_EVENT(xmbuf_create,
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
- 		__field(unsigned long, ino)
--		__array(char, pathname, MAXNAMELEN)
- 	),
- 	TP_fast_assign(
--		char		*path;
- 		struct file	*file = btp->bt_file;
+-static inline void i2c_imx_isr_read_continue(struct imx_i2c_struct *i2c_imx)
++static inline enum imx_i2c_state i2c_imx_isr_read_continue(struct imx_i2c_struct *i2c_imx)
+ {
++	enum imx_i2c_state next_state = IMX_I2C_STATE_READ_CONTINUE;
+ 	unsigned int temp;
  
- 		__entry->dev = btp->bt_mount->m_super->s_dev;
- 		__entry->ino = file_inode(file)->i_ino;
--		path = file_path(file, __entry->pathname, MAXNAMELEN);
--		if (IS_ERR(path))
--			strncpy(__entry->pathname, "(unknown)",
--					sizeof(__entry->pathname));
- 	),
--	TP_printk("dev %d:%d xmino 0x%lx path '%s'",
-+	TP_printk("dev %d:%d xmino 0x%lx",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
--		  __entry->ino,
--		  __entry->pathname)
-+		  __entry->ino)
- );
+ 	if ((i2c_imx->msg->len - 1) == i2c_imx->msg_buf_idx) {
+@@ -1033,18 +1034,20 @@ static inline void i2c_imx_isr_read_cont
+ 				i2c_imx->stopped =  1;
+ 			temp &= ~(I2CR_MSTA | I2CR_MTX);
+ 			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
+-		} else {
+-			/*
+-			 * For i2c master receiver repeat restart operation like:
+-			 * read -> repeat MSTA -> read/write
+-			 * The controller must set MTX before read the last byte in
+-			 * the first read operation, otherwise the first read cost
+-			 * one extra clock cycle.
+-			 */
+-			temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+-			temp |= I2CR_MTX;
+-			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
++
++			return IMX_I2C_STATE_DONE;
+ 		}
++		/*
++		 * For i2c master receiver repeat restart operation like:
++		 * read -> repeat MSTA -> read/write
++		 * The controller must set MTX before read the last byte in
++		 * the first read operation, otherwise the first read cost
++		 * one extra clock cycle.
++		 */
++		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
++		temp |= I2CR_MTX;
++		imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
++		next_state = IMX_I2C_STATE_DONE;
+ 	} else if (i2c_imx->msg_buf_idx == (i2c_imx->msg->len - 2)) {
+ 		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+ 		temp |= I2CR_TXAK;
+@@ -1052,6 +1055,7 @@ static inline void i2c_imx_isr_read_cont
+ 	}
  
- TRACE_EVENT(xmbuf_free,
+ 	i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
++	return next_state;
+ }
+ 
+ static inline void i2c_imx_isr_read_block_data_len(struct imx_i2c_struct *i2c_imx)
+@@ -1088,11 +1092,9 @@ static irqreturn_t i2c_imx_master_isr(st
+ 		break;
+ 
+ 	case IMX_I2C_STATE_READ_CONTINUE:
+-		i2c_imx_isr_read_continue(i2c_imx);
+-		if (i2c_imx->msg_buf_idx == i2c_imx->msg->len) {
+-			i2c_imx->state = IMX_I2C_STATE_DONE;
++		i2c_imx->state = i2c_imx_isr_read_continue(i2c_imx);
++		if (i2c_imx->state == IMX_I2C_STATE_DONE)
+ 			wake_up(&i2c_imx->queue);
+-		}
+ 		break;
+ 
+ 	case IMX_I2C_STATE_READ_BLOCK_DATA:
+@@ -1490,6 +1492,7 @@ static int i2c_imx_read(struct imx_i2c_s
+ 			bool is_lastmsg)
+ {
+ 	int block_data = msgs->flags & I2C_M_RECV_LEN;
++	int ret = 0;
+ 
+ 	dev_dbg(&i2c_imx->adapter.dev,
+ 		"<%s> write slave address: addr=0x%x\n",
+@@ -1522,10 +1525,20 @@ static int i2c_imx_read(struct imx_i2c_s
+ 		dev_err(&i2c_imx->adapter.dev, "<%s> read timedout\n", __func__);
+ 		return -ETIMEDOUT;
+ 	}
+-	if (i2c_imx->is_lastmsg && !i2c_imx->stopped)
+-		return i2c_imx_bus_busy(i2c_imx, 0, false);
++	if (i2c_imx->is_lastmsg) {
++		if (!i2c_imx->stopped)
++			ret = i2c_imx_bus_busy(i2c_imx, 0, false);
++		/*
++		 * Only read the last byte of the last message after the bus is
++		 * not busy. Else the controller generates another clock which
++		 * might confuse devices.
++		 */
++		if (!ret)
++			i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] = imx_i2c_read_reg(i2c_imx,
++										     IMX_I2C_I2DR);
++	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
 
 
 
