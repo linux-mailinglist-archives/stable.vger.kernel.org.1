@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-231496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PfmD0n2y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:57 +0200
+	id 6Fh9D0IAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E49136CA04
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:28:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1184C36E193
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2106230C4DCA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3BBE6309D5BA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C16F3EF0A2;
-	Tue, 31 Mar 2026 16:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540402D77F5;
+	Tue, 31 Mar 2026 17:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3vOQNXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Evn0q6EH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43013E3C5C;
-	Tue, 31 Mar 2026 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174592D0C94;
+	Tue, 31 Mar 2026 17:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974323; cv=none; b=lf+sfkanu2xnahqb6XSQwh6CkAGaHcryUsaeflv2idTbZqK10wayUv85F1uAsviM262B5xDtTN+05EDhJJ72yn31fAGV+tHpgXqOJ8L3YolbSyTjoY5vI1ZKGD4w5jAVmf1HGFdEZrwm4wF1HP8KM+iZkaBCwgjUl7f3uc9T2NA=
+	t=1774976433; cv=none; b=YJt/gDVeF82n+lN+efnbdFCdediwLLil2NwESeit3l0xcQGcijlx7yECluOnCZ/5EN3tKPcKt/2Q6IwlvMsbNWUmcwmvVlJc9oa+0Rzhax8Do9DG0RukisrWsCOWbcyhtFJ7ok22ZkGbVo+hNStHvyqUIl6bePUZyTCbPPjdi68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974323; c=relaxed/simple;
-	bh=kGCUZHf4I3tGaQoYvXysJ6sr+TpH1a46vn1Ye4dNTnQ=;
+	s=arc-20240116; t=1774976433; c=relaxed/simple;
+	bh=7KECGkyz9KnLSN1kBwVErKHRcnu274UR4HmYaRspQsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMmjVr9UBbmuQdhoy8SfcWWRB4+EzEyzTfT0tDqnDB/RMdYZEvwJca72LfwSfTOF7QP4zbe4BsapGWM96C4bSQYZYj/U/W/XOIm+9T03eC5dz3WTf8IX0Z7ulXsOZ0CwzOb35TgNjf6s4R+iFsKMtwCJavHAFSfzNE3Q2ZXrv50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3vOQNXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3650DC19423;
-	Tue, 31 Mar 2026 16:25:22 +0000 (UTC)
+	 MIME-Version; b=F2Iqz3QT0yhAhVM8Hsv698nIlaft9PI199EzMTYcRT0ZHEhKerEoa2ykMXgbyLA8a1tabpeaSGzaiGiGg+rF62xT3o8CeBx/uqpR92IzjFlpJxAS2ZsLW73JoMu0H6XUp7iaUlNqflukhYfYTwqhhfUOIqPU5mRXgCz8zRs1Fps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Evn0q6EH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC34C19423;
+	Tue, 31 Mar 2026 17:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974322;
-	bh=kGCUZHf4I3tGaQoYvXysJ6sr+TpH1a46vn1Ye4dNTnQ=;
+	s=korg; t=1774976433;
+	bh=7KECGkyz9KnLSN1kBwVErKHRcnu274UR4HmYaRspQsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3vOQNXDbIIwL4clFqcW+pGqUa0n4nDAGenbmj6XY+2n5Hw+3O9bQoXtDvW/7E3ra
-	 EJ3XrurqxQ/fduAvLnMWYMD1gj8UV7uB6uCaB6jgouVfh+/EoE8vhvDyRWeGbNgUqq
-	 TE3HtbBtBZuhC9FHNS3bPSnJtdyG2rF8u4Nz67aE=
+	b=Evn0q6EHV9JSyRB/fhf8qL8RRAx8QN9q5hSjt3L7wd4jPR4a6tNGXxweiN40mZIR+
+	 WlC7GqqTnq0ckA49zC2NzMfmpn5EcoM6k3h44HhX8tUzoRM4lmYX2lm/tLrjxpLRx1
+	 R7i5uKWOEe1bdKeH/vcojOc6FODRQ+Lgs6wgV0F8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Gregory Bell <grbell@redhat.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Mohammad Heib <mheib@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/175] bpf: Release module BTF IDR before module unload
+Subject: [PATCH 6.18 089/309] ionic: fix persistent MAC address override on PF
 Date: Tue, 31 Mar 2026 18:19:52 +0200
-Message-ID: <20260331161730.089623166@linuxfoundation.org>
+Message-ID: <20260331161756.764430342@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,158 +70,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,etsalapatis.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-231496-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232315-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8E49136CA04
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 1184C36E193
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Mohammad Heib <mheib@redhat.com>
 
-[ Upstream commit 146bd2a87a65aa407bb17fac70d8d583d19aba06 ]
+[ Upstream commit cbcb3cfcdc436d6f91a3d95ecfa9c831abe14aed ]
 
-Gregory reported in [0] that the global_map_resize test when run in
-repeatedly ends up failing during program load. This stems from the fact
-that BTF reference has not dropped to zero after the previous run's
-module is unloaded, and the older module's BTF is still discoverable and
-visible. Later, in libbpf, load_module_btfs() will find the ID for this
-stale BTF, open its fd, and then it will be used during program load
-where later steps taking module reference using btf_try_get_module()
-fail since the underlying module for the BTF is gone.
+The use of IONIC_CMD_LIF_SETATTR in the MAC address update path causes
+the ionic firmware to update the LIF's identity in its persistent state.
+Since the firmware state is maintained across host warm boots and driver
+reloads, any MAC change on the Physical Function (PF) becomes "sticky.
 
-Logically, once a module is unloaded, it's associated BTF artifacts
-should become hidden. The BTF object inside the kernel may still remain
-alive as long its reference counts are alive, but it should no longer be
-discoverable.
+This is problematic because it causes ethtool -P to report the
+user-configured MAC as the permanent factory address, which breaks
+system management tools that rely on a stable hardware identity.
 
-To fix this, let us call btf_free_id() from the MODULE_STATE_GOING case
-for the module unload to free the BTF associated IDR entry, and disable
-its discovery once module unload returns to user space. If a race
-happens during unload, the outcome is non-deterministic anyway. However,
-user space should be able to rely on the guarantee that once it has
-synchronously established a successful module unload, no more stale
-artifacts associated with this module can be obtained subsequently.
+While Virtual Functions (VFs) need this hardware-level programming to
+properly handle MAC assignments in guest environments, the PF should
+maintain standard transient behavior. This patch gates the
+ionic_program_mac call using is_virtfn so that PF MAC changes remain
+local to the netdev filters and do not overwrite the firmware's
+permanent identity block.
 
-Note that we must be careful to not invoke btf_free_id() in btf_put()
-when btf_is_module() is true now. There could be a window where the
-module unload drops a non-terminal reference, frees the IDR, but the
-same ID gets reused and the second unconditional btf_free_id() ends up
-releasing an unrelated entry.
-
-To avoid a special case for btf_is_module() case, set btf->id to zero to
-make btf_free_id() idempotent, such that we can unconditionally invoke it
-from btf_put(), and also from the MODULE_STATE_GOING case. Since zero is
-an invalid IDR, the idr_remove() should be a noop.
-
-Note that we can be sure that by the time we reach final btf_put() for
-btf_is_module() case, the btf_free_id() is already done, since the
-module itself holds the BTF reference, and it will call this function
-for the BTF before dropping its own reference.
-
-  [0]: https://lore.kernel.org/bpf/cover.1773170190.git.grbell@redhat.com
-
-Fixes: 36e68442d1af ("bpf: Load and verify kernel module BTFs")
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Suggested-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reported-by: Gregory Bell <grbell@redhat.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20260312205307.1346991-1-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 19058be7c48c ("ionic: VF initial random MAC address if no assigned mac")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20260317170806.35390-1-mheib@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 14361b3b9edd0..1ace7faa59cfd 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -1636,7 +1636,16 @@ static void btf_free_id(struct btf *btf)
- 	 * of the _bh() version.
- 	 */
- 	spin_lock_irqsave(&btf_idr_lock, flags);
--	idr_remove(&btf_idr, btf->id);
-+	if (btf->id) {
-+		idr_remove(&btf_idr, btf->id);
-+		/*
-+		 * Clear the id here to make this function idempotent, since it will get
-+		 * called a couple of times for module BTFs: on module unload, and then
-+		 * the final btf_put(). btf_alloc_id() starts IDs with 1, so we can use
-+		 * 0 as sentinel value.
-+		 */
-+		WRITE_ONCE(btf->id, 0);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index b28966ae50c22..29a8a25a3ed08 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -1719,13 +1719,18 @@ static int ionic_set_mac_address(struct net_device *netdev, void *sa)
+ 	if (ether_addr_equal(netdev->dev_addr, mac))
+ 		return 0;
+ 
+-	err = ionic_program_mac(lif, mac);
+-	if (err < 0)
+-		return err;
++	/* Only program macs for virtual functions to avoid losing the permanent
++	 * Mac across warm reset/reboot.
++	 */
++	if (lif->ionic->pdev->is_virtfn) {
++		err = ionic_program_mac(lif, mac);
++		if (err < 0)
++			return err;
+ 
+-	if (err > 0)
+-		netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
+-			   __func__);
++		if (err > 0)
++			netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
++				   __func__);
 +	}
- 	spin_unlock_irqrestore(&btf_idr_lock, flags);
- }
  
-@@ -7158,7 +7167,7 @@ static void bpf_btf_show_fdinfo(struct seq_file *m, struct file *filp)
- {
- 	const struct btf *btf = filp->private_data;
- 
--	seq_printf(m, "btf_id:\t%u\n", btf->id);
-+	seq_printf(m, "btf_id:\t%u\n", READ_ONCE(btf->id));
- }
- #endif
- 
-@@ -7250,7 +7259,7 @@ int btf_get_info_by_fd(const struct btf *btf,
- 	if (copy_from_user(&info, uinfo, info_copy))
- 		return -EFAULT;
- 
--	info.id = btf->id;
-+	info.id = READ_ONCE(btf->id);
- 	ubtf = u64_to_user_ptr(info.btf);
- 	btf_copy = min_t(u32, btf->data_size, info.btf_size);
- 	if (copy_to_user(ubtf, btf->data, btf_copy))
-@@ -7313,7 +7322,7 @@ int btf_get_fd_by_id(u32 id)
- 
- u32 btf_obj_id(const struct btf *btf)
- {
--	return btf->id;
-+	return READ_ONCE(btf->id);
- }
- 
- bool btf_is_kernel(const struct btf *btf)
-@@ -7445,6 +7454,13 @@ static int btf_module_notify(struct notifier_block *nb, unsigned long op,
- 			if (btf_mod->module != module)
- 				continue;
- 
-+			/*
-+			 * For modules, we do the freeing of BTF IDR as soon as
-+			 * module goes away to disable BTF discovery, since the
-+			 * btf_try_get_module() on such BTFs will fail. This may
-+			 * be called again on btf_put(), but it's ok to do so.
-+			 */
-+			btf_free_id(btf_mod->btf);
- 			list_del(&btf_mod->list);
- 			if (btf_mod->sysfs_attr)
- 				sysfs_remove_bin_file(btf_kobj, btf_mod->sysfs_attr);
+ 	err = eth_prepare_mac_addr_change(netdev, addr);
+ 	if (err)
 -- 
 2.51.0
 
