@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJr8EPv4y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:27 +0200
+	id cF0ABcIGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32CBD36CEDF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677D836F14B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 732E7304CEDB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A97E3314E93A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6FF3E92A5;
-	Tue, 31 Mar 2026 16:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20F12FE042;
+	Tue, 31 Mar 2026 17:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/SNjYFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBhinBw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A2F336EC5;
-	Tue, 31 Mar 2026 16:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855792FCC0E;
+	Tue, 31 Mar 2026 17:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974395; cv=none; b=HyN1DBEGHXxGSgxB9o2DpVr1Xv3Nz0KhYYVz7w1MDNq0brjstiR07i/gfFxMGq8FVoyJyxg7IG51NT3qVMiCjneAW4uxm0ScylLZkeL2LjRYEp7fcNquy7ohhQxyW3kX9ZHQxdLbdieNSyBXPyBOBa/LWSHVkFd5DrcCAM3EsF0=
+	t=1774976518; cv=none; b=JOhFWqgh3+BgOi0hYEOGkLbGWtaIBy2TbXXSJ9KDqx0Yw+kFZG1+aTBoidyTin4Noeetuunh8aTzHu4xF0laDm5iBqVKatgQowm4v+5r2mNxJZuWfMnoOwdKCI/Y+H9sdDgLKrzZZXYZ2uyMS1xeg5vEmvtqUxS8CXk/v5/mPT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974395; c=relaxed/simple;
-	bh=27i66W4NErdstwcx+dLmLVZ69sWt9d/dqdBvEBa6h5Y=;
+	s=arc-20240116; t=1774976518; c=relaxed/simple;
+	bh=z4aZTZnJc783iSFh9CZ91eZVTfoisQviXfY4cPzC/Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ha6NUs2O++1fralNDmdElD1f4Zd4dg+bPmS7X+xofcNBlcJQ+0+ICxZauS+0slrQ43OoZDAc9nS3pNjUTDcwUpEC/G2w1Bu7Pc6OYLfYye23un13ihm7OPzM73Mkar1olbyS9LfO2zDTZnpmj9esb5kjs0NvKnIDhiRmtGgFNZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/SNjYFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79347C19423;
-	Tue, 31 Mar 2026 16:26:34 +0000 (UTC)
+	 MIME-Version; b=o+l1Jl3WrFdr4mWFPryAL934nkwtZVjShVn7HrjaauMVHQAeuCMZUnk+ePnjsDOsm5ipqijdcnzvuyrv+tXnZ4TJTW/XxD23MOlhjf69EJwqAWGN+xUUuWWUKkYloQXNAx5/gNEO+4U4ldm9IejNTDLEAKPkdU107akd/Bk8Em0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBhinBw8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFF8C19423;
+	Tue, 31 Mar 2026 17:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974394;
-	bh=27i66W4NErdstwcx+dLmLVZ69sWt9d/dqdBvEBa6h5Y=;
+	s=korg; t=1774976518;
+	bh=z4aZTZnJc783iSFh9CZ91eZVTfoisQviXfY4cPzC/Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/SNjYFBPOUnJgwaSygbbSvVBTekQMsSaemMGX1NGjaAD3M7maqubdWIBHqzgaPbL
-	 q1TsRsiV9nX+ksmcp555rF8EFRbNd0fWl6fsTpAh6GLyd1a/MopUb8yoZfLdO5HgK9
-	 4D68YTKLYA5DaEm/TzXoLRyeeJj/4P2GphgP9yZo=
+	b=vBhinBw8rzKyEc1xP+XRrSYnwehQ9XlftbRo6gTmaRpiIYdV8ErbvcPfjIpt133/U
+	 7IBwmHH5Jb/LR1E5eb6S8lthXpcXwym/rYKvi4av7VHCD2fJJr95fGzJ9oBHKXSjLM
+	 23JbkwGntSRs+Az5rExzkC4yJC8kfywgUAvVgVzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Anas Iqbal <mohd.abd.6602@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/175] Bluetooth: hci_ll: Fix firmware leak on error path
+Subject: [PATCH 6.18 122/309] Bluetooth: L2CAP: Fix deadlock in l2cap_conn_del()
 Date: Tue, 31 Mar 2026 18:20:25 +0200
-Message-ID: <20260331161731.295214220@linuxfoundation.org>
+Message-ID: <20260331161757.971717266@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232348-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-231525-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,molgen.mpg.de,gmail.com,intel.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email]
-X-Rspamd-Queue-Id: 32CBD36CEDF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 677D836F14B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anas Iqbal <mohd.abd.6602@gmail.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 31148a7be723aa9f2e8fbd62424825ab8d577973 ]
+[ Upstream commit 00fdebbbc557a2fc21321ff2eaa22fd70c078608 ]
 
-Smatch reports:
+l2cap_conn_del() calls cancel_delayed_work_sync() for both info_timer
+and id_addr_timer while holding conn->lock. However, the work functions
+l2cap_info_timeout() and l2cap_conn_update_id_addr() both acquire
+conn->lock, creating a potential AB-BA deadlock if the work is already
+executing when l2cap_conn_del() takes the lock.
 
-drivers/bluetooth/hci_ll.c:587 download_firmware() warn:
-'fw' from request_firmware() not released on lines: 544.
+Move the work cancellations before acquiring conn->lock and use
+disable_delayed_work_sync() to additionally prevent the works from
+being rearmed after cancellation, consistent with the pattern used in
+hci_conn_del().
 
-In download_firmware(), if request_firmware() succeeds but the returned
-firmware content is invalid (no data or zero size), the function returns
-without releasing the firmware, resulting in a resource leak.
-
-Fix this by calling release_firmware() before returning when
-request_firmware() succeeded but the firmware content is invalid.
-
-Fixes: 371805522f87 ("bluetooth: hci_uart: add LL protocol serdev driver support")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
+Fixes: ab4eedb790ca ("Bluetooth: L2CAP: Fix corrupted list in hci_chan_del")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_ll.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/l2cap_core.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_ll.c b/drivers/bluetooth/hci_ll.c
-index 4a0b5c3160c2b..4d987dece2d0c 100644
---- a/drivers/bluetooth/hci_ll.c
-+++ b/drivers/bluetooth/hci_ll.c
-@@ -541,6 +541,8 @@ static int download_firmware(struct ll_device *lldev)
- 	if (err || !fw->data || !fw->size) {
- 		bt_dev_err(lldev->hu.hdev, "request_firmware failed(errno %d) for %s",
- 			   err, bts_scr_name);
-+		if (!err)
-+			release_firmware(fw);
- 		return -EINVAL;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 5bd5561a8dbf5..734cbb5dc1bfa 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -1748,6 +1748,9 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 
+ 	BT_DBG("hcon %p conn %p, err %d", hcon, conn, err);
+ 
++	disable_delayed_work_sync(&conn->info_timer);
++	disable_delayed_work_sync(&conn->id_addr_timer);
++
+ 	mutex_lock(&conn->lock);
+ 
+ 	kfree_skb(conn->rx_skb);
+@@ -1763,8 +1766,6 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 
+ 	ida_destroy(&conn->tx_ida);
+ 
+-	cancel_delayed_work_sync(&conn->id_addr_timer);
+-
+ 	l2cap_unregister_all_users(conn);
+ 
+ 	/* Force the connection to be immediately dropped */
+@@ -1783,9 +1784,6 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 		l2cap_chan_put(chan);
  	}
- 	ptr = (void *)fw->data;
+ 
+-	if (conn->info_state & L2CAP_INFO_FEAT_MASK_REQ_SENT)
+-		cancel_delayed_work_sync(&conn->info_timer);
+-
+ 	hci_chan_del(conn->hchan);
+ 	conn->hchan = NULL;
+ 
 -- 
 2.51.0
 
