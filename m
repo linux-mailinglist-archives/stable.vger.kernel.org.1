@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +CLiIMn5y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:53 +0200
+	id mOfBHTf9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68EE36D09A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7FC36D8FC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0582D30AEECC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B376B32B24DE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FE33D75B3;
-	Tue, 31 Mar 2026 16:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73266421F1F;
+	Tue, 31 Mar 2026 16:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq8pZtLj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smaZKFkx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655DC421EE4;
-	Tue, 31 Mar 2026 16:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355033E3C40;
+	Tue, 31 Mar 2026 16:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974594; cv=none; b=Q+YTlGKlcR9UkJNS6rRLdgtaj/sFOqE48lGJPT+Z8A2ksG+sLohxrx5AFdHZvYHldDdKuyEMk+VJw29ZQYIEYOQz1Xf/OB4AXs7hG6qegkjAsK6vOPojV3bWdw8UxW+EcUvvC+eRYPjGq8lCAgA47KkMOAw2ty5e6hzv1VZhWRc=
+	t=1774975363; cv=none; b=df4lJs6GN+UBLG8Uzz4631X1lKbvpuXrB47bpt1wBSGLVsxY0TULNz/g4ikVCc+kjZR7F4nwdcrFwmk3AiIViCpqLTgSvjnTX/A97QPrwAlgYAGFw9NLuq4/kEME4YUR9OJJ9geemCpVBLXvsDxmu75tzFcWIbgiurnf3jGoZIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974594; c=relaxed/simple;
-	bh=Z+8po0VV8W19+CKRhB51twY7dh9VeFCytwlRmt16e1Y=;
+	s=arc-20240116; t=1774975363; c=relaxed/simple;
+	bh=fvxf8NAMrO78ZlMAodVlmD1Yl4EuNCXPM2uhoZWWY+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5YqKnaZaJRnTkQHun/DkO4+RtCLUA7rNgOtjBCA/j0DosnTGjbS6Ib+egZ2VhYLP0FCKrHshPmqFTC/7oXs2lEvZ48jRcjfMR+zJCwucCtPCyl5ON6Ny55cvr0xeMrAhLHudm7r/itjr6nUvVi5Pka/DWFPvB5PJtc4/7TYmEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq8pZtLj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1065C19423;
-	Tue, 31 Mar 2026 16:29:53 +0000 (UTC)
+	 MIME-Version; b=ds9MJHnqENHzwh/3N/Yh3hCmHKWYInK1d8liw2qfA/7+vKzs71CZiayjClsm8vjN1CRBWoPvwLStXOff3yaqf2hzjctw9p7I1GB8DRlEVA+lCvRvD2yQOTY38uUeEyypKbrKOqCDhjLuxQU3d9gUe5koGpQt/RTVi72hGoYlric=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smaZKFkx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E182C19423;
+	Tue, 31 Mar 2026 16:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974594;
-	bh=Z+8po0VV8W19+CKRhB51twY7dh9VeFCytwlRmt16e1Y=;
+	s=korg; t=1774975362;
+	bh=fvxf8NAMrO78ZlMAodVlmD1Yl4EuNCXPM2uhoZWWY+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lq8pZtLjkbRcdJOX0cCKxD5oRsaSQsF2q7QKjE5zOQEhucCxPBBAlOAnUKi+P9SFl
-	 J1ueSFwvlcpbq+dqVyZjUDY3kh/0IxX6NVYF3lX6Aizpguk1skj+AoDxWRGs4GCXyu
-	 kTFzmau3YdW7FwXlJPkjwvUupVwr1s/3Fpc6Ph4w=
+	b=smaZKFkxeQSs0P42510CyMWPuop3dNe3yhi4IBaUJ6nlNuM624iR6Kmw0uqy7QGMW
+	 LlcHQF7Gjw15u9DQND+tvmhtNUXA99rodPpW28M7h6NqLmYlYJ4yDLCGCR4rn4Gm6b
+	 BH4XtZBsfIyJK3X1FEIQfNzYUS9DxbkSPbfP4Eqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuchan Nam <entropy1110@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 113/175] media: mc, v4l2: serialize REINIT and REQBUFS with req_queue_mutex
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.19 264/342] drm/amd/display: Fix DCE LVDS handling
 Date: Tue, 31 Mar 2026 18:21:37 +0200
-Message-ID: <20260331161733.932455432@linuxfoundation.org>
+Message-ID: <20260331161808.665837267@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +64,201 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231602-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231902-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A68EE36D09A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DA7FC36D8FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuchan Nam <entropy1110@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit bef4f4a88b73e4cc550d25f665b8a9952af22773 upstream.
+commit 90d239cc53723c1a3f89ce08eac17bf3a9e9f2d4 upstream.
 
-MEDIA_REQUEST_IOC_REINIT can run concurrently with VIDIOC_REQBUFS(0)
-queue teardown paths. This can race request object cleanup against vb2
-queue cancellation and lead to use-after-free reports.
+LVDS does not use an HPD pin so it may be invalid.  Handle
+this case correctly in link encoder creation.
 
-We already serialize request queueing against STREAMON/OFF with
-req_queue_mutex. Extend that serialization to REQBUFS, and also take
-the same mutex in media_request_ioctl_reinit() so REINIT is in the
-same exclusion domain.
-
-This keeps request cleanup and queue cancellation from running in
-parallel for request-capable devices.
-
-Fixes: 6093d3002eab ("media: vb2: keep a reference to the request until dqbuf")
+Fixes: 7c8fb3b8e9ba ("drm/amd/display: Add hpd_source index check for DCE60/80/100/110/112/120 link encoders")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5012
+Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3b5620f7ee688177fcf65cf61588c5435bce1872)
 Cc: stable@vger.kernel.org
-Signed-off-by: Yuchan Nam <entropy1110@gmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/mc/mc-request.c        |    5 +++++
- drivers/media/v4l2-core/v4l2-ioctl.c |    5 +++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c |    6 +---
+ drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c |    5 ++-
+ drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c |    5 ++-
+ drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c |    5 ++-
+ drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c   |   14 ++++------
+ drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c   |    6 +---
+ 6 files changed, 19 insertions(+), 22 deletions(-)
 
---- a/drivers/media/mc/mc-request.c
-+++ b/drivers/media/mc/mc-request.c
-@@ -190,6 +190,8 @@ static long media_request_ioctl_reinit(s
- 	struct media_device *mdev = req->mdev;
- 	unsigned long flags;
- 
-+	mutex_lock(&mdev->req_queue_mutex);
-+
- 	spin_lock_irqsave(&req->lock, flags);
- 	if (req->state != MEDIA_REQUEST_STATE_IDLE &&
- 	    req->state != MEDIA_REQUEST_STATE_COMPLETE) {
-@@ -197,6 +199,7 @@ static long media_request_ioctl_reinit(s
- 			"request: %s not in idle or complete state, cannot reinit\n",
- 			req->debug_str);
- 		spin_unlock_irqrestore(&req->lock, flags);
-+		mutex_unlock(&mdev->req_queue_mutex);
- 		return -EBUSY;
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
+@@ -651,9 +651,6 @@ static struct link_encoder *dce100_link_
+ 		return &enc110->base;
  	}
- 	if (req->access_count) {
-@@ -204,6 +207,7 @@ static long media_request_ioctl_reinit(s
- 			"request: %s is being accessed, cannot reinit\n",
- 			req->debug_str);
- 		spin_unlock_irqrestore(&req->lock, flags);
-+		mutex_unlock(&mdev->req_queue_mutex);
- 		return -EBUSY;
- 	}
- 	req->state = MEDIA_REQUEST_STATE_CLEANING;
-@@ -214,6 +218,7 @@ static long media_request_ioctl_reinit(s
- 	spin_lock_irqsave(&req->lock, flags);
- 	req->state = MEDIA_REQUEST_STATE_IDLE;
- 	spin_unlock_irqrestore(&req->lock, flags);
-+	mutex_unlock(&mdev->req_queue_mutex);
  
- 	return 0;
+-	if (enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
+-		return NULL;
+-
+ 	link_regs_id =
+ 		map_transmitter_id_to_phy_instance(enc_init_data->transmitter);
+ 
+@@ -662,7 +659,8 @@ static struct link_encoder *dce100_link_
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
  }
---- a/drivers/media/v4l2-core/v4l2-ioctl.c
-+++ b/drivers/media/v4l2-core/v4l2-ioctl.c
-@@ -2998,13 +2998,14 @@ static long __video_do_ioctl(struct file
- 		vfh = file->private_data;
  
- 	/*
--	 * We need to serialize streamon/off with queueing new requests.
-+	 * We need to serialize streamon/off/reqbufs with queueing new requests.
- 	 * These ioctls may trigger the cancellation of a streaming
- 	 * operation, and that should not be mixed with queueing a new
- 	 * request at the same time.
- 	 */
- 	if (v4l2_device_supports_requests(vfd->v4l2_dev) &&
--	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF)) {
-+	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF ||
-+	     cmd == VIDIOC_REQBUFS)) {
- 		req_queue_lock = &vfd->v4l2_dev->mdev->req_queue_mutex;
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
+@@ -672,7 +672,7 @@ static struct link_encoder *dce110_link_
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
  
- 		if (mutex_lock_interruptible(req_queue_lock))
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
+ 
+ 	link_regs_id =
+@@ -683,7 +683,8 @@ static struct link_encoder *dce110_link_
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
+ 
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
+@@ -633,7 +633,7 @@ static struct link_encoder *dce112_link_
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
+ 
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
+ 
+ 	link_regs_id =
+@@ -644,7 +644,8 @@ static struct link_encoder *dce112_link_
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
+ 
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
+@@ -717,7 +717,7 @@ static struct link_encoder *dce120_link_
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
+ 
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
+ 
+ 	link_regs_id =
+@@ -728,7 +728,8 @@ static struct link_encoder *dce120_link_
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 
+ 	return &enc110->base;
+ }
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+@@ -747,18 +747,16 @@ static struct link_encoder *dce60_link_e
+ 		return &enc110->base;
+ 	}
+ 
+-	if (enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
+-		return NULL;
+-
+ 	link_regs_id =
+ 		map_transmitter_id_to_phy_instance(enc_init_data->transmitter);
+ 
+ 	dce60_link_encoder_construct(enc110,
+-				      enc_init_data,
+-				      &link_enc_feature,
+-				      &link_enc_regs[link_regs_id],
+-				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				     enc_init_data,
++				     &link_enc_feature,
++				     &link_enc_regs[link_regs_id],
++				     &link_enc_aux_regs[enc_init_data->channel - 1],
++				     enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				     NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
+ 
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
+@@ -753,9 +753,6 @@ static struct link_encoder *dce80_link_e
+ 		return &enc110->base;
+ 	}
+ 
+-	if (enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
+-		return NULL;
+-
+ 	link_regs_id =
+ 		map_transmitter_id_to_phy_instance(enc_init_data->transmitter);
+ 
+@@ -764,7 +761,8 @@ static struct link_encoder *dce80_link_e
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
+ 
 
 
 
