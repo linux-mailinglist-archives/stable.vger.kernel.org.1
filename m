@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIkwAP4AzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-231788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:38 +0200
+	id qKEBBY3/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8241436E460
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA8B36DF39
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A66ED3275D31
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5DC0D30DF276
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E6B425CD1;
-	Tue, 31 Mar 2026 16:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A863B2D9EF0;
+	Tue, 31 Mar 2026 17:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1mAYtxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JStv8iKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B784D421A1D;
-	Tue, 31 Mar 2026 16:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B55F2DA74C;
+	Tue, 31 Mar 2026 17:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975070; cv=none; b=ZQ77ZI5oRc0lAQytCgjQN54/udfDTzNpTGSd6V2HAHfdRdEY3E4B8i6JOVFPZ2rdazK2q+WVKjB4XTHJ18T4eCcoiwhmG54/AA4C7u964ZAPQc+2VH+NmFbDiUDYvl5lGC4zRvl8h2aXydyUXqOg6/+WNTc9lE+lmGBwuNrOHl4=
+	t=1774976412; cv=none; b=bHObEtc4Kbr4q2gJjlkLjamceF9PaglYk82DD2BaXbhTH6GvmXdtEvATTk54ddGdd/KhzSxSPHTtDS7DZL9C8NPtEwcOUnh1jRpJZBmA4tHuktlxTB7O2EZCbOyvOnAnliua7/z/LIN+D0ZvBOOG5XU8RgTe2fSsMEF22sjxgDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975070; c=relaxed/simple;
-	bh=kr3dax1OYXwAjpB1yPn06IPn6ceYpr55Bz1cwnq8fqs=;
+	s=arc-20240116; t=1774976412; c=relaxed/simple;
+	bh=F1+9jcVxBDQqrOfP2o/v5px39UMz42YB76XVj7uqCWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A97MSXvcrLl9ltIQl8wzXjchIwllieETreLUK8Gnlvi7ApAPjguNhISt1ZeT82aKvEBL4dgEZWMoWdtIW0i8WSGDykNjm0B/fudPb75LQqrqGNkGa9XboNMUHPjBSl8eLp5fFfTbzzu5bpA7xTrOlu4pwCC9vZI3Uql4+Y0SFis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1mAYtxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8B5C19423;
-	Tue, 31 Mar 2026 16:37:50 +0000 (UTC)
+	 MIME-Version; b=X9RYB2ECxgXAsqjla1EFuT6DH1dUsyQp3FrMMfj/9IYeZB0T8eCrIbZFolpOpCE/DB8kqASfez/jUfQVlGq2qZhfKo2TiqU0Xp7+WJDzZhzQncpMYdjbwHdrtuGDEwvmt5WXNAoerFnY4a4zYpaBzmg+pRO6GeKr7h24CtpaTh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JStv8iKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4197C19423;
+	Tue, 31 Mar 2026 17:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975070;
-	bh=kr3dax1OYXwAjpB1yPn06IPn6ceYpr55Bz1cwnq8fqs=;
+	s=korg; t=1774976412;
+	bh=F1+9jcVxBDQqrOfP2o/v5px39UMz42YB76XVj7uqCWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1mAYtxWpD2JIDmmCIz6qP9Ypc07wS92NlyEMKObiIhhwnv88lcbiGQrhGDTSYy4V
-	 nVPiU8b4tTpyVNzYPzn8pJ3cl+kBJDwV63S9t8MO+mSrLCV9cIT76YmCPo57NMvVPp
-	 53u8iSbTiuQtRLwPNITCPBuxJCt3lDXxjKggeh4c=
+	b=JStv8iKvhvTirHjOLPOiPHVwG6TluoplneYNboRboQ32FfxiwCXiZezkQFwbNQisU
+	 M1fN88NNzaJrO11i+GrHZQsbOMAy6LEjihh4aqZt6BDLsJZkT6gZE9Wno1zqIAmtr+
+	 orFxRXrYYmDc1wpECobmsnosQG10kIvkwd9F+Ogk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Rhodes <sean@starlabs.systems>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+b7f3e7d9a596bf6a63e3@syzkaller.appspotmail.com,
+	Minseo Park <jacob.park.9436@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 152/342] ALSA: hda/realtek: Sequence GPIO2 on Star Labs StarFighter
+Subject: [PATCH 6.18 082/309] Bluetooth: L2CAP: Fix stack-out-of-bounds read in l2cap_ecred_conn_req
 Date: Tue, 31 Mar 2026 18:19:45 +0200
-Message-ID: <20260331161804.599910056@linuxfoundation.org>
+Message-ID: <20260331161756.504194528@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +65,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231788-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232307-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.992];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,b7f3e7d9a596bf6a63e3];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,starlabs.systems:email]
-X-Rspamd-Queue-Id: 8241436E460
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,intel.com:email,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7FA8B36DF39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Rhodes <sean@starlabs.systems>
+From: Minseo Park <jacob.park.9436@gmail.com>
 
-[ Upstream commit a6919f2a01f8fbf807b015e5b26aecae7db8117b ]
+[ Upstream commit 9d87cb22195b2c67405f5485d525190747ad5493 ]
 
-The initial StarFighter quirk fixed the runtime suspend pop by muting
-speakers in the shutup callback before power-down. Further hardware
-validation showed that the speaker path is controlled directly by LINE2
-EAPD on NID 0x1b together with GPIO2 for the external amplifier.
+Syzbot reported a KASAN stack-out-of-bounds read in l2cap_build_cmd()
+that is triggered by a malformed Enhanced Credit Based Connection Request.
 
-Replace the shutup-delay workaround with explicit sequencing of those
-controls at playback start and stop:
-- assert LINE2 EAPD and drive GPIO2 high on PREPARE
-- deassert LINE2 EAPD and drive GPIO2 low on CLEANUP
+The vulnerability stems from l2cap_ecred_conn_req(). The function allocates
+a local stack buffer (`pdu`) designed to hold a maximum of 5 Source Channel
+IDs (SCIDs), totaling 18 bytes. When an attacker sends a request with more
+than 5 SCIDs, the function calculates `rsp_len` based on this unvalidated
+`cmd_len` before checking if the number of SCIDs exceeds
+L2CAP_ECRED_MAX_CID.
 
-This avoids the runtime suspend pop without a sleep, and also fixes pops
-around G3 entry and display-manager start that the original workaround
-did not cover.
+If the SCID count is too high, the function correctly jumps to the
+`response` label to reject the packet, but `rsp_len` retains the
+attacker's oversized value. Consequently, l2cap_send_cmd() is instructed
+to read past the end of the 18-byte `pdu` buffer, triggering a
+KASAN panic.
 
-Fixes: 1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter")
-Tested-by: Sean Rhodes <sean@starlabs.systems>
-Signed-off-by: Sean Rhodes <sean@starlabs.systems>
-Link: https://patch.msgid.link/20260315201127.33744-1-sean@starlabs.systems
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix this by moving the assignment of `rsp_len` to after the `num_scid`
+boundary check. If the packet is rejected, `rsp_len` will safely
+remain 0, and the error response will only read the 8-byte base header
+from the stack.
+
+Fixes: c28d2bff7044 ("Bluetooth: L2CAP: Fix result of L2CAP_ECRED_CONN_RSP when MTU is too short")
+Reported-by: syzbot+b7f3e7d9a596bf6a63e3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b7f3e7d9a596bf6a63e3
+Tested-by: syzbot+b7f3e7d9a596bf6a63e3@syzkaller.appspotmail.com
+Signed-off-by: Minseo Park <jacob.park.9436@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 38 ++++++++++++++++++++++++++-----
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ net/bluetooth/l2cap_core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index ab4b22fcb72ed..eba7afef302f7 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -1017,12 +1017,30 @@ static int alc269_resume(struct hda_codec *codec)
- 	return 0;
- }
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 9ea030fc9a9cc..583fe3b654c11 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5065,14 +5065,14 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
+ 	cmd_len -= sizeof(*req);
+ 	num_scid = cmd_len / sizeof(u16);
  
--#define STARLABS_STARFIGHTER_SHUTUP_DELAY_MS	30
-+#define ALC233_STARFIGHTER_SPK_PIN	0x1b
-+#define ALC233_STARFIGHTER_GPIO2	0x04
+-	/* Always respond with the same number of scids as in the request */
+-	rsp_len = cmd_len;
+-
+ 	if (num_scid > L2CAP_ECRED_MAX_CID) {
+ 		result = L2CAP_CR_LE_INVALID_PARAMS;
+ 		goto response;
+ 	}
  
--static void starlabs_starfighter_shutup(struct hda_codec *codec)
-+static void alc233_starfighter_update_amp(struct hda_codec *codec, bool on)
- {
--	if (snd_hda_gen_shutup_speakers(codec))
--		msleep(STARLABS_STARFIGHTER_SHUTUP_DELAY_MS);
-+	snd_hda_codec_write(codec, ALC233_STARFIGHTER_SPK_PIN, 0,
-+			    AC_VERB_SET_EAPD_BTLENABLE,
-+			    on ? AC_EAPDBTL_EAPD : 0);
-+	alc_update_gpio_data(codec, ALC233_STARFIGHTER_GPIO2, on);
-+}
++	/* Always respond with the same number of scids as in the request */
++	rsp_len = cmd_len;
 +
-+static void alc233_starfighter_pcm_hook(struct hda_pcm_stream *hinfo,
-+					struct hda_codec *codec,
-+					struct snd_pcm_substream *substream,
-+					int action)
-+{
-+	switch (action) {
-+	case HDA_GEN_PCM_ACT_PREPARE:
-+		alc233_starfighter_update_amp(codec, true);
-+		break;
-+	case HDA_GEN_PCM_ACT_CLEANUP:
-+		alc233_starfighter_update_amp(codec, false);
-+		break;
-+	}
- }
+ 	mtu  = __le16_to_cpu(req->mtu);
+ 	mps  = __le16_to_cpu(req->mps);
  
- static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
-@@ -1031,8 +1049,16 @@ static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
- {
- 	struct alc_spec *spec = codec->spec;
- 
--	if (action == HDA_FIXUP_ACT_PRE_PROBE)
--		spec->shutup = starlabs_starfighter_shutup;
-+	switch (action) {
-+	case HDA_FIXUP_ACT_PRE_PROBE:
-+		spec->gpio_mask |= ALC233_STARFIGHTER_GPIO2;
-+		spec->gpio_dir |= ALC233_STARFIGHTER_GPIO2;
-+		spec->gpio_data &= ~ALC233_STARFIGHTER_GPIO2;
-+		break;
-+	case HDA_FIXUP_ACT_PROBE:
-+		spec->gen.pcm_playback_hook = alc233_starfighter_pcm_hook;
-+		break;
-+	}
- }
- 
- static void alc269_fixup_pincfg_no_hp_to_lineout(struct hda_codec *codec,
 -- 
-2.53.0
+2.51.0
 
 
 
