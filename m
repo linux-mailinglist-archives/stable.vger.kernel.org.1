@@ -1,168 +1,202 @@
-Return-Path: <stable+bounces-232574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJcjEG80zGlRRQYAu9opvQ
-	(envelope-from <stable+bounces-232574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:54:07 +0200
+	id WIYlJHE0zGlRRQYAu9opvQ
+	(envelope-from <stable+bounces-232575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:54:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5BE4371485
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:54:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F098637148C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 22:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABCF33018BEB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:51:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5829C302DBBB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8658338A709;
-	Tue, 31 Mar 2026 20:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45803E0239;
+	Tue, 31 Mar 2026 20:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umIoWgTc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="biARpTj9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4635233DEE5;
-	Tue, 31 Mar 2026 20:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152583DB62D
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 20:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774990274; cv=none; b=Fg92q7M/jZwKynpjk4G23OQUV0reIKjnGKDgtKi1Vpv5ROVYAxEpPV967iyswDezVMitrWFE7g2btgTjJdpT57yyRkL+XFo7crmLZIdOZJegXAhW5Dpe1JYlSsocuSYaLhgWLFd5oHH4rIU/0bUh+1tQwxr76d6Nxiyd2YdS6G0=
+	t=1774990447; cv=none; b=h6xWUfB7sviaPa0F8z+ItWvrH6OCSmQCUq9GUf9IjmUFX2SUAycdRGvyojHMKEEgG2Fve6kWxnB43p8zIephsTRa5T2CmzKgJd+VIUl5tCz27SI3F/ERFAFiAFKdBIMR7vNqRTmeetQFImEdkXIf6TiTpltn2kJR4ePVf9QAmMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774990274; c=relaxed/simple;
-	bh=R2SNtf8D9RTFGTcrXAVFU3cnZEn4csddMjgdX7pSwAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q+DN4590cH8BOnnmTk+mrdycWG1eLfc4b8UJm8ADff3oLTbRVR7uFEmq4Q5ezkpHJVPn0EwTJcuTGBZrRJjlrPRsGX3J0XJcmOa2wt4bnNbYqtSvxtuMz8Or+XVQimWvh27BWeFyBHMMf+UV4F0uoF9WrjeyZJfxIyHrYIKZhMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umIoWgTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE44FC19423;
-	Tue, 31 Mar 2026 20:51:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774990273;
-	bh=R2SNtf8D9RTFGTcrXAVFU3cnZEn4csddMjgdX7pSwAo=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=umIoWgTcfhrBkTMgHFOTEX1PmSj7PIroh7pe4F2vc3cJojsur0HYjxdIAC/VsHteo
-	 tpAPwQ/jrzHEIW1W+Ck9eqAlg3mmTxp3IpIHngCWCF6W7Sa+eRdRttyCQeFapqtuIg
-	 bOwFL9MqIJat8ePbOGFIz2RyMooTApuhKJchsGHVXOXmTqdPZigcSQCbyvlxec+1vh
-	 kZ+w1Jkln1E74pnaXMbfKQusFRrIn6DoWWWgjQ/dBhORvXoTw9pgZvu8V/q0gdMG4N
-	 JvOwZNfDEoKsTIgmvC7CCQHvAvE1priJlIrt18/cEvJ6Hhq38VHZxAkRKf1i0Y/S/k
-	 jlM0C7lI+mKMg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 8219BCE00EF; Tue, 31 Mar 2026 13:51:11 -0700 (PDT)
-Date: Tue, 31 Mar 2026 13:51:11 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Sonam Sanju <sonam.sanju@intel.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vineeth Pillai <vineeth@bitbyteword.org>,
-	Dmitry Maluka <dmaluka@chromium.org>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu
- out of resampler_lock
-Message-ID: <2d080c02-9602-4b22-94ce-1f7a71cc19a4@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260323053353.805336-1-sonam.sanju@intel.com>
- <20260323064248.1660757-1-sonam.sanju@intel.com>
- <acwPr_Aic9xd95_R@google.com>
+	s=arc-20240116; t=1774990447; c=relaxed/simple;
+	bh=xzZNSyXLHafrytf3VN4xGFqU7adjtRPPfSXD0Gs3mLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dG0CLNj9D3U5Ve8HNUvaenOlhc7hlLayxpNIxEB9mYSnlRAGDpRFwxxVOKStbAD8b6WLJd5F0nmu0wKUv/PNV8eqo0O3/6ZiEz9ykfql9AaRnSZWg/6OAaK82MfLgKoeE2lhO+5D/MARTlXep11i4Tci1Gi8TpdowG+OGI6/dFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=biARpTj9; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2c66eafc1easo4470669eec.1
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 13:54:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774990444; x=1775595244; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZspNX5rs+mbfHqezyzp4ll5OJtm1yyo5L/3asPtSr14=;
+        b=biARpTj9/QQwG/GWm2OaLc850ThcmromQWq0S6hENjGaLFnobmwzqhbIFFXNEonXtb
+         oMZwypR6wkjVmzlTNTB58fS8ojw4OP6LfEvhyynI5zWCKLbE1qB5Ky402qp0Dxww/CmC
+         r6pEDLb2JXGMEbQmLht7W6v/mFSQns1ymG8eAP7RXt6BQqYD2GlKU0xBmBJs29S2DKba
+         719pCPPqmrDJLNPT96IGGo4yeZK6R4Dx7FpShMXuG9fXB/KP5U03cwq0XHZS0auqNZHy
+         y/3maR/eD7DK0jm4ETq2uoj+PVX9HtTrUHOKmOd1GRcHki/Fkn6CILpTg4HbEYNoztli
+         bm8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774990444; x=1775595244;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZspNX5rs+mbfHqezyzp4ll5OJtm1yyo5L/3asPtSr14=;
+        b=iOdbApF033KIZcwdEYA8+KRMTARhUD6CbP3f+enjxG0q9Nc+QskVmhInqGTlIFuluj
+         uzpA5+2odOSga1Uq+FLWs5sULOqUgsVIVCU9JIgAWRVLoNQUHwBCaYDhQxKv18T2yHDm
+         hs2OXkegfUYf4Z6cN9hT6tIZqNRCsZ74JNl/vXpmSgVZfXpNezeiPPBZsjDkh5FfqHOu
+         RdMEgxwMbF7tTpcbKtymR+EGO6d3oEc98Q1O6kWLewyztxN9PiB0aX9i6c/bJTtK3Wfx
+         +FNtBKjLhOFd1w650eAx+k1FLvZAZ7L9uTRxR+/IGQ5eVl6zhF3i1r5tPrMb4YsFfVZG
+         DKhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUzW57fM8ksFXv2OzU4Njwja5se3/QvQQbxVzfp3SPt7h9vONjQNBZ3pjyOqAcnQ0xi1/lzFcE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTJ5F0zxXnpCx4i8n0SD5hxyccZWBPZHnRrPWs/s5Cslp4gwMz
+	v6Kr3sfJfJnnQfsTZ2PRAJJdZvLwivgjmRpyO+FmmQk0InaZjcV4vn6h
+X-Gm-Gg: ATEYQzxoTAiezXjMVL2z+COoYmTwGm4ZwNm5Y0WIP+9ovwLQu7N/zzor6YzpNTZLvcY
+	U/lm9QdrKI4ci+/Kd7QBbSp2O7wdu0ervz2gBG963kq6G8LOeG9nlvcS8g9EyuKwcGtgoraDqHG
+	SmzBdRnX8Ws0w2J85BTYI6Cctzd/5TSU3ITx3dHBxAU3+l7p4vpBFm27048i5DeXDZcUEvVqfbO
+	w6+VleTXUUUHVpkLxuq7mieYUfihbWVAxmFcA5R7TOwmWMzoc8bJTKgGigc+o+bWRIbDg/tN+/k
+	8Pv8slaeK/KhwRRpzirQNa37/VOOxLYoQaBRKeohHHIGTsesR3lFqVEgiBlXpeZzs24tWkycRJV
+	8N/HGzXKpIxNjlEmWxdxD1VRzferbT2bzHqDoB7ZQ7Tnf7IwFowQZ2C6jKneRltHAa8zuvirmT4
+	kBffJynqYomQMy7J+VBoHy4J4WCDdKagSUGvSsUeqBmBJu6W06sIX7+p+OI64bYVahV/RDX/vJT
+	Ec=
+X-Received: by 2002:a05:7300:fb8e:b0:2c7:11f2:d072 with SMTP id 5a478bee46e88-2c9323b8c8cmr558693eec.16.1774990443987;
+        Tue, 31 Mar 2026 13:54:03 -0700 (PDT)
+Received: from [192.168.1.8] (177-4-161-218.user3p.v-tal.net.br. [177.4.161.218])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c41c1513sm11457738eec.8.2026.03.31.13.54.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 13:54:03 -0700 (PDT)
+Message-ID: <c1aac723-8a60-4b37-9c8b-74b2ea4daebb@gmail.com>
+Date: Tue, 31 Mar 2026 17:53:59 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acwPr_Aic9xd95_R@google.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ALSA: aoa: i2sbus: clear stale prepared state
+To: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+References: <20260330-aoa-i2sbus-clear-stale-active-v1-1-47a6c0a3ac9e@gmail.com>
+ <202604010125.AvkWBYKI-lkp@intel.com>
+From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
+ <cassiogabrielcontato@gmail.com>
+Content-Language: en-US
+In-Reply-To: <202604010125.AvkWBYKI-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232574-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-232575-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,gmail.com,joshtriplett.org,redhat.com,bitbyteword.org,chromium.org,vger.kernel.org,goodmis.org,efficios.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[paulmck@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[paulmck@kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D5BE4371485
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,01.org:url]
+X-Rspamd-Queue-Id: F098637148C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 11:17:19AM -0700, Sean Christopherson wrote:
-> +srcu folks
+On 3/31/26 14:10, kernel test robot wrote:
+> Hi Cássio,
 > 
-> Please don't post subsequent versions In-Reply-To previous versions, it tends to
-> muck up tooling.
+> kernel test robot noticed the following build errors:
 > 
-> On Mon, Mar 23, 2026, Sonam Sanju wrote:
-> > irqfd_resampler_shutdown() and kvm_irqfd_assign() both call
-> > synchronize_srcu_expedited() while holding kvm->irqfds.resampler_lock.
-> > This can deadlock when multiple irqfd workers run concurrently on the
-> > kvm-irqfd-cleanup workqueue during VM teardown or when VMs are rapidly
-> > created and destroyed:
-> > 
-> >   CPU A (mutex holder)               CPU B/C/D (mutex waiters)
-> >   irqfd_shutdown()                   irqfd_shutdown() / kvm_irqfd_assign()
-> >    irqfd_resampler_shutdown()         irqfd_resampler_shutdown()
-> >     mutex_lock(resampler_lock)  <---- mutex_lock(resampler_lock) //BLOCKED
-> >     list_del_rcu(...)                     ...blocked...
-> >     synchronize_srcu_expedited()      // Waiters block workqueue,
-> >       // waits for SRCU grace            preventing SRCU grace
-> >       // period which requires            period from completing
-> >       // workqueue progress          --- DEADLOCK ---
-> > 
-> > In irqfd_resampler_shutdown(), the synchronize_srcu_expedited() in
-> > the else branch is called directly within the mutex.  In the if-last
-> > branch, kvm_unregister_irq_ack_notifier() also calls
-> > synchronize_srcu_expedited() internally.  In kvm_irqfd_assign(),
-> > synchronize_srcu_expedited() is called after list_add_rcu() but
-> > before mutex_unlock().  All paths can block indefinitely because:
-> > 
-> >   1. synchronize_srcu_expedited() waits for an SRCU grace period
-> >   2. SRCU grace period completion needs workqueue workers to run
-> >   3. The blocked mutex waiters occupy workqueue slots preventing progress
+> [auto build test ERROR on 46a6512f4a74dd7b18d9a455669c226843fc49ce]
 > 
-> Unless I'm misunderstanding the bug, "fixing" in this in KVM is papering over an
-> underlying flaw.  Essentially, this would be establishing a rule that
-> synchronize_srcu_expedited() can *never* be called while holding a mutex.  That's
-> not viable.
+> url:    https://github.com/intel-lab-lkp/linux/commits/C-ssio-Gabriel/ALSA-aoa-i2sbus-clear-stale-prepared-state/20260331-113724
+> base:   46a6512f4a74dd7b18d9a455669c226843fc49ce
+> patch link:    https://lore.kernel.org/r/20260330-aoa-i2sbus-clear-stale-active-v1-1-47a6c0a3ac9e%40gmail.com
+> patch subject: [PATCH] ALSA: aoa: i2sbus: clear stale prepared state
+> config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260401/202604010125.AvkWBYKI-lkp@intel.com/config)
+> compiler: powerpc64-linux-gcc (GCC) 15.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260401/202604010125.AvkWBYKI-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202604010125.AvkWBYKI-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>>> sound/aoa/soundbus/i2sbus/pcm.c:760:25: error: initialization of 'int (*)(struct snd_pcm_substream *, struct snd_pcm_hw_params *)' from incompatible pointer type 'int (*)(struct snd_pcm_substream *)' [-Wincompatible-pointer-types]
+>      760 |         .hw_params =    i2sbus_playback_hw_params,
+>          |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+>    sound/aoa/soundbus/i2sbus/pcm.c:760:25: note: (near initialization for 'i2sbus_playback_ops.hw_params')
+>    sound/aoa/soundbus/i2sbus/pcm.c:313:12: note: 'i2sbus_playback_hw_params' declared here
+>      313 | static int i2sbus_playback_hw_params(struct snd_pcm_substream *substream)
+>          |            ^~~~~~~~~~~~~~~~~~~~~~~~~
+>    sound/aoa/soundbus/i2sbus/pcm.c:829:25: error: initialization of 'int (*)(struct snd_pcm_substream *, struct snd_pcm_hw_params *)' from incompatible pointer type 'int (*)(struct snd_pcm_substream *)' [-Wincompatible-pointer-types]
+>      829 |         .hw_params =    i2sbus_record_hw_params,
+>          |                         ^~~~~~~~~~~~~~~~~~~~~~~
+>    sound/aoa/soundbus/i2sbus/pcm.c:829:25: note: (near initialization for 'i2sbus_record_ops.hw_params')
+>    sound/aoa/soundbus/i2sbus/pcm.c:323:12: note: 'i2sbus_record_hw_params' declared here
+>      323 | static int i2sbus_record_hw_params(struct snd_pcm_substream *substream)
+>          |            ^~~~~~~~~~~~~~~~~~~~~~~
+> 
+> 
+> vim +760 sound/aoa/soundbus/i2sbus/pcm.c
+> 
+>    756	
+>    757	static const struct snd_pcm_ops i2sbus_playback_ops = {
+>    758		.open =		i2sbus_playback_open,
+>    759		.close =	i2sbus_playback_close,
+>  > 760		.hw_params =	i2sbus_playback_hw_params,
+>    761		.hw_free =	i2sbus_playback_hw_free,
+>    762		.prepare =	i2sbus_playback_prepare,
+>    763		.trigger =	i2sbus_playback_trigger,
+>    764		.pointer =	i2sbus_playback_pointer,
+>    765	};
+>    766	
+> 
+Oops my bad!
 
-First, it is OK to invoke synchronize_srcu_expedited() while holding
-a mutex.  Second, the synchronize_srcu_expedited() function's use of
-workqueues is the same as that of synchronize_srcu(), so in an alternate
-universe where it was not OK to invoke synchronize_srcu_expedited() while
-holding a mutex, it would also not be OK to invoke synchronize_srcu()
-while holding that same mutex.  Third, it is also OK to acquire that
-same mutex within a workqueue handler.  Fourth, SRCU and RCU use their
-own workqueue, which no one else should be using (and that prohibition
-most definitely includes the irqfd workers).
+I had added i2sbus_playback_hw_params(), i2sbus_record_hw_params(),
+and the helper they use without the struct snd_pcm_hw_params *params argument
+expected by struct snd_pcm_ops.hw_params, which caused the compilation error.
 
-As a result, I do have to ask...  When you say "multiple irqfd workers",
-exactly how many such workers are you running?
+After fixing the callback signatures to match the ALSA API, the file
+builds cleanly.
 
-							Thanx, Paul
+I will send a v2 patch with the proposed fixes.
 
-> >   4. The mutex holder never releases the lock -> deadlock
+-- 
+Thanks,
+Cássio
+
 
