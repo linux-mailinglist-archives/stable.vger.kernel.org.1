@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KnkBmn8y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:05 +0200
+	id UCTWAKkGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7465836D64C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB5E36F125
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 464163176492
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33188304C2D8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE7042E014;
-	Tue, 31 Mar 2026 16:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206B53019D6;
+	Tue, 31 Mar 2026 17:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0SJ4mym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yt0GwCpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F229A425CEA;
-	Tue, 31 Mar 2026 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BBC2FE042;
+	Tue, 31 Mar 2026 17:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975172; cv=none; b=rKkWg8YgICVf8ZDJybdq8QBMXwqkdE6o2n4eFTnCo2ulIcQ4FlQMbA3fwxwRbRkIbeC14RMVH0TBHen4XFBy9/vtEPRQokxxakkJsPww2MD3Ec2PoPjBlDC2zpxjRVuF1774+YObqysyguuE6bncKXGziFkwS1pePrGajxgpJt0=
+	t=1774976510; cv=none; b=mYRSgKmWyxDGVRbwSZHNPzMxs5sPY+3ryqwPL8a9bZYVMCdPbwAfWFDDMcPsipYAZLeNwSV8EM4GGexQ21xQWerRxQCLRwdDkjrKIEukJ/OIxNKezZEPF4tB5LiE/L3dLC0yEXXqQazi4oI82SoDn6kcy/l7NX1dotq+3dToevk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975172; c=relaxed/simple;
-	bh=5UptM1qor/Ui4k0aiCHwV4uD+CJL16h8mr7uJ21JqRw=;
+	s=arc-20240116; t=1774976510; c=relaxed/simple;
+	bh=OO4JQApIj+O+IIiwdtetKPUm4AtvUv15MOn2qyCqkbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=akGg63p//bWJL6aHK0AFXDVS0uKLWYPBgx7YWanUiIOrJGVeabYaPQwqaH/qVEdkaTIerJ1ec6pw1KEu/QzeZNA5DQwxY/WKZCoh+y0mTfauTnWIL28zNmF+M8t8a2S9nSdVVrQhch8riGmXJAVHdV/49RrUJ5TAPUynKKrtR4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0SJ4mym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895A9C19423;
-	Tue, 31 Mar 2026 16:39:31 +0000 (UTC)
+	 MIME-Version; b=WWmu7hhKuTvbCzgpmiXmHQsi+XOiHSuSWf6Z6koFmAk2KvgqUVj3WPSAwY5qbfgxXwOWac+q+rGDh4uEpvMEOTnxNrlCo2loB1S406lVt69H2+y+/xn0pKGlFZQ7PecEnM11WXGQoSSQKDIHlMQLUBT+Feox2scBV7mKLGboZTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yt0GwCpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F01CC19423;
+	Tue, 31 Mar 2026 17:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975171;
-	bh=5UptM1qor/Ui4k0aiCHwV4uD+CJL16h8mr7uJ21JqRw=;
+	s=korg; t=1774976510;
+	bh=OO4JQApIj+O+IIiwdtetKPUm4AtvUv15MOn2qyCqkbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0SJ4mymB5SZlmFlssy0ICIMDCDqLXNQmd9JtFosadIm4/RB1KwQ7tznhP0YDuERA
-	 5z7g3PYYaTWWG0KtjvUdMdxnGj7aADeWm8oL0KugWEb3IJgwY68iGOhl7gQeKa91R9
-	 cQK++VaIzhFKkyacGPC+1vRCxtxpnsY2Zl3YQpEw=
+	b=yt0GwCpCrWspXFUjewe4yz5vuW6WqGExhbqoLxGI29Cz8javyh2CaJ9d17Zj88PT0
+	 r0IpIZvnpqzVGzxXSfMcIKBeJG8F8fkSnUluIsY5ZRfW//KDT30UxdlbABnrbsZhUJ
+	 cUY5gWSpimLAyfpveezg2e7Rl6qXOLIfs2mt7eFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Mark Brown <broonie@kernel.org>,
+	Cen Zhang <zzzccc427@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 190/342] ASoC: adau1372: Fix clock leak on PLL lock failure
+Subject: [PATCH 6.18 120/309] Bluetooth: btintel: serialize btintel_hw_error() with hci_req_sync_lock
 Date: Tue, 31 Mar 2026 18:20:23 +0200
-Message-ID: <20260331161805.989292945@linuxfoundation.org>
+Message-ID: <20260331161757.898587862@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +63,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231827-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232345-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.964];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7465836D64C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0FB5E36F125
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Cen Zhang <zzzccc427@gmail.com>
 
-[ Upstream commit bfe6a264effcb6fe99ad7ceaf9e8c7439fc9555b ]
+[ Upstream commit 94d8e6fe5d0818e9300e514e095a200bd5ff93ae ]
 
-adau1372_enable_pll() was a void function that logged a dev_err() on
-PLL lock timeout but did not propagate the error. As a result,
-adau1372_set_power() would continue with adau1372->enabled set to true
-despite the PLL being unlocked, and the mclk left enabled with no
-corresponding disable on the error path.
+btintel_hw_error() issues two __hci_cmd_sync() calls (HCI_OP_RESET
+and Intel exception-info retrieval) without holding
+hci_req_sync_lock().  This lets it race against
+hci_dev_do_close() -> btintel_shutdown_combined(), which also runs
+__hci_cmd_sync() under the same lock.  When both paths manipulate
+hdev->req_status/req_rsp concurrently, the close path may free the
+response skb first, and the still-running hw_error path hits a
+slab-use-after-free in kfree_skb().
 
-Convert adau1372_enable_pll() to return int, using -ETIMEDOUT on lock
-timeout and propagating regmap errors directly. In adau1372_set_power(),
-check the return value and unwind in reverse order: restore regcache to
-cache-only mode, reassert GPIO power-down, and disable the clock before
-returning the error.
+Wrap the whole recovery sequence in hci_req_sync_lock/unlock so it
+is serialized with every other synchronous HCI command issuer.
 
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Fixes: 6cd4c6459e47 ("ASoC: Add ADAU1372 audio CODEC support")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20260325210704.76847-3-jihed.chaibi.dev@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Below is the data race report and the kasan report:
+
+  BUG: data-race in __hci_cmd_sync_sk / btintel_shutdown_combined
+
+  read of hdev->req_rsp at net/bluetooth/hci_sync.c:199
+  by task kworker/u17:1/83:
+   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
+   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
+   btintel_hw_error+0x114/0x670 drivers/bluetooth/btintel.c:254
+   hci_error_reset+0x348/0xa30 net/bluetooth/hci_core.c:1030
+
+  write/free by task ioctl/22580:
+   btintel_shutdown_combined+0xd0/0x360
+    drivers/bluetooth/btintel.c:3648
+   hci_dev_close_sync+0x9ae/0x2c10 net/bluetooth/hci_sync.c:5246
+   hci_dev_do_close+0x232/0x460 net/bluetooth/hci_core.c:526
+
+  BUG: KASAN: slab-use-after-free in
+   sk_skb_reason_drop+0x43/0x380 net/core/skbuff.c:1202
+  Read of size 4 at addr ffff888144a738dc
+  by task kworker/u17:1/83:
+   __hci_cmd_sync_sk+0x12f2/0x1c30 net/bluetooth/hci_sync.c:200
+   __hci_cmd_sync+0x55/0x80 net/bluetooth/hci_sync.c:223
+   btintel_hw_error+0x186/0x670 drivers/bluetooth/btintel.c:260
+
+Fixes: 973bb97e5aee ("Bluetooth: btintel: Add generic function for handling hardware errors")
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/adau1372.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/bluetooth/btintel.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/adau1372.c b/sound/soc/codecs/adau1372.c
-index 6345342218d61..d7363f9d53bb3 100644
---- a/sound/soc/codecs/adau1372.c
-+++ b/sound/soc/codecs/adau1372.c
-@@ -762,7 +762,7 @@ static int adau1372_startup(struct snd_pcm_substream *substream, struct snd_soc_
- 	return 0;
- }
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 9d29ab811f802..5e0a05edcbfd1 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -251,11 +251,13 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
  
--static void adau1372_enable_pll(struct adau1372 *adau1372)
-+static int adau1372_enable_pll(struct adau1372 *adau1372)
- {
- 	unsigned int val, timeout = 0;
- 	int ret;
-@@ -778,8 +778,12 @@ static void adau1372_enable_pll(struct adau1372 *adau1372)
- 		timeout++;
- 	} while (!(val & 1) && timeout < 3);
+ 	bt_dev_err(hdev, "Hardware error 0x%2.2x", code);
  
--	if (ret < 0 || !(val & 1))
-+	if (ret < 0 || !(val & 1)) {
- 		dev_err(adau1372->dev, "Failed to lock PLL\n");
-+		return ret < 0 ? ret : -ETIMEDOUT;
-+	}
++	hci_req_sync_lock(hdev);
 +
-+	return 0;
- }
+ 	skb = __hci_cmd_sync(hdev, HCI_OP_RESET, 0, NULL, HCI_INIT_TIMEOUT);
+ 	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Reset after hardware error failed (%ld)",
+ 			   PTR_ERR(skb));
+-		return;
++		goto unlock;
+ 	}
+ 	kfree_skb(skb);
  
- static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
-@@ -807,7 +811,14 @@ static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
- 		 * accessed.
- 		 */
- 		if (adau1372->use_pll) {
--			adau1372_enable_pll(adau1372);
-+			ret = adau1372_enable_pll(adau1372);
-+			if (ret) {
-+				regcache_cache_only(adau1372->regmap, true);
-+				if (adau1372->pd_gpio)
-+					gpiod_set_value(adau1372->pd_gpio, 1);
-+				clk_disable_unprepare(adau1372->mclk);
-+				return ret;
-+			}
- 			clk_ctrl |= ADAU1372_CLK_CTRL_CLKSRC;
- 		}
+@@ -263,18 +265,21 @@ void btintel_hw_error(struct hci_dev *hdev, u8 code)
+ 	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Retrieving Intel exception info failed (%ld)",
+ 			   PTR_ERR(skb));
+-		return;
++		goto unlock;
+ 	}
+ 
+ 	if (skb->len != 13) {
+ 		bt_dev_err(hdev, "Exception info size mismatch");
+ 		kfree_skb(skb);
+-		return;
++		goto unlock;
+ 	}
+ 
+ 	bt_dev_err(hdev, "Exception info %s", (char *)(skb->data + 1));
+ 
+ 	kfree_skb(skb);
++
++unlock:
++	hci_req_sync_unlock(hdev);
+ }
+ EXPORT_SYMBOL_GPL(btintel_hw_error);
  
 -- 
-2.53.0
+2.51.0
 
 
 
