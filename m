@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-232228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKmKLfYFzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:50 +0200
+	id aKzbHgkBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19ECF36EF5A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAAE36E48B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F115332AB0CF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 374E73047BAA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB92C423A61;
-	Tue, 31 Mar 2026 16:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F7830C372;
+	Tue, 31 Mar 2026 17:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Wp3Om2b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1JX6Ke3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5A33EF0A2;
-	Tue, 31 Mar 2026 16:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F5C30AD00;
+	Tue, 31 Mar 2026 17:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976207; cv=none; b=ZF0CNxBnZonmfvOQCYuZQdsKa12esVbDLAB0UQPorRuqtuwnJ+/intWFGPfAQDFtF2HsxMCN5/gAsVhYbT4E4DJyS6A+uK5ff00YT+IdhzU3J+V0AnQHAXdRbpdl9PbDxo+7IVC6Gvor0K8tgLWby8WPzUJdNMHWZzf0T2BJ7Lw=
+	t=1774976880; cv=none; b=jneE59i9VWtwg1SAyeRxRNa00Bcd6eeRBQx2n8IyZVSlbC4g/mvMSRu5IxkjDFkH0c50c9PoRKg7UjLwD5aOPOWSwu5qBdStFjyJubAqTFqED1PDzBRpz2ITLS1S72Ly2YfDlY1V0cTT5+XTn/WzHSOiHnLOcceRp6a95Fz/sd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976207; c=relaxed/simple;
-	bh=p/oAhJb4QVm6RqWPVQHhQYaHc49EPb93KjQUY2ddmaQ=;
+	s=arc-20240116; t=1774976880; c=relaxed/simple;
+	bh=d1NCKD4yRjTfbgndrYF7CfTALNgyjtUkaQvH0RvhANQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f1gt08NpsJoGcO2OYoyBnxjb2RQAlX8VKS/Lvf/vni4OHVf+Loa3HTt7DaRwEh7Ndp6a8uACZlvJytbwpmynFXVOnvCXuG0Ala2fS1Fh0T0z/BTjeR+465TbBJOQfyVaLTIS4+P363+4/nU70TJzXJDoM8NRDS5rkLG9jvHTgi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Wp3Om2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F27C19423;
-	Tue, 31 Mar 2026 16:56:46 +0000 (UTC)
+	 MIME-Version; b=kFQeeG226IkQ9qya2UBLECTysTXftZUwShvG2WuIVbEMicP7maC2xvmYjcWRXQU3z/oWt6pZvIFz2A7tTmUQuUDhiE8NCnIn/4NFkOB7s80dOAEj8YWShMJD8MtvkQj1tqQ2VxpLt+8YsRkU69Niq5pr/pNUKKHnnUmQMmGapXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1JX6Ke3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87675C19423;
+	Tue, 31 Mar 2026 17:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976207;
-	bh=p/oAhJb4QVm6RqWPVQHhQYaHc49EPb93KjQUY2ddmaQ=;
+	s=korg; t=1774976879;
+	bh=d1NCKD4yRjTfbgndrYF7CfTALNgyjtUkaQvH0RvhANQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Wp3Om2bFX4drxzv+fJnVMhvw8CD8i+NeAb3cGfLx5xhSs7S39L22Aq1EDqjWOfSc
-	 yl4dTTLt2iAjxdEbMHpULEF+S+FuJ09aEdrbobbwCRLggp9nu5efbuN2AtyS2QQLek
-	 XbFahKZGlKj+nZBtgnJlhjjY8OP3cvg9CyxpY0gg=
+	b=r1JX6Ke3G64LF5wJ3w0sK6bocjisSPl8cvNMQiCLM5sl7eY4J13yvEQpaeiVnhK95
+	 mewayYrT0k00cJzlIAC5+0AQkbdR4OOWAkUxBrj3yK8ZPBv4kz0EMUONz5R4EkGgf4
+	 DjaxdaPgH5pQyNXt9A6Dpgd6pgppFFZbqLp5MMYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Song Liu <song@kernel.org>,
-	Tingmao Wang <m@maowtm.org>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 216/244] landlock: Fix handling of disconnected directories
+	syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,
+	Tejas Bharambe <tejas.bharambe@outlook.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.18 263/309] ext4: validate p_idx bounds in ext4_ext_correct_indexes
 Date: Tue, 31 Mar 2026 18:22:46 +0200
-Message-ID: <20260331161749.740971676@linuxfoundation.org>
+Message-ID: <20260331161803.246778435@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,199 +64,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232228-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232489-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,outlook.com,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,04c4e65cab786a2e5b7e];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,maowtm.org:email]
-X-Rspamd-Queue-Id: 19ECF36EF5A
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,outlook.com:email]
+X-Rspamd-Queue-Id: 1DAAE36E48B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Tejas Bharambe <tejas.bharambe@outlook.com>
 
-[ Upstream commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1 ]
+commit 2acb5c12ebd860f30e4faf67e6cc8c44ddfe5fe8 upstream.
 
-Disconnected files or directories can appear when they are visible and
-opened from a bind mount, but have been renamed or moved from the source
-of the bind mount in a way that makes them inaccessible from the mount
-point (i.e. out of scope).
+ext4_ext_correct_indexes() walks up the extent tree correcting
+index entries when the first extent in a leaf is modified. Before
+accessing path[k].p_idx->ei_block, there is no validation that
+p_idx falls within the valid range of index entries for that
+level.
 
-Previously, access rights tied to files or directories opened through a
-disconnected directory were collected by walking the related hierarchy
-down to the root of the filesystem, without taking into account the
-mount point because it couldn't be found. This could lead to
-inconsistent access results, potential access right widening, and
-hard-to-debug renames, especially since such paths cannot be printed.
+If the on-disk extent header contains a corrupted or crafted
+eh_entries value, p_idx can point past the end of the allocated
+buffer, causing a slab-out-of-bounds read.
 
-For a sandboxed task to create a disconnected directory, it needs to
-have write access (i.e. FS_MAKE_REG, FS_REMOVE_FILE, and FS_REFER) to
-the underlying source of the bind mount, and read access to the related
-mount point.   Because a sandboxed task cannot acquire more access
-rights than those defined by its Landlock domain, this could lead to
-inconsistent access rights due to missing permissions that should be
-inherited from the mount point hierarchy, while inheriting permissions
-from the filesystem hierarchy hidden by this mount point instead.
+Fix this by validating path[k].p_idx against EXT_LAST_INDEX() at
+both access sites: before the while loop and inside it. Return
+-EFSCORRUPTED if the index pointer is out of range, consistent
+with how other bounds violations are handled in the ext4 extent
+tree code.
 
-Landlock now handles files and directories opened from disconnected
-directories by taking into account the filesystem hierarchy when the
-mount point is not found in the hierarchy walk, and also always taking
-into account the mount point from which these disconnected directories
-were opened.  This ensures that a rename is not allowed if it would
-widen access rights [1].
-
-The rationale is that, even if disconnected hierarchies might not be
-visible or accessible to a sandboxed task, relying on the collected
-access rights from them improves the guarantee that access rights will
-not be widened during a rename because of the access right comparison
-between the source and the destination (see LANDLOCK_ACCESS_FS_REFER).
-It may look like this would grant more access on disconnected files and
-directories, but the security policies are always enforced for all the
-evaluated hierarchies.  This new behavior should be less surprising to
-users and safer from an access control perspective.
-
-Remove a wrong WARN_ON_ONCE() canary in collect_domain_accesses() and
-fix the related comment.
-
-Because opened files have their access rights stored in the related file
-security properties, there is no impact for disconnected or unlinked
-files.
-
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Song Liu <song@kernel.org>
-Reported-by: Tingmao Wang <m@maowtm.org>
-Closes: https://lore.kernel.org/r/027d5190-b37a-40a8-84e9-4ccbc352bcdf@maowtm.org
-Closes: https://lore.kernel.org/r/09b24128f86973a6022e6aa8338945fcfb9a33e4.1749925391.git.m@maowtm.org
-Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
-Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
-Link: https://lore.kernel.org/r/b0f46246-f2c5-42ca-93ce-0d629702a987@maowtm.org [1]
-Reviewed-by: Tingmao Wang <m@maowtm.org>
-Link: https://lore.kernel.org/r/20251128172200.760753-2-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-(cherry picked from commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1)
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reported-by: syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=04c4e65cab786a2e5b7e
+Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
+Link: https://patch.msgid.link/JH0PR06MB66326016F9B6AD24097D232B897CA@JH0PR06MB6632.apcprd06.prod.outlook.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/errata/abi-1.h |   16 +++++++++++++++
- security/landlock/fs.c           |   40 +++++++++++++++++++++++++++------------
- 2 files changed, 44 insertions(+), 12 deletions(-)
- create mode 100644 security/landlock/errata/abi-1.h
+ fs/ext4/extents.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- /dev/null
-+++ b/security/landlock/errata/abi-1.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+/**
-+ * DOC: erratum_3
-+ *
-+ * Erratum 3: Disconnected directory handling
-+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ *
-+ * This fix addresses an issue with disconnected directories that occur when a
-+ * directory is moved outside the scope of a bind mount.  The change ensures
-+ * that evaluated access rights include both those from the disconnected file
-+ * hierarchy down to its filesystem root and those from the related mount point
-+ * hierarchy.  This prevents access right widening through rename or link
-+ * actions.
-+ */
-+LANDLOCK_ERRATUM(3)
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -899,21 +899,31 @@ jump_up:
- 				break;
- 			}
- 		}
-+
- 		if (unlikely(IS_ROOT(walker_path.dentry))) {
--			/*
--			 * Stops at disconnected root directories.  Only allows
--			 * access to internal filesystems (e.g. nsfs, which is
--			 * reachable through /proc/<pid>/ns/<namespace>).
--			 */
--			if (walker_path.mnt->mnt_flags & MNT_INTERNAL) {
-+			if (likely(walker_path.mnt->mnt_flags & MNT_INTERNAL)) {
-+				/*
-+				 * Stops and allows access when reaching disconnected root
-+				 * directories that are part of internal filesystems (e.g. nsfs,
-+				 * which is reachable through /proc/<pid>/ns/<namespace>).
-+				 */
- 				allowed_parent1 = true;
- 				allowed_parent2 = true;
-+				break;
- 			}
--			break;
-+
-+			/*
-+			 * We reached a disconnected root directory from a bind mount.
-+			 * Let's continue the walk with the mount point we missed.
-+			 */
-+			dput(walker_path.dentry);
-+			walker_path.dentry = walker_path.mnt->mnt_root;
-+			dget(walker_path.dentry);
-+		} else {
-+			parent_dentry = dget_parent(walker_path.dentry);
-+			dput(walker_path.dentry);
-+			walker_path.dentry = parent_dentry;
- 		}
--		parent_dentry = dget_parent(walker_path.dentry);
--		dput(walker_path.dentry);
--		walker_path.dentry = parent_dentry;
- 	}
- 	path_put(&walker_path);
- 
-@@ -990,6 +1000,9 @@ static access_mask_t maybe_remove(const
-  * file.  While walking from @dir to @mnt_root, we record all the domain's
-  * allowed accesses in @layer_masks_dom.
-  *
-+ * Because of disconnected directories, this walk may not reach @mnt_dir.  In
-+ * this case, the walk will continue to @mnt_dir after this call.
-+ *
-  * This is similar to is_access_to_paths_allowed() but much simpler because it
-  * only handles walking on the same mount point and only checks one set of
-  * accesses.
-@@ -1031,8 +1044,11 @@ static bool collect_domain_accesses(
- 			break;
- 		}
- 
--		/* We should not reach a root other than @mnt_root. */
--		if (dir == mnt_root || WARN_ON_ONCE(IS_ROOT(dir)))
-+		/*
-+		 * Stops at the mount point or the filesystem root for a disconnected
-+		 * directory.
-+		 */
-+		if (dir == mnt_root || unlikely(IS_ROOT(dir)))
- 			break;
- 
- 		parent_dentry = dget_parent(dir);
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1741,6 +1741,13 @@ static int ext4_ext_correct_indexes(hand
+ 	err = ext4_ext_get_access(handle, inode, path + k);
+ 	if (err)
+ 		return err;
++	if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
++		EXT4_ERROR_INODE(inode,
++				 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
++				 k, path[k].p_idx,
++				 EXT_LAST_INDEX(path[k].p_hdr));
++		return -EFSCORRUPTED;
++	}
+ 	path[k].p_idx->ei_block = border;
+ 	err = ext4_ext_dirty(handle, inode, path + k);
+ 	if (err)
+@@ -1753,6 +1760,14 @@ static int ext4_ext_correct_indexes(hand
+ 		err = ext4_ext_get_access(handle, inode, path + k);
+ 		if (err)
+ 			goto clean;
++		if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
++			EXT4_ERROR_INODE(inode,
++					 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
++					 k, path[k].p_idx,
++					 EXT_LAST_INDEX(path[k].p_hdr));
++			err = -EFSCORRUPTED;
++			goto clean;
++		}
+ 		path[k].p_idx->ei_block = border;
+ 		err = ext4_ext_dirty(handle, inode, path + k);
+ 		if (err)
 
 
 
