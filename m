@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-231854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKAbEJ78y2nDNAYAu9opvQ
-	(envelope-from <stable+bounces-231854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:58 +0200
+	id OBkyO2oDzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F6A36D703
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC1F36EA8D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67B84310194B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 90859310561E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F32C4266BB;
-	Tue, 31 Mar 2026 16:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46042FDC5E;
+	Tue, 31 Mar 2026 17:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7axSOlX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8YekhvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019892EE262;
-	Tue, 31 Mar 2026 16:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C1A2F5491;
+	Tue, 31 Mar 2026 17:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975242; cv=none; b=RwjoTexPeHT9i/2G8z++zZxV3z1yBCgcaLUE5uLf3dM+MCIB706202yzwtZ/wp+25ZMtwsZwYJYJMj4ZVZUdH6/DPCYhZiM8ojzQP6ajcj798US0cqeuJNo2f0vc2r4aekfgHi7UY/GNQluJsOoGCJDbxR31DeuikGjLDmTwmJ4=
+	t=1774976582; cv=none; b=Qox3KeZHyMB8BFdeGvDmVvm6ngPYQsgtlSOUWj+ZMP//8RJvrIMmbt+SFj9uuMbVMKtvV3c2Z+2bNfggvBq1PE3tPyRewmYYdS5QCxObjOHpXJ65dEf0DIj0FbEyTBN3IPR1sBcw/R5rND35eN02KJajNs7Kya7JVFf02dVLyBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975242; c=relaxed/simple;
-	bh=kbfQuAl3N1lfLutqryqSqgS3vPX0IRhV9Xw+2PM+3Tc=;
+	s=arc-20240116; t=1774976582; c=relaxed/simple;
+	bh=gjcVj02mr6V2vNkoyRWzRQUSyPt7f3SL9wKhVF21Ozo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8ziiY+grSHwGrCkuqn7A3+WIHE9v8BVCZlekU0N7skvGD8OKmNXc7J/IkYvWYssoAWqVNUYAtyJa+ku1agVEoZJo64MkokQXhn620YhPj5e7JWneTtYiYyJqHKcE/YR7yF/USSEDRwRbxNXiVo4MV9540bEUhujooPk4yqtIK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7axSOlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB92C19423;
-	Tue, 31 Mar 2026 16:40:41 +0000 (UTC)
+	 MIME-Version; b=QYh2tae75pRKdiBBy7ZvQYTc/x1/C/dXx0tATihuhouhVHZHN2Ck6m81OsWTLf9FnoI9IQlq/0dkNAd8BvDq2+P1U0Gt9TgbSIheXUAOI2H5QxjO0LQGmIhJAFy8aW42uSAIaL//c8H1x3ycUrgHejXEvS6VONEWrjgJUlpejSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8YekhvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDDAC19424;
+	Tue, 31 Mar 2026 17:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975241;
-	bh=kbfQuAl3N1lfLutqryqSqgS3vPX0IRhV9Xw+2PM+3Tc=;
+	s=korg; t=1774976582;
+	bh=gjcVj02mr6V2vNkoyRWzRQUSyPt7f3SL9wKhVF21Ozo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7axSOlX2/q7f37aNXHjnFvJsC3hLiOrxunJvwp9JVsudLDg8p6a8aPlQhCBvf+aW
-	 VtFEQgBCXy+It4Wjbvjhdg7+Oc0YufivB4wwEUPFktoQSvowHIYeLXfGwb8R0N2L39
-	 Wten+d4oW8Nsa+PgDsMZMTFrWhKeA3kKCWYNq4Uw=
+	b=d8YekhvDjpctfu907WQZHze+N6NSFh8v88VxFdJZ1VGy1QdneY5WBzvgq/la1f9J5
+	 ScqghGRsmvXs9+zmShrzmdMTV33+pXw0ahvgwNBhhISsZL6nzgAvrGix9RosJ14V6u
+	 pt46C3xTRcevH896WFyo8i7bo1Hk2XheXoGq9Ib0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 218/342] mm/damon/stat: monitor all System RAM resources
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 148/309] RDMA/irdma: Harden depth calculation functions
 Date: Tue, 31 Mar 2026 18:20:51 +0200
-Message-ID: <20260331161806.997574910@linuxfoundation.org>
+Message-ID: <20260331161758.918188909@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,140 +69,140 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232374-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231854-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B7F6A36D703
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3CC1F36EA8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Shiraz Saleem <shiraz.saleem@intel.com>
 
-commit 84481e705ab07ed46e56587fe846af194acacafe upstream.
+[ Upstream commit e37afcb56ae070477741fe2d6e61fc0c542cce2d ]
 
-DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
-says it monitors the system's entire physical memory.  But, it is
-monitoring only the biggest System RAM resource of the system.  When there
-are multiple System RAM resources, this results in monitoring only an
-unexpectedly small fraction of the physical memory.  For example, suppose
-the system has a 500 GiB System RAM, 10 MiB non-System RAM, and 500 GiB
-System RAM resources in order on the physical address space.  DAMON_STAT
-will monitor only the first 500 GiB System RAM.  This situation is
-particularly common on NUMA systems.
+An issue was exposed where OS can pass in U32_MAX for SQ/RQ/SRQ size.
+This can cause integer overflow and truncation of SQ/RQ/SRQ depth
+returning a success when it should have failed.
 
-Select a physical address range that covers all System RAM areas of the
-system, to fix this issue and make it work as documented.
+Harden the functions to do all depth calculations and boundary
+checking in u64 sizes.
 
-[sj@kernel.org: return error if monitoring target region is invalid]
-  Link: https://lkml.kernel.org/r/20260317053631.87907-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20260316235118.873-1-sj@kernel.org
-Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 563e1feb5f6e ("RDMA/irdma: Add SRQ support")
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/stat.c |   53 ++++++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 50 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/irdma/uk.c | 39 ++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -145,12 +145,59 @@ static int damon_stat_damon_call_fn(void
+diff --git a/drivers/infiniband/hw/irdma/uk.c b/drivers/infiniband/hw/irdma/uk.c
+index d5568584ad5e3..4cc81d61be7fa 100644
+--- a/drivers/infiniband/hw/irdma/uk.c
++++ b/drivers/infiniband/hw/irdma/uk.c
+@@ -1410,7 +1410,7 @@ int irdma_uk_cq_poll_cmpl(struct irdma_cq_uk *cq,
+  * irdma_round_up_wq - return round up qp wq depth
+  * @wqdepth: wq depth in quanta to round up
+  */
+-static int irdma_round_up_wq(u32 wqdepth)
++static u64 irdma_round_up_wq(u64 wqdepth)
+ {
+ 	int scount = 1;
+ 
+@@ -1463,15 +1463,16 @@ void irdma_get_wqe_shift(struct irdma_uk_attrs *uk_attrs, u32 sge,
+ int irdma_get_sqdepth(struct irdma_uk_attrs *uk_attrs, u32 sq_size, u8 shift,
+ 		      u32 *sqdepth)
+ {
+-	u32 min_size = (u32)uk_attrs->min_hw_wq_size << shift;
++	u32 min_hw_quanta = (u32)uk_attrs->min_hw_wq_size << shift;
++	u64 hw_quanta =
++		irdma_round_up_wq(((u64)sq_size << shift) + IRDMA_SQ_RSVD);
+ 
+-	*sqdepth = irdma_round_up_wq((sq_size << shift) + IRDMA_SQ_RSVD);
+-
+-	if (*sqdepth < min_size)
+-		*sqdepth = min_size;
+-	else if (*sqdepth > uk_attrs->max_hw_wq_quanta)
++	if (hw_quanta < min_hw_quanta)
++		hw_quanta = min_hw_quanta;
++	else if (hw_quanta > uk_attrs->max_hw_wq_quanta)
+ 		return -EINVAL;
+ 
++	*sqdepth = hw_quanta;
  	return 0;
  }
  
-+struct damon_stat_system_ram_range_walk_arg {
-+	bool walked;
-+	struct resource res;
-+};
-+
-+static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
-+{
-+	struct damon_stat_system_ram_range_walk_arg *a = arg;
-+
-+	if (!a->walked) {
-+		a->walked = true;
-+		a->res.start = res->start;
-+	}
-+	a->res.end = res->end;
-+	return 0;
-+}
-+
-+static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
-+		unsigned long addr_unit)
-+{
-+	/*
-+	 * Use div_u64() for avoiding linking errors related with __udivdi3,
-+	 * __aeabi_uldivmod, or similar problems.  This should also improve the
-+	 * performance optimization (read div_u64() comment for the detail).
-+	 */
-+	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
-+		return div_u64(ra, addr_unit);
-+	return ra / addr_unit;
-+}
-+
-+static int damon_stat_set_monitoring_region(struct damon_target *t,
-+		unsigned long addr_unit, unsigned long min_region_sz)
-+{
-+	struct damon_addr_range addr_range;
-+	struct damon_stat_system_ram_range_walk_arg arg = {};
-+
-+	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
-+	if (!arg.walked)
-+		return -EINVAL;
-+	addr_range.start = damon_stat_res_to_core_addr(
-+			arg.res.start, addr_unit);
-+	addr_range.end = damon_stat_res_to_core_addr(
-+			arg.res.end + 1, addr_unit);
-+	if (addr_range.end <= addr_range.start)
-+		return -EINVAL;
-+	return damon_set_regions(t, &addr_range, 1, min_region_sz);
-+}
-+
- static struct damon_ctx *damon_stat_build_ctx(void)
+@@ -1485,15 +1486,16 @@ int irdma_get_sqdepth(struct irdma_uk_attrs *uk_attrs, u32 sq_size, u8 shift,
+ int irdma_get_rqdepth(struct irdma_uk_attrs *uk_attrs, u32 rq_size, u8 shift,
+ 		      u32 *rqdepth)
  {
- 	struct damon_ctx *ctx;
- 	struct damon_attrs attrs;
- 	struct damon_target *target;
--	unsigned long start = 0, end = 0;
+-	u32 min_size = (u32)uk_attrs->min_hw_wq_size << shift;
+-
+-	*rqdepth = irdma_round_up_wq((rq_size << shift) + IRDMA_RQ_RSVD);
++	u32 min_hw_quanta = (u32)uk_attrs->min_hw_wq_size << shift;
++	u64 hw_quanta =
++		irdma_round_up_wq(((u64)rq_size << shift) + IRDMA_RQ_RSVD);
  
- 	ctx = damon_new_ctx();
- 	if (!ctx)
-@@ -188,8 +235,8 @@ static struct damon_ctx *damon_stat_buil
- 	if (!target)
- 		goto free_out;
- 	damon_add_target(ctx, target);
--	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
--							ctx->min_region_sz))
-+	if (damon_stat_set_monitoring_region(target, ctx->addr_unit,
-+				ctx->min_region_sz))
- 		goto free_out;
- 	return ctx;
- free_out:
+-	if (*rqdepth < min_size)
+-		*rqdepth = min_size;
+-	else if (*rqdepth > uk_attrs->max_hw_rq_quanta)
++	if (hw_quanta < min_hw_quanta)
++		hw_quanta = min_hw_quanta;
++	else if (hw_quanta > uk_attrs->max_hw_rq_quanta)
+ 		return -EINVAL;
+ 
++	*rqdepth = hw_quanta;
+ 	return 0;
+ }
+ 
+@@ -1507,13 +1509,16 @@ int irdma_get_rqdepth(struct irdma_uk_attrs *uk_attrs, u32 rq_size, u8 shift,
+ int irdma_get_srqdepth(struct irdma_uk_attrs *uk_attrs, u32 srq_size, u8 shift,
+ 		       u32 *srqdepth)
+ {
+-	*srqdepth = irdma_round_up_wq((srq_size << shift) + IRDMA_RQ_RSVD);
++	u32 min_hw_quanta = (u32)uk_attrs->min_hw_wq_size << shift;
++	u64 hw_quanta =
++		irdma_round_up_wq(((u64)srq_size << shift) + IRDMA_RQ_RSVD);
+ 
+-	if (*srqdepth < ((u32)uk_attrs->min_hw_wq_size << shift))
+-		*srqdepth = uk_attrs->min_hw_wq_size << shift;
+-	else if (*srqdepth > uk_attrs->max_hw_srq_quanta)
++	if (hw_quanta < min_hw_quanta)
++		hw_quanta = min_hw_quanta;
++	else if (hw_quanta > uk_attrs->max_hw_srq_quanta)
+ 		return -EINVAL;
+ 
++	*srqdepth = hw_quanta;
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
