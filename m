@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBlqJD0HzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:17 +0200
+	id UKNFJmj4y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:38:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE94036F21A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E450036CE11
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF6F130C66FB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7006E31867C8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFA93009C7;
-	Tue, 31 Mar 2026 17:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2186D41C30C;
+	Tue, 31 Mar 2026 16:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="suuShswM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeIjg1SR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544EF2D63E8;
-	Tue, 31 Mar 2026 17:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D57402BA9;
+	Tue, 31 Mar 2026 16:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976706; cv=none; b=KPech6dNErfeNLyITTaWQaYXFS8elnLVuCsHrn0AwlO5rp16Gy1VMEqu2Kcpghu5wLNAhmpWGgV3b/PKm0OQ2ecV4Wd3A1hPEOorzOiywazwMOIqFsUVBgSvwqurD2DMDFlp5Wzz2N5S6+Z1gnmCwUFUpfAQ+LjGLcfZuQjGoMs=
+	t=1774974596; cv=none; b=UHgJ0mHOj2RKZ0k9yyn5/reI/gAssomAGRM3wDXyoosZzusJvItFeQv4J5JmwkZAxj5mhENzb4OH+xH3l3ZirmDRyMzn7IU5heu3QAwKmXhmeUizu0vUeHHIiNySDPe5+fToM6f61P2dboMUJym93pRTys4L1jL2Hgd480vfR4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976706; c=relaxed/simple;
-	bh=TmxmD1gYTowWwplv1u+ZTUyfIdfxzcKd/ahYmq4uWPQ=;
+	s=arc-20240116; t=1774974596; c=relaxed/simple;
+	bh=itC0H0nFZKsuCrWAuMUP1fFLzxy9CVa4PMrjBjn+pp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xys19WncaOSfs0qJ8X+qV7ClCYEpt1yTvGioMJEWEOouj3B0v/Vj83mbF4MVTq18VZv1NrVXMi2IaKDMkw/7pgFViTcZV8RXu884wxg/TQwpgydZZXVL32KsJ9fSX+zmu8wjQX4V7Epfd+fGzvwMkZGeRz7fwQp8cUSnkaHrvhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=suuShswM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE778C19423;
-	Tue, 31 Mar 2026 17:05:05 +0000 (UTC)
+	 MIME-Version; b=ZXMzErgN0ZeexlD5NyRZOFnzttdvpIJ5C0fhl3+O9AGWHFxjgaPtlIaWX+ctECGPSjo9a18d2NRo7C+WYB5VM3OKkzK/7MnAvL01mdVQLg8EyoFOAzYgCOcIeQVn77T+W+7JxMF44GTBJ1v64ApPaouLs5tcgFZYoECHE8+XVbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeIjg1SR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7EEC2BCB1;
+	Tue, 31 Mar 2026 16:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976706;
-	bh=TmxmD1gYTowWwplv1u+ZTUyfIdfxzcKd/ahYmq4uWPQ=;
+	s=korg; t=1774974596;
+	bh=itC0H0nFZKsuCrWAuMUP1fFLzxy9CVa4PMrjBjn+pp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=suuShswM9uxb8RlVY9cf7A3jyRL9XQhLo4x1/UpMe0y6LQUmAVtSze4NrtpowY9JJ
-	 JnkqdM0yVB43jALg7i695MRrJmMsnoRshFpU207DdvW+kUyIjl2/4af/VqUmXIZYTe
-	 ZBjvslid6iErEI72Wer/3GfP+nqiw4Xm7W24OH+s=
+	b=JeIjg1SRR3zFUtSMd6mzfWrz2dmtCgjVR0Pjn8w1A/E7GEwGbvfN36fmAS6VEq6Hc
+	 V4OtZXaqzhRUBv/BgxaIduvykXcYiLt4T5gM041TcKAJ2SIWdcPnB6ZYWY/rmQ4Gav
+	 BRt9O/7x0ZkJeL0GPQUgQ+uSwnkt7TKBbECcBkBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erin Park <erin.park@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.18 195/309] thermal: intel: int340x: soc_slider: Set offset only for balanced mode
+	xietangxin <xietangxin@yeah.net>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 114/175] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
 Date: Tue, 31 Mar 2026 18:21:38 +0200
-Message-ID: <20260331161800.634332028@linuxfoundation.org>
+Message-ID: <20260331161733.969368654@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +66,125 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231603-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,linux.alibaba.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232422-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: AE94036F21A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,yeah.net:email]
+X-Rspamd-Queue-Id: E450036CE11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: xietangxin <xietangxin@yeah.net>
 
-commit 7dfe9846016b15816e287a4650be1ff1b48c5ab4 upstream.
+commit ba8bda9a0896746053aa97ac6c3e08168729172c upstream.
 
-The slider offset can be set via debugfs for balanced mode. The offset
-should be only applicable in balanced mode. For other modes, it should
-be 0 when writing to MMIO offset,
+A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
+and the device's IFF_XMIT_DST_RELEASE flag is cleared
+(e.g., during the configuration of tc route filter rules).
 
-Fixes: 8306bcaba06d ("thermal: intel: int340x: Add module parameter to change slider offset")
-Tested-by: Erin Park <erin.park@intel.com>
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: 6.18+ <stable@vger.kernel.org> # 6.18+
-[ rjw: Subject and changelog tweaks ]
-Link: https://patch.msgid.link/20260324172346.3317145-1-srinivas.pandruvada@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
+expects the driver to hold the reference to skb->dst until the packet
+is fully transmitted and freed. In virtio_net with napi_tx=N,
+skbs may remain in the virtio transmit ring for an extended period.
+
+If the network namespace is destroyed while these skbs are still pending,
+the corresponding dst_ops structure has freed. When a subsequent packet
+is transmitted, free_old_xmit() is triggered to clean up old skbs.
+It then calls dst_release() on the skb associated with the stale dst_entry.
+Since the dst_ops (referenced by the dst_entry) has already been freed,
+a UAF kernel paging request occurs.
+
+fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
+the dst reference before the skb is queued in virtio_net.
+
+Call Trace:
+ Unable to handle kernel paging request at virtual address ffff80007e150000
+ CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
+  ...
+  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
+  dst_release+0xe0/0x110  net/core/dst.c:177
+  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
+  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
+  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
+  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
+  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
+  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
+  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
+  ...
+
+Reproduction Steps:
+NETDEV="enp3s0"
+
+config_qdisc_route_filter() {
+    tc qdisc del dev $NETDEV root
+    tc qdisc add dev $NETDEV root handle 1: prio
+    tc filter add dev $NETDEV parent 1:0 \
+	protocol ip prio 100 route to 100 flowid 1:1
+    ip route add 192.168.1.100/32 dev $NETDEV realm 100
+}
+
+test_ns() {
+    ip netns add testns
+    ip link set $NETDEV netns testns
+    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
+    ip netns exec testns ping -c 1 10.0.32.1
+    ip netns del testns
+}
+
+config_qdisc_route_filter
+
+test_ns
+sleep 2
+test_ns
+
+Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
+Cc: stable@vger.kernel.org
+Signed-off-by: xietangxin <xietangxin@yeah.net>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")
+Link: https://patch.msgid.link/20260312025406.15641-1-xietangxin@yeah.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../intel/int340x_thermal/processor_thermal_soc_slider.c  | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.c
-index 49ff3bae7271..91f291627132 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_soc_slider.c
-@@ -176,15 +176,21 @@ static inline void write_soc_slider(struct proc_thermal_device *proc_priv, u64 v
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2443,6 +2443,7 @@ static netdev_tx_t start_xmit(struct sk_
+ 	/* Don't wait up for transmitted skbs to be freed. */
+ 	if (!use_napi) {
+ 		skb_orphan(skb);
++		skb_dst_drop(skb);
+ 		nf_reset_ct(skb);
+ 	}
  
- static void set_soc_power_profile(struct proc_thermal_device *proc_priv, int slider)
- {
-+	u8 offset;
- 	u64 val;
- 
- 	val = read_soc_slider(proc_priv);
- 	val &= ~SLIDER_MASK;
- 	val |= FIELD_PREP(SLIDER_MASK, slider) | BIT(SLIDER_ENABLE_BIT);
- 
-+	if (slider == SOC_SLIDER_VALUE_MINIMUM || slider == SOC_SLIDER_VALUE_MAXIMUM)
-+		offset = 0;
-+	else
-+		offset = slider_offset;
-+
- 	/* Set the slider offset from module params */
- 	val &= ~SLIDER_OFFSET_MASK;
--	val |= FIELD_PREP(SLIDER_OFFSET_MASK, slider_offset);
-+	val |= FIELD_PREP(SLIDER_OFFSET_MASK, offset);
- 
- 	write_soc_slider(proc_priv, val);
- }
--- 
-2.53.0
-
 
 
 
