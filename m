@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-231561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kK9uOED5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231561-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:36 +0200
+	id mO2/MncAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64E136CFA3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8700A36E284
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 16A28309672A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:28:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A295E304B81E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB2F3FAE08;
-	Tue, 31 Mar 2026 16:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B212FE042;
+	Tue, 31 Mar 2026 17:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4S8tMuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTJNxgAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004213EF0A2;
-	Tue, 31 Mar 2026 16:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3F92E11A6;
+	Tue, 31 Mar 2026 17:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974488; cv=none; b=PHiJwGP2P1sPl9oQRSfxbTGc0Mpr8SD3t5rNpQ/vi1YlNM/26zE23fgVitybo7m+qrHeFw8a9XpJslDDaEIeJ/Js0sV3MJ2OIs6LD6FiC1gN0l5sr6Sp+v/oaA8nDlYAkcjqrc74lru8szE13Hflfso7eusN+7rLChcTkL1qb4M=
+	t=1774976677; cv=none; b=Z9pf+0bJCWZOgnqzb3N8JfTb0qeUMCQZgOuM5mZXp4SoaR960NETFaSA/AXjCthA36A2BuO8tH15iG/UUk0ZKN233jg5/zr1o/8TPOtabTk979uBK7kXnSclLglHFC6LW9hH0zFLQakEvFlEqtey499GvI5CVYJr+mL7LoXv/hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974488; c=relaxed/simple;
-	bh=H72ViErjvt1Ovd4taD6XI7lwzgpwEmkBudPZlZ3lM7Q=;
+	s=arc-20240116; t=1774976677; c=relaxed/simple;
+	bh=WnRptf6Bbl8/IdXOearYZJ0R0QtUVa0pe/n2uTXw+IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLAkKD05iJqroeZFnppts49a38ZekgiZjgxeZN1sXG2/+KKaEjTBo2FAR9oIZtwRvttwQl4uWbBAO3polIDdFDrUtLPCgU9A29XXP2YjKD4MGBECcM3O2ZhaEmNDKidyQ1nH7qBaLCYXFU06GFql8Gu8i7G6jF3chW/3ckrVutM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4S8tMuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B26DC19423;
-	Tue, 31 Mar 2026 16:28:07 +0000 (UTC)
+	 MIME-Version; b=CwDTKBMK1H0VQPnW3/NMS0LBlr8Cuf2meSkKxBkvUY4Vbo3aO8gefNE5wEzSeUq37o3uwq5UTYQzVDrutKV40L79GoC0R3AT8Eea3/kXM98MLXtii0vH+uMr/NIVcIQk996ObpDCuw8cvdbb6661zk56kCFRAlJuI12ZzeBlCdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTJNxgAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8B2C19423;
+	Tue, 31 Mar 2026 17:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974487;
-	bh=H72ViErjvt1Ovd4taD6XI7lwzgpwEmkBudPZlZ3lM7Q=;
+	s=korg; t=1774976677;
+	bh=WnRptf6Bbl8/IdXOearYZJ0R0QtUVa0pe/n2uTXw+IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4S8tMuo9PxoFtmLyXwMhrR32gAumUDf6oADMn4pyU8oU1HrbHgrP4H1OKCRE1yxj
-	 kxQ+nBMfXC6f4m8a6Ft2fFoAMLoLYTk/Xlm7Sw07rKCMsn3lqyGbfsljBVb4LuuAT3
-	 sIiyOlDft72NwgmKZ07bcdY2Hl9Bk+KLntZ0+Rm8=
+	b=OTJNxgAEgwFgv06SnLsv7D90Ow0V4zaDeZ+6Ep8AIe9nN4mxvrFF1evv8C06IjQXL
+	 Ojfn9K2V/X49vMtNLa37Zxok4aFkefykF9id6J+eieAVg3TfSj72nWoy7/2zv+/bZn
+	 Ldm2VM1et7Va0NOpkg42s4EjEr+YPG0tRu7FYINA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
+	Zhang Heng <zhangheng@kylinos.cn>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 103/175] ALSA: firewire-lib: fix uninitialized local variable
-Date: Tue, 31 Mar 2026 18:21:27 +0200
-Message-ID: <20260331161733.561962057@linuxfoundation.org>
+Subject: [PATCH 6.18 185/309] ALSA: hda/realtek: add quirk for ASUS Strix G16 G615JMR
+Date: Tue, 31 Mar 2026 18:21:28 +0200
+Message-ID: <20260331161800.270794505@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,63 +77,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231561-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232411-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email]
-X-Rspamd-Queue-Id: E64E136CFA3
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kylinos.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: 8700A36E284
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-commit bb120ad57def62e3f23e3d999c5fbed11f610993 upstream.
+commit 0bdf27abaf8940592207be939142451436afe39f upstream.
 
-Similar to commit d8dc8720468a ("ALSA: firewire-lib: fix uninitialized
-local variable"), the local variable `curr_cycle_time` in
-process_rx_packets() is declared without initialization.
+The machine is equipped with ALC294 and requires the
+ALC287_FIXUP_TXNW2781_I2C_ASUS quirk for the amplifier to work properly.
+Since the machine's PCI SSID is also 1043:1204, HDA_CODEC_QUIRK is
+used to retain the previous quirk.
 
-When the tracepoint event is not probed, the variable may appear to be
-used without being initialized. In practice the value is only relevant
-when the tracepoint is enabled, however initializing it avoids potential
-use of an uninitialized value and improves code safety.
-
-Initialize `curr_cycle_time` to zero.
-
-Fixes: fef4e61b0b76 ("ALSA: firewire-lib: extend tracepoints event including CYCLE_TIME of 1394 OHCI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Link: https://patch.msgid.link/20260316191824.83249-1-sdl@nppct.ru
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221173
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260316022843.2809968-1-zhangheng@kylinos.cn
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/amdtp-stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/hda/codecs/realtek/alc269.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -1156,7 +1156,7 @@ static void process_rx_packets(struct fw
- 	struct pkt_desc *desc = s->packet_descs_cursor;
- 	unsigned int pkt_header_length;
- 	unsigned int packets;
--	u32 curr_cycle_time;
-+	u32 curr_cycle_time = 0;
- 	bool need_hw_irq;
- 	int i;
- 
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7033,6 +7033,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1043, 0x1194, "ASUS UM3406KA", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
++	HDA_CODEC_QUIRK(0x1043, 0x1204, "ASUS Strix G16 G615JMR", ALC287_FIXUP_TXNW2781_I2C_ASUS),
+ 	SND_PCI_QUIRK(0x1043, 0x1204, "ASUS Strix G615JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x1214, "ASUS Strix G615LH_LM_LP", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
 
 
 
