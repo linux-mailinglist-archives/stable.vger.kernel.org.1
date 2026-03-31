@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBWOAiD+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:24 +0200
+	id KHI9BXgBzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C37836DB1D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECFA36E5F5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66F9C30EB5CD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07D2530BF635
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4A5426D08;
-	Tue, 31 Mar 2026 16:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3043016EE;
+	Tue, 31 Mar 2026 17:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTIOTNla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SoElibnQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D574266B5;
-	Tue, 31 Mar 2026 16:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C052E1C7C;
+	Tue, 31 Mar 2026 17:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976045; cv=none; b=Ap/LjrFlHuvjizuLMAwRMvwDzY5qEC32uudq3dJFpCF4pcDmd7x+csvZ0ZqtMQtGvw4exQEIv5Z1+AWGlJsaE1szNWqbps9w6jZ/Ibp9F8ACZ3yZGRD7ke3fV4Xu9EQDo2ecgPJDAuESwZT0FjkNYlmNyz7vouLNFIjYynarfv4=
+	t=1774976805; cv=none; b=gkv0CsiW4ZaonU/aVam+wEpFOscFfKj6ShRYid/SnYHa0nA5BEWDAG1t+8JzVPKStdjIPc8q5iZKM/nsNaMUX3R2FNxWNRU6DkRESdmmamRG4h6R1jajYq4Leb0RFGw/JJzKd0ez5VYl1ov3G455YiFZJqx2DMHW+w3sGIH7S60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976045; c=relaxed/simple;
-	bh=K3gzMI6Kwi/hKT01hBT+JTdxNZSYHojnhL+wbUO0zA0=;
+	s=arc-20240116; t=1774976805; c=relaxed/simple;
+	bh=31XaKez47BQuFzFHSqJYnA9EzkD2TlPHJL2HvGBJ1UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtoZX5PeXmlKbHH6OsSL/QpGW5uk/HKqMdajwd3qFlhiJhKkok40YdxxKbjsW7xBZJrWZ8M6zNt073JCm9V7L4uQYq1kx0x2F+hXq6vSRbSZ5MqAMp4Ijiee3XtQym9geXeYCEBEsPCOgUYA5935c55YJQL6ZNG3ch0SRC20O58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTIOTNla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761BBC19423;
-	Tue, 31 Mar 2026 16:54:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QhtM3cXHJQ4moLS3ZYYhLE2KyW6jdIL4++Rxgh1idpNwStBAjiR/Ps6HB1nR3v7tHxqoHiTX7qFPlUnwvD2ay/Gw1FBlqGPaX51JwgeJpChQm33eWh3r2dfjcIoCLPQ2kF0EveSRAmNGcKuAz7R7L1vTEKtJUcsLDUTLarhBIWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoElibnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F3FC19423;
+	Tue, 31 Mar 2026 17:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976044;
-	bh=K3gzMI6Kwi/hKT01hBT+JTdxNZSYHojnhL+wbUO0zA0=;
+	s=korg; t=1774976804;
+	bh=31XaKez47BQuFzFHSqJYnA9EzkD2TlPHJL2HvGBJ1UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTIOTNlaGtYuvmecXFpeTgizKisZXATACWSXD8Xa+fXKPIAbQsgBjOr3tEN88LU3I
-	 j+KpFYfs06h6VZYoWxndO5R1WGbRMyR2wAJXqjhAUe0saGBOiiREZ+Oo1Eq+UTnUe9
-	 tpxsYPIe7k8+UCHvu+UKhknTxpnPymC1iX/qLvZk=
+	b=SoElibnQWA1Vp7iOzN59tsUqt02yhfqNbra6b/xc/Xx9PSffNWtycxC5+eWSGHnrN
+	 5uauEh1VnEAAJVf7xapZkbOhC+eRl5CnU8OgnluhCJ55sAKg105ZRvZ1LtYX/rhfjy
+	 zCew3OVhaHUvearbKC9YDRMPN8jnheVloEfjFhwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Free Ekanayaka <free.ekanayaka@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.12 186/244] ext4: fix fsync(2) for nojournal mode
+	Eric Huang <jinhuieric.huang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 233/309] drm/amdgpu: prevent immediate PASID reuse case
 Date: Tue, 31 Mar 2026 18:22:16 +0200
-Message-ID: <20260331161748.626231080@linuxfoundation.org>
+Message-ID: <20260331161802.155707744@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +63,166 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232165-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,huawei.com,mit.edu,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232460-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email]
-X-Rspamd-Queue-Id: 7C37836DB1D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 9ECFA36E5F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Eric Huang <jinhuieric.huang@amd.com>
 
-commit 1308255bbf8452762f89f44f7447ce137ecdbcff upstream.
+commit 14b81abe7bdc25f8097906fc2f91276ffedb2d26 upstream.
 
-When inode metadata is changed, we sometimes just call
-ext4_mark_inode_dirty() to track modified metadata. This copies inode
-metadata into block buffer which is enough when we are journalling
-metadata. However when we are running in nojournal mode we currently
-fail to write the dirtied inode buffer during fsync(2) because the inode
-is not marked as dirty. Use explicit ext4_write_inode() call to make
-sure the inode table buffer is written to the disk. This is a band aid
-solution but proper solution requires a much larger rewrite including
-changes in metadata bh tracking infrastructure.
+PASID resue could cause interrupt issue when process
+immediately runs into hw state left by previous
+process exited with the same PASID, it's possible that
+page faults are still pending in the IH ring buffer when
+the process exits and frees up its PASID. To prevent the
+case, it uses idr cyclic allocator same as kernel pid's.
 
-Reported-by: Free Ekanayaka <free.ekanayaka@gmail.com>
-Link: https://lore.kernel.org/all/87il8nhxdm.fsf@x1.mail-host-address-is-not-set/
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20260216164848.3074-4-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8f1de51f49be692de137c8525106e0fce2d1912d)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsync.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |   45 ++++++++++++++++++++++----------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h |    1 
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c  |    1 
+ 3 files changed, 34 insertions(+), 13 deletions(-)
 
---- a/fs/ext4/fsync.c
-+++ b/fs/ext4/fsync.c
-@@ -83,11 +83,23 @@ static int ext4_fsync_nojournal(struct f
- 				int datasync, bool *needs_barrier)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+@@ -35,10 +35,13 @@
+  * PASIDs are global address space identifiers that can be shared
+  * between the GPU, an IOMMU and the driver. VMs on different devices
+  * may use the same PASID if they share the same address
+- * space. Therefore PASIDs are allocated using a global IDA. VMs are
+- * looked up from the PASID per amdgpu_device.
++ * space. Therefore PASIDs are allocated using IDR cyclic allocator
++ * (similar to kernel PID allocation) which naturally delays reuse.
++ * VMs are looked up from the PASID per amdgpu_device.
+  */
+-static DEFINE_IDA(amdgpu_pasid_ida);
++
++static DEFINE_IDR(amdgpu_pasid_idr);
++static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
+ 
+ /* Helper to free pasid from a fence callback */
+ struct amdgpu_pasid_cb {
+@@ -50,8 +53,8 @@ struct amdgpu_pasid_cb {
+  * amdgpu_pasid_alloc - Allocate a PASID
+  * @bits: Maximum width of the PASID in bits, must be at least 1
+  *
+- * Allocates a PASID of the given width while keeping smaller PASIDs
+- * available if possible.
++ * Uses kernel's IDR cyclic allocator (same as PID allocation).
++ * Allocates sequentially with automatic wrap-around.
+  *
+  * Returns a positive integer on success. Returns %-EINVAL if bits==0.
+  * Returns %-ENOSPC if no PASID was available. Returns %-ENOMEM on
+@@ -59,14 +62,15 @@ struct amdgpu_pasid_cb {
+  */
+ int amdgpu_pasid_alloc(unsigned int bits)
  {
- 	struct inode *inode = file->f_inode;
-+	struct writeback_control wbc = {
-+		.sync_mode = WB_SYNC_ALL,
-+		.nr_to_write = 0,
-+	};
- 	int ret;
+-	int pasid = -EINVAL;
++	int pasid;
  
- 	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
--	if (!ret)
--		ret = ext4_sync_parent(inode);
-+	if (ret)
-+		return ret;
+-	for (bits = min(bits, 31U); bits > 0; bits--) {
+-		pasid = ida_alloc_range(&amdgpu_pasid_ida, 1U << (bits - 1),
+-					(1U << bits) - 1, GFP_KERNEL);
+-		if (pasid != -ENOSPC)
+-			break;
+-	}
++	if (bits == 0)
++		return -EINVAL;
 +
-+	/* Force writeout of inode table buffer to disk */
-+	ret = ext4_write_inode(inode, &wbc);
-+	if (ret)
-+		return ret;
-+
-+	ret = ext4_sync_parent(inode);
-+
- 	if (test_opt(inode->i_sb, BARRIER))
- 		*needs_barrier = true;
++	spin_lock(&amdgpu_pasid_idr_lock);
++	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
++				 1U << bits, GFP_KERNEL);
++	spin_unlock(&amdgpu_pasid_idr_lock);
  
+ 	if (pasid >= 0)
+ 		trace_amdgpu_pasid_allocated(pasid);
+@@ -81,7 +85,10 @@ int amdgpu_pasid_alloc(unsigned int bits
+ void amdgpu_pasid_free(u32 pasid)
+ {
+ 	trace_amdgpu_pasid_freed(pasid);
+-	ida_free(&amdgpu_pasid_ida, pasid);
++
++	spin_lock(&amdgpu_pasid_idr_lock);
++	idr_remove(&amdgpu_pasid_idr, pasid);
++	spin_unlock(&amdgpu_pasid_idr_lock);
+ }
+ 
+ static void amdgpu_pasid_free_cb(struct dma_fence *fence,
+@@ -640,3 +647,15 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_
+ 		}
+ 	}
+ }
++
++/**
++ * amdgpu_pasid_mgr_cleanup - cleanup PASID manager
++ *
++ * Cleanup the IDR allocator.
++ */
++void amdgpu_pasid_mgr_cleanup(void)
++{
++	spin_lock(&amdgpu_pasid_idr_lock);
++	idr_destroy(&amdgpu_pasid_idr);
++	spin_unlock(&amdgpu_pasid_idr_lock);
++}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
+@@ -74,6 +74,7 @@ int amdgpu_pasid_alloc(unsigned int bits
+ void amdgpu_pasid_free(u32 pasid);
+ void amdgpu_pasid_free_delayed(struct dma_resv *resv,
+ 			       u32 pasid);
++void amdgpu_pasid_mgr_cleanup(void);
+ 
+ bool amdgpu_vmid_had_gpu_reset(struct amdgpu_device *adev,
+ 			       struct amdgpu_vmid *id);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2884,6 +2884,7 @@ void amdgpu_vm_manager_fini(struct amdgp
+ 	xa_destroy(&adev->vm_manager.pasids);
+ 
+ 	amdgpu_vmid_mgr_fini(adev);
++	amdgpu_pasid_mgr_cleanup();
+ }
+ 
+ /**
 
 
 
