@@ -1,162 +1,146 @@
-Return-Path: <stable+bounces-231391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PD8HSily2mhJwYAu9opvQ
-	(envelope-from <stable+bounces-231391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:42:48 +0200
+	id S3QwBoaky2mhJwYAu9opvQ
+	(envelope-from <stable+bounces-231390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:40:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE4D368346
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:42:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762C1368274
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BA3A30EB8B3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:33:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FF783180AD0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915043A75AC;
-	Tue, 31 Mar 2026 10:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310C43A9D94;
+	Tue, 31 Mar 2026 10:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gf+9/QaZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAOaD+IJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547BE29D281
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 10:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61773A5428;
+	Tue, 31 Mar 2026 10:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774953183; cv=none; b=AQQdp7Nh+PqtePfzEovzhEhlYoIWhsXzKFtuv8yZ0KLxObmobJC6LK4HvjcuXZJoLNoOfAWMRvrCi04G/UpwhrnBMrBzvsoFJDXxIrSzkbHYIOkk+qmvxf41eR1NVe8YLK+EE+a5VdG8lbpI/sfKnPbTLgrGU6XwwGfS0zk9cYo=
+	t=1774953170; cv=none; b=ZhVurJHIkBE8hB4pR/5L02UVNj9ZzgscqjU3fYc1Ah0qjDMOD+QWBNEdL+i1OVYgWzG4TxA4KyLe2oX2HbLuIZTsUgR8X3828/Re/9R5tSzVbDycRHb2JbpfBKMoFABq4IBnfh1g7d1qVFn/GZEcvbVCloPBThmwryCHZh02IaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774953183; c=relaxed/simple;
-	bh=kLmbVdu/BXacw1J2Jn+sIS1O5IlKQvG5ppWJoa1iSp8=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmaQCEsjakzPGw+NW4n7q2u4GeV8eJcTYpyJk1956FEJwWQZ+9QbnVVBOfM0GoWGVNM6GgrE1fR69JWtUpEyyp2jaAXXKgyr16mbGZYDLxo+R3+sNSYb9cMeZvEWTyCM+v2uo3HN/7scXPCEk19nDS7Slz73B1Wh6OEDRUj51cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gf+9/QaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB944C19423
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 10:33:02 +0000 (UTC)
+	s=arc-20240116; t=1774953170; c=relaxed/simple;
+	bh=qJc5PuREPBTu4Wdi5PAFDNcZUwIIeo6M8iuzTeH9Unc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YyZQd9hlXbTpg8J18M/tN6maPuorGHN0Ie9oRiv8mUPxB3Ei2L6Rhi7s7ekLdCxW3gZ6FmTFAsz5Z7/+G+6+gZcZIullQhg8rKoAcxu2og+iFnooYZMKMTfPpOL2DW4FEa5eER8NBUVnslEzUr7IMbnA5tY0SyzoMI+1ao7oDoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAOaD+IJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B55C19423;
+	Tue, 31 Mar 2026 10:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774953183;
-	bh=kLmbVdu/BXacw1J2Jn+sIS1O5IlKQvG5ppWJoa1iSp8=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Gf+9/QaZs6jy1Gd5H8E5aBEYuVXWxeugISVxzq3SrY3dP7vRz3y5J1kFosm/PyJFS
-	 NsHtZ9l09gf+7QLvMFu30CFp+X0SWQ5OQz+PoLrBrnhan6PM5Avme1bQCP/994Gqbl
-	 SdE4rPTButKadU/UQXV2lmYpPOBref5TsazywWWKgWQZF123qrI79voqxI8p4DWZqN
-	 gYksBNsVm+CiNI39fTBo5kY9shB3bjSZDfoCy1iFBKJzX2mJjLOn6eWaV2tu8Qn9Dd
-	 l6sclgznBZ2k+hHrGxnK+J2eouyWKSRYOiXTGQBy57cndXLzrLnkgkfN3n4kclIgpG
-	 okpssmBaXHnVg==
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 6.18.y] mm/mseal: update VMA end correctly on merge
-Date: Tue, 31 Mar 2026 11:31:55 +0100
-Message-ID: <20260331103155.92038-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033044-debug-embargo-40fb@gregkh>
-References: <2026033044-debug-embargo-40fb@gregkh>
+	s=k20201202; t=1774953169;
+	bh=qJc5PuREPBTu4Wdi5PAFDNcZUwIIeo6M8iuzTeH9Unc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cAOaD+IJqoq4BGsUkB0c45E2kZ6ukn47bHwnIsC2zGFNmNm4EyghMwJypPAn8wQ7D
+	 df7D/hoPAkG+Cy+M8SCxIJpAcYtpldx9s0+VSBhrQdB6C8XOT1+kGR1QxAvdH6mWuA
+	 /YsY340SvgJjD9SYU0FiGCk1lTU/8H2QcS/44MtWWnFLu8YXAL8tCYxGgMOPsMGzSP
+	 E2uY0gocEGBFGDVchfB1npYVuNHFOsZ0Ehw7txNLsvE4yargBoi8qd0nbE6+vovYPe
+	 tOEGrOZq6AkxwpKBhmwL3JKGe+9Ub6qUoAAACpZ/geQJ1vGjAjQtUeHGI83anhhPx0
+	 MCM1Qxl/CJpxw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1w7WOt-00000007vm3-1kyA;
+	Tue, 31 Mar 2026 12:32:47 +0200
+Date: Tue, 31 Mar 2026 12:32:47 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tony Olech <tony.olech@elandigitalsystems.com>
+Subject: Re: [PATCH 1/4] mmc: vub300: fix NULL-deref on disconnect
+Message-ID: <acuiz2y0pIdEwlB4@hovoldconsulting.com>
+References: <20260327105208.1310739-1-johan@kernel.org>
+ <20260327105208.1310739-2-johan@kernel.org>
+ <CAPDyKFp1DbRufpro86fXi9xXnJGbWW=NrD3Q0NFQ+aHxhxogLg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFp1DbRufpro86fXi9xXnJGbWW=NrD3Q0NFQ+aHxhxogLg@mail.gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231390-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231391-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.994];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,bluedragonsec.com:email,chromium.org:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: DDE4D368346
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,elandigitalsystems.com:email,hovoldconsulting.com:mid]
+X-Rspamd-Queue-Id: 762C1368274
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Previously we stored the end of the current VMA in curr_end, and then upon
-iterating to the next VMA updated curr_start to curr_end to advance to the
-next VMA.
+On Tue, Mar 31, 2026 at 12:13:41PM +0200, Ulf Hansson wrote:
+> On Fri, 27 Mar 2026 at 11:52, Johan Hovold <johan@kernel.org> wrote:
+> >
+> > Make sure to deregister the controller before dropping the reference to
+> > the driver data on disconnect to avoid NULL-pointer dereferences or
+> > use-after-free.
+> >
+> > Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+> > Cc: stable@vger.kernel.org      # 3.0
+> > Cc: Tony Olech <tony.olech@elandigitalsystems.com>
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > ---
+> >  drivers/mmc/host/vub300.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/mmc/host/vub300.c b/drivers/mmc/host/vub300.c
+> > index ff49d0770506..f173c7cf4e1a 100644
+> > --- a/drivers/mmc/host/vub300.c
+> > +++ b/drivers/mmc/host/vub300.c
+> > @@ -2365,8 +2365,8 @@ static void vub300_disconnect(struct usb_interface *interface)
+> >                         usb_set_intfdata(interface, NULL);
+> >                         /* prevent more I/O from starting */
+> >                         vub300->interface = NULL;
+> > -                       kref_put(&vub300->kref, vub300_delete);
+> >                         mmc_remove_host(mmc);
+> > +                       kref_put(&vub300->kref, vub300_delete);
+> 
+> While this seems like a step in the right direction, I don't see why
+> calling usb_set_intfdata(interface, NULL)
 
-However, this doesn't take into account the fact that a VMA might be
-updated due to a merge by vma_modify_flags(), which can result in curr_end
-being stale and thus, upon setting curr_start to curr_end, ending up with
-an incorrect curr_start on the next iteration.
+The interface data is only used in the USB bus callbacks and is not
+needed after disconnect().
 
-Resolve the issue by setting curr_end to vma->vm_end unconditionally to
-ensure this value remains updated should this occur.
+> and assigning
+> vub300->interface = NULL is safe.
+>
+> For example, some of the workqueues might be running a work that uses
+> the vub300->interface, isn't that a problem too?
 
-While we're here, eliminate this entire class of bug by simply setting
-const curr_[start/end] to be clamped to the input range and VMAs, which
-also happens to simplify the logic.
+The driver uses this pointer to indicate that the device has been
+disconnected. That doesn't mean that the implementation is correct (e.g.
+the check in vub300_pollwork_thread() should use some locking) but that
+would be pre-existing issues.
 
-Link: https://lkml.kernel.org/r/20260327173104.322405-1-ljs@kernel.org
-Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Reported-by: Antonius <antonius@bluedragonsec.com>
-Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
-Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jeff Xu <jeffxu@chromium.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 2697dd8ae721db4f6a53d4f4cbd438212a80f8dc)
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
- mm/mseal.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/mm/mseal.c b/mm/mseal.c
-index e5b205562d2e..c561f0ea93e8 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct *mm,
- 		unsigned long start, unsigned long end)
- {
- 	struct vm_area_struct *vma, *prev;
--	unsigned long curr_start = start;
- 	VMA_ITERATOR(vmi, mm, start);
- 
- 	/* We know there are no gaps so this will be non-NULL. */
-@@ -66,7 +65,8 @@ static int mseal_apply(struct mm_struct *mm,
- 		prev = vma;
- 
- 	for_each_vma_range(vmi, vma, end) {
--		unsigned long curr_end = MIN(vma->vm_end, end);
-+		const unsigned long curr_start = MAX(vma->vm_start, start);
-+		const unsigned long curr_end = MIN(vma->vm_end, end);
- 
- 		if (!(vma->vm_flags & VM_SEALED)) {
- 			vma = vma_modify_flags(&vmi, prev, vma,
-@@ -78,7 +78,6 @@ static int mseal_apply(struct mm_struct *mm,
- 		}
- 
- 		prev = vma;
--		curr_start = curr_end;
- 	}
- 
- 	return 0;
--- 
-2.53.0
-
+Johan
 
