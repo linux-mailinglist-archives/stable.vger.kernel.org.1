@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-231818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJ3nF3/7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:11 +0200
+	id MGrVA+71y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBE036D409
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 604F436C99C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ECA9E3119071
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03ADC303F7FD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15380426692;
-	Tue, 31 Mar 2026 16:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF01F3E92A5;
+	Tue, 31 Mar 2026 16:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgwjTStf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u67MncYn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFC2428472;
-	Tue, 31 Mar 2026 16:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823573E316C;
+	Tue, 31 Mar 2026 16:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975148; cv=none; b=LjoMRQDouBE3qD8YHJsUhs5KV3deP5cryJCthzPKSfXKn6s3+lX7caJ9Op/QQFHPaPL3cWVj4+Dp3UrYvfVqFofWZy3j+5TR++R5liOyc4IbEIHmWWI34RzW+11vJ+6fNb3XwXxKWJjBUFoK9O7uwG/dD6PZw/DJvZpJgXDaTUY=
+	t=1774974299; cv=none; b=qQtwUdUTp1Y05wewRNacVub/L2oiaAjCvO/Zw1KFxnaBhi16u7RQgcrfqgR31lKjM/lO/ByjI8hKroVEv9XOyspoXdBUVN3OTvtHuXD/4hwXtfg7bZFIgubeti3WcD/fwxQ+G++iDkEDv+9omY8Dlc8SQ8ipVs/+ecuQE4De89k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975148; c=relaxed/simple;
-	bh=TNRv886a4jUzLUipovmJH+F5DjVRGEEhls08dNlMDDI=;
+	s=arc-20240116; t=1774974299; c=relaxed/simple;
+	bh=wW746/M8dzojgF04kuor+2Hr80sBEfslfAFTEDvicVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUGXbku3aJ6TTZ/lLfgWnvFhRBa+7ud3YpZ2yaTs3ahX8W8q31pA2nRCJVduMVJ5xucTTUGWm/jlxFZmK3/l8IRx2rDAqgmWXCgnH3cZUbWWYgFbJ3OHy1xKQc9bCFHcm+gNBpd7rC+w57s73ryNS9fjNcGnU71ysOnBUa3CsGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgwjTStf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8B3C2BCB3;
-	Tue, 31 Mar 2026 16:39:08 +0000 (UTC)
+	 MIME-Version; b=t6kQ1W5N9llJC22dj+PQ0laY6yGMBWwwOmZhrfjj51Ht+IWS6NgTRoCncshLWmWtcjWjjRHaiR+PHogLmXqmLJdeqfX+Gaw9vbH/sdfeiQt4OWS6XLknMWKUw6DnkaNDaf5IByjEMO+H4qDMlbeb/DgoF5noWtPdzWlx4HyFSVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u67MncYn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199C5C19423;
+	Tue, 31 Mar 2026 16:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975148;
-	bh=TNRv886a4jUzLUipovmJH+F5DjVRGEEhls08dNlMDDI=;
+	s=korg; t=1774974299;
+	bh=wW746/M8dzojgF04kuor+2Hr80sBEfslfAFTEDvicVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgwjTStfSVIEuZpuRu8kNSBtjSbU4HgUFbtjp9t0QEjd0YvP2JSNULd9vB2OPic7P
-	 BkjLxuHBFUJ4jN02r76VzYVm8VJ5cwHg9RDjF4nyb7ecEOzDDB0X6VkWypcq6f8xWh
-	 YaUqirpdZnp6oSfNchsbCO2WFMIB2A5B/73txq8Y=
+	b=u67MncYnTjq4zBizvKoewkiTHdLC33fJMmOMx/cjf8/T234juHpE4RceJshcNAfDX
+	 KZ8UwPx26Q7riikLAwA6kDPGABDnO6yMEXh/w96XPQ/eNCfYkcdFrSgaTyYHQdyRM2
+	 I7MwhBpOK1fcBXiDp8puAzbl3umafxZKuvbS9lTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Jie Deng <dengjie03@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 182/342] drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib
+Subject: [PATCH 6.6 031/175] usb: core: new quirk to handle devices with zero configurations
 Date: Tue, 31 Mar 2026 18:20:15 +0200
-Message-ID: <20260331161805.700515453@linuxfoundation.org>
+Message-ID: <20260331161730.930494804@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +62,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231818-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231487-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DEBE036D409
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
+X-Rspamd-Queue-Id: 604F436C99C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Jie Deng <dengjie03@kylinos.cn>
 
-[ Upstream commit 7150850146ebfa4ca998f653f264b8df6f7f85be ]
+[ Upstream commit 9f6a983cfa22ac662c86e60816d3a357d4b551e9 ]
 
-amdgpu_amdkfd_submit_ib() submits a GPU job and gets a fence
-from amdgpu_ib_schedule(). This fence is used to wait for job
-completion.
+Some USB devices incorrectly report bNumConfigurations as 0 in their
+device descriptor, which causes the USB core to reject them during
+enumeration.
+logs:
+usb 1-2: device descriptor read/64, error -71
+usb 1-2: no configurations
+usb 1-2: can't read configurations, error -22
 
-Currently, the code drops the fence reference using dma_fence_put()
-before calling dma_fence_wait().
+However, these devices actually work correctly when
+treated as having a single configuration.
 
-If dma_fence_put() releases the last reference, the fence may be
-freed before dma_fence_wait() is called. This can lead to a
-use-after-free.
+Add a new quirk USB_QUIRK_FORCE_ONE_CONFIG to handle such devices.
+When this quirk is set, assume the device has 1 configuration instead
+of failing with -EINVAL.
 
-Fix this by waiting on the fence first and releasing the reference
-only after dma_fence_wait() completes.
+This quirk is applied to the device with VID:PID 5131:2007 which
+exhibits this behavior.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c:697 amdgpu_amdkfd_submit_ib() warn: passing freed memory 'f' (line 696)
-
-Fixes: 9ae55f030dc5 ("drm/amdgpu: Follow up change to previous drm scheduler change.")
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8b9e5259adc385b61a6590a13b82ae0ac2bd3482)
+Signed-off-by: Jie Deng <dengjie03@kylinos.cn>
+Link: https://patch.msgid.link/20260227084931.1527461-1-dengjie03@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt | 3 +++
+ drivers/usb/core/config.c                       | 6 +++++-
+ drivers/usb/core/quirks.c                       | 5 +++++
+ include/linux/usb/quirks.h                      | 3 +++
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-index a2879d2b7c8ec..1ec26be82f30e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -687,9 +687,9 @@ int amdgpu_amdkfd_submit_ib(struct amdgpu_device *adev,
- 		goto err_ib_sched;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index fff3ca50c6c26..fdbc2749fbb37 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6901,6 +6901,9 @@
+ 				p = USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT
+ 					(Reduce timeout of the SET_ADDRESS
+ 					request from 5000 ms to 500 ms);
++				q = USB_QUIRK_FORCE_ONE_CONFIG (Device
++					claims zero configurations,
++					forcing to 1);
+ 			Example: quirks=0781:5580:bk,0a5c:5834:gij
+ 
+ 	usbhid.mousepoll=
+diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
+index 10a1bc059ea1f..9cd263b6cdee8 100644
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -891,7 +891,11 @@ int usb_get_configuration(struct usb_device *dev)
+ 		dev->descriptor.bNumConfigurations = ncfg = USB_MAXCONFIG;
  	}
  
--	/* Drop the initial kref_init count (see drm_sched_main as example) */
--	dma_fence_put(f);
- 	ret = dma_fence_wait(f, false);
-+	/* Drop the returned fence reference after the wait completes */
-+	dma_fence_put(f);
+-	if (ncfg < 1) {
++	if (ncfg < 1 && dev->quirks & USB_QUIRK_FORCE_ONE_CONFIG) {
++		dev_info(ddev, "Device claims zero configurations, forcing to 1\n");
++		dev->descriptor.bNumConfigurations = 1;
++		ncfg = 1;
++	} else if (ncfg < 1) {
+ 		dev_err(ddev, "no configurations\n");
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index c12942a533ce2..53b08d6cf7824 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -141,6 +141,8 @@ static int quirks_param_set(const char *value, const struct kernel_param *kp)
+ 			case 'p':
+ 				flags |= USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT;
+ 				break;
++			case 'q':
++				flags |= USB_QUIRK_FORCE_ONE_CONFIG;
+ 			/* Ignore unrecognized flag characters */
+ 			}
+ 		}
+@@ -594,6 +596,9 @@ static const struct usb_device_id usb_quirk_list[] = {
+ 	/* VCOM device */
+ 	{ USB_DEVICE(0x4296, 0x7570), .driver_info = USB_QUIRK_CONFIG_INTF_STRINGS },
  
- err_ib_sched:
- 	amdgpu_job_free(job);
++	/* Noji-MCS SmartCard Reader */
++	{ USB_DEVICE(0x5131, 0x2007), .driver_info = USB_QUIRK_FORCE_ONE_CONFIG },
++
+ 	/* INTEL VALUE SSD */
+ 	{ USB_DEVICE(0x8086, 0xf1a5), .driver_info = USB_QUIRK_RESET_RESUME },
+ 
+diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
+index 2f7bd2fdc6164..b3cc7beab4a3c 100644
+--- a/include/linux/usb/quirks.h
++++ b/include/linux/usb/quirks.h
+@@ -78,4 +78,7 @@
+ /* skip BOS descriptor request */
+ #define USB_QUIRK_NO_BOS			BIT(17)
+ 
++/* Device claims zero configurations, forcing to 1 */
++#define USB_QUIRK_FORCE_ONE_CONFIG		BIT(18)
++
+ #endif /* __LINUX_USB_QUIRKS_H */
 -- 
-2.53.0
+2.51.0
 
 
 
