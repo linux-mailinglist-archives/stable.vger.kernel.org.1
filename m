@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCapFZ32y2kGNAYAu9opvQ
-	(envelope-from <stable+bounces-231518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:21 +0200
+	id eAICBpP8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8BB536CAA1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DBE36D6ED
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93FC330641ED
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60AA1329D84B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43090402435;
-	Tue, 31 Mar 2026 16:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D2A425CE6;
+	Tue, 31 Mar 2026 16:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRvT36gb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnr6tgrg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049393FAE08;
-	Tue, 31 Mar 2026 16:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDD942317F;
+	Tue, 31 Mar 2026 16:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974377; cv=none; b=XVhVTz/gHCv4JjqoOAfQHig90FlT/M+K5f2FIhf7agEX+Rby5hjSQKGU6rY6uwPTnnvitgF52uETH9OKgiFiscigNKCNbxSuNq7V4S+v6ndT10cxklfWGZRwHYJi/5XI/NfTItuEGTQcT7cHoWq3Lwl9NLZjIwueggqi8O1XCmg=
+	t=1774975224; cv=none; b=NSC9sPlYILhlBqwF365ykBIGYvwlLCAui1opI9pN++QfgKTYOmBl7KxYPGyAWeo9UbLlccMxH6rdb94rD83E4EJQaGcxG+PH+Fu/qK8jI5yr8AYYDhFvoG4g4ET1MyZ6McJQZv+QFJPSIKNF+U5e72/jhxprcpIh/esoeipoLGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974377; c=relaxed/simple;
-	bh=UFJo34f9ytznBuUdLFvQ3bQp3EGbMF5ZCiHCbZA0HW0=;
+	s=arc-20240116; t=1774975224; c=relaxed/simple;
+	bh=Yd8CxGoDcnqGF4V6dJQXm7U81bbUMcSh1EUy7zb0OFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fep6O/Q5KdeY4RKHMr8RZwgUEQcgOP6LsqgmzAvjM6BnLLsdgPmG5x+6OMo6GyW6yyoetqTL0xvQUCYec5l0XwQdcB4fEibwUruvsJmKwoD4QVpr/54rA3XEKpYJscose9gWJqLQD7kWj/9e/LXzdlse+cq6dndTEENZF2rtG6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRvT36gb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2FEC19423;
-	Tue, 31 Mar 2026 16:26:16 +0000 (UTC)
+	 MIME-Version; b=DfAoUyx0gGuhMlp7yS7VjeZPuAQ3qrA00L1fG01LOmlnlzQSJFGE9Ik0Cy/A0QRAfwtoUWcH7J5HF4F7CTQlMko0QZqo0bzF5M0xMeCUJI03C9j/IFx5b99A8mHUqfu5M5Ufl5FP8xR2GPcVvDSUTkq29RfheZNLUTmiq5neVE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnr6tgrg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E67C19423;
+	Tue, 31 Mar 2026 16:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974376;
-	bh=UFJo34f9ytznBuUdLFvQ3bQp3EGbMF5ZCiHCbZA0HW0=;
+	s=korg; t=1774975223;
+	bh=Yd8CxGoDcnqGF4V6dJQXm7U81bbUMcSh1EUy7zb0OFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRvT36gbki8keEBRlK6JBmmRBCHZHlbdQ1yE6bRcOp5CuXsQuTNYJH03VIRmrjCyL
-	 B7BmrnmuWF/ci3RSYBnFL8oiK6MJj7rCdepUNADkIpF3HeF+5Gx+dhrIxoNBB/fIKG
-	 vKmU0Vl3vIV8MdONTnYF9Ievuzx8mMczdCNLjfCY=
+	b=jnr6tgrg1VDTYiESsiyHhUZxiT51cW2ucFxr4GSnF7N85cgbIHp0dXVd4wMHKuzLa
+	 o6uiVUi89MY9BkomZJDtgVSXaWO32PWSLLS7PXq+o0HxTKvv/Znqa0BIRf9MOGO2RJ
+	 9Z/lxfHmEcVZrexfkZk0ez6y3b6zFNzoEgNJyM7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/175] dma-mapping: add missing `inline` for `dma_free_attrs`
+	Ali Norouzi <ali.norouzi@keysight.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.19 212/342] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
 Date: Tue, 31 Mar 2026 18:20:45 +0200
-Message-ID: <20260331161732.026725843@linuxfoundation.org>
+Message-ID: <20260331161806.780384100@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,77 +78,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231518-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231847-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C8BB536CAA1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,keysight.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,hartkopp.net:email]
+X-Rspamd-Queue-Id: 96DBE36D6ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Ali Norouzi <ali.norouzi@keysight.com>
 
-[ Upstream commit 2cdaff22ed26f1e619aa2b43f27bb84f2c6ef8f8 ]
+commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
 
-Under an UML build for an upcoming series [1], I got `-Wstatic-in-inline`
-for `dma_free_attrs`:
+cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
 
-      BINDGEN rust/bindings/bindings_generated.rs - due to target missing
-    In file included from rust/helpers/helpers.c:59:
-    rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs' is used in an inline function with external linkage [-Wstatic-in-inline]
-       17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
-          |         ^
-    rust/helpers/dma.c:12:1: note: use 'static' to give inline function 'rust_helper_dma_free_attrs' internal linkage
-       12 | __rust_helper void rust_helper_dma_free_attrs(struct device *dev, size_t size,
-          | ^
-          | static
+    int from = calc_idx(crc8->from_idx, cf->len);
+    int to   = calc_idx(crc8->to_idx,   cf->len);
+    int res  = calc_idx(crc8->result_idx, cf->len);
 
-The issue is that `dma_free_attrs` was not marked `inline` when it was
-introduced alongside the rest of the stubs.
+    if (from < 0 || to < 0 || res < 0)
+        return;
 
-Thus mark it.
+However, the loop and the result write then use the raw s8 fields directly
+instead of the computed variables:
 
-Fixes: ed6ccf10f24b ("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA")
-Closes: https://lore.kernel.org/rust-for-linux/20260322194616.89847-1-ojeda@kernel.org/ [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260325015548.70912-1-ojeda@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
+    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
+
+With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
+calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
+i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
+This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
+start of the canfd_frame on the heap.
+
+The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
+correctly throughout; fix cgw_csum_crc8_rel() to match.
+
+Confirmed with KASAN on linux-7.0-rc2:
+  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
+  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
+
+To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
+
+Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
+Cc: stable@vger.kernel.org
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/dma-mapping.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/can/gw.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 608e8296ba206..d5cd7b243b87d 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -219,8 +219,8 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
- {
- 	return NULL;
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -374,10 +374,10 @@ static void cgw_csum_crc8_rel(struct can
+ 		return;
+ 
+ 	if (from <= to) {
+-		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
++		for (i = from; i <= to; i++)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	} else {
+-		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
++		for (i = from; i >= to; i--)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	}
+ 
+@@ -396,7 +396,7 @@ static void cgw_csum_crc8_rel(struct can
+ 		break;
+ 	}
+ 
+-	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
++	cf->data[res] = crc ^ crc8->final_xor_val;
  }
--static void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
--		dma_addr_t dma_handle, unsigned long attrs)
-+static inline void dma_free_attrs(struct device *dev, size_t size,
-+		void *cpu_addr, dma_addr_t dma_handle, unsigned long attrs)
- {
- }
- static inline void *dmam_alloc_attrs(struct device *dev, size_t size,
--- 
-2.51.0
-
+ 
+ static void cgw_csum_crc8_pos(struct canfd_frame *cf,
 
 
 
