@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-231913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uD8mFC/8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231913-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:07 +0200
+	id wEjPJ/79y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63CA36D5A3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2D836DAD4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 530C3306D9E0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 586CC321EF8C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAF0423A7C;
-	Tue, 31 Mar 2026 16:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F402426EAA;
+	Tue, 31 Mar 2026 16:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdfI8TeN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vL4eBT7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAB12C15BB;
-	Tue, 31 Mar 2026 16:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61CA4266BA;
+	Tue, 31 Mar 2026 16:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975391; cv=none; b=eUO0Tg9tgViN3O7DMzIOezfIpD3wmap13aQ7O4iDw8UvznYPB2OnZ7G7hAam27QpRRCxAZ/QpqJcOrJ3S9JXEnORmGSI9yBBrgnwCIsVdoTT0TW7qAtGf9vSLWZu2rT4ykl6jNS09r56kn/FII7ZfVfpIM8gRuvZ6sdkuRZ7oBs=
+	t=1774975982; cv=none; b=V6akIx+/9vhD0r8/uIWf6yDcu+IxshFxV4dQL1dQnWQgLBsUJJN5V3mHAmJqFnNLXLN3cgwYuAL95iD1Lv17k9IH7x4ZvFknmdpEqMiWV9C6B0fXLRCgG1AH7SDxf06zotChR74By7GubGu7kveJM2ZMDltxr96DP5Xe7dG+OPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975391; c=relaxed/simple;
-	bh=nSaHdSkXiSRfgAta04BdX7inYw7KaCFcEfarBC6wl4Q=;
+	s=arc-20240116; t=1774975982; c=relaxed/simple;
+	bh=+Uf/wVwP0KPYurecSXtSE0zkyssinIVEfoPKg64bdyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBlpVPbLYWR5tmGZQURAu6JsEk+2X5qYGiDRPz8hlAoslDYiv8u6FMfibMXbbUIH+W7X6oa4Fope/Er60KzZL/BaABp4fq4TZusljF5Qpj0GmG8paPWw2Xxb5bMKRGXoxyab3dXf5c5FLIhkO//yl7pbVEF63i+V0iwLr2QFbDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdfI8TeN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEF7C19423;
-	Tue, 31 Mar 2026 16:43:10 +0000 (UTC)
+	 MIME-Version; b=sjQa0YxlLyREMORs8NDk2J3e4K9F9pLb+rKoc9qSkwEUCn2DpnXP7IVTMB+AhFRfP6eJ++NPeQk/n2xCW1d45XSW/7CM4+cMcPCHR0DjVd0WcBCN6btMi8MK5sBIsGkjPJZJwgx/zQnNcGR2Hkb98xDxzHqcgjjzR9GdiM0vOx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vL4eBT7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4B4C19423;
+	Tue, 31 Mar 2026 16:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975390;
-	bh=nSaHdSkXiSRfgAta04BdX7inYw7KaCFcEfarBC6wl4Q=;
+	s=korg; t=1774975981;
+	bh=+Uf/wVwP0KPYurecSXtSE0zkyssinIVEfoPKg64bdyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdfI8TeNXsKYlvLRDLIyYr3P4Mxo/mTlQeH1DjAfwkFL0IdgT9iAPucIG43x50XaH
-	 dg/6yPqpuo2XcIQCIP6+WnBQPZha+PG4O9SxsziQBN9WSY//twmqQhD/Da4GL5o2ML
-	 Y9GAut29wVvLEWGC0KfxMhJLz2KSvVv9zw2YihIY=
+	b=vL4eBT7rK9sts9fat2PBwnfx94TyhQwnbq40QW+dYKQnyc2xImXnLafoAjsN3pgf5
+	 PeRFaYfM+/J9qWzbi3l2aqBnuIk8ORrvEjhAFZV/YJ8gNuqzMuOexoPe7L/QFbR6R1
+	 Kqwd9CRkUk6L8SJDTUCCZcAt33Bg9vnEu9IzYQi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Peter Xu <peterx@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 277/342] mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
-Date: Tue, 31 Mar 2026 18:21:50 +0200
-Message-ID: <20260331161809.131618589@linuxfoundation.org>
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	stable <stable@kernel.org>,
+	Hannes Reinecke <hare@suse.de>
+Subject: [PATCH 6.12 161/244] scsi: ses: Handle positive SCSI error from ses_recv_diag()
+Date: Tue, 31 Mar 2026 18:21:51 +0200
+Message-ID: <20260331161747.712755991@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,131 +69,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232141-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231913-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E63CA36D5A3
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,hansenpartnership.com:email]
+X-Rspamd-Queue-Id: CE2D836DAD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand (Arm) <david@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit ffef67b93aa352b34e6aeba3d52c19a63885409a upstream.
+commit 7a9f448d44127217fabc4065c5ba070d4e0b5d37 upstream.
 
-follow_pfnmap_start() suffers from two problems:
+ses_recv_diag() can return a positive value, which also means that an
+error happened, so do not only test for negative values.
 
-(1) We are not re-fetching the pmd/pud after taking the PTL
-
-Therefore, we are not properly stabilizing what the lock actually
-protects.  If there is concurrent zapping, we would indicate to the
-caller that we found an entry, however, that entry might already have
-been invalidated, or contain a different PFN after taking the lock.
-
-Properly use pmdp_get() / pudp_get() after taking the lock.
-
-(2) pmd_leaf() / pud_leaf() are not well defined on non-present entries
-
-pmd_leaf()/pud_leaf() could wrongly trigger on non-present entries.
-
-There is no real guarantee that pmd_leaf()/pud_leaf() returns something
-reasonable on non-present entries.  Most architectures indeed either
-perform a present check or make it work by smart use of flags.
-
-However, for example loongarch checks the _PAGE_HUGE flag in pmd_leaf(),
-and always sets the _PAGE_HUGE flag in __swp_entry_to_pmd().  Whereby
-pmd_trans_huge() explicitly checks pmd_present(), pmd_leaf() does not do
-that.
-
-Let's check pmd_present()/pud_present() before assuming "the is a present
-PMD leaf" when spotting pmd_leaf()/pud_leaf(), like other page table
-handling code that traverses user page tables does.
-
-Given that non-present PMD entries are likely rare in VM_IO|VM_PFNMAP, (1)
-is likely more relevant than (2).  It is questionable how often (1) would
-actually trigger, but let's CC stable to be sure.
-
-This was found by code inspection.
-
-Link: https://lkml.kernel.org/r/20260323-follow_pfnmap_fix-v1-1-5b0ec10872b3@kernel.org
-Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API")
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://patch.msgid.link/2026022301-bony-overstock-a07f@gregkh
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/scsi/ses.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6775,11 +6775,16 @@ retry:
+--- a/drivers/scsi/ses.c
++++ b/drivers/scsi/ses.c
+@@ -216,7 +216,7 @@ static unsigned char *ses_get_page2_desc
+ 	unsigned char *type_ptr = ses_dev->page1_types;
+ 	unsigned char *desc_ptr = ses_dev->page2 + 8;
  
- 	pudp = pud_offset(p4dp, address);
- 	pud = pudp_get(pudp);
--	if (pud_none(pud))
-+	if (!pud_present(pud))
- 		goto out;
- 	if (pud_leaf(pud)) {
- 		lock = pud_lock(mm, pudp);
--		if (!unlikely(pud_leaf(pud))) {
-+		pud = pudp_get(pudp);
-+
-+		if (unlikely(!pud_present(pud))) {
-+			spin_unlock(lock);
-+			goto out;
-+		} else if (unlikely(!pud_leaf(pud))) {
- 			spin_unlock(lock);
- 			goto retry;
- 		}
-@@ -6791,9 +6796,16 @@ retry:
+-	if (ses_recv_diag(sdev, 2, ses_dev->page2, ses_dev->page2_len) < 0)
++	if (ses_recv_diag(sdev, 2, ses_dev->page2, ses_dev->page2_len))
+ 		return NULL;
  
- 	pmdp = pmd_offset(pudp, address);
- 	pmd = pmdp_get_lockless(pmdp);
-+	if (!pmd_present(pmd))
-+		goto out;
- 	if (pmd_leaf(pmd)) {
- 		lock = pmd_lock(mm, pmdp);
--		if (!unlikely(pmd_leaf(pmd))) {
-+		pmd = pmdp_get(pmdp);
-+
-+		if (unlikely(!pmd_present(pmd))) {
-+			spin_unlock(lock);
-+			goto out;
-+		} else if (unlikely(!pmd_leaf(pmd))) {
- 			spin_unlock(lock);
- 			goto retry;
- 		}
+ 	for (i = 0; i < ses_dev->page1_num_types; i++, type_ptr += 4) {
 
 
 
