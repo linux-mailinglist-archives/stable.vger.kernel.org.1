@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLZPNyAEzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:28:00 +0200
+	id KAJIKQP5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695EE36EC07
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:28:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B247436CEFE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C7B9327B2FF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5ED2E308D604
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7614266BC;
-	Tue, 31 Mar 2026 16:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC273F7A8B;
+	Tue, 31 Mar 2026 16:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzbpycy5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GS9S+NP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BE2423A7C;
-	Tue, 31 Mar 2026 16:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426E630C345;
+	Tue, 31 Mar 2026 16:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975906; cv=none; b=Zmtz7QtqxhBL4ATmlUw9z760vJ8ldKQXLrYQyr4IPy20JEHJTb3xAQFt9aa8QoDYADw4WV/Bjaz89ahJTAZYU3oVsNUY5TeK/wt8mjFEnhBPEKRnKLqqqOeFs8KWadZmfFJiu/fxDVl4sKYkZ7aOyS0imQOPI1FxYkT5wCiN0MM=
+	t=1774974405; cv=none; b=thLtF4jixqix4aqYxj0B0ToRvpLykLJ8kgh27cvsIl6TpAh//Y8QollgYEzicLM3WK1+o40hZ05kNBftVRk4TTgHQe4dCNDRrka/WU4UYDueX08gpaFeLuAKsNWPI7OH0LwJ/4P54acog8v7c/X5B+Y9TMlDIumCyP6I6JqYF5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975906; c=relaxed/simple;
-	bh=9/Q81TkgHLZyTSSZ0lbVRmqyTnMtY3TrtA6Yx4tDJVg=;
+	s=arc-20240116; t=1774974405; c=relaxed/simple;
+	bh=wXZGPCuyhMns6fz0f07pcuAdaw6+ocvZ1l/bkefynG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEA+ySVX9yaM15WkopxcQFUF8xAnyIMuaOFs2hXRWHO6jqo8nx8kVoNJ5p+YmgdGvqKJQFc+03LBj7bRxfsgvCIZFMqW+/w0EXMEEIGfDlUmH51br+Dqs5C1zUexKBPxIX5aOm6Tlp8XfyQbW+tVRhvz3b/M/zHQQiPzJIwjeks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzbpycy5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579ACC19423;
-	Tue, 31 Mar 2026 16:51:46 +0000 (UTC)
+	 MIME-Version; b=pswDfg3NByqnEzinM/s/rr7JHUrbi/rgvyNFzF+s1bNTa+RTlJ0c1mmionR3lKtWFclszvyCrh48+hRbU4vaWEusPSEv3CliK4wRQqcntG/lwH6eDKg72KBeEjG2c+d8i22bwIdy3aLCnfQoGUZAFkfonkjSBBhTQTCVqA6tOxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GS9S+NP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE20C19423;
+	Tue, 31 Mar 2026 16:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975906;
-	bh=9/Q81TkgHLZyTSSZ0lbVRmqyTnMtY3TrtA6Yx4tDJVg=;
+	s=korg; t=1774974405;
+	bh=wXZGPCuyhMns6fz0f07pcuAdaw6+ocvZ1l/bkefynG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qzbpycy5x/wuj7Q6frY4amMZt77AH3IV0MqWV7/xxlk2EqbwxuPxV2MYdiDRAE+hy
-	 52qHV1pI6e9PTByLx2mQUQEA7gWL0rQ3d1GP5mppaCo9UJr46DjS8XWt3XiVM8WCcf
-	 1azUBkRc3xgZEr6+DBCGKZBe4WpEN0S2rfhTv6NQ=
+	b=2GS9S+NPT9gWelcPb0gkQzXvkqt8m39mWBBrry9iAgXMFOmoOaM83jzf++8kUZhC1
+	 X+G/ayatRHBbzrUzO4Nz5fLg5XSSTD9QnDSCxUAXlK4SUqI/rdWDQ7pAtgOdVa35zp
+	 r6BhbYAu12qU5qf5W155jLMRfLJQi9zmFkAHi8/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Mark Brown <broonie@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/244] regmap: Synchronize cache for the page selector
+Subject: [PATCH 6.6 071/175] netfilter: nf_conntrack_expect: skip expectations in other netns via proc
 Date: Tue, 31 Mar 2026 18:20:55 +0200
-Message-ID: <20260331161745.548160556@linuxfoundation.org>
+Message-ID: <20260331161732.388214476@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +68,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232112-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231529-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 695EE36EC07
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email]
+X-Rspamd-Queue-Id: B247436CEFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 09e70e4f119ff650d24c96161fd2f62ac7e424b0 ]
+[ Upstream commit 3db5647984de03d9cae0dcddb509b058351f0ee4 ]
 
-If the selector register is represented in each page, its value
-according to the debugfs is stale because it gets synchronized
-only after the real page switch happens. Hence the regmap cache
-initialisation from the HW inherits outdated data in the selector
-register.
+Skip expectations that do not reside in this netns.
 
-Synchronize cache for the page selector just in time.
+Similar to e77e6ff502ea ("netfilter: conntrack: do not dump other netns's
+conntrack entries via proc").
 
-Before (offset followed by hexdump, the first byte is selector):
-
-    // Real registers
-    18: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
-    ...
-    // Virtual (per port)
-    40: 05 ff 00 00 e0 e0 00 00 00 00 00 1f
-    50: 00 ff 00 00 e0 e0 00 00 00 00 00 1f
-    60: 01 ff 00 00 ff ff 00 00 00 00 00 00
-    70: 02 ff 00 00 cf f3 00 00 00 00 00 0c
-    80: 03 ff 00 00 00 00 00 00 00 00 00 ff
-    90: 04 ff 00 00 ff 0f 00 00 f0 00 00 00
-
-After:
-
-    // Real registers
-    18: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
-    ...
-    // Virtual (per port)
-    40: 00 ff 00 00 e0 e0 00 00 00 00 00 1f
-    50: 01 ff 00 00 e0 e0 00 00 00 00 00 1f
-    60: 02 ff 00 00 ff ff 00 00 00 00 00 00
-    70: 03 ff 00 00 cf f3 00 00 00 00 00 0c
-    80: 04 ff 00 00 00 00 00 00 00 00 00 ff
-    90: 05 ff 00 00 ff 0f 00 00 f0 00 00 00
-
-Fixes: 6863ca622759 ("regmap: Add support for register indirect addressing.")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260302184753.2693803-1-andriy.shevchenko@linux.intel.com
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9b03f38d0487 ("netfilter: netns nf_conntrack: per-netns expectations")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ net/netfilter/nf_conntrack_expect.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 70cde1bd04000..3b2e27af91fe6 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1544,6 +1544,7 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
- 			       unsigned int val_num)
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index 81ca348915c98..7bc64eb89bac4 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -627,11 +627,15 @@ static int exp_seq_show(struct seq_file *s, void *v)
  {
- 	void *orig_work_buf;
-+	unsigned int selector_reg;
- 	unsigned int win_offset;
- 	unsigned int win_page;
- 	bool page_chg;
-@@ -1562,10 +1563,31 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
- 			return -EINVAL;
- 	}
+ 	struct nf_conntrack_expect *expect;
+ 	struct nf_conntrack_helper *helper;
++	struct net *net = seq_file_net(s);
+ 	struct hlist_node *n = v;
+ 	char *delim = "";
  
--	/* It is possible to have selector register inside data window.
--	   In that case, selector register is located on every page and
--	   it needs no page switching, when accessed alone. */
-+	/*
-+	 * Calculate the address of the selector register in the corresponding
-+	 * data window if it is located on every page.
-+	 */
-+	page_chg = in_range(range->selector_reg, range->window_start, range->window_len);
-+	if (page_chg)
-+		selector_reg = range->range_min + win_page * range->window_len +
-+			       range->selector_reg - range->window_start;
+ 	expect = hlist_entry(n, struct nf_conntrack_expect, hnode);
+ 
++	if (!net_eq(nf_ct_exp_net(expect), net))
++		return 0;
 +
-+	/*
-+	 * It is possible to have selector register inside data window.
-+	 * In that case, selector register is located on every page and it
-+	 * needs no page switching, when accessed alone.
-+	 *
-+	 * Nevertheless we should synchronize the cache values for it.
-+	 * This can't be properly achieved if the selector register is
-+	 * the first and the only one to be read inside the data window.
-+	 * That's why we update it in that case as well.
-+	 *
-+	 * However, we specifically avoid updating it for the default page,
-+	 * when it's overlapped with the real data window, to prevent from
-+	 * infinite looping.
-+	 */
- 	if (val_num > 1 ||
-+	    (page_chg && selector_reg != range->selector_reg) ||
- 	    range->window_start + win_offset != range->selector_reg) {
- 		/* Use separate work_buf during page switching */
- 		orig_work_buf = map->work_buf;
-@@ -1574,7 +1596,7 @@ static int _regmap_select_page(struct regmap *map, unsigned int *reg,
- 		ret = _regmap_update_bits(map, range->selector_reg,
- 					  range->selector_mask,
- 					  win_page << range->selector_shift,
--					  &page_chg, false);
-+					  NULL, false);
- 
- 		map->work_buf = orig_work_buf;
- 
+ 	if (expect->timeout.function)
+ 		seq_printf(s, "%ld ", timer_pending(&expect->timeout)
+ 			   ? (long)(expect->timeout.expires - jiffies)/HZ : 0);
 -- 
-2.53.0
+2.51.0
 
 
 
