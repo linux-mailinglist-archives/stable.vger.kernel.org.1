@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKEBBY3/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:29 +0200
+	id WLHUF3T2y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA8B36DF39
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB97A36CA35
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5DC0D30DF276
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 98DF53049988
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A863B2D9EF0;
-	Tue, 31 Mar 2026 17:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6723E92A5;
+	Tue, 31 Mar 2026 16:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JStv8iKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1Fj8jPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B55F2DA74C;
-	Tue, 31 Mar 2026 17:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17203D75D9;
+	Tue, 31 Mar 2026 16:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976412; cv=none; b=bHObEtc4Kbr4q2gJjlkLjamceF9PaglYk82DD2BaXbhTH6GvmXdtEvATTk54ddGdd/KhzSxSPHTtDS7DZL9C8NPtEwcOUnh1jRpJZBmA4tHuktlxTB7O2EZCbOyvOnAnliua7/z/LIN+D0ZvBOOG5XU8RgTe2fSsMEF22sjxgDQ=
+	t=1774974240; cv=none; b=EtUXwiHNp1VurfY0GC7yV3Sc0s+42GIF8HmnJeDViLCJxEeN9hO35mDXCnIrKvAYj6YqRS5W2ofOmwHHM9OW5Cn5hperi8bpFq//8GtPENyeqgZm4KG4iLYgscTwuUfaZdUGlW/+sa6/7EnsXfUdMtdifcP3e2Ga1JTRkf1Au54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976412; c=relaxed/simple;
-	bh=F1+9jcVxBDQqrOfP2o/v5px39UMz42YB76XVj7uqCWo=;
+	s=arc-20240116; t=1774974240; c=relaxed/simple;
+	bh=BluBn50t5prR4UgpK+tt8bE+oXcbb3TKK/PJOLK+p6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9RYB2ECxgXAsqjla1EFuT6DH1dUsyQp3FrMMfj/9IYeZB0T8eCrIbZFolpOpCE/DB8kqASfez/jUfQVlGq2qZhfKo2TiqU0Xp7+WJDzZhzQncpMYdjbwHdrtuGDEwvmt5WXNAoerFnY4a4zYpaBzmg+pRO6GeKr7h24CtpaTh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JStv8iKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4197C19423;
-	Tue, 31 Mar 2026 17:00:11 +0000 (UTC)
+	 MIME-Version; b=sCCImS0EqB+4HRqW8UXlFgCssyIrqqHIhkna5ITdaP8OqfysyW8w76kfy6vfW836bPa/f6oWuVthVeBp5BpXeMbJVi+TiNkej5FYW8hztWr5R4Kp4ap+WFVEgAvfdEcvMyi8NNbJ0kQXEwu99GGYBejeH1tkSUiUK7R9jpmkyZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1Fj8jPc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021DEC19423;
+	Tue, 31 Mar 2026 16:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976412;
-	bh=F1+9jcVxBDQqrOfP2o/v5px39UMz42YB76XVj7uqCWo=;
+	s=korg; t=1774974239;
+	bh=BluBn50t5prR4UgpK+tt8bE+oXcbb3TKK/PJOLK+p6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JStv8iKvhvTirHjOLPOiPHVwG6TluoplneYNboRboQ32FfxiwCXiZezkQFwbNQisU
-	 M1fN88NNzaJrO11i+GrHZQsbOMAy6LEjihh4aqZt6BDLsJZkT6gZE9Wno1zqIAmtr+
-	 orFxRXrYYmDc1wpECobmsnosQG10kIvkwd9F+Ogk=
+	b=P1Fj8jPc1o2qFiMwamJmtN0W//AtVCkI2NoErNqRQIJr4Nfz/b3jdsgXPC0aGMdbO
+	 gD40ZURfJYMra5dwd0L9/uths8zFDUk3G2/3RE58K/SNOPwutLiokii6ctaQEUf6us
+	 E/xsydavM19EHqDbmgpacRQUCBKp3/WHsbVbLfs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b7f3e7d9a596bf6a63e3@syzkaller.appspotmail.com,
-	Minseo Park <jacob.park.9436@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 082/309] Bluetooth: L2CAP: Fix stack-out-of-bounds read in l2cap_ecred_conn_req
+Subject: [PATCH 6.6 001/175] perf: Extract a few helpers
 Date: Tue, 31 Mar 2026 18:19:45 +0200
-Message-ID: <20260331161756.504194528@linuxfoundation.org>
+Message-ID: <20260331161729.837275842@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +65,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232307-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231464-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,b7f3e7d9a596bf6a63e3];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,intel.com:email,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7FA8B36DF39
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: BB97A36CA35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minseo Park <jacob.park.9436@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 9d87cb22195b2c67405f5485d525190747ad5493 ]
+[ Upstream commit 9a32bd9901fe5b1dcf544389dbf04f3b0a2fbab4 ]
 
-Syzbot reported a KASAN stack-out-of-bounds read in l2cap_build_cmd()
-that is triggered by a malformed Enhanced Credit Based Connection Request.
+The context time update code is repeated verbatim a few times.
 
-The vulnerability stems from l2cap_ecred_conn_req(). The function allocates
-a local stack buffer (`pdu`) designed to hold a maximum of 5 Source Channel
-IDs (SCIDs), totaling 18 bytes. When an attacker sends a request with more
-than 5 SCIDs, the function calculates `rsp_len` based on this unvalidated
-`cmd_len` before checking if the number of SCIDs exceeds
-L2CAP_ECRED_MAX_CID.
-
-If the SCID count is too high, the function correctly jumps to the
-`response` label to reject the packet, but `rsp_len` retains the
-attacker's oversized value. Consequently, l2cap_send_cmd() is instructed
-to read past the end of the 18-byte `pdu` buffer, triggering a
-KASAN panic.
-
-Fix this by moving the assignment of `rsp_len` to after the `num_scid`
-boundary check. If the packet is rejected, `rsp_len` will safely
-remain 0, and the error response will only read the 8-byte base header
-from the stack.
-
-Fixes: c28d2bff7044 ("Bluetooth: L2CAP: Fix result of L2CAP_ECRED_CONN_RSP when MTU is too short")
-Reported-by: syzbot+b7f3e7d9a596bf6a63e3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b7f3e7d9a596bf6a63e3
-Tested-by: syzbot+b7f3e7d9a596bf6a63e3@syzkaller.appspotmail.com
-Signed-off-by: Minseo Park <jacob.park.9436@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240807115550.031212518@infradead.org
+Stable-dep-of: 4b9ce6719606 ("perf: Make sure to use pmu_ctx->pmu for groups")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/events/core.c | 39 ++++++++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 9ea030fc9a9cc..583fe3b654c11 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5065,14 +5065,14 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
- 	cmd_len -= sizeof(*req);
- 	num_scid = cmd_len / sizeof(u16);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 652baf91c629e..53cb9ee145746 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2349,6 +2349,24 @@ group_sched_out(struct perf_event *group_event, struct perf_event_context *ctx)
+ 		event_sched_out(event, ctx);
+ }
  
--	/* Always respond with the same number of scids as in the request */
--	rsp_len = cmd_len;
--
- 	if (num_scid > L2CAP_ECRED_MAX_CID) {
- 		result = L2CAP_CR_LE_INVALID_PARAMS;
- 		goto response;
- 	}
- 
-+	/* Always respond with the same number of scids as in the request */
-+	rsp_len = cmd_len;
++static inline void
++ctx_time_update(struct perf_cpu_context *cpuctx, struct perf_event_context *ctx)
++{
++	if (ctx->is_active & EVENT_TIME) {
++		update_context_time(ctx);
++		update_cgrp_time_from_cpuctx(cpuctx, false);
++	}
++}
 +
- 	mtu  = __le16_to_cpu(req->mtu);
- 	mps  = __le16_to_cpu(req->mps);
++static inline void
++ctx_time_update_event(struct perf_event_context *ctx, struct perf_event *event)
++{
++	if (ctx->is_active & EVENT_TIME) {
++		update_context_time(ctx);
++		update_cgrp_time_from_event(event);
++	}
++}
++
+ #define DETACH_GROUP	0x01UL
+ #define DETACH_CHILD	0x02UL
+ #define DETACH_DEAD	0x04UL
+@@ -2370,10 +2388,7 @@ __perf_remove_from_context(struct perf_event *event,
+ 	enum perf_event_state state = PERF_EVENT_STATE_OFF;
+ 	unsigned long flags = (unsigned long)info;
  
+-	if (ctx->is_active & EVENT_TIME) {
+-		update_context_time(ctx);
+-		update_cgrp_time_from_cpuctx(cpuctx, false);
+-	}
++	ctx_time_update(cpuctx, ctx);
+ 
+ 	/*
+ 	 * Ensure event_sched_out() switches to OFF, at the very least
+@@ -2470,12 +2485,8 @@ static void __perf_event_disable(struct perf_event *event,
+ 	if (event->state < PERF_EVENT_STATE_INACTIVE)
+ 		return;
+ 
+-	if (ctx->is_active & EVENT_TIME) {
+-		update_context_time(ctx);
+-		update_cgrp_time_from_event(event);
+-	}
+-
+ 	perf_pmu_disable(event->pmu_ctx->pmu);
++	ctx_time_update_event(ctx, event);
+ 
+ 	/*
+ 	 * When disabling a group leader, the whole group becomes ineligible
+@@ -4534,10 +4545,7 @@ static void __perf_event_read(void *info)
+ 		return;
+ 
+ 	raw_spin_lock(&ctx->lock);
+-	if (ctx->is_active & EVENT_TIME) {
+-		update_context_time(ctx);
+-		update_cgrp_time_from_event(event);
+-	}
++	ctx_time_update_event(ctx, event);
+ 
+ 	perf_event_update_time(event);
+ 	if (data->group)
+@@ -4718,10 +4726,7 @@ static int perf_event_read(struct perf_event *event, bool group)
+ 		 * May read while context is not active (e.g., thread is
+ 		 * blocked), in that case we cannot update context time
+ 		 */
+-		if (ctx->is_active & EVENT_TIME) {
+-			update_context_time(ctx);
+-			update_cgrp_time_from_event(event);
+-		}
++		ctx_time_update_event(ctx, event);
+ 
+ 		perf_event_update_time(event);
+ 		if (group)
 -- 
 2.51.0
 
