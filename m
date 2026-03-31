@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-231731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEshKh36y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:45:17 +0200
+	id UHIDIcT/y2koNQYAu9opvQ
+	(envelope-from <stable+bounces-231696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B91736D150
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E902B36E039
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 94FF3316C55C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1431631E3EAB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE48421EF4;
-	Tue, 31 Mar 2026 16:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198CB4218B4;
+	Tue, 31 Mar 2026 16:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDV6W8+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBUE12mg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5A0402B9B;
-	Tue, 31 Mar 2026 16:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B7E30C368;
+	Tue, 31 Mar 2026 16:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974920; cv=none; b=MH2yZNiMAUUl4lL0XgloiUubNAOZ0No+XhRJKS4Wh1a2eZi9NBb7pQZnVSDgP0jv3zm9cbVBiwpYwmLkVLLDw8TGEsE4hUsGrfaZjKXAnMISjb2oNIrrZ9XHiwZDWorDn8+knTWqpkZZ1qWlCY47ntg/JTQ5TBWedrGIi6gUOvw=
+	t=1774974832; cv=none; b=BprDAuPNX74MSrjPFwfz4n1YJh0YeCa2xo6MF15/w4FMyPhCRT0IlpFRRdo50PfdTtNxLU/b+OUaX4Fkp1tDH605QYLskqcDBDZsrj2GeP82EAhZ+3KLmo2iYlUcRk4ePnYFQyLEiRyOjym67RQH6/D0DOAwGKiSqRrkDd4L7Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974920; c=relaxed/simple;
-	bh=g1alI/EX3UJG35ZqCoc/IjRk/2Pa98SZpz9YsWVPj0A=;
+	s=arc-20240116; t=1774974832; c=relaxed/simple;
+	bh=tXR6qTxd9KBXTyuDOeP3S6HCnNxOsdyMJULBoo5AuIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUI0gT3YFOMJO/9vzgt9pDnbFxG6bqBcR6COc5yogiPRS9SUvnlyFsxad9J24QX/H+GediW4F/5MewHdHaZwTS0cSPEExlzny6zHubbxa7gtvynDNZy9lDupF0ZqgOqlaPSchdreYiBEnAYNsFcQWLMX7sUlxlOxB8tP1f2ZDfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDV6W8+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35029C2BCB2;
-	Tue, 31 Mar 2026 16:35:20 +0000 (UTC)
+	 MIME-Version; b=SzA8qmCJXZ3SDAzZzwy3dStA7c93QykPbeQb1Zcuc570wz8287K4NB4jPbAsjN7HuGn2R4UrLU8tmE3N4ZLMGLVYTG0Z4kHgT3ab1lWoVZWsPKz+yyqh+iz/QNv+EMbVUa5wG1c2ctjc37xq8Uqx4myRxeFI4oyfUAwH/a9xR9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBUE12mg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F9BC19423;
+	Tue, 31 Mar 2026 16:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974920;
-	bh=g1alI/EX3UJG35ZqCoc/IjRk/2Pa98SZpz9YsWVPj0A=;
+	s=korg; t=1774974832;
+	bh=tXR6qTxd9KBXTyuDOeP3S6HCnNxOsdyMJULBoo5AuIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDV6W8+N9J2y+pCHJXxP6B6eRUwl0x8uOnhPLej7FMTGi/6VokrfxI2UI5SYYZLoL
-	 dKH48UNBLmNVTPBhQCnCWGeZBaTP9i1XrexrRtO7YPEzLMI5u2Lxjq/2yJJw96w33Z
-	 VrKoIeaIZ1L3CBd0E3904+O3r/mA3Lfp86zfTolo=
+	b=tBUE12mgjZD0FXAHbgvhA6MSE/zKV03bepQubUf2yxlz0+8ipP6gXvVy5UlOibkbu
+	 pUtYcOYJCficQrk3b7MRAHATAwO8APkDoyF0U4pTjoPMFG+FR+2tMZWlECIcYNlN1v
+	 fyjMLDwN7Z73A2E5QempUcUQh5hMnf+3a2v+kCnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Vladimir Yakovlev <vovchkir@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 053/342] ASoC: cs35l56: Only patch ASP registers if the DAI is part of a DAIlink
-Date: Tue, 31 Mar 2026 18:18:06 +0200
-Message-ID: <20260331161800.850396900@linuxfoundation.org>
+Subject: [PATCH 6.19 054/342] spi: spi-dw-dma: fix print error log when wait finish transaction
+Date: Tue, 31 Mar 2026 18:18:07 +0200
+Message-ID: <20260331161800.887146041@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -66,32 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-231696-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231731-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.994];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,cirrus.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2B91736D150
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E902B36E039
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,110 +100,36 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Vladimir Yakovlev <vovchkir@gmail.com>
 
-[ Upstream commit 9351cf3fd92dc1349bb75f2f7f7324607dcf596f ]
+[ Upstream commit 3b46d61890632c8f8b117147b6923bff4b42ccb7 ]
 
-Move the ASP register patches to a separate struct and apply this from the
-ASP DAI probe() function so that the registers are only patched if the DAI
-is part of a DAI link.
+If an error occurs, the device may not have a current message. In this
+case, the system will crash.
 
-Some systems use the ASP as a special-purpose interconnect and on these
-systems the ASP registers are configured by a third party (the firmware,
-the BIOS, or another device using the amp's secondary host control
-interface).
+In this case, it's better to use dev from the struct ctlr (struct spi_controller*).
 
-If the machine driver does not hook up the ASP DAI then the ASP registers
-must be omitted from the patch to prevent overwriting the third party
-configuration.
-
-If the machine driver includes the ASP DAI in a DAI link, this implies that
-the machine driver and higher components (such as alsa-ucm) are taking
-ownership of the ASP. In this case the ASP registers are patched to known
-defaults and the machine driver should configure the ASP.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260226110137.1664562-1-rf@opensource.cirrus.com
+Signed-off-by: Vladimir Yakovlev <vovchkir@gmail.com>
+Link: https://patch.msgid.link/20260302222017.992228-2-vovchkir@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/cs35l56.h           |  1 +
- sound/soc/codecs/cs35l56-shared.c | 16 +++++++++++++++-
- sound/soc/codecs/cs35l56.c        |  8 ++++++++
- 3 files changed, 24 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
-index 5928af539c468..d0ae1ae2ae2a0 100644
---- a/include/sound/cs35l56.h
-+++ b/include/sound/cs35l56.h
-@@ -374,6 +374,7 @@ extern const char * const cs35l56_cal_set_status_text[3];
- extern const char * const cs35l56_tx_input_texts[CS35L56_NUM_INPUT_SRC];
- extern const unsigned int cs35l56_tx_input_values[CS35L56_NUM_INPUT_SRC];
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index 65adec7c7524b..fe726b9b1780d 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -271,7 +271,7 @@ static int dw_spi_dma_wait(struct dw_spi *dws, unsigned int len, u32 speed)
+ 					 msecs_to_jiffies(ms));
  
-+int cs35l56_set_asp_patch(struct cs35l56_base *cs35l56_base);
- int cs35l56_set_patch(struct cs35l56_base *cs35l56_base);
- int cs35l56_mbox_send(struct cs35l56_base *cs35l56_base, unsigned int command);
- int cs35l56_firmware_shutdown(struct cs35l56_base *cs35l56_base);
-diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
-index 60100c8f8c952..0ec6a96e80858 100644
---- a/sound/soc/codecs/cs35l56-shared.c
-+++ b/sound/soc/codecs/cs35l56-shared.c
-@@ -23,7 +23,7 @@
- 
- #include "cs35l56.h"
- 
--static const struct reg_sequence cs35l56_patch[] = {
-+static const struct reg_sequence cs35l56_asp_patch[] = {
- 	/*
- 	 * Firmware can change these to non-defaults to satisfy SDCA.
- 	 * Ensure that they are at known defaults.
-@@ -40,6 +40,20 @@ static const struct reg_sequence cs35l56_patch[] = {
- 	{ CS35L56_ASP1TX2_INPUT,		0x00000000 },
- 	{ CS35L56_ASP1TX3_INPUT,		0x00000000 },
- 	{ CS35L56_ASP1TX4_INPUT,		0x00000000 },
-+};
-+
-+int cs35l56_set_asp_patch(struct cs35l56_base *cs35l56_base)
-+{
-+	return regmap_register_patch(cs35l56_base->regmap, cs35l56_asp_patch,
-+				     ARRAY_SIZE(cs35l56_asp_patch));
-+}
-+EXPORT_SYMBOL_NS_GPL(cs35l56_set_asp_patch, "SND_SOC_CS35L56_SHARED");
-+
-+static const struct reg_sequence cs35l56_patch[] = {
-+	/*
-+	 * Firmware can change these to non-defaults to satisfy SDCA.
-+	 * Ensure that they are at known defaults.
-+	 */
- 	{ CS35L56_SWIRE_DP3_CH1_INPUT,		0x00000018 },
- 	{ CS35L56_SWIRE_DP3_CH2_INPUT,		0x00000019 },
- 	{ CS35L56_SWIRE_DP3_CH3_INPUT,		0x00000029 },
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index 55b4d0d55712a..1c1924c6f4070 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -346,6 +346,13 @@ static int cs35l56_dsp_event(struct snd_soc_dapm_widget *w,
- 	return wm_adsp_event(w, kcontrol, event);
- }
- 
-+static int cs35l56_asp_dai_probe(struct snd_soc_dai *codec_dai)
-+{
-+	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(codec_dai->component);
-+
-+	return cs35l56_set_asp_patch(&cs35l56->base);
-+}
-+
- static int cs35l56_asp_dai_set_fmt(struct snd_soc_dai *codec_dai, unsigned int fmt)
- {
- 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(codec_dai->component);
-@@ -550,6 +557,7 @@ static int cs35l56_asp_dai_set_sysclk(struct snd_soc_dai *dai,
- }
- 
- static const struct snd_soc_dai_ops cs35l56_ops = {
-+	.probe = cs35l56_asp_dai_probe,
- 	.set_fmt = cs35l56_asp_dai_set_fmt,
- 	.set_tdm_slot = cs35l56_asp_dai_set_tdm_slot,
- 	.hw_params = cs35l56_asp_dai_hw_params,
+ 	if (ms == 0) {
+-		dev_err(&dws->ctlr->cur_msg->spi->dev,
++		dev_err(&dws->ctlr->dev,
+ 			"DMA transaction timed out\n");
+ 		return -ETIMEDOUT;
+ 	}
 -- 
 2.51.0
 
