@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-231607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFYuNO7+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:50 +0200
+	id CA6IB6v+y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1A236DDBB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D322536DCE8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9A9231A9063
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EFEC33131DB1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E4D423A62;
-	Tue, 31 Mar 2026 16:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE812426D16;
+	Tue, 31 Mar 2026 16:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8Oaqr5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2fDQ9Ia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EC3425CCD;
-	Tue, 31 Mar 2026 16:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09D24266AE;
+	Tue, 31 Mar 2026 16:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974607; cv=none; b=dNayPPoQm9XZIDmZ3lv/KaFf2G7oKNvJ3z8CaBvUhg4WGAJUbtewU0I1bCV+uxfMdowEE2QNmFHscTAa3RO/WuGnhYr/pTb44OEQb3nmUfeJgsp/l1ZDKh9uSbDc8beOfw9hiYxZ2IYNZpdHu5UtOQ1hF3IRX+nHzWLUVjEOy+0=
+	t=1774975958; cv=none; b=kZktJUND+QVljR+VnAwRTpjWvfMvu6pf3AsnLD+fNMjHFQlS5uUcn369V/nmodODBIwWtnylt9AfDsMyQPon59UUuAz0Jz5iVt/SiS2Jt5wiQzMMzXPvTmb5szQIz88I7loYYIVO5W7hg926tAic27j9ufyjNUkafTFxlJk0cs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974607; c=relaxed/simple;
-	bh=PAqpRS2Foi/XI18CmssbQ++Rwfce2fYu0lYzjFGbyk8=;
+	s=arc-20240116; t=1774975958; c=relaxed/simple;
+	bh=l0OYJJZhfw6oVfvoYhwSrPmj0zwUsDBKeHtSzJwDLzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CduLM9vdGy29D/HuMDdQR5PuYmEx+1FGnU+vZmO0xmAl9ScQJNY1ycG0fHgIeQbl/3k87Er0Uq5L2X0ivKdk8AqzBui/FNhqX6vpSpk6qtk/Yf5I47pDHdymUlF7u3ucV6R1YAHz80pHGRAw3tq7rZ8/aKGIF7NDToo+ZzC7HmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8Oaqr5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E927C2BCB5;
-	Tue, 31 Mar 2026 16:30:06 +0000 (UTC)
+	 MIME-Version; b=UanDTtfivuXg+yKKKxeXU+bFS4XjTL02C6VMKJj/dXg2LsE4a5qr8ABX7inAnneWRTQ6a3nCDcUgZW0dyUPanX6mmF+vf9fG30tmk8J2PxNusnbTA8WpqRMsi3rSAh3qPLanZijV5jG+xaprC/vG2cSuA3jcUPBqpriZdE3yJtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2fDQ9Ia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342CDC19423;
+	Tue, 31 Mar 2026 16:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974607;
-	bh=PAqpRS2Foi/XI18CmssbQ++Rwfce2fYu0lYzjFGbyk8=;
+	s=korg; t=1774975958;
+	bh=l0OYJJZhfw6oVfvoYhwSrPmj0zwUsDBKeHtSzJwDLzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R8Oaqr5hesd64U7KsW4pndUz94tLNKx3FpMEXicpfqexlHCxdrOQZmdFT+7/lRBUR
-	 WII7tHOYBOcoDco84J7NqyvJR2jAKtBKcw3UX7McbSEArbmzej6Sb2r9higALh+RY0
-	 WLhg1XtjbR+kGKFOjpiWP3i6I8TenoBIw9wP7dOM=
+	b=M2fDQ9IaupdiL0nPN6549kMevf8z4TWwWWgTzfpZRAolRaWKeBnPYWWYqpQ7vdWaL
+	 4uztzMPoO2ffesEE7f5PweG2G3WXZRQ9mzO7XSnuBNEjeJiG4p30HKJ0uB1L7k9HQ9
+	 uHhCTvZa4xo6103jy11BoH1jBm4unOLG/Qu/qQIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Tyllis Xu <LivelyCarpet87@gmail.com>,
-	Dave Marquardt <davemarq@linux.ibm.com>,
-	Tyrel Datwyler <tyreld@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 118/175] scsi: ibmvfc: Fix OOB access in ibmvfc_discover_targets_done()
-Date: Tue, 31 Mar 2026 18:21:42 +0200
-Message-ID: <20260331161734.116204644@linuxfoundation.org>
+	xietangxin <xietangxin@yeah.net>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 153/244] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
+Date: Tue, 31 Mar 2026 18:21:43 +0200
+Message-ID: <20260331161747.418206930@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +66,125 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-231607-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232132-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,linux.alibaba.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4F1A236DDBB
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D322536DCE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyllis Xu <livelycarpet87@gmail.com>
+From: xietangxin <xietangxin@yeah.net>
 
-commit 61d099ac4a7a8fb11ebdb6e2ec8d77f38e77362f upstream.
+commit ba8bda9a0896746053aa97ac6c3e08168729172c upstream.
 
-A malicious or compromised VIO server can return a num_written value in the
-discover targets MAD response that exceeds max_targets. This value is
-stored directly in vhost->num_targets without validation, and is then used
-as the loop bound in ibmvfc_alloc_targets() to index into disc_buf[], which
-is only allocated for max_targets entries. Indices at or beyond max_targets
-access kernel memory outside the DMA-coherent allocation.  The
-out-of-bounds data is subsequently embedded in Implicit Logout and PLOGI
-MADs that are sent back to the VIO server, leaking kernel memory.
+A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
+and the device's IFF_XMIT_DST_RELEASE flag is cleared
+(e.g., during the configuration of tc route filter rules).
 
-Fix by clamping num_written to max_targets before storing it.
+When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
+expects the driver to hold the reference to skb->dst until the packet
+is fully transmitted and freed. In virtio_net with napi_tx=N,
+skbs may remain in the virtio transmit ring for an extended period.
 
-Fixes: 072b91f9c651 ("[SCSI] ibmvfc: IBM Power Virtual Fibre Channel Adapter Client Driver")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+If the network namespace is destroyed while these skbs are still pending,
+the corresponding dst_ops structure has freed. When a subsequent packet
+is transmitted, free_old_xmit() is triggered to clean up old skbs.
+It then calls dst_release() on the skb associated with the stale dst_entry.
+Since the dst_ops (referenced by the dst_entry) has already been freed,
+a UAF kernel paging request occurs.
+
+fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
+the dst reference before the skb is queued in virtio_net.
+
+Call Trace:
+ Unable to handle kernel paging request at virtual address ffff80007e150000
+ CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
+  ...
+  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
+  dst_release+0xe0/0x110  net/core/dst.c:177
+  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
+  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
+  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
+  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
+  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
+  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
+  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
+  ...
+
+Reproduction Steps:
+NETDEV="enp3s0"
+
+config_qdisc_route_filter() {
+    tc qdisc del dev $NETDEV root
+    tc qdisc add dev $NETDEV root handle 1: prio
+    tc filter add dev $NETDEV parent 1:0 \
+	protocol ip prio 100 route to 100 flowid 1:1
+    ip route add 192.168.1.100/32 dev $NETDEV realm 100
+}
+
+test_ns() {
+    ip netns add testns
+    ip link set $NETDEV netns testns
+    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
+    ip netns exec testns ping -c 1 10.0.32.1
+    ip netns del testns
+}
+
+config_qdisc_route_filter
+
+test_ns
+sleep 2
+test_ns
+
+Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
-Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Link: https://patch.msgid.link/20260314170151.548614-1-LivelyCarpet87@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: xietangxin <xietangxin@yeah.net>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")
+Link: https://patch.msgid.link/20260312025406.15641-1-xietangxin@yeah.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -4928,7 +4928,8 @@ static void ibmvfc_discover_targets_done
- 	switch (mad_status) {
- 	case IBMVFC_MAD_SUCCESS:
- 		ibmvfc_dbg(vhost, "Discover Targets succeeded\n");
--		vhost->num_targets = be32_to_cpu(rsp->num_written);
-+		vhost->num_targets = min_t(u32, be32_to_cpu(rsp->num_written),
-+					   max_targets);
- 		ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_ALLOC_TGTS);
- 		break;
- 	case IBMVFC_MAD_FAILED:
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3178,6 +3178,7 @@ static netdev_tx_t start_xmit(struct sk_
+ 	/* Don't wait up for transmitted skbs to be freed. */
+ 	if (!use_napi) {
+ 		skb_orphan(skb);
++		skb_dst_drop(skb);
+ 		nf_reset_ct(skb);
+ 	}
+ 
 
 
 
