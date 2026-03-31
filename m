@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELZ5FQQGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:04 +0200
+	id gGJSGzr8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B699136EF91
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29B936D5BA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75996308CB37
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EAC2330DAE40
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6593240710B;
-	Tue, 31 Mar 2026 16:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6099933E367;
+	Tue, 31 Mar 2026 16:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/f+TgMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNVzR8Qy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22109425CD5;
-	Tue, 31 Mar 2026 16:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D0725D527;
+	Tue, 31 Mar 2026 16:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976215; cv=none; b=chQohHnGJYrHI5v6t8zK7G0voqaf3tG2xUkr6kyBNzdI4pAMiBTRDIhDeZcwCMXN4yhrqRzN48cLkegn8khEZv3KAFeNQCjuTSmJOGlVKBD/ZVqb2PADi8+/NfQ6up7omDtEh4Z3O0jNT4lJCoGps1B5vmYej8F/36hOnzGrZBI=
+	t=1774975519; cv=none; b=lEapnZXctmgJ3yfICxYmjH0Lit5E0+t6nCVCDmqjxaZGIcgHJrLEnaU/EFcwVEINELlaGixd0jilE9ELqwTFROs0+qBQUKPu/sNwKfL8z+EC/F7NG1d54anqKPs0EICbTD2mLd9Vj5vs9dKq4pDOSoArTPgyRiAyD1Z2RGjtIK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976215; c=relaxed/simple;
-	bh=7mlq3QF2JnjfzHpPPVdyR5vyknHPk7PkVQO8VPmbblk=;
+	s=arc-20240116; t=1774975519; c=relaxed/simple;
+	bh=ObUnb1yTeG350KhmXCU9XYq2voufG6isJgqqnel8nRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3p2JcFdcE3ciSwqFmvt+diCrkwhJpphdueXmA/lVKK9tQXV2LcKwgGlp1p0l7ANkQRBZ4fqPIr1e3vniZEWbdn2wVw2udMnDiKsHKC1W/DbIPgG4GH3c7fhdowuhh9WGWI6SdM9jhSO/9GWQNfmsPBYIwtnk3wdeF1ltylQ0no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/f+TgMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A733EC19423;
-	Tue, 31 Mar 2026 16:56:54 +0000 (UTC)
+	 MIME-Version; b=R3hXtFxtiYQABSarrQSs3EQmR4Mh3IdoxnHCFpZBGpmgGww5+GllEX/LoRr7Q6pwdgBSVm3trzDgAxMOlpFGXRT2fE1xsyFf9btA8qxtkiHwnIFkP7laP6bL6y7CUWZz6bLoaCOR6nQECUBGvWlOgulcdm3EhlBKk2evTjo8wJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNVzR8Qy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B71C19423;
+	Tue, 31 Mar 2026 16:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976215;
-	bh=7mlq3QF2JnjfzHpPPVdyR5vyknHPk7PkVQO8VPmbblk=;
+	s=korg; t=1774975519;
+	bh=ObUnb1yTeG350KhmXCU9XYq2voufG6isJgqqnel8nRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/f+TgMc+/Z6+nUqKx0W2LqcHKJv2JATfPMcJHFrtBVvZqORX+U81SOxGrqT5TLcR
-	 X5fJp2GLNfLvTzxf5ZiTUlImhEPuAhUje+eHJLPdQZJoc+UXsAZn1FCKZEmGs38nfe
-	 wpxP6Hkfrw1qyeQieWp5YaISAgyyArGIw2bYdLFQ=
+	b=gNVzR8Qy1MPw0hFToOa4SFVNsqrzOqDBkjnjqmR2038y/26o8jwwBSLwER3Aa2+yr
+	 R793RXbXyuUmCTfIgvSnK/afSnYp5zmq7097CL6Rar8h8vqaS6MXaWoRaqq2oX4Ih5
+	 c+khCkIxcMBI9sLFqehWnlH2DfCLpzxVcR2KlJw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 209/244] rust: pin-init: internal: init: document load-bearing fact of field accessors
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 326/342] dmaengine: xilinx: xilinx_dma: Fix residue calculation for cyclic DMA
 Date: Tue, 31 Mar 2026 18:22:39 +0200
-Message-ID: <20260331161749.473456466@linuxfoundation.org>
+Message-ID: <20260331161810.906349059@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232231-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231963-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,92 +89,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,zulipchat.com:url,garyguo.net:email]
-X-Rspamd-Queue-Id: B699136EF91
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nabladev.com:email]
+X-Rspamd-Queue-Id: B29B936D5BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benno Lossin <lossin@kernel.org>
+From: Marek Vasut <marex@nabladev.com>
 
-commit 580cc37b1de4fcd9997c48d7080e744533f09f36 upstream.
+[ Upstream commit f61d145999d61948a23cd436ebbfa4c3b9ab8987 ]
 
-The functions `[Pin]Init::__[pinned_]init` and `ptr::write` called from
-the `init!` macro require the passed pointer to be aligned. This fact is
-ensured by the creation of field accessors to previously initialized
-fields.
+The cyclic DMA calculation is currently entirely broken and reports
+residue only for the first segment. The problem is twofold.
 
-Since we missed this very important fact from the beginning [1],
-document it in the code.
+First, when the first descriptor finishes, it is moved from active_list
+to done_list, but it is never returned back into the active_list. The
+xilinx_dma_tx_status() expects the descriptor to be in the active_list
+to report any meaningful residue information, which never happens after
+the first descriptor finishes. Fix this up in xilinx_dma_start_transfer()
+and if the descriptor is cyclic, lift it from done_list and place it back
+into active_list list.
 
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-init/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
-Fixes: 90e53c5e70a6 ("rust: add pin-init API core")
-Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y: 42415d163e5d: rust: pin-init: add references to previously initialized fields
-Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y, 6.18.y, 6.19.y
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260302140424.4097655-2-lossin@kernel.org
-[ Updated Cc: stable@ tags as discussed. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ Moved changes to the declarative macro, because 6.19.y and earlier do not
-  have `syn`. Also duplicated the comment for all field accessor creations.
-  - Benno ]
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Second, the segment .status fields of the descriptor remain dirty. Once
+the DMA did one pass on the descriptor, the .status fields are populated
+with data by the DMA, but the .status fields are not cleared before reuse
+during the next cyclic DMA round. The xilinx_dma_get_residue() recognizes
+that as if the descriptor was complete and had 0 residue, which is bogus.
+Reinitialize the status field before placing the descriptor back into the
+active_list.
+
+Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316221943.160375-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/init/macros.rs |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/dma/xilinx/xilinx_dma.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -1231,6 +1231,10 @@ macro_rules! __init_internal {
-         // return when an error/panic occurs.
-         // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
-         unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
-+        // NOTE: the field accessor ensures that the initialized field is properly aligned.
-+        // Unaligned fields will cause the compiler to emit E0793. We do not support
-+        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-+        // `ptr::write` below has the same requirement.
-         // SAFETY:
-         // - the project function does the correct field projection,
-         // - the field has been initialized,
-@@ -1270,6 +1274,10 @@ macro_rules! __init_internal {
-         // return when an error/panic occurs.
-         unsafe { $crate::init::Init::__init(init, ::core::ptr::addr_of_mut!((*$slot).$field))? };
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index e6d10079ec670..ccfcc2b801f82 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -1546,8 +1546,29 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 	if (chan->err)
+ 		return;
  
-+        // NOTE: the field accessor ensures that the initialized field is properly aligned.
-+        // Unaligned fields will cause the compiler to emit E0793. We do not support
-+        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-+        // `ptr::write` below has the same requirement.
-         // SAFETY:
-         // - the field is not structurally pinned, since the line above must compile,
-         // - the field has been initialized,
-@@ -1310,6 +1318,10 @@ macro_rules! __init_internal {
-             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
-         }
+-	if (list_empty(&chan->pending_list))
++	if (list_empty(&chan->pending_list)) {
++		if (chan->cyclic) {
++			struct xilinx_dma_tx_descriptor *desc;
++			struct list_head *entry;
++
++			desc = list_last_entry(&chan->done_list,
++					       struct xilinx_dma_tx_descriptor, node);
++			list_for_each(entry, &desc->segments) {
++				struct xilinx_axidma_tx_segment *axidma_seg;
++				struct xilinx_axidma_desc_hw *axidma_hw;
++				axidma_seg = list_entry(entry,
++							struct xilinx_axidma_tx_segment,
++							node);
++				axidma_hw = &axidma_seg->hw;
++				axidma_hw->status = 0;
++			}
++
++			list_splice_tail_init(&chan->done_list, &chan->active_list);
++			chan->desc_pendingcount = 0;
++			chan->idle = false;
++		}
+ 		return;
++	}
  
-+        // NOTE: the field accessor ensures that the initialized field is properly aligned.
-+        // Unaligned fields will cause the compiler to emit E0793. We do not support
-+        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-+        // `ptr::write` below has the same requirement.
-         #[allow(unused_variables, unused_assignments)]
-         // SAFETY:
-         // - the field is not structurally pinned, since no `use_data` was required to create this
-@@ -1350,6 +1362,10 @@ macro_rules! __init_internal {
-             // SAFETY: The memory at `slot` is uninitialized.
-             unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
-         }
-+        // NOTE: the field accessor ensures that the initialized field is properly aligned.
-+        // Unaligned fields will cause the compiler to emit E0793. We do not support
-+        // unaligned fields since `Init::__init` requires an aligned pointer; the call to
-+        // `ptr::write` below has the same requirement.
-         // SAFETY:
-         // - the project function does the correct field projection,
-         // - the field has been initialized,
+ 	if (!chan->idle)
+ 		return;
+-- 
+2.53.0
+
 
 
 
