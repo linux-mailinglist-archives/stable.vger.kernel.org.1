@@ -1,185 +1,236 @@
-Return-Path: <stable+bounces-231412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOosHo27y2kpKAYAu9opvQ
-	(envelope-from <stable+bounces-231412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:18:21 +0200
+	id WEctGje8y2knKwYAu9opvQ
+	(envelope-from <stable+bounces-231413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:21:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5A03695D8
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBFD36963C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B49C3040760
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:13:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 547573012279
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42CD3E0C77;
-	Tue, 31 Mar 2026 12:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8633A2BE642;
+	Tue, 31 Mar 2026 12:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pkQOni0K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsSJwNZy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1A73D8909
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 12:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3502836BE
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 12:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774959224; cv=none; b=uKmm7mPOcVbAgEHyWpxWYcCEBR3Mq0MhnZZja5I8xTju5SaPYgHk5QBMDGDmO36JS6WcaYx93cTH9VjEUvMVEMj6YU2xYbWPF8kT4FhWtZVq+hIhSQOtLAmB7XXm1B/d0M0XqSTTGZKGRjhz07UE0/HUmjzgSUJ4LgxbRCLfExU=
+	t=1774959404; cv=none; b=jknKPOLeK3CJGqe4/Q7DJcH7YVeYggjhnY5jB/KNPkVIoU1oIpaWP1Mt6EjpSkK3LWH0A87RcPc9y6EuVi+PBmwh2iWlu8egYYAEmfIVasB86Pr8sZtSgwyC0bfHhXfE8XMsDEdO3ait3/dAzjazNPmx+9sGwdsaqPyP7oLFZac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774959224; c=relaxed/simple;
-	bh=0Z9faOwXUmh9qLgJhY+ZBPIJVESNk4JcKVkmsZ8jSzI=;
+	s=arc-20240116; t=1774959404; c=relaxed/simple;
+	bh=vlCcYSA5qvAi3Pg2/QzGYs2N7Q95Mv4V8Y6jq1RgM5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OAQ9bcjh0OqCXBj71aJrazg52fvq7+7ZYzjHCrDOce2BZEn3RxRUXJu1odI7ndl5bsjc8gd5p9g26LnBkKsutEahGGAcAmQDJE2/8wnawlkMmmQ97YImkctKa2i4QKlZ4BvKof6bSbWEUT4S1+y8oCbouVOddjbM8+v/Yo1eTUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pkQOni0K; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 44E5D1A30B1;
-	Tue, 31 Mar 2026 12:13:40 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 125556029D;
-	Tue, 31 Mar 2026 12:13:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 501861045028C;
-	Tue, 31 Mar 2026 14:13:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774959219; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=pQanRxNZVj5rjDHm72RB8zAUvY47FsQWhmsFM28fyzo=;
-	b=pkQOni0Kzytfp/hYUnUFM0OgsFiePcP9VFooY1yzAMtgji+zUSfFbZ3pHYJ9mG9SfsMUk4
-	axYh2j9+P+HGl9NlogKJRqZN+VnF0gRECRhMXWYtIEg2hztXzfwk+c9kdS8cDUu1n+BkKz
-	maiD0ajt3LDA70dCZZ3a7QIcJwDfNRaHaGrrWv5qGChUS0ggrAky8BWwBHAYtj28EiI5vX
-	JeYqwKSFVmNzE4kLmn+cpfw4npJf5aPnhpcv/oB0j0/zL2vJPyn9vJ5Yypcvlii5R+WKH8
-	hvk7NwCV64lXjJWkIpdObcj+cGcUvA0//e9tGCOeI6o8q6fXH5i4pZAqga2vKA==
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject:
- Re: [PATCH] iio: inkern: Avoid risky abs() usage in iio_multiply_value()
-Date: Tue, 31 Mar 2026 14:13:29 +0200
-Message-ID: <12864533.O9o76ZdvQC@fw-rgant>
-In-Reply-To: <acudGrFiD7TcAs3S@ashevche-desk.local>
-References:
- <20260331-iio-multiply-abs-usage-v1-1-2ae8063e80e4@bootlin.com>
- <acuT8oTnaYujC0k6@ashevche-desk.local> <acudGrFiD7TcAs3S@ashevche-desk.local>
+	 MIME-Version; b=Fgox490eEMC/YNihmsLVOSA870BF7D2tc1/HeMAhKqA1A6Nxs8NsUjmD5sJAxLu6xlctrvOwKnYiEh9JmKa7boAA608xmJCR4F7AZw/3ibHkKXoB40CbbiI79kHZWt3MmSIHXW2G7jrXN2ZZze21wfRc/b3D4blEVj1evfyQeT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsSJwNZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C5BC19423;
+	Tue, 31 Mar 2026 12:16:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774959404;
+	bh=vlCcYSA5qvAi3Pg2/QzGYs2N7Q95Mv4V8Y6jq1RgM5w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EsSJwNZy/b3zknmpXIreyy2QvTWX9/mLARotXi9IrH2vlQsHoVbPY/tTPniaWKogz
+	 3PMnMJg0tLNTmcG/FEd/lb3Qy+LZ7ZrV0gvSHBAZ+yO3CKYD0V0MDqA6kTNjvUUfOK
+	 ArfzPyja1+38kRLE58Az/MtSvleGMF2he5+twnuclY2EdEYqeM/bTjmKI0XQUTcKQP
+	 LXCE61YLGU2d33dMLDXOv3b5Bu+XbmlPkCbbVMerIvqLwgVlAuGvK8f6SQHYSFZEKZ
+	 HJXK86lZAXjdVu0JBTLfWNZ2ABIh0YssxHBCsFhvkkhC15gGjT28kIhjtKjQ6o9pcM
+	 H6EXKMea3MG9w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Nikunj A Dadhania <nikunj@amd.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] x86/cpu: Enable FSGSBASE early in cpu_init_exception_handling()
+Date: Tue, 31 Mar 2026 08:16:42 -0400
+Message-ID: <20260331121642.2195682-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033059-stargazer-connected-2af4@gregkh>
+References: <2026033059-stargazer-connected-2af4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5978803.DvuYhMxLoT";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-3.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231412-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DKIM_TRACE(0.00)[bootlin.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[romain.gantois@bootlin.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_FROM(0.00)[bounces-231413-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:url]
-X-Rspamd-Queue-Id: CE5A03695D8
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,alien8.de:email,amd.com:email]
+X-Rspamd-Queue-Id: BEBFD36963C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
---nextPart5978803.DvuYhMxLoT
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Date: Tue, 31 Mar 2026 14:13:29 +0200
-Message-ID: <12864533.O9o76ZdvQC@fw-rgant>
-In-Reply-To: <acudGrFiD7TcAs3S@ashevche-desk.local>
-MIME-Version: 1.0
+From: Nikunj A Dadhania <nikunj@amd.com>
 
-Hello Andy,
+[ Upstream commit 05243d490bb7852a8acca7b5b5658019c7797a52 ]
 
-On Tuesday, 31 March 2026 12:08:26 CEST Andy Shevchenko wrote:
-> On Tue, Mar 31, 2026 at 12:29:22PM +0300, Andy Shevchenko wrote:
-> > On Tue, Mar 31, 2026 at 10:49:59AM +0200, Romain Gantois wrote:
-> ...
-> 
-> > > -		*result = multiplier * abs(val);
-> > > -		*result += div_s64(multiplier * abs(val2), denominator);
-> > > +		*result = multiplier * abs((s64)val);
-> > > +		*result += div_s64(multiplier * abs((s64)val2), denominator);
-> > 
-> > Right, but here we get val and val2 from either static values from the
-> > driver (when it is SCALE channel), or when channel has PROCESSED support.
-> > In the latter one it might theoretically be possible to go till the
-> > INT_MIN, but practically I don't know how, except for the broken driver
-> > code in the first place. With that being said, I think it's better to
-> > validate somewhere the multipliers (when it's SCALE or PROCESSED
-> > channel). I also noted that for the _PROCESSED some drivers keep a
-> > garbage in val2. That probably needs to be addressed as well (exempli
-> > gratia: bmi270_read_raw() does that).
-> 
-> Actually the data in the val and val2 should be aligned with the returned
-> type, hence the potential bugs might only come from the untested drivers.
-> Which means that this patch doesn't improve the situation.
+Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handling()
+to ensure it is enabled before any exceptions can occur on both boot and
+secondary CPUs.
 
-I'm a bit confused: when you say "the returned type" what returning function 
-are you referring to? Also, doesn't the patch still fix the bug for potentially 
-untested drivers which use PROCESSED?
+== Background ==
 
-Thanks,
+Exception entry code (paranoid_entry()) uses ALTERNATIVE patching based on
+X86_FEATURE_FSGSBASE to decide whether to use RDGSBASE/WRGSBASE instructions
+or the slower RDMSR/SWAPGS sequence for saving/restoring GSBASE.
 
+On boot CPU, ALTERNATIVE patching happens after enabling FSGSBASE in CR4.
+When the feature is available, the code is permanently patched to use
+RDGSBASE/WRGSBASE, which require CR4.FSGSBASE=1 to execute without triggering
+
+== Boot Sequence ==
+
+Boot CPU (with CR pinning enabled):
+  trap_init()
+    cpu_init()                   <- Uses unpatched code (RDMSR/SWAPGS)
+      x2apic_setup()
+  ...
+  arch_cpu_finalize_init()
+    identify_boot_cpu()
+      identify_cpu()
+        cr4_set_bits(X86_CR4_FSGSBASE)  # Enables the feature
+	# This becomes part of cr4_pinned_bits
+    ...
+    alternative_instructions()   <- Patches code to use RDGSBASE/WRGSBASE
+
+Secondary CPUs (with CR pinning enabled):
+  start_secondary()
+    cr4_init()                   <- Code already patched, CR4.FSGSBASE=1
+                                    set implicitly via cr4_pinned_bits
+
+    cpu_init()                   <- exceptions work because FSGSBASE is
+                                    already enabled
+
+Secondary CPU (with CR pinning disabled):
+  start_secondary()
+    cr4_init()                   <- Code already patched, CR4.FSGSBASE=0
+    cpu_init()
+      x2apic_setup()
+        rdmsrq(MSR_IA32_APICBASE)  <- Triggers #VC in SNP guests
+          exc_vmm_communication()
+            paranoid_entry()       <- Uses RDGSBASE with CR4.FSGSBASE=0
+                                      (patched code)
+    ...
+    ap_starting()
+      identify_secondary_cpu()
+        identify_cpu()
+	  cr4_set_bits(X86_CR4_FSGSBASE)  <- Enables the feature, which is
+                                             too late
+
+== CR Pinning ==
+
+Currently, for secondary CPUs, CR4.FSGSBASE is set implicitly through
+CR-pinning: the boot CPU sets it during identify_cpu(), it becomes part of
+cr4_pinned_bits, and cr4_init() applies those pinned bits to secondary CPUs.
+This works but creates an undocumented dependency between cr4_init() and the
+pinning mechanism.
+
+== Problem ==
+
+Secondary CPUs boot after alternatives have been applied globally. They
+execute already-patched paranoid_entry() code that uses RDGSBASE/WRGSBASE
+instructions, which require CR4.FSGSBASE=1. Upcoming changes to CR pinning
+behavior will break the implicit dependency, causing secondary CPUs to
+generate #UD.
+
+This issue manifests itself on AMD SEV-SNP guests, where the rdmsrq() in
+x2apic_setup() triggers a #VC exception early during cpu_init(). The #VC
+handler (exc_vmm_communication()) executes the patched paranoid_entry() path.
+Without CR4.FSGSBASE enabled, RDGSBASE instructions trigger #UD.
+
+== Fix ==
+
+Enable FSGSBASE explicitly in cpu_init_exception_handling() before loading
+exception handlers. This makes the dependency explicit and ensures both
+boot and secondary CPUs have FSGSBASE enabled before paranoid_entry()
+executes.
+
+Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
+Reported-by: Borislav Petkov <bp@alien8.de>
+Suggested-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20260318075654.1792916-2-nikunj@amd.com
+[ placed FSGSBASE enablement before load_current_idt() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/kernel/cpu/common.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 96643de567d85..d008416bd0838 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1839,12 +1839,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ 	setup_smap(c);
+ 	setup_umip(c);
+ 
+-	/* Enable FSGSBASE instructions if available. */
+-	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
+-		cr4_set_bits(X86_CR4_FSGSBASE);
+-		elf_hwcap2 |= HWCAP2_FSGSBASE;
+-	}
+-
+ 	/*
+ 	 * The vendor-specific functions might have changed features.
+ 	 * Now we do "generic changes."
+@@ -2220,6 +2214,18 @@ void cpu_init_exception_handling(void)
+ 
+ 	load_TR_desc();
+ 
++	/*
++	 * On CPUs with FSGSBASE support, paranoid_entry() uses
++	 * ALTERNATIVE-patched RDGSBASE/WRGSBASE instructions. Secondary CPUs
++	 * boot after alternatives are patched globally, so early exceptions
++	 * execute patched code that depends on FSGSBASE. Enable the feature
++	 * before any exceptions occur.
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_FSGSBASE)) {
++		cr4_set_bits(X86_CR4_FSGSBASE);
++		elf_hwcap2 |= HWCAP2_FSGSBASE;
++	}
++
+ 	/* Finally load the IDT */
+ 	load_current_idt();
+ }
 -- 
-Romain Gantois, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---nextPart5978803.DvuYhMxLoT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmnLumkACgkQKCYAIARz
-eA7EpA//QF4nYAISxA0588PT9pa0oAm6cCa8txaDLpXYs0EUVlvXnBYijbK+rWy/
-q/ooiddpwO6NfzNjvdt7SVjjOO5vH91nHTLTn7qlfa+0yLOgIMOBTItDzlLN15b3
-lJ3z58CSkAuNO4RADkPXMbt0HJ6Jws1yy2MUH1Q/t9ju5oJ1WbynVYBrZzwLKsS/
-S3ArOZfWW8yOH7emXiqkgERPoLuP+nRsl1fETWF+L3R4E+1LAk2QXBW90fcVwfbB
-mCXh/0L9UdzPEua/pTt0M4A6zVpmwQOqpGAOjluGv3Kd1Ft0JTLjOaGPGOnL3jj8
-Z0uekG4SfjSWjMzldzcj7+/z87pqTz2Wi3TrKy9Py0LWTHmLqcJhYtbUeEFDbB6/
-bPH/lmJqQ+4QxhPTc2Bm0HTFztVkM+oydcxL+y3O8aD60IMFt4YbjPhUAYZil+DQ
-yDusu/fSIV2Im88yadXjKkhiQP4BWHmqVc+j/NwY7WHeGMjRDinGSl99F0ZRt8lE
-+nN+PobtLbo8+xGNXHcghA+LW3fJcMRpjbiqV/2KQJ+AErqnkq71bxuDryalWVUA
-4vvheAXsibFo+kQW3L2VgygsM8DyMW3j84hCxS/qy3p0a88KdWhmo/kHPhSQaHnI
-Lz3W+93s4JDVYqu8TvVEKF1EvEjwlL4Ej/sFHFa5kB/aJHjDaQo=
-=4kPg
------END PGP SIGNATURE-----
-
---nextPart5978803.DvuYhMxLoT--
-
-
+2.53.0
 
 
