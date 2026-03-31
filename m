@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBdCDPoCzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:06 +0200
+	id qBa6LIH2y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2C436E967
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7B436CA60
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DCEC31626E9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 202F230DB0AD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE0C423A91;
-	Tue, 31 Mar 2026 16:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84A73FEB20;
+	Tue, 31 Mar 2026 16:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjSC7jg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjWmckL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F13A346E46;
-	Tue, 31 Mar 2026 16:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790EE3E3C5C;
+	Tue, 31 Mar 2026 16:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975681; cv=none; b=RW0QmGZ+LHgcoiD/jH9JHvmKh85tg4+zDRV1gganGCNrfLWxkiQ1nc67VC8NHLOoiHYfh8yQ62RE3M17XMa6HeUHXGa3uBYPoh1IKwmJi3buAZ2ZCQyYC/sgtQC3Dt0f+H15Zj/+ienMmKCUd4v0bXfz24zkKR/0f20B5epAznk=
+	t=1774974333; cv=none; b=qGJAfXktJEMOxQ9w69mZsRYqYVoznPmrcI/XEJt5DQD9Aar7hGJ6zQdZnOz87z/pP63OCIso0aIMN0rKdhjNLdS4Qq6P06oitdKS7nic9ywysz3wf4TMH4OkUMhiEObnPHKTGkmJn287BVSj/iLhJIQW4e9mcsCz8/qGHwK+yRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975681; c=relaxed/simple;
-	bh=JuxUsmA0ZpqiCczqIxuZlB47RGkVzcITzQejxuvvTL0=;
+	s=arc-20240116; t=1774974333; c=relaxed/simple;
+	bh=Gr0uf2NX7fL37C+7ERHTpO7hjkem5e/CwEYmNfO3g1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOPZJ6cPo6o8Cgzr/igsOFhLNLoOzocOQ+tY8EVV/j0u3gApvIeyd4RqEP+wOX88kNlrPWQ+PXZa5xzLHsMhUtOHZNui98uupOGOnP+XxJzTleFd888SrOUEL2q7veeA1u86fj3OWCl8wbgCMKP80Q6VcLOuOQOHw2pWytyrqYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjSC7jg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86A1C19423;
-	Tue, 31 Mar 2026 16:48:00 +0000 (UTC)
+	 MIME-Version; b=n+8GgSqmUjrx0OTPsMQRiZx66fQyYDE2aI/YXrcRJ9YznHqWAjxWf5dBI86G4ilAUqR3mdK2Hs8kANV98RpNI+YMGud6pEOIztSeJrekB8t81+WGtJ3A2FSr6j80GtLrFlacsG/s3wPHR12Gp1BhdQrUx/CtC5uDyZaDF98rscE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjWmckL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0566C19423;
+	Tue, 31 Mar 2026 16:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975681;
-	bh=JuxUsmA0ZpqiCczqIxuZlB47RGkVzcITzQejxuvvTL0=;
+	s=korg; t=1774974333;
+	bh=Gr0uf2NX7fL37C+7ERHTpO7hjkem5e/CwEYmNfO3g1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QjSC7jg0jLuH11znE3UzUg/Xsd46IHM3INlUuOsTuzq0dUIf6LFwHgtJDHe4vWKmy
-	 jbAYHfVPr5Bwv7dQBhvJ9RF53j/fXxh+WA/3ofb76u7jt+NvE1u3DWv28mmHCT9pEs
-	 kJCHVddTAEXfKdnuRpcRqc+m9Mavz4JBMJ6R7+nY=
+	b=kjWmckL88GPnS22E/u2eB4nYhpSqf3IC8Pjw4ipwe8xcTget3JzvplQgZ6haKNcoh
+	 Ay4gegWiTqyuQrYBFOXeZjJxdOAyj5cvKGcoAMWexMfMW5bGDIS5ja4Pu3m7wRvjZ7
+	 xiR6G0T/bun5JkqDQM2BNWs3prEVkCvxDOVwqgXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Yin <peteryin.openbmc@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/244] i3c: master: dw-i3c: Fix missing of_node for virtual I2C adapter
+Subject: [PATCH 6.6 012/175] nvme-pci: cap queue creation to used queues
 Date: Tue, 31 Mar 2026 18:19:56 +0200
-Message-ID: <20260331161743.397836405@linuxfoundation.org>
+Message-ID: <20260331161730.233425873@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +65,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232025-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,bootlin.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231501-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,bootlin.com:email]
-X-Rspamd-Queue-Id: AF2C436E967
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
+X-Rspamd-Queue-Id: 2B7B436CA60
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Yin <peteryin.openbmc@gmail.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit f26ecaa0f0abfe5db173416214098a00d3b7db79 ]
+[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
 
-The DesignWare I3C master driver creates a virtual I2C adapter to
-provide backward compatibility with I2C devices. However, the current
-implementation does not associate this virtual adapter with any
-Device Tree node.
+If the user reduces the special queue count at runtime and resets the
+controller, we need to reduce the number of queues and interrupts
+requested accordingly rather than start with the pre-allocated queue
+count.
 
-Propagate the of_node from the I3C master platform device to the
-virtual I2C adapter's device structure. This ensures that standard
-I2C aliases are correctly resolved and bus numbering remains consistent.
-
-Signed-off-by: Peter Yin <peteryin.openbmc@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260302075645.1492766-1-peteryin.openbmc@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Tested-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/host/pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index e0853a6bde0a4..3453431e49a24 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -1606,6 +1606,8 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
- 	master->free_pos = GENMASK(master->maxdevs - 1, 0);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 03a2ca3edb9c3..820e211feded2 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2355,7 +2355,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
+ 	dev->nr_write_queues = write_queues;
+ 	dev->nr_poll_queues = poll_queues;
  
- 	INIT_WORK(&master->hj_work, dw_i3c_hj_work);
-+
-+	device_set_of_node_from_dev(&master->base.i2c.dev, &pdev->dev);
- 	ret = i3c_master_register(&master->base, &pdev->dev,
- 				  &dw_mipi_i3c_ops, false);
- 	if (ret)
+-	nr_io_queues = dev->nr_allocated_queues - 1;
++	/*
++	 * The initial number of allocated queue slots may be too large if the
++	 * user reduced the special queue parameters. Cap the value to the
++	 * number we need for this round.
++	 */
++	nr_io_queues = min(nvme_max_io_queues(dev),
++			   dev->nr_allocated_queues - 1);
+ 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
+ 	if (result < 0)
+ 		return result;
 -- 
 2.51.0
 
