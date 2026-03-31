@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-231703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMDTEd/5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:15 +0200
+	id YFLzNtT/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB13736D0E2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC1D36E07A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09982318FE2B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2988231B53AE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228C5423A80;
-	Tue, 31 Mar 2026 16:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9DC423A8B;
+	Tue, 31 Mar 2026 16:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9l2Qwk+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkxRWdiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7293F99EA;
-	Tue, 31 Mar 2026 16:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724B0423A62;
+	Tue, 31 Mar 2026 16:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974850; cv=none; b=THtsWZBI3mlnSS7sSUIliuhwCG2hsbpkAMyRbVZmbhpjz8Kt9KUVBOZ+GaWFQI/7Y33uHLX1HYxDejuXC3tdsFoBpxRFu0+1zaC5wU+qzcEGDPWV1GS4pfS/uabx3bXkiizwL0exSfJJrbMSkmqZ4PD/AzsKd8oqbJIU3dWtseM=
+	t=1774974853; cv=none; b=JyC+sg9UAeWDRv2VxhsJW2j47zIcJZ8FXidiEbDZ3j3FDXm35OILO6Pbmije3/qu+BJFHAAfgXMgB+tbgIakYN2oIlvTxKnnnsK5w1RNR23jxEeYe0EUc204EtYNSL9xdS5IgkFpG9nxKlnIAI7Y8pMH/nL+1qB8f7/glyeG8yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974850; c=relaxed/simple;
-	bh=PUC4tuVtdc3acrAabCePnQdgYXqzQGzNqxgZukCrmss=;
+	s=arc-20240116; t=1774974853; c=relaxed/simple;
+	bh=thCXMQgGjhMqNhcJq90CPaVvmleWit9k1GVwhVP/xkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EGl1FSW4yvRIh1Ta1AdqCdiXud37kXgZ7mYdC589u2yJbRCVJwsm9pRad+lE1KwEj8uV9Suq/vhVSgZgSw3KuShQsZR+e+q//5YyiS9uT2iOrwd+FE4Mspdg5ZnT6zO+MnJ7aCrSz6TijxtVYgOevM0n0Y7wi8AaakyJ3T8FqpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9l2Qwk+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70705C19423;
-	Tue, 31 Mar 2026 16:34:10 +0000 (UTC)
+	 MIME-Version; b=eSlHSkgPmLYW577wnK04uRhaJkyE6WOxHVBBuAJgfz/aTJ8dm4w2dBfrYRkKnwlW0f4ROokVS/bwF3I2aA/KVM3Hi2EMaiW+t/GMrakmhfF6tJQukOmNfeHPBZKNiV2cMFdDvbz7U2BzID0qdS0RG6shcmLz3HPE8wR/ZEjE8BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkxRWdiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07101C19423;
+	Tue, 31 Mar 2026 16:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974850;
-	bh=PUC4tuVtdc3acrAabCePnQdgYXqzQGzNqxgZukCrmss=;
+	s=korg; t=1774974853;
+	bh=thCXMQgGjhMqNhcJq90CPaVvmleWit9k1GVwhVP/xkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9l2Qwk+oSSFVttN1RZEI8mKxbhTyQgDTgf3uM8Gfv28Knq4ser48IPFlVs3vbnAA
-	 +lnYkyn+3K6A986maPcKCQOLLZ6luRBoQkii/k/JcG5RVrSsqLVY3MjH/D0VHwKYWZ
-	 8qLevDXqmEK2ccaqOo0mev3aUCZEviajsn5bspXI=
+	b=fkxRWdiKlTuqRffatOT3n+0iJSxUygX2i7DzruEknJ2lzytvjGZ79BA792+CskVSZ
+	 zNHJ2IfgN+lLP1nmhISEKj1IMpfFjh2AhCEBdGPpyal6RvNh5Y3eGqXeHKcZperAMx
+	 TRoQT35w+i1PDINEdFOWbpbEB711WdvgoDI0HMoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uzair Mughal <contact@uzair.is-a.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 069/342] ALSA: hda/realtek: Add headset jack quirk for Thinkpad X390
-Date: Tue, 31 Mar 2026 18:18:22 +0200
-Message-ID: <20260331161801.434948200@linuxfoundation.org>
+Subject: [PATCH 6.19 070/342] objtool: Handle Clang RSP musical chairs
+Date: Tue, 31 Mar 2026 18:18:23 +0200
+Message-ID: <20260331161801.471818630@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,20 +78,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231703-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231704-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,uzair.is-a.dev:email]
-X-Rspamd-Queue-Id: AB13736D0E2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3BC1D36E07A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,41 +99,134 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Uzair Mughal <contact@uzair.is-a.dev>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 542127f6528ca7cc3cf61e1651d6ccb58495f953 ]
+[ Upstream commit 7fdaa640c810cb42090a182c33f905bcc47a616a ]
 
-The Lenovo ThinkPad X390 (ALC257 codec, subsystem ID 0x17aa2288)
-does not report headset button press events. Headphone insertion is
-detected (SW_HEADPHONE_INSERT), but pressing the inline microphone
-button on a headset produces no input events.
+For no apparent reason (possibly related to CONFIG_KMSAN), Clang can
+randomly pass the value of RSP to other registers and then back again to
+RSP.  Handle that accordingly.
 
-Add a SND_PCI_QUIRK entry that maps this subsystem ID to
-ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK, which enables
-headset jack button detection through alc_fixup_headset_jack()
-and ThinkPad ACPI integration. This is the same fixup used by
-similar ThinkPad models (P1 Gen 3, X1 Extreme Gen 3).
+Fixes the following warnings:
 
-Signed-off-by: Uzair Mughal <contact@uzair.is-a.dev>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260307012906.20093-1-contact@uzair.is-a.dev
+  drivers/input/misc/uinput.o: warning: objtool: uinput_str_to_user+0x165: undefined stack state
+  drivers/input/misc/uinput.o: warning: objtool: uinput_str_to_user+0x165: unknown CFA base reg -1
+
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Closes: https://lore.kernel.org/90956545-2066-46e3-b547-10c884582eb0@app.fastmail.com
+Link: https://patch.msgid.link/240e6a172cc73292499334a3724d02ccb3247fc7.1772818491.git.jpoimboe@kernel.org
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/objtool/arch/x86/decode.c | 62 ++++++++++++---------------------
+ tools/objtool/check.c           | 14 ++++++++
+ 2 files changed, 37 insertions(+), 39 deletions(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index fcddab2cc54b3..024d0b37574db 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7494,6 +7494,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x224c, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x224d, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x225d, "Thinkpad T480", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x17aa, 0x2288, "Thinkpad X390", ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x2292, "Thinkpad X1 Carbon 7th", ALC285_FIXUP_THINKPAD_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x22be, "Thinkpad X1 Carbon 8th", ALC285_FIXUP_THINKPAD_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x22c1, "Thinkpad P1 Gen 3", ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK),
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index f4af825082284..4544c2cb44400 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -395,52 +395,36 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 		if (!rex_w)
+ 			break;
+ 
+-		if (modrm_reg == CFI_SP) {
+-
+-			if (mod_is_reg()) {
+-				/* mov %rsp, reg */
+-				ADD_OP(op) {
+-					op->src.type = OP_SRC_REG;
+-					op->src.reg = CFI_SP;
+-					op->dest.type = OP_DEST_REG;
+-					op->dest.reg = modrm_rm;
+-				}
+-				break;
+-
+-			} else {
+-				/* skip RIP relative displacement */
+-				if (is_RIP())
+-					break;
+-
+-				/* skip nontrivial SIB */
+-				if (have_SIB()) {
+-					modrm_rm = sib_base;
+-					if (sib_index != CFI_SP)
+-						break;
+-				}
+-
+-				/* mov %rsp, disp(%reg) */
+-				ADD_OP(op) {
+-					op->src.type = OP_SRC_REG;
+-					op->src.reg = CFI_SP;
+-					op->dest.type = OP_DEST_REG_INDIRECT;
+-					op->dest.reg = modrm_rm;
+-					op->dest.offset = ins.displacement.value;
+-				}
+-				break;
++		if (mod_is_reg()) {
++			/* mov reg, reg */
++			ADD_OP(op) {
++				op->src.type = OP_SRC_REG;
++				op->src.reg = modrm_reg;
++				op->dest.type = OP_DEST_REG;
++				op->dest.reg = modrm_rm;
+ 			}
+-
+ 			break;
+ 		}
+ 
+-		if (rm_is_reg(CFI_SP)) {
++		/* skip RIP relative displacement */
++		if (is_RIP())
++			break;
+ 
+-			/* mov reg, %rsp */
++		/* skip nontrivial SIB */
++		if (have_SIB()) {
++			modrm_rm = sib_base;
++			if (sib_index != CFI_SP)
++				break;
++		}
++
++		/* mov %rsp, disp(%reg) */
++		if (modrm_reg == CFI_SP) {
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_REG;
+-				op->src.reg = modrm_reg;
+-				op->dest.type = OP_DEST_REG;
+-				op->dest.reg = CFI_SP;
++				op->src.reg = CFI_SP;
++				op->dest.type = OP_DEST_REG_INDIRECT;
++				op->dest.reg = modrm_rm;
++				op->dest.offset = ins.displacement.value;
+ 			}
+ 			break;
+ 		}
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index eba35bb8c0bdf..30609aed5d37e 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2960,6 +2960,20 @@ static int update_cfi_state(struct instruction *insn,
+ 				cfi->stack_size += 8;
+ 			}
+ 
++			else if (cfi->vals[op->src.reg].base == CFI_CFA) {
++				/*
++				 * Clang RSP musical chairs:
++				 *
++				 *   mov %rsp, %rdx [handled above]
++				 *   ...
++				 *   mov %rdx, %rbx [handled here]
++				 *   ...
++				 *   mov %rbx, %rsp [handled above]
++				 */
++				cfi->vals[op->dest.reg].base = CFI_CFA;
++				cfi->vals[op->dest.reg].offset = cfi->vals[op->src.reg].offset;
++			}
++
+ 
+ 			break;
+ 
 -- 
 2.51.0
 
