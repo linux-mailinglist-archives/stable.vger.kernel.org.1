@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-231575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELIxL6D+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:32 +0200
+	id 4HDuFeYAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D9036DCBD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:04:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08C836E425
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67E6A30CE576
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E05193138B49
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAED423A9A;
-	Tue, 31 Mar 2026 16:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E33301708;
+	Tue, 31 Mar 2026 17:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHVB8oNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHlnx3IU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCDB425CC7;
-	Tue, 31 Mar 2026 16:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9F32FE042;
+	Tue, 31 Mar 2026 17:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974524; cv=none; b=ihsbkLVZa2unXd9ufdx/CPB2NSsBBIAVH88bODFEFAqMSvae63FfO2arICUjYEY81XqeK+WqcE3LfyJSjaO1jRbYD1akMhNKmHBfTna36Np8KjsubkEWOa7t3zHygM2rHaPjMjtcc+vWtVlYKBB7YYgnjlhoKAiKUcaY13C5Ork=
+	t=1774976734; cv=none; b=u4zBWwPhLW7942A7D7LMTjfr9dT7D3JQwZ3WyCw6igi8PKUt4O0v27JUFR70dXZW2Vl+mpfIPqsIGWmH6mgsrfDwOzJHZKE/K3sZKYfuFYocTigilpMmV/oBbz5nJoV0xi8fj6cBixm1Ud5KuXSVxZ9eT4X8iX2oae3vt9qoqs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974524; c=relaxed/simple;
-	bh=bXrPitvd7wR+ylG/CmhnmVGPr/4AoGkN42rAXsO7vQk=;
+	s=arc-20240116; t=1774976734; c=relaxed/simple;
+	bh=cV9UJWcyH4VI4kjpIMAym4LuRNPsfDK7r9+KMaxPH00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ixV1xUrBCH1YPTX0/v8X689D/1FkkDc4a/AvFRNtFLPHJoYbcXXA0o13tmpgpDXOxxqHcci7yICpy5TOIf7B1pnIHSvrbUdLuB0dxXar75ndesIw7Aa+HQSp/3nOAPF+mPHjRVv+zkMOKQDje8uhsz3Sdmp5pDc6NdxUnc9B4vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHVB8oNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECBCC19423;
-	Tue, 31 Mar 2026 16:28:43 +0000 (UTC)
+	 MIME-Version; b=u9QHhePFn67Kmng97Fc4qQf9vGQf3D48/t+lw7YRy8x9DRuJspmwXt38OdZEbVaSeW9CGesMZReKlOWM07DlbovPJCRIXBN2D1d2Pz2CgkoGXpF19ArERMFeRZlevlkwoNjeEYAiR36huLiERaaMljD8Zjid8Xkk9M6PXE3e2iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHlnx3IU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6537DC19423;
+	Tue, 31 Mar 2026 17:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974524;
-	bh=bXrPitvd7wR+ylG/CmhnmVGPr/4AoGkN42rAXsO7vQk=;
+	s=korg; t=1774976734;
+	bh=cV9UJWcyH4VI4kjpIMAym4LuRNPsfDK7r9+KMaxPH00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHVB8oNXnCcmUdJr8pOutF6DxQ2X2n95uJ56/ckHWH18Hu/L+Qj/+UceDWs/nZBhm
-	 v0qerzagOunadKjEjz0RstKevkR+bgBkkt1nEcfxtoedeHeM2fnDEXYEaPtWI65z+D
-	 GdcVotM7cvZLH1qQrkYq2+8nR0IDkavveQdUG3w4=
+	b=CHlnx3IU8xClfWbCuQMsHbC+zHGmKa+B/EpNbZclKweGeX4smfA8rbVqfUOS4rSVR
+	 7yw0vP2jXN/usd5X+JXoo96/IGd7EVpiGF8KJaS/LZek9bK0QKAcQNIMgMRMqkIaBC
+	 pqiH2ksm/49kqHrEAVICbKNt10DT+ziPGWxlaHDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	stable <stable@kernel.org>,
-	Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 6.6 119/175] scsi: ses: Handle positive SCSI error from ses_recv_diag()
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 200/309] hwmon: (pmbus/isl68137) Add mutex protection for AVS enable sysfs attributes
 Date: Tue, 31 Mar 2026 18:21:43 +0200
-Message-ID: <20260331161734.152732111@linuxfoundation.org>
+Message-ID: <20260331161800.815658979@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,68 +67,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231575-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232433-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,hansenpartnership.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email]
-X-Rspamd-Queue-Id: 41D9036DCBD
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:email,juniper.net:email]
+X-Rspamd-Queue-Id: D08C836E425
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 7a9f448d44127217fabc4065c5ba070d4e0b5d37 upstream.
+commit 3075a3951f7708da5a8ab47b0b7d068a32f69e58 upstream.
 
-ses_recv_diag() can return a positive value, which also means that an
-error happened, so do not only test for negative values.
+The custom avs0_enable and avs1_enable sysfs attributes access PMBus
+registers through the exported API helpers (pmbus_read_byte_data,
+pmbus_read_word_data, pmbus_write_word_data, pmbus_update_byte_data)
+without holding the PMBus update_lock mutex. These exported helpers do
+not acquire the mutex internally, unlike the core's internal callers
+which hold the lock before invoking them.
 
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://patch.msgid.link/2026022301-bony-overstock-a07f@gregkh
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The store callback is especially vulnerable: it performs a multi-step
+read-modify-write sequence (read VOUT_COMMAND, write VOUT_COMMAND, then
+update OPERATION) where concurrent access from another thread could
+interleave and corrupt the register state.
+
+Add pmbus_lock_interruptible()/pmbus_unlock() around both the show and
+store callbacks to serialize PMBus register access with the rest of the
+driver.
+
+Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260319173055.125271-3-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ses.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/isl68137.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/ses.c
-+++ b/drivers/scsi/ses.c
-@@ -190,7 +190,7 @@ static unsigned char *ses_get_page2_desc
- 	unsigned char *type_ptr = ses_dev->page1_types;
- 	unsigned char *desc_ptr = ses_dev->page2 + 8;
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -94,7 +94,15 @@ static ssize_t isl68137_avs_enable_show_
+ 					     int page,
+ 					     char *buf)
+ {
+-	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
++	int val;
++
++	val = pmbus_lock_interruptible(client);
++	if (val)
++		return val;
++
++	val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
++
++	pmbus_unlock(client);
  
--	if (ses_recv_diag(sdev, 2, ses_dev->page2, ses_dev->page2_len) < 0)
-+	if (ses_recv_diag(sdev, 2, ses_dev->page2, ses_dev->page2_len))
- 		return NULL;
+ 	if (val < 0)
+ 		return val;
+@@ -116,6 +124,10 @@ static ssize_t isl68137_avs_enable_store
  
- 	for (i = 0; i < ses_dev->page1_num_types; i++, type_ptr += 4) {
+ 	op_val = result ? ISL68137_VOUT_AVS : 0;
+ 
++	rc = pmbus_lock_interruptible(client);
++	if (rc)
++		return rc;
++
+ 	/*
+ 	 * Writes to VOUT setpoint over AVSBus will persist after the VRM is
+ 	 * switched to PMBus control. Switching back to AVSBus control
+@@ -127,17 +139,20 @@ static ssize_t isl68137_avs_enable_store
+ 		rc = pmbus_read_word_data(client, page, 0xff,
+ 					  PMBUS_VOUT_COMMAND);
+ 		if (rc < 0)
+-			return rc;
++			goto unlock;
+ 
+ 		rc = pmbus_write_word_data(client, page, PMBUS_VOUT_COMMAND,
+ 					   rc);
+ 		if (rc < 0)
+-			return rc;
++			goto unlock;
+ 	}
+ 
+ 	rc = pmbus_update_byte_data(client, page, PMBUS_OPERATION,
+ 				    ISL68137_VOUT_AVS, op_val);
+ 
++unlock:
++	pmbus_unlock(client);
++
+ 	return (rc < 0) ? rc : count;
+ }
+ 
 
 
 
