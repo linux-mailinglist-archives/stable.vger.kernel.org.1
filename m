@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-232204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJP3BOoEzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:22 +0200
+	id 0PxtKd/8y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-231986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673C136EDC6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A5636D7A2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 751DF32EFAC5
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:55:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4968430ED0CC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB06E425CE0;
-	Tue, 31 Mar 2026 16:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8103341B342;
+	Tue, 31 Mar 2026 16:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJN9aiQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4W+LeFI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D775425CD5;
-	Tue, 31 Mar 2026 16:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447EF2D1F40;
+	Tue, 31 Mar 2026 16:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976145; cv=none; b=L52W7m5fu7Gv4yJD9WxKxgtJ2qYUxkNV03cuX5Lq+aoAoOzKaX3pu9b1R/QsPqWDEH9/7LUj6J4F30R5DKMXId3GALFcuHy/ntSPOtu4ggHyjTd0rFFdz4dFkSeqDbUW4+c7Um7sMc0Bs38xe+LjNE0qpkT+LFyxiKlBoZ25xkg=
+	t=1774975580; cv=none; b=eawPTaaHZPaOmYJLcNiz9tWM1wp7h0xvclbKEW5MsTkZvCbaxSePmrtmeCKPNq3gpMpcnifa2zVAfzQVfjaewtLaR5V6vyje4qrKrkTfYMkHu+Si5jb//h9iGAIPtVea4O+FTnpQT1o8IL5i0Oc1Revmcc16UpBmOfNlqTGQhUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976145; c=relaxed/simple;
-	bh=o2NbFhtMX/HyKsQ6XMzoLcFW3aXMTjSX/lSQmCKwfsU=;
+	s=arc-20240116; t=1774975580; c=relaxed/simple;
+	bh=nLmBnW+UmEfcR6CBA2Upb98vMlojPg0FsaoAI50v1Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4+wl4tWLQyckI+6KpZXfzQbfXPlYWCecrRiBooMXVP63VGOGxUOyQkzjIG6Ls1N6ZLT7mtCFzvNlRkFtDvZg0E53nuNSYsCAu9dTtcWOxQm6PjUXPpyoWm5R2n5g2WAUzlpVPiURIPYFU+EWJcDPKgZ8/CaBrRX8uCBVIhYQSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJN9aiQH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6B7C19423;
-	Tue, 31 Mar 2026 16:55:44 +0000 (UTC)
+	 MIME-Version; b=jf2mAUnLvVvu/OQIGgF4TlvEAC62Dm70RyKGp0wj3ilkVTAhQI2M1v858ulKncfzjAD3z/cIVgPuKJR94QLI40ZdRmQ/OnIpt5VE1r3Nh80OGmDrTxZmxDz25KRAh4w+ZAjkClwafMP/pOqQ2P/H4aQ58KM5yskBIePm9Xtj5H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4W+LeFI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE32EC19423;
+	Tue, 31 Mar 2026 16:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976145;
-	bh=o2NbFhtMX/HyKsQ6XMzoLcFW3aXMTjSX/lSQmCKwfsU=;
+	s=korg; t=1774975580;
+	bh=nLmBnW+UmEfcR6CBA2Upb98vMlojPg0FsaoAI50v1Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJN9aiQHztDi67WKrPyAauUTXqotNCXO8YzpYQiuAQoebthq7u5k3ZXrM1zTmlud+
-	 IVtGpif2d2m8qr9r42CVHr98HujkufU74/tbnaByATHgAzfNbCc1pSRi86ONwzQ4rg
-	 qBNL20pkEJ2ZWL8iYGYyhXqMx5VlYdC/fU0hGoRI=
+	b=q4W+LeFIwisFLupPFMDu4JSxTe3bAMoFK+Isnsuz7WsMdvDcEx/OuotgvD1DpHV1a
+	 7D+hwKFhQnv1agOC0QyCR7AxgDVczZG/YG/v6TjbxhlLwaxQ3gdVtfDGHlOG8ZzigB
+	 aetqcWca+fMsOtSiFkoY/veVTYke5kPGl4YUutO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/244] dmaengine: idxd: Fix memory leak when a wq is reset
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christian Eggers <ceggers@arri.de>
+Subject: [PATCH 6.19 342/342] Bluetooth: L2CAP: Fix regressions caused by reusing ident
 Date: Tue, 31 Mar 2026 18:22:55 +0200
-Message-ID: <20260331161750.077141691@linuxfoundation.org>
+Message-ID: <20260331161811.482525451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +67,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232204-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231986-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 673C136EDC6
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 46A5636D7A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d9cfb5193a047a92a4d3c0e91ea4cc87c8f7c478 ]
+commit 761fb8ec8778f0caf2bba5a41e3cff1ea86974f3 upstream.
 
-idxd_wq_disable_cleanup() which is called from the reset path for a
-workqueue, sets the wq type to NONE, which for other parts of the
-driver mean that the wq is empty (all its resources were released).
+This attempt to fix regressions caused by reusing ident which apparently
+is not handled well on certain stacks causing the stack to not respond to
+requests, so instead of simple returning the first unallocated id this
+stores the last used tx_ident and then attempt to use the next until all
+available ids are exausted and then cycle starting over to 1.
 
-Only set the wq type to NONE after its resources are released.
-
-Fixes: da32b28c95a7 ("dmaengine: idxd: cleanup workqueue config after disabling")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-8-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221120
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221177
+Fixes: 6c3ea155e5ee ("Bluetooth: L2CAP: Fix not tracking outstanding TX ident")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/device.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/net/bluetooth/l2cap.h |    1 +
+ net/bluetooth/l2cap_core.c    |   29 ++++++++++++++++++++++++++---
+ 2 files changed, 27 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
-index c41ef195eeb9f..d8e0a12f62ace 100644
---- a/drivers/dma/idxd/device.c
-+++ b/drivers/dma/idxd/device.c
-@@ -174,6 +174,7 @@ void idxd_wq_free_resources(struct idxd_wq *wq)
- 	free_descs(wq);
- 	dma_free_coherent(dev, wq->compls_size, wq->compls, wq->compls_addr);
- 	sbitmap_queue_free(&wq->sbq);
-+	wq->type = IDXD_WQT_NONE;
- }
- EXPORT_SYMBOL_NS_GPL(idxd_wq_free_resources, IDXD);
+--- a/include/net/bluetooth/l2cap.h
++++ b/include/net/bluetooth/l2cap.h
+@@ -658,6 +658,7 @@ struct l2cap_conn {
+ 	struct sk_buff		*rx_skb;
+ 	__u32			rx_len;
+ 	struct ida		tx_ida;
++	__u8			tx_ident;
  
-@@ -367,7 +368,6 @@ static void idxd_wq_disable_cleanup(struct idxd_wq *wq)
- 	lockdep_assert_held(&wq->wq_lock);
- 	wq->state = IDXD_WQ_DISABLED;
- 	memset(wq->wqcfg, 0, idxd->wqcfg_size);
--	wq->type = IDXD_WQT_NONE;
- 	wq->threshold = 0;
- 	wq->priority = 0;
- 	wq->enqcmds_retries = IDXD_ENQCMDS_RETRIES;
-@@ -1513,7 +1513,6 @@ void idxd_drv_disable_wq(struct idxd_wq *wq)
- 	idxd_wq_reset(wq);
- 	idxd_wq_free_resources(wq);
- 	percpu_ref_exit(&wq->wq_active);
--	wq->type = IDXD_WQT_NONE;
- 	wq->client_count = 0;
+ 	struct sk_buff_head	pending_rx;
+ 	struct work_struct	pending_rx_work;
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -926,16 +926,39 @@ int l2cap_chan_check_security(struct l2c
+ 
+ static int l2cap_get_ident(struct l2cap_conn *conn)
+ {
++	u8 max;
++	int ident;
++
+ 	/* LE link does not support tools like l2ping so use the full range */
+ 	if (conn->hcon->type == LE_LINK)
+-		return ida_alloc_range(&conn->tx_ida, 1, 255, GFP_ATOMIC);
+-
++		max = 255;
+ 	/* Get next available identificator.
+ 	 *    1 - 128 are used by kernel.
+ 	 *  129 - 199 are reserved.
+ 	 *  200 - 254 are used by utilities like l2ping, etc.
+ 	 */
+-	return ida_alloc_range(&conn->tx_ida, 1, 128, GFP_ATOMIC);
++	else
++		max = 128;
++
++	/* Allocate ident using min as last used + 1 (cyclic) */
++	ident = ida_alloc_range(&conn->tx_ida, READ_ONCE(conn->tx_ident) + 1,
++				max, GFP_ATOMIC);
++	/* Force min 1 to start over */
++	if (ident <= 0) {
++		ident = ida_alloc_range(&conn->tx_ida, 1, max, GFP_ATOMIC);
++		if (ident <= 0) {
++			/* If all idents are in use, log an error, this is
++			 * extremely unlikely to happen and would indicate a bug
++			 * in the code that idents are not being freed properly.
++			 */
++			BT_ERR("Unable to allocate ident: %d", ident);
++			return 0;
++		}
++	}
++
++	WRITE_ONCE(conn->tx_ident, ident);
++
++	return ident;
  }
- EXPORT_SYMBOL_NS_GPL(idxd_drv_disable_wq, IDXD);
--- 
-2.53.0
-
+ 
+ static void l2cap_send_acl(struct l2cap_conn *conn, struct sk_buff *skb,
 
 
 
