@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-232270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHMlA8X+y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:09 +0200
+	id wK2LM00AzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8832836DD29
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:05:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7203D36E1D3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE45A30A185A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C34B831921F6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AAB423A8E;
-	Tue, 31 Mar 2026 16:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FC042317F;
+	Tue, 31 Mar 2026 16:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8D5sBSf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAqEVNmt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE37F423A62;
-	Tue, 31 Mar 2026 16:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2E42EE262;
+	Tue, 31 Mar 2026 16:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976315; cv=none; b=l+CbcjwjQwi6qSftBTRzaszkQeeqR46gmbkfyZ7tlqF9rlgpy8mNnwk14killbE4GWFETYVujGOAqg0HArI7prqB2qKOaCTcngwSOqXYgSWFNsy6K6R8zy6HKYPi7ew48uZ/JJLOaYTb7oZAJuOs7ywwnJL8vOrcRorvGnd577U=
+	t=1774974974; cv=none; b=ubWNQ/vO3NFrmoFQqZbbuZ08/BHq1BrtM6uhCDWW9WdFtON/z1U/KxFvIw0Q/GYoiv1ORHRo/vjwTFnU9wnxNMndVam6y2J1ba4OdV8dPsARvWpqyHfB8lcCEURxyG16dXtvPKDdxE9b3B/N7g6AVOOT75Bs3ENMrIFwt8tKUh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976315; c=relaxed/simple;
-	bh=GZwTe5Ejmx/IPthteoitU5d1MsjcSKZtkM2Crq1AEQs=;
+	s=arc-20240116; t=1774974974; c=relaxed/simple;
+	bh=k+C+PKY5QYCHyGEWcUs/pburMEmUATq2zRNOiUflXmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=So3+whWBQKWa49SivVTRiGm4UP71sKp/FrcMSW9/WRAMVDGDlPEbIFfOcxjnIeMPtBjV0JSjJJgx+G73p5CK4PZ00D8sY6SatixkgZE/2sIylzUC1AcrBxeG08FR2zuufZFeoaKqulHzcW5mJtLHxyty4Tevjtxpcu240mg5RQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8D5sBSf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6264BC19423;
-	Tue, 31 Mar 2026 16:58:35 +0000 (UTC)
+	 MIME-Version; b=Mf+AbIx7C+J4Q5ObVo0Foj+iQP5J5lWN+R5TNNKCgjZHnTYkM3ZYWt6xW7iYhG3HC0KEoihbg9HYVHWxvCDr504SSZgeHs5FHQr26siIPM+dkAYmTen9xRkYOu6v1Z7M24cwdYvRPZ3pvFyB64FhpZC0dBTKq5uVjxC4GqALR14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAqEVNmt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5497C19423;
+	Tue, 31 Mar 2026 16:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976315;
-	bh=GZwTe5Ejmx/IPthteoitU5d1MsjcSKZtkM2Crq1AEQs=;
+	s=korg; t=1774974974;
+	bh=k+C+PKY5QYCHyGEWcUs/pburMEmUATq2zRNOiUflXmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8D5sBSf7mJzlxC8ejIVGi/z+PQIcMR0hCnmHD0XkLHJQqd6/sXOZ30+wArNIuPga
-	 KCEdaejXAtrjIb/uFdfwz0Xi+/som4X4kobUWvxYU5liJ/e48bOX3yvDGI+yVhPAfT
-	 WMgOVbCGnE9PRokIMPG2xhgOTW1vnnyht7+QcZkY=
+	b=GAqEVNmtWjeOrywyJ9tFFkcVIhOySQOX6b2YNIKgjiRxYZpGqrMzySVUHuVVvbl6O
+	 f5E0fFMoRZhcbug5L5dAh/0AClsR05dw1Hm/a7l6bpDKHI5DXB+Up+p9ENDiEVNUdl
+	 0EHuMA99odKNNOkWycYEZMtgGB9xZ5LkGMojzLMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheetal <sheetal@nvidia.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Patryk Holda <patryk.holda@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/309] ALSA: hda/hdmi: Add Tegra238 HDA codec device ID
+Subject: [PATCH 6.19 115/342] ice: fix inverted ready check for VF representors
 Date: Tue, 31 Mar 2026 18:19:08 +0200
-Message-ID: <20260331161755.143938872@linuxfoundation.org>
+Message-ID: <20260331161803.243264070@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,63 +71,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231751-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232270-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 8832836DD29
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7203D36E1D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheetal <sheetal@nvidia.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit 5f4338e5633dc034a81000b2516a78cfb51c601d ]
+[ Upstream commit ad85de0fc09eb3236e73df5acb2bc257625103f5 ]
 
-Add Tegra238 HDA codec device in hda_device_id list.
+Commit 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
+refactored the VF readiness check into a generic repr->ops.ready()
+callback but implemented ice_repr_ready_vf() with inverted logic:
 
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Link: https://patch.msgid.link/20260302084217.3135982-1-sheetal@nvidia.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  return !ice_check_vf_ready_for_cfg(repr->vf);
+
+ice_check_vf_ready_for_cfg() returns 0 on success, so the negation
+makes ready() return non-zero when the VF is ready. All callers treat
+non-zero as "not ready, skip", causing ndo_get_stats64, get_drvinfo,
+get_strings and get_ethtool_stats to always bail out in switchdev mode.
+
+Remove the erroneous negation. The SF variant ice_repr_ready_sf() is
+already correct (returns !active, i.e. non-zero when not active).
+
+Fixes: 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Patryk Holda <patryk.holda@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/hdmi/tegrahdmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ice/ice_repr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/hdmi/tegrahdmi.c b/sound/hda/codecs/hdmi/tegrahdmi.c
-index 5f6fe31aa2028..ebb6410a48313 100644
---- a/sound/hda/codecs/hdmi/tegrahdmi.c
-+++ b/sound/hda/codecs/hdmi/tegrahdmi.c
-@@ -299,6 +299,7 @@ static const struct hda_device_id snd_hda_id_tegrahdmi[] = {
- 	HDA_CODEC_ID_MODEL(0x10de002f, "Tegra194 HDMI/DP2",	MODEL_TEGRA),
- 	HDA_CODEC_ID_MODEL(0x10de0030, "Tegra194 HDMI/DP3",	MODEL_TEGRA),
- 	HDA_CODEC_ID_MODEL(0x10de0031, "Tegra234 HDMI/DP",	MODEL_TEGRA234),
-+	HDA_CODEC_ID_MODEL(0x10de0032, "Tegra238 HDMI/DP",	MODEL_TEGRA234),
- 	HDA_CODEC_ID_MODEL(0x10de0033, "SoC 33 HDMI/DP",	MODEL_TEGRA234),
- 	HDA_CODEC_ID_MODEL(0x10de0034, "Tegra264 HDMI/DP",	MODEL_TEGRA234),
- 	HDA_CODEC_ID_MODEL(0x10de0035, "SoC 35 HDMI/DP",	MODEL_TEGRA234),
+diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
+index cb08746556a67..2a84f65640582 100644
+--- a/drivers/net/ethernet/intel/ice/ice_repr.c
++++ b/drivers/net/ethernet/intel/ice/ice_repr.c
+@@ -315,7 +315,7 @@ ice_repr_reg_netdev(struct net_device *netdev, const struct net_device_ops *ops)
+ 
+ static int ice_repr_ready_vf(struct ice_repr *repr)
+ {
+-	return !ice_check_vf_ready_for_cfg(repr->vf);
++	return ice_check_vf_ready_for_cfg(repr->vf);
+ }
+ 
+ static int ice_repr_ready_sf(struct ice_repr *repr)
 -- 
 2.51.0
 
