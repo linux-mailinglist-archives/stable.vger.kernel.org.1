@@ -1,194 +1,154 @@
-Return-Path: <stable+bounces-232564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEWlBIEYzGkeOQYAu9opvQ
-	(envelope-from <stable+bounces-232564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:54:57 +0200
+	id uDImA3YazGnHPgYAu9opvQ
+	(envelope-from <stable+bounces-232565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:03:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4218370438
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 20:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4DE370547
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 21:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 742A23042D09
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D0B7A30406AE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E383A542C;
-	Tue, 31 Mar 2026 18:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5168E3A16B5;
+	Tue, 31 Mar 2026 19:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U8qNiudu"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="q12YdEwn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3A73A4F27
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 18:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983273; cv=pass; b=T8mkI0Z9DbgAU7VT9nL4YLxiDKOp7fQ7ejxQi8Mq1KWJTBqE+3KPA+09CPldw3HDMWdGo1z8nE7OKpjc5SNc4g9KOlOUl+im8ur3iDd76J+NzsabfjWxd72yU8IMWO9F28HSRB2mllXMgnRou5YDQhNoMNdOhWHDgVmRKAnZ0Gs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983273; c=relaxed/simple;
-	bh=uhzoRXxX78P/5kx2Ju13EGTvDLo7lvJcJD3Pm6rkk8c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FelDJJGf5ms/TI4ixsMt5MEQHqyXYJET03jlXYVbFO0kfqOXBW0HG42UFYMOzz3nWd0DyNwtiqw1ro5ykb+MSyJ/g7c2/Nemk2pwcdsaHTpW5y42O9LFbz4zwlWJPi85Eo0ILxrvvSRQ8yla7agWoxIcMf+e1w4z3bL9g8DzfdU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U8qNiudu; arc=pass smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a2a5236811so4933927e87.1
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 11:54:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774983270; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GSSN/vFAf4b1e8+XppE7xM7knd3Vx3MMlS0xFSJUmp6Gg4fpbljtP5TlhtdqotoZ2G
-         dtamAPqJ9I73is6xlwQZJqC1jG1cmaG+4GK22jfGLkBfLxNDLjKaLUBZLNmrS4M0fftc
-         wYVwVAcqbiHEBF9vFiH9i6TBoQrNgOwTA+FlUBAZCAvFhw3OGBs7JKgMmYwXrNDStCVZ
-         VgC+wyVt/1ZfIajoyrbAj70aOYbNdgXkzOdLt+27DKKnpjwY+xY42FAH24SKHyKqoCi5
-         xyV83bVZHka92lYDY1IEH31xnbHNcUk8qSUsxkD0XMt1Qg/dYMUC8iGFY818FeqTkgiz
-         GAuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PelUNYlHA4etBcKLJ5LMDyufODvPTjPf2fovxktMXIU=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=kKTex2v1QKmA2RiwRiHTOdL7IzpryFlN0U1Lo/CyjCHf6c/feAp8XQjacAXXSC2jds
-         f2V+tAO99uX69fr8Zpcbaq4RxgXU3i3PbLHbVt0/atwmXi2qn1N8OWTCHigDEANS6wlF
-         VxzMfvWmmY52UPTOsQ9Q2Ydse+0GsKbHPy3WjndHYiBCJW9pm4BSb3gAfPWbX+A9XQjd
-         EdUUTvI/lW0W9cSJkycHXCVgDFA3lAdg9Ed3C5D02GToofntP+5u/0S04ayMHqGr8IWT
-         dOZ8qZSv14b5D9Mgj7JRVRU1F7KsHQXwwiJlUTI3JsMoDB/syErnTj50FMcxwm9szdoZ
-         s78g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774983270; x=1775588070; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PelUNYlHA4etBcKLJ5LMDyufODvPTjPf2fovxktMXIU=;
-        b=U8qNiuduJd6Iuu/fIttMLHkP44OV+ro/9Lzc/Z6dRKos5Hs8EoA5D/gDg+FZZh7YYa
-         YH2ldCSNfqqSG32xPiK8Utat+NCmdTdtSHQSt52VKEpA+CPyWT1h68M1vH3eJeom5L2I
-         DRqbcWzV8dn2HWGQCKVnNomS+MfDdq9ItoSw4s3L5DcvfjlNc2FSsZUu4HTNLgqDnQwT
-         APpDaDrhu7k5Hc2DzLzFyHXVnDObtP7J3UI4eukMD1oFqbFn7iRAwLwZ86hns6E7aZ5H
-         RufVcWZBrxZLrL6kgkaP7oQbsm1MqLsanVIpStxQIdSjpRBbkAstzeaoRBCyVvjtC6jA
-         AtOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774983270; x=1775588070;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PelUNYlHA4etBcKLJ5LMDyufODvPTjPf2fovxktMXIU=;
-        b=kDMoeAIy6eJ5mULkeUWXfJ7CRJ/v+eh+jNStgT827tr1ZDoOisos4K9MNmOjKONdu3
-         WJYEdNRXbafjn0SqMiIwYiNYsCix6kfQd0jHaK3ynss+/5tGCEnfkongvvh2/sRzI5Fj
-         wgwb744hJ+9PrPU42DjNxhE9HN/aPED7tSRPx/AAxIOIcQ86G/KEXPqIdOVShGfFXD9b
-         kEQqqlPpy+kSSYOoxCNG0hx/o57dTZSXeNBcNT0hjSBOBbW5zPbGVjuc2kh8N677vRWL
-         8FKj5Sq91nxV2v+FxWxsY+OUA1LW3ypd05ZssZiSf73D+Wb4/bvdRamXgSPCIWeaWiyI
-         B0Wg==
-X-Gm-Message-State: AOJu0Yy+ch9K1k4yTl+YWINFR4ZsyYHmnjj/eNbSr2B+rQWB6SP7z83J
-	dqnbItx1SR0lqabpMqi9bfjpPtqlu+jQFKfoOUpeeXHXMs8xVqR1e1F7VQCBVeSWWqJlVRmJrXe
-	P4qBCLwlXrTZRrGB1xAZ8PgysalcMYak=
-X-Gm-Gg: ATEYQzxh3dajweh6RHTUxIu72mqC8xdEn1tyq4LHaTPOxBOdV4nqlccae3cB5INJh5V
-	mVo48xgvblq5eA9oyIOrQ5+9Yx5SlhD0YKUSG7oJ97D09nkpZJWCKCc1h+sGm4yjY1dyo0qaN5E
-	HWJppxuruy4YGDI84V3cDlyGqhxaJKdg6lFDq1taNTPZTYPrO88YNjO2jz1wcST+g5oxfhyXpXw
-	Gp8XCto6X03b0MlYA/AvMt9vjbnO4D7abNtdqM8xwCC4Yi+3S+uUwMEj4mV3G2IewlDu+5mZ6g0
-	9+gu6W3arDFxzM50ceYoVQNvN7cwwwlG9t9A5oPwQw==
-X-Received: by 2002:a05:6512:308b:b0:5a1:351f:8650 with SMTP id
- 2adb3069b0e04-5a2c1eec64fmr165899e87.8.1774983269524; Tue, 31 Mar 2026
- 11:54:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B8D37883C;
+	Tue, 31 Mar 2026 19:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774983793; cv=none; b=QrJcOAOShy3FdpwyGT5QP7GdztnRJcdRl7lr52su376iTzjllpURziGa5iC/dCS81wYK6khPN6JakcAh/xcuiCrWBqnp2wsMKNg6RCellGZP03tWeDr5sEpWfCSsr9hw67dlIy47s2J6npS1uSq/waHq6Q84/D3pjtJxR9xBI+c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774983793; c=relaxed/simple;
+	bh=lHpNuvAMhCX6p3T7a7BazybaLrtSomcuIRgu8XwxmiA=;
+	h=Date:To:From:Subject:Message-Id; b=J8V4VIzAgBEsDCJQV5LWhhnjDtuYJyUrhfXk1FMn+IeoxqAJAcX8lie+Fl3JRh5YzAUNCCbMJ/YWERLr8XvP2ctmJqDMMuhFt47k5fwpIN1kdW5O8shGzRHHnp6bkJxvsXWqatJnqe4qvjASP43Z05ZkVnHO6bf3ehQ/i71F0k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=q12YdEwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923C7C19423;
+	Tue, 31 Mar 2026 19:03:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774983792;
+	bh=lHpNuvAMhCX6p3T7a7BazybaLrtSomcuIRgu8XwxmiA=;
+	h=Date:To:From:Subject:From;
+	b=q12YdEwnG9xZnkFna1+NhJFv+gLlZ0cjoa0+ObbOAJ32OvkJ2TrJigxMTEZJrfcrs
+	 nlQvvg/5eIlXGb8Hdicg0jqg1neri7jZJQ1nwt8Gw1MFNlez+UPeraJwpVDCfE4rVu
+	 ltKtWk42lZpkn7fLyq57D+xW1iNRXIq7+L7i/kO8=
+Date: Tue, 31 Mar 2026 12:03:12 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,joshua.hahnjy@gmail.com,gourry@gourry.net,david@kernel.org,byungchul@sk.com,apopple@nvidia.com,liuyun01@kylinos.cn,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store.patch added to mm-unstable branch
+Message-Id: <20260331190312.923C7C19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260331161753.468533260@linuxfoundation.org>
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-From: Dileep malepu <dileep.debian@gmail.com>
-Date: Wed, 1 Apr 2026 00:24:16 +0530
-X-Gm-Features: AQROBzBNIKLKEZtwNjxuWXV3qWqroAIDJd6GWuT8KNKRw9dfUwXw5HuACN9i8HY
-Message-ID: <CAC-m1roDY60qEnS1ciy_93yE_BBKNy1w5=kdgO8h1kW-T1X1_w@mail.gmail.com>
-Subject: Re: [PATCH 6.18 000/309] 6.18.21-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232565-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232564-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dileepdebian@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,gourry.net,kernel.org,sk.com,nvidia.com,kylinos.cn,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: B4218370438
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,kylinos.cn:email,sk.com:email,gourry.net:email]
+X-Rspamd-Queue-Id: 7F4DE370547
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 10:33=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.18.21 release.
-> There are 309 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.18.21-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.18.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
-> -------------
 
-Build and Boot Report for 6.18.21-rc1
+The patch titled
+     Subject: mm/mempolicy: fix memory leak in weighted_interleave_auto_store()
+has been added to the -mm mm-unstable branch.  Its filename is
+     mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store.patch
 
-Build and boot testing was performed on version 6.18.21-rc1 using the
-default configuration on both x86_64 and arm64 architectures in
-a virtual environment. The kernel built and booted successfully,
-and no dmesg regressions were observed.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store.patch
 
-kernel version: 6.18.21-rc1
-Configurations: x86_64_defconfig, defconfig
-Architectures: arm64, x86_64
-Kernel Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux=
--stable-rc.git
-Commit: 489a397a6e94bf636650e210b0ed749a3cdf1e9f
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Best regards,
-Dileep Malepu.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Jackie Liu <liuyun01@kylinos.cn>
+Subject: mm/mempolicy: fix memory leak in weighted_interleave_auto_store()
+Date: Tue, 31 Mar 2026 18:07:40 +0800
+
+Add the missing kfree(new_wi_state) when the auto mode is already set to
+the requested value.  When a user writes "false" to the auto sysfs
+interface and the current mode is already manual (mode_auto == false), the
+function returns early without freeing new_wi_state allocated at the
+beginning of the function.  This can be triggered repeatedly from
+userspace, leaking memory on each write.
+
+Link: https://lkml.kernel.org/r/20260331100740.84906-1-liu.yun@linux.dev
+Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mempolicy.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/mempolicy.c~mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store
++++ a/mm/mempolicy.c
+@@ -3707,6 +3707,7 @@ static ssize_t weighted_interleave_auto_
+ 			goto update_wi_state;
+ 		if (input == old_wi_state->mode_auto) {
+ 			mutex_unlock(&wi_state_lock);
++			kfree(new_wi_state);
+ 			return count;
+ 		}
+ 
+_
+
+Patches currently in -mm which might be from liuyun01@kylinos.cn are
+
+mm-mempolicy-fix-memory-leak-in-weighted_interleave_auto_store.patch
+
 
