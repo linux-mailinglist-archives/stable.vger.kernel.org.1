@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-232108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232400-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BXCJ4L9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:46 +0200
+	id yO/7BZcGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232400-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19EC036D9E7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D5436F108
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E24553279F4B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A268A32D7A91
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CD14266AA;
-	Tue, 31 Mar 2026 16:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B3D2FF641;
+	Tue, 31 Mar 2026 17:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCX+S2VX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1SrkXgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D042423A8A;
-	Tue, 31 Mar 2026 16:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42A92E11A6;
+	Tue, 31 Mar 2026 17:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975896; cv=none; b=SySVfrRRni+agC3O7O/sz5rsgLluma1Z5RalwZ9bXlbkU//ouOX/JXIaC/McBM8SsefAN9oOqY/dMttrCNF8MCmeMozfkAoQppmo2FLCbXmkgk8e2JNXsy8qIyyZJWYB5L/9XSN2SZ0hgVREjscEyK5HE51+q9GCVqNEQLqROS4=
+	t=1774976649; cv=none; b=J08VTVMUKsv1ydlLw2kpCK478k9qBr5tAUeyMRWY8xBBzpGqgzihlBEotResSjPNdjklTdgFGl7/g3yMt56a9vjvwPftFW79ao7zgejA6lBoZwsxDzYAq1ljPN8OjWTUz7PIr+AkGnFOf2VLW0ywms+/eXxwj8tMx5vuJ3JHGpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975896; c=relaxed/simple;
-	bh=cIL/Dy/AIdLDfP3mpLHo3+nvhS1aA+TeHi8ZNg/wggw=;
+	s=arc-20240116; t=1774976649; c=relaxed/simple;
+	bh=O8/rfsP95ejLYview66m3+DroH4WVTz29LC0re+XQno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSzKhP4G/cH5pNRisLt1kPGDBrd9t5JMigMsMw56ke6wyrP0h1Q9+5Ur92dGm36QfpodWt4jnPNkZv/wwUPCyGWtMQTSLWe84H03nlb8jnwuPuRyrVYr5JPLY86Fyd87DXsxQ1SlLLKyfAFde8pXicZvH8CUaGJrZbryPUlfiMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCX+S2VX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C0BC2BCB1;
-	Tue, 31 Mar 2026 16:51:35 +0000 (UTC)
+	 MIME-Version; b=Y1c7vfjGCP3lUh63cyJr0lJuUdpAjJFRSw13APrZ1bG9fmKADeZLxf5wT0DmWp+3OCm+cN26iGUxRvk7H0Kpujf/7lx4fo4Waft09aXf5Tn/3SIpxFKMA3aFRPVHMnyxH5VrkG1N8EzRu0XZXJ+L6B63ZPWj5OpWkCpMuykaVJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1SrkXgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3515C19423;
+	Tue, 31 Mar 2026 17:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975896;
-	bh=cIL/Dy/AIdLDfP3mpLHo3+nvhS1aA+TeHi8ZNg/wggw=;
+	s=korg; t=1774976649;
+	bh=O8/rfsP95ejLYview66m3+DroH4WVTz29LC0re+XQno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCX+S2VXYTB+LO5hi4ZuBxkG8lOANXi0mEY2MC8ceaL7TZGzXhdPOFO14k35j1Jq7
-	 cb3att7QevR9S+c09Kfk/nxCtJLNPIHsdnY/oNmReBVuuxE8i38TS6rsk9R+o1FqqJ
-	 wkGgjq40kMYVQFDR5YykoNV0yKRwbP3ISHFUPJ6A=
+	b=s1SrkXgl6mPyJzuDQ2+PaYrdBacsgpml4xWTFEaJNWihFn33RIVtf7ZNYCAp2QwgO
+	 9BuqLBThrXvi7GGqbD2fHvBuHcgPtqf+tIgjtxwJ1i9aZq4xajMrhM3IENRzns1HT3
+	 OzUgHka8yfzeSWQRhZR89Erx9mfzwjJmbwOlW2tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 128/244] hwmon: (pmbus/core) Fix various coding style issues
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	stable@kernel.org
+Subject: [PATCH 6.18 175/309] s390/syscalls: Add spectre boundary for syscall dispatch table
 Date: Tue, 31 Mar 2026 18:21:18 +0200
-Message-ID: <20260331161746.382506404@linuxfoundation.org>
+Message-ID: <20260331161759.908252873@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,225 +77,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232400-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232108-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email]
-X-Rspamd-Queue-Id: 19EC036D9E7
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 70D5436F108
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 649b419f918fedf7213e590dba16e2fab5ea7259 ]
+commit 48b8814e25d073dd84daf990a879a820bad2bcbd upstream.
 
-Checkpatch reports bad multi-line comments, bad multi-line alignments,
-missing blank lines after variable declarations, unnecessary empty lines,
-unnecessary spaces, and unnecessary braces. Fix most of the reported
-problems except for some multi-line alignment problems.
+The s390 syscall number is directly controlled by userspace, but does
+not have an array_index_nospec() boundary to prevent access past the
+syscall function pointer tables.
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 805a5bd1c3f3 ("hwmon: (pmbus) Mark lowest/average/highest/rated attributes as read-only")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Fixes: 56e62a737028 ("s390: convert to generic entry")
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/2026032404-sterling-swoosh-43e6@gregkh
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 41 +++++++++++++-------------------
- 1 file changed, 17 insertions(+), 24 deletions(-)
+ arch/s390/kernel/syscall.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index a68b0a98e8d4d..a8ffafc7411e3 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -41,8 +41,7 @@ struct pmbus_sensor {
- 	enum pmbus_sensor_classes class;	/* sensor class */
- 	bool update;		/* runtime sensor update needed */
- 	bool convert;		/* Whether or not to apply linear/vid/direct */
--	int data;		/* Sensor data.
--				   Negative if there was a read error */
-+	int data;		/* Sensor data; negative if there was a read error */
- };
- #define to_pmbus_sensor(_attr) \
- 	container_of(_attr, struct pmbus_sensor, attribute)
-@@ -189,11 +188,10 @@ static void pmbus_update_ts(struct i2c_client *client, bool write_op)
- 	struct pmbus_data *data = i2c_get_clientdata(client);
- 	const struct pmbus_driver_info *info = data->info;
+--- a/arch/s390/kernel/syscall.c
++++ b/arch/s390/kernel/syscall.c
+@@ -13,6 +13,7 @@
+  */
  
--	if (info->access_delay) {
-+	if (info->access_delay)
- 		data->access_time = ktime_get();
--	} else if (info->write_delay && write_op) {
-+	else if (info->write_delay && write_op)
- 		data->write_time = ktime_get();
--	}
+ #include <linux/cpufeature.h>
++#include <linux/nospec.h>
+ #include <linux/errno.h>
+ #include <linux/sched.h>
+ #include <linux/mm.h>
+@@ -121,8 +122,10 @@ void noinstr __do_syscall(struct pt_regs
+ 	if (unlikely(test_and_clear_pt_regs_flag(regs, PIF_SYSCALL_RET_SET)))
+ 		goto out;
+ 	regs->gprs[2] = -ENOSYS;
+-	if (likely(nr < NR_syscalls))
++	if (likely(nr < NR_syscalls)) {
++		nr = array_index_nospec(nr, NR_syscalls);
+ 		regs->gprs[2] = current->thread.sys_call_table[nr](regs);
++	}
+ out:
+ 	syscall_exit_to_user_mode(regs);
  }
- 
- int pmbus_set_page(struct i2c_client *client, int page, int phase)
-@@ -289,7 +287,6 @@ int pmbus_write_word_data(struct i2c_client *client, int page, u8 reg,
- }
- EXPORT_SYMBOL_NS_GPL(pmbus_write_word_data, PMBUS);
- 
--
- static int pmbus_write_virt_reg(struct i2c_client *client, int page, int reg,
- 				u16 word)
- {
-@@ -378,14 +375,14 @@ int pmbus_update_fan(struct i2c_client *client, int page, int id,
- 	u8 to;
- 
- 	from = _pmbus_read_byte_data(client, page,
--				    pmbus_fan_config_registers[id]);
-+				     pmbus_fan_config_registers[id]);
- 	if (from < 0)
- 		return from;
- 
- 	to = (from & ~mask) | (config & mask);
- 	if (to != from) {
- 		rv = _pmbus_write_byte_data(client, page,
--					   pmbus_fan_config_registers[id], to);
-+					    pmbus_fan_config_registers[id], to);
- 		if (rv < 0)
- 			return rv;
- 	}
-@@ -560,7 +557,7 @@ static int pmbus_get_fan_rate(struct i2c_client *client, int page, int id,
- 	}
- 
- 	config = _pmbus_read_byte_data(client, page,
--				      pmbus_fan_config_registers[id]);
-+				       pmbus_fan_config_registers[id]);
- 	if (config < 0)
- 		return config;
- 
-@@ -785,7 +782,7 @@ static s64 pmbus_reg2data_linear(struct pmbus_data *data,
- 
- 	if (sensor->class == PSC_VOLTAGE_OUT) {	/* LINEAR16 */
- 		exponent = data->exponent[sensor->page];
--		mantissa = (u16) sensor->data;
-+		mantissa = (u16)sensor->data;
- 	} else {				/* LINEAR11 */
- 		exponent = ((s16)sensor->data) >> 11;
- 		mantissa = ((s16)((sensor->data & 0x7ff) << 5)) >> 5;
-@@ -1170,7 +1167,6 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
- 		} else {
- 			pmbus_clear_fault_page(client, page);
- 		}
--
- 	}
- 	if (s1 && s2) {
- 		s64 v1, v2;
-@@ -1497,8 +1493,7 @@ struct pmbus_limit_attr {
- 	u16 reg;		/* Limit register */
- 	u16 sbit;		/* Alarm attribute status bit */
- 	bool update;		/* True if register needs updates */
--	bool low;		/* True if low limit; for limits with compare
--				   functions only */
-+	bool low;		/* True if low limit; for limits with compare functions only */
- 	const char *attr;	/* Attribute name */
- 	const char *alarm;	/* Alarm attribute name */
- };
-@@ -2209,8 +2204,8 @@ static const u32 pmbus_fan_status_flags[] = {
- 
- /* Precondition: FAN_CONFIG_x_y and FAN_COMMAND_x must exist for the fan ID */
- static int pmbus_add_fan_ctrl(struct i2c_client *client,
--		struct pmbus_data *data, int index, int page, int id,
--		u8 config)
-+			      struct pmbus_data *data, int index, int page,
-+			      int id, u8 config)
- {
- 	struct pmbus_sensor *sensor;
- 
-@@ -2222,7 +2217,7 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
- 		return -ENOMEM;
- 
- 	if (!((data->info->func[page] & PMBUS_HAVE_PWM12) ||
--			(data->info->func[page] & PMBUS_HAVE_PWM34)))
-+	      (data->info->func[page] & PMBUS_HAVE_PWM34)))
- 		return 0;
- 
- 	sensor = pmbus_add_sensor(data, "pwm", NULL, index, page,
-@@ -2888,7 +2883,7 @@ static void pmbus_notify(struct pmbus_data *data, int page, int reg, int flags)
- }
- 
- static int _pmbus_get_flags(struct pmbus_data *data, u8 page, unsigned int *flags,
--			   unsigned int *event, bool notify)
-+			    unsigned int *event, bool notify)
- {
- 	int i, status;
- 	const struct pmbus_status_category *cat;
-@@ -2917,7 +2912,6 @@ static int _pmbus_get_flags(struct pmbus_data *data, u8 page, unsigned int *flag
- 
- 		if (notify && status)
- 			pmbus_notify(data, page, cat->reg, status);
--
- 	}
- 
- 	/*
-@@ -2968,7 +2962,6 @@ static int _pmbus_get_flags(struct pmbus_data *data, u8 page, unsigned int *flag
- 		*event |= REGULATOR_EVENT_OVER_TEMP_WARN;
- 	}
- 
--
- 	return 0;
- }
- 
-@@ -3181,7 +3174,7 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
- }
- 
- static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
--					 unsigned int selector)
-+					unsigned int selector)
- {
- 	struct device *dev = rdev_get_dev(rdev);
- 	struct i2c_client *client = to_i2c_client(dev->parent);
-@@ -3296,8 +3289,8 @@ static irqreturn_t pmbus_fault_handler(int irq, void *pdata)
- {
- 	struct pmbus_data *data = pdata;
- 	struct i2c_client *client = to_i2c_client(data->dev);
--
- 	int i, status, event;
-+
- 	mutex_lock(&data->update_lock);
- 	for (i = 0; i < data->info->pages; i++) {
- 		_pmbus_get_flags(data, i, &status, &event, true);
-@@ -3405,7 +3398,7 @@ DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops_status, pmbus_debugfs_get_status,
- 			 NULL, "0x%04llx\n");
- 
- static ssize_t pmbus_debugfs_mfr_read(struct file *file, char __user *buf,
--				       size_t count, loff_t *ppos)
-+				      size_t count, loff_t *ppos)
- {
- 	int rc;
- 	struct pmbus_debugfs_entry *entry = file->private_data;
-@@ -3724,8 +3717,8 @@ int pmbus_do_probe(struct i2c_client *client, struct pmbus_driver_info *info)
- 
- 	data->groups[0] = &data->group;
- 	memcpy(data->groups + 1, info->groups, sizeof(void *) * groups_num);
--	data->hwmon_dev = devm_hwmon_device_register_with_groups(dev,
--					name, data, data->groups);
-+	data->hwmon_dev = devm_hwmon_device_register_with_groups(dev, name,
-+								 data, data->groups);
- 	if (IS_ERR(data->hwmon_dev)) {
- 		dev_err(dev, "Failed to register hwmon device\n");
- 		return PTR_ERR(data->hwmon_dev);
--- 
-2.53.0
-
 
 
 
