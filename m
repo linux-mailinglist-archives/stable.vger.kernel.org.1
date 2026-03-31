@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yM+mG2IHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:54 +0200
+	id GLUNEfUEzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BE236F24E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DA936EDE3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA07C312C317
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9E7433154D5E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6229B301708;
-	Tue, 31 Mar 2026 17:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE6E425CC3;
+	Tue, 31 Mar 2026 16:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh7oqhpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfopwL4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242342FDC5E;
-	Tue, 31 Mar 2026 17:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D66E4035AB;
+	Tue, 31 Mar 2026 16:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976745; cv=none; b=rRgiKTzoKs3rlziKGKKcwA8FJbo0c4X4ZiAHtl2IpOKQFgEYMh+VhweWy+7sEkbrTxfqU8rsIwSnDcuUDCEsQ9tJ84OwY9oAOA6Z+vtBIGHF4DGbXIPZWGN57atVix7Llxb4HV3/W3eYcVb0rIDdq23dkjBXSZGlE2sulzodSYM=
+	t=1774975992; cv=none; b=F3ZV5qqXtaffgcweOEUGSnFD1GMB/DwkMA6Kue5Mvm1ASN81YMiCkQ8OgHWqihd90791Gr5fpmzcQHQ1nOmb7QCT+X1eH3UXEM3lM56Vg6uECnFHO439PfbNwZSofD5Y9ca9kwSP7aiFIn9Ld9wCD+FHEgCoWoNGZquj0691AF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976745; c=relaxed/simple;
-	bh=nuiMItCsKEE2bbSxPMobc8C6kmIcQpA6cQhgbpBsvcA=;
+	s=arc-20240116; t=1774975992; c=relaxed/simple;
+	bh=VjY7EL8g6W7w85K8vZjAR8jokEffpNTJ/WfYwTxhfnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e17apIyYmsYbq7HnOBIfpB3g+7G9LLVlDNxJblXPaAxYK0vSgflJwzsH0g/NtnGyvkZsDmmyT8fzuNI9jbWGD1n0S1aKg436xSkdCM+bCBD/0s+YReJeCK/j4hCNgsJadluTfAR5zsH30Al7QfahH0mgVo31Z0Fc+/qDMbko5E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh7oqhpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED06C19423;
-	Tue, 31 Mar 2026 17:05:44 +0000 (UTC)
+	 MIME-Version; b=uZe616YDtj5Mexbhep8ff5S+pZ6TVPlousf96rWEGlYtXvYLlpZqyLehDpl2NSroZyMEArmrtxhq0qx/mKAn/b3a9aqwjkm37t59jCoJxmMFjeWkFOeTxn16OhYbV8O9h+ZAsw/5daqcHqK/erUVo8jnDLhEhq+TVlEw8lRNWOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfopwL4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C950FC19423;
+	Tue, 31 Mar 2026 16:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976745;
-	bh=nuiMItCsKEE2bbSxPMobc8C6kmIcQpA6cQhgbpBsvcA=;
+	s=korg; t=1774975992;
+	bh=VjY7EL8g6W7w85K8vZjAR8jokEffpNTJ/WfYwTxhfnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fh7oqhpXti9Ldyypi6A0inhWeUSmLhGvgaX6bwmJ7TylggRYLt46DRMvS+5bX5I+f
-	 +gfQ9icbO1JODmP5eoUsZiNPv/gyt/PFl/XnYa4ZlpvqhooT+B2Za0FrrvLPH6XwFy
-	 tTuuQKL/3EcdtyBjA2QAfNchUajPHvGhCdJFMDMg=
+	b=YfopwL4ypmRbELnAi3Xks66tYS3GQXxbczVakn0VvnL3R8OSEU4Lbo68QkMwgiKc5
+	 2XhnRHfVLiXCfw60+Qz7Ivwi7y4cFysWvKBFGZnfV9t0vcATMd+gIPOEwyywdFIvPF
+	 lJ+NkmaGxSYxdzbbZUXxjVWz1aZ4YwClozSZTrMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.18 212/309] x86/cpu: Remove X86_CR4_FRED from the CR4 pinned bits mask
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 165/244] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
 Date: Tue, 31 Mar 2026 18:21:55 +0200
-Message-ID: <20260331161801.249486088@linuxfoundation.org>
+Message-ID: <20260331161747.857200618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,89 +73,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232437-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232145-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,infradead.org:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alien8.de:email]
-X-Rspamd-Queue-Id: 74BE236F24E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amazon.co.uk:email]
+X-Rspamd-Queue-Id: 28DA936EDE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 411df123c017169922cc767affce76282b8e6c85 upstream.
+commit aad885e774966e97b675dfe928da164214a71605 upstream.
 
-Commit in Fixes added the FRED CR4 bit to the CR4 pinned bits mask so
-that whenever something else modifies CR4, that bit remains set. Which
-in itself is a perfectly fine idea.
+When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
+existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
+right about it being impossible to convert a shadow-present SPTE to an
+MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
+memory that are outside the scope of KVM.
 
-However, there's an issue when during boot FRED is initialized: first on
-the BSP and later on the APs. Thus, there's a window in time when
-exceptions cannot be handled.
+E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
+to emulted MMIO and then the guest hits a relevant page fault, KVM will
+install the MMIO SPTE without first zapping the shadow-present SPTE.
 
-This becomes particularly nasty when running as SEV-{ES,SNP} or TDX
-guests which, when they manage to trigger exceptions during that short
-window described above, triple fault due to FRED MSRs not being set up
-yet.
+  ------------[ cut here ]------------
+  is_shadow_present_pte(*sptep)
+  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
+  Call Trace:
+   <TASK>
+   mmu_set_spte+0x237/0x440 [kvm]
+   ept_page_fault+0x535/0x7f0 [kvm]
+   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
+   kvm_mmu_page_fault+0x8d/0x620 [kvm]
+   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
+   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
+   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
+   __x64_sys_ioctl+0x8a/0xd0
+   do_syscall_64+0xb5/0x730
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x47fa3f
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-See Link tag below for a much more detailed explanation of the
-situation.
-
-So, as a result, the commit in that Link URL tried to address this
-shortcoming by temporarily disabling CR4 pinning when an AP is not
-online yet.
-
-However, that is a problem in itself because in this case, an attack on
-the kernel needs to only modify the online bit - a single bit in RW
-memory - and then disable CR4 pinning and then disable SM*P, leading to
-more and worse things to happen to the system.
-
-So, instead, remove the FRED bit from the CR4 pinning mask, thus
-obviating the need to temporarily disable CR4 pinning.
-
-If someone manages to disable FRED when poking at CR4, then
-idt_invalidate() would make sure the system would crash'n'burn on the
-first exception triggered, which is a much better outcome security-wise.
-
-Fixes: ff45746fbf00 ("x86/cpu: Add X86_CR4_FRED macro")
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org> # 6.12+
-Link: https://lore.kernel.org/r/177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2
+Reported-by: Alexander Bulekov <bkov@amazon.com>
+Debugged-by: Alexander Bulekov <bkov@amazon.com>
+Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
+Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/mmu/mmu.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -407,7 +407,7 @@ out:
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -2919,12 +2919,6 @@ static int mmu_set_spte(struct kvm_vcpu
+ 	bool prefetch = !fault || fault->prefetch;
+ 	bool write_fault = fault && fault->write;
  
- /* These bits should not change their value after CPU init is finished. */
- static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
--					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED;
-+					     X86_CR4_FSGSBASE | X86_CR4_CET;
- static DEFINE_STATIC_KEY_FALSE_RO(cr_pinning);
- static unsigned long cr4_pinned_bits __ro_after_init;
+-	if (unlikely(is_noslot_pfn(pfn))) {
+-		vcpu->stat.pf_mmio_spte_created++;
+-		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
+-		return RET_PF_EMULATE;
+-	}
+-
+ 	if (is_shadow_present_pte(*sptep)) {
+ 		/*
+ 		 * If we overwrite a PTE page pointer with a 2MB PMD, unlink
+@@ -2944,6 +2938,14 @@ static int mmu_set_spte(struct kvm_vcpu
+ 			was_rmapped = 1;
+ 	}
+ 
++	if (unlikely(is_noslot_pfn(pfn))) {
++		vcpu->stat.pf_mmio_spte_created++;
++		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
++		if (flush)
++			kvm_flush_remote_tlbs_gfn(vcpu->kvm, gfn, level);
++		return RET_PF_EMULATE;
++	}
++
+ 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
+ 			   true, host_writable, &spte);
  
 
 
