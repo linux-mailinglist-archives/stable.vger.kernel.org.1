@@ -1,59 +1,70 @@
-Return-Path: <stable+bounces-232212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIF7BG3+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:41 +0200
+	id AHaRKo4CzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:21:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C44736DC27
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F26D36E88F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC61332C6808
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C341F3155EC4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72A629DB8F;
-	Tue, 31 Mar 2026 16:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF99313293;
+	Tue, 31 Mar 2026 17:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9xY5l8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQpMheie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B03A3E4C6C;
-	Tue, 31 Mar 2026 16:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6373E311592;
+	Tue, 31 Mar 2026 17:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976166; cv=none; b=LyA1NhefjiGaR7GCT+MzzL/fHU77rs1D7g6clysBZdVIs88IzisiWvkBNmvUZVybYBJAehzUabqI0dnrEysF9wI2wicGOBjIjAb+fgFqp7EV46Yy0ZJ558rzyMYOA//E8BXA/B4qYSOZOD+VKLCSHMgNxZJfIgfSC1dZtD8mgv8=
+	t=1774976921; cv=none; b=F9oJQgAGLfrCNNB5gTpc6aeQS+mFGrZZ5Yn+ViQG00a3QXhbUZNX59HBYCKi1tCLl4dl7bMeu3JWhhB6dY9v5Cuq51i+OkHjvcScdPJx1Qr7ISBKyInAAeZ0tRG0qRG2OkU7OiA01sDs40DtxP1PrJZXtmaVCLt8uZ78lW6/kuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976166; c=relaxed/simple;
-	bh=SXhXSoO2YI3d2Dpa1/Pju6SPS43M+4IniBTCeK8xc+A=;
+	s=arc-20240116; t=1774976921; c=relaxed/simple;
+	bh=JmquOdWSplFXLXkyGGIXQ+rEpRS7EMRvV4GghuBme5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/16nSHih894sn/XGMc5hrbtTPqr3mLYb+ZhpWyvVBoH54QjzrUR/mCqx7bmlp2BiAt5K9jE5X4B3U/p+ZoQ9/Jus7+Lya1WXrfAo3N7J4xBilGbsEGf5IubqB+/WdHO/ebvlwnUGxRmmRj5nro75m0BlUXF+bT/gRVGZr/ToZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9xY5l8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC482C19423;
-	Tue, 31 Mar 2026 16:56:05 +0000 (UTC)
+	 MIME-Version; b=gELvL+fIEX+iLctVH8Kirt85sHVkzJ9NRPuz1prVwgpYeVfyq9eWT5j2Sfn+AA6fGsIZSeefFFImxnQI55KIgSa68uMtIsWK1QjRY2RNg5FMDaKZIhcDy564jggeWarIM4sW0rW/vWTaSM51T+H/nsdf0lVSM/rLmlQyovFHJaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQpMheie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62B4C19424;
+	Tue, 31 Mar 2026 17:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976166;
-	bh=SXhXSoO2YI3d2Dpa1/Pju6SPS43M+4IniBTCeK8xc+A=;
+	s=korg; t=1774976921;
+	bh=JmquOdWSplFXLXkyGGIXQ+rEpRS7EMRvV4GghuBme5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9xY5l8jkT8/34ea7HqbtrPfDMWTj1Gd/ZhycBLW0E1UNE7PXl9zHLq14BStuLGEb
-	 XWVwMzv9pPxVsBY0UFBsTyFqIWLgbSniqd2niscFsrcgwsC3TDQGE8HVoUKvpVKyUR
-	 Upo+QGCpE8fmomEc4e284DMhKQd5UBd2ZR+i0PII=
+	b=vQpMheiejOq6VjTU8blHcUiYLfRbR+0QSb7tctN+TrXwuBYb+AMn18DLFvdv0u5ky
+	 haOQ3vYXgbWEAMlEpQBZZmHrj/vuLxE80DfDcw1IllRbkcEdhNIREFIfbmUlDQRXbo
+	 nBhRyopzb48FZ4SCNGLxKIbxctn884IAJBh8uBoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Barry Song <baohua@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nanyong Sun <sunnanyong@huawei.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 232/244] dmaengine: xilinx: xilinx_dma: Fix dma_device directions
-Date: Tue, 31 Mar 2026 18:23:02 +0200
-Message-ID: <20260331161750.331672200@linuxfoundation.org>
+Subject: [PATCH 6.18 280/309] mm/huge_memory: fix folio isnt locked in softleaf_to_folio()
+Date: Tue, 31 Mar 2026 18:23:03 +0200
+Message-ID: <20260331161803.872940900@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,8 +89,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232212-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232505-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -87,51 +98,131 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nabladev.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5C44736DC27
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3F26D36E88F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit e9cc95397bb7da13fe8a5b53a2f23cfaf9018ade ]
+[ Upstream commit 4c5e7f0fcd592801c9cc18f29f80fbee84eb8669 ]
 
-Unlike chan->direction , struct dma_device .directions field is a
-bitfield. Turn chan->direction into a bitfield to make it compatible
-with struct dma_device .directions .
+On arm64 server, we found folio that get from migration entry isn't locked
+in softleaf_to_folio().  This issue triggers when mTHP splitting and
+zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
+in softleaf_to_folio().  The race is as follows:
 
-Fixes: 7e01511443c3 ("dmaengine: xilinx_dma: Set dma_device directions")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260316221728.160139-1-marex@nabladev.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+	CPU0                                             CPU1
+
+deferred_split_scan()                              zap_nonpresent_ptes()
+  lock folio
+  split_folio()
+    unmap_folio()
+      change ptes to migration entries
+    __split_folio_to_order()                         softleaf_to_folio()
+      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
+      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
+      prep_compound_page() for tail pages
+
+In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
+are visible before the tail page becomes non-compound.  smp_wmb() should
+be paired with smp_rmb() in softleaf_to_folio(), which is missed.  As a
+result, if zap_nonpresent_ptes() accesses migration entry that stores tail
+pfn, softleaf_to_folio() may see the updated compound_head of tail page
+before page->flags.
+
+This issue will trigger VM_WARN_ON_ONCE() in pfn_swap_entry_folio()
+because of the race between folio split and zap_nonpresent_ptes()
+leading to a folio incorrectly undergoing modification without a folio
+lock being held.
+
+This is a BUG_ON() before commit 93976a20345b ("mm: eliminate further
+swapops predicates"), which in merged in v6.19-rc1.
+
+To fix it, add missing smp_rmb() if the softleaf entry is migration entry
+in softleaf_to_folio() and softleaf_to_page().
+
+[tujinjiang@huawei.com: update function name and comments]
+  Link: https://lkml.kernel.org/r/20260321075214.3305564-1-tujinjiang@huawei.com
+Link: https://lkml.kernel.org/r/20260319012541.4158561-1-tujinjiang@huawei.com
+Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ applied fix to swapops.h using old pfn_swap_entry/swp_entry_t naming ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/swapops.h |   27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 3ad37e9b924a7..7d49b8978aa57 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -2907,7 +2907,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 		return -EINVAL;
- 	}
+--- a/include/linux/swapops.h
++++ b/include/linux/swapops.h
+@@ -487,15 +487,29 @@ static inline int pte_none_mostly(pte_t
+ 	return pte_none(pte) || is_pte_marker(pte);
+ }
  
--	xdev->common.directions |= chan->direction;
-+	xdev->common.directions |= BIT(chan->direction);
+-static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
++static inline void swap_entry_migration_sync(swp_entry_t entry,
++		struct folio *folio)
+ {
+-	struct page *p = pfn_to_page(swp_offset_pfn(entry));
++	/*
++	 * Ensure we do not race with split, which might alter tail pages into new
++	 * folios and thus result in observing an unlocked folio.
++	 * This matches the write barrier in __split_folio_to_order().
++	 */
++	smp_rmb();
  
- 	/* Request the interrupt */
- 	chan->irq = of_irq_get(node, chan->tdest);
--- 
-2.53.0
-
+ 	/*
+ 	 * Any use of migration entries may only occur while the
+ 	 * corresponding page is locked
+ 	 */
+-	BUG_ON(is_migration_entry(entry) && !PageLocked(p));
++	BUG_ON(!folio_test_locked(folio));
++}
++
++static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
++{
++	struct page *p = pfn_to_page(swp_offset_pfn(entry));
++
++	if (is_migration_entry(entry))
++		swap_entry_migration_sync(entry, page_folio(p));
+ 
+ 	return p;
+ }
+@@ -504,11 +518,8 @@ static inline struct folio *pfn_swap_ent
+ {
+ 	struct folio *folio = pfn_folio(swp_offset_pfn(entry));
+ 
+-	/*
+-	 * Any use of migration entries may only occur while the
+-	 * corresponding folio is locked
+-	 */
+-	BUG_ON(is_migration_entry(entry) && !folio_test_locked(folio));
++	if (is_migration_entry(entry))
++		swap_entry_migration_sync(entry, folio);
+ 
+ 	return folio;
+ }
 
 
 
