@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-232022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QB7xBfv8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:31 +0200
+	id QPzpFXH2y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9883336D7EB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE2136CA2C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B705F3122897
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5922130D8CD1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7F4423A99;
-	Tue, 31 Mar 2026 16:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D6530E0DC;
+	Tue, 31 Mar 2026 16:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWnwElc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k06fio4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9054A423A63;
-	Tue, 31 Mar 2026 16:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560033FFADF;
+	Tue, 31 Mar 2026 16:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975673; cv=none; b=gXAb/rLABwHcLtpAeuxA4FGHNSufgKkPykWK4dqUBsJlTvxMPvshOTXbmRuAN9cN0ZUJuXgBEqpf331gq/c26N4K5PwO85QeoOiji/qubN+DEnnDE3xsZCV5uVwdUaqLoVqgOdRtodiG7MMovuJYjoyQiCkhoTeontME0V3Rop4=
+	t=1774974325; cv=none; b=V+pjokTXe2QRTLq498M4CgRQD5QgcN3uIXSzigXgyLgYfmhfNDYFJ+wK5ESyPyZgK5daYZ1QXqnF+VZ9FZeuORaTbNChHWUkgAOc3pQTcdra6CUkyTk6quU51ji+kg1QbLusA9ksIXYk5PhPrpanDe1DigQhmwy7fwOmyVTkFBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975673; c=relaxed/simple;
-	bh=MOBHLhtWexEy+fSKk3GFvfnkyBa+FP1Yw51UPCyMVkI=;
+	s=arc-20240116; t=1774974325; c=relaxed/simple;
+	bh=6V4cZYRaLalD4PxWuYyIoBx05x+icDI4fUZInZ/zclo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQBBv+KpCwPOtQCZdBdWn3VYyKfkrSvh2eEwqW9+vQK2G6qtKw1NldNRMIgrUrYqnlzEMVAmN2BhBVSvOpjCfHjBK4+6+FtIFaBtqm0Zu+7lBT+v8588SIVEr3CfdDufUL3udWgkB1s5Kr1OLQTBVWLNAJiwRMH3rZD482K/qV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWnwElc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263A0C19423;
-	Tue, 31 Mar 2026 16:47:52 +0000 (UTC)
+	 MIME-Version; b=RkkW1c6OlwYhoazbrOT6jT+/UdPl480o9RRb4s+6x7Sn+6zLuJPNk+HcH2t4AyB6SFNq7mmU2A4V5ClHgQFzxFEW5ghI5ebpmOqsZnCkN7qVeX+uIniFZ/zxBEEjrEqsE/EqfwjaTLEblg3RRNxjCxcBiwGm1XKTS/pUNoTxzlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k06fio4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB827C19423;
+	Tue, 31 Mar 2026 16:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975673;
-	bh=MOBHLhtWexEy+fSKk3GFvfnkyBa+FP1Yw51UPCyMVkI=;
+	s=korg; t=1774974325;
+	bh=6V4cZYRaLalD4PxWuYyIoBx05x+icDI4fUZInZ/zclo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FWnwElc5LRT6dbHdT/AuG24h6rgZEPVn4Mje95N/qfNRcXVxmtL8BryGcFWEu9SML
-	 f9OlvctR1YcKt+KZkbCWp05PCOb269SOASpX0MkVxnlhCqWF87wNlK9lef7NQ50yer
-	 zBAAR3XeS7VmzMmkHsZ9gSxU+2qKMQFJ2jmF1Wzw=
+	b=k06fio4YgzJHqinWeAqC/5ghIyWqwyw/LNihQcTHijUM12vaTD+nU+Quj5b9mXJJB
+	 fHDUJqF37BUhrmLMVcRjyc9RmqyTqT4XoFluGdyythpVf82YG3ho909GADtJFyNZ8I
+	 A65VceZf02MP9Z/7QUmT/FQRIL3/RQrlsgJ+FZKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Deng <dengjie03@kylinos.cn>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/244] usb: core: new quirk to handle devices with zero configurations
+Subject: [PATCH 6.6 009/175] bpf: Fix undefined behavior in interpreter sdiv/smod for INT_MIN
 Date: Tue, 31 Mar 2026 18:19:53 +0200
-Message-ID: <20260331161743.289091660@linuxfoundation.org>
+Message-ID: <20260331161730.124951594@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,136 +70,134 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,meta.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231497-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232022-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9883336D7EB
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,meta.com:email]
+X-Rspamd-Queue-Id: 7EE2136CA2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Deng <dengjie03@kylinos.cn>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 9f6a983cfa22ac662c86e60816d3a357d4b551e9 ]
+[ Upstream commit c77b30bd1dcb61f66c640ff7d2757816210c7cb0 ]
 
-Some USB devices incorrectly report bNumConfigurations as 0 in their
-device descriptor, which causes the USB core to reject them during
-enumeration.
-logs:
-usb 1-2: device descriptor read/64, error -71
-usb 1-2: no configurations
-usb 1-2: can't read configurations, error -22
+The BPF interpreter's signed 32-bit division and modulo handlers use
+the kernel abs() macro on s32 operands. The abs() macro documentation
+(include/linux/math.h) explicitly states the result is undefined when
+the input is the type minimum. When DST contains S32_MIN (0x80000000),
+abs((s32)DST) triggers undefined behavior and returns S32_MIN unchanged
+on arm64/x86. This value is then sign-extended to u64 as
+0xFFFFFFFF80000000, causing do_div() to compute the wrong result.
 
-However, these devices actually work correctly when
-treated as having a single configuration.
+The verifier's abstract interpretation (scalar32_min_max_sdiv) computes
+the mathematically correct result for range tracking, creating a
+verifier/interpreter mismatch that can be exploited for out-of-bounds
+map value access.
 
-Add a new quirk USB_QUIRK_FORCE_ONE_CONFIG to handle such devices.
-When this quirk is set, assume the device has 1 configuration instead
-of failing with -EINVAL.
+Introduce abs_s32() which handles S32_MIN correctly by casting to u32
+before negating, avoiding signed overflow entirely. Replace all 8
+abs((s32)...) call sites in the interpreter's sdiv32/smod32 handlers.
 
-This quirk is applied to the device with VID:PID 5131:2007 which
-exhibits this behavior.
+s32 is the only affected case -- the s64 division/modulo handlers do
+not use abs().
 
-Signed-off-by: Jie Deng <dengjie03@kylinos.cn>
-Link: https://patch.msgid.link/20260227084931.1527461-1-dengjie03@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ec0e2da95f72 ("bpf: Support new signed div/mod instructions.")
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Mykyta Yatsenko <yatsenko@meta.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Link: https://lore.kernel.org/r/20260311011116.2108005-2-qguanni@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 3 +++
- drivers/usb/core/config.c                       | 6 +++++-
- drivers/usb/core/quirks.c                       | 5 +++++
- include/linux/usb/quirks.h                      | 3 +++
- 4 files changed, 16 insertions(+), 1 deletion(-)
+ kernel/bpf/core.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index e88505e945d52..811345669be4e 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7249,6 +7249,9 @@
- 				p = USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT
- 					(Reduce timeout of the SET_ADDRESS
- 					request from 5000 ms to 500 ms);
-+				q = USB_QUIRK_FORCE_ONE_CONFIG (Device
-+					claims zero configurations,
-+					forcing to 1);
- 			Example: quirks=0781:5580:bk,0a5c:5834:gij
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index a343248c35ded..3011add7c4a88 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1667,6 +1667,12 @@ bool bpf_opcode_in_insntable(u8 code)
+ }
  
- 	usbhid.mousepoll=
-diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
-index bbc3cb1ba7b5c..0baecdd342c7a 100644
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -891,7 +891,11 @@ int usb_get_configuration(struct usb_device *dev)
- 		dev->descriptor.bNumConfigurations = ncfg = USB_MAXCONFIG;
- 	}
- 
--	if (ncfg < 1) {
-+	if (ncfg < 1 && dev->quirks & USB_QUIRK_FORCE_ONE_CONFIG) {
-+		dev_info(ddev, "Device claims zero configurations, forcing to 1\n");
-+		dev->descriptor.bNumConfigurations = 1;
-+		ncfg = 1;
-+	} else if (ncfg < 1) {
- 		dev_err(ddev, "no configurations\n");
- 		return -EINVAL;
- 	}
-diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
-index c12942a533ce2..53b08d6cf7824 100644
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -141,6 +141,8 @@ static int quirks_param_set(const char *value, const struct kernel_param *kp)
- 			case 'p':
- 				flags |= USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT;
- 				break;
-+			case 'q':
-+				flags |= USB_QUIRK_FORCE_ONE_CONFIG;
- 			/* Ignore unrecognized flag characters */
- 			}
- 		}
-@@ -594,6 +596,9 @@ static const struct usb_device_id usb_quirk_list[] = {
- 	/* VCOM device */
- 	{ USB_DEVICE(0x4296, 0x7570), .driver_info = USB_QUIRK_CONFIG_INTF_STRINGS },
- 
-+	/* Noji-MCS SmartCard Reader */
-+	{ USB_DEVICE(0x5131, 0x2007), .driver_info = USB_QUIRK_FORCE_ONE_CONFIG },
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
++/* Absolute value of s32 without undefined behavior for S32_MIN */
++static u32 abs_s32(s32 x)
++{
++	return x >= 0 ? (u32)x : -(u32)x;
++}
 +
- 	/* INTEL VALUE SSD */
- 	{ USB_DEVICE(0x8086, 0xf1a5), .driver_info = USB_QUIRK_RESET_RESUME },
- 
-diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
-index 2f7bd2fdc6164..b3cc7beab4a3c 100644
---- a/include/linux/usb/quirks.h
-+++ b/include/linux/usb/quirks.h
-@@ -78,4 +78,7 @@
- /* skip BOS descriptor request */
- #define USB_QUIRK_NO_BOS			BIT(17)
- 
-+/* Device claims zero configurations, forcing to 1 */
-+#define USB_QUIRK_FORCE_ONE_CONFIG		BIT(18)
-+
- #endif /* __LINUX_USB_QUIRKS_H */
+ /**
+  *	___bpf_prog_run - run eBPF program on a given context
+  *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
+@@ -1831,8 +1837,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = do_div(AX, (u32) SRC);
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			AX = do_div(AX, abs((s32)SRC));
++			AX = abs_s32((s32)DST);
++			AX = do_div(AX, abs_s32((s32)SRC));
+ 			if ((s32)DST < 0)
+ 				DST = (u32)-AX;
+ 			else
+@@ -1859,8 +1865,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = do_div(AX, (u32) IMM);
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			AX = do_div(AX, abs((s32)IMM));
++			AX = abs_s32((s32)DST);
++			AX = do_div(AX, abs_s32((s32)IMM));
+ 			if ((s32)DST < 0)
+ 				DST = (u32)-AX;
+ 			else
+@@ -1886,8 +1892,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = (u32) AX;
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			do_div(AX, abs((s32)SRC));
++			AX = abs_s32((s32)DST);
++			do_div(AX, abs_s32((s32)SRC));
+ 			if (((s32)DST < 0) == ((s32)SRC < 0))
+ 				DST = (u32)AX;
+ 			else
+@@ -1913,8 +1919,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 			DST = (u32) AX;
+ 			break;
+ 		case 1:
+-			AX = abs((s32)DST);
+-			do_div(AX, abs((s32)IMM));
++			AX = abs_s32((s32)DST);
++			do_div(AX, abs_s32((s32)IMM));
+ 			if (((s32)DST < 0) == ((s32)IMM < 0))
+ 				DST = (u32)AX;
+ 			else
 -- 
 2.51.0
 
