@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kP54B1kDzGmPNQYAu9opvQ
-	(envelope-from <stable+bounces-232054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:41 +0200
+	id cJTuAmH/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A268136EA46
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB58136DEC9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6772A31CD081
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C98143034325
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D053EF0A2;
-	Tue, 31 Mar 2026 16:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE96425CC5;
+	Tue, 31 Mar 2026 17:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQGhnUla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1xP40oE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF17F33120E;
-	Tue, 31 Mar 2026 16:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F0F3A1E8C;
+	Tue, 31 Mar 2026 17:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975757; cv=none; b=RgteK8Otxk1EZwRz9+Ci1bZo+uElTl8/RrkgiYLLCwJq7+5Exmnh5iXuZU3URJ2AZYYkl3hGm+JL+3lUiYkyxQCB7gPxIiKM5QA1TMr3vAcwbd7Ouqp2v/N5q4bebQ/JzAAiecb9nziPsDu0NwIV6ma3e/llTrkwWn53QzwFteA=
+	t=1774976402; cv=none; b=L4YTGAQz2RrahfVrtX8ia/RCIHyyih+c21EAsMnUREJ/oDC5dk/K5UGu7QgaVOTh/ldmrdnqvnxJ/QevpModFl3wZXTIyze272cyZeF3Vca5auhKOcMQDL+yZzz28QfWOS45JClfP3a8FgOJK/kyIvJE9DvbBZs/IIYL+R5kDPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975757; c=relaxed/simple;
-	bh=NUXTR2GRk9hxI1lZaYa4e85lO/Yb25g43j/fLunu17E=;
+	s=arc-20240116; t=1774976402; c=relaxed/simple;
+	bh=QdddpCzNslIpHjyyP2he+/toZzTcaX64KQUk/bs4JoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DfAHPvKQQnP6xVd9Rj7sWXV7mFaKz4+MIQDSP0QO6kSaqskOUThLH9mctZZbLdhfdOgTGCjbyREL+r2tMIAsWzBzLIroNCQmh/SIfnloKY6jyrbbR67fPA33Bwcd+wXGXYxoXDlN13q7DaScmyTnn8+XZkUggpGAjC4bsLjdtOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQGhnUla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345E8C19423;
-	Tue, 31 Mar 2026 16:49:16 +0000 (UTC)
+	 MIME-Version; b=raN4zfHqpU44AtRZZGNnjrxV/DuDA8npadFFsAykCfL9bV57wcTTTVzo/3HfsdjtSlNGJOSTMQgHUVIqwybkGzZUkKend8HSmchggLFumaqZlOh6BK5DA0hudBzrNKtpP42O5J/KYUa6YrnVgXpKA8RSUDFNMisRFKrtcXmOEXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1xP40oE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA52C19423;
+	Tue, 31 Mar 2026 17:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975756;
-	bh=NUXTR2GRk9hxI1lZaYa4e85lO/Yb25g43j/fLunu17E=;
+	s=korg; t=1774976402;
+	bh=QdddpCzNslIpHjyyP2he+/toZzTcaX64KQUk/bs4JoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQGhnUla3zkf2BbH5oLSuPLdi6MOARjJFMyOUkNrAyx0ksflACRjcWtbZyckl41PB
-	 QvLm1wrvkY0XBMioFbQyakQd+KpExHEjvwcJ9HLnrtCpPF8jifmF1TytwjuKdI0TrR
-	 ECb+5EaM0G4SjKwciJjkSHekg+duoI3A2eq8dqmg=
+	b=d1xP40oE4RrSQUVDoy5rPyEiweP73MDRCBu5Ib0bfhzAr7p+oY3Ug6nqE/7c+3WQk
+	 XQbGQ9WJsL9Od/Eyr2eCaPoTbJU6VZUQhaRq9gus+ED30pTRMYFNlCjd8Hza2S+sAp
+	 GvKksXLArXJodY3UYyn6WQS81nHn1Fl5TyFJqGR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alexander Potapenko <glider@google.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/244] dma-buf: Include ioctl.h in UAPI header
+Subject: [PATCH 6.18 078/309] dma: swiotlb: add KMSAN annotations to swiotlb_bounce()
 Date: Tue, 31 Mar 2026 18:19:41 +0200
-Message-ID: <20260331161742.851760519@linuxfoundation.org>
+Message-ID: <20260331161756.358866019@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232054-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232303-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A268136EA46
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BB58136DEC9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit a116bac87118903925108e57781bbfc7a7eea27b ]
+[ Upstream commit 6f770b73d0311a5b099277653199bb6421c4fed2 ]
 
-include/uapi/linux/dma-buf.h uses several macros from ioctl.h to define
-its ioctl commands. However, it does not include ioctl.h itself. So,
-if userspace source code tries to include the dma-buf.h file without
-including ioctl.h, it can result in build failures.
+When a device performs DMA to a bounce buffer, KMSAN is unaware of
+the write and does not mark the data as initialized.  When
+swiotlb_bounce() later copies the bounce buffer back to the original
+buffer, memcpy propagates the uninitialized shadow to the original
+buffer, causing false positive uninit-value reports.
 
-Therefore, include ioctl.h in the dma-buf UAPI header.
+Fix this by calling kmsan_unpoison_memory() on the bounce buffer
+before copying it back in the DMA_FROM_DEVICE path, so that memcpy
+naturally propagates initialized shadow to the destination.
 
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20260303002309.1401849-1-isaacmanjarres@google.com
+Suggested-by: Alexander Potapenko <glider@google.com>
+Link: https://lore.kernel.org/CAG_fn=WUGta-paG1BgsGRoAR+fmuCgh3xo=R3XdzOt_-DqSdHw@mail.gmail.com/
+Fixes: 7ade4f10779c ("dma: kmsan: unpoison DMA mappings")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20260315082750.2375581-1-syoshida@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/dma-buf.h | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/dma/swiotlb.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/dma-buf.h b/include/uapi/linux/dma-buf.h
-index 5a6fda66d9adf..e827c9d20c5d3 100644
---- a/include/uapi/linux/dma-buf.h
-+++ b/include/uapi/linux/dma-buf.h
-@@ -20,6 +20,7 @@
- #ifndef _DMA_BUF_UAPI_H_
- #define _DMA_BUF_UAPI_H_
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 0d37da3d95b65..e27225f8aeb27 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -30,6 +30,7 @@
+ #include <linux/gfp.h>
+ #include <linux/highmem.h>
+ #include <linux/io.h>
++#include <linux/kmsan-checks.h>
+ #include <linux/iommu-helper.h>
+ #include <linux/init.h>
+ #include <linux/memblock.h>
+@@ -903,10 +904,19 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
  
-+#include <linux/ioctl.h>
- #include <linux/types.h>
+ 			local_irq_save(flags);
+ 			page = pfn_to_page(pfn);
+-			if (dir == DMA_TO_DEVICE)
++			if (dir == DMA_TO_DEVICE) {
++				/*
++				 * Ideally, kmsan_check_highmem_page()
++				 * could be used here to detect infoleaks,
++				 * but callers may map uninitialized buffers
++				 * that will be written by the device,
++				 * causing false positives.
++				 */
+ 				memcpy_from_page(vaddr, page, offset, sz);
+-			else
++			} else {
++				kmsan_unpoison_memory(vaddr, sz);
+ 				memcpy_to_page(page, offset, vaddr, sz);
++			}
+ 			local_irq_restore(flags);
  
- /**
+ 			size -= sz;
+@@ -915,8 +925,15 @@ static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size
+ 			offset = 0;
+ 		}
+ 	} else if (dir == DMA_TO_DEVICE) {
++		/*
++		 * Ideally, kmsan_check_memory() could be used here to detect
++		 * infoleaks (uninitialized data being sent to device), but
++		 * callers may map uninitialized buffers that will be written
++		 * by the device, causing false positives.
++		 */
+ 		memcpy(vaddr, phys_to_virt(orig_addr), size);
+ 	} else {
++		kmsan_unpoison_memory(vaddr, size);
+ 		memcpy(phys_to_virt(orig_addr), vaddr, size);
+ 	}
+ }
 -- 
 2.51.0
 
