@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-231491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKQ8Lfv1y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231491-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:39 +0200
+	id wHyXIfT/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D33E36C9C0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:27:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0624936E0D9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 922BB304B5A3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D0EF230FEA6C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696843DB62F;
-	Tue, 31 Mar 2026 16:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711F6301471;
+	Tue, 31 Mar 2026 17:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgJCzYn0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylKQ48Lj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B36430E0DC;
-	Tue, 31 Mar 2026 16:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643712FDC5E;
+	Tue, 31 Mar 2026 17:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974310; cv=none; b=Mo9l2Ev6FbN1oe03ng+mTH6hGvh8KmTLh9cC/eTPeRGWYBUI+AaaiJyUCuKGb00Mt37xwZGktOIbpM3YMb6wANtvqXiHRFPddhAHDVf/Wm3AkFWzSlxUSIFZUP2i2T5aDrzk2IdUwVqsYXicO7j3N6nXbe8QMW72egZdbnHUHmk=
+	t=1774976498; cv=none; b=MDt1VNQLCo/45fby/Y1WBkQJqY1au25agkO3hvlnW+4BqJ3Qivjl+iocbH5JxXFXRkUeXFMYSN1vkVnm1ENMTTe+kvFZZNv6j1mXA/cVywgFOsikETekPGSSBRLb7emKlA/f8nRi8AWYQ+PEkE1STfNpPF27y4fh+x3+/z1xYCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974310; c=relaxed/simple;
-	bh=FqISV540026RrEUFfDwSsBVi5y7KZsQd+znL21YIi4E=;
+	s=arc-20240116; t=1774976498; c=relaxed/simple;
+	bh=E72b2tGJw5W4Z1hV+LtaAou17uT0SskCDtApwZqkAyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k0daRY2FRgqJhzUzGo3ko3P//KfY79A9XcDQ/zbo9aS+Qn92yWb7pcZCau6zte6l6VuWiJEO3jfpLpoPakZwD42YmzH2hY9SXaTL6FR30XMFBtGRWb8YXuBKiz0qBqPDe+5oCgDNBJ0zvapj5IwTXA61naaHCDOUcXCXrNsRYoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgJCzYn0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D416C19423;
-	Tue, 31 Mar 2026 16:25:09 +0000 (UTC)
+	 MIME-Version; b=SrQaHln0jU5nktTc7NZToDUr96zWsFxGQXK7RPSYwc0Xi3gDGh47hRnXAGyFDOIpORmUAIJf46hlAIAjJTipBVZ38g0JqcVNJmjIZvdEV2w6y4ZStPyUZOY4sxS3mdcJGY8hjQLIoZ9wyeMv2BuQGr+Agkob2l/Fq70PCHcH3hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylKQ48Lj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84237C19423;
+	Tue, 31 Mar 2026 17:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974309;
-	bh=FqISV540026RrEUFfDwSsBVi5y7KZsQd+znL21YIi4E=;
+	s=korg; t=1774976497;
+	bh=E72b2tGJw5W4Z1hV+LtaAou17uT0SskCDtApwZqkAyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgJCzYn07PXeHAScGMI4DQvUTl10MP/ZBcS8Kkm9R/9LRxp8EjlE9//EQ3syIaYFr
-	 10QEw/5DbEoMmcS1mM1C2zXudU6FhZ73F6kkbUXiEH3hcoCLwymAmi/LNd5Kj+KCu6
-	 aTsPN0p5fThsROVHIzjQk918rdKdkUBgnyJEWChc=
+	b=ylKQ48LjoTa2/VA+lfMxMjCPyTssHDjGHklPzXsFQqE5E4EBfLinSFvnudtgzwMra
+	 khXkrEjSKVf+uW6EhhusJIlfi3BRKI8VyYkIG/5ptZawGhC652BlcI+Ool0UPSYPh7
+	 h71x+aX36Xz5APPSwWIXub1FeLVo1v2irNAe5Xdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Eric Dumazet <edumazet@google.com>,
+	syzbot+3d8bc31c45e11450f24c@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/175] xfrm: Fix the usage of skb->sk
+Subject: [PATCH 6.18 115/309] team: fix header_ops type confusion with non-Ethernet ports
 Date: Tue, 31 Mar 2026 18:20:18 +0200
-Message-ID: <20260331161731.038268360@linuxfoundation.org>
+Message-ID: <20260331161757.717227655@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,168 +66,166 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231491-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232340-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5D33E36C9C0
+	TAGGED_RCPT(0.00)[stable,3d8bc31c45e11450f24c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,shopee.com:email,msgid.link:url,linux.dev:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 0624936E0D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steffen Klassert <steffen.klassert@secunet.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 1620c88887b16940e00dbe57dd38c74eda9bad9e ]
+[ Upstream commit 425000dbf17373a4ab8be9428f5dc055ef870a56 ]
 
-xfrm assumed to always have a full socket at skb->sk.
-This is not always true, so fix it by converting to a
-full socket before it is used.
+Similar to commit 950803f72547 ("bonding: fix type confusion in
+bond_setup_by_slave()") team has the same class of header_ops type
+confusion.
 
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Stable-dep-of: 0c0eef8ccd24 ("esp: fix skb leak with espintcp and async crypto")
+For non-Ethernet ports, team_setup_by_port() copies port_dev->header_ops
+directly. When the team device later calls dev_hard_header() or
+dev_parse_header(), these callbacks can run with the team net_device
+instead of the real lower device, so netdev_priv(dev) is interpreted as
+the wrong private type and can crash.
+
+The syzbot report shows a crash in bond_header_create(), but the root
+cause is in team: the topology is gre -> bond -> team, and team calls
+the inherited header_ops with its own net_device instead of the lower
+device, so bond_header_create() receives a team device and interprets
+netdev_priv() as bonding private data, causing a type confusion crash.
+
+Fix this by introducing team header_ops wrappers for create/parse,
+selecting a team port under RCU, and calling the lower device callbacks
+with port->dev, so each callback always sees the correct net_device
+context.
+
+Also pass the selected lower device to the lower parse callback, so
+recursion is bounded in stacked non-Ethernet topologies and parse
+callbacks always run with the correct device context.
+
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Reported-by: syzbot+3d8bc31c45e11450f24c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69b46af7.050a0220.36eb34.000e.GAE@google.com/T/
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260320072139.134249-2-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4.c                | 2 +-
- net/ipv6/esp6.c                | 2 +-
- net/ipv6/xfrm6_output.c        | 4 ++--
- net/xfrm/xfrm_interface_core.c | 2 +-
- net/xfrm/xfrm_output.c         | 7 ++++---
- net/xfrm/xfrm_policy.c         | 2 +-
- 6 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/team/team_core.c | 65 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 2caf6a2a819b2..85e24dc42f2f3 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -236,7 +236,7 @@ static void esp_output_done(void *data, int err)
- 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
- 			esp_output_tail_tcp(x, skb);
- 		else
--			xfrm_output_resume(skb->sk, skb, err);
-+			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- 	}
- }
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index 6ec6708c52e2d..a98f5e5061544 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -2059,6 +2059,68 @@ static const struct ethtool_ops team_ethtool_ops = {
+  * rt netlink interface
+  ***********************/
  
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 2caaab61b9967..be8e2e5b439ed 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -272,7 +272,7 @@ static void esp_output_done(void *data, int err)
- 		    x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
- 			esp_output_tail_tcp(x, skb);
- 		else
--			xfrm_output_resume(skb->sk, skb, err);
-+			xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- 	}
- }
- 
-diff --git a/net/ipv6/xfrm6_output.c b/net/ipv6/xfrm6_output.c
-index ad07904642cad..ff183bd76c998 100644
---- a/net/ipv6/xfrm6_output.c
-+++ b/net/ipv6/xfrm6_output.c
-@@ -82,14 +82,14 @@ static int __xfrm6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 
- 	toobig = skb->len > mtu && !skb_is_gso(skb);
- 
--	if (toobig && xfrm6_local_dontfrag(skb->sk)) {
-+	if (toobig && xfrm6_local_dontfrag(sk)) {
- 		xfrm6_local_rxpmtu(skb, mtu);
- 		kfree_skb(skb);
- 		return -EMSGSIZE;
- 	} else if (toobig && xfrm6_noneed_fragment(skb)) {
- 		skb->ignore_df = 1;
- 		goto skip_frag;
--	} else if (!skb->ignore_df && toobig && skb->sk) {
-+	} else if (!skb->ignore_df && toobig && sk) {
- 		xfrm_local_error(skb, mtu);
- 		kfree_skb(skb);
- 		return -EMSGSIZE;
-diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
-index ca6db1e960ce6..44e48c58aa324 100644
---- a/net/xfrm/xfrm_interface_core.c
-+++ b/net/xfrm/xfrm_interface_core.c
-@@ -507,7 +507,7 @@ xfrmi_xmit2(struct sk_buff *skb, struct net_device *dev, struct flowi *fl)
- 	skb_dst_set(skb, dst);
- 	skb->dev = tdev;
- 
--	err = dst_output(xi->net, skb->sk, skb);
-+	err = dst_output(xi->net, skb_to_full_sk(skb), skb);
- 	if (net_xmit_eval(err) == 0) {
- 		dev_sw_netstats_tx_add(dev, 1, length);
- 	} else {
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index 9277dd4ed541a..a5b5d82bd7550 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -841,7 +841,7 @@ static int xfrm4_tunnel_check_size(struct sk_buff *skb)
- 	     !skb_gso_validate_network_len(skb, ip_skb_dst_mtu(skb->sk, skb)))) {
- 		skb->protocol = htons(ETH_P_IP);
- 
--		if (skb->sk)
-+		if (skb->sk && sk_fullsock(skb->sk))
- 			xfrm_local_error(skb, mtu);
- 		else
- 			icmp_send(skb, ICMP_DEST_UNREACH,
-@@ -877,6 +877,7 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
++/* For tx path we need a linkup && enabled port and for parse any port
++ * suffices.
++ */
++static struct team_port *team_header_port_get_rcu(struct team *team,
++						  bool txable)
++{
++	struct team_port *port;
++
++	list_for_each_entry_rcu(port, &team->port_list, list) {
++		if (!txable || team_port_txable(port))
++			return port;
++	}
++
++	return NULL;
++}
++
++static int team_header_create(struct sk_buff *skb, struct net_device *team_dev,
++			      unsigned short type, const void *daddr,
++			      const void *saddr, unsigned int len)
++{
++	struct team *team = netdev_priv(team_dev);
++	const struct header_ops *port_ops;
++	struct team_port *port;
++	int ret = 0;
++
++	rcu_read_lock();
++	port = team_header_port_get_rcu(team, true);
++	if (port) {
++		port_ops = READ_ONCE(port->dev->header_ops);
++		if (port_ops && port_ops->create)
++			ret = port_ops->create(skb, port->dev,
++					       type, daddr, saddr, len);
++	}
++	rcu_read_unlock();
++	return ret;
++}
++
++static int team_header_parse(const struct sk_buff *skb,
++			     const struct net_device *team_dev,
++			     unsigned char *haddr)
++{
++	struct team *team = netdev_priv(team_dev);
++	const struct header_ops *port_ops;
++	struct team_port *port;
++	int ret = 0;
++
++	rcu_read_lock();
++	port = team_header_port_get_rcu(team, false);
++	if (port) {
++		port_ops = READ_ONCE(port->dev->header_ops);
++		if (port_ops && port_ops->parse)
++			ret = port_ops->parse(skb, port->dev, haddr);
++	}
++	rcu_read_unlock();
++	return ret;
++}
++
++static const struct header_ops team_header_ops = {
++	.create		= team_header_create,
++	.parse		= team_header_parse,
++};
++
+ static void team_setup_by_port(struct net_device *dev,
+ 			       struct net_device *port_dev)
  {
- 	int mtu, ret = 0;
- 	struct dst_entry *dst = skb_dst(skb);
-+	struct sock *sk = skb_to_full_sk(skb);
- 
- 	if (skb->ignore_df)
- 		goto out;
-@@ -891,9 +892,9 @@ static int xfrm6_tunnel_check_size(struct sk_buff *skb)
- 		skb->dev = dst->dev;
- 		skb->protocol = htons(ETH_P_IPV6);
- 
--		if (xfrm6_local_dontfrag(skb->sk))
-+		if (xfrm6_local_dontfrag(sk))
- 			ipv6_stub->xfrm6_local_rxpmtu(skb, mtu);
--		else if (skb->sk)
-+		else if (sk)
- 			xfrm_local_error(skb, mtu);
- 		else
- 			icmpv6_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index b516dd15113ed..45851f822ec4a 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -2937,7 +2937,7 @@ static void xfrm_policy_queue_process(struct timer_list *t)
- 		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 
--		dst_output(net, skb->sk, skb);
-+		dst_output(net, skb_to_full_sk(skb), skb);
- 	}
- 
- out:
+@@ -2067,7 +2129,8 @@ static void team_setup_by_port(struct net_device *dev,
+ 	if (port_dev->type == ARPHRD_ETHER)
+ 		dev->header_ops	= team->header_ops_cache;
+ 	else
+-		dev->header_ops	= port_dev->header_ops;
++		dev->header_ops	= port_dev->header_ops ?
++				  &team_header_ops : NULL;
+ 	dev->type = port_dev->type;
+ 	dev->hard_header_len = port_dev->hard_header_len;
+ 	dev->needed_headroom = port_dev->needed_headroom;
 -- 
 2.51.0
 
