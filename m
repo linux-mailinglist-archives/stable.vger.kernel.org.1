@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-231780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232299-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFCAFpn6y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:47:21 +0200
+	id 4NHhEVH/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232299-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49D336D240
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:47:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F3D36DEB4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B4019306FE9A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63EF430CBCCC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C6B42E01F;
-	Tue, 31 Mar 2026 16:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1208F423A9B;
+	Tue, 31 Mar 2026 16:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqHBsCQD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKeixFlC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1415042B749;
-	Tue, 31 Mar 2026 16:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9814423A62;
+	Tue, 31 Mar 2026 16:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975050; cv=none; b=Ubunj/W90LZkSFEo8DF90hw67k730OVNtPQUqDkHodHt0IK7SDytFkTLxnh2Ihca01hotPfkRihLQ8w45B/woMmf6/28S9hjaAZKvhPsYPH3efNyJKj8sX6PewVgYdS7acYevG1QNO11NtUzAlc62AJCraJX23QDU7PgwzsJOic=
+	t=1774976390; cv=none; b=X/SM22Rx4FiLOkqB0Bz75LT1QPmey7GvFve5CNrb9JAsO28RzHpWgZTpFzcSK0ztXnbLc9ucdcikqJbdLVr1vSrohDSiyYoKh5MkBiYNdSSla8CvNDyZqWUwYo84uYVxJo+M9t2L7WZmeVje80T45TBzexOtruCnV3rwTRkP1Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975050; c=relaxed/simple;
-	bh=cpvaPajKKb7Hg0NhcM1DOLUywA/3Rjd3v093csPUYek=;
+	s=arc-20240116; t=1774976390; c=relaxed/simple;
+	bh=WdKOhgQd3iyjSP9VOfUGCMEu0Ku6OqX3AAyRQJ22iG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+7vT+9iPMhLUKoMWJk9GIJlhlvLYlDUze5DMiNe/rP6kLEDwK6JRSQ/s76bc14cqFoC0GNC2EH9Hn0o+t1C/g9FzJGaz/gCbGVZSkyMp5XvtnGSzfjghdoypttuCZyrESmS/CwvExdWGozQppr20bqPQtA1+PZGGpxjQksREus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqHBsCQD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73745C19423;
-	Tue, 31 Mar 2026 16:37:29 +0000 (UTC)
+	 MIME-Version; b=cO8FsMxLsLZ+KFlOEuPe332Q52tMA1DrxyOm1js37covrUfTmyu7uH26dfriO0m5g7VL528Rk3QdS2+MnA0sBkPWIS3yK3yaF9lprlG64aGbPY0MlzZpVPArRY8uHkFl9T33/+puk0V9e2sa+eLsxooUjZduG0Er+agmoriF4S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKeixFlC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9E9C19423;
+	Tue, 31 Mar 2026 16:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975050;
-	bh=cpvaPajKKb7Hg0NhcM1DOLUywA/3Rjd3v093csPUYek=;
+	s=korg; t=1774976390;
+	bh=WdKOhgQd3iyjSP9VOfUGCMEu0Ku6OqX3AAyRQJ22iG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vqHBsCQDh/DJJ+YK0bNCwyxFOuFLuNWLSm7vQzgv/zsdOlMfhoK8UA/+NlZyIz8jV
-	 6biubrnIJFnMMc5uscmwiOnjcXX86PrscAh/kx5zKxVrh6u8lIMUo4e1Vvy2mz7VOW
-	 +HwJ3Im6oTJX02/IH4tPvJUmPkAkUesEopyDTfTc=
+	b=LKeixFlChEZ3zVGzuzVFk9U77vRks1WCmgAR3isjEwVWn6BryTANMgqhOPz398mwI
+	 z19m2pvA+EMPBkaDCkap4L/owuCQqz9WXofSib4l3uoidCo67YFctV7Q0nPgcq46gg
+	 /ex/m0ZwudRy18CMLk15KNdaN6Is99BvUE4+hCNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 144/342] netfilter: nf_conntrack_sip: fix use of uninitialized rtp_addr in process_sdp
-Date: Tue, 31 Mar 2026 18:19:37 +0200
-Message-ID: <20260331161804.306524900@linuxfoundation.org>
+Subject: [PATCH 6.18 075/309] xfrm: Fix work re-schedule after cancel in xfrm_nat_keepalive_net_fini()
+Date: Tue, 31 Mar 2026 18:19:38 +0200
+Message-ID: <20260331161756.249545750@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,122 +69,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231780-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,queasysnail.net,secunet.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232299-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email]
-X-Rspamd-Queue-Id: E49D336D240
+	DBL_BLOCKED_OPENRESOLVER(0.00)[queasysnail.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,secunet.com:email]
+X-Rspamd-Queue-Id: E0F3D36DEB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 6a2b724460cb67caed500c508c2ae5cf012e4db4 ]
+[ Upstream commit daf8e3b253aa760ff9e96c7768a464bc1d6b3c90 ]
 
-process_sdp() declares union nf_inet_addr rtp_addr on the stack and
-passes it to the nf_nat_sip sdp_session hook after walking the SDP
-media descriptions. However rtp_addr is only initialized inside the
-media loop when a recognized media type with a non-zero port is found.
+After cancel_delayed_work_sync() is called from
+xfrm_nat_keepalive_net_fini(), xfrm_state_fini() flushes remaining
+states via __xfrm_state_delete(), which calls
+xfrm_nat_keepalive_state_updated() to re-schedule nat_keepalive_work.
 
-If the SDP body contains no m= lines, only inactive media sections
-(m=audio 0 ...) or only unrecognized media types, rtp_addr is never
-assigned. Despite that, the function still calls hooks->sdp_session()
-with &rtp_addr, causing nf_nat_sdp_session() to format the stale stack
-value as an IP address and rewrite the SDP session owner and connection
-lines with it.
+The following is a simple race scenario:
 
-With CONFIG_INIT_STACK_ALL_ZERO (default on most distributions) this
-results in the session-level o= and c= addresses being rewritten to
-0.0.0.0 for inactive SDP sessions. Without stack auto-init the
-rewritten address is whatever happened to be on the stack.
+           cpu0                             cpu1
 
-Fix this by pre-initializing rtp_addr from the session-level connection
-address (caddr) when available, and tracking via a have_rtp_addr flag
-whether any valid address was established. Skip the sdp_session hook
-entirely when no valid address exists.
+cleanup_net() [Round 1]
+  ops_undo_list()
+    xfrm_net_exit()
+      xfrm_nat_keepalive_net_fini()
+        cancel_delayed_work_sync(nat_keepalive_work);
+      xfrm_state_fini()
+        xfrm_state_flush()
+          xfrm_state_delete(x)
+            __xfrm_state_delete(x)
+              xfrm_nat_keepalive_state_updated(x)
+                schedule_delayed_work(nat_keepalive_work);
+  rcu_barrier();
+  net_complete_free();
+  net_passive_dec(net);
+    llist_add(&net->defer_free_list, &defer_free_list);
 
-Fixes: 4ab9e64e5e3c ("[NETFILTER]: nf_nat_sip: split up SDP mangling")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+cleanup_net() [Round 2]
+  rcu_barrier();
+  net_complete_free()
+    kmem_cache_free(net_cachep, net);
+                                     nat_keepalive_work()
+                                       // on freed net
+
+To prevent this, cancel_delayed_work_sync() is replaced with
+disable_delayed_work_sync().
+
+Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UDP states")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_sip.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ net/xfrm/xfrm_nat_keepalive.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 4ab5ef71d96db..17af0ff4ea7ab 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1040,6 +1040,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 	unsigned int port;
- 	const struct sdp_media_type *t;
- 	int ret = NF_ACCEPT;
-+	bool have_rtp_addr = false;
+diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.c
+index ebf95d48e86c1..1856beee0149b 100644
+--- a/net/xfrm/xfrm_nat_keepalive.c
++++ b/net/xfrm/xfrm_nat_keepalive.c
+@@ -261,7 +261,7 @@ int __net_init xfrm_nat_keepalive_net_init(struct net *net)
  
- 	hooks = rcu_dereference(nf_nat_sip_hooks);
+ int xfrm_nat_keepalive_net_fini(struct net *net)
+ {
+-	cancel_delayed_work_sync(&net->xfrm.nat_keepalive_work);
++	disable_delayed_work_sync(&net->xfrm.nat_keepalive_work);
+ 	return 0;
+ }
  
-@@ -1056,8 +1057,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 	caddr_len = 0;
- 	if (ct_sip_parse_sdp_addr(ct, *dptr, sdpoff, *datalen,
- 				  SDP_HDR_CONNECTION, SDP_HDR_MEDIA,
--				  &matchoff, &matchlen, &caddr) > 0)
-+				  &matchoff, &matchlen, &caddr) > 0) {
- 		caddr_len = matchlen;
-+		memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
-+		have_rtp_addr = true;
-+	}
- 
- 	mediaoff = sdpoff;
- 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
-@@ -1091,9 +1095,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 					  &matchoff, &matchlen, &maddr) > 0) {
- 			maddr_len = matchlen;
- 			memcpy(&rtp_addr, &maddr, sizeof(rtp_addr));
--		} else if (caddr_len)
-+			have_rtp_addr = true;
-+		} else if (caddr_len) {
- 			memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
--		else {
-+			have_rtp_addr = true;
-+		} else {
- 			nf_ct_helper_log(skb, ct, "cannot parse SDP message");
- 			return NF_DROP;
- 		}
-@@ -1125,7 +1131,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 
- 	/* Update session connection and owner addresses */
- 	hooks = rcu_dereference(nf_nat_sip_hooks);
--	if (hooks && ct->status & IPS_NAT_MASK)
-+	if (hooks && ct->status & IPS_NAT_MASK && have_rtp_addr)
- 		ret = hooks->sdp_session(skb, protoff, dataoff,
- 					 dptr, datalen, sdpoff,
- 					 &rtp_addr);
 -- 
 2.51.0
 
