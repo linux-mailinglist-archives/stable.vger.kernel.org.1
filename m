@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGAAJ4//y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:31 +0200
+	id G+JMJIABzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABF836DF49
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:08:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AA336E61F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 38AC130E05A9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:00:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 309F83121288
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D852D9EE4;
-	Tue, 31 Mar 2026 17:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A44425CC4;
+	Tue, 31 Mar 2026 16:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdnBbstE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCMtgb9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071312D3EF2;
-	Tue, 31 Mar 2026 17:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0DC423A9B;
+	Tue, 31 Mar 2026 16:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976415; cv=none; b=oDM5uaoZmQIBPBiC+kP1pANXuEVWpc7Eh+deBQ6Wt5LwX9hk+/VVJXlh46kR2tSS443iYlmXjfIxLrz7qmQgh+4LSDiNTKyQdvm5L/cwFwj8XOSDhKtmleq2YZdraQRaFJKPbPMJyY4M9ztE57wlz3pAljxB2v4jQzXp4Xs1fXI=
+	t=1774975744; cv=none; b=PuNRLLi57osmEF0g8yXNPP21XXjvAX1GBcFl3AYkeeSre2f7+nRh6vgdZybhP+NrITrswa/KgipGaj05s+I9UH7FFRUjC1EPhWPEB6pfOPnHUTP5VdQTbYF3Y95Yj4JTJ92lq2BdoEdPQ4Ma2u9EI23gFDiDq7PNfLokP5n0EW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976415; c=relaxed/simple;
-	bh=DVOq7zH9mO8DKQTrQ+6a31shwsz63FcSVFWab4q5Khs=;
+	s=arc-20240116; t=1774975744; c=relaxed/simple;
+	bh=0NLLhAHWwsZhGlK9mLLy/mVlepQYbJEqbHQj0mC8GmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWK1AVjl7BaHwENwCLVRhHJvvnu3lFi/HtLa6E+DgxZkHV0xm3e9wvMlP59YnCrB1QV3UuWJ/H5qcH5VJ0MtV5C2pIby5eXRxI9F/q1J6hiwCi340gRFLSHRChI1WQ4wJbNlYJ4KQ7mF/Xk+6e23xNXe5nTP/oCTACSFp2pVQL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdnBbstE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8994AC19423;
-	Tue, 31 Mar 2026 17:00:14 +0000 (UTC)
+	 MIME-Version; b=P018FA3pwVFUkQIZ2wqDsdlbVL4gWOoho6lDyHLKgtQSUoEkO/FxKf4WzLuzXPnPtiMwSjavnul5fNO1DmZTwYKHpyQsseFhw5sz1TIOD8T/8aqfP8Gx0AAaE9aUYeJ4f8mN8XD7HW/GPuQrg/jqyG7dyV4vgVnwzxn0QyQOfBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCMtgb9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9A4C19423;
+	Tue, 31 Mar 2026 16:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976414;
-	bh=DVOq7zH9mO8DKQTrQ+6a31shwsz63FcSVFWab4q5Khs=;
+	s=korg; t=1774975743;
+	bh=0NLLhAHWwsZhGlK9mLLy/mVlepQYbJEqbHQj0mC8GmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdnBbstEl5ATXt+7gmqINvb5sp/hiWskdyP04J7nQSGQvQuClYIcRQYkQrtsvVGwd
-	 NXuAQurIryUDQq28mRzsr53lFIY8i7p0osWfxc/JOwr+gF8xbnEzH8RJs0/sR649YU
-	 R/FkoEbtDlc8ctZLZHwT/Bfz5RqhEJRXk+GR2hZE=
+	b=UCMtgb9ngpCsr9CeVVKOs+4fMbzhuhDayOk6gXLtOfBi+/g9TjvADHrmQchYLx6ZQ
+	 s7IghTG88YQA1zi88Q3KkFtCrucIHUVYTFgnEyijWYcSjV0/vU2EuERPb+zhQU+Eim
+	 iHGys90EwADIDDrF4DFX6352V6K7wdG5Z1BRYl1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	zhidao su <suzhidao@xiaomi.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 083/309] Bluetooth: L2CAP: Validate PDU length before reading SDU length in l2cap_ecred_data_rcv()
+Subject: [PATCH 6.12 036/244] sched_ext: Use WRITE_ONCE() for the write side of dsq->seq update
 Date: Tue, 31 Mar 2026 18:19:46 +0200
-Message-ID: <20260331161756.540550092@linuxfoundation.org>
+Message-ID: <20260331161743.034151026@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232308-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232049-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 1ABF836DF49
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,xiaomi.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B9AA336E61F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: zhidao su <soolaugust@gmail.com>
 
-[ Upstream commit c65bd945d1c08c3db756821b6bf9f1c4a77b29c6 ]
+[ Upstream commit 7a8464555d2e5f038758bb19e72ab4710b79e9cd ]
 
-l2cap_ecred_data_rcv() reads the SDU length field from skb->data using
-get_unaligned_le16() without first verifying that skb contains at least
-L2CAP_SDULEN_SIZE (2) bytes. When skb->len is less than 2, this reads
-past the valid data in the skb.
+bpf_iter_scx_dsq_new() reads dsq->seq via READ_ONCE() without holding
+any lock, making dsq->seq a lock-free concurrently accessed variable.
+However, dispatch_enqueue(), the sole writer of dsq->seq, uses a plain
+increment without the matching WRITE_ONCE() on the write side:
 
-The ERTM reassembly path correctly calls pskb_may_pull() before reading
-the SDU length (l2cap_reassemble_sdu, L2CAP_SAR_START case). Apply the
-same validation to the Enhanced Credit Based Flow Control data path.
+    dsq->seq++;
+    ^^^^^^^^^^^
+    plain write -- KCSAN data race
 
-Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+The KCSAN documentation requires that if one accessor uses READ_ONCE()
+or WRITE_ONCE() on a variable to annotate lock-free access, all other
+accesses must also use the appropriate accessor. A plain write leaves
+the pair incomplete and will trigger KCSAN warnings.
+
+Fix by using WRITE_ONCE() for the write side of the update:
+
+    WRITE_ONCE(dsq->seq, dsq->seq + 1);
+
+This is consistent with bpf_iter_scx_dsq_new() and makes the
+concurrent access annotation complete and KCSAN-clean.
+
+Signed-off-by: zhidao su <suzhidao@xiaomi.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/sched/ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 583fe3b654c11..848a9b945de89 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6672,6 +6672,11 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
- 	if (!chan->sdu) {
- 		u16 sdu_len;
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 545f197d330c1..86ef9c8f45dae 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -1775,7 +1775,7 @@ static void dispatch_enqueue(struct scx_dispatch_q *dsq, struct task_struct *p,
+ 	}
  
-+		if (!pskb_may_pull(skb, L2CAP_SDULEN_SIZE)) {
-+			err = -EINVAL;
-+			goto failed;
-+		}
-+
- 		sdu_len = get_unaligned_le16(skb->data);
- 		skb_pull(skb, L2CAP_SDULEN_SIZE);
+ 	/* seq records the order tasks are queued, used by BPF DSQ iterator */
+-	dsq->seq++;
++	WRITE_ONCE(dsq->seq, dsq->seq + 1);
+ 	p->scx.dsq_seq = dsq->seq;
  
+ 	dsq_mod_nr(dsq, 1);
 -- 
 2.51.0
 
