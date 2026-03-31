@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMEoEy0CzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232050-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:41 +0200
+	id EJoeHsL2y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B757836E7D6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A16136CAD5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4027731C0C8D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 09D6C305C0C3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2DC346E7F;
-	Tue, 31 Mar 2026 16:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D69A3FADEE;
+	Tue, 31 Mar 2026 16:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+kA0NRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k72eTs9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9E7423A91;
-	Tue, 31 Mar 2026 16:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F249C3E3174;
+	Tue, 31 Mar 2026 16:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975746; cv=none; b=ocMKrHEv9cLUaztjD8xAGDxF3Bfu7G52Gkcc0QNL0FeflSpr3ZDcAtNah7lU1GqzvTyHtZIu9aJtkTvCHaEVbpOV36ctA3gz5lUa/KSX1Zj9XxeK6iy66xOwILPHV199R+BTYOSyXDnJvl87g7OCTM86H6p72F5DzIXvMjRGssQ=
+	t=1774974336; cv=none; b=O203/SdfNSAIBpapGQY2aUzMbFukofi8sAkxdvBnahf3uyZ4sEJPnkI5FEatwpY2OGVGV8Xa/VAsMwd2iixRBeLCv8/TAvAagUg6hJ3B4bz8OmkGoVYbK5Lq3iJ2u0RfzwkZNmPZTfXE0LnjufwzwP62rj5oCmS7D95C2G+v2o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975746; c=relaxed/simple;
-	bh=nSv6+szENdFWQ+ng/6M5QiDXeHPKyEi7QpEBu7OE83U=;
+	s=arc-20240116; t=1774974336; c=relaxed/simple;
+	bh=rD2li+y8znJqUwQvaciEPf6oges0oS9hueLzt37EfIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivOrGYURon+dUc1IdGhSZRLqslVAl7BcJWZg3ItZlP0jIxmNoQxyhkmxCNu6RKh3OCzfatzpr954zcYahVBZZJPRadHbIB9tHefynuEa0s77ki03rU7VoI5nOQyMxyRSOH/0Qtlp45VjmCAQJTgeLkiUgEAZvQNbK57xCJEQk1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+kA0NRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB634C19423;
-	Tue, 31 Mar 2026 16:49:05 +0000 (UTC)
+	 MIME-Version; b=iKKDAcNfiMAKXSaO+Kz1tGWmez76OzyZhNaXePT9AnrRES+5+UtOPHeYjqy7Xm0wdp6n4/Pi4doTBrn2Lpu22AVyd5r0LhDD7sXf36tUbDbKAFcxz0s6JK3ZScXLdlDuvITerMWh7kQRyjRqSgUUrQZXSsffK0MrR1+J+bYXFic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k72eTs9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A28C19423;
+	Tue, 31 Mar 2026 16:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975746;
-	bh=nSv6+szENdFWQ+ng/6M5QiDXeHPKyEi7QpEBu7OE83U=;
+	s=korg; t=1774974335;
+	bh=rD2li+y8znJqUwQvaciEPf6oges0oS9hueLzt37EfIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+kA0NRWMAAEe4lfdh5y6khwAaCd9xijsm4pW6F/6QmwqRaIROef5a4ZXlhW9u4Z/
-	 C0xlXqMaLy4F2tPxV57JSGZgVbRjUCctUN7/rTwhGL+8FbFOjjLWMSdCqcqPWoiQ7V
-	 TQ5rv0aN1HHUQFJC6w0AdVCh413f6QNbCCe2SUhM=
+	b=k72eTs9VtMwF44yGR479MQ0rsY2XlspP73ZMxtP7vt4Mj34r6G7dsZglvzshc6xkB
+	 8+bMtpFo3VdUqnWGFZZySie8OUcr43ksCyhp/3TE6Dk3VhbJu60UUiZmBj5v2jwH0h
+	 yyjmiXFVAQ+AhaG63jsWXwhz1UddIM9wlrylJshI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/244] btrfs: set BTRFS_ROOT_ORPHAN_CLEANUP during subvol create
+Subject: [PATCH 6.6 003/175] cxl/hdm: Avoid incorrect DVSEC fallback when HDM decoders are enabled
 Date: Tue, 31 Mar 2026 18:19:47 +0200
-Message-ID: <20260331161743.070015752@linuxfoundation.org>
+Message-ID: <20260331161729.909978788@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232050-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231502-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,208 +86,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: B757836E7D6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: 0A16136CAD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 
-[ Upstream commit 5131fa077f9bb386a1b901bf5b247041f0ec8f80 ]
+[ Upstream commit 75cea0776de502f2a1be5ca02d37c586dc81887e ]
 
-We have recently observed a number of subvolumes with broken dentries.
-ls-ing the parent dir looks like:
+Check the global CXL_HDM_DECODER_ENABLE bit instead of looping over
+per-decoder COMMITTED bits to determine whether to fall back to DVSEC
+range emulation. When the HDM decoder capability is globally enabled,
+ignore DVSEC range registers regardless of individual decoder commit
+state.
 
-drwxrwxrwt 1 root root 16 Jan 23 16:49 .
-drwxr-xr-x 1 root root 24 Jan 23 16:48 ..
-d????????? ? ?    ?     ?            ? broken_subvol
+should_emulate_decoders() currently loops over per-decoder COMMITTED
+bits, which leads to an incorrect DVSEC fallback when those bits are
+zero. One way to trigger this is to destroy a region and bounce the
+memdev:
 
-and similarly stat-ing the file fails.
+  cxl disable-region region0
+  cxl destroy-region region0
+  cxl disable-memdev mem0
+  cxl enable-memdev mem0
 
-In this state, deleting the subvol fails with ENOENT, but attempting to
-create a new file or subvol over it errors out with EEXIST and even
-aborts the fs. Which leaves us a bit stuck.
+Region teardown zeroes the HDM decoder registers including the committed
+bits. The subsequent memdev re-probe finds uncommitted decoders and falls
+back to DVSEC emulation, even though HDM remains globally enabled.
 
-dmesg contains a single notable error message reading:
-"could not do orphan cleanup -2"
+Observed failures:
 
-2 is ENOENT and the error comes from the failure handling path of
-btrfs_orphan_cleanup(), with the stack leading back up to
-btrfs_lookup().
+  should_emulate_decoders: cxl_port endpoint6: decoder6.0: committed: 0 base: 0x0_00000000 size: 0x0_00000000
+  devm_cxl_setup_hdm: cxl_port endpoint6: Fallback map 1 range register
+  ..
+  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region0
+  __construct_region: cxl_pci 0000:e1:00.0: mem1:decoder6.0:
+  __construct_region region0 res: [mem 0x850000000-0x284fffffff flags 0x200] iw: 1 ig: 4096
+  cxl region0: pci0000:e0:port1 cxl_port_setup_targets expected iw: 1 ig: 4096 ..
+  cxl region0: pci0000:e0:port1 cxl_port_setup_targets got iw: 1 ig: 256 state: disabled ..
+  cxl_port endpoint6: failed to attach decoder6.0 to region0: -6
+  ..
+  devm_cxl_add_region: cxl_acpi ACPI0017:00: decoder0.0: created region4
+  alloc_hpa: cxl region4: HPA allocation error (-34) ..
 
-btrfs_lookup
-btrfs_lookup_dentry
-btrfs_orphan_cleanup // prints that message and returns -ENOENT
-
-After some detailed inspection of the internal state, it became clear
-that:
-- there are no orphan items for the subvol
-- the subvol is otherwise healthy looking, it is not half-deleted or
-  anything, there is no drop progress, etc.
-- the subvol was created a while ago and does the meaningful first
-  btrfs_orphan_cleanup() call that sets BTRFS_ROOT_ORPHAN_CLEANUP much
-  later.
-- after btrfs_orphan_cleanup() fails, btrfs_lookup_dentry() returns -ENOENT,
-  which results in a negative dentry for the subvolume via
-  d_splice_alias(NULL, dentry), leading to the observed behavior. The
-  bug can be mitigated by dropping the dentry cache, at which point we
-  can successfully delete the subvolume if we want.
-
-i.e.,
-btrfs_lookup()
-  btrfs_lookup_dentry()
-    if (!sb_rdonly(inode->vfs_inode)->vfs_inode)
-    btrfs_orphan_cleanup(sub_root)
-      test_and_set_bit(BTRFS_ROOT_ORPHAN_CLEANUP)
-      btrfs_search_slot() // finds orphan item for inode N
-      ...
-      prints "could not do orphan cleanup -2"
-  if (inode == ERR_PTR(-ENOENT))
-    inode = NULL;
-  return d_splice_alias(NULL, dentry) // NEGATIVE DENTRY for valid subvolume
-
-btrfs_orphan_cleanup() does test_and_set_bit(BTRFS_ROOT_ORPHAN_CLEANUP)
-on the root when it runs, so it cannot run more than once on a given
-root, so something else must run concurrently. However, the obvious
-routes to deleting an orphan when nlinks goes to 0 should not be able to
-run without first doing a lookup into the subvolume, which should run
-btrfs_orphan_cleanup() and set the bit.
-
-The final important observation is that create_subvol() calls
-d_instantiate_new() but does not set BTRFS_ROOT_ORPHAN_CLEANUP, so if
-the dentry cache gets dropped, the next lookup into the subvolume will
-make a real call into btrfs_orphan_cleanup() for the first time. This
-opens up the possibility of concurrently deleting the inode/orphan items
-but most typical evict() paths will be holding a reference on the parent
-dentry (child dentry holds parent->d_lockref.count via dget in
-d_alloc(), released in __dentry_kill()) and prevent the parent from
-being removed from the dentry cache.
-
-The one exception is delayed iputs. Ordered extent creation calls
-igrab() on the inode. If the file is unlinked and closed while those
-refs are held, iput() in __dentry_kill() decrements i_count but does
-not trigger eviction (i_count > 0). The child dentry is freed and the
-subvol dentry's d_lockref.count drops to 0, making it evictable while
-the inode is still alive.
-
-Since there are two races (the race between writeback and unlink and
-the race between lookup and delayed iputs), and there are too many moving
-parts, the following three diagrams show the complete picture.
-(Only the second and third are races)
-
-Phase 1:
-Create Subvol in dentry cache without BTRFS_ROOT_ORPHAN_CLEANUP set
-
-btrfs_mksubvol()
-  lookup_one_len()
-    __lookup_slow()
-      d_alloc_parallel()
-        __d_alloc() // d_lockref.count = 1
-  create_subvol(dentry)
-    // doesn't touch the bit..
-    d_instantiate_new(dentry, inode) // dentry in cache with d_lockref.count == 1
-
-Phase 2:
-Create a delayed iput for a file in the subvol but leave the subvol in
-state where its dentry can be evicted (d_lockref.count == 0)
-
-T1 (task)                    T2 (writeback)                   T3 (OE workqueue)
-
-write() // dirty pages
-                              btrfs_writepages()
-                                btrfs_run_delalloc_range()
-                                  cow_file_range()
-                                    btrfs_alloc_ordered_extent()
-                                      igrab() // i_count: 1 -> 2
-btrfs_unlink_inode()
-  btrfs_orphan_add()
-close()
-  __fput()
-    dput()
-      finish_dput()
-        __dentry_kill()
-          dentry_unlink_inode()
-            iput() // 2 -> 1
-          --parent->d_lockref.count // 1 -> 0; evictable
-                                                                finish_ordered_fn()
-                                                                  btrfs_finish_ordered_io()
-                                                                    btrfs_put_ordered_extent()
-                                                                      btrfs_add_delayed_iput()
-
-Phase 3:
-Once the delayed iput is pending and the subvol dentry is evictable,
-the shrinker can free it, causing the next lookup to go through
-btrfs_lookup() and call btrfs_orphan_cleanup() for the first time.
-If the cleaner kthread processes the delayed iput concurrently, the
-two race:
-
-  T1 (shrinker)              T2 (cleaner kthread)                          T3 (lookup)
-
-  super_cache_scan()
-    prune_dcache_sb()
-      __dentry_kill()
-      // subvol dentry freed
-                              btrfs_run_delayed_iputs()
-                                iput()  // i_count -> 0
-                                  evict()  // sets I_FREEING
-                                    btrfs_evict_inode()
-                                      // truncation loop
-                                                                            btrfs_lookup()
-                                                                              btrfs_lookup_dentry()
-                                                                                btrfs_orphan_cleanup()
-                                                                                  // first call (bit never set)
-                                                                                  btrfs_iget()
-                                                                                    // blocks on I_FREEING
-
-                                      btrfs_orphan_del()
-                                      // inode freed
-                                                                                    // returns -ENOENT
-                                                                                  btrfs_del_orphan_item()
-                                                                                    // -ENOENT
-                                                                                // "could not do orphan cleanup -2"
-                                                                            d_splice_alias(NULL, dentry)
-                                                                            // negative dentry for valid subvol
-
-The most straightforward fix is to ensure the invariant that a dentry
-for a subvolume can exist if and only if that subvolume has
-BTRFS_ROOT_ORPHAN_CLEANUP set on its root (and is known to have no
-orphans or ran btrfs_orphan_cleanup()).
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 52cc48ad2a76 ("cxl/hdm: Limit emulation to the number of range registers")
+Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20260316201950.224567-1-Smita.KoralahalliChannabasappa@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ioctl.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/cxl/core/hdm.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 72d73953d1b77..9a548f2eec3af 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -766,6 +766,13 @@ static noinline int create_subvol(struct mnt_idmap *idmap,
- 		goto out;
- 	}
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index f9738c863df0e..dc4dff7a2d38d 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -119,7 +119,6 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
+ 	struct cxl_hdm *cxlhdm;
+ 	void __iomem *hdm;
+ 	u32 ctrl;
+-	int i;
  
-+	/*
-+	 * Subvolumes have orphans cleaned on first dentry lookup. A new
-+	 * subvolume cannot have any orphans, so we should set the bit before we
-+	 * add the subvolume dentry to the dentry cache, so that it is in the
-+	 * same state as a subvolume after first lookup.
-+	 */
-+	set_bit(BTRFS_ROOT_ORPHAN_CLEANUP, &new_root->state);
- 	d_instantiate_new(dentry, new_inode_args.inode);
- 	new_inode_args.inode = NULL;
+ 	if (!info)
+ 		return false;
+@@ -138,22 +137,16 @@ static bool should_emulate_decoders(struct cxl_endpoint_dvsec_info *info)
+ 		return false;
  
+ 	/*
+-	 * If any decoders are committed already, there should not be any
+-	 * emulated DVSEC decoders.
++	 * If HDM decoders are globally enabled, do not fall back to DVSEC
++	 * range emulation. Zeroed decoder registers after region teardown
++	 * do not imply absence of HDM capability.
++	 *
++	 * Falling back to DVSEC here would treat the decoder as AUTO and
++	 * may incorrectly latch default interleave settings.
+ 	 */
+-	for (i = 0; i < cxlhdm->decoder_count; i++) {
+-		ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(i));
+-		dev_dbg(&info->port->dev,
+-			"decoder%d.%d: committed: %ld base: %#x_%.8x size: %#x_%.8x\n",
+-			info->port->id, i,
+-			FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl),
+-			readl(hdm + CXL_HDM_DECODER0_BASE_HIGH_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(i)),
+-			readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(i)));
+-		if (FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl))
+-			return false;
+-	}
++	ctrl = readl(hdm + CXL_HDM_DECODER_CTRL_OFFSET);
++	if (ctrl & CXL_HDM_DECODER_ENABLE)
++		return false;
+ 
+ 	return true;
+ }
 -- 
 2.51.0
 
