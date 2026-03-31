@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-232237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFbXDLj/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:12 +0200
+	id UKQkKO7/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-231721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DC836DFDF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD9C36E0C3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A968C30ED0F2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39CD9318726E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362AA3F7867;
-	Tue, 31 Mar 2026 16:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0933C421F1F;
+	Tue, 31 Mar 2026 16:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waGaFwdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbcT7VgI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE9D3A1E8C;
-	Tue, 31 Mar 2026 16:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEC030C368;
+	Tue, 31 Mar 2026 16:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976231; cv=none; b=BRvGE34Q5CEjjhJ6jWR2TuFcTUtDVgsjwDEs9NrZJMtMbRKfinJpzOa/8Ia1CQiBe8hKdmbBCNR3u/JNfuaIwE2KA2ZA60/ObfCJ/KaA/qRV/+Vh3yZkK9fiLrCP7Lp7GTXTTPd1P++SKXjtWmeUQJadqFtJA04nrV2mqc9/B1A=
+	t=1774974894; cv=none; b=V3zE8S29XnDEx8hWWtLqwADz2TvvuLEGBRDdUxfWB+PpLw1TrkS1ZCoAAVGfZ7/7uc7ppxqjf4C4n6iE3Cix+W2x1IrW7a6kE/Kev0V4816ezHpsaUC+qpoV/w4g5+OUHHTECumxvt/iSzcxNUg0Vi1mtFIJlC32hmehndvAZHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976231; c=relaxed/simple;
-	bh=mh5kRAnv3pgS5BbGG26Rn+Ae+6S6iEJDdVwyeG+1gbg=;
+	s=arc-20240116; t=1774974894; c=relaxed/simple;
+	bh=HLo1KRcOHLVpD912X2udFEyGyHI7stJhT4w2j0RsR/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jw5I+fddKJ67eKMRtCZcjQavG4za9JlIoCUCWfy/HjA1t80tVANKIfP5p0ai51dzD2m1z7iLW3dSpJ4Pcefy1h0WoevABXZf1Mj46TIIMVq64ArMeuu8VXRi84+ALHybqfaKuykHQTdCGHU7QjLlK4uI8FUsYRImCN/82idwXa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waGaFwdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35112C19423;
-	Tue, 31 Mar 2026 16:57:10 +0000 (UTC)
+	 MIME-Version; b=QwDrODiTtT+nVGFTJDF4YnCIXSKuoFZU79awz3DE7c1PG6k8UUU7RrDhlJorQyKVphsIdJvURUBzyVeDp4Dn/qMsyUxIdezYeAPUkzRVpLUq/rL56gLSjaPLoLzFmFwJp+0zUAOXUnET95qHtCngelhVJRSK5Dv+pNCD/aNaYIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbcT7VgI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524CBC19423;
+	Tue, 31 Mar 2026 16:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976230;
-	bh=mh5kRAnv3pgS5BbGG26Rn+Ae+6S6iEJDdVwyeG+1gbg=;
+	s=korg; t=1774974894;
+	bh=HLo1KRcOHLVpD912X2udFEyGyHI7stJhT4w2j0RsR/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=waGaFwdvLWv98RgJE4efy7k9tdegC2u2Tw3t5SJLO2712PbWi5nPVKT9hzTEbgLCA
-	 IpvreMXQqACJJPW75T7+iURj3TK+JDs9g9kCTaqduGC8XUY0hUu5qNOJDQfosvObGo
-	 52Xthl6E76HJcsjW2OHXLpPmSCjgsOaTE7WQchH8=
+	b=tbcT7VgID+8mpm9oXZmQJAbCMg0INWZAmIHBUnFGBrgcd8oEFxlRScizFgluehpLV
+	 ucqDN812NTCnen2zcPjwFhsEBOZD1abrpBwYMxNSEtvyHlHUFs/2z5NJiBkXkHD1Kc
+	 UMlGc6ucihM8BDVnYPnM0onPspO9voqgq45Pg5w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Yinfeng <wangyinfeng@phytium.com.cn>,
-	Cui Chao <cuichao1753@phytium.com.cn>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 013/309] cxl: Adjust the startup priority of cxl_pmem to be higher than that of cxl_acpi
-Date: Tue, 31 Mar 2026 18:18:36 +0200
-Message-ID: <20260331161753.966631576@linuxfoundation.org>
+Subject: [PATCH 6.19 084/342] pinctrl: qcom: spmi-gpio: implement .get_direction()
+Date: Tue, 31 Mar 2026 18:18:37 +0200
+Message-ID: <20260331161802.114144729@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232237-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231721-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,63 +87,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,phytium.com.cn:email]
-X-Rspamd-Queue-Id: C7DC836DFDF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DFD9C36E0C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cui Chao <cuichao1753@phytium.com.cn>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit be5c5280cf2b20e363dc8e2a424dd200a29b1c77 ]
+[ Upstream commit 263447532463cf4444a3595e835b99a4e90952fa ]
 
-During the cxl_acpi probe process, it checks whether the cxl_nvb device
-and driver have been attached. Currently, the startup priority of the
-cxl_pmem driver is lower than that of the cxl_acpi driver. At this point,
-the cxl_nvb driver has not yet been registered on the cxl_bus, causing
-the attachment check to fail. This results in a failure to add the root
-nvdimm bridge, leading to a cxl_acpi probe failure and ultimately
-affecting the subsequent loading of cxl drivers. As a consequence, only
-one mem device object exists on the cxl_bus, while the cxl_port device
-objects and decoder device objects are missing.
+GPIO controller driver should typically implement the .get_direction()
+callback as GPIOLIB internals may try to use it to determine the state
+of a pin. Since introduction of shared proxy, it prints a warning splat
+when using a shared spmi gpio.
 
-The solution is to raise the startup priority of cxl_pmem to be higher
-than that of cxl_acpi, ensuring that the cxl_pmem driver is registered
-before the aforementioned attachment check occurs.
+The implementation is not easy because the controller supports enabling
+the input and output logic at the same time, so we aligns on the
+behaviour of the .get() operation and return -EINVAL in other
+situations.
 
-Co-developed-by: Wang Yinfeng <wangyinfeng@phytium.com.cn>
-Signed-off-by: Wang Yinfeng <wangyinfeng@phytium.com.cn>
-Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
-Fixes: e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to cxl_pmem.ko")
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/20260319074535.1709250-1-cuichao1753@phytium.com.cn
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: eadff3024472 ("pinctrl: Qualcomm SPMI PMIC GPIO pin controller driver")
+Fixes: d7b5f5cc5eb4 ("pinctrl: qcom: spmi-gpio: Add support for GPIO LV/MV subtype")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/pmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/cxl/pmem.c b/drivers/cxl/pmem.c
-index c00b84b960761..3432fd83b1e2a 100644
---- a/drivers/cxl/pmem.c
-+++ b/drivers/cxl/pmem.c
-@@ -554,7 +554,7 @@ static __exit void cxl_pmem_exit(void)
+diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+index 83f940fe30b26..d02d42513ebbc 100644
+--- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
++++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+@@ -723,6 +723,21 @@ static const struct pinconf_ops pmic_gpio_pinconf_ops = {
+ 	.pin_config_group_dbg_show	= pmic_gpio_config_dbg_show,
+ };
  
- MODULE_DESCRIPTION("CXL PMEM: Persistent Memory Support");
- MODULE_LICENSE("GPL v2");
--module_init(cxl_pmem_init);
-+subsys_initcall(cxl_pmem_init);
- module_exit(cxl_pmem_exit);
- MODULE_IMPORT_NS("CXL");
- MODULE_ALIAS_CXL(CXL_DEVICE_NVDIMM_BRIDGE);
++static int pmic_gpio_get_direction(struct gpio_chip *chip, unsigned pin)
++{
++	struct pmic_gpio_state *state = gpiochip_get_data(chip);
++	struct pmic_gpio_pad *pad;
++
++	pad = state->ctrl->desc->pins[pin].drv_data;
++
++	if (!pad->is_enabled || pad->analog_pass ||
++	    (!pad->input_enabled && !pad->output_enabled))
++		return -EINVAL;
++
++	/* Make sure the state is aligned on what pmic_gpio_get() returns */
++	return pad->input_enabled ? GPIO_LINE_DIRECTION_IN : GPIO_LINE_DIRECTION_OUT;
++}
++
+ static int pmic_gpio_direction_input(struct gpio_chip *chip, unsigned pin)
+ {
+ 	struct pmic_gpio_state *state = gpiochip_get_data(chip);
+@@ -801,6 +816,7 @@ static void pmic_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
+ }
+ 
+ static const struct gpio_chip pmic_gpio_gpio_template = {
++	.get_direction		= pmic_gpio_get_direction,
+ 	.direction_input	= pmic_gpio_direction_input,
+ 	.direction_output	= pmic_gpio_direction_output,
+ 	.get			= pmic_gpio_get,
 -- 
 2.51.0
 
