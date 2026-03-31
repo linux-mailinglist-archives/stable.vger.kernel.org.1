@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBa6LIH2y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:53 +0200
+	id EBKJCfwCzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7B436CA60
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:29:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877F136E975
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 202F230DB0AD
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:25:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0A6B3165421
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84A73FEB20;
-	Tue, 31 Mar 2026 16:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8988A423A8A;
+	Tue, 31 Mar 2026 16:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjWmckL8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eOL23F8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790EE3E3C5C;
-	Tue, 31 Mar 2026 16:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B7433E372;
+	Tue, 31 Mar 2026 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974333; cv=none; b=qGJAfXktJEMOxQ9w69mZsRYqYVoznPmrcI/XEJt5DQD9Aar7hGJ6zQdZnOz87z/pP63OCIso0aIMN0rKdhjNLdS4Qq6P06oitdKS7nic9ywysz3wf4TMH4OkUMhiEObnPHKTGkmJn287BVSj/iLhJIQW4e9mcsCz8/qGHwK+yRM=
+	t=1774975684; cv=none; b=uksbjMHxKA+SbdlqkbEc+5jvqJG0SDKuHtgQNzWgjBiOzhXwaqjL8wbKIx4SsRMVD3fkkLqGyiPRGtOBxJ9ExLVF+nY8i8IrSiOFPDdDMrC8Xjz+Qp9wpPR27N9EF7jvQsaooxV6wKU2I/GoCAuUJA+tM2a7zPEO652WWgZLajQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974333; c=relaxed/simple;
-	bh=Gr0uf2NX7fL37C+7ERHTpO7hjkem5e/CwEYmNfO3g1E=;
+	s=arc-20240116; t=1774975684; c=relaxed/simple;
+	bh=0Aq9TL9K4Mpt+W3jMJjQL1yse1Q9lVw0VxsCtpH2eDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+8GgSqmUjrx0OTPsMQRiZx66fQyYDE2aI/YXrcRJ9YznHqWAjxWf5dBI86G4ilAUqR3mdK2Hs8kANV98RpNI+YMGud6pEOIztSeJrekB8t81+WGtJ3A2FSr6j80GtLrFlacsG/s3wPHR12Gp1BhdQrUx/CtC5uDyZaDF98rscE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjWmckL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0566C19423;
-	Tue, 31 Mar 2026 16:25:32 +0000 (UTC)
+	 MIME-Version; b=GP4xWUWjA1fN6KgfJzHq2ONL7BWDFMjA5k7JAJKcFsrp8KprzL8jPyJpKHCv2h9BEmlRXfvy/WiymcNgTDtgK9LfF0RyxOigCtnopUgCkmdSCZWKUlHsFtjRq4cOZ0FYONuvFirR26VDIRFSs/XW/X+kb/hVYiVKnNypf4d0TSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eOL23F8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7B4C19423;
+	Tue, 31 Mar 2026 16:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974333;
-	bh=Gr0uf2NX7fL37C+7ERHTpO7hjkem5e/CwEYmNfO3g1E=;
+	s=korg; t=1774975683;
+	bh=0Aq9TL9K4Mpt+W3jMJjQL1yse1Q9lVw0VxsCtpH2eDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjWmckL88GPnS22E/u2eB4nYhpSqf3IC8Pjw4ipwe8xcTget3JzvplQgZ6haKNcoh
-	 Ay4gegWiTqyuQrYBFOXeZjJxdOAyj5cvKGcoAMWexMfMW5bGDIS5ja4Pu3m7wRvjZ7
-	 xiR6G0T/bun5JkqDQM2BNWs3prEVkCvxDOVwqgXE=
+	b=1eOL23F8o5XVuQyOfStcBoBs4raXdwr66vsD8xZSymrvDNdLbYfWVehowu8rS2Qxx
+	 2Ggsnd51ww/rWGr4dsBRypBY+m6JnLEVigAHxHKA2o1g31qknEjGlvOB42AWoKARRR
+	 +gjIaWopxxT5yvPdkuy0811RzfBakWf42TD/YJ+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/175] nvme-pci: cap queue creation to used queues
-Date: Tue, 31 Mar 2026 18:19:56 +0200
-Message-ID: <20260331161730.233425873@linuxfoundation.org>
+Subject: [PATCH 6.12 047/244] xfrm: add missing extack for XFRMA_SA_PCPU in add_acquire and allocspi
+Date: Tue, 31 Mar 2026 18:19:57 +0200
+Message-ID: <20260331161743.433786670@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231501-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232026-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,57 +86,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
-X-Rspamd-Queue-Id: 2B7B436CA60
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,queasysnail.net:email,secunet.com:email]
+X-Rspamd-Queue-Id: 877F136E975
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 4735b510a00fb2d4ac9e8d21a8c9552cb281f585 ]
+[ Upstream commit aa8a3f3c67235422a0c3608a8772f69ca3b7b63f ]
 
-If the user reduces the special queue count at runtime and resets the
-controller, we need to reduce the number of queues and interrupts
-requested accordingly rather than start with the pre-allocated queue
-count.
+We're returning an error caused by invalid user input without setting
+an extack. Add one.
 
-Tested-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_user.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 03a2ca3edb9c3..820e211feded2 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2355,7 +2355,13 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	dev->nr_write_queues = write_queues;
- 	dev->nr_poll_queues = poll_queues;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 1a4d2fac08594..7d03a6e486b34 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -1785,6 +1785,7 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		pcpu_num = nla_get_u32(attrs[XFRMA_SA_PCPU]);
+ 		if (pcpu_num >= num_possible_cpus()) {
+ 			err = -EINVAL;
++			NL_SET_ERR_MSG(extack, "pCPU number too big");
+ 			goto out_noput;
+ 		}
+ 	}
+@@ -2934,8 +2935,10 @@ static int xfrm_add_acquire(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (attrs[XFRMA_SA_PCPU]) {
+ 		x->pcpu_num = nla_get_u32(attrs[XFRMA_SA_PCPU]);
+ 		err = -EINVAL;
+-		if (x->pcpu_num >= num_possible_cpus())
++		if (x->pcpu_num >= num_possible_cpus()) {
++			NL_SET_ERR_MSG(extack, "pCPU number too big");
+ 			goto free_state;
++		}
+ 	}
  
--	nr_io_queues = dev->nr_allocated_queues - 1;
-+	/*
-+	 * The initial number of allocated queue slots may be too large if the
-+	 * user reduced the special queue parameters. Cap the value to the
-+	 * number we need for this round.
-+	 */
-+	nr_io_queues = min(nvme_max_io_queues(dev),
-+			   dev->nr_allocated_queues - 1);
- 	result = nvme_set_queue_count(&dev->ctrl, &nr_io_queues);
- 	if (result < 0)
- 		return result;
+ 	err = verify_newpolicy_info(&ua->policy, extack);
 -- 
 2.51.0
 
