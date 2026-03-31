@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-232495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIUAN44IzGlaNgYAu9opvQ
-	(envelope-from <stable+bounces-232495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:46:54 +0200
+	id yMggNTn9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3C836F4E6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:46:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE8E36D90B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2988A31B16C9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:09:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8A0CC30FEB9F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0050B30F543;
-	Tue, 31 Mar 2026 17:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3F8423149;
+	Tue, 31 Mar 2026 16:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLR7Y4/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jov641W1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7436630DEDC;
-	Tue, 31 Mar 2026 17:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F9C317166;
+	Tue, 31 Mar 2026 16:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976895; cv=none; b=uLIKdbkqWdwycxwECAZtyCGayjoiJDGuU9EdSWq+VX6k4stxoQE+Ir8AdkqesZ+vj5hTDdZOGL3CChCzbNK4DnTIGf1B0qs3MCpqw8PK6kWwKcVmr4IgCwykuGit3T5MtnnqeNvtf26/w2glI9r3eKl3QYjPEOV1EmYdt8K34lE=
+	t=1774975582; cv=none; b=pM/EeiBIcmy75F/S1TqO/7/wWMcTHppWxW6jP963FuuiAkKXxijKRPaCdkZxmCoFvM8NMUDAWb7YdRJlbSYorGVsT6OaAH9sAHPOzwxcwvaCKRqvXfZxA5hm8liFAMqRQpeeBb/MEkres8Es9gWzLfZqL+6D+TYiPw4QM9vB+jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976895; c=relaxed/simple;
-	bh=wzmPgSEc27QxHRz0BZvtOVvJfeOS1t7YZ5/6NFebX+E=;
+	s=arc-20240116; t=1774975582; c=relaxed/simple;
+	bh=zWmfolDiKaRDoB0/qYyJN1mJbKSfdpYycPXtgaZVKr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HoUOxUosHX7AJVmJ0l9zaKAPFYQ29jujIOg18CNoemaGLTyC7Etq2U3YutPqdrO9wn3xBZ9LW82LF/bWfiYrsq9a6XicmqilvE1R+U+gfogiWAHQhvr3Rc1lGPdW5pSUt2WTbCRoZImB9rPQL3oiIMeRvswbuUBzunOO7+cCbxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLR7Y4/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089B0C19423;
-	Tue, 31 Mar 2026 17:08:14 +0000 (UTC)
+	 MIME-Version; b=Sm9NNuPEtH9GHHUoWj2YCVVROwxWTyIWHAjXHC21RlxFwQYc2W5fLrg2Tczw5ew0K2KsjtoEAsPfb3rZr524qBF96Dw1nBm1ELKFBfZAhhT2ub7a36aio7gwLJq7BbQ3LtFfYkLFmj2qwW7tJDYLKhQ3/rR8Z6Tp2Dg2b3UZL2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jov641W1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD3CC19423;
+	Tue, 31 Mar 2026 16:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976895;
-	bh=wzmPgSEc27QxHRz0BZvtOVvJfeOS1t7YZ5/6NFebX+E=;
+	s=korg; t=1774975582;
+	bh=zWmfolDiKaRDoB0/qYyJN1mJbKSfdpYycPXtgaZVKr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLR7Y4/grfNrZEElQdgxFfbkSZPCFsTvW4iM42/075nGfUCgXJY0bNzIerL2Xudm/
-	 SNYZbI3pTA1hNQXg40/RraY/7E4EqPJDZszKA0oaZHqJjC4z/hHPnXvpOum6zbbYQi
-	 lJ8aN/zUUR+W9/CPxR8IROqMw0qprEcvK2dmTYyk=
+	b=jov641W1bg1mqFRwk48iZ6BOZvobLhCTXSM51mU8N8YAvsj6upuhizlxTSYy6FDeD
+	 ZmcFCHrJVzWJnWA3ysnJ/FCHEPjQrIDAY6nyPwIBLSkSWOD6LJEa9iYZ9XE2C94y1x
+	 vu6XOJfiI1srQKCI0ar2vLm+tWwymeVztbjJX5Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang@linux.dev>,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.18 268/309] ext4: fix the might_sleep() warnings in kvfree()
+	Hao-Yu Yang <naup96721@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 338/342] futex: Fix UaF between futex_key_to_node_opt() and vma_replace_policy()
 Date: Tue, 31 Mar 2026 18:22:51 +0200
-Message-ID: <20260331161803.427645495@linuxfoundation.org>
+Message-ID: <20260331161811.337733893@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,200 +70,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,infradead.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231987-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232495-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,alibaba.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4B3C836F4E6
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7CE8E36D90B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang@linux.dev>
+From: Hao-Yu Yang <naup96721@gmail.com>
 
-commit 496bb99b7e66f48b178126626f47e9ba79e2d0fa upstream.
+[ Upstream commit 190a8c48ff623c3d67cb295b4536a660db2012aa ]
 
-Use the kvfree() in the RCU read critical section can trigger
-the following warnings:
+During futex_key_to_node_opt() execution, vma->vm_policy is read under
+speculative mmap lock and RCU. Concurrently, mbind() may call
+vma_replace_policy() which frees the old mempolicy immediately via
+kmem_cache_free().
 
-EXT4-fs (vdb): unmounting filesystem cd983e5b-3c83-4f5a-a136-17b00eb9d018.
+This creates a race where __futex_key_to_node() dereferences a freed
+mempolicy pointer, causing a use-after-free read of mpol->mode.
 
-WARNING: suspicious RCU usage
+[  151.412631] BUG: KASAN: slab-use-after-free in __futex_key_to_node (kernel/futex/core.c:349)
+[  151.414046] Read of size 2 at addr ffff888001c49634 by task e/87
 
-./include/linux/rcupdate.h:409 Illegal context switch in RCU read-side critical section!
+[  151.415969] Call Trace:
 
-other info that might help us debug this:
+[  151.416732]  __asan_load2 (mm/kasan/generic.c:271)
+[  151.416777]  __futex_key_to_node (kernel/futex/core.c:349)
+[  151.416822]  get_futex_key (kernel/futex/core.c:374 kernel/futex/core.c:386 kernel/futex/core.c:593)
 
-rcu_scheduler_active = 2, debug_locks = 1
+Fix by adding rcu to __mpol_put().
 
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbb/0xd0
- dump_stack+0x14/0x20
- lockdep_rcu_suspicious+0x15a/0x1b0
- __might_resched+0x375/0x4d0
- ? put_object.part.0+0x2c/0x50
- __might_sleep+0x108/0x160
- vfree+0x58/0x910
- ? ext4_group_desc_free+0x27/0x270
- kvfree+0x23/0x40
- ext4_group_desc_free+0x111/0x270
- ext4_put_super+0x3c8/0xd40
- generic_shutdown_super+0x14c/0x4a0
- ? __pfx_shrinker_free+0x10/0x10
- kill_block_super+0x40/0x90
- ext4_kill_sb+0x6d/0xb0
- deactivate_locked_super+0xb4/0x180
- deactivate_super+0x7e/0xa0
- cleanup_mnt+0x296/0x3e0
- __cleanup_mnt+0x16/0x20
- task_work_run+0x157/0x250
- ? __pfx_task_work_run+0x10/0x10
- ? exit_to_user_mode_loop+0x6a/0x550
- exit_to_user_mode_loop+0x102/0x550
- do_syscall_64+0x44a/0x500
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-BUG: sleeping function called from invalid context at mm/vmalloc.c:3441
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 556, name: umount
-preempt_count: 1, expected: 0
-CPU: 3 UID: 0 PID: 556 Comm: umount
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbb/0xd0
- dump_stack+0x14/0x20
- __might_resched+0x275/0x4d0
- ? put_object.part.0+0x2c/0x50
- __might_sleep+0x108/0x160
- vfree+0x58/0x910
- ? ext4_group_desc_free+0x27/0x270
- kvfree+0x23/0x40
- ext4_group_desc_free+0x111/0x270
- ext4_put_super+0x3c8/0xd40
- generic_shutdown_super+0x14c/0x4a0
- ? __pfx_shrinker_free+0x10/0x10
- kill_block_super+0x40/0x90
- ext4_kill_sb+0x6d/0xb0
- deactivate_locked_super+0xb4/0x180
- deactivate_super+0x7e/0xa0
- cleanup_mnt+0x296/0x3e0
- __cleanup_mnt+0x16/0x20
- task_work_run+0x157/0x250
- ? __pfx_task_work_run+0x10/0x10
- ? exit_to_user_mode_loop+0x6a/0x550
- exit_to_user_mode_loop+0x102/0x550
- do_syscall_64+0x44a/0x500
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The above scenarios occur in initialization failures and teardown
-paths, there are no parallel operations on the resources released
-by kvfree(), this commit therefore remove rcu_read_lock/unlock() and
-use rcu_access_pointer() instead of rcu_dereference() operations.
-
-Fixes: 7c990728b99e ("ext4: fix potential race between s_flex_groups online resizing and access")
-Fixes: df3da4ea5a0f ("ext4: fix potential race between s_group_info online resizing and access")
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
-Link: https://patch.msgid.link/20260319094545.19291-1-qiang.zhang@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c042c505210d ("futex: Implement FUTEX2_MPOL")
+Reported-by: Hao-Yu Yang <naup96721@gmail.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Hao-Yu Yang <naup96721@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Link: https://patch.msgid.link/20260324174418.GB1850007@noisy.programming.kicks-ass.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   10 +++-------
- fs/ext4/super.c   |    8 ++------
- 2 files changed, 5 insertions(+), 13 deletions(-)
+ include/linux/mempolicy.h |  1 +
+ kernel/futex/core.c       |  2 +-
+ mm/mempolicy.c            | 10 ++++++++--
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3579,9 +3579,7 @@ err_freebuddy:
- 	rcu_read_unlock();
- 	iput(sbi->s_buddy_cache);
- err_freesgi:
--	rcu_read_lock();
--	kvfree(rcu_dereference(sbi->s_group_info));
--	rcu_read_unlock();
-+	kvfree(rcu_access_pointer(sbi->s_group_info));
- 	return -ENOMEM;
- }
+diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
+index 0fe96f3ab3ef0..65c732d440d2f 100644
+--- a/include/linux/mempolicy.h
++++ b/include/linux/mempolicy.h
+@@ -55,6 +55,7 @@ struct mempolicy {
+ 		nodemask_t cpuset_mems_allowed;	/* relative to these nodes */
+ 		nodemask_t user_nodemask;	/* nodemask passed by user */
+ 	} w;
++	struct rcu_head rcu;
+ };
  
-@@ -3898,7 +3896,8 @@ void ext4_mb_release(struct super_block
- 		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
+ /*
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index cf7e610eac429..31e83a09789e0 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm_struct *mm, unsigned long addr)
+ 	if (!vma)
+ 		return FUTEX_NO_NODE;
+ 
+-	mpol = vma_policy(vma);
++	mpol = READ_ONCE(vma->vm_policy);
+ 	if (!mpol)
+ 		return FUTEX_NO_NODE;
+ 
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 68a98ba578821..74ebf38a7db1a 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -488,7 +488,13 @@ void __mpol_put(struct mempolicy *pol)
+ {
+ 	if (!atomic_dec_and_test(&pol->refcnt))
+ 		return;
+-	kmem_cache_free(policy_cache, pol);
++	/*
++	 * Required to allow mmap_lock_speculative*() access, see for example
++	 * futex_key_to_node_opt(). All accesses are serialized by mmap_lock,
++	 * however the speculative lock section unbound by the normal lock
++	 * boundaries, requiring RCU freeing.
++	 */
++	kfree_rcu(pol, rcu);
+ }
+ EXPORT_SYMBOL_FOR_MODULES(__mpol_put, "kvm");
+ 
+@@ -1021,7 +1027,7 @@ static int vma_replace_policy(struct vm_area_struct *vma,
  	}
  
--	if (sbi->s_group_info) {
-+	group_info = rcu_access_pointer(sbi->s_group_info);
-+	if (group_info) {
- 		for (i = 0; i < ngroups; i++) {
- 			cond_resched();
- 			grinfo = ext4_get_group_info(sb, i);
-@@ -3916,12 +3915,9 @@ void ext4_mb_release(struct super_block
- 		num_meta_group_infos = (ngroups +
- 				EXT4_DESC_PER_BLOCK(sb) - 1) >>
- 			EXT4_DESC_PER_BLOCK_BITS(sb);
--		rcu_read_lock();
--		group_info = rcu_dereference(sbi->s_group_info);
- 		for (i = 0; i < num_meta_group_infos; i++)
- 			kfree(group_info[i]);
- 		kvfree(group_info);
--		rcu_read_unlock();
- 	}
- 	ext4_mb_avg_fragment_size_destroy(sbi);
- 	ext4_mb_largest_free_orders_destroy(sbi);
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1249,12 +1249,10 @@ static void ext4_group_desc_free(struct
- 	struct buffer_head **group_desc;
- 	int i;
+ 	old = vma->vm_policy;
+-	vma->vm_policy = new; /* protected by mmap_lock */
++	WRITE_ONCE(vma->vm_policy, new); /* protected by mmap_lock */
+ 	mpol_put(old);
  
--	rcu_read_lock();
--	group_desc = rcu_dereference(sbi->s_group_desc);
-+	group_desc = rcu_access_pointer(sbi->s_group_desc);
- 	for (i = 0; i < sbi->s_gdb_count; i++)
- 		brelse(group_desc[i]);
- 	kvfree(group_desc);
--	rcu_read_unlock();
- }
- 
- static void ext4_flex_groups_free(struct ext4_sb_info *sbi)
-@@ -1262,14 +1260,12 @@ static void ext4_flex_groups_free(struct
- 	struct flex_groups **flex_groups;
- 	int i;
- 
--	rcu_read_lock();
--	flex_groups = rcu_dereference(sbi->s_flex_groups);
-+	flex_groups = rcu_access_pointer(sbi->s_flex_groups);
- 	if (flex_groups) {
- 		for (i = 0; i < sbi->s_flex_groups_allocated; i++)
- 			kvfree(flex_groups[i]);
- 		kvfree(flex_groups);
- 	}
--	rcu_read_unlock();
- }
- 
- static void ext4_put_super(struct super_block *sb)
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
