@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-232272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELA+H/oFzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:54 +0200
+	id qHtlJjz9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C1E36EF62
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134D936D915
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 38E49306E532
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0754B30FFABE
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383DC423A8E;
-	Tue, 31 Mar 2026 16:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7F33E9299;
+	Tue, 31 Mar 2026 16:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1MH/vdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOvNFE9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6AE423A62;
-	Tue, 31 Mar 2026 16:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E737317166;
+	Tue, 31 Mar 2026 16:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976321; cv=none; b=OBrdqBjx1EQSZ0dDVplHapfeerGCeDXAnpiy68d8je+I++RHTRITeHDJW+MdIEZ+yxjUFULupF4ThH5uIMuTD7Im+KTq7hrLVPZ/Khy/eddM0RtnE6SSSZevoyfs9fuRsHVjXDGxGI4zBWm6NcTbR2i/k+ZMnGZtYXKKUiJ8cH8=
+	t=1774975585; cv=none; b=JQfb9bZokA12dYwuhJ47H9CjodMga+803b6eqRXvpcKELB4un1oxhOw7eRV15/jfjfNairEtQa+vK1OerM0zZ0UICCngXyLb05+qC7pOpYwmWdQkmssYDFUqfzSC+TcucIcSI3jQH7pUQSoKOJ49WcJREte2JURQCtjbF9+ACAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976321; c=relaxed/simple;
-	bh=FwLzTqKQJ0Y6w+Y41bPwp2A2eQRmAF2e0N2qntct42k=;
+	s=arc-20240116; t=1774975585; c=relaxed/simple;
+	bh=o8rbCx1d+L+tR4rLB1a6mPKDVjvDB1qNIadzJtxlMgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZQxv/pgTMMywtoM0WLpQncPAkgnJOpZ8q6tyYZCnabnr2ZBcvRblsNKS/zd9WMzub4ZYHaQxf0TKlDrQlqN1B7Vez0mtaJx1tqIIlvBoM5gBjilirsA4pVaqIqu688eESdlbhntOwMR8FeYjrSW/2M74auK7maNLD35VU/wVCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1MH/vdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867BCC19423;
-	Tue, 31 Mar 2026 16:58:40 +0000 (UTC)
+	 MIME-Version; b=BxONvgtXDiknYbR5rLHF1YQwe9Xr7r/M5xcDMsTYC+jtG4HnOP+eI4QWlmgffU3P3oi0H1FNXry/nKHdOmlYqKMhwzCsCizNL6ntz5k5+0GHcCMkhqLYEPD4/KZmmMFy7ThWrHN3OFlr+uqhNqNCs9DuiBf7zfPGojakBXNR7qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOvNFE9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0540EC19423;
+	Tue, 31 Mar 2026 16:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976320;
-	bh=FwLzTqKQJ0Y6w+Y41bPwp2A2eQRmAF2e0N2qntct42k=;
+	s=korg; t=1774975585;
+	bh=o8rbCx1d+L+tR4rLB1a6mPKDVjvDB1qNIadzJtxlMgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x1MH/vdlqstCYDdK0B26Mte7UovlWvWpIMO4sMPkJqyBUn2dezjn28b83gDepHftp
-	 9BTrqBtw1aE5yoOa2SKUsXzJm8pwzvvlHJThBl6NelnjyUCXJ5ftUISJbaqOefky01
-	 GDVk5fvFlBKu/V0If4Z+hieBlN3D/s/6WVvqUy68=
+	b=hOvNFE9RA5Xrf0tAajuzFK9R6sAWk7WZ0iy0xpAQoqsqri2ORScRml8906/dX9B5Y
+	 fFrCBjKsHL6KrnAZ9ByXZyakPIyx26t7WiqCBqACXSgnbARCx9fU1tPAKtrGQ5K0UF
+	 2D4PvyApsWCd1tcfniET5SBRHQsGR3si6r0Xyxb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Li Ming <ming.li@zohomail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 047/309] ASoC: cs35l56: Only patch ASP registers if the DAI is part of a DAIlink
-Date: Tue, 31 Mar 2026 18:19:10 +0200
-Message-ID: <20260331161755.216800559@linuxfoundation.org>
+Subject: [PATCH 6.12 001/244] cxl/port: Fix use after free of parent_port in cxl_detach_ep()
+Date: Tue, 31 Mar 2026 18:19:11 +0200
+Message-ID: <20260331161741.710814226@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,141 +70,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231988-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232272-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,cirrus.com:email]
-X-Rspamd-Queue-Id: 76C1E36EF62
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,huawei.com:email,zohomail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 134D936D915
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit 9351cf3fd92dc1349bb75f2f7f7324607dcf596f ]
+[ Upstream commit 19d2f0b97a131198efc2c4ca3eb7f980bba8c2b4 ]
 
-Move the ASP register patches to a separate struct and apply this from the
-ASP DAI probe() function so that the registers are only patched if the DAI
-is part of a DAI link.
+cxl_detach_ep() is called during bottom-up removal when all CXL memory
+devices beneath a switch port have been removed. For each port in the
+hierarchy it locks both the port and its parent, removes the endpoint,
+and if the port is now empty, marks it dead and unregisters the port
+by calling delete_switch_port(). There are two places during this work
+where the parent_port may be used after freeing:
 
-Some systems use the ASP as a special-purpose interconnect and on these
-systems the ASP registers are configured by a third party (the firmware,
-the BIOS, or another device using the amp's secondary host control
-interface).
+First, a concurrent detach may have already processed a port by the
+time a second worker finds it via bus_find_device(). Without pinning
+parent_port, it may already be freed when we discover port->dead and
+attempt to unlock the parent_port. In a production kernel that's a
+silent memory corruption, with lock debug, it looks like this:
 
-If the machine driver does not hook up the ASP DAI then the ASP registers
-must be omitted from the patch to prevent overwriting the third party
-configuration.
+[]DEBUG_LOCKS_WARN_ON(__owner_task(owner) != get_current())
+[]WARNING: kernel/locking/mutex.c:949 at __mutex_unlock_slowpath+0x1ee/0x310
+[]Call Trace:
+[]mutex_unlock+0xd/0x20
+[]cxl_detach_ep+0x180/0x400 [cxl_core]
+[]devm_action_release+0x10/0x20
+[]devres_release_all+0xa8/0xe0
+[]device_unbind_cleanup+0xd/0xa0
+[]really_probe+0x1a6/0x3e0
 
-If the machine driver includes the ASP DAI in a DAI link, this implies that
-the machine driver and higher components (such as alsa-ucm) are taking
-ownership of the ASP. In this case the ASP registers are patched to known
-defaults and the machine driver should configure the ASP.
+Second, delete_switch_port() releases three devm actions registered
+against parent_port. The last of those is unregister_port() and it
+calls device_unregister() on the child port, which can cascade. If
+parent_port is now also empty the device core may unregister and free
+it too. So by the time delete_switch_port() returns, parent_port may
+be free, and the subsequent device_unlock(&parent_port->dev) operates
+on freed memory. The kernel log looks same as above, with a different
+offset in cxl_detach_ep().
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260226110137.1664562-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Both of these issues stem from the absence of a lifetime guarantee
+between a child port and its parent port.
+
+Establish a lifetime rule for ports: child ports hold a reference to
+their parent device until release. Take the reference when the port
+is allocated and drop it when released. This ensures the parent is
+valid for the full lifetime of the child and eliminates the use after
+free window in cxl_detach_ep().
+
+This is easily reproduced with a reload of cxl_acpi in QEMU with CXL
+devices present.
+
+Fixes: 2345df54249c ("cxl/memdev: Fix endpoint port removal")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Li Ming <ming.li@zohomail.com>
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20260226184439.1732841-1-alison.schofield@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/cs35l56.h           |  1 +
- sound/soc/codecs/cs35l56-shared.c | 16 +++++++++++++++-
- sound/soc/codecs/cs35l56.c        |  8 ++++++++
- 3 files changed, 24 insertions(+), 1 deletion(-)
+ drivers/cxl/core/port.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
-index ab044ce2aa8b3..0374c251901f5 100644
---- a/include/sound/cs35l56.h
-+++ b/include/sound/cs35l56.h
-@@ -344,6 +344,7 @@ extern const struct cirrus_amp_cal_controls cs35l56_calibration_controls;
- extern const char * const cs35l56_tx_input_texts[CS35L56_NUM_INPUT_SRC];
- extern const unsigned int cs35l56_tx_input_values[CS35L56_NUM_INPUT_SRC];
- 
-+int cs35l56_set_asp_patch(struct cs35l56_base *cs35l56_base);
- int cs35l56_set_patch(struct cs35l56_base *cs35l56_base);
- int cs35l56_mbox_send(struct cs35l56_base *cs35l56_base, unsigned int command);
- int cs35l56_firmware_shutdown(struct cs35l56_base *cs35l56_base);
-diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
-index 9e6b9ca2f3547..a13e8eaf277d4 100644
---- a/sound/soc/codecs/cs35l56-shared.c
-+++ b/sound/soc/codecs/cs35l56-shared.c
-@@ -16,7 +16,7 @@
- 
- #include "cs35l56.h"
- 
--static const struct reg_sequence cs35l56_patch[] = {
-+static const struct reg_sequence cs35l56_asp_patch[] = {
- 	/*
- 	 * Firmware can change these to non-defaults to satisfy SDCA.
- 	 * Ensure that they are at known defaults.
-@@ -33,6 +33,20 @@ static const struct reg_sequence cs35l56_patch[] = {
- 	{ CS35L56_ASP1TX2_INPUT,		0x00000000 },
- 	{ CS35L56_ASP1TX3_INPUT,		0x00000000 },
- 	{ CS35L56_ASP1TX4_INPUT,		0x00000000 },
-+};
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index af92c67bc9542..6eb2e69361412 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -539,10 +539,13 @@ static void cxl_port_release(struct device *dev)
+ 	xa_destroy(&port->dports);
+ 	xa_destroy(&port->regions);
+ 	ida_free(&cxl_port_ida, port->id);
+-	if (is_cxl_root(port))
 +
-+int cs35l56_set_asp_patch(struct cs35l56_base *cs35l56_base)
-+{
-+	return regmap_register_patch(cs35l56_base->regmap, cs35l56_asp_patch,
-+				     ARRAY_SIZE(cs35l56_asp_patch));
-+}
-+EXPORT_SYMBOL_NS_GPL(cs35l56_set_asp_patch, "SND_SOC_CS35L56_SHARED");
-+
-+static const struct reg_sequence cs35l56_patch[] = {
-+	/*
-+	 * Firmware can change these to non-defaults to satisfy SDCA.
-+	 * Ensure that they are at known defaults.
-+	 */
- 	{ CS35L56_SWIRE_DP3_CH1_INPUT,		0x00000018 },
- 	{ CS35L56_SWIRE_DP3_CH2_INPUT,		0x00000019 },
- 	{ CS35L56_SWIRE_DP3_CH3_INPUT,		0x00000029 },
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index 2c1edbd636efc..193adba0cd1a4 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -324,6 +324,13 @@ static int cs35l56_dsp_event(struct snd_soc_dapm_widget *w,
- 	return wm_adsp_event(w, kcontrol, event);
++	if (is_cxl_root(port)) {
+ 		kfree(to_cxl_root(port));
+-	else
++	} else {
++		put_device(dev->parent);
+ 		kfree(port);
++	}
  }
  
-+static int cs35l56_asp_dai_probe(struct snd_soc_dai *codec_dai)
-+{
-+	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(codec_dai->component);
-+
-+	return cs35l56_set_asp_patch(&cs35l56->base);
-+}
-+
- static int cs35l56_asp_dai_set_fmt(struct snd_soc_dai *codec_dai, unsigned int fmt)
- {
- 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(codec_dai->component);
-@@ -528,6 +535,7 @@ static int cs35l56_asp_dai_set_sysclk(struct snd_soc_dai *dai,
- }
+ static ssize_t decoders_committed_show(struct device *dev,
+@@ -710,6 +713,7 @@ static struct cxl_port *cxl_port_alloc(struct device *uport_dev,
+ 		struct cxl_port *iter;
  
- static const struct snd_soc_dai_ops cs35l56_ops = {
-+	.probe = cs35l56_asp_dai_probe,
- 	.set_fmt = cs35l56_asp_dai_set_fmt,
- 	.set_tdm_slot = cs35l56_asp_dai_set_tdm_slot,
- 	.hw_params = cs35l56_asp_dai_hw_params,
+ 		dev->parent = &parent_port->dev;
++		get_device(dev->parent);
+ 		port->depth = parent_port->depth + 1;
+ 		port->parent_dport = parent_dport;
+ 
 -- 
 2.51.0
 
