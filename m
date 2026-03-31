@@ -1,196 +1,161 @@
-Return-Path: <stable+bounces-231389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCoZNkqjy2kUJwYAu9opvQ
-	(envelope-from <stable+bounces-231389-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:34:50 +0200
+	id 4PD8HSily2mhJwYAu9opvQ
+	(envelope-from <stable+bounces-231391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:42:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221F53680E9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:34:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE4D368346
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1514302F730
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:28:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BA3A30EB8B3
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636023EF0AB;
-	Tue, 31 Mar 2026 10:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915043A75AC;
+	Tue, 31 Mar 2026 10:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="RsHTDxub"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gf+9/QaZ"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70943EDADB;
-	Tue, 31 Mar 2026 10:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547BE29D281
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 10:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774952879; cv=none; b=CyxtYkQRYJHMndmPTWyuw8t6tj5rMmoHPNEMZKOscdhroP6XJuHm3lOyh6KUwXBlmc6+4FPNs4Op0d/pzK4wHlTZVY6kdFaCfjNTtixWFTBhoStcVZ/m79X+nmErNHitzGfie0aZIVyyfVpOPdiTrANNqbc8czrWbkRchsuYwIo=
+	t=1774953183; cv=none; b=AQQdp7Nh+PqtePfzEovzhEhlYoIWhsXzKFtuv8yZ0KLxObmobJC6LK4HvjcuXZJoLNoOfAWMRvrCi04G/UpwhrnBMrBzvsoFJDXxIrSzkbHYIOkk+qmvxf41eR1NVe8YLK+EE+a5VdG8lbpI/sfKnPbTLgrGU6XwwGfS0zk9cYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774952879; c=relaxed/simple;
-	bh=qjqN3UVBZddPw7k6SBUknSInyEUjzkn/TIchzSfs5R8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=huYAD9TS2/NDBY5Jle3kMRokp75aAcaqE8tx+cKVfSjg5A0bo9jz48KSe2rbTOgJ4nOfmlVJP6gItiblWjRS12/TJ9OjBUPtMEKL1rOT8SslrWbO6+8Jn5pT5HLgWl1rX+05HuG/u+va5xAhV0GJBW968zSNzqIxbtxhXEEyyAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=RsHTDxub; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [100.93.44.16] (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 72D5610D4;
-	Tue, 31 Mar 2026 12:26:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1774952793;
-	bh=qjqN3UVBZddPw7k6SBUknSInyEUjzkn/TIchzSfs5R8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RsHTDxub8mfkK4PFbVmxwh9/Pn4FDM5HLA0+cYSulzAfToHifVig9vDhxuYicaQ1x
-	 mDkCZyH2FJ77iHSI/u5As4A+IjWuFXWTumIxuiNchs4u36Xqd0pl1XSifGvwSImSRx
-	 tK0WY7+D648JgR1jhVAGCSyH8opPmmVZvgKl0TkY=
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Date: Tue, 31 Mar 2026 12:27:31 +0200
-Subject: [PATCH v2 01/15] media: rzg2l-cru: Skip ICnMC configuration when
- ICnSVC is used
+	s=arc-20240116; t=1774953183; c=relaxed/simple;
+	bh=kLmbVdu/BXacw1J2Jn+sIS1O5IlKQvG5ppWJoa1iSp8=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KmaQCEsjakzPGw+NW4n7q2u4GeV8eJcTYpyJk1956FEJwWQZ+9QbnVVBOfM0GoWGVNM6GgrE1fR69JWtUpEyyp2jaAXXKgyr16mbGZYDLxo+R3+sNSYb9cMeZvEWTyCM+v2uo3HN/7scXPCEk19nDS7Slz73B1Wh6OEDRUj51cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gf+9/QaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB944C19423
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 10:33:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774953183;
+	bh=kLmbVdu/BXacw1J2Jn+sIS1O5IlKQvG5ppWJoa1iSp8=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Gf+9/QaZs6jy1Gd5H8E5aBEYuVXWxeugISVxzq3SrY3dP7vRz3y5J1kFosm/PyJFS
+	 NsHtZ9l09gf+7QLvMFu30CFp+X0SWQ5OQz+PoLrBrnhan6PM5Avme1bQCP/994Gqbl
+	 SdE4rPTButKadU/UQXV2lmYpPOBref5TsazywWWKgWQZF123qrI79voqxI8p4DWZqN
+	 gYksBNsVm+CiNI39fTBo5kY9shB3bjSZDfoCy1iFBKJzX2mJjLOn6eWaV2tu8Qn9Dd
+	 l6sclgznBZ2k+hHrGxnK+J2eouyWKSRYOiXTGQBy57cndXLzrLnkgkfN3n4kclIgpG
+	 okpssmBaXHnVg==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: stable@vger.kernel.org
+Subject: [PATCH 6.18.y] mm/mseal: update VMA end correctly on merge
+Date: Tue, 31 Mar 2026 11:31:55 +0100
+Message-ID: <20260331103155.92038-1-ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033044-debug-embargo-40fb@gregkh>
+References: <2026033044-debug-embargo-40fb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-b4-cru-rework-v2-1-f94b238b35d4@ideasonboard.com>
-References: <20260331-b4-cru-rework-v2-0-f94b238b35d4@ideasonboard.com>
-In-Reply-To: <20260331-b4-cru-rework-v2-0-f94b238b35d4@ideasonboard.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
- Biju Das <biju.das.jz@bp.renesas.com>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Cc: Daniel Scally <dan.scally@ideasonboard.com>, 
- =?utf-8?q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>, 
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>, stable@vger.kernel.org, 
- Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2714;
- i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
- bh=yMSf/Uh8D73dR+HGREaX3F3oHZpFtzwWwYAbsWP52Ro=;
- b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBpy6GnXbqkbG+4f3JMYo1XhH3+2rgfcwcfs3sh5
- cicvmSZrlOJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCacuhpwAKCRByNAaPFqFW
- PC1GD/4717/irmi3QQw8GvRMYixn+0OWioLYu/XHeCGs2XlzKOMgi6/XzFKJeW+43LvZzx1Cpmq
- vQ35G70ouKk/r0kaDsFyn45quqKBawDwyXJxoAoow9mEYqNaTh7v0Q3DrZm4LbCWRqdqSTVbpkr
- mTDh2VJvJGEV1dnoOdNkD/CNAY8Rr5XttMi+WpZ3uOlh/BdZrpuiEELd+YwI1BSOHIZpVKr2dz6
- ZX1wMLujDteJyFdb2lDUwxNe6qyZiuSrbll2STLMn2RrLU1rKYcCTmmQj9A9ZTuckIf6Q7L7uZX
- qN/F4A4aewZQhO1pcynN0XJVD/CFd431KWiyggUTv5MJevb/Dd6IjpV21wwPFzHxsx2D31/zUlz
- Y/tY4gseSCte2YKSFIC530hO0nzjs38D3iNOUEYyemDiTz0oKaoN8s9IJbRH/l2qxXu7l0w1Ukq
- KPm5bsIVGYfXA0KP9ijLErkCmc3WH161bkqQ/Ki3IPPFFnP9+MVZqqzf23aLjmiHjtsoPVoPSYP
- lJ5xawdDqwtzInf5/BrUb7vqpetzXQjPY4D13yz/bCEgF4rAIyUb8w4Pw04kCY1z4AWaD2cxC/1
- 1mLQEmNzGP9KEO7y4ZA3mc3X1S4bPN82z8gPLtH1QyvwZM22TjxilHZaNipc2DfIGqufd5aZFFl
- laHnHLO/GoPfa+Q==
-X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
- fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231389-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231391-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[ideasonboard.com,protonmail.com,bp.renesas.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.994];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas,cisco];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid]
-X-Rspamd-Queue-Id: 221F53680E9
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,bluedragonsec.com:email,chromium.org:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: DDE4D368346
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Previously we stored the end of the current VMA in curr_end, and then upon
+iterating to the next VMA updated curr_start to curr_end to advance to the
+next VMA.
 
-When the CRU is configured to use ICnSVC for virtual channel mapping,
-as on the RZ/{G3E, V2H/P} SoC, the ICnMC register must not be
-programmed.
+However, this doesn't take into account the fact that a VMA might be
+updated due to a merge by vma_modify_flags(), which can result in curr_end
+being stale and thus, upon setting curr_start to curr_end, ending up with
+an incorrect curr_start on the next iteration.
 
-Return early after setting up ICnSVC to avoid overriding the ICnMC
-register, which is not applicable in this mode.
+Resolve the issue by setting curr_end to vma->vm_end unconditionally to
+ensure this value remains updated should this occur.
 
-This prevents unintended register programming when ICnSVC is enabled.
+While we're here, eliminate this entire class of bug by simply setting
+const curr_[start/end] to be clamped to the input range and VMAs, which
+also happens to simplify the logic.
 
-Fixes: 3c5ca0a48bb0 ("media: rzg2l-cru: Drop function pointer to configure CSI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-[Rework to not break image format programming]
-Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lkml.kernel.org/r/20260327173104.322405-1-ljs@kernel.org
+Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Reported-by: Antonius <antonius@bluedragonsec.com>
+Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
+Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jeff Xu <jeffxu@chromium.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 2697dd8ae721db4f6a53d4f4cbd438212a80f8dc)
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- .../media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h   |  1 +
- drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c  | 17 +++++++++++------
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ mm/mseal.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
-index a5a57369ef0e..10e62f2646d0 100644
---- a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
-+++ b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-cru-regs.h
-@@ -60,6 +60,7 @@
- #define ICnMC_CSCTHR			BIT(5)
- #define ICnMC_INF(x)			((x) << 16)
- #define ICnMC_VCSEL(x)			((x) << 22)
-+#define ICnMC_VCSEL_MASK		GENMASK(23, 22)
- #define ICnMC_INF_MASK			GENMASK(21, 16)
- 
- #define ICnMS_IA			BIT(2)
-diff --git a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-index 162e2ace6931..6aea7c244df1 100644
---- a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-+++ b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-@@ -262,19 +262,24 @@ static void rzg2l_cru_csi2_setup(struct rzg2l_cru_dev *cru,
- 				 u8 csi_vc)
+diff --git a/mm/mseal.c b/mm/mseal.c
+index e5b205562d2e..c561f0ea93e8 100644
+--- a/mm/mseal.c
++++ b/mm/mseal.c
+@@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct *mm,
+ 		unsigned long start, unsigned long end)
  {
- 	const struct rzg2l_cru_info *info = cru->info;
--	u32 icnmc = ICnMC_INF(ip_fmt->datatype);
-+	u32 icnmc = rzg2l_cru_read(cru, info->image_conv) & ~(ICnMC_INF_MASK |
-+							      ICnMC_VCSEL_MASK);
-+	icnmc |= ICnMC_INF(ip_fmt->datatype);
+ 	struct vm_area_struct *vma, *prev;
+-	unsigned long curr_start = start;
+ 	VMA_ITERATOR(vmi, mm, start);
  
-+	/*
-+	 * VC filtering goes through SVC register on G3E/V2H.
-+	 *
-+	 * FIXME: virtual channel filtering is likely broken and only VC=0
-+	 * works.
-+	 */
- 	if (cru->info->regs[ICnSVC]) {
- 		rzg2l_cru_write(cru, ICnSVCNUM, csi_vc);
- 		rzg2l_cru_write(cru, ICnSVC, ICnSVC_SVC0(0) | ICnSVC_SVC1(1) |
- 				ICnSVC_SVC2(2) | ICnSVC_SVC3(3));
-+	} else {
-+		icnmc |= ICnMC_VCSEL(csi_vc);
+ 	/* We know there are no gaps so this will be non-NULL. */
+@@ -66,7 +65,8 @@ static int mseal_apply(struct mm_struct *mm,
+ 		prev = vma;
+ 
+ 	for_each_vma_range(vmi, vma, end) {
+-		unsigned long curr_end = MIN(vma->vm_end, end);
++		const unsigned long curr_start = MAX(vma->vm_start, start);
++		const unsigned long curr_end = MIN(vma->vm_end, end);
+ 
+ 		if (!(vma->vm_flags & VM_SEALED)) {
+ 			vma = vma_modify_flags(&vmi, prev, vma,
+@@ -78,7 +78,6 @@ static int mseal_apply(struct mm_struct *mm,
+ 		}
+ 
+ 		prev = vma;
+-		curr_start = curr_end;
  	}
  
--	icnmc |= rzg2l_cru_read(cru, info->image_conv) & ~ICnMC_INF_MASK;
--
--	/* Set virtual channel CSI2 */
--	icnmc |= ICnMC_VCSEL(csi_vc);
--
- 	rzg2l_cru_write(cru, info->image_conv, icnmc);
- }
- 
-
+ 	return 0;
 -- 
 2.53.0
 
