@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFahDPn5y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231720-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:41 +0200
+	id mFbXDLj/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7813336D108
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DC836DFDF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83034316FAEE
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A968C30ED0F2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0DF3423A70;
-	Tue, 31 Mar 2026 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362AA3F7867;
+	Tue, 31 Mar 2026 16:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOkDPEG+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waGaFwdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1D8421A1D;
-	Tue, 31 Mar 2026 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE9D3A1E8C;
+	Tue, 31 Mar 2026 16:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974892; cv=none; b=o/QErd+8wCL8oekBNvtbP/H7hgD1m1VmW1uMMNNOgy5rXHqA9NH3WVAqbE/zuus8KoJuI6ZvBd8CgG86SOoqqIrki/oVoNikkPRGl52ghOY7upIsxKJIIJxc411IRocEpAv3sJ/w8otNxZBYA4hbV06x200XgkRi12LXo5UKHmo=
+	t=1774976231; cv=none; b=BRvGE34Q5CEjjhJ6jWR2TuFcTUtDVgsjwDEs9NrZJMtMbRKfinJpzOa/8Ia1CQiBe8hKdmbBCNR3u/JNfuaIwE2KA2ZA60/ObfCJ/KaA/qRV/+Vh3yZkK9fiLrCP7Lp7GTXTTPd1P++SKXjtWmeUQJadqFtJA04nrV2mqc9/B1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974892; c=relaxed/simple;
-	bh=B75+myYq6QfL89JD9+dXRiUTboD5cF9HYmedCNqV3g0=;
+	s=arc-20240116; t=1774976231; c=relaxed/simple;
+	bh=mh5kRAnv3pgS5BbGG26Rn+Ae+6S6iEJDdVwyeG+1gbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEyHAGl7LKMgc1TpUKwo+VoQHoS5l1pbuJLUb0cU2v0xAqBlfOll5R/cHD/WXvyub+5+oXZiTRe1y0v8hIZoungY6cGWD6KYE5BRc9l+LB9dlT3CuNVcvDmfjprNZlReUyy9Bk1A1QWgKofsOl7PauPXIHmPJ4mTfOrEkvd5HTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOkDPEG+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2771C19423;
-	Tue, 31 Mar 2026 16:34:51 +0000 (UTC)
+	 MIME-Version; b=Jw5I+fddKJ67eKMRtCZcjQavG4za9JlIoCUCWfy/HjA1t80tVANKIfP5p0ai51dzD2m1z7iLW3dSpJ4Pcefy1h0WoevABXZf1Mj46TIIMVq64ArMeuu8VXRi84+ALHybqfaKuykHQTdCGHU7QjLlK4uI8FUsYRImCN/82idwXa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waGaFwdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35112C19423;
+	Tue, 31 Mar 2026 16:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974892;
-	bh=B75+myYq6QfL89JD9+dXRiUTboD5cF9HYmedCNqV3g0=;
+	s=korg; t=1774976230;
+	bh=mh5kRAnv3pgS5BbGG26Rn+Ae+6S6iEJDdVwyeG+1gbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YOkDPEG+s9tcNlYwey4460kTvRb61ZiiEH06yrU4Ryj+K1SU+hqlHb4YaybzSQOng
-	 bbN6/3Wl/MN2aDJ+iwgOI7UWpsAelqcoyfQkqZjmQqM27m/JbhHw5vGCSQ2DsfF2HS
-	 y2umijg8mARX6XukbRyFKAVdxOfmAoCIGeHcrmkE=
+	b=waGaFwdvLWv98RgJE4efy7k9tdegC2u2Tw3t5SJLO2712PbWi5nPVKT9hzTEbgLCA
+	 IpvreMXQqACJJPW75T7+iURj3TK+JDs9g9kCTaqduGC8XUY0hUu5qNOJDQfosvObGo
+	 52Xthl6E76HJcsjW2OHXLpPmSCjgsOaTE7WQchH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Long <me@imlonghao.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Wang Yinfeng <wangyinfeng@phytium.com.cn>,
+	Cui Chao <cuichao1753@phytium.com.cn>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 083/342] xfrm: iptfs: fix skb_put() panic on non-linear skb during reassembly
+Subject: [PATCH 6.18 013/309] cxl: Adjust the startup priority of cxl_pmem to be higher than that of cxl_acpi
 Date: Tue, 31 Mar 2026 18:18:36 +0200
-Message-ID: <20260331161802.078874332@linuxfoundation.org>
+Message-ID: <20260331161753.966631576@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231720-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232237-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,92 +87,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7813336D108
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,phytium.com.cn:email]
+X-Rspamd-Queue-Id: C7DC836DFDF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Cui Chao <cuichao1753@phytium.com.cn>
 
-[ Upstream commit 0b352f83cabfefdaafa806d6471f0eca117dc7d5 ]
+[ Upstream commit be5c5280cf2b20e363dc8e2a424dd200a29b1c77 ]
 
-In iptfs_reassem_cont(), IP-TFS attempts to append data to the new inner
-packet 'newskb' that is being reassembled. First a zero-copy approach is
-tried if it succeeds then newskb becomes non-linear.
+During the cxl_acpi probe process, it checks whether the cxl_nvb device
+and driver have been attached. Currently, the startup priority of the
+cxl_pmem driver is lower than that of the cxl_acpi driver. At this point,
+the cxl_nvb driver has not yet been registered on the cxl_bus, causing
+the attachment check to fail. This results in a failure to add the root
+nvdimm bridge, leading to a cxl_acpi probe failure and ultimately
+affecting the subsequent loading of cxl drivers. As a consequence, only
+one mem device object exists on the cxl_bus, while the cxl_port device
+objects and decoder device objects are missing.
 
-When a subsequent fragment in the same datagram does not meet the
-fast-path conditions, a memory copy is performed. It calls skb_put() to
-append the data and as newskb is non-linear it triggers
-SKB_LINEAR_ASSERT check.
+The solution is to raise the startup priority of cxl_pmem to be higher
+than that of cxl_acpi, ensuring that the cxl_pmem driver is registered
+before the aforementioned attachment check occurs.
 
- Oops: invalid opcode: 0000 [#1] SMP NOPTI
- [...]
- RIP: 0010:skb_put+0x3c/0x40
- [...]
- Call Trace:
-  <IRQ>
-  iptfs_reassem_cont+0x1ab/0x5e0 [xfrm_iptfs]
-  iptfs_input_ordered+0x2af/0x380 [xfrm_iptfs]
-  iptfs_input+0x122/0x3e0 [xfrm_iptfs]
-  xfrm_input+0x91e/0x1a50
-  xfrm4_esp_rcv+0x3a/0x110
-  ip_protocol_deliver_rcu+0x1d7/0x1f0
-  ip_local_deliver_finish+0xbe/0x1e0
-  __netif_receive_skb_core.constprop.0+0xb56/0x1120
-  __netif_receive_skb_list_core+0x133/0x2b0
-  netif_receive_skb_list_internal+0x1ff/0x3f0
-  napi_complete_done+0x81/0x220
-  virtnet_poll+0x9d6/0x116e [virtio_net]
-  __napi_poll.constprop.0+0x2b/0x270
-  net_rx_action+0x162/0x360
-  handle_softirqs+0xdc/0x510
-  __irq_exit_rcu+0xe7/0x110
-  irq_exit_rcu+0xe/0x20
-  common_interrupt+0x85/0xa0
-  </IRQ>
-  <TASK>
-
-Fix this by checking if the skb is non-linear. If it is, linearize it by
-calling skb_linearize(). As the initial allocation of newskb originally
-reserved enough tailroom for the entire reassembled packet we do not
-need to check if we have enough tailroom or extend it.
-
-Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
-Reported-by: Hao Long <me@imlonghao.com>
-Closes: https://lore.kernel.org/netdev/DGRCO9SL0T5U.JTINSHJQ9KPK@imlonghao.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Co-developed-by: Wang Yinfeng <wangyinfeng@phytium.com.cn>
+Signed-off-by: Wang Yinfeng <wangyinfeng@phytium.com.cn>
+Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+Fixes: e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to cxl_pmem.ko")
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20260319074535.1709250-1-cuichao1753@phytium.com.cn
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_iptfs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/cxl/pmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 3b6d7284fc70a..4e270628fc347 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -901,6 +901,12 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
- 	    iptfs_skb_can_add_frags(newskb, fragwalk, data, copylen)) {
- 		iptfs_skb_add_frags(newskb, fragwalk, data, copylen);
- 	} else {
-+		if (skb_linearize(newskb)) {
-+			XFRM_INC_STATS(xs_net(xtfs->x),
-+				       LINUX_MIB_XFRMINBUFFERERROR);
-+			goto abandon;
-+		}
-+
- 		/* copy fragment data into newskb */
- 		if (skb_copy_seq_read(st, data, skb_put(newskb, copylen),
- 				      copylen)) {
+diff --git a/drivers/cxl/pmem.c b/drivers/cxl/pmem.c
+index c00b84b960761..3432fd83b1e2a 100644
+--- a/drivers/cxl/pmem.c
++++ b/drivers/cxl/pmem.c
+@@ -554,7 +554,7 @@ static __exit void cxl_pmem_exit(void)
+ 
+ MODULE_DESCRIPTION("CXL PMEM: Persistent Memory Support");
+ MODULE_LICENSE("GPL v2");
+-module_init(cxl_pmem_init);
++subsys_initcall(cxl_pmem_init);
+ module_exit(cxl_pmem_exit);
+ MODULE_IMPORT_NS("CXL");
+ MODULE_ALIAS_CXL(CXL_DEVICE_NVDIMM_BRIDGE);
 -- 
 2.51.0
 
