@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eN06AS7+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:38 +0200
+	id UDvxKDQBzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66A036DB4E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BF536E530
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7A1F930B3974
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E1BA30991BD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75D6425CD9;
-	Tue, 31 Mar 2026 16:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BBD3009D4;
+	Tue, 31 Mar 2026 17:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnLMi6nw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSWc8yxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3E1425CD4;
-	Tue, 31 Mar 2026 16:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4B32C21F2;
+	Tue, 31 Mar 2026 17:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975870; cv=none; b=gpu7KKEHGTR1OSgyA/0jh5WnKlTyj07c4THIfee2ibn04ipRsI/78IS8QIgJtwUhtridJqBvHZUwW9YbK0ei3/HyZ0g0DOO4zs8+9oUOI171GmmoC+XRisf+uY1C/gPxG23IwHx7Jx+85mf1GDyq9f/xAgsBXnKDvgjos2jU87M=
+	t=1774976698; cv=none; b=UWFaUOB8gkNAowRpTy0Sp/1w1GpFNmk8oYiNvHkB8XRWqfahEATNpox3QZpUVwF+AbbcEeYhgT8mowQvlrV0MnwquU2w4EO6sPn7zDp4CMuZ4aF/MlfeKmSoAlN5HNLdclpB8dMP//woow6vwrZDanwDeZwtekLVdAbTgC6wROY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975870; c=relaxed/simple;
-	bh=n80LRVviTYEzo4LI23v1fxRkF9f5wtZXY9GhDqewReo=;
+	s=arc-20240116; t=1774976698; c=relaxed/simple;
+	bh=ROzNKWRfHw3cbYvSgZfHeQD2z7jrMZonQEh9OeuHZtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBZRRxpEHQbfjuTa0OVNyMGMmpayHEP1smZr4x8HgizrsyRwEm7YfA845NP012onO6evbU1sOlgVfoD0D1EIrBRUWNvDzf5w0cm+eAihTktBcuDbOPK3P8/9lkEOK7Oh9zgZHRYrACpDRG5K/JZoSmzpCR8SE0OOMYSgeasP00s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnLMi6nw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D10C19423;
-	Tue, 31 Mar 2026 16:51:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a3s1SxzuURKQstDq7pvD6c6L8xzHgQLOi+R2FX/oSCLG7m1/wqCzGs4D1v0t1uNv62a//+x3vMcK6O1pDmWDZXUfIc686SGgf4GRTZiwH0PbNBHnOZJIGaH0W+8CiqFPtswyeXqTnE5bjdyZiSshdkGlX1ojWlZq9xM2pJnDIbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSWc8yxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12735C19423;
+	Tue, 31 Mar 2026 17:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975870;
-	bh=n80LRVviTYEzo4LI23v1fxRkF9f5wtZXY9GhDqewReo=;
+	s=korg; t=1774976698;
+	bh=ROzNKWRfHw3cbYvSgZfHeQD2z7jrMZonQEh9OeuHZtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnLMi6nwvWlKfnYgjn20wZh6I9FU97PzP9TekhBhvK3Yj4FUxBdz+AXHSyX5BbKhW
-	 6r2Ea2xi4Orfhehe9I0URifXCJrhvJ9NqdjU6NU7phms9ypgYWUPsoZxzb9IJZJzqI
-	 0mx1q/Gvx6fZvxfsDVVpaXxmmQfq/bOZIh5q9elM=
+	b=RSWc8yxm/x2eVMqG2UJC7vpGMzUNOvXVUVXa6aL+ukkijFpmmi5F8TXTGvuNSFjxt
+	 0LPG4O+sjhG7BPteMssKxxjbkDGTemknvSdiFBCz0JthGu6Zg7m5WuzzjTSKt/noyc
+	 ERGPkguy5QX/AvWJUC7b2puPMeHVg2s4n/mXrCeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sanman Pradhan <psanman@juniper.net>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/244] spi: sn-f-ospi: Fix resource leak in f_ospi_probe()
+Subject: [PATCH 6.18 166/309] hwmon: (adm1177) fix sysfs ABI violation and current unit conversion
 Date: Tue, 31 Mar 2026 18:21:09 +0200
-Message-ID: <20260331161746.056406396@linuxfoundation.org>
+Message-ID: <20260331161759.575490531@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +64,218 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232098-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232419-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.988];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D66A036DB4E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,juniper.net:email,analog.com:email]
+X-Rspamd-Queue-Id: 42BF536E530
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit ef3d549e1deb3466c61f3b01d22fc3fe3e5efb08 ]
+[ Upstream commit bf08749a6abb6d1959bfdc0edc32c640df407558 ]
 
-In f_ospi_probe(), when num_cs validation fails, it returns without
-calling spi_controller_put() on the SPI controller, which causes a
-resource leak.
+The adm1177 driver exposes the current alert threshold through
+hwmon_curr_max_alarm. This violates the hwmon sysfs ABI, where
+*_alarm attributes are read-only status flags and writable thresholds
+must use currN_max.
 
-Use devm_spi_alloc_host() instead of spi_alloc_host() to ensure the
-SPI controller is properly freed when probe fails.
+The driver also stores the threshold internally in microamps, while
+currN_max is defined in milliamps. Convert the threshold accordingly
+on both the read and write paths.
 
-Fixes: 1b74dd64c861 ("spi: Add Socionext F_OSPI SPI flash controller driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260319-sn-f-v1-1-33a6738d2da8@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Widen the cached threshold and related calculations to 64 bits so
+that small shunt resistor values do not cause truncation or overflow.
+Also use 64-bit arithmetic for the mA/uA conversions, clamp writes
+to the range the hardware can represent, and propagate failures from
+adm1177_write_alert_thr() instead of silently ignoring them.
+
+Update the hwmon documentation to reflect the attribute rename and
+the correct units returned by the driver.
+
+Fixes: 09b08ac9e8d5 ("hwmon: (adm1177) Add ADM1177 Hot Swap Controller and Digital Power Monitor driver")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Acked-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20260325051246.28262-1-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sn-f-ospi.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ Documentation/hwmon/adm1177.rst |  8 ++---
+ drivers/hwmon/adm1177.c         | 54 +++++++++++++++++++--------------
+ 2 files changed, 35 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
-index fd8c8eb37d01d..2d6d50b6f4dc9 100644
---- a/drivers/spi/spi-sn-f-ospi.c
-+++ b/drivers/spi/spi-sn-f-ospi.c
-@@ -609,7 +609,7 @@ static int f_ospi_probe(struct platform_device *pdev)
- 	u32 num_cs = OSPI_NUM_CS;
- 	int ret;
+diff --git a/Documentation/hwmon/adm1177.rst b/Documentation/hwmon/adm1177.rst
+index 1c85a2af92bf7..375f6d6e03a7d 100644
+--- a/Documentation/hwmon/adm1177.rst
++++ b/Documentation/hwmon/adm1177.rst
+@@ -27,10 +27,10 @@ for details.
+ Sysfs entries
+ -------------
  
--	ctlr = spi_alloc_host(dev, sizeof(*ospi));
-+	ctlr = devm_spi_alloc_host(dev, sizeof(*ospi));
- 	if (!ctlr)
- 		return -ENOMEM;
+-The following attributes are supported. Current maxim attribute
++The following attributes are supported. Current maximum attribute
+ is read-write, all other attributes are read-only.
  
-@@ -632,16 +632,12 @@ static int f_ospi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, ospi);
+-in0_input		Measured voltage in microvolts.
++in0_input		Measured voltage in millivolts.
  
- 	ospi->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(ospi->base)) {
--		ret = PTR_ERR(ospi->base);
--		goto err_put_ctlr;
--	}
-+	if (IS_ERR(ospi->base))
-+		return PTR_ERR(ospi->base);
+-curr1_input		Measured current in microamperes.
+-curr1_max_alarm		Overcurrent alarm in microamperes.
++curr1_input		Measured current in milliamperes.
++curr1_max		Overcurrent shutdown threshold in milliamperes.
+diff --git a/drivers/hwmon/adm1177.c b/drivers/hwmon/adm1177.c
+index 8b2c965480e3f..7888afe8dafd6 100644
+--- a/drivers/hwmon/adm1177.c
++++ b/drivers/hwmon/adm1177.c
+@@ -10,6 +10,8 @@
+ #include <linux/hwmon.h>
+ #include <linux/i2c.h>
+ #include <linux/init.h>
++#include <linux/math64.h>
++#include <linux/minmax.h>
+ #include <linux/module.h>
+ #include <linux/regulator/consumer.h>
  
- 	ospi->clk = devm_clk_get_enabled(dev, NULL);
--	if (IS_ERR(ospi->clk)) {
--		ret = PTR_ERR(ospi->clk);
--		goto err_put_ctlr;
--	}
-+	if (IS_ERR(ospi->clk))
-+		return PTR_ERR(ospi->clk);
+@@ -33,7 +35,7 @@
+ struct adm1177_state {
+ 	struct i2c_client	*client;
+ 	u32			r_sense_uohm;
+-	u32			alert_threshold_ua;
++	u64			alert_threshold_ua;
+ 	bool			vrange_high;
+ };
  
- 	mutex_init(&ospi->mlock);
- 
-@@ -658,9 +654,6 @@ static int f_ospi_probe(struct platform_device *pdev)
- err_destroy_mutex:
- 	mutex_destroy(&ospi->mlock);
- 
--err_put_ctlr:
--	spi_controller_put(ctlr);
--
- 	return ret;
+@@ -48,7 +50,7 @@ static int adm1177_write_cmd(struct adm1177_state *st, u8 cmd)
  }
  
+ static int adm1177_write_alert_thr(struct adm1177_state *st,
+-				   u32 alert_threshold_ua)
++				   u64 alert_threshold_ua)
+ {
+ 	u64 val;
+ 	int ret;
+@@ -91,8 +93,8 @@ static int adm1177_read(struct device *dev, enum hwmon_sensor_types type,
+ 			*val = div_u64((105840000ull * dummy),
+ 				       4096 * st->r_sense_uohm);
+ 			return 0;
+-		case hwmon_curr_max_alarm:
+-			*val = st->alert_threshold_ua;
++		case hwmon_curr_max:
++			*val = div_u64(st->alert_threshold_ua, 1000);
+ 			return 0;
+ 		default:
+ 			return -EOPNOTSUPP;
+@@ -126,9 +128,10 @@ static int adm1177_write(struct device *dev, enum hwmon_sensor_types type,
+ 	switch (type) {
+ 	case hwmon_curr:
+ 		switch (attr) {
+-		case hwmon_curr_max_alarm:
+-			adm1177_write_alert_thr(st, val);
+-			return 0;
++		case hwmon_curr_max:
++			val = clamp_val(val, 0,
++					div_u64(105840000ULL, st->r_sense_uohm));
++			return adm1177_write_alert_thr(st, (u64)val * 1000);
+ 		default:
+ 			return -EOPNOTSUPP;
+ 		}
+@@ -156,7 +159,7 @@ static umode_t adm1177_is_visible(const void *data,
+ 			if (st->r_sense_uohm)
+ 				return 0444;
+ 			return 0;
+-		case hwmon_curr_max_alarm:
++		case hwmon_curr_max:
+ 			if (st->r_sense_uohm)
+ 				return 0644;
+ 			return 0;
+@@ -170,7 +173,7 @@ static umode_t adm1177_is_visible(const void *data,
+ 
+ static const struct hwmon_channel_info * const adm1177_info[] = {
+ 	HWMON_CHANNEL_INFO(curr,
+-			   HWMON_C_INPUT | HWMON_C_MAX_ALARM),
++			   HWMON_C_INPUT | HWMON_C_MAX),
+ 	HWMON_CHANNEL_INFO(in,
+ 			   HWMON_I_INPUT),
+ 	NULL
+@@ -192,7 +195,8 @@ static int adm1177_probe(struct i2c_client *client)
+ 	struct device *dev = &client->dev;
+ 	struct device *hwmon_dev;
+ 	struct adm1177_state *st;
+-	u32 alert_threshold_ua;
++	u64 alert_threshold_ua;
++	u32 prop;
+ 	int ret;
+ 
+ 	st = devm_kzalloc(dev, sizeof(*st), GFP_KERNEL);
+@@ -208,22 +212,26 @@ static int adm1177_probe(struct i2c_client *client)
+ 	if (device_property_read_u32(dev, "shunt-resistor-micro-ohms",
+ 				     &st->r_sense_uohm))
+ 		st->r_sense_uohm = 0;
+-	if (device_property_read_u32(dev, "adi,shutdown-threshold-microamp",
+-				     &alert_threshold_ua)) {
+-		if (st->r_sense_uohm)
+-			/*
+-			 * set maximum default value from datasheet based on
+-			 * shunt-resistor
+-			 */
+-			alert_threshold_ua = div_u64(105840000000,
+-						     st->r_sense_uohm);
+-		else
+-			alert_threshold_ua = 0;
++	if (!device_property_read_u32(dev, "adi,shutdown-threshold-microamp",
++				      &prop)) {
++		alert_threshold_ua = prop;
++	} else if (st->r_sense_uohm) {
++		/*
++		 * set maximum default value from datasheet based on
++		 * shunt-resistor
++		 */
++		alert_threshold_ua = div_u64(105840000000ULL,
++					     st->r_sense_uohm);
++	} else {
++		alert_threshold_ua = 0;
+ 	}
+ 	st->vrange_high = device_property_read_bool(dev,
+ 						    "adi,vrange-high-enable");
+-	if (alert_threshold_ua && st->r_sense_uohm)
+-		adm1177_write_alert_thr(st, alert_threshold_ua);
++	if (alert_threshold_ua && st->r_sense_uohm) {
++		ret = adm1177_write_alert_thr(st, alert_threshold_ua);
++		if (ret)
++			return ret;
++	}
+ 
+ 	ret = adm1177_write_cmd(st, ADM1177_CMD_V_CONT |
+ 				    ADM1177_CMD_I_CONT |
 -- 
 2.53.0
 
