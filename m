@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MN0jGhkBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:05 +0200
+	id 8FD2J6X7y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9834936E4DF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005FA36D453
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D167F306183C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6F8C32700A0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF6E41B342;
-	Tue, 31 Mar 2026 16:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12776436352;
+	Tue, 31 Mar 2026 16:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyzteeJp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AO630IiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68EF2D1F40;
-	Tue, 31 Mar 2026 16:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DD142EEDA;
+	Tue, 31 Mar 2026 16:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975639; cv=none; b=cA/uFvBpBiURBLFjvG/pFgwqaA0zVsjsi6DA9zMJekNpWYuXAMC3RM/l3Hn20AkxHJuijWTH/HedRqjgpvvxal2wWhFzJ2e14jqwMpTVVtk5SZ0yyqX/uaHC0rS2gK57IgfuL6ytXhgi+b3vZevawAgcr7EVHzazRqO8sVihXOk=
+	t=1774975057; cv=none; b=uwt1ade/HdgFmf3hUq9MKwXqqDGRTYICxtXIO2XAl+OjYa9r728KtDJhXoc9o8VNblQp724c4Se9SUXdGWY7Tf0SOV9D16Bd+OlmRD10WwSRvus4KabW/m5NcvGhubrIK5ZB4BEJRjR5bJQr28gvTSckwzdH0L2tVmfGhLIiQiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975639; c=relaxed/simple;
-	bh=80HFVsVIEV2t/qXgGsQv7za8DYHy0jwmTIGZPTLd01o=;
+	s=arc-20240116; t=1774975057; c=relaxed/simple;
+	bh=leAC6GUoN7zbrfgDqaABSwr4NV2zrskaw1LAUgrphiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lg4fLQiKozIukHU/8EVBU6wNybpE0oVDNR2UnZJf0EGKsWduor2qrazsI2SFRWObtTo5NG166rcR4IZJBjxMu3mSTTZHjm4cUXUGz18CCSEnDV8BasDdwf7VuxG8yAW3WCIn1J6T63HQlu+uREV3siXDDqFexGGnyuHFLcWEFCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyzteeJp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C97AC19423;
-	Tue, 31 Mar 2026 16:47:19 +0000 (UTC)
+	 MIME-Version; b=O9fuuNCH1XKRgsXlC0KN8DPqjwuqAb37rBbF6o2rQlmh47B+wSyZJGjnA0xsPZPUih4c9Z4JSvQV09gwbtqPuRJOxeP/qautHS8Hmac+2Df8IDUe53SB8+sZkxllgan8FyOI9P6vNOftqm2XDxLc22HX4dBeg3FaqgnXb9QQkC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AO630IiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601C4C19424;
+	Tue, 31 Mar 2026 16:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975639;
-	bh=80HFVsVIEV2t/qXgGsQv7za8DYHy0jwmTIGZPTLd01o=;
+	s=korg; t=1774975057;
+	bh=leAC6GUoN7zbrfgDqaABSwr4NV2zrskaw1LAUgrphiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyzteeJpwaYwOtz1lEChdNj0VCVwrZ9DBZU6An97IpuSbMG5sm2+XRIR58smrhhhd
-	 yoEYrMgRYIIAXqgt3/vFnNwbrpYafGEnhAA1ggNzivZnFOCphHlOpoItgSjdfGsKwI
-	 jNBl/EdeFcGXwmZ7dKH6IypDUH+QcVu8szwhOXKY=
+	b=AO630IiY2XVi5L9a3G2nzR5ChQG3QCSQ+Ab65xsUXF7KjwjRlhmYDlp50yfutZ2Mz
+	 2s3thzcIvOjn1tD46nBiVAkPKocEVmbASW3kZm64or/dymOn7+XIK54b17dM0GbD21
+	 k1KLPdVAQgP5BOWzqbA9m+eUjQbgwCuB+GXEUPjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fuchs <fuchsfl@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Kamal Heib <kheib@redhat.com>,
+	Siva Reddy Kallam <siva.kallam@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/244] scsi: devinfo: Add BLIST_SKIP_IO_HINTS for Iomega ZIP
-Date: Tue, 31 Mar 2026 18:19:39 +0200
-Message-ID: <20260331161742.778208735@linuxfoundation.org>
+Subject: [PATCH 6.19 147/342] RDMA/bng_re: Fix silent failure in HWRM version query
+Date: Tue, 31 Mar 2026 18:19:40 +0200
+Message-ID: <20260331161804.413720188@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +67,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232009-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231783-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: 9834936E4DF
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 005FA36D453
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fuchs <fuchsfl@gmail.com>
+From: Kamal Heib <kheib@redhat.com>
 
-[ Upstream commit 80bf3b28d32b431f84f244a8469488eb6d96afbb ]
+[ Upstream commit c242e92c9da456d361d1d4482fb6e93ee95bd8cf ]
 
-The Iomega ZIP 100 (Z100P2) can't process IO Advice Hints Grouping mode
-page query. It immediately switches to the status phase 0xb8 after
-receiving the subpage code 0x05 of MODE_SENSE_10 command, which fails
-imm_out() and turns into DID_ERROR of this command, which leads to unusable
-device. This was tested with an Iomega ZIP 100 (Z100P2) connected with a
-StarTech PEX1P2 AX99100 PCIe parallel port card.
+If the firmware version query fails, the driver currently ignores the
+error and continues initializing. This leaves the device in a bad state.
 
-Prior to this fix, Test Unit Ready fails and the drive can't be used:
-        IMM: returned SCSI status b8
-        sd 7:0:6:0: [sdh] Test Unit Ready failed: Result: hostbyte=0x01 driverbyte=DRIVER_OK
+Fix this by making bng_re_query_hwrm_version() return the error code and
+update the driver to check for this error and stop the setup process
+safely if it happens.
 
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
-Link: https://patch.msgid.link/20260227181823.892932-1-fuchsfl@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 745065770c2d ("RDMA/bng_re: Register and get the resources from bnge driver")
+Signed-off-by: Kamal Heib <kheib@redhat.com>
+Link: https://patch.msgid.link/20260303043645.425724-1-kheib@redhat.com
+Reviewed-by: Siva Reddy Kallam <siva.kallam@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_devinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bng_re/bng_dev.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/scsi_devinfo.c b/drivers/scsi/scsi_devinfo.c
-index 90f1393a23f87..3cdc4cd4b1639 100644
---- a/drivers/scsi/scsi_devinfo.c
-+++ b/drivers/scsi/scsi_devinfo.c
-@@ -190,7 +190,7 @@ static struct {
- 	{"IBM", "2076", NULL, BLIST_NO_VPD_SIZE},
- 	{"IBM", "2105", NULL, BLIST_RETRY_HWERROR},
- 	{"iomega", "jaz 1GB", "J.86", BLIST_NOTQ | BLIST_NOLUN},
--	{"IOMEGA", "ZIP", NULL, BLIST_NOTQ | BLIST_NOLUN},
-+	{"IOMEGA", "ZIP", NULL, BLIST_NOTQ | BLIST_NOLUN | BLIST_SKIP_IO_HINTS},
- 	{"IOMEGA", "Io20S         *F", NULL, BLIST_KEY},
- 	{"INSITE", "Floptical   F*8I", NULL, BLIST_KEY},
- 	{"INSITE", "I325VM", NULL, BLIST_KEY},
+diff --git a/drivers/infiniband/hw/bng_re/bng_dev.c b/drivers/infiniband/hw/bng_re/bng_dev.c
+index fd0a4fe274ca6..9cf73f87070ec 100644
+--- a/drivers/infiniband/hw/bng_re/bng_dev.c
++++ b/drivers/infiniband/hw/bng_re/bng_dev.c
+@@ -210,7 +210,7 @@ static int bng_re_stats_ctx_alloc(struct bng_re_dev *rdev)
+ 	return rc;
+ }
+ 
+-static void bng_re_query_hwrm_version(struct bng_re_dev *rdev)
++static int bng_re_query_hwrm_version(struct bng_re_dev *rdev)
+ {
+ 	struct bnge_auxr_dev *aux_dev = rdev->aux_dev;
+ 	struct hwrm_ver_get_output ver_get_resp = {};
+@@ -230,7 +230,7 @@ static void bng_re_query_hwrm_version(struct bng_re_dev *rdev)
+ 	if (rc) {
+ 		ibdev_err(&rdev->ibdev, "Failed to query HW version, rc = 0x%x",
+ 			  rc);
+-		return;
++		return rc;
+ 	}
+ 
+ 	cctx = rdev->chip_ctx;
+@@ -244,6 +244,8 @@ static void bng_re_query_hwrm_version(struct bng_re_dev *rdev)
+ 
+ 	if (!cctx->hwrm_cmd_max_timeout)
+ 		cctx->hwrm_cmd_max_timeout = BNG_ROCE_FW_MAX_TIMEOUT;
++
++	return 0;
+ }
+ 
+ static void bng_re_dev_uninit(struct bng_re_dev *rdev)
+@@ -306,13 +308,15 @@ static int bng_re_dev_init(struct bng_re_dev *rdev)
+ 		goto msix_ctx_fail;
+ 	}
+ 
+-	bng_re_query_hwrm_version(rdev);
++	rc = bng_re_query_hwrm_version(rdev);
++	if (rc)
++		goto destroy_chip_ctx;
+ 
+ 	rc = bng_re_alloc_fw_channel(&rdev->bng_res, &rdev->rcfw);
+ 	if (rc) {
+ 		ibdev_err(&rdev->ibdev,
+ 			  "Failed to allocate RCFW Channel: %#x\n", rc);
+-		goto alloc_fw_chl_fail;
++		goto destroy_chip_ctx;
+ 	}
+ 
+ 	/* Allocate nq record memory */
+@@ -391,7 +395,7 @@ static int bng_re_dev_init(struct bng_re_dev *rdev)
+ 	kfree(rdev->nqr);
+ nq_alloc_fail:
+ 	bng_re_free_rcfw_channel(&rdev->rcfw);
+-alloc_fw_chl_fail:
++destroy_chip_ctx:
+ 	bng_re_destroy_chip_ctx(rdev);
+ msix_ctx_fail:
+ 	bnge_unregister_dev(rdev->aux_dev);
 -- 
-2.51.0
+2.53.0
 
 
 
