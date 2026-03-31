@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGJxHVkHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:45 +0200
+	id aChtNAgCzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83FD036F23F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D473E36E799
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1335030CB194
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9F73F3132DC0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35A63033DF;
-	Tue, 31 Mar 2026 17:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028E7425CE1;
+	Tue, 31 Mar 2026 16:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGesQcTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owKH6N4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E652E1C7C;
-	Tue, 31 Mar 2026 17:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F593DE431;
+	Tue, 31 Mar 2026 16:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976729; cv=none; b=Pvk5cpwprBldxjyRS5J4Sg7mS7jHMCVToXSRoh9X1b78DcnSNfC2dP2c+SRj6fxFOSAwc8HBxtnTfkwKrLUpDA/YRaNphtKbdkP8jJc3U4vsP5E2q0klkwsLNeZEjVLqf+dYzn7VGbLulkWCSC5oMPAHT/Zo8IvdQxw/X/MhmjA=
+	t=1774975888; cv=none; b=YrD0YvY2E5yFd5Zpkjjr2kXpvQ6FcmMP5Q/eBG81hfDVp1iA2lrMJRo1429OqlbhP/BLrQR+KWIfzPt0kI3uivgXTXupMkGqfiqfMjOZ/g3cSwdJedp4/5x+ZWak8c12Hir97B5oVLzBaGlAwUlL4ChZHUJvTvHbcsnyb2VELgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976729; c=relaxed/simple;
-	bh=WVCJmcO1MlpnRAu8rXsyO+wbog2zqux0gtE4V88YjK8=;
+	s=arc-20240116; t=1774975888; c=relaxed/simple;
+	bh=SmQCUvCc6oasanASo960njHg/hlc1H5qyxjR7hcAbbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qFIvxNP+cE0R4PN4Eei/ktPzfOkju8v4yWnMAeUmwaA+PNexCePccHnj/zMELcFkM2q/AsTfrgxbJRZkChU6I4VVelQmWcJIDhu8/zg+2jEWmEsCIukHbhe71TSr4CHOy5DO8TeDwZ+v3akUEpfVxUQiwYiOZ1OrgX1euWNGv1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGesQcTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C78CC2BCB3;
-	Tue, 31 Mar 2026 17:05:29 +0000 (UTC)
+	 MIME-Version; b=a0ZSfL8f33QdtlxSL8MKQzlE+E3vu6/ttB0XQWNWtUWyK49mVKIzd3eTr+PgxZfto1GWbhbDPEO4cjRZJye64b98V7PLmM88TMVBgJEPHusiR2cuYKCBGqg8dpp/iAjOSDmY9SberSTyqEmVpfDI0NJ4GmCtmUHkOalzrQxyIkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owKH6N4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526BAC19423;
+	Tue, 31 Mar 2026 16:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976729;
-	bh=WVCJmcO1MlpnRAu8rXsyO+wbog2zqux0gtE4V88YjK8=;
+	s=korg; t=1774975888;
+	bh=SmQCUvCc6oasanASo960njHg/hlc1H5qyxjR7hcAbbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGesQcTBeapn8CCVvu5OwiD9mKOnR+QmOYk5/Op4n1lpYwDx6gqMv26yn716gv+Yv
-	 wzoN7jzgpuiLmiccuJ0quF3lmHKjvox80nAbHYHwtWAglaDW3sl7Cy+lIsKNogzxj/
-	 YYvAhILLm0Miusv39juF78fb3DaH5IQ8wa+QkryU=
+	b=owKH6N4Jz3iflByB6gcFzyFU9WJoZHMddSxVn2RPIEFBnZYrZjXTVq+VDBvF1+nVY
+	 F6DZ+1wKFHTBdPzJ19gjenpDMQYMGmsHxBWEjlJD5rTt9xJpxwSgPmOyuaLDTkZYM9
+	 E/gyXo+PIqILnkxptdn5BDxXshmuBzriUqKY+1t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Mark Brown <broonie@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 172/309] ASoC: adau1372: Fix clock leak on PLL lock failure
+Subject: [PATCH 6.12 125/244] ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()
 Date: Tue, 31 Mar 2026 18:21:15 +0200
-Message-ID: <20260331161759.797480054@linuxfoundation.org>
+Message-ID: <20260331161746.275433848@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +64,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232431-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.973];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232105-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 83FD036F23F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D473E36E799
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit bfe6a264effcb6fe99ad7ceaf9e8c7439fc9555b ]
+[ Upstream commit f6484cadbcaf26b5844b51bd7307a663dda48ef6 ]
 
-adau1372_enable_pll() was a void function that logged a dev_err() on
-PLL lock timeout but did not propagate the error. As a result,
-adau1372_set_power() would continue with adau1372->enabled set to true
-despite the PLL being unlocked, and the mclk left enabled with no
-corresponding disable on the error path.
+When ec_install_handlers() returns -EPROBE_DEFER on reduced-hardware
+platforms, it has already started the EC and installed the address
+space handler with the struct acpi_ec pointer as handler context.
+However, acpi_ec_setup() propagates the error without any cleanup.
 
-Convert adau1372_enable_pll() to return int, using -ETIMEDOUT on lock
-timeout and propagating regmap errors directly. In adau1372_set_power(),
-check the return value and unwind in reverse order: restore regcache to
-cache-only mode, reassert GPIO power-down, and disable the clock before
-returning the error.
+The caller acpi_ec_add() then frees the struct acpi_ec for non-boot
+instances, leaving a dangling handler context in ACPICA.
 
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Fixes: 6cd4c6459e47 ("ASoC: Add ADAU1372 audio CODEC support")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20260325210704.76847-3-jihed.chaibi.dev@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Any subsequent AML evaluation that accesses an EC OpRegion field
+dispatches into acpi_ec_space_handler() with the freed pointer,
+causing a use-after-free:
+
+ BUG: KASAN: slab-use-after-free in mutex_lock (kernel/locking/mutex.c:289)
+ Write of size 8 at addr ffff88800721de38 by task init/1
+ Call Trace:
+  <TASK>
+  mutex_lock (kernel/locking/mutex.c:289)
+  acpi_ec_space_handler (drivers/acpi/ec.c:1362)
+  acpi_ev_address_space_dispatch (drivers/acpi/acpica/evregion.c:293)
+  acpi_ex_access_region (drivers/acpi/acpica/exfldio.c:246)
+  acpi_ex_field_datum_io (drivers/acpi/acpica/exfldio.c:509)
+  acpi_ex_extract_from_field (drivers/acpi/acpica/exfldio.c:700)
+  acpi_ex_read_data_from_field (drivers/acpi/acpica/exfield.c:327)
+  acpi_ex_resolve_node_to_value (drivers/acpi/acpica/exresolv.c:392)
+  </TASK>
+
+ Allocated by task 1:
+  acpi_ec_alloc (drivers/acpi/ec.c:1424)
+  acpi_ec_add (drivers/acpi/ec.c:1692)
+
+ Freed by task 1:
+  kfree (mm/slub.c:6876)
+  acpi_ec_add (drivers/acpi/ec.c:1751)
+
+The bug triggers on reduced-hardware EC platforms (ec->gpe < 0)
+when the GPIO IRQ provider defers probing. Once the stale handler
+exists, any unprivileged sysfs read that causes AML to touch an
+EC OpRegion (battery, thermal, backlight) exercises the dangling
+pointer.
+
+Fix this by calling ec_remove_handlers() in the error path of
+acpi_ec_setup() before clearing first_ec. ec_remove_handlers()
+checks each EC_FLAGS_* bit before acting, so it is safe to call
+regardless of how far ec_install_handlers() progressed:
+
+  -ENODEV  (handler not installed): only calls acpi_ec_stop()
+  -EPROBE_DEFER (handler installed): removes handler, stops EC
+
+Fixes: 03e9a0e05739 ("ACPI: EC: Consolidate event handler installation code")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260324165458.1337233-2-bestswngs@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/adau1372.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/acpi/ec.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/adau1372.c b/sound/soc/codecs/adau1372.c
-index 6345342218d61..d7363f9d53bb3 100644
---- a/sound/soc/codecs/adau1372.c
-+++ b/sound/soc/codecs/adau1372.c
-@@ -762,7 +762,7 @@ static int adau1372_startup(struct snd_pcm_substream *substream, struct snd_soc_
- 	return 0;
- }
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index a813bc97cf425..10bd2942c4beb 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1653,6 +1653,8 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
  
--static void adau1372_enable_pll(struct adau1372 *adau1372)
-+static int adau1372_enable_pll(struct adau1372 *adau1372)
- {
- 	unsigned int val, timeout = 0;
- 	int ret;
-@@ -778,8 +778,12 @@ static void adau1372_enable_pll(struct adau1372 *adau1372)
- 		timeout++;
- 	} while (!(val & 1) && timeout < 3);
- 
--	if (ret < 0 || !(val & 1))
-+	if (ret < 0 || !(val & 1)) {
- 		dev_err(adau1372->dev, "Failed to lock PLL\n");
-+		return ret < 0 ? ret : -ETIMEDOUT;
-+	}
+ 	ret = ec_install_handlers(ec, device, call_reg);
+ 	if (ret) {
++		ec_remove_handlers(ec);
 +
-+	return 0;
- }
- 
- static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
-@@ -807,7 +811,14 @@ static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
- 		 * accessed.
- 		 */
- 		if (adau1372->use_pll) {
--			adau1372_enable_pll(adau1372);
-+			ret = adau1372_enable_pll(adau1372);
-+			if (ret) {
-+				regcache_cache_only(adau1372->regmap, true);
-+				if (adau1372->pd_gpio)
-+					gpiod_set_value(adau1372->pd_gpio, 1);
-+				clk_disable_unprepare(adau1372->mclk);
-+				return ret;
-+			}
- 			clk_ctrl |= ADAU1372_CLK_CTRL_CLKSRC;
- 		}
+ 		if (ec == first_ec)
+ 			first_ec = NULL;
  
 -- 
 2.53.0
