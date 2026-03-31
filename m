@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-231619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNJpJM/4y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:43 +0200
+	id EOLKKTD+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C3336CEA6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3917136DB56
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9788731E9BA7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADBAC328C12F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E14425CE6;
-	Tue, 31 Mar 2026 16:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E0B425CE4;
+	Tue, 31 Mar 2026 16:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLSdYFwQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mg09ceVn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8265425CC4;
-	Tue, 31 Mar 2026 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1AC425CC4;
+	Tue, 31 Mar 2026 16:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974638; cv=none; b=KSepbpGufuuZTtnpILJhDkGeyR4dMnBqHbyLrIDczVz9wajFfKn5ACymFG59cOekoRMmKVq5d2T5JM9+61JdvyPVv6F56BKZ4Ny7qcfn5x42opsBA6KfY0y/EPzEAr2WWUFeIHxyhAGT0iW5SmfAwrQr62V4s8jYK3PWhzsMoYU=
+	t=1774976076; cv=none; b=YL4PDAPbNnaAsyJb/eAUq5DttkK+d7F1UzWUOGdVzz9hPYUU8KXbDaIkYcrCR2OZ4aFWiGO5QhM8L7dYv0gliXi9hTM/ZXpj2dnVBJPLe39hBHelrmdJDa8VjD6mcuGZVO3o7DzBsVS4Vq7Rz+jrwdAcUBuvLu8aOkT4eaav+Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974638; c=relaxed/simple;
-	bh=NOG0eNckwqYKKubd+3ifEJv/9IGdH1AfIJDoN5S0nQ0=;
+	s=arc-20240116; t=1774976076; c=relaxed/simple;
+	bh=YEb6Llls5iJjeHBDDaDGPi43eTC35X5/EW2pejyMYQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMmN5Ap9872ERu2qOgwXt/9VLoOkw8V32aB7xpctvCHRZ3+uiLHBEfF7Xtzqx+EzzaJyl5ycJy8MnGI2o+mp0go7HMg4zcPr5W/n6XlpTVPDXHm+xxxTFf587oRLA3xdGv3sB89juES5gW1eakaaOfgb470Nk1pYIldV+t7vP8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLSdYFwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2A5C2BCB1;
-	Tue, 31 Mar 2026 16:30:38 +0000 (UTC)
+	 MIME-Version; b=t88I4xtO1xqVV13DtoT9OW8Hghw3lByPeJS7uctqRX10hMw21Fg0BF3isu0147nk3cN0o1UR6Puj6Edt8wONOt3zI2lr9f98Wnb80CFUReDBlVVoxakDoYe8rhMSSJSNsc7QR9suG5oQAvd1G5v/K31vPCprTbKt7TtYC98LpzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg09ceVn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B30C19424;
+	Tue, 31 Mar 2026 16:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974638;
-	bh=NOG0eNckwqYKKubd+3ifEJv/9IGdH1AfIJDoN5S0nQ0=;
+	s=korg; t=1774976075;
+	bh=YEb6Llls5iJjeHBDDaDGPi43eTC35X5/EW2pejyMYQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLSdYFwQJaV+nTdYFG1ODdA61fO/e+IlO4rAbz8sehoBMJWx99rLGy5iFbqpUPO4m
-	 xcbqUVbICqkCMqvg7kkJHOUOTsiYFhrurP6AVDj/nZ+DNZ5oemcauF/Za3OmTH/5pS
-	 CVK7HrC1y5XtGteMq0GOfwf6mBrruc3eVS8hOvHU=
+	b=Mg09ceVnbT81pDZCRenBWdfQNQdhumY/AkhuFsHV7CEy4+dNcBy+N83vaqHdS7ER2
+	 O3aFawIRz4mRX5qfq2MRrKMeC/7i8/dmYnNBhSS3H5pKRBpShLFkA1FBfPDq63U2Ye
+	 E/4stzD/ucsjxsCwbvNg+bD68Twg7NJQveR3uYPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LUO Haowen <luo-hw@foxmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/175] dmaengine: dw-edma: Fix multiple times setting of the CYCLE_STATE and CYCLE_BIT bits for HDMA.
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.12 197/244] ext4: always drain queued discard work in ext4_mb_release()
 Date: Tue, 31 Mar 2026 18:22:27 +0200
-Message-ID: <20260331161735.785848515@linuxfoundation.org>
+Message-ID: <20260331161749.024821258@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +67,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,foxmail.com,nxp.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231619-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-232177-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,foxmail.com:email,gxmicro.cn:email]
-X-Rspamd-Queue-Id: D9C3336CEA6
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sashiko.dev:url]
+X-Rspamd-Queue-Id: 3917136DB56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LUO Haowen <luo-hw@foxmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 3f63297ff61a994b99d710dcb6dbde41c4003233 ]
+commit 9ee29d20aab228adfb02ca93f87fb53c56c2f3af upstream.
 
-Others have submitted this issue (https://lore.kernel.org/dmaengine/
-20240722030405.3385-1-zhengdongxiong@gxmicro.cn/),
-but it has not been fixed yet. Therefore, more supplementary information
-is provided here.
+While reviewing recent ext4 patch[1], Sashiko raised the following
+concern[2]:
 
-As mentioned in the "PCS-CCS-CB-TCB" Producer-Consumer Synchronization of
-"DesignWare Cores PCI Express Controller Databook, version 6.00a":
+> If the filesystem is initially mounted with the discard option,
+> deleting files will populate sbi->s_discard_list and queue
+> s_discard_work. If it is then remounted with nodiscard, the
+> EXT4_MOUNT_DISCARD flag is cleared, but the pending s_discard_work is
+> neither cancelled nor flushed.
 
-1. The Consumer CYCLE_STATE (CCS) bit in the register only needs to be
-initialized once; the value will update automatically to be
-~CYCLE_BIT (CB) in the next chunk.
-2. The Consumer CYCLE_BIT bit in the register is loaded from the LL
-element and tested against CCS. When CB = CCS, the data transfer is
-executed. Otherwise not.
+[1] https://lore.kernel.org/r/20260319094545.19291-1-qiang.zhang@linux.dev/
+[2] https://sashiko.dev/#/patchset/20260319094545.19291-1-qiang.zhang%40linux.dev
 
-The current logic sets customer (HDMA) CS and CB bits to 1 in each chunk
-while setting the producer (software) CB of odd chunks to 0 and even
-chunks to 1 in the linked list. This is leading to a mismatch between
-the producer CB and consumer CS bits.
+The concern was valid, but it had nothing to do with the patch[1].
+One of the problems with Sashiko in its current (early) form is that
+it will detect pre-existing issues and report it as a problem with the
+patch that it is reviewing.
 
-This issue can be reproduced by setting the transmission data size to
-exceed one chunk. By the way, in the EDMA using the same "PCS-CCS-CB-TCB"
-mechanism, the CS bit is only initialized once and this issue was not
-found. Refer to
-drivers/dma/dw-edma/dw-edma-v0-core.c:dw_edma_v0_core_start.
+In practice, it would be hard to hit deliberately (unless you are a
+malicious syzkaller fuzzer), since it would involve mounting the file
+system with -o discard, and then deleting a large number of files,
+remounting the file system with -o nodiscard, and then immediately
+unmounting the file system before the queued discard work has a change
+to drain on its own.
 
-So fix this issue by initializing the CYCLE_STATE and CYCLE_BIT bits
-only once.
+Fix it because it's a real bug, and to avoid Sashiko from raising this
+concern when analyzing future patches to mballoc.c.
 
-Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
-Signed-off-by: LUO Haowen <luo-hw@foxmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/tencent_CB11AA9F3920C1911AF7477A9BD8EFE0AD05@qq.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 55cdd0af2bc5 ("ext4: get discard out of jbd2 commit kthread contex")
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw-edma/dw-hdma-v0-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/mballoc.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-index e3f8db4fe909a..ce8f7254bab21 100644
---- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-@@ -252,10 +252,10 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- 			  lower_32_bits(chunk->ll_region.paddr));
- 		SET_CH_32(dw, chan->dir, chan->id, llp.msb,
- 			  upper_32_bits(chunk->ll_region.paddr));
-+		/* Set consumer cycle */
-+		SET_CH_32(dw, chan->dir, chan->id, cycle_sync,
-+			HDMA_V0_CONSUMER_CYCLE_STAT | HDMA_V0_CONSUMER_CYCLE_BIT);
- 	}
--	/* Set consumer cycle */
--	SET_CH_32(dw, chan->dir, chan->id, cycle_sync,
--		  HDMA_V0_CONSUMER_CYCLE_STAT | HDMA_V0_CONSUMER_CYCLE_BIT);
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3874,13 +3874,11 @@ void ext4_mb_release(struct super_block
+ 	struct kmem_cache *cachep = get_groupinfo_cache(sb->s_blocksize_bits);
+ 	int count;
  
- 	dw_hdma_v0_sync_ll_data(chunk);
+-	if (test_opt(sb, DISCARD)) {
+-		/*
+-		 * wait the discard work to drain all of ext4_free_data
+-		 */
+-		flush_work(&sbi->s_discard_work);
+-		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
+-	}
++	/*
++	 * wait the discard work to drain all of ext4_free_data
++	 */
++	flush_work(&sbi->s_discard_work);
++	WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
  
--- 
-2.53.0
-
+ 	group_info = rcu_access_pointer(sbi->s_group_info);
+ 	if (group_info) {
 
 
 
