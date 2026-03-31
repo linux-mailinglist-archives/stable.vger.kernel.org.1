@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-232246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FXoESf+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:31 +0200
+	id cMc6Kdr/y2koNQYAu9opvQ
+	(envelope-from <stable+bounces-231708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A7B36DB33
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0965036E08F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B8143063AE2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:57:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9323C3291EC7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631593A4F34;
-	Tue, 31 Mar 2026 16:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11936402B9B;
+	Tue, 31 Mar 2026 16:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf1IBS1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMW6BrGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2678829DB8F;
-	Tue, 31 Mar 2026 16:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AF33DFC7D;
+	Tue, 31 Mar 2026 16:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976254; cv=none; b=rqEkX45mwbjr1ywvEPx/p7XWyDOGuWE03TNV7n94PAITDA8s8XRAiV6iFgXvofIl0Tl4XQ5iBwGtyXYvvBpu5IhafWV4keR/z+a5BZNzsxJ+DyLmzIQTufolyrf0Nzf4VwEaeuaHOgJb7Ed2rkpSvP3TfuyrABmeOLnXJqgW1ng=
+	t=1774974863; cv=none; b=s0/kCjm2uRy/uLZKw+4xBBfOMp2i6j2JT8KnSZCueg2KWWH0XiNAdfTj3i7yDG0Bc9Ma1sYFkdHsgB7lHZr9ZS/ItF1hotVEmyDbUvhlVS+5r8DWKb8cmYHMJlPjAhw9Gn3B3ai4DzrLVBkPNcuMGNwzp/aHPkGqsV9dhqCNkes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976254; c=relaxed/simple;
-	bh=HbmjjnTagP5mPPB6Akm0GQ4Vv9injxNnQ01MBJWLkFM=;
+	s=arc-20240116; t=1774974863; c=relaxed/simple;
+	bh=CAU65dJBarfHIFvBNt6OD5YO3yy4ZnR2lvm4aDZ7vJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkrnTPPbTaa0VJOMW8PbahJ+z6uhprfkUsrRw9oN/ukYxNR6CJfSK30U6fDhqjT0xmnvXBRX/bk3h++C5+ywGBb6dgqAO82YgU5ncPLqqy+lfBQTX6Qthr+cJjQvh/SdhZZTCM0xdQl9HixDXUIG+zfu9Kf/3HUWFJHzkZfDA4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf1IBS1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6889AC19423;
-	Tue, 31 Mar 2026 16:57:33 +0000 (UTC)
+	 MIME-Version; b=cGQ+7Fq3kdw8HMYmtWkKKnfm7OzbU3qRtUttKcDtq4VkTiYAb2DpFy0zI8FZpzblUw79wAvYJvXpjVXETTMKAxeuxhRHioQv+BTHxEBuvn9eIKzdvwSN/51NK/w3DSD1mXSTs9zCEVqH5IbWxWWbSDoMg52dTtKu7BJtWF6rL4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMW6BrGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE79C19423;
+	Tue, 31 Mar 2026 16:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976253;
-	bh=HbmjjnTagP5mPPB6Akm0GQ4Vv9injxNnQ01MBJWLkFM=;
+	s=korg; t=1774974863;
+	bh=CAU65dJBarfHIFvBNt6OD5YO3yy4ZnR2lvm4aDZ7vJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lf1IBS1DgYWWFSX5KRLTRLSdA6v1id9Ez2hpmDtWZKGppUTVkG3wLhHnvSqIB7dfA
-	 zjr2TCZ8OIi+PbfABiPVXJiXXprcSH4xI+9IA2ZgjM8e5D75P4zqRiHao4LFZ+1mtr
-	 ddvFghiTdoRZVFySMAQpXSLIoitJ6JCt1ZUr/xX0=
+	b=sMW6BrGS3utY32UDOe5BET3wI5ljBzAINCwsBKaNCO74Ryo2d6yTRxz5oqlTOkB+3
+	 N79kaPy7Pbzvs+M1A3ZFPzePs76GDLR/oBxxcUbQZqlCTKO+BzWGb0haTkBtOrE3SA
+	 fd1Rc5dVZqQEOB1eyrLaUnGC7J9slXEc8V+4jj9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Sachin Kumar <xcyfun@protonmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jie Deng <dengjie03@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 003/309] bpf: Fix constant blinding for PROBE_MEM32 stores
+Subject: [PATCH 6.19 073/342] usb: core: new quirk to handle devices with zero configurations
 Date: Tue, 31 Mar 2026 18:18:26 +0200
-Message-ID: <20260331161753.600677364@linuxfoundation.org>
+Message-ID: <20260331161801.579975006@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,107 +67,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,etsalapatis.com,protonmail.com,iogearbox.net];
-	TAGGED_FROM(0.00)[bounces-232246-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-231708-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,etsalapatis.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,protonmail.com:email,iogearbox.net:email]
-X-Rspamd-Queue-Id: B8A7B36DB33
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kylinos.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0965036E08F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sachin Kumar <xcyfun@protonmail.com>
+From: Jie Deng <dengjie03@kylinos.cn>
 
-[ Upstream commit 2321a9596d2260310267622e0ad8fbfa6f95378f ]
+[ Upstream commit 9f6a983cfa22ac662c86e60816d3a357d4b551e9 ]
 
-BPF_ST | BPF_PROBE_MEM32 immediate stores are not handled by
-bpf_jit_blind_insn(), allowing user-controlled 32-bit immediates to
-survive unblinded into JIT-compiled native code when bpf_jit_harden >= 1.
+Some USB devices incorrectly report bNumConfigurations as 0 in their
+device descriptor, which causes the USB core to reject them during
+enumeration.
+logs:
+usb 1-2: device descriptor read/64, error -71
+usb 1-2: no configurations
+usb 1-2: can't read configurations, error -22
 
-The root cause is that convert_ctx_accesses() rewrites BPF_ST|BPF_MEM
-to BPF_ST|BPF_PROBE_MEM32 for arena pointer stores during verification,
-before bpf_jit_blind_constants() runs during JIT compilation. The
-blinding switch only matches BPF_ST|BPF_MEM (mode 0x60), not
-BPF_ST|BPF_PROBE_MEM32 (mode 0xa0). The instruction falls through
-unblinded.
+However, these devices actually work correctly when
+treated as having a single configuration.
 
-Add BPF_ST|BPF_PROBE_MEM32 cases to bpf_jit_blind_insn() alongside the
-existing BPF_ST|BPF_MEM cases. The blinding transformation is identical:
-load the blinded immediate into BPF_REG_AX via mov+xor, then convert
-the immediate store to a register store (BPF_STX).
+Add a new quirk USB_QUIRK_FORCE_ONE_CONFIG to handle such devices.
+When this quirk is set, assume the device has 1 configuration instead
+of failing with -EINVAL.
 
-The rewritten STX instruction must preserve the BPF_PROBE_MEM32 mode so
-the architecture JIT emits the correct arena addressing (R12-based on
-x86-64). Cannot use the BPF_STX_MEM() macro here because it hardcodes
-BPF_MEM mode; construct the instruction directly instead.
+This quirk is applied to the device with VID:PID 5131:2007 which
+exhibits this behavior.
 
-Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the verifier.")
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Sachin Kumar <xcyfun@protonmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/Y6IT5VvNRchPBLI5D7JZHBzZrU9rb0ycRJPJzJSXGj7kJlX8RJwZFSM2YZjcDxoQKABkxt1T8Os2gi23PYyFuQe6KkZGWVyfz8K5afdy9ak=@protonmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jie Deng <dengjie03@kylinos.cn>
+Link: https://patch.msgid.link/20260227084931.1527461-1-dengjie03@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt | 3 +++
+ drivers/usb/core/config.c                       | 6 +++++-
+ drivers/usb/core/quirks.c                       | 5 +++++
+ include/linux/usb/quirks.h                      | 3 +++
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index c2278f392e932..a17e42ff89853 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1403,6 +1403,27 @@ static int bpf_jit_blind_insn(const struct bpf_insn *from,
- 		*to++ = BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
- 		*to++ = BPF_STX_MEM(from->code, from->dst_reg, BPF_REG_AX, from->off);
- 		break;
-+
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_DW:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_W:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_H:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_B:
-+		*to++ = BPF_ALU64_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^
-+				      from->imm);
-+		*to++ = BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
-+		/*
-+		 * Cannot use BPF_STX_MEM() macro here as it
-+		 * hardcodes BPF_MEM mode, losing PROBE_MEM32
-+		 * and breaking arena addressing in the JIT.
-+		 */
-+		*to++ = (struct bpf_insn) {
-+			.code  = BPF_STX | BPF_PROBE_MEM32 |
-+				 BPF_SIZE(from->code),
-+			.dst_reg = from->dst_reg,
-+			.src_reg = BPF_REG_AX,
-+			.off   = from->off,
-+		};
-+		break;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index aa0031108bc1d..f31e9e4c598fc 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -8090,6 +8090,9 @@ Kernel parameters
+ 				p = USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT
+ 					(Reduce timeout of the SET_ADDRESS
+ 					request from 5000 ms to 500 ms);
++				q = USB_QUIRK_FORCE_ONE_CONFIG (Device
++					claims zero configurations,
++					forcing to 1);
+ 			Example: quirks=0781:5580:bk,0a5c:5834:gij
+ 
+ 	usbhid.mousepoll=
+diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
+index 2bb1ceb9d621a..3067e18ec4d8a 100644
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -927,7 +927,11 @@ int usb_get_configuration(struct usb_device *dev)
+ 		dev->descriptor.bNumConfigurations = ncfg = USB_MAXCONFIG;
  	}
- out:
- 	return to - to_buff;
+ 
+-	if (ncfg < 1) {
++	if (ncfg < 1 && dev->quirks & USB_QUIRK_FORCE_ONE_CONFIG) {
++		dev_info(ddev, "Device claims zero configurations, forcing to 1\n");
++		dev->descriptor.bNumConfigurations = 1;
++		ncfg = 1;
++	} else if (ncfg < 1) {
+ 		dev_err(ddev, "no configurations\n");
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index 9fef2f4d604a5..65168eb89295c 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -141,6 +141,8 @@ static int quirks_param_set(const char *value, const struct kernel_param *kp)
+ 			case 'p':
+ 				flags |= USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT;
+ 				break;
++			case 'q':
++				flags |= USB_QUIRK_FORCE_ONE_CONFIG;
+ 			/* Ignore unrecognized flag characters */
+ 			}
+ 		}
+@@ -597,6 +599,9 @@ static const struct usb_device_id usb_quirk_list[] = {
+ 	/* VCOM device */
+ 	{ USB_DEVICE(0x4296, 0x7570), .driver_info = USB_QUIRK_CONFIG_INTF_STRINGS },
+ 
++	/* Noji-MCS SmartCard Reader */
++	{ USB_DEVICE(0x5131, 0x2007), .driver_info = USB_QUIRK_FORCE_ONE_CONFIG },
++
+ 	/* INTEL VALUE SSD */
+ 	{ USB_DEVICE(0x8086, 0xf1a5), .driver_info = USB_QUIRK_RESET_RESUME },
+ 
+diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
+index 2f7bd2fdc6164..b3cc7beab4a3c 100644
+--- a/include/linux/usb/quirks.h
++++ b/include/linux/usb/quirks.h
+@@ -78,4 +78,7 @@
+ /* skip BOS descriptor request */
+ #define USB_QUIRK_NO_BOS			BIT(17)
+ 
++/* Device claims zero configurations, forcing to 1 */
++#define USB_QUIRK_FORCE_ONE_CONFIG		BIT(18)
++
+ #endif /* __LINUX_USB_QUIRKS_H */
 -- 
 2.51.0
 
