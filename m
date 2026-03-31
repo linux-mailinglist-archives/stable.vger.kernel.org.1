@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OP1CMi/4y2kXNAYAu9opvQ
-	(envelope-from <stable+bounces-231577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:03 +0200
+	id KFvjJWf7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247AF36CD67
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:37:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DC436D3D5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85F153161844
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E05153080C0F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBDD423A74;
-	Tue, 31 Mar 2026 16:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0753EF0A2;
+	Tue, 31 Mar 2026 16:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2X+hbZ5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNeFll0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF18D423149;
-	Tue, 31 Mar 2026 16:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CD231714F;
+	Tue, 31 Mar 2026 16:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974529; cv=none; b=P9wHctp5Xq2IjLHpRkHLug4MazeMQra55ocZZgUdxypj+nbpXZTJGHfKlCLHMpfiPYymE0ONGb3blvL7DXyaFR6+5JuGx5Ou9FT6SyUofBYk1o+oY1mMdsTEPWjkaa5tgjPvrY+j/Hf2EPLiE29JH4wgpiC4U47hBxwpXG7E4EQ=
+	t=1774975465; cv=none; b=PqVX6ODjCPTUuzmPCuGJPr5qDrgbSNaiqLdj+v2fl1AenE7/JCnLEUgVGSY+vc7zMUxLM3fiAh6Flrg+vjTTvftmy/BVGX1J2/Z9YImIN6Yc+4ekzFBj19Wzf0X15v5cnO+9QCmm+lCUOKOQdZbwD+95U10up7HCMvgDoYaDcOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974529; c=relaxed/simple;
-	bh=k3zZ3f1p9X1JuvvJupVqtKKIIiTjVJ6GIM4Pcj38NrY=;
+	s=arc-20240116; t=1774975465; c=relaxed/simple;
+	bh=uVKSFFmAegvt8VY+NsHV3F3uHX2M/GCT5gzi8sV/lu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfPsoD8X2NSw8br9XTGNyWEpfWs1F8QRfRTCBxDdK0J1Qc7Luf0iYAv4zwv9abAvILyUUQAo2+SGVI+v49jZV3GL0cXRPoWoa9ssyzfHIZvraYfXrMBoKWQ6setX2v5Kcw4M7QfU1t4JrRpu/6kfebr9RchFOYEQginDF+8lk44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2X+hbZ5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93AEC19423;
-	Tue, 31 Mar 2026 16:28:48 +0000 (UTC)
+	 MIME-Version; b=b1FrIVPESrYDMGRceU8eC/gjgngqWIGmlSiXTslk0Sie7dQnZH+tlowo3uiXJd7X6OJNO07lZTD4Rn8XqFsHJngFlv5qJ3d65JoQjSvf1RCNQuGMxLC0v4/F4FtDgNEcQ864T2gaer5FzsWoXaqT/gR/7PQxk+/FxPIsJQuUe+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNeFll0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E6CC19423;
+	Tue, 31 Mar 2026 16:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974529;
-	bh=k3zZ3f1p9X1JuvvJupVqtKKIIiTjVJ6GIM4Pcj38NrY=;
+	s=korg; t=1774975464;
+	bh=uVKSFFmAegvt8VY+NsHV3F3uHX2M/GCT5gzi8sV/lu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2X+hbZ5cfiIXSYjhYYnVSlYJSfmEQOHPVT+RrEKGQTUmb7yS8gtV0a5UonKXad4Kk
-	 nJShqfIkP6rVidqkaWMBkR6hV+a8NIrdeyeq2prEdEXXDM/KAon/lvpkjJPuyk+VXL
-	 4xc2B96bmmb4yyjNQaW5FrxXtYfusPQcdtDMtu2A=
+	b=dNeFll0GlVGUmkVQEY4BCFt0ONB6DEDAKoigLJdRYrMBm3kXh7g1srQdqw4Z63pyg
+	 dkmSochCYhTbdUUuI7XcXvCNx+wlWTFxoGvyTrsaOOOy64IAEjoNhcPhkmWg1+UCJ6
+	 cYYQz/NqUungR4WkQeKoNA6B5fDBdw3FsD8kxy+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 121/175] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
+	Qianhai Wu <wuqianhai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.19 272/342] LoongArch: Workaround LS2K/LS7A GPU DMA hang bug
 Date: Tue, 31 Mar 2026 18:21:45 +0200
-Message-ID: <20260331161734.225651896@linuxfoundation.org>
+Message-ID: <20260331161808.953271049@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231577-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231942-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,96 +86,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 247AF36CD67
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 16DC436D3D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit aad885e774966e97b675dfe928da164214a71605 upstream.
+commit 95db0c9f526d583634cddb2e5914718570fbac87 upstream.
 
-When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
-existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
-right about it being impossible to convert a shadow-present SPTE to an
-MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
-memory that are outside the scope of KVM.
+1. Hardware limitation: GPU, DC and VPU are typically PCI device 06.0,
+06.1 and 06.2. They share some hardware resources, so when configure the
+PCI 06.0 device BAR1, DMA memory access cannot be performed through this
+BAR, otherwise it will cause hardware abnormalities.
 
-E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
-to emulted MMIO and then the guest hits a relevant page fault, KVM will
-install the MMIO SPTE without first zapping the shadow-present SPTE.
+2. In typical scenarios of reboot or S3/S4, DC access to memory through
+BAR is not prohibited, resulting in GPU DMA hangs.
 
-  ------------[ cut here ]------------
-  is_shadow_present_pte(*sptep)
-  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
-  Call Trace:
-   <TASK>
-   mmu_set_spte+0x237/0x440 [kvm]
-   ept_page_fault+0x535/0x7f0 [kvm]
-   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
-   kvm_mmu_page_fault+0x8d/0x620 [kvm]
-   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb5/0x730
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x47fa3f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
+3. Workaround method: When configuring the 06.0 device BAR1, turn off
+the memory access of DC, GPU and VPU (via DC's CRTC registers).
 
-Reported-by: Alexander Bulekov <bkov@amazon.com>
-Debugged-by: Alexander Bulekov <bkov@amazon.com>
-Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
-Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Qianhai Wu <wuqianhai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/loongarch/pci/pci.c |   80 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2914,12 +2914,6 @@ static int mmu_set_spte(struct kvm_vcpu
- 	bool prefetch = !fault || fault->prefetch;
- 	bool write_fault = fault && fault->write;
+--- a/arch/loongarch/pci/pci.c
++++ b/arch/loongarch/pci/pci.c
+@@ -5,9 +5,11 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/acpi.h>
++#include <linux/delay.h>
+ #include <linux/types.h>
+ #include <linux/pci.h>
+ #include <linux/vgaarb.h>
++#include <linux/io-64-nonatomic-lo-hi.h>
+ #include <asm/cacheflush.h>
+ #include <asm/loongson.h>
  
--	if (unlikely(is_noslot_pfn(pfn))) {
--		vcpu->stat.pf_mmio_spte_created++;
--		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
--		return RET_PF_EMULATE;
--	}
--
- 	if (is_shadow_present_pte(*sptep)) {
- 		/*
- 		 * If we overwrite a PTE page pointer with a 2MB PMD, unlink
-@@ -2939,6 +2933,14 @@ static int mmu_set_spte(struct kvm_vcpu
- 			was_rmapped = 1;
- 	}
+@@ -15,6 +17,9 @@
+ #define PCI_DEVICE_ID_LOONGSON_DC1      0x7a06
+ #define PCI_DEVICE_ID_LOONGSON_DC2      0x7a36
+ #define PCI_DEVICE_ID_LOONGSON_DC3      0x7a46
++#define PCI_DEVICE_ID_LOONGSON_GPU1     0x7a15
++#define PCI_DEVICE_ID_LOONGSON_GPU2     0x7a25
++#define PCI_DEVICE_ID_LOONGSON_GPU3     0x7a35
  
-+	if (unlikely(is_noslot_pfn(pfn))) {
-+		vcpu->stat.pf_mmio_spte_created++;
-+		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
-+		if (flush)
-+			kvm_flush_remote_tlbs_gfn(vcpu->kvm, gfn, level);
-+		return RET_PF_EMULATE;
+ int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
+ 						int reg, int len, u32 *val)
+@@ -99,3 +104,78 @@ static void pci_fixup_vgadev(struct pci_
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC1, pci_fixup_vgadev);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC2, pci_fixup_vgadev);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC3, pci_fixup_vgadev);
++
++#define CRTC_NUM_MAX		2
++#define CRTC_OUTPUT_ENABLE	0x100
++
++static void loongson_gpu_fixup_dma_hang(struct pci_dev *pdev, bool on)
++{
++	u32 i, val, count, crtc_offset, device;
++	void __iomem *crtc_reg, *base, *regbase;
++	static u32 crtc_status[CRTC_NUM_MAX] = { 0 };
++
++	base = pdev->bus->ops->map_bus(pdev->bus, pdev->devfn + 1, 0);
++	device = readw(base + PCI_DEVICE_ID);
++
++	regbase = ioremap(readq(base + PCI_BASE_ADDRESS_0) & ~0xffull, SZ_64K);
++	if (!regbase) {
++		pci_err(pdev, "Failed to ioremap()\n");
++		return;
 +	}
 +
- 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
- 			   true, host_writable, &spte);
- 
++	switch (device) {
++	case PCI_DEVICE_ID_LOONGSON_DC2:
++		crtc_reg = regbase + 0x1240;
++		crtc_offset = 0x10;
++		break;
++	case PCI_DEVICE_ID_LOONGSON_DC3:
++		crtc_reg = regbase;
++		crtc_offset = 0x400;
++		break;
++	}
++
++	for (i = 0; i < CRTC_NUM_MAX; i++, crtc_reg += crtc_offset) {
++		val = readl(crtc_reg);
++
++		if (!on)
++			crtc_status[i] = val;
++
++		/* No need to fixup if the status is off at startup. */
++		if (!(crtc_status[i] & CRTC_OUTPUT_ENABLE))
++			continue;
++
++		if (on)
++			val |= CRTC_OUTPUT_ENABLE;
++		else
++			val &= ~CRTC_OUTPUT_ENABLE;
++
++		mb();
++		writel(val, crtc_reg);
++
++		for (count = 0; count < 40; count++) {
++			val = readl(crtc_reg) & CRTC_OUTPUT_ENABLE;
++			if ((on && val) || (!on && !val))
++				break;
++			udelay(1000);
++		}
++
++		pci_info(pdev, "DMA hang fixup at reg[0x%lx]: 0x%x\n",
++				(unsigned long)crtc_reg & 0xffff, readl(crtc_reg));
++	}
++
++	iounmap(regbase);
++}
++
++static void pci_fixup_dma_hang_early(struct pci_dev *pdev)
++{
++	loongson_gpu_fixup_dma_hang(pdev, false);
++}
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU2, pci_fixup_dma_hang_early);
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU3, pci_fixup_dma_hang_early);
++
++static void pci_fixup_dma_hang_final(struct pci_dev *pdev)
++{
++	loongson_gpu_fixup_dma_hang(pdev, true);
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU2, pci_fixup_dma_hang_final);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU3, pci_fixup_dma_hang_final);
 
 
 
