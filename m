@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-232373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NlxKEAGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:04 +0200
+	id SLHbNAn9y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E5736F02C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:37:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E92C36D83C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46DE43275A19
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:03:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE97E3026200
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213AE2FE56E;
-	Tue, 31 Mar 2026 17:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C10413225;
+	Tue, 31 Mar 2026 16:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dw8tzhZq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqMNvxS9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86202E1C7C;
-	Tue, 31 Mar 2026 17:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E643E95A9;
+	Tue, 31 Mar 2026 16:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976579; cv=none; b=iPydmJ5uYp+4g5WiazZMnLQlqbbhS57/J+HVL0FZptG1AmYcIXDgHb38h3x6icpCfzbK+2S+p9LdBFNSiU+fwaEKS3EggdgU3LKFOcVPUExXxVRas4/oS4Ui43PiaJLYtnlB4gK0F4dhSAp4V27NOIIIYFUDpfPSJtL0zvHFr4c=
+	t=1774975780; cv=none; b=BO+bssyBLS8/zPAQ9fxSypTpiiQv31g+sMlVTb2PhwP/uD9y5D4wLw2XMLMGsB913YH1B4AATJk5qVuaQmboyFj1h6ZiybvaEuQ+H5RD2vf2i3GLkb7oGkpM3fSvLY4b5/Vrvuaz6MqAxmFB297b4pF1Hy3OwYGeGYiAC1drrVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976579; c=relaxed/simple;
-	bh=5u2OTV2D6WvJ3jomus68lzcqT1pdHes0ilox4sxfWBw=;
+	s=arc-20240116; t=1774975780; c=relaxed/simple;
+	bh=I/ej6eIQQAcoIktCt65wVEG83TPc7mdyTHoOeYTcDYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLgE7VMy1ixUjaMpXxzgze3aRw6wIGBkuSal2f/FHrMMOH7zZcLHIW9paFA/6IK6qay7SrjUo4LKRqlwW+tAr3BjqwTn96rg0T8SyGWWqL/02/SURVYiANg8pZScmiRtejKaZJZAYSzuXHMyN8Ly65xhSfu+mUWSh4bW//MJRpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dw8tzhZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BFBC19423;
-	Tue, 31 Mar 2026 17:02:59 +0000 (UTC)
+	 MIME-Version; b=Ym+JUTQONUkY4TsHG8HEg2ncSwr3KLaCVHwF+Ce7BuKsApI0ZB5bGesbtdk9AGhIoB+6C7VEDOwcFRfkU0gz/+kciwx79UCr9yOXKybEESEYumfjd5tvMG+KL+ke9liOZGePI3zVHKgnClbvv4+x2x1Ucn5WVH9ojzIa0axQ/Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqMNvxS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94466C19423;
+	Tue, 31 Mar 2026 16:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976579;
-	bh=5u2OTV2D6WvJ3jomus68lzcqT1pdHes0ilox4sxfWBw=;
+	s=korg; t=1774975779;
+	bh=I/ej6eIQQAcoIktCt65wVEG83TPc7mdyTHoOeYTcDYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dw8tzhZqlNAgV3niwVwPc3/Bfi3mVFliQpLKvsei7B86Y9Bg1dvrrEqMeyx2KBGV4
-	 Xg1+UBa5Ip/jcyanx635t1Wgn8SGBWXhUMfIqpZtx2DjI+oeAzrm+FSOMBNtc/WSQ3
-	 uOvIZCalGKqklRNKtU7FbnJxuvxDlqVZic23fTN4=
+	b=TqMNvxS92IGIV4vE3bnKYTOME1oQSXHt9QtaCl6ZYgG4t3DGbj/rGXZ6pG/OYkfGW
+	 g3QHGjOpZtutU33oO6nYCOvtSwOgrUyURgGvc2ALTVYGY3ape5a+IHh3nEOu7SyiLu
+	 noOwyCDdwAulEUYmUNPSf6vNYW5mcPtSjrp+LfsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kohei Enju <kohei@enjuk.jp>,
+	Simon Horman <horms@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 130/309] netfilter: nf_conntrack_sip: fix use of uninitialized rtp_addr in process_sdp
-Date: Tue, 31 Mar 2026 18:20:33 +0200
-Message-ID: <20260331161758.262936100@linuxfoundation.org>
+Subject: [PATCH 6.12 084/244] iavf: fix out-of-bounds writes in iavf_get_ethtool_stats()
+Date: Tue, 31 Mar 2026 18:20:34 +0200
+Message-ID: <20260331161744.783528957@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,122 +72,187 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-232373-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232063-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,asu.edu:email]
-X-Rspamd-Queue-Id: 12E5736F02C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,enjuk.jp:email]
+X-Rspamd-Queue-Id: 5E92C36D83C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 6a2b724460cb67caed500c508c2ae5cf012e4db4 ]
+[ Upstream commit fecacfc95f195b99c71c579a472120d0b4ed65fa ]
 
-process_sdp() declares union nf_inet_addr rtp_addr on the stack and
-passes it to the nf_nat_sip sdp_session hook after walking the SDP
-media descriptions. However rtp_addr is only initialized inside the
-media loop when a recognized media type with a non-zero port is found.
+iavf incorrectly uses real_num_tx_queues for ETH_SS_STATS. Since the
+value could change in runtime, we should use num_tx_queues instead.
 
-If the SDP body contains no m= lines, only inactive media sections
-(m=audio 0 ...) or only unrecognized media types, rtp_addr is never
-assigned. Despite that, the function still calls hooks->sdp_session()
-with &rtp_addr, causing nf_nat_sdp_session() to format the stale stack
-value as an IP address and rewrite the SDP session owner and connection
-lines with it.
+Moreover iavf_get_ethtool_stats() uses num_active_queues while
+iavf_get_sset_count() and iavf_get_stat_strings() use
+real_num_tx_queues, which triggers out-of-bounds writes when we do
+"ethtool -L" and "ethtool -S" simultaneously [1].
 
-With CONFIG_INIT_STACK_ALL_ZERO (default on most distributions) this
-results in the session-level o= and c= addresses being rewritten to
-0.0.0.0 for inactive SDP sessions. Without stack auto-init the
-rewritten address is whatever happened to be on the stack.
+For example when we change channels from 1 to 8, Thread 3 could be
+scheduled before Thread 2, and out-of-bounds writes could be triggered
+in Thread 3:
 
-Fix this by pre-initializing rtp_addr from the session-level connection
-address (caddr) when available, and tracking via a have_rtp_addr flag
-whether any valid address was established. Skip the sdp_session hook
-entirely when no valid address exists.
+Thread 1 (ethtool -L)       Thread 2 (work)        Thread 3 (ethtool -S)
+iavf_set_channels()
+...
+iavf_alloc_queues()
+-> num_active_queues = 8
+iavf_schedule_finish_config()
+                                                   iavf_get_sset_count()
+                                                   real_num_tx_queues: 1
+                                                   -> buffer for 1 queue
+                                                   iavf_get_ethtool_stats()
+                                                   num_active_queues: 8
+                                                   -> out-of-bounds!
+                            iavf_finish_config()
+                            -> real_num_tx_queues = 8
 
-Fixes: 4ab9e64e5e3c ("[NETFILTER]: nf_nat_sip: split up SDP mangling")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Use immutable num_tx_queues in all related functions to avoid the issue.
+
+[1]
+ BUG: KASAN: vmalloc-out-of-bounds in iavf_add_one_ethtool_stat+0x200/0x270
+ Write of size 8 at addr ffffc900031c9080 by task ethtool/5800
+
+ CPU: 1 UID: 0 PID: 5800 Comm: ethtool Not tainted 6.19.0-enjuk-08403-g8137e3db7f1c #241 PREEMPT(full)
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x6f/0xb0
+  print_report+0x170/0x4f3
+  kasan_report+0xe1/0x180
+  iavf_add_one_ethtool_stat+0x200/0x270
+  iavf_get_ethtool_stats+0x14c/0x2e0
+  __dev_ethtool+0x3d0c/0x5830
+  dev_ethtool+0x12d/0x270
+  dev_ioctl+0x53c/0xe30
+  sock_do_ioctl+0x1a9/0x270
+  sock_ioctl+0x3d4/0x5e0
+  __x64_sys_ioctl+0x137/0x1c0
+  do_syscall_64+0xf3/0x690
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x7f7da0e6e36d
+ ...
+  </TASK>
+
+ The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900031c9000 allocated at __dev_ethtool+0x3cc9/0x5830
+ The buggy address belongs to the physical page: page: refcount:1 mapcount:0 mapping:0000000000000000
+ index:0xffff88813a013de0 pfn:0x13a013
+ flags: 0x200000000000000(node=0|zone=2)
+ raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
+ raw: ffff88813a013de0 0000000000000000 00000001ffffffff 0000000000000000
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffffc900031c8f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+  ffffc900031c9000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ >ffffc900031c9080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                    ^
+  ffffc900031c9100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+  ffffc900031c9180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+
+Fixes: 64430f70ba6f ("iavf: Fix displaying queue statistics shown by ethtool")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_sip.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ .../net/ethernet/intel/iavf/iavf_ethtool.c    | 31 +++++++++----------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 4ab5ef71d96db..17af0ff4ea7ab 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1040,6 +1040,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 	unsigned int port;
- 	const struct sdp_media_type *t;
- 	int ret = NF_ACCEPT;
-+	bool have_rtp_addr = false;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
+index 74a1e9fe18212..53e5a3bd9b956 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
+@@ -311,14 +311,13 @@ static int iavf_get_sset_count(struct net_device *netdev, int sset)
+ {
+ 	/* Report the maximum number queues, even if not every queue is
+ 	 * currently configured. Since allocation of queues is in pairs,
+-	 * use netdev->real_num_tx_queues * 2. The real_num_tx_queues is set
+-	 * at device creation and never changes.
++	 * use netdev->num_tx_queues * 2. The num_tx_queues is set at
++	 * device creation and never changes.
+ 	 */
  
- 	hooks = rcu_dereference(nf_nat_sip_hooks);
+ 	if (sset == ETH_SS_STATS)
+ 		return IAVF_STATS_LEN +
+-			(IAVF_QUEUE_STATS_LEN * 2 *
+-			 netdev->real_num_tx_queues);
++		       (IAVF_QUEUE_STATS_LEN * 2 * netdev->num_tx_queues);
+ 	else
+ 		return -EINVAL;
+ }
+@@ -343,19 +342,19 @@ static void iavf_get_ethtool_stats(struct net_device *netdev,
+ 	iavf_add_ethtool_stats(&data, adapter, iavf_gstrings_stats);
  
-@@ -1056,8 +1057,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 	caddr_len = 0;
- 	if (ct_sip_parse_sdp_addr(ct, *dptr, sdpoff, *datalen,
- 				  SDP_HDR_CONNECTION, SDP_HDR_MEDIA,
--				  &matchoff, &matchlen, &caddr) > 0)
-+				  &matchoff, &matchlen, &caddr) > 0) {
- 		caddr_len = matchlen;
-+		memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
-+		have_rtp_addr = true;
-+	}
+ 	rcu_read_lock();
+-	/* As num_active_queues describe both tx and rx queues, we can use
+-	 * it to iterate over rings' stats.
++	/* Use num_tx_queues to report stats for the maximum number of queues.
++	 * Queues beyond num_active_queues will report zero.
+ 	 */
+-	for (i = 0; i < adapter->num_active_queues; i++) {
+-		struct iavf_ring *ring;
++	for (i = 0; i < netdev->num_tx_queues; i++) {
++		struct iavf_ring *tx_ring = NULL, *rx_ring = NULL;
  
- 	mediaoff = sdpoff;
- 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
-@@ -1091,9 +1095,11 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 					  &matchoff, &matchlen, &maddr) > 0) {
- 			maddr_len = matchlen;
- 			memcpy(&rtp_addr, &maddr, sizeof(rtp_addr));
--		} else if (caddr_len)
-+			have_rtp_addr = true;
-+		} else if (caddr_len) {
- 			memcpy(&rtp_addr, &caddr, sizeof(rtp_addr));
--		else {
-+			have_rtp_addr = true;
-+		} else {
- 			nf_ct_helper_log(skb, ct, "cannot parse SDP message");
- 			return NF_DROP;
- 		}
-@@ -1125,7 +1131,7 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+-		/* Tx rings stats */
+-		ring = &adapter->tx_rings[i];
+-		iavf_add_queue_stats(&data, ring);
++		if (i < adapter->num_active_queues) {
++			tx_ring = &adapter->tx_rings[i];
++			rx_ring = &adapter->rx_rings[i];
++		}
  
- 	/* Update session connection and owner addresses */
- 	hooks = rcu_dereference(nf_nat_sip_hooks);
--	if (hooks && ct->status & IPS_NAT_MASK)
-+	if (hooks && ct->status & IPS_NAT_MASK && have_rtp_addr)
- 		ret = hooks->sdp_session(skb, protoff, dataoff,
- 					 dptr, datalen, sdpoff,
- 					 &rtp_addr);
+-		/* Rx rings stats */
+-		ring = &adapter->rx_rings[i];
+-		iavf_add_queue_stats(&data, ring);
++		iavf_add_queue_stats(&data, tx_ring);
++		iavf_add_queue_stats(&data, rx_ring);
+ 	}
+ 	rcu_read_unlock();
+ }
+@@ -374,9 +373,9 @@ static void iavf_get_stat_strings(struct net_device *netdev, u8 *data)
+ 	iavf_add_stat_strings(&data, iavf_gstrings_stats);
+ 
+ 	/* Queues are always allocated in pairs, so we just use
+-	 * real_num_tx_queues for both Tx and Rx queues.
++	 * num_tx_queues for both Tx and Rx queues.
+ 	 */
+-	for (i = 0; i < netdev->real_num_tx_queues; i++) {
++	for (i = 0; i < netdev->num_tx_queues; i++) {
+ 		iavf_add_stat_strings(&data, iavf_gstrings_queue_stats,
+ 				      "tx", i);
+ 		iavf_add_stat_strings(&data, iavf_gstrings_queue_stats,
 -- 
 2.51.0
 
