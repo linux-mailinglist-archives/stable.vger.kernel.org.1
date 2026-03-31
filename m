@@ -1,224 +1,188 @@
-Return-Path: <stable+bounces-231339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHwOMSpxy2k3HwYAu9opvQ
-	(envelope-from <stable+bounces-231339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:00:58 +0200
+	id yKJLIUZxy2k3HwYAu9opvQ
+	(envelope-from <stable+bounces-231340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:01:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFBC364B3A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:00:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A6D364B5D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 156503024119
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:00:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 163B3301221A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 07:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3383F2C0323;
-	Tue, 31 Mar 2026 07:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9453B774B;
+	Tue, 31 Mar 2026 07:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="gj7WUrOt"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="CnkWA8Fn"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+Received: from mail114-241.sinamail.sina.com.cn (mail114-241.sinamail.sina.com.cn [218.30.114.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB9B2DC32A
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 07:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D803A8745
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 07:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.114.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774940451; cv=none; b=F4Pi2HOuWj9QtZxKOz5jCA+HEpbY2OGNB+4XPpIId2C825vpBw5d+hoeUG1WhJE1YZJTZj/xa+zW6Btf8bcPdUvw+pQj6/wT5wv4G9QVQTVlYvxGB+eQfqhJ8BEbHunK3DbGjAcgM+YGtCW5z4It+zF+6YNvWhJUH2Xt6rPHf2Y=
+	t=1774940475; cv=none; b=FdMm7smqbFRcef5UkObXBpOqq4jCkUocB6EevfskuJzvtksYD/8cKOnzTwxTN/pO7PLjvpNDFw9LrdtBXcVq5Cey3Afm9MClcfefFTUTkJrb+e3fXzMT+kS2f1Rfa57vOsqnLTxRXDjuvBLHwbbOk7zhq577dMJoQx/BT316K2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774940451; c=relaxed/simple;
-	bh=CQnTfAotn0CwXzYne2gpYmldCyQ1irHmVHQXAOHoRqc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n5scuvpOEUuXQGJbyJn7op+XOmdpX8XTHBK45M43Vq7yUVAmVEOieeXQdcO3QFSrKCo0YOcScu7WplQQhOUCFnWbEuyUwciptdMShO0o0S9KmTYeEzF3/2CpdRpiFwIA3YQiSUwywrWEQVf+KSZLakARy2y9MnncnCEEUhRW6UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=gj7WUrOt; arc=none smtp.client-ip=52.42.203.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1774940449; x=1806476449;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=knC+iIeIQ4EnUAXjeSSd18oOPTf/Amwk9ojeWmxCVyE=;
-  b=gj7WUrOtEU2mGirhKoZE1x60+PF8QbjU3y6kq2386pU6Z4fkVx/eFK/u
-   XEfMy3r8PRecn+kV8hCmypMFLrel2ploDs3Wy0T8SHu87IWGFkHYPUi1Y
-   mY+18ZrDTRgOxYpmNDt+zdXcwXK69M98xSOSg5epcGtUAz5KoxhCAxQ/V
-   00QUCVGmdge1IF7eJcRzJLI9J4r6b4oceyL8i60UfCfX0vMpGpfFCajyI
-   V5o7VMroORLMIGt50GUzSn2Wj98bwFUlE/L2q/NLLFua9/BeE2UHq96fz
-   TtgC9lCs5S7YQOUCTFBnwR6kcGJLzPuG3H/8aCUkYlX1+7JbbJd/loyFs
-   g==;
-X-CSE-ConnectionGUID: cAzJtl3vQfSfDtNUkKFrZQ==
-X-CSE-MsgGUID: PmLr5BJpT6K5/c1zTbhgMw==
-X-IronPort-AV: E=Sophos;i="6.23,151,1770595200"; 
-   d="scan'208";a="16198382"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 07:00:47 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:18203]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.164:2525] with esmtp (Farcaster)
- id b87304fa-9580-4cb1-b0f0-04ae5a044c93; Tue, 31 Mar 2026 07:00:46 +0000 (UTC)
-X-Farcaster-Flow-ID: b87304fa-9580-4cb1-b0f0-04ae5a044c93
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 31 Mar 2026 07:00:46 +0000
-Received: from c889f3b07a0a.amazon.com (10.106.82.29) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 31 Mar 2026 07:00:44 +0000
-From: Yuto Ohnuki <ytohnuki@amazon.com>
-To: <stable@vger.kernel.org>
-CC: <gregkh@linuxfoundation.org>, <cem@kernel.org>, <djwong@kernel.org>,
-	<dchinner@redhat.com>, Yuto Ohnuki <ytohnuki@amazon.com>,
-	<syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com>
-Subject: [PATCH 6.6.y 2/2] xfs: save ailp before dropping the AIL lock in push callbacks
-Date: Tue, 31 Mar 2026 08:00:36 +0100
-Message-ID: <20260331070035.60480-2-ytohnuki@amazon.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <2026033009-pelt-display-3ac7@gregkh>
-References: <2026033009-pelt-display-3ac7@gregkh>
+	s=arc-20240116; t=1774940475; c=relaxed/simple;
+	bh=M2wmi5yj3XHFFZnhpaczCRACrgVAh2vHUkmt62Gxaio=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mIw/sOujsSKreDEKUu3CPtmHOWtBshmf3UacPR+KWJp8xxssY/dI2F5gMg/c0d3ZbHwUkPv8xRetu5CwbOzkBkvK1EFhXEt3KaGNgaqi5k8ESrYyJRt2uNm8p9MdDYoiPXfkCj+cFy1iUwGeesk5oZvk2pBngqg+qyB4NM+etG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=CnkWA8Fn; arc=none smtp.client-ip=218.30.114.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1774940471;
+	bh=hZRTzXeo+f/qimGJsHFx65MwoVYeDkem54Ryrk9NRqA=;
+	h=From:Subject:Date:Message-Id;
+	b=CnkWA8Fn62O4NoTaCsZvZ8Eqd/iwsE8cuwJUmeuil1BLD+JcKNQKyR+MFFQFVFdfk
+	 GZ1qoSjWUmIotlWqjMQ/MhoINDA5YDR0/N7gUUuzUmnHuNe2ydPJqLc3yIXpnOMi/b
+	 Rz6csW3arE8Dd3dHV9lVZFIeaCRmlRo++C9IMVbg=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.23) with ESMTP
+	id 69CB712A000051F4; Tue, 31 Mar 2026 15:01:00 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 9622848913361
+X-SMAIL-UIID: C006AE8DB9B74ED79438E91759121FC9-20260331-150100-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Steve French <stfrench@microsoft.com>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15.y] smb: client: Fix refcount leak for cifs_sb_tlink
+Date: Tue, 31 Mar 2026 15:00:54 +0800
+Message-Id: <20260331070054.4148997-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D037UWC003.ant.amazon.com (10.13.139.231) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-6.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231339-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231340-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_URIBL_FAIL(0.00)[ust.hk:query timed out];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amazon.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[dchinner.redhat.com:query timed out];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ytohnuki@amazon.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 6DFBC364B3A
+	FREEMAIL_CC(0.00)[vger.kernel.org,cse.ust.hk,microsoft.com,sina.com];
+	DKIM_TRACE(0.00)[sina.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RSPAMD_EMAILBL_FAIL(0.00)[johnny_haocn.sina.com:query timed out,sfual.cse.ust.hk:query timed out];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ust.hk:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 48A6D364B5D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In xfs_inode_item_push() and xfs_qm_dquot_logitem_push(), the AIL lock
-is dropped to perform buffer IO. Once the cluster buffer no longer
-protects the log item from reclaim, the log item may be freed by
-background reclaim or the dquot shrinker. The subsequent spin_lock()
-call dereferences lip->li_ailp, which is a use-after-free.
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-Fix this by saving the ailp pointer in a local variable while the AIL
-lock is held and the log item is guaranteed to be valid.
+[ Upstream commit c2b77f42205ef485a647f62082c442c1cd69d3fc ]
 
-Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-Cc: stable@vger.kernel.org # v5.9
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-(cherry picked from commit 394d70b86fae9fe865e7e6d9540b7696f73aa9b6)
+Fix three refcount inconsistency issues related to `cifs_sb_tlink`.
+
+Comments for `cifs_sb_tlink` state that `cifs_put_tlink()` needs to be
+called after successful calls to `cifs_sb_tlink()`. Three calls fail to
+update refcount accordingly, leading to possible resource leaks.
+
+Fixes: 8ceb98437946 ("CIFS: Move rename to ops struct")
+Fixes: 2f1afe25997f ("cifs: Use smb 2 - 3 and cifsacl mount options getacl functions")
+Fixes: 366ed846df60 ("cifs: Use smb 2 - 3 and cifsacl mount options setacl function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
 ---
- fs/xfs/xfs_dquot_item.c | 9 +++++++--
- fs/xfs/xfs_inode_item.c | 9 +++++++--
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ fs/cifs/inode.c   | 6 ++++--
+ fs/cifs/smb2ops.c | 8 ++++----
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/xfs/xfs_dquot_item.c b/fs/xfs/xfs_dquot_item.c
-index 7d19091215b0..74449aec81ed 100644
---- a/fs/xfs/xfs_dquot_item.c
-+++ b/fs/xfs/xfs_dquot_item.c
-@@ -125,6 +125,7 @@ xfs_qm_dquot_logitem_push(
- {
- 	struct xfs_dquot	*dqp = DQUOT_ITEM(lip)->qli_dquot;
- 	struct xfs_buf		*bp = lip->li_buf;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
+diff --git a/fs/cifs/inode.c b/fs/cifs/inode.c
+index 30a9a89c141b..bb0b172c5a74 100644
+--- a/fs/cifs/inode.c
++++ b/fs/cifs/inode.c
+@@ -2023,8 +2023,10 @@ cifs_do_rename(const unsigned int xid, struct dentry *from_dentry,
+ 	tcon = tlink_tcon(tlink);
+ 	server = tcon->ses->server;
  
-@@ -153,7 +154,7 @@ xfs_qm_dquot_logitem_push(
- 		goto out_unlock;
+-	if (!server->ops->rename)
+-		return -ENOSYS;
++	if (!server->ops->rename) {
++		rc = -ENOSYS;
++		goto do_rename_exit;
++	}
+ 
+ 	/* try path-based rename first */
+ 	rc = server->ops->rename(xid, tcon, from_path, to_path, cifs_sb);
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index 619905fc694e..0a62720590da 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -3437,8 +3437,7 @@ get_smb2_acl_by_path(struct cifs_sb_info *cifs_sb,
+ 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
+ 	if (!utf16_path) {
+ 		rc = -ENOMEM;
+-		free_xid(xid);
+-		return ERR_PTR(rc);
++		goto put_tlink;
  	}
  
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	error = xfs_qm_dqflush(dqp, &bp);
- 	if (!error) {
-@@ -163,7 +164,11 @@ xfs_qm_dquot_logitem_push(
- 	} else if (error == -EAGAIN)
- 		rval = XFS_ITEM_LOCKED;
- 
--	spin_lock(&lip->li_ailp->ail_lock);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
-+	spin_lock(&ailp->ail_lock);
- out_unlock:
- 	xfs_dqunlock(dqp);
- 	return rval;
-diff --git a/fs/xfs/xfs_inode_item.c b/fs/xfs/xfs_inode_item.c
-index b55ad3b7b113..77cd2f168a2b 100644
---- a/fs/xfs/xfs_inode_item.c
-+++ b/fs/xfs/xfs_inode_item.c
-@@ -727,6 +727,7 @@ xfs_inode_item_push(
- 	struct xfs_inode_log_item *iip = INODE_ITEM(lip);
- 	struct xfs_inode	*ip = iip->ili_inode;
- 	struct xfs_buf		*bp = lip->li_buf;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -749,7 +750,7 @@ xfs_inode_item_push(
- 	if (!xfs_buf_trylock(bp))
- 		return XFS_ITEM_LOCKED;
- 
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	/*
- 	 * We need to hold a reference for flushing the cluster buffer as it may
-@@ -773,7 +774,11 @@ xfs_inode_item_push(
- 		rval = XFS_ITEM_LOCKED;
+ 	oparms.tcon = tcon;
+@@ -3466,6 +3465,7 @@ get_smb2_acl_by_path(struct cifs_sb_info *cifs_sb,
+ 		SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
  	}
  
--	spin_lock(&lip->li_ailp->ail_lock);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
-+	spin_lock(&ailp->ail_lock);
- 	return rval;
- }
++put_tlink:
+ 	cifs_put_tlink(tlink);
+ 	free_xid(xid);
  
+@@ -3506,8 +3506,7 @@ set_smb2_acl(struct cifs_ntsd *pnntsd, __u32 acllen,
+ 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
+ 	if (!utf16_path) {
+ 		rc = -ENOMEM;
+-		free_xid(xid);
+-		return rc;
++		goto put_tlink;
+ 	}
+ 
+ 	oparms.tcon = tcon;
+@@ -3527,6 +3526,7 @@ set_smb2_acl(struct cifs_ntsd *pnntsd, __u32 acllen,
+ 		SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
+ 	}
+ 
++put_tlink:
+ 	cifs_put_tlink(tlink);
+ 	free_xid(xid);
+ 	return rc;
 -- 
-2.50.1
-
-
-
-
-Amazon Web Services EMEA SARL, 38 avenue John F. Kennedy, L-1855 Luxembourg, R.C.S. Luxembourg B186284
-
-Amazon Web Services EMEA SARL, Irish Branch, One Burlington Plaza, Burlington Road, Dublin 4, Ireland, branch registration number 908705
-
-
+2.34.1
 
 
