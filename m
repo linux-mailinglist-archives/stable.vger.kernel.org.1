@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-232471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPf8A7cHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:19 +0200
+	id CCMKEQ38y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B58A36F328
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B024136D55B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3DBF130C622D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A1B0730CD800
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B9D306498;
-	Tue, 31 Mar 2026 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E42A421A1D;
+	Tue, 31 Mar 2026 16:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUk6znxC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v93QiXl3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934233016EE;
-	Tue, 31 Mar 2026 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EA1402BA9;
+	Tue, 31 Mar 2026 16:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976833; cv=none; b=beri+GUJOTAtwW0wFsWLEXRYcicSXnLv/z7+fsG+wa9wNlHKOaponi36PzUt/BTQ4zRvdlpt8VmtGclHHJSCL0YXlsNZgcJlhnT71m4h4yW7o8lo7ps+6w6HJNAr7gIPZhGowGtwpmIvNBQBlaYBFen9UIxUIRjKVYBUsdgpj6A=
+	t=1774975493; cv=none; b=AGcU6m4iOn5kkZkxKMvEOdvVbrs9gZahY//Nzm7J5Zv6nkt5K3wSsz4urWlaX6bu9Xqz8iOtw/O6yxNuCTB2LcFcdozv8LiVBZoGdzUzAJ/kK0efaajruJCMxOQbyvRD1m8u7wJSVEA5/t+uvFdmHKvBIefsclmB7jnitmbRp68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976833; c=relaxed/simple;
-	bh=ABDjbdBtkeQ+B2UU0lJpHZudfRrAn7XKiAnY6QWSwU8=;
+	s=arc-20240116; t=1774975493; c=relaxed/simple;
+	bh=OtAGHwZcUJbzChhpCgK4HysYJ1Mf6IziCuzouCidQ7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uK8Bv9mackjdBthq15yGvWElALibA1oIe7JiGcOEvyASMoOpO6tr25CHkSLoZOOO48aeMMeowp+7xrzloBdAyX6y+A6YDueS9e0PxtZS43BhXn/cbR/hD3n0y9kH+OTxYWlrqgdyxhmCUheDYYvU5He+WciHJ7oRtleipVgX9CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUk6znxC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B7CC19423;
-	Tue, 31 Mar 2026 17:07:13 +0000 (UTC)
+	 MIME-Version; b=BP4D9mU9XKIgX33+o7pmx9/JY/RUttQ72hrMx6Gd4jfBqTtwWrI3DJj2tNGpILIkvHxsyctWkix0B/Es1N7y3amEB4XatfhHYn3s/24VWXtImevWIozogKpNuevsm3752TQw+7L0/aKHQhBrBKYQpyaPi546x2GPMu5S4DuGRQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v93QiXl3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9F9C19423;
+	Tue, 31 Mar 2026 16:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976833;
-	bh=ABDjbdBtkeQ+B2UU0lJpHZudfRrAn7XKiAnY6QWSwU8=;
+	s=korg; t=1774975492;
+	bh=OtAGHwZcUJbzChhpCgK4HysYJ1Mf6IziCuzouCidQ7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUk6znxCv4wjAs+V7cS55PFmblsLuL99DJCtvrUhjDf/GIcctAH5GUojaPTYx5rs2
-	 nukRgNgtefxK/y4qT0g/Lf55OiIDk3EL4JP9EImuTpSsaiLSh18xlGyS26O9jb31Uk
-	 9JmyjWCFwfFCr4jTOTl3FsG53b5BUmM/vI7TYKbs=
+	b=v93QiXl3V+/NPMdzfmfQCcGexcAM8eqJ6yHMI2yzsZcHqFRP2+1w5RvKPyLILUp22
+	 tqpUcQmNiXpXHkqSq56DCjmesUxtad4fFWtEEGiZ2t2tl7Fz58urKdfnsdB7eOFCXU
+	 2J+Xxm7s5OQY/Si5EyLzjaftbJy7Wq3V2bb9ktdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Max Boone <mboone@akamai.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 246/309] mm/pagewalk: fix race between concurrent split and refault
-Date: Tue, 31 Mar 2026 18:22:29 +0200
-Message-ID: <20260331161802.625678585@linuxfoundation.org>
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 317/342] dmaengine: idxd: Fix freeing the allocated ida too late
+Date: Tue, 31 Mar 2026 18:22:30 +0200
+Message-ID: <20260331161810.584284040@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,183 +69,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231953-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232471-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.com:email,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2B58A36F328
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B024136D55B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Boone <mboone@akamai.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-commit 3b89863c3fa482912911cd65a12a3aeef662c250 upstream.
+[ Upstream commit c311f5e9248471a950f0a524c2fd736414d98900 ]
 
-The splitting of a PUD entry in walk_pud_range() can race with a
-concurrent thread refaulting the PUD leaf entry causing it to try walking
-a PMD range that has disappeared.
+It can happen that when the cdev .release() is called, the driver
+already called ida_destroy(). Move ida_free() to the _del() path.
 
-An example and reproduction of this is to try reading numa_maps of a
-process while VFIO-PCI is setting up DMA (specifically the
-vfio_pin_pages_remote call) on a large BAR for that process.
+We see with DEBUG_KOBJECT_RELEASE enabled and forcing an early PCI
+unbind.
 
-This will trigger a kernel BUG:
-vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-BUG: unable to handle page fault for address: ffffa23980000000
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-...
-RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
-   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- __walk_page_range+0x195/0x1b0
- walk_page_vma+0x62/0xc0
- show_numa_map+0x12b/0x3b0
- seq_read_iter+0x297/0x440
- seq_read+0x11d/0x140
- vfs_read+0xc2/0x340
- ksys_read+0x5f/0xe0
- do_syscall_64+0x68/0x130
- ? get_page_from_freelist+0x5c2/0x17e0
- ? mas_store_prealloc+0x17e/0x360
- ? vma_set_page_prot+0x4c/0xa0
- ? __alloc_pages_noprof+0x14e/0x2d0
- ? __mod_memcg_lruvec_state+0x8d/0x140
- ? __lruvec_stat_mod_folio+0x76/0xb0
- ? __folio_mod_stat+0x26/0x80
- ? do_anonymous_page+0x705/0x900
- ? __handle_mm_fault+0xa8d/0x1000
- ? __count_memcg_events+0x53/0xf0
- ? handle_mm_fault+0xa5/0x360
- ? do_user_addr_fault+0x342/0x640
- ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
- ? irqentry_exit_to_user_mode+0x24/0x100
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fe88464f47e
-Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
-   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
- </TASK>
-
-Fix this by validating the PUD entry in walk_pmd_range() using a stable
-snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
-walk via ACTION_AGAIN instead of descending further.  This mirrors the
-retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
-PTE is not being got by pte_offset_map_lock().
-
-Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
-Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Max Boone <mboone@akamai.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04922b7445a1 ("dmaengine: idxd: fix cdev setup and free device lifetime issues")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-9-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/pagewalk.c |   25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/dma/idxd/cdev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, un
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 7e4715f927732..4105688cf3f06 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -158,11 +158,7 @@ static const struct device_type idxd_cdev_file_type = {
+ static void idxd_cdev_dev_release(struct device *dev)
  {
-+	pud_t pudval = pudp_get(pud);
- 	pmd_t *pmd;
- 	unsigned long next;
- 	const struct mm_walk_ops *ops = walk->ops;
-@@ -105,6 +106,24 @@ static int walk_pmd_range(pud_t *pud, un
- 	int err = 0;
- 	int depth = real_depth(3);
+ 	struct idxd_cdev *idxd_cdev = dev_to_cdev(dev);
+-	struct idxd_cdev_context *cdev_ctx;
+-	struct idxd_wq *wq = idxd_cdev->wq;
  
-+	/*
-+	 * For PTE handling, pte_offset_map_lock() takes care of checking
-+	 * whether there actually is a page table. But it also has to be
-+	 * very careful about concurrent page table reclaim.
-+	 *
-+	 * Similarly, we have to be careful here - a PUD entry that points
-+	 * to a PMD table cannot go away, so we can just walk it. But if
-+	 * it's something else, we need to ensure we didn't race something,
-+	 * so need to retry.
-+	 *
-+	 * A pertinent example of this is a PUD refault after PUD split -
-+	 * we will need to split again or risk accessing invalid memory.
-+	 */
-+	if (!pud_present(pudval) || pud_leaf(pudval)) {
-+		walk->action = ACTION_AGAIN;
-+		return 0;
-+	}
+-	cdev_ctx = &ictx[wq->idxd->data->type];
+-	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
+ 	kfree(idxd_cdev);
+ }
+ 
+@@ -582,11 +578,15 @@ int idxd_wq_add_cdev(struct idxd_wq *wq)
+ 
+ void idxd_wq_del_cdev(struct idxd_wq *wq)
+ {
++	struct idxd_cdev_context *cdev_ctx;
+ 	struct idxd_cdev *idxd_cdev;
+ 
+ 	idxd_cdev = wq->idxd_cdev;
+ 	wq->idxd_cdev = NULL;
+ 	cdev_device_del(&idxd_cdev->cdev, cdev_dev(idxd_cdev));
 +
- 	pmd = pmd_offset(pud, addr);
- 	do {
- again:
-@@ -218,12 +237,12 @@ static int walk_pud_range(p4d_t *p4d, un
- 		else if (pud_leaf(*pud) || !pud_present(*pud))
- 			continue; /* Nothing to do. */
++	cdev_ctx = &ictx[wq->idxd->data->type];
++	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
+ 	put_device(cdev_dev(idxd_cdev));
+ }
  
--		if (pud_none(*pud))
--			goto again;
--
- 		err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
-+
-+		if (walk->action == ACTION_AGAIN)
-+			goto again;
- 	} while (pud++, addr = next, addr != end);
- 
- 	return err;
+-- 
+2.53.0
+
 
 
 
