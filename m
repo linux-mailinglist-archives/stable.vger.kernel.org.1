@@ -1,63 +1,54 @@
-Return-Path: <stable+bounces-231384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCNVENahy2lHJwYAu9opvQ
-	(envelope-from <stable+bounces-231384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:28:38 +0200
+	id OFuZKPKhy2lHJwYAu9opvQ
+	(envelope-from <stable+bounces-231385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:29:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94784367F40
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:28:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B965367F76
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 562EF30AA87C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:21:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2CBD3081361
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 10:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FF63ECBE5;
-	Tue, 31 Mar 2026 10:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD573EDAC6;
+	Tue, 31 Mar 2026 10:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm5WcEns"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5C4LiL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990993ECBED;
-	Tue, 31 Mar 2026 10:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983BB3EDAB2
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 10:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774952460; cv=none; b=R+dZFGU8H4fqgHoz1J1QAET2fBgf1zeyXadZQwNOLrZy7QPMTXJuPcHYWjHT2JBvl1+/Sa57wgqbf/SdMJMEa3XbQqNcHJWMR47BlBNy8r6XbI5b1u3FqtpSFfyGfVIT6zpUG1M/E/uZ+Vn0tKJdG7EBk8YeeTwAfgxhRmpKgY0=
+	t=1774952524; cv=none; b=fcN6IAYsSM2bR4enpnuL2t0zUdtcoUTgogCldcRhSuXXUazaw1b/eEAo/Z88mY3nDwTUOXNDm//9ndYiTZtKMOC6yzQ6HK0MxODUKVSZqvvERLC8ZGTWSIYaQuqpSuicuSjQ6ndIccvFxtL+K4Q7WdVtcqUeu9+TM3zLd/1wVSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774952460; c=relaxed/simple;
-	bh=BHEsXAaKbfrTXbZu0YNFbP6Pcp3fCQx38/LD4/9y+7E=;
+	s=arc-20240116; t=1774952524; c=relaxed/simple;
+	bh=DdS5P9Em7i6NU0h74P/W9ImTzQ5Z9jul/Vm9Is3XGGg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vfk1fjT48wbXdGEIMdP60NSKsY3Qny0ggDO95JHulgcY9cr0dhpr2Tz07wGM69+hqA6DIoGCpNHA2IXFbaTj5nFCq9wf3QM/zFBTQMlyjj+edCpXR9xolYo8pV2G4DY1mFjgAozHDePceJt+bkZ2cbPG9fWbzzftbifVwbXxrdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm5WcEns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FE5C2BCB0;
-	Tue, 31 Mar 2026 10:20:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sAMmGw4b7nf56GcGh/Fhld6PcNaWzZN5urPejZHiqGEXHP3IQ3Y+rrMnQdd61VGWirmv7ZDhZLe+jANxPj+9Ks0x1lV2iYyDnO/WXhrjU/BEsjHpemPCQsc3RFbpmZieNz33al7y1UeXhh4G7upLpsDkrnQOeCMDFh0KW4V5SOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5C4LiL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3CDC2BCB3;
+	Tue, 31 Mar 2026 10:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774952460;
-	bh=BHEsXAaKbfrTXbZu0YNFbP6Pcp3fCQx38/LD4/9y+7E=;
+	s=korg; t=1774952524;
+	bh=DdS5P9Em7i6NU0h74P/W9ImTzQ5Z9jul/Vm9Is3XGGg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dm5WcEnsStHtpWK/aZwkhUyLzoymBLHNV1Dff5LVpvUIl93CqQvWCFMPkXte90VNS
-	 wtKeeiKHv+MBYhPFtdXtQ24XaFd5FrEVw8u1tEgtDc5oQaemtsTsgqeWzIzORCreVC
-	 sV7MaH6dj4k9wH4UVK8kmitNatoo536RUTAk/Mjw=
-Date: Tue, 31 Mar 2026 12:20:57 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Cal Peake <cp@absolutedigital.net>
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Mario Limonciello <superm1@kernel.org>,
-	Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	stable@vger.kernel.org, jslaby@suse.cz,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: Re: Linux 6.18.19 -- amdgpu bug and a new warning
-Message-ID: <2026033151-require-onward-f864@gregkh>
-References: <2026031914-send-embezzle-1648@gregkh>
- <1df33732-8d66-d669-84a8-259f1b7f3278@absolutedigital.net>
- <156c7e58-df60-44ca-8c26-78ccab2c1647@kernel.org>
- <9223c139-3c0e-49b0-a5c2-27025739e8e9@oracle.com>
- <8e2fcc37-7192-6eca-e4e-f9d6ebef8ec0@absolutedigital.net>
+	b=y5C4LiL3Sq4GSdakxLXvYrR9JkhcEhUQ1UfK//1qaKXIMTqhfue1IpTpCt+IRjmlA
+	 LU6I03oimALaue8w49yjLf3Cf5B/Jzrx1zs0RditFuhqlQZaLAyJB/TKuTw6k+6urO
+	 eyKFa8QlRabM9P5L1l7zw79CoIWZkLX1wbLqda+8=
+Date: Tue, 31 Mar 2026 12:22:01 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 6.18.y] mm/mseal: update VMA end correctly on merge
+Message-ID: <2026033151-crinkly-manhunt-7916@gregkh>
+References: <2026033044-debug-embargo-40fb@gregkh>
+ <20260330110021.56330-1-ljs@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,53 +57,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8e2fcc37-7192-6eca-e4e-f9d6ebef8ec0@absolutedigital.net>
+In-Reply-To: <20260330110021.56330-1-ljs@kernel.org>
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231384-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-231385-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.861];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 94784367F40
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bluedragonsec.com:email]
+X-Rspamd-Queue-Id: 0B965367F76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 26, 2026 at 05:43:41PM -0400, Cal Peake wrote:
-> On Thu, 26 Mar 2026, Harshit Mogalapalli wrote:
+On Mon, Mar 30, 2026 at 12:00:21PM +0100, Lorenzo Stoakes (Oracle) wrote:
+> Previously we stored the end of the current VMA in curr_end, and then upon
+> iterating to the next VMA updated curr_start to curr_end to advance to the
+> next VMA.
 > 
-> > I think backporting this would help ?
-> > 
-> > commit: e12603bf2c3d ("drm/amd/pm: fix amdgpu_irq enabled counter unbalanced
-> > on smu v11.0")
-> > 
+> However, this doesn't take into account the fact that a VMA might be
+> updated due to a merge by vma_modify_flags(), which can result in curr_end
+> being stale and thus, upon setting curr_start to curr_end, ending up with
+> an incorrect curr_start on the next iteration.
 > 
-> Ah, very good find! Thank you, Harshit, this fixes things up.
+> Resolve the issue by setting curr_end to vma->vm_end unconditionally to
+> ensure this value remains updated should this occur.
 > 
-> Greg, please consider commit e12603bf2c3d in mainline for 6.18 stable.
+> While we're here, eliminate this entire class of bug by simply setting
+> const curr_[start/end] to be clamped to the input range and VMAs, which
+> also happens to simplify the logic.
+> 
+> Reported-by: Antonius <antonius@bluedragonsec.com>
+> Closes: https://lore.kernel.org/linux-mm/CAK8a0jwWGj9-SgFk0yKFh7i8jMkwKm5b0ao9=kmXWjO54veX2g@mail.gmail.com/
+> Suggested-by: David Hildenbrand (ARM) <david@kernel.org>
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
+> Cc: <stable@vger.kernel.org>
+> (cherry picked from commit 88995f43fdc2045ff0b030ca054898483004de36)
 
-Now queued up, thanks.
+Not a valid git id :(
 
-greg k-h
 
