@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-231844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNrwC478y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:42 +0200
+	id kK3ULpIDzGmPNQYAu9opvQ
+	(envelope-from <stable+bounces-232072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CBB36D6D0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAE436EACC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27C9632C382E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3E3032181CD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4721402435;
-	Tue, 31 Mar 2026 16:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81276423A8E;
+	Tue, 31 Mar 2026 16:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7bbL7/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOUS8wKg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CE43E559E;
-	Tue, 31 Mar 2026 16:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444FF423A61;
+	Tue, 31 Mar 2026 16:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975216; cv=none; b=JC/KTFurzfP8ua+denmPfmkVU6jPnM3izcQI/N/3FvB6vVTF69ozCbePjKJGRzcqwdkf9mq+I71Vrr5wGaCG6kRJ/IaJCIt3ewHCA5lTM4x+S8g4wpSNBrXPkDnrkbIY53bQRDWakqz8KZhP5DFl0xPlDLJURFTycT+ynSx5lGc=
+	t=1774975803; cv=none; b=pcL/7a+1Av0+RvsxwnB98I2ZaI6m4WOlBHqtsIyYLLc0b9sGhxhVT/MVhRomZIhSg7z83+xpVUL5pWnP8oWHFuLp69yCVbmF4wIYMPQP8gB5bsoWiOK3ZKQ4b+ySiVlOXarb4CA3F+H70Uam4BeNtPUSbG2d6YnwkfPo+PWLAC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975216; c=relaxed/simple;
-	bh=gggfqyLzBn8va7ecmV1TEm+8hJcvwi8XYd0haqUOSf0=;
+	s=arc-20240116; t=1774975803; c=relaxed/simple;
+	bh=lj+2HyzIXNze/KdAGdsPR4pNRgM13ln6ZP73zbwnPvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PonCaR2+Dh06ttwdmHij38Gy/bI9Xv6qvHVgoDif0Vayb5K/704SLawjw8XCnpmvRkQYt4UFpAaG/VzhvtmJRYMDPoY3Y6fz0ReG47bHCZxYThgbzk2ps43iB99mNB6HYu+QMLJ00mesZRjfwRU03Ge5gi8a0BCMsnmXrkPY2UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7bbL7/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1D6C19423;
-	Tue, 31 Mar 2026 16:40:15 +0000 (UTC)
+	 MIME-Version; b=mB5ucwKhF6IIVSTM3YZFs5mE2ODA+5Pc6bkFU/C2i5HRkYueLKxWnkn2g11999emnY7KsZDzO7dx/D9pTc3BiQD4Mu/B4pHPZW0g6cxWzRBGeiwEwW8u6OYSacU+4Jviad4snIjG692wdsfJ32n9/uy1g4kU2+g6J+4j42/nuao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOUS8wKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC0EC19423;
+	Tue, 31 Mar 2026 16:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975216;
-	bh=gggfqyLzBn8va7ecmV1TEm+8hJcvwi8XYd0haqUOSf0=;
+	s=korg; t=1774975803;
+	bh=lj+2HyzIXNze/KdAGdsPR4pNRgM13ln6ZP73zbwnPvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B7bbL7/ErfqdNIw1BCQGK49v7ERphw4dFAjMh6U2Ltxl8e50OquqKLrxWATkDcO2z
-	 Oon00azYz/2NOxTFp9CMTs1w9oHP25dVaDVLseWWUO/lLToU8yxP+YoXHJExpCuO3z
-	 08WitGs+MNKv1RCzHTkw63K5Wo3UC8plFuojNhLo=
+	b=eOUS8wKg+bzPoIBBtj+9Cf76DrS0tK/sMb/DxVUdoblPE8TPpQMRyv2xo6Zepddha
+	 o7lkHhjkx7U4wXGtk6QpzC3dIe9tklpjVY1gU0E1bF9A2gLe+2dBhHL7D8M+ffK9Fe
+	 GV5qmOGs2bj2fmlrIhPcSNsKPP8/d2KkKbYutG7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Joel Selvaraj <foss@joelselvaraj.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.19 209/342] ASoC: codecs: wcd934x: fix typo in dt parsing
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 092/244] net: lan743x: fix duplex configuration in mac_link_up
 Date: Tue, 31 Mar 2026 18:20:42 +0200
-Message-ID: <20260331161806.671464988@linuxfoundation.org>
+Message-ID: <20260331161745.074072182@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +65,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-232072-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231844-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,joelselvaraj.com:email]
-X-Rspamd-Queue-Id: 84CBB36D6D0
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,microchip.com:email,armlinux.org.uk:email]
+X-Rspamd-Queue-Id: 3EAE436EACC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-commit cfb385a8dc88d86a805a5682eaa68f59fa5c0ec3 upstream.
+[ Upstream commit 71399707876b93240f236f48b8062f3423a5fe97 ]
 
-Looks like we ended up with a typo during device tree data parsing
-as part of 4f16b6351bbff ("ASoC: codecs: wcd: add common helper for wcd
-codecs") patch.
- This will result in not parsing the device tree data and results in
-zero mic bias values.
+The driver does not explicitly configure the MAC duplex mode when
+bringing the link up. As a result, the MAC may retain a stale duplex
+setting from a previous link state, leading to duplex mismatches with
+the link partner and degraded network performance.
 
-Fix this by calling wcd_dt_parse_micbias_info instead of
-wcd_dt_parse_mbhc_data.
+Update lan743x_phylink_mac_link_up() to set or clear the MAC_CR_DPX_
+bit according to the negotiated duplex mode.
 
-Fixes: 4f16b6351bbff ("ASoC: codecs: wcd: add common helper for wcd codecs")
-Cc: Stable@vger.kernel.org
-Reported-by: Joel Selvaraj <foss@joelselvaraj.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260323231748.2217967-1-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This ensures the MAC configuration is consistent with the phylink
+resolved state.
+
+Fixes: a5f199a8d8a03 ("net: lan743x: Migrate phylib to phylink")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20260323065345.144915-1-thangaraj.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd934x.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -2172,7 +2172,7 @@ static int wcd934x_init_dmic(struct snd_
- 	u32 def_dmic_rate, dmic_clk_drv;
- 	int ret;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 8c4c28a1d6575..b897d071fc452 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -3055,6 +3055,11 @@ static void lan743x_phylink_mac_link_up(struct phylink_config *config,
+ 	else if (speed == SPEED_100)
+ 		mac_cr |= MAC_CR_CFG_L_;
  
--	ret = wcd_dt_parse_mbhc_data(comp->dev, &wcd->mbhc_cfg);
-+	ret = wcd_dt_parse_micbias_info(&wcd->common);
- 	if (ret)
- 		return ret;
++	if (duplex == DUPLEX_FULL)
++		mac_cr |= MAC_CR_DPX_;
++	else
++		mac_cr &= ~MAC_CR_DPX_;
++
+ 	lan743x_csr_write(adapter, MAC_CR, mac_cr);
  
+ 	lan743x_ptp_update_latency(adapter, speed);
+-- 
+2.51.0
+
 
 
 
