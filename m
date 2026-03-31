@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-232061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJBwBXEDzGmPNQYAu9opvQ
-	(envelope-from <stable+bounces-232061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:05 +0200
+	id IDuwOsz8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CA936EA94
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9B236D774
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C76B31D5FCC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBB1731BAC4A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4014035AB;
-	Tue, 31 Mar 2026 16:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3082426EC2;
+	Tue, 31 Mar 2026 16:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb13bU0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awS1xxtu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E41A3EF0A2;
-	Tue, 31 Mar 2026 16:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56143F7A8B;
+	Tue, 31 Mar 2026 16:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975775; cv=none; b=Cx8Jc86n5YL2IUWKm4S/6MMdewyUsqbUBp9daiBPg+B2QBVfro5ovgGV2uYCN3P097Pvmi5ELNlhkvMgdXxLQOEZkTkevgy4KJnzuH51EOmACQQ3moQum9A5VHjVozlwm1458LQpChWhXgBscJ3FTdpp2V4KzuY3po8WCcWnyqc=
+	t=1774975280; cv=none; b=d0gK7kqQ5ZUgwqpjHBXMPcSKl5d2wasypdX1Y6CVezOoJ4vdzw1ugRBVzHRDxAKkjLy2ZzZqxzruijhmLLm9XXw3ZrHuR9i0MV/pB1ZKpNlnp9IYrb6mr+UQt9JLdR54k7ObZmIhtVfVg10M/ol8PHCFcafOZYgXq6pm02qIXPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975775; c=relaxed/simple;
-	bh=7mQGE8NoNUpuu6PoxOaqw+e7cl6Vx/A6Y6IEFH+JvAQ=;
+	s=arc-20240116; t=1774975280; c=relaxed/simple;
+	bh=jf5PpyewlaJOpVSvaA4zeA1cp2bh3Qxl9s+4h4V0KCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhzd6l+ddPY3q1mMAaki2LlbvJm8DMdAy6TVt6BlSlnYIW3A3w7Qa6VtdeAPuE6x1OelUevmM+uuSx7KqTYkHBJOFUJBtmbxX4WIoIyzrHmCU1w5qSTK5rNPxKlSzYIONyWCB+SECauz1GyNpQRbXdhgEV1zuk5nkylEdUNpM2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb13bU0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D07C19423;
-	Tue, 31 Mar 2026 16:49:34 +0000 (UTC)
+	 MIME-Version; b=Ol7CD++PQ+PgSD1HU3/fi94TIMKX/DJ7+VEvacGJytV9q4smuwjxfCFfgYEPsp3oJcw4nqXDfhVK6iUKphkGL2AVyl3CKywmxoWlCuAx6f99IyAZjLDf84l9praxBRUUj0Kgp5163QO2e0918arNsslEvTRoHM9vwOGunoJe5ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awS1xxtu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABC1C19423;
+	Tue, 31 Mar 2026 16:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975774;
-	bh=7mQGE8NoNUpuu6PoxOaqw+e7cl6Vx/A6Y6IEFH+JvAQ=;
+	s=korg; t=1774975280;
+	bh=jf5PpyewlaJOpVSvaA4zeA1cp2bh3Qxl9s+4h4V0KCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xb13bU0YFzjfYKHI+pQMMWAVmCt91+s+Nx7hPE0zv2t9eOOv7Zg3ZSt99pqUi/Dru
-	 p1nbET+Z/t1WfbAb1IS/o0WfClN1GT5zJfZDB5cm7apkcQm6aUJCzvw5lofmJ1w5TY
-	 u3dhP/3A4Ao2iqhRQEwQlQs7CTfVvXuANPkDocoM=
+	b=awS1xxtu+ut1aWN7kHheTl1vGJmEcV87mQ9LAPot/og/rQALXQlxS3oRx2tLYtYJk
+	 GFil8SMUSCuX53DY35UsOYPKpV7yNMrrX/oPoGuzL5+uRolWI7Rc0Cj+iImoTn0eGe
+	 kJ3i7aQ4roZ/hE8Aq4lPxu0kzKa+7Z4ub3j8cpI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Patryk Holda <patryk.holda@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/244] ice: fix inverted ready check for VF representors
-Date: Tue, 31 Mar 2026 18:20:32 +0200
-Message-ID: <20260331161744.711048512@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.19 200/342] drm/xe: always keep track of remap prev/next
+Date: Tue, 31 Mar 2026 18:20:33 +0200
+Message-ID: <20260331161806.347573004@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,77 +73,224 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232061-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231870-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 78CA936EA94
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2A9B236D774
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit ad85de0fc09eb3236e73df5acb2bc257625103f5 ]
+commit bfe9e314d7574d1c5c851972e7aee342733819d2 upstream.
 
-Commit 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
-refactored the VF readiness check into a generic repr->ops.ready()
-callback but implemented ice_repr_ready_vf() with inverted logic:
+During 3D workload, user is reporting hitting:
 
-  return !ice_check_vf_ready_for_cfg(repr->vf);
+[  413.361679] WARNING: drivers/gpu/drm/xe/xe_vm.c:1217 at vm_bind_ioctl_ops_unwind+0x1e2/0x2e0 [xe], CPU#7: vkd3d_queue/9925
+[  413.361944] CPU: 7 UID: 1000 PID: 9925 Comm: vkd3d_queue Kdump: loaded Not tainted 7.0.0-070000rc3-generic #202603090038 PREEMPT(lazy)
+[  413.361949] RIP: 0010:vm_bind_ioctl_ops_unwind+0x1e2/0x2e0 [xe]
+[  413.362074] RSP: 0018:ffffd4c25c3df930 EFLAGS: 00010282
+[  413.362077] RAX: 0000000000000000 RBX: ffff8f3ee817ed10 RCX: 0000000000000000
+[  413.362078] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[  413.362079] RBP: ffffd4c25c3df980 R08: 0000000000000000 R09: 0000000000000000
+[  413.362081] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8f41fbf99380
+[  413.362082] R13: ffff8f3ee817e968 R14: 00000000ffffffef R15: ffff8f43d00bd380
+[  413.362083] FS:  00000001040ff6c0(0000) GS:ffff8f4696d89000(0000) knlGS:00000000330b0000
+[  413.362085] CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+[  413.362086] CR2: 00007ddfc4747000 CR3: 00000002e6262005 CR4: 0000000000f72ef0
+[  413.362088] PKRU: 55555554
+[  413.362089] Call Trace:
+[  413.362092]  <TASK>
+[  413.362096]  xe_vm_bind_ioctl+0xa9a/0xc60 [xe]
 
-ice_check_vf_ready_for_cfg() returns 0 on success, so the negation
-makes ready() return non-zero when the VF is ready. All callers treat
-non-zero as "not ready, skip", causing ndo_get_stats64, get_drvinfo,
-get_strings and get_ethtool_stats to always bail out in switchdev mode.
+Which seems to hint that the vma we are re-inserting for the ops unwind
+is either invalid or overlapping with something already inserted in the
+vm. It shouldn't be invalid since this is a re-insertion, so must have
+worked before. Leaving the likely culprit as something already placed
+where we want to insert the vma.
 
-Remove the erroneous negation. The SF variant ice_repr_ready_sf() is
-already correct (returns !active, i.e. non-zero when not active).
+Following from that, for the case where we do something like a rebind in
+the middle of a vma, and one or both mapped ends are already compatible,
+we skip doing the rebind of those vma and set next/prev to NULL. As well
+as then adjust the original unmap va range, to avoid unmapping the ends.
+However, if we trigger the unwind path, we end up with three va, with
+the two ends never being removed and the original va range in the middle
+still being the shrunken size.
 
-Fixes: 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: Patryk Holda <patryk.holda@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If this occurs, one failure mode is when another unwind op needs to
+interact with that range, which can happen with a vector of binds. For
+example, if we need to re-insert something in place of the original va.
+In this case the va is still the shrunken version, so when removing it
+and then doing a re-insert it can overlap with the ends, which were
+never removed, triggering a warning like above, plus leaving the vm in a
+bad state.
+
+With that, we need two things here:
+
+ 1) Stop nuking the prev/next tracking for the skip cases. Instead
+    relying on checking for skip prev/next, where needed. That way on the
+    unwind path, we now correctly remove both ends.
+
+ 2) Undo the unmap va shrinkage, on the unwind path. With the two ends
+    now removed the unmap va should expand back to the original size again,
+    before re-insertion.
+
+v2:
+  - Update the explanation in the commit message, based on an actual IGT of
+    triggering this issue, rather than conjecture.
+  - Also undo the unmap shrinkage, for the skip case. With the two ends
+    now removed, the original unmap va range should expand back to the
+    original range.
+v3:
+  - Track the old start/range separately. vma_size/start() uses the va
+    info directly.
+
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7602
+Fixes: 8f33b4f054fc ("drm/xe: Avoid doing rebinds")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260318100208.78097-2-matthew.auld@intel.com
+(cherry picked from commit aec6969f75afbf4e01fd5fb5850ed3e9c27043ac)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_repr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_pt.c       |   12 ++++++------
+ drivers/gpu/drm/xe/xe_vm.c       |   22 ++++++++++++++++++----
+ drivers/gpu/drm/xe/xe_vm_types.h |    4 ++++
+ 3 files changed, 28 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
-index 970a99a52bf18..1b1288d243248 100644
---- a/drivers/net/ethernet/intel/ice/ice_repr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_repr.c
-@@ -314,7 +314,7 @@ ice_repr_reg_netdev(struct net_device *netdev, const struct net_device_ops *ops)
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -1442,9 +1442,9 @@ static int op_check_svm_userptr(struct x
+ 		err = vma_check_userptr(vm, op->map.vma, pt_update);
+ 		break;
+ 	case DRM_GPUVA_OP_REMAP:
+-		if (op->remap.prev)
++		if (op->remap.prev && !op->remap.skip_prev)
+ 			err = vma_check_userptr(vm, op->remap.prev, pt_update);
+-		if (!err && op->remap.next)
++		if (!err && op->remap.next && !op->remap.skip_next)
+ 			err = vma_check_userptr(vm, op->remap.next, pt_update);
+ 		break;
+ 	case DRM_GPUVA_OP_UNMAP:
+@@ -2029,12 +2029,12 @@ static int op_prepare(struct xe_vm *vm,
  
- static int ice_repr_ready_vf(struct ice_repr *repr)
- {
--	return !ice_check_vf_ready_for_cfg(repr->vf);
-+	return ice_check_vf_ready_for_cfg(repr->vf);
- }
+ 		err = unbind_op_prepare(tile, pt_update_ops, old);
  
- static int ice_repr_ready_sf(struct ice_repr *repr)
--- 
-2.51.0
-
+-		if (!err && op->remap.prev) {
++		if (!err && op->remap.prev && !op->remap.skip_prev) {
+ 			err = bind_op_prepare(vm, tile, pt_update_ops,
+ 					      op->remap.prev, false);
+ 			pt_update_ops->wait_vm_bookkeep = true;
+ 		}
+-		if (!err && op->remap.next) {
++		if (!err && op->remap.next && !op->remap.skip_next) {
+ 			err = bind_op_prepare(vm, tile, pt_update_ops,
+ 					      op->remap.next, false);
+ 			pt_update_ops->wait_vm_bookkeep = true;
+@@ -2258,10 +2258,10 @@ static void op_commit(struct xe_vm *vm,
+ 
+ 		unbind_op_commit(vm, tile, pt_update_ops, old, fence, fence2);
+ 
+-		if (op->remap.prev)
++		if (op->remap.prev && !op->remap.skip_prev)
+ 			bind_op_commit(vm, tile, pt_update_ops, op->remap.prev,
+ 				       fence, fence2, false);
+-		if (op->remap.next)
++		if (op->remap.next && !op->remap.skip_next)
+ 			bind_op_commit(vm, tile, pt_update_ops, op->remap.next,
+ 				       fence, fence2, false);
+ 		break;
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2532,7 +2532,6 @@ static int xe_vma_op_commit(struct xe_vm
+ 			if (!err && op->remap.skip_prev) {
+ 				op->remap.prev->tile_present =
+ 					tile_present;
+-				op->remap.prev = NULL;
+ 			}
+ 		}
+ 		if (op->remap.next) {
+@@ -2542,11 +2541,13 @@ static int xe_vma_op_commit(struct xe_vm
+ 			if (!err && op->remap.skip_next) {
+ 				op->remap.next->tile_present =
+ 					tile_present;
+-				op->remap.next = NULL;
+ 			}
+ 		}
+ 
+-		/* Adjust for partial unbind after removing VMA from VM */
++		/*
++		 * Adjust for partial unbind after removing VMA from VM. In case
++		 * of unwind we might need to undo this later.
++		 */
+ 		if (!err) {
+ 			op->base.remap.unmap->va->va.addr = op->remap.start;
+ 			op->base.remap.unmap->va->va.range = op->remap.range;
+@@ -2665,6 +2666,8 @@ static int vm_bind_ioctl_ops_parse(struc
+ 
+ 			op->remap.start = xe_vma_start(old);
+ 			op->remap.range = xe_vma_size(old);
++			op->remap.old_start = op->remap.start;
++			op->remap.old_range = op->remap.range;
+ 
+ 			flags |= op->base.remap.unmap->va->flags & XE_VMA_CREATE_MASK;
+ 			if (op->base.remap.prev) {
+@@ -2812,8 +2815,19 @@ static void xe_vma_op_unwind(struct xe_v
+ 			xe_svm_notifier_lock(vm);
+ 			vma->gpuva.flags &= ~XE_VMA_DESTROYED;
+ 			xe_svm_notifier_unlock(vm);
+-			if (post_commit)
++			if (post_commit) {
++				/*
++				 * Restore the old va range, in case of the
++				 * prev/next skip optimisation. Otherwise what
++				 * we re-insert here could be smaller than the
++				 * original range.
++				 */
++				op->base.remap.unmap->va->va.addr =
++					op->remap.old_start;
++				op->base.remap.unmap->va->va.range =
++					op->remap.old_range;
+ 				xe_vm_insert_vma(vm, vma);
++			}
+ 		}
+ 		break;
+ 	}
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -360,6 +360,10 @@ struct xe_vma_op_remap {
+ 	u64 start;
+ 	/** @range: range of the VMA unmap */
+ 	u64 range;
++	/** @old_start: Original start of the VMA we unmap */
++	u64 old_start;
++	/** @old_range: Original range of the VMA we unmap */
++	u64 old_range;
+ 	/** @skip_prev: skip prev rebind */
+ 	bool skip_prev;
+ 	/** @skip_next: skip next rebind */
 
 
 
