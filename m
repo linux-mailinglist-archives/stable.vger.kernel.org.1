@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-232473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFapHbcHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:19 +0200
+	id oC0WOuD4y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC85236F329
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:43:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886AB36CECA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C152A314B461
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:07:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6ADBF30E9332
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F364030AABE;
-	Tue, 31 Mar 2026 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A142423A80;
+	Tue, 31 Mar 2026 16:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkrvxUSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JR6huje0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3490309DCF;
-	Tue, 31 Mar 2026 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCD9423A70;
+	Tue, 31 Mar 2026 16:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976838; cv=none; b=TKQhpUz9p35s2KfAY1dBR5j+0vcYqdZi2573lvB4mqhXnmu6PVUyhIoyBtWjUsH85meuLJOqGdSO3kb4P66HjOqG5j+o0z8XGVbodZ1LnpwZ34Isa8JB1vXdMjldAcCp1rQXSglMBHnRIWsKUGbv832wxSvlS5W25iOGwn/8w3A=
+	t=1774974651; cv=none; b=SnXf20KOyZDtCChLz9AIXj9ecMvykNVz1Fikv0LYbG/lZoBWC9LKse7N5YArRPl2UHTXAJB41JZxLUrbndnhW/EsFepjk4ksp8Ufxk2tilabevmQ2d62nRQbFl8bLRuKkjCc4GwuBmimX7QsIbfFOUFNmuuOJM1OiZeG7UwzdvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976838; c=relaxed/simple;
-	bh=oG4nJUNXk8nqLTUVt7dBn9voQMIdvDdT8QWoD/q3D6w=;
+	s=arc-20240116; t=1774974651; c=relaxed/simple;
+	bh=peN9r6y0i7lhXtCKxQ/ZPtw+cwgKUyJ9+74W9qH2XSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYatUQiNr47dR6Kcp23Bv6PZiuvh8uItDUQs9P9B+cHT0DyRWrqi/3g98OsYsY1NCSk+Hd5ZR380Z63WrFparOuAqINPqo+kzOkPfWRbKmxHfYplTxEzV+3g7ZOJDw3SpUBeDi9g/9XbH31m2bmzVDGtZ4e0i+niGHjFv8+JL0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkrvxUSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49563C19423;
-	Tue, 31 Mar 2026 17:07:18 +0000 (UTC)
+	 MIME-Version; b=BEZ3htTqA6KO9mGXYNwYBMNYeMLc8DA8KJbIH3068+qTELNwZlazdemQZxTA0FNCbX1A7QBliKasNt73e9I18nQFtjCwic509FQhZY0IiiqhWle0fPaib+qPOfky2kPOnWMfWcDja5O7hASYoKkCxeyZr1u8SsA6+VRH164ckDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JR6huje0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CE5C2BCB1;
+	Tue, 31 Mar 2026 16:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976838;
-	bh=oG4nJUNXk8nqLTUVt7dBn9voQMIdvDdT8QWoD/q3D6w=;
+	s=korg; t=1774974651;
+	bh=peN9r6y0i7lhXtCKxQ/ZPtw+cwgKUyJ9+74W9qH2XSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkrvxUSgzlcS2WUFWfmWeJUT0cadq1QiNMKhf8gHbKMCajgYMg4ybKMRRxz0XIP8+
-	 S7zBFdNjRJ58FNm7NKSHFHckJl12KW3GregZumY5Fj2HvQbhr4e4eSQzMdtHUQxt4O
-	 S15Cz6eGeYKF7yTHtlPW4xA+OpaUKaEIcHvdrgkA=
+	b=JR6huje0+EcgNTHhMvNGnB1mZ+uJ3irMy/9kvG8l7F3j4r02Y+4zqSKWvmWebCP3h
+	 whhrPNax552C8G9CO0zBOm/lrCDFI6pCUcKiTVr7ioPnUEnKo2HxVmZ/tsH+PdXR75
+	 El5TZhRwZknjrXmwHulb7IGdRMQ28yZldrpevQAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Yuto Ohnuki <ytohnuki@amazon.com>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.18 248/309] xfs: save ailp before dropping the AIL lock in push callbacks
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 167/175] dmaengine: xilinx: xilinx_dma: Fix unmasked residue subtraction
 Date: Tue, 31 Mar 2026 18:22:31 +0200
-Message-ID: <20260331161802.699830233@linuxfoundation.org>
+Message-ID: <20260331161735.932802945@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,135 +64,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232473-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231626-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email]
-X-Rspamd-Queue-Id: AC85236F329
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 886AB36CECA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuto Ohnuki <ytohnuki@amazon.com>
+From: Marek Vasut <marex@nabladev.com>
 
-commit 394d70b86fae9fe865e7e6d9540b7696f73aa9b6 upstream.
+[ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
 
-In xfs_inode_item_push() and xfs_qm_dquot_logitem_push(), the AIL lock
-is dropped to perform buffer IO. Once the cluster buffer no longer
-protects the log item from reclaim, the log item may be freed by
-background reclaim or the dquot shrinker. The subsequent spin_lock()
-call dereferences lip->li_ailp, which is a use-after-free.
+The segment .control and .status fields both contain top bits which are
+not part of the buffer size, the buffer size is located only in the bottom
+max_buffer_len bits. To avoid interference from those top bits, mask out
+the size using max_buffer_len first, and only then subtract the values.
 
-Fix this by saving the ailp pointer in a local variable while the AIL
-lock is held and the log item is guaranteed to be valid.
-
-Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-Cc: stable@vger.kernel.org # v5.9
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a575d0b4e663 ("dmaengine: xilinx_dma: Introduce xilinx_dma_get_residue")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316222530.163815-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_dquot_item.c |    9 +++++++--
- fs/xfs/xfs_inode_item.c |    9 +++++++--
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/xfs/xfs_dquot_item.c
-+++ b/fs/xfs/xfs_dquot_item.c
-@@ -126,6 +126,7 @@ xfs_qm_dquot_logitem_push(
- 	struct xfs_dq_logitem	*qlip = DQUOT_ITEM(lip);
- 	struct xfs_dquot	*dqp = qlip->qli_dquot;
- 	struct xfs_buf		*bp;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -154,7 +155,7 @@ xfs_qm_dquot_logitem_push(
- 		goto out_unlock;
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 17c424e650d2f..89583d6c4de46 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -994,16 +994,16 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
+ 					      struct xilinx_cdma_tx_segment,
+ 					      node);
+ 			cdma_hw = &cdma_seg->hw;
+-			residue += (cdma_hw->control - cdma_hw->status) &
+-				   chan->xdev->max_buffer_len;
++			residue += (cdma_hw->control & chan->xdev->max_buffer_len) -
++			           (cdma_hw->status & chan->xdev->max_buffer_len);
+ 		} else if (chan->xdev->dma_config->dmatype ==
+ 			   XDMA_TYPE_AXIDMA) {
+ 			axidma_seg = list_entry(entry,
+ 						struct xilinx_axidma_tx_segment,
+ 						node);
+ 			axidma_hw = &axidma_seg->hw;
+-			residue += (axidma_hw->control - axidma_hw->status) &
+-				   chan->xdev->max_buffer_len;
++			residue += (axidma_hw->control & chan->xdev->max_buffer_len) -
++			           (axidma_hw->status & chan->xdev->max_buffer_len);
+ 		} else {
+ 			aximcdma_seg =
+ 				list_entry(entry,
+@@ -1011,8 +1011,8 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
+ 					   node);
+ 			aximcdma_hw = &aximcdma_seg->hw;
+ 			residue +=
+-				(aximcdma_hw->control - aximcdma_hw->status) &
+-				chan->xdev->max_buffer_len;
++				(aximcdma_hw->control & chan->xdev->max_buffer_len) -
++				(aximcdma_hw->status & chan->xdev->max_buffer_len);
+ 		}
  	}
  
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	error = xfs_dquot_use_attached_buf(dqp, &bp);
- 	if (error == -EAGAIN) {
-@@ -173,9 +174,13 @@ xfs_qm_dquot_logitem_push(
- 			rval = XFS_ITEM_FLUSHING;
- 	}
- 	xfs_buf_relse(bp);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
- 
- out_relock_ail:
--	spin_lock(&lip->li_ailp->ail_lock);
-+	spin_lock(&ailp->ail_lock);
- out_unlock:
- 	xfs_dqunlock(dqp);
- 	return rval;
---- a/fs/xfs/xfs_inode_item.c
-+++ b/fs/xfs/xfs_inode_item.c
-@@ -749,6 +749,7 @@ xfs_inode_item_push(
- 	struct xfs_inode_log_item *iip = INODE_ITEM(lip);
- 	struct xfs_inode	*ip = iip->ili_inode;
- 	struct xfs_buf		*bp = lip->li_buf;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -774,7 +775,7 @@ xfs_inode_item_push(
- 	if (!xfs_buf_trylock(bp))
- 		return XFS_ITEM_LOCKED;
- 
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	/*
- 	 * We need to hold a reference for flushing the cluster buffer as it may
-@@ -798,7 +799,11 @@ xfs_inode_item_push(
- 		rval = XFS_ITEM_LOCKED;
- 	}
- 
--	spin_lock(&lip->li_ailp->ail_lock);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
-+	spin_lock(&ailp->ail_lock);
- 	return rval;
- }
- 
+-- 
+2.53.0
+
 
 
 
