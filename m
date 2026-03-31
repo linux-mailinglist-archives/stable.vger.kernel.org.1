@@ -1,200 +1,208 @@
-Return-Path: <stable+bounces-231305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IChpNVEay2lrDwYAu9opvQ
-	(envelope-from <stable+bounces-231305-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 02:50:25 +0200
+	id iPxrAOMYy2lrDwYAu9opvQ
+	(envelope-from <stable+bounces-231306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 02:44:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BDE362D97
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 02:50:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B171C362CBA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 02:44:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6CD930A112A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:43:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02CE23017AB7
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 00:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD2E2D7DE9;
-	Tue, 31 Mar 2026 00:43:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QLKKsBjw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880692F1FED;
+	Tue, 31 Mar 2026 00:44:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E333E25782A;
-	Tue, 31 Mar 2026 00:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EBF40855;
+	Tue, 31 Mar 2026 00:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774917795; cv=none; b=UKfXn7uNn7oH9M6KIr74tGOtAuQR3hWrT3YIdhAfk8PrDXlbqaoYrPMlR8nEn0t7Pw9uiAWT8SbAvEBhPSFRewM69t2fXVTF3RQXGgW+Sw7Tn/s5RLtSnqO5JP4NeUVS9euqH/zV02lV2sPsyPc80DWmhuESt2gsqAqpXdbqM6g=
+	t=1774917842; cv=none; b=ULY0F/T/llpTxG+5unqm+uJkd/zWEX9zFqQKVD7TfEnQmp3rA6OpjQiLggSJgMmmILgGmnhe5BHDcuRgDWr8sXgRemwBYTvvk8EbBpNGZdqnGYQU+sL9+DUgRbQquKlAWL0It773Gx+kPe7QYH0w+NwJwoUxqTTbLYyWq2nKODc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774917795; c=relaxed/simple;
-	bh=2OQu86adnHs7+CTlKHyWbq1cGGMulu4wjfOYgcgONyg=;
-	h=Date:To:From:Subject:Message-Id; b=SK6XELo7xhlMsTm+CgjiOiiR8Fno4WHbRKDUBjUXBSpNkNmq8wKOE04LsMvozVWYf5rKGYi4lKvoNT9+HTNP7PsOoXbU2SNlYiTzi25pb/PoP1HaW0+VKAgwCQnlFzI45YPvBW55D6h5xsLkSN4AnnCNUGkFAph+NF/4bpYi29s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QLKKsBjw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B8AC4CEF7;
-	Tue, 31 Mar 2026 00:43:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774917794;
-	bh=2OQu86adnHs7+CTlKHyWbq1cGGMulu4wjfOYgcgONyg=;
-	h=Date:To:From:Subject:From;
-	b=QLKKsBjwH/ewdaRhgOlkMZL0XoyYW8WhMWaD3r/Z73RVnK8Z57kbGleZt4CcoWfDA
-	 BEX9uvapG33TUUbVcZ2YYWMYcRW7d0dTT6rruqLSUYr4tBnpu6T/Pz+lCTa4TN0C6/
-	 Z7zrGvUrLSF7zoLLfX56bF/xLIxb1USZFOSKxhBM=
-Date: Mon, 30 Mar 2026 17:43:14 -0700
-To: mm-commits@vger.kernel.org,wei.liu@kernel.org,viro@zeniv.linux.org.uk,vigneshr@ti.com,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,ryan.roberts@arm.com,rppt@kernel.org,richard@nod.at,pfalcato@suse.de,miquel.raynal@bootlin.com,mhocko@suse.com,mcoquelin.stm32@gmail.com,martin.petersen@oracle.com,marc.dionne@auristor.com,longli@microsoft.com,liam.howlett@oracle.com,kys@microsoft.com,jannh@google.com,jack@suse.cz,haiyangz@microsoft.com,gregkh@linuxfoundation.org,dhowells@redhat.com,decui@microsoft.com,david@kernel.org,corbet@lwn.net,clemens@ladisch.de,brauner@kernel.org,bostroesser@gmail.com,arnd@arndb.de,alexandre.torgue@foss.st.com,alexander.shishkin@linux.intel.com,ljs@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] fs-afs-revert-mmap_prepare-change.patch removed from -mm tree
-Message-Id: <20260331004314.B2B8AC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1774917842; c=relaxed/simple;
+	bh=OoYAJJ2IOn1C4pdT4r5UkIPxYoebCDjwcnjFxkun7+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f4mHDJ/J9zBfU+zzxpgfjAkomWXQmMaZcLO9Vig6yZLNiEtIgcnuXSL4/slJH+rjif7fDH4n4LLlZoS94oGE16Bmr1oM/jpncOehdzZg+p5GZItHzxz6bUADuedOxrfSQDT3UM4KuomOImsv9JepRWo25IHyE0YohhbDcgVy4Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from ubuntu.. (unknown [202.112.113.208])
+	by APP-05 (Coremail) with SMTP id zQCowAC3TBCtGMtpnhv_Cw--.47429S2;
+	Tue, 31 Mar 2026 08:43:36 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: vz@mleia.com
+Cc: alexandre.belloni@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	make24@iscas.ac.cn,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	piotr.wojtaszczyk@timesys.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: lpc_eth: Fix a possible memory leak in lpc_mii_probe()
+Date: Tue, 31 Mar 2026 08:43:25 +0800
+Message-ID: <20260331004325.3304949-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <b44db9e6-f820-439d-a7ed-c1e2514579a8@mleia.com>
+References: <b44db9e6-f820-439d-a7ed-c1e2514579a8@mleia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAC3TBCtGMtpnhv_Cw--.47429S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXw4ktw18AFWfWw1kWF4DJwb_yoW5Kw4Dp3
+	y5GaySkFykGry7K395Za1UAryavw42yw1rGFy2yan0g3Z8XryrAryUKrWj93s8AFWkWF40
+	vr1ayF93Xa1kXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBq14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
+	W8Jr0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8C
+	rVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxV
+	WUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS
+	5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw2
+	8IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4l
+	x2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrw
+	CI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI
+	42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z2
+	80aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231305-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231306-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,zeniv.linux.org.uk,ti.com,google.com,arm.com,nod.at,suse.de,bootlin.com,suse.com,gmail.com,oracle.com,auristor.com,microsoft.com,suse.cz,linuxfoundation.org,redhat.com,lwn.net,ladisch.de,arndb.de,foss.st.com,linux.intel.com,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 78BDE362D97
+	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
+X-Rspamd-Queue-Id: B171C362CBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On 3/30/26 13:04, Vladimir Zapolskiy wrote:
+> On 3/30/26 11:16, Ma Ke wrote:
+> > lpc_mii_probe() calls of_phy_find_device() to obtain a phy_device
+> > pointer. of_phy_find_device() increments the refcount of the device.
+> > The current implementation does not decrement the refcount after using
+> > the pointer, which leads to a memory leak.
+> 
+> this is correct, there is an actual detected bug.
+> 
+> > 
+> > Add phy_device_free() to balance the refcount.
+> 
+> But this does not sound right, you shoud use of_node_put(pldat->phy_node).
+> 
+> > 
+> > Found by code review.
+> > 
+> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> > Cc: stable@vger.kernel.org
+> > Fixes: 3503bf024b3e ("net: lpc_eth: parse phy nodes from device tree")
+> > ---
+> >   drivers/net/ethernet/nxp/lpc_eth.c | 11 ++++++-----
+> >   1 file changed, 6 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
+> > index 8b9a3e3bba30..8ce7c9bb6dd6 100644
+> > --- a/drivers/net/ethernet/nxp/lpc_eth.c
+> > +++ b/drivers/net/ethernet/nxp/lpc_eth.c
+> > @@ -751,7 +751,7 @@ static void lpc_handle_link_change(struct net_device *ndev)
+> >   static int lpc_mii_probe(struct net_device *ndev)
+> >   {
+> >   	struct netdata_local *pldat = netdev_priv(ndev);
+> > -	struct phy_device *phydev;
+> > +	struct phy_device *phydev, *phydev_tmp;
+> >   
+> >   	/* Attach to the PHY */
+> >   	if (lpc_phy_interface_mode(&pldat->pdev->dev) == PHY_INTERFACE_MODE_MII)
+> > @@ -760,17 +760,18 @@ static int lpc_mii_probe(struct net_device *ndev)
+> >   		netdev_info(ndev, "using RMII interface\n");
+> >   
+> >   	if (pldat->phy_node)
+> > -		phydev =  of_phy_find_device(pldat->phy_node);
+> > +		phydev_tmp =  of_phy_find_device(pldat->phy_node);
+> >   	else
+> > -		phydev = phy_find_first(pldat->mii_bus);
+> > -	if (!phydev) {
+> > +		phydev_tmp = phy_find_first(pldat->mii_bus);
+> > +	if (!phydev_tmp) {
+> 
+> I didn't get it, why the new phydev_tmp is needed above, please
+> restore the original code above.
+> 
+> >   		netdev_err(ndev, "no PHY found\n");
+> >   		return -ENODEV;
+> >   	}
+> >   
+> > -	phydev = phy_connect(ndev, phydev_name(phydev),
+> > +	phydev = phy_connect(ndev, phydev_name(phydev_tmp),
+> >   			     &lpc_handle_link_change,
+> >   			     lpc_phy_interface_mode(&pldat->pdev->dev));
+> > +	phy_device_free(phydev_tmp);
+> 
+> This is plainly wrong and has to be dropped or changed to
+> 
+> 	if (pldat->phy_node)
+> 		of_node_put(pldat->phy_node);
+> 
+> >   	if (IS_ERR(phydev)) {
+> >   		netdev_err(ndev, "Could not attach to PHY\n");
+> >   		return PTR_ERR(phydev);
+> 
+> Is it AI generated fix or what?.. The change looks bad, it introduces
+> more severe issues than it fixes.
+> 
+> If you think you cannot create a proper change, let me know.
+> 
+> -- 
+> Best wishes,
+> Vladimir
+Thank you very much for your detailed review and guidance.
 
-The quilt patch titled
-     Subject: fs: afs: revert mmap_prepare() change
-has been removed from the -mm tree.  Its filename was
-     fs-afs-revert-mmap_prepare-change.patch
+Now I think your point probably is: you are saying that the real leak is not from of_phy_find_device(), but from the device node pldat->phy_node which was obtained earlier (probably by of_parse_phandle()) and never freed by of_node_put(). And you suggest to add of_node_put(pldat->phy_node) instead of my wrong phy_device_free().
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+However, I am still a little confused. In lpc_mii_probe(), of_phy_find_device() is called. From my understanding, this function increases the reference count of the device. To balance it, I thought phy_device_free() (which calls put_device()) should be used.
 
-------------------------------------------------------
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Subject: fs: afs: revert mmap_prepare() change
-Date: Fri, 20 Mar 2026 22:39:35 +0000
+Could you please kindly advise the correct patch? I will follow your guidance and submit a proper fix.
 
-Partially reverts commit 9d5403b1036c ("fs: convert most other
-generic_file_*mmap() users to .mmap_prepare()").
+I apologize again for my previous wrong patch. Thank you very much for your help.
 
-This is because the .mmap invocation establishes a refcount, but
-.mmap_prepare is called at a point where a merge or an allocation failure
-might happen after the call, which would leak the refcount increment.
+Best regards,
+Ma Ke
 
-Functionality is being added to permit the use of .mmap_prepare in this
-case, but in the interim, we need to fix this.
 
-Link: https://lkml.kernel.org/r/08804c94e39d9102a3a8fbd12385e8aa079ba1d3.1774045440.git.ljs@kernel.org
-Fixes: 9d5403b1036c ("fs: convert most other generic_file_*mmap() users to .mmap_prepare()")
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Bodo Stroesser <bostroesser@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Clemens Ladisch <clemens@ladisch.de>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Dexuan Cui <decui@microsoft.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Marc Dionne <marc.dionne@auristor.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
 
- fs/afs/file.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
---- a/fs/afs/file.c~fs-afs-revert-mmap_prepare-change
-+++ a/fs/afs/file.c
-@@ -19,7 +19,7 @@
- #include <trace/events/netfs.h>
- #include "internal.h"
- 
--static int afs_file_mmap_prepare(struct vm_area_desc *desc);
-+static int afs_file_mmap(struct file *file, struct vm_area_struct *vma);
- 
- static ssize_t afs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter);
- static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
-@@ -35,7 +35,7 @@ const struct file_operations afs_file_op
- 	.llseek		= generic_file_llseek,
- 	.read_iter	= afs_file_read_iter,
- 	.write_iter	= netfs_file_write_iter,
--	.mmap_prepare	= afs_file_mmap_prepare,
-+	.mmap		= afs_file_mmap,
- 	.splice_read	= afs_file_splice_read,
- 	.splice_write	= iter_file_splice_write,
- 	.fsync		= afs_fsync,
-@@ -492,16 +492,16 @@ static void afs_drop_open_mmap(struct af
- /*
-  * Handle setting up a memory mapping on an AFS file.
-  */
--static int afs_file_mmap_prepare(struct vm_area_desc *desc)
-+static int afs_file_mmap(struct file *file, struct vm_area_struct *vma)
- {
--	struct afs_vnode *vnode = AFS_FS_I(file_inode(desc->file));
-+	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
- 	int ret;
- 
- 	afs_add_open_mmap(vnode);
- 
--	ret = generic_file_mmap_prepare(desc);
-+	ret = generic_file_mmap(file, vma);
- 	if (ret == 0)
--		desc->vm_ops = &afs_vm_ops;
-+		vma->vm_ops = &afs_vm_ops;
- 	else
- 		afs_drop_open_mmap(vnode);
- 	return ret;
-_
-
-Patches currently in -mm which might be from ljs@kernel.org are
-
-maintainers-update-mglru-entry-to-reflect-current-status.patch
-selftests-mm-add-merge-test-for-partial-msealed-range.patch
 
 
