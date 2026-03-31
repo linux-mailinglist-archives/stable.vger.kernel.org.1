@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-231878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNxtJqgBzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-231878-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:28 +0200
+	id cNp7L5IGzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E8A36E6A1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F9F36F101
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47F6D3096611
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6F0F32D71C8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6632D42669C;
-	Tue, 31 Mar 2026 16:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDC52FB632;
+	Tue, 31 Mar 2026 17:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR2gfASe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoogfQzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2788C4279E9;
-	Tue, 31 Mar 2026 16:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440E12F5491;
+	Tue, 31 Mar 2026 17:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975301; cv=none; b=iyDfUKHFt3fZ953Cq/iT9eF6aS1QkgkQCzkXCDZpPPpYwjPnYIi56zISYLCMDRwF2yAl6gh0xpHgs+IgEUtYjIFYd417AiuCX/uWE+XUzcTSy0YrYb8lfmVRmm3iB1YGJl6xcXHMNCOpeP6Citqq3hDZ7IEnzGr0KNJGeHhWjkY=
+	t=1774976644; cv=none; b=fWTDmR6xg5NOkG7C49fSquQUz9aRcKv4n+keMIyB4iNyJTetMlFFuF2I6cx3GoNPMobmnjKykNgvDrFH5QjzlKp6jmgL4mOYVqNx0I7h0F2SJNO+munL43DOCM1sqPKZUIRncdegXVpW2+eQX/8uSbRToZMTeanCk4isx0RRiLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975301; c=relaxed/simple;
-	bh=9hsO5NeUuW008D7X1uyVC5gDP55msVd6wErRyAWY+Qo=;
+	s=arc-20240116; t=1774976644; c=relaxed/simple;
+	bh=eYxi5crwyflC1V3vfJs97KjaV228/n8jTRthDgFX3Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvqGfEkbRjWjg+BtNyv2zFIM2MJuknhBEOfOLYTxML5+C8vaUkFYtwvcIuxW8pcWWX8Oi+0F91JkuapFVdZj6wPMYNYAWRwEcp6sIDZXr+5Znu95x5XLP4Vxpqrk8/hTFzujuQIfqZHaC/cshc9DewSA3dv8x01+SVf5QuQTXX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rR2gfASe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AB3C19423;
-	Tue, 31 Mar 2026 16:41:40 +0000 (UTC)
+	 MIME-Version; b=kh1VJd1OQX3uE2z6h6rzGsGPQgYMz+zBXcfURLIkH7ELhLEG3tSEMJ/fzFiPE7aozk8A292aZBXrbCqSN3wCG8k2x+/bbYIgz5A2POhDkD5hibKsQsbBPh7e6hINpD2uH6vy/bxlCKp4z+kW53ZiHHiybs0kFGfaLT2pMBqgYxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoogfQzC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB65C19423;
+	Tue, 31 Mar 2026 17:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975301;
-	bh=9hsO5NeUuW008D7X1uyVC5gDP55msVd6wErRyAWY+Qo=;
+	s=korg; t=1774976644;
+	bh=eYxi5crwyflC1V3vfJs97KjaV228/n8jTRthDgFX3Wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rR2gfASehcVm2nLl9Ip05EAgmNI396G3OQxCiyJpxIkcTyupRh3NGupQt2ZDLEMdG
-	 PFIPogarnv1W6Lx+Uw1hY9peXCPkAGAD8i7xRdoq1qi1Y9OmHVVDJA5TEJTLyXySNC
-	 rR8Kwy/40A+x3Cy7c/LZ3nrA0jp5xqkjP8L1+Frc=
+	b=QoogfQzCqgxxdn2bNqA++bjdgCaKoe1tATW70waNjvInwxgkRVS9i/nynKpLITpaQ
+	 P5UC67Od7cT99TViopZZmjxhAxHvMIz2Yiiwb52Pkz+PCf6Vm2PX49u0n244UkyAfo
+	 j0wmH8TrZv9HWoDNVsyyHWov+bKGgY0+I55CA0G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.19 242/342] phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4
-Date: Tue, 31 Mar 2026 18:21:15 +0200
-Message-ID: <20260331161807.869751182@linuxfoundation.org>
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 173/309] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
+Date: Tue, 31 Mar 2026 18:21:16 +0200
+Message-ID: <20260331161759.834265205@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +68,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231878-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232398-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: F0E8A36E6A1
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 27F9F36F101
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 81af9e40e2e4e1aa95f09fb34811760be6742c58 upstream.
+[ Upstream commit b341c1176f2e001b3adf0b47154fc31589f7410e ]
 
-According to internal documentation, on SM8650, when the PHY is configured
-in Gear 4, the QPHY_V6_PCS_UFS_PLL_CNTL register needs to have the same
-value as for Gear 5.
+There is a teardown order issue in the driver. The SPI controller is
+registered using devm_spi_register_controller(), which delays
+unregistration of the SPI controller until after the fsl_lpspi_remove()
+function returns.
 
-At the moment, there is no board that comes with a UFS 3.x device, so
-this issue doesn't show up, but with the new Eliza SoC, which uses the
-same init sequence as SM8650, on the MTP board, the link startup fails
-with the current Gear 4 PCS table.
+As the fsl_lpspi_remove() function synchronously tears down the DMA
+channels, a running SPI transfer triggers the following NULL pointer
+dereference due to use after free:
 
-So fix that by moving the entry into the PCS generic table instead,
-while keeping the value from Gear 5 configuration.
+| fsl_lpspi 42550000.spi: I/O Error in DMA RX
+| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[...]
+| Call trace:
+|  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
+|  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
+|  spi_transfer_one_message+0x49c/0x7c8
+|  __spi_pump_transfer_message+0x120/0x420
+|  __spi_sync+0x2c4/0x520
+|  spi_sync+0x34/0x60
+|  spidev_message+0x20c/0x378 [spidev]
+|  spidev_ioctl+0x398/0x750 [spidev]
+[...]
 
-Cc: stable@vger.kernel.org # v6.10
-Fixes: b9251e64a96f ("phy: qcom: qmp-ufs: update SM8650 tables for Gear 4 & 5")
-Suggested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Link: https://patch.msgid.link/20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Switch from devm_spi_register_controller() to spi_register_controller() in
+fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
+fsl_lpspi_remove().
+
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://patch.msgid.link/20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-ufs.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-@@ -928,6 +928,7 @@ static const struct qmp_phy_init_tbl sm8
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0xc1),
-+	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
-@@ -937,13 +938,11 @@ static const struct qmp_phy_init_tbl sm8
- };
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 065456aba2aea..47d372557e4f6 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -972,7 +972,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		enable_irq(irq);
+ 	}
  
- static const struct qmp_phy_init_tbl sm8650_ufsphy_g4_pcs[] = {
--	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x13),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x04),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x04),
- };
+-	ret = devm_spi_register_controller(&pdev->dev, controller);
++	ret = spi_register_controller(controller);
+ 	if (ret < 0) {
+ 		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
+ 		goto free_dma;
+@@ -998,6 +998,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
+ 	struct fsl_lpspi_data *fsl_lpspi =
+ 				spi_controller_get_devdata(controller);
  
- static const struct qmp_phy_init_tbl sm8650_ufsphy_g5_pcs[] = {
--	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x05),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x05),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HS_G5_SYNC_LENGTH_CAPABILITY, 0x4d),
++	spi_unregister_controller(controller);
+ 	fsl_lpspi_dma_exit(controller);
+ 
+ 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
+-- 
+2.53.0
+
 
 
 
