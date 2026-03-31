@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLWuNDX7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:57 +0200
+	id WJTuECwGzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D8136D374
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B33036EFF9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2DDC23031BDB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2517A31FE77D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC55B426EB0;
-	Tue, 31 Mar 2026 16:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E9D3033CC;
+	Tue, 31 Mar 2026 17:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09qhNNFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWLKG69M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC60426EA3;
-	Tue, 31 Mar 2026 16:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91782F6591;
+	Tue, 31 Mar 2026 17:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975112; cv=none; b=NUmajCjr7C5JoOcRMkNN15ZRX90OeoPcuAsDMOl/qRb2ueWHZ5fab3yEo9KQAdPr8wJxdsZu01UGnT5BsN4bK64wOrOehKiOHewI0cTZ4TQBJceES6CWmkWsxD5Zt7ezbk3mp6jh2n3NdeDKuMfQrJmBrltmwTs1k1vp9QjSjA4=
+	t=1774976544; cv=none; b=LEt+K2vu3HYgg3KtVJa3s90T/U0N7LtZL7GEp5TJxh5xXrUGx4LhwizpoztpCp2gqs5B3FsfmOoaMQ/HAL2axtipqeeztxCqOotH804D5fe/wUc92/1Sg0lqrbpb8yNgsm0c18NoMN4srg4gQWr/R63uLyuGj56lPw7STnd/SJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975112; c=relaxed/simple;
-	bh=3fexK56KeJJ89axbFp1l7z2V9QqyWyQcdk4ik1zKxWM=;
+	s=arc-20240116; t=1774976544; c=relaxed/simple;
+	bh=K986Tn8KYUih2ziC9XyyvOWHxtVh5cIUpArsQ6WcpxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwDiPRZWAK87vfCpKVcE/bSGpjlKQADK1QIF7ndeOViR/BTIUrajCARMWKkv+B7YYSOrMqSqcn1Gc7A0/MeuaJHDE95hH2AwihqUyVvcMwqvEQ44cp5vcJfqyrsroWQr+sjEn6mIWLDQsvzrlPWoCDxkR2m3vAR+GrkVY3syRI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09qhNNFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF7A0C19423;
-	Tue, 31 Mar 2026 16:38:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zy7NXqhip5e2q/yhut977ltpUGdXl9GThCzGwAE/9mMxJs/nGFJpzRquggDemWTUcTMnspeVllLPnR8kGSabj0VClT5TvBJ2Y4x6ZTl8C2zVDUM2CCGyb3HuVSz0nm8k7Omxn22cQx4bBhDuv4/S8El/myU03JHLgALrPSSjJjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWLKG69M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF36DC19423;
+	Tue, 31 Mar 2026 17:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975112;
-	bh=3fexK56KeJJ89axbFp1l7z2V9QqyWyQcdk4ik1zKxWM=;
+	s=korg; t=1774976544;
+	bh=K986Tn8KYUih2ziC9XyyvOWHxtVh5cIUpArsQ6WcpxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09qhNNFsJukISfUbytsDciPfGZKH59pWfVgsuGWS5WEUzT/ZC8vZg0z8yDfVBxxQi
-	 nfccurRpyRmMcnfagtZ/x/BSI0VJ9nXpgoxzzAm/YMOoNSNT1U584jlnzqgEElV2HP
-	 typbekmjbhrfbAeFj3esOGemwk2m1gQu471GfS+M=
+	b=QWLKG69ML8V7tFkgqqsg8yt5gq2srFL86EmyatROwEAaNQg85sLV8LFSoJ8+5/1LW
+	 2DyzFghbf5eJHhxvK1N9cuAeCyw7bJp/Yg+YNs3V0QEW+LtKghMt4tZUqGMwvLvAhN
+	 WUQPzXNtEJG1IcYEH3AdAjcZuUPmO7iEN334efq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 169/342] drm/i915/gmbus: fix spurious timeout on 512-byte burst reads
-Date: Tue, 31 Mar 2026 18:20:02 +0200
-Message-ID: <20260331161805.230431223@linuxfoundation.org>
+Subject: [PATCH 6.18 100/309] platform/x86: ISST: Check HWP support before MSR access
+Date: Tue, 31 Mar 2026 18:20:03 +0200
+Message-ID: <20260331161757.168963574@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +64,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231804-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-232359-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email]
-X-Rspamd-Queue-Id: A4D8136D374
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9B33036EFF9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 08441f10f4dc09fdeb64529953ac308abc79dd38 ]
+[ Upstream commit 9f11d9b15efb5f77e810b6dfbeb01b4650a79eae ]
 
-When reading exactly 512 bytes with burst read enabled, the
-extra_byte_added path breaks out of the inner do-while without
-decrementing len. The outer while(len) then re-enters and gmbus_wait()
-times out since all data has been delivered. Decrement len before the
-break so the outer loop terminates correctly.
+On some systems, HWP can be explicitly disabled in the BIOS settings
+When HWP is disabled by firmware, the HWP CPUID bit is not set, and
+attempting to read MSR_PM_ENABLE will result in a General Protection
+(GP) fault.
 
-Fixes: d5dc0f43f268 ("drm/i915/gmbus: Enable burst read")
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patch.msgid.link/20260316231920.135438-2-samasth.norway.ananda@oracle.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4ab0f09ee73fc853d00466682635f67c531f909c)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+  unchecked MSR access error: RDMSR from 0x770 at rIP: 0xffffffffc33db92e (disable_dynamic_sst_features+0xe/0x50 [isst_tpmi_core])
+  Call Trace:
+   <TASK>
+   ? ex_handler_msr+0xf6/0x150
+   ? fixup_exception+0x1ad/0x340
+   ? gp_try_fixup_and_notify+0x1e/0xb0
+   ? exc_general_protection+0xc9/0x390
+   ? terminate_walk+0x64/0x100
+   ? asm_exc_general_protection+0x22/0x30
+   ? disable_dynamic_sst_features+0xe/0x50 [isst_tpmi_core]
+   isst_if_def_ioctl+0xece/0x1050 [isst_tpmi_core]
+   ? ioctl_has_perm.constprop.42+0xe0/0x130
+   isst_if_def_ioctl+0x10d/0x1a0 [isst_if_common]
+   __se_sys_ioctl+0x86/0xc0
+   do_syscall_64+0x8a/0x100
+   entry_SYSCALL_64_after_hwframe+0x78/0xe2
+  RIP: 0033:0x7f36eaef54a7
+
+Add a check for X86_FEATURE_HWP before accessing the MSR. If HWP is
+not available, return true safely.
+
+Fixes: 12a7d2cb811d ("platform/x86: ISST: Add SST-CP support via TPMI")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20260303074635.2218-1-lirongqing@baidu.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_gmbus.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_gmbus.c b/drivers/gpu/drm/i915/display/intel_gmbus.c
-index 795012d7c24c2..5a941bea81cad 100644
---- a/drivers/gpu/drm/i915/display/intel_gmbus.c
-+++ b/drivers/gpu/drm/i915/display/intel_gmbus.c
-@@ -498,8 +498,10 @@ gmbus_xfer_read_chunk(struct intel_display *display,
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+index 13b11c3a2ec4e..e657b88bfd36e 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+@@ -558,6 +558,9 @@ static bool disable_dynamic_sst_features(void)
+ {
+ 	u64 value;
  
- 		val = intel_de_read_fw(display, GMBUS3(display));
- 		do {
--			if (extra_byte_added && len == 1)
-+			if (extra_byte_added && len == 1) {
-+				len--;
- 				break;
-+			}
- 
- 			*buf++ = val & 0xff;
- 			val >>= 8;
++	if (!static_cpu_has(X86_FEATURE_HWP))
++		return true;
++
+ 	rdmsrq(MSR_PM_ENABLE, value);
+ 	return !(value & 0x1);
+ }
 -- 
-2.53.0
+2.51.0
 
 
 
