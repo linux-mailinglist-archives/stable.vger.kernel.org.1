@@ -1,248 +1,264 @@
-Return-Path: <stable+bounces-231363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sM7mDXGOy2kuIwYAu9opvQ
-	(envelope-from <stable+bounces-231363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:05:53 +0200
+	id gNtMKtGQy2kuIwYAu9opvQ
+	(envelope-from <stable+bounces-231364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:16:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC44366AFC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:05:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE37C366D4C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C61DF300D35F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:05:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8404230FF4E8
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 09:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B713EBF13;
-	Tue, 31 Mar 2026 09:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8653DCDA4;
+	Tue, 31 Mar 2026 09:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lFR9K8+1"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="i+BvmIya";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jjzj3mS1"
 X-Original-To: stable@vger.kernel.org
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012042.outbound.protection.outlook.com [40.107.209.42])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69658384236
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 09:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774947940; cv=fail; b=Dd0lHe+RgBsUO8LlbjbtSVU9STcpxgipY+fl9bohs96zVv76UaAPaN19AwC7Pzrin/Takd+MS4X7TtQDefx4ysKBIP/9+LDY01WnSK53pzkvGIiCZDJxMvvhRo2HjCUrh4w2Vo9mTjyvp2XsYrPvZ2AUIJA4JwBIqZnQ4v9Cpuk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774947940; c=relaxed/simple;
-	bh=jKslFhpXyNF+E2SSkmX0yWFon7ZpJY9Xm1wuNAGgRWM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gjwM3ZaySgjrUOC32Tp6A7Ow4Nw7hQiF24V7MbrhJFlc+ZyitVYyD5YGpCmtbtqB9m9ONMN7eByvaTXvMA3J34hXsQyDpxZE3U/MSUxs1Pmj1UBgzzuIcnt5h94NUCFWy5kY44EJDA3C9elGhgO6dApydexr28znWTqVISu2lx0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lFR9K8+1; arc=fail smtp.client-ip=40.107.209.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sesuHxv19SD+3aWV0sYl5/gnGzFTNbtDyPrAERt5xbHPENhqNQWBl1NCVxM1pS6MZjc0aJtuFDFqY7k8ijei8a6CcSpFXXWscGFGISDETtNAJ+nyI1btFtoJduBDHMmYbE7Ha0ecEWGA5tIoIX57XKsuBZqzBLDfnz9cfY4BgpTw8lZQELF20/+sOkSt55R+lf4D34IDLkwEq5VEK+yBaNsKhQTuGc0tWEhXZXTF8oSKmK9/hFgdGaAGSgTCXBnEHYH0pFDUDQ5Fm0dg/HVcLEcuIt4LyRdb7/9RIfaLB44INsdnpzXFmN6e5VLwUDQUMGXcdkueOrY52Wngv6RVbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7tsQv44uw1tKIt9gwK+zyAvxI89JSwJTq9KXLzENmRg=;
- b=lhaWoYGiWMuJngkMr8mGC3AyOo7c0+BmiBFfJTB+OCFp4U5oupGBAsR3wWoAmi2yUJ641D7QicIpEamHWCvP4dzlpR+ciew8nAwC2Cf9xsaNz7k9CnSciPocM9WI6MkIF3HaHwEGvYQTJ/k0+0+EYZnNyRR2NDlMwLahGyw5LYNQzugTF3GJWH3fnDXavp356ex4bFEqIkx41XTy1MUN7/+dK0f9/QrSq3q6M8YshCa+PlzgaWxwamf2kGxAVB0Ixu6GrWOAetbI41sKgysWA8hjgMLcJQDKBKNRnRJEzlBR0HRh3tNzX6zTxuxB9kQ561UMAmpmW4cK9kaFICZ3zA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7tsQv44uw1tKIt9gwK+zyAvxI89JSwJTq9KXLzENmRg=;
- b=lFR9K8+1TmfOSVMmjt6U988OJ53at/zriClGUrt3TAy7t/ipQP9bxsC30g8eFZ7I6J8XGaXGbuGLViPfIe9VricfQe2ViW8aN+mTI8gaf42dIilk2sw3EJVc7bNuqtHcIsAPbX2vkUn0+sqqpnm4LZh7bbxM8e3N0CLbpFoG2p4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SJ2PR12MB8740.namprd12.prod.outlook.com (2603:10b6:a03:53f::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
- 2026 09:05:36 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
- 09:05:36 +0000
-Message-ID: <b25b23e8-2854-4f4d-b838-1924185fdd9b@amd.com>
-Date: Tue, 31 Mar 2026 11:05:32 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] drm/amdgpu: fix sleeping allocation under spinlock
- in PASID IDR
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
- Alex Deucher <alexander.deucher@amd.com>
-Cc: Eric Huang <jinhuieric.huang@amd.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20260330053025.19203-1-mikhail.v.gavrilov@gmail.com>
- <20260330053025.19203-2-mikhail.v.gavrilov@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260330053025.19203-2-mikhail.v.gavrilov@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BLAPR03CA0001.namprd03.prod.outlook.com
- (2603:10b6:208:32b::6) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3768F3DDDA3
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 09:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774948232; cv=none; b=D3uMkJ/CevFwrEzKFyX2cbPPBmkyX5xDxxmeZtLwGViqt93PhbNjHRQk+LrJg41cBlUWwKMam+jxbIgZKrUwL1m9z/ShFr2JUFCQC5yVVAMSBepgOTPj7elJRduTkTLBsxIJiO8o/3iTXeJF4273Bmh+1pMEDNxBAHrHxQM88gM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774948232; c=relaxed/simple;
+	bh=+fcgrokixlEbcf+aOsmiZdoomim6YGRO5kT5k3+jI7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DgEKU+IkF2RKK2883erj3boaCCPh9FUx+yOXeDcmlc7lGQvaTKxkszuXuPq7dRv0yBnpgsAyMRKIdtOZTBDFdW3/fvd5C6hBNpDz2Fw2BPQDXgF832HWHUpCzL9RLRKV81Hu/DYKj5iUm9vCLslq/+u43sA26oO09iReLEDUqIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=i+BvmIya; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jjzj3mS1; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62V6qF2b2391345
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 09:10:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=fcs5ftBhXtYRcqqz+HI3Ln1If1xisAux+zA
+	c7yob4so=; b=i+BvmIyaeE18u15CE/47Qr73cjIGc8PTRv4o79eFGzPG2yvFM6m
+	rKR4wsLmVtIinwoDhT9cl5qlLrpXDVMnNsUttiZfIoC1jaHNrdEBKOYFLO/aiZul
+	OQn1X2FeP6ZAkrzjuJdtRZz1RENybJsJU4cxd6/Sjm/CKrZnNijdnJm+e8Uo5rLF
+	VBOcUv3bPL3z3QD6rrZeeMtpjChRm0cqA1PL2MLqZqrt8IzIiX+r9putRxu0Suhr
+	UYvhaY2CVZ3rLolNTYTa7PF1qJrBqAkijjEjpnlCPluyhw3cNRnql8qRqtMNW8sh
+	ewDj2ZkYvotiJ8iRpjQKlblSBamiSXwTFlA==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d7ue7krm5-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 09:10:30 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c73c065dd15so3476170a12.0
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 02:10:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774948229; x=1775553029; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fcs5ftBhXtYRcqqz+HI3Ln1If1xisAux+zAc7yob4so=;
+        b=jjzj3mS1NGrRYeTnU7zTB5PZ+3lYBhnE+iAO6cjX0UQHudV6sBm/kiq9eoiDapYEEY
+         U9u1ol9Tc9V6PjAhWWXbnM8Ibgf4wmUQ/W6j1jFu6taDSjroxWX0esrKDDSIX+DMUnFd
+         FuNKd6fhms1js0Nw2GWdTqARPWXAKpdYulpkJz5Bkn+/hI74UmZWeEpm52sPWKnetOmd
+         kYYlg+IWaoLD8Rtvcuu6SWMH2fMp/oTytpdCxu/mAZUy08FNntpdOQ37ccOBKTPDWWms
+         +btYW9rIPM0JVRABPpOudWZpZ7hcjiDmnHefxqA+JwZgKtVaWQkfekeQ4yll0qVqfxvK
+         JEYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774948229; x=1775553029;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fcs5ftBhXtYRcqqz+HI3Ln1If1xisAux+zAc7yob4so=;
+        b=FKGAN/Qup/J3k5r83D1voKsU+woC8xdPrmkdB1T/B0WmTYGqZqX4aymUcgvFFflL10
+         c2/I6Mo2xvdVSgqF9eL9VVwR0s9vH9fZ/ZOLYULQHRQo/uARGGM/2dT/q0AJcyWKQxUA
+         ree8/eyVN8v2C9JZObir8Cx7uTv5sAe5yt3P29cYeiAZSLjaXj8eRndU4p7O2rpoGTax
+         sbe6bpofBlXTIyMu8jiqCvYKYpFUdSGewUl2yIafKqJAU6vkIl3o83Gq7OuHmRlpaFeH
+         NZPNkhAanLGCW1AW3d+vwQkE/0P4u0cbWnGpEPuDZAhKM4dnjhrUB/KxGecIf+emLtLq
+         xxJQ==
+X-Gm-Message-State: AOJu0Yw3gS9PwQCLioMGdkvCopzy7/P1q2dznK4jl6LsM/h5Qt0nWcFO
+	4idV33z4QZsatDScVH4OdDgC5vP2RxLfIxvoUK5MDUU8dRxtL7n45z5/m7mYBhta9c2GV1e6FEH
+	ou2rK6hf6TqMeJce0JKfsn6YUwOQCrB6J1RxPKKGfFqlYT5jkifWRmsygF22QB6zqaAY=
+X-Gm-Gg: ATEYQzxME9l9zw12ykyHYNuOe0pPot5aj2s9mRXxrwFKu0+HdWZ4u1Q2oe4OKHXgJiy
+	m27+7C/mi1V1H8WZCDYgJSvSrLz5LZ++GZrSxq94WdFeY614IzjeQzW3eL6NnbMqsMkGcs5F4NR
+	hg+vnVwTSW55urGBj48ILStUAgWVI/XJsLMXcgm6W599BX4AclstIxzM8wMolNkGLJdnN0n16Fv
+	A4xmTJTIrl8SjxBCVRLbhA1xQTiKjE0XnV86oKh5rDT+mPPhzjwb0yVdYM1HljVTqne+yeyrSBK
+	fywARSGMh44D2E59eiHi8lLCspvaSe/J+kaCzEG5vwsTPS4wPUxZxdAjjo4z3WAlQOYPDcPTqjd
+	TBPHfXthd6Fvl+LkH5bfm3o4CUHYfVtAdkivqecA=
+X-Received: by 2002:a05:6a20:7d9c:b0:38b:de3d:d542 with SMTP id adf61e73a8af0-39c87aea147mr17138850637.51.1774948229251;
+        Tue, 31 Mar 2026 02:10:29 -0700 (PDT)
+X-Received: by 2002:a05:6a20:7d9c:b0:38b:de3d:d542 with SMTP id adf61e73a8af0-39c87aea147mr17138802637.51.1774948228605;
+        Tue, 31 Mar 2026 02:10:28 -0700 (PDT)
+Received: from work ([117.193.210.140])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cdaa4c3basm1567941b3a.37.2026.03.31.02.10.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 02:10:28 -0700 (PDT)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+To: stable@vger.kernel.org
+Cc: bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, robin.murphy@arm.com,
+        Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+        John Hancock <john@kernel.doghat.io>, bjorn.forsman@gmail.com,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+Subject: [PATCH] Revert "PCI: Enable ACS after configuring IOMMU for OF platforms"
+Date: Tue, 31 Mar 2026 14:40:09 +0530
+Message-ID: <20260331091009.19536-1-manivannan.sadhasivam@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SJ2PR12MB8740:EE_
-X-MS-Office365-Filtering-Correlation-Id: 870c9eb3-b3cd-45c4-938f-08de8f04ac55
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	wsbfCpg1C19kYBwXyKoogauDP3dzneYIeK8zHcc1dS9A6U51PV9AMXdhb26rt2glk3JR0mi7kE+xIW3ydJO0Xbp1OTkmXCVfYgeB8Mw/Vmo6lBTDqn904FdjQDskMp+iAhEg8Rh87AXMw5kNbIxvvVcsh2Py9d+2jkAJG4SKFt+pAB1waYcg6G/ja7aRqiWVvco/8B6/3DjjiABx8WkSVyXgJ3sZ7UhO9m+Qg3HSUcgiwnQJrWPQuLo43mdtPgOy7ZOy3r30gJoUR8YkiDIMGvicKDFWIMVIGEzFdFWbhKHDolitXnql0RUVlj9GgvMnYCb69WYIkxBu3qoljAS9EteCNaITo/Gr9sIGAicdC98M49ywfgsEX7WdyjiPTRLH0PHX7NsS874ps8H22fiYkpbsSEqVlawUhm2yZG+bedgyOa3AFkGloz0nAQfkH0X5tRGeD/xVpG5KjkKggOKwrwlSv0pT8Ly78NMe/4PDHTm87D+Fhh1XaaAkBf/F2WJg+58C1eZ6tX8QKjR8y++KGYxpvB/KevhSk80xSeUSqAbpjQn8j5OLNCp1uKS3GzckBeo7NYnajhbME51VNtJ5Eu/GnFGkLbISzYBIiHVIErqFVTfHxTam40z5GfnNrHYmmA47RjCJp28yB9IuP/T2Igxe+m3ihotEHTgpaLWhtyM2amPyNLtW0iGA5Uq/gA6W5iRY+iN0fdGNjul+a1MGuYXojEL1aBGJq3EafKiT9mo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjQyUEhaaXhoczVPMmp3OXVNbmR2bkN4R3pPU21SRGdkb0xyb1FhNGRQQlh2?=
- =?utf-8?B?b0JaTzl3a0VwR2ZtVnNwTmFQOXdLc1JrRkRWOU1HWkt6Q1dxZm1jVzg2UFJ3?=
- =?utf-8?B?WkNYUXRxOGphVU9vVm1VSUYvUTc2STdLK3RjYWdVcG1tamxBZGJHNCtyNTdP?=
- =?utf-8?B?QmQ2UWVDTE5mZU5VdXkxRlFmNXIzOTgrbEFHRVk4dWFQLzVJQjlCNDJPMUp1?=
- =?utf-8?B?QUZvKzdQdy9PVElDNU9wWmViN1YvbUp3WkVsWGo3RGZPOUZ5U0d4WGY1Wm5E?=
- =?utf-8?B?RnpqckFEM2tDcmZINkVob3JSa0xBRDZXeUY2VzIzdnQ0RmRmVm4xTHJ4T3pn?=
- =?utf-8?B?V0F4cTA1OW5SUWdqdVRCZ2lqQ3JOcExuQ3N0c1pUTTVlaVcrR05Ld0RmRVI4?=
- =?utf-8?B?MEMwbTBTaktiazBkOUdiNkVjb21xSVVneDdRek9aOEg0MmNNQ3hLYy8rckxO?=
- =?utf-8?B?cFc5NmoyaCtybzFGTmdBK0l4NEpWVDh5S1VncVpKNGpzZEpLVWh4WTZpM09S?=
- =?utf-8?B?N3JmYnJOZlpzenFnSlFaUzl4RzdRTVArVjZLWWQramNuTGVVaE9Bb2pVUTA3?=
- =?utf-8?B?QjJ5eTVCL2dhRHhQMHZ4TmlrSnFzUHJ2QXhTcitwUFVYZEptUVllQjdVNjZD?=
- =?utf-8?B?WFgyRlRQUExiZG94Z3N3ajBhaGFxMUZ4ZUFwdlI4blVCWVh0ZWd6WlhUTmFq?=
- =?utf-8?B?YkZlVWNQcEY2U25odlVBOTRHbGt5bnZhenYyemlWZmZLRWlhQWtUeTFDRFM1?=
- =?utf-8?B?WmRmcDZzZmtOOUtKdHVLSFgrRTRmRTR2Z0w5Q3k0VUsrdERYdnJKNlh5a0Zr?=
- =?utf-8?B?bVVsUHlKbEcwOTV6MUdCT1lIajJxZGZEamlqNi8vMExVT09WcGYyWEo0cWRT?=
- =?utf-8?B?RkdvZkZ1UGtUcm11cTVhMVMxQUsvbE11ZlAvK3BrekVCOE9xcTlDN25iYTlx?=
- =?utf-8?B?aU01MllnSzRaTkk4ZE5zdHNGTzRqK0F3NFc2blhCOU52bnl4Nm1za1lXZVhZ?=
- =?utf-8?B?OWZtbFliRExWbEYxazBsTHI0SmR1c0JlUnJ4RTNBaGhUS0JnRHZFR3NNRDEv?=
- =?utf-8?B?SWtaL29SUTVkeXdXK0IySXozU2JCc0RhSnR3bkkzWkhZK3VmdmNuU1BrbzBp?=
- =?utf-8?B?STBidUUvM3oyUXZTa3V3V01TM2VzNkREK08raDhmVy9udUJSOWVUT0pCcnlE?=
- =?utf-8?B?cFlER2c0c25Kdkc1L2NkSlMrZDY3djl6ckpVejN5T1V5dm1TVlNCV0dRUnNr?=
- =?utf-8?B?QXBDWXZXOUhUa0lpMWhmZ2doQ1lyRDc0QWFvTVpMS1VUMVE3RXlrL1hMUGxh?=
- =?utf-8?B?T25xNGhuQlhYbnZ3UGxMZDdRblBuWlhxMjBhNkNZNHBhRFg0Ykd0VUFGdVVB?=
- =?utf-8?B?U1F1WTlFNVArK0pXM2puSXg5eG1wNzVvQWNtTkoxbmxZdFpYREtYMzd6ZXpR?=
- =?utf-8?B?eUxaTlFGWmRvRk9HcmJDZGNGU2dET2NZeHZORXB0NUVFTnZTaTM5VlB2dWwz?=
- =?utf-8?B?SXhTL0YrUG5keU4xa25TcGNIcGVDUUFKUW5VZE1OcExFTTJKK2dRb3AvOGlN?=
- =?utf-8?B?N2YyN3V3amYvSGJTelNHZEZqKzhaU3dDVDhhK25XZVhoNnA1VDFObk92cHFD?=
- =?utf-8?B?REVNMDMzUkZJVnY0dzZMNm43bXZId3d5OXQ2K244QUQ2eHRnbEJpN0JEam53?=
- =?utf-8?B?V05mSng3bWtpdEorVnJYUXMzS3Y5TVpWTHBkWWpkL3pxU04rOGJhaDhGeXZx?=
- =?utf-8?B?WUppSG0rUU1wRXJ2eEE4S01tWnk4WDhac3ZMRXgvaUlzRk94V2M1cXJqc2RH?=
- =?utf-8?B?SU1CL0JTSEE4WFNZNFR6UVYyU2pSZ1p5Q0pLVktTcTFDRUhXRUM5VlZHWGlY?=
- =?utf-8?B?NWtodEV5UGZMa3VQTjQxNlpyTVBTTHRnWktxYWNFM3pTQndNK3FmZk1pcWk4?=
- =?utf-8?B?UEhpV2pzMC9vam5FZGZjUVFFSjZEczJlZnNKZ1NnRkRMNnZvYStDT2ZibG5o?=
- =?utf-8?B?TE5FOE43bnVrTkMvUFF4Q3JKVVhJenBqdWoxL3JYMGVPNm4rODZpRS9XSGxJ?=
- =?utf-8?B?WU9mMWtEbSs5THNtUk4za1pxRTQyNVlMS3pjL21sdGRoVkxBOGFpNXZSOU01?=
- =?utf-8?B?OERIQkFXTVFIdnRNYTR4SFpBNnNheHhRRFkrMzlNTko4YVljSDBOT0xHNVhw?=
- =?utf-8?B?dVpSTnBGQ3JyNk9xdGlLdXR2WU1TQktpS05GYmhSdmhudXhqVGNDVTl4c3Ax?=
- =?utf-8?B?VlVHRVdoTk83TC8yTFhKVmxzRlZjTlpjMmsveUQ5MmZPKzJnZDN0Q1lhc1Jj?=
- =?utf-8?Q?CsAs6BrjGseZ6iOCD7?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 870c9eb3-b3cd-45c4-938f-08de8f04ac55
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 09:05:36.8230
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: s/dvNfuREigghxyyU09Z6OuqrfQ0LnhjoYNK5N7ozgfZMOy4yHJBMzbtbdEazbfR
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8740
-X-Spamd-Result: default: False [1.34 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDA4NiBTYWx0ZWRfX/iuPdpo2eqFZ
+ TcmtT7gDi6n+ZHdPAcRZJjQBL8N6ZyBswVczrEh5oTGMWmgDW3TxjFaH8lPRmN5pKt/9ggJx2yT
+ HH+JuZf/Y04I7tiZPa0AFg+ILGf02dEvTjYFrUFzUxl7uJ5w9NoGk9pZCEri1VrX2LQNB8I7/kc
+ EFqun+3duxSI1BjrtYec99tsbR8JSh5uOxpXmVGatriZ38iXWPzfar1H1egX0BEdiVE/ygHxVHs
+ 6reNlmWQA8gw6n4jSZbdjdgboe0MCZDbxNuJ0W3jcMWuwJT4+Un15X+8C80r5so4llgxE6nKYrU
+ ANtL9lxcwby1M2H2ntPJ3hmnQzmro88hGB02A7Nel/DIwdPZPb1ZxFyrsQ9YB43pwGR5JuMLxI7
+ 1NTUQtNG2+QZlcP3F/CfLh14Y+SH6zIa3C2HqexqG0l1AxQWW3yO0P6HSJgZJE3gek+1LlX3IuO
+ nNGJdhCIG64OkZ9QOrA==
+X-Proofpoint-GUID: eo7qbe7tgaoUfh1arLVI4oajDfdV5XkH
+X-Authority-Analysis: v=2.4 cv=G7sR0tk5 c=1 sm=1 tr=0 ts=69cb8f86 cx=c_pps
+ a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=vr9TklybbRi32TvS4M0W1g==:17
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=VwQbUJbxAAAA:8
+ a=lAgNKBcoAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=hAXPUp1672zZkZ7mbzMA:9
+ a=x9snwWr2DeNwDh03kgHS:22 a=drE6d5tx1tjNRBs8zHOc:22
+X-Proofpoint-ORIG-GUID: eo7qbe7tgaoUfh1arLVI4oajDfdV5XkH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-31_02,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603310086
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,amd.com];
-	TAGGED_FROM(0.00)[bounces-231363-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	FREEMAIL_CC(0.00)[google.com,vger.kernel.org,arm.com,oss.qualcomm.com,kernel.doghat.io,gmail.com,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231364-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[manivannan.sadhasivam@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CBC44366AFC
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: EE37C366D4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/30/26 07:30, Mikhail Gavrilov wrote:
-> Commit 14b81abe7bdc ("drm/amdgpu: prevent immediate PASID reuse case")
-> switched from ida to idr_alloc_cyclic() protected by a spinlock, but
-> passes GFP_KERNEL to the allocator.  idr_alloc_cyclic() may need to
-> allocate radix-tree nodes, which with GFP_KERNEL can sleep — illegal
-> under a spinlock that disables preemption.  With CONFIG_PREEMPT or
-> lockdep enabled this triggers:
-> 
->   BUG: sleeping function called from invalid context at
->        ./include/linux/sched/mm.h:323
->   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 570
->   ...
->   #1: ffffffffc2cd24f8 (amdgpu_pasid_idr_lock){+.+.}-{3:3},
->       at: amdgpu_pasid_alloc+0x24/0x210 [amdgpu]
->   ...
->   kmem_cache_alloc_noprof+0x41d/0x780
->   radix_tree_node_alloc.constprop.0+0x56/0x3a0
->   idr_get_free+0x330/0x830
->   idr_alloc_u32+0x14a/0x2e0
->   idr_alloc_cyclic+0xd3/0x1d0
->   amdgpu_pasid_alloc+0x51/0x210 [amdgpu]
-> 
-> A mutex is not an option because amdgpu_pasid_free() is reachable from
-> dma-fence callbacks (amdgpu_pasid_free_cb) which may run in IRQ context.
-> 
-> Use idr_preload(GFP_KERNEL) before taking the spinlock to pre-allocate
-> radix-tree nodes, then pass GFP_NOWAIT inside the critical section so
-> the allocator draws from the preloaded pool and never sleeps.  This is
-> the standard kernel pattern for IDR allocation under a spinlock.
-> 
-> Fixes: 14b81abe7bdc ("drm/amdgpu: prevent immediate PASID reuse case")
-> Cc: stable@vger.kernel.org
+This reverts commit b20b659c2c6a072560b360feda81ae52176034df.
 
-The patch introducing this was never released to any stable kernel as far as I know.
+The original commit attempted to enable ACS in pci_dma_configure() prior
+to IOMMU group assignment in iommu_init_device() to fix the ACS enablement
+issue for OF platforms. But that assumption doesn't hold true for kernel
+versions prior to v6.15, because on these older kernels,
+pci_dma_configure() is called *after* iommu_init_device(). So the IOMMU
+groups are already created before the ACS gets enabled. This causes the
+devices that should have been split into separate groups by ACS, getting
+merged into one group, thereby breaking the IOMMU isolation as reported on
+the AMD machines.
 
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-> index d88523568b62..515775eab2ef 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-> @@ -67,10 +67,12 @@ int amdgpu_pasid_alloc(unsigned int bits)
->  	if (bits == 0)
->  		return -EINVAL;
->  
-> +	idr_preload(GFP_KERNEL);
->  	spin_lock(&amdgpu_pasid_idr_lock);
->  	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
-> -				 1U << bits, GFP_KERNEL);
-> +				 1U << bits, GFP_NOWAIT);
+So revert the offending commit to restore the IOMMU group assignment on
+those affected machines. It should be noted that ACS has never really
+worked on kernel versions prior to v6.15, so the revert doesn't make any
+difference for OF platforms.
 
-That needs to be GFP_ATOMIC and not GFP_NOWAIT.
+Reported-by: John Hancock <john@kernel.doghat.io>
+Reported-by: bjorn.forsman@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221234
+Fixes: b20b659c2c6a ("PCI: Enable ACS after configuring IOMMU for OF platforms")
+Cc: Linux kernel regressions list <regressions@lists.linux.dev>
+Link: https://lore.kernel.org/regressions/2c30f181-ffc6-4d63-a64e-763cf4528f48@leemhuis.info
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+---
 
-Regards,
-Christian.
+This revert is targeted for v5.15 stable kernel.
 
->  	spin_unlock(&amdgpu_pasid_idr_lock);
-> +	idr_preload_end();
->  
->  	if (pasid >= 0)
->  		trace_amdgpu_pasid_allocated(pasid);
+ drivers/pci/pci-driver.c |  8 --------
+ drivers/pci/pci.c        | 10 +++++++++-
+ drivers/pci/pci.h        |  1 -
+ 3 files changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index ecbe382b56be..08c985478b8f 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -1616,14 +1616,6 @@ static int pci_dma_configure(struct device *dev)
+ 		ret = acpi_dma_configure(dev, acpi_get_dma_attr(adev));
+ 	}
+ 
+-	/*
+-	 * Attempt to enable ACS regardless of capability because some Root
+-	 * Ports (e.g. those quirked with *_intel_pch_acs_*) do not have
+-	 * the standard ACS capability but still support ACS via those
+-	 * quirks.
+-	 */
+-	pci_enable_acs(to_pci_dev(dev));
+-
+ 	pci_put_host_bridge_device(bridge);
+ 	return ret;
+ }
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index d1474b2129ab..2d4f3080e4dd 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -936,7 +936,7 @@ static void pci_std_enable_acs(struct pci_dev *dev)
+  * pci_enable_acs - enable ACS if hardware support it
+  * @dev: the PCI device
+  */
+-void pci_enable_acs(struct pci_dev *dev)
++static void pci_enable_acs(struct pci_dev *dev)
+ {
+ 	if (!pci_acs_enable)
+ 		goto disable_acs_redir;
+@@ -3609,6 +3609,14 @@ bool pci_acs_path_enabled(struct pci_dev *start,
+ void pci_acs_init(struct pci_dev *dev)
+ {
+ 	dev->acs_cap = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ACS);
++
++	/*
++	 * Attempt to enable ACS regardless of capability because some Root
++	 * Ports (e.g. those quirked with *_intel_pch_acs_*) do not have
++	 * the standard ACS capability but still support ACS via those
++	 * quirks.
++	 */
++	pci_enable_acs(dev);
+ }
+ 
+ /**
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index d9d7a79e3563..4a8f499d278b 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -562,7 +562,6 @@ static inline resource_size_t pci_resource_alignment(struct pci_dev *dev,
+ }
+ 
+ void pci_acs_init(struct pci_dev *dev);
+-void pci_enable_acs(struct pci_dev *dev);
+ #ifdef CONFIG_PCI_QUIRKS
+ int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
+ int pci_dev_specific_enable_acs(struct pci_dev *dev);
+-- 
+2.51.0
 
 
