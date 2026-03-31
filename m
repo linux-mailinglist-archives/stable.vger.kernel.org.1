@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-232436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kB7wFboAzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:30 +0200
+	id 6COyGTP8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225BF36E36C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F76536D5AA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 692E23088DC3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 021A93075849
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11743009C7;
-	Tue, 31 Mar 2026 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6169A423A9F;
+	Tue, 31 Mar 2026 16:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bS1xcda5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDUAo+Of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940D02FE042;
-	Tue, 31 Mar 2026 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2491E31714F;
+	Tue, 31 Mar 2026 16:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976742; cv=none; b=vGmcFI1SU4bhbpTsfr4GmxH2aQrVCcfiD6Ig3GwI56XAX6l9gg9yoxR3IhjvFpnAkZ7ou5O2RAbGbFiDdIJTPmeM30WUxenWzrF8WLtRmeYQJFAstAsTQIAHtuqo4luL90GQPgZc68kGTxr+P5cyB/HQal9CaKlweRXnm49rUq0=
+	t=1774975401; cv=none; b=Yi0TxsyubtRFMqCH+phw4lX4d6Ofo0+7Fbx2zFv2X+rpBSvB4g01n7AuyP4pLwJtSc1vRQXc4gnQcKpOKywcOgh2EAZ26Ow+XCPriCnxklb2Ds6kAkQZCUT9PHOtwqiSvoXVzRek4lEWEhwcpVeM4KlK2eYGjrTD2Z3T6eM2BrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976742; c=relaxed/simple;
-	bh=OqK6h/fWLLtM+dWvqooSqQGNzsegwSnefJj6yrfJRpo=;
+	s=arc-20240116; t=1774975401; c=relaxed/simple;
+	bh=HG6TslWt9VUZwxXXRzUlWiw8HPKBqUD108YQzn0jp8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nl3iWALjIlyRjnflQlyFvFey+BBqM3Kr4I82oJ5ku36HwDR8xJbC01Ux4zwpY3rNZlAAPv0Sx8aZn50dYGKOI9AlHzC2dop8L+e8fIGurn3FdhD3yLLOwnleBI2ARUQ8d+diV3Nz+pWxYzSXMDWykhkNGJs52ntmLDeRuJoQQgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bS1xcda5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F2AC2BCB1;
-	Tue, 31 Mar 2026 17:05:41 +0000 (UTC)
+	 MIME-Version; b=ueP+gVeGJixD8AQ1f+nEAhHc7w1ZMuAzGSIIEon/0DNx4ObGRAyqjmivXWntBqFSsQ6YCpJJwL5iiTfySl1utNfvLOX8kImvi8VYdjjNuMR/YZ7bSpR3x+KJx5+Pm845WCy7xYGjJu2a0IxtXQRWsJV6acaK8LFeJ55j6F0nINU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDUAo+Of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE30BC19423;
+	Tue, 31 Mar 2026 16:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976742;
-	bh=OqK6h/fWLLtM+dWvqooSqQGNzsegwSnefJj6yrfJRpo=;
+	s=korg; t=1774975401;
+	bh=HG6TslWt9VUZwxXXRzUlWiw8HPKBqUD108YQzn0jp8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bS1xcda5gnD9g8QnXfO1llkKhGUoP6WECBKKzzs4ZEsZsSypjft9nSQMkcoCx1fKp
-	 DOG87vupiTNJfZuQPgQf6rkpUUuiDKXFPfNmQQDEv+1ukvKZNo5lDZshk9bYy68+3H
-	 7KEHcq0/R88fxXYtkqgzfRHF3AmMqOMNfM7eKQPQ=
+	b=aDUAo+OfdqSxhioZX7Uw56Y2RZaFoJNfjpIYi4DaFNYygOvzdgrV+sxKmLY8SLtdF
+	 hEuzP24lcPtDDd1nWmwpaJakfazEOg/s0OwRUbngJRa1TTlONWhUdhWBK7VrUyFvcq
+	 /0NtUvoz7bK2sZfrULOcxeQNL3DZghPgXyCdDDiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	stable@kernel.org
-Subject: [PATCH 6.18 211/309] x86/cpu: Enable FSGSBASE early in cpu_init_exception_handling()
+	Josh Law <objecting@objecting.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 281/342] mm/damon/sysfs: check contexts->nr in repeat_call_fn
 Date: Tue, 31 Mar 2026 18:21:54 +0200
-Message-ID: <20260331161801.213754946@linuxfoundation.org>
+Message-ID: <20260331161809.279805413@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,164 +73,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232436-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231917-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,alien8.de:email]
-X-Rspamd-Queue-Id: 225BF36E36C
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,objecting.org:email]
+X-Rspamd-Queue-Id: 2F76536D5AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikunj A Dadhania <nikunj@amd.com>
+From: Josh Law <objecting@objecting.org>
 
-commit 05243d490bb7852a8acca7b5b5658019c7797a52 upstream.
+commit 6557004a8b59c7701e695f02be03c7e20ed1cc15 upstream.
 
-Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handling()
-to ensure it is enabled before any exceptions can occur on both boot and
-secondary CPUs.
+damon_sysfs_repeat_call_fn() calls damon_sysfs_upd_tuned_intervals(),
+damon_sysfs_upd_schemes_stats(), and
+damon_sysfs_upd_schemes_effective_quotas() without checking contexts->nr.
+If nr_contexts is set to 0 via sysfs while DAMON is running, these
+functions dereference contexts_arr[0] and cause a NULL pointer
+dereference.  Add the missing check.
 
-== Background ==
+For example, the issue can be reproduced using DAMON sysfs interface and
+DAMON user-space tool (damo) [1] like below.
 
-Exception entry code (paranoid_entry()) uses ALTERNATIVE patching based on
-X86_FEATURE_FSGSBASE to decide whether to use RDGSBASE/WRGSBASE instructions
-or the slower RDMSR/SWAPGS sequence for saving/restoring GSBASE.
+    $ sudo damo start --refresh_interval 1s
+    $ echo 0 | sudo tee \
+            /sys/kernel/mm/damon/admin/kdamonds/0/contexts/nr_contexts
 
-On boot CPU, ALTERNATIVE patching happens after enabling FSGSBASE in CR4.
-When the feature is available, the code is permanently patched to use
-RDGSBASE/WRGSBASE, which require CR4.FSGSBASE=1 to execute without triggering
-
-== Boot Sequence ==
-
-Boot CPU (with CR pinning enabled):
-  trap_init()
-    cpu_init()                   <- Uses unpatched code (RDMSR/SWAPGS)
-      x2apic_setup()
-  ...
-  arch_cpu_finalize_init()
-    identify_boot_cpu()
-      identify_cpu()
-        cr4_set_bits(X86_CR4_FSGSBASE)  # Enables the feature
-	# This becomes part of cr4_pinned_bits
-    ...
-    alternative_instructions()   <- Patches code to use RDGSBASE/WRGSBASE
-
-Secondary CPUs (with CR pinning enabled):
-  start_secondary()
-    cr4_init()                   <- Code already patched, CR4.FSGSBASE=1
-                                    set implicitly via cr4_pinned_bits
-
-    cpu_init()                   <- exceptions work because FSGSBASE is
-                                    already enabled
-
-Secondary CPU (with CR pinning disabled):
-  start_secondary()
-    cr4_init()                   <- Code already patched, CR4.FSGSBASE=0
-    cpu_init()
-      x2apic_setup()
-        rdmsrq(MSR_IA32_APICBASE)  <- Triggers #VC in SNP guests
-          exc_vmm_communication()
-            paranoid_entry()       <- Uses RDGSBASE with CR4.FSGSBASE=0
-                                      (patched code)
-    ...
-    ap_starting()
-      identify_secondary_cpu()
-        identify_cpu()
-	  cr4_set_bits(X86_CR4_FSGSBASE)  <- Enables the feature, which is
-                                             too late
-
-== CR Pinning ==
-
-Currently, for secondary CPUs, CR4.FSGSBASE is set implicitly through
-CR-pinning: the boot CPU sets it during identify_cpu(), it becomes part of
-cr4_pinned_bits, and cr4_init() applies those pinned bits to secondary CPUs.
-This works but creates an undocumented dependency between cr4_init() and the
-pinning mechanism.
-
-== Problem ==
-
-Secondary CPUs boot after alternatives have been applied globally. They
-execute already-patched paranoid_entry() code that uses RDGSBASE/WRGSBASE
-instructions, which require CR4.FSGSBASE=1. Upcoming changes to CR pinning
-behavior will break the implicit dependency, causing secondary CPUs to
-generate #UD.
-
-This issue manifests itself on AMD SEV-SNP guests, where the rdmsrq() in
-x2apic_setup() triggers a #VC exception early during cpu_init(). The #VC
-handler (exc_vmm_communication()) executes the patched paranoid_entry() path.
-Without CR4.FSGSBASE enabled, RDGSBASE instructions trigger #UD.
-
-== Fix ==
-
-Enable FSGSBASE explicitly in cpu_init_exception_handling() before loading
-exception handlers. This makes the dependency explicit and ensures both
-boot and secondary CPUs have FSGSBASE enabled before paranoid_entry()
-executes.
-
-Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Suggested-by: Sohil Mehta <sohil.mehta@intel.com>
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20260318075654.1792916-2-nikunj@amd.com
+Link: https://patch.msgid.link/20260320163559.178101-3-objecting@objecting.org
+Link: https://lkml.kernel.org/r/20260321175427.86000-4-sj@kernel.org
+Link: https://github.com/damonitor/damo [1]
+Fixes: d809a7c64ba8 ("mm/damon/sysfs: implement refresh_ms file internal work")
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.17+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ mm/damon/sysfs.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2020,12 +2020,6 @@ static void identify_cpu(struct cpuinfo_
- 	setup_smap(c);
- 	setup_umip(c);
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1622,9 +1622,12 @@ static int damon_sysfs_repeat_call_fn(vo
  
--	/* Enable FSGSBASE instructions if available. */
--	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
--		cr4_set_bits(X86_CR4_FSGSBASE);
--		elf_hwcap2 |= HWCAP2_FSGSBASE;
--	}
--
- 	/*
- 	 * The vendor-specific functions might have changed features.
- 	 * Now we do "generic changes."
-@@ -2386,6 +2380,18 @@ void cpu_init_exception_handling(bool bo
- 	/* GHCB needs to be setup to handle #VC. */
- 	setup_ghcb();
- 
-+	/*
-+	 * On CPUs with FSGSBASE support, paranoid_entry() uses
-+	 * ALTERNATIVE-patched RDGSBASE/WRGSBASE instructions. Secondary CPUs
-+	 * boot after alternatives are patched globally, so early exceptions
-+	 * execute patched code that depends on FSGSBASE. Enable the feature
-+	 * before any exceptions occur.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_FSGSBASE)) {
-+		cr4_set_bits(X86_CR4_FSGSBASE);
-+		elf_hwcap2 |= HWCAP2_FSGSBASE;
-+	}
-+
- 	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
- 		/* The boot CPU has enabled FRED during early boot */
- 		if (!boot_cpu)
+ 	if (!mutex_trylock(&damon_sysfs_lock))
+ 		return 0;
++	if (sysfs_kdamond->contexts->nr != 1)
++		goto out;
+ 	damon_sysfs_upd_tuned_intervals(sysfs_kdamond);
+ 	damon_sysfs_upd_schemes_stats(sysfs_kdamond);
+ 	damon_sysfs_upd_schemes_effective_quotas(sysfs_kdamond);
++out:
+ 	mutex_unlock(&damon_sysfs_lock);
+ 	return 0;
+ }
 
 
 
