@@ -1,169 +1,159 @@
-Return-Path: <stable+bounces-231450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBwmOdXsy2mlMgYAu9opvQ
-	(envelope-from <stable+bounces-231450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:48:37 +0200
+	id qJgtMvbsy2m5MgYAu9opvQ
+	(envelope-from <stable+bounces-231452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:49:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E423C36C0D6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:48:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B054136C132
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 897E230ABB1F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:39:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1DE9030BFC53
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 15:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E9E3E9598;
-	Tue, 31 Mar 2026 15:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B4A423177;
+	Tue, 31 Mar 2026 15:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TsVyblDw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="prKcdYCr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46838413234
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 15:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72FC423A62;
+	Tue, 31 Mar 2026 15:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774971437; cv=none; b=fnd8Yl7HgiaMbxkaESLYiJUOczq2TTHY0gWToxGinIL9YOrKWdu6qKgjLm9YVmGj689BQiG27mXPfYDoii16ELp4v/WuD6GoWUky8RwbdfzF8gNZhERWSPJ7DElwKfMBaTjtGdhnWXicKQ4tEV0nC/+S84PMZ7aVRQrf6Zvi1Ic=
+	t=1774971503; cv=none; b=JLXgMz9Ifw0xZFmVPzXft1OCx9IMy9A/Vt9ycu+Q9gW5Rkxd5APvTz7BEXJbd0VhwNNc2VGflAPyiV8BzDNdN70jFj/URZBEF2DiVPeR8mP89QqrE0GJ0GS50Yb2aAq/G52sMEB1ruRqMZ2wCn3MSMD4LTAEt/b7zxvMnBEOGyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774971437; c=relaxed/simple;
-	bh=Yb+PbtUMeEDqyWvZOoBcT6U6EFeoBjI81t+7Sf93/CM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZddpSpsypwZZslcNLWfBupujUir/w9RQ5dQ5nGwpDoUOP40FR4/POgMglrJ0eLFJ9lG4IjpA2YJYso3UD03LuBadf3lOIrzldJerXFN0Q8n3cEwPkFscA1srbs00uF/dC689eaRBP1CH1Il+TcOzwsTuTfCtHVHlGd9G90pALtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TsVyblDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FC3C19423;
-	Tue, 31 Mar 2026 15:37:16 +0000 (UTC)
+	s=arc-20240116; t=1774971503; c=relaxed/simple;
+	bh=Yb4OkI2lEqPgmQxRKGJSkL8RVqJUE5jHBisHEcfMpvg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ABCk9aztLjGKMrpcmuk9+ALlhEE8Henosy1TNN2AY6pR8QvZON7DKGiwYDhLc+6PTGhUtNE3YojL972p1VqkVdJYEzkj0oRvc/OQfRtN5r00mCoDnOf2jQgz8fAfcryutJygqkK28aYu1vOYGeFoihWayILxhNI7GQdGUj2GjpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=prKcdYCr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C17C19423;
+	Tue, 31 Mar 2026 15:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774971436;
-	bh=Yb+PbtUMeEDqyWvZOoBcT6U6EFeoBjI81t+7Sf93/CM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TsVyblDwJksvRcrBR6egtgDuLQS2GxDKn7X9bx9SsXCr7ZHFPMz8ni1/202neD3EV
-	 1v8bIGpeFSKreBmADpZVpO5Ew87VXL9EytyudUaC2yhRIiadPwQUVnLamllTKMqpSt
-	 Wqf++J2tQicRwzFBU2Ahz826ZI+kKQMGuYRcX5jImJ9A3YOFGIAgvKSn4fGOigaVbg
-	 d4nQjeh0CyndgeE1O6Z5PsT7LMIlLa9WdtjYPutEl2+qWmRbbCUvbU3sG2/Mjw+jRV
-	 sdkD4oIYNwjOQNPp9vFTLccHhJY21ClPdrG5ov5SVmaV/bzYcMA1smYm6tPFNfpql5
-	 UuDeU3Lv4eeFA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: gregkh@linuxfoundation.org, dave@stgolabs.net
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.6.y, 6.1.y] futex: Clear stale exiting pointer in
- futex_lock_pi() retry
-In-Reply-To: <2026033033-common-quartet-fb0d@gregkh>
-References: <2026033033-common-quartet-fb0d@gregkh>
-Date: Tue, 31 Mar 2026 17:37:13 +0200
-Message-ID: <875x6c9fiu.ffs@tglx>
+	s=k20201202; t=1774971503;
+	bh=Yb4OkI2lEqPgmQxRKGJSkL8RVqJUE5jHBisHEcfMpvg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=prKcdYCr9iUyZdZ03hpH+SWUzKf/iZt3M/8nLRReechb2/xcnKO/U8zPaj1FD4PRW
+	 rcI/U+g8I9Fg+Uy9J0cWT42CaAJ4yHyByOfNNl9BnVlF4GVpw92otBZpe9Yul4xOra
+	 r6WXTB//qE6Mq6BduC9WyguCnBztFLP7cRpOZ25mlLWzTOV/pQGBzsZ1rfwpv8Vq+0
+	 0R8QMNP/cePyrMsgXBFfUJCIbRRaybE/ej0GpMR8doFNDLUiCXIjgNoMGFn0cgD9sh
+	 4Z3OEV8NpzB4A4fcY0jePFPXbSyADic8kRMnpIyvQB/3mMBO6378UUsd0kC9EcDF0G
+	 HvO6+kk2oZXFQ==
+Date: Tue, 31 Mar 2026 17:38:18 +0200
+From: Nathan Chancellor <nathan@kernel.org>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev, netdev@vger.kernel.org,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Wei Fang <wei.fang@nxp.com>, Rahul Sharma <black.hawk@163.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.1] net: enetc: fix PF !of_device_is_available()
+ teardown path
+Message-ID: <20260331153818.GA1992169@ax162>
+References: <20260330081944.527545-1-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [2.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330081944.527545-1-vladimir.oltean@nxp.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231450-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231452-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.968];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,nxp.com,davemloft.net,google.com,kernel.org,redhat.com,163.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: E423C36C0D6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B054136C132
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Mon, Mar 30, 2026 at 11:19:44AM +0300, Vladimir Oltean wrote:
+> Upstream commit e15c5506dd39 ("net: enetc: allocate vf_state during PF
+> probes") was backported incorrectly to kernels where enetc_pf_probe()
+> still has to manually check whether the OF node of the PCI device is
+> enabled.
+> 
+> In kernels which contain commit bfce089ddd0e ("net: enetc: remove
+> of_device_is_available() handling") and its dependent change, commit
+> 6fffbc7ae137 ("PCI: Honor firmware's device disabled status"), the
+> "err_device_disabled" label has disappeared. Yet, linux-6.1.y and
+> earlier still contains it.
+> 
+> The trouble is that upstream commit e15c5506dd39 ("net: enetc: allocate
+> vf_state during PF probes"), backported as 35668e29e979 in linux-6.1.y,
+> introduces new code for the err_setup_mac_addresses and err_alloc_netdev
+> labels which calls kfree(pf->vf_state). This code must not execute for
+> the err_device_disabled label, because at that stage, the pf structure
+> has not yet been allocated, and is an uninitialized pointer.
+> 
+> By moving the err_device_disabled label to undo just the previous
+> operation, i.e. a successful enetc_psi_create() call with
+> enetc_psi_destroy(), the dereference of uninitialized pf->vf_state is
+> avoided.
+> 
+> Fixes: 35668e29e979 ("net: enetc: allocate vf_state during PF probes")
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Closes: https://lore.kernel.org/linux-patches/20260330073356.GA1017537@ax162/
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org> # build
 
-Commit 210d36d892de5195e6766c45519dfb1e65f3eb83 upstream.
-
-Fuzzying/stressing futexes triggered:
-
-    WARNING: kernel/futex/core.c:825 at wait_for_owner_exiting+0x7a/0x80, CPU#11: futex_lock_pi_s/524
-
-When futex_lock_pi_atomic() sees the owner is exiting, it returns -EBUSY
-and stores a refcounted task pointer in 'exiting'.
-
-After wait_for_owner_exiting() consumes that reference, the local pointer
-is never reset to nil. Upon a retry, if futex_lock_pi_atomic() returns a
-different error, the bogus pointer is passed to wait_for_owner_exiting().
-
-  CPU0			     CPU1		       CPU2
-  futex_lock_pi(uaddr)
-  // acquires the PI futex
-  exit()
-    futex_cleanup_begin()
-      futex_state = EXITING;
-			     futex_lock_pi(uaddr)
-			       futex_lock_pi_atomic()
-				 attach_to_pi_owner()
-				   // observes EXITING
-				   *exiting = owner;  // takes ref
-				   return -EBUSY
-			       wait_for_owner_exiting(-EBUSY, owner)
-				 put_task_struct();   // drops ref
-			       // exiting still points to owner
-			       goto retry;
-			       futex_lock_pi_atomic()
-				 lock_pi_update_atomic()
-				   cmpxchg(uaddr)
-					*uaddr ^= WAITERS // whatever
-				   // value changed
-				 return -EAGAIN;
-			       wait_for_owner_exiting(-EAGAIN, exiting) // stale
-				 WARN_ON_ONCE(exiting)
-
-Fix this by resetting upon retry, essentially aligning it with requeue_pi.
-
-Fixes: 3ef240eaff36 ("futex: Prevent exit livelock")
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260326001759.4129680-1-dave@stgolabs.net
----
- kernel/futex/pi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
----
---- a/kernel/futex/pi.c
-+++ b/kernel/futex/pi.c
-@@ -930,9 +930,9 @@ int fixup_pi_owner(u32 __user *uaddr, st
- int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int trylock)
- {
- 	struct hrtimer_sleeper timeout, *to;
--	struct task_struct *exiting = NULL;
- 	struct rt_mutex_waiter rt_waiter;
- 	struct futex_hash_bucket *hb;
-+	struct task_struct *exiting;
- 	struct futex_q q = futex_q_init;
- 	int res, ret;
- 
-@@ -945,6 +945,7 @@ int futex_lock_pi(u32 __user *uaddr, uns
- 	to = futex_setup_timer(time, &timeout, flags, 0);
- 
- retry:
-+	exiting = NULL;
- 	ret = get_futex_key(uaddr, flags & FLAGS_SHARED, &q.key, FUTEX_WRITE);
- 	if (unlikely(ret != 0))
- 		goto out;
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc_pf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> index 99422c0b4a26..8cb4c759b165 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> @@ -1393,10 +1393,10 @@ static int enetc_pf_probe(struct pci_dev *pdev,
+>  	si->ndev = NULL;
+>  	free_netdev(ndev);
+>  err_alloc_netdev:
+> -err_device_disabled:
+>  err_setup_mac_addresses:
+>  	kfree(pf->vf_state);
+>  err_alloc_vf_state:
+> +err_device_disabled:
+>  	enetc_psi_destroy(pdev);
+>  err_psi_create:
+>  	return err;
+> -- 
+> 2.43.0
+> 
 
