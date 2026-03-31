@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-231542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJOsHB/5y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:03 +0200
+	id IJN0CvwBzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726A936CF46
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6198136E783
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D790830993C1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 91E5B306EBDA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE643FF8A7;
-	Tue, 31 Mar 2026 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8457B42668F;
+	Tue, 31 Mar 2026 16:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IDvL2TH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/iKG2+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E391B3DD507;
-	Tue, 31 Mar 2026 16:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46726425CF0;
+	Tue, 31 Mar 2026 16:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974439; cv=none; b=n2ofVxFEXWeo4p73naZgKxAPEVFD5YwyonpK3qe80hPz2ZFFS1loskRQfoFpp4q3CO14S9rHrlKz/FNYiMilaDAj1pFRZnYdX64O7C35NALPHy41OjU4Ynqh0k44l7RQb2IB8rk0FD1Nr4J7rJwkTLjy2xhvL5JBb06Pq/xEmLY=
+	t=1774975873; cv=none; b=fVVFe0ymjzIMEpzInUNlQjruQOHyuNgT6LtNcGKaUsR/9isDhoRxA+OqAv27wPQKFwTCR2SZITPGhePRdA6RNmCUZrAHp4fpC56jKdk/ILarD7fKgSaUgM8hUANpVyma9n1jL0X4WwCZR4ElTW3fngL/qcFocRYplPvAnL3LcmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974439; c=relaxed/simple;
-	bh=7AJQghWNnWJDLtpotECSiHq000wNjL9mikXL6CROTP8=;
+	s=arc-20240116; t=1774975873; c=relaxed/simple;
+	bh=KGSIj655rBO69GkQ7+5lWdSxsZCkn7eCXHRBSkOA1/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N56jwHYvuqZcuEcN/qB2REN2+ZUAaWRXt/mmXeZ9lITNvmjBOyGbqVg3vbys1SFHYHW+ceDBJNyQ+qliVzuFMHhjJ8//roOf8uj/nc66dpRojldDVoUyUvQ4mdLiXXSIYoyPYjiUDnKnxbslQH6DjVf8ru5QDJ5tX7NjjkkfKu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IDvL2TH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CC7C19423;
-	Tue, 31 Mar 2026 16:27:18 +0000 (UTC)
+	 MIME-Version; b=IdIkOY2q5W2c5SU9UaV8+JAG7EMEkbLyvN72GJudax/wQkPv2g58C1IwJ1evqWXGsxsaXF3SqX10eYDEAq3UN1Q4vVRNQ1h8f6cUFoImoaVHYjj8CoIxu7qpnTGQ2Pql7WQc1jq386SJk7CsjJWTLKPYILJyiKTZz6dZCLo9oP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/iKG2+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B04C19423;
+	Tue, 31 Mar 2026 16:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974438;
-	bh=7AJQghWNnWJDLtpotECSiHq000wNjL9mikXL6CROTP8=;
+	s=korg; t=1774975873;
+	bh=KGSIj655rBO69GkQ7+5lWdSxsZCkn7eCXHRBSkOA1/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IDvL2THlxYer25w5waiL4nfVAyojh3msfhZkdz0Pn0Cja4OJExZI1fZvbHu1gRcn
-	 neUKBKnqxRTgPn49iAq/H+mD3rT/P1jkrcC0YHlLoiEXpjejvwe2rp77tjmPLmYzQa
-	 L85HmUaS1yaeUsPo9IJOdzkougc8X9XiKZaWfZNM=
+	b=H/iKG2+EDX/g2qpMnZoELDquikwXofImESh/NfCRp6m4YfP2F9TfrdPFqQRdPbapT
+	 vVX49rbVdWr4TJw0TjvKdgQhGT9E5mvldIp/kVNY27bVAVcSSqTW4YkqkCHVQuFNj8
+	 sBDfwqbS1W348WAZilEN/65dXPzCtABZwJ4yKXJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/175] drm/i915/gmbus: fix spurious timeout on 512-byte burst reads
+Subject: [PATCH 6.12 120/244] ASoC: Intel: catpt: Fix the device initialization
 Date: Tue, 31 Mar 2026 18:21:10 +0200
-Message-ID: <20260331161732.931341680@linuxfoundation.org>
+Message-ID: <20260331161746.092578530@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231542-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232099-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,57 +87,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,oracle.com:email]
-X-Rspamd-Queue-Id: 726A936CF46
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6198136E783
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 08441f10f4dc09fdeb64529953ac308abc79dd38 ]
+[ Upstream commit 5a184f1cb43a8e035251c635f5c47da5dc3e3049 ]
 
-When reading exactly 512 bytes with burst read enabled, the
-extra_byte_added path breaks out of the inner do-while without
-decrementing len. The outer while(len) then re-enters and gmbus_wait()
-times out since all data has been delivered. Decrement len before the
-break so the outer loop terminates correctly.
+The DMA mask shall be coerced before any buffer allocations for the
+device are done.  At the same time explain why DMA mask of 31 bits is
+used in the first place.
 
-Fixes: d5dc0f43f268 ("drm/i915/gmbus: Enable burst read")
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patch.msgid.link/20260316231920.135438-2-samasth.norway.ananda@oracle.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4ab0f09ee73fc853d00466682635f67c531f909c)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 7a10b66a5df9 ("ASoC: Intel: catpt: Device driver lifecycle")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260320101217.1243688-1-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_gmbus.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/intel/catpt/device.c | 10 +++++++++-
+ sound/soc/intel/catpt/dsp.c    |  3 ---
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_gmbus.c b/drivers/gpu/drm/i915/display/intel_gmbus.c
-index e95ddb580ef6c..a01e655c24ff3 100644
---- a/drivers/gpu/drm/i915/display/intel_gmbus.c
-+++ b/drivers/gpu/drm/i915/display/intel_gmbus.c
-@@ -460,8 +460,10 @@ gmbus_xfer_read_chunk(struct drm_i915_private *i915,
+diff --git a/sound/soc/intel/catpt/device.c b/sound/soc/intel/catpt/device.c
+index 2aa637124bec6..37f4d116e6c26 100644
+--- a/sound/soc/intel/catpt/device.c
++++ b/sound/soc/intel/catpt/device.c
+@@ -271,7 +271,15 @@ static int catpt_acpi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(cdev->pci_ba))
+ 		return PTR_ERR(cdev->pci_ba);
  
- 		val = intel_de_read_fw(i915, GMBUS3(i915));
- 		do {
--			if (extra_byte_added && len == 1)
-+			if (extra_byte_added && len == 1) {
-+				len--;
- 				break;
-+			}
+-	/* alloc buffer for storing DRAM context during dx transitions */
++	/*
++	 * As per design HOST is responsible for preserving firmware's runtime
++	 * context during D0 -> D3 -> D0 transitions.  Addresses used for DMA
++	 * to/from HOST memory shall be outside the reserved range of 0xFFFxxxxx.
++	 */
++	ret = dma_coerce_mask_and_coherent(cdev->dev, DMA_BIT_MASK(31));
++	if (ret)
++		return ret;
++
+ 	cdev->dxbuf_vaddr = dmam_alloc_coherent(dev, catpt_dram_size(cdev),
+ 						&cdev->dxbuf_paddr, GFP_KERNEL);
+ 	if (!cdev->dxbuf_vaddr)
+diff --git a/sound/soc/intel/catpt/dsp.c b/sound/soc/intel/catpt/dsp.c
+index 5993819cc58a2..8e4836605e8e1 100644
+--- a/sound/soc/intel/catpt/dsp.c
++++ b/sound/soc/intel/catpt/dsp.c
+@@ -125,9 +125,6 @@ int catpt_dmac_probe(struct catpt_dev *cdev)
+ 	dmac->dev = cdev->dev;
+ 	dmac->irq = cdev->irq;
  
- 			*buf++ = val & 0xff;
- 			val >>= 8;
+-	ret = dma_coerce_mask_and_coherent(cdev->dev, DMA_BIT_MASK(31));
+-	if (ret)
+-		return ret;
+ 	/*
+ 	 * Caller is responsible for putting device in D0 to allow
+ 	 * for I/O and memory access before probing DW.
 -- 
 2.53.0
 
