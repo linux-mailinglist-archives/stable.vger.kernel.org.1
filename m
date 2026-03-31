@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231952-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGhAKhv/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-232179-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:35 +0200
+	id GHsdCfr7y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231952-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D62D36DE22
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:06:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA69736D542
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 34DE13055E4A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4588730C45BD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40228425CE6;
-	Tue, 31 Mar 2026 16:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0334423149;
+	Tue, 31 Mar 2026 16:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGnZHSe3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHXo2cJH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036613E4C6C;
-	Tue, 31 Mar 2026 16:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62142402435;
+	Tue, 31 Mar 2026 16:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976081; cv=none; b=NUlyY2JbMeH6EJTvXMJg2hcxT8xIN2Wd1lAX83bHexKkjuHTi60GfnWeAyLdjyy2PeKVsyITgWvR1JBZLiZqjF2u+2ogAmt1kfvXxjlZ4dnYpU724VzOgJyqyfA42LzegVwhAzg8YV+TzbbZp4O7myLpsCBqkWAxsDvf87lG4/s=
+	t=1774975490; cv=none; b=Ijfmhc3rktc87kKcvvmQ2jbPy5QmaXiEWOtYHOXIVcyXfnpgCKSiztEgjiV8ALTcc2fZi4wXD4f8GPCo3kdAjlGU1B6ic7pLmDFwV8laFpiS4u0GSLVKv5tk75yDOrGpQFg8PpP5nMPEW9a096WfDq3X2uwWsXHYS5yp56JhRpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976081; c=relaxed/simple;
-	bh=CyN50w7vpJ668drh59bvIkA0xKgikQITfNAH9Xy4/dg=;
+	s=arc-20240116; t=1774975490; c=relaxed/simple;
+	bh=TNFZXlzJ6zxy+UlFJ6gEdCgTXZH7yBxFVlRV1O+HceE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcirg7kEWHABNWfrpUyKQKTsv/6+eJeTduROfOcJlAbUt4zlpAgjZdds4lT2jp0DC24EjLQHj8Aftrab5AT/X7Hq0MMdlVvlmCa9YeqRSU7+AJatd0gSrptqCaWhXViRx1sfvo+jqmbvVoQf+TSCOa/53NeGYY2uXfKbxy+gmAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGnZHSe3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906CBC19423;
-	Tue, 31 Mar 2026 16:54:40 +0000 (UTC)
+	 MIME-Version; b=AOCCWTudJ/n8EmQyhVSLUbwXerEq5NmVikhrIc9dhYKgOlmGwNlYygl3eJmYkRts/D4sksoelJ7wu5n9sM6t6Rstxqk0TbE+pw6vmyga+h9V13q8h7nfH5MTk/6SW66LAC7wNZuFNJAVisP8PxYI/MDWRk54WoJAm/1RzcgBNLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHXo2cJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17F4C2BCB1;
+	Tue, 31 Mar 2026 16:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976080;
-	bh=CyN50w7vpJ668drh59bvIkA0xKgikQITfNAH9Xy4/dg=;
+	s=korg; t=1774975490;
+	bh=TNFZXlzJ6zxy+UlFJ6gEdCgTXZH7yBxFVlRV1O+HceE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vGnZHSe37MKzVlO8YsxlFcTcqSflqg5fn9qL0QWnt2mqesGrkc1Yp8gWdWhiqaTW9
-	 WF8i8Rpr99jfSVClALVNIHeHj8prsiVIvliSrUN8i4kfBa82N/QhbE28aZeWFVoIL2
-	 KvUUYlH0YPfPa07OLEfbxT0EQl5G09TpxgmHp9Zs=
+	b=aHXo2cJH3OT6b281Ek5bYJLSBnviz4QqfhClc4UOkg/KwIr1KcQRuuDK9r1Dzo2St
+	 TjJqyJ0LQf+i8gsqFPXsPbPuZWccWPKp+n3YfDfMfmq5pa8JO+Hj6ZjRqu8IqNFfgW
+	 WNUFDeJnWUXl08NKR/uXW7nKGwm54DJ1ZlSqAexo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.12 199/244] powerpc64/bpf: do not increment tailcall count when prog is NULL
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 316/342] dmaengine: idxd: Fix memory leak when a wq is reset
 Date: Tue, 31 Mar 2026 18:22:29 +0200
-Message-ID: <20260331161749.098336726@linuxfoundation.org>
+Message-ID: <20260331161810.548876183@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,102 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231952-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232179-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4D62D36DE22
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CA69736D542
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-commit 521bd39d9d28ce54cbfec7f9b89c94ad4fdb8350 upstream.
+[ Upstream commit d9cfb5193a047a92a4d3c0e91ea4cc87c8f7c478 ]
 
-Do not increment tailcall count, if tailcall did not succeed due to
-missing BPF program.
+idxd_wq_disable_cleanup() which is called from the reset path for a
+workqueue, sets the wq type to NONE, which for other parts of the
+driver mean that the wq is empty (all its resources were released).
 
-Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
-Cc: stable@vger.kernel.org
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260303181031.390073-2-hbathini@linux.ibm.com
-[ Conflict due to missing feature commit 2ed2d8f6fb38 ("powerpc64/bpf:
-  Support tailcalls with subprogs") resolved accordingly. ]
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Only set the wq type to NONE after its resources are released.
+
+Fixes: da32b28c95a7 ("dmaengine: idxd: cleanup workqueue config after disabling")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-8-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/net/bpf_jit_comp64.c |   23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/dma/idxd/device.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -404,27 +404,32 @@ static int bpf_jit_emit_tail_call(u32 *i
+diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
+index f9e49c5545f65..a7ecc17442354 100644
+--- a/drivers/dma/idxd/device.c
++++ b/drivers/dma/idxd/device.c
+@@ -175,6 +175,7 @@ void idxd_wq_free_resources(struct idxd_wq *wq)
+ 	free_descs(wq);
+ 	dma_free_coherent(dev, wq->compls_size, wq->compls, wq->compls_addr);
+ 	sbitmap_queue_free(&wq->sbq);
++	wq->type = IDXD_WQT_NONE;
+ }
+ EXPORT_SYMBOL_NS_GPL(idxd_wq_free_resources, "IDXD");
  
- 	/*
- 	 * tail_call_cnt++;
-+	 * Writeback this updated value only if tailcall succeeds.
- 	 */
- 	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), 1));
--	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
- 
- 	/* prog = array->ptrs[index]; */
--	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_1), b2p_index, 8));
--	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), b2p_bpf_array));
--	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_array, ptrs)));
-+	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_2), b2p_index, 8));
-+	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2), b2p_bpf_array));
-+	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			offsetof(struct bpf_array, ptrs)));
- 
- 	/*
- 	 * if (prog == NULL)
- 	 *   goto out;
- 	 */
--	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_1), 0));
-+	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_2), 0));
- 	PPC_BCC_SHORT(COND_EQ, out);
- 
- 	/* goto *(prog->bpf_func + prologue_size); */
--	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_prog, bpf_func)));
--	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1),
--			FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
--	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_1)));
-+	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			offsetof(struct bpf_prog, bpf_func)));
-+	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			  FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
-+	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_2)));
-+
-+	/* Writeback updated tailcall count */
-+	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
- 
- 	/* tear down stack, restore NVRs, ... */
- 	bpf_jit_emit_common_epilogue(image, ctx);
+@@ -382,7 +383,6 @@ static void idxd_wq_disable_cleanup(struct idxd_wq *wq)
+ 	lockdep_assert_held(&wq->wq_lock);
+ 	wq->state = IDXD_WQ_DISABLED;
+ 	memset(wq->wqcfg, 0, idxd->wqcfg_size);
+-	wq->type = IDXD_WQT_NONE;
+ 	wq->threshold = 0;
+ 	wq->priority = 0;
+ 	wq->enqcmds_retries = IDXD_ENQCMDS_RETRIES;
+@@ -1531,7 +1531,6 @@ void idxd_drv_disable_wq(struct idxd_wq *wq)
+ 	idxd_wq_reset(wq);
+ 	idxd_wq_free_resources(wq);
+ 	percpu_ref_exit(&wq->wq_active);
+-	wq->type = IDXD_WQT_NONE;
+ 	wq->client_count = 0;
+ }
+ EXPORT_SYMBOL_NS_GPL(idxd_drv_disable_wq, "IDXD");
+-- 
+2.53.0
+
 
 
 
