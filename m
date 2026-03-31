@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-231612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPS4Mq34y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:09 +0200
+	id sGZcGSb+y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-232169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A9336CE7F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:39:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA45936DB2B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D08AA31CD98D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8F163289684
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1682A3EF0A2;
-	Tue, 31 Mar 2026 16:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCBD426D16;
+	Tue, 31 Mar 2026 16:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LuofAZk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfgYpk7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF6B1C861A;
-	Tue, 31 Mar 2026 16:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F226426D14;
+	Tue, 31 Mar 2026 16:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974620; cv=none; b=drV+Xo7r37LB6OMMRt7pp6ZgAjjHFgNolJrqlnYdRkL0CGb5nvoTTns/uRoNgTaQNJU+Sdv5di+NXKSCEd7gVH1uLZG4sSrxarw0YQiCqmDS1hpyQoH/1jl899wyTb/cc25zNl1h2DExoDREDT1NosRwq2hbCa6/ztp/XWtV4rw=
+	t=1774976055; cv=none; b=gbjuhGQ6wjQv8gi+XnM+aG3aBczBQqyUBqx/aPJE48PLwnzTu6NL34t/JeVssvNizd1R2T72w7RLQNop8B/Y18HeE59jR2rtnE5WXllbt1626rB5nStDKDx/vDuZcn02wuAelmQTJ2IeDZ+5Dnpf0OJ4XK6KxhSAOTCPAgcLjmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974620; c=relaxed/simple;
-	bh=NQI54xrHgUUlLT75crgVah55ZMEbmkmwmwEFaL4HXRc=;
+	s=arc-20240116; t=1774976055; c=relaxed/simple;
+	bh=UUdpXcgr4k9OPlqWw4c9mCWjNRHWAjFvr8+E7HVROQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCUXUpWp95xfgSQs5mqno2ELtDQQQeJtzadzVU8HDNEMWs1/Tm8xirffZ/WLrP2lYqlgRBRB+lp+56dUaCoOlfYhzaVTZFmInZxb/qjvgeYEfGLpt74F4UArNb/WnGp5iXPoDuAg5QfIvOjNyqTToeF1z81tXlvXJ78uL52Z0N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LuofAZk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0D3C19423;
-	Tue, 31 Mar 2026 16:30:20 +0000 (UTC)
+	 MIME-Version; b=QvAdtyAO1+nhaLUpiI3MYC7LaWbUjQgY5Nl9x8pmfmEEjsx73xoDMPBYyELyS+SzJRvDEBWkqD9XETrJrLEIVDKaE1IevLnPcg0wN//hGYhVo8a/c+VS46uNBSQzKKy5EhCBGN4ZHo/2PYHfWM40q1sKiwBGqPRT+XwDLgFUSnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfgYpk7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F2BC19423;
+	Tue, 31 Mar 2026 16:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974620;
-	bh=NQI54xrHgUUlLT75crgVah55ZMEbmkmwmwEFaL4HXRc=;
+	s=korg; t=1774976055;
+	bh=UUdpXcgr4k9OPlqWw4c9mCWjNRHWAjFvr8+E7HVROQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LuofAZkXHY/NF+T4Fc+5HMh7p5/vTXWmGiTE4ZzJpBPJZwP2qcjlrhftGw1OmgsG
-	 YyRy0ZAc8bJcD2iVvcxI7B+v5lli1CfNMz/QdM6ECtaQ7km71tfKUMlyU6DjauT3h4
-	 tEIxabCa+kQZ1FvGIlik+sS7McuHGpvonEwX346c=
+	b=zfgYpk7nF9B/R/QRsZXJW535eQRlvncl1zQ3eG7BfHQkdsiDRfGyUx8+PR/+YB59t
+	 9TuHTYNnfqEYSeO0FescAmO5aBDTpaf92UZ6w5Ob38HyHg/Gu1fbinV4Y9RTqHE4Oz
+	 /k1kYdbTycxPZJjVMkhpA86fD5JSSy9Rrk8i7V3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 156/175] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
+	syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com,
+	syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.12 190/244] ext4: avoid infinite loops caused by residual data
 Date: Tue, 31 Mar 2026 18:22:20 +0200
-Message-ID: <20260331161735.526766978@linuxfoundation.org>
+Message-ID: <20260331161748.772178124@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +67,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231612-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232169-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,suse.cz,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,512459401510e2a9a39f,1659aaaaa8d9d11265d7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,objecting.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 53A9336CE7F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,qq.com:email,suse.cz:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: BA45936DB2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 1bfe9fb5ed2667fb075682408b776b5273162615 upstream.
+commit 5422fe71d26d42af6c454ca9527faaad4e677d6c upstream.
 
-Multiple sysfs command paths dereference contexts_arr[0] without first
-verifying that kdamond->contexts->nr == 1.  A user can set nr_contexts to
-0 via sysfs while DAMON is running, causing NULL pointer dereferences.
+On the mkdir/mknod path, when mapping logical blocks to physical blocks,
+if inserting a new extent into the extent tree fails (in this example,
+because the file system disabled the huge file feature when marking the
+inode as dirty), ext4_ext_map_blocks() only calls ext4_free_blocks() to
+reclaim the physical block without deleting the corresponding data in
+the extent tree. This causes subsequent mkdir operations to reference
+the previously reclaimed physical block number again, even though this
+physical block is already being used by the xattr block. Therefore, a
+situation arises where both the directory and xattr are using the same
+buffer head block in memory simultaneously.
 
-In more detail, the issue can be triggered by privileged users like
-below.
+The above causes ext4_xattr_block_set() to enter an infinite loop about
+"inserted" and cannot release the inode lock, ultimately leading to the
+143s blocking problem mentioned in [1].
 
-First, start DAMON and make contexts directory empty
-(kdamond->contexts->nr == 0).
+If the metadata is corrupted, then trying to remove some extent space
+can do even more harm. Also in case EXT4_GET_BLOCKS_DELALLOC_RESERVE
+was passed, remove space wrongly update quota information.
+Jan Kara suggests distinguishing between two cases:
 
-    # damo start
-    # cd /sys/kernel/mm/damon/admin/kdamonds/0
-    # echo 0 > contexts/nr_contexts
+1) The error is ENOSPC or EDQUOT - in this case the filesystem is fully
+consistent and we must maintain its consistency including all the
+accounting. However these errors can happen only early before we've
+inserted the extent into the extent tree. So current code works correctly
+for this case.
 
-Then, each of below commands will cause the NULL pointer dereference.
+2) Some other error - this means metadata is corrupted. We should strive to
+do as few modifications as possible to limit damage. So I'd just skip
+freeing of allocated blocks.
 
-    # echo update_schemes_stats > state
-    # echo update_schemes_tried_regions > state
-    # echo update_schemes_tried_bytes > state
-    # echo update_schemes_effective_quotas > state
-    # echo update_tuned_intervals > state
+[1]
+INFO: task syz.0.17:5995 blocked for more than 143 seconds.
+Call Trace:
+ inode_lock_nested include/linux/fs.h:1073 [inline]
+ __start_dirop fs/namei.c:2923 [inline]
+ start_dirop fs/namei.c:2934 [inline]
 
-Guard all commands (except OFF) at the entry point of
-damon_sysfs_handle_cmd().
-
-Link: https://lkml.kernel.org/r/20260321175427.86000-3-sj@kernel.org
-Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
-Signed-off-by: Josh Law <objecting@objecting.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.18+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1659aaaaa8d9d11265d7
+Tested-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Reported-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=512459401510e2a9a39f
+Tested-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Tested-by: syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/tencent_43696283A68450B761D76866C6F360E36705@qq.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/extents.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1494,6 +1494,9 @@ static int damon_sysfs_handle_cmd(enum d
- {
- 	bool need_wait = true;
- 
-+	if (cmd != DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr != 1)
-+		return -EINVAL;
-+
- 	/* Handle commands that doesn't access DAMON context-internal data */
- 	switch (cmd) {
- 	case DAMON_SYSFS_CMD_ON:
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4458,9 +4458,13 @@ got_allocated_blocks:
+ 	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
+ 	if (IS_ERR(path)) {
+ 		err = PTR_ERR(path);
+-		if (allocated_clusters) {
++		/*
++		 * Gracefully handle out of space conditions. If the filesystem
++		 * is inconsistent, we'll just leak allocated blocks to avoid
++		 * causing even more damage.
++		 */
++		if (allocated_clusters && (err == -EDQUOT || err == -ENOSPC)) {
+ 			int fb_flags = 0;
+-
+ 			/*
+ 			 * free data blocks we just allocated.
+ 			 * not a good idea to call discard here directly,
 
 
 
