@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-232090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHgnCy0EzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:28:13 +0200
+	id QDPkEaT8y2mcNAYAu9opvQ
+	(envelope-from <stable+bounces-231856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA9536EC33
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:28:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E56936D71E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BD68A318AD3B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:50:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 612F93115F9C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED55425CEE;
-	Tue, 31 Mar 2026 16:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3D8426D0B;
+	Tue, 31 Mar 2026 16:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i74Xwsw7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjvjpDBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63DA425CE1;
-	Tue, 31 Mar 2026 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE50426D05;
+	Tue, 31 Mar 2026 16:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975850; cv=none; b=BtkPgPpZgOdugbiPRMQLoKgRyGvuRN1zwwxbwPHnp7NrIyKG4heADIFM1tOwng6Ap4wQOEILiIbqtUar34VwNpYlUEx463fnJNb6u5PycWmGKRXhYlOw9VLTxDc0jUN/Ev0MQS7J3M3OH0RdXwJQcheAhrIBhBp9wjbVGUUisOA=
+	t=1774975247; cv=none; b=HXW29ug9bv4N0Wxp2/g785gy9KkO9tIoB1Z+oy6iHX01DKYHHSuy8zrkCA7oz9/KrIzcz7Z71S5C/NU6vXnCpLHpITJTu4PxXQ9HPVfkLBlIWJtYgdtn3QR3XJ0hscD7/Uc5OdS/zh/Rd4DGg7qiV6Z297wdM6H6MpK7elT6rBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975850; c=relaxed/simple;
-	bh=wrMFJ5FjJIj+Ue9jgc4s53QmAhwhuqgPhcZ0uwvDVrs=;
+	s=arc-20240116; t=1774975247; c=relaxed/simple;
+	bh=MhBO4gOm09NSA0Rh1T8v0o0pHWEwbFYA/JvokkY3JS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lS0T8eNp9TtPU0jSg75qj2jNIjsS7Nk1FrTYdhFSsoi5h9knvMgqZWuu3kzISDeHhIDDvAQMKreOjM9d4t4IB3Z/2bIU63ExrS3Zuzxd7ivjIiNGH1WNnuFn+WMiA+fg97qs4dlqOnU5LEiqIwgoxmcQMo1n6J/619cpuLCIgjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i74Xwsw7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE24C2BCB2;
-	Tue, 31 Mar 2026 16:50:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QDDoVKDjnZ9Cb3MV9Pa2Xchct6SqZ31G4xGWrei5IKTl0rBI4Uan1MoVWbzR1iBXHnC1yt13ZXWvHzBO8HqrIEKhTM45WZEYQHpUsU23WZAZxhH23vRPPN8LNJbvR7STqa/I4Jg7tPRrBrEj8ELOaNeMki4I/SKI5Gx/v4NSuZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjvjpDBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78B6C19423;
+	Tue, 31 Mar 2026 16:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975849;
-	bh=wrMFJ5FjJIj+Ue9jgc4s53QmAhwhuqgPhcZ0uwvDVrs=;
+	s=korg; t=1774975247;
+	bh=MhBO4gOm09NSA0Rh1T8v0o0pHWEwbFYA/JvokkY3JS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i74Xwsw7IXvkhgX2Z2bnALAuO3bNBK12+vqpz9KhqWY5PPRjclMUdZXA8goKZAL+y
-	 ydfQZMSETGklbZTfoqELBeW0wjz5p8/z27no+46uJU9uLR+w6eeOfRfBK+pL+xN85z
-	 dOzzAlIUSlpdHfMxw8dWDu4gPb+befHZOIIf7yC4=
+	b=FjvjpDBQ3PuBHY/0LDKC9qDUUOH6FFXrsQE+enNsc+ktMjbulPhaDT+MAfD7bhvnN
+	 gAiXzdOIpltB7jCeWkYuFB0RgCu2LcIbVWkVI6QIc+ONqUuStJh0SDau+UqIOZ1N9R
+	 2++8wRB997zzM6rwV05BIop6i2osnVtkTFCUIoYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.12 103/244] netfilter: ctnetlink: use netlink policy range checks
+	Abhijit Gangurde <abhijit.gangurde@amd.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.19 220/342] RDMA/ionic: Preserve and set Ethernet source MAC after ib_ud_header_init()
 Date: Tue, 31 Mar 2026 18:20:53 +0200
-Message-ID: <20260331161745.476268755@linuxfoundation.org>
+Message-ID: <20260331161807.069969327@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,165 +62,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org,strlen.de];
-	TAGGED_FROM(0.00)[bounces-232090-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231856-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,netfilter.org:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6FA9536EC33
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9E56936D71E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Abhijit Gangurde <abhijit.gangurde@amd.com>
 
-[ Upstream commit 8f15b5071b4548b0aafc03b366eb45c9c6566704 ]
+commit a08aaf3968aec5d05cd32c801b8cc0c61da69c41 upstream.
 
-Replace manual range and mask validations with netlink policy
-annotations in ctnetlink code paths, so that the netlink core rejects
-invalid values early and can generate extack errors.
+ionic_build_hdr() populated the Ethernet source MAC (hdr->eth.smac_h) by
+passing the header’s storage directly to rdma_read_gid_l2_fields().
+However, ib_ud_header_init() is called after that and re-initializes the
+UD header, which wipes the previously written smac_h. As a result, packets
+are emitted with an zero source MAC address on the wire.
 
-- CTA_PROTOINFO_TCP_STATE: reject values > TCP_CONNTRACK_SYN_SENT2 at
-  policy level, removing the manual >= TCP_CONNTRACK_MAX check.
-- CTA_PROTOINFO_TCP_WSCALE_ORIGINAL/REPLY: reject values > TCP_MAX_WSCALE
-  (14). The normal TCP option parsing path already clamps to this value,
-  but the ctnetlink path accepted 0-255, causing undefined behavior when
-  used as a u32 shift count.
-- CTA_FILTER_ORIG_FLAGS/REPLY_FLAGS: use NLA_POLICY_MASK with
-  CTA_FILTER_F_ALL, removing the manual mask checks.
-- CTA_EXPECT_FLAGS: use NLA_POLICY_MASK with NF_CT_EXPECT_MASK, adding
-  a new mask define grouping all valid expect flags.
+Correct the source MAC by reading the GID-derived smac into a temporary
+buffer and copy it after ib_ud_header_init() completes.
 
-Extracted from a broader nf-next patch by Florian Westphal, scoped to
-ctnetlink for the fixes tree.
-
-Fixes: c8e2078cfe41 ("[NETFILTER]: ctnetlink: add support for internal tcp connection tracking flags handling")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Co-developed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e8521822c733 ("RDMA/ionic: Register device ops for control path")
+Cc: stable@vger.kernel.org # 6.18
+Signed-off-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
+Link: https://patch.msgid.link/20260227061809.2979990-1-abhijit.gangurde@amd.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../uapi/linux/netfilter/nf_conntrack_common.h   |  4 ++++
- net/netfilter/nf_conntrack_netlink.c             | 16 +++++-----------
- net/netfilter/nf_conntrack_proto_tcp.c           | 10 +++-------
- 3 files changed, 12 insertions(+), 18 deletions(-)
+ drivers/infiniband/hw/ionic/ionic_controlpath.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/netfilter/nf_conntrack_common.h b/include/uapi/linux/netfilter/nf_conntrack_common.h
-index 26071021e986f..56b6b60a814f5 100644
---- a/include/uapi/linux/netfilter/nf_conntrack_common.h
-+++ b/include/uapi/linux/netfilter/nf_conntrack_common.h
-@@ -159,5 +159,9 @@ enum ip_conntrack_expect_events {
- #define NF_CT_EXPECT_INACTIVE		0x2
- #define NF_CT_EXPECT_USERSPACE		0x4
+--- a/drivers/infiniband/hw/ionic/ionic_controlpath.c
++++ b/drivers/infiniband/hw/ionic/ionic_controlpath.c
+@@ -508,6 +508,7 @@ static int ionic_build_hdr(struct ionic_
+ {
+ 	const struct ib_global_route *grh;
+ 	enum rdma_network_type net;
++	u8 smac[ETH_ALEN];
+ 	u16 vlan;
+ 	int rc;
  
-+#ifdef __KERNEL__
-+#define NF_CT_EXPECT_MASK	(NF_CT_EXPECT_PERMANENT | NF_CT_EXPECT_INACTIVE | \
-+				 NF_CT_EXPECT_USERSPACE)
-+#endif
+@@ -518,7 +519,7 @@ static int ionic_build_hdr(struct ionic_
  
- #endif /* _UAPI_NF_CONNTRACK_COMMON_H */
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 627790fcb6bb0..3fe37bdd625eb 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -885,8 +885,8 @@ struct ctnetlink_filter {
- };
+ 	grh = rdma_ah_read_grh(attr);
  
- static const struct nla_policy cta_filter_nla_policy[CTA_FILTER_MAX + 1] = {
--	[CTA_FILTER_ORIG_FLAGS]		= { .type = NLA_U32 },
--	[CTA_FILTER_REPLY_FLAGS]	= { .type = NLA_U32 },
-+	[CTA_FILTER_ORIG_FLAGS]		= NLA_POLICY_MASK(NLA_U32, CTA_FILTER_F_ALL),
-+	[CTA_FILTER_REPLY_FLAGS]	= NLA_POLICY_MASK(NLA_U32, CTA_FILTER_F_ALL),
- };
+-	rc = rdma_read_gid_l2_fields(grh->sgid_attr, &vlan, &hdr->eth.smac_h[0]);
++	rc = rdma_read_gid_l2_fields(grh->sgid_attr, &vlan, smac);
+ 	if (rc)
+ 		return rc;
  
- static int ctnetlink_parse_filter(const struct nlattr *attr,
-@@ -900,17 +900,11 @@ static int ctnetlink_parse_filter(const struct nlattr *attr,
- 	if (ret)
- 		return ret;
+@@ -536,6 +537,7 @@ static int ionic_build_hdr(struct ionic_
+ 	if (rc)
+ 		return rc;
  
--	if (tb[CTA_FILTER_ORIG_FLAGS]) {
-+	if (tb[CTA_FILTER_ORIG_FLAGS])
- 		filter->orig_flags = nla_get_u32(tb[CTA_FILTER_ORIG_FLAGS]);
--		if (filter->orig_flags & ~CTA_FILTER_F_ALL)
--			return -EOPNOTSUPP;
--	}
++	ether_addr_copy(hdr->eth.smac_h, smac);
+ 	ether_addr_copy(hdr->eth.dmac_h, attr->roce.dmac);
  
--	if (tb[CTA_FILTER_REPLY_FLAGS]) {
-+	if (tb[CTA_FILTER_REPLY_FLAGS])
- 		filter->reply_flags = nla_get_u32(tb[CTA_FILTER_REPLY_FLAGS]);
--		if (filter->reply_flags & ~CTA_FILTER_F_ALL)
--			return -EOPNOTSUPP;
--	}
- 
- 	return 0;
- }
-@@ -2628,7 +2622,7 @@ static const struct nla_policy exp_nla_policy[CTA_EXPECT_MAX+1] = {
- 	[CTA_EXPECT_HELP_NAME]	= { .type = NLA_NUL_STRING,
- 				    .len = NF_CT_HELPER_NAME_LEN - 1 },
- 	[CTA_EXPECT_ZONE]	= { .type = NLA_U16 },
--	[CTA_EXPECT_FLAGS]	= { .type = NLA_U32 },
-+	[CTA_EXPECT_FLAGS]	= NLA_POLICY_MASK(NLA_BE32, NF_CT_EXPECT_MASK),
- 	[CTA_EXPECT_CLASS]	= { .type = NLA_U32 },
- 	[CTA_EXPECT_NAT]	= { .type = NLA_NESTED },
- 	[CTA_EXPECT_FN]		= { .type = NLA_NUL_STRING },
-diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
-index 0c1d086e96cb3..b67426c2189b2 100644
---- a/net/netfilter/nf_conntrack_proto_tcp.c
-+++ b/net/netfilter/nf_conntrack_proto_tcp.c
-@@ -1385,9 +1385,9 @@ static int tcp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
- }
- 
- static const struct nla_policy tcp_nla_policy[CTA_PROTOINFO_TCP_MAX+1] = {
--	[CTA_PROTOINFO_TCP_STATE]	    = { .type = NLA_U8 },
--	[CTA_PROTOINFO_TCP_WSCALE_ORIGINAL] = { .type = NLA_U8 },
--	[CTA_PROTOINFO_TCP_WSCALE_REPLY]    = { .type = NLA_U8 },
-+	[CTA_PROTOINFO_TCP_STATE]	    = NLA_POLICY_MAX(NLA_U8, TCP_CONNTRACK_SYN_SENT2),
-+	[CTA_PROTOINFO_TCP_WSCALE_ORIGINAL] = NLA_POLICY_MAX(NLA_U8, TCP_MAX_WSCALE),
-+	[CTA_PROTOINFO_TCP_WSCALE_REPLY]    = NLA_POLICY_MAX(NLA_U8, TCP_MAX_WSCALE),
- 	[CTA_PROTOINFO_TCP_FLAGS_ORIGINAL]  = { .len = sizeof(struct nf_ct_tcp_flags) },
- 	[CTA_PROTOINFO_TCP_FLAGS_REPLY]	    = { .len = sizeof(struct nf_ct_tcp_flags) },
- };
-@@ -1414,10 +1414,6 @@ static int nlattr_to_tcp(struct nlattr *cda[], struct nf_conn *ct)
- 	if (err < 0)
- 		return err;
- 
--	if (tb[CTA_PROTOINFO_TCP_STATE] &&
--	    nla_get_u8(tb[CTA_PROTOINFO_TCP_STATE]) >= TCP_CONNTRACK_MAX)
--		return -EINVAL;
--
- 	spin_lock_bh(&ct->lock);
- 	if (tb[CTA_PROTOINFO_TCP_STATE])
- 		ct->proto.tcp.state = nla_get_u8(tb[CTA_PROTOINFO_TCP_STATE]);
--- 
-2.51.0
-
+ 	if (net == RDMA_NETWORK_IPV4) {
 
 
 
