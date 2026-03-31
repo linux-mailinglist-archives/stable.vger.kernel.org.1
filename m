@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-232173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNDyKbMEzGm4NQYAu9opvQ
-	(envelope-from <stable+bounces-232173-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:27 +0200
+	id GMngEOMAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-231980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C2236ED40
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:30:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8E336E40F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C34A312E65D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7AD1A30BD1DA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27C64218A4;
-	Tue, 31 Mar 2026 16:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBCC423A89;
+	Tue, 31 Mar 2026 16:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Wogo2wr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tG3fUU8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8560E41B373;
-	Tue, 31 Mar 2026 16:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03522413258;
+	Tue, 31 Mar 2026 16:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976065; cv=none; b=r1hRNhXanZ7IGqLxket27uz2wKC8eVi4uukqtpFY5xwvPO2vF6eYI7LqYvz5Bw3u3ZV8gr/x3iiA6K3G1MiOX5zp97vpNIUonwJd91p6DzRuCRH0GW6orbHUL+AIkvXjy7TwDvyC7N5jU5HwlrCo3ajbe76C8ixghOlGgoAHOuA=
+	t=1774975565; cv=none; b=gBAHQBCZjfebK1VnRH72P1hUBvCJ2GCEoktmWSikOzKZkvjmSYCg9+aJYXfB/0/Sko+2eLg6K/8kAJ26ZbU+S1kJOMFiWuYbqAZDPFVXhlLRjhuanS85lKGDX+HxpDNJy92n3+TgrYpXcP0CpXum2vUubxLUIA5bbNG9lOhshYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976065; c=relaxed/simple;
-	bh=iTe7D5iPbjHvs1M1kPVUe5/6MaynOoXPf9OgiCIiBKg=;
+	s=arc-20240116; t=1774975565; c=relaxed/simple;
+	bh=rtVFecSvs0kjaSQ91aaU9xmmqdCFXKGADyttldemOY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4+Hc7X2JIQMG2sljVaYmZoufjIfGWDjP78SR6XIU4idhEyJFHBYCjZxo1CWOrQrn2DNamI9PoNln6fbF6WX36yp7NeKlsfna+kqCU+mNxg5c0q95wZMiJtJtfNYi4CTKp0vXvbLKRRfnvxLazaewep/HW0H2gK8gUu2cGuaeE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Wogo2wr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3AEC19423;
-	Tue, 31 Mar 2026 16:54:24 +0000 (UTC)
+	 MIME-Version; b=HUMKjp8fBUqA0h/b08uJIexFTzVy+8XoudTm9SlZAuSNHXsNqRLytm3KXlDyEmZwPCioiMQzjUTEEezeuyv+mhh5gRRjK3UXkyTlzxizUXTDB1ZMys/tzroGK6nvLQfVAAlZ2Uk8yHI+6YdXOxQqiVW4xurmfPUzdRwVnTny6YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tG3fUU8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841EAC19423;
+	Tue, 31 Mar 2026 16:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976065;
-	bh=iTe7D5iPbjHvs1M1kPVUe5/6MaynOoXPf9OgiCIiBKg=;
+	s=korg; t=1774975564;
+	bh=rtVFecSvs0kjaSQ91aaU9xmmqdCFXKGADyttldemOY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Wogo2wrjzprD/jf9D6JrLm2j8xeTqVxQSral3h/dJbg15rchvSuL/wVe/wZAvsee
-	 qPqI4g0Sry9tSZUpZGDLugMTMwcg/nUb0vQprlfZDuQQzpaik7YJEKhUbh24B62pX/
-	 dap+JFQPZcfrKoQKlWB6Fdn0p0qKxM7ObTZiVUMM=
+	b=tG3fUU8Pt38NAaOtf1XOwEkcaV5Ui+38RDcbCgbX61+K/OCdwLghnkkou+96asR/N
+	 79Bo77FDhQwqnfiLrvrXQ8st3XfUD+Nn5FLtCPyyGW7HYlsqAY77z5oCMnryf3ZE4K
+	 KS7MAk0LHhix2PBUNIIHIZNiVllscYeb9JJ/cKgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.12 193/244] ext4: fix use-after-free in update_super_work when racing with umount
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 310/342] mm/damon/core: avoid use of half-online-committed context
 Date: Tue, 31 Mar 2026 18:22:23 +0200
-Message-ID: <20260331161748.879282509@linuxfoundation.org>
+Message-ID: <20260331161810.330097263@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,151 +63,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232173-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,suse.cz,shopee.com,gmail.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231980-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,suse.cz:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 00C2236ED40
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email,sashiko.dev:url]
+X-Rspamd-Queue-Id: 5A8E336E40F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit d15e4b0a418537aafa56b2cb80d44add83e83697 upstream.
+commit 26f775a054c3cda86ad465a64141894a90a9e145 upstream.
 
-Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
-filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
-to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
-reads during unmount. However, this introduced a use-after-free because
-update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
-accesses the kobject's kernfs_node after it has been freed by kobject_del()
-in ext4_unregister_sysfs():
+One major usage of damon_call() is online DAMON parameters update.  It is
+done by calling damon_commit_ctx() inside the damon_call() callback
+function.  damon_commit_ctx() can fail for two reasons: 1) invalid
+parameters and 2) internal memory allocation failures.  In case of
+failures, the damon_ctx that attempted to be updated (commit destination)
+can be partially updated (or, corrupted from a perspective), and therefore
+shouldn't be used anymore.  The function only ensures the damon_ctx object
+can safely deallocated using damon_destroy_ctx().
 
-  update_super_work                ext4_put_super
-  -----------------                --------------
-                                   ext4_unregister_sysfs(sb)
-                                     kobject_del(&sbi->s_kobj)
-                                       __kobject_del()
-                                         sysfs_remove_dir()
-                                           kobj->sd = NULL
-                                         sysfs_put(sd)
-                                           kernfs_put()  // RCU free
-  ext4_notify_error_sysfs(sbi)
-    sysfs_notify(&sbi->s_kobj)
-      kn = kobj->sd              // stale pointer
-      kernfs_get(kn)             // UAF on freed kernfs_node
-                                   ext4_journal_destroy()
-                                     flush_work(&sbi->s_sb_upd_work)
+The API callers are, however, calling damon_commit_ctx() only after
+asserting the parameters are valid, to avoid damon_commit_ctx() fails due
+to invalid input parameters.  But it can still theoretically fail if the
+internal memory allocation fails.  In the case, DAMON may run with the
+partially updated damon_ctx.  This can result in unexpected behaviors
+including even NULL pointer dereference in case of damos_commit_dests()
+failure [1].  Such allocation failure is arguably too small to fail, so
+the real world impact would be rare.  But, given the bad consequence, this
+needs to be fixed.
 
-Instead of reordering the teardown sequence, fix this by making
-ext4_notify_error_sysfs() detect that sysfs has already been torn down
-by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
-in that case. A dedicated mutex (s_error_notify_mutex) serializes
-ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
-to prevent TOCTOU races where the kobject could be deleted between the
-state_in_sysfs check and the sysfs_notify() call.
+Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
+the damon_commit_ctx() failure on the damon_ctx object.  For this,
+introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
+when it is failed.  kdamond_call() checks if the field is set after each
+damon_call_control->fn() is executed.  If it is set, ignore remaining
+callback requests and return.  All kdamond_call() callers including
+kdamond_fn() also check the maybe_corrupted field right after
+kdamond_call() invocations.  If the field is set, break the kdamond_fn()
+main loop so that DAMON sill doesn't use the context that might be
+corrupted.
 
-Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+[sj@kernel.org: let kdamond_call() with cancel regardless of maybe_corrupted]
+  Link: https://lkml.kernel.org/r/20260320031553.2479-1-sj@kernel.org
+  Link: https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
+Link: https://lkml.kernel.org/r/20260319145218.86197-1-sj@kernel.org
+Link: https://lore.kernel.org/20260319043309.97966-1-sj@kernel.org [1]
+Fixes: 3301f1861d34 ("mm/damon/sysfs: handle commit command using damon_call()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h  |    1 +
- fs/ext4/super.c |    1 +
- fs/ext4/sysfs.c |   10 +++++++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ include/linux/damon.h |    7 +++++++
+ mm/damon/core.c       |    9 ++++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1534,6 +1534,7 @@ struct ext4_sb_info {
- 	struct proc_dir_entry *s_proc;
- 	struct kobject s_kobj;
- 	struct completion s_kobj_unregister;
-+	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
- 	struct super_block *s_sb;
- 	struct buffer_head *s_mmp_bh;
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -806,7 +806,14 @@ struct damon_ctx {
+ 	struct damos_walk_control *walk_control;
+ 	struct mutex walk_control_lock;
  
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5313,6 +5313,7 @@ static int __ext4_fill_super(struct fs_c
++	/*
++	 * indicate if this may be corrupted.  Currentonly this is set only for
++	 * damon_commit_ctx() failure.
++	 */
++	bool maybe_corrupted;
++
+ /* public: */
++	/* Working thread of the given DAMON context */
+ 	struct task_struct *kdamond;
+ 	struct mutex kdamond_lock;
  
- 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
- 	spin_lock_init(&sbi->s_error_lock);
-+	mutex_init(&sbi->s_error_notify_mutex);
- 	INIT_WORK(&sbi->s_sb_upd_work, update_super_work);
- 
- 	err = ext4_group_desc_init(sb, es, logical_sb_block, &first_not_zeroed);
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -551,7 +551,10 @@ static const struct kobj_type ext4_feat_
- 
- void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1241,6 +1241,7 @@ int damon_commit_ctx(struct damon_ctx *d
  {
--	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_lock(&sbi->s_error_notify_mutex);
-+	if (sbi->s_kobj.state_in_sysfs)
-+		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- }
- 
- static struct kobject *ext4_root;
-@@ -564,8 +567,10 @@ int ext4_register_sysfs(struct super_blo
  	int err;
  
- 	init_completion(&sbi->s_kobj_unregister);
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
- 				   "%s", sb->s_id);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- 	if (err) {
- 		kobject_put(&sbi->s_kobj);
- 		wait_for_completion(&sbi->s_kobj_unregister);
-@@ -598,7 +603,10 @@ void ext4_unregister_sysfs(struct super_
++	dst->maybe_corrupted = true;
+ 	if (!is_power_of_2(src->min_region_sz))
+ 		return -EINVAL;
  
- 	if (sbi->s_proc)
- 		remove_proc_subtree(sb->s_id, ext4_proc_root);
-+
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	kobject_del(&sbi->s_kobj);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
+@@ -1266,6 +1267,7 @@ int damon_commit_ctx(struct damon_ctx *d
+ 	dst->addr_unit = src->addr_unit;
+ 	dst->min_region_sz = src->min_region_sz;
+ 
++	dst->maybe_corrupted = false;
+ 	return 0;
  }
  
- int __init ext4_init_sysfs(void)
+@@ -2610,10 +2612,11 @@ static void kdamond_call(struct damon_ct
+ 			complete(&control->completion);
+ 		} else if (control->canceled && control->dealloc_on_cancel) {
+ 			kfree(control);
+-			continue;
+ 		} else {
+ 			list_add(&control->list, &repeat_controls);
+ 		}
++		if (!cancel && ctx->maybe_corrupted)
++			break;
+ 	}
+ 	control = list_first_entry_or_null(&repeat_controls,
+ 			struct damon_call_control, list);
+@@ -2646,6 +2649,8 @@ static int kdamond_wait_activation(struc
+ 		kdamond_usleep(min_wait_time);
+ 
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			return -EINVAL;
+ 		damos_walk_cancel(ctx);
+ 	}
+ 	return -EBUSY;
+@@ -2731,6 +2736,8 @@ static int kdamond_fn(void *data)
+ 		 * kdamond_merge_regions() if possible, to reduce overhead
+ 		 */
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			break;
+ 		if (!list_empty(&ctx->schemes))
+ 			kdamond_apply_schemes(ctx);
+ 		else
 
 
 
