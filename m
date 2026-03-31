@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPTIFFEBzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:01 +0200
+	id CHceNfcCzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67A536E56A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB4E36E960
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12F87323F8A6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96A12315E227
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF01428473;
-	Tue, 31 Mar 2026 16:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC40423149;
+	Tue, 31 Mar 2026 16:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neLssQvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJUDfAFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26F640710B;
-	Tue, 31 Mar 2026 16:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7218346E46;
+	Tue, 31 Mar 2026 16:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975166; cv=none; b=WgqV2dqN/BFgOFNhdEpGDvg4sMEorKG/D2aaVgPQUeDxXUfI34ZM8/95f6dFEsI+Iy4nw2fajAQHIYeRzyjMulhre/qFePVW8BWWOiStt5J4yvk9Npj3HhmJKTaQlwqPaaMpduZ2MyxbLX2MpV0xstXxTrXC010dptvgWFya0To=
+	t=1774975678; cv=none; b=fnpyEkaWTKnedEp7D4mFBe/mfBkVbMENC4lyJcR2YvWIR7zOgRUyhWoxbbuWKDxrafHSImDFJQNY2iCcgWGS3/2h4G2Biss6FYL57DmQ3NSlD0EooXkEJq2zWDeYmDT3uKL33xyRcLoSWsSdY8XZ1Csa1g3v16S4V0xDei53yvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975166; c=relaxed/simple;
-	bh=ewcXxxzb3K/wqUzwc0JVAy+czjeT78aW24XOByKM1m4=;
+	s=arc-20240116; t=1774975678; c=relaxed/simple;
+	bh=w8SAAfmuXS/Qkbh2Agiv1QytUdz6Eo99oBHJcjdOIdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTCS3uke/mw1ECGpcwU5G1fG0Tt4JnhSr0c5qq1VhJu9mJ3A4TEzUs6/BsYPv5AIpNMxM+uv+s7xFe3kVvM7bqZOSZoou0bkvyNeX9itul0knTidpBbKRNsXJ+LqPdz28RnBGmbNHLxg/U/mTHQXbxzxgj5NjzNMTFjqhrQ/s2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neLssQvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5952CC19423;
-	Tue, 31 Mar 2026 16:39:26 +0000 (UTC)
+	 MIME-Version; b=m5EjmzQQi6O9HPkbQkpDV7XQpvdyRuoVWmIpmsGZOdINiGqvmNuHiQfpOggxD8PBYr2poC8NOY8p/yIWAryuzE8imeWeaOeiwZJBSiMF+NaYjE7WjVHHoa87DbQAzAY8qkGog1PKy5unI58MwNwdDTm17bKxszh9nQzGADEpGuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJUDfAFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D832C19423;
+	Tue, 31 Mar 2026 16:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975166;
-	bh=ewcXxxzb3K/wqUzwc0JVAy+czjeT78aW24XOByKM1m4=;
+	s=korg; t=1774975678;
+	bh=w8SAAfmuXS/Qkbh2Agiv1QytUdz6Eo99oBHJcjdOIdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neLssQvDzRR8/KHU0ooX/SZe2EfgKjSlWRM8O1UDtBx4Ww3kyl+/Wng2Mr5kBXh4m
-	 3t0XAI8+bj4yth6LOV7H1RbLF0W1K578PhlKUgIwXMI1VbbXh2xMSKB6DVIaO/H/q3
-	 syDGLOwSPrXptq8VtvlAhR5FAJBOVpEv+pZJfk0Q=
+	b=oJUDfAFM144/87WA29E60HJHwAWBMvzM+WzRyYIKH9jifAifkOuNDnQ6oHgbHpgrT
+	 /jZH69KP3smchND+U6wFn8q9KgIR1j3QV0YUw76+Th+snS6Z1elmhi2fES+XxSAlUa
+	 6swa9SSTR1gSaJ5GiaHFCoQwssauGrgKdSH09DTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 162/342] RDMA/irdma: Return EINVAL for invalid arp index error
+Subject: [PATCH 6.12 045/244] ALSA: hda/realtek: add quirk for ASUS UM6702RC
 Date: Tue, 31 Mar 2026 18:19:55 +0200
-Message-ID: <20260331161804.972482031@linuxfoundation.org>
+Message-ID: <20260331161743.361464455@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231825-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232024-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,96 +89,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D67A536E56A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,suse.de:email]
+X-Rspamd-Queue-Id: 5DB4E36E960
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit 7221f581eefa79ead06e171044f393fb7ee22f87 ]
+[ Upstream commit 0d3429f12133c2ca47aa82ddab2342bc360c47d3 ]
 
-When rdma_connect() fails due to an invalid arp index, user space rdma core
-reports ENOMEM which is confusing. Modify irdma_make_cm_node() to return the
-correct error code.
+The sound card of this machine cannot adjust the volume, it can only
+be 0 or 100%. The reason is that the DAC with pin 0x17 is connected
+to 0x06. Testing found that connecting 0x02 can fix this problem.
 
-Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220356
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260306123317.575346-1-zhangheng@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/cm.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
-index 128cfcf27714d..d14a381beb661 100644
---- a/drivers/infiniband/hw/irdma/cm.c
-+++ b/drivers/infiniband/hw/irdma/cm.c
-@@ -2241,11 +2241,12 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- 	int oldarpindex;
- 	int arpindex;
- 	struct net_device *netdev = iwdev->netdev;
-+	int ret;
- 
- 	/* create an hte and cm_node for this instance */
- 	cm_node = kzalloc(sizeof(*cm_node), GFP_ATOMIC);
- 	if (!cm_node)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* set our node specific transport info */
- 	cm_node->ipv4 = cm_info->ipv4;
-@@ -2348,8 +2349,10 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- 			arpindex = -EINVAL;
- 	}
- 
--	if (arpindex < 0)
-+	if (arpindex < 0) {
-+		ret = -EINVAL;
- 		goto err;
-+	}
- 
- 	ether_addr_copy(cm_node->rem_mac,
- 			iwdev->rf->arp_table[arpindex].mac_addr);
-@@ -2360,7 +2363,7 @@ irdma_make_cm_node(struct irdma_cm_core *cm_core, struct irdma_device *iwdev,
- err:
- 	kfree(cm_node);
- 
--	return NULL;
-+	return ERR_PTR(ret);
- }
- 
- static void irdma_destroy_connection(struct irdma_cm_node *cm_node)
-@@ -3021,8 +3024,8 @@ static int irdma_create_cm_node(struct irdma_cm_core *cm_core,
- 
- 	/* create a CM connection node */
- 	cm_node = irdma_make_cm_node(cm_core, iwdev, cm_info, NULL);
--	if (!cm_node)
--		return -ENOMEM;
-+	if (IS_ERR(cm_node))
-+		return PTR_ERR(cm_node);
- 
- 	/* set our node side to client (active) side */
- 	cm_node->tcp_cntxt.client = 1;
-@@ -3219,9 +3222,9 @@ void irdma_receive_ilq(struct irdma_sc_vsi *vsi, struct irdma_puda_buf *rbuf)
- 		cm_info.cm_id = listener->cm_id;
- 		cm_node = irdma_make_cm_node(cm_core, iwdev, &cm_info,
- 					     listener);
--		if (!cm_node) {
-+		if (IS_ERR(cm_node)) {
- 			ibdev_dbg(&cm_core->iwdev->ibdev,
--				  "CM: allocate node failed\n");
-+				  "CM: allocate node failed ret=%ld\n", PTR_ERR(cm_node));
- 			refcount_dec(&listener->refcnt);
- 			return;
- 		}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 79bbe9894c35f..689b5510a95e8 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11234,6 +11234,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1e8e, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1eb3, "ASUS Ally RCLA72", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x1ed3, "ASUS HN7306W", ALC287_FIXUP_CS35L41_I2C_2),
++	HDA_CODEC_QUIRK(0x1043, 0x1ee2, "ASUS UM6702RA/RC", ALC285_FIXUP_ASUS_I2C_SPEAKER2_TO_DAC1),
+ 	SND_PCI_QUIRK(0x1043, 0x1ee2, "ASUS UM6702RA/RC", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1c52, "ASUS Zephyrus G15 2022", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1f11, "ASUS Zephyrus G14", ALC289_FIXUP_ASUS_GA401),
 -- 
-2.53.0
+2.51.0
 
 
 
