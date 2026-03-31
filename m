@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIbiMCwHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:41:00 +0200
+	id AF8zIrUBzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-231891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F337336F1EF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:40:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7E336E6D5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1A7B4307048E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A341C31E2B94
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC3B3002A9;
-	Tue, 31 Mar 2026 17:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2BA425CE4;
+	Tue, 31 Mar 2026 16:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvdGHlkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uL2Sr1L8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9D22FDC5E;
-	Tue, 31 Mar 2026 17:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7D21C861A;
+	Tue, 31 Mar 2026 16:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976672; cv=none; b=rhb2OAVcERG19iXu1Dj33op2FDuEy7vZNkQSHiivPrulpH5JEb3gjdjStsY4eNBCPa98B5RKToZR6ZHIOmLOy3mb5yYM3y/QUfSfui0iociQ06zPQ8pyY/FRo+ZFJ6PwH9knnbqGxmr0UY3BIfje4NmtqIAYvM5TFUaJm8pgkQQ=
+	t=1774975334; cv=none; b=RtAPhuRB7umxb3Fq22mQj1iC5GuavaMRquHGdKuLrPm6kItTPnVPxn40cagihHJO6ykHArE0F8/f2m7JA91Qi37CGOh4w86dFGCGrTDOlXYQgXIdA+7IlY3faVv+0PyvZ8UEaV8GSHs+4KIPTyl+nnA81rsJ41o24qwkbZSYr80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976672; c=relaxed/simple;
-	bh=lGRElcKIycp+6AUvMu0GgammNB6WhILNtAceT2O1B1I=;
+	s=arc-20240116; t=1774975334; c=relaxed/simple;
+	bh=hN/QO3R8uIQ0eePPb7M7vngSJjOvdvGUur7KzjBOvpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VpbUWWcAxX7GsSSHCeqjX3rHRe3BZQ/5LRIVSjf2e1P629onD5L1tCY60jptR9kEX8/K3T/n0MXf4ZNitmMrFAherLQfFPR2SYtKyMuVTO1lm/oixuhOFZpMSL3geWjD1Fy/wMAqY18efnRMq7hyJKhmlNFJ3Bx2XRI7b4CG33o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvdGHlkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44855C19423;
-	Tue, 31 Mar 2026 17:04:32 +0000 (UTC)
+	 MIME-Version; b=sr4mJ5BJbw+g1p9X75CJn1Kh9Ka/BVw4iGreI/wLi+X0VSd/M6LDPWVHefRprNZdQOd5alA/q20fTN7RWCD0Wf98OhrN5vBFr9uqfjzm8f4KvHwuINKPi04rB+L/dEuIjXCEEItKoHBNU3fTMEMPeg7XfiAX/3xJJu5FIJd+JG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uL2Sr1L8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13387C19423;
+	Tue, 31 Mar 2026 16:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976672;
-	bh=lGRElcKIycp+6AUvMu0GgammNB6WhILNtAceT2O1B1I=;
+	s=korg; t=1774975334;
+	bh=hN/QO3R8uIQ0eePPb7M7vngSJjOvdvGUur7KzjBOvpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvdGHlkUz/mQVSZfE/snkLsscLxzAikueE9cIm3MQqj1CnyU5UzzIxtVJetTbfZJ8
-	 0vEsgYsFxTIvzh9hShf8uwOoq9cCZbvppaDL/MM+pfsgXydesy/tRMkJs5OiCii5A5
-	 AhTRuFOFHtSS2/t8ovXqAonUxK8/KUv4/6UcpLO4=
+	b=uL2Sr1L8nv8MMT4TQ08/O49ky4Gdsmh/xjk0qrpcLEVnb4pg9lPvEbWUXxvoDo14k
+	 5doITN1XywqJafssyRM65W7eC9aucDhNTsESoOilHSbSgcw7hJqd/zdYtoxAqZYLAS
+	 JAZCSinQKYo5GRLxY21IfJi8ohTlMW39Q06Mh5tQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 183/309] ksmbd: do not expire session on binding failure
-Date: Tue, 31 Mar 2026 18:21:26 +0200
-Message-ID: <20260331161800.199242873@linuxfoundation.org>
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.19 254/342] iomap: fix invalid folio access when i_blkbits differs from I/O granularity
+Date: Tue, 31 Mar 2026 18:21:27 +0200
+Message-ID: <20260331161808.302172556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +67,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232409-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wdc.com,gmail.com,lst.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-231891-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: F337336F1EF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,wdc.com:email]
+X-Rspamd-Queue-Id: 0B7E336E6D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-commit 9bbb19d21ded7d78645506f20d8c44895e3d0fb9 upstream.
+commit bd71fb3fea9945987053968f028a948997cba8cc upstream.
 
-When a multichannel session binding request fails (e.g. wrong password),
-the error path unconditionally sets sess->state = SMB2_SESSION_EXPIRED.
-However, during binding, sess points to the target session looked up via
-ksmbd_session_lookup_slowpath() -- which belongs to another connection's
-user. This allows a remote attacker to invalidate any active session by
-simply sending a binding request with a wrong password (DoS).
+Commit aa35dd5cbc06 ("iomap: fix invalid folio access after
+folio_end_read()") partially addressed invalid folio access for folios
+without an ifs attached, but it did not handle the case where
+1 << inode->i_blkbits matches the folio size but is different from the
+granularity used for the IO, which means IO can be submitted for less
+than the full folio for the !ifs case.
 
-Fix this by skipping session expiration when the failed request was
-a binding attempt, since the session does not belong to the current
-connection. The reference taken by ksmbd_session_lookup_slowpath() is
-still correctly released via ksmbd_user_session_put().
+In this case, the condition:
 
+  if (*bytes_submitted == folio_len)
+    ctx->cur_folio = NULL;
+
+in iomap_read_folio_iter() will not invalidate ctx->cur_folio, and
+iomap_read_end() will still be called on the folio even though the IO
+helper owns it and will finish the read on it.
+
+Fix this by unconditionally invalidating ctx->cur_folio for the !ifs
+case.
+
+Reported-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/linux-fsdevel/b3dfe271-4e3d-4922-b618-e73731242bca@wdc.com/
+Fixes: b2f35ac4146d ("iomap: add caller-provided callbacks for read and readahead")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Link: https://patch.msgid.link/20260317203935.830549-1-joannelkoong@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/iomap/buffered-io.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1948,8 +1948,14 @@ out_err:
- 			if (sess->user && sess->user->flags & KSMBD_USER_FLAG_DELAY_SESSION)
- 				try_delay = true;
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -506,6 +506,7 @@ static int iomap_read_folio_iter(struct
+ 	loff_t length = iomap_length(iter);
+ 	struct folio *folio = ctx->cur_folio;
+ 	size_t folio_len = folio_size(folio);
++	struct iomap_folio_state *ifs;
+ 	size_t poff, plen;
+ 	loff_t pos_diff;
+ 	int ret;
+@@ -517,7 +518,7 @@ static int iomap_read_folio_iter(struct
+ 		return iomap_iter_advance(iter, length);
+ 	}
  
--			sess->last_active = jiffies;
--			sess->state = SMB2_SESSION_EXPIRED;
-+			/*
-+			 * For binding requests, session belongs to another
-+			 * connection. Do not expire it.
-+			 */
-+			if (!(req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
-+				sess->last_active = jiffies;
-+				sess->state = SMB2_SESSION_EXPIRED;
-+			}
- 			ksmbd_user_session_put(sess);
- 			work->sess = NULL;
- 			if (try_delay) {
+-	ifs_alloc(iter->inode, folio, iter->flags);
++	ifs = ifs_alloc(iter->inode, folio, iter->flags);
+ 
+ 	length = min_t(loff_t, length, folio_len - offset_in_folio(folio, pos));
+ 	while (length) {
+@@ -548,11 +549,15 @@ static int iomap_read_folio_iter(struct
+ 
+ 			*bytes_submitted += plen;
+ 			/*
+-			 * If the entire folio has been read in by the IO
+-			 * helper, then the helper owns the folio and will end
+-			 * the read on it.
++			 * Hand off folio ownership to the IO helper when:
++			 * 1) The entire folio has been submitted for IO, or
++			 * 2) There is no ifs attached to the folio
++			 *
++			 * Case (2) occurs when 1 << i_blkbits matches the folio
++			 * size but the underlying filesystem or block device
++			 * uses a smaller granularity for IO.
+ 			 */
+-			if (*bytes_submitted == folio_len)
++			if (*bytes_submitted == folio_len || !ifs)
+ 				ctx->cur_folio = NULL;
+ 		}
+ 
 
 
 
