@@ -1,214 +1,172 @@
-Return-Path: <stable+bounces-231330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIrWMuZmy2mAHQYAu9opvQ
-	(envelope-from <stable+bounces-231330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:17:10 +0200
+	id YE8WEklny2mAHQYAu9opvQ
+	(envelope-from <stable+bounces-231332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:18:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771673646D3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:17:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B87A1364707
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B2E1A301C057
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 06:17:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5134730210DB
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 06:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81656385509;
-	Tue, 31 Mar 2026 06:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3415438737F;
+	Tue, 31 Mar 2026 06:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/dPmRFB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0CEs0Ci"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F6A3ACA72
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 06:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3F634CFCF
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 06:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774937826; cv=none; b=hDxU/m7jb8i1+QadzhJHbR68dGd+orIpLPdjYDMlmYZqFrUMzov+5ST8HiuQAPaG7SVsDhGgyJFtGafSdy2qfDPMCmE4eLMKrEzrfXrmqxBsKDO0y92i7MdUMDsJKki3SiHEN8CfDo4mxuvvxzMAnuLxMKg/d1g49e13/62HkWo=
+	t=1774937918; cv=none; b=PZ8OzTBUH6rx/sWtTkgPqGuUsdLa6sux4dwM6zINo7yrWKrD3p8m9t8ONDljceGAkBokz/QRw3n93RyHl6518/4cHefbNAySdiK9yqWq7orIE+SvDlbz2osptjqyUztMt3+zkXbP8Nnjd5QkqGyvWtrwzaJWSBuSBRgTYy+932U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774937826; c=relaxed/simple;
-	bh=32Nkju6QPo7DcDfAct7IAD8EQeQKUz1dOWtW6JHOpPk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IT2EEaQeAakoDwG+8u85C/K64b3GAYON8tWkbG6+Fzfoaw1Xx+Nw/H4XQ+M8enTAC7QtfcpVLDK9b7PqmFPGRmAD28RB+iIPDxEqHPoV82LaCWysKoYPHXkncpT4Ayin7tOG46b2nlznyrAMHfTK3m6Gj3lFvqCFRIfFGCGFppQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/dPmRFB; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38be5d7c27cso50736511fa.0
-        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 23:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774937822; x=1775542622; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=slrIynpsyCDGbw/DVJ139y58tD8HDF7VkYtGZ4Dd10U=;
-        b=P/dPmRFBIohgW+J1TbSt/GE0XAz0coqH2iZXs2lf31kShRPnxveKhLhjnVtYaAMRmP
-         ekQ+yBAxsKy/D4NpGexvd9aIl8hndoaQnUwSyq9OM95X5c2OnhfDT/BegYZ50cfzANPy
-         W21i3Id2f0l9Ar6gpzFX0EsCcZc1iD7d6Svpw7/9sZzTwn+5TQn/KCtxFF5xSzEel+1Q
-         K5ERR+HkEbnasS0hFmbw6f7Ke/r/umNNifE7Mtd7b+Qd4zd981TvRGztvIF/yjfTL/A+
-         wmbRNuX/fpBdEaoa3f4+bdar5M/B9y0Npq05VkBRcPlgG7dzQy0R1hwH/DCHzeDFaEJ2
-         Cu+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774937822; x=1775542622;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=slrIynpsyCDGbw/DVJ139y58tD8HDF7VkYtGZ4Dd10U=;
-        b=MEDfWYFzM+xEF7wdPiUnzQx76u+k7nviDh+RkYfxHjtrg0fHofbBxqi1cUpyH+ZgvP
-         nBFpVifat3SJvfNeWdomqW+Fdspoe9kyH2eHeap6tYBZ4ATXdYY9vATwpUrLGEIQNdmk
-         wfn6/l/IkMhqo8lgS2DtqNN/+ofDNgnPDsTe4dyOO/AEXlYEYzh6ryPDB0OvJd9HHGql
-         DJxvLK+NJ5B41RuWaP23Wm0TZEJfqpkLBDBHBzpjz3DbXvn+OdXTtsIUitaV40lVzX0i
-         kF/aWjDr9JSLev9jsuptDvp2VbteBOFbOo/+kzi0luTgMZljGzUpLvCfv5yDbUw4cbFM
-         9sfA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjPG77k4T1XKZ8mXMnINlv1NCJsludv70ExoBiZp6SYarTSUAdcraAaCv3JcoBXIgdTDR5wE4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzi1Ht8IzIyT0snudCqFcglY6ko/oDQfVjFH77TJ2+TvpqNvhOS
-	cZkhyfoU+2EG7P6cYE2MeA4uDogD4zzHiwjI5azds0m9Tr8blbKozyYT
-X-Gm-Gg: ATEYQzx9DNhCS7cUPmPnXItjaWYe8teYXAlOYKg65TzNN6u+8beLX3vls9UNSrMWpac
-	3On2bpwi4V3+SwOZ8CyH61NRU52z083/bcangieXO/jDN7SYj6+z4g6U1AWnxJR5ntKc1JMqM7Z
-	6iJDI2OQEx+ZyE4ircqKnX7xgiUNEZkdhvf16MMj6Cs14C289y6I/FEaV3PaluxrksPEF6dsQf2
-	oc+xzUupJjmTI71bIqPnWuAl3fLYpz8S0iOrwk1hp7MJ6UJx/ErU/FF9w3AWiHtRg3bYStQM0so
-	ZYf4GVBLA6IHVY+V1Sh6zjToeF4NTddAkiwgZzoXB9hznw2dmnvD9I2hBZlCURRMXfxF71X6kLs
-	vayDBRrn57MXWQX+a/HrNIwA/hxfUd5PI4rTyu18QQ3h5a+mbWDpzALiPn4x121Tqi6aCSAswMC
-	itIydOUaCrHw428fXVpWvLlT/7cw0dw+uTww==
-X-Received: by 2002:a05:6512:3b2c:b0:5a2:b3fc:b877 with SMTP id 2adb3069b0e04-5a2b3fcbaacmr2578412e87.25.1774937821564;
-        Mon, 30 Mar 2026 23:17:01 -0700 (PDT)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b1455e14sm2145277e87.64.2026.03.30.23.17.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 23:17:00 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: kraxel@redhat.com,
-	vivek.kasireddy@intel.com
-Cc: sumit.semwal@linaro.org,
-	christian.koenig@amd.com,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH v2] dma-buf/udmabuf: skip redundant cpu sync to fix cacheline EEXIST warning
-Date: Tue, 31 Mar 2026 11:16:57 +0500
-Message-ID: <20260331061657.79983-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1774937918; c=relaxed/simple;
+	bh=dmQ29kP7K8FBF47XhosSKu5r0d1kMW1R0rtkLUub+i0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bHxgj6hdzZPkSNkySBSyCw0g8e7SLbMaqTqEMmBKXzigoUzD2S/MA/sWou1TxXUmtWEhYuMgQiFNmF5ILy7MQpNVwaWWgy+2WHaOPvnE4/rNpS6FLGm2Ktn2vuTv1jBbWzIowtYqoDjdvIYXqvTJR5fiX3Mr48YHL+Cg/CIYHkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0CEs0Ci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A7697C19424;
+	Tue, 31 Mar 2026 06:18:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774937917;
+	bh=dmQ29kP7K8FBF47XhosSKu5r0d1kMW1R0rtkLUub+i0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=F0CEs0CiY7D26OPwi9UxwC/EcP+1JzfIUxis2ntIX+9V1GbrCi8b8tLGm8rrL2oUJ
+	 tvkgfNnAnlDt7/3gh2lV4qaQMbHpWKAtzX2n762yTy/B7zvHo2i8b0z80/ZU7Klqad
+	 lgwR/c7OfZrBPocEy+Cuse3bRvtoQsR7MZj48DJXzyqYeX/1I+bBZm9SCtlSZNoVFh
+	 2LkmS3Lwzcc9PNlhWdE6J4wFaDldCPM6UhDWEjy/Xtig+vNQRXyr2DE1G69tAT7QzM
+	 oCquu2w82bxTgU9/vr/Hne5FP3T3u5pG3CVMUngCi1wVMx5CNxrAqBkKN4k645//8i
+	 rDM3CF5G/f3Tg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94537FF60D0;
+	Tue, 31 Mar 2026 06:18:37 +0000 (UTC)
+From: Kyle Farnung via B4 Relay <devnull+kfarnung.gmail.com@kernel.org>
+Date: Mon, 30 Mar 2026 23:17:47 -0700
+Subject: [PATCH] wifi: ath11k: apply existing PM quirk to ThinkPad P14s Gen
+ 5 AMD
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260330-p14s-pm-quirk-v1-1-cf2fa39cc2d5@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDY2MD3QJDk2LdglzdwtLMomxdg0RTw6REQ0sjY9M0JaCegqLUtMwKsHn
+ RsbW1AB5tVOlfAAAA
+X-Change-ID: 20260330-p14s-pm-quirk-0a51ba19235f
+To: jjohnson@kernel.org
+Cc: mpearson-lenovo@squebb.ca, stable@vger.kernel.org, 
+ Kyle Farnung <kfarnung@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774937917; l=1833;
+ i=kfarnung@gmail.com; s=20260330; h=from:subject:message-id;
+ bh=kq96BemCwbcNxO2n44+TaDQg1Fcri89cgz/ZQ9TgDdg=;
+ b=pa5pjOR2vnhafTL+EdDpqtqMPiEzGYbPgE054MTKHj0n1HJxummszMac60OE+n92t2gaDjBcI
+ Yqltxiep5NKBk37sa8X4egufw0LmuqRukWlYVVDl/otSgFeDVKz+tA6
+X-Developer-Key: i=kfarnung@gmail.com; a=ed25519;
+ pk=47jis5OdLKFgZynNQVqkx1mTGiEgFTUX+MecmG9rbmE=
+X-Endpoint-Received: by B4 Relay for kfarnung@gmail.com/20260330 with
+ auth_id=706
+X-Original-From: Kyle Farnung <kfarnung@gmail.com>
+Reply-To: kfarnung@gmail.com
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231330-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linaro.org,amd.com,lists.freedesktop.org,vger.kernel.org,lists.linaro.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231332-lists,stable=lfdr.de,kfarnung.gmail.com];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[squebb.ca,vger.kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	HAS_REPLYTO(0.00)[kfarnung@gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.979];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 771673646D3
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lenovo.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B87A1364707
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When CONFIG_DMA_API_DEBUG_SG is enabled, importing a udmabuf into a DRM
-driver (e.g. amdgpu for video playback in GNOME Videos / Showtime)
-triggers a spurious warning:
+From: Kyle Farnung <kfarnung@gmail.com>
 
-  DMA-API: amdgpu 0000:03:00.0: cacheline tracking EEXIST, \
-      overlapping mappings aren't supported
-  WARNING: kernel/dma/debug.c:619 at add_dma_entry+0x473/0x5f0
+Some ThinkPad P14s Gen 5 AMD systems experience suspend/resume
+reliability issues similar to those reported in [1]. These platforms
+were not previously included in the ath11k PM quirk table.
 
-The call chain is:
+Add DMI matches for product IDs 21ME and 21MF to apply the existing
+ATH11K_PM_WOW override, improving suspend/resume behavior on these
+systems.
 
-  amdgpu_cs_ioctl
-   -> amdgpu_ttm_backend_bind
-    -> dma_buf_map_attachment
-     -> [udmabuf] map_udmabuf -> get_sg_table
-      -> dma_map_sgtable(dev, sg, direction, 0)  // attrs=0
-       -> debug_dma_map_sg -> add_dma_entry -> EEXIST
+Tested on a ThinkPad P14s Gen 5 AMD (21ME) running 6.19.9.
 
-This happens because udmabuf builds a per-page scatter-gather list via
-sg_set_folio().  When begin_cpu_udmabuf() has already created an sg
-table mapped for the misc device, and an importer such as amdgpu maps
-the same pages for its own device via map_udmabuf(), the DMA debug
-infrastructure sees two active mappings whose physical addresses share
-cacheline boundaries and warns about the overlap.
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+[2] https://pcsupport.lenovo.com/us/en/products/laptops-and-netbooks/thinkpad-p-series-laptops/thinkpad-p14s-gen-5-type-21me-21mf/
 
-The DMA_ATTR_SKIP_CPU_SYNC flag suppresses this check in
-add_dma_entry() because it signals that no CPU cache maintenance is
-performed at map/unmap time, making the cacheline overlap harmless.
-
-All other major dma-buf exporters already pass this flag:
-  - drm_gem_map_dma_buf() passes DMA_ATTR_SKIP_CPU_SYNC
-  - amdgpu_dma_buf_map() passes DMA_ATTR_SKIP_CPU_SYNC
-
-The CPU sync at map/unmap time is also redundant for udmabuf:
-begin_cpu_udmabuf() and end_cpu_udmabuf() already perform explicit
-cache synchronization via dma_sync_sgtable_for_cpu/device() when CPU
-access is requested through the dma-buf interface.
-
-Pass DMA_ATTR_SKIP_CPU_SYNC to dma_map_sgtable() and
-dma_unmap_sgtable() in udmabuf to suppress the spurious warning and
-skip the redundant sync.
-
-Fixes: 284562e1f348 ("udmabuf: implement begin_cpu_access/end_cpu_access hooks")
+Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
 ---
+ drivers/net/wireless/ath/ath11k/core.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-v1 -> v2:
-  - Rebased on drm-tip to resolve conflict with folio conversion
-    patches. No code change, same two-line fix.
-
-v1: https://lore.kernel.org/all/20260317053653.28888-1-mikhail.v.gavrilov@gmail.com/
-
- drivers/dma-buf/udmabuf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index 94b26ea706a3..bced421c0d65 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -145,7 +145,7 @@ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
- 	if (ret < 0)
- 		goto err_alloc;
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 3f6f4db5b7ee1aba79fd7526e5d59d068e0f4a2e..21d366224e75904feeae6cb9c93d9ef692d127fe 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1041,6 +1041,20 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21D5"),
+ 		},
+ 	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* P14s G5 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* P14s G5 AMD #2 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21MF"),
++		},
++	},
+ 	{}
+ };
  
--	ret = dma_map_sgtable(dev, sg, direction, 0);
-+	ret = dma_map_sgtable(dev, sg, direction, DMA_ATTR_SKIP_CPU_SYNC);
- 	if (ret < 0)
- 		goto err_map;
- 	return sg;
-@@ -160,7 +160,7 @@ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
- static void put_sg_table(struct device *dev, struct sg_table *sg,
- 			 enum dma_data_direction direction)
- {
--	dma_unmap_sgtable(dev, sg, direction, 0);
-+	dma_unmap_sgtable(dev, sg, direction, DMA_ATTR_SKIP_CPU_SYNC);
- 	sg_free_table(sg);
- 	kfree(sg);
- }
+
+---
+base-commit: dbd94b9831bc52a1efb7ff3de841ffc3457428ce
+change-id: 20260330-p14s-pm-quirk-0a51ba19235f
+
+Best regards,
 -- 
-2.53.0
+Kyle Farnung <kfarnung@gmail.com>
+
 
 
