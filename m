@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aO75LPz7y2mwNAYAu9opvQ
-	(envelope-from <stable+bounces-231805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:16 +0200
+	id QFj+HSP9y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-232033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4B036D54D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7ACF36D8BA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D68730ED910
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D5E3231305F1
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156A5426EB3;
-	Tue, 31 Mar 2026 16:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D5A423A9F;
+	Tue, 31 Mar 2026 16:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDzksqRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcnJkaon"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBFE426681;
-	Tue, 31 Mar 2026 16:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080BA413225;
+	Tue, 31 Mar 2026 16:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975114; cv=none; b=CvcnrE246CRW1P4orKbLhJpRXoO2D6wNBeB4+TKEDV5z3Q9r0aKg02QF18PxvWPrxzpOZevalqizcjyyFzeUsrTLBRdZah5IsZeMoZImlHHJ0HzNUnZdcOamH4zK2At4dOUdKavUBsIIHxlIxB0dUdDt0nAHeY3k2iWsbfLE9gY=
+	t=1774975702; cv=none; b=bLBd0kc4GqBkX0AMBxiv6eoRFJiClEi0ot5aQ+HH+E5Jfn0E/ebS4PPeVk3+UcTnCxHcL/pWgfDAAwQlDFUdUkSgcsHHsWJasvCBwEUf09dA0CoKsXNVrG0Z6GDo9lmkKkzdg52Z1WkT4Gi39v7n+SuxXrwtvobYZanhRi561Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975114; c=relaxed/simple;
-	bh=fKZ/aC/+dPDNA6yOfdJ8aIRrI7y94EM0jzlCiUHew0M=;
+	s=arc-20240116; t=1774975702; c=relaxed/simple;
+	bh=u8B5+8sMDWriSmI7WECcgkCisyLqmu9UMTQ63C2cU1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmQYhlVdRvB2M6ccUrdLucqqL/qE9z8ffAK7cK/fU11LgDDWySThWi2oFDK+F76cbndMovkj1SGZ6TM2lcQ/fE6O/KaNvfnUnFAYJTAIEvLkq5uAX+adOx53CqvKHualrGbVS9Hw+uxMc7NCwkn3BIwjHNjBDoS1zWgMF67fLKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDzksqRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659B2C19423;
-	Tue, 31 Mar 2026 16:38:34 +0000 (UTC)
+	 MIME-Version; b=Tzlv1Udtf/JokMX5u5UtS9t26WAqgSOLq3umCh4ws0Z+/Vt1DuEadklNOVVw+ZxNQTdl7KeyRXSUC9RWSzn1788gEu1rzmyAY6Kna4LIJTarPFG0hXPxJ/NwS1L2Z/ufUWvyxEOVw2V50PF/mvelE6OBEz8NKErqR7KmjUc3z14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcnJkaon; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938B4C19423;
+	Tue, 31 Mar 2026 16:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975114;
-	bh=fKZ/aC/+dPDNA6yOfdJ8aIRrI7y94EM0jzlCiUHew0M=;
+	s=korg; t=1774975701;
+	bh=u8B5+8sMDWriSmI7WECcgkCisyLqmu9UMTQ63C2cU1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDzksqRY2tsjG5HuJi6RcOx47Fgo2zDvJC2qLYMW8WROUCNx1SGOM4fEm1bl/wToB
-	 qu9DPv15IVwSca4Logo9ILEwQvoCiS75EFZk593sW4iIvCTVuLEgYqZrsrRXMRJbgi
-	 sOYPBZk9Rcf155y2psrQVKvAva2mGD6gRYPKOEfU=
+	b=FcnJkaon49c5Fn99s0o39WJXiVn+QdlOLw6AOQfQBy/a04ZXPczgGZ1GcNG6HtEwC
+	 AOrxx0J+6JZk/zgO6y+uILRjNvIXK3VnYgtbeinQ0jFjVayj5HNx5YXqbDGzDW4Twe
+	 5fc06KFVD7cpnU1VZs12jvUswywlAbIkOMtLiPWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alberto Garcia <berto@igalia.com>,
-	Brian Geffon <bgeffon@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Minwoo Ra <raminwo0202@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 170/342] PM: hibernate: Drain trailing zero pages on userspace restore
+Subject: [PATCH 6.12 053/244] xfrm: prevent policy_hthresh.work from racing with netns teardown
 Date: Tue, 31 Mar 2026 18:20:03 +0200
-Message-ID: <20260331161805.266482143@linuxfoundation.org>
+Message-ID: <20260331161743.651416992@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,97 +66,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232033-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231805-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0E4B036D54D
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E7ACF36D8BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alberto Garcia <berto@igalia.com>
+From: Minwoo Ra <raminwo0202@gmail.com>
 
-[ Upstream commit 734eba62cd32cb9ceffa09e57cdc03d761528525 ]
+[ Upstream commit 29fe3a61bcdce398ee3955101c39f89c01a8a77e ]
 
-Commit 005e8dddd497 ("PM: hibernate: don't store zero pages in the
-image file") added an optimization to skip zero-filled pages in the
-hibernation image. On restore, zero pages are handled internally by
-snapshot_write_next() in a loop that processes them without returning
-to the caller.
+A XFRM_MSG_NEWSPDINFO request can queue the per-net work item
+policy_hthresh.work onto the system workqueue.
 
-With the userspace restore interface, writing the last non-zero page
-to /dev/snapshot is followed by the SNAPSHOT_ATOMIC_RESTORE ioctl. At
-this point there are no more calls to snapshot_write_next() so any
-trailing zero pages are not processed, snapshot_image_loaded() fails
-because handle->cur is smaller than expected, the ioctl returns -EPERM
-and the image is not restored.
+The queued callback, xfrm_hash_rebuild(), retrieves the enclosing
+struct net via container_of(). If the net namespace is torn down
+before that work runs, the associated struct net may already have
+been freed, and xfrm_hash_rebuild() may then dereference stale memory.
 
-The in-kernel restore path is not affected by this because the loop in
-load_image() in swap.c calls snapshot_write_next() until it returns 0.
-It is this final call that drains any trailing zero pages.
+xfrm_policy_fini() already flushes policy_hash_work during teardown,
+but it does not synchronize policy_hthresh.work.
 
-Fixed by calling snapshot_write_next() in snapshot_write_finalize(),
-giving the kernel the chance to drain any trailing zero pages.
+Synchronize policy_hthresh.work in xfrm_policy_fini() as well, so the
+queued work cannot outlive the net namespace teardown and access a
+freed struct net.
 
-Fixes: 005e8dddd497 ("PM: hibernate: don't store zero pages in the image file")
-Signed-off-by: Alberto Garcia <berto@igalia.com>
-Acked-by: Brian Geffon <bgeffon@google.com>
-Link: https://patch.msgid.link/ef5a7c5e3e3dbd17dcb20efaa0c53a47a23498bb.1773075892.git.berto@igalia.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 880a6fab8f6b ("xfrm: configure policy hash table thresholds by netlink")
+Signed-off-by: Minwoo Ra <raminwo0202@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/snapshot.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/xfrm/xfrm_policy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index 0a946932d5c17..5706287e7230e 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -2855,6 +2855,17 @@ int snapshot_write_finalize(struct snapshot_handle *handle)
- {
- 	int error;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index e1ce873b83234..f4713ab7996f2 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4270,6 +4270,8 @@ static void xfrm_policy_fini(struct net *net)
+ 	unsigned int sz;
+ 	int dir;
  
-+	/*
-+	 * Call snapshot_write_next() to drain any trailing zero pages,
-+	 * but make sure we're in the data page region first.
-+	 * This function can return PAGE_SIZE if the kernel was expecting
-+	 * another copy page. Return -ENODATA in that situation.
-+	 */
-+	if (handle->cur > nr_meta_pages + 1) {
-+		error = snapshot_write_next(handle);
-+		if (error)
-+			return error > 0 ? -ENODATA : error;
-+	}
- 	copy_last_highmem_page();
- 	error = hibernate_restore_protect_page(handle->buffer);
- 	/* Do that only if we have loaded the image entirely */
++	disable_work_sync(&net->xfrm.policy_hthresh.work);
++
+ 	flush_work(&net->xfrm.policy_hash_work);
+ #ifdef CONFIG_XFRM_SUB_POLICY
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
 -- 
-2.53.0
+2.51.0
 
 
 
