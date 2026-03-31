@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-231826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIENKVMBzGkoNQYAu9opvQ
-	(envelope-from <stable+bounces-231826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:03 +0200
+	id aEwyKEL3y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D9F36E572
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B84336CBEF
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2DF9E3251483
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41D3130961ED
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D4A42EEB6;
-	Tue, 31 Mar 2026 16:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEB53FF8AB;
+	Tue, 31 Mar 2026 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCQ+VzNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yb3O11x1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6302B425CEE;
-	Tue, 31 Mar 2026 16:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E56A3EF0A2;
+	Tue, 31 Mar 2026 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975169; cv=none; b=bOuoiFN6yBx8iXEK7yrmIMQFyl3HwKKdnTDN5S8WdLYXDhQOV2sp54FvwyemSQM7w8UisVF27OQSngXu1Qvl3ERxigump4nFZZ3Cv0/XWMs9Z7IGFwpK24bYUdkYZLDqytDfijQzXZfTFOLdw9u7MzjzSu83oiGbe7bwbwnbvzI=
+	t=1774974426; cv=none; b=o1FuGFUhZmN1KSNI9lBFENg7aj+XxmnttZdSKDFCyuIC8C4qKC55kCuBey9zTXUBL66XiauhSnDU4V0V6q3qZ20ZW1n/m2OaghoAs/fXilqiON1SLeiUFzWEevcsAiHiyutGjzd8a2XezrPVap2LmKbARgnI+MBQAgIx0jQvR6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975169; c=relaxed/simple;
-	bh=oPNGqmst+cCBf+yt9X18cvR5z+2iyNHPmL99iHThbkU=;
+	s=arc-20240116; t=1774974426; c=relaxed/simple;
+	bh=xYcVft71B4AAFyGJWwQvxVuKLLEBLTPrZYwk5MxDplc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mns6x4P5f3tQpMDeUS4zYtrJufe9Kw9zzsXBK9vwshEX81oxcAU+hSQbNbyK/tM9UyF3XqtrfFUOZXs+5dlj2oRzfYSDv4wFNBryWL7yH/08tQnyN0OuUSG+9YkgNQml+zqoz/HZCgKFJEwBsuHj50bj4229MFCqZMed54kUVDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCQ+VzNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC32C19423;
-	Tue, 31 Mar 2026 16:39:28 +0000 (UTC)
+	 MIME-Version; b=FcAKxpkJlmawasB0j33YDMEYG3GmP/sfB1xtSjRx33zSzXXcG1O5OXc79cXa37ucgTkVenVd9/jGVamLP7AQBPGUITPDXKaFRtdAA5RENR9f61fmHQLTc+HK4OM7QGvJov9SXQmAj8H/ccCcV/6qKXSc6YMlqqaAVyH/JSoJomM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yb3O11x1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F59CC19423;
+	Tue, 31 Mar 2026 16:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975169;
-	bh=oPNGqmst+cCBf+yt9X18cvR5z+2iyNHPmL99iHThbkU=;
+	s=korg; t=1774974426;
+	bh=xYcVft71B4AAFyGJWwQvxVuKLLEBLTPrZYwk5MxDplc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCQ+VzNIsBLjUyFzAL1ljuQBrtCDQZYZgruH5fV5UmOvYzhgdBMcgrAf3Ix5QdXft
-	 4H9GCtdOzl2otEIjBewYr7R+BUzcLad8kJ+f24re5L9rrDP8bDwpVFT64UUQBrTgQ8
-	 pFvK5hos6S3Wvcras+JdKsb6qeCmMwJXZJtsv/vY=
+	b=yb3O11x1SkCCn4glItbRMh5Oz3ieRfYFS/OWfFOJXzrPFz6EcGkPKQ4eDF7O1nwac
+	 NRImvNNKFuwpHvH9ntNUvT6sSbstgO8l8jU/Pwa05nfUDe0R9nlt5xKnKLehw8lCbN
+	 PmJMIrGuMFxoI3tH3G1SFMFa20XQtoKBiLdFqfmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Mark Brown <broonie@kernel.org>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 189/342] ASoC: adau1372: Fix unchecked clk_prepare_enable() return value
+Subject: [PATCH 6.6 038/175] can: statistics: add missing atomic access in hot path
 Date: Tue, 31 Mar 2026 18:20:22 +0200
-Message-ID: <20260331161805.953600152@linuxfoundation.org>
+Message-ID: <20260331161731.185043348@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +63,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231826-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.964];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-231537-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E4D9F36E572
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 1B84336CBEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 326fe8104a4020d30080d37ac8b6b43893cdebca ]
+[ Upstream commit 46eee1661aa9b49966e6c43d07126fe408edda57 ]
 
-adau1372_set_power() calls clk_prepare_enable() but discards the return
-value. If the clock enable fails, the driver proceeds to access registers
-on unpowered hardware, potentially causing silent corruption.
+Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+fixed a KCSAN issue in can_receive() but missed to convert the 'matches'
+variable used in can_rcv_filter().
 
-Make adau1372_set_power() return int and propagate the error from
-clk_prepare_enable(). Update adau1372_set_bias_level() to return the
-error directly for the STANDBY and OFF cases.
-
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Fixes: 6cd4c6459e47 ("ASoC: Add ADAU1372 audio CODEC support")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20260325210704.76847-2-jihed.chaibi.dev@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260318173413.28235-1-socketcan@hartkopp.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/adau1372.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ net/can/af_can.c | 4 ++--
+ net/can/af_can.h | 2 +-
+ net/can/proc.c   | 3 ++-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/adau1372.c b/sound/soc/codecs/adau1372.c
-index fdee689cae538..6345342218d61 100644
---- a/sound/soc/codecs/adau1372.c
-+++ b/sound/soc/codecs/adau1372.c
-@@ -782,15 +782,18 @@ static void adau1372_enable_pll(struct adau1372 *adau1372)
- 		dev_err(adau1372->dev, "Failed to lock PLL\n");
- }
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index cdad0be43e8ff..e0ad55b9af646 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -467,7 +467,7 @@ int can_rx_register(struct net *net, struct net_device *dev, canid_t can_id,
  
--static void adau1372_set_power(struct adau1372 *adau1372, bool enable)
-+static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
+ 	rcv->can_id = can_id;
+ 	rcv->mask = mask;
+-	rcv->matches = 0;
++	atomic_long_set(&rcv->matches, 0);
+ 	rcv->func = func;
+ 	rcv->data = data;
+ 	rcv->ident = ident;
+@@ -571,7 +571,7 @@ EXPORT_SYMBOL(can_rx_unregister);
+ static inline void deliver(struct sk_buff *skb, struct receiver *rcv)
  {
- 	if (adau1372->enabled == enable)
--		return;
-+		return 0;
- 
- 	if (enable) {
- 		unsigned int clk_ctrl = ADAU1372_CLK_CTRL_MCLK_EN;
-+		int ret;
- 
--		clk_prepare_enable(adau1372->mclk);
-+		ret = clk_prepare_enable(adau1372->mclk);
-+		if (ret)
-+			return ret;
- 		if (adau1372->pd_gpio)
- 			gpiod_set_value(adau1372->pd_gpio, 0);
- 
-@@ -829,6 +832,8 @@ static void adau1372_set_power(struct adau1372 *adau1372, bool enable)
- 	}
- 
- 	adau1372->enabled = enable;
-+
-+	return 0;
+ 	rcv->func(skb, rcv->data);
+-	rcv->matches++;
++	atomic_long_inc(&rcv->matches);
  }
  
- static int adau1372_set_bias_level(struct snd_soc_component *component,
-@@ -842,11 +847,9 @@ static int adau1372_set_bias_level(struct snd_soc_component *component,
- 	case SND_SOC_BIAS_PREPARE:
- 		break;
- 	case SND_SOC_BIAS_STANDBY:
--		adau1372_set_power(adau1372, true);
--		break;
-+		return adau1372_set_power(adau1372, true);
- 	case SND_SOC_BIAS_OFF:
--		adau1372_set_power(adau1372, false);
--		break;
-+		return adau1372_set_power(adau1372, false);
- 	}
+ static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buff *skb)
+diff --git a/net/can/af_can.h b/net/can/af_can.h
+index 22f3352c77fec..87887014f5628 100644
+--- a/net/can/af_can.h
++++ b/net/can/af_can.h
+@@ -52,7 +52,7 @@ struct receiver {
+ 	struct hlist_node list;
+ 	canid_t can_id;
+ 	canid_t mask;
+-	unsigned long matches;
++	atomic_long_t matches;
+ 	void (*func)(struct sk_buff *skb, void *data);
+ 	void *data;
+ 	char *ident;
+diff --git a/net/can/proc.c b/net/can/proc.c
+index 25fdf060e30d0..2f78ea8ac30b0 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -196,7 +196,8 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
+ 			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
  
- 	return 0;
+ 		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
+-				r->func, r->data, r->matches, r->ident);
++			   r->func, r->data, atomic_long_read(&r->matches),
++			   r->ident);
+ 	}
+ }
+ 
 -- 
-2.53.0
+2.51.0
 
 
 
