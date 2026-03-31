@@ -1,157 +1,166 @@
-Return-Path: <stable+bounces-231334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNynOL9py2ktHgYAu9opvQ
-	(envelope-from <stable+bounces-231334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:29:19 +0200
+	id kEthNgtpy2ktHgYAu9opvQ
+	(envelope-from <stable+bounces-231333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:26:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8011D3647D0
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:29:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764BD36476F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 08:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB7E6301A791
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 06:29:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1133302E90A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 06:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0147D3A9D83;
-	Tue, 31 Mar 2026 06:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9583A450F;
+	Tue, 31 Mar 2026 06:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2M3pV4O"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158D4149C7B;
-	Tue, 31 Mar 2026 06:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A517385509
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 06:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774938556; cv=none; b=DD8u9t6jZaopzcPncxK86unxXzadi/0wJ+/WHGGwVUNTylypAwGfpZsuT6yv4CaANh1uQ1nMtLEbeHSzVnv7qeGPqgH7yqfKzoFLzaKxkNYsXQHzLieUMrPNrlomlQVUY6Tg5UFU9Bj23jtNt5Io/WwZHEyZcNOYogEf0PvXEhQ=
+	t=1774938278; cv=none; b=t2PuKNRRAASjV0Y9G44ACTb8GV8kZ2HFENj5v2KNYVounpDzhC1vsQm0wgHwHAeKxzoUyccfO8djBPO641WmrRc62cX0rKJTqzmyf2AN7YMkq1pWegMhhOTm4041V5vrCIyNoCFA5WSx+Qchuenp9UxldYtrXmRhTbTP3by6S+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774938556; c=relaxed/simple;
-	bh=9wwk+vofmTz8mNDwsydXfg0d6M/0TEv8DDsMbBg9Yg8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aauAYWPGzDrHPbF56LHQQNOhNFbbfB+czO1shbVUEatchTuhOzLcVtGVGwmFn5/TFquaQyFd/bck9BK4WjT6CX2u7j+9eodRoeGfySoh8fK5QgP9RU9F1OEkcHSQDoYpHC5RrvZYKd0yKGOXH5VBHfbkGrUoabEA6l1q7IXNGzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.2.229] (p5b13a713.dip0.t-ipconnect.de [91.19.167.19])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 4F2094C4430F7B;
-	Tue, 31 Mar 2026 08:20:27 +0200 (CEST)
-Message-ID: <a3099d4c-221a-413e-9112-7deb1d77e6f9@molgen.mpg.de>
-Date: Tue, 31 Mar 2026 08:20:25 +0200
+	s=arc-20240116; t=1774938278; c=relaxed/simple;
+	bh=vWlAHWkTCyA7++NZ0O2EqtDYUYeKrn9fUAwZU7E8i7s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GSbPytr3B+QZEPG6oygKolyoxNPmc1mhFvmAGAHUaiCGzXLWRUUXIGcpkAqiXGaVwEFbsrZaCV7fSj88J5A/OZvFRatDMhtUSk4NLm29YCz2dxxHKd5bGAnaUi7nj16ZahRwwF4ilQlDwX2lI3bIaYtHXWD29vRn91ZSlyyCq+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2M3pV4O; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b0c8362d93so30538185ad.3
+        for <stable@vger.kernel.org>; Mon, 30 Mar 2026 23:24:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774938277; x=1775543077; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vWlAHWkTCyA7++NZ0O2EqtDYUYeKrn9fUAwZU7E8i7s=;
+        b=C2M3pV4Odr+GN1Pzxm/nYKp9vkvixRqq+dz4wFyJyIYCbZBgUZgjdPYYxpueZj2dWQ
+         6PpH6VflVENLOpBFC9x5G9hh1Ziky9Lu8OVsHabY4trwhdKqpcYxd179S/iq040ok6n5
+         gMzNQ4CnFDTD2+lSwa7DvELjbRfEgq5Ono3IYbkWhjTqJtEsrBjcrFeYTaNVbh/omWq5
+         lTZBkVVH/Ib7Y+ELM+WuOm5zT3+Pl9WdxTGj33A9whLyutc91Py4e6H3fkXk0d9FxryL
+         8jfnuRhNcR42usacAiYm4QkAKSQxIMHtqADlGMeOUi1P6pI88O3PfqLp21CVxDyr8vWm
+         9S7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774938277; x=1775543077;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vWlAHWkTCyA7++NZ0O2EqtDYUYeKrn9fUAwZU7E8i7s=;
+        b=qBWjzUU5Zgt+lgeOFzduqHGZZEWrzFKfO/qpPstDgsJ4MpTDl1NPJX4RD9MrdAtenX
+         md7aKeJW9ZoSqesXAdlZ2/CTJDrZ6FGa8zvfUnJcJFC4g5q5usecp+m9lgQhCD7fz6Ln
+         vaTdJssjtAF6tvpdP5GWOqimD42BKLpUDyYoSj7yDTmGaRu62XypcdGuuXCeyl0a/zRA
+         GTeGpGAp4spGnjWTwOzdTD309LwrXGy6u575ylDc6592rFy4yypJGkwfe17SddcDlN/F
+         nrBJsLQPzbWPLi/o/jRlerPjkxZY3UWAp2692XGgxgWQE7nLudz6vUnbkDQaAKGHpa99
+         Niog==
+X-Forwarded-Encrypted: i=1; AJvYcCUvWvYNhG9FgfW1vdBpEQCNLKGwhm1e/1IHuOkCZyVXr0rHyMIMcB9xAe3rBuNXDRrcwl5adaA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycpL03oPhSbQX2XqGVG2tOJd1L7wg7UA+W31A5blEsVD2tgf5H
+	c/eU1wfSsvc+2fnEvM/ro+cC7fWJIAggxiCz9Vn2UC31MWno7XyxKZ9R
+X-Gm-Gg: ATEYQzzlEy+9kP5AFvXYNzkwIEJ6JFXmlp1TiDTp2edHOtujhLYyskdffN/2NkALj10
+	CnpnF7hmAUUVa1Xv709gwOzkMWFjqmMyhDpQEYAmtrv6h+ui77ssKvLEYESBRCSZMBxorPGHP92
+	6sGI6gS+4Ra59VRpGS0YZ3Nr26QQqSgWFDzONhCSS3eJVac91OoDI4+VkQ4cCCG5s8GmfSucV1z
+	75l//1BQDuFbGaQl0ukBj6cKqhnO6iVI22EDXhQpcp1FYx2c34dqkKqoWz4IdG5gasR9Z5/0ISV
+	Ipf5Tkp9wPF2uA3+MsmZT00KcfQSby6LvzgvbwVXtuT8sPgIpxZNDtFPbSFzWMeFlVdE8i7UPBc
+	lGcPKv/GHtN7aBAYHPJiej9jb2AGDCk0GTU5nwzLTkA5pWh8aXRGQJCaNGuLakyPlnOptf/1x9+
+	FATZrHb6YLkDwi3mX97UH9gFAGAiNAT9k=
+X-Received: by 2002:a17:902:e889:b0:2ae:d09c:5241 with SMTP id d9443c01a7336-2b0cdc0332dmr160886305ad.2.1774938276711;
+        Mon, 30 Mar 2026 23:24:36 -0700 (PDT)
+Received: from f7eceb44c2db ([115.245.213.202])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242676e13sm103873625ad.28.2026.03.30.23.24.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 23:24:36 -0700 (PDT)
+From: Sanjaikumar V S <sanjaikumarvs@gmail.com>
+To: mwalle@kernel.org,
+	pratyush@kernel.org
+Cc: hd@os-cillation.de,
+	linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	miquel.raynal@bootlin.com,
+	richard@nod.at,
+	sanjaikumar.vs@dicortech.com,
+	sanjaikumarvs@gmail.com,
+	stable@vger.kernel.org,
+	tudor.ambarus@linaro.org,
+	vigneshr@ti.com
+Subject: Re: [PATCH v4 2/2] mtd: spi-nor: core: Fix AAI mode when dirmap is not available
+Date: Tue, 31 Mar 2026 06:24:17 +0000
+Message-ID: <20260331062417.26-1-sanjaikumarvs@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <2vxz1ph11jmq.fsf@kernel.org>
+References: <2vxz1ph11jmq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Bluetooth: hci_sync: fix stack buffer overflow in
- hci_le_big_create_sync
-To: hkbinbinbin@gmail.com
-Cc: marcel@holtmann.org, luiz.dentz@gmail.com,
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260331053916.1856760-1-hkbinbinbin@gmail.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260331053916.1856760-1-hkbinbinbin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-231334-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[holtmann.org,gmail.com,vger.kernel.org];
-	DMARC_NA(0.00)[mpg.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[os-cillation.de,vger.kernel.org,lists.infradead.org,bootlin.com,nod.at,dicortech.com,gmail.com,linaro.org,ti.com];
+	TAGGED_FROM(0.00)[bounces-231333-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.883];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sanjaikumarvs@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mpg.de:email,user.name:url,molgen.mpg.de:mid]
-X-Rspamd-Queue-Id: 8011D3647D0
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 764BD36476F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Dear hkbinbin,
+Hi,
 
+> But if the controller does support direct mapping, won't it end up
+> using the wrong opcode? Would it be a better idea to update the
+> dirmap_info with the right opcodes?
 
-Thank you for your patch. It’d be great if you spelt your name with 
-capital letters and spaces (`git config --global user.name "…"`).
+You're right. If the controller supports direct mapping, it would still
+use the wrong opcode from the template created at probe time.
 
-Am 31.03.26 um 07:39 schrieb hkbinbin:
-> hci_le_big_create_sync() uses DEFINE_FLEX to allocate a
-> struct hci_cp_le_big_create_sync on the stack with room for 0x11 (17)
-> BIS entries.  However, conn->num_bis can hold up to HCI_MAX_ISO_BIS (31)
-> entries — validated against ISO_MAX_NUM_BIS (0x1f) in the caller
-> hci_conn_big_create_sync().  When conn->num_bis is between 18 and 31,
-> the memcpy that copies conn->bis into cp->bis writes up to 14 bytes
-> past the stack buffer, corrupting adjacent stack memory.
-> 
-> This is trivially reproducible: binding an ISO socket with
-> bc_num_bis = ISO_MAX_NUM_BIS (31) and calling listen() will
+Updating dirmap_info at runtime is problematic because SST AAI mode
+requires dynamic changes per write:
+- cmd.opcode: SPINOR_OP_BP (single byte) vs SPINOR_OP_AAI_WP (word)
+- addr.nbytes: must be 0 for subsequent AAI writes
 
-If this is not more than twenty lines, maybe share the program/script?
+Controllers may also cache the template at dirmap_create time, so
+modifying it at runtime could cause issues.
 
-> eventually trigger hci_le_big_create_sync() from the HCI command
-> sync worker, causing a KASAN-detectable stack-out-of-bounds write:
-> 
->    BUG: KASAN: stack-out-of-bounds in hci_le_big_create_sync+0x256/0x3b0
->    Write of size 31 at addr ffffc90000487b48 by task kworker/u9:0/71
-> 
-> Fix this by changing the DEFINE_FLEX count from the incorrect 0x11 to
-> HCI_MAX_ISO_BIS, which matches the maximum number of BIS entries that
-> conn->bis can actually carry.
-> 
-> Fixes: 42ecf1947135 ("Bluetooth: ISO: Do not emit LE BIG Create Sync if previous is pending")
+A cleaner approach is to disable dirmap for SST AAI devices by setting
+nodirmap=1 in sst_nor_late_init(). This ensures all writes go through
+spi_nor_spimem_exec_op() which uses the runtime opcode.
 
-Just for the record, that the commit is present since Linux v6.13-rc1.
+This only affects devices with SST_WRITE flag (sst25wf*, sst25vf016b,
+sst25vf032b, sst25vf040b, sst25vf080b). Other SST devices that use
+standard page program can still benefit from dirmap.
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: hkbinbin <hkbinbinbin@gmail.com>
-> ---
->   net/bluetooth/hci_sync.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-> index 45d16639874a..b84587061ae0 100644
-> --- a/net/bluetooth/hci_sync.c
-> +++ b/net/bluetooth/hci_sync.c
-> @@ -7222,7 +7222,8 @@ static void create_big_complete(struct hci_dev *hdev, void *data, int err)
->   
->   static int hci_le_big_create_sync(struct hci_dev *hdev, void *data)
->   {
-> -	DEFINE_FLEX(struct hci_cp_le_big_create_sync, cp, bis, num_bis, 0x11);
-> +	DEFINE_FLEX(struct hci_cp_le_big_create_sync, cp, bis, num_bis,
-> +		    HCI_MAX_ISO_BIS);
->   	struct hci_conn *conn = data;
->   	struct bt_iso_qos *qos = &conn->iso_qos;
->   	int err;
+I'll send a v5 with this change.
 
-The diff looks good. Great find.
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-
-Kind regards,
-
-Paul
+Thanks,
+Sanjaikumar
 
