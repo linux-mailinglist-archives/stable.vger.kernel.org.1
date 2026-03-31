@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDq5Mnr+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:54 +0200
+	id 6JqnG6EHzGn+NQYAu9opvQ
+	(envelope-from <stable+bounces-232406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EAF36DC62
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FA836F2EA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A4CB03115053
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:53:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EB2230CC633
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF85427A0B;
-	Tue, 31 Mar 2026 16:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6FF2E11A6;
+	Tue, 31 Mar 2026 17:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeuwB2+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPKaJmCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9401F427A03;
-	Tue, 31 Mar 2026 16:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032A62FF669;
+	Tue, 31 Mar 2026 17:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975914; cv=none; b=DAgfQXKb4+rZC5G52CApCOuJBQb5OrJmvBXHGNC6Mp4tmCrCSsdY3B4kryLe8ofmPqC+Q9qgPsSvDBX2xd0DmzXu6K281ZVY05fXRWGfSMKedW0hc56e7o9QqWyxGQB7CcQQebuvY+HVyKwX//q4ZDarp7PhyH4wijQCqnAAj+U=
+	t=1774976665; cv=none; b=K62+60zzgywaydheDh7E3w7n5jFPY2HkCYg74Jn3Jyp+1iECiry4lohm52d1qHtSmkLkizG6i1YCTHZGQXNBEI0v+G35rFkIHldSG8QwNjsFih91xzAGkghwhlaTR3gPOVpOQq2MAqiBEgkTUHSS2yFtJRPeVICYKI4JnL7ZyW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975914; c=relaxed/simple;
-	bh=yDHWGBuNel9kbZmqoFz4WmJxFCBx7whlSwodu83qJnk=;
+	s=arc-20240116; t=1774976665; c=relaxed/simple;
+	bh=viL+NNgB9lFQgtg+jYMq2Zoefo2eVgRgQ1XICp5BjOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dx1Rt0zyKWJXQ+KIPIqX7jtwq2jV5RyOGMtz+hONQBLAVFSiGppWnk0/C0h+zEircilnSsJ4/ZJMoIx9JmBNhjxSFpVl7K7QSiH1NHWzu+goOee10MX9VFemhaq7t0YCDnlBO349smR+meeBQDWKscr5q7NMsQJmMzCxDdayNFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeuwB2+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28496C19424;
-	Tue, 31 Mar 2026 16:51:54 +0000 (UTC)
+	 MIME-Version; b=acVhhRS/lzhvCMiXocZxF4Wsw2qwimX5/gLKTB+ijf1dAXQrJ0wFAfFQtzxO8HUvF0+iAH1Cwq+B1uYwHJ/oogg9VFyGgaC/tUG4oAA93NkAG0AJxuRglRizoctiZMbly6mHynoaiT6GarUiidQ5ilNKura48cccNq2ebFLbNLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPKaJmCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7C8C19423;
+	Tue, 31 Mar 2026 17:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975914;
-	bh=yDHWGBuNel9kbZmqoFz4WmJxFCBx7whlSwodu83qJnk=;
+	s=korg; t=1774976664;
+	bh=viL+NNgB9lFQgtg+jYMq2Zoefo2eVgRgQ1XICp5BjOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WeuwB2+J6HkSLN+Fvqeo/0q4FACPUIIuOdCq2xC2yHWJEuyWEtUqdT+IEmb/5rOeZ
-	 BCGjnn7G+du+cVycItiPXsLgFegBpJM+ycReTxzL682g0ky4kbe3pP67DROWLhikGd
-	 3MVnKsL3pR5ak7vAMFimBkpOnR3fwl9MpCzjSaSc=
+	b=SPKaJmCc2MOpFywwFp2N/xPE+mntvfqncjgkm5MDR7TGmB/wbaCctKaoXkeOmAYfV
+	 +PN2LylY7rOFmnn/Y1kd4hIjMhVSt+ismOmI7HpUmzCo9fG9e0jTrnr00H1/W/j2uo
+	 Q3XeS1NUX422lsXCsKFiD3AJWSfmCY6JPs8/zew4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 134/244] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 181/309] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
 Date: Tue, 31 Mar 2026 18:21:24 +0200
-Message-ID: <20260331161746.602757572@linuxfoundation.org>
+Message-ID: <20260331161800.126903348@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,91 +78,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232115-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232406-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 90EAF36DC62
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pm.me:email]
+X-Rspamd-Queue-Id: F1FA836F2EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit b341c1176f2e001b3adf0b47154fc31589f7410e ]
+commit beef2634f81f1c086208191f7228bce1d366493d upstream.
 
-There is a teardown order issue in the driver. The SPI controller is
-registered using devm_spi_register_controller(), which delays
-unregistration of the SPI controller until after the fsl_lpspi_remove()
-function returns.
+When a compound request consists of QUERY_DIRECTORY + QUERY_INFO
+(FILE_ALL_INFORMATION) and the first command consumes nearly the entire
+max_trans_size, get_file_all_info() would blindly call smbConvertToUTF16()
+with PATH_MAX, causing out-of-bounds write beyond the response buffer.
+In get_file_all_info(), there was a missing validation check for
+the client-provided OutputBufferLength before copying the filename into
+FileName field of the smb2_file_all_info structure.
+If the filename length exceeds the available buffer space, it could lead to
+potential buffer overflows or memory corruption during smbConvertToUTF16
+conversion. This calculating the actual free buffer size using
+smb2_calc_max_out_buf_len() and returning -EINVAL if the buffer is
+insufficient and updating smbConvertToUTF16 to use the actual filename
+length (clamped by PATH_MAX) to ensure a safe copy operation.
 
-As the fsl_lpspi_remove() function synchronously tears down the DMA
-channels, a running SPI transfer triggers the following NULL pointer
-dereference due to use after free:
-
-| fsl_lpspi 42550000.spi: I/O Error in DMA RX
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[...]
-| Call trace:
-|  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
-|  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
-|  spi_transfer_one_message+0x49c/0x7c8
-|  __spi_pump_transfer_message+0x120/0x420
-|  __spi_sync+0x2c4/0x520
-|  spi_sync+0x34/0x60
-|  spidev_message+0x20c/0x378 [spidev]
-|  spidev_ioctl+0x398/0x750 [spidev]
-[...]
-
-Switch from devm_spi_register_controller() to spi_register_controller() in
-fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
-fsl_lpspi_remove().
-
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://patch.msgid.link/20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Reported-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 5e96913fd9466..8879baab1daf3 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -954,7 +954,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		enable_irq(irq);
- 	}
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4943,7 +4943,8 @@ static int get_file_all_info(struct ksmb
+ 	int conv_len;
+ 	char *filename;
+ 	u64 time;
+-	int ret;
++	int ret, buf_free_len, filename_len;
++	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
  
--	ret = devm_spi_register_controller(&pdev->dev, controller);
-+	ret = spi_register_controller(controller);
- 	if (ret < 0) {
- 		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
- 		goto free_dma;
-@@ -981,6 +981,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(controller);
+ 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
+ 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
+@@ -4955,6 +4956,16 @@ static int get_file_all_info(struct ksmb
+ 	if (IS_ERR(filename))
+ 		return PTR_ERR(filename);
  
-+	spi_unregister_controller(controller);
- 	fsl_lpspi_dma_exit(controller);
- 
- 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
--- 
-2.53.0
-
++	filename_len = strlen(filename);
++	buf_free_len = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_query_info_rsp, Buffer) +
++			offsetof(struct smb2_file_all_info, FileName),
++			le32_to_cpu(req->OutputBufferLength));
++	if (buf_free_len < (filename_len + 1) * 2) {
++		kfree(filename);
++		return -EINVAL;
++	}
++
+ 	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
+ 			  AT_STATX_SYNC_AS_STAT);
+ 	if (ret) {
+@@ -4998,7 +5009,8 @@ static int get_file_all_info(struct ksmb
+ 	file_info->Mode = fp->coption;
+ 	file_info->AlignmentRequirement = 0;
+ 	conv_len = smbConvertToUTF16((__le16 *)file_info->FileName, filename,
+-				     PATH_MAX, conn->local_nls, 0);
++				     min(filename_len, PATH_MAX),
++				     conn->local_nls, 0);
+ 	conv_len *= 2;
+ 	file_info->FileNameLength = cpu_to_le32(conv_len);
+ 	rsp->OutputBufferLength =
 
 
 
