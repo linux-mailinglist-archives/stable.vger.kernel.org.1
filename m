@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-231965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDsAO4z8y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:40 +0200
+	id kGUjD2j/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC7736D6C9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE69136DEE0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 076D6308C507
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:45:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 66ABA30C8E97
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F4B413258;
-	Tue, 31 Mar 2026 16:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2109D423A99;
+	Tue, 31 Mar 2026 16:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpkO5syG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq5mGr+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7539F2D1F40;
-	Tue, 31 Mar 2026 16:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AFF423A7C;
+	Tue, 31 Mar 2026 16:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975524; cv=none; b=JCWJW9NUeoZXEUSyC5LRPCBM6cBAULKduGjBXWZyoNnilec7Jyw0pj4LPe2CwV0HmdOpSe8WjNJmRRBwbeyEj01b6A2AnJKhBEVIFy+1gXSouesB8EnWLsuNVZH9nxnB9X6OvyJIa+0LVGxLK2Wfdfdz3JK7k2wHhxNkTxExjvo=
+	t=1774976155; cv=none; b=eFiVWKXyT2Fu1W2NV0Q1SvZFOTxJBTCBTCM4v0A1JK/n7ZKhCLv89/qSmUSLyWJXSC2T4P608UH5Orc82bnQeRPPs9A6SCx9ohe7x1IwfdM9MEGsjoeN/4++gStdP6EvDVjHiNgyb6gnNyymhXDo5PsYsGSZE2OIKkv/8B81w5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975524; c=relaxed/simple;
-	bh=Za8QKLZOMtUlSWZUVTQ7UeosBqrWU3UYXiIldVf20P4=;
+	s=arc-20240116; t=1774976155; c=relaxed/simple;
+	bh=TDFku8lxL5odH8eH/0ozHEouKBRaOmr/G+jd42FCnLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Px13oMWdPxOLhyxo+fespIMA3OVGJQfuJilU+hNUbZPNx83nV+51eMbakhYZpPDG+H7sHa08fpQxp0yf2rYNBV8CzzrJj1rKwGqPwPCf6OpVRbN+JrxBnz+j6QAWDY2nRw6m5hX5ap9xvMe/nbcwOHQJEuQHvYDAZB291Lj8eec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpkO5syG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1E0C19423;
-	Tue, 31 Mar 2026 16:45:23 +0000 (UTC)
+	 MIME-Version; b=G5fPlMnR3Tvmd5mNixlc+EtaJPOEKcAt0Fa2sgLFbeGi/GkTB/r5bVAW/aVOlS+cmVh1CCJRfEQPfCAwRwkdTEG44oTZc0Fs9ezfW+M59Bwao/6GtaIaD5ZOqE5rgV/cjJ7XIFKcnh7bBtr+gmSh+9D7yZ7XWpHvTr9waN24ZYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq5mGr+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA30C19423;
+	Tue, 31 Mar 2026 16:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975524;
-	bh=Za8QKLZOMtUlSWZUVTQ7UeosBqrWU3UYXiIldVf20P4=;
+	s=korg; t=1774976155;
+	bh=TDFku8lxL5odH8eH/0ozHEouKBRaOmr/G+jd42FCnLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpkO5syGimHGKZl4VD7OKiYI/Ukb5Lj+C4p9LAxchF0VCMv2nWxKRTmY5Liz0zDq0
-	 WGVB0VAsPN3gUTebbrcVMUIZKcsG/d2/wLJTrw6cubd+AjtJ3g9qKL7S7sfwzXNuJJ
-	 azcr4jvDhRebDLoPhxdFZhOiAaI16oO/UnLyqBXI=
+	b=rq5mGr+cxu8YFHmmRiC4WCRSxZJsYAtBtAlNVPagdx4BZyykRtvSe8wgPwAjDHSJz
+	 zf4UvY6gztUBZFms5+pChHBQ+bYhbsG2u9F6OAzFKaYlTQwbgdcAYtz/BxyTaEmhka
+	 lZi4wGOZAJ0N0q6jOp9TErwiwLNTwN+7pxzTU88Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 328/342] dmaengine: xilinx_dma: Fix reset related timeout with two-channel AXIDMA
+	Chenglong Tang <chenglongtang@google.com>,
+	Fei Lv <feilv@asrmicro.com>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.12 211/244] ovl: make fsync after metadata copy-up opt-in mount option
 Date: Tue, 31 Mar 2026 18:22:41 +0200
-Message-ID: <20260331161810.977887556@linuxfoundation.org>
+Message-ID: <20260331161749.548819396@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,131 +66,320 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232208-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,asrmicro.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231965-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ideasonboard.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BCC7736D6C9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EE69136DEE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Fei Lv <feilv@asrmicro.com>
 
-[ Upstream commit a17ce4bc6f4f9acf77ba416c36791a15602e53aa ]
+commit 1f6ee9be92f8df85a8c9a5a78c20fd39c0c21a95 upstream.
 
-A single AXIDMA controller can have one or two channels. When it has two
-channels, the reset for both are tied together: resetting one channel
-resets the other as well. This creates a problem where resetting one
-channel will reset the registers for both channels, including clearing
-interrupt enable bits for the other channel, which can then lead  to
-timeouts as the driver is waiting for an interrupt which never comes.
+Commit 7d6899fb69d25 ("ovl: fsync after metadata copy-up") was done to
+fix durability of overlayfs copy up on an upper filesystem which does
+not enforce ordering on storing of metadata changes (e.g. ubifs).
 
-The driver currently has a probe-time work around for this: when a
-channel is created, the driver also resets and enables the
-interrupts. With two channels the reset for the second channel will
-clear the interrupt enables for the first one. The work around in the
-driver is just to manually enable the interrupts again in
-xilinx_dma_alloc_chan_resources().
+In an earlier revision of the regressing commit by Lei Lv, the metadata
+fsync behavior was opt-in via a new "fsync=strict" mount option.
+We were hoping that the opt-in mount option could be avoided, so the
+change was only made to depend on metacopy=off, in the hope of not
+hurting performance of metadata heavy workloads, which are more likely
+to be using metacopy=on.
 
-This workaround only addresses the probe-time issue. When channels are
-reset at runtime (e.g., in xilinx_dma_terminate_all() or during error
-recovery), there's no corresponding mechanism to restore the other
-channel's interrupt enables. This leads to one channel having its
-interrupts disabled while the driver expects them to work, causing
-timeouts and DMA failures.
+This hope was proven wrong by a performance regression report from Google
+COS workload after upgrade to kernel 6.12.
 
-A proper fix is a complicated matter, as we should not reset the other
-channel when it's operating normally. So, perhaps, there should be some
-kind of synchronization for a common reset, which is not trivial to
-implement. To add to the complexity, the driver also supports other DMA
-types, like VDMA, CDMA and MCDMA, which don't have a shared reset.
+This is an adaptation of Lei's original "fsync=strict" mount option
+to the existing upstream code.
 
-However, when the two-channel AXIDMA is used in the (assumably) normal
-use case, providing DMA for a single memory-to-memory device, the common
-reset is a bit smaller issue: when something bad happens on one channel,
-or when one channel is terminated, the assumption is that we also want
-to terminate the other channel. And thus resetting both at the same time
-is "ok".
+The new mount option is mutually exclusive with the "volatile" mount
+option, so the latter is now an alias to the "fsync=volatile" mount
+option.
 
-With that line of thinking we can implement a bit better work around
-than just the current probe time work around: let's enable the
-AXIDMA interrupts at xilinx_dma_start_transfer() instead.
-This ensures interrupts are enabled whenever a transfer starts,
-regardless of any prior resets that may have cleared them.
-
-This approach is also more logical: enable interrupts only when needed
-for a transfer, rather than at resource allocation time, and, I think,
-all the other DMA types should also use this model, but I'm reluctant to
-do such changes as I cannot test them.
-
-The reset function still enables interrupts even though it's not needed
-for AXIDMA anymore, but it's common code for all DMA types (VDMA, CDMA,
-MCDMA), so leave it unchanged to avoid affecting other variants.
-
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
-Link: https://patch.msgid.link/20260311-xilinx-dma-fix-v2-1-a725abb66e3c@ideasonboard.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Chenglong Tang <chenglongtang@google.com>
+Closes: https://lore.kernel.org/linux-unionfs/CAOdxtTadAFH01Vui1FvWfcmQ8jH1O45owTzUcpYbNvBxnLeM7Q@mail.gmail.com/
+Link: https://lore.kernel.org/linux-unionfs/CAOQ4uxgKC1SgjMWre=fUb00v8rxtd6sQi-S+dxR8oDzAuiGu8g@mail.gmail.com/
+Fixes: 7d6899fb69d25 ("ovl: fsync after metadata copy-up")
+Depends: 50e638beb67e0 ("ovl: Use str_on_off() helper in ovl_show_options()")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Fei Lv <feilv@asrmicro.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ Documentation/filesystems/overlayfs.rst |   50 ++++++++++++++++++++++++++++++++
+ fs/overlayfs/copy_up.c                  |    6 +--
+ fs/overlayfs/overlayfs.h                |   21 +++++++++++++
+ fs/overlayfs/ovl_entry.h                |    7 ----
+ fs/overlayfs/params.c                   |   33 +++++++++++++++++----
+ fs/overlayfs/super.c                    |    2 -
+ 6 files changed, 104 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 7b24d0a18ea53..7dec5e6babe14 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -1217,14 +1217,6 @@ static int xilinx_dma_alloc_chan_resources(struct dma_chan *dchan)
+--- a/Documentation/filesystems/overlayfs.rst
++++ b/Documentation/filesystems/overlayfs.rst
+@@ -745,6 +745,56 @@ controlled by the "uuid" mount option, w
+     mounted with "uuid=on".
  
- 	dma_cookie_init(dchan);
  
--	if (chan->xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA) {
--		/* For AXI DMA resetting once channel will reset the
--		 * other channel as well so enable the interrupts here.
--		 */
--		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
--			      XILINX_DMA_DMAXR_ALL_IRQ_MASK);
--	}
++Durability and copy up
++----------------------
++
++The fsync(2) system call ensures that the data and metadata of a file
++are safely written to the backing storage, which is expected to
++guarantee the existence of the information post system crash.
++
++Without an fsync(2) call, there is no guarantee that the observed
++data after a system crash will be either the old or the new data, but
++in practice, the observed data after crash is often the old or new data
++or a mix of both.
++
++When an overlayfs file is modified for the first time, copy up will
++create a copy of the lower file and its parent directories in the upper
++layer.  Since the Linux filesystem API does not enforce any particular
++ordering on storing changes without explicit fsync(2) calls, in case
++of a system crash, the upper file could end up with no data at all
++(i.e. zeros), which would be an unusual outcome.  To avoid this
++experience, overlayfs calls fsync(2) on the upper file before completing
++data copy up with rename(2) or link(2) to make the copy up "atomic".
++
++By default, overlayfs does not explicitly call fsync(2) on copied up
++directories or on metadata-only copy up, so it provides no guarantee to
++persist the user's modification unless the user calls fsync(2).
++The fsync during copy up only guarantees that if a copy up is observed
++after a crash, the observed data is not zeroes or intermediate values
++from the copy up staging area.
++
++On traditional local filesystems with a single journal (e.g. ext4, xfs),
++fsync on a file also persists the parent directory changes, because they
++are usually modified in the same transaction, so metadata durability during
++data copy up effectively comes for free.  Overlayfs further limits risk by
++disallowing network filesystems as upper layer.
++
++Overlayfs can be tuned to prefer performance or durability when storing
++to the underlying upper layer.  This is controlled by the "fsync" mount
++option, which supports these values:
++
++- "auto": (default)
++    Call fsync(2) on upper file before completion of data copy up.
++    No explicit fsync(2) on directory or metadata-only copy up.
++- "strict":
++    Call fsync(2) on upper file and directories before completion of any
++    copy up.
++- "volatile": [*]
++    Prefer performance over durability (see `Volatile mount`_)
++
++[*] The mount option "volatile" is an alias to "fsync=volatile".
++
++
+ Volatile mount
+ --------------
+ 
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -1160,15 +1160,15 @@ static int ovl_copy_up_one(struct dentry
+ 		return -EOVERFLOW;
+ 
+ 	/*
+-	 * With metacopy disabled, we fsync after final metadata copyup, for
++	 * With "fsync=strict", we fsync after final metadata copyup, for
+ 	 * both regular files and directories to get atomic copyup semantics
+ 	 * on filesystems that do not use strict metadata ordering (e.g. ubifs).
+ 	 *
+-	 * With metacopy enabled we want to avoid fsync on all meta copyup
++	 * By default, we want to avoid fsync on all meta copyup, because
+ 	 * that will hurt performance of workloads such as chown -R, so we
+ 	 * only fsync on data copyup as legacy behavior.
+ 	 */
+-	ctx.metadata_fsync = !OVL_FS(dentry->d_sb)->config.metacopy &&
++	ctx.metadata_fsync = ovl_should_sync_metadata(OVL_FS(dentry->d_sb)) &&
+ 			     (S_ISREG(ctx.stat.mode) || S_ISDIR(ctx.stat.mode));
+ 	ctx.metacopy = ovl_need_meta_copy_up(dentry, ctx.stat.mode, flags);
+ 
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -99,6 +99,12 @@ enum {
+ 	OVL_VERITY_REQUIRE,
+ };
+ 
++enum {
++	OVL_FSYNC_VOLATILE,
++	OVL_FSYNC_AUTO,
++	OVL_FSYNC_STRICT,
++};
++
+ /*
+  * The tuple (fh,uuid) is a universal unique identifier for a copy up origin,
+  * where:
+@@ -618,6 +624,21 @@ static inline bool ovl_xino_warn(struct
+ 	return ofs->config.xino == OVL_XINO_ON;
+ }
+ 
++static inline bool ovl_should_sync(struct ovl_fs *ofs)
++{
++	return ofs->config.fsync_mode != OVL_FSYNC_VOLATILE;
++}
++
++static inline bool ovl_should_sync_metadata(struct ovl_fs *ofs)
++{
++	return ofs->config.fsync_mode == OVL_FSYNC_STRICT;
++}
++
++static inline bool ovl_is_volatile(struct ovl_config *config)
++{
++	return config->fsync_mode == OVL_FSYNC_VOLATILE;
++}
++
+ /*
+  * To avoid regressions in existing setups with overlay lower offline changes,
+  * we allow lower changes only if none of the new features are used.
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -18,7 +18,7 @@ struct ovl_config {
+ 	int xino;
+ 	bool metacopy;
+ 	bool userxattr;
+-	bool ovl_volatile;
++	int fsync_mode;
+ };
+ 
+ struct ovl_sb {
+@@ -118,11 +118,6 @@ static inline struct ovl_fs *OVL_FS(stru
+ 	return (struct ovl_fs *)sb->s_fs_info;
+ }
+ 
+-static inline bool ovl_should_sync(struct ovl_fs *ofs)
+-{
+-	return !ofs->config.ovl_volatile;
+-}
 -
- 	if ((chan->xdev->dma_config->dmatype == XDMA_TYPE_CDMA) && chan->has_sg)
- 		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
- 			     XILINX_CDMA_CR_SGMODE);
-@@ -1594,6 +1586,7 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
- 			     head_desc->async_tx.phys);
- 	reg  &= ~XILINX_DMA_CR_DELAY_MAX;
- 	reg  |= chan->irq_delay << XILINX_DMA_CR_DELAY_SHIFT;
-+	reg |= XILINX_DMA_DMAXR_ALL_IRQ_MASK;
- 	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
+ static inline unsigned int ovl_numlower(struct ovl_entry *oe)
+ {
+ 	return oe ? oe->__numlower : 0;
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -58,6 +58,7 @@ enum ovl_opt {
+ 	Opt_xino,
+ 	Opt_metacopy,
+ 	Opt_verity,
++	Opt_fsync,
+ 	Opt_volatile,
+ };
  
- 	xilinx_dma_start(chan);
--- 
-2.53.0
-
+@@ -139,6 +140,23 @@ static int ovl_verity_mode_def(void)
+ 	return OVL_VERITY_OFF;
+ }
+ 
++static const struct constant_table ovl_parameter_fsync[] = {
++	{ "volatile",	OVL_FSYNC_VOLATILE },
++	{ "auto",	OVL_FSYNC_AUTO     },
++	{ "strict",	OVL_FSYNC_STRICT   },
++	{}
++};
++
++static const char *ovl_fsync_mode(struct ovl_config *config)
++{
++	return ovl_parameter_fsync[config->fsync_mode].name;
++}
++
++static int ovl_fsync_mode_def(void)
++{
++	return OVL_FSYNC_AUTO;
++}
++
+ const struct fs_parameter_spec ovl_parameter_spec[] = {
+ 	fsparam_string_empty("lowerdir",    Opt_lowerdir),
+ 	fsparam_string("lowerdir+",         Opt_lowerdir_add),
+@@ -154,6 +172,7 @@ const struct fs_parameter_spec ovl_param
+ 	fsparam_enum("xino",                Opt_xino, ovl_parameter_xino),
+ 	fsparam_enum("metacopy",            Opt_metacopy, ovl_parameter_bool),
+ 	fsparam_enum("verity",              Opt_verity, ovl_parameter_verity),
++	fsparam_enum("fsync",               Opt_fsync, ovl_parameter_fsync),
+ 	fsparam_flag("volatile",            Opt_volatile),
+ 	{}
+ };
+@@ -590,8 +609,11 @@ static int ovl_parse_param(struct fs_con
+ 	case Opt_verity:
+ 		config->verity_mode = result.uint_32;
+ 		break;
++	case Opt_fsync:
++		config->fsync_mode = result.uint_32;
++		break;
+ 	case Opt_volatile:
+-		config->ovl_volatile = true;
++		config->fsync_mode = OVL_FSYNC_VOLATILE;
+ 		break;
+ 	case Opt_userxattr:
+ 		config->userxattr = true;
+@@ -702,6 +724,7 @@ int ovl_init_fs_context(struct fs_contex
+ 	ofs->config.nfs_export		= ovl_nfs_export_def;
+ 	ofs->config.xino		= ovl_xino_def();
+ 	ofs->config.metacopy		= ovl_metacopy_def;
++	ofs->config.fsync_mode		= ovl_fsync_mode_def();
+ 
+ 	fc->s_fs_info		= ofs;
+ 	fc->fs_private		= ctx;
+@@ -770,9 +793,9 @@ int ovl_fs_params_verify(const struct ov
+ 		config->index = false;
+ 	}
+ 
+-	if (!config->upperdir && config->ovl_volatile) {
++	if (!config->upperdir && ovl_is_volatile(config)) {
+ 		pr_info("option \"volatile\" is meaningless in a non-upper mount, ignoring it.\n");
+-		config->ovl_volatile = false;
++		config->fsync_mode = ovl_fsync_mode_def();
+ 	}
+ 
+ 	if (!config->upperdir && config->uuid == OVL_UUID_ON) {
+@@ -997,8 +1020,8 @@ int ovl_show_options(struct seq_file *m,
+ 		seq_printf(m, ",xino=%s", ovl_xino_mode(&ofs->config));
+ 	if (ofs->config.metacopy != ovl_metacopy_def)
+ 		seq_printf(m, ",metacopy=%s", str_on_off(ofs->config.metacopy));
+-	if (ofs->config.ovl_volatile)
+-		seq_puts(m, ",volatile");
++	if (ofs->config.fsync_mode != ovl_fsync_mode_def())
++		seq_printf(m, ",fsync=%s", ovl_fsync_mode(&ofs->config));
+ 	if (ofs->config.userxattr)
+ 		seq_puts(m, ",userxattr");
+ 	if (ofs->config.verity_mode != ovl_verity_mode_def())
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -744,7 +744,7 @@ static int ovl_make_workdir(struct super
+ 	 * For volatile mount, create a incompat/volatile/dirty file to keep
+ 	 * track of it.
+ 	 */
+-	if (ofs->config.ovl_volatile) {
++	if (ovl_is_volatile(&ofs->config)) {
+ 		err = ovl_create_volatile_dirty(ofs);
+ 		if (err < 0) {
+ 			pr_err("Failed to create volatile/dirty file.\n");
 
 
 
