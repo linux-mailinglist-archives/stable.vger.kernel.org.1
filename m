@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232334-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CJjMyYCzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:34 +0200
+	id KEE7H+X/y2kJNQYAu9opvQ
+	(envelope-from <stable+bounces-232334-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C26F36E7C6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:19:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3274036E0BC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F5ED31B7EF7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C85C30FA8B0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41399423A82;
-	Tue, 31 Mar 2026 16:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5108A2E173D;
+	Tue, 31 Mar 2026 17:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTDQwPUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2jxoyKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F7C423A62;
-	Tue, 31 Mar 2026 16:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8119A2E0413;
+	Tue, 31 Mar 2026 17:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975730; cv=none; b=MPp6oOmJ7g26RryRhcJHINB2uj/rYU8a12oE/kDojnv/mNS/ZO90awHTlSqswljsANSlzklEZEIZy9wVIXcvWCW6jhFQdNFCCW+84MFCq/6DFPPBiAiDNsyhhR0cFaf1b4Y+TIuN7x3b363rHz8UpCP/B6mtDXuHrhI/NtqfLbY=
+	t=1774976482; cv=none; b=UVwt3wxoA/Jgkf4Fh5gixgholes8eeoi4LMl83HIKM7ilmWoNL6lAbLLG2zhdH0qnGgqbiNWdjOafEDduCfF3J1s/IVYK+j3J7bT/4lyHFQunrsuPa2B8J4n65YvOxjB+fbpAgajXBN4TCQXcm+FqloZxdUZFFcH2jIxKUvfVt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975730; c=relaxed/simple;
-	bh=guO8ZX8AQzqPWwkyQ5uG4yZYP4H+y3QT+BoxwYt4QBs=;
+	s=arc-20240116; t=1774976482; c=relaxed/simple;
+	bh=8THfTtgIuVQs8ubS/PFDc8Mh35LjZqkGEvdgft1SeOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AnDdcPjk9A3Mjn/ym0XYFosVR0hyD8rRUipLNXTLtN/extNdVsOnAwGA1jMbiKUrqsffpzoDpzDolDOhUFIZDUUCFhjO0LpFqmVOvce3yIt7Gg2B19vF1fjZ4qJGmjKOphCGeE957HO/W4m3O3YsGom5K9nQTMVUe+WEsWjdTqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTDQwPUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0865FC19423;
-	Tue, 31 Mar 2026 16:48:49 +0000 (UTC)
+	 MIME-Version; b=N3i81/rcyJvFMXMje4UYLRTZcJU+l8bYKenU7PyMy1nJraBZSamx63Y2falM+MFGBgmNH62qwStPedP1umptsz3AgchMEcXXVFjftyuyJ/FkPCPbyuiv3PyE3u8xrZoPMHiUECvmvg8f1395LoePiz+n8ifO62oHV/ngB9s5gMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2jxoyKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04352C19423;
+	Tue, 31 Mar 2026 17:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975730;
-	bh=guO8ZX8AQzqPWwkyQ5uG4yZYP4H+y3QT+BoxwYt4QBs=;
+	s=korg; t=1774976482;
+	bh=8THfTtgIuVQs8ubS/PFDc8Mh35LjZqkGEvdgft1SeOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTDQwPUoFx3hX1bbsMBWhx37vhpbK3OkptXlVOY1GmdtnkJ/Lkx4f2tvtT8CaESZr
-	 vt9QTHdtVx4yxTEneoF6B1aTmRSoZGfuN5crI39PJihp6BIwvN8I7Pce10T2vMcPYw
-	 qlfnizR/7ijkeXd4WKJIseImpo5RLgJfwm0PGPMg=
+	b=B2jxoyKqCB4SB1O34XvlAZL/z9vbk0NANfe5vhZBvc1lYrpAP2/TRoBbXZRvXRMmv
+	 SqTGzBTEybXRZ2aVdfkYAjfMqtY7hCq1q21UN2eRlmvg3pjXmFE9SWimWY9gR9V2sm
+	 XI2snKqIMRq9IoNl6CvL2glLmyrB/OzYccmrn2dM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helen Koike <koike@igalia.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/244] Bluetooth: L2CAP: Fix null-ptr-deref on l2cap_sock_ready_cb
+Subject: [PATCH 6.18 110/309] net: airoha: add RCU lock around dev_fill_forward_path
 Date: Tue, 31 Mar 2026 18:20:13 +0200
-Message-ID: <20260331161744.016153680@linuxfoundation.org>
+Message-ID: <20260331161757.534868718@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,134 +69,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-232334-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232044-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,igalia.com:email]
-X-Rspamd-Queue-Id: 5C26F36E7C6
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 3274036E0BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helen Koike <koike@igalia.com>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit b6552e0503973daf6f23bd6ed9273ef131ee364f ]
+[ Upstream commit 1065913dedfd3a8269816835bfe810b6e2c28579 ]
 
-Before using sk pointer, check if it is null.
+Since 0417adf367a0 ("ppp: fix race conditions in ppp_fill_forward_path")
+dev_fill_forward_path() should be called with RCU read lock held. This
+fix was applied to net, while the Airoha flowtable commit was applied to
+net-next, so it hadn't been an issue until net was merged into net-next.
 
-Fix the following:
-
- KASAN: null-ptr-deref in range [0x0000000000000260-0x0000000000000267]
- CPU: 0 UID: 0 PID: 5985 Comm: kworker/0:5 Not tainted 7.0.0-rc4-00029-ga989fde763f4 #1 PREEMPT(full)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-9.fc43 06/10/2025
- Workqueue: events l2cap_info_timeout
- RIP: 0010:kasan_byte_accessible+0x12/0x30
- Code: 79 ff ff ff 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6 48 c1 ef 03 48 b8 00 00 00 00 00 fc ff df <0f> b6 04 07 3c 08 0f 92 c0 c3 cc cce
- veth0_macvtap: entered promiscuous mode
- RSP: 0018:ffffc90006e0f808 EFLAGS: 00010202
- RAX: dffffc0000000000 RBX: ffffffff89746018 RCX: 0000000080000001
- RDX: 0000000000000000 RSI: ffffffff89746018 RDI: 000000000000004c
- RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
- R10: dffffc0000000000 R11: ffffffff8aae3e70 R12: 0000000000000000
- R13: 0000000000000260 R14: 0000000000000260 R15: 0000000000000001
- FS:  0000000000000000(0000) GS:ffff8880983c2000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00005582615a5008 CR3: 000000007007e000 CR4: 0000000000752ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  __kasan_check_byte+0x12/0x40
-  lock_acquire+0x79/0x2e0
-  lock_sock_nested+0x48/0x100
-  ? l2cap_sock_ready_cb+0x46/0x160
-  l2cap_sock_ready_cb+0x46/0x160
-  l2cap_conn_start+0x779/0xff0
-  ? __pfx_l2cap_conn_start+0x10/0x10
-  ? l2cap_info_timeout+0x60/0xa0
-  ? __pfx___mutex_lock+0x10/0x10
-  l2cap_info_timeout+0x68/0xa0
-  ? process_scheduled_works+0xa8d/0x18c0
-  process_scheduled_works+0xb6e/0x18c0
-  ? __pfx_process_scheduled_works+0x10/0x10
-  ? assign_work+0x3d5/0x5e0
-  worker_thread+0xa53/0xfc0
-  kthread+0x388/0x470
-  ? __pfx_worker_thread+0x10/0x10
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x51e/0xb90
-  ? __pfx_ret_from_fork+0x10/0x10
- veth1_macvtap: entered promiscuous mode
-  ? __switch_to+0xc7d/0x1450
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- Modules linked in:
- ---[ end trace 0000000000000000 ]---
- batman_adv: batadv0: Interface activated: batadv_slave_0
- batman_adv: batadv0: Interface activated: batadv_slave_1
- netdevsim netdevsim7 netdevsim0: set [1, 0] type 2 family 0 port 6081 - 0
- netdevsim netdevsim7 netdevsim1: set [1, 0] type 2 family 0 port 6081 - 0
- netdevsim netdevsim7 netdevsim2: set [1, 0] type 2 family 0 port 6081 - 0
- netdevsim netdevsim7 netdevsim3: set [1, 0] type 2 family 0 port 6081 - 0
- RIP: 0010:kasan_byte_accessible+0x12/0x30
- Code: 79 ff ff ff 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6 48 c1 ef 03 48 b8 00 00 00 00 00 fc ff df <0f> b6 04 07 3c 08 0f 92 c0 c3 cc cce
- ieee80211 phy39: Selected rate control algorithm 'minstrel_ht'
- RSP: 0018:ffffc90006e0f808 EFLAGS: 00010202
- RAX: dffffc0000000000 RBX: ffffffff89746018 RCX: 0000000080000001
- RDX: 0000000000000000 RSI: ffffffff89746018 RDI: 000000000000004c
- RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
- R10: dffffc0000000000 R11: ffffffff8aae3e70 R12: 0000000000000000
- R13: 0000000000000260 R14: 0000000000000260 R15: 0000000000000001
- FS:  0000000000000000(0000) GS:ffff8880983c2000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f7e16139e9c CR3: 000000000e74e000 CR4: 0000000000752ef0
- PKRU: 55555554
- Kernel panic - not syncing: Fatal exception
-
-Fixes: 54a59aa2b562 ("Bluetooth: Add l2cap_chan->ops->ready()")
-Signed-off-by: Helen Koike <koike@igalia.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: a8bdd935d1dd ("net: airoha: Add wlan flowtable TX offload")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260320094315.525126-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/airoha/airoha_ppe.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index ef1b8a44420ed..697b997f3fb65 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1668,6 +1668,9 @@ static void l2cap_sock_ready_cb(struct l2cap_chan *chan)
- 	struct sock *sk = chan->data;
- 	struct sock *parent;
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index 190d98970014f..b3632f964a580 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -201,7 +201,9 @@ static int airoha_ppe_get_wdma_info(struct net_device *dev, const u8 *addr,
+ 	if (!dev)
+ 		return -ENODEV;
  
-+	if (!sk)
-+		return;
-+
- 	lock_sock(sk);
++	rcu_read_lock();
+ 	err = dev_fill_forward_path(dev, addr, &stack);
++	rcu_read_unlock();
+ 	if (err)
+ 		return err;
  
- 	parent = bt_sk(sk)->parent;
 -- 
 2.51.0
 
