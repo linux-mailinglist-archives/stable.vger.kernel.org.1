@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-232056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GP6vLxL9y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:54 +0200
+	id SHTFKA8AzGkJNQYAu9opvQ
+	(envelope-from <stable+bounces-231875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BBA36D886
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E0336E11C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F784301983C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1603830A1319
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A45C3EF0A2;
-	Tue, 31 Mar 2026 16:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D3C426686;
+	Tue, 31 Mar 2026 16:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZpsHicb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAjpHJ74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E235B33120E;
-	Tue, 31 Mar 2026 16:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663CA426EDA;
+	Tue, 31 Mar 2026 16:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975762; cv=none; b=Gdzmggqy2ep1oKU8msNsROJYSRXW9LVRePPut8uOZwHX7Gw1Kr8kNZZdMMuHPxrULTngwD5yvgO07CqPaGjHTzvtfAxZL7o/0exnPO5ngE/zzG2lNhXtgutQ3qWQOxRYNNKaA70L8iRSLGHsePNnSm85uFFJjStXfNYYXesl/fk=
+	t=1774975293; cv=none; b=ojRW2FXV3hLNq3SFx+VSLO9AlcnZ2RuZSnYizYWcR0i/t1KOb3q/AQSgMA/vCHtByiwsA3WllYzXJ2fXjhjQTofB1MzvShRrFz402G2S6ORbA7i9Mg1Kn01h0yMBGEzdOV/zpL7tiCA8KbvNx2DHZrz1J75kMdBzrkC82vltme8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975762; c=relaxed/simple;
-	bh=geb6JHNg0Bpj4KArl4EHhxxH5U/vOdQujkvGJBya2gE=;
+	s=arc-20240116; t=1774975293; c=relaxed/simple;
+	bh=RPLNY0N2jb7GsIgtUnW1Xlm6qaOPurCeA5OdaORqZf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPxOPXW/rb3GFp2fAp11fB9KFNUQr+pmCowmCfcV0v+2gvkC2oZ1FRKcllHUlGU0gA9USX3Sl9GfaZbqUkTVu3QS9EIeghuHwCBORkFnFoADjtSHb/2om2dDtUTuW3VQQtE0MhbHhpxxtI3xx6YAQTQ8og7LX+20PxeU68WLdY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZpsHicb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB1EC19423;
-	Tue, 31 Mar 2026 16:49:21 +0000 (UTC)
+	 MIME-Version; b=QzaI0kuMDL1JWBU8WO5KFDEripte44sbBH/V7U+epqyhyvCfOn9OEY1dBRq21mvD3CsjXvlbCZvF+WqLTCPl9mOHbdi7tHaeIwpSoYLztIkyPj2vd+UmmupcmP8CLsFtDb7NrYMsrp/D9VdwclHOdyAQwf8bDNeyp7fSFO6NyUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAjpHJ74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03F5C19423;
+	Tue, 31 Mar 2026 16:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975761;
-	bh=geb6JHNg0Bpj4KArl4EHhxxH5U/vOdQujkvGJBya2gE=;
+	s=korg; t=1774975293;
+	bh=RPLNY0N2jb7GsIgtUnW1Xlm6qaOPurCeA5OdaORqZf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZpsHicb0zSkK0RxmfMoTbyyzOd9Ra/K/Ua9NEi1sw4ecog2xRpffZlKsM+U9wTvO
-	 sJayGZJ8Y/Ole+VLeBcEbu4n7hHJ14cZqdvaLa0ispZPCLYhZsxLqWBA2QCtddgko+
-	 R22xbYVuu30uf+exW5Oi0/ThkYQBuCLcI9N2BsgQ=
+	b=gAjpHJ74lfXD8cvyvegEJylcw9JZ8IfI38UoyNDPF3+8zHG5H6bjBAlP/g9FO6s/L
+	 UJxstKG/j8XoMpV1tBPXN8PwlSAhqaijAU+GCzeH8l0Zu62EYNgO/iKiulh3oT2kMg
+	 MzJdPDCeRL/SGZ/GspvADXq9h83xaN6Ukjzaeey0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/244] net: bcmasp: fix double free of WoL irq
-Date: Tue, 31 Mar 2026 18:20:27 +0200
-Message-ID: <20260331161744.529124358@linuxfoundation.org>
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	stable@kernel.org
+Subject: [PATCH 6.19 195/342] s390/syscalls: Add spectre boundary for syscall dispatch table
+Date: Tue, 31 Mar 2026 18:20:28 +0200
+Message-ID: <20260331161806.168552154@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232056-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231875-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,73 +89,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 91BBA36D886
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,arndb.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C3E0336E11C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit cbfa5be2bf64511d49b854a0f9fd6d0b5118621f ]
+commit 48b8814e25d073dd84daf990a879a820bad2bcbd upstream.
 
-We do not need to free wol_irq since it was instantiated with
-devm_request_irq(). So devres will free for us.
+The s390 syscall number is directly controlled by userspace, but does
+not have an array_index_nospec() boundary to prevent access past the
+syscall function pointer tables.
 
-Fixes: a2f0751206b0 ("net: bcmasp: Add support for WoL magic packet")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260319234813.1937315-2-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Fixes: 56e62a737028 ("s390: convert to generic entry")
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/2026032404-sterling-swoosh-43e6@gregkh
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 8 --------
- 1 file changed, 8 deletions(-)
+ arch/s390/kernel/syscall.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index 1e73595096c13..44f55eb72f174 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -1154,12 +1154,6 @@ void bcmasp_enable_wol(struct bcmasp_intf *intf, bool en)
- 	}
+--- a/arch/s390/kernel/syscall.c
++++ b/arch/s390/kernel/syscall.c
+@@ -13,6 +13,7 @@
+  */
+ 
+ #include <linux/cpufeature.h>
++#include <linux/nospec.h>
+ #include <linux/errno.h>
+ #include <linux/sched.h>
+ #include <linux/mm.h>
+@@ -131,8 +132,10 @@ void noinstr __do_syscall(struct pt_regs
+ 	if (unlikely(test_and_clear_pt_regs_flag(regs, PIF_SYSCALL_RET_SET)))
+ 		goto out;
+ 	regs->gprs[2] = -ENOSYS;
+-	if (likely(nr < NR_syscalls))
++	if (likely(nr < NR_syscalls)) {
++		nr = array_index_nospec(nr, NR_syscalls);
+ 		regs->gprs[2] = sys_call_table[nr](regs);
++	}
+ out:
+ 	syscall_exit_to_user_mode(regs);
  }
- 
--static void bcmasp_wol_irq_destroy(struct bcmasp_priv *priv)
--{
--	if (priv->wol_irq > 0)
--		free_irq(priv->wol_irq, priv);
--}
--
- static void bcmasp_eee_fixup(struct bcmasp_intf *intf, bool en)
- {
- 	u32 reg, phy_lpi_overwrite;
-@@ -1332,7 +1326,6 @@ static int bcmasp_probe(struct platform_device *pdev)
- 	return ret;
- 
- err_cleanup:
--	bcmasp_wol_irq_destroy(priv);
- 	bcmasp_remove_intfs(priv);
- 
- 	return ret;
-@@ -1345,7 +1338,6 @@ static void bcmasp_remove(struct platform_device *pdev)
- 	if (!priv)
- 		return;
- 
--	bcmasp_wol_irq_destroy(priv);
- 	bcmasp_remove_intfs(priv);
- }
- 
--- 
-2.51.0
-
 
 
 
