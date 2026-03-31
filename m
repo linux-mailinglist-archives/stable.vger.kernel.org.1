@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-232039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNa7CcD9y2nqNAYAu9opvQ
-	(envelope-from <stable+bounces-232039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:48 +0200
+	id kLEDLrj1y2nlMwYAu9opvQ
+	(envelope-from <stable+bounces-231482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9617936DA41
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:00:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FE236C93A
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C5B231331EB
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:48:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92CF6302C924
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B5D423A7C;
-	Tue, 31 Mar 2026 16:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4206C3E3C5C;
+	Tue, 31 Mar 2026 16:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IecMb9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9SlwdHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862F9413225;
-	Tue, 31 Mar 2026 16:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0441230C345;
+	Tue, 31 Mar 2026 16:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975717; cv=none; b=pz9uoqWaATrfCAAsGf5DifRJ5ZhwcjspoLBTSNQZ/nN+389ayPzCxe6DdkR4SxeFUbRBkvxFNdrl4h8k+F1WNFuINnwA3XLYAoCRLYdIm4kZEVQBX3m+Y2HNWSDy5n7fD+16vZtcLhjqr1xlM4etSg9/bk4CcKZ+/K6oFidGyj0=
+	t=1774974287; cv=none; b=qA4CYrVHQf/HMiHXQqoiKEuo/vRiIMviVl/Pf2Xu7wQu6L04rxRYa65qKK3/ONawQl0faLqEvTEJUzWApX3+z/MepBH5S2cKvDSSld1UzxD58RD8uEd1o1GOuPA3kJR9u9PmIEVOcH3t7WsnIxRRKAkyIoJPDoYaR0K/2ZaNyps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975717; c=relaxed/simple;
-	bh=Ak4oB30WJLkSj8ms+BZ3I7hihOm5bIh3LqkN4RUm390=;
+	s=arc-20240116; t=1774974287; c=relaxed/simple;
+	bh=4utwA8vIto4yxf+1ydUcJsYmJAy4uV4xMOsIfgAnWqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lo8JLQ9t+4UM278LpPUIYcI3kXxgFK5dsNHqFEi7HAjaLZBuKvEFx9ZzYd/Eb3hX50jF204Q3TJJZiAMGXIVz5edBQR+jyY529l8XnljwxqP8MtXtwfDfJ+Vmy1MK5IR+vPpHtNifKNV2Q+/xw7MxFoleXjlpZX8iYjjXa0zSG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IecMb9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EC9C19423;
-	Tue, 31 Mar 2026 16:48:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YqJ4mMH5sw8ZfqOivr59lmUw6KPZHYp3H0wx6ULAAZ1NIHp5Toee3J6Aa1bjgXYRTLn9GGCnmDn+Mmijqmskikohc3y/nncYN2ckUMSUH6qkfm2Wz1eXn3bBNHUrLfOfHAcxwjYOm/9ir7xWzhV+Ntv61Bo9pIDoY9pkON13/hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9SlwdHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37139C19423;
+	Tue, 31 Mar 2026 16:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975717;
-	bh=Ak4oB30WJLkSj8ms+BZ3I7hihOm5bIh3LqkN4RUm390=;
+	s=korg; t=1774974286;
+	bh=4utwA8vIto4yxf+1ydUcJsYmJAy4uV4xMOsIfgAnWqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IecMb9ZCoOHevoHYqEQ114L9r1wx/1a9bCZNzM7Kl3QkY5JHSvdyCUr4dleiMf0y
-	 6C7VBsH9xZssh3KL4OzzMc9Lkplg5ZxeG+J0cHL+Su9TYXFhY6yzheMPqIxQEWHTs/
-	 aMgJx6VURQMxlRAiMgIVzjS1r9A28I/9sUBqVd08=
+	b=u9SlwdHPOQ1KJZNSAhEaiBbUYYsvaeQC+V0D0NWOFgASH+CnWR4hVRwOacaVe8rzv
+	 5iekWwBANNG+XuaQ7+DQRpHWujZXW5JdKJC5B1Q3g6bWENLiWrN4EBgOG7fe0aIWIj
+	 pZ0nlI3zpQjPV60NdSwuykW44ABCaj/vhT/CChGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/244] Bluetooth: L2CAP: Validate PDU length before reading SDU length in l2cap_ecred_data_rcv()
-Date: Tue, 31 Mar 2026 18:20:09 +0200
-Message-ID: <20260331161743.870315929@linuxfoundation.org>
+Subject: [PATCH 6.6 026/175] HID: apple: avoid memory leak in apple_report_fixup()
+Date: Tue, 31 Mar 2026 18:20:10 +0200
+Message-ID: <20260331161730.749708465@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232039-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231482-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9617936DA41
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 15FE236C93A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Günther Noack <gnoack@google.com>
 
-[ Upstream commit c65bd945d1c08c3db756821b6bf9f1c4a77b29c6 ]
+[ Upstream commit 239c15116d80f67d32f00acc34575f1a6b699613 ]
 
-l2cap_ecred_data_rcv() reads the SDU length field from skb->data using
-get_unaligned_le16() without first verifying that skb contains at least
-L2CAP_SDULEN_SIZE (2) bytes. When skb->len is less than 2, this reads
-past the valid data in the skb.
+The apple_report_fixup() function was returning a
+newly kmemdup()-allocated buffer, but never freeing it.
 
-The ERTM reassembly path correctly calls pskb_may_pull() before reading
-the SDU length (l2cap_reassemble_sdu, L2CAP_SAR_START case). Apply the
-same validation to the Enhanced Credit Based Flow Control data path.
+The caller of report_fixup() does not take ownership of the returned
+pointer, but it *is* permitted to return a sub-portion of the input
+rdesc, whose lifetime is managed by the caller.
 
-Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Assisted-by: Gemini-CLI:Google Gemini 3
+Signed-off-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hid/hid-apple.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 13f124cc4b6b1..c65724d19fcfe 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6637,6 +6637,11 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
- 	if (!chan->sdu) {
- 		u16 sdu_len;
+diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
+index 9dd5c698fefe0..6fae3427218fc 100644
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -645,9 +645,7 @@ static __u8 *apple_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		hid_info(hdev,
+ 			 "fixing up Magic Keyboard battery report descriptor\n");
+ 		*rsize = *rsize - 1;
+-		rdesc = kmemdup(rdesc + 1, *rsize, GFP_KERNEL);
+-		if (!rdesc)
+-			return NULL;
++		rdesc = rdesc + 1;
  
-+		if (!pskb_may_pull(skb, L2CAP_SDULEN_SIZE)) {
-+			err = -EINVAL;
-+			goto failed;
-+		}
-+
- 		sdu_len = get_unaligned_le16(skb->data);
- 		skb_pull(skb, L2CAP_SDULEN_SIZE);
- 
+ 		rdesc[0] = 0x05;
+ 		rdesc[1] = 0x01;
 -- 
 2.51.0
 
