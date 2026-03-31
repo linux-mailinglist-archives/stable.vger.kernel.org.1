@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uG57CLX5y2lENAYAu9opvQ
-	(envelope-from <stable+bounces-231590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:33 +0200
+	id iAidNrwAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA1B36D056
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A6336E373
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6687D303C135
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E0BE830929CC
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE81423149;
-	Tue, 31 Mar 2026 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892083009D4;
+	Tue, 31 Mar 2026 17:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kspmJG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBhVwMgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8BE421EE4;
-	Tue, 31 Mar 2026 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0382FE042;
+	Tue, 31 Mar 2026 17:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974563; cv=none; b=arWpenZDoG69Vjd3oTZwGyQaG1ljV20twJMi0TzGVqmzWxO3ZaBFMxjHJ9x0DL7tk4j+yRiqn+q0/DleqaCTkBS5g63TjRYNz6xbT6BkySomtj4N+b51RO6I5rOyHzV6mTZXX25zjVbRbHSylSnJxlthqqWvcIHAb1vs6m60zNo=
+	t=1774976750; cv=none; b=oliX/oVZ44Vx1JvwPcw7NGIlVA9JrNYC2lt9wvO63p/J4ZlZlxYkCIEtMPzWRC4eq+e1TtFHjZKW1OJ+UaXB3uAVOjtlw0f9zOvAko+BPcByyrYzsRFJ0WqmPc3KOPHYSRrExuUHCmfw3k7lyLv06xl2DtXS1g3Ae9g5786rcmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974563; c=relaxed/simple;
-	bh=j/VOvBbl/KBVPYilapXpv21XFbX7XY/92jI12ys9WDE=;
+	s=arc-20240116; t=1774976750; c=relaxed/simple;
+	bh=IG8hYLJOXVqzFYDwohPeWYVJ8Hjk8rTWArBYcKRMa9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhkFaiRcrocb2Jgy7nhKoAulQ0bNJHqkOke+aoIU54uIh9ppW7JXK1WdfizDo8Kc3sk9TLEIUH646/nuC3tqU8VQfpYwb6AM0SqRQABI4tocaXPEYb2SO4+fHlFztbEpT51MHE8cNXtDb3buu6oC+6jpDllBQwFvX95hjWhUsOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kspmJG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C9BC19423;
-	Tue, 31 Mar 2026 16:29:22 +0000 (UTC)
+	 MIME-Version; b=Y1C8Wv8MgkNVgkqBq3SV/1abu+LdzDJX8PKYkYux8EIpPCugbV6DGucCWy25dxlvzwzYiroli5LtOQEVnnVP91PtcnqcTPj+KtnGZKXfoeYvvMh6LN2wIFStp15jjJGKt+0St4nroFEaMLdMbXhPvf74KdgvYphACgfzKCxk1TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBhVwMgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58C4C19423;
+	Tue, 31 Mar 2026 17:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974563;
-	bh=j/VOvBbl/KBVPYilapXpv21XFbX7XY/92jI12ys9WDE=;
+	s=korg; t=1774976750;
+	bh=IG8hYLJOXVqzFYDwohPeWYVJ8Hjk8rTWArBYcKRMa9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kspmJG77f9h3EYptCgETbKzZkLxeigzMFHcS6ciiGmjU3N8q22MACPrxDV+PVlgc
-	 3pnjtE050/hh+GRo//y/TrtNc7/suj2s5Rmb/BUPhY8SHmUI1+JDhV2IRfeOvVEeo1
-	 LfqI8OZJUDxCaomZGbfVSiaby5rNHXX29+4T5vSw=
+	b=xBhVwMgk+g/fFUZ6xzeGR05cRx1diPJBEVizH5D8GpP8rmkoClgiTfkgPvv1cDvxB
+	 2lmRBBYRduiCMDmpBrbwKktuoGYnu+PgDltVG1utdNGgugVIVIFIzoY/nbb4sRbhWk
+	 ecK5/rJZqg07NheY+rsB0XWMt0yoSbVvi02FmzAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 133/175] ext4: make recently_deleted() properly work with lazy itable initialization
+	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.18 214/309] phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4
 Date: Tue, 31 Mar 2026 18:21:57 +0200
-Message-ID: <20260331161734.672809333@linuxfoundation.org>
+Message-ID: <20260331161801.324205240@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231590-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232439-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,57 +87,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 0DA1B36D056
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 94A6336E373
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
 
-commit bd060afa7cc3e0ad30afa9ecc544a78638498555 upstream.
+commit 81af9e40e2e4e1aa95f09fb34811760be6742c58 upstream.
 
-recently_deleted() checks whether inode has been used in the near past.
-However this can give false positive result when inode table is not
-initialized yet and we are in fact comparing to random garbage (or stale
-itable block of a filesystem before mkfs). Ultimately this results in
-uninitialized inodes being skipped during inode allocation and possibly
-they are never initialized and thus e2fsck complains.  Verify if the
-inode has been initialized before checking for dtime.
+According to internal documentation, on SM8650, when the PHY is configured
+in Gear 4, the QPHY_V6_PCS_UFS_PLL_CNTL register needs to have the same
+value as for Gear 5.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20260216164848.3074-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+At the moment, there is no board that comes with a UFS 3.x device, so
+this issue doesn't show up, but with the new Eliza SoC, which uses the
+same init sequence as SM8650, on the MTP board, the link startup fails
+with the current Gear 4 PCS table.
+
+So fix that by moving the entry into the PCS generic table instead,
+while keeping the value from Gear 5 configuration.
+
+Cc: stable@vger.kernel.org # v6.10
+Fixes: b9251e64a96f ("phy: qcom: qmp-ufs: update SM8650 tables for Gear 4 & 5")
+Suggested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Link: https://patch.msgid.link/20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ialloc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -688,6 +688,12 @@ static int recently_deleted(struct super
- 	if (unlikely(!gdp))
- 		return 0;
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+@@ -928,6 +928,7 @@ static const struct qmp_phy_init_tbl sm8
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0xc1),
++	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
+@@ -937,13 +938,11 @@ static const struct qmp_phy_init_tbl sm8
+ };
  
-+	/* Inode was never used in this filesystem? */
-+	if (ext4_has_group_desc_csum(sb) &&
-+	    (gdp->bg_flags & cpu_to_le16(EXT4_BG_INODE_UNINIT) ||
-+	     ino >= EXT4_INODES_PER_GROUP(sb) - ext4_itable_unused_count(sb, gdp)))
-+		return 0;
-+
- 	bh = sb_find_get_block(sb, ext4_inode_table(sb, gdp) +
- 		       (ino / inodes_per_block));
- 	if (!bh || !buffer_uptodate(bh))
+ static const struct qmp_phy_init_tbl sm8650_ufsphy_g4_pcs[] = {
+-	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x13),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x04),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x04),
+ };
+ 
+ static const struct qmp_phy_init_tbl sm8650_ufsphy_g5_pcs[] = {
+-	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x05),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x05),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HS_G5_SYNC_LENGTH_CAPABILITY, 0x4d),
 
 
 
