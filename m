@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-232448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gH10H8ADzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:26:24 +0200
+	id QOFcDsT5y2lENAYAu9opvQ
+	(envelope-from <stable+bounces-231599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BCF36EB2E
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:26:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D5036D085
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5838930595AF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CAF06303BE2F
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28433308F39;
-	Tue, 31 Mar 2026 17:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B843EF0A2;
+	Tue, 31 Mar 2026 16:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDrvcq0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vv7a4tfN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCFC303A07;
-	Tue, 31 Mar 2026 17:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A1A3E316C;
+	Tue, 31 Mar 2026 16:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976773; cv=none; b=dPqJsIue50Y1KYXuPQumYVar00qBTXygEd48n6eCj6Co1nLbC0exfRPAKaIpzQld/suxtKEZ5RplUi+jS5nXl84nctGF3dlfMhBDHWj9aI9ngDhJK8EydYAwtP7+FIAGjciYHj5IfvVswbRVkW2ykeuYEjen5+FV9O/taAIDuyo=
+	t=1774974586; cv=none; b=f35FWkipt/Ocys28TXT7xT/pIJpaANJ4QbfEOJmMkN+Xq1rpClDSSqnau9ytuwFjzDiHusfaYjJLgr2HmnZ1FZxefB/vTB2+OzbJXZ0IP1wUb02S/bPyuadytJyJ63N8FU6/Iui8j3ho+AfVSMd0+0eKI8ie42k3GDFIXWqUdN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976773; c=relaxed/simple;
-	bh=DG+Tq7TXBDLni+0NPm1kb08gc8zWFHlK95QCba7HkDc=;
+	s=arc-20240116; t=1774974586; c=relaxed/simple;
+	bh=Gupp3NOjR2+uOwJ0ANsqMdTIqczTsJdOnbwIE3zwfFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3vtFo+ZKS8FT7ooTugzkUciPp4k7CnvmDMJCLPGQVjesgYuuvesAX84Riy1Xkz7QaaqFnPCmppgpKnXG49s5ZdUV0rrRcqgoNfcYIiJttQYpWPPKDXOuKd9DCvMMhS5nee3n0Kxs6Sg/ZRhcUxZ4bryXHYl/t5LJmKimGWTDCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDrvcq0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73366C19423;
-	Tue, 31 Mar 2026 17:06:13 +0000 (UTC)
+	 MIME-Version; b=izmxU+5vtkVpsCZ6DDSNK32VfpAXARhSCO6HvgZ4fVe0USYJf4J+6I3GqY9yDanm+ql9+XUyy1gbMBWKF/dxyURvUCRuhXrJgGzhjy8iYlUSfOw6QKffvFU6drW9/b6tXe6nU/NYKrBwUJZTKRuoRQumyowvgLy+Of9R1/nfy8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vv7a4tfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266FEC19423;
+	Tue, 31 Mar 2026 16:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976773;
-	bh=DG+Tq7TXBDLni+0NPm1kb08gc8zWFHlK95QCba7HkDc=;
+	s=korg; t=1774974586;
+	bh=Gupp3NOjR2+uOwJ0ANsqMdTIqczTsJdOnbwIE3zwfFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CDrvcq0n9hUROnecbvGPwSLlUqXB8ujY2+xZA5mCN60mAuiUPEwag21zh3GndHvIB
-	 LxqyAms9dnkEpqslkbTK+ytKQ874kfovbuzSyZPmHEL2/45KBLPv8xU+v6G2YhJtTM
-	 LDjEkexnG0Kf95RQch1yAx6N8aXS+PKHcvFdIwpY=
+	b=Vv7a4tfN2X8kISVqPKr4nNeVHPMyVDhTYRT1lClo47ip8C/JpKeoSfELxyRSoqfuV
+	 6QHyxUztvYOvXQqxZA4fsHZVE17WbkRQsqyiIiE2nHWtbVjpVXxryqBxjBa70tgn8c
+	 hDOOzbBPoif8PDHtce6AmmhVcP5LnEF0cHq7rBwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 222/309] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 141/175] ext4: always drain queued discard work in ext4_mb_release()
 Date: Tue, 31 Mar 2026 18:22:05 +0200
-Message-ID: <20260331161801.617771557@linuxfoundation.org>
+Message-ID: <20260331161734.966390494@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232448-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231599-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,96 +86,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amazon.co.uk:email]
-X-Rspamd-Queue-Id: 88BCF36EB2E
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 53D5036D085
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit aad885e774966e97b675dfe928da164214a71605 upstream.
+commit 9ee29d20aab228adfb02ca93f87fb53c56c2f3af upstream.
 
-When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
-existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
-right about it being impossible to convert a shadow-present SPTE to an
-MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
-memory that are outside the scope of KVM.
+While reviewing recent ext4 patch[1], Sashiko raised the following
+concern[2]:
 
-E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
-to emulted MMIO and then the guest hits a relevant page fault, KVM will
-install the MMIO SPTE without first zapping the shadow-present SPTE.
+> If the filesystem is initially mounted with the discard option,
+> deleting files will populate sbi->s_discard_list and queue
+> s_discard_work. If it is then remounted with nodiscard, the
+> EXT4_MOUNT_DISCARD flag is cleared, but the pending s_discard_work is
+> neither cancelled nor flushed.
 
-  ------------[ cut here ]------------
-  is_shadow_present_pte(*sptep)
-  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
-  Call Trace:
-   <TASK>
-   mmu_set_spte+0x237/0x440 [kvm]
-   ept_page_fault+0x535/0x7f0 [kvm]
-   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
-   kvm_mmu_page_fault+0x8d/0x620 [kvm]
-   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb5/0x730
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x47fa3f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
+[1] https://lore.kernel.org/r/20260319094545.19291-1-qiang.zhang@linux.dev/
+[2] https://sashiko.dev/#/patchset/20260319094545.19291-1-qiang.zhang%40linux.dev
 
-Reported-by: Alexander Bulekov <bkov@amazon.com>
-Debugged-by: Alexander Bulekov <bkov@amazon.com>
-Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
-Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+The concern was valid, but it had nothing to do with the patch[1].
+One of the problems with Sashiko in its current (early) form is that
+it will detect pre-existing issues and report it as a problem with the
+patch that it is reviewing.
+
+In practice, it would be hard to hit deliberately (unless you are a
+malicious syzkaller fuzzer), since it would involve mounting the file
+system with -o discard, and then deleting a large number of files,
+remounting the file system with -o nodiscard, and then immediately
+unmounting the file system before the queued discard work has a change
+to drain on its own.
+
+Fix it because it's a real bug, and to avoid Sashiko from raising this
+concern when analyzing future patches to mballoc.c.
+
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 55cdd0af2bc5 ("ext4: get discard out of jbd2 commit kthread contex")
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/ext4/mballoc.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3044,12 +3044,6 @@ static int mmu_set_spte(struct kvm_vcpu
- 	bool prefetch = !fault || fault->prefetch;
- 	bool write_fault = fault && fault->write;
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3793,13 +3793,11 @@ int ext4_mb_release(struct super_block *
+ 	struct kmem_cache *cachep = get_groupinfo_cache(sb->s_blocksize_bits);
+ 	int count;
  
--	if (unlikely(is_noslot_pfn(pfn))) {
--		vcpu->stat.pf_mmio_spte_created++;
--		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
--		return RET_PF_EMULATE;
+-	if (test_opt(sb, DISCARD)) {
+-		/*
+-		 * wait the discard work to drain all of ext4_free_data
+-		 */
+-		flush_work(&sbi->s_discard_work);
+-		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
 -	}
--
- 	if (is_shadow_present_pte(*sptep)) {
- 		if (prefetch && is_last_spte(*sptep, level) &&
- 		    pfn == spte_to_pfn(*sptep))
-@@ -3073,6 +3067,14 @@ static int mmu_set_spte(struct kvm_vcpu
- 			was_rmapped = 1;
- 	}
++	/*
++	 * wait the discard work to drain all of ext4_free_data
++	 */
++	flush_work(&sbi->s_discard_work);
++	WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
  
-+	if (unlikely(is_noslot_pfn(pfn))) {
-+		vcpu->stat.pf_mmio_spte_created++;
-+		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
-+		if (flush)
-+			kvm_flush_remote_tlbs_gfn(vcpu->kvm, gfn, level);
-+		return RET_PF_EMULATE;
-+	}
-+
- 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
- 			   false, host_writable, &spte);
- 
+ 	group_info = rcu_access_pointer(sbi->s_group_info);
+ 	if (group_info) {
 
 
 
