@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-231681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OD0KF0j+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:04 +0200
+	id APjOOC77y2lsNAYAu9opvQ
+	(envelope-from <stable+bounces-231683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D0D36DBB3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F1836D339
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 98BAE3052BB7
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B633A30419EA
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AD54266A5;
-	Tue, 31 Mar 2026 16:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A504266A6;
+	Tue, 31 Mar 2026 16:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rs5gkdcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2f0Nt9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E7423A8B;
-	Tue, 31 Mar 2026 16:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491EC3DFC7D;
+	Tue, 31 Mar 2026 16:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974794; cv=none; b=ei+WXQsXZ/qNuUGBfzRBjHGC/D+DchBzsdc55CwmaSECwMU8bHYW/zDBLzaeAWb5TqG4vzXrjKu75Vivb9EpgEvFg9A2K6UG6FG41gpcLdxNUlk8vOUeb/nDbpBm2jV0JMWAQP/2Svi4hgvJPxSV/+imn20INd9N030CttjFMQ4=
+	t=1774974799; cv=none; b=WS0WpIm1JA1jCw6hKkjS3+r3lwX8ywxad1OIC2UkzcG4C5sJLOVHD3MJ9qlMMSqOd9PsdRK2AfDnRe7ckJXD8VgXqlM1fWPjj2Wv3aMUYBn2rTkXC/u/53UsMouP1L2ZV3XhtLvCG5wbZjXgWEwwCTwHkrU7lqp+QSCG+t5DWX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974794; c=relaxed/simple;
-	bh=vpLUUSQGsgpKNgEGOFCYeqTldtAxyKYSUnmP0Sn5+0Q=;
+	s=arc-20240116; t=1774974799; c=relaxed/simple;
+	bh=j68KxYN4akx/K3dJcNp9VxmtnXppNcA/mKVT69LJXF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9rwkI1Cj0B2JKf0YI7O46SOkzVzl6EXhAVOpVbVTRggySUGilCBabuW144G2SvIRhU6KU0nw1dDuIMf/CHgwa2ogYZV40NDEO1M6tNWG4iGDLXbmzr0Z/3nxQwbBOWktXWHCTg17a17aYPC9Euc87Oyk1DJI26cMGJOMCIdybI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rs5gkdcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0664C19423;
-	Tue, 31 Mar 2026 16:33:13 +0000 (UTC)
+	 MIME-Version; b=Jvdp0boNI6eWoOv7EgFBrcdgImghQi0zKVfvOt0M0dAmqJeGbrtaOlTei7tzqBtU7v8Fy9U4dJfLUst1JU4/lLiA+5CM3gEVZDkb0Edg1vk+XeY5x8E6zQ+sHyEJntql47ju4Ip5kTr2BhkVYCOLkMId6Es2td7kOooaN/skHoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2f0Nt9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6965C19423;
+	Tue, 31 Mar 2026 16:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974794;
-	bh=vpLUUSQGsgpKNgEGOFCYeqTldtAxyKYSUnmP0Sn5+0Q=;
+	s=korg; t=1774974799;
+	bh=j68KxYN4akx/K3dJcNp9VxmtnXppNcA/mKVT69LJXF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rs5gkdcuy2uStQ8+lWf6vce5t4JsEYbvakBQbVPb4xwPIELe/CMyDQQJLi0cGFzg9
-	 XDFcF6FLVO15UVCaMa6RmHQ8IeT0G+3G/dKvpByo+C69yyC6P/hoS4t+HKcU2/wJZ0
-	 T4RoBz5wrMu96xtPWp5m9yGIzu7ZF/RtGWO6jTl8=
+	b=r2f0Nt9w0oPUOMufM3cZmvTvLMwuMJsjGvTLBkWdjladvJcyNr7L7pcXoiMZQ+x/7
+	 bH83CZd5+cF8EB7ebTCSC7of0Kk8DnKHaXhFKCPLqJflsUMy4dCJ7dcC4XAWgUW4iC
+	 UQiFtWRklwzwB68sEqc7jPJmw/YwyNXdRrIH5FtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 046/342] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_set_reg()
-Date: Tue, 31 Mar 2026 18:17:59 +0200
-Message-ID: <20260331161800.595029681@linuxfoundation.org>
+Subject: [PATCH 6.19 047/342] scsi: mpi3mr: Clear reset history on ready and recheck state after timeout
+Date: Tue, 31 Mar 2026 18:18:00 +0200
+Message-ID: <20260331161800.631626025@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 References: <20260331161758.909578033@linuxfoundation.org>
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231681-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231683-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,11 +87,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A3D0D36DBB3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: E2F1836D339
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,50 +99,56 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 31ddc62c1cd92e51b9db61d7954b85ae2ec224da ]
+[ Upstream commit dbd53975ed4132d161b6a97ebe785a262380182d ]
 
-ALSA controls should return 1 if the value in the control changed but the
-control put operation fsl_easrc_set_reg() only returns 0 or a negative
-error code, causing ALSA to not generate any change events. Add a suitable
-check by using regmap_update_bits_check() with the underlying regmap, this
-is more clearly and simply correct than trying to verify that one of the
-generic ops is exactly equivalent to this one.
+The driver retains reset history even after the IOC has successfully
+reached the READY state. That leaves stale reset information active during
+normal operation and can mislead recovery and diagnostics.  In addition, if
+the IOC becomes READY just as the ready timeout loop exits, the driver
+still follows the failure path and may retry or report failure incorrectly.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-2-39d4c766918b@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Clear reset history once READY is confirmed so driver state matches actual
+IOC status. After the timeout loop, recheck the IOC state and treat READY
+as success instead of failing.
+
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://patch.msgid.link/20260225082622.82588-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index e64a0d97afd0c..733374121196e 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -93,14 +93,17 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
- 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
-+	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
- 	unsigned int regval = ucontrol->value.integer.value[0];
-+	bool changed;
- 	int ret;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 8382afed12813..4c8d78b840fc9 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -1530,6 +1530,7 @@ static int mpi3mr_bring_ioc_ready(struct mpi3mr_ioc *mrioc)
+ 			ioc_info(mrioc,
+ 			    "successfully transitioned to %s state\n",
+ 			    mpi3mr_iocstate_name(ioc_state));
++			mpi3mr_clear_reset_history(mrioc);
+ 			return 0;
+ 		}
+ 		ioc_status = readl(&mrioc->sysif_regs->ioc_status);
+@@ -1549,6 +1550,15 @@ static int mpi3mr_bring_ioc_ready(struct mpi3mr_ioc *mrioc)
+ 		elapsed_time_sec = jiffies_to_msecs(jiffies - start_time)/1000;
+ 	} while (elapsed_time_sec < mrioc->ready_timeout);
  
--	ret = snd_soc_component_write(component, mc->regbase, regval);
--	if (ret < 0)
-+	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
-+				       GENMASK(31, 0), regval, &changed);
-+	if (ret != 0)
- 		return ret;
- 
--	return 0;
-+	return changed;
- }
- 
- #define SOC_SINGLE_REG_RW(xname, xreg) \
++	ioc_state = mpi3mr_get_iocstate(mrioc);
++	if (ioc_state == MRIOC_STATE_READY) {
++		ioc_info(mrioc,
++		    "successfully transitioned to %s state after %llu seconds\n",
++		    mpi3mr_iocstate_name(ioc_state), elapsed_time_sec);
++		mpi3mr_clear_reset_history(mrioc);
++		return 0;
++	}
++
+ out_failed:
+ 	elapsed_time_sec = jiffies_to_msecs(jiffies - start_time)/1000;
+ 	if ((retry < 2) && (elapsed_time_sec < (mrioc->ready_timeout - 60))) {
 -- 
 2.51.0
 
