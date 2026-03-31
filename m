@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-231817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHDtL7X/y2kJNQYAu9opvQ
-	(envelope-from <stable+bounces-231817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:09 +0200
+	id oC0XJUIDzGmPNQYAu9opvQ
+	(envelope-from <stable+bounces-232046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D859536DFCF
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:09:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD8E36EA05
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 305893166A32
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73E2C31B9EB4
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC3B428474;
-	Tue, 31 Mar 2026 16:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17E0425CE4;
+	Tue, 31 Mar 2026 16:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLyGEhRy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8DShD1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B445428466;
-	Tue, 31 Mar 2026 16:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE65413225;
+	Tue, 31 Mar 2026 16:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975146; cv=none; b=S3LWLGS1vrFGs4244ANcE+tdyf2TS/AGxBXaL+UAS8Uj4PbZa0ODXq7X5fMa5FlYEsy4/DwbEfYHEZcEZGAh+DNmohWFREcacTU6JOgzvaSH78tRv3j/j5hJ9UGvlZiOW0GnrRsvK1wCVJsV5Sid+40/dDougryEtfwmhhV5V7M=
+	t=1774975735; cv=none; b=AMUiR5sCEh3Lb6o7c4VCDiDsrpS2QIZl9P0PfNVpJjBtzRuYgyXY/BrJPI5WdCzussdJBlXTE/AzVNo8299Gndrih0mp/h6HcJDj3B08VETsYu9Gwjuj+3qFXM5iPEx5NXEl3vPL5vxHIVika3lBAq78VFcOXGCLCh/08DRfzF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975146; c=relaxed/simple;
-	bh=sY567LQelg2jb3TKJpvIdtCzvAj5+U/QDYLewowtUfk=;
+	s=arc-20240116; t=1774975735; c=relaxed/simple;
+	bh=VVRwsXkNoCsrDRA9EhyV9gD75E5oVnJEaCkpU5yyNHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkmEJiYme3iWo60ofC5/j8DM0pzhOf7BmD77bI7fymOANMXhVXpGpwxBzIA7Dd9d4KSAFEHnKOrql05gPxviqpesn4VyxvRw7kD+k5e/IUQzPsSTiSkdI5+Hwh+DgbD8fa7vFnJFzyT+9oQ0lBDqQpLyvrc1vyT/aHjrGUTWVmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLyGEhRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51B1C2BCB1;
-	Tue, 31 Mar 2026 16:39:05 +0000 (UTC)
+	 MIME-Version; b=Xt4ja6ib0puXHVv3XQrQREImo/nVKD519RMf7vWpXDyIAhOVntN5cvpLcmhYdow7/IX1+WNmgoOfP5jtglN0LH7wwRRH9s8vRZVhMvZN+rxKnt2HXb5SN2X7w38Nxo++aUZNU8DzVwn7rk4vyfMM2v6mw/M1lsvIS72CqH1d+Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8DShD1K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8D7C19423;
+	Tue, 31 Mar 2026 16:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975146;
-	bh=sY567LQelg2jb3TKJpvIdtCzvAj5+U/QDYLewowtUfk=;
+	s=korg; t=1774975735;
+	bh=VVRwsXkNoCsrDRA9EhyV9gD75E5oVnJEaCkpU5yyNHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLyGEhRyjKHjDHa/fr5vjTujgDGK7UdNQtZypA3QAXoBKGpKsl5Z/oPYXbGI2ydbS
-	 dmWTXFP3R97tk9rHyUGe2dgZGuqcZFKUM0qjVpOBgE4QjpUH2/9FdEzucevUuJhi6D
-	 r8c6Ueo7xilOXYWEN0eQrviklo5ACrXXbMb+llz8=
+	b=L8DShD1Kh9+lMFLucfWyYXp6x4s/ujpBvWHTC9smytUnMtRkm1AcfHQll03tmY+ZM
+	 D5xa5Ay4/8RxUmBlh4rHUyWVhVMez7lkDvXwLQyBpSm2BvhIWFpx9oj6fCGmrK13jy
+	 7eFNJg8BiUiNEVkk8+BPq3G5LZc+KzdaZf6HH0Dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mohammad Heib <mheib@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 181/342] ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()
-Date: Tue, 31 Mar 2026 18:20:14 +0200
-Message-ID: <20260331161805.664391264@linuxfoundation.org>
+Subject: [PATCH 6.12 065/244] ionic: fix persistent MAC address override on PF
+Date: Tue, 31 Mar 2026 18:20:15 +0200
+Message-ID: <20260331161744.088877752@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+References: <20260331161741.651718120@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,115 +70,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231817-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232046-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: D859536DFCF
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,amd.com:email]
+X-Rspamd-Queue-Id: 1AD8E36EA05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Mohammad Heib <mheib@redhat.com>
 
-[ Upstream commit f6484cadbcaf26b5844b51bd7307a663dda48ef6 ]
+[ Upstream commit cbcb3cfcdc436d6f91a3d95ecfa9c831abe14aed ]
 
-When ec_install_handlers() returns -EPROBE_DEFER on reduced-hardware
-platforms, it has already started the EC and installed the address
-space handler with the struct acpi_ec pointer as handler context.
-However, acpi_ec_setup() propagates the error without any cleanup.
+The use of IONIC_CMD_LIF_SETATTR in the MAC address update path causes
+the ionic firmware to update the LIF's identity in its persistent state.
+Since the firmware state is maintained across host warm boots and driver
+reloads, any MAC change on the Physical Function (PF) becomes "sticky.
 
-The caller acpi_ec_add() then frees the struct acpi_ec for non-boot
-instances, leaving a dangling handler context in ACPICA.
+This is problematic because it causes ethtool -P to report the
+user-configured MAC as the permanent factory address, which breaks
+system management tools that rely on a stable hardware identity.
 
-Any subsequent AML evaluation that accesses an EC OpRegion field
-dispatches into acpi_ec_space_handler() with the freed pointer,
-causing a use-after-free:
+While Virtual Functions (VFs) need this hardware-level programming to
+properly handle MAC assignments in guest environments, the PF should
+maintain standard transient behavior. This patch gates the
+ionic_program_mac call using is_virtfn so that PF MAC changes remain
+local to the netdev filters and do not overwrite the firmware's
+permanent identity block.
 
- BUG: KASAN: slab-use-after-free in mutex_lock (kernel/locking/mutex.c:289)
- Write of size 8 at addr ffff88800721de38 by task init/1
- Call Trace:
-  <TASK>
-  mutex_lock (kernel/locking/mutex.c:289)
-  acpi_ec_space_handler (drivers/acpi/ec.c:1362)
-  acpi_ev_address_space_dispatch (drivers/acpi/acpica/evregion.c:293)
-  acpi_ex_access_region (drivers/acpi/acpica/exfldio.c:246)
-  acpi_ex_field_datum_io (drivers/acpi/acpica/exfldio.c:509)
-  acpi_ex_extract_from_field (drivers/acpi/acpica/exfldio.c:700)
-  acpi_ex_read_data_from_field (drivers/acpi/acpica/exfield.c:327)
-  acpi_ex_resolve_node_to_value (drivers/acpi/acpica/exresolv.c:392)
-  </TASK>
-
- Allocated by task 1:
-  acpi_ec_alloc (drivers/acpi/ec.c:1424)
-  acpi_ec_add (drivers/acpi/ec.c:1692)
-
- Freed by task 1:
-  kfree (mm/slub.c:6876)
-  acpi_ec_add (drivers/acpi/ec.c:1751)
-
-The bug triggers on reduced-hardware EC platforms (ec->gpe < 0)
-when the GPIO IRQ provider defers probing. Once the stale handler
-exists, any unprivileged sysfs read that causes AML to touch an
-EC OpRegion (battery, thermal, backlight) exercises the dangling
-pointer.
-
-Fix this by calling ec_remove_handlers() in the error path of
-acpi_ec_setup() before clearing first_ec. ec_remove_handlers()
-checks each EC_FLAGS_* bit before acting, so it is safe to call
-regardless of how far ec_install_handlers() progressed:
-
-  -ENODEV  (handler not installed): only calls acpi_ec_stop()
-  -EPROBE_DEFER (handler installed): removes handler, stops EC
-
-Fixes: 03e9a0e05739 ("ACPI: EC: Consolidate event handler installation code")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260324165458.1337233-2-bestswngs@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 19058be7c48c ("ionic: VF initial random MAC address if no assigned mac")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20260317170806.35390-1-mheib@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 59b3d50ff01ec..c981a53434edf 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1655,6 +1655,8 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index d6bea71528057..8119281b26d07 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -1718,13 +1718,18 @@ static int ionic_set_mac_address(struct net_device *netdev, void *sa)
+ 	if (ether_addr_equal(netdev->dev_addr, mac))
+ 		return 0;
  
- 	ret = ec_install_handlers(ec, device, call_reg);
- 	if (ret) {
-+		ec_remove_handlers(ec);
-+
- 		if (ec == first_ec)
- 			first_ec = NULL;
+-	err = ionic_program_mac(lif, mac);
+-	if (err < 0)
+-		return err;
++	/* Only program macs for virtual functions to avoid losing the permanent
++	 * Mac across warm reset/reboot.
++	 */
++	if (lif->ionic->pdev->is_virtfn) {
++		err = ionic_program_mac(lif, mac);
++		if (err < 0)
++			return err;
  
+-	if (err > 0)
+-		netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
+-			   __func__);
++		if (err > 0)
++			netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
++				   __func__);
++	}
+ 
+ 	err = eth_prepare_mac_addr_change(netdev, addr);
+ 	if (err)
 -- 
-2.53.0
+2.51.0
 
 
 
