@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-231474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6A+GE6X1y2nlMwYAu9opvQ
-	(envelope-from <stable+bounces-231474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:13 +0200
+	id aO75LPz7y2mwNAYAu9opvQ
+	(envelope-from <stable+bounces-231805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B1B36C91C
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4B036D54D
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE738302351F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:24:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D68730ED910
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E16E3E3174;
-	Tue, 31 Mar 2026 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156A5426EB3;
+	Tue, 31 Mar 2026 16:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQxnrd19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDzksqRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50244329E4B;
-	Tue, 31 Mar 2026 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBFE426681;
+	Tue, 31 Mar 2026 16:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974266; cv=none; b=cpQKA3s/EJ2kxm4t0656cICdfi3yWYxrvqQfHm0Lr8CiCk60qsXFeSrP1qAEhAzcELDhlIBVZbdRpXMwpzLRqDnkfDunEQ7ifilLB/p/GL2kkxWhZlCvRUitZb8brZGvLO5lFaLkhaUrzvCMa2J5K0UV9GFe4aK3PvC9v4oq20U=
+	t=1774975114; cv=none; b=CvcnrE246CRW1P4orKbLhJpRXoO2D6wNBeB4+TKEDV5z3Q9r0aKg02QF18PxvWPrxzpOZevalqizcjyyFzeUsrTLBRdZah5IsZeMoZImlHHJ0HzNUnZdcOamH4zK2At4dOUdKavUBsIIHxlIxB0dUdDt0nAHeY3k2iWsbfLE9gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974266; c=relaxed/simple;
-	bh=BzFMxX5x5moyxM0MUT66U9T/jj1Lv2SwjteLT3d8/Sc=;
+	s=arc-20240116; t=1774975114; c=relaxed/simple;
+	bh=fKZ/aC/+dPDNA6yOfdJ8aIRrI7y94EM0jzlCiUHew0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggGjpy29i4r2zFd0JHKpbwTLFGFU+xJqw07jEAZpHHU95ueCpIoEZY1gkDL/SCB/vkkjODyLSCqqLb7vKy+vQ059jB56ZRhYbUPtvN7KEGd7mHjhoFs/PscxKbjWYwUvt/fJKjMhIoMu3M27I9NDa2gScq2Dvl9fP5sDsvYyz1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQxnrd19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9161DC19423;
-	Tue, 31 Mar 2026 16:24:25 +0000 (UTC)
+	 MIME-Version; b=mmQYhlVdRvB2M6ccUrdLucqqL/qE9z8ffAK7cK/fU11LgDDWySThWi2oFDK+F76cbndMovkj1SGZ6TM2lcQ/fE6O/KaNvfnUnFAYJTAIEvLkq5uAX+adOx53CqvKHualrGbVS9Hw+uxMc7NCwkn3BIwjHNjBDoS1zWgMF67fLKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDzksqRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659B2C19423;
+	Tue, 31 Mar 2026 16:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974265;
-	bh=BzFMxX5x5moyxM0MUT66U9T/jj1Lv2SwjteLT3d8/Sc=;
+	s=korg; t=1774975114;
+	bh=fKZ/aC/+dPDNA6yOfdJ8aIRrI7y94EM0jzlCiUHew0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQxnrd19IHjgkUfp3YXjmIF3PC4os2jkbaL7nfb8lbBhbZM38nLJF+WWt46w4cveu
-	 fGmtMz2bXThQwwQ3vjEUaqZ641z2+4DuDCKhNwE4j/q0MDkFAL+zcXLPWjGU8ElD/3
-	 CVG905/y+e6pLLIv3lNOCsSuRsPEs9Ja3HkEP0pw=
+	b=LDzksqRY2tsjG5HuJi6RcOx47Fgo2zDvJC2qLYMW8WROUCNx1SGOM4fEm1bl/wToB
+	 qu9DPv15IVwSca4Logo9ILEwQvoCiS75EFZk593sW4iIvCTVuLEgYqZrsrRXMRJbgi
+	 sOYPBZk9Rcf155y2psrQVKvAva2mGD6gRYPKOEfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valentin Spreckels <valentin@spreckels.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alberto Garcia <berto@igalia.com>,
+	Brian Geffon <bgeffon@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/175] net: usb: r8152: add TRENDnet TUC-ET2G
+Subject: [PATCH 6.19 170/342] PM: hibernate: Drain trailing zero pages on userspace restore
 Date: Tue, 31 Mar 2026 18:20:03 +0200
-Message-ID: <20260331161730.488587399@linuxfoundation.org>
+Message-ID: <20260331161805.266482143@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,74 +74,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231805-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231474-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,spreckels.dev:email]
-X-Rspamd-Queue-Id: 51B1B36C91C
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0E4B036D54D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Spreckels <valentin@spreckels.dev>
+From: Alberto Garcia <berto@igalia.com>
 
-[ Upstream commit 15fba71533bcdfaa8eeba69a5a5a2927afdf664a ]
+[ Upstream commit 734eba62cd32cb9ceffa09e57cdc03d761528525 ]
 
-The TRENDnet TUC-ET2G is a RTL8156 based usb ethernet adapter. Add its
-vendor and product IDs.
+Commit 005e8dddd497 ("PM: hibernate: don't store zero pages in the
+image file") added an optimization to skip zero-filled pages in the
+hibernation image. On restore, zero pages are handled internally by
+snapshot_write_next() in a loop that processes them without returning
+to the caller.
 
-Signed-off-by: Valentin Spreckels <valentin@spreckels.dev>
-Link: https://patch.msgid.link/20260226195409.7891-2-valentin@spreckels.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+With the userspace restore interface, writing the last non-zero page
+to /dev/snapshot is followed by the SNAPSHOT_ATOMIC_RESTORE ioctl. At
+this point there are no more calls to snapshot_write_next() so any
+trailing zero pages are not processed, snapshot_image_loaded() fails
+because handle->cur is smaller than expected, the ioctl returns -EPERM
+and the image is not restored.
+
+The in-kernel restore path is not affected by this because the loop in
+load_image() in swap.c calls snapshot_write_next() until it returns 0.
+It is this final call that drains any trailing zero pages.
+
+Fixed by calling snapshot_write_next() in snapshot_write_finalize(),
+giving the kernel the chance to drain any trailing zero pages.
+
+Fixes: 005e8dddd497 ("PM: hibernate: don't store zero pages in the image file")
+Signed-off-by: Alberto Garcia <berto@igalia.com>
+Acked-by: Brian Geffon <bgeffon@google.com>
+Link: https://patch.msgid.link/ef5a7c5e3e3dbd17dcb20efaa0c53a47a23498bb.1773075892.git.berto@igalia.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c   | 1 +
- include/linux/usb/r8152.h | 1 +
- 2 files changed, 2 insertions(+)
+ kernel/power/snapshot.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index a2e3f9583def7..91cf24fb5531f 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -10036,6 +10036,7 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
- 	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
- 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
-+	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
- 	{}
- };
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 0a946932d5c17..5706287e7230e 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2855,6 +2855,17 @@ int snapshot_write_finalize(struct snapshot_handle *handle)
+ {
+ 	int error;
  
-diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
-index 2ca60828f28bb..1502b2a355f98 100644
---- a/include/linux/usb/r8152.h
-+++ b/include/linux/usb/r8152.h
-@@ -32,6 +32,7 @@
- #define VENDOR_ID_DLINK			0x2001
- #define VENDOR_ID_DELL			0x413c
- #define VENDOR_ID_ASUS			0x0b05
-+#define VENDOR_ID_TRENDNET		0x20f4
- 
- #if IS_REACHABLE(CONFIG_USB_RTL8152)
- extern u8 rtl8152_get_version(struct usb_interface *intf);
++	/*
++	 * Call snapshot_write_next() to drain any trailing zero pages,
++	 * but make sure we're in the data page region first.
++	 * This function can return PAGE_SIZE if the kernel was expecting
++	 * another copy page. Return -ENODATA in that situation.
++	 */
++	if (handle->cur > nr_meta_pages + 1) {
++		error = snapshot_write_next(handle);
++		if (error)
++			return error > 0 ? -ENODATA : error;
++	}
+ 	copy_last_highmem_page();
+ 	error = hibernate_restore_protect_page(handle->buffer);
+ 	/* Do that only if we have loaded the image entirely */
 -- 
-2.51.0
+2.53.0
 
 
 
