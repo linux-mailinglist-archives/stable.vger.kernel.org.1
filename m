@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-232287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFzRGRkGzGljNQYAu9opvQ
-	(envelope-from <stable+bounces-232287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:25 +0200
+	id 8FVjLhcAzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-231735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E01C36EFCC
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:36:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4A636E139
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4BDB230C5175
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B7D230BD193
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1766425CD2;
-	Tue, 31 Mar 2026 16:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25142401A2C;
+	Tue, 31 Mar 2026 16:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYMwfJNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhCr0R0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4965423A88;
-	Tue, 31 Mar 2026 16:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB8733F38A;
+	Tue, 31 Mar 2026 16:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976359; cv=none; b=VA1imppLuyCrp2PAHkIWYSRK8vkn3CzN7gV/JD01P61HbJeXVc1r1MNi625C93D5QY57hesFwo3B9lnHHxMKb1Sgfw9ydc2U6wyoT5ej3mhoXdGpKCqKx3/It7jkLTfNEmu3oKR4ET3bx1PgBn/ABuVE04xsnmRm+axaqS3ddDE=
+	t=1774974930; cv=none; b=LbceTemhB0/CSCPaXetmSbzBOo3+1ouBrzpjdLWMLeElxDyRY5lOz3aalN3s3VBAlaX1Cc5vE4nG3FyT10Q57wESHQJLy1HD4BaHuqbm8v2wgYDNt9zUJZtNC17hDkOAV6MOlzsQk32QJp2sLvbFcOUQfACF8FEFU2J630Mz3Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976359; c=relaxed/simple;
-	bh=LKZUgNgDCA0DU768pYP9DLBa6rYRAj/416bh8sC3nH4=;
+	s=arc-20240116; t=1774974930; c=relaxed/simple;
+	bh=sJO8Kp4zcuohaZqS3gcmMPxys+SnLxMpUYrheqjHfGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnKNxXxZbWNKrOoBA6fR7OhqVgd2RcjH0zhDiTw3nTpDPesgEThL94AEMU6zKXN5X9ePQOGoY+xlPU/UeEEbMmgrj4+gbAZpe/44U8DVX3Bj3DKw8+HrYXquq7fPasWmB3qVXHP9J0oN69osLu6XfkfT7Ytupv2+9kxrDvAq6y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYMwfJNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358E3C2BCB2;
-	Tue, 31 Mar 2026 16:59:19 +0000 (UTC)
+	 MIME-Version; b=FrUAwILM6Ghxw5AH1uB3+lm9GFcmCkq0in4HrpWVqV4jtMVTbfjiIaXMOgChV+mVx6AZGCiuuxJZ29vnLjBYjaWxQsHdRGFQCeM2FK9gOs3EUiy7ZFlr3gsuzFoN7wr6bvgBe6CW7s1MJQTrNJOIwn06xJdiZDApSHYT1fHjL0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhCr0R0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DC3C19423;
+	Tue, 31 Mar 2026 16:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976359;
-	bh=LKZUgNgDCA0DU768pYP9DLBa6rYRAj/416bh8sC3nH4=;
+	s=korg; t=1774974930;
+	bh=sJO8Kp4zcuohaZqS3gcmMPxys+SnLxMpUYrheqjHfGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYMwfJNCh6Dc9hLxnxOYhNwGyzknHD6SixpcWDhrHwTW3Kq6Ht+eOxulTpHNNzTFJ
-	 Xpgp7eUUAZ98bMjgnhbYPp0yaBOItvdWasvxXdC38vt2QLqNLXihd1RLwsrgUDailg
-	 6kYIpe3lA3DfFpz/RLORk6UZ2EDPm9832EhWVAdg=
+	b=UhCr0R0P16KOFQ1Kn4khpVR2LGwNND350DR6mz2Am5Uh4213xs1roLOgJo0qh9Ciq
+	 0maisyN0ojYZlTFiFl+lSw60l65b3jkRt9CcoZhlDxCw1WnzvxwnVVCAbbPFc8KNOo
+	 U1KssGDFfOVuPT9858OHA7oq8nA3R1pEKn4eNxjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Mohammad Heib <mheib@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 029/309] HID: intel-ish-hid: ipc: Add Nova Lake-H/S PCI device IDs
-Date: Tue, 31 Mar 2026 18:18:52 +0200
-Message-ID: <20260331161754.553594045@linuxfoundation.org>
+Subject: [PATCH 6.19 100/342] ionic: fix persistent MAC address override on PF
+Date: Tue, 31 Mar 2026 18:18:53 +0200
+Message-ID: <20260331161802.695162179@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232287-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231735-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,91 +87,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5E01C36EFCC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E4A636E139
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Mohammad Heib <mheib@redhat.com>
 
-[ Upstream commit 22f8bcec5aeb05104b3eaa950cb5a345e95f0aa8 ]
+[ Upstream commit cbcb3cfcdc436d6f91a3d95ecfa9c831abe14aed ]
 
-Add device IDs of Nova Lake-H and Nova Lake-S into ishtp support list.
+The use of IONIC_CMD_LIF_SETATTR in the MAC address update path causes
+the ionic firmware to update the LIF's identity in its persistent state.
+Since the firmware state is maintained across host warm boots and driver
+reloads, any MAC change on the Physical Function (PF) becomes "sticky.
 
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+This is problematic because it causes ethtool -P to report the
+user-configured MAC as the permanent factory address, which breaks
+system management tools that rely on a stable hardware identity.
+
+While Virtual Functions (VFs) need this hardware-level programming to
+properly handle MAC assignments in guest environments, the PF should
+maintain standard transient behavior. This patch gates the
+ionic_program_mac call using is_virtfn so that PF MAC changes remain
+local to the netdev filters and do not overwrite the firmware's
+permanent identity block.
+
+Fixes: 19058be7c48c ("ionic: VF initial random MAC address if no assigned mac")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20260317170806.35390-1-mheib@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/hw-ish.h  |  2 ++
- drivers/hid/intel-ish-hid/ipc/pci-ish.c | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/hw-ish.h b/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-index fa5d68c363134..27389971b96cc 100644
---- a/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-+++ b/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-@@ -39,6 +39,8 @@
- #define PCI_DEVICE_ID_INTEL_ISH_PTL_H		0xE345
- #define PCI_DEVICE_ID_INTEL_ISH_PTL_P		0xE445
- #define PCI_DEVICE_ID_INTEL_ISH_WCL		0x4D45
-+#define PCI_DEVICE_ID_INTEL_ISH_NVL_H		0xD354
-+#define PCI_DEVICE_ID_INTEL_ISH_NVL_S		0x6E78
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 058eea86e141c..38a827203a2f7 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -1719,13 +1719,18 @@ static int ionic_set_mac_address(struct net_device *netdev, void *sa)
+ 	if (ether_addr_equal(netdev->dev_addr, mac))
+ 		return 0;
  
- #define	REVISION_ID_CHT_A0	0x6
- #define	REVISION_ID_CHT_Ax_SI	0x0
-diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-index b748ac6fbfdc7..51a41a28541c5 100644
---- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-+++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-@@ -28,11 +28,15 @@ enum ishtp_driver_data_index {
- 	ISHTP_DRIVER_DATA_LNL_M,
- 	ISHTP_DRIVER_DATA_PTL,
- 	ISHTP_DRIVER_DATA_WCL,
-+	ISHTP_DRIVER_DATA_NVL_H,
-+	ISHTP_DRIVER_DATA_NVL_S,
- };
+-	err = ionic_program_mac(lif, mac);
+-	if (err < 0)
+-		return err;
++	/* Only program macs for virtual functions to avoid losing the permanent
++	 * Mac across warm reset/reboot.
++	 */
++	if (lif->ionic->pdev->is_virtfn) {
++		err = ionic_program_mac(lif, mac);
++		if (err < 0)
++			return err;
  
- #define ISH_FW_GEN_LNL_M "lnlm"
- #define ISH_FW_GEN_PTL "ptl"
- #define ISH_FW_GEN_WCL "wcl"
-+#define ISH_FW_GEN_NVL_H "nvlh"
-+#define ISH_FW_GEN_NVL_S "nvls"
+-	if (err > 0)
+-		netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
+-			   __func__);
++		if (err > 0)
++			netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
++				   __func__);
++	}
  
- #define ISH_FIRMWARE_PATH(gen) "intel/ish/ish_" gen ".bin"
- #define ISH_FIRMWARE_PATH_ALL "intel/ish/ish_*.bin"
-@@ -47,6 +51,12 @@ static struct ishtp_driver_data ishtp_driver_data[] = {
- 	[ISHTP_DRIVER_DATA_WCL] = {
- 		.fw_generation = ISH_FW_GEN_WCL,
- 	},
-+	[ISHTP_DRIVER_DATA_NVL_H] = {
-+		.fw_generation = ISH_FW_GEN_NVL_H,
-+	},
-+	[ISHTP_DRIVER_DATA_NVL_S] = {
-+		.fw_generation = ISH_FW_GEN_NVL_S,
-+	},
- };
- 
- static const struct pci_device_id ish_pci_tbl[] = {
-@@ -76,6 +86,8 @@ static const struct pci_device_id ish_pci_tbl[] = {
- 	{PCI_DEVICE_DATA(INTEL, ISH_PTL_H, ISHTP_DRIVER_DATA_PTL)},
- 	{PCI_DEVICE_DATA(INTEL, ISH_PTL_P, ISHTP_DRIVER_DATA_PTL)},
- 	{PCI_DEVICE_DATA(INTEL, ISH_WCL, ISHTP_DRIVER_DATA_WCL)},
-+	{PCI_DEVICE_DATA(INTEL, ISH_NVL_H, ISHTP_DRIVER_DATA_NVL_H)},
-+	{PCI_DEVICE_DATA(INTEL, ISH_NVL_S, ISHTP_DRIVER_DATA_NVL_S)},
- 	{}
- };
- MODULE_DEVICE_TABLE(pci, ish_pci_tbl);
+ 	err = eth_prepare_mac_addr_change(netdev, addr);
+ 	if (err)
 -- 
 2.51.0
 
