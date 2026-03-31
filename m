@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-232399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OW9BIkHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:33 +0200
+	id 0CNID/r8y2naNAYAu9opvQ
+	(envelope-from <stable+bounces-231881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1E736F2A6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90FD436D7DD
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85B8631375E3
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:04:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9337315A0A0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602B93002A9;
-	Tue, 31 Mar 2026 17:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F948423A62;
+	Tue, 31 Mar 2026 16:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnJ7q6Za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGRrCDwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2402E2FB632;
-	Tue, 31 Mar 2026 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F853EF0A2;
+	Tue, 31 Mar 2026 16:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976647; cv=none; b=ImnrGB25Rvroe80iu7/3AGOmNl6nQHK8c6IIQU0zpppt8ZD0wrBNgAPYaurDnCMoikmpHCL/G/Z3ZvNdnXDaa//ZCqQOc/ElT2ZmdzwSgkTNim3Z2zMLn4eWQE4LtquAuH7eIYTraSYJWUiv4ycZV9GsXxpUWp4B8FvMr9mxlJg=
+	t=1774975308; cv=none; b=Wou3mloEf0YftE+YdQ/W0eD3Rfhy25RK2e3T4/6ThGbCmkO455VS8WNUqLBu3j+E97WCprm3kUf1eY7zzIwBjU7yg917c9FktRWxSvjoB+lmZaqIKo1C47bTKNdBA+qB6eVD0O0PTAtEqZCllXotafzsjjMHzvKQvrtsQoBuerU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976647; c=relaxed/simple;
-	bh=v8Ah5t8eaWacYunvW3v4eit8+iH6Pr9dDxqguH3SeBs=;
+	s=arc-20240116; t=1774975308; c=relaxed/simple;
+	bh=TOU3L8pjFemqEQp+gc+ojKyrGIcmJ3QPnJXT/u6iu34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6wqiWrU0pGQzjL6jJoe4bY6Sz9ykKBEudyeYJbzlf0aE7rfxZbvkxDUEOLKEnewGKTZu4XQ7wwho9wtFYOl35XGvTGfjG9hJonPLH6Hki6rSUsiJs/mZLbphmFTGHNQiMQ2HC5th3mjYqrHHiJ9JIp8TAIDPQEpH2+W4Cp0EYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnJ7q6Za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D672C19423;
-	Tue, 31 Mar 2026 17:04:06 +0000 (UTC)
+	 MIME-Version; b=L3aMLGCzhIHz6cEAZvkSJeF+0iYJbSIgXKd3CApgrl+w5S3YOgWuWirNm7I+XtNrCBNV+mpnpuzpPQ+hIZmgvuPMK9NLieC0VbF8sdfIvw8P8THMJURgGWlmwLuOPmQlwODBqvKxKrIWk9abbIhiD76kDRUh6aPgzj1np/unY0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGRrCDwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2FBC19423;
+	Tue, 31 Mar 2026 16:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976646;
-	bh=v8Ah5t8eaWacYunvW3v4eit8+iH6Pr9dDxqguH3SeBs=;
+	s=korg; t=1774975308;
+	bh=TOU3L8pjFemqEQp+gc+ojKyrGIcmJ3QPnJXT/u6iu34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SnJ7q6ZavghcACuiirk78btJ20QbPZUZA3H9Zzn6cR5YR2q/tUyBPyCGKFge1QF+N
-	 Jt7Hyt9gnsDHnF3tz/eU4LqqGu7q12nF3B7pzRZtU2RoSC1VmxxMyUGVmC6BorP9ZQ
-	 lhNMvA8f3E8wqhOgrUn4l/BMntz7PaEXZF6GC1UA=
+	b=yGRrCDwbllOvLgxera+GGO7oAVH80av6K91XPXpqzmXNhiBIarT5ZqZwHI5RPTJdL
+	 54iCJ0zZmCCJqtXLOGBki25t9H+foXwYzcl9UoVjxc4wqr4ihD3J2jqQdE+0loqtsU
+	 5O3XDRw3303qYokAczqekc9n8zzTJDU8Kg9xgq/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 174/309] ALSA: usb-audio: Exclude Scarlett 2i4 1st Gen from SKIP_IFACE_SETUP
-Date: Tue, 31 Mar 2026 18:21:17 +0200
-Message-ID: <20260331161759.871117514@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Tyllis Xu <LivelyCarpet87@gmail.com>,
+	Dave Marquardt <davemarq@linux.ibm.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.19 245/342] scsi: ibmvfc: Fix OOB access in ibmvfc_discover_targets_done()
+Date: Tue, 31 Mar 2026 18:21:18 +0200
+Message-ID: <20260331161807.980700625@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,65 +75,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,oracle.com];
+	TAGGED_FROM(0.00)[bounces-231881-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232399-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5B1E736F2A6
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 90FD436D7DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Tyllis Xu <livelycarpet87@gmail.com>
 
-[ Upstream commit 990a8b0732cf899d4a0f847b0a67efeb9a384c82 ]
+commit 61d099ac4a7a8fb11ebdb6e2ec8d77f38e77362f upstream.
 
-Same issue that the Scarlett 2i2 1st Gen had:
-QUIRK_FLAG_SKIP_IFACE_SETUP causes distorted/flanging audio on the
-Scarlett 2i4 1st Gen (1235:800a).
+A malicious or compromised VIO server can return a num_written value in the
+discover targets MAD response that exceeds max_targets. This value is
+stored directly in vhost->num_targets without validation, and is then used
+as the loop bound in ibmvfc_alloc_targets() to index into disc_buf[], which
+is only allocated for max_targets entries. Indices at or beyond max_targets
+access kernel memory outside the DMA-coherent allocation.  The
+out-of-bounds data is subsequently embedded in Implicit Logout and PLOGI
+MADs that are sent back to the VIO server, leaking kernel memory.
 
-Fixes: 38c322068a26 ("ALSA: usb-audio: Add QUIRK_FLAG_SKIP_IFACE_SETUP")
-Reported-by: dcferreira [https://github.com/geoffreybennett/linux-fcp/issues/54]
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/acEkEbftzyNe8W7C@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by clamping num_written to max_targets before storing it.
+
+Fixes: 072b91f9c651 ("[SCSI] ibmvfc: IBM Power Virtual Fibre Channel Adapter Client Driver")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Link: https://patch.msgid.link/20260314170151.548614-1-LivelyCarpet87@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/ibmvscsi/ibmvfc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 11823549900f1..45d0e1364dd98 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2423,6 +2423,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 	VENDOR_FLG(0x07fd, /* MOTU */
- 		   QUIRK_FLAG_VALIDATE_RATES),
- 	DEVICE_FLG(0x1235, 0x8006, 0), /* Focusrite Scarlett 2i2 1st Gen */
-+	DEVICE_FLG(0x1235, 0x800a, 0), /* Focusrite Scarlett 2i4 1st Gen */
- 	VENDOR_FLG(0x1235, /* Focusrite Novation */
- 		   QUIRK_FLAG_SKIP_IFACE_SETUP),
- 	VENDOR_FLG(0x1511, /* AURALiC */
--- 
-2.53.0
-
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -4965,7 +4965,8 @@ static void ibmvfc_discover_targets_done
+ 	switch (mad_status) {
+ 	case IBMVFC_MAD_SUCCESS:
+ 		ibmvfc_dbg(vhost, "Discover Targets succeeded\n");
+-		vhost->num_targets = be32_to_cpu(rsp->num_written);
++		vhost->num_targets = min_t(u32, be32_to_cpu(rsp->num_written),
++					   max_targets);
+ 		ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_ALLOC_TGTS);
+ 		break;
+ 	case IBMVFC_MAD_FAILED:
 
 
 
