@@ -1,71 +1,62 @@
-Return-Path: <stable+bounces-231414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231415-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGmxHDu8y2kpKAYAu9opvQ
-	(envelope-from <stable+bounces-231414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:21:15 +0200
+	id OKudM0m7y2kpKAYAu9opvQ
+	(envelope-from <stable+bounces-231415-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:17:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D900B369643
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:21:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D38613695B9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 14:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34D093016507
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:16:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F3780301DA51
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 12:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9445D283FC4;
-	Tue, 31 Mar 2026 12:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D553A9D99;
+	Tue, 31 Mar 2026 12:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5EdhRWF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O49ZhHue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581D8271443
-	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 12:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BEB271443
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 12:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774959408; cv=none; b=UiKgK2JFiu70fMTH5rVskdGK+XBy9fgvhOgQdb3IweIc7YDs5i27Q8AUY8h8FT1FAq6Zgfnwpauqaom6II0L6gjE8rTJp7JF3OReqLxoA4ycw7663vuXjkIZi4qP0EZxpQJKNMPetY/P2WCYzQElMDWF15tDmZiQz8DoQb/WDxQ=
+	t=1774959428; cv=none; b=RGQmSit/XFXCjCBjcXDAz+zi8lsDTBkf5UCO5TTwizE9dciy3lS4kc1YvbsGojG9+c9vlE9X/1hlpGnTRmKis0ezr25ePZ3uswDs+XfdFJtAVHuq5tKDQexJeOjgUWR97EiOjX0lPQPcpqxzrl1lqj2Qqr1teNr63USZgP9Zj9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774959408; c=relaxed/simple;
-	bh=wMG/Y7nPki3jsejuV3YYjX4QMoEufsehSbY/lI9alSo=;
+	s=arc-20240116; t=1774959428; c=relaxed/simple;
+	bh=T6ptbdpTzlGbsB528d0JWQS23w+4AcDOQ331jz4Jh50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=he/u+p4AFf/aTMCXe1tJhUL5oCU0tmg2n+ZQCKUWZ6THZqzPSd5WsVgpXchnTnTGjs6u4ReRg+cA5dIaJ+K5JQH4uV7VXwcTH/tdBig9PvuGWN6f97epMvxsYu0KRpLdDRo4Icwnqw9gUQRnFT8RltCEM6YXGI3DJ4Og7feWtEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5EdhRWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA2EC19423;
-	Tue, 31 Mar 2026 12:16:46 +0000 (UTC)
+	 MIME-Version; b=c3WnCo/svuqRchjS4oyT6TNiefGkqsZ+sttXbdEkdIT0G2CnC+uHgzfGSrvz45wj74Obl4lpzqeCp0IUBR8NMosYVqjNAeKHfctICSGoSex8L3I2clvP0/AShhjBDryUt9esroWNk/ckMVI6jbC3IvpjpNcdW7wxNWpDiBk7mvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O49ZhHue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE9EC19423;
+	Tue, 31 Mar 2026 12:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774959408;
-	bh=wMG/Y7nPki3jsejuV3YYjX4QMoEufsehSbY/lI9alSo=;
+	s=k20201202; t=1774959428;
+	bh=T6ptbdpTzlGbsB528d0JWQS23w+4AcDOQ331jz4Jh50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5EdhRWFgu1nyW3elnhfuApeC2Mv6HxO2GOFlD01F8J7mJ3lmfMreG+IE9g5RmJt/
-	 ypBpupNU7Lro1QBFUL13MVxf8Ybqc9VSzl6B818gWqFfK1r5/AXh9V51t5uh2P/WN+
-	 nFM/BbYDoCddb4iyyGkZpXZm+x2LkenD99WiR0qmBsyDWoO9aE4uPdEyExqXuVz8HS
-	 Ax/fAj8msbIa4MTHpB4X5gCe9JPhHHibBv9cBQPbAUx9yj/CI0YefSIDIlSFBZcmvI
-	 66MYhPAdtuwoy1xM8yqiJqe3nzrCQ5tCD4cOAOrzDTiWt3ve5cgcXODJrOFgxSvv+7
-	 RN2DGX2y911Xw==
+	b=O49ZhHueeL5ZauEI0pN0D61mH9Gmko8c4AwJW8WY80/SbfcnYpy1u1ZOVm6YrIt/S
+	 kWbG7AmxE+mX9NyoB2RXmCM+oqnG49yHrYGymIE1POHQ7dRjDaaL8vZGD8r/4pJlfi
+	 ewERh9RXcxFju71uBpf+drScXtgHy4CA2z/tJaCOsh1le7k2XCWTyvstsnCw3/lV+x
+	 VL/MREM0hBFaFqpBrawOHJeICvTFSTlJQQX+RDlYdXHVe0tltnDWKdKCpIZFE2mr4S
+	 NoSVnr6LPTBgOW/rP05FD8v2muNe5VJayLAKXk0oP0qaQlb2l4ocgeyb1lKZ3FTPL3
+	 W9Nsb9GFQhQmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jinjiang Tu <tujinjiang@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Nikunj A Dadhania <nikunj@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mm/huge_memory: fix folio isn't locked in softleaf_to_folio()
-Date: Tue, 31 Mar 2026 08:16:44 -0400
-Message-ID: <20260331121644.2195769-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] x86/fred: Fix early boot failures on SEV-ES/SNP guests
+Date: Tue, 31 Mar 2026 08:17:06 -0400
+Message-ID: <20260331121706.2197458-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033038-rejoicing-dart-be64@gregkh>
-References: <2026033038-rejoicing-dart-be64@gregkh>
+In-Reply-To: <2026033022-wiry-prodigal-d8ff@gregkh>
+References: <2026033022-wiry-prodigal-d8ff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,126 +69,121 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231414-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231415-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linux-foundation.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: D900B369643
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alien8.de:email,amd.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: D38613695B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Nikunj A Dadhania <nikunj@amd.com>
 
-[ Upstream commit 4c5e7f0fcd592801c9cc18f29f80fbee84eb8669 ]
+[ Upstream commit 3645eb7e3915990a149460c151a00894cb586253 ]
 
-On arm64 server, we found folio that get from migration entry isn't locked
-in softleaf_to_folio().  This issue triggers when mTHP splitting and
-zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-in softleaf_to_folio().  The race is as follows:
+FRED-enabled SEV-(ES,SNP) guests fail to boot due to the following issues
+in the early boot sequence:
 
-	CPU0                                             CPU1
+* FRED does not have a #VC exception handler in the dispatch logic
 
-deferred_split_scan()                              zap_nonpresent_ptes()
-  lock folio
-  split_folio()
-    unmap_folio()
-      change ptes to migration entries
-    __split_folio_to_order()                         softleaf_to_folio()
-      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
-      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
-      prep_compound_page() for tail pages
+* Early FRED #VC exceptions attempt to use uninitialized per-CPU GHCBs
+  instead of boot_ghcb
 
-In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-are visible before the tail page becomes non-compound.  smp_wmb() should
-be paired with smp_rmb() in softleaf_to_folio(), which is missed.  As a
-result, if zap_nonpresent_ptes() accesses migration entry that stores tail
-pfn, softleaf_to_folio() may see the updated compound_head of tail page
-before page->flags.
+Add X86_TRAP_VC case to fred_hwexc() with a new exc_vmm_communication()
+function that provides the unified entry point FRED requires, dispatching
+to existing user/kernel handlers based on privilege level. The function is
+already declared via DECLARE_IDTENTRY_VC().
 
-This issue will trigger VM_WARN_ON_ONCE() in pfn_swap_entry_folio()
-because of the race between folio split and zap_nonpresent_ptes()
-leading to a folio incorrectly undergoing modification without a folio
-lock being held.
+Fix early GHCB access by falling back to boot_ghcb in
+__sev_{get,put}_ghcb() when per-CPU GHCBs are not yet initialized.
 
-This is a BUG_ON() before commit 93976a20345b ("mm: eliminate further
-swapops predicates"), which in merged in v6.19-rc1.
-
-To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-in softleaf_to_folio() and softleaf_to_page().
-
-[tujinjiang@huawei.com: update function name and comments]
-  Link: https://lkml.kernel.org/r/20260321075214.3305564-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20260319012541.4158561-1-tujinjiang@huawei.com
-Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ adapted fix from leafops.h softleaf_to_page()/softleaf_to_folio() ]
+Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@kernel.org>  # 6.12+
+Link: https://patch.msgid.link/20260318075654.1792916-4-nikunj@amd.com
+[ applied GHCB early-return changes to core.c instead of noinstr.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/swapops.h | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ arch/x86/coco/sev/core.c    |  6 ++++++
+ arch/x86/entry/entry_fred.c | 14 ++++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 1f59f9edcc241..7de89a03b72e7 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -541,11 +541,21 @@ static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
- {
- 	struct page *p = pfn_to_page(swp_offset_pfn(entry));
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index d5329211b1a7e..2be730765f835 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -253,6 +253,9 @@ static noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
  
--	/*
--	 * Any use of migration entries may only occur while the
--	 * corresponding page is locked
--	 */
--	BUG_ON(is_migration_entry(entry) && !PageLocked(p));
-+	if (is_migration_entry(entry)) {
-+		/*
-+		 * Ensure we do not race with split, which might alter tail
-+		 * pages into new folios and thus result in observing an
-+		 * unlocked folio.
-+		 * This matches the write barrier in __split_folio_to_order().
-+		 */
-+		smp_rmb();
+ 	WARN_ON(!irqs_disabled());
+ 
++	if (!sev_cfg.ghcbs_initialized)
++		return boot_ghcb;
 +
-+		/*
-+		 * Any use of migration entries may only occur while the
-+		 * corresponding page is locked
-+		 */
-+		BUG_ON(!PageLocked(p));
-+	}
+ 	data = this_cpu_read(runtime_data);
+ 	ghcb = &data->ghcb_page;
  
- 	return p;
+@@ -649,6 +652,9 @@ static noinstr void __sev_put_ghcb(struct ghcb_state *state)
+ 
+ 	WARN_ON(!irqs_disabled());
+ 
++	if (!sev_cfg.ghcbs_initialized)
++		return;
++
+ 	data = this_cpu_read(runtime_data);
+ 	ghcb = &data->ghcb_page;
+ 
+diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
+index 563e439b743f2..9f50f0c1c00f5 100644
+--- a/arch/x86/entry/entry_fred.c
++++ b/arch/x86/entry/entry_fred.c
+@@ -176,6 +176,16 @@ static noinstr void fred_extint(struct pt_regs *regs)
+ 	}
  }
+ 
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++noinstr void exc_vmm_communication(struct pt_regs *regs, unsigned long error_code)
++{
++	if (user_mode(regs))
++		return user_exc_vmm_communication(regs, error_code);
++	else
++		return kernel_exc_vmm_communication(regs, error_code);
++}
++#endif
++
+ static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
+ {
+ 	/* Optimize for #PF. That's the only exception which matters performance wise */
+@@ -206,6 +216,10 @@ static noinstr void fred_hwexc(struct pt_regs *regs, unsigned long error_code)
+ #ifdef CONFIG_X86_CET
+ 	case X86_TRAP_CP: return exc_control_protection(regs, error_code);
+ #endif
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	case X86_TRAP_VC: return exc_vmm_communication(regs, error_code);
++#endif
++
+ 	default: return fred_bad_type(regs, error_code);
+ 	}
+ 
 -- 
 2.53.0
 
