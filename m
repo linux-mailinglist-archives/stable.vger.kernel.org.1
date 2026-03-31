@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231617-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHvPIzD+y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-232174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:40 +0200
+	id +HaaAOL3y2kXNAYAu9opvQ
+	(envelope-from <stable+bounces-231617-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2318C36DB55
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:02:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9323D36CD00
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A3BF328512F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:54:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 86082300B471
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6127B423A8E;
-	Tue, 31 Mar 2026 16:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2388E3F7887;
+	Tue, 31 Mar 2026 16:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qt9cFdBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9bfj2ke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA67423A91;
-	Tue, 31 Mar 2026 16:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B63266581;
+	Tue, 31 Mar 2026 16:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976068; cv=none; b=cGd5hQ2pFaNeNwqzfysH4mDHJQsBNXxomJWCLRzQLr1k99lkETZKINd08elB3+JCNSgmkHaEGRs3PBeVq+8RJ28qyGq0QJpVKPz8zf4Akz/sJgkccDc8i5XtuyT27k3qZFKcDgjEQ67mnf2z9bwFQbc/Z1Kg6hmhmx+C3mu8EVs=
+	t=1774974633; cv=none; b=Kn+fPztRJ8SMpEiFc8hcglLwAWAbQsJK1P3GVBhD5I5O2ExK3VFFU8MkHCC7s6+iXHA23pBXtkxLxRrgBnwhwVIwxaia6tVP4yWhjf+rtSnY8a7wAC5Snd+DOdhuYFs7i30Xf2gwYVs1wiiT2UhZDMmLyUmC+GcrwMaaAzVjLNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976068; c=relaxed/simple;
-	bh=vVzZzTy/7XkvxeDBB36yP6MHMGE3GNyJuHBSP+ttxlg=;
+	s=arc-20240116; t=1774974633; c=relaxed/simple;
+	bh=6dkGKJxu97Gt3xGy7nLJLFb/o+gVdYZalma8zh33wEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPPAJI9O28+nSFQdGZnn8/cMsXaAU7PgrEwdIdiHoYgSoUanZFznNFEkkJkM1rSIrCDHsGoMQYUNltS/bYmmxBOXETg1EY2eIJUlB7NBXEfqWT7BR9Ged0ly9/lrflzigB82Ux0h9mSfFI1OfsEWL6yARTP3cAqDdJLMfTtXqEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qt9cFdBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76E6C19423;
-	Tue, 31 Mar 2026 16:54:27 +0000 (UTC)
+	 MIME-Version; b=r8qGq/xtm8rkTZnA7hyI8alCoO9ESD+f/ttS2xT9VajrMQGL0pN0YrnS2mfn7f05U5vy7u11OTZSdWtPahTGEEp3QuUPxqe7qwK33sSlF8m5kI+iFz9ijRY5s2OK1eKKk39X2OZPYs8YB5YpV7n+RVeBIw4Q8VJXmrSF8IlAhMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9bfj2ke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E29C19423;
+	Tue, 31 Mar 2026 16:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976068;
-	bh=vVzZzTy/7XkvxeDBB36yP6MHMGE3GNyJuHBSP+ttxlg=;
+	s=korg; t=1774974633;
+	bh=6dkGKJxu97Gt3xGy7nLJLFb/o+gVdYZalma8zh33wEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qt9cFdBU+74pYUcEi+Li5/RDcOJFLNXD3i19AKVcK+ofN1P2v5AEmpO/OmE3cREVS
-	 iBvOiL1ubapgCjSv1E991bIiWHZqUwh9ySmq4u8ok/MAgkwEAQd0/sh5W0qNKxDfpk
-	 fH0/hzhq9Jc4kv/Xs25nFD6Q+sdQGM6zFFldFxwQ=
+	b=C9bfj2keMyOu5AlddoWvSy+K7a/mN7QY+dTlDPCgfGgYUqENzPHERk6SqjswPKjHA
+	 fONIV2FG1qVLam4tyIMrHOtgNNpat7X0PkD8vHpoQDQRKIDBON1u4ivxT9OBdqvtI1
+	 oOsvX86IVTe0618Bpqc9iR9wwwuBAYyrqKiokhEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang@linux.dev>,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.12 194/244] ext4: fix the might_sleep() warnings in kvfree()
-Date: Tue, 31 Mar 2026 18:22:24 +0200
-Message-ID: <20260331161748.915620503@linuxfoundation.org>
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 161/175] dmaengine: idxd: Fix memory leak when a wq is reset
+Date: Tue, 31 Mar 2026 18:22:25 +0200
+Message-ID: <20260331161735.713054568@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+References: <20260331161729.779738837@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232174-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231617-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,183 +86,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-0.998];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email]
-X-Rspamd-Queue-Id: 2318C36DB55
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9323D36CD00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang@linux.dev>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-commit 496bb99b7e66f48b178126626f47e9ba79e2d0fa upstream.
+[ Upstream commit d9cfb5193a047a92a4d3c0e91ea4cc87c8f7c478 ]
 
-Use the kvfree() in the RCU read critical section can trigger
-the following warnings:
+idxd_wq_disable_cleanup() which is called from the reset path for a
+workqueue, sets the wq type to NONE, which for other parts of the
+driver mean that the wq is empty (all its resources were released).
 
-EXT4-fs (vdb): unmounting filesystem cd983e5b-3c83-4f5a-a136-17b00eb9d018.
+Only set the wq type to NONE after its resources are released.
 
-WARNING: suspicious RCU usage
-
-./include/linux/rcupdate.h:409 Illegal context switch in RCU read-side critical section!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbb/0xd0
- dump_stack+0x14/0x20
- lockdep_rcu_suspicious+0x15a/0x1b0
- __might_resched+0x375/0x4d0
- ? put_object.part.0+0x2c/0x50
- __might_sleep+0x108/0x160
- vfree+0x58/0x910
- ? ext4_group_desc_free+0x27/0x270
- kvfree+0x23/0x40
- ext4_group_desc_free+0x111/0x270
- ext4_put_super+0x3c8/0xd40
- generic_shutdown_super+0x14c/0x4a0
- ? __pfx_shrinker_free+0x10/0x10
- kill_block_super+0x40/0x90
- ext4_kill_sb+0x6d/0xb0
- deactivate_locked_super+0xb4/0x180
- deactivate_super+0x7e/0xa0
- cleanup_mnt+0x296/0x3e0
- __cleanup_mnt+0x16/0x20
- task_work_run+0x157/0x250
- ? __pfx_task_work_run+0x10/0x10
- ? exit_to_user_mode_loop+0x6a/0x550
- exit_to_user_mode_loop+0x102/0x550
- do_syscall_64+0x44a/0x500
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-BUG: sleeping function called from invalid context at mm/vmalloc.c:3441
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 556, name: umount
-preempt_count: 1, expected: 0
-CPU: 3 UID: 0 PID: 556 Comm: umount
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbb/0xd0
- dump_stack+0x14/0x20
- __might_resched+0x275/0x4d0
- ? put_object.part.0+0x2c/0x50
- __might_sleep+0x108/0x160
- vfree+0x58/0x910
- ? ext4_group_desc_free+0x27/0x270
- kvfree+0x23/0x40
- ext4_group_desc_free+0x111/0x270
- ext4_put_super+0x3c8/0xd40
- generic_shutdown_super+0x14c/0x4a0
- ? __pfx_shrinker_free+0x10/0x10
- kill_block_super+0x40/0x90
- ext4_kill_sb+0x6d/0xb0
- deactivate_locked_super+0xb4/0x180
- deactivate_super+0x7e/0xa0
- cleanup_mnt+0x296/0x3e0
- __cleanup_mnt+0x16/0x20
- task_work_run+0x157/0x250
- ? __pfx_task_work_run+0x10/0x10
- ? exit_to_user_mode_loop+0x6a/0x550
- exit_to_user_mode_loop+0x102/0x550
- do_syscall_64+0x44a/0x500
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The above scenarios occur in initialization failures and teardown
-paths, there are no parallel operations on the resources released
-by kvfree(), this commit therefore remove rcu_read_lock/unlock() and
-use rcu_access_pointer() instead of rcu_dereference() operations.
-
-Fixes: 7c990728b99e ("ext4: fix potential race between s_flex_groups online resizing and access")
-Fixes: df3da4ea5a0f ("ext4: fix potential race between s_group_info online resizing and access")
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
-Link: https://patch.msgid.link/20260319094545.19291-1-qiang.zhang@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da32b28c95a7 ("dmaengine: idxd: cleanup workqueue config after disabling")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-8-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   10 +++-------
- fs/ext4/super.c   |    8 ++------
- 2 files changed, 5 insertions(+), 13 deletions(-)
+ drivers/dma/idxd/device.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3575,9 +3575,7 @@ err_freebuddy:
- 	rcu_read_unlock();
- 	iput(sbi->s_buddy_cache);
- err_freesgi:
--	rcu_read_lock();
--	kvfree(rcu_dereference(sbi->s_group_info));
--	rcu_read_unlock();
-+	kvfree(rcu_access_pointer(sbi->s_group_info));
- 	return -ENOMEM;
+diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
+index 542d340552dd7..44bbeb3acd14e 100644
+--- a/drivers/dma/idxd/device.c
++++ b/drivers/dma/idxd/device.c
+@@ -173,6 +173,7 @@ void idxd_wq_free_resources(struct idxd_wq *wq)
+ 	free_descs(wq);
+ 	dma_free_coherent(dev, wq->compls_size, wq->compls, wq->compls_addr);
+ 	sbitmap_queue_free(&wq->sbq);
++	wq->type = IDXD_WQT_NONE;
  }
  
-@@ -3882,7 +3880,8 @@ void ext4_mb_release(struct super_block
- 		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
- 	}
- 
--	if (sbi->s_group_info) {
-+	group_info = rcu_access_pointer(sbi->s_group_info);
-+	if (group_info) {
- 		for (i = 0; i < ngroups; i++) {
- 			cond_resched();
- 			grinfo = ext4_get_group_info(sb, i);
-@@ -3900,12 +3899,9 @@ void ext4_mb_release(struct super_block
- 		num_meta_group_infos = (ngroups +
- 				EXT4_DESC_PER_BLOCK(sb) - 1) >>
- 			EXT4_DESC_PER_BLOCK_BITS(sb);
--		rcu_read_lock();
--		group_info = rcu_dereference(sbi->s_group_info);
- 		for (i = 0; i < num_meta_group_infos; i++)
- 			kfree(group_info[i]);
- 		kvfree(group_info);
--		rcu_read_unlock();
- 	}
- 	ext4_mb_avg_fragment_size_destroy(sbi);
- 	ext4_mb_largest_free_orders_destroy(sbi);
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1270,12 +1270,10 @@ static void ext4_group_desc_free(struct
- 	struct buffer_head **group_desc;
- 	int i;
- 
--	rcu_read_lock();
--	group_desc = rcu_dereference(sbi->s_group_desc);
-+	group_desc = rcu_access_pointer(sbi->s_group_desc);
- 	for (i = 0; i < sbi->s_gdb_count; i++)
- 		brelse(group_desc[i]);
- 	kvfree(group_desc);
--	rcu_read_unlock();
+ int idxd_wq_enable(struct idxd_wq *wq)
+@@ -365,7 +366,6 @@ static void idxd_wq_disable_cleanup(struct idxd_wq *wq)
+ 	lockdep_assert_held(&wq->wq_lock);
+ 	wq->state = IDXD_WQ_DISABLED;
+ 	memset(wq->wqcfg, 0, idxd->wqcfg_size);
+-	wq->type = IDXD_WQT_NONE;
+ 	wq->threshold = 0;
+ 	wq->priority = 0;
+ 	wq->enqcmds_retries = IDXD_ENQCMDS_RETRIES;
+@@ -1507,7 +1507,6 @@ void drv_disable_wq(struct idxd_wq *wq)
+ 	idxd_wq_reset(wq);
+ 	idxd_wq_free_resources(wq);
+ 	percpu_ref_exit(&wq->wq_active);
+-	wq->type = IDXD_WQT_NONE;
+ 	wq->client_count = 0;
  }
  
- static void ext4_flex_groups_free(struct ext4_sb_info *sbi)
-@@ -1283,14 +1281,12 @@ static void ext4_flex_groups_free(struct
- 	struct flex_groups **flex_groups;
- 	int i;
- 
--	rcu_read_lock();
--	flex_groups = rcu_dereference(sbi->s_flex_groups);
-+	flex_groups = rcu_access_pointer(sbi->s_flex_groups);
- 	if (flex_groups) {
- 		for (i = 0; i < sbi->s_flex_groups_allocated; i++)
- 			kvfree(flex_groups[i]);
- 		kvfree(flex_groups);
- 	}
--	rcu_read_unlock();
- }
- 
- static void ext4_put_super(struct super_block *sb)
+-- 
+2.53.0
+
 
 
 
