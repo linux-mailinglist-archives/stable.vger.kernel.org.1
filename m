@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-231753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGdrJv35y2lsNAYAu9opvQ
-	(envelope-from <stable+bounces-231753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:45 +0200
+	id ELA+H/oFzGljNQYAu9opvQ
+	(envelope-from <stable+bounces-232272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450E536D11D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:44:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C1E36EF62
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3143730DC8E1
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:36:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 38E49306E532
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C630740710B;
-	Tue, 31 Mar 2026 16:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383DC423A8E;
+	Tue, 31 Mar 2026 16:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrpfp2+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1MH/vdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E6E3E559E;
-	Tue, 31 Mar 2026 16:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6AE423A62;
+	Tue, 31 Mar 2026 16:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774974979; cv=none; b=G7FuRa4FQBa3eHilAeiCFwlZ0oxYG6YW9c9gBd+0yxLMliekk+1jiRT3MZkukH18kC39vwO2tBlWrc4JBl4xNz9U22MPBiEjK8vMDa03E8t/jsGQE3deuTenLunV8Zxp0KGI1a9lbQZ0YlL144EqlvxqNdUlYuRbNUI1BV3slh4=
+	t=1774976321; cv=none; b=OBrdqBjx1EQSZ0dDVplHapfeerGCeDXAnpiy68d8je+I++RHTRITeHDJW+MdIEZ+yxjUFULupF4ThH5uIMuTD7Im+KTq7hrLVPZ/Khy/eddM0RtnE6SSSZevoyfs9fuRsHVjXDGxGI4zBWm6NcTbR2i/k+ZMnGZtYXKKUiJ8cH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774974979; c=relaxed/simple;
-	bh=iJwIYd4/vHKhYxYa0gIZPreVV6dLqG7fmTHryF8yAVQ=;
+	s=arc-20240116; t=1774976321; c=relaxed/simple;
+	bh=FwLzTqKQJ0Y6w+Y41bPwp2A2eQRmAF2e0N2qntct42k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9EWCuPJYRzWku3Pj2o37KHTuBui5AvrvfoOVndm5/CjnCqCV1v3yyNCyrwp7CWf/zXd5TRO18sZDHbEHvzz51HtefB81GExFfjg8c085zkDo6zUb5uFBKg8bHV6wnXkSGhiMq28Lr5gQQE0hs0N7KkVTDZzloMzOXDh05RqJhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrpfp2+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE1FC19423;
-	Tue, 31 Mar 2026 16:36:18 +0000 (UTC)
+	 MIME-Version; b=sZQxv/pgTMMywtoM0WLpQncPAkgnJOpZ8q6tyYZCnabnr2ZBcvRblsNKS/zd9WMzub4ZYHaQxf0TKlDrQlqN1B7Vez0mtaJx1tqIIlvBoM5gBjilirsA4pVaqIqu688eESdlbhntOwMR8FeYjrSW/2M74auK7maNLD35VU/wVCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1MH/vdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867BCC19423;
+	Tue, 31 Mar 2026 16:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774974979;
-	bh=iJwIYd4/vHKhYxYa0gIZPreVV6dLqG7fmTHryF8yAVQ=;
+	s=korg; t=1774976320;
+	bh=FwLzTqKQJ0Y6w+Y41bPwp2A2eQRmAF2e0N2qntct42k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrpfp2+HHbfSb1/LAWfv7IEfaTMLeaJILpFWZQ389R2AQ0WEiicbknOOCt6z1qqEG
-	 mWJS9CZfzWnqTrF4p9KuUHfQTnGeplsHhkeM0BXwSLUh9op8Lc6QXWzJpkpS+Ji0G7
-	 Lbsnp0i8uNQCvY5eOUrThL+nqc3LHwfIn3Txow54=
+	b=x1MH/vdlqstCYDdK0B26Mte7UovlWvWpIMO4sMPkJqyBUn2dezjn28b83gDepHftp
+	 9BTrqBtw1aE5yoOa2SKUsXzJm8pwzvvlHJThBl6NelnjyUCXJ5ftUISJbaqOefky01
+	 GDVk5fvFlBKu/V0If4Z+hieBlN3D/s/6WVvqUy68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Simon Horman <horms@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 117/342] iavf: fix out-of-bounds writes in iavf_get_ethtool_stats()
+Subject: [PATCH 6.18 047/309] ASoC: cs35l56: Only patch ASP registers if the DAI is part of a DAIlink
 Date: Tue, 31 Mar 2026 18:19:10 +0200
-Message-ID: <20260331161803.316043571@linuxfoundation.org>
+Message-ID: <20260331161755.216800559@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,187 +68,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231753-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232272-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email]
-X-Rspamd-Queue-Id: 450E536D11D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,cirrus.com:email]
+X-Rspamd-Queue-Id: 76C1E36EF62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit fecacfc95f195b99c71c579a472120d0b4ed65fa ]
+[ Upstream commit 9351cf3fd92dc1349bb75f2f7f7324607dcf596f ]
 
-iavf incorrectly uses real_num_tx_queues for ETH_SS_STATS. Since the
-value could change in runtime, we should use num_tx_queues instead.
+Move the ASP register patches to a separate struct and apply this from the
+ASP DAI probe() function so that the registers are only patched if the DAI
+is part of a DAI link.
 
-Moreover iavf_get_ethtool_stats() uses num_active_queues while
-iavf_get_sset_count() and iavf_get_stat_strings() use
-real_num_tx_queues, which triggers out-of-bounds writes when we do
-"ethtool -L" and "ethtool -S" simultaneously [1].
+Some systems use the ASP as a special-purpose interconnect and on these
+systems the ASP registers are configured by a third party (the firmware,
+the BIOS, or another device using the amp's secondary host control
+interface).
 
-For example when we change channels from 1 to 8, Thread 3 could be
-scheduled before Thread 2, and out-of-bounds writes could be triggered
-in Thread 3:
+If the machine driver does not hook up the ASP DAI then the ASP registers
+must be omitted from the patch to prevent overwriting the third party
+configuration.
 
-Thread 1 (ethtool -L)       Thread 2 (work)        Thread 3 (ethtool -S)
-iavf_set_channels()
-...
-iavf_alloc_queues()
--> num_active_queues = 8
-iavf_schedule_finish_config()
-                                                   iavf_get_sset_count()
-                                                   real_num_tx_queues: 1
-                                                   -> buffer for 1 queue
-                                                   iavf_get_ethtool_stats()
-                                                   num_active_queues: 8
-                                                   -> out-of-bounds!
-                            iavf_finish_config()
-                            -> real_num_tx_queues = 8
+If the machine driver includes the ASP DAI in a DAI link, this implies that
+the machine driver and higher components (such as alsa-ucm) are taking
+ownership of the ASP. In this case the ASP registers are patched to known
+defaults and the machine driver should configure the ASP.
 
-Use immutable num_tx_queues in all related functions to avoid the issue.
-
-[1]
- BUG: KASAN: vmalloc-out-of-bounds in iavf_add_one_ethtool_stat+0x200/0x270
- Write of size 8 at addr ffffc900031c9080 by task ethtool/5800
-
- CPU: 1 UID: 0 PID: 5800 Comm: ethtool Not tainted 6.19.0-enjuk-08403-g8137e3db7f1c #241 PREEMPT(full)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x6f/0xb0
-  print_report+0x170/0x4f3
-  kasan_report+0xe1/0x180
-  iavf_add_one_ethtool_stat+0x200/0x270
-  iavf_get_ethtool_stats+0x14c/0x2e0
-  __dev_ethtool+0x3d0c/0x5830
-  dev_ethtool+0x12d/0x270
-  dev_ioctl+0x53c/0xe30
-  sock_do_ioctl+0x1a9/0x270
-  sock_ioctl+0x3d4/0x5e0
-  __x64_sys_ioctl+0x137/0x1c0
-  do_syscall_64+0xf3/0x690
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7f7da0e6e36d
- ...
-  </TASK>
-
- The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900031c9000 allocated at __dev_ethtool+0x3cc9/0x5830
- The buggy address belongs to the physical page: page: refcount:1 mapcount:0 mapping:0000000000000000
- index:0xffff88813a013de0 pfn:0x13a013
- flags: 0x200000000000000(node=0|zone=2)
- raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
- raw: ffff88813a013de0 0000000000000000 00000001ffffffff 0000000000000000
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ffffc900031c8f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ffffc900031c9000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ffffc900031c9080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                    ^
-  ffffc900031c9100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ffffc900031c9180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fixes: 64430f70ba6f ("iavf: Fix displaying queue statistics shown by ethtool")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260226110137.1664562-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/intel/iavf/iavf_ethtool.c    | 31 +++++++++----------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ include/sound/cs35l56.h           |  1 +
+ sound/soc/codecs/cs35l56-shared.c | 16 +++++++++++++++-
+ sound/soc/codecs/cs35l56.c        |  8 ++++++++
+ 3 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index 6ff3842a1ff1f..98bec3afc2006 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -313,14 +313,13 @@ static int iavf_get_sset_count(struct net_device *netdev, int sset)
+diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
+index ab044ce2aa8b3..0374c251901f5 100644
+--- a/include/sound/cs35l56.h
++++ b/include/sound/cs35l56.h
+@@ -344,6 +344,7 @@ extern const struct cirrus_amp_cal_controls cs35l56_calibration_controls;
+ extern const char * const cs35l56_tx_input_texts[CS35L56_NUM_INPUT_SRC];
+ extern const unsigned int cs35l56_tx_input_values[CS35L56_NUM_INPUT_SRC];
+ 
++int cs35l56_set_asp_patch(struct cs35l56_base *cs35l56_base);
+ int cs35l56_set_patch(struct cs35l56_base *cs35l56_base);
+ int cs35l56_mbox_send(struct cs35l56_base *cs35l56_base, unsigned int command);
+ int cs35l56_firmware_shutdown(struct cs35l56_base *cs35l56_base);
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index 9e6b9ca2f3547..a13e8eaf277d4 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -16,7 +16,7 @@
+ 
+ #include "cs35l56.h"
+ 
+-static const struct reg_sequence cs35l56_patch[] = {
++static const struct reg_sequence cs35l56_asp_patch[] = {
+ 	/*
+ 	 * Firmware can change these to non-defaults to satisfy SDCA.
+ 	 * Ensure that they are at known defaults.
+@@ -33,6 +33,20 @@ static const struct reg_sequence cs35l56_patch[] = {
+ 	{ CS35L56_ASP1TX2_INPUT,		0x00000000 },
+ 	{ CS35L56_ASP1TX3_INPUT,		0x00000000 },
+ 	{ CS35L56_ASP1TX4_INPUT,		0x00000000 },
++};
++
++int cs35l56_set_asp_patch(struct cs35l56_base *cs35l56_base)
++{
++	return regmap_register_patch(cs35l56_base->regmap, cs35l56_asp_patch,
++				     ARRAY_SIZE(cs35l56_asp_patch));
++}
++EXPORT_SYMBOL_NS_GPL(cs35l56_set_asp_patch, "SND_SOC_CS35L56_SHARED");
++
++static const struct reg_sequence cs35l56_patch[] = {
++	/*
++	 * Firmware can change these to non-defaults to satisfy SDCA.
++	 * Ensure that they are at known defaults.
++	 */
+ 	{ CS35L56_SWIRE_DP3_CH1_INPUT,		0x00000018 },
+ 	{ CS35L56_SWIRE_DP3_CH2_INPUT,		0x00000019 },
+ 	{ CS35L56_SWIRE_DP3_CH3_INPUT,		0x00000029 },
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index 2c1edbd636efc..193adba0cd1a4 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -324,6 +324,13 @@ static int cs35l56_dsp_event(struct snd_soc_dapm_widget *w,
+ 	return wm_adsp_event(w, kcontrol, event);
+ }
+ 
++static int cs35l56_asp_dai_probe(struct snd_soc_dai *codec_dai)
++{
++	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(codec_dai->component);
++
++	return cs35l56_set_asp_patch(&cs35l56->base);
++}
++
+ static int cs35l56_asp_dai_set_fmt(struct snd_soc_dai *codec_dai, unsigned int fmt)
  {
- 	/* Report the maximum number queues, even if not every queue is
- 	 * currently configured. Since allocation of queues is in pairs,
--	 * use netdev->real_num_tx_queues * 2. The real_num_tx_queues is set
--	 * at device creation and never changes.
-+	 * use netdev->num_tx_queues * 2. The num_tx_queues is set at
-+	 * device creation and never changes.
- 	 */
- 
- 	if (sset == ETH_SS_STATS)
- 		return IAVF_STATS_LEN +
--			(IAVF_QUEUE_STATS_LEN * 2 *
--			 netdev->real_num_tx_queues);
-+		       (IAVF_QUEUE_STATS_LEN * 2 * netdev->num_tx_queues);
- 	else
- 		return -EINVAL;
+ 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(codec_dai->component);
+@@ -528,6 +535,7 @@ static int cs35l56_asp_dai_set_sysclk(struct snd_soc_dai *dai,
  }
-@@ -345,19 +344,19 @@ static void iavf_get_ethtool_stats(struct net_device *netdev,
- 	iavf_add_ethtool_stats(&data, adapter, iavf_gstrings_stats);
  
- 	rcu_read_lock();
--	/* As num_active_queues describe both tx and rx queues, we can use
--	 * it to iterate over rings' stats.
-+	/* Use num_tx_queues to report stats for the maximum number of queues.
-+	 * Queues beyond num_active_queues will report zero.
- 	 */
--	for (i = 0; i < adapter->num_active_queues; i++) {
--		struct iavf_ring *ring;
-+	for (i = 0; i < netdev->num_tx_queues; i++) {
-+		struct iavf_ring *tx_ring = NULL, *rx_ring = NULL;
- 
--		/* Tx rings stats */
--		ring = &adapter->tx_rings[i];
--		iavf_add_queue_stats(&data, ring);
-+		if (i < adapter->num_active_queues) {
-+			tx_ring = &adapter->tx_rings[i];
-+			rx_ring = &adapter->rx_rings[i];
-+		}
- 
--		/* Rx rings stats */
--		ring = &adapter->rx_rings[i];
--		iavf_add_queue_stats(&data, ring);
-+		iavf_add_queue_stats(&data, tx_ring);
-+		iavf_add_queue_stats(&data, rx_ring);
- 	}
- 	rcu_read_unlock();
- }
-@@ -376,9 +375,9 @@ static void iavf_get_stat_strings(struct net_device *netdev, u8 *data)
- 	iavf_add_stat_strings(&data, iavf_gstrings_stats);
- 
- 	/* Queues are always allocated in pairs, so we just use
--	 * real_num_tx_queues for both Tx and Rx queues.
-+	 * num_tx_queues for both Tx and Rx queues.
- 	 */
--	for (i = 0; i < netdev->real_num_tx_queues; i++) {
-+	for (i = 0; i < netdev->num_tx_queues; i++) {
- 		iavf_add_stat_strings(&data, iavf_gstrings_queue_stats,
- 				      "tx", i);
- 		iavf_add_stat_strings(&data, iavf_gstrings_queue_stats,
+ static const struct snd_soc_dai_ops cs35l56_ops = {
++	.probe = cs35l56_asp_dai_probe,
+ 	.set_fmt = cs35l56_asp_dai_set_fmt,
+ 	.set_tdm_slot = cs35l56_asp_dai_set_tdm_slot,
+ 	.hw_params = cs35l56_asp_dai_hw_params,
 -- 
 2.51.0
 
