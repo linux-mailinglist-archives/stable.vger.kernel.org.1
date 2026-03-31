@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-232339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNbhHgIHzGn+NQYAu9opvQ
-	(envelope-from <stable+bounces-232339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:40:18 +0200
+	id SLFrHUwBzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-231820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060D036F1AA
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D088F36E55C
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68722302F26F
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:01:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 723AB3128251
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197332FF147;
-	Tue, 31 Mar 2026 17:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6097442E01F;
+	Tue, 31 Mar 2026 16:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkafOWR6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ng6fhdXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D862FD68B;
-	Tue, 31 Mar 2026 17:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223AA428472;
+	Tue, 31 Mar 2026 16:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774976495; cv=none; b=cqMeYUmwtiuuEA6aIDcNV2WzU3fjy17Ud2aQR9Y6R0KQREsD6lOTKw2MAZmMKIpGsxps2IqTXzNlAGO7ZNKGH/IIT7zvBwOrb4gcpW581eov+LY5038AX9FyLAwpPm0nfFiDAnWhS6jlIwGv1JsA4yVTMnxjQfhXstddmrz5aGI=
+	t=1774975154; cv=none; b=oBl5vqP4oIsn9tv8azZO8ksSzIUsRab+X9U4fE5UCIlZsHcq/MPlvVtuXrDSKuqrLsHRi6iFgKX/rfpulQROD9IMxSDDOiLJBHl7HVHbrzf6LyC56+wQs+g5YW3qdMTJ0zSHTZqWRkvbHWH2UgEJoO+H3bYooxszb3iNehMFjyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774976495; c=relaxed/simple;
-	bh=Sq5QdBVTKz+Bms8tswGMHd/IfBNQev0lQYHYIrqYITA=;
+	s=arc-20240116; t=1774975154; c=relaxed/simple;
+	bh=4sHqNmihLZtFAfcFUc+wLST4vJUH52DZMKnNl6JHhAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/w5ln35fJQHZiqwa8xAObm5Eq0EN/A/rM1kgHBLJPxqorgynAa8yVlTWSR7epItgWWs77wB078w8IdW+eHtN+AfU4ItkbcSqx4I4nIuJp3Zaw3nrSBjJtQl+2esV2CAAacNFNSwA6de6hFUTvgGlquKP0heZSUeRBZJtOsxqfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkafOWR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67F5C19423;
-	Tue, 31 Mar 2026 17:01:34 +0000 (UTC)
+	 MIME-Version; b=Nw/6ZuErJysEzo8VfLCN+FrPQgdJv8sG8EPFq6QLXxM7PwT855x3CphD3Zjv8VOH3fIdpAl2zzN7rq5EEONA2Mno1XZ2R6ysmYnAa64BXqopGrBChYKdyblFKUIvpamRnpYGxhgUvc3ZllAp20yRizpcal8Of0iemo//wewIrsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ng6fhdXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7625FC19423;
+	Tue, 31 Mar 2026 16:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774976495;
-	bh=Sq5QdBVTKz+Bms8tswGMHd/IfBNQev0lQYHYIrqYITA=;
+	s=korg; t=1774975153;
+	bh=4sHqNmihLZtFAfcFUc+wLST4vJUH52DZMKnNl6JHhAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kkafOWR6D3Nu05BUV1X5EpLvyK3CCzxOXTYCXUk+6tLn3aRq6vfSMXto2lSJrhLZ1
-	 91SjDgTAjbdIORjwrK8dkxlVwmoLmCyGPTyDs8CnmOoMOeUfxI4WIU7WmpH8l9g5fO
-	 vnrD+yxS/OcV+jZwI/V1r/Cue1xb4N3Nx50FE27Y=
+	b=Ng6fhdXu4A/AT4mTgJglDY5swQLid9Z6RcG0O0ZQT5lA9Nq0bgsLU7nH4e8DBA2SY
+	 YDrCqW7QIICxleEuWPEnlDkl3Hxix4YTpirnrpyaH2xoAQEXO4p3aKJvIBfbEhBbFs
+	 eAk7/YPzYQhUUUn8oWTbNGxaIwbjudI1wJ8lr0cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 114/309] virtio-net: correct hdr_len handling for tunnel gso
+Subject: [PATCH 6.19 184/342] ASoC: SDCA: fix finding wrong entity
 Date: Tue, 31 Mar 2026 18:20:17 +0200
-Message-ID: <20260331161757.681242907@linuxfoundation.org>
+Message-ID: <20260331161805.772733591@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+References: <20260331161758.909578033@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232339-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-231820-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,93 +87,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 060D036F1AA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,realtek.com:email,cirrus.com:email]
+X-Rspamd-Queue-Id: D088F36E55C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-[ Upstream commit 6c860dc02a8e60b438e26940227dfa641fcdb66a ]
+[ Upstream commit c673efd5db2223c2e8b885025bcd96bca6cdb171 ]
 
-The commit a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP
-GSO tunneling.") introduces support for the UDP GSO tunnel feature in
-virtio-net.
+This patch fixes an issue like:
+where searching for the entity 'FU 11' could incorrectly match 'FU 113' first.
+The driver should first perform an exact match on the full string name.
+If no exact match is found, it can then fall back to a partial match.
 
-The virtio spec says:
-
-    If the \field{gso_type} has the VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 bit or
-    VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 bit set, \field{hdr_len} accounts for
-    all the headers up to and including the inner transport.
-
-The commit did not update the hdr_len to include the inner transport.
-
-I observed that the "hdr_len" is 116 for this packet:
-
-    17:36:18.241105 52:55:00:d1:27:0a > 2e:2c:df:46:a9:e1, ethertype IPv4 (0x0800), length 2912: (tos 0x0, ttl 64, id 45197, offset 0, flags [none], proto UDP (17), length 2898)
-        192.168.122.100.50613 > 192.168.122.1.4789: [bad udp cksum 0x8106 -> 0x26a0!] VXLAN, flags [I] (0x08), vni 1
-    fa:c3:ba:82:05:ee > ce:85:0c:31:77:e5, ethertype IPv4 (0x0800), length 2862: (tos 0x0, ttl 64, id 14678, offset 0, flags [DF], proto TCP (6), length 2848)
-        192.168.3.1.49880 > 192.168.3.2.9898: Flags [P.], cksum 0x9266 (incorrect -> 0xaa20), seq 515667:518463, ack 1, win 64, options [nop,nop,TS val 2990048824 ecr 2798801412], length 2796
-
-116 = 14(mac) + 20(ip) + 8(udp) + 8(vxlan) + 14(inner mac) + 20(inner ip) + 32(innner tcp)
-
-Fixes: a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP GSO tunneling.")
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://patch.msgid.link/20260320021818.111741-3-xuanzhuo@linux.alibaba.com
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 48fa77af2f4a ("ASoC: SDCA: Add terminal type into input/output widget name")
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20260325110406.3232420-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_net.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ sound/soc/sdca/sdca_functions.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 361b60c8be680..f36d21b5bc19e 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -224,6 +224,22 @@ static inline void __virtio_net_set_hdrlen(const struct sk_buff *skb,
- 	hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
- }
+diff --git a/sound/soc/sdca/sdca_functions.c b/sound/soc/sdca/sdca_functions.c
+index d2de9e81b4f9f..a1f6f931a8081 100644
+--- a/sound/soc/sdca/sdca_functions.c
++++ b/sound/soc/sdca/sdca_functions.c
+@@ -1568,10 +1568,19 @@ static int find_sdca_entities(struct device *dev, struct sdw_slave *sdw,
+ static struct sdca_entity *find_sdca_entity_by_label(struct sdca_function_data *function,
+ 						     const char *entity_label)
+ {
++	struct sdca_entity *entity = NULL;
+ 	int i;
  
-+/* This function must be called after virtio_net_hdr_from_skb(). */
-+static inline void __virtio_net_set_tnl_hdrlen(const struct sk_buff *skb,
-+					       struct virtio_net_hdr *hdr)
-+{
-+	u16 hdr_len;
+ 	for (i = 0; i < function->num_entities; i++) {
+-		struct sdca_entity *entity = &function->entities[i];
++		entity = &function->entities[i];
 +
-+	hdr_len = skb_inner_transport_offset(skb);
++		/* check whole string first*/
++		if (!strcmp(entity->label, entity_label))
++			return entity;
++	}
 +
-+	if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-+		hdr_len += sizeof(struct udphdr);
-+	else
-+		hdr_len += inner_tcp_hdrlen(skb);
-+
-+	hdr->hdr_len = __cpu_to_virtio16(true, hdr_len);
-+}
-+
- static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
- 					  struct virtio_net_hdr *hdr,
- 					  bool little_endian,
-@@ -440,6 +456,9 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
- 	if (ret)
- 		return ret;
++	for (i = 0; i < function->num_entities; i++) {
++		entity = &function->entities[i];
  
-+	if (feature_hdrlen && hdr->hdr_len)
-+		__virtio_net_set_tnl_hdrlen(skb, hdr);
-+
- 	if (skb->protocol == htons(ETH_P_IPV6))
- 		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6;
- 	else
+ 		if (!strncmp(entity->label, entity_label, strlen(entity_label)))
+ 			return entity;
 -- 
-2.51.0
+2.53.0
 
 
 
