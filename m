@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-231907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIMyOvL8y2naNAYAu9opvQ
-	(envelope-from <stable+bounces-231907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:22 +0200
+	id iGBZMZgAzGk8NQYAu9opvQ
+	(envelope-from <stable+bounces-232427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE19F36D7D6
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:57:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4AC36E2F5
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2ACF530AEAE9
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:43:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BC1B4306D9D9
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342AB423A62;
-	Tue, 31 Mar 2026 16:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8570E2FDC5E;
+	Tue, 31 Mar 2026 17:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBhb7GG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzBWWUpn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A5E421EFC;
-	Tue, 31 Mar 2026 16:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489502FF669;
+	Tue, 31 Mar 2026 17:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975376; cv=none; b=heAkN/KojQur0lH4/AVgmB77BrV4Sn19c/eN8j2yLJjBJTlaB2EgQWipwejR/LcUUf4+kcNSzQpLSksWUYLEDmfP722Y89I+nedGKTIhzUMcVTKRamdrgoVm+fRIb/DP0l6ASBj3JkEpx8YQfI+XgOsS4gdVykNAePhglvW4HFI=
+	t=1774976719; cv=none; b=Je/QdD4Xi+FFR6/ggUa0yLzxrl099aqZgInp3wJasRKrPOmRllnm7OqJ1dZM86FKWUBNA0E6n3IfUK1wYPPVve3m2GXc9mQjXk4ytmk6UikPNF6kZ79ArUUx3XZeHc2zUsk0Q4ZE6QYznDqqtJ4/1dPiDFyO2x+iYCK6Q+pldEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975376; c=relaxed/simple;
-	bh=PA0P4C1bFIfOg0cq1r5HX5RUM5+rMnJqCcJYSXc+duM=;
+	s=arc-20240116; t=1774976719; c=relaxed/simple;
+	bh=Z1DlU31qXFaILBsktKSEDW6QczejXoe/pbkPbxMyTrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptBGwqYC3vWc3EgL0dc+psk0GCFHjbX8x83aYxZnUKjX0ugKPe6/GJ5ZTgJaunufx3sWngy9VEs2lfq9E4QREH12ksXVbwYR/bL4Uien1XoyqWzne97YE5euRKYuOLOlQ0FsS5fSMmKYRDlgxZxanOp8KKn/rQsPqmwji1QfSAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBhb7GG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B8FC19423;
-	Tue, 31 Mar 2026 16:42:55 +0000 (UTC)
+	 MIME-Version; b=mlz/0G3ynUD/wvDoLht7YS4WRHuhzT+gkC45EBVW0uI6WA2eynJCPpuYHmEE5CSIxv3GeEAlu+ndjyIDYinc3TOWO2FSq6XxLgKtxz0FQDK1nBir3/o7FHxL/7b4jOO1sHQbjH9Xezydl/lwIBVioqmxXedXGYNf5/a52JQ9XCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzBWWUpn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20B3C19423;
+	Tue, 31 Mar 2026 17:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975375;
-	bh=PA0P4C1bFIfOg0cq1r5HX5RUM5+rMnJqCcJYSXc+duM=;
+	s=korg; t=1774976719;
+	bh=Z1DlU31qXFaILBsktKSEDW6QczejXoe/pbkPbxMyTrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBhb7GG6jsql6Vk3/ajXY9WzlA5ptAfslTGy8uRwROysVIrBr7Fcu0xHTdRyiN8NW
-	 O4c79xloK8VJ/j3qkZj47T8nIVKVQuHPCMPmnbffugiuy3M8EBt8anvJUkAeovGFss
-	 k1hx4j1LXIUwUZZcvXmJmTl2KFkdhZkQVnbkkdpM=
+	b=FzBWWUpnwPWz1IF1xCQG0gx9pG175HQGDMqC65w+p+0WizJ4Nnb0EkQHN4441IGzU
+	 mPh3t195ZUr+ZHZq05u5WMUTP8aDo1e76rXxyVtyYcw/M5ZRlBgoouNgVDpJ5xXKvz
+	 snBpwX7maHxgAkU+C3VO4AFQZv8VrxJSxaOgvzP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John <therealgraysky@proton.me>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.19 238/342] writeback: dont block sync for filesystems with no data integrity guarantees
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 168/309] hwmon: (pmbus) Introduce the concept of "write-only" attributes
 Date: Tue, 31 Mar 2026 18:21:11 +0200
-Message-ID: <20260331161807.722806399@linuxfoundation.org>
+Message-ID: <20260331161759.650619688@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,206 +68,218 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,gmail.com,suse.cz,kernel.org];
-	TAGGED_FROM(0.00)[bounces-231907-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-232427-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,proton.me:email]
-X-Rspamd-Queue-Id: CE19F36D7D6
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,juniper.net:email]
+X-Rspamd-Queue-Id: AF4AC36E2F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 76f9377cd2ab7a9220c25d33940d9ca20d368172 upstream.
+[ Upstream commit cd658475e7694d58e1c40dabc1dacf8431ccedb2 ]
 
-Add a SB_I_NO_DATA_INTEGRITY superblock flag for filesystems that cannot
-guarantee data persistence on sync (eg fuse). For superblocks with this
-flag set, sync kicks off writeback of dirty inodes but does not wait
-for the flusher threads to complete the writeback.
+Attributes intended to clear sensor history are intended to be writeable
+only. Reading those attributes today results in reporting more or less
+random values. To avoid ABI surprises, have those attributes explicitly
+return 0 when reading.
 
-This replaces the per-inode AS_NO_DATA_INTEGRITY mapping flag added in
-commit f9a49aa302a0 ("fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
-in wait_sb_inodes()"). The flag belongs at the superblock level because
-data integrity is a filesystem-wide property, not a per-inode one.
-Having this flag at the superblock level also allows us to skip having
-to iterate every dirty inode in wait_sb_inodes() only to skip each inode
-individually.
-
-Prior to this commit, mappings with no data integrity guarantees skipped
-waiting on writeback completion but still waited on the flusher threads
-to finish initiating the writeback. Waiting on the flusher threads is
-unnecessary. This commit kicks off writeback but does not wait on the
-flusher threads. This change properly addresses a recent report [1] for
-a suspend-to-RAM hang seen on fuse-overlayfs that was caused by waiting
-on the flusher threads to finish:
-
-Workqueue: pm_fs_sync pm_fs_sync_work_fn
-Call Trace:
- <TASK>
- __schedule+0x457/0x1720
- schedule+0x27/0xd0
- wb_wait_for_completion+0x97/0xe0
- sync_inodes_sb+0xf8/0x2e0
- __iterate_supers+0xdc/0x160
- ksys_sync+0x43/0xb0
- pm_fs_sync_work_fn+0x17/0xa0
- process_one_work+0x193/0x350
- worker_thread+0x1a1/0x310
- kthread+0xfc/0x240
- ret_from_fork+0x243/0x280
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-On fuse this is problematic because there are paths that may cause the
-flusher thread to block (eg if systemd freezes the user session cgroups
-first, which freezes the fuse daemon, before invoking the kernel
-suspend. The kernel suspend triggers ->write_node() which on fuse issues
-a synchronous setattr request, which cannot be processed since the
-daemon is frozen. Or if the daemon is buggy and cannot properly complete
-writeback, initiating writeback on a dirty folio already under writeback
-leads to writeback_get_folio() -> folio_prepare_writeback() ->
-unconditional wait on writeback to finish, which will cause a hang).
-This commit restores fuse to its prior behavior before tmp folios were
-removed, where sync was essentially a no-op.
-
-[1] https://lore.kernel.org/linux-fsdevel/CAJnrk1a-asuvfrbKXbEwwDSctvemF+6zfhdnuzO65Pt8HsFSRw@mail.gmail.com/T/#m632c4648e9cafc4239299887109ebd880ac6c5c1
-
-Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
-Reported-by: John <therealgraysky@proton.me>
-Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Link: https://patch.msgid.link/20260320005145.2483161-2-joannelkoong@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 787c095edaa9d ("hwmon: (pmbus/core) Add support for rated attributes")
+Reviewed-by: Sanman Pradhan <psanman@juniper.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs-writeback.c              |   18 ++++++++++++------
- fs/fuse/file.c                 |    4 +---
- fs/fuse/inode.c                |    1 +
- include/linux/fs/super_types.h |    1 +
- include/linux/pagemap.h        |   11 -----------
- 5 files changed, 15 insertions(+), 20 deletions(-)
+ drivers/hwmon/pmbus/pmbus_core.c | 32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2759,13 +2759,8 @@ static void wait_sb_inodes(struct super_
- 		 * The mapping can appear untagged while still on-list since we
- 		 * do not have the mapping lock. Skip it here, wb completion
- 		 * will remove it.
--		 *
--		 * If the mapping does not have data integrity semantics,
--		 * there's no need to wait for the writeout to complete, as the
--		 * mapping cannot guarantee that data is persistently stored.
- 		 */
--		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
--		    mapping_no_data_integrity(mapping))
-+		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
- 			continue;
- 
- 		spin_unlock_irq(&sb->s_inode_wblist_lock);
-@@ -2900,6 +2895,17 @@ void sync_inodes_sb(struct super_block *
- 	 */
- 	if (bdi == &noop_backing_dev_info)
- 		return;
-+
-+	/*
-+	 * If the superblock has SB_I_NO_DATA_INTEGRITY set, there's no need to
-+	 * wait for the writeout to complete, as the filesystem cannot guarantee
-+	 * data persistence on sync. Just kick off writeback and return.
-+	 */
-+	if (sb->s_iflags & SB_I_NO_DATA_INTEGRITY) {
-+		wakeup_flusher_threads_bdi(bdi, WB_REASON_SYNC);
-+		return;
-+	}
-+
- 	WARN_ON(!rwsem_is_locked(&sb->s_umount));
- 
- 	/* protect against inode wb switch, see inode_switch_wbs_work_fn() */
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3200,10 +3200,8 @@ void fuse_init_file_inode(struct inode *
- 
- 	inode->i_fop = &fuse_file_operations;
- 	inode->i_data.a_ops = &fuse_file_aops;
--	if (fc->writeback_cache) {
-+	if (fc->writeback_cache)
- 		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
--		mapping_set_no_data_integrity(&inode->i_data);
--	}
- 
- 	INIT_LIST_HEAD(&fi->write_files);
- 	INIT_LIST_HEAD(&fi->queued_writes);
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -1709,6 +1709,7 @@ static void fuse_sb_defaults(struct supe
- 	sb->s_export_op = &fuse_export_operations;
- 	sb->s_iflags |= SB_I_IMA_UNVERIFIABLE_SIGNATURE;
- 	sb->s_iflags |= SB_I_NOIDMAP;
-+	sb->s_iflags |= SB_I_NO_DATA_INTEGRITY;
- 	if (sb->s_user_ns != &init_user_ns)
- 		sb->s_iflags |= SB_I_UNTRUSTED_MOUNTER;
- 	sb->s_flags &= ~(SB_NOSEC | SB_I_VERSION);
---- a/include/linux/fs/super_types.h
-+++ b/include/linux/fs/super_types.h
-@@ -332,5 +332,6 @@ struct super_block {
- #define SB_I_NOUMASK	0x00001000	/* VFS does not apply umask */
- #define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on this superblock */
- #define SB_I_ALLOW_HSM	0x00004000	/* Allow HSM events on this superblock */
-+#define SB_I_NO_DATA_INTEGRITY	0x00008000 /* fs cannot guarantee data persistence on sync */
- 
- #endif /* _LINUX_FS_SUPER_TYPES_H */
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -210,7 +210,6 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
--	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -346,16 +345,6 @@ static inline bool mapping_writeback_may
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index ecd1dddcbe0ff..cbc36f0ba4bf9 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -1209,6 +1209,12 @@ static ssize_t pmbus_show_boolean(struct device *dev,
+ 	return sysfs_emit(buf, "%d\n", val);
  }
  
--static inline void mapping_set_no_data_integrity(struct address_space *mapping)
--{
--	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
--}
--
--static inline bool mapping_no_data_integrity(const struct address_space *mapping)
--{
--	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
--}
--
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
++static ssize_t pmbus_show_zero(struct device *dev,
++			       struct device_attribute *devattr, char *buf)
++{
++	return sysfs_emit(buf, "0\n");
++}
++
+ static ssize_t pmbus_show_sensor(struct device *dev,
+ 				 struct device_attribute *devattr, char *buf)
  {
- 	return mapping->gfp_mask;
+@@ -1407,7 +1413,7 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
+ 					     int reg,
+ 					     enum pmbus_sensor_classes class,
+ 					     bool update, bool readonly,
+-					     bool convert)
++					     bool writeonly, bool convert)
+ {
+ 	struct pmbus_sensor *sensor;
+ 	struct device_attribute *a;
+@@ -1436,7 +1442,8 @@ static struct pmbus_sensor *pmbus_add_sensor(struct pmbus_data *data,
+ 	sensor->data = -ENODATA;
+ 	pmbus_dev_attr_init(a, sensor->name,
+ 			    readonly ? 0444 : 0644,
+-			    pmbus_show_sensor, pmbus_set_sensor);
++			    writeonly ? pmbus_show_zero : pmbus_show_sensor,
++			    pmbus_set_sensor);
+ 
+ 	if (pmbus_add_attribute(data, &a->attr))
+ 		return NULL;
+@@ -1496,6 +1503,7 @@ struct pmbus_limit_attr {
+ 	u16 reg;		/* Limit register */
+ 	u16 sbit;		/* Alarm attribute status bit */
+ 	bool readonly:1;	/* True if the attribute is read-only */
++	bool writeonly:1;	/* True if the attribute is write-only */
+ 	bool update:1;		/* True if register needs updates */
+ 	bool low:1;		/* True if low limit; for limits with compare functions only */
+ 	const char *attr;	/* Attribute name */
+@@ -1545,7 +1553,7 @@ static int pmbus_add_limit_attrs(struct i2c_client *client,
+ 			curr = pmbus_add_sensor(data, name, l->attr, index,
+ 						page, 0xff, l->reg, attr->class,
+ 						attr->update || l->update,
+-						l->readonly, true);
++						l->readonly, l->writeonly, true);
+ 			if (!curr)
+ 				return -ENOMEM;
+ 			if (l->sbit && (info->func[page] & attr->sfunc)) {
+@@ -1585,7 +1593,7 @@ static int pmbus_add_sensor_attrs_one(struct i2c_client *client,
+ 			return ret;
+ 	}
+ 	base = pmbus_add_sensor(data, name, "input", index, page, phase,
+-				attr->reg, attr->class, true, true, true);
++				attr->reg, attr->class, true, true, false, true);
+ 	if (!base)
+ 		return -ENOMEM;
+ 	/* No limit and alarm attributes for phase specific sensors */
+@@ -1722,6 +1730,7 @@ static const struct pmbus_limit_attr vin_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_VIN_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_VIN_MIN,
+@@ -1796,6 +1805,7 @@ static const struct pmbus_limit_attr vout_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_VOUT_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_VOUT_MIN,
+@@ -1877,6 +1887,7 @@ static const struct pmbus_limit_attr iin_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_IIN_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_IIN_MAX,
+@@ -1918,6 +1929,7 @@ static const struct pmbus_limit_attr iout_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_IOUT_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_IOUT_MAX,
+@@ -1976,6 +1988,7 @@ static const struct pmbus_limit_attr pin_limit_attrs[] = {
+ 		.attr = "input_highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_PIN_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_PIN_MAX,
+@@ -2017,6 +2030,7 @@ static const struct pmbus_limit_attr pout_limit_attrs[] = {
+ 		.attr = "input_highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_POUT_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_POUT_MAX,
+@@ -2088,6 +2102,7 @@ static const struct pmbus_limit_attr temp_limit_attrs[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_TEMP_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_MAX_TEMP_1,
+@@ -2133,6 +2148,7 @@ static const struct pmbus_limit_attr temp_limit_attrs2[] = {
+ 		.attr = "highest",
+ 	}, {
+ 		.reg = PMBUS_VIRT_RESET_TEMP2_HISTORY,
++		.writeonly = true,
+ 		.attr = "reset_history",
+ 	}, {
+ 		.reg = PMBUS_MFR_MAX_TEMP_2,
+@@ -2250,7 +2266,7 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
+ 
+ 	sensor = pmbus_add_sensor(data, "fan", "target", index, page,
+ 				  0xff, PMBUS_VIRT_FAN_TARGET_1 + id, PSC_FAN,
+-				  false, false, true);
++				  false, false, false, true);
+ 
+ 	if (!sensor)
+ 		return -ENOMEM;
+@@ -2261,14 +2277,14 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
+ 
+ 	sensor = pmbus_add_sensor(data, "pwm", NULL, index, page,
+ 				  0xff, PMBUS_VIRT_PWM_1 + id, PSC_PWM,
+-				  false, false, true);
++				  false, false, false, true);
+ 
+ 	if (!sensor)
+ 		return -ENOMEM;
+ 
+ 	sensor = pmbus_add_sensor(data, "pwm", "enable", index, page,
+ 				  0xff, PMBUS_VIRT_PWM_ENABLE_1 + id, PSC_PWM,
+-				  true, false, false);
++				  true, false, false, false);
+ 
+ 	if (!sensor)
+ 		return -ENOMEM;
+@@ -2310,7 +2326,7 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
+ 
+ 			if (pmbus_add_sensor(data, "fan", "input", index,
+ 					     page, 0xff, pmbus_fan_registers[f],
+-					     PSC_FAN, true, true, true) == NULL)
++					     PSC_FAN, true, true, false, true) == NULL)
+ 				return -ENOMEM;
+ 
+ 			/* Fan control */
+-- 
+2.53.0
+
 
 
 
