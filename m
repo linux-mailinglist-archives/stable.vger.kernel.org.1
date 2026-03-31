@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-232016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPZ4NigBzGk8NQYAu9opvQ
-	(envelope-from <stable+bounces-232016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:20 +0200
+	id 4KEkHfX/y2koNQYAu9opvQ
+	(envelope-from <stable+bounces-232282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C6936E51A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:15:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35EAA36E0E6
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 22B0830DF04B
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:47:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5286D3070C6B
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36036423A7C;
-	Tue, 31 Mar 2026 16:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031AD423A9B;
+	Tue, 31 Mar 2026 16:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9idzswb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8PRTHJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2D941B342;
-	Tue, 31 Mar 2026 16:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAF4423A7C;
+	Tue, 31 Mar 2026 16:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975658; cv=none; b=STEcSQwLn1PRcPA6tFm8P2Og6kXz+Uk8qOpVVqUwLtsBFRSx6+UTb6+mxw0l94eybAgRSk+MUhr3AMZwNzRienbI4ogv4wadXeFle46ArL5bbAxkOGzdYnq20nlNxiF7hezWLZLUn4QSgtxI4UBPOah6fs/OhPJa0p6Boh8v60g=
+	t=1774976346; cv=none; b=uc4y1NiFSXf53lYIY2zCUVY+5Pih2l5siA+E3MjF8Vc0JuJ+2mXY/8ckJIHnAizwqedBepK9pr1CQPh4YNfCcs/FWYaV6jpKKG8A2hEHF+yFohEKuMTuxvq+spgS0lBblMYsBvmKL7LlZh6SmCSbr/3ZRYoO6umo2Go0uF20qKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975658; c=relaxed/simple;
-	bh=eWpRkUPDZar5RWyYkfaOmFKlAaOfO6lG8h9McIVyQJw=;
+	s=arc-20240116; t=1774976346; c=relaxed/simple;
+	bh=uRkNYARlzxVApljUUlKCIAPlzuySL3gRUe5SSW5e2aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kj8vli3IunfWvTY80fbcoBVwgjO/cB/6BbF4jj28paoTgyttjeQawLwl60WQD+g/QM56of0eT28FXwcIa3hf/2tggMpF+xZHtwe42AwbcbEBvh0oKdFc5az7Wly3AQMvki995AacIcwrZDUuxqy7Emux+NwdCIFrCMHJ6DWLrVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9idzswb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80644C2BCB1;
-	Tue, 31 Mar 2026 16:47:37 +0000 (UTC)
+	 MIME-Version; b=OrhE3Bsto1IdRkHyGj5t5NYPOXhViVWJXsG4WVPit8D8PobH0XjUcANrB2rMCOENO/WUOA29obP9Tgo3uUYcjtDyWOhhuoBitRRL+XzE8+TSpXi4itfG48e6Z9CMw4ExSWxo6Dzi9oPusqEt4Nz5BCVRqPTKyUJHLvH+OtwkQZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8PRTHJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5256CC19423;
+	Tue, 31 Mar 2026 16:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975657;
-	bh=eWpRkUPDZar5RWyYkfaOmFKlAaOfO6lG8h9McIVyQJw=;
+	s=korg; t=1774976346;
+	bh=uRkNYARlzxVApljUUlKCIAPlzuySL3gRUe5SSW5e2aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9idzswbZnFEWlfW+CoGtLjX+GbKPDSOn0lW/kADyPdnvRdNcxFyFdZJ57OwPz2DX
-	 ppxyhIta99DsIIldiaepbAmWhRNK9/p6FuHcNTkOwGwbu5B7Z+Srh1i8+yxJR9M9F8
-	 9wUbFoFjZ5nty9VtOl7EUMjluFnPJepJqIbZ+K0g=
+	b=U8PRTHJy4vH6gmZedW0m/6MjZZXX3+lVgPr2ITufJROnNUwoQQXAv66OtUFgUM2QS
+	 OqDvxtO80XBnBTv6l/AfVCZEWGp/patQd7eg/hCX4kBFMTuGToQfleu0iewgDUjGhV
+	 vCfs4W8C92xJCuZh8r+afRkjLRZAjC5G2/YSqaoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/244] driver core: platform: use generic driver_override infrastructure
-Date: Tue, 31 Mar 2026 18:19:18 +0200
-Message-ID: <20260331161742.011773850@linuxfoundation.org>
+Subject: [PATCH 6.18 056/309] btrfs: set BTRFS_ROOT_ORPHAN_CLEANUP during subvol create
+Date: Tue, 31 Mar 2026 18:19:19 +0200
+Message-ID: <20260331161755.548911017@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-References: <20260331161741.651718120@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,232 +67,227 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232016-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232282-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 27C6936E51A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 35EAA36E0E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 2b38efc05bf7a8568ec74bfffea0f5cfa62bc01d ]
+[ Upstream commit 5131fa077f9bb386a1b901bf5b247041f0ec8f80 ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+We have recently observed a number of subvolumes with broken dentries.
+ls-ing the parent dir looks like:
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+drwxrwxrwt 1 root root 16 Jan 23 16:49 .
+drwxr-xr-x 1 root root 24 Jan 23 16:48 ..
+d????????? ? ?    ?     ?            ? broken_subvol
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
+and similarly stat-ing the file fails.
 
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 3d713e0e382e ("driver core: platform: add device binding path 'driver_override'")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260303115720.48783-5-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+In this state, deleting the subvol fails with ENOENT, but attempting to
+create a new file or subvol over it errors out with EEXIST and even
+aborts the fs. Which leaves us a bit stuck.
+
+dmesg contains a single notable error message reading:
+"could not do orphan cleanup -2"
+
+2 is ENOENT and the error comes from the failure handling path of
+btrfs_orphan_cleanup(), with the stack leading back up to
+btrfs_lookup().
+
+btrfs_lookup
+btrfs_lookup_dentry
+btrfs_orphan_cleanup // prints that message and returns -ENOENT
+
+After some detailed inspection of the internal state, it became clear
+that:
+- there are no orphan items for the subvol
+- the subvol is otherwise healthy looking, it is not half-deleted or
+  anything, there is no drop progress, etc.
+- the subvol was created a while ago and does the meaningful first
+  btrfs_orphan_cleanup() call that sets BTRFS_ROOT_ORPHAN_CLEANUP much
+  later.
+- after btrfs_orphan_cleanup() fails, btrfs_lookup_dentry() returns -ENOENT,
+  which results in a negative dentry for the subvolume via
+  d_splice_alias(NULL, dentry), leading to the observed behavior. The
+  bug can be mitigated by dropping the dentry cache, at which point we
+  can successfully delete the subvolume if we want.
+
+i.e.,
+btrfs_lookup()
+  btrfs_lookup_dentry()
+    if (!sb_rdonly(inode->vfs_inode)->vfs_inode)
+    btrfs_orphan_cleanup(sub_root)
+      test_and_set_bit(BTRFS_ROOT_ORPHAN_CLEANUP)
+      btrfs_search_slot() // finds orphan item for inode N
+      ...
+      prints "could not do orphan cleanup -2"
+  if (inode == ERR_PTR(-ENOENT))
+    inode = NULL;
+  return d_splice_alias(NULL, dentry) // NEGATIVE DENTRY for valid subvolume
+
+btrfs_orphan_cleanup() does test_and_set_bit(BTRFS_ROOT_ORPHAN_CLEANUP)
+on the root when it runs, so it cannot run more than once on a given
+root, so something else must run concurrently. However, the obvious
+routes to deleting an orphan when nlinks goes to 0 should not be able to
+run without first doing a lookup into the subvolume, which should run
+btrfs_orphan_cleanup() and set the bit.
+
+The final important observation is that create_subvol() calls
+d_instantiate_new() but does not set BTRFS_ROOT_ORPHAN_CLEANUP, so if
+the dentry cache gets dropped, the next lookup into the subvolume will
+make a real call into btrfs_orphan_cleanup() for the first time. This
+opens up the possibility of concurrently deleting the inode/orphan items
+but most typical evict() paths will be holding a reference on the parent
+dentry (child dentry holds parent->d_lockref.count via dget in
+d_alloc(), released in __dentry_kill()) and prevent the parent from
+being removed from the dentry cache.
+
+The one exception is delayed iputs. Ordered extent creation calls
+igrab() on the inode. If the file is unlinked and closed while those
+refs are held, iput() in __dentry_kill() decrements i_count but does
+not trigger eviction (i_count > 0). The child dentry is freed and the
+subvol dentry's d_lockref.count drops to 0, making it evictable while
+the inode is still alive.
+
+Since there are two races (the race between writeback and unlink and
+the race between lookup and delayed iputs), and there are too many moving
+parts, the following three diagrams show the complete picture.
+(Only the second and third are races)
+
+Phase 1:
+Create Subvol in dentry cache without BTRFS_ROOT_ORPHAN_CLEANUP set
+
+btrfs_mksubvol()
+  lookup_one_len()
+    __lookup_slow()
+      d_alloc_parallel()
+        __d_alloc() // d_lockref.count = 1
+  create_subvol(dentry)
+    // doesn't touch the bit..
+    d_instantiate_new(dentry, inode) // dentry in cache with d_lockref.count == 1
+
+Phase 2:
+Create a delayed iput for a file in the subvol but leave the subvol in
+state where its dentry can be evicted (d_lockref.count == 0)
+
+T1 (task)                    T2 (writeback)                   T3 (OE workqueue)
+
+write() // dirty pages
+                              btrfs_writepages()
+                                btrfs_run_delalloc_range()
+                                  cow_file_range()
+                                    btrfs_alloc_ordered_extent()
+                                      igrab() // i_count: 1 -> 2
+btrfs_unlink_inode()
+  btrfs_orphan_add()
+close()
+  __fput()
+    dput()
+      finish_dput()
+        __dentry_kill()
+          dentry_unlink_inode()
+            iput() // 2 -> 1
+          --parent->d_lockref.count // 1 -> 0; evictable
+                                                                finish_ordered_fn()
+                                                                  btrfs_finish_ordered_io()
+                                                                    btrfs_put_ordered_extent()
+                                                                      btrfs_add_delayed_iput()
+
+Phase 3:
+Once the delayed iput is pending and the subvol dentry is evictable,
+the shrinker can free it, causing the next lookup to go through
+btrfs_lookup() and call btrfs_orphan_cleanup() for the first time.
+If the cleaner kthread processes the delayed iput concurrently, the
+two race:
+
+  T1 (shrinker)              T2 (cleaner kthread)                          T3 (lookup)
+
+  super_cache_scan()
+    prune_dcache_sb()
+      __dentry_kill()
+      // subvol dentry freed
+                              btrfs_run_delayed_iputs()
+                                iput()  // i_count -> 0
+                                  evict()  // sets I_FREEING
+                                    btrfs_evict_inode()
+                                      // truncation loop
+                                                                            btrfs_lookup()
+                                                                              btrfs_lookup_dentry()
+                                                                                btrfs_orphan_cleanup()
+                                                                                  // first call (bit never set)
+                                                                                  btrfs_iget()
+                                                                                    // blocks on I_FREEING
+
+                                      btrfs_orphan_del()
+                                      // inode freed
+                                                                                    // returns -ENOENT
+                                                                                  btrfs_del_orphan_item()
+                                                                                    // -ENOENT
+                                                                                // "could not do orphan cleanup -2"
+                                                                            d_splice_alias(NULL, dentry)
+                                                                            // negative dentry for valid subvol
+
+The most straightforward fix is to ensure the invariant that a dentry
+for a subvolume can exist if and only if that subvolume has
+BTRFS_ROOT_ORPHAN_CLEANUP set on its root (and is known to have no
+orphans or ran btrfs_orphan_cleanup()).
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/platform.c         | 37 +++++----------------------------
- drivers/bus/simple-pm-bus.c     |  4 ++--
- drivers/clk/imx/clk-scu.c       |  3 +--
- drivers/slimbus/qcom-ngd-ctrl.c |  6 ++----
- include/linux/platform_device.h |  5 -----
- sound/soc/samsung/i2s.c         |  6 +++---
- 6 files changed, 13 insertions(+), 48 deletions(-)
+ fs/btrfs/ioctl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 6f2a33722c520..24440eec1d4a2 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -562,7 +562,6 @@ static void platform_device_release(struct device *dev)
- 	kfree(pa->pdev.dev.platform_data);
- 	kfree(pa->pdev.mfd_cell);
- 	kfree(pa->pdev.resource);
--	kfree(pa->pdev.driver_override);
- 	kfree(pa);
- }
- 
-@@ -1265,38 +1264,9 @@ static ssize_t numa_node_show(struct device *dev,
- }
- static DEVICE_ATTR_RO(numa_node);
- 
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
--	device_unlock(dev);
--
--	return len;
--}
--
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *platform_dev_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	&dev_attr_numa_node.attr,
--	&dev_attr_driver_override.attr,
- 	NULL,
- };
- 
-@@ -1336,10 +1306,12 @@ static int platform_match(struct device *dev, const struct device_driver *drv)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct platform_driver *pdrv = to_platform_driver(drv);
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (pdev->driver_override)
--		return !strcmp(pdev->driver_override, drv->name);
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret >= 0)
-+		return ret;
- 
- 	/* Attempt an OF style match first */
- 	if (of_driver_match_device(dev, drv))
-@@ -1477,6 +1449,7 @@ static const struct dev_pm_ops platform_dev_pm_ops = {
- const struct bus_type platform_bus_type = {
- 	.name		= "platform",
- 	.dev_groups	= platform_dev_groups,
-+	.driver_override = true,
- 	.match		= platform_match,
- 	.uevent		= platform_uevent,
- 	.probe		= platform_probe,
-diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
-index 50870c8278899..11fb711edd999 100644
---- a/drivers/bus/simple-pm-bus.c
-+++ b/drivers/bus/simple-pm-bus.c
-@@ -36,7 +36,7 @@ static int simple_pm_bus_probe(struct platform_device *pdev)
- 	 * that's not listed in simple_pm_bus_of_match. We don't want to do any
- 	 * of the simple-pm-bus tasks for these devices, so return early.
- 	 */
--	if (pdev->driver_override)
-+	if (device_has_driver_override(&pdev->dev))
- 		return 0;
- 
- 	match = of_match_device(dev->driver->of_match_table, dev);
-@@ -78,7 +78,7 @@ static void simple_pm_bus_remove(struct platform_device *pdev)
- {
- 	const void *data = of_device_get_match_data(&pdev->dev);
- 
--	if (pdev->driver_override || data)
-+	if (device_has_driver_override(&pdev->dev) || data)
- 		return;
- 
- 	dev_dbg(&pdev->dev, "%s\n", __func__);
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index b27186aaf2a15..75a6d91c0711c 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -715,8 +715,7 @@ struct clk_hw *imx_clk_scu_alloc_dev(const char *name,
- 	if (ret)
- 		goto put_device;
- 
--	ret = driver_set_override(&pdev->dev, &pdev->driver_override,
--				  "imx-scu-clk", strlen("imx-scu-clk"));
-+	ret = device_set_driver_override(&pdev->dev, "imx-scu-clk");
- 	if (ret)
- 		goto put_device;
- 
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index f8d033a289810..ecc74a8903859 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1539,10 +1539,8 @@ static int of_qcom_slim_ngd_register(struct device *parent,
- 		ngd->id = id;
- 		ngd->pdev->dev.parent = parent;
- 
--		ret = driver_set_override(&ngd->pdev->dev,
--					  &ngd->pdev->driver_override,
--					  QCOM_SLIM_NGD_DRV_NAME,
--					  strlen(QCOM_SLIM_NGD_DRV_NAME));
-+		ret = device_set_driver_override(&ngd->pdev->dev,
-+						 QCOM_SLIM_NGD_DRV_NAME);
- 		if (ret) {
- 			platform_device_put(ngd->pdev);
- 			kfree(ngd);
-diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-index 7132623e46585..40f9d2e725bff 100644
---- a/include/linux/platform_device.h
-+++ b/include/linux/platform_device.h
-@@ -31,11 +31,6 @@ struct platform_device {
- 	struct resource	*resource;
- 
- 	const struct platform_device_id	*id_entry;
--	/*
--	 * Driver name to force a match.  Do not set directly, because core
--	 * frees it.  Use driver_set_override() to set or clear it.
--	 */
--	const char *driver_override;
- 
- 	/* MFD cell pointer */
- 	struct mfd_cell *mfd_cell;
-diff --git a/sound/soc/samsung/i2s.c b/sound/soc/samsung/i2s.c
-index 8f6deb06e2346..8ad99f1ef6554 100644
---- a/sound/soc/samsung/i2s.c
-+++ b/sound/soc/samsung/i2s.c
-@@ -1362,10 +1362,10 @@ static int i2s_create_secondary_device(struct samsung_i2s_priv *priv)
- 	if (!pdev_sec)
- 		return -ENOMEM;
- 
--	pdev_sec->driver_override = kstrdup("samsung-i2s", GFP_KERNEL);
--	if (!pdev_sec->driver_override) {
-+	ret = device_set_driver_override(&pdev_sec->dev, "samsung-i2s");
-+	if (ret) {
- 		platform_device_put(pdev_sec);
--		return -ENOMEM;
-+		return ret;
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 5f0bac5cea7e4..c7977bd5442b3 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -674,6 +674,13 @@ static noinline int create_subvol(struct mnt_idmap *idmap,
+ 		goto out;
  	}
  
- 	ret = platform_device_add(pdev_sec);
++	/*
++	 * Subvolumes have orphans cleaned on first dentry lookup. A new
++	 * subvolume cannot have any orphans, so we should set the bit before we
++	 * add the subvolume dentry to the dentry cache, so that it is in the
++	 * same state as a subvolume after first lookup.
++	 */
++	set_bit(BTRFS_ROOT_ORPHAN_CLEANUP, &new_root->state);
+ 	d_instantiate_new(dentry, new_inode_args.inode);
+ 	new_inode_args.inode = NULL;
+ 
 -- 
 2.51.0
 
