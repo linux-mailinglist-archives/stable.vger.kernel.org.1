@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-231934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PNOJBP7y2mcNAYAu9opvQ
-	(envelope-from <stable+bounces-231934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:23 +0200
+	id 0FF6Nt4AzGkoNQYAu9opvQ
+	(envelope-from <stable+bounces-232453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088AC36D30D
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 18:49:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAAE136E408
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 19:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DAF8D305A2C2
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 16:44:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7B48630087E2
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 17:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E133E559E;
-	Tue, 31 Mar 2026 16:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1014E2E1C7C;
+	Tue, 31 Mar 2026 17:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR2kEC1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zncMszMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02EA3A4F34;
-	Tue, 31 Mar 2026 16:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FE32FDC5E;
+	Tue, 31 Mar 2026 17:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975445; cv=none; b=CsaztSrwMgoRsYqOkoK2qqX4P3Q3v3l4RfqF198ymVh6HH6WkMgftfm3pbrVwDTreS57B0r1UsIKfpMrFNSy4Iyo9Cn5xse6YYW/Smlwq9qflfnu4byONbjXvqxUTt6cJd6laFMyWfOpwtE+D0mASWgds+7Wc7WvXaux0rsy1EI=
+	t=1774976786; cv=none; b=tsubA6yvBduDHkbCauohe/bDyoF/2yMnA0mN3bFWjMNeqTt7QzXLhxo4HfCmGtuWljAkkB0eo9DqInM8uQWp4BSGeFzeTF/vJhp8I09i9v7EO6BA0VSq3zYPCsAm0l3v4r9V62FOyfLqwS5SHbWnwsdaLmTlmZR3L2SRvitx5o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975445; c=relaxed/simple;
-	bh=SjbFtgqwV7Iz0v/snQmYDjPKq9vyzbbTahdcS7v3OSI=;
+	s=arc-20240116; t=1774976786; c=relaxed/simple;
+	bh=hDQXUPIrOlxifmm+H1G4SIJqOPFlUE1V9zezLy71GTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wd/7sUpktoz+dFux67LOQiGg3tf3c69ZWaVle+XEutZgaWQkVUhg0gNWpKYlKtB+K1pMLOGFJ8aqEHnc+jjt6jd3HoQm2XE97l7UYIkIE9OUEKgYD2WzUPZ2QM4tB4g3gRGKVy8BWXBEmTt53QGy6czXtq8oWwwzGwP2lNQfy7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QR2kEC1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46216C19423;
-	Tue, 31 Mar 2026 16:44:04 +0000 (UTC)
+	 MIME-Version; b=kPoER0/1r4v+cUe1X5tw/ytZw+FsT6J6QRIcefw1tSlH+2ryeAMyDf9FvhnE5fbLmSGfRzmB5voyMf2BZUttow/1YldYyGO7OSkv7obNYD5d3oh4MNyCtHbBuCzecvICWL+svsVm+YavoLoV5hSpJ+xhs4kPnkpnOqy1qLuC2cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zncMszMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8D0C19423;
+	Tue, 31 Mar 2026 17:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774975444;
-	bh=SjbFtgqwV7Iz0v/snQmYDjPKq9vyzbbTahdcS7v3OSI=;
+	s=korg; t=1774976786;
+	bh=hDQXUPIrOlxifmm+H1G4SIJqOPFlUE1V9zezLy71GTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QR2kEC1qfWrOwVKeUjEIWAXTQi2b6Q0bCfsANMNRAVEA/MEQYSN2Sw+pbjstrkCCU
-	 XyrAsvFZH3co03TUnfG5GrHXYteOZ+5FI6UM2r6BPXzglbywrvE90J+WE4c6HPDw5K
-	 DJE+zLLSIgh4KLtzN1EEqDL+qPo027t450h0Z3Sg=
+	b=zncMszMMDsbSh36T7I27PK9EpVnjvg+lrp6+F/KhQOie7VTHgHfnR4d2GkM04v1qy
+	 F+acjqqDLIkldBlU0oC/fPVA+PVPAh37bSvtfy8eP1mwTjo1k3tnEVx8X40Mfo+6XP
+	 YCqucXAmDwDdCefySmB94I2wrvM+hTmN1+arO1i8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuto Ohnuki <ytohnuki@amazon.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.19 296/342] ext4: replace BUG_ON with proper error handling in ext4_read_inline_folio
-Date: Tue, 31 Mar 2026 18:22:09 +0200
-Message-ID: <20260331161809.826802420@linuxfoundation.org>
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 6.18 227/309] futex: Clear stale exiting pointer in futex_lock_pi() retry path
+Date: Tue, 31 Mar 2026 18:22:10 +0200
+Message-ID: <20260331161801.802407247@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+References: <20260331161753.468533260@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,67 +77,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-231934-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232453-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 088AC36D30D
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,stgolabs.net:email]
+X-Rspamd-Queue-Id: AAAE136E408
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuto Ohnuki <ytohnuki@amazon.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-commit 356227096eb66e41b23caf7045e6304877322edf upstream.
+commit 210d36d892de5195e6766c45519dfb1e65f3eb83 upstream.
 
-Replace BUG_ON() with proper error handling when inline data size
-exceeds PAGE_SIZE. This prevents kernel panic and allows the system to
-continue running while properly reporting the filesystem corruption.
+Fuzzying/stressing futexes triggered:
 
-The error is logged via ext4_error_inode(), the buffer head is released
-to prevent memory leak, and -EFSCORRUPTED is returned to indicate
-filesystem corruption.
+    WARNING: kernel/futex/core.c:825 at wait_for_owner_exiting+0x7a/0x80, CPU#11: futex_lock_pi_s/524
 
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-Link: https://patch.msgid.link/20260223123345.14838-2-ytohnuki@amazon.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+When futex_lock_pi_atomic() sees the owner is exiting, it returns -EBUSY
+and stores a refcounted task pointer in 'exiting'.
+
+After wait_for_owner_exiting() consumes that reference, the local pointer
+is never reset to nil. Upon a retry, if futex_lock_pi_atomic() returns a
+different error, the bogus pointer is passed to wait_for_owner_exiting().
+
+  CPU0			     CPU1		       CPU2
+  futex_lock_pi(uaddr)
+  // acquires the PI futex
+  exit()
+    futex_cleanup_begin()
+      futex_state = EXITING;
+			     futex_lock_pi(uaddr)
+			       futex_lock_pi_atomic()
+				 attach_to_pi_owner()
+				   // observes EXITING
+				   *exiting = owner;  // takes ref
+				   return -EBUSY
+			       wait_for_owner_exiting(-EBUSY, owner)
+				 put_task_struct();   // drops ref
+			       // exiting still points to owner
+			       goto retry;
+			       futex_lock_pi_atomic()
+				 lock_pi_update_atomic()
+				   cmpxchg(uaddr)
+					*uaddr ^= WAITERS // whatever
+				   // value changed
+				 return -EAGAIN;
+			       wait_for_owner_exiting(-EAGAIN, exiting) // stale
+				 WARN_ON_ONCE(exiting)
+
+Fix this by resetting upon retry, essentially aligning it with requeue_pi.
+
+Fixes: 3ef240eaff36 ("futex: Prevent exit livelock")
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260326001759.4129680-1-dave@stgolabs.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inline.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ kernel/futex/pi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -522,7 +522,15 @@ static int ext4_read_inline_folio(struct
- 		goto out;
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -918,7 +918,7 @@ int fixup_pi_owner(u32 __user *uaddr, st
+ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int trylock)
+ {
+ 	struct hrtimer_sleeper timeout, *to;
+-	struct task_struct *exiting = NULL;
++	struct task_struct *exiting;
+ 	struct rt_mutex_waiter rt_waiter;
+ 	struct futex_q q = futex_q_init;
+ 	DEFINE_WAKE_Q(wake_q);
+@@ -933,6 +933,7 @@ int futex_lock_pi(u32 __user *uaddr, uns
+ 	to = futex_setup_timer(time, &timeout, flags, 0);
  
- 	len = min_t(size_t, ext4_get_inline_size(inode), i_size_read(inode));
--	BUG_ON(len > PAGE_SIZE);
-+
-+	if (len > PAGE_SIZE) {
-+		ext4_error_inode(inode, __func__, __LINE__, 0,
-+				 "inline size %zu exceeds PAGE_SIZE", len);
-+		ret = -EFSCORRUPTED;
-+		brelse(iloc.bh);
-+		goto out;
-+	}
-+
- 	kaddr = kmap_local_folio(folio, 0);
- 	ret = ext4_read_inline_data(inode, kaddr, len, &iloc);
- 	kaddr = folio_zero_tail(folio, len, kaddr + len);
+ retry:
++	exiting = NULL;
+ 	ret = get_futex_key(uaddr, flags, &q.key, FUTEX_WRITE);
+ 	if (unlikely(ret != 0))
+ 		goto out;
 
 
 
