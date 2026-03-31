@@ -1,173 +1,195 @@
-Return-Path: <stable+bounces-231395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-231396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGdbJKuqy2kpKAYAu9opvQ
-	(envelope-from <stable+bounces-231395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:06:19 +0200
+	id II+MFDiqy2kpKAYAu9opvQ
+	(envelope-from <stable+bounces-231396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:04:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0863836880A
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:06:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1033687B0
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 13:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6F143016267
-	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:03:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 42D7C300CA0E
+	for <lists+stable@lfdr.de>; Tue, 31 Mar 2026 11:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE9D3A7F54;
-	Tue, 31 Mar 2026 11:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5BD3B19AE;
+	Tue, 31 Mar 2026 11:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KigaQzFR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VyGtxGJE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830703A6B6F;
-	Tue, 31 Mar 2026 11:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774955017; cv=none; b=qbkmG1l2TrhDNG9bQudYpVxQ2aI9D4lg34plrArkOe5dSEAZ/ZiTO3kwOTYJCzSdeEbqM23h995mhLeY5WS/ah1m30zNhtDaSWkC5JjpZDjmz8U9QV3VnFwSmb/DuhAqA0H1Im7aOtyUQQuSzIM3ukMbCOiEmmj8QLT5oitgKmc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774955017; c=relaxed/simple;
-	bh=ki8n3fWjJ0uDLFj/cJjwAfUHSi8/QbPmwfna1VWmJpM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u2qwJBG1DxPli0RdS/TfnN2Lgft9Dbm52fYscugbI4neysm9hWDTcrCfuqxlc6wc0Z5Aio4mTRhCnlYjKyvtBxWCJqCDiAqLErXXPUYrw7VYKBj5ZOpka28UzVwj0M1wK1swBqGSQuOesP07aFIY7PVjtTc4b4tifKYIDZzpHFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KigaQzFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7123FC19423;
-	Tue, 31 Mar 2026 11:03:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774955017;
-	bh=ki8n3fWjJ0uDLFj/cJjwAfUHSi8/QbPmwfna1VWmJpM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KigaQzFRq2BwuyGeaF4v7+e+qDvQNCTfHCJOLYHznpfQXn8fDrFu+rMX4zjSX6ur8
-	 INwAPokWjXvuUaS44mCmKq6efIjjqm2ZMjC63Le1YoKE0ZUQZcp9Zea/DyeL+MB29y
-	 Nwn9PxeHLMdIOKO5YCCJLY1E0G0YiD/epwQ3mTLw=
-Date: Tue, 31 Mar 2026 13:03:34 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: Timur =?iso-8859-1?Q?Krist=F3f?= <timur.kristof@gmail.com>,
-	stable@vger.kernel.org,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Pan, Xinhui" <Xinhui.Pan@amd.com>, David Airlie <airlied@linux.ie>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>, Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Mario Limonciello <Mario.Limonciello@amd.com>,
-	Ray Wu <ray.wu@amd.com>, Wayne Lin <wayne.lin@amd.com>,
-	Roman Li <Roman.Li@amd.com>, Eric Yang <Eric.Yang2@amd.com>,
-	Tony Cheng <Tony.Cheng@amd.com>,
-	Mauro Rossi <issor.oruam@gmail.com>,
-	"open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH for 6.12 3/9] drm/amd/display: Disable fastboot on DCE 6
- too
-Message-ID: <2026033157-trifocals-swerve-d18f@gregkh>
-References: <20260326234716.16723-1-rosenp@gmail.com>
- <2312151.9o76ZdvQCi@timur-hyperion>
- <6b15401c-1fdf-4d3b-84aa-dfc47f430895@amd.com>
- <7351746.9J7NaK4W3v@timur-hyperion>
- <CAKxU2N-CRua=kMVm8gdf2AnbCFyLsLTbf=-9NZHAkhL3sJC-tw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1D73AA4E8
+	for <stable@vger.kernel.org>; Tue, 31 Mar 2026 11:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774955059; cv=pass; b=aM8RqHyTdrlsHgc3oB46pwJ2RGJGUUp2b4VqpkeIGDrLV5sOOjmqXsjS8qqaQU5rip0vfoe1jE6jS17CYa88gJqH4eS7s0ILKP0RWWQZcrRgnKd/LEZRaK/n1HeNH0kP0Q5GtbFohXi6wvdppwEURovMZlvkEIVWbexuc6ckUQQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774955059; c=relaxed/simple;
+	bh=+q0hBdBFS9L+ZjH5fY/IXXzHbz9h9o01OcmnbZ0EUCw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ENpSDN+VfgdcNQLXfCbLoDl1tX9ZyZwO4+yGA5Utn7o1dYYgD3Iz/Ui22O12UQtNfa7VyyYRzU3lKAvMCC92ukboZipTsBnYiwEaX5dJvj55AcjcUIfeuLvonUqGCxzAYh/H4ZYQJRteYL1Mpjns6s5nr0kxem9RACZyBZzLU5k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VyGtxGJE; arc=pass smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a2967e5de4so7485086e87.3
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 04:04:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774955055; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CaLUZ7n3ae1mkTI3xC8MuAPN4LVpBdGrCKLorX6/65+d0pnevxRpU7pXrCcflOxNb6
+         ndXgw6xwWUqFWVHgyj/Fv3XeII6UF2PpXU96d89a5UeeGvd1dPdKP1i+nl+r5cB0aaC5
+         9HfbYt8lLEq03ERNaOxZ7Iycc3wgaV38WHqhfrJvt2SqBBK9zY/cbvEYern5xH7ZGIXP
+         yuAngfMjPtkSBlQg3Sa2yGq5O4KXXw+Bas/yi9fw+vyY2xASkJE0i3A2yKibckAv70ba
+         sDuYIQ7o/PoiHPHQo9+pyvtuKmIYtdNwix5lXKKkLdoDkzXlESw++21+qB+TXjK8AMeS
+         gHtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=vYyC5Bmz8Oh01Vq9Hljyc6MoUHIUJ6A6aUIDWO1eZxI=;
+        fh=UAxHKwerkAWW8fFff9p5j7oxQyJVyoB2BamASEbfnUY=;
+        b=YHVzvQR29Vir6gW/jqQaY4o9HxkC+GIIP4MXMPkhsCsGR+Oq3Mwd74Va1aiDVk6n8q
+         QPWpizTOjUGXXoGmz2TGP3MQc7bYstZ7u1Go2I33LKPNzFbxk8xCq2asHGklDyxDsHHP
+         9WLxMrImmU4aA0DcH37FXSP2cNtDlHnyd1v3H6z/iFiknBY8hDYy4Tx363pb4Jixog3D
+         m1YU3DnmnXxb/s2zHDZ0wWU9HvmFvOOZXdtz+NcpjaA2A7TZIUYbUTwaqFBNGvrLNbN8
+         J08eGZT1ySy3RdjuP8oYX+wuKD8eAi8K20vhOG44NH/A1g6GvFW9y6/gUwJ/Snox5SOy
+         T4vQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1774955055; x=1775559855; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vYyC5Bmz8Oh01Vq9Hljyc6MoUHIUJ6A6aUIDWO1eZxI=;
+        b=VyGtxGJE62HiYHuY7u5eNhF/MSGRhy2cuMIpz+sSVNMhgf+4W0XIDAIqOxwMLV5jl9
+         ZxKEC9yq6bVp9mBtsvZ1CMbkfFLbuPSU9CwEtitZuAl2dS0E5mdlXmdWH74pX7PGKxEa
+         IFBvith4UoEHepcHbJlja7jkJbnemI/umoWeQnlb7+ma6OaZW65JyPa3uVYX8LGSrG77
+         200rNJvn0hp6KufARQw9XBeKFxGzSI3GqYZ7NNB8OM28Jt1iENge6qG/dRncIE5wgWxt
+         zqOKXzFhclbYZPM0/LMEOdEmx+rObGq6KBSmr30fzOQvTxxVa2H2GRM7/quwVVzp41fX
+         ZJcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774955055; x=1775559855;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vYyC5Bmz8Oh01Vq9Hljyc6MoUHIUJ6A6aUIDWO1eZxI=;
+        b=W+JXpBq2AwW5iOxIeDcEnj+/Qx7wJuiAQ3ZWzBpqmaW6I6261lRTfG/i51pk3B9NTs
+         iUlwDfQoc3S96qwLYA7/BDoXZzqEIHscczqFFY0KqjWp/CJn2Yx39Gyf85mOFviUGOJH
+         7pBRyJFdTZLEEI0jH6MjTqp7PZCwN2mMA4kisjnTNSQYAue2dSuvLWRUjaiq7aU/6HfH
+         v+mK3v5gZNwd5q8dLaSTSsyWgOcUSjQoB9mcdRjWmG1R62Kr+1KEgLfgHE2bvIl7X8X3
+         oVCNu+hvFmRH+H0tJzL8COeFUdYdUW1cpPUVDB29xxYSRHn5HQx8T4l1SVA9Rw8Pbo9G
+         4t8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVLMu0Pd/+uU1VBcV2xZtV6Wtd8Qan4A5Ej9a0hre0DtSfSjtUUPpZzkFp/kIW3nMo7k2kLPXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzepjkL4NGmO4tOHSJHna65pCIjSp9qD/BS9/ZWa809c/ZDGndM
+	bwQe/TT9y6NnAcSuTceR2rz4VDUaNnxfpwHLdWOI642hiW/Mweu2ZnH3yeBfmf0HjnoJOvJo10X
+	96ktQIDILZ+uussdm6OKvPxWbRUS9ih3+EvW8TT3kCw==
+X-Gm-Gg: ATEYQzxeZi6RJK9fca+ZkPef+R8qX/aVUlmXh8oLzjhOVNfiXV6sm6lfhkvfmV0fx9H
+	dEvbS/0m9G53cyV8nB6sC5taVLYOfS1+u+/ob2YjW1/yCm6BqMUYtk+EPmu1116wvfndaBNMIZ/
+	NMaQEmSAPU6ClVSpjk+CdtF185JLyhYHBt8Wdh6157RYitLQQPoIP3x7emCfAhvI5/ohwlNCvuU
+	HCQ7aP0amqzuIOEgKK5KNR7eTBpFvqqKcIynmSoDHciVvEMkx9z4K/DZgtcoCaTM8gfoG+d1+X5
+	6bnuzq83sDDAvKSSSZ8=
+X-Received: by 2002:a05:6512:3d9f:b0:5a1:1d29:e749 with SMTP id
+ 2adb3069b0e04-5a2ab7eba2bmr7270864e87.12.1774955054900; Tue, 31 Mar 2026
+ 04:04:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKxU2N-CRua=kMVm8gdf2AnbCFyLsLTbf=-9NZHAkhL3sJC-tw@mail.gmail.com>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+References: <20260327105208.1310739-1-johan@kernel.org> <20260327105208.1310739-2-johan@kernel.org>
+ <CAPDyKFp1DbRufpro86fXi9xXnJGbWW=NrD3Q0NFQ+aHxhxogLg@mail.gmail.com> <acuiz2y0pIdEwlB4@hovoldconsulting.com>
+In-Reply-To: <acuiz2y0pIdEwlB4@hovoldconsulting.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 31 Mar 2026 13:03:39 +0200
+X-Gm-Features: AQROBzDA3rOKmAK4zrEQAayE6915y47sO72Sc-zBqp7MVFgwop6L7ntgv2j6BvY
+Message-ID: <CAPDyKFpbcn3SJrZP1SE5VPw4nxk7ct=B80=nD9k2gBdEo6EBCw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mmc: vub300: fix NULL-deref on disconnect
+To: Johan Hovold <johan@kernel.org>
+Cc: linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Tony Olech <tony.olech@elandigitalsystems.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-231395-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-231396-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.686];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,amd.com,linux.ie,ffwll.ch,windriver.com,igalia.com,lists.freedesktop.org];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lists.freedesktop.org:url,amd.com:email]
-X-Rspamd-Queue-Id: 0863836880A
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,linaro.org:dkim,elandigitalsystems.com:email]
+X-Rspamd-Queue-Id: DE1033687B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 02:38:35PM -0700, Rosen Penev wrote:
-> On Mon, Mar 30, 2026 at 7:21 AM Timur Kristóf <timur.kristof@gmail.com> wrote:
-> >
-> > On Monday, March 30, 2026 3:55:55 PM Central European Summer Time Christian
-> > König wrote:
-> > > On 3/30/26 15:16, Timur Kristóf wrote:
-> > > > On Friday, March 27, 2026 12:47:10 AM Central European Summer Time Rosen
-> > > > Penev>
-> > > > wrote:
-> > > >> From: Timur Kristóf <timur.kristof@gmail.com>
-> > > >>
-> > > >> [ Upstream commit 7495962cbceb967e095233a5673ea71f3bcdee7e ]
-> > > >>
-> > > >> It already didn't work on DCE 8,
-> > > >> so there is no reason to assume it would on DCE 6.
-> > > >>
-> > > >> Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-> > > >> Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-> > > >> Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-> > > >> Reviewed-by: Alex Hung <alex.hung@amd.com>
-> > > >> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > > >> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > > >
-> > > > This patch is incorrect and should not be backported.
-> > > >
-> > > > (Note that the error is already fixed upstream. For stable kernels IMO
-> > > > it's
-> > > > best to drop this one.)
+On Tue, 31 Mar 2026 at 12:32, Johan Hovold <johan@kernel.org> wrote:
+>
+> On Tue, Mar 31, 2026 at 12:13:41PM +0200, Ulf Hansson wrote:
+> > On Fri, 27 Mar 2026 at 11:52, Johan Hovold <johan@kernel.org> wrote:
 > > >
-> > > Is there some alternative which needs to be backported or should the old
-> > > kernel just work out of the box because we never enabled some feature
-> > > there?
+> > > Make sure to deregister the controller before dropping the reference to
+> > > the driver data on disconnect to avoid NULL-pointer dereferences or
+> > > use-after-free.
 > > >
-> > > Apart from that the patch set looks good to me.
+> > > Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+> > > Cc: stable@vger.kernel.org      # 3.0
+> > > Cc: Tony Olech <tony.olech@elandigitalsystems.com>
+> > > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > > ---
+> > >  drivers/mmc/host/vub300.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
 > > >
+> > > diff --git a/drivers/mmc/host/vub300.c b/drivers/mmc/host/vub300.c
+> > > index ff49d0770506..f173c7cf4e1a 100644
+> > > --- a/drivers/mmc/host/vub300.c
+> > > +++ b/drivers/mmc/host/vub300.c
+> > > @@ -2365,8 +2365,8 @@ static void vub300_disconnect(struct usb_interface *interface)
+> > >                         usb_set_intfdata(interface, NULL);
+> > >                         /* prevent more I/O from starting */
+> > >                         vub300->interface = NULL;
+> > > -                       kref_put(&vub300->kref, vub300_delete);
+> > >                         mmc_remove_host(mmc);
+> > > +                       kref_put(&vub300->kref, vub300_delete);
 > >
-> > This patch had a typo and does the opposite of what it should, ie. it disables
-> > eDP fastboot on DCE10 and newer instead of disabling it on DCE8 and older.
+> > While this seems like a step in the right direction, I don't see why
+> > calling usb_set_intfdata(interface, NULL)
+>
+> The interface data is only used in the USB bus callbacks and is not
+> needed after disconnect().
+>
+> > and assigning
+> > vub300->interface = NULL is safe.
 > >
-> > The upstream fix is here:
-> > https://lists.freedesktop.org/archives/amd-gfx/2026-February/138577.html
-> > which disables eDP fastboot on DCE10 and older.
-> Not sure what the process is here. I make sure everything can be git
-> cherry-pick ed. In that case, both should be present.
+> > For example, some of the workqueues might be running a work that uses
+> > the vub300->interface, isn't that a problem too?
+>
+> The driver uses this pointer to indicate that the device has been
+> disconnected. That doesn't mean that the implementation is correct (e.g.
+> the check in vub300_pollwork_thread() should use some locking) but that
+> would be pre-existing issues.
 
-I agree, I don't understand the problem here.  Just take the commits
-that are upstream including "fixes for the fixes".
+Right, that was my thinking as well.
 
-Timur, what specifically do you want to see happen here?
+Out of curiosity, are you planning on fixing these issues too or is
+that left for later?
 
-thanks,
-
-greg k-h
+Kind regards
+Uffe
 
