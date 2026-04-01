@@ -1,167 +1,165 @@
-Return-Path: <stable+bounces-232739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCEQBBvozGk/XwYAu9opvQ
-	(envelope-from <stable+bounces-232739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:40:43 +0200
+	id SNBXHNLpzGk/XwYAu9opvQ
+	(envelope-from <stable+bounces-232740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:48:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BED3377D5A
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:40:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A920377F35
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 851FC30846C8
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 09:29:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5EBB6300C3BA
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 09:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33E23A9629;
-	Wed,  1 Apr 2026 09:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DD73D8917;
+	Wed,  1 Apr 2026 09:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="uzr8hbfP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XpgHDtZd"
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0EA33C513
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 09:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCD33D1702;
+	Wed,  1 Apr 2026 09:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775035762; cv=none; b=DpMaOFvMHmMLyTKO8squQn/sqy1opig5sAK3e3tw+Wrr4ZdWwCJ7W9osyfpZq8Q6e4kYOfh2fM0msmYt10sH1+KMgDQc8XCq3x7ILLjU6ZHcBDxysuY+IXYRrr2L5/NQnbJ8aapEFuZbSpO/8BAVjkVdC/xC0D3nkYF93yAalX8=
+	t=1775035918; cv=none; b=eHt7ioel5dmT1dEUzfTPGJd8pZf1E/xUOaIKkDwdPjMpgIc8kPIl+84VcQuaj4XI4AXQAkgQHxcKmhQVch7wri85YHM0o8mb29L/+Jpo9DnYwlI5WdhBoG24isn6LALjKAgz1X/U8RyjP0Q9WRm+NHWxYeSBLdtJ6UtTXOtwEFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775035762; c=relaxed/simple;
-	bh=60vS2sOqyczXeildRX1gg9bbkIwsHX7Jju0Cy6KNS1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KB3B0o3cdAP7TTOHJyVi1f8GLfxGjn6xH/Q1mpjvvnqG4M+MS1qzzcxE9c4/kVg+4aixsYAAqJ1RU8wv/FAf0hGAdXgK39SQWfu8dTYxDzGAq7MxGgLVan4q50Bl4S5O9Jqp2Mt82F8YIITwjJtObGCTnJUfwpxBs6+UbXEYi1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=uzr8hbfP; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6001b.ext.cloudfilter.net ([10.0.30.143])
-	by cmsmtp with ESMTPS
-	id 7lsnw2yEjnwj27rt3wXmk2; Wed, 01 Apr 2026 09:29:21 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id 7rt2wrjnjYA8x7rt3wvC8J; Wed, 01 Apr 2026 09:29:21 +0000
-X-Authority-Analysis: v=2.4 cv=VJfdn8PX c=1 sm=1 tr=0 ts=69cce571
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=FHuNozLtWGT0fbKrETUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=X68ssfcK7nVIPFjbfb4/xKnS6kYn3CebrUQCtIH9PsU=; b=uzr8hbfP/Y9DjJmTzShqhrmseA
-	jp3vOCGFNeWEykLStosLDfhY+BXZLieLydc5a7m8Lpb2jvZXRSU+DYxnTlWeEYfHWkcXU7AERiKYK
-	du4J9VRq8Gctr4aABP6F1toTSI4pqxBwv6owMXWx6uooXWdndtIW+rk/DSlELhWAutbvHQKfMKOaD
-	THtoB5ieIALX2muBuDXxQWcok7MClVQe6xYovWMYvXCDzgy+AWxawBNtl/dqvwk1VhW6y7zYzsn1A
-	LQkqs2tUIhHFJmLJvBmtRuDpUnvmFCM7gZPTFQmWd4gcE25omd1V1AwX2NNwYOQJZnWWUkttNVsQh
-	9FhbJW1w==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:44294 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1w7rt2-00000001iDu-0vnv;
-	Wed, 01 Apr 2026 03:29:20 -0600
-Message-ID: <f8cadade-73a3-4bde-832c-f472463779d3@w6rz.net>
-Date: Wed, 1 Apr 2026 02:29:18 -0700
+	s=arc-20240116; t=1775035918; c=relaxed/simple;
+	bh=OKK/7LL62YMlaPAzxkc8qo/IdgFm0bA7lFxJW9F/8e0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r2tFKzpu8JHe5yV/qZ5Ze5hhWRQURlu697XC4stX4mykAOWjHuXBhuY+T6+jJ96PxU1kDN+JxoScfq95iEZo8HIVMmeAH1jZhHGZAaqD+R0g5b4oBZe5ej+OmaTuNMbUnMu7ZnVngER2DixS3IL9p/droMgC39i0Q9vyLvv6juU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XpgHDtZd; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775035916; x=1806571916;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OKK/7LL62YMlaPAzxkc8qo/IdgFm0bA7lFxJW9F/8e0=;
+  b=XpgHDtZd8T4flL4fW3VHwllEqkelvreL2W2ltuwdKT1AwYSpe1HOTI/g
+   x6+Gfi85yvOge1FrpkCtohkWL5VYvFKUq8u3bEj4UrNdvFM+MYeEy2foH
+   2O+XaSHyk+KPd6iGbzzwNlBZejW3/eUdpBOWp5t17TCqwFz7L4akKRg5f
+   bS3ekRbTAOAQM5jiRKFLGnVh2iug9fho2W7VEQy2QXsQApUZsiPvyGfN/
+   DHtX0MHq9Ue6JGWBDMCPH0YxkhYJaBHQzBBqU3Jmo4D1GvKyIqCpimuF+
+   gZmw78ZFRneYTVrPguDSAdI58S+bExYtOx7M6M9744NHqn3n1LHVZvEOI
+   A==;
+X-CSE-ConnectionGUID: dpzq8mWAQ0uOYVX6WnjtOA==
+X-CSE-MsgGUID: gga/7q4ZTCuCIebkARlRww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75107893"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="75107893"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 02:31:55 -0700
+X-CSE-ConnectionGUID: Qi5NVprmS8ekcM6SFotfnA==
+X-CSE-MsgGUID: BVXMpLzZRr6goj26XpvnNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="257114510"
+Received: from silpixa00401971.ir.intel.com ([10.20.226.106])
+  by orviesa002.jf.intel.com with ESMTP; 01 Apr 2026 02:31:54 -0700
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+To: herbert@gondor.apana.org.au
+Cc: linux-crypto@vger.kernel.org,
+	qat-linux@intel.com,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	stable@vger.kernel.org,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Laurent M Coquerel <laurent.m.coquerel@intel.com>
+Subject: [PATCH] crypto: qat - fix IRQ cleanup on 6xxx probe failure
+Date: Wed,  1 Apr 2026 10:31:11 +0100
+Message-ID: <20260401093146.268157-1-giovanni.cabiddu@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/244] 6.12.80-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260331161741.651718120@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1w7rt2-00000001iDu-0vnv
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:44294
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfAxvfrJvRxNQ6pRX1Qg1xpvgSo5YwKsOg+kLuovp4PU0rWpuyZlbOcZKFKV7o9IQgNcBOFisGPh72mIFeeGJpnHSweJe60eeNgvMbOUruwubcrLWwK4t
- zJmn/JEyLaIYNt54BhRNVijqDFBU0NoAooycHQoe3fdD2FOYnT/937mw1VqkG1Qvigs3Kww6j5p7RA==
-X-Spamd-Result: default: False [1.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232739-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232740-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[giovanni.cabiddu@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	NEURAL_HAM(-0.00)[-0.591];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:email,w6rz.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6BED3377D5A
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A920377F35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/31/26 09:19, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.80 release.
-> There are 244 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.80-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+When adf_dev_up() partially completes and then fails, the IRQ
+handlers registered during adf_isr_resource_alloc() are not detached
+before the MSI-X vectors are released.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Since the device is enabled with pcim_enable_device(), calling
+pci_alloc_irq_vectors() internally registers pcim_msi_release() as a
+devres action. On probe failure, devres runs pcim_msi_release() which
+calls pci_free_irq_vectors(), tearing down the MSI-X vectors while IRQ
+handlers (for example 'qat0-bundle0') are still attached. This causes
+remove_proc_entry() warnings:
 
-Tested-by: Ron Economos <re@w6rz.net>
+    [   22.163964] remove_proc_entry: removing non-empty directory 'irq/143', leaking at least 'qat0-bundle0'
+
+Moving the devm_add_action_or_reset() before adf_dev_up() does not solve
+the problem since devres runs in LIFO order and pcim_msi_release(),
+registered later inside adf_dev_up(), would still fire before
+adf_device_down().
+
+Fix by calling adf_dev_down() explicitly when adf_dev_up() fails, to
+properly free IRQ handlers before devres releases the MSI-X vectors.
+
+Fixes: 17fd7514ae68 ("crypto: qat - add qat_6xxx driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Laurent M Coquerel <laurent.m.coquerel@intel.com>
+---
+ drivers/crypto/intel/qat/qat_6xxx/adf_drv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/crypto/intel/qat/qat_6xxx/adf_drv.c b/drivers/crypto/intel/qat/qat_6xxx/adf_drv.c
+index 0684ea9be2ac..c52462a48c34 100644
+--- a/drivers/crypto/intel/qat/qat_6xxx/adf_drv.c
++++ b/drivers/crypto/intel/qat/qat_6xxx/adf_drv.c
+@@ -209,8 +209,10 @@ static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		return ret;
+ 
+ 	ret = adf_dev_up(accel_dev, true);
+-	if (ret)
++	if (ret) {
++		adf_dev_down(accel_dev);
+ 		return ret;
++	}
+ 
+ 	ret = devm_add_action_or_reset(dev, adf_device_down, accel_dev);
+ 	if (ret)
+
+base-commit: 313ea1d8a965b395d2e1570bd7cc2f4fa25d0e49
+-- 
+2.53.0
 
 
