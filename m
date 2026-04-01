@@ -1,54 +1,80 @@
-Return-Path: <stable+bounces-232845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBtnBCprzWkkdQYAu9opvQ
-	(envelope-from <stable+bounces-232845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 20:59:54 +0200
+	id oDJ6AylszWnvdQYAu9opvQ
+	(envelope-from <stable+bounces-232847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:04:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A348537F8F8
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 20:59:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A543D37F989
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D2A903045C31
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 18:59:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8004D305F0BC
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 19:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF0347DFA8;
-	Wed,  1 Apr 2026 18:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7F531A05E;
+	Wed,  1 Apr 2026 19:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="J1+TawQP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFA747DD5F;
-	Wed,  1 Apr 2026 18:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775069980; cv=none; b=UrspiTnv+XgWGWpj6dAx5JDDSPnKqvehTh/4tGnHtOxKiP/RE2hToU67Godhg93nyGhDpRTrpCAJmVzpPZ5VE/U+y1TnVeNSoBQ5ZKJ0MuOIYMhNmstAwufxtGerWns6hqvs0IEz382JHQgJJXhGIidHOXu9dPreOlfY2MbQIZs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775069980; c=relaxed/simple;
-	bh=YM9uc0Zy1HNxNhPg2ddGuC8aqyjWmJ1l8HhkN6I21CM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=unouwPWOBqbFZ3ehD1ouOBWY4b1+DNEKPrFe74ZhJSv8AzWL2cFmlb2IENiFkVsMYTyjpoyESH64ioeys0CWuHii0KtZUyM1DN1ldXaEWxcp6qJKGvauV0vAHuV/JxWiKP8FHGj0dhh230Lc4ZROjOKKfAkzZ/2icEo4c4XQ+eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 631Ix8mi029079;
-	Wed, 1 Apr 2026 20:59:15 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
-        david.lebrun@uclouvain.be, stefano.salsano@uniroma2.it,
-        paolo.lungaroni@uniroma2.it, nicolas.dichtel@6wind.com,
-        linux-kernel@vger.kernel.org, Andrea Mayer <andrea.mayer@uniroma2.it>,
-        stable@vger.kernel.org
-Subject: [PATCH net v2 1/2] seg6: separate dst_cache for input and output paths in seg6 lwtunnel
-Date: Wed,  1 Apr 2026 20:57:54 +0200
-Message-Id: <20260401185755.29813-2-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260401185755.29813-1-andrea.mayer@uniroma2.it>
-References: <20260401185755.29813-1-andrea.mayer@uniroma2.it>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B662247295;
+	Wed,  1 Apr 2026 19:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775070160; cv=pass; b=FDWaCPBnK4E0O1xUrFcIY0SJuEdBZXj+9xNMiFhgy5BNCC1BBkRyQKGxAFSJWSlD17lGR2eEJKx2+PSDK1PDdBx2IxT/dcf0vAlQZMD+tFv/6n2yi3L6gfvPwbMSMKMnaVhlJn2M/JNm8m3TXPzLeUDTB+eo64WtYtbEvI8Flfo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775070160; c=relaxed/simple;
+	bh=v5dKzljNePBFaemZmz+iFNRtcPfnjlDZ5SF6cQuY8Q0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tDo8zQ2neYSpwF7wUDNu9/ItEZfq/zRJaOsL2QbWQCf8Qlno3DH7scaLSphermDxDIq5Jmwu/vehQnyH8a5Ce+SlxONuIYNCennm7/q5rrgYYuLJymjW7Co4lxON0oviYaySjb1wi/+Kyobu4MIJTRR+fm5pJiXV9ljjhV2skZg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=J1+TawQP; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
+ARC-Seal: i=1; a=rsa-sha256; t=1775070149; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Or0W6OQQPP8DQNVofRpKyMSF9VsBaHrgEPCNO04cRAiCnfSdhS0lpD3NgooVT8CmNGXpbH1CTlHru1Z9ADzzfmJ0Bf/jy1PaDjUyO+hDp7iQ3zuwJZcBLdmWzrCuPlP/AYgAmd7krjNzAn2E+8lN2H2ns9skfMfL7e/gK5LUXPk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1775070149; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yjGruuLNbYry6JyygcnVNDcA/cl4nVFtzQi6sOYnPMw=; 
+	b=m6OfH6RqGkdN+mzdRGM3NWs61mVKSLft9M4rWc+WOENztUrtdNtPj1QVYWXDhzAliz6BDEoLhplG4KJv6IDQPAf5PYUzz1Jcz/zl2Pm3KpQoYoL4B1xZqbVULYHvWanj4Psj234uiDqpZV6T9INhkwG4XyD327TMtHAGf+g60yk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=rong.moe;
+	spf=pass  smtp.mailfrom=i@rong.moe;
+	dmarc=pass header.from=<i@rong.moe>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775070149;
+	s=zmail2048; d=rong.moe; i=i@rong.moe;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=yjGruuLNbYry6JyygcnVNDcA/cl4nVFtzQi6sOYnPMw=;
+	b=J1+TawQP4ujUK0ZPJFUk7Sksgj9257PqtXQgz62NvVHTBCCc3gU7QfNvf1YizfCo
+	YNlhYmBKtUSuJOEUrcll8dSUg3N8+llgrFLVPsbmAQzlxL/py6lhkM4VxcarVn5OTzr
+	Zw54dJYb36TTooOFmeGFvrfbMisVnlHRRkd3XHg8GgKuMREEc70VouDpuOAxXD4Y+ki
+	pilzs+pr8iubFOVCAYkLw/rj5gEGrMaHuDvWhkkwAvZW7QQE7OSs/Snytb0BMlgEft7
+	gnW3bgkqlv4VNxKGsk8PK/LRgG51Z++v44+nvBXk01vCAVeYcEdQJzGZLFTM9vwZxs4
+	u/oTw2HU1Q==
+Received: by mx.zohomail.com with SMTPS id 1775070146569314.8129352025503;
+	Wed, 1 Apr 2026 12:02:26 -0700 (PDT)
+From: Rong Zhang <i@rong.moe>
+To: "Derek J . Clark" <derekjohn.clark@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hansg@kernel.org>
+Cc: Rong Zhang <i@rong.moe>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Kurt Borja <kuurtb@gmail.com>,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] platform/x86: lenovo-wmi-helpers: Fix memory leak in lwmi_dev_evaluate_int()
+Date: Thu,  2 Apr 2026 03:00:55 +0800
+Message-ID: <20260401190221.1595264-1-i@rong.moe>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <499fa3efd5be054ffdda77dd00ad4d8d3391e073.camel@rong.moe>
+References: <499fa3efd5be054ffdda77dd00ad4d8d3391e073.camel@rong.moe>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,147 +82,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
-X-Spamd-Result: default: False [0.14 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-ZohoMailClient: External
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[rong.moe,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[rong.moe:s=zmail2048];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[uniroma2.it : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[rong.moe,squebb.ca,gmx.de,lwn.net,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232847-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-232845-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andrea.mayer@uniroma2.it,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniroma2.it:email,uniroma2.it:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,6wind.com:email]
-X-Rspamd-Queue-Id: A348537F8F8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[i@rong.moe,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[rong.moe:+];
+	NEURAL_HAM(-0.00)[-0.993];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,rong.moe:dkim,rong.moe:email,rong.moe:mid,sashiko.dev:url]
+X-Rspamd-Queue-Id: A543D37F989
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The seg6 lwtunnel uses a single dst_cache per encap route, shared
-between seg6_input_core() and seg6_output_core(). These two paths
-can perform the post-encap SID lookup in different routing contexts
-(e.g., ip rules matching on the ingress interface, or VRF table
-separation). Whichever path runs first populates the cache, and the
-other reuses it blindly, bypassing its own lookup.
+lwmi_dev_evaluate_int() leaks output.pointer when retval == NULL (found
+by sashiko.dev [1]).
 
-Fix this by splitting the cache into cache_input and cache_output,
-so each path maintains its own cached dst independently.
+Fix it by moving `ret_obj = output.pointer' outside of the `if (retval)'
+block so that it is always freed by the __free cleanup callback.
 
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+No functional change intended.
+
+Fixes: e521d16e76cd ("platform/x86: Add lenovo-wmi-helpers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.clark%40gmail.com [1]
+Signed-off-by: Rong Zhang <i@rong.moe>
 ---
- net/ipv6/seg6_iptunnel.c | 34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+ drivers/platform/x86/lenovo/wmi-helpers.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 3e1b9991131a..d6a0f7df9080 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -48,7 +48,8 @@ static size_t seg6_lwt_headroom(struct seg6_iptunnel_encap *tuninfo)
- }
+diff --git a/drivers/platform/x86/lenovo/wmi-helpers.c b/drivers/platform/x86/lenovo/wmi-helpers.c
+index 7379defac500..80021f59d1ef 100644
+--- a/drivers/platform/x86/lenovo/wmi-helpers.c
++++ b/drivers/platform/x86/lenovo/wmi-helpers.c
+@@ -55,8 +55,9 @@ int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
+ 	if (ACPI_FAILURE(status))
+ 		return -EIO;
  
- struct seg6_lwt {
--	struct dst_cache cache;
-+	struct dst_cache cache_input;
-+	struct dst_cache cache_output;
- 	struct seg6_iptunnel_encap tuninfo[];
- };
- 
-@@ -488,7 +489,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	slwt = seg6_lwt_lwtunnel(lwtst);
- 
- 	local_bh_disable();
--	dst = dst_cache_get(&slwt->cache);
-+	dst = dst_cache_get(&slwt->cache_input);
- 	local_bh_enable();
- 
- 	err = seg6_do_srh(skb, dst);
-@@ -504,7 +505,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 		/* cache only if we don't create a dst reference loop */
- 		if (!dst->error && lwtst != dst->lwtstate) {
- 			local_bh_disable();
--			dst_cache_set_ip6(&slwt->cache, dst,
-+			dst_cache_set_ip6(&slwt->cache_input, dst,
- 					  &ipv6_hdr(skb)->saddr);
- 			local_bh_enable();
- 		}
-@@ -564,7 +565,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
- 	local_bh_disable();
--	dst = dst_cache_get(&slwt->cache);
-+	dst = dst_cache_get(&slwt->cache_output);
- 	local_bh_enable();
- 
- 	err = seg6_do_srh(skb, dst);
-@@ -591,7 +592,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 		/* cache only if we don't create a dst reference loop */
- 		if (orig_dst->lwtstate != dst->lwtstate) {
- 			local_bh_disable();
--			dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
-+			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
- 			local_bh_enable();
- 		}
- 
-@@ -701,11 +702,13 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 
- 	slwt = seg6_lwt_lwtunnel(newts);
- 
--	err = dst_cache_init(&slwt->cache, GFP_ATOMIC);
--	if (err) {
--		kfree(newts);
--		return err;
--	}
-+	err = dst_cache_init(&slwt->cache_input, GFP_ATOMIC);
-+	if (err)
-+		goto err_free_newts;
++	ret_obj = output.pointer;
 +
-+	err = dst_cache_init(&slwt->cache_output, GFP_ATOMIC);
-+	if (err)
-+		goto err_destroy_input;
+ 	if (retval) {
+-		ret_obj = output.pointer;
+ 		if (!ret_obj)
+ 			return -ENODATA;
  
- 	memcpy(&slwt->tuninfo, tuninfo, tuninfo_len);
- 
-@@ -720,11 +723,20 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 	*ts = newts;
- 
- 	return 0;
-+
-+err_destroy_input:
-+	dst_cache_destroy(&slwt->cache_input);
-+err_free_newts:
-+	kfree(newts);
-+	return err;
- }
- 
- static void seg6_destroy_state(struct lwtunnel_state *lwt)
- {
--	dst_cache_destroy(&seg6_lwt_lwtunnel(lwt)->cache);
-+	struct seg6_lwt *slwt = seg6_lwt_lwtunnel(lwt);
-+
-+	dst_cache_destroy(&slwt->cache_input);
-+	dst_cache_destroy(&slwt->cache_output);
- }
- 
- static int seg6_fill_encap_info(struct sk_buff *skb,
+
+base-commit: 9147566d801602c9e7fc7f85e989735735bf38ba
 -- 
-2.43.0
+2.53.0
 
 
