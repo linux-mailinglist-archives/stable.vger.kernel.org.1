@@ -1,268 +1,422 @@
-Return-Path: <stable+bounces-232714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AErrOALWzGnnWwYAu9opvQ
-	(envelope-from <stable+bounces-232714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:23:30 +0200
+	id kFP3ARPVzGnnWwYAu9opvQ
+	(envelope-from <stable+bounces-232715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:19:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EA7376B77
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:23:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D8A376A59
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:19:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 17B3B3007AC0
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 08:10:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8743530FEF13
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 08:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46153392C23;
-	Wed,  1 Apr 2026 08:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BD1382389;
+	Wed,  1 Apr 2026 08:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YWNBL9Sk"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="oCpI4IYa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp134-24.sina.com.cn (smtp134-24.sina.com.cn [180.149.134.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14DE3A1687
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 08:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775030999; cv=pass; b=dUWyT2/q+WeN+DK3r75uYdCmD6qDOAVxy/y55q7iBN79ynDM0SKZZ2asBQVoO0FIowU6DWKJj56oEzqD2GlfKyzQyxiKxksfpsNs9DEJjof/7ZELfs9usSCsgxnoEuAHy7Cy13TF03/V8Um2oEX0i6AqHxxc2XPWCiVhTHsZRes=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775030999; c=relaxed/simple;
-	bh=jzUrClyX8cx2Dl1XB0LjoIRE3MInfsdiP6asEc2NveM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nrY8QLVCB1lp/XR5Gy90rRB3traPU9Weuv+rg93jOal+slSfzVj5mTGdrpn1vyykXfTMnBlOHdVjWkn/aVi798HYAVCn7Q/m8C1VyTaFoiS/uId3AvClFfxPrDzfkVQC+o/FfqY6F/sLDE8atv+MQpv9Bp0Vo+XTr/BNhNok7cc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YWNBL9Sk; arc=pass smtp.client-ip=74.125.224.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6501e465a8eso1094284d50.1
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 01:09:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775030996; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dX0wpsgupM5tC4jIR2Cp5lGvpeHKSF/0qP4eHQFLaeKeJS7VVeq8J44Zwr+eOs0QYM
-         W5Pr59/qRfUeFmxCtTnU96TCaOOR6JnP3Ek8jOc1rQyLmOZbVQi6Jj54uCSghqg9Cyfm
-         qNbrX3m9AyTsnNCbZ64+44QfChbjPhlffjafEmHdLT+ne2zNFlh3u0Kkk1Iv+GMCMApN
-         K7IpI4a8ORFxhsAcBVjR7dXxy0U7AENRbDwBiLhcS0s6DIPg4B1nEkaLavJbJjKP4KE2
-         qIBiQcfnACWLTFCA3iDT36/whc8j3eEKG+L1a+yYeBDbNQUDYl+nHIfQpeCBTvSii2a3
-         pyoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QGJ43lTmGm7tqVbmRpoI+e40OCefs4+iqftR/DXmG04=;
-        fh=++bwsOrtBvq49/DdN6SBgYIVyBAD1veUQxxN0zlJOEY=;
-        b=eB0yHFPD995sHjbDzWdsaRVUXa4pGWR7X5rmoMz9X8cnwS0vHZFM5pH5sE7pscd5Ud
-         OT+IPf+AHLDOlbpQnQ2qHdbe/aHfHNmOeOJrIV726muizaNeFJp01iLjLIZF3VytDusL
-         QfqRlYinp4AZDyRVoYZKkNQKKuVKnFmcDWzufgYmxJGR5EXJ3PMbE7XyHQNUXPDyKLsV
-         /KJkhFzS0KNQqY+uoPo4zzRmKUyj6CgaYtOqEl44kLZFUp34qNDFi5NuuLwr3EMc796n
-         cH2ia9rQVTyTz7avkUPIn9ZRWN6XDqQf33bsKO2kK+PmJ+makGdjrv7e3TcD6CFAmscg
-         7GBw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775030996; x=1775635796; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QGJ43lTmGm7tqVbmRpoI+e40OCefs4+iqftR/DXmG04=;
-        b=YWNBL9SklJpd38K47jKt1TkJceOl669WXPs0ubICzKjcnaLtteexPYoFzOn4JJPQ8J
-         r8bBzqB4Jpq6VHCaVw7NzdlQG9kfQnpHeO6xvL+cPPzKOx18p5EmyUmERmTl8lggMi45
-         gq1U69ef36WBCf4Zr3qHlo8R378ZXYVYd4pkJ4yU5Zp4Ze/eguKx3L432jHCAmNcVwTS
-         DWrnve0uvdOHz72DbiVsh8DIdTsL2HL51t2XnPgWXgvoaMfaRGwsfA4yfzoj87i+eRec
-         rj7REBVGHw/6qZoswN8l0+BTmvFPRjHTIwhuVO79y45Dgej7lWbyAwSqr4VC+ie7MZUl
-         koDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775030996; x=1775635796;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QGJ43lTmGm7tqVbmRpoI+e40OCefs4+iqftR/DXmG04=;
-        b=mRfFXbIsZM61VEP7Auw1fzJMKI63ZAsl21AvcfCQhuyveCLrU/eqKNtzc7ldnimd+Q
-         z1GJuEG1Udm4lJzVYHomWZ8e2oCtP5UtZbGr4AjCUt62MUDd+JIbg0P0rkic1aDsOxjp
-         7yM73QSKuRhJEm8sWy5xrGSRvcOT9/ctgOjvZMoSXNhJV0RmpIzAOnkRku7qbj/s5zNE
-         7rskbOfGJNUhxygnfc3e8tRUOQwBi/NOyoF90IxrqGF6ah+xZYMvoOFpEHI8WonGunl/
-         ir+x2Xg9CDVaPWmJGb3ErFDNTFh/NM0taoWH3HJBY892Tzl51uDHE5dBtPuKGTphlPkb
-         fiOg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4LTaRyFlQCgFyjHr9zDlQ8DadinGAp1PbjViNagl4p6WpGsPE7XY2yko/qB5BAOILaOhTZ6E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZjftmtX2IK4+xbH2cAJqmZ1ZZVnq855Fn91TI+sNxTLxG/+fE
-	lPgIqoCfIhMWn/MGseRUciuOKG00/Fc7bzK9igc83qnbxJ8HmIXzVemSJaN2aEU007gAyW49gjT
-	P8PFxpykLlJk1vf7OdpDbNySn0LREhcg=
-X-Gm-Gg: ATEYQzz5zoaMNfLR5QqIIZxktn+pQjgFldHvXNNy+1fNf5q/qHPT2Gh19KWY8/CWD75
-	Vbt4oDARJKa7yj7+eEVSOYo/EdMU8XGa9C8M++FDDu51t/n+O7Q+XczQ1dmbaYHfwHDqQMxJLm4
-	sLvhRkGRmZuBZmvpObWBV9c+fXcOZO/eU9nOcwNB64xMtyL9lixDwFViJiefXZhCc3OroHZMn3F
-	qj5Oqs/b0FYIGrvUwqQfaxsanHEWRvzqlEOsKlB5Lyj/oZQoLZWy9sQYyV1OKu5nleodDqTP5Gl
-	uVrG/XioKg==
-X-Received: by 2002:a53:acd7:0:20b0:650:2257:e052 with SMTP id
- 956f58d0204a3-650265fda6cmr5036099d50.17.1775030995799; Wed, 01 Apr 2026
- 01:09:55 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA313A8746
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 08:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.24
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775031071; cv=none; b=AGW9r7LPXa9Bztd+WbImjudVOWuzu3KVJR8LkP6s/fQ5WB1rdlg/1Dm9691k4SpiG7GSCXzaGpuKpqnlEW94a3rig/QqF7t9gQY/Kl3sGWvAL95otneouTENt9rF8Im65qyAZ8aVyPMp9FLVtzvHoG5u5eei2dc7lf/o8xAZINA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775031071; c=relaxed/simple;
+	bh=l/R7MstC1lsAPvOIyctP2OinN+opa7eRa+B8n53id0c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Bej57Ttx9pqV+7JerWGDu99v7RYyv7Hl5ddGXYCUVOAx+/G2/ubhJ3K+Wg1Vss/3wnKumOpazsTYlRuyC2bpOrioKGDkmleR6sF7ObSRdPbollcwogXAk5wWW8unrAlo5gCJlO/hvUZpdLrdenlUnUsLgjN/tq8bAv0ra6kfxFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=oCpI4IYa; arc=none smtp.client-ip=180.149.134.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1775031063;
+	bh=IM6FBYx0ryIlI9rQj8aNP8O2s3A9zHT5fBYis5L3fPw=;
+	h=From:Subject:Date:Message-Id;
+	b=oCpI4IYaaKGklntSxgf5VggYsA3GFQ+LmrTg2jsso4YZgYsCLq7UgsT0SsEC2SaCu
+	 SHOgGA9ODAWy9NYHEldO5C0fHUUdDsDZe6ajay++5kSJ4tm8sW9KJHJ35sSDU/0AHx
+	 0F/UeQb6QO+gYOrqVOfY+5F0TSc0TPFOhoBp6k+c=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.21) with ESMTP
+	id 69CCD30900004EEC; Wed, 1 Apr 2026 16:10:54 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 2810233408195
+X-SMAIL-UIID: 8391BF5FA20746BB9CA1C3E05E85D98F-20260401-161054-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com,
+	syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com,
+	Youngjun Lee <yjjuny.lee@samsung.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15.y] media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID
+Date: Wed,  1 Apr 2026 16:10:48 +0800
+Message-Id: <20260401081048.2338697-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260401031339.1418417-1-lgs201920130244@gmail.com> <aa8c074d-fdce-460f-a9b7-8644880eebb5@suse.com>
-In-Reply-To: <aa8c074d-fdce-460f-a9b7-8644880eebb5@suse.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Wed, 1 Apr 2026 16:09:45 +0800
-X-Gm-Features: AQROBzD9iqdOf-hjodNWRwd7n_vljJpSJ53rYJAa0xgydMeLcbvf8YxBXgvWfQg
-Message-ID: <CANUHTR_ZgLHj8COyE8S_J+nqUUunxMTH9TcOMsDuN=Y1hPXPEg@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: fix double free in create_space_info() error path
-To: Qu Wenruo <wqu@suse.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>, linux-btrfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232714-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[fb.com,suse.com,gmail.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232715-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[sina.com];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[sina.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,igalia.com,syzkaller.appspotmail.com,samsung.com,chromium.org,ideasonboard.com,kernel.org,sina.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,0584f746fde3d52b4675,dd320d114deb3f5bb79b,cisco];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 31EA7376B77
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sina.com:dkim,sina.com:email,sina.com:mid,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ideasonboard.com:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 66D8A376A59
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Qu,
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-Thanks for looking at this.
+[ Upstream commit 0e2ee70291e64a30fe36960c85294726d34a103e ]
 
-I checked this on my tree at:
+Per UVC 1.1+ specification 3.7.2, units and terminals must have a non-zero
+unique ID.
 
-`v6.19-rc8-214-ge7aa57247700`
-
-My understanding of the failure path is as follows.
-
-In `create_space_info()`:
-
-```c
-ret =3D btrfs_sysfs_add_space_info_type(space_info);
-if (ret)
-goto out_free;
-...
-out_free:
-kfree(space_info);
-return ret;
+```
+Each Unit and Terminal within the video function is assigned a unique
+identification number, the Unit ID (UID) or Terminal ID (TID), contained in
+the bUnitID or bTerminalID field of the descriptor. The value 0x00 is
+reserved for undefined ID,
 ```
 
-And in `btrfs_sysfs_add_space_info_type()`:
+If we add a new entity with id 0 or a duplicated ID, it will be marked
+as UVC_INVALID_ENTITY_ID.
 
-```c
-ret =3D kobject_init_and_add(&space_info->kobj, &space_info_ktype,
-   space_info->fs_info->space_info_kobj, "%s",
-   alloc_name(space_info));
-if (ret) {
-kobject_put(&space_info->kobj);
-return ret;
-}
-```
+In a previous attempt commit 3dd075fe8ebb ("media: uvcvideo: Require
+entities to have a non-zero unique ID"), we ignored all the invalid units,
+this broke a lot of non-compatible cameras. Hopefully we are more lucky
+this time.
 
-The `kobj_type` has:
+This also prevents some syzkaller reproducers from triggering warnings due
+to a chain of entities referring to themselves. In one particular case, an
+Output Unit is connected to an Input Unit, both with the same ID of 1. But
+when looking up for the source ID of the Output Unit, that same entity is
+found instead of the input entity, which leads to such warnings.
 
-```c
-.release =3D space_info_release,
-```
+In another case, a backward chain was considered finished as the source ID
+was 0. Later on, that entity was found, but its pads were not valid.
 
-and:
+Here is a sample stack trace for one of those cases.
 
-```c
-static void space_info_release(struct kobject *kobj)
-{
-struct btrfs_space_info *sinfo =3D to_space_info(kobj);
-kfree(sinfo);
-}
-```
+[   20.650953] usb 1-1: new high-speed USB device number 2 using dummy_hcd
+[   20.830206] usb 1-1: Using ep0 maxpacket: 8
+[   20.833501] usb 1-1: config 0 descriptor??
+[   21.038518] usb 1-1: string descriptor 0 read error: -71
+[   21.038893] usb 1-1: Found UVC 0.00 device <unnamed> (2833:0201)
+[   21.039299] uvcvideo 1-1:0.0: Entity type for entity Output 1 was not initialized!
+[   21.041583] uvcvideo 1-1:0.0: Entity type for entity Input 1 was not initialized!
+[   21.042218] ------------[ cut here ]------------
+[   21.042536] WARNING: CPU: 0 PID: 9 at drivers/media/mc/mc-entity.c:1147 media_create_pad_link+0x2c4/0x2e0
+[   21.043195] Modules linked in:
+[   21.043535] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.11.0-rc7-00030-g3480e43aeccf #444
+[   21.044101] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+[   21.044639] Workqueue: usb_hub_wq hub_event
+[   21.045100] RIP: 0010:media_create_pad_link+0x2c4/0x2e0
+[   21.045508] Code: fe e8 20 01 00 00 b8 f4 ff ff ff 48 83 c4 30 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 0f 0b eb e9 0f 0b eb 0a 0f 0b eb 06 <0f> 0b eb 02 0f 0b b8 ea ff ff ff eb d4 66 2e 0f 1f 84 00 00 00 00
+[   21.046801] RSP: 0018:ffffc9000004b318 EFLAGS: 00010246
+[   21.047227] RAX: ffff888004e5d458 RBX: 0000000000000000 RCX: ffffffff818fccf1
+[   21.047719] RDX: 000000000000007b RSI: 0000000000000000 RDI: ffff888004313290
+[   21.048241] RBP: ffff888004313290 R08: 0001ffffffffffff R09: 0000000000000000
+[   21.048701] R10: 0000000000000013 R11: 0001888004313290 R12: 0000000000000003
+[   21.049138] R13: ffff888004313080 R14: ffff888004313080 R15: 0000000000000000
+[   21.049648] FS:  0000000000000000(0000) GS:ffff88803ec00000(0000) knlGS:0000000000000000
+[   21.050271] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   21.050688] CR2: 0000592cc27635b0 CR3: 000000000431c000 CR4: 0000000000750ef0
+[   21.051136] PKRU: 55555554
+[   21.051331] Call Trace:
+[   21.051480]  <TASK>
+[   21.051611]  ? __warn+0xc4/0x210
+[   21.051861]  ? media_create_pad_link+0x2c4/0x2e0
+[   21.052252]  ? report_bug+0x11b/0x1a0
+[   21.052540]  ? trace_hardirqs_on+0x31/0x40
+[   21.052901]  ? handle_bug+0x3d/0x70
+[   21.053197]  ? exc_invalid_op+0x1a/0x50
+[   21.053511]  ? asm_exc_invalid_op+0x1a/0x20
+[   21.053924]  ? media_create_pad_link+0x91/0x2e0
+[   21.054364]  ? media_create_pad_link+0x2c4/0x2e0
+[   21.054834]  ? media_create_pad_link+0x91/0x2e0
+[   21.055131]  ? _raw_spin_unlock+0x1e/0x40
+[   21.055441]  ? __v4l2_device_register_subdev+0x202/0x210
+[   21.055837]  uvc_mc_register_entities+0x358/0x400
+[   21.056144]  uvc_register_chains+0x1fd/0x290
+[   21.056413]  uvc_probe+0x380e/0x3dc0
+[   21.056676]  ? __lock_acquire+0x5aa/0x26e0
+[   21.056946]  ? find_held_lock+0x33/0xa0
+[   21.057196]  ? kernfs_activate+0x70/0x80
+[   21.057533]  ? usb_match_dynamic_id+0x1b/0x70
+[   21.057811]  ? find_held_lock+0x33/0xa0
+[   21.058047]  ? usb_match_dynamic_id+0x55/0x70
+[   21.058330]  ? lock_release+0x124/0x260
+[   21.058657]  ? usb_match_one_id_intf+0xa2/0x100
+[   21.058997]  usb_probe_interface+0x1ba/0x330
+[   21.059399]  really_probe+0x1ba/0x4c0
+[   21.059662]  __driver_probe_device+0xb2/0x180
+[   21.059944]  driver_probe_device+0x5a/0x100
+[   21.060170]  __device_attach_driver+0xe9/0x160
+[   21.060427]  ? __pfx___device_attach_driver+0x10/0x10
+[   21.060872]  bus_for_each_drv+0xa9/0x100
+[   21.061312]  __device_attach+0xed/0x190
+[   21.061812]  device_initial_probe+0xe/0x20
+[   21.062229]  bus_probe_device+0x4d/0xd0
+[   21.062590]  device_add+0x308/0x590
+[   21.062912]  usb_set_configuration+0x7b6/0xaf0
+[   21.063403]  usb_generic_driver_probe+0x36/0x80
+[   21.063714]  usb_probe_device+0x7b/0x130
+[   21.063936]  really_probe+0x1ba/0x4c0
+[   21.064111]  __driver_probe_device+0xb2/0x180
+[   21.064577]  driver_probe_device+0x5a/0x100
+[   21.065019]  __device_attach_driver+0xe9/0x160
+[   21.065403]  ? __pfx___device_attach_driver+0x10/0x10
+[   21.065820]  bus_for_each_drv+0xa9/0x100
+[   21.066094]  __device_attach+0xed/0x190
+[   21.066535]  device_initial_probe+0xe/0x20
+[   21.066992]  bus_probe_device+0x4d/0xd0
+[   21.067250]  device_add+0x308/0x590
+[   21.067501]  usb_new_device+0x347/0x610
+[   21.067817]  hub_event+0x156b/0x1e30
+[   21.068060]  ? process_scheduled_works+0x48b/0xaf0
+[   21.068337]  process_scheduled_works+0x5a3/0xaf0
+[   21.068668]  worker_thread+0x3cf/0x560
+[   21.068932]  ? kthread+0x109/0x1b0
+[   21.069133]  kthread+0x197/0x1b0
+[   21.069343]  ? __pfx_worker_thread+0x10/0x10
+[   21.069598]  ? __pfx_kthread+0x10/0x10
+[   21.069908]  ret_from_fork+0x32/0x40
+[   21.070169]  ? __pfx_kthread+0x10/0x10
+[   21.070424]  ret_from_fork_asm+0x1a/0x30
+[   21.070737]  </TASK>
 
-So the call chain I had in mind is:
+Reported-by: syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0584f746fde3d52b4675
+Reported-by: syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=dd320d114deb3f5bb79b
+Reported-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Fixes: a3fbc2e6bb05 ("media: mc-entity.c: use WARN_ON, validate link pads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Co-developed-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+---
+ drivers/media/usb/uvc/uvc_driver.c | 73 +++++++++++++++++++-----------
+ drivers/media/usb/uvc/uvcvideo.h   |  2 +
+ 2 files changed, 48 insertions(+), 27 deletions(-)
 
-`create_space_info()`
--> `btrfs_sysfs_add_space_info_type()`
--> `kobject_init_and_add()`
--> failure
--> `kobject_put(&space_info->kobj)`
--> `space_info_release()`
--> `kfree(space_info)`
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 858fc5b26a5e..c39c1f237d10 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -413,6 +413,9 @@ struct uvc_entity *uvc_entity_by_id(struct uvc_device *dev, int id)
+ {
+ 	struct uvc_entity *entity;
+ 
++	if (id == UVC_INVALID_ENTITY_ID)
++		return NULL;
++
+ 	list_for_each_entry(entity, &dev->entities, list) {
+ 		if (entity->id == id)
+ 			return entity;
+@@ -1029,14 +1032,27 @@ static const u8 uvc_media_transport_input_guid[16] =
+ 	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
+ static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
+ 
+-static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
+-		unsigned int num_pads, unsigned int extra_size)
++static struct uvc_entity *uvc_alloc_new_entity(struct uvc_device *dev, u16 type,
++					       u16 id, unsigned int num_pads,
++					       unsigned int extra_size)
+ {
+ 	struct uvc_entity *entity;
+ 	unsigned int num_inputs;
+ 	unsigned int size;
+ 	unsigned int i;
+ 
++	/* Per UVC 1.1+ spec 3.7.2, the ID should be non-zero. */
++	if (id == 0) {
++		dev_err(&dev->intf->dev, "Found Unit with invalid ID 0\n");
++		id = UVC_INVALID_ENTITY_ID;
++	}
++
++	/* Per UVC 1.1+ spec 3.7.2, the ID is unique. */
++	if (uvc_entity_by_id(dev, id)) {
++		dev_err(&dev->intf->dev, "Found multiple Units with ID %u\n", id);
++		id = UVC_INVALID_ENTITY_ID;
++	}
++
+ 	extra_size = roundup(extra_size, sizeof(*entity->pads));
+ 	if (num_pads)
+ 		num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
+@@ -1046,7 +1062,7 @@ static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
+ 	     + num_inputs;
+ 	entity = kzalloc(size, GFP_KERNEL);
+ 	if (entity == NULL)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	entity->id = id;
+ 	entity->type = type;
+@@ -1136,10 +1152,10 @@ static int uvc_parse_vendor_control(struct uvc_device *dev,
+ 			break;
+ 		}
+ 
+-		unit = uvc_alloc_entity(UVC_VC_EXTENSION_UNIT, buffer[3],
+-					p + 1, 2*n);
+-		if (unit == NULL)
+-			return -ENOMEM;
++		unit = uvc_alloc_new_entity(dev, UVC_VC_EXTENSION_UNIT,
++					    buffer[3], p + 1, 2 * n);
++		if (IS_ERR(unit))
++			return PTR_ERR(unit);
+ 
+ 		memcpy(unit->guid, &buffer[4], 16);
+ 		unit->extension.bNumControls = buffer[20];
+@@ -1249,10 +1265,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return -EINVAL;
+ 		}
+ 
+-		term = uvc_alloc_entity(type | UVC_TERM_INPUT, buffer[3],
+-					1, n + p);
+-		if (term == NULL)
+-			return -ENOMEM;
++		term = uvc_alloc_new_entity(dev, type | UVC_TERM_INPUT,
++					    buffer[3], 1, n + p);
++		if (IS_ERR(term))
++			return PTR_ERR(term);
+ 
+ 		if (UVC_ENTITY_TYPE(term) == UVC_ITT_CAMERA) {
+ 			term->camera.bControlSize = n;
+@@ -1308,10 +1324,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return 0;
+ 		}
+ 
+-		term = uvc_alloc_entity(type | UVC_TERM_OUTPUT, buffer[3],
+-					1, 0);
+-		if (term == NULL)
+-			return -ENOMEM;
++		term = uvc_alloc_new_entity(dev, type | UVC_TERM_OUTPUT,
++					    buffer[3], 1, 0);
++		if (IS_ERR(term))
++			return PTR_ERR(term);
+ 
+ 		memcpy(term->baSourceID, &buffer[7], 1);
+ 
+@@ -1332,9 +1348,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, 0);
+-		if (unit == NULL)
+-			return -ENOMEM;
++		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
++					    p + 1, 0);
++		if (IS_ERR(unit))
++			return PTR_ERR(unit);
+ 
+ 		memcpy(unit->baSourceID, &buffer[5], p);
+ 
+@@ -1356,9 +1373,9 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_entity(buffer[2], buffer[3], 2, n);
+-		if (unit == NULL)
+-			return -ENOMEM;
++		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3], 2, n);
++		if (IS_ERR(unit))
++			return PTR_ERR(unit);
+ 
+ 		memcpy(unit->baSourceID, &buffer[4], 1);
+ 		unit->processing.wMaxMultiplier =
+@@ -1387,9 +1404,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+ 			return -EINVAL;
+ 		}
+ 
+-		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, n);
+-		if (unit == NULL)
+-			return -ENOMEM;
++		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
++					    p + 1, n);
++		if (IS_ERR(unit))
++			return PTR_ERR(unit);
+ 
+ 		memcpy(unit->guid, &buffer[4], 16);
+ 		unit->extension.bNumControls = buffer[20];
+@@ -1528,9 +1546,10 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 		return dev_err_probe(&dev->intf->dev, irq,
+ 				     "No IRQ for privacy GPIO\n");
+ 
+-	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
+-	if (!unit)
+-		return -ENOMEM;
++	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
++				    UVC_EXT_GPIO_UNIT_ID, 0, 1);
++	if (IS_ERR(unit))
++		return PTR_ERR(unit);
+ 
+ 	unit->gpio.gpio_privacy = gpio_privacy;
+ 	unit->gpio.irq = irq;
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 95af1591f105..be4b746d902c 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -41,6 +41,8 @@
+ #define UVC_EXT_GPIO_UNIT		0x7ffe
+ #define UVC_EXT_GPIO_UNIT_ID		0x100
+ 
++#define UVC_INVALID_ENTITY_ID          0xffff
++
+ /* ------------------------------------------------------------------------
+  * GUIDs
+  */
+-- 
+2.34.1
 
-and then control returns to `create_space_info()`:
-
-`btrfs_sysfs_add_space_info_type()` returns error
--> `goto out_free`
--> `kfree(space_info)`
-
-So my concern was that after `kobject_init_and_add()` has been called,
-the cleanup is already handed to `kobject_put()` /
-`space_info_release()`, and the later `kfree(space_info)` in
-`create_space_info()` becomes a second free.
-
-If my understanding of the `kobject_init_and_add()` failure path here
-is incorrect, please let me know. I may be missing something.
-
-Thanks,
-Guangshuo
-
-Qu Wenruo <wqu@suse.com> =E4=BA=8E2026=E5=B9=B44=E6=9C=881=E6=97=A5=E5=91=
-=A8=E4=B8=89 12:34=E5=86=99=E9=81=93=EF=BC=9A
->
->
->
-> =E5=9C=A8 2026/4/1 13:43, Guangshuo Li =E5=86=99=E9=81=93:
-> > When kobject_init_and_add() fails, btrfs_sysfs_add_space_info_type()
-> > calls kobject_put(&space_info->kobj).
-> >
-> > The kobject release callback space_info_release() frees space_info,
-> > but the current error path in create_space_info() then calls
-> > kfree(space_info) again, causing a double free.
->
-> Can you give an example call chain of where such space_info_release() is
-> triggered?
->
-> >
-> > Keep the direct kfree(space_info) for the earlier failure path, but
-> > after btrfs_sysfs_add_space_info_type() has called kobject_put(), let
-> > the kobject release callback handle the cleanup.
-> >
-> > Fixes: a11224a016d6d ("btrfs: fix memory leaks in create_space_info() e=
-rror paths")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> > ---
-> >   fs/btrfs/space-info.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
-> > index 3f08e450f796..d7176eb2fcbf 100644
-> > --- a/fs/btrfs/space-info.c
-> > +++ b/fs/btrfs/space-info.c
-> > @@ -311,7 +311,7 @@ static int create_space_info(struct btrfs_fs_info *=
-info, u64 flags)
-> >
-> >       ret =3D btrfs_sysfs_add_space_info_type(space_info);
-> >       if (ret)
-> > -             goto out_free;
-> > +             return ret;
-> >
-> >       list_add(&space_info->list, &info->space_info);
-> >       if (flags & BTRFS_BLOCK_GROUP_DATA)
->
 
