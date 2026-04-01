@@ -1,307 +1,162 @@
-Return-Path: <stable+bounces-232640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wL9+CzVyzGn1SwYAu9opvQ
-	(envelope-from <stable+bounces-232640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 03:17:41 +0200
+	id 0KaxJ8V1zGn1SwYAu9opvQ
+	(envelope-from <stable+bounces-232641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 03:32:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEEC3736B1
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 03:17:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1611837380C
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 03:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C716A306B9E8
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 01:15:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 93B03306129C
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 01:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B3F288505;
-	Wed,  1 Apr 2026 01:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B352777FD;
+	Wed,  1 Apr 2026 01:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WYlzQ12b"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="jS4WhiSa"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEEE17A586;
-	Wed,  1 Apr 2026 01:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775006141; cv=fail; b=CzBetOdfdI3cVSrly+4JALfMO49dDSlt6qdtwwGEmwEl8d4j3qliXr9qAFwQxUREBBHDjJTUcUltrCHNpEi9Uq4aAwT9VrajTKUyYpPtByVtfn2PYxQnAE7SLcnCLaWF59mqa/Dc4wWBtLDUDYk4xqdMItbT5nPhI6dfpo4y7PA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775006141; c=relaxed/simple;
-	bh=XGVPL6QExAQ5JKPqzN+AsOs9sg1Vzi8msCc2x+WZcpc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=bm+A38PleZW9mOUOXqQ4ZDb9r3kS7jsxnB1TfZnoEAYGFgdtp3q5q+XtD0dlm4WKmJPfW13L25+1meD5bJhgBEF3UFinflfaiK3Q9rsozO+Hd9KEAEUNZ83nMBQl0US7Ekf3eHnY0zP78mm70NmWlz9zjcKSW/EGql8hFEj6HNI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WYlzQ12b; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775006140; x=1806542140;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=XGVPL6QExAQ5JKPqzN+AsOs9sg1Vzi8msCc2x+WZcpc=;
-  b=WYlzQ12byTPOsvKjU3t+GsXkmuVLLNiihGg5A7LEy7Jm4gLV+RI9WPA/
-   +0+vLQOPMU33jh8fwUMrIPUmKNWzxMgVlvWLcIaxhWqbtukcFUfVxhujL
-   g+YaZuc0VUgEZqWTNzUglwx0Qf5O1yTy62OOtBZsIdo3VIfA1FCmCyDYr
-   xPnJVnBj5H2drH6yIeiHPAl9Rw4AHD+77a3iU+1CmkRrXcetkGBs8bIA5
-   wUahoEL35hu0P/A1nwOYiENx95YPGXK+nJizCZ/QteCVHE6kloLT2vfiK
-   S+bs2JHDInfr6Adr6Ze3SEJ99izr5eEmjZB4TmWIFOQ2MyaAVGmjCdOFE
-   w==;
-X-CSE-ConnectionGUID: NniD/ZyrQX+dztA8q/bqtA==
-X-CSE-MsgGUID: vezGy6wfStSv7J6l8q7eOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="101487922"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="101487922"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 18:15:39 -0700
-X-CSE-ConnectionGUID: 9J1xutW5Q9Sz/82Rs2TPog==
-X-CSE-MsgGUID: Omj3ruPKQhKo8jVp0DOYxA==
-X-ExtLoop1: 1
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 18:15:39 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 31 Mar 2026 18:15:38 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 31 Mar 2026 18:15:38 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.45) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 31 Mar 2026 18:15:36 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WNWpNFhL5Ye6abCIp0H0Bs1tiRR/DLch7KlSF6X9PT8V9wrDTJky74twbClZl8sH9ff/1YcZsK9u9EQDrdgNv7IKiLLurmohWm2iIssyP2PvRKLRVa6w8LzngZxPE6YQYau88QRgkAqToYuOqeO3SBvhm0lF82/wQN7MtMwnfRfY1ZYQ9U/WAtAxM9P0GbUfVZFCFdG0hXfCbFVvwhAAsoXoZnLITZYt4NGXf8x7r1RaGWN89S9WiP6owCdQS/FhAOq6GJDoz7s0KY2SvPGwflRgWiBD4dR4TETM52yodBcUHF2plzK/F2maf4+KN022tyixyeXHTmcJF5EKBKu7lA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jkcueib8rEI8f+C+zEzpVAW+IGzDsguK00C9SV6uVMg=;
- b=EBEMthlyw6Z1wf1DrPLEgoU9iuuvlEwPrnbZk/NiZiE0lMKi9Xkh5eni8dqdfRVjVS+ibDtdBAug6yTOJmS22KnT5aLFfQT01839LaGckqO8oBDcv+82gqBaABQ67kyNklgriKeM4yAgItT0Gtb7QAVoSYByuzfBInEJxv5d/k/6sUWAZc51AE87kgPbfPc7ty+JfSG/n62uMIrrXAh/WZO1IwUKH0DZd9E8fnlXKGW0WK5InEFgocAMg2vFg8eUzrNf3kHYHc9ioDghlGn3ERFOV7Rt6cLffGJAABvjb0NfPP4ORrjeZibfNz9KFD3lFwonsGOW1mnJAXUvhUHEbg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA0PR11MB7185.namprd11.prod.outlook.com (2603:10b6:208:432::20)
- by PH3PPF37A184CA6.namprd11.prod.outlook.com (2603:10b6:518:1::d15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 1 Apr
- 2026 01:15:32 +0000
-Received: from IA0PR11MB7185.namprd11.prod.outlook.com
- ([fe80::9f37:cb81:5463:300e]) by IA0PR11MB7185.namprd11.prod.outlook.com
- ([fe80::9f37:cb81:5463:300e%5]) with mapi id 15.20.9769.014; Wed, 1 Apr 2026
- 01:15:32 +0000
-From: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, "kraxel@redhat.com"
-	<kraxel@redhat.com>
-CC: "sumit.semwal@linaro.org" <sumit.semwal@linaro.org>,
-	"christian.koenig@amd.com" <christian.koenig@amd.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v2] dma-buf/udmabuf: skip redundant cpu sync to fix
- cacheline EEXIST warning
-Thread-Topic: [PATCH v2] dma-buf/udmabuf: skip redundant cpu sync to fix
- cacheline EEXIST warning
-Thread-Index: AQHcwNYF9KroOjxdFkWXYGnE97XBWbXJBjIQ
-Date: Wed, 1 Apr 2026 01:15:32 +0000
-Message-ID: <IA0PR11MB718531C51736C57114D6DC2CF850A@IA0PR11MB7185.namprd11.prod.outlook.com>
-References: <20260331061657.79983-1-mikhail.v.gavrilov@gmail.com>
-In-Reply-To: <20260331061657.79983-1-mikhail.v.gavrilov@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR11MB7185:EE_|PH3PPF37A184CA6:EE_
-x-ms-office365-filtering-correlation-id: 5a149c93-1021-415c-3386-08de8f8c2b8d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: JlKImN6V9XE9iBtE0bhbjz6q3af5Mfh3CE+plBgimiE6x3Xm6iQa0k10JTz60prS5FGEnNy0foY+rTsoeg+2TBG5i6PenaFCkg3+VOOb+tsAzppls/Iq0jYjjqsL3W8/hvg0401ITpv9mItD4hg9UQJtEJGSFFBT5pq/n3yxUiAPegC01NcN0Xy47oycT0nJJZrXMqXQ6i/zNcGd7/Wx/LHlw31NkVJ0CABFNnqpTdK3MpMMCKh25arWv2l5+GzymCuD3RTrfpmB3iqUf/mjFCTd9ugwF0cGOTPExhjKADmQphOBXL4mMMrk+GhpkR4kxJyXzeZ4c5CkYRVX5hQ+lEWW0mY38NKWrrV8vbiKVrjv+N0sKQjsQWD/ofOOpKaI/RBCV5CtN28EhBsoKffjxPPwknaIh9otgBdlKloc1P2gCwq27XfYyCIjc4XiNKjJipJ8gzKdT/wZPTmHnWopWLB5f5eNZVLWIjX92NwfYxYhka0iAEfPgD3AuTWWbhjwDFKcv4FVdWOtrvCYtn07OX9JwjpnZJuphZIt1KbFhavTA1ydZrinEW8W9icIkkEQ+5Gns+UBMFHs8vJru3IodUz1o/x7xztVx8yNvjPb4Odn4GFPgdykGhQLmX8nUcGnfhE1b79tYD93Kaee2z6PlhqsHKUzSq3iKAh72Nj0ninnvRiZnMpZNuR177GxqMy92z6z8IUJZ13OGQTAVA79WvUPvQD4dRGRgbZtZh66FDDf7qGGcQScepNeGvdawmAsv8+DFmYhsQHA8JzVle3SAJmTrZcFzgYYzSG/ba+asjc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB7185.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?tvX9n0YPBAuPuV15UsOuBYXlA8uG3tUVO1l8v9BBkx3qwHeoULEIGaY9rwj/?=
- =?us-ascii?Q?JtJuAadhBvC8ygZScwrHmeUyTdRwpKOpFo9UAKC7M31b5WbU+XPeiL7JPZ2E?=
- =?us-ascii?Q?BrzlS6NBDGXy4Ms//Ao6ZPYPYOvBa21ZAy+D70eOUfrbnhbX/9oCz8gGRZvo?=
- =?us-ascii?Q?mHdgvHy65T9rnJYuPoMXkk291Bvg3j/X23BcU7WjcszYy9GzFwebUxnfWU0y?=
- =?us-ascii?Q?RbKWYSWPYzEJBkMqXRx2cUC8ZRhV2SZiYvPtmSV0yWONtpJknrKgfrso/Nrj?=
- =?us-ascii?Q?ZEvM686aY0a1yamJ+7wofX41Fx+8GIcxfCcW/gp217RqzFhVUDRHzngwY3+Y?=
- =?us-ascii?Q?9AsnPweg6FGB+/kGKSalI1sJ1AhOUtVrMMFOz2N64JS8cFV8LwLx3Rx6mMAg?=
- =?us-ascii?Q?wtlFhyZsROR0QCZCAwEvnnchW2MFuEDh7KJHHPI54O7ON1+hjhzd2CT2Gtu/?=
- =?us-ascii?Q?/nCjDZtPEqgqIZcx+fOiP3W2okjzqRy/KpiYdNBtn6qGJAK3JXfJDSa9Az2i?=
- =?us-ascii?Q?v7YtSS821IZbc+6B8mPuvd4LkHUJ78/wkf6z7fqtG7MPeDXmMxULlWtBbqMV?=
- =?us-ascii?Q?KRXb/5gZKGoAsd/GdcJJRTUDfE+w4rPVUPtQ0lIGaBDtmfle7b5vP2XPIa3j?=
- =?us-ascii?Q?tFsnTCVsO0uA40XPF20FyYc3uaJseexOMLtAdbUtb1ZuZpYH1Tu7YBOeycn2?=
- =?us-ascii?Q?h4GtNVL3W37/zc2vXiq7jvWyrrrSrfI7wnV0y2chsG2KYrb+TwyEDqmq+S9K?=
- =?us-ascii?Q?jiImiW7uWBcXPZGMt19pKM6ud7XywnI5j8wGMgoyIl6Wf/CE5hEjdMEvhSTd?=
- =?us-ascii?Q?PDcKWu9O43D5q4HnshyV3fKoiebmd2Bkpa/9htf1GW4yQUqQzE8NYADMR1hr?=
- =?us-ascii?Q?wgkF78j43rSxS67eMu8cJG114jrW1aeDj6mdgbXweDUH988dh+To/mYN0x1j?=
- =?us-ascii?Q?XkVxPRNbXsnUXMAzN05NEFEFQy7lmJiR/2MKglnT/B2oCFW92h+JQQZGaLmt?=
- =?us-ascii?Q?R5WHIWC90Efou+dQ/weM71o5UrE2T+GMsIMWqC9x0aEXCpzDXWHhtw3oChTN?=
- =?us-ascii?Q?CZLMsAxtp/RfDiw6lPuqi3+Mi2/JTuigeZVsQbS8oISQhG2DVGAzud+Jin04?=
- =?us-ascii?Q?sQfhesWClTCkLnQciQS+4AU61E38hMwZGRWR45TmDKu/2fL25v/l99RttnC9?=
- =?us-ascii?Q?Ig055aTRlidvzOXyzyc30ynGU9rm+bfU0LTPBXTrkzgaiO2yL9XIpOn8/cmP?=
- =?us-ascii?Q?u8ElseCW6Y15s/qffj7E/F6FN/Z9j3avefKK8HSbEmx+9eiunhrFyVyxYq1b?=
- =?us-ascii?Q?+o6iJr1vaL7JdKLRmvRlaQ9D4HGxKoRzDHxtP0LchCcilGsggDiWp6fyhq++?=
- =?us-ascii?Q?5useBFmek9ZD6SUpdYaVOvR4iwGt5exkihIFvLRT5QifqYKVl3fbhwqYTnQA?=
- =?us-ascii?Q?AQaUC2alc8WzCVn9N/qLfXb2qn+o6Jl3ybXXXHLa5m4tFmMo5UvKHUrrjg1E?=
- =?us-ascii?Q?KKugj08Y5AiuQNUKe3fJm8FADBUy0EL0G88Gl7dzuy+HGbfdK8axFOJwts8+?=
- =?us-ascii?Q?tTMsal5BUmuZi7VLNK5HQakPXcibrjrmPZwrwVnzASK8qRus8tMGUhW4Fh1s?=
- =?us-ascii?Q?ms5sDlRjQjVT1dcYGsGqiac9JEhJhANiiKZPLQpGnUDGDlTLgIeyfrsIv2QV?=
- =?us-ascii?Q?LymBySYoxXJWps9g/CCTpeYKy/aOgSDrwpExiFt9rGW2yE7MJ0P5KelBniks?=
- =?us-ascii?Q?DQQUlbeZig=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC17E27FB35
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 01:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775007168; cv=none; b=B1REtrs4ZWFoINwb5fJQxH59183WpxlHYbRksckahxs2vvJLKbBgG2TqGj5QpC72UQkfma20BlTbGBDXGO/U7OhosCHhVtXOgNcK5vxJLZaFciI+vSp+qal8JqcwwGDX9Bv4U4hISkArDaN8JWunZXMQJ5hKpU1HxqjY3gfWZIo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775007168; c=relaxed/simple;
+	bh=FvPnJOtchaOMZT4wCLNb0Hf3tgFeuUiZAfTnfIfz6Hk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A/Ll+lOr4LyMY57Am7XYL1WCjKDvgta/AtpOH4X9dJlM6P4tMeO/4rgiC28HFzVdvF3cqv9CeWe+ZHHFuNL12n1GFKMiMZ5JT9lTtBFMkZmXPzN7vrNIrG4hYvY6YCvTvVsGe/rhIvHgqFfk5aXXDJcz/7BXmK0loAqxujpQvjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=jS4WhiSa; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-486b9675d36so52008775e9.0
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 18:32:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1775007165; x=1775611965; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2T/XLQ7RKXHebgKd5i5a4vHwH0UE4XVg7tpmJKpdoaY=;
+        b=jS4WhiSaGbaIPny5h7uPkjkNzUGa9wVb2wGWI6/UP7gyt2vao6DpqR6WKIsJlwXDmv
+         MWY/MHUeJLDk2B1DvcWMmRW4Ipj/yVupbIeQqrj//cDCV9KgMLcGe/OXfkTMbg+TLofu
+         RReZ1AP0gF7HP3lvqoPgrUFdt2MZEn0WYEeFeiPYA0eeHqY013QBeBwr/C8nGy+tdwvc
+         FYlWAaGuyHf6ZVzDO+0zjXH/7Flw4YgjqpQXR2+wnu9GzdbtyLuVDDt0wcngk1Ka74Rm
+         rEwZUenIYvXlzYSv8FDCHpAmKp78PxDwp0hbQgRnfqHkttSID+d/7ZYzRHGbMVwQ1O9W
+         /Iqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775007165; x=1775611965;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2T/XLQ7RKXHebgKd5i5a4vHwH0UE4XVg7tpmJKpdoaY=;
+        b=Zn2oB3dX2BptjchhfgmLJPuOF5NLqtLs1o0DSwGi8Y/sC7paJUjzKpPiDgata8WwHu
+         KuKS/qig2RHRkdaw/ppXGjJYmiT16y5GYbX/6ZYlRtnT2DQodWs4e2IFVex+HQupWpQd
+         LthlSTYq8E548UjbTyNxbTDvbRw1pBtZ4QBvaaSbE3b2gY6slCQyWT8VfxPrher142mU
+         Vtco7yirbL273Rr/XambW7rl+9btT2BpVGySAYzA357yVoiMBiClfWdDcoMwEuiLwkfk
+         y4DlZtWoxaXkHH5NUxwyR0cdfpIliScvuuUdUrT+EevWLc6wd4504pBAsZ+8CcfBonqL
+         5NiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsepUhTmKKGtZlgcS7EN87RgqeBsiXhKEMFYZzZ+IymfMEaUkpAo4g4xMeapCuMfUWIp2D/os=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznLSZZ+QdOu0LgBy93fEbDsUMcDcV9ancs0+abgVScd3Es5Onf
+	O6/nF/47Ht3xUdF2rRdCQQHJTOXhzqaXx7bdlqus1RLeThIdL8A3DfE=
+X-Gm-Gg: ATEYQzww/Byl1bTltrANOBvq8ZeZnGajFi/36GsYfuNXIplOqqxFV+s37ibJa6sui0g
+	Bs8rZiHwbtORBTpFn0osri4EExcpbp6DIcgdjeO5ML1xO5f26CB+DfN+TBSijlrNwwoTgI8klS5
+	QRANM4v2CVMhd66HoC4hldtq2Cy52XUtapbqO9AC3bR7t1i4uf2FdMdXONZg/n8wSL64AoBNNCW
+	ueALU8NnDPzLbrd0Vq8O6+1gcbXvR12HhSL2U0kjGONGQUca57Nv1n2tWvRaivoNoogt49xWdk5
+	V997y79NV+hOUNok3MUQ9RfLS+ReBnLhsOSU+h1+mtKHoWjER66djmMGi4I8GMjWLkzlkXf2BVV
+	OZDJx0J4IZmuAmcVd3BOS76KPEbuSn/k1X38axR+ByXI+dXWM5PY1UTYBJM7EfUv0rKO/PnBjW9
+	OkREhpRT/TFkWgJZ0yQ4vbPopTKyvLamK75HEYmOstpL9YL3Y+dhvYnhGg+KGlSYTQdfbGHhcen
+	Q==
+X-Received: by 2002:a05:600c:354a:b0:485:49c5:8eb7 with SMTP id 5b1f17b1804b1-4888359205dmr22716615e9.22.1775007164828;
+        Tue, 31 Mar 2026 18:32:44 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057048.dip0.t-ipconnect.de. [91.5.112.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c8a546esm42072455e9.5.2026.03.31.18.32.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 18:32:44 -0700 (PDT)
+Message-ID: <1d66295f-e699-4dd2-9269-aa5ef08c4e03@googlemail.com>
+Date: Wed, 1 Apr 2026 03:32:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: FH4fahOzJw98R5758chkhmbHNbYWa5EagvePy6pBnjQSlnyTgTM9BxQWTQLmgupYpJvvfmLzVWqrsThCVpojqKUSFOwrdIS6dwBFvsRLQ2iIiWMytKXvtzGuR9qpyHZiNAMp0jejErpvsGV2zVRG5na+hVnvl5Kd2Pl6ZLXxX7cgaxmH5X7M8vhAGZ2BCZKAczoMziLToUbkM3wsLpfS8vX+8X4CWfliS2UwZnvFox2B4YmlQjlRLKHrUhlRMEQNHmqkZ7o+b1aoKIrUzvh/opwETyBuoguGre9hbCRlZwvfJWWTaSwuVhGBqSieRgoaMVkjsKqztzG5oGy3ANtiYw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7185.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a149c93-1021-415c-3386-08de8f8c2b8d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Apr 2026 01:15:32.2016
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Lksl2jHjByqjoSrJ0jMU0Swb3cqqB18JqkKfwD6KNVhGn7U2nLL0r4xnZrXUoQPrDq7V8eIb0j3jmxMUhxIBl7feUoTykHGiKu6n8vEfQg0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF37A184CA6
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [1.34 / 15.00];
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/175] 6.6.131-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260331161729.779738837@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.65 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232640-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-232641-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,IA0PR11MB7185.namprd11.prod.outlook.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vivek.kasireddy@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.986];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 7FEEC3736B1
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:dkim,googlemail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1611837380C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> Subject: [PATCH v2] dma-buf/udmabuf: skip redundant cpu sync to fix
-> cacheline EEXIST warning
->=20
-> When CONFIG_DMA_API_DEBUG_SG is enabled, importing a udmabuf
-> into a DRM
-> driver (e.g. amdgpu for video playback in GNOME Videos / Showtime)
-> triggers a spurious warning:
->=20
->   DMA-API: amdgpu 0000:03:00.0: cacheline tracking EEXIST, \
->       overlapping mappings aren't supported
->   WARNING: kernel/dma/debug.c:619 at add_dma_entry+0x473/0x5f0
->=20
-> The call chain is:
->=20
->   amdgpu_cs_ioctl
->    -> amdgpu_ttm_backend_bind
->     -> dma_buf_map_attachment
->      -> [udmabuf] map_udmabuf -> get_sg_table
->       -> dma_map_sgtable(dev, sg, direction, 0)  // attrs=3D0
->        -> debug_dma_map_sg -> add_dma_entry -> EEXIST
->=20
-> This happens because udmabuf builds a per-page scatter-gather list via
-> sg_set_folio().  When begin_cpu_udmabuf() has already created an sg
-> table mapped for the misc device, and an importer such as amdgpu
-> maps
-> the same pages for its own device via map_udmabuf(), the DMA debug
-> infrastructure sees two active mappings whose physical addresses share
-> cacheline boundaries and warns about the overlap.
->=20
-> The DMA_ATTR_SKIP_CPU_SYNC flag suppresses this check in
-> add_dma_entry() because it signals that no CPU cache maintenance is
-> performed at map/unmap time, making the cacheline overlap harmless.
->=20
-> All other major dma-buf exporters already pass this flag:
->   - drm_gem_map_dma_buf() passes DMA_ATTR_SKIP_CPU_SYNC
->   - amdgpu_dma_buf_map() passes DMA_ATTR_SKIP_CPU_SYNC
->=20
-> The CPU sync at map/unmap time is also redundant for udmabuf:
-> begin_cpu_udmabuf() and end_cpu_udmabuf() already perform explicit
-> cache synchronization via dma_sync_sgtable_for_cpu/device() when
-> CPU
-> access is requested through the dma-buf interface.
->=20
-> Pass DMA_ATTR_SKIP_CPU_SYNC to dma_map_sgtable() and
-> dma_unmap_sgtable() in udmabuf to suppress the spurious warning
-> and
-> skip the redundant sync.
->=20
-> Fixes: 284562e1f348 ("udmabuf: implement
-> begin_cpu_access/end_cpu_access hooks")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-> ---
->=20
-> v1 -> v2:
->   - Rebased on drm-tip to resolve conflict with folio conversion
->     patches. No code change, same two-line fix.
->=20
-> v1: https://lore.kernel.org/all/20260317053653.28888-1-
-> mikhail.v.gavrilov@gmail.com/
->=20
->  drivers/dma-buf/udmabuf.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-> index 94b26ea706a3..bced421c0d65 100644
-> --- a/drivers/dma-buf/udmabuf.c
-> +++ b/drivers/dma-buf/udmabuf.c
-> @@ -145,7 +145,7 @@ static struct sg_table *get_sg_table(struct device
-> *dev, struct dma_buf *buf,
->  	if (ret < 0)
->  		goto err_alloc;
->=20
-> -	ret =3D dma_map_sgtable(dev, sg, direction, 0);
-> +	ret =3D dma_map_sgtable(dev, sg, direction,
-> DMA_ATTR_SKIP_CPU_SYNC);
->  	if (ret < 0)
->  		goto err_map;
->  	return sg;
-> @@ -160,7 +160,7 @@ static struct sg_table *get_sg_table(struct device
-> *dev, struct dma_buf *buf,
->  static void put_sg_table(struct device *dev, struct sg_table *sg,
->  			 enum dma_data_direction direction)
->  {
-> -	dma_unmap_sgtable(dev, sg, direction, 0);
-> +	dma_unmap_sgtable(dev, sg, direction,
-> DMA_ATTR_SKIP_CPU_SYNC);
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Will push this one to drm-misc-next soon.
+Am 31.03.2026 um 18:19 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.131 release.
+> There are 175 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks,
-Vivek
->  	sg_free_table(sg);
->  	kfree(sg);
->  }
-> --
-> 2.53.0
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
