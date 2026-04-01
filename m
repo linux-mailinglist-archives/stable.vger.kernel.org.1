@@ -1,144 +1,112 @@
-Return-Path: <stable+bounces-232764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232766-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFftEUkFzWnhZQYAu9opvQ
-	(envelope-from <stable+bounces-232764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:45:13 +0200
+	id AOeVAKQLzWnhZgYAu9opvQ
+	(envelope-from <stable+bounces-232766-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 14:12:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056DC379B12
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:45:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFBC37A3C3
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 14:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D19363021F66
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 11:44:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11ABB3074E17
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 11:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB28D3FADE0;
-	Wed,  1 Apr 2026 11:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD043E6DCA;
+	Wed,  1 Apr 2026 11:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qz8Lr9Sh"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="FBAezy0i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F30E375ADE;
-	Wed,  1 Apr 2026 11:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6893DEFF6
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 11:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775043882; cv=none; b=d0uRXZSiGZZZh/SEVg1LfYHRbmZIddgi5mPhUMK/4/tSaPgUCO/fjQ32k3vtaX5VGRTm5vpHeTLy5nLiFw05OeQqtJk6dZ/nHZ70EFXh7P9ah0hwKJa9ljSPhCI/TwdGrpwoNSlhO0FzRuweagtCPnKkQxSI8WLM3CO77gLajlA=
+	t=1775044795; cv=none; b=BFaphDyJObnLcI+x3t/3QTIH4GLmOE9ppKhZfKdr7v64R7hAvTdmaWRm/zWZD0QEkwpcy/D1CL6rCNjhTwYBfoRqBFrWTI4tPy6iu9enFCrbdYTey9Ofnbf3VoYFdexh6WjC6fpgvGA7lbhr6BliPgYl8zincYTLn03yYHEr2VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775043882; c=relaxed/simple;
-	bh=4C5Ms/kSSh+TQIeAk+1DYtjiUFwHDZRGHYeT5Sm5z8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pY+uIK11NcU/7Xk34mBgR6fEoNZWFFhg7yBIs4iOXlCsy7LOt3JG4pNCJSXPhCmHjn+fk9rz+4yWiTGvWSuQPC92YfRkZz01DEO/LkQvSlJ5HhvKkJgFqrG186EkbwmMmQ6Jk0gxk3II0X0VSepYtTluFBmqbwbp+tcl29/HgPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qz8Lr9Sh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19DAC4CEF7;
-	Wed,  1 Apr 2026 11:44:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775043882;
-	bh=4C5Ms/kSSh+TQIeAk+1DYtjiUFwHDZRGHYeT5Sm5z8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qz8Lr9ShSCNL4pRSaEur2Oc9cfl21HVJVW5GKQ48JPC6lJc8Oa/x/levm/gK0gMDn
-	 4fVRcpEuPJGkaePVsEwnAgJRA0fh5WFxf9jZCnS1/BjZU+NVz7ek7Myezmsh3b4Kfl
-	 IYJRrk8fcmIHJjI+FnrB8B1SQzPR4pJpb2w4eARk=
-Date: Wed, 1 Apr 2026 13:44:39 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Cc: Eduard Zingerman <eddyz87@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Andrea Righi <arighi@nvidia.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 034/244] bpf: Fix u32/s32 bounds when ranges cross
- min/max boundary
-Message-ID: <2026040115-dose-aerobics-7c6d@gregkh>
-References: <20260331161741.651718120@linuxfoundation.org>
- <20260331161742.960922011@linuxfoundation.org>
- <i4c753x3y67ek3r7dp774pcmaaaid3gvxcsvdssosdingre4in@od45qzitwtrf>
+	s=arc-20240116; t=1775044795; c=relaxed/simple;
+	bh=yoddX4IZ4ec77cwOPa2F4+K1rvtdfnrzECWap8mVxMc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MzFN0xRSmpPB1uUK2JPffNVd6K9RHk4kC3eV/wBCKG3AWdxsgeIXzoW07rHmKoWNj2UUM+55zPBiSoKKXoiugmRBYfYf+xGYD0cHcGt8kK0xjViQxydSbPfNl8/DdNRjOWxgISInM5FVdOgRlktOtkEbE+NR/KbWSRZc9ehHixk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=FBAezy0i; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1775044789; x=1775303989;
+	bh=yoddX4IZ4ec77cwOPa2F4+K1rvtdfnrzECWap8mVxMc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=FBAezy0i8n5XTo5BiP3WmhXMeoNEz01bghNaPIh+y0owMr9ZvJBMPKa41yhYcO1Yx
+	 c1pCi4ZC8X44Oj4pK9WgvyTIMzGu//Dy8LWmEN+wECd1mNoDGx0nAySSni2z2rp3Uo
+	 wpz3bOfhBzYNY6sZADMfIRAvA368LPt33mOPDZvki0/+3U2m0YhckdUlLW2KWwV2SJ
+	 NRcpGx0hAb8DvVvEBHjP8FKw42pgRXde9lSLMrJgB6NrIFGHHlidIzdg98+35mEEQ0
+	 o/ALJTecRgusj6UccrFGBRFFLHaMvRsYuhQJ5eMqd+ab4nmoLreEBK2WOjOVnv5iAr
+	 o5e19RrkwN+PQ==
+Date: Wed, 01 Apr 2026 11:59:46 +0000
+To: Jakub Kicinski <kuba@kernel.org>
+From: Paul Moses <p@1g4.org>
+Cc: Kangzheng Gu <xiaoguai0992@gmail.com>, gregkh@linuxfoundation.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, kees@kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net-shapers: free rollback entries using kfree_rcu
+Message-ID: <AA-_oeafacETaUw-zXqE2GL70EacawnSC7XXZnHEdy9N1gMfMr6X2N-8_ReZ35CpJl097iWNsCafQjaSiLLfhqttBeen2cUWRdRkomYEWG0=@1g4.org>
+In-Reply-To: <20260331183358.3d6f9799@kernel.org>
+References: <CAKvcANOzRwFk0jm4xBfMGVNJrgGhBT8zvb6r49qc=WdB5zP_fg@mail.gmail.com> <20260328185804.41325-1-xiaoguai0992@gmail.com> <20260330181541.5a3c9f73@kernel.org> <CAKvcANN1OEqXv9fo=cxTEEnq+=qs8NnZBrDTf=FTzdo9rHYJbQ@mail.gmail.com> <20260331183358.3d6f9799@kernel.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: e1f4d0d7beda9c064e2a86bf6a40840f82f327d3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <i4c753x3y67ek3r7dp774pcmaaaid3gvxcsvdssosdingre4in@od45qzitwtrf>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232764-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lists.linux.dev,nvidia.com,etsalapatis.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linuxfoundation.org,davemloft.net,google.com,redhat.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232766-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[1g4.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.877];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 056DC379B12
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,1g4.org:dkim,1g4.org:mid]
+X-Rspamd-Queue-Id: 9EFBC37A3C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 01, 2026 at 02:22:58PM +0800, Shung-Hsi Yu wrote:
-> Cc Eduard and Paul since they know this change better.
-> 
-> On Tue, Mar 31, 2026 at 06:19:44PM +0200, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Eduard Zingerman <eddyz87@gmail.com>
-> > 
-> > [ Upstream commit fbc7aef517d8765e4c425d2792409bb9bf2e1f13 ]
-> > 
-> > Same as in __reg64_deduce_bounds(), refine s32/u32 ranges
-> > in __reg32_deduce_bounds() in the following situations:
-> ...
-> 
-> Hi Greg,
-> 
-> This patch is causing the following BPF selftests to fail
-> 
->   #222 reg_bounds_crafted
->   #222/27 reg_bounds_crafted/(u64)[0x7fffffffffffffff; 0xffffffff00000000] (s64)<op> 0
->   #222/28 reg_bounds_crafted/(u64)0 (s64)<op> [0x7fffffffffffffff; 0xffffffff00000000]
->   #222/29 reg_bounds_crafted/(u64)[0x7fffffff00000001; 0xffffffff00000000] (s64)<op> 0
->   #222/30 reg_bounds_crafted/(u64)0 (s64)<op> [0x7fffffff00000001; 0xffffffff00000000]
->   #222/59 reg_bounds_crafted/(s64)[0xffffffff00000001; 0] (u64)<op> 0xffffffff00000000
->   #222/60 reg_bounds_crafted/(s64)0xffffffff00000000 (u64)<op> [0xffffffff00000001; 0]
->   #222/79 reg_bounds_crafted/(s64)[S64_MIN; 0] (u64)<op> 0
->   #222/80 reg_bounds_crafted/(s64)0 (u64)<op> [S64_MIN; 0]
->   #262 reg_bounds_rand_consts_s64_u64
-> 
-> The failure is caused by the selftests' expectation not aligning to the
-> stable 6.12 behavior. I believe the easier way out is to drop this, then
-> wait for [1] to land and pick it up in stable (or I'll try to backport
-> and send). That should address the root cause of what this patch is
-> trying to workaround.
-> 
-> 1: https://lore.kernel.org/bpf/d4fe45f8bd5c6a48efd2ba3b66932bf7eb5aa020.1774025082.git.paul.chaignon@gmail.com/
+> I noticed this patch
+> https://patchwork.kernel.org/project/netdevbpf/patch/20260309173450.53802=
+6-1-p@1g4.org/,
+> but it seems that there is no further progress on it.
 
-Now dropped, thanks.
+> Please experiment and return once you are sure.
+> netdevsim (netdev simulator) driver supports net_shapers, so you can
+> easily exercise this code in a VM.
+>
 
-greg k-h
+Unfortunately in the case of shaper.c, netdevsim only implemented stubs=20
+that return 0, so it's a not a 1:1 representation of the physical drivers.
+The rollback path specifically is not reliably reachable with netdevsim,
+whereas it looks like a proper trigger with real hardware.
 
