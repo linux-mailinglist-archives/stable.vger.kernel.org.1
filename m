@@ -1,92 +1,91 @@
-Return-Path: <stable+bounces-232768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHrLEoANzWnhZgYAu9opvQ
-	(envelope-from <stable+bounces-232768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 14:20:16 +0200
+	id eImtBWYXzWmMZwYAu9opvQ
+	(envelope-from <stable+bounces-232769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:02:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E2A37A5B5
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 14:20:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5F837AE11
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6D509303F0B7
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 12:09:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7896307D4C3
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 12:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931CA3FCB10;
-	Wed,  1 Apr 2026 12:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF073DFC8B;
+	Wed,  1 Apr 2026 12:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MRLeSSci"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gg/dunDc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC953DEAD4
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 12:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8125B402B87
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 12:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775045350; cv=none; b=UrPskIhAab8dQVwr9nKPsr6qJIFRh4NuhEOIAUKrjx88K9qgY1a7gM3Z8Dt8HaxaPvtvjFhz5wmZ88xsAR3pzw0nixuwIMrmsznCUWylqWwabnXxLaTHCcjarnwz1Bw1TkKEMKJWlhvWj48uas5dJO9ZOwlt6emN7KNXl7O8m3U=
+	t=1775045961; cv=none; b=bIlGrL8tvcIlIIme7YKlmciwWvZDq+Kradkr9glYqg5g00tuTZaq5IqOQtAqpy/jyYrHFlrt11ydZrdO5ECM7Ry8u/MjZkm44RUlxcRV9ye2mqc2Bt1wpErk62QqTqpZfVtB/nTHC/yN3PkttaL8lTi7ONJtPa3MXBuZ3CIUVcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775045350; c=relaxed/simple;
-	bh=//Urz/K9pTwj4R51GVVhcOJ0Kf3oWTMWkp9QDOAgsFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nTvpvwa7XYmZY1/MBXHaFCMqfpJyHupr+pZ26WBCPv/Dgdnts4W/FldsnsWWpuZCDTkvDzr8xxtasdYy92uvD7hNR3Gk8k+Hiu3fZSs7T0OOS/85WLb3u+2+9gMKvU1rtfnSaw7+jNwr9tlNErleQEImIN0wN2h/21HA/9Xq160=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MRLeSSci; arc=none smtp.client-ip=209.85.128.174
+	s=arc-20240116; t=1775045961; c=relaxed/simple;
+	bh=x6WXeSZWVt4a2zYVs/4EbxVlbkdET5QdS7RBm52VSFs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vda5t382maIaWzeL/ENpyS6iQ3ZtpT+0+If5l5LsM6zuO93hacAZkSX2ughRr6lekd47OrdUmrODEQ9GYe5ir86LPxQs9J22IHZSg3PpaaTeiKphZMqRZhSEbiaMoKS/kpA8fFizU+nQiAS8RmvCkdsPsF0K9E4Z4Zl+aSsfvFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gg/dunDc; arc=none smtp.client-ip=74.125.82.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-79853c0f5b9so41072917b3.0
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 05:09:08 -0700 (PDT)
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12776bebe9fso3571475c88.1
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 05:19:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775045348; x=1775650148; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775045956; x=1775650756; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gpu+nIydRNg4LqEAOn0F6sFr7pGZaX7fcnHuwE94M0Q=;
-        b=MRLeSSciqg2O7b3M91LogUUfamZ/z0zzG9e47mxXhlA9luf2vFZzxqQm7u0ahiEaIu
-         D8vspshsCBbsSQNtQmvzM8mNzCHStWaaoseh8j60L4QhAuO9ItHSHRk6ubywt/CYlpUr
-         /9D9x3n6jAzxcIP3p0NyqfnuN+Ryq05pgaKSEuYJzXNfm9JB5iERWDvvxm3W7MbFPjO9
-         WjKemuXS9KvESywpU96B64oZ0pGiFageDRcJIQhWXjytNiahLN3a5QD04B5lFntUIM2I
-         MSrpvHulYd+QTyZ6H4u7scMw86wjF4cpjIW9rbhD4FLxETz8XCup/P6tOwGR8EiAF0gm
-         fSJQ==
+        bh=L1OiliMXENpNlUeXTkiwAk5fsKUJbcwISyUwh8pYldk=;
+        b=gg/dunDc3RcSeSpL7I5i1H8m4yCyxGjBHO0Udd7ghkiTeIClGQcwa560BXOPa/oSUJ
+         j//HOZKYYlxh1boky6ROwW/jpdzD9TzXzDR5a4ttRxl0im5Q8AYr/o5Kedw5dfukqVK9
+         0TeRgMOwgE/uJPR1afQysnjMxIM010J02PPyUrUhx8/RieMYAqIld7iJzmXHakoy55Sr
+         v80m1JUXrQlbT5EGnVcNTVV3AAs+dFOct2Ahwlfddm8gLMOw/JP4fwZYHxeWlceoRAlA
+         tRTZPHUGUcSYaXoo0rpPsY2gTr0NxiW7eYWuuDNfz8owu0JU0gNi7cayNnMAcNmCOaOc
+         gpyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775045348; x=1775650148;
+        d=1e100.net; s=20251104; t=1775045956; x=1775650756;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gpu+nIydRNg4LqEAOn0F6sFr7pGZaX7fcnHuwE94M0Q=;
-        b=NHl3zpO8xHW9bTLaovzP6G6Z10Y0ICFP5bY7MEJewu4QWloxCJdAJ4hupBNY6Hurcb
-         NKsHQco0b4kLCo4KEHXGbl7Ads6DO/mc05Al0/d0xOLgw7fuNROZSGeHfZ0DeNhLPoD7
-         dHzNBX9Sb7mV7kmuQk9m4k9UvQWKiEttolnoeXI603WfxuBKzY3K1EfasFla6z1PhTqd
-         fBJQQm3QYHPqEFiOD66aAf8jIghMzmK5vYOsWWLTGqHkEkIc4Fa+X3hO7lL9zcl5VceP
-         2+njpVC+06n7zPmrze4/YhUp6zkqXPDM3BQLFbPU3DkbUcV7eqNBUzrR/kYrQCB4uPKL
-         l7Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHM3xc/7MyToRdyoCm1/ut88nI6+bpccT0OIdVtAqGIP08TPgerZsP06qWytJtz1pEs/YBTC0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7TEex4CFGXFDBSWDKQ+fwuRRUMKNABlIaCFASz+q1ppMsvjYJ
-	BK87S/pPIMHHRi2akLIe1LefmqvePUto1scbbMzHTQlgYckdpC8Xzv4S
-X-Gm-Gg: ATEYQzyL3jQPiTt5f9qSGrQ9iU354FJT8WDDFHZUvD/O87qgj6A0AxN7CCok6uPTw0A
-	MZ9D8jqvK35p/Nbzfz/ougkHds10xvODWdA2AYn2hAUIQwrkzAgS9FtgUeKwppa1K2zH8K2pAa8
-	km0A3Hwo+xLUplbUU/btXHtaywQPtj37GlvF3HJtEyNKHNJ3HE2W2+6qy7xSE406GqSIWFjgZiS
-	fngwZ8AOW/kPKTGtAl2hJuT8IzMiJAzcg30zMCusBQHwNegRT0DPAGU72E0mDldH5EH3u7egkPJ
-	FzfE5oUKl25i78WWhnqQ0rEbdldGHVqTJr7afMwCV+EDuBlyfTPEKH5WxCN8+mwKbSEor4whkie
-	duvRlZtnOKPyJ7RJI67cJcjSPh3Fq/3+bBJiUjHDpxyEADIrgMwPCKqQz5y4bwANVbLNb+3+Qi/
-	NSmvGPVh07L6ohe2CGs1TfuG7w8RY3lbRPa8zs9/TK+8NFFKq9xKmAeYJ872mOOFTz88qLKIqC1
-	SO5
-X-Received: by 2002:a05:690c:388:b0:79d:dce:5880 with SMTP id 00721157ae682-7a20f4ff581mr33389067b3.7.1775045348153;
-        Wed, 01 Apr 2026 05:09:08 -0700 (PDT)
+        bh=L1OiliMXENpNlUeXTkiwAk5fsKUJbcwISyUwh8pYldk=;
+        b=K7S/mpApTh9tdYI66XRvYT1bJkXJEbkFYl6h+XWQf8fJnq9JH8bko3ixO8ck4rbeSm
+         Z/dsiKzqkJbgc0X/o5kFOuJx+OXx/+ZrVr+kt9ysLPRVUxmDuXTtWCk0QC9tD4LpvxKg
+         sHnzN+f6d72ZeP8iVIxPy531MiFBWUy3M9FoaC9RHDgzwWF1hkUQX6Z3dZpgTyXeBAaf
+         51Cii55MsbFiosuiIDNgEpc+KAURHC5WnxcXjIMIadj/zcu0zTUKxwGaV5/z3mUvtf7z
+         TO5PClCw6OIeTFQvpJykPsMBqzFSIvutmufQ+k7yYqbFyEPeCmp8+oFXjP0O1fAbhQ9t
+         qywA==
+X-Forwarded-Encrypted: i=1; AJvYcCXDC38AIGJcFOejEyU1qVBKvz6c/fZqS8pN2psCJr7u3PkyFZx+IzyzW0yB8DdhdV1nmi7Kq7U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/gIkFsXMlScB+iobvjWkGSS9jKS+YbiFEBZRTfQ31Tt0T/MDB
+	cXlDkoZW2RlZSnGj7GT13WPEgavmOyo0Sa5bvcnJklSXT14jRj29wfEw
+X-Gm-Gg: ATEYQzyp2DW0wXxN8DTf64GtySmVpnyo7aOFr1/iIt0jnzDCqLQTxBr6huykIYP6r8z
+	J8DXiudXYoHrRYHCN6vMN4pN9pDNQ8dntMFVFhxB3rCwsoiAwwqpDzoZnUAxp1LyqANH/5nRNDt
+	yrry9emOcJSN/4niFeM7yoMKiv4SDlw/0XIThTLdNa6hca/NNatGYMa8tIcQ3W1Bhr9QnnKEz98
+	2P7YmPmauvIgK3ZSkV1nVidLrKVPwyKDlmx8gUhaV/cpJaAVWuYBql8CV74u/KTqGP3GQkx1E2k
+	2XYGhnx4/DsBRfyF1gtJYLZyd2Oxn5rFv5bMneHK8EPAITCa2TUfTvSopCK2YaTjYZi8ziH1zul
+	kDEtob4dZMHqpOnfMjc6UYcssr2nOdfAffPjxP4cofJZRAP/0jIY1Gz4Zp3H3UdGuvjZ3Vr1KCl
+	sTaxKJgmJEauso1Hxb0Nhtz2GDtAirvOFY+ArdcNUxLEGAbba1IxK4ckyGJUqNFWTsWw==
+X-Received: by 2002:a05:7301:1f04:b0:2c5:721d:99e2 with SMTP id 5a478bee46e88-2c93088eb63mr1783508eec.2.1775045956149;
+        Wed, 01 Apr 2026 05:19:16 -0700 (PDT)
 Received: from localhost.localdomain (104.194.93.216.16clouds.com. [104.194.93.216])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79cb790c05asm61771647b3.16.2026.04.01.05.09.05
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c8d8776dc0sm2851058eec.2.2026.04.01.05.19.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 05:09:07 -0700 (PDT)
+        Wed, 01 Apr 2026 05:19:15 -0700 (PDT)
 From: hkbinbin <hkbinbinbin@gmail.com>
-To: valentina.manea.m@gmail.com,
-	shuah@kernel.org,
-	i@zenithal.me,
-	gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
+To: zyjzyj2000@gmail.com,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	w@1wt.eu
+Cc: linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	hkbinbin <hkbinbinbin@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] usbip: vhci: validate ret_submit number_of_packets
-Date: Wed,  1 Apr 2026 12:08:57 +0000
-Message-ID: <20260401120857.1443552-1-hkbinbinbin@gmail.com>
+Subject: [PATCH] RDMA: rxe: validate pad and ICRC before payload_size() in rxe_rcv
+Date: Wed,  1 Apr 2026 12:19:07 +0000
+Message-ID: <20260401121907.1468366-1-hkbinbinbin@gmail.com>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -95,111 +94,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,zenithal.me,linuxfoundation.org];
+	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232768-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232769-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,ziepe.ca,kernel.org,1wt.eu];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[hkbinbinbin@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 50E2A37A5B5
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6E5F837AE11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-vhci_recv_ret_submit() unpacks USBIP_RET_SUBMIT directly into the URB,
-including number_of_packets from the remote server. For isochronous
-URBs, iso_frame_desc[] was allocated using the original locally
-submitted number_of_packets.
+rxe_rcv() currently checks only that the incoming packet is at least
+header_size(pkt) bytes long before payload_size() is used.
 
-If a malicious or buggy USB/IP server returns a larger
-number_of_packets, usbip_recv_iso() will iterate past the end of
-urb->iso_frame_desc[] and write attacker-controlled ISO descriptors out
-of bounds. Later completion paths may also walk past iso_frame_desc[]
-if the poisoned number_of_packets is left in the URB after rejecting
-the response.
+However, payload_size() subtracts both the attacker-controlled BTH pad
+field and RXE_ICRC_SIZE from pkt->paylen:
 
-Fix this by saving the original packet count before unpacking the PDU,
-rejecting larger values from the server, restoring the original count
-on error, and marking the connection as broken.
+  payload_size = pkt->paylen - offset[RXE_PAYLOAD] - bth_pad(pkt)
+                 - RXE_ICRC_SIZE
 
-Fixes: 1325f85fa49f ("staging: usbip: bugfix add number of packets for isochronous frames")
+This means a short packet can still make payload_size() underflow even
+if it includes enough bytes for the fixed headers. Simply requiring
+header_size(pkt) + RXE_ICRC_SIZE is not sufficient either, because a
+packet with a forged non-zero BTH pad can still leave payload_size()
+negative and pass an underflowed value to later receive-path users.
+
+Fix this by validating pkt->paylen against the full minimum length
+required by payload_size(): header_size(pkt) + bth_pad(pkt) +
+RXE_ICRC_SIZE.
+
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: hkbinbin <hkbinbinbin@gmail.com>
 ---
- drivers/usb/usbip/vhci_rx.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/infiniband/sw/rxe/rxe_recv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/usbip/vhci_rx.c b/drivers/usb/usbip/vhci_rx.c
-index a75f4a898a41..5bbfd5ae7755 100644
---- a/drivers/usb/usbip/vhci_rx.c
-+++ b/drivers/usb/usbip/vhci_rx.c
-@@ -60,6 +60,7 @@ static void vhci_recv_ret_submit(struct vhci_device *vdev,
- 	struct usbip_device *ud = &vdev->ud;
- 	struct urb *urb;
- 	unsigned long flags;
-+	int orig_number_of_packets;
+diff --git a/drivers/infiniband/sw/rxe/rxe_recv.c b/drivers/infiniband/sw/rxe/rxe_recv.c
+index 5861e4244049..f79214738c2b 100644
+--- a/drivers/infiniband/sw/rxe/rxe_recv.c
++++ b/drivers/infiniband/sw/rxe/rxe_recv.c
+@@ -330,7 +330,8 @@ void rxe_rcv(struct sk_buff *skb)
+ 	pkt->qp = NULL;
+ 	pkt->mask |= rxe_opcode[pkt->opcode].mask;
  
- 	spin_lock_irqsave(&vdev->priv_lock, flags);
- 	urb = pickup_urb_and_free_priv(vdev, pdu->base.seqnum);
-@@ -73,9 +74,33 @@ static void vhci_recv_ret_submit(struct vhci_device *vdev,
- 		return;
- 	}
+-	if (unlikely(skb->len < header_size(pkt)))
++	if (unlikely(pkt->paylen < header_size(pkt) + bth_pad(pkt) +
++		       RXE_ICRC_SIZE))
+ 		goto drop;
  
-+	/*
-+	 * Save the original number_of_packets before it gets overwritten
-+	 * by the server's response. The iso_frame_desc[] array was allocated
-+	 * based on this value, so the server must not increase it.
-+	 */
-+	orig_number_of_packets = urb->number_of_packets;
-+
- 	/* unpack the pdu to a urb */
- 	usbip_pack_pdu(pdu, urb, USBIP_RET_SUBMIT, 0);
- 
-+	/*
-+	 * Validate number_of_packets from the server response against the
-+	 * original URB allocation. A malicious server could set this to a
-+	 * larger value, causing usbip_recv_iso() to write beyond the
-+	 * iso_frame_desc[] array bounds.
-+	 */
-+	if (urb->number_of_packets < 0 ||
-+	    urb->number_of_packets > orig_number_of_packets) {
-+		dev_err(&urb->dev->dev,
-+			"invalid number_of_packets in ret_submit: %d (max %d)\n",
-+			urb->number_of_packets, orig_number_of_packets);
-+		urb->number_of_packets = orig_number_of_packets;
-+		urb->status = -EPROTO;
-+		usbip_event_add(ud, VDEV_EVENT_ERROR_TCP);
-+		goto error;
-+	}
-+
- 	/* recv transfer buffer */
- 	if (usbip_recv_xbuff(ud, urb) < 0) {
- 		urb->status = -EPROTO;
+ 	err = hdr_check(pkt);
 -- 
-2.51.0
-
+2.49.0
 
