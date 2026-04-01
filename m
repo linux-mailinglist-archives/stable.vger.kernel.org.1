@@ -1,175 +1,173 @@
-Return-Path: <stable+bounces-232676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGKaMLuSzGmbUAYAu9opvQ
-	(envelope-from <stable+bounces-232676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:36:27 +0200
+	id CE5OAcqSzGmbUAYAu9opvQ
+	(envelope-from <stable+bounces-232678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:36:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41AAF3746CD
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:36:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4EA3746E2
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 51601304EA7E
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 03:36:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D98C6300C541
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 03:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DB337E2E7;
-	Wed,  1 Apr 2026 03:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776DF37E317;
+	Wed,  1 Apr 2026 03:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="T4V8k+rf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Npa5lCQX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A512F26E711;
-	Wed,  1 Apr 2026 03:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D06E3793AC
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 03:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775014582; cv=none; b=mJ9d+xsY3DsZ2896FpWch/xCEWdlzoJRyVXpGWaE9IT+g0R1E+QJeEibVAXPwyi7GZrrYBgGdmZRKH/xmGBM9srAWwKFW9vIk3I7Ct0ZbTojaCZhLpOwrAh8mdsTVrEuqrKXc40BAwhMxAUb9lWrPo1OcWIrXK3WJBNXmuwZwgk=
+	t=1775014596; cv=none; b=UDTn3JuAjCeRmu8xM/l47mKk5pOYgk6od+90rFEA2JKO/RMif48X/pvZ+O0KCSnBSsWjKHHsvB3iRiqvnTNgIUpaxUdIx28NIvexpIdZbmgf2ThFV5T/Rz5a9gg+0yluOddKDekAilAOKjmFsKc7GhebKv/wmVOcbchpYazqVjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775014582; c=relaxed/simple;
-	bh=oM8MoDisKpDaXjO3RLPXLi7naizlxim+j7rzUdhBd8A=;
-	h=Date:To:From:Subject:Message-Id; b=sfd9os7NYPTJriyeLfndh963vXykQk8PhpPkWua27gErpCUQeLHxw01BsuXGwYN0eYNAY9UOYYfyqAsTrnYm+4BBdK+8+Z3J4J9av893Tov1WjAnlltOFIgdlsSfm53gGZucnxEC5A5rRJr9UednPEbWoX8kzxyb+NO5opYzu3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=T4V8k+rf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6700BC4CEF7;
-	Wed,  1 Apr 2026 03:36:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775014582;
-	bh=oM8MoDisKpDaXjO3RLPXLi7naizlxim+j7rzUdhBd8A=;
-	h=Date:To:From:Subject:From;
-	b=T4V8k+rfOHVrE77sTng58yre4ghwaAdfCdbOUvfxqcMToKQGQxXQNNwwnIbQpHy1K
-	 MH7wFpaPNKMBWZbt4Ysfrj9QEdu59Yaq3/aUubCViQrI6VxtsPuIcAz/YIHHEw4n+M
-	 Iz36EbrhxlC2sekIcw4IYww1IRL/uiFM0ipV6Yag=
-Date: Tue, 31 Mar 2026 20:36:21 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + docs-admin-guide-mm-damon-reclaim-warn-commit_inputs-vs-param-updates-race.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260401033622.6700BC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1775014596; c=relaxed/simple;
+	bh=cnZj4Tq75TU+m9MvB0/TuXcjxJ0PZXub5lCKx9Ude6U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R3zYLTeHAbSVTowh1UV+gtJzpQv2gkUEC9T4bADeFyRfShtFoMNFyNowBoVRU412qYRWiv/VT1Gqy4rB1RNJdGv5JFXU8KMAOTAXqzl2ws/IHAGG1VH7qKX76gaOct3XIQEJAtJO0bg51IFgwSQZIuk5b8QvLlAyaXcYvVDnOeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Npa5lCQX; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35d96be7c13so370197a91.0
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 20:36:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775014594; x=1775619394; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=R2TCQh4xS6cid2Jzw04r6Vvh+yYWLSOE9opB+QSqdXM=;
+        b=Npa5lCQXtkB3b88W8jYPKdAKXO9om4AvUabEihu3j4N7Ol+k7Dzh7hbmATUqJmQ8Ac
+         bTrGJ3E7X744/0tJIoxXZjKuXhI7hHJU80LNH3Ojok0GOrNifY0NzFwWSG/O9kxT8UqK
+         8gm17FIEsrQNXt1q0/RO2fKP/oeli+ZUJ0tDut7sZs41aZNc8uzPE5DW1biED65bjfHh
+         weaqGbA7sfarPm9fzLw+CeNTBu6o2FUfNfkCBVl4vYJMjfwvRQ4NUo4cbklNwhBpl760
+         Vlbk/4wHtruBK/E9iHEHnDYUNdouUf11/L/FG9VLKNVNhZzeuuQMbqpNbRV0be/5DXe9
+         mI9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775014594; x=1775619394;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R2TCQh4xS6cid2Jzw04r6Vvh+yYWLSOE9opB+QSqdXM=;
+        b=l8jV5l4wcZApfHY1GRunIt2orxcvvpGjpqiGOSKfmzHg9YMOuwcRomFycIlP8NDF//
+         A7m9YrnVWonpVD4j7d5cDZU7dYbsWDc03AsyfeuTk+y5N7Ta82avlqI/uyM6JSePw4z2
+         iUGrns2TdWchcqIah2bH6MHdV5d8PB2J0OnFHbJ0R0o8pBnq1xagiqGUngdZTwhVgAbl
+         qyRzpqwLwn0cIRXwu2kU5cYqnFizRFeGyNPYmU4AKn6cvda3ZCa3gh3DjbU7PMe5R656
+         ST20yBMikQft/KybmlisMKbt7eMpVzFx9YzKeOozcGjpsDpZPsUY9GV+RU3rfxAJ7xiL
+         7EWg==
+X-Forwarded-Encrypted: i=1; AJvYcCWFfqDLn69A44AY6Q62H++EIg5WyaRs+lexLbiqtSFeSxqxRtYFQLhU1krIszu0x4SstigsUBM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGSJroNJqYb/MjX6iFPa3oX10/JeGViFCY0NpLrWa//qsLDcn+
+	TKdLOKVRd4LrgMsJ6qbPHLVcz58SQhZJhk4RedNG1lGj/ts0XhSVyhZH
+X-Gm-Gg: ATEYQzy7sB3d5/yZXs2U3f1F0UvCmqpHr09l2O9C+LObnJwx816WbWFxZf2WbCqs5Ex
+	FucGoZk1ZZM7Z14xBlUkVdGcyJPtpH1+mVJ2TPsV6Nh8lT47SU/BZiQd6AUaLGCwxiSvLbujBrE
+	5TuHtzamQ2YPejXQQpPjhmUF75k2jOtNZvxJE9OVGSUMxl7A6UlpHEywS9ZJcqxBGj8VOfeuTbB
+	2rsQV35jP2tjqXxoMK8u2lVtLsHSb/rECKe80uXSvkK+qmsrT3ltEWyBuDKRVDilnVyO42+DUJV
+	IYBfQVwZChBqUQ+HF0nWYnLElAPprubqbn0Uiqo18QFKzLeOSG8IZaiQS50PnNScTqMoJ2mILk2
+	TVDg8zxhzIvb6Pze8teIC5WxyOL9YVnwy0am0hfArALVO4tiko+iwlXnp0gIl0SLgZMabZiN4tZ
+	bf/G2KfuizpoAPXpJq94S9+g==
+X-Received: by 2002:a17:90b:518e:b0:35c:10e8:1a72 with SMTP id 98e67ed59e1d1-35db8e58d67mr5963651a91.7.1775014594402;
+        Tue, 31 Mar 2026 20:36:34 -0700 (PDT)
+Received: from lgs.. ([2408:8417:e10:5f85:653:6a84:ffc9:685c])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76916cce42sm10470716a12.9.2026.03.31.20.36.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 20:36:34 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dmaengine: idxd: fix double free in idxd_setup_groups() error path
+Date: Wed,  1 Apr 2026 11:36:22 +0800
+Message-ID: <20260401033622.1446904-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232676-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232678-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 41AAF3746CD
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0D4EA3746E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+When an error happens after device_initialize(), idxd_setup_groups()
+calls put_device(conf_dev).
 
-The patch titled
-     Subject: Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     docs-admin-guide-mm-damon-reclaim-warn-commit_inputs-vs-param-updates-race.patch
+The device release callback idxd_conf_group_release() frees group, but
+the current error paths then call kfree(group) again, causing a double
+free.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/docs-admin-guide-mm-damon-reclaim-warn-commit_inputs-vs-param-updates-race.patch
+Keep the cleanup in idxd_conf_group_release() after put_device() and
+avoid freeing group again in idxd_setup_groups().
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
-Date: Sun, 29 Mar 2026 08:30:49 -0700
-
-Patch series "Docs/admin-guide/mm/damon: warn commit_inputs vs other
-params race".
-
-Writing 'Y' to the commit_inputs parameter of DAMON_RECLAIM and
-DAMON_LRU_SORT, and writing other parameters before the commit_inputs
-request is completely processed can cause race conditions.  While the
-consequence can be bad, the documentation is not clearly describing that. 
-Add clear warnings.
-
-The issue was discovered [1,2] by sashiko.
-
-
-This patch (of 2):
-
-DAMON_RECLAIM handles commit_inputs request inside kdamond thread,
-reading the module parameters.  If the user updates the module
-parameters while the kdamond thread is reading those, races can happen.
-To avoid this, the commit_inputs parameter shows whether it is still in
-the progress, assuming users wouldn't update parameters in the middle of
-the work.  Some users might ignore that.  Add a warning about the
-behavior.
-
-The issue was discovered in [1] by sashiko.
-
-Link: https://lkml.kernel.org/r/20260329153052.46657-2-sj@kernel.org
-Link: https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org [1]
-Link: https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org [3]
-Fixes: 81a84182c343 ("Docs/admin-guide/mm/damon/reclaim: document 'commit_inputs' parameter")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.19.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: aa6f4f945b10 ("dmaengine: idxd: fix memory leak in error handling path of idxd_setup_groups")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
+ drivers/dma/idxd/init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- Documentation/admin-guide/mm/damon/reclaim.rst |    4 ++++
- 1 file changed, 4 insertions(+)
-
---- a/Documentation/admin-guide/mm/damon/reclaim.rst~docs-admin-guide-mm-damon-reclaim-warn-commit_inputs-vs-param-updates-race
-+++ a/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -71,6 +71,10 @@ of parametrs except ``enabled`` again.
- parameter is set as ``N``.  If invalid parameters are found while the
- re-reading, DAMON_RECLAIM will be disabled.
- 
-+Once ``Y`` is written to this parameter, the user must not write to any
-+parameters until reading ``commit_inputs`` again returns ``N``.  If users
-+violate this rule, the kernel may exhibit undefined behavior.
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index b782eb3c191d..d9a9d56dd277 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -374,7 +374,7 @@ static int idxd_setup_groups(struct idxd_device *idxd)
+ 		rc = dev_set_name(conf_dev, "group%d.%d", idxd->id, group->id);
+ 		if (rc < 0) {
+ 			put_device(conf_dev);
+-			kfree(group);
 +
- min_age
- -------
+ 			goto err;
+ 		}
  
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-sysfs-dealloc-repeat_call_control-if-damon_call-fails.patch
-mm-damon-core-fix-damon_call-vs-kdamond_fn-exit-race.patch
-mm-damon-core-fix-damos_walk-vs-kdamond_fn-exit-race.patch
-mm-damon-core-validate-damos_quota_goal-nid-for-node_mem_usedfree_bp.patch
-mm-damon-core-validate-damos_quota_goal-nid-for-node_memcg_usedfree_bp.patch
-mm-damon-core-use-time_in_range_open-for-damos-quota-window-start.patch
-docs-admin-guide-mm-damon-reclaim-warn-commit_inputs-vs-param-updates-race.patch
-docs-admin-guide-mm-damon-lru_sort-warn-commit_inputs-vs-param-updates-race.patch
+@@ -399,7 +399,7 @@ static int idxd_setup_groups(struct idxd_device *idxd)
+ 	while (--i >= 0) {
+ 		group = idxd->groups[i];
+ 		put_device(group_confdev(group));
+-		kfree(group);
++
+ 	}
+ 	kfree(idxd->groups);
+ 
+-- 
+2.43.0
 
 
