@@ -1,255 +1,168 @@
-Return-Path: <stable+bounces-232743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLbSA9XqzGk/XwYAu9opvQ
-	(envelope-from <stable+bounces-232743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:52:21 +0200
+	id WKe9KWTpzGk/XwYAu9opvQ
+	(envelope-from <stable+bounces-232744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:46:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D08237807A
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:52:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2036F377ED4
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 098E4300290C
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 09:35:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C782305B344
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 09:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5543845CB;
-	Wed,  1 Apr 2026 09:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D3F3D16E5;
+	Wed,  1 Apr 2026 09:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TXW42sFa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ss2mXuD4"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5F6364036
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 09:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D753AC0ED
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 09:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775036152; cv=none; b=jsYlgSM8qI7nFSkje8KsFTjCY7IHV4/59nbIbNK7dSWYdnk+nkhF9nm6TJATYDTn4JKhGvGq033sS12/bYTeO6ab6WjpDNoM2RLU2+F5umPkYW0RfYe/JKgWH6/tsR8IwxDe6UGOnjE0RbUV/a8CqJa6gCaLZLeldTd7U79840M=
+	t=1775036465; cv=none; b=q4x6Pj/eIW0kvtpEixlDJpjwhzxJirue2ewxDMOlFyqTjiESQ2edz/AMXrisVT68ZFgpLY2XjwMAvoZCJv1Sd6f7dvirGIMlpkks3wo9CPJduXQ8+mFZUhEEGa4ilxpFGJmEoaNJeHwzujg/S0sYEoYLHTkjjzUfVoy7YPuNBic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775036152; c=relaxed/simple;
-	bh=4V/FW6fK6X5i2m7UgvuVEcz+vvW5eTftn0cz50oh42M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D9b9bUhdNXhG++Jnq44rq5X33m9iGdibHTnNYIs23OawLE12u/aHFrKZ1wxkh35VUjanWpV2LQp7NWHmT2zBY23qHmRlu6hXbJs7Nx4BwocqQxrdJmFS+r6XVKMzktoedLIdQTQMi+xHuJc7kvI/kKHkN9Zf1HrRKbrI7DdPJXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TXW42sFa; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <5194cf52-f8a8-4479-a95e-233104272839@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775036148;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FA42hI52ujEO2ZvjmTzgrIggej28Ooo69DQnS/txLtU=;
-	b=TXW42sFanZADGvoENLxUoMiviEyVXa/layMETVbX2HzYh8Zzks5ZKL0I1bfuc9Htc6+z49
-	/VRnEfpdy+FW/jSiFaU0w2cU2YzBsQRAv94FnzJZK8TLfiCKY2VLkSpxjcHVd/gPxbDGPr
-	+voT42sxaqnWmYyBHl2PgXLZBVxuyHI=
-Date: Wed, 1 Apr 2026 17:34:58 +0800
+	s=arc-20240116; t=1775036465; c=relaxed/simple;
+	bh=OYYUWkgCxAQGpQCSIvAQ1bkD3r6IuE5Qn3pidaElBqg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kOO1JU7CktJYYE1beMM6qSKOBzk0M7P2Nc1b/VjvoRkgxo5QWjObP99WOIWtBBKf6GxP3KOcVmOBA9DLHJs9YoO8KILlg4BebmMtFdHBK95EFfif5UugA0jYp189a6qyP4OhrcPImvTPiGkytZe1WXHCoBHocDvrYZtHm035QD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ss2mXuD4; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35da8d037a5so1342385a91.0
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 02:41:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775036461; x=1775641261; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RO4ZhYSZqYOFn/guHJmRqbXOWS6aNnS9NZJLkKz5OII=;
+        b=Ss2mXuD4qD61P+GugJKl1FNimk0k84zHilguKNwscc0FoGm+EOH6VFaKhQSibXg4wC
+         ZXf1B7oDno1nvem7exL0sJ7N6YW7GO2nd/HdpOB/Ks5sx/rbcgqoS5j7qfwcrMAg9PsD
+         dBxRLQwAfZM9KMB8f3JuxE7QHZyhHEsbBRnf4UhgU24rV+chWFhZPVeaMo8to4z/ny0E
+         NP4VPUgX4fCuHHwjGdaoYrJCxi61aTZnJ4+vCgVB4cMUEBrXI914UWybIHpqDoFbVvTA
+         zun2hy/eYeGtStOTnmdinAvHeCiHmzOsp32zflyAiuBOPkTciwbTI/wtR1hF7frtqBBk
+         TrMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775036461; x=1775641261;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RO4ZhYSZqYOFn/guHJmRqbXOWS6aNnS9NZJLkKz5OII=;
+        b=PiO8PlTWiit69Z8ZBM7etqyVs+rTLTyC9BLIR6SdKeEFRNVD6qs60OfMigDrRHoIfM
+         hB2nvuzXpEaKuD5woPCZbOhsNI/X43VJpUvuhy4Be7dW329X2gxZtOLNbwaaMtmHDaiC
+         yzwAzfaxAIBuhmxYUbbB9mglKEsNDJeIKh9DKt317M7H9eSwxgKKOyMuGog3n3maN4Sz
+         hUfokSBeLsfeonJz+l9hvuXF587qdzctA2DqW4dlnfJ1uTsYpRFOFBgP7Zk9h8dYErfW
+         1q2TZPPcHNjK0ocUkJp9pk2enY6jtF/cKRRz8vUBMzZFmxHKlEhTy0Y5DvdhzxQz7n0Y
+         rHuw==
+X-Forwarded-Encrypted: i=1; AJvYcCWM9FHm7v/41RrDggAoHdEFOYmDvZlumiwrxMiibzAZuxeeJ/5/7S+nJptLkRD3pC7OVNI4qYc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtt+hJ7M/q/IrDaQ4ZepgySgkFLMeoVvPM7F8o7S/mgpEwpBTT
+	FOs4TiT5QuvYS6ltWUACBXzvcYz2aXUokyT8OkxtUnNU8g640TjaSc1M6zbBHm3nuVo=
+X-Gm-Gg: ATEYQzza8bapPGVEN0rlF4aWPliB7bjr78RXWi7PjYZgbZJOF6XKtfXbBHrFkL042I6
+	X5JPDZzwsQP1g0sLMtIbnQ5becKnMicZyEHPgeP6wQAIeG925AOepkeB0ECRRKxVE/JE2zjA5v1
+	1wD95jceUGcO7weVC0Tn4bwfvewYyexqKF3lBAFx54VJ7HaEGbB4xhm/epTUz5R4jdjofwy/3WU
+	TeFKojk6r+GNfojhVpDUfpOZNME9KHeHrLkUNNH0WU25aJJWf+DZkWK0rCEEl4X+JIbiDb8u+0B
+	P9zxFj56q8GrBSRuALpcoyfWvVshkfh2kqN13kmmnCBDuIvfa0ghMSIJtOQwfve6Rut4d9Fdg6z
+	2OmvKq7JuAQIfusFQKZyKg6jZb/56QyGTsq+WPryOQmuclrB0wpKyR9CUoSq/6FQa9ZXS6waKq9
+	CDWuJLS7MaVKWvb7J8IfJ4
+X-Received: by 2002:a17:902:7610:b0:2b0:6365:21a9 with SMTP id d9443c01a7336-2b269c3f058mr21308135ad.31.1775036461375;
+        Wed, 01 Apr 2026 02:41:01 -0700 (PDT)
+Received: from lgs.. ([223.80.110.53])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242642913sm140147225ad.10.2026.04.01.02.40.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 02:41:01 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dmaengine: idxd: fix double free in idxd_alloc() error path
+Date: Wed,  1 Apr 2026 17:40:03 +0800
+Message-ID: <20260401094003.1482794-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu
- out of resampler_lock
-To: Sonam Sanju <sonam.sanju@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Vineeth Pillai <vineeth@bitbyteword.org>, Sonam Sanju
- <sonam.sanju@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Vineeth Pillai <vineeth@bitbyteword.org>
-Cc: Dmitry Maluka <dmaluka@chromium.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260323053353.805336-1-sonam.sanju@intel.com>
- <20260323064248.1660757-1-sonam.sanju@intel.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kunwu Chan <kunwu.chan@linux.dev>
-In-Reply-To: <20260323064248.1660757-1-sonam.sanju@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232743-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232744-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kunwu.chan@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 0D08237807A
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2036F377ED4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/23/26 14:42, Sonam Sanju wrote:
-> irqfd_resampler_shutdown() and kvm_irqfd_assign() both call
-> synchronize_srcu_expedited() while holding kvm->irqfds.resampler_lock.
-> This can deadlock when multiple irqfd workers run concurrently on the
-> kvm-irqfd-cleanup workqueue during VM teardown or when VMs are rapidly
-> created and destroyed:
->
->   CPU A (mutex holder)               CPU B/C/D (mutex waiters)
->   irqfd_shutdown()                   irqfd_shutdown() / kvm_irqfd_assign()
->    irqfd_resampler_shutdown()         irqfd_resampler_shutdown()
->     mutex_lock(resampler_lock)  <---- mutex_lock(resampler_lock) //BLOCKED
->     list_del_rcu(...)                     ...blocked...
->     synchronize_srcu_expedited()      // Waiters block workqueue,
->       // waits for SRCU grace            preventing SRCU grace
->       // period which requires            period from completing
->       // workqueue progress          --- DEADLOCK ---
->
-> In irqfd_resampler_shutdown(), the synchronize_srcu_expedited() in
-> the else branch is called directly within the mutex.  In the if-last
-> branch, kvm_unregister_irq_ack_notifier() also calls
-> synchronize_srcu_expedited() internally.  In kvm_irqfd_assign(),
-> synchronize_srcu_expedited() is called after list_add_rcu() but
-> before mutex_unlock().  All paths can block indefinitely because:
->
->   1. synchronize_srcu_expedited() waits for an SRCU grace period
->   2. SRCU grace period completion needs workqueue workers to run
->   3. The blocked mutex waiters occupy workqueue slots preventing progress
->   4. The mutex holder never releases the lock -> deadlock
->
-> Fix both paths by releasing the mutex before calling
-> synchronize_srcu_expedited().
->
-> In irqfd_resampler_shutdown(), use a bool last flag to track whether
-> this is the final irqfd for the resampler, then release the mutex
-> before the SRCU synchronization.  This is safe because list_del_rcu()
-> already removed the entries under the mutex, and
-> kvm_unregister_irq_ack_notifier() uses its own locking (kvm->irq_lock).
->
-> In kvm_irqfd_assign(), simply move synchronize_srcu_expedited() after
-> mutex_unlock().  The SRCU grace period still completes before the irqfd
-> goes live (the subsequent srcu_read_lock() ensures ordering).
->
-> Signed-off-by: Sonam Sanju <sonam.sanju@intel.com>
-> ---
-> v2:
->  - Fix the same deadlock in kvm_irqfd_assign() (Vineeth Pillai)
->
->  virt/kvm/eventfd.c | 30 +++++++++++++++++++++++-------
->  1 file changed, 23 insertions(+), 7 deletions(-)
->
-> diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
-> index 0e8b8a2c5b79..8ae9f81f8bb3 100644
-> --- a/virt/kvm/eventfd.c
-> +++ b/virt/kvm/eventfd.c
-> @@ -93,6 +93,7 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
->  {
->  	struct kvm_kernel_irqfd_resampler *resampler = irqfd->resampler;
->  	struct kvm *kvm = resampler->kvm;
-> +	bool last = false;
->  
->  	mutex_lock(&kvm->irqfds.resampler_lock);
->  
-> @@ -100,19 +101,27 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
->  
->  	if (list_empty(&resampler->list)) {
->  		list_del_rcu(&resampler->link);
-> +		last = true;
-> +	}
-> +
-> +	mutex_unlock(&kvm->irqfds.resampler_lock);
-> +
-> +	/*
-> +	 * synchronize_srcu_expedited() (called explicitly below, or internally
-> +	 * by kvm_unregister_irq_ack_notifier()) must not be invoked under
-> +	 * resampler_lock.  Holding the mutex while waiting for an SRCU grace
-> +	 * period creates a deadlock: the blocked mutex waiters occupy workqueue
-> +	 * slots that the SRCU grace period machinery needs to make forward
-> +	 * progress.
-> +	 */
-> +	if (last) {
->  		kvm_unregister_irq_ack_notifier(kvm, &resampler->notifier);
-> -		/*
-> -		 * synchronize_srcu_expedited(&kvm->irq_srcu) already called
-> -		 * in kvm_unregister_irq_ack_notifier().
-> -		 */
->  		kvm_set_irq(kvm, KVM_IRQFD_RESAMPLE_IRQ_SOURCE_ID,
->  			    resampler->notifier.gsi, 0, false);
->  		kfree(resampler);
->  	} else {
->  		synchronize_srcu_expedited(&kvm->irq_srcu);
->  	}
-> -
-> -	mutex_unlock(&kvm->irqfds.resampler_lock);
->  }
->  
->  /*
-> @@ -450,9 +459,16 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
->  		}
->  
->  		list_add_rcu(&irqfd->resampler_link, &irqfd->resampler->list);
-> -		synchronize_srcu_expedited(&kvm->irq_srcu);
->  
->  		mutex_unlock(&kvm->irqfds.resampler_lock);
-> +
-> +		/*
-> +		 * Ensure the resampler_link is SRCU-visible before the irqfd
-> +		 * itself goes live.  Moving synchronize_srcu_expedited() outside
-> +		 * the resampler_lock avoids deadlock with shutdown workers waiting
-> +		 * for the mutex while SRCU waits for workqueue progress.
-> +		 */
-> +		synchronize_srcu_expedited(&kvm->irq_srcu);
->  	}
->  
->  	/*
+When dev_set_name() fails after device_initialize(), idxd_alloc()
+calls put_device(conf_dev).
 
-Building on the discussion so far, it would be helpful from the SRCU
-side to gather a bit more evidence to classify the issue.
+For these devices, conf_dev->type is set from idxd->data->dev_type,
+which resolves to dsa_device_type or iax_device_type, and both use
+idxd_conf_device_release() as their release callback.
 
-Calling synchronize_srcu_expedited() while holding a mutex is generally
-valid, so the observed behavior may be workload-dependent.
+That release callback frees idxd, idxd->opcap_bmap, and releases
+idxd->id, but the current error path then frees those resources again
+directly, causing a double free.
 
-The reported deadlock seems to rely on the assumption that SRCU grace
-period progress is indirectly blocked by irqfd workqueue saturation.
-It would be good to confirm whether that assumption actually holds.
+Keep the cleanup in idxd_conf_device_release() after put_device() and
+avoid freeing idxd-managed resources again in idxd_alloc().
 
-In particular:
+Fixes: 46a5cca76c76 ("dmaengine: idxd: fix memory leak in error handling path of idxd_alloc")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/dma/idxd/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-1) Are SRCU GP kthreads/workers still making forward progress when
-the system is stuck?
-
-2) How many irqfd workers are active in the reported scenario, and
-can they saturate CPU or worker pools?
-
-3) Do we have a concrete wait-for cycle showing that tasks blocked
-on resampler_lock are in turn preventing SRCU GP completion?
-
-4) Is the behavior reproducible in both irqfd_resampler_shutdown()
-and kvm_irqfd_assign() paths?
-
-If SRCU GP remains independent, it would help distinguish whether
-this is a strict deadlock or a form of workqueue starvation / lock
-contention.
-
-A timestamp-correlated dump (blocked stacks + workqueue state +
-SRCU GP activity) would likely be sufficient to classify this.
-
-Happy to help look at traces if available.
-
-Thanx, Kunwu
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index 4eff74182225..94ce52565e7a 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -635,7 +635,7 @@ static struct idxd_device *idxd_alloc(struct pci_dev *pdev, struct idxd_driver_d
+ 
+ err_name:
+ 	put_device(conf_dev);
+-	bitmap_free(idxd->opcap_bmap);
++	return NULL;
+ err_opcap:
+ 	ida_free(&idxd_ida, idxd->id);
+ err_ida:
+-- 
+2.43.0
 
 
