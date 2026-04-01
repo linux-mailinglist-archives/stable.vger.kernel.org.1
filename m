@@ -1,189 +1,144 @@
-Return-Path: <stable+bounces-232866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBIMN0ePzWn4ewYAu9opvQ
-	(envelope-from <stable+bounces-232866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 23:33:59 +0200
+	id +E1cCB6TzWklfAYAu9opvQ
+	(envelope-from <stable+bounces-232867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 23:50:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D821380A09
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 23:33:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F90B380B77
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 23:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F7CC303B2D0
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 21:33:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BF233305CA55
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 21:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7F032A3E1;
-	Wed,  1 Apr 2026 21:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76C53A6B8B;
+	Wed,  1 Apr 2026 21:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="U2TZJRKE"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oRoFhmas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEECF2673B0;
-	Wed,  1 Apr 2026 21:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E293A383B;
+	Wed,  1 Apr 2026 21:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775079232; cv=none; b=a2Mr0IZYxSXtCq/Cxd0BwscLmtv1sJoE0RrtdrsnsSG8+F7jeeYwbdbZMv9mCZMtQ9ZG+vqyUF+FsgFgCMz2qcZNNiIj4gCn7ElZHz4oLA4tWdR6fJJofitbb9FBL0ddfi8tQivR8ulv+CBcXKdgqlzAd+bariy9Lis+6mEw/yk=
+	t=1775080120; cv=none; b=kabHktmUbI0sIraEV/zhudZZITtyyBnIu/cJkRPUAhuhN73O47DVmlBfpGhcXjixUibTtSsn1L/wk5LvfnbQTyBMTkXxWCYxyeuFkUJdVRCe3NIr72nmhsrpTAItuAzLz7wp8rd6raHGy7AVAqzAixhzW+rVc6SZ1G41edrfdgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775079232; c=relaxed/simple;
-	bh=mWMxSmnlBADZ27xepfqTEImAm/Tn25hFSaGEnX3CeL4=;
-	h=Date:To:From:Subject:Message-Id; b=Md3mA2BsMlAosWkNFjmRhoReIxqUoTmqPQE6SMzwXHjnECcFliXu6BjZETmo22cmZJhwBI4wx+gcMLFfX+kn/Xgvg0Cfp/OeD7gzMEph9TJDYzQchRJ3j8ctSCyH/zOp4xFZ3BkcMThG37aU4fG5kS4/9TEnEi+gNH8ObF/zFo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=U2TZJRKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41316C4CEF7;
-	Wed,  1 Apr 2026 21:33:52 +0000 (UTC)
+	s=arc-20240116; t=1775080120; c=relaxed/simple;
+	bh=DNJaCNZdFC80zGgJFtAuVlv2J8uV9wtsJdfASUh6qrI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=p6TurSvwE38rugn5iPKmkf97zf5uUH62j9GauKd7saOrAF8yeyVZW87+Bs98KfiOlSoaXiuPGR2JVHmv+UEG8suRqcCrGZq2eazWj/CVO39XP6FeDVe4oKWMDupTav1ey+wE7MFlhwaRKL6ex7Kp1ZZMLqKiwSd3lYW9sW0lOf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oRoFhmas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F860C4CEF7;
+	Wed,  1 Apr 2026 21:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775079232;
-	bh=mWMxSmnlBADZ27xepfqTEImAm/Tn25hFSaGEnX3CeL4=;
-	h=Date:To:From:Subject:From;
-	b=U2TZJRKEKkFbcQmiql+98Z/q19iySqjlJ5q6zIT3B3dX5U7eRZNAjlaAIZA+ycDjs
-	 X4MiYQu2p951N3GLl/pXYDumXz+64AsNLfo8G1X7InmpFX/7B/XyjDcoULxFDubZJq
-	 NjRRUp+6y1v24SHz3hdg0bcCVXtHDcjVePeQ0yps=
-Date: Wed, 01 Apr 2026 14:33:51 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,gality369@gmail.com,akpm@linux-foundation.org
+	s=korg; t=1775080120;
+	bh=DNJaCNZdFC80zGgJFtAuVlv2J8uV9wtsJdfASUh6qrI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oRoFhmasNi1W+kf51MBZlPjvlrcjkvN/UGWInXlI3S+Xz5+GenIfIzdHhFXX6Y2H8
+	 cMdQlm83BYIK82l+hreGER6Wn1Ati6ozJ00tJig6GLJiyT3A3oRrpFfEljAk51Azdh
+	 JFOu1iTB0R4bpScWLf39NP376IFOGgRPRDgRV4a8=
+Date: Wed, 1 Apr 2026 14:48:38 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-handle-invalid-dinode-in-ocfs2_group_extend.patch added to mm-nonmm-unstable branch
-Message-Id: <20260401213352.41316C4CEF7@smtp.kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: david@kernel.org, ljs@kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, richard.weiyang@gmail.com, usama.arif@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kartikey406@gmail.com,
+ syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH mm-unstable 1/1] mm: fix deferred split queue races
+ during migration
+Message-Id: <20260401144838.e07cebebb625b2810257c2ec@linux-foundation.org>
+In-Reply-To: <20260401131032.13011-1-lance.yang@linux.dev>
+References: <20260401131032.13011-1-lance.yang@linux.dev>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232866-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232867-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,live.cn:email,suse.com:email]
-X-Rspamd-Queue-Id: 2D821380A09
+	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,linux.alibaba.com,oracle.com,redhat.com,arm.com,intel.com,gmail.com,sk.com,gourry.net,linux.dev,kvack.org,vger.kernel.org,syzkaller.appspotmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,a7067a757858ac8eb085];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:mid,appspotmail.com:email]
+X-Rspamd-Queue-Id: 8F90B380B77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed,  1 Apr 2026 21:10:32 +0800 Lance Yang <lance.yang@linux.dev> wrote:
 
-The patch titled
-     Subject: ocfs2: handle invalid dinode in ocfs2_group_extend
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-handle-invalid-dinode-in-ocfs2_group_extend.patch
+> From: Lance Yang <lance.yang@linux.dev>
+> 
+> migrate_folio_move() records the deferred split queue state from src and
+> replays it on dst. Replaying it after remove_migration_ptes(src, dst, 0)
+> makes dst visible before it is requeued, so a concurrent rmap-removal path
+> can mark dst partially mapped and trip the WARN in deferred_split_folio().
+> 
+> Move the requeue before remove_migration_ptes() so dst is back on the
+> deferred split queue before it becomes visible again.
+> 
+> Because migration still holds dst locked at that point, teach
+> deferred_split_scan() to requeue a folio when folio_trylock() fails.
+> Otherwise a fully mapped underused folio can be dequeued by the shrinker
+> and silently lost from split_queue.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-handle-invalid-dinode-in-ocfs2_group_extend.patch
+Thanks.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
+> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
+> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
+> Cc: <stable@vger.kernel.org>
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+I'll add this to mm-unstable with a plan to move it into the current
+mm-stable batch in a few days.  So that 8a8ca142a488 and this
+follow-up fix stay in the same bundle.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> [ Backport note ]
+> This patch is a follow-up fix for 8a8ca142a488 ("mm: migrate: requeue
+> destination folio on deferred split queue"), which is currently only in
+> mm-stable, and should be backported together with it.
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+As far as I understand it, this should happen automatically. 
+8a8ca142a488 has cc:stable, this patch has Fixes:8a8ca142a488 and
+also cc:stable.
 
-------------------------------------------------------
-From: ZhengYuan Huang <gality369@gmail.com>
-Subject: ocfs2: handle invalid dinode in ocfs2_group_extend
-Date: Wed, 1 Apr 2026 17:23:03 +0800
-
-[BUG]
-kernel BUG at fs/ocfs2/resize.c:308!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-RIP: 0010:ocfs2_group_extend+0x10aa/0x1ae0 fs/ocfs2/resize.c:308
-Code: 8b8520ff ffff83f8 860f8580 030000e8 5cc3c1fe
-Call Trace:
- ...
- ocfs2_ioctl+0x175/0x6e0 fs/ocfs2/ioctl.c:869
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
- x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
- ...
-
-[CAUSE]
-ocfs2_group_extend() assumes that the global bitmap inode block
-returned from ocfs2_inode_lock() has already been validated and
-BUG_ONs when the signature is not a dinode. That assumption is too
-strong for crafted filesystems because the JBD2-managed buffer path
-can bypass structural validation and return an invalid dinode to the
-resize ioctl.
-
-[FIX]
-Validate the dinode explicitly in ocfs2_group_extend(). If the global
-bitmap buffer does not contain a valid dinode, report filesystem
-corruption with ocfs2_error() and fail the resize operation instead of
-crashing the kernel.
-
-Link: https://lkml.kernel.org/r/20260401092303.3709187-1-gality369@gmail.com
-Fixes: 10995aa2451a ("ocfs2: Morph the haphazard OCFS2_IS_VALID_DINODE() checks.")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/resize.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
---- a/fs/ocfs2/resize.c~ocfs2-handle-invalid-dinode-in-ocfs2_group_extend
-+++ a/fs/ocfs2/resize.c
-@@ -303,9 +303,13 @@ int ocfs2_group_extend(struct inode * in
- 
- 	fe = (struct ocfs2_dinode *)main_bm_bh->b_data;
- 
--	/* main_bm_bh is validated by inode read inside ocfs2_inode_lock(),
--	 * so any corruption is a code bug. */
--	BUG_ON(!OCFS2_IS_VALID_DINODE(fe));
-+	/* JBD-managed buffers can bypass validation, so treat this as corruption. */
-+	if (!OCFS2_IS_VALID_DINODE(fe)) {
-+		ret = ocfs2_error(main_bm_inode->i_sb,
-+				  "Invalid dinode #%llu\n",
-+				  (unsigned long long)OCFS2_I(main_bm_inode)->ip_blkno);
-+		goto out_unlock;
-+	}
- 
- 	if (le16_to_cpu(fe->id2.i_chain.cl_cpg) !=
- 		ocfs2_group_bitmap_size(osb->sb, 0,
-_
-
-Patches currently in -mm which might be from gality369@gmail.com are
-
-ocfs2-validate-bg_list-extent-bounds-in-discontig-groups.patch
-ocfs2-handle-invalid-dinode-in-ocfs2_group_extend.patch
-
+There's enough info here for the -stable people to figure it out!
 
