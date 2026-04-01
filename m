@@ -1,173 +1,191 @@
-Return-Path: <stable+bounces-232758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMj7NI/8zGnRYgYAu9opvQ
-	(envelope-from <stable+bounces-232758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:07:59 +0200
+	id yBVTLkr/zGnRYgYAu9opvQ
+	(envelope-from <stable+bounces-232759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:19:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B2D379187
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17EE1379424
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39BE130989EA
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 11:04:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 965BB303C293
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 11:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC363F786C;
-	Wed,  1 Apr 2026 11:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEA43D0903;
+	Wed,  1 Apr 2026 11:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n5V5aRTm"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="A33Hs1VS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136F63264F4
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 11:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775041353; cv=none; b=oAE7igodiy/1o9c7X7Xqc1vMdUgcoGBmh7QpLQo89+J+x7eckRFuQswgGdGnmoOJtG+zlHBi9XggD3BVbSLr4tXr7tldb4L2+U+IwiznsVD4GT99n8h4OlNV/kdn+vM1xpJEnmdnQjTVn11ibrakUuzP23XN/Ye0c2OnsKfm3SQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775041353; c=relaxed/simple;
-	bh=SbqRNhVI3Sgg9eZpNawZvYKHn4MdY9ZbL6RY8LFSIjw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cgkaSfGUzF8N1B4jR/I91TIJDfN6uDrBWQ4idGRcAXXSWpVSzayFGuzbXvWC6z+hOH8qgut+q2htzp9e+s9kKUzDp8VUvTRH418mbPq2WZlbQF6V+Q6Cz+HQZEIBvNdFe7B/HymVoedZ/Hu6jGykUeWjQNtiIdP6DWIoOkUd8uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n5V5aRTm; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35d96be7c13so590247a91.0
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 04:02:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ABF3CCA0C
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 11:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775042073; cv=pass; b=VPzZuIAkCY0VfH1utIsXvrs8AUQN33fGPrwWDG7MS/AYzPfX2d4QuQqT9TPyKoe6YPFRiX06YERoGS8rGR1qn7bknxBqX9c7Mt3CnWLetk+99f1gkWHxzO5PSr5xZ+qXo+IKHlBhOtVVqwnrIvkynH35BEstdMEF4leiHubKQng=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775042073; c=relaxed/simple;
+	bh=pc5H36RuEHckCC4rxZiHAV25J1O0MfCUQosX2L+946Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OZp6wsIotQkvsh5tBkZxarmKkka4kI0+A+OvYzzcs7IucDvvcZcEI/9SGo+ZOJcRqUVT0PUItQz8Zelfz/PlWek+s6O3eeM6MDAF0YdnaIcHYa8hxZkgWUxm0Rv94CWe6qIy2tHOXPxAa8QU+20iqz4yjAxFlBKidWv3udMr5Ac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=A33Hs1VS; arc=pass smtp.client-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-128ebee22caso393573c88.0
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 04:14:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775042071; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Qv6feF5eJhaxIj/09471prDqGf/Ycbbt5kw8M7LG7zLfd7OO3N+2i6z7/OWyYLyhT9
+         57HLFBy0Ons1QFhljwGByasbonfRAMpqmYEEjL903ForAL/H3yOgoRyXGtV/CaBgZhOt
+         U8Nt0oukTMRLk7NhiyAjD93JgbBCq8SUngtXSnBfXIqSBl6aT2u6Yor4kOWmSsoc0eyj
+         PAkcZ2EJy6W6wO4OeVRnYrg4grnFj2CPc2rYTiXqoKpKsITDOAHaGQUFPFXN+bOIgXzA
+         f4aaGZ8FYUqStIuLNpU2nR56S4b6PnD7EOK3BTBzf3Ge2nevQ5VsBR0Nuqi/KkipAG+V
+         q3eQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tZhdqGF0+1HrQa1yHew2N2aXTxqOA/y8rCZpynRhAAg=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=END9Qe6McDrb58ch24Wa4Xah1tGOe6M1YB23ByKS0vyiBC4nrxs3BCNRmonUnSzH/P
+         67U2MOFaKCq9PMSgUatVgNDxCM7tAF1ukS4yT30NFZ6AAm3UcLONvHJCRu5p8TcQELbz
+         TsV4SmjczJKWmOf+FNCrR2zoswTnWbCbee32tbw1/3XqOaDhkVXadMOmQqwdFPXOrT0b
+         i4YZe8/hvReIaRe9jmO6y9P9cbjZQAXNN28pW5oyDstkQtftaBDyPR1Lt8b70ZiHEP+z
+         zPBkId0oOeswYwpFY8GT03JhBp2igBd5FBenq/KS4shD3MwG+ffDqEmhzTyUbG/qdgIs
+         iRZw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775041351; x=1775646151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HirRrF/8RjBfg411Yn+GABwevBrUwvnGEoVcLWmnLPc=;
-        b=n5V5aRTmgjSYRFS/JeajMKCd6eVvqsLLjjalILqW2n0U18iqBWgZHt7RU23L2RP0jd
-         1g+AG9MtgVT4AG5U4p+mqtXpR/dCvNSl50YJjuSCq6eApt89SnTQV6zqwkqPfh8pS+R/
-         WQQCCt3j8fSjrD4tRuUcxBe1goOS8PJotNXyJY98J1GE66kZUb7FCBHKMhAN7rs2ijtd
-         tzcu3X17j1hhiQr2moYaTY742SuL9WSH5C7UmXQlFhxL/tTESRsuysVAbgJMezGecOQM
-         s9fFun3mn0Wu3Q2Lrd4cGGAcG4btaQHvi3Wa1qVRhcDBn5LRgJX0iijtjUXPmxJ8374S
-         ZtXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775041351; x=1775646151;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=futuring-girl.com; s=google; t=1775042071; x=1775646871; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HirRrF/8RjBfg411Yn+GABwevBrUwvnGEoVcLWmnLPc=;
-        b=RZin0DpsN27jJXiN38TT4471LYazl4xUUQAFbbzedite/ixLbbcuTD100jgty7BIV8
-         mn9ocYQKIGyxvKHqLCcom3c25ISr7oKU79cmxuKwivKFZTRgzuwSTkFuFb7GgrQkXBW6
-         znCJOJorG/Bee3fP5k4cFSkG4m6cg4G48pC9EhmzL/7OK6oI0Qr3W3z/77expz9l25SI
-         ntWQvLob7JXJXMnem59vaSDXGKkxd1WqqHQD0CBIYbfDkJTCx4J5cbpiUVOtiakMx3Jj
-         1mFfvZkbaPDE796UVsEUapwvO7lT8JhTWIAZRbHjeX8zIYHE4ngH8Wlp9nIpL5pbGjyx
-         E5Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCWZebk1r7k0JlShyD/EdhQ9WYz4UZK5gTsTXnHfRdTtB2d1hDV9HQCT/zd6972SVXHzubXvry4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCoLtutc860rGUo3S1eqN61R3yq2fTy8LC6OOutMS5f3NoLeCa
-	MMkHN6ztNQp0fuLsT/h6ZuY9USLAIQgTv8n5PPSFCOJDUxzJsYBwExLkHcynlANSmcU=
-X-Gm-Gg: ATEYQzz4n1OEq53gVvxbeXw9VGeGgVJgMeNrR8/Xxrqq5o2YpNSxKRsUv9mBAuOaQs3
-	IjZensQ8ihygYbAlwEDwGdQQ6UP8dmunF9ZgQVYUcaCf9rInsJ6vv1z5fqYDyBcbUKzVc6hFi+Q
-	tVmJSmqeCwAsyZuKfGi6dgFcTBo/f+hWxNQn3xJw8xeWjbL8a1pH2bptTdI7l+kFbCZ+WESDqTl
-	2zp/+6RmiuWRseGtvFhMSIaBJOn6nVU/TqFSJ1/qZ21pHU9iepzCfFca2KqhZhEJ4VuI9nK40fm
-	G8ZBtkMraFH3UehErZW0fWDGfKfFJW+yoaA1DpKJDkhho34+O52fnTiOokLOO8CEScgkQ1uE74+
-	S2SGSfak288JTQedGoXxMNdpbRs5bexo1lvZ2FDBG1BezaShmXhBxcEHM0aRs3Y2Mn0TuSvootH
-	W5LzWB1aswElR6Oaw=
-X-Received: by 2002:a17:90b:1d03:b0:35b:9d0c:a2f3 with SMTP id 98e67ed59e1d1-35dc7027dbemr2379083a91.15.1775041351018;
-        Wed, 01 Apr 2026 04:02:31 -0700 (PDT)
-Received: from lgs.. ([199.182.234.55])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe977031sm4604626a91.17.2026.04.01.04.02.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 04:02:30 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] btrfs: fix double free in create_space_info_sub_group() error path
-Date: Wed,  1 Apr 2026 19:02:19 +0800
-Message-ID: <20260401110219.1517804-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=tZhdqGF0+1HrQa1yHew2N2aXTxqOA/y8rCZpynRhAAg=;
+        b=A33Hs1VS9/6RamNSOgPiVIxm4WT+VlyN3M0k2wkkIbeOV45zZ9Jm76kh7YQdJ5Wr37
+         s05nQkcccAIaqtP6yUYxlzsKFT885Fr1cXLWBMryKWeFQowjliX1717dj26EuNid73TL
+         CJ7Oe3iJDPc66utYgHGJ0Y2M1aufd1WpF+Y4ZcDlSaWM9DZIjlGjKCAM7kAb73SQ6RIQ
+         +PkptlRRiLezigGvIjQUCNoF1dC3llX6uML3S6aC7TaE+/IUIBJx/w8yvsqah2EAjRRJ
+         pZVLoyDvw/ZhmiyR1OVYk4IG+sOxLNoak9CuvHRUqEByz8R4xNUwMlD3nZtEDFLA3cFb
+         6/Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775042071; x=1775646871;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tZhdqGF0+1HrQa1yHew2N2aXTxqOA/y8rCZpynRhAAg=;
+        b=WzTDdokW7ptHiXCxn0oXy/0OZTHeDMEivRw9ZuVk4hcgff1s56HdBjPkfBlKYTel5K
+         9Jh3LezUkbR7lm2Ba34fZSrMuN2z4WH7b5BxOqF6lh9+uHfKK2AVwDMFDGCdBnylqB9e
+         fCDVP4g6dbVb1dZ4TRbE4DoD3dD4U80jJ85slyBjN+eLY6QW3VUGPsmYe8TIuQfvt3Vy
+         +wUPyFhWM1cmEclBfXMS3w80GugbRdtFiskN9fnt23KTlbmy5y3/r9MlFw4IeD+Rzqyt
+         evIEl8u5nnObqFYTd1vT+HAPEJowTmU9vYDZRUqu5XRSDfCWG9fam2UrqnKJ3VIfv/PP
+         Wg4w==
+X-Gm-Message-State: AOJu0YxE25TwFQx4u7YdPgJEwaQnoEqRI42pREfdKd2AJFMPtzGqSP4G
+	VoJgSOr3kPeygcfgNxxgUs6T8HEnphTRVMR7xkB5YUjEhA0wLFabITg/4vygLi+1zRBBfKXEGg3
+	uq2vrPppsBIYnHNPorw7KMeIuQVHl4e5nS33Z0SD/FQ==
+X-Gm-Gg: ATEYQzwUn35N6jh2KeKTvwxkLTs7WOuVbyzMD/W6IsFZi4m8yBobdcl0EzrsIg8eS7f
+	esZyH9LHOwcarv2Jmx54IjGOHjckGWzd28HyfWZtjh5l+RqJrfWgrRivvaalRbr9yvJ7oaYL9R+
+	0UzcLlARKNFnkN+aHffe2sv+qKT2ud4UEz2YzDoMqrC/dyE3zk+ED7uRxW0bhaN038PguSffn3v
+	TIJs68y4QxY7niv6aqerAANejQ7NSXGW0U0K2fG+GaI/UX2/1rMXjqRiF8j+OeEmQvKLsL2fVRr
+	UhfcHwf7
+X-Received: by 2002:a05:7022:6720:b0:11b:b179:6e17 with SMTP id
+ a92af1059eb24-12be65988efmr1913619c88.34.1775042070889; Wed, 01 Apr 2026
+ 04:14:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Wed, 1 Apr 2026 20:14:14 +0900
+X-Gm-Features: AQROBzCcWjpIDbqMiVDnMHwjdZ3Du7329NtkcMVFmn20aZQ4M0bdNteoauZCp2s
+Message-ID: <CAKL4bV6wXdd-FRft9p69+LDNfw6=yarXgRAmNVZTE6PYLW0kNA@mail.gmail.com>
+Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[futuring-girl.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[futuring-girl.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-232758-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232759-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[takeshi.ogasawara@futuring-girl.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[futuring-girl.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 67B2D379187
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,mail.gmail.com:mid,thinkpadx1gen10j0764:email]
+X-Rspamd-Queue-Id: 17EE1379424
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When kobject_init_and_add() fails, the call chain is:
+Hi Greg
 
-create_space_info_sub_group()
--> btrfs_sysfs_add_space_info_type()
--> kobject_init_and_add()
--> failure
--> kobject_put(&sub_group->kobj)
--> space_info_release()
--> kfree(sub_group)
+On Wed, Apr 1, 2026 at 2:01=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.19.11 release.
+> There are 342 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.19.11-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Then control returns to create_space_info_sub_group(), where:
+6.19.11-rc1 tested.
 
-btrfs_sysfs_add_space_info_type() returns error
--> kfree(sub_group)
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Thus, sub_group is freed twice.
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-Keep parent->sub_group[index] = NULL for the failure path, but after
-btrfs_sysfs_add_space_info_type() has called kobject_put(), let the
-kobject release callback handle the cleanup.
+[    0.000000] Linux version 6.19.11-rc1rv-g411f8a553ae8
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20260209, GNU ld (GNU
+Binutils) 2.46) #1 SMP PREEMPT_DYNAMIC Wed Apr  1 19:21:05 JST 2026
 
-Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- fs/btrfs/space-info.c | 1 -
- 1 file changed, 1 deletion(-)
+Thanks
 
-diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
-index d7176eb2fcbf..f5d0f587b755 100644
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -277,7 +277,6 @@ static int create_space_info_sub_group(struct btrfs_space_info *parent, u64 flag
- 
- 	ret = btrfs_sysfs_add_space_info_type(sub_group);
- 	if (ret) {
--		kfree(sub_group);
- 		parent->sub_group[index] = NULL;
- 	}
- 	return ret;
--- 
-2.43.0
-
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
