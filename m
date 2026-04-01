@@ -1,111 +1,81 @@
-Return-Path: <stable+bounces-232760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAW2E7kDzWnhZQYAu9opvQ
-	(envelope-from <stable+bounces-232760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:38:33 +0200
+	id oLrIDhMGzWkjZgYAu9opvQ
+	(envelope-from <stable+bounces-232761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:48:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5469B3799A3
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:38:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE7B379C2A
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E7EEB30FD8AC
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 11:24:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 62C4D317D549
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 11:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4278D3F99CD;
-	Wed,  1 Apr 2026 11:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D973F211C;
+	Wed,  1 Apr 2026 11:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O2lw5rKz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cb38F6uk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC433F20E2
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 11:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C1B375ADF;
+	Wed,  1 Apr 2026 11:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775042618; cv=none; b=VTtXczilurW13uzqlC1WMuhclRU6PEP2ieejpzCIZcpRJBetmXxclb3ISRrccKXcxJ5NIR1bHnxoDb4F8ZTHBrX2WCGqDcmlviFCIDj54mM0EEY9bBDpQ7mTT58hND7X+SERdeu4e/yuKZHQRTtR4JxwuQCWDwKajbOAvFQWL9E=
+	t=1775042898; cv=none; b=Zd99/amEagqqvm0JG/KNqWrueUYPBplsMZe5AmFC4lOsnELl4sEj9TE0wcOdHINrHg5G4hte1jhPEjxj1yA87sTySgVLha6eIbNkbb2nvl3+zNWo00enmwGEuxYjsih35L7+GwOKAQvOpapkawU+Wc1UsvDNQSScBA1T2Evgs6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775042618; c=relaxed/simple;
-	bh=tZ1qpc9jFWedWE8AwUzwx8Nqnc2oEi5R0JG7PTZIt4s=;
+	s=arc-20240116; t=1775042898; c=relaxed/simple;
+	bh=B488BqTIOeJwl6zVePCpf2OvVSlVrzzJr95UEVo0X/s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o7Be6tCY/K7Vwdy0uCL+9e2qxA0izXup3la/r4mcanv2lGjfpI4yzOTlQ6MxVvTopD7RXFDobuYiGiTGZyhQdp75J7q5OIbzDAiEXVvywI2cIXRVPqV5pq7qAeio1bXjgqELFEN04cPTEiVSfp5P65VP7zGRYKECpek5Fh9Xuds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O2lw5rKz; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b0b260d309so166085ad.1
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 04:23:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775042616; x=1775647416; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+wLwW3RwfZlMNchucl4Q1BjkgKkbbVmuqcbZXsSlons=;
-        b=O2lw5rKzv5GpIGsoYjagOB45bkJh4I6JgxIli2awfnFsT4t1c1hSmMgmvdMgOMnbBz
-         fac3oVn3+cPk/wgYD/paypKWKshVQ3jW+Anq1DNfujtYscj9oc4gFEe4UmN8H2vLQFLd
-         7R19rZxz+bD42Ax4Z4gtobCRM4PM5pFNSa5+/mulVOkKrrVMrv5XofTCNTphAq92ajn8
-         LTPc5Jt9Y0uxNfv4/2aC6ILm+/N3n/tFOjZRtBa5XJr1oBQpUtKS6NzA4rAXq79zOJjU
-         4pHuRh86tdRXZpbznTW2n6784yHtHCr1GPvK+C7Z35eni6kIfPyW2bxeHxhynIQ5aGz3
-         SclQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775042616; x=1775647416;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+wLwW3RwfZlMNchucl4Q1BjkgKkbbVmuqcbZXsSlons=;
-        b=atGhSJagHh5AwAT3y3xVFxyInrysls0C0HR62NOxXlFtMqFOZmul13lmuhv04frZ2u
-         Tm/7AV0TBBOGZC337m/GGDrFddERtBikxl443TDTxeKcn0JRXESq3JU6VlMSBgXLkQvs
-         NM09rvfwSnQrj14xnWXAoTQ3G3VKd2kb2PhccNE2JKEReskFzydOEN69bdFNq1zKbYl4
-         OjVO8PZiMJaDnNPlHv46n7i2hmvNgPqJf44fct7RKvdHWBtkGLo+xQ1GMRxjPa9b1Ms5
-         xQVbZwntDmFv487vbAAkVsxhupZi+dekYxhGQOz6w0MrwZqmYVPeM9TwcR343F+4RHwI
-         AUIw==
-X-Forwarded-Encrypted: i=1; AJvYcCWS5HaDN0czRtnbEyTmkoJ+IqaQOzyOVSZ/ixn9NBXl1+ljbxAJdCblXL99wSIe/DBqEOD/r7Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHV69tCVzHNGp0w3j3aW3ZgCkK1rKuKAgtHRIMBb6jclQ1kWSF
-	98lFD9GrkgIuOEvoPKWUR5WiuH+uQA/9Law3r03c0wVMHqflnVzD5FUzQWCumc8idg==
-X-Gm-Gg: ATEYQzxbnRz3i4SL9uHva83L2UP8+Nhsyb3CuedHjqEwFmPsH04r6EFLZjc1AcUNNMC
-	W1e9xdCDsAntVnm9+qKxvoB5FdJvgz/yHSoEz5SDCslx+yQK305zrvP2DoDBmFoZWQVJWHFUcde
-	nshYpT6sqHLXizxPUzpD8QxnGb5Zgrlxfum8d6FncTKH7ZyPetJmWq2rn2zYoKL8erBp2IGt6CZ
-	WF6QsRCJn824BmrW7lXY3HYkvtFNndjPhynvjjXApAT7N0NbvXRiYqMiPUH8bPixjC+FogIZfDd
-	zD870hjxJ4XvugYf40euXLt/t8Yn/L8x/fY86cC87z8Rqyn0c4arXsmpzeMFkgoK/Yn9QLLHwAn
-	GlefUesk9rSY6Mp7J/ya5QE9F5GgAZsAMOuSwWFcNlL/vDv/yUK0i/tV3z/omZkYgJSdEW47HMN
-	e4WCCG+kRI6uEC+GXR7Sq7f3CPQVp3GIhCOsgX8o733/w6t1Ng8K6EMn+enw==
-X-Received: by 2002:a17:902:ccca:b0:2ae:44db:570c with SMTP id d9443c01a7336-2b26b2b089amr2189835ad.12.1775042615401;
-        Wed, 01 Apr 2026 04:23:35 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe606dd2sm6533691a91.3.2026.04.01.04.23.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 04:23:34 -0700 (PDT)
-Date: Wed, 1 Apr 2026 11:23:23 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, iommu@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jean-Philippe Brucker <jpb@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Neal Gompa <neal@gompa.dev>, Orson Zhai <orsonzhai@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel@sholland.org>, Sven Peter <sven@kernel.org>,
-	virtualization@lists.linux.dev, Chen-Yu Tsai <wens@kernel.org>,
-	Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Jon Hunter <jonathanh@nvidia.com>, patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org,
-	Vasant Hegde <vasant.hegde@amd.com>
-Subject: Re: [PATCH] iommu: Always fill in gather when unmapping
-Message-ID: <ac0AKyvHMYHlqL5i@google.com>
-References: <0-v1-664d3acaabb9+78b-iommu_gather_always_jgg@nvidia.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ARWVdPUyCtdJBdlGbBkBVVeCdD9N32717xW7/9xvzMx22r12y0SfN1wRsnsvYXpfgw0I1I5Z++RqJ2qBsTVpb+bDq13ccNwF+V4c7CbMPkat7Mhi3TH2dhVDIWzNGGtwERQTy91brYEbZEpkm+X5CfmKwiuysd+x8Kw1hJ0w56Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cb38F6uk; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775042897; x=1806578897;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=B488BqTIOeJwl6zVePCpf2OvVSlVrzzJr95UEVo0X/s=;
+  b=Cb38F6uk8zHX4Q0Ek1i14RFXiJFBaWNI+hFw8IzJroZ3/VcpTn6aizMH
+   oHEDkzBNOeN8a1KNFaCltwfjg+LqPKjhjho1xcj1OMLAkJmk32o6fNVfg
+   Mwdm0JU0MdzPsTHzYXvXYZgduiWshyo9hI/rWcCHgJWJWYSszJspm3rZo
+   Ld/cF5EgQbjoarGt/Ww63YE8p8Io8GtrwV3xouvVauQ0goGWPa+iM9tHR
+   TCTLJwtR4UwRQsc76pxvSOJ0X204XlJEWgDXWHiSPkIucU5OhFGAug7Lc
+   NuP0blrF/tRELB02lEXC7I5mWR8HMj5lDk1ShLvXcxoiIXSVFDb7YSUDe
+   Q==;
+X-CSE-ConnectionGUID: HHuRmg1YS1+YLzPzoi8K8g==
+X-CSE-MsgGUID: kL/6iOddQ/uAY0BU46ZeYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="86380399"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="86380399"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 04:28:17 -0700
+X-CSE-ConnectionGUID: F85XJDgNSo+/9prZBWzwaA==
+X-CSE-MsgGUID: udC60o6gRbeKBT10IHPR2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="226512720"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.203])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 04:28:15 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 89D2E120AAD;
+	Wed, 01 Apr 2026 14:28:23 +0300 (EEST)
+Date: Wed, 1 Apr 2026 14:28:23 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Marco Nenciarini <mnencia@kcore.it>
+Cc: linux-media@vger.kernel.org, Bingbu Cao <bingbu.cao@intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] media: intel/ipu6: Improve DWC PHY HSFREQRANGE band
+ selection for overlapping ranges
+Message-ID: <ac0BVwO4XGhzcMu3@kekkonen.localdomain>
+References: <20260323154037.1404865-1-mnencia@kcore.it>
+ <20260325093241.1441512-1-mnencia@kcore.it>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -114,107 +84,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0-v1-664d3acaabb9+78b-iommu_gather_always_jgg@nvidia.com>
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <20260325093241.1441512-1-mnencia@kcore.it>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[ghiti.fr,collabora.com,eecs.berkeley.edu,lists.linux.dev,linux.alibaba.com,jannau.net,gmail.com,8bytes.org,kernel.org,lists.infradead.org,gompa.dev,dabbelt.com,sholland.org,mediatek.com,linux.intel.com,amd.com,nvidia.com,arm.com,google.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-232760-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232761-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[36];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[praan@google.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 5469B3799A3
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,kekkonen.localdomain:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kcore.it:email]
+X-Rspamd-Queue-Id: 3FE7B379C2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 04:56:22PM -0300, Jason Gunthorpe wrote:
-> The fixed commit assumed that the gather would always be populated if
-> an iotlb_sync was required.
-> 
-> arm-smmu-v3, amd, VT-d, riscv, s390, mtk all use information from the
-> gather during their iotlb_sync() and this approach works for them.
-> 
-> However, arm-smmu, qcom_iommu, ipmmu-vmsa, sun50i, sprd, virtio,
-> apple-dart all ignore the gather during their iotlb_sync(). They
-> mostly issue a full flush.
-> 
-> Unfortunately the latter set of drivers often don't bother to add
-> anything to the gather since they don't intend on using it. Since the
-> core code now blocks gathers that were never filled, this caused those
-> drivers to stop getting their iotlb_sync() calls and breaks them.
-> 
-> Since it is impossible to tell the difference between gathers that are
-> empty because there is nothing to do and gathers that are empty
-> because they are not used, fill in the gathers for the missing cases.
-> 
+Hi Marco,
 
-I believe the problem is a fundamental disagreement between the core
-layer and these drivers. The core assumes an empty gather means there
-is no work to do, while these drivers expect a sync regardless. With
-this, it seems we're forcing the drivers to lie to the core by 
-populating a gather they don't actually use just to trigger the sync.
+Thanks for the update.
 
-I was wondering if, as a longer-term direction, having an explicit flag
-for these drivers to indicate they always require a sync would be a
-cleaner way to handle this than the trivial population?
-
-Just a thought, not a hard disagreement with the current approach..
-
-> io-pgtable might have intended to allow the driver to choose between
-> gather or immediate flush because it passed gather to
-> ops->tlb_add_page(), however no driver does anything with it.
+On Wed, Mar 25, 2026 at 10:32:41AM +0100, Marco Nenciarini wrote:
+> The get_hsfreq_by_mbps() function searches the freqranges[] table
+> backward (from highest to lowest index). Because adjacent frequency
+> bands overlap, a data rate that falls in the overlap region always
+> lands on the higher-indexed band.
 > 
-> mtk uses io-pgtable-arm-v7s but added the range to the gather in the
-> unmap callback. Move this into the io-pgtable-arm unmap itself. That
-> will fix all the armv7 using drivers (arm-smmu, qcom_iommu,
-> ipmmu-vmsa).
+> For data rates up to 1500 Mbps (index 42) every band uses
+> osc_freq_target 335. Starting at index 43 (1461-1640 Mbps) the
+> osc_freq_target drops to 208. A sensor running at 1498 Mbps sits in
+> the overlap between index 42 (1414-1588, osc 335) and index 43
+> (1461-1640, osc 208). The backward search picks index 43, programming
+> the lower osc_freq_target of 208 instead of the optimal 335.
 > 
-> arm-smmu uses both ARM_V7S and ARM LPAE formats. The LPAE formats
-> already have the gather population because SMMUv3 requires it, so it
-> becomes consistent.
+> This causes DDL lock instability and CSI-2 CRC errors on affected
+> configurations, such as the OmniVision OV08X40 sensor on Intel Arrow
+> Lake platforms (Dell Pro Max 16).
 > 
-> Add a trivial gather population to io-pgtable-dart.
+> Rewrite get_hsfreq_by_mbps() to select the optimal band:
 > 
-> Add trivial populations to sprd, sun50i and virtio-iommu in their
-> unmap functions.
+> 1. Prefer an exact default_mbps match (returned immediately).
+> 2. Among bands whose min/max range covers the data rate, prefer
+>    the one with the higher osc_freq_target.
+> 3. If osc_freq_target is equal, prefer the band whose default_mbps
+>    is closest to the requested rate.
 > 
-> Fixes: 90c5def10bea ("iommu: Do not call drivers for empty gathers")
-> Reported-by: Jon Hunter <jonathanh@nvidia.com>
-> Closes: https://lore.kernel.org/r/8800a38b-8515-4bbe-af15-0dae81274bf7@nvidia.com
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> For 1498 Mbps this now correctly selects index 42 (osc_freq_target
+> 335, range 1414-1588) instead of index 43 (osc_freq_target 208,
+> range 1461-1640).
+> 
+> Fixes: 1e7eeb301696 ("media: intel/ipu6: add the CSI2 DPHY implementation")
+> Cc: stable@vger.kernel.org
+> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Cc: Bingbu Cao <bingbu.cao@intel.com>
+> Signed-off-by: Marco Nenciarini <mnencia@kcore.it>
 > ---
->  drivers/iommu/io-pgtable-arm.c  | 4 +++-
->  drivers/iommu/io-pgtable-dart.c | 3 +++
->  drivers/iommu/mtk_iommu.c       | 1 -
->  drivers/iommu/sprd-iommu.c      | 1 +
->  drivers/iommu/sun50i-iommu.c    | 1 +
->  drivers/iommu/virtio-iommu.c    | 2 ++
->  6 files changed, 10 insertions(+), 2 deletions(-)
->
+> Changes in v2:
+> - Rewrote get_hsfreq_by_mbps() with a proper selection algorithm instead
+>   of patching after the call, as suggested by Sakari Ailus.
+> - Added Fixes tag and Cc stable.
+> 
+>  .../media/pci/intel/ipu6/ipu6-isys-dwc-phy.c  | 22 ++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-dwc-phy.c b/drivers/media/pci/intel/ipu6/ipu6-isys-dwc-phy.c
+> index db28748..4c9e50c 100644
+> --- a/drivers/media/pci/intel/ipu6/ipu6-isys-dwc-phy.c
+> +++ b/drivers/media/pci/intel/ipu6/ipu6-isys-dwc-phy.c
+> @@ -288,15 +288,27 @@ static const struct dwc_dphy_freq_range freqranges[DPHY_FREQ_RANGE_NUM] = {
+>  
+>  static u16 get_hsfreq_by_mbps(u32 mbps)
+>  {
+> -	unsigned int i = DPHY_FREQ_RANGE_NUM;
+> +	int best = DPHY_FREQ_RANGE_INVALID_INDEX;
 
-Acked-by: Pranjal Shrivastava <praan@google.com>
+The function returns u16 and u16 is fine here, too...
 
-Thanks,
-Praan
+> +	unsigned int i;
+>  
+> -	while (i--) {
+> -		if (freqranges[i].default_mbps == mbps ||
+> -		    (mbps >= freqranges[i].min && mbps <= freqranges[i].max))
+> +	for (i = 0; i < DPHY_FREQ_RANGE_NUM; i++) {
+> +		if (freqranges[i].default_mbps == mbps)
+>  			return i;
+
+Doesn't the condition below handle this already?
+
+> +
+> +		if (mbps < freqranges[i].min || mbps > freqranges[i].max)
+> +			continue;
+
+The frequencies in the array are consistently increasing so you can replace
+this with:
+
+		if (mbps < freqranges[i].min)
+			continue;
+
+		if (mbps > freqranges[i].max)
+			break;
+
+> +
+> +		if (best == DPHY_FREQ_RANGE_INVALID_INDEX ||
+> +		    freqranges[i].osc_freq_target >
+> +		    freqranges[best].osc_freq_target ||
+> +		    (freqranges[i].osc_freq_target ==
+> +		     freqranges[best].osc_freq_target &&
+> +		     abs((int)mbps - (int)freqranges[i].default_mbps) <
+> +		     abs((int)mbps - (int)freqranges[best].default_mbps)))
+> +			best = i;
+>  	}
+>  
+> -	return DPHY_FREQ_RANGE_INVALID_INDEX;
+> +	return best;
+>  }
+>  
+>  static int ipu6_isys_dwc_phy_config(struct ipu6_isys *isys,
+
+-- 
+Kind regards,
+
+Sakari Ailus
 
