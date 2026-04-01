@@ -1,182 +1,298 @@
-Return-Path: <stable+bounces-232796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCTVLNUszWn7aQYAu9opvQ
-	(envelope-from <stable+bounces-232796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 16:33:57 +0200
+	id 4BggHscvzWn7aQYAu9opvQ
+	(envelope-from <stable+bounces-232798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 16:46:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743C437C351
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 16:33:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0126237C646
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 16:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 186A03012CD4
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 14:25:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C31983005321
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 14:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FAB84657FA;
-	Wed,  1 Apr 2026 14:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xofge9k9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3CF2C0296;
+	Wed,  1 Apr 2026 14:29:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9734D44D685
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 14:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775053506; cv=pass; b=YW9LZt+RUZyPB4fSkCitfgGglqeMoVHqJFqGmlA/MqeTAkSIRqOBM/lEEvXPllJ8v8uCpqTy9oh1PXQAMgklBx+UC8FfAhamR4+lr6KgQrDY7I2iLtKevULdEmdcOzNBgUy4ZL4QCb8vyw+neBcF5emy0edS/Kjo53E+wHuCXRg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775053506; c=relaxed/simple;
-	bh=gSQ6pTcuTePG32M6XmGUQnNRHQHNKydM20nRxn05ChU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E1NFZNpEAWBuM+l6KyOiBWvyMwNRlEvHs22r+WP1puVlErkjB7nxedBDp0mJG+KttgfdpEhFlntn6pDw7HcwKgCQ1dCQBbAfoFGg364+nILB9EuYpgiVsTmFvbDuW0iF2wKvnC+AXSUk4PstF6ALPyDGYBYUT4pFChOSZTz4z38=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xofge9k9; arc=pass smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-38be66a9fc0so72647441fa.1
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 07:25:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775053503; cv=none;
-        d=google.com; s=arc-20240605;
-        b=B+0twEmiY58nrKvRqGdreNlAEUdi5VzeTBm22keaMxQu8PugN6MOPO/8dIM496glDc
-         +hbtxzq1Bt/x9uWmgs67xIjfp6H3UI3uSrpjdvUCycRixti5tq4Nsv/OccT/xJ01QO52
-         ZSw5XJmlKGhpsoJ1INqVRR6GLgWqdRY8FpIPhxCeuYA3SKQNC+XH8lypEzroafS6nZqk
-         N325lq+Jkxi3r3uBHNL1nbYKYK+OMd21QYAViTK1ZdKTG6NwdVCAId9uWwiFh9fMZq5G
-         EAETHvLnu9KCrSadH9XCab2OYmV/fRgKVowRT4c7ISp2rEQnMiIaFaLksojVc8CnPA3m
-         pG3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gSQ6pTcuTePG32M6XmGUQnNRHQHNKydM20nRxn05ChU=;
-        fh=dO/aBKFaiKrro274e2PQZDS4xyZoeit26Y6xjL/cY4s=;
-        b=J3B6wmc9LqYRihh9ZGy9gBCns50EuzmVWezcgGkOD7+sGqNTfcvRl1Vj+t2RseU5B7
-         3WphsY7rULbN9k3i8GwqNDRKJbrckmcR8/FmXtPwqs790pUNJxJDulUIhODbEALmN9KH
-         fgNHghlktTAzjqPAk6E9lmoswM8Qqc5kHZoEkEbG0Iflgjbd4ntqbJlwwNZ6+pehxHMC
-         Ik2q92LMmlvfcXoak9sh8PozuZuQO8wVeVsawhEZ3iKQO5cXvIsmefBKNPTlwbqebLBH
-         3THLRXk2R3XKGxvZLu+GY34OlWiqi+f50r8PFLS6DhE5iw6OfYYhb46QcmNfGE6RMOdH
-         7DkA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775053503; x=1775658303; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gSQ6pTcuTePG32M6XmGUQnNRHQHNKydM20nRxn05ChU=;
-        b=Xofge9k9RYYO7Of36FF8GfpDt/uyrCaYs6FmX3T1kxcsdFBwnS0Nvh1zd4qbrMZkL+
-         nmGPgtAtkthl3E0uPCSKWS1WURe09D0MFkwuMR4j7Wk/bly20CifWMMa+VL1PntyQKPc
-         1utfxSWMuh7ZUar3Z7OOcjQ1XQIVEIi2utvg8yaLKyjTyAO1veoYw1s53/bsGH56nVdp
-         PR/2H3Ky7FsukRQa2DsIOcWSFxaClCCy8LhU1jf4fQNe6ZCDD2l+yQUjhFMihJbD+dPc
-         UH/nbZ2bbGprgFui6fOXv+db6YTr2GzAszapfqPOluJIFA1G4sJMeAUy1Ua5YSG1AfoU
-         iV6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775053503; x=1775658303;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gSQ6pTcuTePG32M6XmGUQnNRHQHNKydM20nRxn05ChU=;
-        b=J2sTkitGgrB0dzusJhO3hovjbUb0Es9OklBqjg0XXYIX/9+uWUQFsKsTi9NQFccVTt
-         rtktG5jWH/M5QENZWuJrIn9CSbHdUBgA0KSGsexSpZd/ppkILixFfUiWQ5t1nbXMNnq6
-         /6vTov7lzZ0JELxrJuXm+ONJXInKGEQM37e73cytuLrQ+/VWGnMRzlqeL9NFVWIhNpos
-         hehtvVUhzVb4ULg40gtlZL1s5wZ/odbxS5+/QByzi/N5NprmmLNWMHdb6rPkQ9G+JkmV
-         5VuaMMeQIMtVyjEYh73DUUQdYIVoR92VN6cY3Rn9Ib9cDfH82L4nkjDSDCAO/BgjtgpK
-         GJYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXB9gNCWWDMfkqTQCLObEkSXIfzFeKeef00Mq74ZcMuT8vdkMXzXobF6w2BHqgPj342dBe3NaY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOIxsRLkGJ6RuPcrla2uvT3RMVbSOLokrG1XWit1TdbjFjhBKi
-	EdrlWdblwb0yBZed5LKML3jCkZIq/OSP7dZFAq9XT6AjuF0lieGV+JeCdr4hWrQEx/6aJsrjWmR
-	fPjs/HpJLU2QY52jnLpucFM2cLuSGs5Y=
-X-Gm-Gg: ATEYQzyinE9cG0xKcHA+sDZTwFWgvV7Zkpcx6tR89O0SJsVsNGc1VQO6cSfiAzArwSJ
-	smPMHJnYiu4Ks3+1IdDtwMGBw+NFbhXn+uQ3lt7tDeSFJ1d4stkExS7MIBwiBJWbmohD+H65U2D
-	lb0H6n3Dc8C6FoUWrJQ8huiQq8ns64q0MAVHlTtLKgcBJQ12XeeaWkxc/P7WQo62qPrp+F58Gsr
-	4rNC9p45WuObQxesd/+JwgVStw02D3Ng2OOZ9v9O3zrPEm5Oy2bVCt5RD7FE4oXcqVbCUBgd4rC
-	1C/+/PY+vppuxVhIwLenyHo80uZ1anz7M8PBmUIXf6djm7Dh1lrL5uqRMITl4sd/kixx/8ZSHNP
-	oaeAzwwQ=
-X-Received: by 2002:a2e:a554:0:b0:38c:3e3:953a with SMTP id
- 38308e7fff4ca-38cc30fed48mr13856341fa.29.1775053502521; Wed, 01 Apr 2026
- 07:25:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8235B29D26E;
+	Wed,  1 Apr 2026 14:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775053779; cv=none; b=jf2kFzqOToQwlIL95J9jYDuCaWW+vFfnZDn/U3VX3qQM+MvNKZcR/pfn52Tew2v4zki2Hj7+8Go2dftEO1Nn8ZGaF7NFaypN12XFXPqsb5vUIr5Q2y+wYfURKoLrGmOL6vs8ocHac91w+eMU7095VMKhmX6SmflijnhRU8opZRE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775053779; c=relaxed/simple;
+	bh=3/3MQ55BfCKTaGGmIrRLvZ5lLCm8E5GPtRS2WYBLfrU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LNMA5KRAY+bl2AFMRmx9UPf4IdZbeEWblAbt4AXZou2OuEqfJS9RaGYJX7ImaQmtgmvcUwY2t0rMyUB0BVEkENE1Z3WL2BVn+nZo/BKKNWxeGQts+vlY7BrKf9LqT1DWQAIwXo2gXkTlNZUNakwcgE/+gs9K2HlqGy2vFhxLEUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=intel.corp-partner.google.com; spf=fail smtp.mailfrom=intel.corp-partner.google.com; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=intel.corp-partner.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=intel.corp-partner.google.com
+X-CSE-ConnectionGUID: 3uspcelDRmCuJLhH/D2D+w==
+X-CSE-MsgGUID: b5g7+IaFSNK7CHiJ9N6vQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="78685773"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="78685773"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 07:29:38 -0700
+X-CSE-ConnectionGUID: RcdIXJ1OS1u8USRxDz97Ug==
+X-CSE-MsgGUID: WaD6vHBZSwu4ZU5c6BLq3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="225675775"
+Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 07:29:34 -0700
+From: Sonam Sanju <sonam.sanju@intel.corp-partner.google.com>
+To: Kunwu Chan <kunwu.chan@linux.dev>,
+	Sean Christopherson <seanjc@google.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Vineeth Pillai <vineeth@bitbyteword.org>,
+	Dmitry Maluka <dmaluka@chromium.org>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	rcu@vger.kernel.org,
+	Sonam Sanju <sonam.sanju@intel.com>
+Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu out of resampler_lock
+Date: Wed,  1 Apr 2026 19:54:56 +0530
+Message-Id: <20260401142456.2632730-1-sonam.sanju@intel.corp-partner.google.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <5194cf52-f8a8-4479-a95e-233104272839@linux.dev>
+References: <5194cf52-f8a8-4479-a95e-233104272839@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260304090727.1800289-1-christofer.jonason@guidelinegeo.com>
- <20260307124118.1d527749@jic23-huawei> <1166aeef-0c93-408d-b265-9037f2840074@amd.com>
- <IA1PR12MB7736AE6EEE95D5D184A15B9F9F50A@IA1PR12MB7736.namprd12.prod.outlook.com>
- <IA1PR12MB77361978ED21FF22F079034D9F50A@IA1PR12MB7736.namprd12.prod.outlook.com>
- <IA1PR12MB77369F79026F7BCB1D9C64999F50A@IA1PR12MB7736.namprd12.prod.outlook.com>
-In-Reply-To: <IA1PR12MB77369F79026F7BCB1D9C64999F50A@IA1PR12MB7736.namprd12.prod.outlook.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 1 Apr 2026 17:24:24 +0300
-X-Gm-Features: AQROBzBoZ-LI1caYHqTvdlVWNWIbminA0-gaXJPHQ8leXNSCDNAFQN7WnRQJ33Y
-Message-ID: <CAHp75Vcg1u86z_TWwz+1Gk9QQ9RB63QmNcqpkGa5HQHZhSE=5Q@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: adc: xilinx-xadc: Fix sequencer mode in
- postdisable for dual mux
-To: "Erim, Salih" <Salih.Erim@amd.com>
-Cc: "Simek, Michal" <michal.simek@amd.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Christofer Jonason <christofer.jonason@guidelinegeo.com>, 
-	"O'Griofa, Conall" <conall.ogriofa@amd.com>, "lars@metafoo.de" <lars@metafoo.de>, 
-	"dlechner@baylibre.com" <dlechner@baylibre.com>, "nuno.sa@analog.com" <nuno.sa@analog.com>, 
-	"andy@kernel.org" <andy@kernel.org>, 
-	"victor.jonsson@guidelinegeo.com" <victor.jonsson@guidelinegeo.com>, 
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [2.04 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[google.com : SPF not aligned (relaxed), No valid DKIM,reject];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232796-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andyshevchenko@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232798-lists,stable=lfdr.de];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sonam.sanju@intel.corp-partner.google.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 743C437C351
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.corp-partner.google.com:mid]
+X-Rspamd-Queue-Id: 0126237C646
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 1, 2026 at 4:58=E2=80=AFPM Erim, Salih <Salih.Erim@amd.com> wro=
-te:
-> > -----Original Message-----
-> > From: Erim, Salih <Salih.Erim@amd.com>
-> > Sent: Wednesday, April 1, 2026 2:13 PM
+From: Sonam Sanju <sonam.sanju@intel.com>=0D
 
-
-> > Caution: This message originated from an External Source. Use proper ca=
-ution
-> > when opening attachments, clicking links, or responding.
-> >
-> > [AMD Official Use Only - AMD Internal Distribution Only]
->
-> I am deeply sorry about these markings. Please try to ignore them, and I =
-will do my best to escape from them.
-
-Maybe, but ignoring them might be subject to law enforcement or other
-legal actions. You must get rid of them for your OSS contributions.
-
---=20
-With Best Regards,
-Andy Shevchenko
+On Wed, Apr 01, 2026 at 05:34:58PM +0800, Kunwu Chan wrote:=0D
+> Building on the discussion so far, it would be helpful from the SRCU=0D
+> side to gather a bit more evidence to classify the issue.=0D
+>=0D
+> Calling synchronize_srcu_expedited() while holding a mutex is generally=0D
+> valid, so the observed behavior may be workload-dependent.=0D
+=0D
+> The reported deadlock seems to rely on the assumption that SRCU grace=0D
+> period progress is indirectly blocked by irqfd workqueue saturation.=0D
+> It would be good to confirm whether that assumption actually holds.=0D
+=0D
+I went back through our logs from two independent crash instances and=0D
+can now provide data for each of your questions.=0D
+=0D
+> 1) Are SRCU GP kthreads/workers still making forward progress when=0D
+> the system is stuck?=0D
+=0D
+No.  In both crash instances, process_srcu work items remain permanently=0D
+"pending" (never "in-flight") throughout the entire hang.=0D
+=0D
+Instance 1 =E2=80=94  kernel 6.18.8, pool 14 (cpus=3D3):=0D
+=0D
+  [  62.712760] workqueue rcu_gp: flags=3D0x108=0D
+  [  62.717801]   pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D2=
+ refcnt=3D3=0D
+  [  62.717801]     pending: 2*process_srcu=0D
+=0D
+  [  187.735092] workqueue rcu_gp: flags=3D0x108           (125 seconds lat=
+er)=0D
+  [  187.735093]   pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D=
+2 refcnt=3D3=0D
+  [  187.735093]     pending: 2*process_srcu              (still pending)=0D
+=0D
+  9 consecutive dumps from t=3D62s to t=3D312s =E2=80=94 process_srcu never=
+ runs.=0D
+=0D
+Instance 2 =E2=80=94  kernel 6.18.2, pool 22 (cpus=3D5):=0D
+=0D
+  [  93.280711] workqueue rcu_gp: flags=3D0x108=0D
+  [  93.280713]   pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D1=
+ refcnt=3D2=0D
+  [  93.280716]     pending: process_srcu=0D
+=0D
+  [  309.040801] workqueue rcu_gp: flags=3D0x108           (216 seconds lat=
+er)=0D
+  [  309.040806]   pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D=
+1 refcnt=3D2=0D
+  [  309.040806]     pending: process_srcu               (still pending)=0D
+=0D
+  8 consecutive dumps from t=3D93s to t=3D341s =E2=80=94 process_srcu never=
+ runs.=0D
+=0D
+In both cases, rcu_gp's process_srcu is bound to the SAME per-CPU pool=0D
+where the kvm-irqfd-cleanup workers are blocked.  Both pools have idle=0D
+workers but are marked as hung/stalled:=0D
+=0D
+  Instance 1: pool 14: cpus=3D3 hung=3D174s workers=3D11 idle: 4046 4038 40=
+45 4039 4043 156 77 (7 idle)=0D
+  Instance 2: pool 22: cpus=3D5 hung=3D297s workers=3D12 idle: 4242 51 4248=
+ 4247 4245 435 4244 4239 (8 idle)=0D
+=0D
+> 2) How many irqfd workers are active in the reported scenario, and=0D
+> can they saturate CPU or worker pools?=0D
+=0D
+4 kvm-irqfd-cleanup workers in both instances, consistently across all=0D
+dumps:=0D
+=0D
+Instance 1 ( pool 14 / cpus=3D3):=0D
+=0D
+  [  62.831877] workqueue kvm-irqfd-cleanup: flags=3D0x0=0D
+  [  62.837838]   pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D4=
+ refcnt=3D5=0D
+  [  62.837838]     in-flight: 157:irqfd_shutdown ,4044:irqfd_shutdown ,=0D
+                               102:irqfd_shutdown ,39:irqfd_shutdown=0D
+=0D
+Instance 2 ( pool 22 / cpus=3D5):=0D
+=0D
+  [  93.280894] workqueue kvm-irqfd-cleanup: flags=3D0x0=0D
+  [  93.280896]   pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D4=
+ refcnt=3D5=0D
+  [  93.280900]     in-flight: 151:irqfd_shutdown ,4246:irqfd_shutdown ,=0D
+                               4241:irqfd_shutdown ,4243:irqfd_shutdown=0D
+=0D
+These are from crosvm instances with multiple virtio devices=0D
+(virtio-blk, virtio-net, virtio-input, etc.), each registering an irqfd=0D
+with a resampler.  During VM shutdown, all irqfds are detached=0D
+concurrently, queueing that many irqfd_shutdown work items.=0D
+=0D
+The 4 workers are not saturating CPU =E2=80=94 they're all in D state.  But=
+ they=0D
+ARE all bound to the same per-CPU pool as rcu_gp's process_srcu work.=0D
+=0D
+> 3) Do we have a concrete wait-for cycle showing that tasks blocked=0D
+> on resampler_lock are in turn preventing SRCU GP completion?=0D
+=0D
+Yes, in both instances the hung task dump identifies the mutex holder=0D
+stuck in synchronize_srcu, with the other workers waiting on the mutex.=0D
+=0D
+Instance 1 (t=3D314s):=0D
+=0D
+  Worker pid 4044 =E2=80=94 MUTEX HOLDER, stuck in synchronize_srcu:=0D
+=0D
+    [  315.963979] task:kworker/3:8     state:D  pid:4044=0D
+    [  315.977125] Workqueue: kvm-irqfd-cleanup irqfd_shutdown=0D
+    [  316.012504]  __synchronize_srcu+0x100/0x130=0D
+    [  316.023157]  irqfd_resampler_shutdown+0xf0/0x150  <-- offset 0xf0 (s=
+ynchronize_srcu)=0D
+=0D
+  Workers pid 39, 102, 157 =E2=80=94 MUTEX WAITERS:=0D
+=0D
+    [  314.793025] task:kworker/3:4     state:D  pid:157=0D
+    [  314.837472]  __mutex_lock+0x409/0xd90=0D
+    [  314.843100]  irqfd_resampler_shutdown+0x23/0x150  <-- offset 0x23 (m=
+utex_lock)=0D
+=0D
+Instance 2 (t=3D343s):=0D
+=0D
+  Worker pid 4241 =E2=80=94 MUTEX HOLDER, stuck in synchronize_srcu:=0D
+=0D
+    [  343.193294] task:kworker/5:4     state:D  pid:4241=0D
+    [  343.193299] Workqueue: kvm-irqfd-cleanup irqfd_shutdown=0D
+    [  343.193328]  __synchronize_srcu+0x100/0x130=0D
+    [  343.193335]  irqfd_resampler_shutdown+0xf0/0x150  <-- offset 0xf0 (s=
+ynchronize_srcu)=0D
+=0D
+  Workers pid 151, 4243, 4246 =E2=80=94 MUTEX WAITERS:=0D
+=0D
+    [  343.193369] task:kworker/5:6     state:D  pid:4243=0D
+    [  343.193397]  __mutex_lock+0x37d/0xbb0=0D
+    [  343.193397]  irqfd_resampler_shutdown+0x23/0x150  <-- offset 0x23 (m=
+utex_lock)=0D
+=0D
+Both instances show the identical wait-for cycle:=0D
+=0D
+  1. One worker holds resampler_lock, blocks in __synchronize_srcu=0D
+     (waiting for SRCU grace period)=0D
+  2. SRCU GP needs process_srcu to run =E2=80=94 but it stays "pending"=0D
+     on the same pool=0D
+  3. Other irqfd workers block on __mutex_lock in the same pool=0D
+  4. The pool is marked "hung" and no pending work makes progress=0D
+     for 250-300 seconds until kernel panic=0D
+=0D
+> 4) Is the behavior reproducible in both irqfd_resampler_shutdown()=0D
+> and kvm_irqfd_assign() paths?=0D
+=0D
+In our 4 crash instances the stuck mutex holder is always in =0D
+irqfd_resampler_shutdown() at offset 0xf0 (synchronize_srcu).  This =0D
+is consistent =E2=80=94 these are all VM shutdown scenarios where only =0D
+irqfd_shutdown workqueue items run.=0D
+=0D
+The kvm_irqfd_assign() path was identified by Vineeth Pillai (Google)=0D
+during a VM create/destroy stress test where assign and shutdown race.=0D
+His traces showed kvm_irqfd (the assign path) stuck in=0D
+synchronize_srcu_expedited with irqfd_resampler_shutdown blocked on=0D
+the mutex, and workqueue pwq 46 at active=3D1024 refcnt=3D2062.=0D
+=0D
+> If SRCU GP remains independent, it would help distinguish whether=0D
+> this is a strict deadlock or a form of workqueue starvation / lock=0D
+> contention.=0D
+=0D
+Based on the data from both instances, SRCU GP is NOT remaining=0D
+independent.  process_srcu stays permanently pending on the affected=0D
+per-CPU pool for 250-300 seconds.  But it's not just process_srcu =E2=80=94=
+=0D
+ALL pending work on the pool is stuck, including items from events,=0D
+cgroup, mm, slub, and other workqueues.=0D
+=0D
+=0D
+> A timestamp-correlated dump (blocked stacks + workqueue state +=0D
+> SRCU GP activity) would likely be sufficient to classify this.=0D
+=0D
+I hope the correlated dumps above from both instances are helpful.=0D
+To summarize the timeline (consistent across both):=0D
+=0D
+  t=3D0:   VM shutdown begins, crosvm detaches irqfds=0D
+  t=3D~14: 4 irqfd_shutdown work items queued on WQ_PERCPU pool=0D
+         One worker acquires resampler_lock, enters synchronize_srcu=0D
+         Other 3 workers block on __mutex_lock=0D
+  t=3D~43: First "BUG: workqueue lockup" =E2=80=94 pool detected stuck=0D
+         rcu_gp: process_srcu shown as "pending" on same pool=0D
+  t=3D~93  Through t=3D~312: Repeated dumps every ~30s=0D
+         process_srcu remains permanently "pending"=0D
+         Pool has idle workers but no pending work executes=0D
+  t=3D~314: Hung task dump confirms mutex holder in __synchronize_srcu=0D
+  t=3D~316: init triggers sysrq crash =E2=86=92 kernel panic=0D
+=0D
+> Happy to help look at traces if available.=0D
+=0D
+I can share the full console-ramoops-0 and dmesg-ramoops-0 from both=0D
+instances.  Shall I post them or send them off-list?=0D
+=0D
+Thanks,=0D
+Sonam=0D
 
