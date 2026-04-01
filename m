@@ -1,117 +1,158 @@
-Return-Path: <stable+bounces-232776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDa2I+8WzWmMZwYAu9opvQ
-	(envelope-from <stable+bounces-232776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:00:31 +0200
+	id 4Ai4EzIbzWnOaAYAu9opvQ
+	(envelope-from <stable+bounces-232778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:18:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B1C37ADDB
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:00:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5842537B167
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8FF4300899C
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:00:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 80386303F1E5
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4545407568;
-	Wed,  1 Apr 2026 13:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1D33A3822;
+	Wed,  1 Apr 2026 13:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="e2aWZAL0"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="XVGeYd97"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from master.debian.org (master.debian.org [82.195.75.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA53D3B47DF;
-	Wed,  1 Apr 2026 13:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE02348883;
+	Wed,  1 Apr 2026 13:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775048410; cv=none; b=Z6xTOLOt5QrfM8c7e46Bx3J9ATz/2VAooHC6oQ2/gi4yIswj4YdgU61jmNRz6+4AS/W3mWWzlMPLTXi1vZD/cuR+gySGZ6dBuYNI69tzudcQEXsvppeodBkq1NScag1hvVZbHDYbKZNHkKIbavBmNYc06uRqRvR8itQJRbTn2YU=
+	t=1775049013; cv=none; b=I7UmVojTU6620FYbNRsGkTA1TEB/6QYgSMMt1C2h8gyTMpyPQuA/Wo+i1TiMdGYyZEy2nVR5i2xxACA/TrQ5BVZuV/N9BdAgMfsjqvvbKL9Xro3u1NrO5tN28oFBdDoH6NlYyQ/f9LLh76Eackfv464RHB77Xh4VDvEGlIl1mNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775048410; c=relaxed/simple;
-	bh=sSBZQW9J3Pj5Ef2fYwWH3fpvKqzj1IsoW4puTUxOKxE=;
+	s=arc-20240116; t=1775049013; c=relaxed/simple;
+	bh=8AqE06BtIHM26cpry7sh/8rDMddZ5jdzj7W8UqW7xLo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GJk4S0PeMAm/JhUhpsUNBvP35PjDv1HbWyU0RAZkYqNXMcg/0qKzybNdu2FrOt/Y+IBaLkhidQ5SEAgXLXd3PkeOzgxDBrhT271SBULZyopi5riGrGjXfv6QaRwsxgm341oCb4DvxeMn3A7PWO2cj6J5Jqy28jriQJsmkaSKsVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=e2aWZAL0; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=sSBZQW9J3Pj5Ef2fYwWH3fpvKqzj1IsoW4puTUxOKxE=; b=e2aWZAL0l3xSw8DvVL4qdN0wGh
-	tqYLr/s0nrQNTqJaO9vWRMolq0ChIhAa9no7hQhtMiacmfJYhWqXziu25k44/k7Lfjl1fYD+/hpDb
-	lruv2f7t2RBb6q4Zds7jlk2UYpE3lPja0JCQdJyMaRf56hcq9J1ajJtLrGVYoW4kzhvSx1lzq+11A
-	wHSfeM85knDgcxqk8M+BY0Jqa2u7V84usxgWF+Ldqs6YHoATiSOAYPOEkZ1rOqX0Nr3rg2Avt543Q
-	E9GN4GovdjnbgiZV/cyOqD77D/E3XFwkdhlq/RqE249rRKe2ha+401EpcMs45v3ooJ+vwvqWmjkYq
-	HLxLC3bw==;
-Received: from 179-125-75-205-dinamico.pombonet.net.br ([179.125.75.205] helo=quatroqueijos.cascardo.eti.br)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1w7vAn-009xPN-17; Wed, 01 Apr 2026 14:59:53 +0200
-Date: Wed, 1 Apr 2026 09:59:47 -0300
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: Johnny Hao <johnny_haocn@sina.com>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com,
-	syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com,
-	Youngjun Lee <yjjuny.lee@samsung.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: Re: [PATCH 5.15.y] media: uvcvideo: Mark invalid entities with id
- UVC_INVALID_ENTITY_ID
-Message-ID: <ac0Ww-aoBRmDkSE5@quatroqueijos.cascardo.eti.br>
-References: <20260401081048.2338697-1-johnny_haocn@sina.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TnR2h+5ZOH3plfZX3q5/lmMo+Wez+RHBJ57c25sGejpONKd3gw9V8/RXTibH0i3BDDNulzftWSWnbtNjAs+9QF9G2LOLYId6LU9rWCMmxlDoPtPrUzCNL4p0cUBJW6bweG07RwP7N8goeFXFnbwtt+axgy5pTyvKNJG8xc0yjBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=master.debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=XVGeYd97; arc=none smtp.client-ip=82.195.75.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=master.debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.master; h=In-Reply-To:Content-Type:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description;
+	bh=8AqE06BtIHM26cpry7sh/8rDMddZ5jdzj7W8UqW7xLo=; b=XVGeYd97QFkzva2ukg+FXypfMD
+	lwMyjsG325Y4xPuX3f+KBx2G7GayjOwifam+pg6lZ+DsrZEc9RJV6pfzChiDVLOKPr5g1miZmvIqe
+	32ce40wV0MNPYgN9c5DEKoO0KIr8GkUXZnwLByWttw53P+g3z6HJpOrgpdyC43JApLU4aULHucua1
+	PlR5jmT3/Dt+VhJzrVs0wEquI/sYCcgX1hL9QZzL48ACzr7JYiP8EDqofNmuSjpRITPJYY6ib9yc+
+	DAlpNYus3C6fpmLYfw3lJIdY6tErTHaJK0Nx/iJ6YjJI7cgj/wyJtDe4lL2yJAlGFsOFAtHTB6goG
+	jUQCG/Qw==;
+Received: from ukleinek by master.debian.org with local (Exim 4.96)
+	(envelope-from <ukleinek@master.debian.org>)
+	id 1w7vKd-007UG2-0w;
+	Wed, 01 Apr 2026 13:10:03 +0000
+Date: Wed, 1 Apr 2026 15:10:02 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@debian.org>
+To: Bernd Schumacher <bernd@bschu.de>, 1131025@bugs.debian.org
+Cc: Lukas Wunner <lukas@wunner.de>, 
+	Salvatore Bonaccorso <carnil@debian.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Mario Limonciello <mario.limonciello@amd.com>, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: Bug#1131025: [6.12.y regression] Regression with 58130e7ce6cb
+ ("PCI/ERR: Ensure error recoverability at all times"): echo vfio-pci
+ >driver_override does not work for DVB Adapter
+Message-ID: <ac0Y85OShbK6mHEV@monoceros>
+References: <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
+ <acfZrlP0Ua_5D3U4@eldamar.lan>
+ <acfhf-odtr0yw_py@wunner.de>
+ <74bcd84500e5efcca035624f325e400dd8a21f44.camel@bschu.de>
+ <acgohjvBpVcR7HcK@wunner.de>
+ <5f9386146f426e2847550681cb7188471205607f.camel@bschu.de>
+ <aclRwznwq6KpA2qA@wunner.de>
+ <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
+ <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ovruitqvpmpuucsl"
 Content-Disposition: inline
-In-Reply-To: <20260401081048.2338697-1-johnny_haocn@sina.com>
-X-Spamd-Result: default: False [1.14 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+In-Reply-To: <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
+X-Spamd-Result: default: False [-3.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.master];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232776-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[debian.org];
+	TAGGED_FROM(0.00)[bounces-232778-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[sina.com];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[igalia.com:-];
+	DKIM_TRACE(0.00)[debian.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.251];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cascardo@igalia.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ukleinek@debian.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,0584f746fde3d52b4675,dd320d114deb3f5bb79b,cisco];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,quatroqueijos.cascardo.eti.br:mid]
-X-Rspamd-Queue-Id: 27B1C37ADDB
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 5842537B167
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-What about the followup fix 758dbc756aad ("media: uvcvideo: Use heuristic
-to find stream entity")?
 
-And what about 6.1? I don't see this at 6.1 yet.
+--ovruitqvpmpuucsl
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Bug#1131025: [6.12.y regression] Regression with 58130e7ce6cb
+ ("PCI/ERR: Ensure error recoverability at all times"): echo vfio-pci
+ >driver_override does not work for DVB Adapter
+MIME-Version: 1.0
 
-Thanks.
-Cascardo.
+On Mon, Mar 30, 2026 at 08:14:53AM +0200, Bernd Schumacher wrote:
+> Am Sonntag, dem 29.03.2026 um 18:22 +0200 schrieb Lukas Wunner:
+> > Could you repeat this and add log_buf_len=3D16M to the kernel command
+> > line
+> > so that the dmesg output isn't truncated?
+>=20
+> I have now added=A0to /etc/default/grub:
+> GRUB_CMDLINE_LINUX=3D"\"dyndbg=3Dfile log_buf_len=3D16M drivers/pci/* +p\=
+""
+> attached is the dmesg result for 6.12.73
+
+This looks wrong. Please make this:
+
+GRUB_CMDLINE_LINUX=3D"\"dyndbg=3Dfile drivers/pci/* +p\" log_buf_len=3D16M"=
+=20
+
+Best regards
+Uwe
+
+
+--ovruitqvpmpuucsl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmnNGScACgkQj4D7WH0S
+/k6bwQf/Qz+FCTFFiiHGjzCnjbZfBVStR6oAqUY9T2dYtGtjGbPTGAVl1qe8tE+t
+jQ3rJZMZtlZu2hqD05Ghk3sGwMooKyq+6y15VCsOg4/nhBNcMx1bakfhBbVX44tU
+qY1CqvgB7ePfHNG/z+ER64j1J6/17ahEhqVQtrobwEl0e6eIU/DS6n8urgdhoEoA
+SMqyiUeM+JsWMw123MbU2gbYNfPFGl4QD60FJYMrpiulz27gaXEpyb0VemT9fe8q
+7f1Jy//IzEaNQ/uT+9gLXsXY8mXfyCZShhrBNruD8l9p5f9QTW9ZeV4zLDV+lN+z
+tcIVjKnNwkmkv5E+pvAk9PtckgoWiQ==
+=jR9w
+-----END PGP SIGNATURE-----
+
+--ovruitqvpmpuucsl--
 
