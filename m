@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-232789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCqmOIwhzWnOaAYAu9opvQ
-	(envelope-from <stable+bounces-232789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:45:48 +0200
+	id sMuJJ8MizWnOaAYAu9opvQ
+	(envelope-from <stable+bounces-232791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:50:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C3637B7A3
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F3E37B945
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C62E53150EF6
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:38:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C908B3157B7B
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DD943DA48;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A432B43E48C;
 	Wed,  1 Apr 2026 13:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="fO1SG79x"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="ryyqZyeE"
 X-Original-To: stable@vger.kernel.org
-Received: from iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com [34.198.218.121])
+Received: from iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com [3.221.209.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DD143D51A;
-	Wed,  1 Apr 2026 13:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.198.218.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB4643D51D;
+	Wed,  1 Apr 2026 13:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.221.209.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775050630; cv=none; b=Ad7Bi8yW/RVrhojbPlm7FpqVXmxZwBwLR5v7FCaNg7hEBx4O7pSqym78Mk66Re+4TpZcxRORNZULlHgNAXJDPE/gjObOsp9Bav3RN91gyO9R43/N7ar2CqFcoGuCe+xHSJuh4sDLedaTkbkF7oy8ZWFmSDSajzj3K1cOeEpzL3A=
+	t=1775050630; cv=none; b=gWmaW0VXDBxtJ0EweMvd/F410c166d1CPL3lM/tp8At/ISOUDBTkHAQE+cmzCL8wFkFKkeKHlxgUCJf49EVdk14RxmRoG86mJKa5uIs4SBvNVOJtz5aK7tAnyO2LL8pEpH84mhw1+QNZuOCBQRQrEx6wXdO4oJhGwnUMVWYkoW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775050630; c=relaxed/simple;
-	bh=Qrk8GSV96kDDkq1+0VAMC53OBa1WpEWTZeLl1slKnmA=;
+	bh=JG2Mv9KfI7xkq43R9tTrX6gyZeNUTJ68NxGSnZETtNU=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YLTE0vgdMQSaT3vgk3fSx4VMIZtYUrS6S09lvg8odYkwcGBnb+ccHrfLODlpXQipeVkHOfZNFxUP3ETEGXvYHCKWBaejDtppIlOpMEPDloC1xD4u+pFqpb+fC9dxKWUGUz4ZMxS+LRRdV7UsC+JKNYGywnVMMAcy6nrVvnYefaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=fO1SG79x; arc=none smtp.client-ip=34.198.218.121
+	 Content-Type:MIME-Version; b=hxMBBHD5MzlOLbqedSU6n9XihB7FJ2s0X2Lt7rX3NhrfFmvH6/GX50AmW6An2iMEC4kv3QSEEFaSuWQR4f2KROEuaggV08WxNB6Ysmh/l6KthqpmnIRGulq9Oxsi9d6sHO6xSRkmRXabGzvstDTkRqAbIlkrMrrKWwQ5gN+87PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=ryyqZyeE; arc=none smtp.client-ip=3.221.209.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
@@ -39,63 +39,62 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   t=1775050628; x=1806586628;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:mime-version:content-transfer-encoding;
-  bh=yyrWPY5Ev1YqXQNI936Pi4tZz7GWIXsbdLr6GEho4RU=;
-  b=fO1SG79xsimdv16UVio+/O0bam0BJ2lZ7dgbo2E+0488AXWrJPh5LcA0
-   LIyXRRXK/afCjJ4bK4BzD7kcRh53gaRKTWeTDsWGicoXzNm+WVeJCVmlb
-   LG2O6uOJGAmFEuS0fa/BKZA1I7gIxfWxycownNFZaoZDIGaX2WydxDb7z
-   hmGeDlqQeF8CUIUhM0x9BrgAHUz2rhulmuVnSGRqmuuAe9VgGq4J6d1Cy
-   kdReBaWKUyRtBi29bItmCBgCbl/4HVAUYMlZNlYtrPWhNV52LFOoDyDGr
-   zuqEkGJByZSS0C5UycsOgjg+qUXYvhZ8b6f0DRYdmfngpHChl/nDC+lsp
-   A==;
-X-CSE-ConnectionGUID: 3S/LPCjRSD6mXfvS8BfF4Q==
-X-CSE-MsgGUID: U7tph4hZTj+7Zz7buNfCIQ==
+  bh=uP5c6JzjwZwnGCsqflyTr1RQBZf98/zHqoDjD1LVIe8=;
+  b=ryyqZyeEtxxfEjo+FnYPhxh1HTVzw58wq8j3sj9RrEFO1Y2GjpVmvogq
+   JBHUw9wrd6LaTrGAFqi9p9f6pBaffl8tKoRpmHqO6zsgm9HMGgzWFeGYy
+   01Zry6zqUHHmeqe4yBLkKwk/gBJQGWkUNVHeWCquGd1MHwduzhdvVd7HO
+   gA+o2isRNLVAoxs8tAU5+PtLAnyeTmbBedSJux/WjK8GLBsLU8kgCdEGi
+   ZQ9a7FBSgquiYgjvFiTjX/FbDeN6SHul7UZXTF9rV44v778BPNhp376N9
+   31GyEuGSiukIpTTTKy6LGRpbKSO+hz0b3p+lvNCP02QDO4AjTzh025GcP
+   g==;
+X-CSE-ConnectionGUID: zLawT+wTR4W8WnCI2LkUkQ==
+X-CSE-MsgGUID: GueIiePrRhahwivpK1isTg==
 X-IronPort-AV: E=Sophos;i="6.23,153,1770595200"; 
-   d="scan'208";a="14740616"
-Received: from ip-10-4-13-79.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.13.79])
-  by internal-iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 13:37:06 +0000
-Received: from EX19MTAUEC001.ant.amazon.com [52.94.133.134:17575]
+   d="scan'208";a="15299642"
+Received: from ip-10-4-3-150.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.3.150])
+  by internal-iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 13:37:07 +0000
+Received: from EX19MTAUEB001.ant.amazon.com [72.21.198.67:5444]
  by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.17.255:2525] with esmtp (Farcaster)
- id d5b417ca-06c6-438e-9b58-67511adcf066; Wed, 1 Apr 2026 13:37:05 +0000 (UTC)
-X-Farcaster-Flow-ID: d5b417ca-06c6-438e-9b58-67511adcf066
-Received: from EX19D012UEC002.ant.amazon.com (10.252.135.254) by
- EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+ id 0f038195-b495-4681-bad2-e90935ddb4f6; Wed, 1 Apr 2026 13:37:07 +0000 (UTC)
+X-Farcaster-Flow-ID: 0f038195-b495-4681-bad2-e90935ddb4f6
+Received: from EX19D012UEC004.ant.amazon.com (10.252.135.219) by
+ EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 1 Apr 2026 13:37:05 +0000
+ Wed, 1 Apr 2026 13:37:07 +0000
 Received: from EX19D012UEC003.ant.amazon.com (10.252.135.160) by
- EX19D012UEC002.ant.amazon.com (10.252.135.254) with Microsoft SMTP Server
+ EX19D012UEC004.ant.amazon.com (10.252.135.219) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 1 Apr 2026 13:37:05 +0000
+ Wed, 1 Apr 2026 13:37:07 +0000
 Received: from EX19D012UEC003.ant.amazon.com ([fe80::67ea:859:1e17:25a9]) by
  EX19D012UEC003.ant.amazon.com ([fe80::67ea:859:1e17:25a9%3]) with mapi id
- 15.02.2562.037; Wed, 1 Apr 2026 13:37:05 +0000
+ 15.02.2562.037; Wed, 1 Apr 2026 13:37:07 +0000
 From: "Heyne, Maximilian" <mheyne@amazon.de>
 To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: "Heyne, Maximilian" <mheyne@amazon.de>, Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>, Sagi Grimberg <sagi@grimberg.me>, "Chaitanya
- Kulkarni" <kch@nvidia.com>, Jens Axboe <axboe@kernel.dk>, Hector Martin
+CC: "Heyne, Maximilian" <mheyne@amazon.de>, Keith Busch <kbusch@kernel.org>,
+	Casey Chen <cachen@purestorage.com>, Christoph Hellwig <hch@lst.de>, "Hannes
+ Reinecke" <hare@suse.de>, Ming Lei <ming.lei@redhat.com>, Chaitanya Kulkarni
+	<kch@nvidia.com>, Jens Axboe <axboe@kernel.dk>, Hector Martin
 	<marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>, Alyssa Rosenzweig
-	<alyssa@rosenzweig.io>, "James E.J. Bottomley" <jejb@linux.ibm.com>, "Martin
- K. Petersen" <martin.petersen@oracle.com>, Alim Akhtar
-	<alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, Bart Van Assche
-	<bvanassche@acm.org>, Sasha Levin <sashal@kernel.org>, Peter Wang
-	<peter.wang@mediatek.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Seunghui Lee <sh043.lee@samsung.com>, Brian Kao <powenkao@google.com>, Adrian
- Hunter <adrian.hunter@intel.com>, Sanjeev Yadav <sanjeev.y@mediatek.com>,
-	Wonkon Kim <wkon.kim@samsung.com>, Hannes Reinecke <hare@suse.de>, Ming Lei
-	<ming.lei@redhat.com>, "linux-block@vger.kernel.org"
-	<linux-block@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "asahi@lists.linux.dev"
-	<asahi@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<alyssa@rosenzweig.io>, Sagi Grimberg <sagi@grimberg.me>, "James E.J.
+ Bottomley" <jejb@linux.ibm.com>, "Martin K. Petersen"
+	<martin.petersen@oracle.com>, Alim Akhtar <alim.akhtar@samsung.com>, "Avri
+ Altman" <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, "Sasha
+ Levin" <sashal@kernel.org>, Peter Wang <peter.wang@mediatek.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Wonkon Kim
+	<wkon.kim@samsung.com>, Sanjeev Yadav <sanjeev.y@mediatek.com>, Brian Kao
+	<powenkao@google.com>, Seunghui Lee <sh043.lee@samsung.com>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"asahi@lists.linux.dev" <asahi@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, "linux-nvme@lists.infradead.org"
 	<linux-nvme@lists.infradead.org>, "linux-scsi@vger.kernel.org"
 	<linux-scsi@vger.kernel.org>
-Subject: [PATCH 6.1.y 6/8] nvme-pci: put the admin queue in
- nvme_dev_remove_admin
-Thread-Topic: [PATCH 6.1.y 6/8] nvme-pci: put the admin queue in
- nvme_dev_remove_admin
-Thread-Index: AQHcwdygkRu0MfiJH0aFifOxHgnywA==
-Date: Wed, 1 Apr 2026 13:37:05 +0000
-Message-ID: <20260401-fugue-granite-a4156254@mheyne-amazon>
+Subject: [PATCH 6.1.y 7/8] nvme: fix admin request_queue lifetime
+Thread-Topic: [PATCH 6.1.y 7/8] nvme: fix admin request_queue lifetime
+Thread-Index: AQHcwdyhnryy0gEdpE2mdsVx0tSoPQ==
+Date: Wed, 1 Apr 2026 13:37:06 +0000
+Message-ID: <20260401-clef-ken-54e30c4e@mheyne-amazon>
 References: <20260401-defer-gleam-5226cb65@mheyne-amazon>
 In-Reply-To: <20260401-defer-gleam-5226cb65@mheyne-amazon>
 Accept-Language: en-US
@@ -120,7 +119,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232789-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232791-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
@@ -136,54 +135,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[8]
-X-Rspamd-Queue-Id: 63C3637B7A3
+X-Rspamd-Queue-Id: C6F3E37B945
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Christoph Hellwig <hch@lst.de>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 96ef1be53663a9343dffcf106e2f1b59da4b8799 ]
+[ Upstream commit 03b3bcd319b3ab5182bc9aaa0421351572c78ac0]
 
-Once the controller is shutdown no one can access the admin queue.  Tear
-it down in nvme_dev_remove_admin, which matches the flow in the other
-drivers.
+The namespaces can access the controller's admin request_queue, and
+stale references on the namespaces may exist after tearing down the
+controller. Ensure the admin request_queue is active by moving the
+controller's 'put' to after all controller references have been released
+to ensure no one is can access the request_queue. This fixes a reported
+use-after-free bug:
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+  BUG: KASAN: slab-use-after-free in blk_queue_enter+0x41c/0x4a0
+  Read of size 8 at addr ffff88c0a53819f8 by task nvme/3287
+  CPU: 67 UID: 0 PID: 3287 Comm: nvme Tainted: G            E       6.13.2-=
+ga1582f1a031e #15
+  Tainted: [E]=3DUNSIGNED_MODULE
+  Hardware name: Jabil /EGS 2S MB1, BIOS 1.00 06/18/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4f/0x60
+   print_report+0xc4/0x620
+   ? _raw_spin_lock_irqsave+0x70/0xb0
+   ? _raw_read_unlock_irqrestore+0x30/0x30
+   ? blk_queue_enter+0x41c/0x4a0
+   kasan_report+0xab/0xe0
+   ? blk_queue_enter+0x41c/0x4a0
+   blk_queue_enter+0x41c/0x4a0
+   ? __irq_work_queue_local+0x75/0x1d0
+   ? blk_queue_start_drain+0x70/0x70
+   ? irq_work_queue+0x18/0x20
+   ? vprintk_emit.part.0+0x1cc/0x350
+   ? wake_up_klogd_work_func+0x60/0x60
+   blk_mq_alloc_request+0x2b7/0x6b0
+   ? __blk_mq_alloc_requests+0x1060/0x1060
+   ? __switch_to+0x5b7/0x1060
+   nvme_submit_user_cmd+0xa9/0x330
+   nvme_user_cmd.isra.0+0x240/0x3f0
+   ? force_sigsegv+0xe0/0xe0
+   ? nvme_user_cmd64+0x400/0x400
+   ? vfs_fileattr_set+0x9b0/0x9b0
+   ? cgroup_update_frozen_flag+0x24/0x1c0
+   ? cgroup_leave_frozen+0x204/0x330
+   ? nvme_ioctl+0x7c/0x2c0
+   blkdev_ioctl+0x1a8/0x4d0
+   ? blkdev_common_ioctl+0x1930/0x1930
+   ? fdget+0x54/0x380
+   __x64_sys_ioctl+0x129/0x190
+   do_syscall_64+0x5b/0x160
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f765f703b0b
+  Code: ff ff ff 85 c0 79 9b 49 c7 c4 ff ff ff ff 5b 5d 4c 89 e0 41 5c c3 6=
+6 0f 1f 84 00 00 00 00 00 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff=
+ ff 73 01 c3 48 8b 0d dd 52 0f 00 f7 d8 64 89 01 48
+  RSP: 002b:00007ffe2cefe808 EFLAGS: 00000202 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00007ffe2cefe860 RCX: 00007f765f703b0b
+  RDX: 00007ffe2cefe860 RSI: 00000000c0484e41 RDI: 0000000000000003
+  RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
+  R10: 00007f765f611d50 R11: 0000000000000202 R12: 0000000000000003
+  R13: 00000000c0484e41 R14: 0000000000000001 R15: 00007ffe2cefea60
+   </TASK>
+
+Reported-by: Casey Chen <cachen@purestorage.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
 Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Tested-by Gerd Bayer <gbayer@linxu.ibm.com>
-Stable-dep-of: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime")
-[ Context change due to missing commit 94cc781f69f4 ("nvme: move OPAL
-  setup from PCIe to core")]
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+[ Because we're missing commit 0da7feaa5913 ("nvme-pci: use the tagset
+  alloc/free helpers") we need to additionally remove the blk_put_queue
+  from nvme_dev_remove_admin in pci.c to properly fix the UAF ]
 Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 ---
- drivers/nvme/host/pci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/nvme/host/core.c | 3 ++-
+ drivers/nvme/host/pci.c  | 1 -
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 044e1a9c099b3..f17318f6c82b0 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -5043,7 +5043,6 @@ EXPORT_SYMBOL_GPL(nvme_alloc_admin_tag_set);
+ void nvme_remove_admin_tag_set(struct nvme_ctrl *ctrl)
+ {
+ 	blk_mq_destroy_queue(ctrl->admin_q);
+-	blk_put_queue(ctrl->admin_q);
+ 	if (ctrl->ops->flags & NVME_F_FABRICS) {
+ 		blk_mq_destroy_queue(ctrl->fabrics_q);
+ 		blk_put_queue(ctrl->fabrics_q);
+@@ -5186,6 +5185,8 @@ static void nvme_free_ctrl(struct device *dev)
+ 		container_of(dev, struct nvme_ctrl, ctrl_device);
+ 	struct nvme_subsystem *subsys =3D ctrl->subsys;
+ =
+
++	if (ctrl->admin_q)
++		blk_put_queue(ctrl->admin_q);
+ 	if (!subsys || ctrl->instance !=3D subsys->instance)
+ 		ida_free(&nvme_instance_ida, ctrl->instance);
+ =
 
 diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 13c0098939ec0..38732c0c28bbb 100644
+index 38732c0c28bbb..e8b7b0004086c 100644
 --- a/drivers/nvme/host/pci.c
 +++ b/drivers/nvme/host/pci.c
-@@ -1782,6 +1782,7 @@ static void nvme_dev_remove_admin(struct nvme_dev *de=
+@@ -1782,7 +1782,6 @@ static void nvme_dev_remove_admin(struct nvme_dev *de=
 v)
  		 */
  		nvme_start_admin_queue(&dev->ctrl);
  		blk_mq_destroy_queue(dev->ctrl.admin_q);
-+		blk_put_queue(dev->ctrl.admin_q);
+-		blk_put_queue(dev->ctrl.admin_q);
  		blk_mq_free_tag_set(&dev->admin_tagset);
  	}
  }
-@@ -2831,8 +2832,6 @@ static void nvme_pci_free_ctrl(struct nvme_ctrl *ctrl)
- =
-
- 	nvme_dbbuf_dma_free(dev);
- 	nvme_free_tagset(dev);
--	if (dev->ctrl.admin_q)
--		blk_put_queue(dev->ctrl.admin_q);
- 	free_opal_dev(dev->ctrl.opal_dev);
- 	mempool_destroy(dev->iod_mempool);
- 	put_device(dev->dev);
 -- =
 
 2.50.1
