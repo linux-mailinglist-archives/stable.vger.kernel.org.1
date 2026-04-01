@@ -1,254 +1,236 @@
-Return-Path: <stable+bounces-232722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qI5IEunUzGnnWwYAu9opvQ
-	(envelope-from <stable+bounces-232722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:18:49 +0200
+	id YGckD+fVzGnnWwYAu9opvQ
+	(envelope-from <stable+bounces-232725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:23:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9803376A3D
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:18:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED9B376B4B
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0E750305F198
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 08:17:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E980B30532EC
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 08:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E393B2FDC;
-	Wed,  1 Apr 2026 08:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257AC3A9018;
+	Wed,  1 Apr 2026 08:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="qLgUdTXy"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hubbP+T3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fjq95id0"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791163AA4F6;
-	Wed,  1 Apr 2026 08:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87828377574
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 08:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775031425; cv=none; b=qEYKxrbjtTvSzDynQqWdn3olOMFjV5aTYlP5inX4boEWScChfADnciG2J3RytxFzt/7eoxsceBdC6tBtgrtaRpiUCkx4G5GB8QYPGt6W2nGCDKic3nw/BGSIG6Iygc1mNSTAHJizcB6cuH5HxK2OvyqgGikkGxjWeTm8o7c9bLA=
+	t=1775031681; cv=none; b=aEegUHdA7o6Pyyd7XjNHK7+ctMlaojC7jGU6OOgLieX96cf9EOJgGAGJzuoIxCVfDnULTLd4RAEwFJfi73YUMIr4fBw8HE/JC+sqJcWwyzdL1M0dAkuUIZvo98lp2/DVFIefTKtyNl4UiV8uSSsUeUaDCkvbh6iiLSZyEuLipeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775031425; c=relaxed/simple;
-	bh=EKUkpbq7JSTnCQVDsQ7Bo7f2ZKWsZtAK12DNKf/nJlk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CYpHRzXWOMVXI9pAjYHpZJU18u4gwvr2FmZ1EfO98vQUibGNMJ9Tm8MZEXvMjyh43tiVvBk5NiFIRgHMlvXQoifZj5uAMKRUiqD9KYSdrhMeb5dgVFttLIGiDFQqaBdgH5KLvLqwRSAtJMX/RAc/wZmnNUnRx7WJO1hvqXdlrYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=qLgUdTXy; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=hE9w7JoPF7q5rCf6KhhEJWJqCptovuDZd/Iy/+tLfKo=;
-	b=qLgUdTXyB2huFMYWwsBs6yJ/F+9lt0zGJ2NBn+WC66I23Xw4lD/MYLZdp/AaESL9MDwbvh4PG
-	4g/cCYoR/67GmTbgs1X5afshxewzUwAWGLnOlgBOHKQjEtF2bK4P57/PDC46EmJDfRwKl3h1FiZ
-	k+9EKAAKSPQbPzHjYnS4Cu4=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4flyPP34Mzz12LG4;
-	Wed,  1 Apr 2026 16:11:37 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id B64C540537;
-	Wed,  1 Apr 2026 16:17:00 +0800 (CST)
-Received: from localhost.localdomain (10.50.163.32) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 1 Apr 2026 16:16:58 +0800
-From: Chengwen Feng <fengchengwen@huawei.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Rafael J .
- Wysocki" <rafael@kernel.org>
-CC: Jonathan Corbet <corbet@lwn.net>, WANG Xuerui <kernel@xen0n.name>, Thomas
- Gleixner <tglx@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, "H .
- Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>, Boris
- Ostrovsky <boris.ostrovsky@oracle.com>, Len Brown <lenb@kernel.org>, Sunil V
- L <sunilvl@ventanamicro.com>, Mark Rutland <mark.rutland@arm.com>, Jonathan
- Cameron <jonathan.cameron@huawei.com>, Kees Cook <kees@kernel.org>, Yanteng
- Si <si.yanteng@linux.dev>, Sean Christopherson <seanjc@google.com>, Kai Huang
-	<kai.huang@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, Thomas Huth
-	<thuth@redhat.com>, Thorsten Blum <thorsten.blum@linux.dev>, Kevin Loughlin
-	<kevinloughlin@google.com>, Zheyun Shen <szy0127@sjtu.edu.cn>, Peter Zijlstra
-	<peterz@infradead.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Xin
- Li <xin@zytor.com>, "Ahmed S . Darwish" <darwi@linutronix.de>, Sohil Mehta
-	<sohil.mehta@intel.com>, Ilkka Koskinen <ilkka@os.amperecomputing.com>, Robin
- Murphy <robin.murphy@arm.com>, James Clark <james.clark@linaro.org>, Besar
- Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>, Wei Huang
-	<wei.huang2@amd.com>, Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>, <punit.agrawal@oss.qualcomm.com>,
-	<guohanjun@huawei.com>, <suzuki.poulose@arm.com>, <ryan.roberts@arm.com>,
-	<chenl311@chinatelecom.cn>, <masahiroy@kernel.org>,
-	<wangyuquan1236@phytium.com.cn>, <anshuman.khandual@arm.com>,
-	<heinrich.schuchardt@canonical.com>, <Eric.VanTassell@amd.com>,
-	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
-	<liuyonglong@huawei.com>, <fengchengwen@huawei.com>,
-	<linux-pci@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<loongarch@lists.linux.dev>, <linux-riscv@lists.infradead.org>,
-	<xen-devel@lists.xenproject.org>, <linux-acpi@vger.kernel.org>,
-	<linux-perf-users@vger.kernel.org>, <stable@vger.kernel.org>,
-	<x86@kernel.org>
-Subject: [PATCH RESEND v10 8/8] PCI/TPH: Pass ACPI Processor UID to Cache Locality _DSM
-Date: Wed, 1 Apr 2026 16:16:40 +0800
-Message-ID: <20260401081640.26875-9-fengchengwen@huawei.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260401081640.26875-1-fengchengwen@huawei.com>
-References: <20260401081640.26875-1-fengchengwen@huawei.com>
+	s=arc-20240116; t=1775031681; c=relaxed/simple;
+	bh=B5Tle2fRi76KfDMCO8D4EC6UyhUw+743wpGBNKtB0iM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7ITeGFTN6j717B6LbWv7stgo8tUJfD4qb/Di+Eftw9QnYYA80o+qG9r96GgQinta+a2tU4b9BrpD8YUMIs4MzHup0nX0yeokAMaDcf0TnyucbKCXrSx+B3VcaprpIXYROnBci/z2Bjxkq3Q2K+OW2qGF0X68SXHDqaohpXjpdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hubbP+T3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fjq95id0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775031678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1+9bEHS3jmAexwoYuhPYmzlkbcIU24Gjv5E3vES6Edw=;
+	b=hubbP+T3DqH6VmwgNZNLMgRo/DMlAsz6jqpH6AtxboKZDyt3jJwKbkMoA+G/i4y0xn6oDw
+	fVh7Rwcmwb50/3G7m7fyk+4QnR5uPlodfOF0PKoSRWtegAkmLtxtNirCNbzYeDG2QdWnNY
+	wY+2ow1/EZdIzJd8xIbbvhrpuo+emF8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-232-k1ecntHNN-ynIa2DZCrYeQ-1; Wed, 01 Apr 2026 04:21:17 -0400
+X-MC-Unique: k1ecntHNN-ynIa2DZCrYeQ-1
+X-Mimecast-MFC-AGG-ID: k1ecntHNN-ynIa2DZCrYeQ_1775031676
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43d07f0aca0so1309586f8f.3
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 01:21:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775031676; x=1775636476; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1+9bEHS3jmAexwoYuhPYmzlkbcIU24Gjv5E3vES6Edw=;
+        b=Fjq95id0xir6J/b+Gbz7A+6NBWMs8P0GMtCNlFhJvMa/+p85jkM/u660o3lR1pBAe5
+         aLtzmHE/zvDCzsKcKu42DGH0DKNHlqETcUf3y90leNzUUS89R2l6kClpql2L3sl5JXfP
+         RzzFOhierK9x75yBmCy+e6PLLLUeHwuy66dwzu1lNMTL6KaUsiVkuqGSaM2MwDHLSKst
+         YyfALx9dOF+8M4ZWDTqlTjMeFwPmLf/EPjNkYSjpsLISu0dHY/9HkZZVoQsGu2ESVS2X
+         iD0ZtJCynmed5GxGagplb8TZcVkyCqJZoJnUXNlP39LLlp8DSiBpqVJq5c9rV14O6oZX
+         6tvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775031676; x=1775636476;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1+9bEHS3jmAexwoYuhPYmzlkbcIU24Gjv5E3vES6Edw=;
+        b=JPlYcklL+F0ZZ6wbQtY9LjBFpfabnbgM/GUIAFtyBVhKbgw9f2aWjDV0XhFFXHl1ty
+         PoVSvahZV1gDj2eO1TTuC383dAk40Gnf+vniPiX0luxXlGzC8KaxzVU1iGxFRBJ0hMWp
+         R9WHu6miiwNjYA2cAFre3to1FmIS3zwbv4ufg/AGbau92zlb164DRv3lt6wKYw8wi9fv
+         +U/g8prDqfY+vQUblZZ7HgAalsrWboTKP0IkD0gg6C4zzgs7n86MdhEjy26MpAUTsvpC
+         akQpPbPdnUnFdgV8EZ7I/AgK81C5zT88vXjzAZIrlFnuUbiq0kleWWsxmGcHRCNo5y57
+         N0nw==
+X-Forwarded-Encrypted: i=1; AJvYcCXX69LF+DuTmlt/HFmLeADOaqTT2nQdLC9MR8VUhzhk31KHbtKwWnNF0aa3D/GlZrN9m9UfZH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfaUgzVnBrr2X3OIMem28vK8sZPUK8k4ZNHA8TkFN+uEH/GCBM
+	4fsdagZnQyRb+moz6hp1vUKRbhSrjfcsf8nN8ZhpDhQWu7L4le9RAQ+1aMRBBe7Mfe6ZKBX+46v
+	AdbpJJSCZxKYNRJdIIUGhSIopEI7itxXtbsgMmGGAxv14Uf6PFAABB5bLXQ==
+X-Gm-Gg: ATEYQzw3kMCoxY9GrzYad8PX2UfcQa7G+L9cuRv4XOTIB595QklXrEKksSR6Xuvg3Ri
+	7Sl1dXTjJRDwxfS8UxnicVzsp0kc6/4FVUvdIFLAQbC4iX0qfG8wAJB6tDZcgs+wv/BEL6Cc3Dn
+	o2lTaTvnn77inh4eHhDiASbvjHRRUoaXfw7qRGJnWCWFDXARJDnAsnyYWbViTa3SYbO8Kh+sFUs
+	Bh7t/sGQ/XgunH0LH4VdNo80OszQ0vKQIa8fmMqXwKS2yhpr2iCo2gJJllJge/G5sxGav7X8Rkh
+	pZrbEdDSRScKp1Yw1jE+GiQbqJBaQrBCj9YJtytUKSMWiJ2ycgjGT9HjrJznLmXLdu4BN/6o+G2
+	e+FoE9Ex+DbrFgG4w
+X-Received: by 2002:a05:600c:468b:b0:480:1d0b:2d32 with SMTP id 5b1f17b1804b1-4888356275bmr40333115e9.12.1775031675923;
+        Wed, 01 Apr 2026 01:21:15 -0700 (PDT)
+X-Received: by 2002:a05:600c:468b:b0:480:1d0b:2d32 with SMTP id 5b1f17b1804b1-4888356275bmr40332415e9.12.1775031675320;
+        Wed, 01 Apr 2026 01:21:15 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e7e9728sm101815975e9.1.2026.04.01.01.21.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 01:21:14 -0700 (PDT)
+Date: Wed, 1 Apr 2026 04:21:11 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Srujana Challa <schalla@marvell.com>
+Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	pabeni@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, ndabilpuram@marvell.com, kshankar@marvell.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net,v5] virtio_net: clamp rss_max_key_size to
+ NETDEV_RSS_KEY_LEN
+Message-ID: <20260401042105-mutt-send-email-mst@kernel.org>
+References: <20260326142344.1171317-1-schalla@marvell.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemk500009.china.huawei.com (7.202.194.94)
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326142344.1171317-1-schalla@marvell.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232722-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232725-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_GT_50(0.00)[62];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:email,huawei.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E9803376A3D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CED9B376B4B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-pcie_tph_get_cpu_st() uses the Query Cache Locality Features _DSM [1]
-to retrieve the TPH Steering Tag for memory associated with the CPU
-identified by its "cpu_uid" parameter, a Linux logical CPU ID.
+On Thu, Mar 26, 2026 at 07:53:44PM +0530, Srujana Challa wrote:
+> rss_max_key_size in the virtio spec is the maximum key size supported by
+> the device, not a mandatory size the driver must use. Also the value 40
+> is a spec minimum, not a spec maximum.
+> 
+> The current code rejects RSS and can fail probe when the device reports a
+> larger rss_max_key_size than the driver buffer limit. Instead, clamp the
+> effective key length to min(device rss_max_key_size, NETDEV_RSS_KEY_LEN)
+> and keep RSS enabled.
+> 
+> This keeps probe working on devices that advertise larger maximum key sizes
+> while respecting the netdev RSS key buffer size limit.
+> 
+> Fixes: 3f7d9c1964fc ("virtio_net: Add hash_key_length check")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Srujana Challa <schalla@marvell.com>
 
-The _DSM requires an ACPI Processor UID, which pcie_tph_get_cpu_st()
-previously assumed was the same as the Linux logical CPU ID. This is
-true on x86 but not on arm64, so pcie_tph_get_cpu_st() returned the
-wrong Steering Tag, resulting in incorrect TPH functionality on arm64.
 
-Convert the Linux logical CPU ID to the ACPI Processor UID with
-acpi_get_cpu_uid() before passing it to the _DSM. Additionally, rename
-the pcie_tph_get_cpu_st() parameter from "cpu_uid" to "cpu" to reflect
-that it represents a logical CPU ID (not an ACPI Processor UID).
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-[1] According to ECN_TPH-ST_Revision_20200924
-    (https://members.pcisig.com/wg/PCI-SIG/document/15470), the input
-    is defined as: "If the target is a processor, then this field
-    represents the ACPI Processor UID of the processor as specified in
-    the MADT. If the target is a processor container, then this field
-    represents the ACPI Processor UID of the processor container as
-    specified in the PPTT."
-
-Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
----
- Documentation/PCI/tph.rst |  4 ++--
- drivers/pci/tph.c         | 16 +++++++++++-----
- include/linux/pci-tph.h   |  4 ++--
- 3 files changed, 15 insertions(+), 9 deletions(-)
-
-diff --git a/Documentation/PCI/tph.rst b/Documentation/PCI/tph.rst
-index e8993be64fd6..b6cf22b9bd90 100644
---- a/Documentation/PCI/tph.rst
-+++ b/Documentation/PCI/tph.rst
-@@ -79,10 +79,10 @@ To retrieve a Steering Tag for a target memory associated with a specific
- CPU, use the following function::
- 
-   int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type type,
--                          unsigned int cpu_uid, u16 *tag);
-+                          unsigned int cpu, u16 *tag);
- 
- The `type` argument is used to specify the memory type, either volatile
--or persistent, of the target memory. The `cpu_uid` argument specifies the
-+or persistent, of the target memory. The `cpu` argument specifies the
- CPU where the memory is associated to.
- 
- After the ST value is retrieved, the device driver can use the following
-diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-index ca4f97be7538..b67c9ad14bda 100644
---- a/drivers/pci/tph.c
-+++ b/drivers/pci/tph.c
-@@ -236,21 +236,27 @@ static int write_tag_to_st_table(struct pci_dev *pdev, int index, u16 tag)
-  * with a specific CPU
-  * @pdev: PCI device
-  * @mem_type: target memory type (volatile or persistent RAM)
-- * @cpu_uid: associated CPU id
-+ * @cpu: associated CPU id
-  * @tag: Steering Tag to be returned
-  *
-  * Return the Steering Tag for a target memory that is associated with a
-- * specific CPU as indicated by cpu_uid.
-+ * specific CPU as indicated by cpu.
-  *
-  * Return: 0 if success, otherwise negative value (-errno)
-  */
- int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type mem_type,
--			unsigned int cpu_uid, u16 *tag)
-+			unsigned int cpu, u16 *tag)
- {
- #ifdef CONFIG_ACPI
- 	struct pci_dev *rp;
- 	acpi_handle rp_acpi_handle;
- 	union st_info info;
-+	u32 cpu_uid;
-+	int ret;
-+
-+	ret = acpi_get_cpu_uid(cpu, &cpu_uid);
-+	if (ret != 0)
-+		return ret;
- 
- 	rp = pcie_find_root_port(pdev);
- 	if (!rp || !rp->bus || !rp->bus->bridge)
-@@ -265,9 +271,9 @@ int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type mem_type,
- 
- 	*tag = tph_extract_tag(mem_type, pdev->tph_req_type, &info);
- 
--	pci_dbg(pdev, "get steering tag: mem_type=%s, cpu_uid=%d, tag=%#04x\n",
-+	pci_dbg(pdev, "get steering tag: mem_type=%s, cpu=%d, tag=%#04x\n",
- 		(mem_type == TPH_MEM_TYPE_VM) ? "volatile" : "persistent",
--		cpu_uid, *tag);
-+		cpu, *tag);
- 
- 	return 0;
- #else
-diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
-index ba28140ce670..be68cd17f2f8 100644
---- a/include/linux/pci-tph.h
-+++ b/include/linux/pci-tph.h
-@@ -25,7 +25,7 @@ int pcie_tph_set_st_entry(struct pci_dev *pdev,
- 			  unsigned int index, u16 tag);
- int pcie_tph_get_cpu_st(struct pci_dev *dev,
- 			enum tph_mem_type mem_type,
--			unsigned int cpu_uid, u16 *tag);
-+			unsigned int cpu, u16 *tag);
- void pcie_disable_tph(struct pci_dev *pdev);
- int pcie_enable_tph(struct pci_dev *pdev, int mode);
- u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
-@@ -36,7 +36,7 @@ static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
- { return -EINVAL; }
- static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
- 				      enum tph_mem_type mem_type,
--				      unsigned int cpu_uid, u16 *tag)
-+				      unsigned int cpu, u16 *tag)
- { return -EINVAL; }
- static inline void pcie_disable_tph(struct pci_dev *pdev) { }
- static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
--- 
-2.17.1
+> ---
+> v3:
+> - Moved RSS key validation checks to virtnet_validate.
+> - Add fixes: tag and CC -stable
+> v4:
+> - Use NETDEV_RSS_KEY_LEN instead of type_max for the maximum rss key size.
+> v5:
+> - Interpret rss_max_key_size as a maximum and clamp it to NETDEV_RSS_KEY_LEN.
+> - Do not disable RSS/HASH_REPORT when device rss_max_key_size exceeds NETDEV_RSS_KEY_LEN.
+> - Drop the separate patch that replaced the runtime check with BUILD_BUG_ON.
+> 
+>  drivers/net/virtio_net.c | 20 +++++++++-----------
+>  1 file changed, 9 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 022f60728721..b241c8dbb4e1 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -373,8 +373,6 @@ struct receive_queue {
+>  	struct xdp_buff **xsk_buffs;
+>  };
+>  
+> -#define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
+> -
+>  /* Control VQ buffers: protected by the rtnl lock */
+>  struct control_buf {
+>  	struct virtio_net_ctrl_hdr hdr;
+> @@ -478,7 +476,7 @@ struct virtnet_info {
+>  
+>  	/* Must be last as it ends in a flexible-array member. */
+>  	TRAILING_OVERLAP(struct virtio_net_rss_config_trailer, rss_trailer, hash_key_data,
+> -		u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
+> +		u8 rss_hash_key_data[NETDEV_RSS_KEY_LEN];
+>  	);
+>  };
+>  static_assert(offsetof(struct virtnet_info, rss_trailer.hash_key_data) ==
+> @@ -6717,6 +6715,7 @@ static int virtnet_probe(struct virtio_device *vdev)
+>  	struct virtnet_info *vi;
+>  	u16 max_queue_pairs;
+>  	int mtu = 0;
+> +	u16 key_sz;
+>  
+>  	/* Find if host supports multiqueue/rss virtio_net device */
+>  	max_queue_pairs = 1;
+> @@ -6851,14 +6850,13 @@ static int virtnet_probe(struct virtio_device *vdev)
+>  	}
+>  
+>  	if (vi->has_rss || vi->has_rss_hash_report) {
+> -		vi->rss_key_size =
+> -			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+> -		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
+> -			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
+> -				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
+> -			err = -EINVAL;
+> -			goto free;
+> -		}
+> +		key_sz = virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+> +
+> +		vi->rss_key_size = min_t(u16, key_sz, NETDEV_RSS_KEY_LEN);
+> +		if (key_sz > vi->rss_key_size)
+> +			dev_warn(&vdev->dev,
+> +				 "rss_max_key_size=%u exceeds driver limit %u, clamping\n",
+> +				 key_sz, vi->rss_key_size);
+>  
+>  		vi->rss_hash_types_supported =
+>  		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
+> -- 
+> 2.25.1
 
 
