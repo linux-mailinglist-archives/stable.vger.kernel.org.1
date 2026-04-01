@@ -1,127 +1,167 @@
-Return-Path: <stable+bounces-232683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCkjA/SYzGl5UQYAu9opvQ
-	(envelope-from <stable+bounces-232683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 06:03:00 +0200
+	id AHlZFAGbzGnHUQYAu9opvQ
+	(envelope-from <stable+bounces-232684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 06:11:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655953748F5
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 06:02:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D70374942
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 06:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46C803024CA8
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 04:02:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 415B83029B62
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 04:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CDF346766;
-	Wed,  1 Apr 2026 04:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC29134751D;
+	Wed,  1 Apr 2026 04:11:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6258B1DF73C;
-	Wed,  1 Apr 2026 04:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16511DF73C;
+	Wed,  1 Apr 2026 04:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775016172; cv=none; b=ONkcd15tWKRh+kT8BLJjaq/sCo9LLEGMNpsDbm+Sg05QUXdmrUQa6l/fsu1R84CCdS+I3RsilvpBR2jFuKrzNkJTgNwJEXH3eLb3C0kos2rACbA9yRpTyqe565uyRkaXC90RkYVIoMDcajj7rO/FEnoJEql7EYYsxEwVF5IwEyg=
+	t=1775016702; cv=none; b=YURBzCAdsO14TS9JxEUbTMOGJ+2antjno9dFx7Nmv7m7Efv8hNs0bBcDJUHbJmjqVTuMX+EG1XZ7Fg7exXuZwgFxEjmkO/22jrTR+KmVO7JfpyP/5AlyhUxCX8R9CSndy2g/P3mhp6NY7JHK0p2GVs5iiTkfzY68w9TqOn2w2nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775016172; c=relaxed/simple;
-	bh=hSDjU7KiCtGJ4NlgfMu2d0Kkdyw1D/vERWXKYePWWXI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jKQl+4lliCONqj72ZoB9J+f219q48URKrPiR4M/c47kp/QF1GDbA+ZJslA5aF0jTIjtqB2PRLzJdtUBpIciglT7seXwbSo+ptDO5DTD0TIAxGKOtYCVR1rvcTb+BydRf8Y5ll+yN2eBvCOS50Dxzueh2StRmYEaYxyYalx2YCog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-01 (Coremail) with SMTP id qwCowABn027hmMxpLzXSCw--.12173S2;
-	Wed, 01 Apr 2026 12:02:43 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: cem@kernel.org,
-	ruansy.fnst@fujitsu.com,
-	akpm@linux-foundation.org,
-	djwong@kernel.org
-Cc: linux-xfs@vger.kernel.org,
+	s=arc-20240116; t=1775016702; c=relaxed/simple;
+	bh=sAWy1Ivi16Z/gQza1WVmjo4POjr+K6avx4D7/qC3ChA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mtdCbnzDKO/wuErf0UDxZsAyzgCqVuuApXTYHJOH66iapPunE+vScu/F/2AurwAHuZeM2IeEb4tZQQjrAZgfoKANFMT82MTI8Sz5FV5LCs9AaaBkTwiLr20ockI+k9VLWG9HWM882t8Ipkx3UYvsbH425lrfz+B6o6l54Dqyc24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id 28A5A10610;
+	Wed, 01 Apr 2026 06:11:37 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 16C5D6006954; Wed,  1 Apr 2026 06:11:37 +0200 (CEST)
+Date: Wed, 1 Apr 2026 06:11:37 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Bernd Schumacher <bernd@bschu.de>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	1131025@bugs.debian.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] xfs: fix a resource leak in xfs_alloc_buftarg()
-Date: Wed,  1 Apr 2026 12:02:41 +0800
-Message-Id: <20260401040241.560314-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [6.12.y regression] Regression with 58130e7ce6cb ("PCI/ERR:
+ Ensure error recoverability at all times"): echo vfio-pci >driver_override
+ does not work for DVB Adapter
+Message-ID: <acya-Q8_pMRRLI6j@wunner.de>
+References: <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
+ <acfZrlP0Ua_5D3U4@eldamar.lan>
+ <acfhf-odtr0yw_py@wunner.de>
+ <74bcd84500e5efcca035624f325e400dd8a21f44.camel@bschu.de>
+ <acgohjvBpVcR7HcK@wunner.de>
+ <5f9386146f426e2847550681cb7188471205607f.camel@bschu.de>
+ <aclRwznwq6KpA2qA@wunner.de>
+ <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
+ <acvHjo8PKdyHshSE@wunner.de>
+ <20260331170149.3ee222aa@shazbot.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABn027hmMxpLzXSCw--.12173S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYc7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8I
-	cVCY1x0267AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r1j6r4UM28EF7xvwVC2z280aV
-	CY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE
-	5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeV
-	CFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l
-	42xK82IYc2Ij64vIr41l4c8EcI0Ec7CjxVAaw2AFwI0_JF0_Jw1l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjfUoOJ5UUUUU
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAcEE2nMOXDyjQABsO
-X-Spamd-Result: default: False [0.04 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331170149.3ee222aa@shazbot.org>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232683-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232684-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 655953748F5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.839];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E9D70374942
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In the error path, call fs_put_dax() to drop the DAX
-device reference.
+On Tue, Mar 31, 2026 at 05:01:49PM -0600, Alex Williamson wrote:
+> On Tue, 31 Mar 2026 15:09:34 +0200 Lukas Wunner <lukas@wunner.de> wrote:
+> > On Mon, Mar 30, 2026 at 08:14:53AM +0200, Bernd Schumacher wrote:
+> > > [    0.318903] pci 0000:07:00.0: [dd01:0003] type 00 class 0x048000 PCIe Endpoint
+> > > [    0.318939] pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]  
+> > 
+> > BIOS initially sets the BAR address to an incorrect value (the top 32 bits
+> > should be all zeroes instead of all ones)...
+> > 
+> > > [    0.339685] pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]: can't claim; no compatible bridge window  
+> > [...]
+> > > [    0.311065] pci 0000:02:03.0: [1022:57a3] type 01 class 0x060400 PCIe Switch Downstream Port
+> > > [    0.311107] pci 0000:02:03.0: PCI bridge to [bus 07]
+> > > [    0.311118] pci 0000:02:03.0:   bridge window [mem 0xfc500000-0xfc5fffff]  
+> > 
+> > ... this doesn't fit into the window of the bridge above the DVB card,
+> > which has the top 32 bits set to all zeroes...
+> > 
+> > > [    0.357346] pci 0000:07:00.0: BAR 0 [mem 0xfc500000-0xfc50ffff 64bit]: assigned  
+> > 
+> > ... the kernel fixes the incorrect BAR, but it seems there's an ordering
+> > issue such that pci_save_state() is called beforehand.  It's weird that
+> > this doen't occur with newer kernels and it would be good to understand why.
+> > I'm not seeing the ordering issue despite staring at the code for a while.
+> 
+> Do we know this isn't occurring on newer kernels?
 
-Fixes: 6f643c57d57c ("xfs: implement ->notify_failure() for XFS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
----
- fs/xfs/xfs_buf.c | 1 +
- 1 file changed, 1 insertion(+)
+Yes, the reporter tested 6.19.8 and the issue does not occur there:
+https://bugs.debian.org/1131025
 
-diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
-index 47edf3041631..1ca95ef46a73 100644
---- a/fs/xfs/xfs_buf.c
-+++ b/fs/xfs/xfs_buf.c
-@@ -1831,6 +1831,7 @@ xfs_alloc_buftarg(
- 	return btp;
- 
- error_free:
-+	fs_put_dax(btp->bt_daxdev, mp);
- 	kfree(btp);
- 	return ERR_PTR(error);
- }
--- 
-2.25.1
+> AIUI, we're saving the state via the call chain invoked by
+> subsys_initcall(pcibios_init), but I think we're doing the resource
+> fixes in fs_initcall(pcibios_assign_resources).  That suggests that
+> the saved state would have the bogus BAR values.
 
+Hm, seems like a valid observation.
+
+But a call to pci_bus_add_devices() is generally preceded by a call to
+pci_assign_unassigned_root_bus_resources(), see e.g. pci_host_probe()
+or acpi_pci_root_add().  The latter is what's usually used on x86,
+whereas pcibios_init() (actually I think you meant pci_subsys_init())
+is for legacy PCI initialization on x86.
+
+Perhaps you're right and the correction of the BAR value happens in
+the fs_initcall.  We should be able to confirm that once the reporter
+has tested the debug patch I provided, which inserts a dump_stack()
+in the BAR correction codepath as well as in pci_save_state().
+
+> If we toss PM runtime into that mix, pci_pm_default_resume_early() will
+> call pci_restore_state() however pci_save_state() in that file is
+> mostly wrapped around pci_dev->state_saved guards.
+
+The state_saved guards only serve the purpose of recognizing whether
+the driver called pci_save_state() on suspend.  If it did not,
+the PCI core calls pci_save_state().
+
+Thanks for taking a look!
+
+Lukas
 
