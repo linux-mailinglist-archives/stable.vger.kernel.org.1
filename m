@@ -1,193 +1,173 @@
-Return-Path: <stable+bounces-232757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKHhL+n+zGnRYgYAu9opvQ
-	(envelope-from <stable+bounces-232757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:18:01 +0200
+	id IMj7NI/8zGnRYgYAu9opvQ
+	(envelope-from <stable+bounces-232758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:07:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FE13793C0
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:18:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B2D379187
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 13:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E4503172A8C
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 11:03:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39BE130989EA
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 11:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B22739DBC9;
-	Wed,  1 Apr 2026 10:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC363F786C;
+	Wed,  1 Apr 2026 11:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n5V5aRTm"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D88F40627B
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 10:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136F63264F4
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 11:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775041184; cv=none; b=RJw/WcDrWTYjYXVYQ1e3Mht6HF3aqOQViioEdWNMGXVLl5ABeqnIGAc7el+fBizGOIohcqhG4SMzl0bOU8ofUzS7En5qPTrrfiTwxIEFdn0KeXKAeywcDgLi0Ct0DWA95spl66C+sd+pwFctBh4vF1TCU7S6HJi65s4zU5Du+f4=
+	t=1775041353; cv=none; b=oAE7igodiy/1o9c7X7Xqc1vMdUgcoGBmh7QpLQo89+J+x7eckRFuQswgGdGnmoOJtG+zlHBi9XggD3BVbSLr4tXr7tldb4L2+U+IwiznsVD4GT99n8h4OlNV/kdn+vM1xpJEnmdnQjTVn11ibrakUuzP23XN/Ye0c2OnsKfm3SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775041184; c=relaxed/simple;
-	bh=Ope8CY7+795Vdw4uV9G0EQaCrrFUAklBTIr4qOATp1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kPJvo1I0fzLxa1NnIhUAeY013anMgxrfnjaeemPW1I3JzVifq0H+kgBQKTsCZKywY9TyKyC6ngCy4/XJFmi7L9W9ug1/vFQxHbW41rRiJKbx8vwcHFtLAxbbzf1rF28R7HGzOLbb6V6/YdLDz4HZGoDlyDKwVOulFEAYw//xlRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w7tIG-0000Zc-2c; Wed, 01 Apr 2026 12:59:28 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w7tIE-003C6L-2m;
-	Wed, 01 Apr 2026 12:59:26 +0200
-Received: from pengutronix.de (unknown [IPv6:2a0a:edc0:0:701:a82f:fdef:12b2:33d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 6CA0A513631;
-	Wed, 01 Apr 2026 10:59:26 +0000 (UTC)
-Date: Wed, 1 Apr 2026 12:59:25 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, Vincent Mailhol <mailhol@kernel.org>, 
-	Wolfgang Grandegger <wg@grandegger.com>, "David S. Miller" <davem@davemloft.net>, 
-	linux-can@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] can: sja1000: Fix pci_iounmap() buffer
-Message-ID: <20260401-effective-piculet-of-will-704d4d-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260330154236.98665-2-fourier.thomas@gmail.com>
+	s=arc-20240116; t=1775041353; c=relaxed/simple;
+	bh=SbqRNhVI3Sgg9eZpNawZvYKHn4MdY9ZbL6RY8LFSIjw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cgkaSfGUzF8N1B4jR/I91TIJDfN6uDrBWQ4idGRcAXXSWpVSzayFGuzbXvWC6z+hOH8qgut+q2htzp9e+s9kKUzDp8VUvTRH418mbPq2WZlbQF6V+Q6Cz+HQZEIBvNdFe7B/HymVoedZ/Hu6jGykUeWjQNtiIdP6DWIoOkUd8uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n5V5aRTm; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35d96be7c13so590247a91.0
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 04:02:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775041351; x=1775646151; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HirRrF/8RjBfg411Yn+GABwevBrUwvnGEoVcLWmnLPc=;
+        b=n5V5aRTmgjSYRFS/JeajMKCd6eVvqsLLjjalILqW2n0U18iqBWgZHt7RU23L2RP0jd
+         1g+AG9MtgVT4AG5U4p+mqtXpR/dCvNSl50YJjuSCq6eApt89SnTQV6zqwkqPfh8pS+R/
+         WQQCCt3j8fSjrD4tRuUcxBe1goOS8PJotNXyJY98J1GE66kZUb7FCBHKMhAN7rs2ijtd
+         tzcu3X17j1hhiQr2moYaTY742SuL9WSH5C7UmXQlFhxL/tTESRsuysVAbgJMezGecOQM
+         s9fFun3mn0Wu3Q2Lrd4cGGAcG4btaQHvi3Wa1qVRhcDBn5LRgJX0iijtjUXPmxJ8374S
+         ZtXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775041351; x=1775646151;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HirRrF/8RjBfg411Yn+GABwevBrUwvnGEoVcLWmnLPc=;
+        b=RZin0DpsN27jJXiN38TT4471LYazl4xUUQAFbbzedite/ixLbbcuTD100jgty7BIV8
+         mn9ocYQKIGyxvKHqLCcom3c25ISr7oKU79cmxuKwivKFZTRgzuwSTkFuFb7GgrQkXBW6
+         znCJOJorG/Bee3fP5k4cFSkG4m6cg4G48pC9EhmzL/7OK6oI0Qr3W3z/77expz9l25SI
+         ntWQvLob7JXJXMnem59vaSDXGKkxd1WqqHQD0CBIYbfDkJTCx4J5cbpiUVOtiakMx3Jj
+         1mFfvZkbaPDE796UVsEUapwvO7lT8JhTWIAZRbHjeX8zIYHE4ngH8Wlp9nIpL5pbGjyx
+         E5Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCWZebk1r7k0JlShyD/EdhQ9WYz4UZK5gTsTXnHfRdTtB2d1hDV9HQCT/zd6972SVXHzubXvry4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCoLtutc860rGUo3S1eqN61R3yq2fTy8LC6OOutMS5f3NoLeCa
+	MMkHN6ztNQp0fuLsT/h6ZuY9USLAIQgTv8n5PPSFCOJDUxzJsYBwExLkHcynlANSmcU=
+X-Gm-Gg: ATEYQzz4n1OEq53gVvxbeXw9VGeGgVJgMeNrR8/Xxrqq5o2YpNSxKRsUv9mBAuOaQs3
+	IjZensQ8ihygYbAlwEDwGdQQ6UP8dmunF9ZgQVYUcaCf9rInsJ6vv1z5fqYDyBcbUKzVc6hFi+Q
+	tVmJSmqeCwAsyZuKfGi6dgFcTBo/f+hWxNQn3xJw8xeWjbL8a1pH2bptTdI7l+kFbCZ+WESDqTl
+	2zp/+6RmiuWRseGtvFhMSIaBJOn6nVU/TqFSJ1/qZ21pHU9iepzCfFca2KqhZhEJ4VuI9nK40fm
+	G8ZBtkMraFH3UehErZW0fWDGfKfFJW+yoaA1DpKJDkhho34+O52fnTiOokLOO8CEScgkQ1uE74+
+	S2SGSfak288JTQedGoXxMNdpbRs5bexo1lvZ2FDBG1BezaShmXhBxcEHM0aRs3Y2Mn0TuSvootH
+	W5LzWB1aswElR6Oaw=
+X-Received: by 2002:a17:90b:1d03:b0:35b:9d0c:a2f3 with SMTP id 98e67ed59e1d1-35dc7027dbemr2379083a91.15.1775041351018;
+        Wed, 01 Apr 2026 04:02:31 -0700 (PDT)
+Received: from lgs.. ([199.182.234.55])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe977031sm4604626a91.17.2026.04.01.04.02.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 04:02:30 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: fix double free in create_space_info_sub_group() error path
+Date: Wed,  1 Apr 2026 19:02:19 +0800
+Message-ID: <20260401110219.1517804-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7zza37utbthxq4gt"
-Content-Disposition: inline
-In-Reply-To: <20260330154236.98665-2-fourier.thomas@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232757-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[pengutronix.de];
-	NEURAL_SPAM(0.00)[0.406];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232758-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:mid,pengutronix.de:url]
-X-Rspamd-Queue-Id: 34FE13793C0
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 67B2D379187
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+When kobject_init_and_add() fails, the call chain is:
 
---7zza37utbthxq4gt
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net] can: sja1000: Fix pci_iounmap() buffer
-MIME-Version: 1.0
+create_space_info_sub_group()
+-> btrfs_sysfs_add_space_info_type()
+-> kobject_init_and_add()
+-> failure
+-> kobject_put(&sub_group->kobj)
+-> space_info_release()
+-> kfree(sub_group)
 
-On 30.03.2026 17:42:31, Thomas Fourier wrote:
-> The base_addr is mapped in kvaser_pci_init_one() and the pointer is
-> copied to priv->reg_base in kvaser_pci_add_chan() with offset
-> channel * KVASER_PCI_PORT_BYTES but unmapped without the offset.
->
-> Cancel the offset before calling pci_iounmap().
->
-> Fixes: 255a9154319d ("can: sja1000: stop misusing member base_addr of str=
-uct net_device")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Then control returns to create_space_info_sub_group(), where:
 
-The cleanup functions in this driver are a mess. kvaser_pci_del_chan()
-should only delete one channel, but it deletes all. It also unmaps the
-iomem, which belongs into kvaser_pci_remove_one().
+btrfs_sysfs_add_space_info_type() returns error
+-> kfree(sub_group)
 
-What about switching the driver to pcim_enable_device(),
-pcim_request_region(), pcim_iomap() functions instead?
+Thus, sub_group is freed twice.
 
-> ---
->  drivers/net/can/sja1000/kvaser_pci.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/can/sja1000/kvaser_pci.c b/drivers/net/can/sja10=
-00/kvaser_pci.c
-> index 95fe9ee1ce32..213fd0eb07e7 100644
-> --- a/drivers/net/can/sja1000/kvaser_pci.c
-> +++ b/drivers/net/can/sja1000/kvaser_pci.c
-> @@ -161,6 +161,7 @@ static void kvaser_pci_del_chan(struct net_device *de=
-v)
->  {
->  	struct sja1000_priv *priv;
->  	struct kvaser_pci *board;
-> +	void __iomem *base_addr;
->  	int i;
->
->  	if (!dev)
-> @@ -186,7 +187,8 @@ static void kvaser_pci_del_chan(struct net_device *de=
-v)
->  	}
->  	unregister_sja1000dev(dev);
->
-> -	pci_iounmap(board->pci_dev, priv->reg_base);
-> +	base_addr =3D priv->reg_base - board->channel * KVASER_PCI_PORT_BYTES;
-> +	pci_iounmap(board->pci_dev, base_addr);
+Keep parent->sub_group[index] = NULL for the failure path, but after
+btrfs_sysfs_add_space_info_type() has called kobject_put(), let the
+kobject release callback handle the cleanup.
 
-When called from kvaser_pci_remove_one(), "dev" points to the master
-dev, which uses priv->reg_base without an offset, as it's board->channel
-is "0", right?
+Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ fs/btrfs/space-info.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-When called from the error path of kvaser_pci_add_chan(), things go
-wrong, and in the error path of kvaser_pci_init_one(), the pci mem is
-unmapped again.
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index d7176eb2fcbf..f5d0f587b755 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -277,7 +277,6 @@ static int create_space_info_sub_group(struct btrfs_space_info *parent, u64 flag
+ 
+ 	ret = btrfs_sysfs_add_space_info_type(sub_group);
+ 	if (ret) {
+-		kfree(sub_group);
+ 		parent->sub_group[index] = NULL;
+ 	}
+ 	return ret;
+-- 
+2.43.0
 
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---7zza37utbthxq4gt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCacz6iwAKCRDMOmT6rpmt
-0odmAQD81TVa/VMDwhrecUb6HKnCAO6NHVpV3LM9adc9uYeH9AEAlfAhhjN+3zrG
-jHdXYDk5sCdin4NgticimjrM8xlB3Qg=
-=/43P
------END PGP SIGNATURE-----
-
---7zza37utbthxq4gt--
 
