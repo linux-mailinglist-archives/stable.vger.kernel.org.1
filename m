@@ -1,165 +1,125 @@
-Return-Path: <stable+bounces-232654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLiAD8+KzGlXTgYAu9opvQ
-	(envelope-from <stable+bounces-232654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:02:39 +0200
+	id WODCMW6KzGlXTgYAu9opvQ
+	(envelope-from <stable+bounces-232655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:01:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F123741C1
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:02:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E09E37418F
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2461230CFB4F
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 02:54:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4AAAF30173BB
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 02:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4377F314D37;
-	Wed,  1 Apr 2026 02:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FE036B071;
+	Wed,  1 Apr 2026 02:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b74buEWd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejXd3Alk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3A836E493;
-	Wed,  1 Apr 2026 02:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9822364EB8;
+	Wed,  1 Apr 2026 02:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775012050; cv=none; b=CMHQyRHkCbRRjriSNLNuFfxpsc8OXKhVp2JpW1tte0z7uog6mExQMJusCRghO291tcDQsbcm9Wr40Qawr6JGSwZH7Ql1FYszxhsGLUE2hvQ+9YtqjDg+65E/DIpo2QvuJpKNeK13tFgc2lOo6zw45CDma9dWCNfIzF7Y1eYLMiU=
+	t=1775012370; cv=none; b=gyNV6dUItcu7MQW7BmUM6st8lQljUFW47XljdpZeA3C9HL27a59HVEl4+Lh2F0X5KPp10EuXdtrlKU6f1dPtiSUsoEpWFsmu4ODoOeoMgLRmtltLh/3t353eIX1yGHds1rkb4a68sPo2MM0cKV8PTBK5yFZs5HJ8XEI2lh1C5N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775012050; c=relaxed/simple;
-	bh=O5X7lcPD1ZDeQusDyz2Ikf6zqk7JQPK0rRhOMxOXdCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YHfTEdwEND0v38AcYbb/k/aMSZ3DSekGSq+iHoZ5SMMPni/bK0rI3U+BpdA38IJXwgVvc3mVvEDheFQGCiDBrXOdxlqOJZ4BDhKXZvbBWRltPbMfjBD7lRAyiOhSo9HB7d9hTQSTQwJfoAAEj/QQYMlt3ldvpnSZYF9aM7wT2fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b74buEWd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CA3C19423;
-	Wed,  1 Apr 2026 02:54:08 +0000 (UTC)
+	s=arc-20240116; t=1775012370; c=relaxed/simple;
+	bh=BGtOrxnlk6f59RvxLQ1mRseOThrers00WBWsCD6tbDM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HJ57ymuy8Bo2YQ+MBoMu9zvwWYzN+FoQvoQwDzBI0uRXk9+i9oQyAMOoO/+Fsf+mALQO7VN2q+H2Viw/pnMAwjrEVIWD6YXlkzOaQusJPnxEwaNsHQ57nhnQFDPyxIjODIGgN5X3E9EaBefee6QL0zoTL6ZiBXuzHwF9pc3Ikx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejXd3Alk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C17BC19423;
+	Wed,  1 Apr 2026 02:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775012049;
-	bh=O5X7lcPD1ZDeQusDyz2Ikf6zqk7JQPK0rRhOMxOXdCU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b74buEWdygfOrK+ixxWQUDq9hejQGdBedmKFt3pdBIDh3+QJNLjJvWYC+Emv6rXNR
-	 38L3jvRrz64Vm3jiFgGvoojpOT42Fz8OAu/xhNuFUlLQ/YthHo7/Z/dQY76lSia4Ax
-	 4C8DpoC/7HDcoxEq8KXpf5+IGLuL7XFOO9IQHW/JQKlo6FxSZeX0jd1cG3rNSWHEeo
-	 HFVJKUDEdVf2tcRYNaJpQaQvfcQT3orfnp2gdpt/EASmvdqmnkmlxSBx9JLnitStm2
-	 9IlzAA25z3D6PrNJM/0mndmapWKhRPgO0c2V6AgzXVLMLCHR1dfAinx0GQhIRhl2rI
-	 Us4/JtizU1UKA==
-Date: Tue, 31 Mar 2026 21:54:05 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, 
-	Srinivas Kandagatla <srini@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Vinod Koul <vkoul@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 0/7] slimbus: qcom-ngd-ctrl: Fix some race conditions and
- deadlocks
-Message-ID: <acyEDJK4nkqsOHvM@baldur>
-References: <20260309-slim-ngd-dev-v1-0-5843e3ed62a3@oss.qualcomm.com>
- <noodhyin3en2l5xravmt5l6dslcz74na5akin24zod2zhmsevo@pqtxi5ydbidx>
+	s=k20201202; t=1775012369;
+	bh=BGtOrxnlk6f59RvxLQ1mRseOThrers00WBWsCD6tbDM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ejXd3AlkjyQFOWvztrRgWHqY/UPe86R9tWibU5sjEoiuQCymqVwOnESxxYPVptFqD
+	 ThXvk7uvuC4ujZ0GITitI/+iZWCpcj++s7cmpooq2Ss+Q4ZKYK6Kxdx69dKKcNVhe/
+	 YjqFAUrkyChYsqYNhFsR+7P91nxQu00+ckDA0jtk2v69WC5JfCHMWi5oiD8w06SrzM
+	 aMvJvsiZ7xO6FkPyefRv5Qa18RhJJrTcaU/Aiz/ZbhcGgShtNyqOZBGOebd91MZxlT
+	 BlNVA9JbFLP2PkK7jnIbn0j3rjHu0lBiKS4KfKpTSjESBJBpgc2SOV5nDMRq6NqEtB
+	 9AEbFlhiX6mhA==
+Date: Tue, 31 Mar 2026 19:59:27 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sam Edwards <cfsworks@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, "Russell King (Oracle)"
+ <rmk+kernel@armlinux.org.uk>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Ovidiu Panait
+ <ovidiu.panait.rb@renesas.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Baruch Siach <baruch@tkos.co.il>, Serge Semin <fancer.lancer@gmail.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [RESEND PATCH net v3 2/2] net: stmmac: Prevent indefinite RX
+ stall on buffer exhaustion
+Message-ID: <20260331195927.3353cc6d@kernel.org>
+In-Reply-To: <20260328192503.520689-3-CFSworks@gmail.com>
+References: <20260328192503.520689-1-CFSworks@gmail.com>
+	<20260328192503.520689-3-CFSworks@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <noodhyin3en2l5xravmt5l6dslcz74na5akin24zod2zhmsevo@pqtxi5ydbidx>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232654-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232655-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[lunn.ch,davemloft.net,google.com,redhat.com,gmail.com,foss.st.com,armlinux.org.uk,bootlin.com,renesas.com,nxp.com,tkos.co.il,st.com,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 89F123741C1
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev,kernel];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E09E37418F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 11, 2026 at 03:40:46AM +0200, Dmitry Baryshkov wrote:
-> On Mon, Mar 09, 2026 at 11:09:01PM -0500, Bjorn Andersson wrote:
-> > When the qcom-ngd-ctrl driver is probed after the ADSP remoteproc, the
-> > SSR notifier will fire immediately, which results in
-> > qcom_slim_ngd_ssr_pdr_notify() attempting to schedule_work() on an
-> > unitialized work_struct.
-> > 
-> > The concrete result of this is that my db845c/RB3 now fails to boot 100%
-> > of the time.
-> > 
-> > In reviewing the problematic code, a few other problems where
-> > discovered, such that platform_driver_unregister() is used to unregister
-> > the child device.
-> > 
-> > Lastly, with the db845c booting, it was determined that attempting to
-> > stop the ADSP remoteproc causes the slimbus driver to deadlock.
-> > 
-> > Note that while this solves the problems described above, and unblock
-> > boot as well as restart of the remoteproc, this stack needs more love.
-> > 
-> > Upon tearing down the slimbus controller (when the ADSP goes down), the
-> > slimbus devices attempts to access their slimbus devices - which is
-> > prevented by the controller being runtime suspended. This results in a
-> > wall of errors in the log, about failing transactions.
-> > 
-> > Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> > ---
-> > Bjorn Andersson (7):
-> >       slimbus: qcom-ngd-ctrl: Fix up platform_driver registration
-> >       slimbus: qcom-ngd-ctrl: Fix probe error path ordering
-> >       slimbus: qcom-ngd-ctrl: Correct PDR and SSR cleanup ownership
-> >       slimbus: qcom-ngd-ctrl: Register callbacks after creating the ngd
-> >       slimbus: qcom-ngd-ctrl: Initialize controller resources in controller
-> >       slimbus: qcom-ngd-ctrl: Balance pm_runtime enablement for NGD
-> >       slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
-> > 
-> >  drivers/slimbus/qcom-ngd-ctrl.c | 127 +++++++++++++++++++++++++---------------
-> >  1 file changed, 80 insertions(+), 47 deletions(-)
-> > ---
-> > base-commit: a0ae2a256046c0c5d3778d1a194ff2e171f16e5f
-> > change-id: 20260211-slim-ngd-dev-74166f29f035
-> > 
-> > Best regards,
-> > -- 
-> > Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> 
-> Bjorn,
-> 
-> While you are at it, it looks like there is another possible issue:
-> ngd->base is set after platform_device_add(), possibly letting NGD
-> driver to use uninitialized base.
-> 
+On Sat, 28 Mar 2026 12:25:03 -0700 Sam Edwards wrote:
+> @@ -5870,6 +5871,10 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  	priv->xstats.rx_dropped += rx_dropped;
+>  	priv->xstats.rx_errors += rx_errors;
+>  
+> +	/* If stmmac_rx_refill() failed, keep trying until it doesn't. */
+> +	if (unlikely(stmmac_rx_dirty(priv, queue) > 0))
+> +		return budget;
 
-ngd->base is only dereferences from qcom_slim_ngd_up_worker() and
-qcom_slim_ngd_runtime_resume(), so at this time there's no concrete
-problem here.
-
-I'll keep it in mind as I continue to poke at the driver.
-
-Regards,
-Bjorn
-
-> -- 
-> With best wishes
-> Dmitry
+If the system is OOMing having ksoftirq busy looping indefinitely is
+not going to be very helpful. 1) only react if the fill level is below
+some critical threshold, 2) try to add some delay (timer)? before the
+retry
+-- 
+pw-bot: cr
 
