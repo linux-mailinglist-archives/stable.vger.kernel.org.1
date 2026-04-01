@@ -1,61 +1,69 @@
-Return-Path: <stable+bounces-232630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPuFFIJqzGlXSwYAu9opvQ
-	(envelope-from <stable+bounces-232630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 02:44:50 +0200
+	id uO/qJi9rzGlXSwYAu9opvQ
+	(envelope-from <stable+bounces-232631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 02:47:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC7F373425
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 02:44:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E30B373470
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 02:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 102C13034202
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 00:44:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B575A30265AC
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 00:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970F01EB1AA;
-	Wed,  1 Apr 2026 00:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263591D8E01;
+	Wed,  1 Apr 2026 00:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p1mUBPo+"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="0WJGfLsX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp134-25.sina.com.cn (smtp134-25.sina.com.cn [180.149.134.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC601D5146
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 00:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F191C861D
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 00:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775004281; cv=none; b=OYAeITPurSxLcjNomNz8VEaoK4SN8SB0KVUe0O2zOobJKo7KpOvfSlnQPUSTHcziO+5kVtkvf2jRpnxE3KRNCnSMSnNq33rOoFBCegh5xMWPiKQaod03kgYNWTqL8cfXlI2QDd+kvvnSCJtmiGiBvPIJ+/zAETzTLEAtjkyH2is=
+	t=1775004295; cv=none; b=mNjluLK/b6v6sy3JuT5UMqt9cpkSGugi9ybF6+1h7fsA09P/kZhI8//7S8U0bf5cXFnAsbiGepgK6JyLYNe4yMggV7F1iYZ0EMlXY8B20FjzA+Gq+hLkN0kAsEX0HwNcLOCSTCKxUtbEVDEylJCKgBXC40Y27us6A9m18ekYihY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775004281; c=relaxed/simple;
-	bh=KwpVvquIJ71zR4kLsr7quLVkpwY5T7Yu3Q+C3u1ZC84=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jzu++3IVeWqSM6e5VekvadPAzRjjWvO/zgbKWXjj8jjsOExJRQ7xtJbSyaug9gN8eorQqZ2iGz9xY+Nx5CmGkdOF8N96urO/7gxcBwKhlEKhfR6uldRSrmTiPqfqfj03W3b22ni8VAkGFHgS+Utnc3C9NFQaMZB9/yw+smykD7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p1mUBPo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FB5C19423;
-	Wed,  1 Apr 2026 00:44:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775004281;
-	bh=KwpVvquIJ71zR4kLsr7quLVkpwY5T7Yu3Q+C3u1ZC84=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1mUBPo+hpANa/yCU4S/W2nsmwcHqYstgn52yk85CJqzSrIHAmGbx8kd54KzyyTAR
-	 6NO042xkClC5talOC9/rKt1YlyDp0zk7Jz2yrGsiV19oxRpoqL0U+NgXo1Thzm3UXa
-	 AbwHcsFNPvYGTMggGrlgw4efUk1YooZwPPVPjG6vZrcZNAHTILJELjr/RuUtCPxy6N
-	 xyRG+zBP6TbRCmg/nSsLnIkZWS9qkEzbyzJY84eQkArnJjnwSQm4WKsZD30DKdCC+M
-	 dCgEMTjtCuOUsZxrrTBUBLLwe/tIAo4ipl5fMxKiJSqsWvAlPMerGcvZxVrEcaPTXg
-	 idUmCrmgxry2g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE
-Date: Tue, 31 Mar 2026 20:44:37 -0400
-Message-ID: <20260401004437.4036016-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033039-occupy-slush-db02@gregkh>
-References: <2026033039-occupy-slush-db02@gregkh>
+	s=arc-20240116; t=1775004295; c=relaxed/simple;
+	bh=mfVsPU2KaYdGU78yOA9MOerup3tdd4QHuKBumFu6460=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DLIjPSImLx97f3/2iYiDQLO0sIPprcjKcvAAE9eFK08IXY7lrkFKi5sqh+odOcHakRu0l6de1/3ljB7yiKxG8wSjB/5YhMOflB2cgAdRoQe+88COeUgGV/lqw6O15lj8edC5SEhyGVVLNY4tsoUgm38PbApRAAdih8C6pmPZUMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=0WJGfLsX; arc=none smtp.client-ip=180.149.134.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1775004289;
+	bh=j6UEnK7coCyYu5WAGKM8DDkqKJIpGKfRXgUFV6o7BlY=;
+	h=From:Subject:Date:Message-Id;
+	b=0WJGfLsXx3FxXCa1qVB0Cmf8seN4jtfrPWNEb9rInyQgWTPV4I4xLO6XIlE5W5Z/s
+	 GF4MhMLZwU5WCA83uBZ5hD31+z9RAo8UgAjK2tFKkrqCAG+wI16McJQ8XOuO1O0dcz
+	 yLOWWwngypEx5vrCjc9kE7R6qAnCgVTw7TDNvysg=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.21) with ESMTP
+	id 69CC6A7C00002F3B; Wed, 1 Apr 2026 08:44:46 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 5084753408296
+X-SMAIL-UIID: 79060A47AE414EB29236CC80D3EE0CDC-20260401-084446-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com,
+	syzbot+1065a199625a388fce60@syzkaller.appspotmail.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15.y] net: mctp: Don't access ifa_index when missing
+Date: Wed,  1 Apr 2026 08:44:41 +0800
+Message-Id: <20260401004441.3928950-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,106 +71,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232630-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,codeconstruct.com.au,syzkaller.appspotmail.com,kernel.org,sina.com];
+	TAGGED_FROM(0.00)[bounces-232631-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[sina.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ECC7F373425
+	TAGGED_RCPT(0.00)[stable,e76d52dadc089b9d197f,1065a199625a388fce60];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,sina.com:dkim,sina.com:email,sina.com:mid,codeconstruct.com.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8E30B373470
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sean Christopherson <seanjc@google.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit aad885e774966e97b675dfe928da164214a71605 ]
+[ Upstream commit f11cf946c0a92c560a890d68e4775723353599e1 ]
 
-When installing an emulated MMIO SPTE, do so *after* dropping/zapping the
-existing SPTE (if it's shadow-present).  While commit a54aa15c6bda3 was
-right about it being impossible to convert a shadow-present SPTE to an
-MMIO SPTE due to a _guest_ write, it failed to account for writes to guest
-memory that are outside the scope of KVM.
+In mctp_dump_addrinfo, ifa_index can be used to filter interfaces, but
+only when the struct ifaddrmsg is provided. Otherwise it will be
+comparing to uninitialised memory - reproducible in the syzkaller case from
+dhcpd, or busybox "ip addr show".
 
-E.g. if host userspace modifies a shadowed gPTE to switch from a memslot
-to emulted MMIO and then the guest hits a relevant page fault, KVM will
-install the MMIO SPTE without first zapping the shadow-present SPTE.
+The kernel MCTP implementation has always filtered by ifa_index, so
+existing userspace programs expecting to dump MCTP addresses must
+already be passing a valid ifa_index value (either 0 or a real index).
 
-  ------------[ cut here ]------------
-  is_shadow_present_pte(*sptep)
-  WARNING: arch/x86/kvm/mmu/mmu.c:484 at mark_mmio_spte+0xb2/0xc0 [kvm], CPU#0: vmx_ept_stale_r/4292
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 0 UID: 1000 PID: 4292 Comm: vmx_ept_stale_r Not tainted 7.0.0-rc2-eafebd2d2ab0-sink-vm #319 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:mark_mmio_spte+0xb2/0xc0 [kvm]
-  Call Trace:
-   <TASK>
-   mmu_set_spte+0x237/0x440 [kvm]
-   ept_page_fault+0x535/0x7f0 [kvm]
-   kvm_mmu_do_page_fault+0xee/0x1f0 [kvm]
-   kvm_mmu_page_fault+0x8d/0x620 [kvm]
-   vmx_handle_exit+0x18c/0x5a0 [kvm_intel]
-   kvm_arch_vcpu_ioctl_run+0xc55/0x1c20 [kvm]
-   kvm_vcpu_ioctl+0x2d5/0x980 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb5/0x730
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x47fa3f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
+BUG: KMSAN: uninit-value in mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
+ mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
+ rtnl_dump_all+0x3ec/0x5b0 net/core/rtnetlink.c:4380
+ rtnl_dumpit+0xd5/0x2f0 net/core/rtnetlink.c:6824
+ netlink_dump+0x97b/0x1690 net/netlink/af_netlink.c:2309
 
-Reported-by: Alexander Bulekov <bkov@amazon.com>
-Debugged-by: Alexander Bulekov <bkov@amazon.com>
-Suggested-by: Fred Griffoul <fgriffo@amazon.co.uk>
-Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ replaced `kvm_flush_remote_tlbs_gfn()` with `kvm_flush_remote_tlbs_with_address()` and omitted `pf_mmio_spte_created` stat counter ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
+Reported-by: syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68135815.050a0220.3a872c.000e.GAE@google.com/
+Reported-by: syzbot+1065a199625a388fce60@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/681357d6.050a0220.14dd7d.000d.GAE@google.com/
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250508-mctp-addr-dump-v2-1-c8a53fd2dd66@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ The context change is due to the commit 2d45eeb7d5d7
+("mctp: no longer rely on net->dev_index_head[]") in v6.14
+which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/mctp/device.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 13bf3198d0cee..79bcb5430b5f8 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2619,6 +2619,14 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
- 			was_rmapped = 1;
- 	}
- 
-+	if (unlikely(is_noslot_pfn(pfn))) {
-+		mark_mmio_spte(vcpu, sptep, gfn, pte_access);
-+		if (flush)
-+			kvm_flush_remote_tlbs_with_address(vcpu->kvm, gfn,
-+					KVM_PAGES_PER_HPAGE(level));
-+		return RET_PF_EMULATE;
-+	}
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index c00a2550e2e0..aec7ffad2666 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -99,12 +99,19 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
+ 	struct net_device *dev;
+ 	struct ifaddrmsg *hdr;
+ 	struct mctp_dev *mdev;
+-	int ifindex;
+-	int idx, rc;
+-
+-	hdr = nlmsg_data(cb->nlh);
+-	// filter by ifindex if requested
+-	ifindex = hdr->ifa_index;
++	int idx;
++	int ifindex = 0, rc;
 +
- 	set_spte_ret = set_spte(vcpu, sptep, pte_access, level, gfn, pfn,
- 				speculative, true, host_writable);
- 	if (set_spte_ret & SET_SPTE_WRITE_PROTECTED_PT) {
++	/* Filter by ifindex if a header is provided */
++	if (cb->nlh->nlmsg_len >= nlmsg_msg_size(sizeof(*hdr))) {
++		hdr = nlmsg_data(cb->nlh);
++		ifindex = hdr->ifa_index;
++	} else {
++		if (cb->strict_check) {
++			NL_SET_ERR_MSG(cb->extack, "mctp: Invalid header for addr dump request");
++			return -EINVAL;
++		}
++	}
+ 
+ 	rcu_read_lock();
+ 	for (; mcb->h < NETDEV_HASHENTRIES; mcb->h++, mcb->idx = 0) {
 -- 
-2.53.0
+2.34.1
 
 
