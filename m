@@ -1,234 +1,138 @@
-Return-Path: <stable+bounces-232868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGocETSTzWklfAYAu9opvQ
-	(envelope-from <stable+bounces-232868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 23:50:44 +0200
+	id yDceKDmTzWklfAYAu9opvQ
+	(envelope-from <stable+bounces-232869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 23:50:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC41380B9A
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 23:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69215380BA2
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 23:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB5B4305F1B3
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 21:49:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 389FD3050BE7
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 21:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D933039BFEB;
-	Wed,  1 Apr 2026 21:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54C43806C5;
+	Wed,  1 Apr 2026 21:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cFsOyDDX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aYWUMnru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D68396B7B;
-	Wed,  1 Apr 2026 21:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65777339872
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 21:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775080129; cv=none; b=mq19tpeaaqRFnnBpLIdgK/Jp1/Q/6niPT8typO9eQKzkXv45MG9ZufNbUsLc00YTV1UgIUy0Lb5+2cXn8way2V0w3SBJch61gw+sjXFm0NXgR/DUyjbd4eeeJF6oyDqApgMkBzDgHlAYwmapqQIdBhly0l9Ip73E4jPsQ+YQz6Q=
+	t=1775080148; cv=none; b=T9rAmNpgiY46J9uQh6bZYjgGjlkGLJBRHxpixu6UTDbp/fl1wLEBigRqvwcc2OKWGuTGRomFb7cNCPWf+vagtAoOoc6PNNzNlitVGPgfTCME98SIRdbkvbAw2c3KdzyyI9Lt03WJnyt8gh1OfjwCFoTPxANBWC/Sbv+5QWC+lUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775080129; c=relaxed/simple;
-	bh=V4i5/EmWr+P57ULvlRJXox8MUBDd8p/YLNBiJoqNHoA=;
-	h=Date:To:From:Subject:Message-Id; b=DTSFKq8eOsSPle7Ige1VEoIJTzry7/CUQ7I49hwiFuhprUbHksClVZRffaUEVf1fNt9UpNDmLIqSjBgDTl+7WlqgmxP+Y0tOFNFdZU0ElUm48fHKkO6Z4dsLpRN7S3HLWK6vtYYV79Zw8Es795NyVfaU6bI1wVzG3ER06njhmQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cFsOyDDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E52FC4CEF7;
-	Wed,  1 Apr 2026 21:48:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775080129;
-	bh=V4i5/EmWr+P57ULvlRJXox8MUBDd8p/YLNBiJoqNHoA=;
-	h=Date:To:From:Subject:From;
-	b=cFsOyDDX2WeiItjgKva5leIZPawq4nZ20b1sCE7ZK7sGhdy5zGLjKjfUWzsFkUnb9
-	 9MUmSBVDV7a1d2YCigKXffsOlbymmfJ7PnVJs6xaMWofHvOdoympIBgvSDckSp/Zz/
-	 sdk2yBhtxDuNln4o1RdUOLUEHOd/1J3wV26O/fGo=
-Date: Wed, 01 Apr 2026 14:48:48 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,usama.arif@linux.dev,stable@vger.kernel.org,ryan.roberts@arm.com,richard.weiyang@gmail.com,rakie.kim@sk.com,npache@redhat.com,matthew.brost@intel.com,ljs@kernel.org,liam.howlett@oracle.com,kartikey406@gmail.com,joshua.hahnjy@gmail.com,gourry@gourry.net,dev.jain@arm.com,david@kernel.org,byungchul@sk.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,apopple@nvidia.com,lance.yang@linux.dev,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-fix-deferred-split-queue-races-during-migration.patch added to mm-unstable branch
-Message-Id: <20260401214849.0E52FC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1775080148; c=relaxed/simple;
+	bh=xpfeRfEwx4Ob+LRv+rxTQXQuKagjWOR5soH19Grw50E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=k0/ly8fzHipz88iovkKqwNNJ1bJg+oOJLSIhkE1qKNYmQIKjbx9wI2TPprF62fBKXSr6/bCVcU8pqHXcC3ximz5gmpAF4YEt6sJtJRdrbJSYJ/KlcQS8Lk/qcvwx4NTcRssfBHyOe4azLmdlSBUI4Ujv/82N6OjL5z6syE+4O5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aYWUMnru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274C9C2BCAF
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 21:49:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775080148;
+	bh=xpfeRfEwx4Ob+LRv+rxTQXQuKagjWOR5soH19Grw50E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aYWUMnrujHEbIyJIvplE4bQcY/8+4yLzkrbOH+zOIVwK1G6QVst7EnEcnomrxjqGz
+	 dyXGI3L7Miucrs00PNchjwyjtGdiexBhEGF0yhTWXHG7RqRNKbjtbUIKLIvBTEjwCW
+	 nRnKyFOR4Yv6tjbaVQlkR92AsCLKdwrBgs1O79cdkQXZM9RanBKCmoL6hd60t+tiyw
+	 4XJ3s5B0PfZRBoFt4rJvpdAOpAv2DW8RXxVIAn2bW3xPANqkaoGDuglBRKMYhrMdyA
+	 bDM9bXpJomlhzw6o+bu8fX4VTZ9++8KmpEwg+m5AIzSD5EQlYyJf9dKVP3naPNmbpZ
+	 B3qJ50yX5YiFw==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so26082066b.2
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 14:49:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXjKY7m2uZWVhvBEI1V1ihjDsVW77Cf3HDawxDlB3MdjJEfIFoFHOM2M2gxnsHhZbFgV7Vdwcg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpttsybIiQD0mhNk2fP51VWColiwWmTrSZiOTke3SEGYSAorAl
+	67JJaBeeyJFlY7C6Uh7koKq6GGeyUope86N9TKXDdxt/lh83PUXsf+ob/rXzA37zD+dVWw3iCSI
+	XcZMzMUz6PvKSfgfg5yol8Myvx/r+iqU=
+X-Received: by 2002:a17:906:6296:b0:b98:7e30:8129 with SMTP id
+ a640c23a62f3a-b9c13b17feamr385114766b.32.1775080146925; Wed, 01 Apr 2026
+ 14:49:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+References: <CAB29vr=U=SaQR9m_O_cZwEKAG2LTnbYGjE+uT0snUT7Jco_3bQ@mail.gmail.com>
+ <ac1OXbMbAY4snEPg@google.com>
+In-Reply-To: <ac1OXbMbAY4snEPg@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 1 Apr 2026 14:48:55 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zODkS5sViRaED9DS5UhuP2+wvUzCmF2L7MJuG0RUyEuRQ@mail.gmail.com>
+X-Gm-Features: AQROBzDKnDKy3gn0pTOj-jM0BOZf9dJjxkiFcVhRMDXu0irBJUoilEaVnxen5aY
+Message-ID: <CAO9r8zODkS5sViRaED9DS5UhuP2+wvUzCmF2L7MJuG0RUyEuRQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nSVM: Snapshot vmcb12 save.rip to prevent TOCTOU race
+To: Sean Christopherson <seanjc@google.com>
+Cc: =?UTF-8?B?7ZmN6ri464+Z?= <jeon1691951@gmail.com>, kvm@vger.kernel.org, 
+	pbonzini@redhat.com, gregkh@linuxfoundation.org, yosryahmed@google.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,redhat.com,linuxfoundation.org,google.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232868-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232869-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.alibaba.com,linux.dev,arm.com,gmail.com,sk.com,redhat.com,intel.com,kernel.org,oracle.com,gourry.net,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_TWELVE(0.00)[23];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AEC41380B9A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 69215380BA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+> > Add rip, rsp, and rax to struct vmcb_save_area_cached, snapshot them
+> > in __nested_copy_vmcb_save_to_cache(), and replace all direct reads
+> > of vmcb12->save.{rip,rsp,rax} with reads from the cached copy. This
+> > ensures all consumers within a single nested VMRUN see consistent
+> > register values.
+>
+> What is actually visibliy problematic?
+>
+> Assuming the worst case scenario is a WARN, then I'm very strongly inclined to
+> either (a) not apply this patch at all and instead wait for Yosry's full series,
+> or (b) have Yosry slot in the most minimal fix (e.g. for just RIP) in a stable@
+> friendly location in his series.
+>
+> There are many, many nSVM issues that need to be fixed, many of which are functional
+> problems for well-behaved setups.  For me, those are by far the priority.  I also
+> want to fix the a guest-triggerable WARN_ON_ONCE(), but it's not urgent, and not
+> something I want to spend a lot of effort on with respect to providing an LTS-friendly
+> commit (though if we can get one cheaply, that'd be great).
 
-The patch titled
-     Subject: mm: fix deferred split queue races during migration
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-fix-deferred-split-queue-races-during-migration.patch
+I agree with Sean here, it's probably not worth fixing in LTS kernels.
+The series has been in kvm-x86/next for a while and I don't think any
+of us want to change that, it took a bit of work to get all the nSVM
+patches there in good shape to begin with (and there's more pending
+patches that depend on current kvm-x86/next).
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-deferred-split-queue-races-during-migration.patch
-
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Lance Yang <lance.yang@linux.dev>
-Subject: mm: fix deferred split queue races during migration
-Date: Wed, 1 Apr 2026 21:10:32 +0800
-
-migrate_folio_move() records the deferred split queue state from src and
-replays it on dst.  Replaying it after remove_migration_ptes(src, dst, 0)
-makes dst visible before it is requeued, so a concurrent rmap-removal path
-can mark dst partially mapped and trip the WARN in deferred_split_folio().
-
-Move the requeue before remove_migration_ptes() so dst is back on the
-deferred split queue before it becomes visible again.
-
-Because migration still holds dst locked at that point, teach
-deferred_split_scan() to requeue a folio when folio_trylock() fails. 
-Otherwise a fully mapped underused folio can be dequeued by the shrinker
-and silently lost from split_queue.
-
-Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
-Link: https://lkml.kernel.org/r/20260401131032.13011-1-lance.yang@linux.dev
-Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: Usama Arif <usama.arif@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/huge_memory.c |   12 +++++++-----
- mm/migrate.c     |   18 +++++++++---------
- 2 files changed, 16 insertions(+), 14 deletions(-)
-
---- a/mm/huge_memory.c~mm-fix-deferred-split-queue-races-during-migration
-+++ a/mm/huge_memory.c
-@@ -4542,7 +4542,7 @@ retry:
- 				goto next;
- 		}
- 		if (!folio_trylock(folio))
--			goto next;
-+			goto requeue;
- 		if (!split_folio(folio)) {
- 			did_split = true;
- 			if (underused)
-@@ -4553,11 +4553,13 @@ retry:
- next:
- 		if (did_split || !folio_test_partially_mapped(folio))
- 			continue;
-+requeue:
- 		/*
--		 * Only add back to the queue if folio is partially mapped.
--		 * If thp_underused returns false, or if split_folio fails
--		 * in the case it was underused, then consider it used and
--		 * don't add it back to split_queue.
-+		 * Add back partially mapped folios, or underused folios
-+		 * that we could not lock this round.  If thp_underused()
-+		 * returns false, or if split_folio() succeeds, or if
-+		 * split_folio() fails in the case it was underused, then
-+		 * consider it used and don't add it back to split_queue.
- 		 */
- 		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
- 		if (list_empty(&folio->_deferred_list)) {
---- a/mm/migrate.c~mm-fix-deferred-split-queue-races-during-migration
-+++ a/mm/migrate.c
-@@ -1384,6 +1384,15 @@ static int migrate_folio_move(free_folio
- 		goto out;
- 
- 	/*
-+	 * Requeue the destination folio on the deferred split queue if
-+	 * the source was on the queue.  The source is unqueued in
-+	 * __folio_migrate_mapping(), so we recorded the state from
-+	 * before move_to_new_folio().
-+	 */
-+	if (src_deferred_split)
-+		deferred_split_folio(dst, src_partially_mapped);
-+
-+	/*
- 	 * When successful, push dst to LRU immediately: so that if it
- 	 * turns out to be an mlocked page, remove_migration_ptes() will
- 	 * automatically build up the correct dst->mlock_count for it.
-@@ -1399,15 +1408,6 @@ static int migrate_folio_move(free_folio
- 	if (old_page_state & PAGE_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
- 
--	/*
--	 * Requeue the destination folio on the deferred split queue if
--	 * the source was on the queue.  The source is unqueued in
--	 * __folio_migrate_mapping(), so we recorded the state from
--	 * before move_to_new_folio().
--	 */
--	if (src_deferred_split)
--		deferred_split_folio(dst, src_partially_mapped);
--
- out_unlock_both:
- 	folio_unlock(dst);
- 	folio_set_owner_migrate_reason(dst, reason);
-_
-
-Patches currently in -mm which might be from lance.yang@linux.dev are
-
-mm-fix-deferred-split-queue-races-during-migration.patch
-
+That being said, I personally do not object to LTS-specific patches
+(e.g. like the one attached), if Sean and Paolo think it's worth it. I
+don't really have time to do that, but I can help with reviews
+(although I will be OOO for the next 2 weeks). As Paolo said, be
+careful that some older LTS trees do not even have the cached save
+area, so they are broken in a much bigger way.
 
