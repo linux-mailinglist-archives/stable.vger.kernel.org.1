@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-232848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFfvGm9szWnvdQYAu9opvQ
-	(envelope-from <stable+bounces-232848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:05:19 +0200
+	id iN7IG49szWnvdQYAu9opvQ
+	(envelope-from <stable+bounces-232849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:05:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF9A37F9D2
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:05:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9F937F9F6
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D1153064E98
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 19:02:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C0BA308153C
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 19:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05170269B1C;
-	Wed,  1 Apr 2026 19:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56928477E4D;
+	Wed,  1 Apr 2026 19:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="Apz2JWyl"
+	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="TWtdQxnj"
 X-Original-To: stable@vger.kernel.org
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FB62F1FEA;
-	Wed,  1 Apr 2026 19:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35E035CBD7;
+	Wed,  1 Apr 2026 19:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775070161; cv=pass; b=JJaXO/I6adqOMtuNEC4Sfm6A258FtaDNDm1PEQbb3D9NrqUqhpNZ3RAhLvZWJzOIGn//pzkQcDlR9M4A+2XuzFHO5vVTZgGNlfAygdWyq3vWKe+OUWBkiq5ZRxFBXuMeDz6i/tXM3faKRt4vevNLkw9Argdn01wQLrfEU+jNaDk=
+	t=1775070164; cv=pass; b=NChsVR0UCfck1K+IjajwUh5d4XqJzyegwVmu7M9aRqfcx0Y1PcGhUUZehqHuGTNcJDbzvgFlCKTzUxY4gDj1ySU+VAqM4fq0l2icjFuF6pOmLV7iYfAJRwqh8JNaCpJcWpRbtpsyhGK7LgVRXklkaswzGz4s+DHwysdgctaA5PY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775070161; c=relaxed/simple;
-	bh=K/4heQCSBx2y/WOPGPm0vZWQI1iInHQeynSlpB+uXDw=;
+	s=arc-20240116; t=1775070164; c=relaxed/simple;
+	bh=vN4i0w1j45GOoB5Hu5uffu0CsFappwHWccRsuRRL4Z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKo/aWVJNhvD0h1fArXs3BbyIs3h69JTiX5T8CMCCx7bJyZBKVxUKadmyIuMpc7/x8ZfqOc6gJr4JIZPtklyJUopTZzRU//FLy0e+q2U5efB64eN8oe2QLqipq40dIaoDnGt+PRyooo+awZ7A+rRTMEEmCBAVhfU+Clxr7NAiiE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=Apz2JWyl; arc=pass smtp.client-ip=136.143.188.15
+	 MIME-Version; b=BgibTVNGnQZXOsXK7XhO3gVx/MBdgdWm7s26sQnLLabGNGBa7jowYrPVrFUXL+oodXElCB5YO0midMh/AgGJfCBjZrcYUDx8Z2zhbfYhHz4INYSWBG4ZoO/35EfqOd7f4G7GVi8VaNuWNtOu7M6LFCKtz6Fuufe35GGKixVs8yY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=TWtdQxnj; arc=pass smtp.client-ip=136.143.188.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
-ARC-Seal: i=1; a=rsa-sha256; t=1775070151; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1775070155; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=P1Y57HW9zybDhTWyiX4TU9ledMmSsLySUjUarRDAXfup77eg+yAFJ+145KzZA/rbZFSUF+ji/3l8h+H1G1Cdy42ny171X3HohyKCftwNZymA90VMd0+QSOGv+hyIaOv6blGge25xeojCZ9KuWVsBfeimWRaEYd1r0wQeXFOTAgI=
+	b=axDbOFBHJZLeqv3u+9OXwF759VuxQqpUgVXVoVS4GlwT9OFHcU9KnR56tVSXNZc3RFRmZ9d6icuQ7r2tRNTv5N2rC+DOjo7Luh3dMQQkwMs9b1LLbjkBtABszNWxrS5EBL2yPFQi2D7CP6YUzXRvOaeQ4Avx0UQwk0esZzi+eTg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1775070151; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=/e4Sc5qee3F2Uk+M/DgIs5gat9OGFgWOA1zU+xUnZ7U=; 
-	b=l/kG0is/Txqrjq7o3iYEtfeM6owH6iJwwuFYzrgkjLspxchOPRdyZC/mg+n9T/yxoS7V1XXarCUpm80BjEM5Yub2TshidbL60hSgArWc2pA/VZbTQHX92/5FToJ8S8slcgkB4xXUHtStoaOBbtiaxHe4dy07NFSf6oK70j4XpGM=
+	t=1775070155; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=526/sqH61ydxU9ksm4AkcWTMmCfqZfsUQZd9dOh0Jd8=; 
+	b=V0BkhvxNEbvbROo9AL/pEEJqGuiqHlwzSB53QeUo7Q8RwqMoMTtXHJpj20PlaabFgpgKK0R4Qv/7tz077mzq0zK4KobbFCT48kVyWXlxOoD+OdIFEJAHufK7UU6kUGqqJxV1FORFawgRZ1NhmWQQdlHafZMhLN6PlOW79zZ2bFQ=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=rong.moe;
 	spf=pass  smtp.mailfrom=i@rong.moe;
 	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775070151;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775070155;
 	s=zmail2048; d=rong.moe; i=i@rong.moe;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=/e4Sc5qee3F2Uk+M/DgIs5gat9OGFgWOA1zU+xUnZ7U=;
-	b=Apz2JWylwen1Uz40PEa5fbEBpN5h7G846Um00mRVkNUDLkzLoTD2R/Nr+tMPrw5+
-	Ysr5uPT/3KIPWkwihedAaWOw2UWInf2jF0CPHizvm2QRBTZF/npJTU1H2thYi2HenYl
-	d99fDXf/ANSC6KeCA+nHvemS0slvYw2ni6bpLryRVVFMPX5ypMoUz6TVZEZPa3T85zp
-	xKWkFPyhwTZi7c6tH4tbPIkQNp5Lkf1IMNIYdHmo1JRz57WKuV0294clMFoFO+v9IrE
-	BTzgaBpiRUG7cbjCjfpKfcA6ZaOZXriooiaw3RfIpiNVN8Qo87J70HPkXieu+WJPClu
-	dEE0wmaotA==
-Received: by mx.zohomail.com with SMTPS id 177507015003269.82753850439974;
-	Wed, 1 Apr 2026 12:02:30 -0700 (PDT)
+	bh=526/sqH61ydxU9ksm4AkcWTMmCfqZfsUQZd9dOh0Jd8=;
+	b=TWtdQxnjKfrJNfCGA6ogjIkMpR2rcs9UGewYhcDE8abhrJgByJfieieAA5kNODxz
+	nmUS6wUyFp7SFVEqI2AN97DJN9ST69GmhbW6nFzU3dnoG1s/yCvQlBsZ9USbdidtXBi
+	KZ4cLY7D44Kb+k+z0s/d58iVaFPnJsqtySq5uMN5E0m1jqCQhw98sTY+hLfBSE3uY2b
+	/JH8xRBW+FWB74ZJIxvBULctBmIcV+q79y1fh+2BJUZGnMVAVH+H2rJzlzvBJGUI2sl
+	jxV59Katky6UaJi3B16bTvXiCQnta+T2U0pbwWvuF+bxvSgFdNyflu7W7TgrPkxMTRu
+	1hhyr4Yh7g==
+Received: by mx.zohomail.com with SMTPS id 1775070153052257.07179805357987;
+	Wed, 1 Apr 2026 12:02:33 -0700 (PDT)
 From: Rong Zhang <i@rong.moe>
 To: "Derek J . Clark" <derekjohn.clark@gmail.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
@@ -69,9 +69,9 @@ Cc: Rong Zhang <i@rong.moe>,
 	platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 2/3] platform/x86: lenovo-wmi-other: Balance IDA id allocation and free
-Date: Thu,  2 Apr 2026 03:00:56 +0800
-Message-ID: <20260401190221.1595264-2-i@rong.moe>
+Subject: [PATCH 3/3] platform/x86: lenovo-wmi-other: Balance component bind and unbind
+Date: Thu,  2 Apr 2026 03:00:57 +0800
+Message-ID: <20260401190221.1595264-3-i@rong.moe>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <499fa3efd5be054ffdda77dd00ad4d8d3391e073.camel@rong.moe>
 References: <499fa3efd5be054ffdda77dd00ad4d8d3391e073.camel@rong.moe>
@@ -90,13 +90,13 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[rong.moe,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[rong.moe:s=zmail2048];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[rong.moe,squebb.ca,gmx.de,lwn.net,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-232848-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232849-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
@@ -107,32 +107,21 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[i@rong.moe,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[rong.moe:+];
-	NEURAL_HAM(-0.00)[-0.991];
+	NEURAL_HAM(-0.00)[-0.992];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:dkim,rong.moe:email,rong.moe:mid,sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EFF9A37F9D2
+X-Rspamd-Queue-Id: DA9F937F9F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Currently, the IDA id is only freed on wmi-other device removal or
-failure to create firmware-attributes device, kset, or attributes. It
-leaks IDA ids if the wmi-other device is bound multiple times, as the
-unbind callback never frees the previously allocated IDA id.
-Additionally, if the wmi-other device has failed to create a
-firmware-attributes device before it gets removed, the wmi-device
-removal callback double frees the same IDA id.
+When lwmi_om_master_bind() fails, the master device's components are
+left bound, with the aggregate device destroyed due to the failure
+(found by sashiko.dev [1]).
 
-These bugs were found by sashiko.dev [1].
-
-Fix them by moving ida_free() into lwmi_om_fw_attr_remove() so it is
-balanced with ida_alloc() in lwmi_om_fw_attr_add(). With them fixed,
-properly set and utilize the validity of priv->ida_id to balance
-firmware-attributes registration and removal, without relying on
-propagating the registration error to the component framework, which is
-more reliable and aligns with the hwmon device registration and removal
-sequences.
+Balance calls to component_bind_all() and component_unbind_all() when an
+error is propagated to the component framework.
 
 No functional change intended.
 
@@ -141,102 +130,26 @@ Cc: stable@vger.kernel.org
 Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.clark%40gmail.com [1]
 Signed-off-by: Rong Zhang <i@rong.moe>
 ---
- drivers/platform/x86/lenovo/wmi-other.c | 34 +++++++++++++++----------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ drivers/platform/x86/lenovo/wmi-other.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/platform/x86/lenovo/wmi-other.c b/drivers/platform/x86/lenovo/wmi-other.c
-index 6040f45aa2b0..b47418df099f 100644
+index b47418df099f..4b47b5886e33 100644
 --- a/drivers/platform/x86/lenovo/wmi-other.c
 +++ b/drivers/platform/x86/lenovo/wmi-other.c
-@@ -957,17 +957,17 @@ static struct capdata01_attr_group cd01_attr_groups[] = {
- /**
-  * lwmi_om_fw_attr_add() - Register all firmware_attributes_class members
-  * @priv: The Other Mode driver data.
-- *
-- * Return: Either 0, or an error code.
-  */
--static int lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
-+static void lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
- {
- 	unsigned int i;
- 	int err;
+@@ -1068,8 +1068,11 @@ static int lwmi_om_master_bind(struct device *dev)
  
- 	priv->ida_id = ida_alloc(&lwmi_om_ida, GFP_KERNEL);
--	if (priv->ida_id < 0)
--		return priv->ida_id;
-+	if (priv->ida_id < 0) {
-+		err = priv->ida_id;
-+		goto err;
+ 	priv->cd00_list = binder.cd00_list;
+ 	priv->cd01_list = binder.cd01_list;
+-	if (!priv->cd00_list || !priv->cd01_list)
++	if (!priv->cd00_list || !priv->cd01_list) {
++		component_unbind_all(dev, NULL);
++
+ 		return -ENODEV;
 +	}
- 
- 	priv->fw_attr_dev = device_create(&firmware_attributes_class, NULL,
- 					  MKDEV(0, 0), NULL, "%s-%u",
-@@ -993,7 +993,7 @@ static int lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
- 
- 		cd01_attr_groups[i].tunable_attr->dev = &priv->wdev->dev;
- 	}
--	return 0;
-+	return;
- 
- err_remove_groups:
- 	while (i--)
-@@ -1007,7 +1007,12 @@ static int lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
- 
- err_free_ida:
- 	ida_free(&lwmi_om_ida, priv->ida_id);
--	return err;
-+
-+err:
-+	priv->ida_id = -EIDRM;
-+
-+	dev_warn(&priv->wdev->dev,
-+		 "failed to register firmware-attributes device: %d\n", err);
- }
- 
- /**
-@@ -1016,12 +1021,17 @@ static int lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
-  */
- static void lwmi_om_fw_attr_remove(struct lwmi_om_priv *priv)
- {
-+	if (priv->ida_id < 0)
-+		return;
-+
- 	for (unsigned int i = 0; i < ARRAY_SIZE(cd01_attr_groups) - 1; i++)
- 		sysfs_remove_group(&priv->fw_attr_kset->kobj,
- 				   cd01_attr_groups[i].attr_group);
- 
- 	kset_unregister(priv->fw_attr_kset);
- 	device_unregister(priv->fw_attr_dev);
-+	ida_free(&lwmi_om_ida, priv->ida_id);
-+	priv->ida_id = -EIDRM;
- }
- 
- /* ======== Self (master: lenovo-wmi-other) ======== */
-@@ -1063,7 +1073,9 @@ static int lwmi_om_master_bind(struct device *dev)
  
  	lwmi_om_fan_info_collect_cd00(priv);
  
--	return lwmi_om_fw_attr_add(priv);
-+	lwmi_om_fw_attr_add(priv);
-+
-+	return 0;
- }
- 
- /**
-@@ -1115,13 +1127,7 @@ static int lwmi_other_probe(struct wmi_device *wdev, const void *context)
- 
- static void lwmi_other_remove(struct wmi_device *wdev)
- {
--	struct lwmi_om_priv *priv = dev_get_drvdata(&wdev->dev);
--
- 	component_master_del(&wdev->dev, &lwmi_om_master_ops);
--
--	/* No IDA to free if the driver is never bound to its components. */
--	if (priv->ida_id >= 0)
--		ida_free(&lwmi_om_ida, priv->ida_id);
- }
- 
- static const struct wmi_device_id lwmi_other_id_table[] = {
 -- 
 2.53.0
 
