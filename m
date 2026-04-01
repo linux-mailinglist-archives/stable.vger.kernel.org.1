@@ -1,275 +1,309 @@
-Return-Path: <stable+bounces-232851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLuDCCp0zWnYdgYAu9opvQ
-	(envelope-from <stable+bounces-232851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:38:18 +0200
+	id sIFzCvV2zWnYdgYAu9opvQ
+	(envelope-from <stable+bounces-232852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:50:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB6037FE04
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:38:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BA637FF6A
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 21:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E5CC303267C
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 19:32:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EFB730125C3
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 19:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E193644BD;
-	Wed,  1 Apr 2026 19:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B76122156C;
+	Wed,  1 Apr 2026 19:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rY8UrzBI"
+	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="DMrqeHPG";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SX6PzwlM"
 X-Original-To: stable@vger.kernel.org
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013027.outbound.protection.outlook.com [40.107.201.27])
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9470361DB0
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 19:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775071973; cv=fail; b=bTW99Vy90nG4o0P+9MCytHChgSYyH/r+joIYLvrAdIYEcXklKMB0rXrmAr8bT6jEl/uUhJAdUSqOM8A/Xa6ykqTZniVZ/FXMdUTVZM1dpEUwcFH3sA/ISTcUcbCqOlHvP+PCAOCpATdpXzNvfjlkx/wTNGnd5rIlXWF4gMwGWqA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775071973; c=relaxed/simple;
-	bh=WRVHkdXyGuNmThw9FIFjp4kXlAGYMmoGbD+qjm301M4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=P5XKedfyCH6lKlrn8HUFhYPE/qDsS97YM6LMElVJUosOdInyidhDwDnaED5wEueyJFEkdxPVtoUQUogozcFSLtj/uMxpR/4IF26TiBv9YbHYCpEivtwN2OU2Jv9pqQpzAgeQw44aa2izK1NML9vioS2L7Qrp4+4TMfC4oqf/1v4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rY8UrzBI; arc=fail smtp.client-ip=40.107.201.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mRGXEwWnfgxDMX+3nED14nNDQrHWSy8b4ugUh2kTKZ7ONvrzbIM24CIJLRrz0vWlp1OpYpu8T/bwIKGXs56sdIjTHDI5drRKYvjqbd9+eN6w8oxqyOP9FomO9jf6b1PJv3bWPX2a1OM2xkhOqhZvl9rEMfk29dYarxLx/gSNWs6pmtmL7zI05RzPyYs6R7grG4GiSosI2h0VR/b0vHzmYcZ1VolA6+C1fHeZ72fqAfNUW+gD5wALHkYkwioKsfN6k3TclH03Egvi0E8dcThdaXPrfkVZWqOiNIwQ/oqpZx9xP5G4SbNVtqnenIAWNuP/wNpo3ppBQkHnhYU3ZVdpJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+kPNfJxiQu3a4OiAZXCtk3U88dZf+4g/kcPZM0zEb04=;
- b=qZqOXC2y6uRllSepyUNS5m+zYWSM6hmqSuYooaZFQBvMIzBsAvP/0uzkY9+6aYu7WAW4/2Tg5v6QGLPwTq6Rr15mjQaSOyFDxAQkN5o2abzgqug62NbKcw3XO9vcOnuJjA5cTB58B10ThblaiWAuvwVhWK24E5YwHa3rAB8Fxz6DoLI8G8gFWr/XTMyXJuuSe0NuHzQAuNzlVDIts9oGv3s7BYLFEEXO09BSmcQzeYlxYsPGN5y72SnQirtAnaTUEjy0k2RhqvZaA/IpP1CfcE41PAZVd2e2Vjjq/igypzyqqYl08CLOQH29VLpNuX+B0ljEU+rvmBvcbl89EjLBiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+kPNfJxiQu3a4OiAZXCtk3U88dZf+4g/kcPZM0zEb04=;
- b=rY8UrzBIQI541HOrr6DYppZPjsuGfnf5GgqmFNS4tr+qNycLYm2gicYwDe/UZ9mnxglD13dH58A25RvJUHZpbXqAhhqKgzXF6pjMRsiOlqogxjOwb2DU1lCZI8xLLyoTEwrvgWOOZ/0DrrDHV7OTgwgPH46/YWqQMGcJ0UAJ2u4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5126.namprd12.prod.outlook.com (2603:10b6:208:312::8)
- by MN2PR12MB4342.namprd12.prod.outlook.com (2603:10b6:208:264::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
- 2026 19:32:48 +0000
-Received: from BL1PR12MB5126.namprd12.prod.outlook.com
- ([fe80::c3e7:1bc5:2b91:1cfe]) by BL1PR12MB5126.namprd12.prod.outlook.com
- ([fe80::c3e7:1bc5:2b91:1cfe%6]) with mapi id 15.20.9769.017; Wed, 1 Apr 2026
- 19:32:48 +0000
-Message-ID: <f4861fc9-a602-44b9-b5c3-6b9c7f233b15@amd.com>
-Date: Wed, 1 Apr 2026 15:32:45 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amd/display: Change dither policy for 10 bpc output
- back to dithering
-To: Mario Kleiner <mario.kleiner.de@gmail.com>, amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
- Aric Cyr <aric.cyr@amd.com>, Anthony Koo <anthony.koo@amd.com>,
- Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
- Krunoslav Kovac <krunoslav.kovac@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>
-References: <20260321052033.23472-1-mario.kleiner.de@gmail.com>
-Content-Language: en-US
-From: Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20260321052033.23472-1-mario.kleiner.de@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT3PR01CA0135.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:83::32) To BL1PR12MB5126.namprd12.prod.outlook.com
- (2603:10b6:208:312::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2344319852;
+	Wed,  1 Apr 2026 19:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775072976; cv=none; b=MJTOG5xBUokbvVh4HconXp3YX01kDK/hNZ/04v4rnh1IjikR6Wa93eu/+PKxRT147ZEhdOZ34R2WBys9odnlSS9Xu8yZ0b4eTeACSegdzeff9YYYOL9BgGKD3VANZA+QnkmP+emxAsPALuynjPEzgU6sjCqdRDuebaKcKsB6GNA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775072976; c=relaxed/simple;
+	bh=AW6IAphtnMrKqb8JFeOVWdb7kazsk1J3Ae7YYMFGaiA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MkPHBK69+q5wBT+HljVXi0myDZlnw/j50gU0YUA+tqAgmw9XTiEbcfoJC5QguXR+mWOpp6Ko/nIHjgAiUz2ZWaHl95Goxz+WnCoOUl2TiWIwHD/nH7VAlNCfuOFLhN49BSQJGgo+NU5BGAiNZb4vnX/A2EWAPh/O9ozl3XoRDwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=DMrqeHPG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SX6PzwlM; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id D4FCCEC0238;
+	Wed,  1 Apr 2026 15:49:33 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 01 Apr 2026 15:49:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1775072973;
+	 x=1775159373; bh=ryVshn7gwERhWO/KEcxICuFnEAk7VQ3gPl+wdKnz7nU=; b=
+	DMrqeHPG6WyFLLcSQ9zxUy7rbpTFUw4YH4+5ObS6uVK/puUHepFNJ52K4y0mQhoL
+	MVi3CnRS24EKZ43f3MlCEqaDQrp5u/NmnIunE1BGLBRDKsTxR73tdHRmz6lrwD6M
+	bcjKHgwc4S0STq69NuFHCUMNRr/wMP3gRatt888m9WXw5Cr4XCtv7++t2NhdyBpq
+	mhbVEJCSzkeMap0HKabwd2C0XCOVaVzWush/oGuaGnPnY+JZU2rJ03ijsAX02GHp
+	N4ZOvioMiBZwD2/ce32As1CtQVIWxKMJKSj3Glod5B7vzxYN4MAYS0VMUX67VnLH
+	19dnRrMxa1iNi8w1pUrw7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775072973; x=
+	1775159373; bh=ryVshn7gwERhWO/KEcxICuFnEAk7VQ3gPl+wdKnz7nU=; b=S
+	X6PzwlM2sGR21Dr/Aoky3Luv97RLa+s76YhCjvvR4dUPY8yaWbbGyBgV/TsguOL1
+	ZMwWcO2HiThbYwMQcDtkkXrrnGbifQsah1v2GRKuo41t074orR43+Ih5vrUA0Ijh
+	QFBnXIbjZgUi1Ldve+klc0MO5yBb6HP21q4u93tuSaaQ7TFyM6j9rtAP89MCP2wn
+	BLi/cbqJrRnQLaJq1SvlRHWhB9eW3ooQe7/VRaAuEEWGy/VK0eDgJVqumloPmDHy
+	A+gVCbgjVxlj1aYkvFnj/ehH8FYsXjSKCPdnLK7rjipdUxfG3gU7/TNK2ocZU/Wx
+	xeG+sY7wt6Drm3VII3LsA==
+X-ME-Sender: <xms:zXbNacfvtYAGjseanQwBCuoxPfu4YQbCyFVKsLRQeZUKGHdWYWuDmg>
+    <xme:zXbNafsL-WX65-v2UHhykh0TpdF_qdZVnsKR0_QdTCnMHUzJno6F91_ChnLsFtNvF
+    Egh4SPDdWdD46xjnbQbcgAJX7rvuVpvtq8NboaCGZ3FJKCJ6Gg2>
+X-ME-Received: <xmr:zXbNadlYRxa4XfB9oe404QCjIRIL43ZqF-U61EO_0G6MpkDy3iqXckn5SMB2tvVP5Czj43TfdymtaRN1Hy0md4infF4Mp6pFhPVJlaoRE19G87sFgg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegtddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeeuvghrnhguucfu
+    tghhuhgsvghrthcuoegsvghrnhgusegsshgsvghrnhgurdgtohhmqeenucggtffrrghtth
+    gvrhhnpeehhfejueejleehtdehteefvdfgtdelffeuudejhfehgedufedvhfehueevudeu
+    geenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsvg
+    hrnhgusegsshgsvghrnhgurdgtohhmpdhnsggprhgtphhtthhopeehpdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopehjohgrnhhnvghlkhhoohhnghesghhmrghilhdrtghomh
+    dprhgtphhtthhopehmihhklhhoshesshiivghrvgguihdrhhhupdhrtghpthhtoheplhhi
+    nhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhsghirhht
+    hhgvlhhmvghrseguughnrdgtohhm
+X-ME-Proxy: <xmx:zXbNaRwkPLB25AzkBNTm3vSEEKCwfWer9HAS2kzKK82NAT9xiu-kKA>
+    <xmx:zXbNafPPFfokvpGYTls3PbQDLwO-x53ovBWxfxM3kpqC9tiyvLosEw>
+    <xmx:zXbNadodk3m_o6v4owgg46qpEfOhjnXCr2pnNuTlCCmMZUGS8R4KrA>
+    <xmx:zXbNaYHsMMrOmob2BgQQu02rygB8ICkxrvuJ8Usn0FhrOzcVKi0IWQ>
+    <xmx:zXbNaSvaRc-yAeioHRiWNVxgFRj8Rn9-W6KSLd6OQ1NTG7PM9tembu1n>
+Feedback-ID: i5c2e48a5:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Apr 2026 15:49:32 -0400 (EDT)
+Message-ID: <278724ec-0c5a-4b3b-b4d7-c5a3c0ceef3b@bsbernd.com>
+Date: Wed, 1 Apr 2026 21:49:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5126:EE_|MN2PR12MB4342:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1988bee3-ed7a-4786-9f9e-08de902574d8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	8V7dqDGH1UO1mgci0jIYxDjuQ7Z1VsSkVboU+6NgRdAAM2uGxN2W1CE0WPVK7ltc5VqRF0l6JiBjbZZHnNAfKAXmWKjb1FN/NLq6VA/h/0igUpEhljgdqrP7p15SzFUrOX6xcoQImHLOYBPfpd173bEdOU1cXeAHlSf9s3YFOfxcTg7RwVx4TIly31+VRbDH/AaJ8Tsr5PHAhGqZYkja8vvpfgQHaP46si+CzsQD3naLy6//rMZn0IvgUMOWOnsFTEC7BkNfN/vy/U0PppbORk1bSBAopKUmE3G342TFeks1hxuf/qGROlNVnNsN+APVEs9m9iXGOnOISsV/6a/Y7y5ZclsP+MguI3M961BlrWDuE1Rj5+TrCwAwQ4jgaSzykAn7XTYJHQtWVZwq7pgo0qshE1YNftgzKQRPZrIo7wuEMedgexGuvWDO1Q8IsYLrQinblsiXct9862hOdgHKuIf1mtm+pof+ZTfvvdKPE+Tu3bwTbJXCKMIQEgwfZLK1fnN4KgZJNbn7DXiY7i/a9dGo7IDzA/FF9C2UDpwOVfOz5iqrQawAjZ2BCrFfjzrkAl8TxXyk30hzlRt3ppTfsMR5/Lk/y+gZrs4kpSQu1mhYIIHyLsVAcgVPlh3mCYHg+JyvhUFF3ymRGLi33Zt9K7oxKKM7pZ4BxKe3YOSSUO9KzlG5NDVYFRbJB3stYFuo8Qt3x4i9upTyCLSYLQ56fuaBb6QNP/Z1x+1khM8uILQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5126.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YU9keXQwRGFQWVoyaUdaVWdNODB3NWZYSTcyY0pYK201Y0RVYU9KLzduTnBU?=
- =?utf-8?B?QWZpSmg3R3hZQ3JPMzVYWGx4UWNXM3pkR0VzZGE3YkdiVWZRZk1EQ2YxY1dE?=
- =?utf-8?B?c0J3cHhrMm93VmIyaG15MXgwSlNyaTNZeTQyc0ZPNG1vWm1CVWZEODhxWlJv?=
- =?utf-8?B?ZVdLVTdlVWpjNVREdDNSbTRvbW0waHd4NitSak1RM2tFRUhYeCtvNk5SV1hF?=
- =?utf-8?B?TERERVkyVFVZcG9rakI1ZERIMUlKR0hLN1FJVlV6Z0FkK0JDb1JsU1V2OVNS?=
- =?utf-8?B?bTdVam5xdWMrMTN1QVgvbEZrMnBIcGhJSDBnakdtaVNYVU5iTVR1TE8wdE1R?=
- =?utf-8?B?eU1maGgrWHlYZVlnVFA3cCtlcWFISTRoZXNZSDVaVjRVSVBnZm9RaEZveERN?=
- =?utf-8?B?cXcrczdIVm0vQ3dmVmlaZjRsWHdqQVNQOFdzWTg2N3BCb2VhaDV6djdNSllw?=
- =?utf-8?B?ZEZKT2o3VGRra1pEWEFQRUg5aGZMVWpvTFV2VHpPSWNUWWxGTGg3WTZjVzIy?=
- =?utf-8?B?Y0ZsSmtSNHNSdmF2bnk5bDl0d0ZseEhiNUQ3azVTMk5Kczg5ZDkvNElPVFA5?=
- =?utf-8?B?Tk1OaW0veXRPejBnNUE0MFBaWlowK0ZlVm10NERYUVkvcjQxa1gxTWx0QU1W?=
- =?utf-8?B?Q3c1RDNHTUFpMEZyRVF3c2ZyNmZkRW5ZcE1Wc1FNZ1JVUGJLZnBoRVE1Qi81?=
- =?utf-8?B?WEN6VzV1bW5aZ0pEanNKNVJia2ptaXNzWUEyWXpsK3pvYi96VDVHSlVBMmtw?=
- =?utf-8?B?Q0VkbVgyeTR5akNodWlkTWUzRmxaTzBXMGEySkxjUVhxd2NRUTJ1TWhSS1lk?=
- =?utf-8?B?ZjJkK0FpS0JrbWJENFgxR29OR1JiSUVIMHI0YkxsM2t6QXNLQytKUkl2ZkNa?=
- =?utf-8?B?WHdzd2RjVS8xVXFEOHVpZFlKMHhmUHdibGVyQklReE54ZW5IOEVndHdaQlRU?=
- =?utf-8?B?TzY5WGZsYW1SMWdqSEFnUWZZL3VOZU5yekN4ZWtaY29MM2xybWlGZFVUcU5N?=
- =?utf-8?B?NU5Gc3Urci95bm41NEV3L21NWmd5dXlLWVdBUDhRUmNqT3NCUUlEV0ZtNmtq?=
- =?utf-8?B?UzdWeXpCTXRGbmhkTVNyTG9LK3RJYUxONk9nR2h1NkFmblFmWFZJc2ZEQ2wv?=
- =?utf-8?B?R2JOQmE3Q2hVT3VnVDIxc0ZJbkx2Tnc1ZEI3ZytHSDNNcUV2VkVMZ1dYbUlj?=
- =?utf-8?B?L01DVHhLbkhXSnVNaEZ3M2VwdXF2ei85M2hjZFVyUTI2UWN3cVZURHUyQjRP?=
- =?utf-8?B?NUJLelBDZDdSVFdxUVhUb250NnBMRnpZQ1YyUGxEYVRlWEhvV0pOb0FiWFNx?=
- =?utf-8?B?Wm1zbmpwVHd5dkIxV3kwNERXZitYcGFMeUluVVFFeXd4Q1Z4dWpPdE81b25n?=
- =?utf-8?B?S050VHlRRFI5clZHR0RaZkpSUld4ekRyVS8wSkNHQzcwY0xmRnZNSXNPNFZI?=
- =?utf-8?B?MWFMaW56ZzgzOTEvTnBpcUNodzVHUVRCVFBFWGtKdytLTWdFV1hUSnVhSjNW?=
- =?utf-8?B?ZUdBa1RGRHpObkIxYjdmZzMwaXNsU1YrV04xNFJxN2R2NFBCdzQwdUR5ZXY1?=
- =?utf-8?B?M0NCWk5Ec1c0WFlBTDV0V3EzWVRLRHFydCsxSHA2RWd5RFBFNHF6M1hEd1JE?=
- =?utf-8?B?ZXY3RWloeEIzdk1OZEhPVGhScXo5QVB6MFdxb2tocVFWaXZQdkRyMkxWdEJF?=
- =?utf-8?B?ZlIzY1hON2dGMHRDVG05cGN2cVl0VmZIdmtnT3NDQ1FnbkhLRVdEdnNOdUJM?=
- =?utf-8?B?M0IxTjJ5VVdXV3RsQVZDZER4T1ZZVVBSY3RmUEg5alAybmlabWlFRjZ6RnJp?=
- =?utf-8?B?Qm4wU3Z3WkJqSy83OCtRVVFzdE9sUnFmUk5FNVJ5QkdaSytvanB0VmtJSnUz?=
- =?utf-8?B?ZTFjZ3N6Zm1nc2V3N0taVGZaSFo1MVRoR0d0aEF5WVExNXJIRFRsTmtDaU8z?=
- =?utf-8?B?dWRhQy9QR0NTSHlSMWRHYVpYeXF3TXNqcSs4dlhLNjFMb1lYd3Q0MkJJZ2hD?=
- =?utf-8?B?MitkUkw4N2h4dTJqOU1jUktKZnhUUHQxNEtMbFg1eXhBajlubVpSM2lpeDZv?=
- =?utf-8?B?VGR1SWNiYy80d1Zoc2lVckplWFRxTnQyK3QwdFpWQlVWWlppbTc5VG5pbVM0?=
- =?utf-8?B?UFBvSldIS1VYb3ArNzFQamJvTG1nd0F5dUswdkpTd29SSUVtRDE1SnFrQ0Ni?=
- =?utf-8?B?dWk4MDBMVTNMQlhxUzBRY2VRQ0JzTUREQmJGYVZCWVhpUjFOclNHOTE5RzVH?=
- =?utf-8?B?WldqUlFaM0poc0RKTm8xUS9VQ2d6TGQ4WnVUSGVKVGQ0ZEJKWmo5dlBtSEdN?=
- =?utf-8?B?QmVKcXFmWWFSWlBvOWNGZFIzVFpnZ0JUZktoYWJuelB3RlE2UzRyUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1988bee3-ed7a-4786-9f9e-08de902574d8
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5126.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 19:32:48.3118
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0sbT8kPKSZzhBnZ0/8mTQ2P+/m5j2qNVqBV9VpoWtrB+OdErfSNPwXRh/l8s+lO7SorBIF4KURvsp7aaoaRHqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4342
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] fuse: fix io-uring background queue stall on request
+ completion
+To: Joanne Koong <joannelkoong@gmail.com>, miklos@szeredi.hu
+Cc: linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+ Horst Birthelmer <hbirthelmer@ddn.com>
+References: <20260401184915.747714-1-joannelkoong@gmail.com>
+From: Bernd Schubert <bernd@bsbernd.com>
+Content-Language: en-US
+In-Reply-To: <20260401184915.747714-1-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[bsbernd.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[bsbernd.com:s=fm3,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232851-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232852-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,szeredi.hu];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amd.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[bsbernd.com:+,messagingengine.com:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harry.wentland@amd.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,amd.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9CB6037FE04
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bsbernd.com:dkim,bsbernd.com:email,bsbernd.com:mid]
+X-Rspamd-Queue-Id: 48BA637FF6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 
-On 2026-03-21 01:20, Mario Kleiner wrote:
-> Commit d5df648ec830 ("drm/amd/display: Change dither policy for 10bpc to
-> round") degraded display of 12 bpc color precision output to 10 bpc sinks
-> by switching 10 bpc output from dithering to "truncate to 10 bpc".
+On 4/1/26 20:49, Joanne Koong wrote:
+> When a background request completes via the io_uring path, the
+> background queue gets flushed to dispatch pending background requests,
+> but this is done before the connection-level background counters
+> (fc->num_background, fc->active_background) are properly accounted,
+> which can leave pending background requests stuck in the per-queue
+> background queue.
+
+I don't think it ever gets stuck. In fuse_uring_flush_bg()
+
+        while ((fc->active_background < fc->max_background ||
+                !queue->active_background) &&
+
+
+And queue->active_background gets decreased in the caller,
+fuse_uring_req_end. Idea is to always let through at least one 
+background request per queue. Reson is that the global 
+fc->num_background might be at the limit already, a 
+queue then might get a request, it would get added to 
+queue->fuse_req_bg_queue, but once fc->active_background goes 
+down, there wouldn't be anything to wake up these requests. 
+Issue: Only one request allowed per queue when this comes up.
+
 > 
-> I don't find the argumentation in that commit convincing, but the
-> consequences highly unfortunate, especially for applications that
-> require effective > 10 bpc precision output of > 10 bpc framebuffers.
+> The connection-level counters are decremented in fuse_request_end(), but
+> flush_bg_queue() flushes the /dev/fuse path queue (fc->bg_queue), not
+> the io_uring per-queue bg one, which means pending uring background
+> requests on the queue are never dispatched.
 > 
-> The argument wasn't something strong like "there are hardware design
-> defects or limitations which require us to work around broken dithering
-> to 10 bpc", or "there are some special use cases which do require
-> truncation to 10 bpc", but essentially "at some point in the past we
-> used truncation in Polaris/Vega times and it looks like it got
-> inadvertently changed for Navi, so let's do that again". I couldn't find
-> evidence for that in the git commit logs for this. The commit message also
-> acknowledges that using dithering "...makes some sense for FP16...
-> ...but not for ARGB2101010 surfaces..."
+> Fix this by accounting the connection-level background counters first
+> before flushing the queue's background queue. Since
+> fuse_request_bg_finish() clears FR_BACKGROUND, fuse_request_end() will
+> skip the background cleanup branch entirely, which avoids any
+> double-decrements; it will call the wake_up(&req->waitq) branch but this
+> is effectively a no-op as background requests have no waiters on
+> req->waitq.
 > 
-> The problem with this is that it makes fp16 surfaces, and especially
-> rgba16 fixed point surfaces, less useful. These are now well
-> supported by Mesa 25.3 and later via OpenGL + EGL, Vulkan/WSI, and by
-> OSS AMDVLK Vulkan/WSI/display, and also by GNOME 50 mutter under Wayland,
-> and they used to provide more than 10 bpc effective precision at the
-> output.
-> 
-> Even for 8 or 10 bpc surfaces, the color pipeline behind the framebuffer,
-> e.g., gamma tables, CTM, can be used for color correction and will
-> benefit from an effective > 10 bpc output precision via dithering,
-> retaining some precision that would get lost on the way through the
-> pipeline, e.g., due to non-linear gamma functions.
-> 
-> Scientific apps rely on this for > 10 bpc display precision. Truncating
-> to 10 bpc, instead of dithering the pipeline internal 12 bpc precision
-> down to 10 bpc, causes a serious loss of precision. This also creates the
-> undesirable and slightly absurd situation that using a cheap monitor
-> with only 8 bpc input and display panel will yield roughly 12 bpc
-> precision via dithering from 12 -> 8 bpc, whereas investment into a
-> more expensive monitor with 10 bpc input and native 10 bpc display will
-> only yield 10 bpc, even if a fp16 or rgb16 framebuffer and/or a properly
-> set up color pipeline (gamma tables, CTM's etc. with more than 10 bpc out
-> precision) would allow effective 12 bpc precision output.
-> 
-> Therefore this patch proposes reverting that commit and going back to
-> dithering down to 10 bpc, consistent with the behaviour for 6 bpc or 8 bpc
-> output.
-> 
-> Successfully tested on AMD Polaris DCE 11.2 and Raven Ridge DCN 1.0 with
-> a native 10 bpc capable monitor, outputting a RGBA16 unorm framebuffer and
-> measuring resulting color precision with a photometer. No apparent visual
-> artifacts or problems were observed, and effective precision was measured
-> to be 12 bpc again, as expected.
-> 
-> Fixes: d5df648ec830 ("drm/amd/display: Change dither policy for 10bpc to round")
-> Signed-off-by: Mario Kleiner <mario.kleiner.de@gmail.com>
-> Tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+> Fixes: 857b0263f30e ("fuse: Allow to queue bg requests through io-uring")
 > Cc: stable@vger.kernel.org
-> Cc: Aric Cyr <aric.cyr@amd.com>
-> Cc: Anthony Koo <anthony.koo@amd.com>
-> Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-> Cc: Krunoslav Kovac <krunoslav.kovac@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-
-Kruno and I chatted a bit more about this and the best way forward
-seems to be to re-enable SPATIAL10 dither and then override that
-when needed in our Windows driver.
-
-Patches is
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-
-Will pull it in today.
-
-Harry
-
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 > ---
->  drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  fs/fuse/dev.c        | 41 ++++++++++++++++++++++++-----------------
+>  fs/fuse/dev_uring.c  |  1 +
+>  fs/fuse/fuse_dev_i.h |  1 +
+>  3 files changed, 26 insertions(+), 17 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-> index c9fbb64d706a..29db5404c4a0 100644
-> --- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-> +++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-> @@ -5056,7 +5056,7 @@ void resource_build_bit_depth_reduction_params(struct dc_stream_state *stream,
->  			option = DITHER_OPTION_SPATIAL8;
->  			break;
->  		case COLOR_DEPTH_101010:
-> -			option = DITHER_OPTION_TRUN10;
-> +			option = DITHER_OPTION_SPATIAL10;
->  			break;
->  		default:
->  			option = DITHER_OPTION_DISABLE;
+> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+> index b212565a78cf..35cdfc162ba5 100644
+> --- a/fs/fuse/dev.c
+> +++ b/fs/fuse/dev.c
+> @@ -447,6 +447,29 @@ static void flush_bg_queue(struct fuse_conn *fc)
+>  	}
+>  }
+>  
+> +void fuse_request_bg_finish(struct fuse_conn *fc, struct fuse_req *req)
+> +{
+> +	lockdep_assert_held(&fc->bg_lock);
+> +
+> +	clear_bit(FR_BACKGROUND, &req->flags);
+> +	if (fc->num_background == fc->max_background) {
+> +		fc->blocked = 0;
+> +		wake_up(&fc->blocked_waitq);
+> +	} else if (!fc->blocked) {
+> +		/*
+> +		 * Wake up next waiter, if any.  It's okay to use
+> +		 * waitqueue_active(), as we've already synced up
+> +		 * fc->blocked with waiters with the wake_up() call
+> +		 * above.
+> +		 */
+> +		if (waitqueue_active(&fc->blocked_waitq))
+> +			wake_up(&fc->blocked_waitq);
+> +	}
+> +
+> +	fc->num_background--;
+> +	fc->active_background--;
+> +}
+> +
+>  /*
+>   * This function is called when a request is finished.  Either a reply
+>   * has arrived or it was aborted (and not yet sent) or some error
+> @@ -479,23 +502,7 @@ void fuse_request_end(struct fuse_req *req)
+>  	WARN_ON(test_bit(FR_SENT, &req->flags));
+>  	if (test_bit(FR_BACKGROUND, &req->flags)) {
+>  		spin_lock(&fc->bg_lock);
+> -		clear_bit(FR_BACKGROUND, &req->flags);
+> -		if (fc->num_background == fc->max_background) {
+> -			fc->blocked = 0;
+> -			wake_up(&fc->blocked_waitq);
+> -		} else if (!fc->blocked) {
+> -			/*
+> -			 * Wake up next waiter, if any.  It's okay to use
+> -			 * waitqueue_active(), as we've already synced up
+> -			 * fc->blocked with waiters with the wake_up() call
+> -			 * above.
+> -			 */
+> -			if (waitqueue_active(&fc->blocked_waitq))
+> -				wake_up(&fc->blocked_waitq);
+> -		}
+> -
+> -		fc->num_background--;
+> -		fc->active_background--;
+> +		fuse_request_bg_finish(fc, req);
+>  		flush_bg_queue(fc);
+>  		spin_unlock(&fc->bg_lock);
+>  	} else {
+> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
+> index 7b9822e8837b..ae916733f18a 100644
+> --- a/fs/fuse/dev_uring.c
+> +++ b/fs/fuse/dev_uring.c
+> @@ -90,6 +90,7 @@ static void fuse_uring_req_end(struct fuse_ring_ent *ent, struct fuse_req *req,
+>  	if (test_bit(FR_BACKGROUND, &req->flags)) {
+>  		queue->active_background--;
+>  		spin_lock(&fc->bg_lock);
+> +		fuse_request_bg_finish(fc, req);
 
+This basically solves the issue that situations could come up where only
+one requests runs at a time.
+
+>  		fuse_uring_flush_bg(queue);
+>  		spin_unlock(&fc->bg_lock);
+>  	}
+> diff --git a/fs/fuse/fuse_dev_i.h b/fs/fuse/fuse_dev_i.h
+> index 134bf44aff0d..7da505af6d35 100644
+> --- a/fs/fuse/fuse_dev_i.h
+> +++ b/fs/fuse/fuse_dev_i.h
+> @@ -59,6 +59,7 @@ unsigned int fuse_req_hash(u64 unique);
+>  struct fuse_req *fuse_request_find(struct fuse_pqueue *fpq, u64 unique);
+>  
+>  void fuse_dev_end_requests(struct list_head *head);
+> +void fuse_request_bg_finish(struct fuse_conn *fc, struct fuse_req *req);
+>  
+>  void fuse_copy_init(struct fuse_copy_state *cs, bool write,
+>  			   struct iov_iter *iter);
+
+
+Reviewed-by: Bernd Schubert <bernd@bsbernd.com>
+
+
+
+PS: If you should be chasing a stuck bg queue issue at tear down, Horst
+is chasing a teardown issue with bg queue. 
+We are currently testing this patch
+
+diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
+index 3de97ed2280f..451bf8981e19 100644
+--- a/fs/fuse/dev_uring.c
++++ b/fs/fuse/dev_uring.c
+@@ -136,11 +136,10 @@ void fuse_uring_abort_end_requests(struct fuse_ring *ring)
+                if (!queue)
+                        continue;
+
+-               queue->stopped = true;
+-
+                WARN_ON_ONCE(ring->fc->max_background != UINT_MAX);
+                spin_lock(&queue->lock);
+                spin_lock(&fc->bg_lock);
++               queue->stopped = true;
+                fuse_uring_flush_bg(queue);
+                spin_unlock(&fc->bg_lock);
+                spin_unlock(&queue->lock);
+
+
+Thanks,
+Bernd
 
