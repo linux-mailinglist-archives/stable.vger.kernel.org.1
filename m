@@ -1,64 +1,81 @@
-Return-Path: <stable+bounces-232819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KeVLzlMzWl6bgYAu9opvQ
-	(envelope-from <stable+bounces-232819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:47:53 +0200
+	id KDOGBaJMzWl6bgYAu9opvQ
+	(envelope-from <stable+bounces-232820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:49:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AC737E208
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:47:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5910837E278
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4868E318E3A0
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 16:27:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C6E931921FF
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 16:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD3847B436;
-	Wed,  1 Apr 2026 16:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B096C426D08;
+	Wed,  1 Apr 2026 16:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=kcore.it header.i=@kcore.it header.b="KGfM9Sjh"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AphRW5s8"
 X-Original-To: stable@vger.kernel.org
-Received: from spark.kcore.it (spark.kcore.it [49.13.27.68])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62D53C942D;
-	Wed,  1 Apr 2026 16:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.13.27.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519EE4657DC
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 16:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775060758; cv=none; b=J0Q89E6QaGZ1CySjSyjyBAREdMiKXFLxSBWwIDwelliMoVA7FBMZ5ydKOraxt8Xn8NXO1OU6BY5QyY/ncs1GfOEtqpGiOG7kbeb3scQU0BpT7Vnj97/tR4tAo6ymBaLDm4SiqbL6wJtiAD3qX5Qm9D9zC7KZMXl/21h4hJYowlU=
+	t=1775060961; cv=none; b=nk1N8VtNN4tWH0jfi+smc4iVjKVvCGvbMlqN2X/trJGe532Zfdr9k0HPbrVD1583YS829/40KQIOqCF47LIUzQDvKhYk2Z0A26p17L6gyBgtC7ig0c/czWXFSfvvfGa+J85bOrqXR5AUvo4wHRygsZYKkgTxZYn3b6NJiVsBcJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775060758; c=relaxed/simple;
-	bh=65k/OPgoCxkpL0B2UvUpOxb8aihUudDsObyqeHk30n0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Bm5sIBgRWyiynOtBYoPOOwwfsYy2RHBom5qyOfRy7N6OHU6AOu8qVcTWUfRSyY6BzLqIAXARCZDPhvcZv3/t8ZZ6D9OhAJUbM+Z5uyva7goGjHvAoyz9yGKkXNfNM6Y12Y6e4jzhk2y1K8NOo5k30YKtB0fhVvyh6aL8A8NJM9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kcore.it; spf=pass smtp.mailfrom=kcore.it; dkim=pass (1024-bit key) header.d=kcore.it header.i=@kcore.it header.b=KGfM9Sjh; arc=none smtp.client-ip=49.13.27.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kcore.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kcore.it
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kcore.it;
-	s=spark; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:
-	To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=cnsGCJerqZeic+bB0DW198cYcKvnJe3T1BtOwC5JpOc=; b=KGfM9Sjh4A7iVDRHTMfSw4RPYc
-	81bB+J9zsHFyQRv5omL5slOTiJFr1ZVQu+UlAcjvULhqviQ+sZipT2+xmh4Bbw03UffryGqrcgx79
-	qLW5bfATQCHVJVqvpgGf44JIRhhaNM9429j4QXwyjMdSVI9q8kKAcL22WDEDpwq8jTh8=;
-Received: from mnencia by spark.kcore.it with local (Exim 4.96)
-	(envelope-from <mnencia@kcore.it>)
-	id 1w7yO3-006hht-2t;
-	Wed, 01 Apr 2026 18:25:47 +0200
-From: Marco Nenciarini <mnencia@kcore.it>
-To: linux-media@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Bingbu Cao <bingbu.cao@intel.com>
-Cc: Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	stable@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Marco Nenciarini <mnencia@kcore.it>
-Subject: [PATCH v3] media: intel/ipu6: Improve DWC PHY HSFREQRANGE band selection for overlapping ranges
-Date: Wed,  1 Apr 2026 18:25:47 +0200
-Message-Id: <20260401162547.1597975-1-mnencia@kcore.it>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1775060961; c=relaxed/simple;
+	bh=bBKM0ztGKZiazPOuWr8a0zlMOiziUMv4UdE/jqDvu+M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nVuJK0RtdSbpbGtF0PuZwgZlgFI4425XoullBWllo/vQi0fVCJuwZs9lALeCk0f01HTKxb2zBohrebbV7v7s0BToTY89VNtEaqVL3oSr5yjf4BaqvhTVCsftgGwyaaxqSMJ0S2SnNpcRZ0v7zHSmN2OI9lduQhu4BRpAGt8lgKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AphRW5s8; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775060947;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/F3w2zUvV0WycgwDhHoSaMjFosjjuSB+DlsqHi2/eOc=;
+	b=AphRW5s823Zt1SPOwvVYdbtW6LttToaWtO2AN2frz4rLWfPyyHug5O+hnPkvXhOD8CPzo6
+	8lNWuXBjQ72MNyRKBZjfDs4ntgLVMHBIDo21zNiAynwjm9jgi8aCnjafdsKl1XQ7iCxgjw
+	YY7AB2ceRqb25ejRGdxqMzm3SCJfvy8=
+From: Usama Arif <usama.arif@linux.dev>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	richard.weiyang@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kartikey406@gmail.com,
+	syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH mm-unstable 1/1] mm: fix deferred split queue races during migration
+Date: Wed,  1 Apr 2026 09:28:53 -0700
+Message-ID: <20260401162855.146945-1-usama.arif@linux.dev>
+In-Reply-To: <20260401131032.13011-1-lance.yang@linux.dev>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,124 +83,161 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[kcore.it:s=spark];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232819-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[kcore.it];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,kernel.org,nvidia.com,linux.alibaba.com,oracle.com,redhat.com,arm.com,intel.com,gmail.com,sk.com,gourry.net,kvack.org,vger.kernel.org,syzkaller.appspotmail.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	TAGGED_FROM(0.00)[bounces-232820-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kcore.it:-];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mnencia@kcore.it,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.916];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,kcore.it:email,kcore.it:mid]
-X-Rspamd-Queue-Id: B1AC737E208
+	FROM_NEQ_ENVFROM(0.00)[usama.arif@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,a7067a757858ac8eb085];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: 5910837E278
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The get_hsfreq_by_mbps() function searches the freqranges[] table
-backward (from highest to lowest index). Because adjacent frequency
-bands overlap, a data rate that falls in the overlap region always
-lands on the higher-indexed band.
+On Wed,  1 Apr 2026 21:10:32 +0800 Lance Yang <lance.yang@linux.dev> wrote:
 
-For data rates up to 1500 Mbps (index 42) every band uses
-osc_freq_target 335. Starting at index 43 (1461-1640 Mbps) the
-osc_freq_target drops to 208. A sensor running at 1498 Mbps sits in
-the overlap between index 42 (1414-1588, osc 335) and index 43
-(1461-1640, osc 208). The backward search picks index 43, programming
-the lower osc_freq_target of 208 instead of the optimal 335.
+> From: Lance Yang <lance.yang@linux.dev>
+> 
+> migrate_folio_move() records the deferred split queue state from src and
+> replays it on dst. Replaying it after remove_migration_ptes(src, dst, 0)
+> makes dst visible before it is requeued, so a concurrent rmap-removal path
+> can mark dst partially mapped and trip the WARN in deferred_split_folio().
+> 
+> Move the requeue before remove_migration_ptes() so dst is back on the
+> deferred split queue before it becomes visible again.
+> 
+> Because migration still holds dst locked at that point, teach
+> deferred_split_scan() to requeue a folio when folio_trylock() fails.
+> Otherwise a fully mapped underused folio can be dequeued by the shrinker
+> and silently lost from split_queue.
+> 
+> Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
+> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
+> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
+> Cc: <stable@vger.kernel.org>
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
+> 
+> [ Backport note ]
+> This patch is a follow-up fix for 8a8ca142a488 ("mm: migrate: requeue
+> destination folio on deferred split queue"), which is currently only in
+> mm-stable, and should be backported together with it.
+> 
+> Credit for this fix goes to David, thanks!
+> 
+>  mm/huge_memory.c | 12 +++++++-----
+>  mm/migrate.c     | 18 +++++++++---------
+>  2 files changed, 16 insertions(+), 14 deletions(-)
+> 
 
-This causes DDL lock instability and CSI-2 CRC errors on affected
-configurations, such as the OmniVision OV08X40 sensor on Intel Arrow
-Lake platforms (Dell Pro Max 16).
 
-Rewrite get_hsfreq_by_mbps() to select the optimal band:
+Thanks for the fix! And sorry for introducing the bug in
+migrate_folio_move() :)
 
-1. Among bands whose min/max range covers the data rate, prefer
-   the one with the higher osc_freq_target.
-2. If osc_freq_target is equal, prefer the band whose default_mbps
-   is closest to the requested rate.
+So I am happy with the migrate_folio_move() change, it makes sense.
 
-Since the frequency ranges are monotonically increasing, the loop
-exits early once min exceeds the requested rate.
+The goto next if folio is locked in deferred_split_scan() was actually
+on purpose. The reasoning was that if the folio is locked, we consider
+it as in use by someone and therefore we shouldnt split it. Eventhough
+thp_underused() does a zero-filled check, the whole point of the shrinker
+was to split THPs that are "not in use", and in my mind, locked folio
+is a folio in use. So not sure about that change..
 
-For 1498 Mbps this now correctly selects index 42 (osc_freq_target
-335, range 1414-1588) instead of index 43 (osc_freq_target 208,
-range 1461-1640).
 
-Fixes: 1e7eeb301696 ("media: intel/ipu6: add the CSI2 DPHY implementation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marco Nenciarini <mnencia@kcore.it>
----
-Changes in v3:
-- Changed best variable type from int to u16 to match the function
-  return type (Sakari Ailus).
-- Removed the exact default_mbps match early return since the range
-  check already covers it (Sakari Ailus).
-- Added early break when mbps < min, since frequencies are
-  monotonically increasing (Sakari Ailus).
-
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Bingbu Cao <bingbu.cao@intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
- .../media/pci/intel/ipu6/ipu6-isys-dwc-phy.c  | 26 ++++++++++++++-----
- 1 file changed, 19 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-dwc-phy.c b/drivers/media/pci/intel/ipu6/ipu6-isys-dwc-phy.c
-index db2874843..237906cb1 100644
---- a/drivers/media/pci/intel/ipu6/ipu6-isys-dwc-phy.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-isys-dwc-phy.c
-@@ -288,15 +288,27 @@ static const struct dwc_dphy_freq_range freqranges[DPHY_FREQ_RANGE_NUM] = {
- 
- static u16 get_hsfreq_by_mbps(u32 mbps)
- {
--	unsigned int i = DPHY_FREQ_RANGE_NUM;
--
--	while (i--) {
--		if (freqranges[i].default_mbps == mbps ||
--		    (mbps >= freqranges[i].min && mbps <= freqranges[i].max))
--			return i;
-+	u16 best = DPHY_FREQ_RANGE_INVALID_INDEX;
-+	unsigned int i;
-+
-+	for (i = 0; i < DPHY_FREQ_RANGE_NUM; i++) {
-+		if (mbps > freqranges[i].max)
-+			continue;
-+
-+		if (mbps < freqranges[i].min)
-+			break;
-+
-+		if (best == DPHY_FREQ_RANGE_INVALID_INDEX ||
-+		    freqranges[i].osc_freq_target >
-+		    freqranges[best].osc_freq_target ||
-+		    (freqranges[i].osc_freq_target ==
-+		     freqranges[best].osc_freq_target &&
-+		     abs((int)mbps - (int)freqranges[i].default_mbps) <
-+		     abs((int)mbps - (int)freqranges[best].default_mbps)))
-+			best = i;
- 	}
- 
--	return DPHY_FREQ_RANGE_INVALID_INDEX;
-+	return best;
- }
- 
- static int ipu6_isys_dwc_phy_config(struct ipu6_isys *isys,
--- 
-2.47.3
-
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index ff9a42abd1b6..ac6d823e351f 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4558,7 +4558,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>  				goto next;
+>  		}
+>  		if (!folio_trylock(folio))
+> -			goto next;
+> +			goto requeue;
+>  		if (!split_folio(folio)) {
+>  			did_split = true;
+>  			if (underused)
+> @@ -4569,11 +4569,13 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>  next:
+>  		if (did_split || !folio_test_partially_mapped(folio))
+>  			continue;
+> +requeue:
+>  		/*
+> -		 * Only add back to the queue if folio is partially mapped.
+> -		 * If thp_underused returns false, or if split_folio fails
+> -		 * in the case it was underused, then consider it used and
+> -		 * don't add it back to split_queue.
+> +		 * Add back partially mapped folios, or underused folios
+> +		 * that we could not lock this round.  If thp_underused()
+> +		 * returns false, or if split_folio() succeeds, or if
+> +		 * split_folio() fails in the case it was underused, then
+> +		 * consider it used and don't add it back to split_queue.
+>  		 */
+>  		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
+>  		if (list_empty(&folio->_deferred_list)) {
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 05cb408846f2..8a64291ab5b4 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -1385,6 +1385,15 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+>  	if (rc)
+>  		goto out;
+>  
+> +	/*
+> +	 * Requeue the destination folio on the deferred split queue if
+> +	 * the source was on the queue.  The source is unqueued in
+> +	 * __folio_migrate_mapping(), so we recorded the state from
+> +	 * before move_to_new_folio().
+> +	 */
+> +	if (src_deferred_split)
+> +		deferred_split_folio(dst, src_partially_mapped);
+> +
+>  	/*
+>  	 * When successful, push dst to LRU immediately: so that if it
+>  	 * turns out to be an mlocked page, remove_migration_ptes() will
+> @@ -1401,15 +1410,6 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+>  	if (old_page_state & PAGE_WAS_MAPPED)
+>  		remove_migration_ptes(src, dst, 0);
+>  
+> -	/*
+> -	 * Requeue the destination folio on the deferred split queue if
+> -	 * the source was on the queue.  The source is unqueued in
+> -	 * __folio_migrate_mapping(), so we recorded the state from
+> -	 * before move_to_new_folio().
+> -	 */
+> -	if (src_deferred_split)
+> -		deferred_split_folio(dst, src_partially_mapped);
+> -
+>  out_unlock_both:
+>  	folio_unlock(dst);
+>  	folio_set_owner_migrate_reason(dst, reason);
+> -- 
+> 2.49.0
+> 
+> 
 
