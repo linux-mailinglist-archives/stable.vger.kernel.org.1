@@ -1,216 +1,170 @@
-Return-Path: <stable+bounces-232783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNP2JcwczWk0aQYAu9opvQ
-	(envelope-from <stable+bounces-232783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:25:32 +0200
+	id gC2qNIgjzWlkaQYAu9opvQ
+	(envelope-from <stable+bounces-232784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:54:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B5837B2F2
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:25:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C3437BA23
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56DFE301027F
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:18:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2C3930D01FB
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918FA35F60A;
-	Wed,  1 Apr 2026 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969C243C042;
+	Wed,  1 Apr 2026 13:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUrVP3HD"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA5638F25C;
-	Wed,  1 Apr 2026 13:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579DE429800
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 13:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775049524; cv=none; b=irfKitzBvYRgWmPHqXrZkGzsHUhTACitj/Afxpr+uD0n6SMZlXoRAYyRXfKmjooKxgRhkltAdNzY437tiHi2Cre8ObCwBVQ0VFvpkY50y/ATeYoAv2u78dV5bkWH9IXNa94l9kP7gezuJOKUm5p0vzzjRsqwc4g0Ec22QCoq8/o=
+	t=1775050468; cv=none; b=mwHFxiyK9Vt89ONIUE8QRUyrAeu945sPpWOWe4hHNtUJAnoQI8oyKikdc1Rv0+j/SNDlIcsUsjreBEDknWV3T+/7Ic7+eeSeCuhzxND/m13iww17nx8d2cUvik0Jam9AivvmXTqNNzYr8PS2hrF1W0CD404hAhV2QvDaUCokXZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775049524; c=relaxed/simple;
-	bh=uQ8xz5ZVCOaxajR/YZaBP19QeYVZgCHHYym7P/lBskI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjYhoO0ELZOSOTWZ9Y2ni8vbn66hIkdvrehEWSGEVKL0TxRmvWdQfBOwJvwBm1GxcnbqJyUdhpb9HXI4xuJ0/0g1sCcIPG6IAO1HsK+KEhIxwrn3KXYqHxMC+4j3RhGIS6MZsPF5zR+bEtJWuTB42vMOVZm9tFVpiB42OQDi078=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from ubuntu.. (unknown [202.112.113.208])
-	by APP-01 (Coremail) with SMTP id qwCowACnT2sVG81pSvbdCw--.49770S2;
-	Wed, 01 Apr 2026 21:18:21 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: vz@mleia.com
-Cc: alexandre.belloni@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	make24@iscas.ac.cn,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	piotr.wojtaszczyk@timesys.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: lpc_eth: Fix a possible memory leak in lpc_mii_probe()
-Date: Wed,  1 Apr 2026 21:18:13 +0800
-Message-ID: <20260401131813.139167-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <b44db9e6-f820-439d-a7ed-c1e2514579a8@mleia.com>
-References: <b44db9e6-f820-439d-a7ed-c1e2514579a8@mleia.com>
+	s=arc-20240116; t=1775050468; c=relaxed/simple;
+	bh=ZgUeRnpR4DATl3Sbw883f5UTNjMmFhqtg9CURPQiQXM=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=sNUTj08kTd3KXxxYg524lLud+OhBmgYVnm3t7WvfOVXCtKFINDex8+6oDdjVsKjBONPoaGzzhw1Emo8heu/PAj3tA7ZiBOeGlFU57lQVQodSfW43Cyj9WPRl8oarb3/GSje4V0V7efGLTXub501rjQ3n63ZI+zYiNz9s5GHB0mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUrVP3HD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C201DC2BCB0;
+	Wed,  1 Apr 2026 13:34:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775050468;
+	bh=ZgUeRnpR4DATl3Sbw883f5UTNjMmFhqtg9CURPQiQXM=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=ZUrVP3HDWATxjX+UNJxVTmHekvvRwtN9LN+JW++iezUbDfU2aV0ukICgXJaFimRq5
+	 Nlx5ojqFkVeSksxNi12dSpW00cU81KvcWXUE98/yOpZN47p0NleQJqKzEXmUjCcSVe
+	 4LXJU8FzZLTNcIkRN5s+Orx0HFlV8nYB0I8MZFvRuZIZePVKfNpNKq5u8VP+SVqbAp
+	 AKBNkfwWme8JuQh42wC9ag/2yJQtvmsPfWb/VJxR8XhpjMKiR962AHzF8kWfKrX42y
+	 QAXhq4V13YPRv7H6Idwee2zBmtu6DIbiuIYxMy7iogcR468Eau+9BOiX/j11fMH1js
+	 ZhQRQlKR1WIrQ==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BF8E6F4007C;
+	Wed,  1 Apr 2026 09:34:26 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Wed, 01 Apr 2026 09:34:26 -0400
+X-ME-Sender: <xms:4h7Nafyx5c5Ox6zroyRUHQ79ixV3CoGkN-oMkA58x0jwtajmLJDvvg>
+    <xme:4h7NaSEElO1zezXPWvItF_AKHkm2g7r-nP_f2Mz_pcusaSeO9-x2Dr-BeboDXACrU
+    POjGyhgvy-ZeWUsSksNFoh6xAg7Benc-tKt2IjV9FRxD80EbIDxo8X2>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefvdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedfvehhuhgtkhcu
+    nfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    fghfeguedtieeiveeugfevtdejfedukeevgfeggfeugfetgfeltdetueelleelteenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegthhhutghklh
+    gvvhgvrhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeifeegleelleeh
+    ledqfedvleekgeegvdefqdgtvghlpeepkhgvrhhnvghlrdhorhhgsehfrghsthhmrghilh
+    drtghomhdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepnhgvihhlsegsrhhofihnrdhnrghmvgdprhgtphhtthhopeduuddvkeekiedusegsuh
+    hgshdruggvsghirghnrdhorhhgpdhrtghpthhtohepuhhklhgvihhnvghkseguvggsihgr
+    nhdrohhrghdprhgtphhtthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehrvghgrhgvshhsihhonhhssehlvggvmhhhuhhishdrihhnfhhopdhrtghpthht
+    ohepthhjrdhirghmrdhtjhesphhrohhtohhnrdhmvgdprhgtphhtthhopehokhhorhhnih
+    gvvhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhinhhugidqnhhfshesvhhgvghr
+    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnh
+    gvlhdrohhrgh
+X-ME-Proxy: <xmx:4h7NaRQeQ18NF5vaHjDbeNzkQv0yRp_-B-LRxxF-kWcpXnlwZp44gw>
+    <xmx:4h7NaXWt1WZdadTLftydoIAJ7HPjw54NayHtHUxu_9jQ5SPhCRrzAQ>
+    <xmx:4h7NabQxVJQd81L_-g6JtKYWl7JW0xARWpJIg3y6kTOVQE_ps9bf6A>
+    <xmx:4h7Naf3i5eaVv-evV5UsgFmtiwUN1yx9IT0zOq0VWkZn9X-0lIJKNA>
+    <xmx:4h7NabfLKt0WHosy2lNz-Ukix0U8MGuiwdJHl-HggqmI_Tg9DYBPoNo2>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 993CA780070; Wed,  1 Apr 2026 09:34:26 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACnT2sVG81pSvbdCw--.49770S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXw4ktw18AFWfWw1kWF4DJwb_yoW5Kw4Dp3
-	y5GaySkFykGry7K395Za1UAryavw42yw1rGFy2yan0g3Z8XryrAryUKrWj93s8AFWkWF40
-	vr1ayF93Xa1kXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwV
-	W5GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
-	6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
-	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-	Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
-	IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUgvtAUUUUU
-	=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-ThreadId: A_jyC0Lb0WUR
+Date: Wed, 01 Apr 2026 09:34:06 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
+ 1128861@bugs.debian.org
+Cc: NeilBrown <neil@brown.name>, "Jeff Layton" <jlayton@kernel.org>,
+ "Thorsten Leemhuis" <regressions@leemhuis.info>, Tj <tj.iam.tj@proton.me>,
+ linux-nfs@vger.kernel.org, "Olga Kornievskaia" <okorniev@redhat.com>,
+ stable@vger.kernel.org
+Message-Id: <856a0051-131e-4847-9b8c-2c377c375da7@app.fastmail.com>
+In-Reply-To: <ac0U4P92l-TkQvnh@monoceros>
+References: <177266540127.7472.3460090956713656639@noble.neil.brown.name>
+ <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>
+ <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>
+ <177434721528.7102.13514118512738778346@noble.neil.brown.name>
+ <d4773958-5ae5-42d4-b785-6598b5c9b27a@app.fastmail.com>
+ <177442248735.2237155.773724155681455344@noble.neil.brown.name>
+ <a6e6a731-2885-4510-87dd-45e6a8f4fbd7@app.fastmail.com>
+ <177456522377.1851489.16395975485525163031@noble.neil.brown.name>
+ <177187492815.425331.14320091315652332093.reportbug@nimble>
+ <465012d6-c824-4d8d-b6f6-8a2d85e30154@app.fastmail.com>
+ <ac0U4P92l-TkQvnh@monoceros>
+Subject: Re: Bug#1128861: [PATCH v2] lockd: fix TEST handling when not all permissions
+ are available.
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	TO_DN_NONE(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232783-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	XM_UA_NO_VERSION(0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232784-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.985];
-	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: 52B5837B2F2
+	FROM_NEQ_ENVFROM(0.00)[cel@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.979];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 32C3437BA23
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/30/26 13:04, Vladimir Zapolskiy wrote:
-> On 3/30/26 11:16, Ma Ke wrote:
-> > lpc_mii_probe() calls of_phy_find_device() to obtain a phy_device
-> > pointer. of_phy_find_device() increments the refcount of the device.
-> > The current implementation does not decrement the refcount after using
-> > the pointer, which leads to a memory leak.
-> 
-> this is correct, there is an actual detected bug.
-> 
-> > 
-> > Add phy_device_free() to balance the refcount.
-> 
-> But this does not sound right, you shoud use of_node_put(pldat->phy_node).
-> 
-> > 
-> > Found by code review.
-> > 
-> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> > Cc: stable@vger.kernel.org
-> > Fixes: 3503bf024b3e ("net: lpc_eth: parse phy nodes from device tree")
-> > ---
-> >   drivers/net/ethernet/nxp/lpc_eth.c | 11 ++++++-----
-> >   1 file changed, 6 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
-> > index 8b9a3e3bba30..8ce7c9bb6dd6 100644
-> > --- a/drivers/net/ethernet/nxp/lpc_eth.c
-> > +++ b/drivers/net/ethernet/nxp/lpc_eth.c
-> > @@ -751,7 +751,7 @@ static void lpc_handle_link_change(struct net_device *ndev)
-> >   static int lpc_mii_probe(struct net_device *ndev)
-> >   {
-> >   	struct netdata_local *pldat = netdev_priv(ndev);
-> > -	struct phy_device *phydev;
-> > +	struct phy_device *phydev, *phydev_tmp;
-> >   
-> >   	/* Attach to the PHY */
-> >   	if (lpc_phy_interface_mode(&pldat->pdev->dev) == PHY_INTERFACE_MODE_MII)
-> > @@ -760,17 +760,18 @@ static int lpc_mii_probe(struct net_device *ndev)
-> >   		netdev_info(ndev, "using RMII interface\n");
-> >   
-> >   	if (pldat->phy_node)
-> > -		phydev =  of_phy_find_device(pldat->phy_node);
-> > +		phydev_tmp =  of_phy_find_device(pldat->phy_node);
-> >   	else
-> > -		phydev = phy_find_first(pldat->mii_bus);
-> > -	if (!phydev) {
-> > +		phydev_tmp = phy_find_first(pldat->mii_bus);
-> > +	if (!phydev_tmp) {
-> 
-> I didn't get it, why the new phydev_tmp is needed above, please
-> restore the original code above.
-> 
-> >   		netdev_err(ndev, "no PHY found\n");
-> >   		return -ENODEV;
-> >   	}
-> >   
-> > -	phydev = phy_connect(ndev, phydev_name(phydev),
-> > +	phydev = phy_connect(ndev, phydev_name(phydev_tmp),
-> >   			     &lpc_handle_link_change,
-> >   			     lpc_phy_interface_mode(&pldat->pdev->dev));
-> > +	phy_device_free(phydev_tmp);
-> 
-> This is plainly wrong and has to be dropped or changed to
-> 
-> 	if (pldat->phy_node)
-> 		of_node_put(pldat->phy_node);
-> 
-> >   	if (IS_ERR(phydev)) {
-> >   		netdev_err(ndev, "Could not attach to PHY\n");
-> >   		return PTR_ERR(phydev);
-> 
-> Is it AI generated fix or what?.. The change looks bad, it introduces
-> more severe issues than it fixes.
-> 
-> If you think you cannot create a proper change, let me know.
-> 
-> -- 
-> Best wishes,
-> Vladimir
-Thank you very much for your detailed review and guidance.
 
-Now I think your point probably is: you are saying that the real leak 
-is not from of_phy_find_device(), but from the device node 
-pldat->phy_node which was obtained earlier (probably by 
-of_parse_phandle()) and never freed by of_node_put(). And you suggest 
-to add of_node_put(pldat->phy_node) instead of my wrong 
-phy_device_free().
+On Wed, Apr 1, 2026, at 8:54 AM, Uwe Kleine-K=C3=B6nig wrote:
+> Hello Chuck,
+>
+> On Fri, Mar 27, 2026 at 09:56:38AM -0400, Chuck Lever wrote:
+>> I think the stable folks will insist on this fix going into
+>> upstream first. However, this version of the fix does not
+>> apply to nfsd-testing because that branch has the NLMv4
+>> xdrgen rewrite.
+>
+> This is not the first time a bug is fixed by changes that are too
+> intrusive for backport. Usually the stable maintainers can be talked to
+> accept a small targeted fix even if it's not upstream. The discussion =
+is
+> simplified by people claiming to have tested the fix and confirm it
+> helps.
 
-However, I am still a little confused. In lpc_mii_probe(), 
-of_phy_find_device() is called. From my understanding, this function 
-increases the reference count of the device. To balance it, I thought
-phy_device_free() (which calls put_device()) should be used.
+Sorry I wasn't clear. Neil and I have also been down this road before
+so I wasn't explicit about my request.
 
-Could you please kindly advise the correct patch? I will follow your
-guidance and submit a proper fix.
+I'd like Neil to provide a patch for upstream against nfsd-testing.
+Once that is merged, he can present the patch from this thread to
+the stable/LTS maintainers.
 
-I apologize again for my previous wrong patch. Thank you very much for
-your help.
 
-Best regards,
-Ma Ke
-
+--=20
+Chuck Lever
 
