@@ -1,121 +1,97 @@
-Return-Path: <stable+bounces-232726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IODPEWXXzGnnWwYAu9opvQ
-	(envelope-from <stable+bounces-232726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:29:25 +0200
+	id aKFKM+/azGnnWwYAu9opvQ
+	(envelope-from <stable+bounces-232728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:44:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1BB376CB2
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7427137707A
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A62A30F7B0E
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 08:21:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6AB013138B6C
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 08:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0AE3A641D;
-	Wed,  1 Apr 2026 08:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDA43B2FE0;
+	Wed,  1 Apr 2026 08:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L85HWBCT";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="A75CgZmW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t0LgG0zD"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C764039C00C
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 08:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC653ACA68;
+	Wed,  1 Apr 2026 08:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775031705; cv=none; b=M6MCqaQwojlYZPRHhyQqQI5eF/J08Kat6iaEifUBjqdYKeJXvnKkzRCpZ0GUvsjcLGSwD75brrreSpqwo8VYAg5df4G8wuIE71Tzt6elst+TikaAfW52Rd/BeDbjxbnEWxBazHWzBle79uFLwn2sDb1n78+a8JKh3Tdq5cnY2XY=
+	t=1775032494; cv=none; b=s2OivYcObdS0QG/K3qufisgq2efI7XQnueGYYrYZWaAiLocMg1/bakYQc4Cpwtx21RdO3oqSfC7+PG85QyHj8Aa2NxpmFaMiwhHgVw/jw88rY2oSX6tDuZHpKrSHC1L9wT1QWWEco4aq2WhSbmSSMELz6CHv4A9O80+pwYNFyjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775031705; c=relaxed/simple;
-	bh=mE58UPyJl/FiMLUP216GucoGkRmpDm4sFWboaotFA54=;
+	s=arc-20240116; t=1775032494; c=relaxed/simple;
+	bh=8LWqVYVupsHf2WpfKI7Tx2LrsjGmOFFgtNiUEes0yjk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SbK7+EtJgrj/CejdLfXOifQ6kbq8dARE3fgWFh/yaGVwIQXTAFKB22cwm5wo9nepvHA4dagsF8gGKbFixVJ5J8HtHbghhLurLMn2bl4Dmbw9d6d9h5rltwX4HVl9oW+02Rr+iPkeS/hNKDPqQGsYjneRSi90+mnfLXdwESTU8yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L85HWBCT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=A75CgZmW; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775031702;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zFlf2MdDkifmThFJKZCcvKogFCBxiEgmNxrJgdVh+Lg=;
-	b=L85HWBCTk6f5/pxyVCl7a9p+Lke1Cl2jSn7fzq8WJfBOUrCA//k5PNXOxz/O/ugm2mUFkB
-	k9wYWP2R9Xr6I0EeFM+rLLbUFwfRh/qcvTHKFKaxp/GrpnUe/QEiXOB4UAiPP2KYD8pgsv
-	tWu8BqzAdRQk8Nf8pg7YflDgmvLoBgY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-aId7bg59OlKN6LtPmP9P7Q-1; Wed, 01 Apr 2026 04:21:41 -0400
-X-MC-Unique: aId7bg59OlKN6LtPmP9P7Q-1
-X-Mimecast-MFC-AGG-ID: aId7bg59OlKN6LtPmP9P7Q_1775031700
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-485c45885e6so52945345e9.0
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 01:21:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775031700; x=1775636500; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zFlf2MdDkifmThFJKZCcvKogFCBxiEgmNxrJgdVh+Lg=;
-        b=A75CgZmW345a1CUYbHimxiSs/IIKpO/IhFL1YDHIY+GhyUoCpeuWFOKojlJXXZ5AWl
-         DYSi/RW669lMjUQmp0ZTWKgg0JFWMYmM/CalBqX8ivWIKg2AY9iUTDjeqo5rRThTCU6r
-         2OkM0a+d68SBsGdcB3gYnmSQyPtFGViBDrjUN7VfgB9Qu+s1w+dQmx5gjT768VeXMtdL
-         YNnueTnb9EDXKXfPgZ3XDDSuD8c+kxtTMk5T0t29BMc7n3CE0VvbuixQr01PmLC3wS2o
-         8w9kQ/km/JlpGnAjgOdrV5zBxbU26oaxCLCkmmDUklN+MclHWuUOhlA/ZCnIFOeyvjg/
-         qIbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775031700; x=1775636500;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zFlf2MdDkifmThFJKZCcvKogFCBxiEgmNxrJgdVh+Lg=;
-        b=NahjKvwDrm4xpsmWDKSEdiRYxz0yFirG3iT0aDoe1dPxiEAJsriavQ2X0xE0fQ7yYi
-         jHKAakOQtjG6TtyNDFaLhfoa430IEBUX1WPuSmK3iTuf+NxDQZUpFPFoDCNctS3M4OIj
-         l5EkBVAqxUTDHGE56ztgKDeIvDT27Bozv0ynjJ01rawhr9vS2eYXycKix1pZ4saMs3o6
-         xPGmp6QlfzNUOK5XKGdiCZbKdeaHnVfCvJrQDLCLfCoH+EALlD/0u61GdTO9e6NQH6j8
-         KerDdrMizbhOWW3xydiWQPlHAI40Cu617Bgy5cn3Uie5Dm63C6uknEz7w/WaiHO7XADV
-         +O7g==
-X-Forwarded-Encrypted: i=1; AJvYcCX0eP8hqFy/rkbVNY/bo7MCUasC2yPze4h2LOYcAHPLI+SqHcC3nmUqeIYn9KLmCDu63DD7ojc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAgl0G3XowM+co1KXIXfGJZ7PFhu/Z6o5q5KCShSgbtibbGeCA
-	zr4HC5Iai6/rGHs+Lj9dRzUrgjugjQiqkFL7uE8z7j2DBei+YSfKDmUjr9qsBIENbxhwIE26SPp
-	bX2aNIKfNfXhTiM7zk20nXiEVsgR8JzXmglbgzx1tayV/8mXJnYXNgF5Zpw==
-X-Gm-Gg: ATEYQzzaLYhxyD2QCwp94ddazPYi3hpNdWIELhS3bkXEkZ6z6D1Utnm6TmV5yGHjv/G
-	Zx9LY0I6VVFJukl+ZQYZqOoO3D/rf6aVTFAHSSjy53Jw5mPzeDmRiCF1YTI1knXfwhvXFUd521o
-	/EcxR/ws45RV8VmH8n5DGp9oDWsU1GppPQSpusqDbl7SIvOykjnbaq6dH6H4hBDd38+X6ugrOpQ
-	nZFZ5ku9jZ6aS+Zli23hHd7CGKGNVP2jb8xr/IRlOh/k6pnearb1lAfTqIM/SmHS6ShqCEIx0mo
-	dQ0LQ9kuXkpkhD2yxg6wjIFGsg2HqFEwq0+Sw9dzDqPUYkS+ru+jC5LQqoMbWkQSnEkRNE1xDCl
-	Qm6iH3yis90HygjDd
-X-Received: by 2002:a05:600c:8718:b0:487:1c2:6a4f with SMTP id 5b1f17b1804b1-488835c0534mr45597775e9.31.1775031700287;
-        Wed, 01 Apr 2026 01:21:40 -0700 (PDT)
-X-Received: by 2002:a05:600c:8718:b0:487:1c2:6a4f with SMTP id 5b1f17b1804b1-488835c0534mr45597015e9.31.1775031699827;
-        Wed, 01 Apr 2026 01:21:39 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf21e29b1sm32050464f8f.8.2026.04.01.01.21.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 01:21:39 -0700 (PDT)
-Date: Wed, 1 Apr 2026 04:21:36 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, Srujana Challa <schalla@marvell.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"eperezma@redhat.com" <eperezma@redhat.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	Nithin Kumar Dabilpuram <ndabilpuram@marvell.com>,
-	Shiva Shankar Kommula <kshankar@marvell.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [EXTERNAL] Re: [PATCH net,v5] virtio_net: clamp rss_max_key_size
- to NETDEV_RSS_KEY_LEN
-Message-ID: <20260401042119-mutt-send-email-mst@kernel.org>
-References: <20260326142344.1171317-1-schalla@marvell.com>
- <ba027306-e5e0-4d4d-8357-f6080441167d@redhat.com>
- <CH3PR18MB6379D39BA068565667CF2B06A053A@CH3PR18MB6379.namprd18.prod.outlook.com>
- <68ca0a8c-27f9-45f1-94cc-7e3c7936181f@redhat.com>
- <20260331104737-mutt-send-email-mst@kernel.org>
- <20260331180522.64ef9886@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lx+UXHayX2SuYsxbxy22lXR8pbuKuBhmyrj4fXNyIuTrgfUxMHj6c8Sv+wOarrisxEea0VxO/0hhXtSIjvGLy7qfEcEHoVR6Gez6y0i575LsyuDdWxJITKRVVMWY57rVDVFsS8UFO/ILSuuFD/0E0U3kH8gTiyB/bqcQNbqNKVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t0LgG0zD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A767C4CEF7;
+	Wed,  1 Apr 2026 08:34:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775032493;
+	bh=8LWqVYVupsHf2WpfKI7Tx2LrsjGmOFFgtNiUEes0yjk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t0LgG0zD3dUM/ufKi0thT18QpcgGKAgqSkXhM4b2GEobQAoUo+7ep2Fk6LstJl4Pe
+	 QBINrjg8YYoO4E+DuhSth8pCIaXlNTdpBcF7WqfM6NfzFqfbU301w4XWcZbhiC0I8Z
+	 UxU9VDG2M/SHLJjC/ohRGMDzXYMABeU4OOtH0pBfnutnO24LuRf7wML072iICRsCgw
+	 FZjk6VfblcxMsGMzU6mtONdsuMgDNvbQQnt2KKU8hgD853TsmTb18FuqLafeTOJ6BK
+	 gAwgQofQfNbm8og0/5/D4uqNDETWA+dgE/2DkjBFUZ8yQNMZCrupIKbY8RrpGa9r17
+	 bFBXMsdY54SxA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id ADA3DF4006B;
+	Wed,  1 Apr 2026 04:34:52 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Wed, 01 Apr 2026 04:34:52 -0400
+X-ME-Sender: <xms:rNjMafuhn_FAUVDkXz3K70LYyVp6bUmqLflbZKgWHtFSwzPXg1f9TQ>
+    <xme:rNjMaRrNBod4OHBZaHuiisaWZteqrom0D41m5p6HCdnmsLpzwvvZi19Hx0ck3QKhR
+    CW9PXvQE_DRm9Tq4xbvaKzCpJYqeErhPCssJNX_0cttoNdXYy4dQBhG>
+X-ME-Received: <xmr:rNjMaTOa3R6sEKH-YwyI8JxxQrZR7cBc_eloNciMIFONFq1yINqzrjT3-Uum5Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvieegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcuufhh
+    uhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epffffkeegffejgfekvdejgeegtddtleejkefhhfduieduhfeigfduuefghfehffdunecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhs
+    ohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrh
+    hnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedviedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshgrthhhhigrnhgrrhgrhigrnhgrnh
+    drkhhuphhpuhhsfigrmhihsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohep
+    thhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhnghhosehrvgguhhgrth
+    drtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegurghv
+    vgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepgiekie
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgt
+    phhtthhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtph
+    htthhopehtshihrhhulhhnihhkohhvrdgsohhrhihssehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:rNjMaXn9MxrG_QpJ4zKSGey5QZafb9MNh3t5kGzKeMi3q4ta6Ov2DA>
+    <xmx:rNjMaVsKz6Pnd9UvI5j6bBhbbgD-OjoIsIyx2_fB2lK-KtmvNMGijA>
+    <xmx:rNjMaekKYaYGnmeLXjn02NY-a1tgjHugyI1H1vZxI1B0kx-rFO2Wow>
+    <xmx:rNjMaWlZwR5oDMJeaYdhlkgPeTFIZaBuBNWhC8O5OG75XNNxirV10w>
+    <xmx:rNjMaQenaN36Yt2L1gw_L2eT8FuTzYrugYLPb6qy_t5V_6FKeHyedLzC>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Apr 2026 04:34:52 -0400 (EDT)
+Date: Wed, 1 Apr 2026 09:34:50 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] x86/tdx: Fix off-by-one in port I/O handling
+Message-ID: <aczYg5hk8yoIi05W@thinkstation>
+References: <20260331112430.71425-1-kas@kernel.org>
+ <20260331112430.71425-2-kas@kernel.org>
+ <ee096f1e-b994-4d56-a78c-cb0e867ea047@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -124,63 +100,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260331180522.64ef9886@kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_RHS_MATCH_TO(1.00)[];
+In-Reply-To: <ee096f1e-b994-4d56-a78c-cb0e867ea047@linux.intel.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	TAGGED_FROM(0.00)[bounces-232728-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232726-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,intel.com,gmail.com,vger.kernel.org,lists.linux.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kas@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DB1BB376CB2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 7427137707A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 06:05:22PM -0700, Jakub Kicinski wrote:
-> On Tue, 31 Mar 2026 10:48:41 -0400 Michael S. Tsirkin wrote:
-> > > > Thank you for the feedback. In net-next, NETDEV_RSS_KEY_LEN is 256. This fix is
-> > > > also intended for stable kernels, where NETDEV_RSS_KEY_LEN is 52, and
-> > > > I added the message to make clamping visible in that case.
-> > > > I will remove the check and send the next version.    
-> > > 
-> > > I'm sorry, I haven't looked at the historical context when I wrote my
-> > > previous reply.
-> > > 
-> > > IMHO the additional check does not make sense in the current net tree.
-> > > On the flip side stable trees will need it. I suggest:
-> > > 
-> > > - dropping the check for the 'net' patch
-> > > - also dropping CC: stable tag
-> > > - explicitly sending to stable the fix variant including the size check.
-> > > 
-> > > @Michael: WDYT?
-> >
-> > I was the one who suggested it, the extra check is harmless, I'm
-> > inclined to always have it.  Less work than maintaining two patches.
+On Tue, Mar 31, 2026 at 02:57:32PM -0700, Kuppuswamy Sathyanarayanan wrote:
+> Hi Kirill,
 > 
-> Give us an RB tag please and lets close this one? :)
+> On 3/31/2026 4:24 AM, Kiryl Shutsemau (Meta) wrote:
+> > handle_in() and handle_out() in arch/x86/coco/tdx/tdx.c use:
+> > 
+> >     u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
+> > 
+> > GENMASK(h, l) includes bit h. For size=1 (INB), this produces
+> > GENMASK(8, 0) = 0x1FF (9 bits) instead of GENMASK(7, 0) = 0xFF (8
+> > bits). The mask is one bit too wide for all I/O sizes.
+> > 
+> > Fix the mask calculation.
+> > 
+> > Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
+> > Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
+> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > Cc: stable@vger.kernel.org
+> > ---
+> 
+> LGTM. Can you include a link to the bug report or related discussion in 
+> the commit log? It will help understand the impact of this issue.
 
-Oh I thought I did. Thanks.
+Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
 
+It is relevant for both.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
