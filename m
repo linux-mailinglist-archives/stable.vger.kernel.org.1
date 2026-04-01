@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-232716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJO1CizXzGkYXAYAu9opvQ
-	(envelope-from <stable+bounces-232716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:28:28 +0200
+	id wOL9IhnVzGnnWwYAu9opvQ
+	(envelope-from <stable+bounces-232720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:19:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BE9376C80
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:28:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 088EF376A68
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 10:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7FC973021444
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 08:17:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6450030D0981
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 08:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2B43AC0CC;
-	Wed,  1 Apr 2026 08:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510333B19CC;
+	Wed,  1 Apr 2026 08:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="0iNno9Ks"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="l/7oJpMq"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF2B39E185;
-	Wed,  1 Apr 2026 08:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A583B0ADB;
+	Wed,  1 Apr 2026 08:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775031417; cv=none; b=C1wadJXAtY0uDiZsF40n2dOZTz/imeIFTqnphw+/nDcX1dtGUFmgGgUCGSvqlF9oJ4zgNHCqTp/JSFjUuWE+AOYSo2poNAIUBcqUxbd13dLV5VedLsjpc1Tes0pJsmWauVuWum9UpV65hvmG0NhspEfj3K2PAF8MU0gvxi348B0=
+	t=1775031424; cv=none; b=dejEePuOQpemKUioDcSFXcj6P+52hrLxHmsDqMC4E5zQuntk+k2hbRtW2nJd8Mnq3z+3ia+U52bx5NPq6+6drgK1Crqygf2ymJrALX+2iac6v1dKKjA/eGgwszTBMHvfwK/DqwRjmoC7HLUI1z9iOL0y/emTCnRwJhjQf68LtMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775031417; c=relaxed/simple;
-	bh=fEGzW0HQ9aaEqblExMt3fAmEGfMNM+rKetFSxjUPWu8=;
+	s=arc-20240116; t=1775031424; c=relaxed/simple;
+	bh=xnGg7URF6SJUcVBsYgX8twXUnvnGOuIUA9tK8uf3WvE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UD7TorTqeNGS9rKHc1R9qCO9TN3WJVMV6tdgy+Rs3eghRJDocFnOcse3JTPXtAnh1TKCS0mA4zFtiGfcXw8bOytLA9ID8Pnn2it8Kq1CLAcuUUNivZDFQX/vQoKbyg1wedddyKESulxFz+t8rZ3nPKQPNAs9x0vyCTE3f5aNo6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=0iNno9Ks; arc=none smtp.client-ip=113.46.200.220
+	 MIME-Version:Content-Type; b=DSTrPCWcOyhe1+TQs7oRrTMCjFpEbAXJEXWwnJc+Cc4PelOW2QcMnPQszAf1pW6jtKmTUpaPMagwealwOJL3TMuzXGWoTsMpTGaNqOjryNSSvCEyAOmurwX94WNXxHOyaARoZR8fJiMIAU3IYlP9AHFEIZTleCPWXIEPlJZesZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=l/7oJpMq; arc=none smtp.client-ip=113.46.200.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=BAu9Jx0jggsoB9DdjhBMDzv6GW2fgZQZhQIfabnTV1w=;
-	b=0iNno9KssbzJIwOx46kM6OnZNBBxZqavG7rHHC5bdLxsRgIt4sx/XNjUZTTVDZXEoVFcegx0c
-	Yif2aSgMI7B+vjuMbgqzpMuvUrJW1SQ8yRstGcNtfNLWFUMM/xjzPhZAjZffDLNoeTFLUbEByDb
-	+8fyvzP5gn6CQVDmf4awY48=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4flyPC3klwz12LG4;
-	Wed,  1 Apr 2026 16:11:27 +0800 (CST)
+	bh=BMMryEb1CdnOx2gMiVv+9iHKONhR3XK5c+5CZUibkPo=;
+	b=l/7oJpMqJuYSGHZyOqLiw5LD07h+45LWAipYVAvEt9pYxSp4UxJSqwXgX66M8/EZ74aeSBY3M
+	qLpVsSs+rpKpxDOoVmFTloYQFQ4DUIG80JTpBOmlHJ7rSI3KUDZxGFyGCXDxs8sVu0UH3BlI+It
+	fJwAj4fQtMaqP5gUwirfIBk=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4flyNJ5zjPzKm91;
+	Wed,  1 Apr 2026 16:10:40 +0800 (CST)
 Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id CEA0F40537;
-	Wed,  1 Apr 2026 16:16:50 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 743394048B;
+	Wed,  1 Apr 2026 16:16:52 +0800 (CST)
 Received: from localhost.localdomain (10.50.163.32) by
  kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 1 Apr 2026 16:16:48 +0800
+ 15.2.1544.11; Wed, 1 Apr 2026 16:16:50 +0800
 From: Chengwen Feng <fengchengwen@huawei.com>
 To: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas
 	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Rafael J .
@@ -84,9 +84,9 @@ CC: Jonathan Corbet <corbet@lwn.net>, WANG Xuerui <kernel@xen0n.name>, Thomas
 	<xen-devel@lists.xenproject.org>, <linux-acpi@vger.kernel.org>,
 	<linux-perf-users@vger.kernel.org>, <stable@vger.kernel.org>,
 	<x86@kernel.org>
-Subject: [PATCH RESEND v10 2/8] LoongArch: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
-Date: Wed, 1 Apr 2026 16:16:34 +0800
-Message-ID: <20260401081640.26875-3-fengchengwen@huawei.com>
+Subject: [PATCH RESEND v10 3/8] RISC-V: ACPI: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+Date: Wed, 1 Apr 2026 16:16:35 +0800
+Message-ID: <20260401081640.26875-4-fengchengwen@huawei.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260401081640.26875-1-fengchengwen@huawei.com>
 References: <20260401081640.26875-1-fengchengwen@huawei.com>
@@ -104,12 +104,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232716-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232720-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -122,55 +122,109 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_GT_50(0.00)[62];
 	DKIM_TRACE(0.00)[huawei.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:email,huawei.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 55BE9376C80
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:email,huawei.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 088EF376A68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 As a step towards unifying the interface for retrieving ACPI CPU UID
 across architectures, introduce a new function acpi_get_cpu_uid() for
-loongarch. While at it, add input validation to make the code more
-robust.
+riscv. While at it, add input validation to make the code more robust.
+
+And also update acpi_numa.c and rhct.c to use the new interface instead
+of the legacy get_acpi_id_for_cpu().
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 ---
- arch/loongarch/include/asm/acpi.h | 1 +
- arch/loongarch/kernel/acpi.c      | 9 +++++++++
- 2 files changed, 10 insertions(+)
+ arch/riscv/include/asm/acpi.h |  1 +
+ arch/riscv/kernel/acpi.c      | 16 ++++++++++++++++
+ arch/riscv/kernel/acpi_numa.c |  9 ++++++---
+ drivers/acpi/riscv/rhct.c     |  7 ++++++-
+ 4 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/acpi.h b/arch/loongarch/include/asm/acpi.h
-index 7376840fa9f7..8bb101b4557e 100644
---- a/arch/loongarch/include/asm/acpi.h
-+++ b/arch/loongarch/include/asm/acpi.h
-@@ -44,6 +44,7 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
+diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
+index 6e13695120bc..f3520cc85af3 100644
+--- a/arch/riscv/include/asm/acpi.h
++++ b/arch/riscv/include/asm/acpi.h
+@@ -65,6 +65,7 @@ static inline u32 get_acpi_id_for_cpu(int cpu)
  {
- 	return acpi_core_pic[cpu_logical_map(cpu)].processor_id;
+ 	return acpi_cpu_get_madt_rintc(cpu)->uid;
  }
 +int acpi_get_cpu_uid(unsigned int cpu, u32 *uid);
  
- #endif /* !CONFIG_ACPI */
+ int acpi_get_riscv_isa(struct acpi_table_header *table,
+ 		       unsigned int cpu, const char **isa);
+diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+index 71698ee11621..322ea92aa39f 100644
+--- a/arch/riscv/kernel/acpi.c
++++ b/arch/riscv/kernel/acpi.c
+@@ -337,3 +337,19 @@ int raw_pci_write(unsigned int domain, unsigned int bus,
+ }
  
-diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
-index 1367ca759468..058f0dbe8e8f 100644
---- a/arch/loongarch/kernel/acpi.c
-+++ b/arch/loongarch/kernel/acpi.c
-@@ -385,3 +385,12 @@ int acpi_unmap_cpu(int cpu)
- EXPORT_SYMBOL(acpi_unmap_cpu);
- 
- #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+ #endif	/* CONFIG_PCI */
 +
 +int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
 +{
++	struct acpi_madt_rintc *rintc;
++
 +	if (cpu >= nr_cpu_ids)
 +		return -EINVAL;
-+	*uid = acpi_core_pic[cpu_logical_map(cpu)].processor_id;
++
++	rintc = acpi_cpu_get_madt_rintc(cpu);
++	if (!rintc)
++		return -ENODEV;
++
++	*uid = rintc->uid;
 +	return 0;
 +}
 +EXPORT_SYMBOL_GPL(acpi_get_cpu_uid);
+diff --git a/arch/riscv/kernel/acpi_numa.c b/arch/riscv/kernel/acpi_numa.c
+index 130769e3a99c..6a2d4289f806 100644
+--- a/arch/riscv/kernel/acpi_numa.c
++++ b/arch/riscv/kernel/acpi_numa.c
+@@ -37,11 +37,14 @@ static int __init acpi_numa_get_nid(unsigned int cpu)
+ 
+ static inline int get_cpu_for_acpi_id(u32 uid)
+ {
+-	int cpu;
++	u32 cpu_uid;
++	int ret;
+ 
+-	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+-		if (uid == get_acpi_id_for_cpu(cpu))
++	for (int cpu = 0; cpu < nr_cpu_ids; cpu++) {
++		ret = acpi_get_cpu_uid(cpu, &cpu_uid);
++		if (ret == 0 && uid == cpu_uid)
+ 			return cpu;
++	}
+ 
+ 	return -EINVAL;
+ }
+diff --git a/drivers/acpi/riscv/rhct.c b/drivers/acpi/riscv/rhct.c
+index caa2c16e1697..8f3f38c64a88 100644
+--- a/drivers/acpi/riscv/rhct.c
++++ b/drivers/acpi/riscv/rhct.c
+@@ -44,10 +44,15 @@ int acpi_get_riscv_isa(struct acpi_table_header *table, unsigned int cpu, const
+ 	struct acpi_rhct_isa_string *isa_node;
+ 	struct acpi_table_rhct *rhct;
+ 	u32 *hart_info_node_offset;
+-	u32 acpi_cpu_id = get_acpi_id_for_cpu(cpu);
++	u32 acpi_cpu_id;
++	int ret;
+ 
+ 	BUG_ON(acpi_disabled);
+ 
++	ret = acpi_get_cpu_uid(cpu, &acpi_cpu_id);
++	if (ret != 0)
++		return ret;
++
+ 	if (!table) {
+ 		rhct = acpi_get_rhct();
+ 		if (!rhct)
 -- 
 2.17.1
 
