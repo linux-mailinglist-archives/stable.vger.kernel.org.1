@@ -1,131 +1,219 @@
-Return-Path: <stable+bounces-232875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMxoG/amzWmvfgYAu9opvQ
-	(envelope-from <stable+bounces-232875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 01:15:02 +0200
+	id K2doADupzWk8fwYAu9opvQ
+	(envelope-from <stable+bounces-232876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 01:24:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0800381876
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 01:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EE4381A85
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 01:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 963C531CA8A9
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 23:08:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A6493013016
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 23:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA3B3C9432;
-	Wed,  1 Apr 2026 23:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EA0370D47;
+	Wed,  1 Apr 2026 23:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njC9pNsM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WLTSpUZ/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72473CE48D;
-	Wed,  1 Apr 2026 23:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5C540DFB5;
+	Wed,  1 Apr 2026 23:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775084682; cv=none; b=UckARAGVAgpektj74INWvGiqGDX48gfIazByRvydQo49hh3SkfQywJ7EdJOY4W3efxcewiJV1HvRc4K51AdWVEHvgVRmqwOcceDJJnpl14Z1cE2E8lb+Gfj4WOiChYLn45T9cVbyhTOyOxxBe3n27GqcsVUeM6ph/rzKIsoPP/c=
+	t=1775085528; cv=none; b=nFtudMjmqliVkmG4O8zDkB6X/rZhFu3bGLMXR7u5+wmE4LFZJE4+9b1YVSv34adjRTuKGcE9GwMONxDcfzTd3SVZpVeAYwQHCs7sSB1TIF5P9XsnBStD6ha5gqDV6WL7KhW2irLIztHVcalGqvNwWQddTnZGVThJj1160LZQqIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775084682; c=relaxed/simple;
-	bh=979aSmaLio+8xpUh4kWBF1FSamarRf48YG0g0DqRC4Y=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dNTFu8NKuPY1bYxxihCATE91su8UqRNGcqS2e+wn4mW4eot1cOfTIHYAkd+jpViPlbQPflGVe+bF1sHax+g+rN71zzio6NGAl7LfFdRaSbIrDrghovi9IJxPeXgJyltl0uxsNnlfX6z06qk2aOBgdefJcbxvulDwgN7++rSnxbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njC9pNsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F38C4CEF7;
-	Wed,  1 Apr 2026 23:04:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775084682;
-	bh=979aSmaLio+8xpUh4kWBF1FSamarRf48YG0g0DqRC4Y=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=njC9pNsM5mZ5gVUw0STRN+DeuDpvdItga/yiGd2oFUtvpZ6S9vyIyuV/jO161t22u
-	 H6XlHxBBBnYzusCNY0D+TkMWm26hz/ZH7K++v0ayu99Hm8VAwNbWuFl6s5FSL4JE0f
-	 LHDnEvWC176C4k1sA2dj2UlTJ8FkCfKG6JxNlnGgE402ly+CaLV6PcTymO5luj9KG4
-	 +XfFi3uA1qrjO05h9KZr4JawjJXZxeTvV4nm6kvl2vbJYdF9wI1+E4rQ0UU2gvxbuh
-	 PeU+kLQjkJMDlHRSxDipl5Q6lmqFSEj2o2fdCygFmwU97H24yECQqYVNI9mNyC/Yv1
-	 iln9WAtPN1Oww==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Nicolas Schier <nsc@kernel.org>, Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
- Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org, 
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
-In-Reply-To: <20260325-modpost-extra_warn-unused-but-set-global-v1-1-2e84003b7e81@kernel.org>
-References: <20260325-modpost-extra_warn-unused-but-set-global-v1-1-2e84003b7e81@kernel.org>
-Subject: Re: (subset) [PATCH] modpost: Declare extra_warn with unused
- attribute
-Message-Id: <177508467966.1735993.3178343195907981949.b4-ty@b4>
-Date: Thu, 02 Apr 2026 00:04:39 +0100
+	s=arc-20240116; t=1775085528; c=relaxed/simple;
+	bh=kvt2sqnU/6PMMzxpzpUg6H7JdDD4ue7qX4Re9/WX4oI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=rURDk8yTGIbIbokarn2icm+TLYnh/fbgzOiA/X0ToSYws8ihAtOW+SbZ/S4a2Xa7u4/zlCbHp5RMl0bHIr7MXz5YYyOAN+Qru1BZA7SIvBDaUcAfFgVq5fMH6mPzDNYUe0l86wNG8VMxNPhfmgV3wryTg5U0BMrjpjOHFsFO7ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WLTSpUZ/; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775085527; x=1806621527;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=kvt2sqnU/6PMMzxpzpUg6H7JdDD4ue7qX4Re9/WX4oI=;
+  b=WLTSpUZ/YFDmpMOOa1yWG4PQlB1DyhGOoA8Xa4VPmKpEQWAccySxRygx
+   knMC+9RiGFtSvMCW9m3EoGJNFEmYHdpVebVgNWXBYNBqlYJl1HHkqUzSb
+   yWZjBN1TdK565wFYg3pxiEo+QYcKDnB50iLJunZ3BGv8zvdgRF1fGoM3b
+   WCPWtdiTh1+I/PSA/LaI3JcMzrbaEeg4Zyi1g3m0tSOxx4maQTxTelk/Z
+   eeAvc1gI4s4MIWVHD89R++nl9edccxZzZUIcFPlNqSKVLaZ2WqsfBtp4B
+   XAO83ayJ/DKoEZlLuVedfAgHT+lA7NmMSPv6yYQnUhH8njTmH1WsEgUDo
+   w==;
+X-CSE-ConnectionGUID: gEm8SxP6QWG2Yz+hvAKr/w==
+X-CSE-MsgGUID: fLXhtXngT/62K8JgsJ4KWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="101588379"
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="101588379"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 16:18:47 -0700
+X-CSE-ConnectionGUID: acjplolbQiGcSoX73bvGPg==
+X-CSE-MsgGUID: RusK7QhDQt+sMzQq7E2H1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
+   d="scan'208";a="250022714"
+Received: from vcostago-desk1.jf.intel.com (HELO vcostago-desk1) ([10.88.27.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 16:18:46 -0700
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>, Dave Jiang
+ <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>, Shuai Xue
+ <xueshuai@linux.alibaba.com>, Fenghua Yu <fenghuay@nvidia.com>,
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: idxd: fix double free in idxd_alloc() error
+ path
+In-Reply-To: <20260401094003.1482794-1-lgs201920130244@gmail.com>
+References: <20260401094003.1482794-1-lgs201920130244@gmail.com>
+Date: Wed, 01 Apr 2026 16:18:45 -0700
+Message-ID: <87h5puxoa2.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232875-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232876-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,oss.qualcomm.com,kernel.org,vger.kernel.org,lists.linux.dev];
+	FREEMAIL_TO(0.00)[gmail.com,intel.com,kernel.org,linux.alibaba.com,nvidia.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vinicius.gomes@intel.com,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D0800381876
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 69EE4381A85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 25 Mar 2026 18:20:30 -0700, Nathan Chancellor wrote:
-> A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
-> in clang under a new subwarning, -Wunused-but-set-global, points out an
-> unused static global variable in scripts/mod/modpost.c:
-> 
->   scripts/mod/modpost.c:59:13: error: variable 'extra_warn' set but not used [-Werror,-Wunused-but-set-global]
->      59 | static bool extra_warn;
->         |             ^
-> 
-> [...]
+Hi,
 
-Applied to
+Guangshuo Li <lgs201920130244@gmail.com> writes:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild-fixes
+> When dev_set_name() fails after device_initialize(), idxd_alloc()
+> calls put_device(conf_dev).
+>
+> For these devices, conf_dev->type is set from idxd->data->dev_type,
+> which resolves to dsa_device_type or iax_device_type, and both use
+> idxd_conf_device_release() as their release callback.
+>
+> That release callback frees idxd, idxd->opcap_bmap, and releases
+> idxd->id, but the current error path then frees those resources again
+> directly, causing a double free.
+>
+> Keep the cleanup in idxd_conf_device_release() after put_device() and
+> avoid freeing idxd-managed resources again in idxd_alloc().
+>
+> Fixes: 46a5cca76c76 ("dmaengine: idxd: fix memory leak in error handling path of idxd_alloc")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 
-Thanks!
+My preference is for the maintainer making the pull request to decide if
+something should be sent to stable or not.
 
-[1/1] modpost: Declare extra_warn with unused attribute
-      https://git.kernel.org/kbuild/c/deb4605671cfa
+I was trying some AI review bot, I hope you don't mind, and got these
+comments, went through them and they seemed good (including that these
+patches should be sent as a series, that there are some more work to do
+while you are cleaning the error paths), including it verbatim here:
 
-Please look out for regression or issue reports or other follow up
-comments, as they may result in the patch/series getting dropped or
-reverted. Patches applied to an "unstable" branch are accepted pending
-wider testing in -next and any post-commit review; they will generally
-be moved to the main branch in a week if no issues are found.
+This patch removes bitmap_free(idxd->opcap_bmap) after put_device()
+in idxd_alloc()'s err_name path and adds a return NULL to prevent
+falling through to the err_opcap and err_ida labels, avoiding
+double-frees of opcap_bmap, ida, and idxd itself.
 
-Best regards,
+> diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+> index 4eff74182225..94ce52565e7a 100644
+> --- a/drivers/dma/idxd/init.c
+> +++ b/drivers/dma/idxd/init.c
+> @@ -635,7 +635,7 @@ static struct idxd_device *idxd_alloc(struct pci_dev *pdev, struct idxd_driver_d
+>
+>  err_name:
+>  	put_device(conf_dev);
+> -	bitmap_free(idxd->opcap_bmap);
+> +	return NULL;
+>  err_opcap:
+>  	ida_free(&idxd_ida, idxd->id);
+>  err_ida:
+
+The double-free analysis is correct, but does the put_device() above
+actually work here?
+
+put_device(conf_dev) drops the refcount from 1 to 0 (no device_add()
+was called, so nobody else holds a reference) and triggers the release
+callback idxd_conf_device_release(), which does:
+
+  idxd_conf_device_release() {
+      destroy_workqueue(idxd->wq);
+      ...
+  }
+
+At this point in idxd_alloc(), idxd->wq is still NULL -- the
+workqueue is created much later in idxd_setup_internals():
+
+  idxd_setup_internals() {
+      ...
+      idxd->wq = create_workqueue(dev_name(dev));
+      ...
+  }
+
+destroy_workqueue() does not handle a NULL argument -- it immediately
+dereferences the pointer:
+
+  destroy_workqueue(wq) {
+      workqueue_sysfs_unregister(wq);
+      mutex_lock(&wq->mutex);          <-- NULL dereference
+      ...
+  }
+
+So put_device() here will oops before the double-free is even
+reached. This is a pre-existing issue (the old code has the same
+put_device call), but relying on idxd_conf_device_release() as the
+cleanup path for a partially-initialized idxd_device doesn't work.
+
+Would it make sense to skip put_device() and instead free only
+what was allocated, similar to the err_opcap and err_ida labels?
+
+Two more things worth noting about this series:
+
+Patch 3 (idxd_setup_engines) includes hunks that remove blank lines
+from idxd_setup_groups() -- lines that only exist after Patch 2 is
+applied. These four patches should probably be sent as a numbered
+series with an explicit ordering rather than as independent patches.
+
+The same put_device()-then-kfree() pattern also exists in
+idxd_clean_wqs(), idxd_clean_engines(), idxd_clean_groups(), and
+idxd_free(), which are not addressed by this series. It might be
+worth fixing all of them together.
+
+
+Cheers,
 -- 
-Nathan Chancellor <nathan@kernel.org>
-
+Vinicius
 
