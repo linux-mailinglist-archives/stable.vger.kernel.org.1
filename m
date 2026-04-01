@@ -1,73 +1,73 @@
-Return-Path: <stable+bounces-232788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gE4VA2ghzWnOaAYAu9opvQ
-	(envelope-from <stable+bounces-232788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:45:12 +0200
+	id IO65N2ggzWnOaAYAu9opvQ
+	(envelope-from <stable+bounces-232792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:40:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B225E37B77C
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:45:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD18B37B637
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB344313EF0A
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:37:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5B68930378FA
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF4C43D4F5;
-	Wed,  1 Apr 2026 13:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D77D43E9CD;
+	Wed,  1 Apr 2026 13:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="AwBT2nuK"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="dBGzWfrw"
 X-Original-To: stable@vger.kernel.org
-Received: from iad-out-008.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-008.esa.us-east-1.outbound.mail-perimeter.amazon.com [34.193.58.168])
+Received: from iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com [34.198.218.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4292E43C06C;
-	Wed,  1 Apr 2026 13:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.193.58.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E53743E485;
+	Wed,  1 Apr 2026 13:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.198.218.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775050627; cv=none; b=oRgyzSKcTq1cgwfGgAsL2DBS7RGLCmKeDQkhFLnOYbrNPgYdad6ujtHaZzTT9nRmoiBvpV1FgJpCKHTUxJQdVnQpxwyruEhRnPcCY4Hf5P13MWKL2TSyuOmSggvKbWN2ZGufrWZvbK7IAg6sv69aOKuxbnUIJVbj/svNfysfHJE=
+	t=1775050632; cv=none; b=mtjf625H5NOPck6eoFyoOcrCbo+nU8Mw3oriPinp28rp3Gvl8zFq0PlJuIJuTNH0o3y3kV2YrVFeq4EE8sc0MOUoQcTHtgzlLG8ekHzxHfc02JJpBTK5xMTM4IMijGUToy9TZszYkNFfEVFo/n6Ku/kNQYWCL9l9qeC4lErp7jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775050627; c=relaxed/simple;
-	bh=ViYXT97lI2Z0arqoS4YYAI4QycWhfakOGGvWTVpUDL0=;
+	s=arc-20240116; t=1775050632; c=relaxed/simple;
+	bh=1+WHPwcQvkrDqjN7jtha7n2OLLRrBtkNbbXM9KBS+Vk=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=a7AT9xGBLhadfGYu7XibvD9PZG5HXvfw6NJLWmBj3ucCJO5eMkF/lu6VzSFsJtxiNfgm3T+oQznrqIRfIzBkDe7Z0Zr3x5nQQt99RFhJprVQIF3sZQoYaHr/6N7olm6Do9Yj3GV+sLlJPjjEwUDN0ZMDnUrb3TTnGFMmoMyhoR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=AwBT2nuK; arc=none smtp.client-ip=34.193.58.168
+	 Content-Type:MIME-Version; b=jlsxQkzVQZMVwEky2vrTLODbOWWIEqqIur4ZldrMukXxonRK/KLgt0zzE1pSmg9Bxh+3kFs7w664+JANH19y/dvGNzk0L7n8r7i7vGN/aXn49MPHO+wPiPJOwYJEWCVKOh67zVU+uFDAMe6+vnepHGREgtYNK+g8a0Z0eplzY+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=dBGzWfrw; arc=none smtp.client-ip=34.198.218.121
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1775050625; x=1806586625;
+  t=1775050630; x=1806586630;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:mime-version:content-transfer-encoding;
-  bh=cpgdsRBIfybYQpKIU9QXK+ymTOvzqCHCto1T2WRCbVo=;
-  b=AwBT2nuKJopfX2cbPO4IGg7AwalXdl87PPonf4Hv2Vi29jgq51nkW+iQ
-   LSa1z/5cql4Ci1/EGwp2AYtx9UaPNhJ4hjjMR7JB/5uK4R/baMGIZa4Zq
-   OA2KrFawQzglQ36IYF2Me5RjY8/DhutZ7N8ysrdkxc2w5TmDTcBJKRxsa
-   n283jNP678KwOy7GN4R4wWvctmItcqSZydS8eOzZ2b+hOWIZD+6nQU939
-   LdvPCORZcqXM53I13qjikMw6VrZTQzFRNmB0aWoko5Cnd5WKaL0ikDhXt
-   h148cmOkvHDvIfC0xw0QI7HSEsA/4gUCn+MW5n7o+kwZ6jE+tjn1AADP+
-   Q==;
-X-CSE-ConnectionGUID: 34e5EzuFRgOV31aCHGvb+A==
-X-CSE-MsgGUID: efuqIHR3QoqOjf3QTAMGtw==
+  bh=wuthZuZJNuIVCbef4TvR92fybPm79mBQ8LikDhPWnf0=;
+  b=dBGzWfrw75o1NSXK8TCJCzSSMfCvFtcw+hN1Jmh/QV1LLEXTXnobJISo
+   vRMlw5dyuDCeDKvDj8C8URCZ4p/QpD8J/MyxyZcqAH4ZkUSCSbLPaEn9G
+   NKrsJZQnFXia7lqHBB1zzDtmzvKf/d6M1oIc1bPk3M3Otoj8WylPE0Msu
+   zeatqB3l4IcxrksXNbpDZR+WE6nxPAxSygG8zB/ueZLtEfnYxq+TMUKr2
+   0k4BipKyTxPMVyUuNrcCy5ORLqD3+6f/PQMF6ejwnrvQywrhXgyYlRyNC
+   K3b7+/AI77JtzW1oD3j6EZP6i6VZgdodJciBfDydHh9bNqaBPEqCwpeZj
+   g==;
+X-CSE-ConnectionGUID: Y52wK3WyQnCQaxue3N9eZw==
+X-CSE-MsgGUID: BvBLo81GSHqURNQ2EZY2FQ==
 X-IronPort-AV: E=Sophos;i="6.23,153,1770595200"; 
-   d="scan'208";a="15127073"
-Received: from ip-10-4-10-75.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.10.75])
-  by internal-iad-out-008.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 13:37:01 +0000
-Received: from EX19MTAUEC002.ant.amazon.com [72.21.196.66:16921]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.95.220:2525] with esmtp (Farcaster)
- id b4971fc6-7db9-411c-927e-3ab4757a8014; Wed, 1 Apr 2026 13:37:01 +0000 (UTC)
-X-Farcaster-Flow-ID: b4971fc6-7db9-411c-927e-3ab4757a8014
-Received: from EX19D012UEC002.ant.amazon.com (10.252.135.254) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
+   d="scan'208";a="14740612"
+Received: from ip-10-4-7-229.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.7.229])
+  by internal-iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 13:37:04 +0000
+Received: from EX19MTAUEB002.ant.amazon.com [72.21.198.67:21684]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.8.197:2525] with esmtp (Farcaster)
+ id b3ce9a85-508e-4dd2-9849-9f140f408e54; Wed, 1 Apr 2026 13:37:03 +0000 (UTC)
+X-Farcaster-Flow-ID: b3ce9a85-508e-4dd2-9849-9f140f408e54
+Received: from EX19D012UEC004.ant.amazon.com (10.252.135.219) by
+ EX19MTAUEB002.ant.amazon.com (10.252.135.47) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 1 Apr 2026 13:37:00 +0000
+ Wed, 1 Apr 2026 13:37:02 +0000
 Received: from EX19D012UEC003.ant.amazon.com (10.252.135.160) by
- EX19D012UEC002.ant.amazon.com (10.252.135.254) with Microsoft SMTP Server
+ EX19D012UEC004.ant.amazon.com (10.252.135.219) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 1 Apr 2026 13:37:00 +0000
+ Wed, 1 Apr 2026 13:37:01 +0000
 Received: from EX19D012UEC003.ant.amazon.com ([fe80::67ea:859:1e17:25a9]) by
  EX19D012UEC003.ant.amazon.com ([fe80::67ea:859:1e17:25a9%3]) with mapi id
- 15.02.2562.037; Wed, 1 Apr 2026 13:37:00 +0000
+ 15.02.2562.037; Wed, 1 Apr 2026 13:37:01 +0000
 From: "Heyne, Maximilian" <mheyne@amazon.de>
 To: "stable@vger.kernel.org" <stable@vger.kernel.org>
 CC: "Heyne, Maximilian" <mheyne@amazon.de>, Christoph Hellwig <hch@lst.de>,
@@ -79,21 +79,21 @@ CC: "Heyne, Maximilian" <mheyne@amazon.de>, Christoph Hellwig <hch@lst.de>,
 	<alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, Bart Van Assche
 	<bvanassche@acm.org>, Sasha Levin <sashal@kernel.org>, Peter Wang
 	<peter.wang@mediatek.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bean Huo <beanhuo@micron.com>, Brian Kao <powenkao@google.com>, Seunghui Lee
-	<sh043.lee@samsung.com>, Sanjeev Yadav <sanjeev.y@mediatek.com>, Wonkon Kim
-	<wkon.kim@samsung.com>, Ming Lei <ming.lei@redhat.com>, Hannes Reinecke
-	<hare@suse.de>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"asahi@lists.linux.dev" <asahi@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
+	Bean Huo <beanhuo@micron.com>, Brian Kao <powenkao@google.com>, Wonkon Kim
+	<wkon.kim@samsung.com>, Seunghui Lee <sh043.lee@samsung.com>, Sanjeev Yadav
+	<sanjeev.y@mediatek.com>, Hannes Reinecke <hare@suse.de>, Ming Lei
+	<ming.lei@redhat.com>, "linux-block@vger.kernel.org"
+	<linux-block@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "asahi@lists.linux.dev"
+	<asahi@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, "linux-nvme@lists.infradead.org"
 	<linux-nvme@lists.infradead.org>, "linux-scsi@vger.kernel.org"
 	<linux-scsi@vger.kernel.org>
-Subject: [PATCH 6.1.y 3/8] scsi: remove an extra queue reference
-Thread-Topic: [PATCH 6.1.y 3/8] scsi: remove an extra queue reference
-Thread-Index: AQHcwdydSAl8T/8/v0W8CfQbTcumKA==
-Date: Wed, 1 Apr 2026 13:37:00 +0000
-Message-ID: <20260401-blobs-hurry-1dd1b23c@mheyne-amazon>
+Subject: [PATCH 6.1.y 4/8] nvme-pci: remove an extra queue reference
+Thread-Topic: [PATCH 6.1.y 4/8] nvme-pci: remove an extra queue reference
+Thread-Index: AQHcwdyeS0oU7vvtXEuRvFkEk0UbGA==
+Date: Wed, 1 Apr 2026 13:37:01 +0000
+Message-ID: <20260401-oat-connect-4976b717@mheyne-amazon>
 References: <20260401-defer-gleam-5226cb65@mheyne-amazon>
 In-Reply-To: <20260401-defer-gleam-5226cb65@mheyne-amazon>
 Accept-Language: en-US
@@ -113,12 +113,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
 	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232788-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232792-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
@@ -132,58 +132,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[8]
-X-Rspamd-Queue-Id: B225E37B77C
+X-Rspamd-Queue-Id: CD18B37B637
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit dc917c361422388f0d39d3f0dc2bc5a188c01156 ]
+[ Upstream commit 7dcebef90d35de13a326f765dd787538880566f9 ]
 
 Now that blk_mq_destroy_queue does not release the queue reference, there
-is no need for a second queue reference to be held by the scsi_device.
+is no need for a second admin queue reference to be held by the nvme_dev.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
 Reviewed-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/20221018135720.670094-3-hch@lst.de
+Link: https://lore.kernel.org/r/20221018135720.670094-4-hch@lst.de
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime")
 Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 ---
- drivers/scsi/scsi_scan.c  | 1 -
- drivers/scsi/scsi_sysfs.c | 1 -
- 2 files changed, 2 deletions(-)
+ drivers/nvme/host/pci.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
-index 696f178fb57d8..0eaec372f7560 100644
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -344,7 +344,6 @@ static struct scsi_device *scsi_alloc_sdev(struct scsi_=
-target *starget,
- 	sdev->request_queue =3D q;
- 	q->queuedata =3D sdev;
- 	__scsi_init_queue(sdev->host, q);
--	WARN_ON_ONCE(!blk_get_queue(q));
- =
-
- 	depth =3D sdev->host->cmd_per_lun ?: 1;
- =
-
-diff --git a/drivers/scsi/scsi_sysfs.c b/drivers/scsi/scsi_sysfs.c
-index af81b2ba0c9b3..456b92c3a7811 100644
---- a/drivers/scsi/scsi_sysfs.c
-+++ b/drivers/scsi/scsi_sysfs.c
-@@ -1486,7 +1486,6 @@ void __scsi_remove_device(struct scsi_device *sdev)
- 	mutex_unlock(&sdev->state_mutex);
- =
-
- 	blk_mq_destroy_queue(sdev->request_queue);
--	blk_put_queue(sdev->request_queue);
- 	kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
- 	cancel_work_sync(&sdev->requeue_work);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 727585f580362..13c0098939ec0 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1782,7 +1782,6 @@ static void nvme_dev_remove_admin(struct nvme_dev *de=
+v)
+ 		 */
+ 		nvme_start_admin_queue(&dev->ctrl);
+ 		blk_mq_destroy_queue(dev->ctrl.admin_q);
+-		blk_put_queue(dev->ctrl.admin_q);
+ 		blk_mq_free_tag_set(&dev->admin_tagset);
+ 	}
+ }
+@@ -1811,11 +1810,6 @@ static int nvme_pci_alloc_admin_tag_set(struct nvme_=
+dev *dev)
+ 		dev->ctrl.admin_q =3D NULL;
+ 		return -ENOMEM;
+ 	}
+-	if (!blk_get_queue(dev->ctrl.admin_q)) {
+-		nvme_dev_remove_admin(dev);
+-		dev->ctrl.admin_q =3D NULL;
+-		return -ENODEV;
+-	}
+ 	return 0;
+ }
  =
 
 -- =
