@@ -1,81 +1,60 @@
-Return-Path: <stable+bounces-232820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDOGBaJMzWl6bgYAu9opvQ
-	(envelope-from <stable+bounces-232820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:49:38 +0200
+	id EKkMK7FJzWk+bgYAu9opvQ
+	(envelope-from <stable+bounces-232821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:37:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5910837E278
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:49:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5187037DFE7
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C6E931921FF
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 16:31:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A73FA307792D
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 16:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B096C426D08;
-	Wed,  1 Apr 2026 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60C6478874;
+	Wed,  1 Apr 2026 16:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AphRW5s8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PIb6/pjG"
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519EE4657DC
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 16:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA0B42316D
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 16:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775060961; cv=none; b=nk1N8VtNN4tWH0jfi+smc4iVjKVvCGvbMlqN2X/trJGe532Zfdr9k0HPbrVD1583YS829/40KQIOqCF47LIUzQDvKhYk2Z0A26p17L6gyBgtC7ig0c/czWXFSfvvfGa+J85bOrqXR5AUvo4wHRygsZYKkgTxZYn3b6NJiVsBcJs=
+	t=1775061098; cv=none; b=BpzJLkU7i9e1JfMhbKpo4xh55AXcEMw21V4MRCmQlj/KfeX/x6qA4vpBrIhBdTsYhTEAEtNxDo7j8CepbYIDVUjqE97WypDPFdSrRJLCnYlL8NNbvNbO0bOhCOXmtjda0XOFawtH7/ybUr+FlDJRDAsFTMaD0SmXtu5iMAAvxjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775060961; c=relaxed/simple;
-	bh=bBKM0ztGKZiazPOuWr8a0zlMOiziUMv4UdE/jqDvu+M=;
+	s=arc-20240116; t=1775061098; c=relaxed/simple;
+	bh=MhNfz3TSmJq+gPZwnerBjjyRYbr9+ljrWXnlEF164TM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVuJK0RtdSbpbGtF0PuZwgZlgFI4425XoullBWllo/vQi0fVCJuwZs9lALeCk0f01HTKxb2zBohrebbV7v7s0BToTY89VNtEaqVL3oSr5yjf4BaqvhTVCsftgGwyaaxqSMJ0S2SnNpcRZ0v7zHSmN2OI9lduQhu4BRpAGt8lgKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AphRW5s8; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775060947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/F3w2zUvV0WycgwDhHoSaMjFosjjuSB+DlsqHi2/eOc=;
-	b=AphRW5s823Zt1SPOwvVYdbtW6LttToaWtO2AN2frz4rLWfPyyHug5O+hnPkvXhOD8CPzo6
-	8lNWuXBjQ72MNyRKBZjfDs4ntgLVMHBIDo21zNiAynwjm9jgi8aCnjafdsKl1XQ7iCxgjw
-	YY7AB2ceRqb25ejRGdxqMzm3SCJfvy8=
-From: Usama Arif <usama.arif@linux.dev>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	richard.weiyang@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kartikey406@gmail.com,
-	syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH mm-unstable 1/1] mm: fix deferred split queue races during migration
-Date: Wed,  1 Apr 2026 09:28:53 -0700
-Message-ID: <20260401162855.146945-1-usama.arif@linux.dev>
-In-Reply-To: <20260401131032.13011-1-lance.yang@linux.dev>
-References: 
+	 MIME-Version; b=JGRCvqutfDFsjaIbUiWEt4MkayK75DPZ9UI8lnCylXXEBkLtF5TIDYUgTuf5qyf+OIBqoOPoKJLI6nQmydCSfNRIW1x+4zoLb4goy/vmeZtLudKP92xvF4f3EUwmFDPGVugfoC8hZAk9ebzjMpY6i4oclP/uB5TYMT5aVQIQUmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PIb6/pjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C8BC4CEF7;
+	Wed,  1 Apr 2026 16:31:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775061097;
+	bh=MhNfz3TSmJq+gPZwnerBjjyRYbr9+ljrWXnlEF164TM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PIb6/pjGiDL+uDj6fNZf0SgwyPpFhAQbZSapCa014lbG397Q+PC/LTupPHers3KKX
+	 40ljZ95T75nMd/cSe2t7+fBahpemJh7bcq5N9BzrTLSQHiH2FsG6hHpikcDwxuwLQ4
+	 7eZV/d5BaqDglMEqSPhNCZIUIpAeNDYLCAIr/VcvRArXPtSn08hzNYnOiZIWRjqNMA
+	 VIvh1SxoXprC0gMOgOmFxQhQO5pZOqjehkAbzqVdJrSlDTNEZqE7W4wXkMwKopSRsO
+	 EX9WlbPiq3uokzidU1sOVfddbpKDgCa7+V+89Qc5xPgF7aRk6fSnqU4z07o+XhHUmf
+	 EPGKBD0eh8aYQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] drm/amd/pm: disable OD_FAN_CURVE if temp or pwm range invalid for smu v13
+Date: Wed,  1 Apr 2026 12:31:35 -0400
+Message-ID: <20260401163135.124580-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033046-upper-refresh-71e3@gregkh>
+References: <2026033046-upper-refresh-71e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,161 +62,180 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,kernel.org,nvidia.com,linux.alibaba.com,oracle.com,redhat.com,arm.com,intel.com,gmail.com,sk.com,gourry.net,kvack.org,vger.kernel.org,syzkaller.appspotmail.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	TAGGED_FROM(0.00)[bounces-232820-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-232821-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[usama.arif@linux.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,a7067a757858ac8eb085];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email]
-X-Rspamd-Queue-Id: 5910837E278
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5187037DFE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed,  1 Apr 2026 21:10:32 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+From: Yang Wang <kevinyang.wang@amd.com>
 
-> From: Lance Yang <lance.yang@linux.dev>
-> 
-> migrate_folio_move() records the deferred split queue state from src and
-> replays it on dst. Replaying it after remove_migration_ptes(src, dst, 0)
-> makes dst visible before it is requeued, so a concurrent rmap-removal path
-> can mark dst partially mapped and trip the WARN in deferred_split_folio().
-> 
-> Move the requeue before remove_migration_ptes() so dst is back on the
-> deferred split queue before it becomes visible again.
-> 
-> Because migration still holds dst locked at that point, teach
-> deferred_split_scan() to requeue a folio when folio_trylock() fails.
-> Otherwise a fully mapped underused folio can be dequeued by the shrinker
-> and silently lost from split_queue.
-> 
-> Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
-> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
-> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
-> Cc: <stable@vger.kernel.org>
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
-> 
-> [ Backport note ]
-> This patch is a follow-up fix for 8a8ca142a488 ("mm: migrate: requeue
-> destination folio on deferred split queue"), which is currently only in
-> mm-stable, and should be backported together with it.
-> 
-> Credit for this fix goes to David, thanks!
-> 
->  mm/huge_memory.c | 12 +++++++-----
->  mm/migrate.c     | 18 +++++++++---------
->  2 files changed, 16 insertions(+), 14 deletions(-)
-> 
+[ Upstream commit 3e6dd28a11083e83e11a284d99fcc9eb748c321c ]
 
+Forcibly disable the OD_FAN_CURVE feature when temperature or PWM range is invalid,
+otherwise PMFW will reject this configuration on smu v13.0.x
 
-Thanks for the fix! And sorry for introducing the bug in
-migrate_folio_move() :)
+example:
+$ sudo cat /sys/bus/pci/devices/<BDF>/gpu_od/fan_ctrl/fan_curve
 
-So I am happy with the migrate_folio_move() change, it makes sense.
+OD_FAN_CURVE:
+0: 0C 0%
+1: 0C 0%
+2: 0C 0%
+3: 0C 0%
+4: 0C 0%
+OD_RANGE:
+FAN_CURVE(hotspot temp): 0C 0C
+FAN_CURVE(fan speed): 0% 0%
 
-The goto next if folio is locked in deferred_split_scan() was actually
-on purpose. The reasoning was that if the folio is locked, we consider
-it as in use by someone and therefore we shouldnt split it. Eventhough
-thp_underused() does a zero-filled check, the whole point of the shrinker
-was to split THPs that are "not in use", and in my mind, locked folio
-is a folio in use. So not sure about that change..
+$ echo "0 50 40" | sudo tee fan_curve
 
+kernel log:
+[  756.442527] amdgpu 0000:03:00.0: amdgpu: Fan curve temp setting(50) must be within [0, 0]!
+[  777.345800] amdgpu 0000:03:00.0: amdgpu: Fan curve temp setting(50) must be within [0, 0]!
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index ff9a42abd1b6..ac6d823e351f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4558,7 +4558,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  				goto next;
->  		}
->  		if (!folio_trylock(folio))
-> -			goto next;
-> +			goto requeue;
->  		if (!split_folio(folio)) {
->  			did_split = true;
->  			if (underused)
-> @@ -4569,11 +4569,13 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  next:
->  		if (did_split || !folio_test_partially_mapped(folio))
->  			continue;
-> +requeue:
->  		/*
-> -		 * Only add back to the queue if folio is partially mapped.
-> -		 * If thp_underused returns false, or if split_folio fails
-> -		 * in the case it was underused, then consider it used and
-> -		 * don't add it back to split_queue.
-> +		 * Add back partially mapped folios, or underused folios
-> +		 * that we could not lock this round.  If thp_underused()
-> +		 * returns false, or if split_folio() succeeds, or if
-> +		 * split_folio() fails in the case it was underused, then
-> +		 * consider it used and don't add it back to split_queue.
->  		 */
->  		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
->  		if (list_empty(&folio->_deferred_list)) {
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 05cb408846f2..8a64291ab5b4 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1385,6 +1385,15 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
->  	if (rc)
->  		goto out;
->  
-> +	/*
-> +	 * Requeue the destination folio on the deferred split queue if
-> +	 * the source was on the queue.  The source is unqueued in
-> +	 * __folio_migrate_mapping(), so we recorded the state from
-> +	 * before move_to_new_folio().
-> +	 */
-> +	if (src_deferred_split)
-> +		deferred_split_folio(dst, src_partially_mapped);
-> +
->  	/*
->  	 * When successful, push dst to LRU immediately: so that if it
->  	 * turns out to be an mlocked page, remove_migration_ptes() will
-> @@ -1401,15 +1410,6 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
->  	if (old_page_state & PAGE_WAS_MAPPED)
->  		remove_migration_ptes(src, dst, 0);
->  
-> -	/*
-> -	 * Requeue the destination folio on the deferred split queue if
-> -	 * the source was on the queue.  The source is unqueued in
-> -	 * __folio_migrate_mapping(), so we recorded the state from
-> -	 * before move_to_new_folio().
-> -	 */
-> -	if (src_deferred_split)
-> -		deferred_split_folio(dst, src_partially_mapped);
-> -
->  out_unlock_both:
->  	folio_unlock(dst);
->  	folio_set_owner_migrate_reason(dst, reason);
-> -- 
-> 2.49.0
-> 
-> 
+Closes: https://github.com/ROCm/amdgpu/issues/208
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 470891606c5a97b1d0d937e0aa67a3bed9fcb056)
+Cc: stable@vger.kernel.org
+[ adapted forward declaration placement to existing FEATURE_MASK macro ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  | 33 ++++++++++++++++++-
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  | 33 ++++++++++++++++++-
+ 2 files changed, 64 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index 2136db7328932..75b542e03e2d0 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -59,6 +59,10 @@
+ 
+ #define to_amdgpu_device(x) (container_of(x, struct amdgpu_device, pm.smu_i2c))
+ 
++static void smu_v13_0_0_get_od_setting_limits(struct smu_context *smu,
++					      int od_feature_bit,
++					      int32_t *min, int32_t *max);
++
+ #define FEATURE_MASK(feature) (1ULL << feature)
+ #define SMC_DPM_FEATURE ( \
+ 	FEATURE_MASK(FEATURE_DPM_GFXCLK_BIT)     | \
+@@ -1061,8 +1065,35 @@ static bool smu_v13_0_0_is_od_feature_supported(struct smu_context *smu,
+ 	PPTable_t *pptable = smu->smu_table.driver_pptable;
+ 	const OverDriveLimits_t * const overdrive_upperlimits =
+ 				&pptable->SkuTable.OverDriveLimitsBasicMax;
++	int32_t min_value, max_value;
++	bool feature_enabled;
+ 
+-	return overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit);
++	switch (od_feature_bit) {
++	case PP_OD_FEATURE_FAN_CURVE_BIT:
++		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
++		if (feature_enabled) {
++			smu_v13_0_0_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_TEMP,
++							  &min_value, &max_value);
++			if (!min_value && !max_value) {
++				feature_enabled = false;
++				goto out;
++			}
++
++			smu_v13_0_0_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_PWM,
++							  &min_value, &max_value);
++			if (!min_value && !max_value) {
++				feature_enabled = false;
++				goto out;
++			}
++		}
++		break;
++	default:
++		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
++		break;
++	}
++
++out:
++	return feature_enabled;
+ }
+ 
+ static void smu_v13_0_0_get_od_setting_limits(struct smu_context *smu,
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+index 2b6c407c6a8c4..f355ede317d83 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -59,6 +59,10 @@
+ 
+ #define to_amdgpu_device(x) (container_of(x, struct amdgpu_device, pm.smu_i2c))
+ 
++static void smu_v13_0_7_get_od_setting_limits(struct smu_context *smu,
++					      int od_feature_bit,
++					      int32_t *min, int32_t *max);
++
+ #define FEATURE_MASK(feature) (1ULL << feature)
+ #define SMC_DPM_FEATURE ( \
+ 	FEATURE_MASK(FEATURE_DPM_GFXCLK_BIT)     | \
+@@ -1050,8 +1054,35 @@ static bool smu_v13_0_7_is_od_feature_supported(struct smu_context *smu,
+ 	PPTable_t *pptable = smu->smu_table.driver_pptable;
+ 	const OverDriveLimits_t * const overdrive_upperlimits =
+ 				&pptable->SkuTable.OverDriveLimitsBasicMax;
++	int32_t min_value, max_value;
++	bool feature_enabled;
+ 
+-	return overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit);
++	switch (od_feature_bit) {
++	case PP_OD_FEATURE_FAN_CURVE_BIT:
++		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
++		if (feature_enabled) {
++			smu_v13_0_7_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_TEMP,
++							  &min_value, &max_value);
++			if (!min_value && !max_value) {
++				feature_enabled = false;
++				goto out;
++			}
++
++			smu_v13_0_7_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_PWM,
++							  &min_value, &max_value);
++			if (!min_value && !max_value) {
++				feature_enabled = false;
++				goto out;
++			}
++		}
++		break;
++	default:
++		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
++		break;
++	}
++
++out:
++	return feature_enabled;
+ }
+ 
+ static void smu_v13_0_7_get_od_setting_limits(struct smu_context *smu,
+-- 
+2.53.0
+
 
