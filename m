@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-232812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CG5lH5pGzWkkbAYAu9opvQ
-	(envelope-from <stable+bounces-232812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:23:54 +0200
+	id uKTvCOJJzWn4bQYAu9opvQ
+	(envelope-from <stable+bounces-232813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:37:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB9E37DDD4
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:23:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE4F37E01D
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6297A30DCDE7
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 16:19:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4F5A4314A764
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 16:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848784779A8;
-	Wed,  1 Apr 2026 16:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7495046AF29;
+	Wed,  1 Apr 2026 16:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eL3ELQ8L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXJMw4wW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442B235DA77
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 16:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE7D44B680
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 16:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775060200; cv=none; b=WiW7KuAN8GK9t+AL3i6j+d2xuNnk19ZUn9UFXNerdMqxEURi467evXpMbQzQRYomh6neK85XYXr2W0iTS4nGNh6eRevz4N8w+184GFH/ahDSkHXkwGBtAnYSBVlzGncXV4dl8p3O3E3jYAtw1wWmyUyDQJW6f34kfATcsvgHn5o=
+	t=1775060222; cv=none; b=FS6H/+eah/r1cEHWG8cj4hyE26tz6UMeHIovP/7yT0W99Bpnv+bGRCkShKYf3N7YkXdvOBvlP35/iXAaIKtWuCNtJdb+bLjFWfNbxESrbI0UdLycKjQY1YCxrTAJBFxlcwe9QFHPHdCvPbuOl5lnvBr2qXbFtjfnK1eCKmMna1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775060200; c=relaxed/simple;
-	bh=9sTFh19675YW33XR5lrDWc8R0ki4ao6rxgTtGUa1CbU=;
+	s=arc-20240116; t=1775060222; c=relaxed/simple;
+	bh=jah76msZHSvgCQuq79xNP4DvNR/lFduJZIHhtaC4+hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofqlDlBIYRBD9dUAYfHeV1AzDOA6O1F/9inYJBoHJKolCNqKHulg9g2/mq/lhNq9PvXm1x9GK6Tc02rf1qYlju4SFTLSvkwn24fGBGc7UX0ouOhSzjjhXhSSfec/ZpmGkYcDblZ//6hic3fG28PO38eBfNnB6rn/D+sRmON8UKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eL3ELQ8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FD6C4CEF7;
-	Wed,  1 Apr 2026 16:16:39 +0000 (UTC)
+	 MIME-Version; b=t9sYi2/LyYvmM01r4ZIH3m6Sxs2mOiAl56Lu/1LSRd8dAEUFXLoiPbowGuD4endE4euoaXlX4LRxtpxbfcVfeZSu62Ae7Ym9PnBke6fBIjj6qe8/EnnmdhDALgF2IfWUaXkgE5H8z6iWbkw5XirBT2T5OMMso9rzF3tbBk9oN34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXJMw4wW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4517C2BCB2;
+	Wed,  1 Apr 2026 16:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775060200;
-	bh=9sTFh19675YW33XR5lrDWc8R0ki4ao6rxgTtGUa1CbU=;
+	s=k20201202; t=1775060221;
+	bh=jah76msZHSvgCQuq79xNP4DvNR/lFduJZIHhtaC4+hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eL3ELQ8LJrdWwdi7pLT3wKfQJqbF0lRzM0aNlvdsblAsI+A4UTKhz1YAJyCD70ep4
-	 X3VNhbhdBqd5nsw4d4WNmTagdmVYlKjTJTkDrKEOV6RznZ3buOK6sDxxiBjsGkgWBF
-	 wSI8n8OX2F1knDSbiy4zvQEIe0GnH+DmmtXIFdMeKxae6bgoU5gGaK4whaHFRuI6cg
-	 rW55iZRPPrhYNFRtKprrhdrLXa6CE+YGI/MwFLhoA4w/epL//to5zN5Itk9JBvW1Gp
-	 nBBO/YRbeJFLbXdWJRrhtkD/mxIJlFdXzZVvQ16MNZ7h6/NRV+CvM6/RmxiiV84lyI
-	 glOzkd4zpZwsg==
+	b=kXJMw4wWBDSQQq6T5JzcfRl/36y6nPwhYBYrTvDYofccV8LzTkndhH4UI/9/nSe/q
+	 B8aTkFleiLld1idxIAfaaUCtvEN2wjYTtN5AQ64rezUL701H2I8LyLyNhAlaO/9K9T
+	 OqdL+F1P9pg+7nMl5atUM6PpJlNv9XuTlxO2TQEGu1F8GfABGDbwVq6UrQU+8Klnrh
+	 VVYvXX591KINjiI0ivS0Bo1z7R8/bG1YtJ78iXYE5aIYbx/0p3LL8XaZLOh8VaiSOn
+	 pignkePVkF3Wt/jzlAeJlPatWD8EiqQ/ZBkWl8mjXXEGhTUaAbz/JQYtPc6ojiS+q7
+	 U4dyh0S2ehFlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y] drm/amd/pm: disable OD_FAN_CURVE if temp or pwm range invalid for smu v13
-Date: Wed,  1 Apr 2026 12:16:37 -0400
-Message-ID: <20260401161637.114960-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
+Date: Wed,  1 Apr 2026 12:16:58 -0400
+Message-ID: <20260401161658.115456-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033042-superior-difficult-0a49@gregkh>
-References: <2026033042-superior-difficult-0a49@gregkh>
+In-Reply-To: <2026033044-applause-erased-d411@gregkh>
+References: <2026033044-applause-erased-d411@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,178 +66,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-232812-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232813-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2CB9E37DDD4
+X-Rspamd-Queue-Id: 1EE4F37E01D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-[ Upstream commit 3e6dd28a11083e83e11a284d99fcc9eb748c321c ]
+[ Upstream commit 89a8567d84bde88cb7cdbbac2ab2299c4f991490 ]
 
-Forcibly disable the OD_FAN_CURVE feature when temperature or PWM range is invalid,
-otherwise PMFW will reject this configuration on smu v13.0.x
+Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
+CHCTRL register. To avoid concurrency issues when configuring
+functionalities exposed by this registers, take the virtual channel lock.
+All other CHCTRL updates were already protected by the same lock.
 
-example:
-$ sudo cat /sys/bus/pci/devices/<BDF>/gpu_od/fan_ctrl/fan_curve
+Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
+accessing CHCTRL registers but this does not ensure race-free access.
+Remove the local IRQ disable/enable code as well.
 
-OD_FAN_CURVE:
-0: 0C 0%
-1: 0C 0%
-2: 0C 0%
-3: 0C 0%
-4: 0C 0%
-OD_RANGE:
-FAN_CURVE(hotspot temp): 0C 0C
-FAN_CURVE(fan speed): 0% 0%
-
-$ echo "0 50 40" | sudo tee fan_curve
-
-kernel log:
-[  756.442527] amdgpu 0000:03:00.0: amdgpu: Fan curve temp setting(50) must be within [0, 0]!
-[  777.345800] amdgpu 0000:03:00.0: amdgpu: Fan curve temp setting(50) must be within [0, 0]!
-
-Closes: https://github.com/ROCm/amdgpu/issues/208
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 470891606c5a97b1d0d937e0aa67a3bed9fcb056)
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
 Cc: stable@vger.kernel.org
-[ adapted forward declaration placement to existing FEATURE_MASK macro ]
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[ replaced scoped_guard(spinlock_irqsave, ...) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  | 33 ++++++++++++++++++-
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  | 33 ++++++++++++++++++-
- 2 files changed, 64 insertions(+), 2 deletions(-)
+ drivers/dma/sh/rz-dmac.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index f4ce4dd027800..cd7db433795f8 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -59,6 +59,10 @@
+diff --git a/drivers/dma/sh/rz-dmac.c b/drivers/dma/sh/rz-dmac.c
+index e6f8257c76672..acab58b02dbe9 100644
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -283,13 +283,10 @@ static void rz_dmac_disable_hw(struct rz_dmac_chan *channel)
+ {
+ 	struct dma_chan *chan = &channel->vc.chan;
+ 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
+-	unsigned long flags;
  
- #define to_amdgpu_device(x) (container_of(x, struct amdgpu_device, pm.smu_i2c))
+ 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
  
-+static void smu_v13_0_0_get_od_setting_limits(struct smu_context *smu,
-+					      int od_feature_bit,
-+					      int32_t *min, int32_t *max);
-+
- #define FEATURE_MASK(feature) (1ULL << feature)
- #define SMC_DPM_FEATURE ( \
- 	FEATURE_MASK(FEATURE_DPM_GFXCLK_BIT)     | \
-@@ -1061,8 +1065,35 @@ static bool smu_v13_0_0_is_od_feature_supported(struct smu_context *smu,
- 	PPTable_t *pptable = smu->smu_table.driver_pptable;
- 	const OverDriveLimits_t * const overdrive_upperlimits =
- 				&pptable->SkuTable.OverDriveLimitsBasicMax;
-+	int32_t min_value, max_value;
-+	bool feature_enabled;
- 
--	return overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit);
-+	switch (od_feature_bit) {
-+	case PP_OD_FEATURE_FAN_CURVE_BIT:
-+		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
-+		if (feature_enabled) {
-+			smu_v13_0_0_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_TEMP,
-+							  &min_value, &max_value);
-+			if (!min_value && !max_value) {
-+				feature_enabled = false;
-+				goto out;
-+			}
-+
-+			smu_v13_0_0_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_PWM,
-+							  &min_value, &max_value);
-+			if (!min_value && !max_value) {
-+				feature_enabled = false;
-+				goto out;
-+			}
-+		}
-+		break;
-+	default:
-+		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
-+		break;
-+	}
-+
-+out:
-+	return feature_enabled;
+-	local_irq_save(flags);
+ 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
+-	local_irq_restore(flags);
  }
  
- static void smu_v13_0_0_get_od_setting_limits(struct smu_context *smu,
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-index e7b2e823812cb..da31a6504ac05 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -59,6 +59,10 @@
+ static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
+@@ -536,8 +533,8 @@ static int rz_dmac_terminate_all(struct dma_chan *chan)
+ 	unsigned int i;
+ 	LIST_HEAD(head);
  
- #define to_amdgpu_device(x) (container_of(x, struct amdgpu_device, pm.smu_i2c))
+-	rz_dmac_disable_hw(channel);
+ 	spin_lock_irqsave(&channel->vc.lock, flags);
++	rz_dmac_disable_hw(channel);
+ 	for (i = 0; i < DMAC_NR_LMDESC; i++)
+ 		lmdesc[i].header = 0;
  
-+static void smu_v13_0_7_get_od_setting_limits(struct smu_context *smu,
-+					      int od_feature_bit,
-+					      int32_t *min, int32_t *max);
+@@ -646,13 +643,17 @@ static void rz_dmac_irq_handle_channel(struct rz_dmac_chan *channel)
+ {
+ 	struct dma_chan *chan = &channel->vc.chan;
+ 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
++	unsigned long flags;
+ 	u32 chstat, chctrl;
+ 
+ 	chstat = rz_dmac_ch_readl(channel, CHSTAT, 1);
+ 	if (chstat & CHSTAT_ER) {
+ 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
+ 			channel->index, chstat);
 +
- #define FEATURE_MASK(feature) (1ULL << feature)
- #define SMC_DPM_FEATURE ( \
- 	FEATURE_MASK(FEATURE_DPM_GFXCLK_BIT)     | \
-@@ -1050,8 +1054,35 @@ static bool smu_v13_0_7_is_od_feature_supported(struct smu_context *smu,
- 	PPTable_t *pptable = smu->smu_table.driver_pptable;
- 	const OverDriveLimits_t * const overdrive_upperlimits =
- 				&pptable->SkuTable.OverDriveLimitsBasicMax;
-+	int32_t min_value, max_value;
-+	bool feature_enabled;
++		spin_lock_irqsave(&channel->vc.lock, flags);
+ 		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
++		spin_unlock_irqrestore(&channel->vc.lock, flags);
+ 		goto done;
+ 	}
  
--	return overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit);
-+	switch (od_feature_bit) {
-+	case PP_OD_FEATURE_FAN_CURVE_BIT:
-+		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
-+		if (feature_enabled) {
-+			smu_v13_0_7_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_TEMP,
-+							  &min_value, &max_value);
-+			if (!min_value && !max_value) {
-+				feature_enabled = false;
-+				goto out;
-+			}
-+
-+			smu_v13_0_7_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_PWM,
-+							  &min_value, &max_value);
-+			if (!min_value && !max_value) {
-+				feature_enabled = false;
-+				goto out;
-+			}
-+		}
-+		break;
-+	default:
-+		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
-+		break;
-+	}
-+
-+out:
-+	return feature_enabled;
- }
- 
- static void smu_v13_0_7_get_od_setting_limits(struct smu_context *smu,
 -- 
 2.53.0
 
