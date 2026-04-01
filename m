@@ -1,221 +1,133 @@
-Return-Path: <stable+bounces-232836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232837-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OM9F+9azWkRcQYAu9opvQ
-	(envelope-from <stable+bounces-232836-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 19:50:39 +0200
+	id CO7aARZbzWkRcQYAu9opvQ
+	(envelope-from <stable+bounces-232837-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 19:51:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E94C37ED55
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 19:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA1E37ED66
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 19:51:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DC24E303ABD8
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 17:38:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7524D301EB50
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 17:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5831837F8D0;
-	Wed,  1 Apr 2026 17:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77294657FA;
+	Wed,  1 Apr 2026 17:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="F+ZzMdg1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4KnkhNP"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD71439934A
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 17:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A67C35E92B;
+	Wed,  1 Apr 2026 17:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775065120; cv=none; b=RO/lUnxdERk4W1mw0k+pZpVJGwQKI1SiTUqAL7+Mro4JTy4V3gqr1CmzNO08xvrhKPrOZXYAU5eMoowFr3EWu4RrJ9tRPT6onsI2KF2oTGclROIHGS+pVhktP8Mf+qs/Vxn9DT2qhQu0dBfkMYY1eXsvMXLEf6I6B0ldzw8e8TM=
+	t=1775065182; cv=none; b=eO4P5ID2J3N+L8QpQottT/4F7r2FGOkhdmdZzflfs/uySM2OiDC4L44CFdDmJW6thN2hE88SneleePOU1OxsvscnfNc6XrjybqW34egXNdmGkhUEsDAhjBtLjng+Z+JGuFz+aasEx+GIEcCsGsTj0ZyVjJ2SYvUdkdcaPnXBS38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775065120; c=relaxed/simple;
-	bh=gwHZfO/mOvP7CRg/an4tySknB3M2HrxrDkytjcnQyK8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c4ac/jTiFRQ6F2Rk+KKjLHwjHMcy9MmqZZlIqFGsMsQ3HEuHwgVv0NcoRkJSJmtrP7Yw/LiazDOvI7jDqQ2A0ceoPWmiENhXK/PznxjdYcdSLFYkzGLDKGRShbYOBwJKDCVQ/spxHmUH6GWXhWSqHLlW3TVJ4AezHbLxDgcKo7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=F+ZzMdg1; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <b67422cb-044a-478d-acac-28f99067548b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775065114;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MaFEEmrvuWW+Qadi8BzniX8RQWYAN2oyCf3v0h969Xw=;
-	b=F+ZzMdg1e4DxdZbJNGQLtQnI9Ea/toFX0m0IsdsGwj2K1oAA/WCDD+DxIHsnmLzUPnBZuh
-	nZJN852OMbKf91SrVWspWOsRmxpG7tFd23yHtuVISoqkJEZgdbBTjkbYpOv1F0G+yt0PET
-	5xwdYX2Jq0S/7eLDuIHNP8LLBm/LJZY=
-Date: Wed, 1 Apr 2026 10:38:21 -0700
+	s=arc-20240116; t=1775065182; c=relaxed/simple;
+	bh=hQ+vnC7PVgmPpxCJDWhjQgO2Dv+XHSTS8KXUr4R5dpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sszUcHogXWX1YHOLcJ0etvLhe0j9oagxJN/PvBAIMVN18IgyVt/ZvvaYffL+5UCf5QMktiZarQ00jHlsmUJuyPsp6TVFXDHCjTrstHwXB983PRy03ehp+aRGbnX6N8sxGWaXMaXRR1uqImJg6ltWSSyOFJpaBRnf2RgHAvAmTq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4KnkhNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784CEC4CEF7;
+	Wed,  1 Apr 2026 17:39:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775065182;
+	bh=hQ+vnC7PVgmPpxCJDWhjQgO2Dv+XHSTS8KXUr4R5dpQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s4KnkhNPJA7ZP7y5LAy2W4eDmbT2M3BdykXOOw7vEuG/E0cWWBfJy8nnFY1ajIeAb
+	 CFcBTOHKecag3E2E5dml0jrqQRKwZZZKvlSBT38/hKEsBw1++yIaNCpvtNVRn65BgB
+	 dptUXlD8iHJFjxGAP5kh/x7ChJEfnEdOJ0+UmJhHgCsQPORMktl3i7eIgNVAQZlLy6
+	 NdbUNFZ0I2unr0FXDircmqqyeU1/ds0t91hYt+pKiYPNHetHEjj93abQP+FUaxpCPp
+	 0Pn96D0/O62+1kjCZE0M3rCszbYERng3PGt7gw1OSMNZPNWVz2eG0gBXRFRCTHFK0h
+	 ZFJHab1uGMplQ==
+Date: Wed, 1 Apr 2026 18:39:35 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/244] 6.12.80-rc1 review
+Message-ID: <550477df-0be7-439b-ba9b-61d3e18f7d8a@sirena.org.uk>
+References: <20260331161741.651718120@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] RDMA: rxe: validate pad and ICRC before payload_size() in
- rxe_rcv
-To: hkbinbin <hkbinbinbin@gmail.com>, zyjzyj2000@gmail.com, jgg@ziepe.ca,
- leon@kernel.org, w@1wt.eu, "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
-Cc: linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260401121907.1468366-1-hkbinbinbin@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <20260401121907.1468366-1-hkbinbinbin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qdb2LJeGpWScc9cE"
+Content-Disposition: inline
+In-Reply-To: <20260331161741.651718120@linuxfoundation.org>
+X-Cookie: "Yo baby yo baby yo."
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232836-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,ziepe.ca,kernel.org,1wt.eu,linux.dev];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232837-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yanjun.zhu@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
-X-Rspamd-Queue-Id: 5E94C37ED55
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: 1AA1E37ED66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-在 2026/4/1 5:19, hkbinbin 写道:
-> rxe_rcv() currently checks only that the incoming packet is at least
-> header_size(pkt) bytes long before payload_size() is used.
-> 
-> However, payload_size() subtracts both the attacker-controlled BTH pad
-> field and RXE_ICRC_SIZE from pkt->paylen:
-> 
->    payload_size = pkt->paylen - offset[RXE_PAYLOAD] - bth_pad(pkt)
->                   - RXE_ICRC_SIZE
-> 
-> This means a short packet can still make payload_size() underflow even
-> if it includes enough bytes for the fixed headers. Simply requiring
-> header_size(pkt) + RXE_ICRC_SIZE is not sufficient either, because a
-> packet with a forged non-zero BTH pad can still leave payload_size()
-> negative and pass an underflowed value to later receive-path users.
-> 
-> Fix this by validating pkt->paylen against the full minimum length
-> required by payload_size(): header_size(pkt) + bth_pad(pkt) +
-> RXE_ICRC_SIZE.
-> 
-> Fixes: 8700e3e7c485 ("Soft RoCE driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: hkbinbin <hkbinbinbin@gmail.com>
 
-Thanks a lot.
-If the following analysis can be added into commit logs, it is better.
+--qdb2LJeGpWScc9cE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-"
-========================================================================
-Analysis
-========================================================================
+On Tue, Mar 31, 2026 at 06:19:10PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.80 release.
+> There are 244 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-In drivers/infiniband/sw/rxe/rxe_hdr.h:
+Tested-by: Mark Brown <broonie@kernel.org>
 
-------------------------------------------------------------------------
-static inline size_t payload_size(struct rxe_pkt_info *pkt)
-{
-     return pkt->paylen - rxe_opcode[pkt->opcode].offset[RXE_PAYLOAD]
-         - bth_pad(pkt) - RXE_ICRC_SIZE;
-}
-------------------------------------------------------------------------
+--qdb2LJeGpWScc9cE
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The relevant receive path is:
+-----BEGIN PGP SIGNATURE-----
 
-   1. rxe_udp_encap_recv() sets pkt->paylen from the incoming UDP packet.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnNWFcACgkQJNaLcl1U
+h9CEXgf/Yg0WkgewR2mwrchWTbilV6GAnKycKJx4Yxv5qU5wVEULRQkdgqsXyU9J
+v5UXU3+Hl3X5i9EVWVOMrfvUogmCaK9R5O8/o8bJ20YExUXGhzS/2T+WcTCY/EdV
+ERmr2tovKW3tuDuKuNQ+E1riCOwnxy1Uoiv93QJf5czKGWU9TGB0ePhzh5O2+7HP
+iiXcgL7Fa9vcq3vwd3vMh7D2ydkbKrXNr0YlRjlxViakcdX6tP1WhSgYti3FIxun
+0nNFZ+O3yaguNHt24M0UEI4hpA1Wcvc0yG3l406hvsNh0phlFrY7SReCWaD8Xq7X
+f836JfA1xBwwC9kcX2s0nkZT1g4KaA==
+=IaXX
+-----END PGP SIGNATURE-----
 
-   2. rxe_rcv() validates only:
-
-------------------------------------------------------------------------
-if (unlikely(skb->len < header_size(pkt)))
-     goto drop;
-------------------------------------------------------------------------
-
-   3. This allows packets where paylen == header_size(pkt), i.e. packets
-      with only headers and no ICRC trailer.
-
-   4. For a UD SEND_ONLY packet (opcode 0x64), the minimum valid header is
-      BTH + DETH = 12 + 8 = 20 bytes, and offset[RXE_PAYLOAD] is also 20.
-
-   5. Therefore a 20-byte packet with pad=0 computes:
-
-------------------------------------------------------------------------
-payload_size = 20 - 20 - 0 - 4 = -4
-------------------------------------------------------------------------
-
-Because payload_size() returns size_t, this wraps to SIZE_MAX - 3.
-
-In drivers/infiniband/sw/rxe/rxe_recv.c, rxe_icrc_check() then uses that
-value in the CRC calculation:
-
-------------------------------------------------------------------------
-icrc = rxe_crc32(pkt->rxe, icrc, (u8 *)payload_addr(pkt),
-                  payload_size(pkt) + bth_pad(pkt));
-------------------------------------------------------------------------
-
-This causes crc32_le() to read from payload_addr(pkt) for essentially the
-entire address space, immediately faulting on unmapped memory.
-
-The bug is remotely reachable because the RXE GSI QP (QPN=1) is always
-present once an RXE device is configured, and UD/GSI traffic passes the
-address validation path. A single crafted UDP packet to port 4791 with
-valid BTH/DETH fields is sufficient.
-
-Trigger packet fields used in testing:
-
-   - Opcode: 0x64 (UD SEND_ONLY)
-   - Transport version: 0
-   - P_Key: 0xffff
-   - QPN: 1 (GSI QP)
-   - Pad: 0
-   - Q_Key: 0x80010000 (GSI_QKEY)
-   - No payload
-   - No ICRC trailer
-"
-But no the above analysis, I still think it is good.
-
-Thanks,
-
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-
-Zhu Yanjun
-
-> ---
->   drivers/infiniband/sw/rxe/rxe_recv.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/infiniband/sw/rxe/rxe_recv.c b/drivers/infiniband/sw/rxe/rxe_recv.c
-> index 5861e4244049..f79214738c2b 100644
-> --- a/drivers/infiniband/sw/rxe/rxe_recv.c
-> +++ b/drivers/infiniband/sw/rxe/rxe_recv.c
-> @@ -330,7 +330,8 @@ void rxe_rcv(struct sk_buff *skb)
->   	pkt->qp = NULL;
->   	pkt->mask |= rxe_opcode[pkt->opcode].mask;
->   
-> -	if (unlikely(skb->len < header_size(pkt)))
-> +	if (unlikely(pkt->paylen < header_size(pkt) + bth_pad(pkt) +
-> +		       RXE_ICRC_SIZE))
->   		goto drop;
->   
->   	err = hdr_check(pkt);
-
+--qdb2LJeGpWScc9cE--
 
