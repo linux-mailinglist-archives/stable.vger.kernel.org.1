@@ -1,192 +1,178 @@
-Return-Path: <stable+bounces-232839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6J4iOEpjzWkHdAYAu9opvQ
-	(envelope-from <stable+bounces-232839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 20:26:18 +0200
+	id QHQYC3hjzWkHdAYAu9opvQ
+	(envelope-from <stable+bounces-232840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 20:27:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BFC37F3FD
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 20:26:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8739637F413
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 20:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9B8C304ADBF
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 18:20:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08F24300D46A
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 18:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9989E328B71;
-	Wed,  1 Apr 2026 18:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76272E62C6;
+	Wed,  1 Apr 2026 18:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HYF6iYVf"
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="q9+CC2dQ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sn+QMQNo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3613A2DEA6B
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 18:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6505E2E0413;
+	Wed,  1 Apr 2026 18:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775067639; cv=none; b=cW+EaUaTX6OB7LWSgrt5kudxxR5fZrfmd2RZ+et+kiLnV9mBgIx+DoAkJ8zCov7SMaNeLZkKPoCzJg50AA+9ub1CKx3M6V7Y+wEJul2ocG1Wn/SOkvblOb+H4EPyrK50ZMjyQhgKIwaFEE3Vzy0nYpXNFp+4J9242f6xzB4NZ5A=
+	t=1775067781; cv=none; b=ZYvtpfiqOa/BFLgofnfCvRX/fMh/3w3yDNw7iDJKEEL00EolrMJg/IfTP0CcRTwAUKzWExFPCX3La3oeZat3WlEvUcLhyegioZh4QFpCcntRuZjIcZQiVzaI+kFQT58Nr8LfvmoUQK+KtG82/iczT2pvnjGP2Gz0T6F4fVl7UBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775067639; c=relaxed/simple;
-	bh=0+BZSA3mYDR/LzPwwVu2/cfe6MfOJaq1pvVv3+j1Rpo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Ev5J2NM+Upk1to4YxbukIrjIcxhKtWqQTgwZnp/zpWXS45KgCe0iie0uPpPo3Xf+nAdGI2RDWnN1b6D66baWfLyWvA3Wv0A6P8r+zrtoNEDgKiU/ccqALj0uB2sJo6Pj4Fl13PuBNIeKbGbsHjE+Kqeo8qvtJKZbgpx/AbcaIXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYF6iYVf; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43cf7190580so11347f8f.0
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 11:20:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775067636; x=1775672436; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=JfFB1XI4oKlCRus1Z6ZKueDQPDMr7i9ooRJ3XtcgH9o=;
-        b=HYF6iYVfRCLf5RDSFTDOSaMpe6yit0X9hUbhOqL7LiT2jhD/4UUE6Vxtm+SipnPEdl
-         zxu1q6vkpFQW2YW/zORbrQENOb6CltYZvHJKH1XU7GBrGJaOf4eABHCTV+mCynfxgaps
-         NQlCM/kb7ZG1R99tK2ZLhCtVYs+GGAM3T21Lf0K6NwVDAyfUD+ZceHWeYbSRU0e86tUZ
-         SxsfK8+Ko1Qk8q3+ZJ1RgdBjffgdBFM53HaV/bO3Lq6HK4v05WAMcKUlFxtsUvzuqsFj
-         RxwVDEcBCG7DDldflTmXShNFfNtBve627GaXk2/ja/zZhSDlL3MGLsZscZEgs3KGbIBr
-         UfYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775067636; x=1775672436;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JfFB1XI4oKlCRus1Z6ZKueDQPDMr7i9ooRJ3XtcgH9o=;
-        b=CX3WDR3ja9rZMLx2R21Ivc+toBGUAn06sso5FR7l8c60R+JyTLsBUmf/AF4t4gLfvr
-         iItnkG0/JHB30ESb+9EJqsUlMJGUiuFYVBGOxLk+kcYpBdt/OVnSbgtB/1dvqbtuERyY
-         NEw9/gGL7hW6wA+5U8RkfDkL/h57hGg9ombZyWIgNQv1lxNQ1t8exaThgWiKI79TLtHp
-         ZxevMoNL56fb2uQFsc+ybgXkMTvWTBcMQBm3UwTSylUtLAIlGbBsoQcS7Ra58oWAEEIY
-         kTO1/cbY79qmDQ0l4dadEEZHWHY2/3D7pHdbD75bTv8KmWM54/wMA6KqDhjetERhRo/3
-         zRMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXKYug9v10cAJAFvCz08n6fGpnV7ucOjHRGyffh8Kl6hxWhO+9CCKJdVKhm7AQF96Zh1kP8Xg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJU+4XopVxERQVzXKqlBoPLhIBu6eRfLCzNERa5AIpviXdHWVN
-	I4wUmCkKb2EFoalTJuuqgAdigJZckW58Gn+Z+zkwDlVCIn2ag+8Lg/1l
-X-Gm-Gg: ATEYQzztsS7Qdi+bJwon46KN+y7z4MjaHWAlq9teyIQ3QO02oBbsArH0XdQQE2wdIEP
-	CBkunOWFsDoYKcRii0TGNCwOEp6GTYGp67pxg62J6APBaLudAA8JAbCUuLWqsqf8/F39WzXgOEd
-	IK6Cntis8LpYkZR82NDVMEYkSMl0ORN9pyDwSqWieqA5gLbVKKSRlBr9YuWvT6nNsJDf7MEGS4l
-	jyUVFqBkb0AdTVYYlf/dWtXKriXKPpthOiop3eJzBRSIqDs3GL7jfnzIA+LJukwOoacT7FiAxxf
-	fdUH51BJK7lLmg8jBU9Yuzcc+NBCrzWfxIVpDnd42qJ9dlUODI0ASeCDuR5j0mAgDMIzTA17Zg/
-	GHqyBJfy1c9PlNUvJmS9o0vE292wBSGuOln3mcTTnGle53s3ncXH8qY82J24HRpn2XSH7N9+mMt
-	zZhVQcc7dfWIxLkIZzO26MEgjaYS9pltzd4xhMFr4MPbRuyOQL1aUvAgE6rqu1tfWoNlKqXMOxE
-	z5rIkRTQePcsRV/6oXxDZ0OHBvL0RoaW00ccPURWDHurdPirztrwMueQ5wPJreVUQSvxe+KkjnF
-	cOJzHvwTyL5lSZMcaEV7FCubJ5NPxMQYelzXE2w7YHr7HkZ9asDGVG10SaAURG9HcJXFg85LGVn
-	UoBoWyxmspMjjxepkPtKDCJMoJcj3mIGKEbn/
-X-Received: by 2002:a05:600c:444e:b0:486:fc61:541d with SMTP id 5b1f17b1804b1-4888355fbb4mr42936945e9.2.1775067636369;
-        Wed, 01 Apr 2026 11:20:36 -0700 (PDT)
-Received: from ?IPV6:2a02:1813:4880:5700:9afc:84ff:fee0:5961? (2a02-1813-4880-5700-9afc-84ff-fee0-5961.ip6.access.telenet.be. [2a02:1813:4880:5700:9afc:84ff:fee0:5961])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888955d711sm33142565e9.9.2026.04.01.11.20.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Apr 2026 11:20:35 -0700 (PDT)
-Message-ID: <c77392e4-eb70-4f21-b072-e6a6de2f8e59@gmail.com>
-Date: Wed, 1 Apr 2026 20:20:35 +0200
+	s=arc-20240116; t=1775067781; c=relaxed/simple;
+	bh=buub52QuZ/KRmj2Zk3J20YYXzwuDYvuW0XMH6C7vJJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=COQVrbU+DBhEQJF8OKsZxHaAOE9NQEMsr/aCWzXDQoiLZFHsNZFMyiI/yRCr5aM8H8bU3Iz0hTMvZJdLEK0wtV7fMq7pcNwX/SH8/pJv5kJO1O8/qDIZLVHFlbyujD6dgumiOjR8So/9pSIcSQfMqB36GBsaGUiAQpI5PrVH29g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=q9+CC2dQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sn+QMQNo; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 6E619EC020A;
+	Wed,  1 Apr 2026 14:22:57 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 01 Apr 2026 14:22:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1775067777;
+	 x=1775154177; bh=aYCGW8OPkNjWJv40wrVz7L1vtYyQsORLFbpGmGVrG2A=; b=
+	q9+CC2dQ2TjF6B6YXwqbqzf5YOdg1Ib4O0TaXOOnRHrs/8VCs8G7V+4isudPI7UU
+	Aij4vjmm7elr1Y4KmrivlOsLbJlh2u0FzaKXT+IgLLwGrAaqB1ZgaYns3RDoqnhE
+	3OJUH6OTqnN6O53ztVOQ8fpzKUJ7EEAuneAB3xGR9Hu7k1hjCt6Z6gZ3w7zmc0Ht
+	Nk2Y2ue1VFwz6SBIe4+q74a9Qp8DDE98gADnTUb41vTSFPMpgzcqi0Ot6az2k5O2
+	8Ytie19sIVEtxpp3cOKOsVQD0tEJLEQAJosNUfj7rzsfKumS29RwXa2lLcMcQ1ku
+	A+cxX5RHdn4GoT3Kex2V4A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775067777; x=
+	1775154177; bh=aYCGW8OPkNjWJv40wrVz7L1vtYyQsORLFbpGmGVrG2A=; b=s
+	n+QMQNoVGNItSAdI0KW7AZLWVQrPpOuUVf5kCevPjt4w9KHe14z8TXsxVKKmHNxw
+	RFGFMjZulMS7AKW99nVeQvH7Ao++L8zqbtru1V9rM9UNxdIaLQ+FwSTH100cgstT
+	T9Ii4t+xXgyu8PvauLKpYY6XO8QHkrx15tqf/pFQTb7sikm10ObW6F+hpNNMFiGj
+	7+ro9ERiIUs2RZXzw8kt5cynu7BlRiRF4mpIzHZCC/mUYdWRQY4lUcU2+XTREnyn
+	neep92ZlYmYYihpDYyeTpg/v5+YgpQNaG43YNN+e7TNEBxsYVLfxKSEuz8/WVz5Q
+	47t1J2SH0v/WNCX0WpdFA==
+X-ME-Sender: <xms:gWLNabHwS9RmTInZ1en-2X4RQ-sg6pjf7c66YVludETjI8K5FZ8yug>
+    <xme:gWLNaa5hdDJ6ClDR4ahe-yiQneg_24snT1h2hPYlZnpoTIKuav7hA5WD5JUyhSj3p
+    xiaky4073Uf8H1PD2UqDt2BymTxLbBj0RiYYPd2TNNbowPMZR5cSA>
+X-ME-Received: <xmr:gWLNaQzA1YJ8HLSSq8quggb-635skYULbBfyvv5nmjXpcok6_8vjORGlkn4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
+    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
+    gvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudegveeu
+    ueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
+    gvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhht
+    phhouhhtpdhrtghpthhtohepnhhiphhunhdrghhuphhtrgesrghmugdrtghomhdprhgtph
+    htthhopehpthhsmheslhhinhhugidrmhhitghrohhsohhfthdrtghomhdprhgtphhtthho
+    pehnihhkhhhilhdrrghgrghrfigrlhesrghmugdrtghomhdprhgtphhtthhopehpihgvth
+    gvrhdrjhgrnhhsvghnqdhvrghnqdhvuhhurhgvnhesrghmugdrtghomhdprhgtphhtthho
+    pehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkh
+    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgv
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigsehshhgriigsoh
+    htrdhorhhg
+X-ME-Proxy: <xmx:gWLNaZNCKkBqqcelgjWjDs2eKUUZaMjdmHAxHSQYN3dVXbHRP0CBbg>
+    <xmx:gWLNaWma0qT4sj5zK0XjPIuR775mIL4UgcJRNSps3Dmbynl9wJnwJw>
+    <xmx:gWLNaeTK09xeJslcDzXz0rcvgcHcvB0pTnEfrSBnT_htVd6g8e9J6g>
+    <xmx:gWLNaVU3rdm-30PzqBkRrnQR5kcmIAHKVsBATWQiDAEB2ExkPKF2tw>
+    <xmx:gWLNaXaKosc3HFzd205MRtp5fg29iXLlU78wCgAtK1mLoOiG_EjK-b4E>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Apr 2026 14:22:56 -0400 (EDT)
+Date: Wed, 1 Apr 2026 12:22:54 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: "Gupta, Nipun" <nipun.gupta@amd.com>
+Cc: Prasanna Kumar T S M <ptsm@linux.microsoft.com>, nikhil.agarwal@amd.com,
+ pieter.jansen-van-vuuren@amd.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
+ trigger path
+Message-ID: <20260401122254.363d93c2@shazbot.org>
+In-Reply-To: <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
+References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+	<e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
-From: =?UTF-8?Q?Fran=C3=A7ois_Valenduc?= <francoisvalenduc@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, alison.schofield@intel.com
-References: <20260331161758.909578033@linuxfoundation.org>
- <0ab3e776-1462-46cb-996c-f4406c84756c@gmail.com>
-Content-Language: fr-FR
-Autocrypt: addr=francoisvalenduc@gmail.com; keydata=
- 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
-In-Reply-To: <0ab3e776-1462-46cb-996c-f4406c84756c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
+	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm1,messagingengine.com:s=fm2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232839-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[francoisvalenduc@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232840-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 45BFC37F3FD
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim,shazbot.org:dkim,shazbot.org:mid]
+X-Rspamd-Queue-Id: 8739637F413
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
->>
->>
-> For me it does not work. systemd fail to start the virtual console 
-> setup. I am using luks to encrypt the root partition. When I type the 
-> password, it is always rejected almost I am 99,9% I type the correct 
-> password. I will try to bisect it tomorrow.
+On Wed, 1 Apr 2026 15:11:17 +0530
+"Gupta, Nipun" <nipun.gupta@amd.com> wrote:
+
+> On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
+> > Add validation to ensure MSI is configured before accessing cdx_irqs
+> > array in vfio_cdx_set_msi_trigger(). Without this check, userspace
+> > can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
+> > with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
+> > ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
+> > 
+> > The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
+> > sets config_msi to 1 only when called through the EVENTFD path. The
+> > trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
+> > done, but there was no enforcement of this call ordering.
+> > 
+> > This matches the protection used in the PCI VFIO driver where
+> > vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
+> > 
+> > Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>  
 > 
-> Best regards,
-> 
-> François Valenduc
+> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
 
-I tried git bisect, but it is quite inconclusive. All commits where bad 
-until the end. So the first bad commit is this one:
+It's an improvement, but I think it also highlights that interrupt
+setup for vfio-cdx devices is racy.  I think it should adopt a mutex on
+the vfio_cdx_device that is acquired with a guard in
+vfio_cdx_set_irqs_ioctl().  That would make config_msi stable for this
+test.  Thanks,
 
-commit 43ee946d8339fb35944b67f598f940814ec139d3 (HEAD)
-Author: Alison Schofield <alison.schofield@intel.com>
-Date:   Thu Feb 26 10:44:36 2026 -0800
+Alex
 
-     cxl/port: Fix use after free of parent_port in cxl_detach_ep()
-
-However, reverting it does not solve the problem. 6.18.21-rc1 fails in 
-the same way.
-
-Any ideas on this ?
-
-Thanks in advance,
-Best regards.
-
-François Valenduc
 
