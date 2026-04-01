@@ -1,110 +1,106 @@
-Return-Path: <stable+bounces-232709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232710-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mB1HMJXLzGlFWwYAu9opvQ
-	(envelope-from <stable+bounces-232709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 09:39:01 +0200
+	id 0IaqMGbLzGn5WgYAu9opvQ
+	(envelope-from <stable+bounces-232710-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 09:38:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50988376131
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 09:39:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8D13760C9
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 09:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 793C930EAE0F
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 07:31:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C57C8307A47E
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 07:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FD8383C99;
-	Wed,  1 Apr 2026 07:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A54A38643D;
+	Wed,  1 Apr 2026 07:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ0xbG6Q"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DDA38B148;
-	Wed,  1 Apr 2026 07:28:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216BA3803E1
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 07:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775028523; cv=none; b=kIhbkMJEjG0VS1mVaS7+FedI2Ez9ZTfA6LN/qSM1R0JcOfEeLKsivrPCubrmuGms+k8DRtBly3RGJetJjovoKGZZbzm8SfZyi8TiHOBTFyu8vs2d6l7limMnQaccpNopKB7Ws8aQeYB7Xtwg/0cDD60ItApjjb3arfWcPM40qxQ=
+	t=1775028594; cv=none; b=PeM+mh/R59O9Om1wyv3ImDOWxmnIVCPDLfh5hFkEv0qr0ZZ6Zi6hbFdprScsNlu4TsKJtdBlJgQUwFdpLKAWlTBbcbSD6VykYR78XKD/4A/H2ZMvcJF7piQ8hHW8iT1xjURq3gx/vu8LiMN/OVHe2WYHiim+iEW4loLm+urw9w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775028523; c=relaxed/simple;
-	bh=v/lO6pMcMf0RDg/vIaPIpYna58RXpnar/piUGA3XKIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmsCBFTmX3/lNo6ORijcJU/ZQ90XLPdNUV+lOlagO2U0wbyL8em83n/9H9rk059a2Go7HUCAbnJjhr2JHJ4vtR/heqEj59c/Qx+5aCn9MHUGXoKXJdlELC27DxE8IWe/pN6luW6hd11LWrHOLbwyCZ4P8zNbKe76MpzZsibCEgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.6 000/175] 6.6.131-rc1 review
-Date: Wed,  1 Apr 2026 07:28:28 +0000
-Message-ID: <20260401072830.36603-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260331161729.779738837@linuxfoundation.org>
-References: <20260331161729.779738837@linuxfoundation.org>
+	s=arc-20240116; t=1775028594; c=relaxed/simple;
+	bh=gXUZsNneD1tBBWx88eLhjeerMVQGed8SWG9JNYjZGxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aYF4Oom7XsAc45g+NcLb3/mjVZz9ZJtymCdmLldUSfWJWNTgSFNbOxspH0F7HJhtM5OpHGDpGGq4spK5BulFapq4n7IO0fXuhIIwgjtFwBoPGBFD4uNvh+w6Gb/Hn6vWYX0tCuE1P7Cz4v7eKZyePxT8pnKVGFEwwIV0+2ps5G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ0xbG6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B858C2BC9E;
+	Wed,  1 Apr 2026 07:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775028593;
+	bh=gXUZsNneD1tBBWx88eLhjeerMVQGed8SWG9JNYjZGxQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QJ0xbG6QiIAcCxbAq1HAEid5IFKgsTLOib+IOg7b2z6z+TMSVKSQl1Gd11dJJL4hz
+	 fO4VFl+HvI+mCxsvJPhaDDH0Ox1Jk6A44ttdIa7M4M9YMHJiW4arim+vRaATf5G1Z4
+	 9q8nnpdazEOI/gNObptw1+ObclxLyNXeyTehJwws=
+Date: Wed, 1 Apr 2026 09:29:27 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.12.y 0/9] Few stable backports for CVE fixes
+Message-ID: <2026040116-paced-those-ca63@gregkh>
+References: <20260324140456.832964-1-harshit.m.mogalapalli@oracle.com>
+ <a3c185fd-2573-4061-8816-2762241a4144@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a3c185fd-2573-4061-8816-2762241a4144@oracle.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232709-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[librecast.net];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232710-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.971];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,librecast.net:email,librecast.net:mid]
-X-Rspamd-Queue-Id: 50988376131
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7E8D13760C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-# Librecast Test Results
+On Wed, Apr 01, 2026 at 11:59:21AM +0530, Harshit Mogalapalli wrote:
+> Hi Greg,
+> 
+> On 24/03/26 19:34, Harshit Mogalapalli wrote:
+> > Hi stable maintainers,
+> > 
+> > I have tried backporting some fixes to stable kernel 6.12.y which also
+> > have CVE numbers and are fixing commits in 6.12.y.
+> > 
+> Thanks a lot for queuing these up for 6.12.y stable tree.
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
-
-CPU/kernel: Linux auntie 6.6.131-rc1-g616fc3cb7c95 #1 SMP PREEMPT_DYNAMIC Wed Apr  1 07:22:11 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
-
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+Hey, thank _you_ for doing the real work here!
 
