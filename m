@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-232627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEfONLppzGlXSwYAu9opvQ
-	(envelope-from <stable+bounces-232627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 02:41:30 +0200
+	id kJ7VD6BqzGlXSwYAu9opvQ
+	(envelope-from <stable+bounces-232626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 02:45:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDCF3373386
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 02:41:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE79F373434
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 02:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 38519303CC35
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 00:39:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4AA230E1F8B
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 00:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9ED21E9B37;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B251E98EF;
 	Wed,  1 Apr 2026 00:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RzjdZ0JF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UR+j0dcw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570811D8E01
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 00:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A761DED63
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 00:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775003986; cv=none; b=XQdJ5WCJcXQHc3B3VWQtLcbDnBHSvTDO8SgBlmywabVxPuOMvd7D2Se8ywSV8hG6Qtn1qU9xI4VpzOL1H4/gj5c2RRIlpikVRyC2d29Y8rW15iLetPnFBCiHHJ4yLvk3k3BYSpqwUcFJbf2HKUM83msrC1mnLq/p2oNOyp27T7o=
+	t=1775003986; cv=none; b=C4SUr7ZIKKGSuX4613E29ZmqhSxpm4FpbL8YHAg0A2Oxaf+F0xDv8mmDTXvasSFJeiGs2czCO3JZUtobz4gVBEDEeb0qRtwPGCfx/huwfKixou3D0SOaiWdd89aqZ9HytznSq2df3r4VFn8WvIclx7Ew9LXyoriFlG7A+z2QKok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775003986; c=relaxed/simple;
-	bh=HjDa2ZaVfCGyD0njzM/Hx1F3qeaUeXvsmO8wpznl5Dc=;
+	bh=mQkiW4SfMzS137EmyrdOnE67zcpG0+2zfv8kd36ZGCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mo07eQyzPHDKHCsbgAcdOQs9IeJKi6Vnl3qhk6ljqaRhvgiPpzQZ9h2YAefvVTSfhKWOABUfADJYiQdJ2M4c99p0Wo0kD0AG44U/nKPqVndxdYaKItq4MFfaAKyT0oysx+0L/GdoBMl7JwGHFPBbUuQoJl0V3V3G9F39IxFmFK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RzjdZ0JF; arc=none smtp.client-ip=74.125.82.178
+	 MIME-Version:Content-Type; b=Oo6OPICykIvhO22KIkCllquCXlRy+d39D4SiPCHCzn0b2lli1sA7yA6fwFOXW8mqjeKWuclTEzBQkKe4kflYfAvUjwH3bk8T/cNJ7ISvPJW7XmdfuoWR4Rz8MUACo6m//BCGLtxvzKTvTZtbIKeYhlxOCdCd1M4pPLkIV4TAWgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UR+j0dcw; arc=none smtp.client-ip=74.125.82.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2c88992d77dso238194eec.1
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 17:39:42 -0700 (PDT)
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2ba895adfeaso6814915eec.0
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 17:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775003981; x=1775608781; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775003983; x=1775608783; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9pCNIYnvbijot8BuXxZwdBSIjs5gTuAaUWfD7Zd1qpw=;
-        b=RzjdZ0JFnwOri102cH94pgyHIGTjEheZ4jq9aQUdWUUhrBlEaiHuBV4ZYBnX4J/DEN
-         mAZu5PnYjYivMJK/Cry+Wcg3djV1kSRaJgdOMGFChz3DWvb1xC9FCzBpQBlVNp9T+Hi3
-         sZ27iqDsZjbEkI6Etj6BEeVMcSfF2jiyAqHoAAYfoiYvWgIaILGBidv8Kz1AwoEEtLjx
-         Fn1X0RxTHe0VsxTyjr+urz0hyHBHkv8UuBL5X4ZTgsoI43ws8DBa2Y5jqpshgBEOG0TU
-         wBOGqw8yJagKt+gGGG70oEDPcD2GKcvRuEPmduFF036bmaVEgbkWAA4Q1vr8u3dMG+hE
-         X3kQ==
+        bh=0/3ZOVQYuvF8/v5An1EVVsLN1VlAxvgYs14Kv3HQDNc=;
+        b=UR+j0dcwrEW7NoOEXqGZQ86ss5xP4Jo3RjFbTU1IQrpZNIufyEO3xV/VpvhYg4GJsy
+         SdumfMFjv0cF5U0XCyT1ho6TnzMO4XScts+yxbLeAGDI6/j6D72t82CccZLNNc2mXYFG
+         URV/R9JlSBYTc0Yvl9LP2+53ts0tAwJ3bFXwtRlRXD+beFDkmDu/ED+ZhLhhXsOeKNR0
+         3YsRulO7j4KAlmisjIGkgXsrSeNEqQ/6U//rdFFCOKeNQXlzxk848d5apQZlCDp25oAi
+         2JNfdjDfJdWHc985TvbmOUPV4ugCAoIWs47Z0yZ5W5UBbBODHDkobSNVbgdOcla25MO6
+         ETEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775003981; x=1775608781;
+        d=1e100.net; s=20251104; t=1775003983; x=1775608783;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9pCNIYnvbijot8BuXxZwdBSIjs5gTuAaUWfD7Zd1qpw=;
-        b=Ev8Kgc0qLQ/Jxc/4Oz98dtFBtJjo5zkCn+n5S/JXpEgX1wwDDoPVJzwfLKR6RUF7/x
-         m2CMXtitMZRn7BqIr0uUP56jJhBKFPfZBmhji7w7UNW/7VCbN0CCFkA3wCXrR35CcgpP
-         OPT/Aq8QVOp/jN15X/MWuGcfjqXL7O7remwhV4vmL3m2ElsevmqOtUuWtavJtWOclG+s
-         xDmaPKxQkOwocfciQwa/RYXMonue2BSIflZ8OHyXrLlpEvJEsFy5QBLWy/7Df4E5YpFC
-         hKv0giJ4OrAT7HeaFOtrOqnnNVnLahFoV0M5CwDCQothu+M3hfHdu6Dr1ScnSMXmNrXb
-         6F+w==
-X-Gm-Message-State: AOJu0Yzq7ItaCKTpWFUDC5WcLyt7ZIwIDXPm5WkAno5pB39rXmkdjuM/
-	dJX4wDv4V+lY5tatf1r7S+puaNPVbE26n7/uttKL3bJRd6R57CADFn4hCYBFbyCG
-X-Gm-Gg: ATEYQzziQ6+lOsgK9pwuxajHunPjzSA9wpB4oePP/rJH7B30oinG9V1Pv7QUl5jaCGD
-	qmGOaD1aEe4CasztCEeI4cLYdWyEyjgCZWdQ1dj5gnFuJDLr3BtwIpUK7tK6CoVMtLMjZfz27Mo
-	cyuKTCjco7cOHsyIMmsWVN/2fd3WH/OU9+WCTrE9z5VI134oareX3hBLXzQSJs7BkAQDcX66rXe
-	390yjymCd8N05FH+6OZORwJwykpxjHdiZ3Ny7GUp+n0oxjyEBmdfezS7Kz8Yg+7+9DbOA9SV2FE
-	YaX/jLy7KWTKY84jj+wsXyMhDieNg2WYoUqHlrrW5MrCOiTg/DsukPeXpoCLrlAYm7IHSJejhFg
-	xD0o/Wr75W66qewGpd9+4WbPumAksO44vafhRVBIeWnAylseTj3oxTO7w52MH71O2XhyFwaoJC2
-	qdb0BYp5I0frxgSF/KHvZGR/jllndvLwL+lOLCTnKeEY7GPRDWsjOCnS0=
-X-Received: by 2002:a05:7301:fa0a:b0:2be:17b1:e49f with SMTP id 5a478bee46e88-2c7baf442a2mr2983559eec.4.1775003981000;
-        Tue, 31 Mar 2026 17:39:41 -0700 (PDT)
+        bh=0/3ZOVQYuvF8/v5An1EVVsLN1VlAxvgYs14Kv3HQDNc=;
+        b=Tgnkqni9Mj4UlRnwG2PrMJzdP3XBy2WJr/+l1jn3NA9A73GK/NkGhu97jWX4sgnGwr
+         GY+Msb1kSaV6Z1CraKaGNYXRvRoTEm0VWGTtn7xccBU67fsPZgZ+PF5JPTRvmO/k4ogb
+         LHgB32pNXduMf862kjEIxGC1Fg+8rXXiGzDROeBo3e+miWtJTJsfRnKRuOy7MUCDkyL+
+         +TUARS+kvD4lxzBgsKsFr3AC6jKoFBTUjWe84jJYGbQ69BQTP6O6Trei5cNEdqNo0yQA
+         yAxFoOP5on0BEsmYG6JyT8EMQqNJ/TlhSfJYPfGPek/DDvgddnjiY0ADAPnKHx6yLemq
+         w7qg==
+X-Gm-Message-State: AOJu0Yy0a/BBw98xlAPWHAjnx0o/iq13SDzfIJgip3E6JDO1rLCkfMlW
+	fKRnyVDhIZTezNh+7tZ8bnjxNLKdMep4sj+96qFWLAaVTCYRd+F8/AI9ZYi+dqVm
+X-Gm-Gg: ATEYQzzLI93Y9oSgge9LvL0IP0lnzQZODt1EjbmSOZVAjMjLTveN9XZK+M6Nm4IPVGc
+	oz1BU6kp+b+L+aO2UNO/9DQ+9wPNtCprPYCFSM59c1JXb3Ws5iAUH53OtznWoMo5Cy6yew9WdDI
+	n9iISQGNSkGYJestz0tbBUEsiykX1CRrSZaiMgtDOG+82jhCRpvkNltKj3blWPwoM78lefQGo+Y
+	8LL7mrSKcFOMsRa3YIBOY6BdpsoyExsCuRftv+bNupjjUv6NDXIdQh9nHy9M4q7/oqOzYsO+ELu
+	c75TdmFW4H8Vuwv5aRSjrVeW1ksyLuGOvvFrZIUAl4GhMlagquQe7po5VDesM3SQCUdD1B+ukkZ
+	BAOZCDkHzz5e9d6ERjwGA83SbR6uS/S8IIjhv4DrZOUUQI+czkKz8B33ZZlGzFEuFwhgIn02IjV
+	QNSTtsyFJEUH0aOngnQef0LfNHqZHF88PjvopeIQ+S8osivfcTCKb9Hkw=
+X-Received: by 2002:a05:7300:fb8b:b0:2c4:b8d6:45ce with SMTP id 5a478bee46e88-2c932aae004mr813092eec.25.1775003982823;
+        Tue, 31 Mar 2026 17:39:42 -0700 (PDT)
 Received: from ryzen ([2601:644:8000:5b5d::8bd])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c3bd9894sm11543019eec.4.2026.03.31.17.39.39
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c3bd9894sm11543019eec.4.2026.03.31.17.39.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 17:39:40 -0700 (PDT)
+        Tue, 31 Mar 2026 17:39:42 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: stable@vger.kernel.org
 Cc: Alex Deucher <alexander.deucher@amd.com>,
@@ -97,9 +97,9 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
 	amd-gfx@lists.freedesktop.org (open list:RADEON and AMDGPU DRM DRIVERS),
 	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv2 for 6.12 07/10] drm/amd/display: Adjust DCE 8-10 clock, don't overclock by 15%
-Date: Tue, 31 Mar 2026 17:39:05 -0700
-Message-ID: <20260401003908.3438-8-rosenp@gmail.com>
+Subject: [PATCHv2 for 6.12 08/10] drm/amd/display: Disable scaling on DCE6 for now
+Date: Tue, 31 Mar 2026 17:39:06 -0700
+Message-ID: <20260401003908.3438-9-rosenp@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260401003908.3438-1-rosenp@gmail.com>
 References: <20260401003908.3438-1-rosenp@gmail.com>
@@ -116,11 +116,11 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232627-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232626-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -137,75 +137,52 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,igalia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DDCF3373386
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: BE79F373434
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 1ae45b5d4f371af8ae51a3827d0ec9fe27eeb867 ]
+[ Upstream commit 0e190a0446ec517666dab4691b296a9b758e590f ]
 
-Adjust the nominal (and performance) clocks for DCE 8-10,
-and set them to 625 MHz, which is the value used by the legacy
-display code in amdgpu_atombios_get_clock_info.
+Scaling doesn't work on DCE6 at the moment, the current
+register programming produces incorrect output when using
+fractional scaling (between 100-200%) on resolutions higher
+than 1080p.
 
-This was tested with Hawaii, Tonga and Fiji.
-These GPUs can output 4K 60Hz (10-bit depth) at 625 MHz.
+Disable it until we figure out how to program it properly.
 
-The extra 15% clock was added as a workaround for a Polaris issue
-which uses DCE 11, and should not have been used on DCE 8-10 which
-are already hardcoded to the highest possible display clock.
-Unfortunately, the extra 15% was mistakenly copied and kept
-even on code paths which don't affect Polaris.
-
-This commit fixes that and also	adds a check to	make sure
-not to exceed the maximum DCE 8-10 display clock.
-
-Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
-Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
+Fixes: 7c15fd86aaec ("drm/amd/display: dc/dce: add initial DCE6 support (v10)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- .../drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c  | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce60/dce60_resource.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-index 5dbe89d9b72d..6131ede2db7a 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-@@ -72,9 +72,9 @@ static const struct state_dependent_clocks dce80_max_clks_by_state[] = {
- /* ClocksStateLow */
- { .display_clk_khz = 352000, .pixel_clk_khz = 330000},
- /* ClocksStateNominal */
--{ .display_clk_khz = 600000, .pixel_clk_khz = 400000 },
-+{ .display_clk_khz = 625000, .pixel_clk_khz = 400000 },
- /* ClocksStatePerformance */
--{ .display_clk_khz = 600000, .pixel_clk_khz = 400000 } };
-+{ .display_clk_khz = 625000, .pixel_clk_khz = 400000 } };
+diff --git a/drivers/gpu/drm/amd/display/dc/dce60/dce60_resource.c b/drivers/gpu/drm/amd/display/dc/dce60/dce60_resource.c
+index 978c024c97ba..3f9ea4fdc7d8 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dce60/dce60_resource.c
+@@ -404,13 +404,13 @@ static const struct dc_plane_cap plane_cap = {
+ 	},
  
- int dentist_get_divider_from_did(int did)
- {
-@@ -403,11 +403,9 @@ static void dce_update_clocks(struct clk_mgr *clk_mgr_base,
- {
- 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	struct dm_pp_power_level_change_request level_change_req;
--	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
--
--	/*TODO: W/A for dal3 linux, investigate why this works */
--	if (!clk_mgr_dce->dfs_bypass_active)
--		patched_disp_clk = patched_disp_clk * 115 / 100;
-+	const int max_disp_clk =
-+		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
-+	int patched_disp_clk = MIN(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
+ 	.max_upscale_factor = {
+-			.argb8888 = 16000,
++			.argb8888 = 1,
+ 			.nv12 = 1,
+ 			.fp16 = 1
+ 	},
  
- 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
- 	/* get max clock state from PPLIB */
+ 	.max_downscale_factor = {
+-			.argb8888 = 250,
++			.argb8888 = 1,
+ 			.nv12 = 1,
+ 			.fp16 = 1
+ 	}
 -- 
 2.53.0
 
