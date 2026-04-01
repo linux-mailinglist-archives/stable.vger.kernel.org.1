@@ -1,299 +1,242 @@
-Return-Path: <stable+bounces-232803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCRQJDM/zWkkbAYAu9opvQ
-	(envelope-from <stable+bounces-232803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 17:52:19 +0200
+	id 6JIBKYVBzWkkbAYAu9opvQ
+	(envelope-from <stable+bounces-232804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:02:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64AB37D7D5
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 17:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C37EF37D9A2
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:02:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D76A31417C1
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 15:24:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CAFE315A094
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 15:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E261A9FA4;
-	Wed,  1 Apr 2026 15:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5133B0AD8;
+	Wed,  1 Apr 2026 15:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="e8ax/MdY"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="vdbB9F7z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0611740DFCA
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 15:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7669A3A9DB2;
+	Wed,  1 Apr 2026 15:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775057076; cv=none; b=cRJ8gZYHhzHFI5W0rpr8sO6tttJ3yyqRr0EB1K4QZEDY7KOUXtD+ZaEqVs6AP2I74sDs6CLpznwGo9ug00F9bFr1D9Oa2UIKKfKuV93JLy4s0jCAzUFytf4TEXwCVJpRZw4ejT9PQHRowzDgboyK3XwcJxg7XUdewNAAkePucnU=
+	t=1775057762; cv=none; b=FuzfXZeIBsl+CirQmmylNaZlTz3dpvO2LHao7+xZvpvAoWj51WOvCnN6o1MWXS0I1MidQNbX8woJckhq3nebBN5Zv5vo1RbEvLdCaUM8cn+wi/qh+XhLA8psUWGIx2J4LxK7oy6fKqLdFZu6tS9bPRbnQ1HEPF5RgzVYI4jdtgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775057076; c=relaxed/simple;
-	bh=cdD+wgRuXjA39RwUQeo/4YDq0oqGkXYeG7Ej6/FuoyQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=prM2Sq123/p6Q7zCUD+tht+dXmdRUIegU65rwusr7hJiBSlxKnGJ3cIlTdTkHJvIEWztEts9LVPPToABLIhVtJ2w8UTvyBYcEt9aEsJY3d0kiM451xufGgJDeuf8nlgLxmGb1UYVRSWNHioGg2I7VLHIWQVGTb6RFsiy3FNoerM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=e8ax/MdY; arc=none smtp.client-ip=45.157.188.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fm80m2KyGzLJd;
-	Wed,  1 Apr 2026 17:24:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1775057064;
-	bh=e5MNM0KUrcE5binQPopBDgEVbpfbHrjOv+qqhnLbFRw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e8ax/MdYGOL4QyzxMzO3lCvQj4Egx8f6K9s6pcqZeEHLuHU/SvQlAATHsKU3dzun6
-	 FB2rCMpcZ8Ez8UeMoAcpcR7Fwuu62NGIjNjblJ5k5zprSk+pRnfkgHoYFgfSCIcgoy
-	 aGZv6F2MHLVeewBGWw+k8SWbx/uroOROAE8p7haw=
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fm80l51CgzXjB;
-	Wed,  1 Apr 2026 17:24:23 +0200 (CEST)
-Date: Wed, 1 Apr 2026 17:24:19 +0200
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Tingmao Wang <m@maowtm.org>, 
-	Matthieu Buffet <matthieu@buffet.re>
-Subject: Re: [PATCH 6.12.y 2/9] landlock: Fix handling of disconnected
- directories
-Message-ID: <20260401.Ahd4leZ5Dix3@digikod.net>
-References: <20260324140456.832964-1-harshit.m.mogalapalli@oracle.com>
- <20260324140456.832964-3-harshit.m.mogalapalli@oracle.com>
+	s=arc-20240116; t=1775057762; c=relaxed/simple;
+	bh=62fiRzIlB0LuN2BoHoHtPdkZTJJ0p6SufQDIUY7eSro=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=U9Rpvl5BPuUrHpQCuhTSkRgHdtTXwevuaDRrr57tU/fRGvINF1MpnI8LifHqLibepkakM0D5uYnr/P8zImRG1wic2D5wNb7ZP0Nkz9mI7XQKDu+zK3yYA5LiSU4n6HCC5vfKJ/FDNUCOqwaDcd5iZGCgPjNb7eyyvwJAITapj+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=vdbB9F7z; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [100.93.44.16] (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D5D7BE4E;
+	Wed,  1 Apr 2026 17:34:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1775057675;
+	bh=62fiRzIlB0LuN2BoHoHtPdkZTJJ0p6SufQDIUY7eSro=;
+	h=From:Date:Subject:To:Cc:From;
+	b=vdbB9F7zHabSQcfi7ZBO4x70vJI4suGHMXB/GRd32COapSwpnLWdkp8QArjeYgNCf
+	 mcwo1oKmDxBeMqhljCXIr1VyW8ojSgaa6yjNMNOME5A+WKBJ+o29zkTq/AXVAMPGZW
+	 OOWGjXOZ+HDLntUtbSaM2nIg3xC8nh13+S/NB1Kc=
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Date: Wed, 01 Apr 2026 17:35:37 +0200
+Subject: [PATCH] media: rzv2h-ivc: Wait for frame end in stop_streaming
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260324140456.832964-3-harshit.m.mogalapalli@oracle.com>
-X-Infomaniak-Routing: alpha
-X-Spamd-Result: default: False [-0.99 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260401-ivc-stop-streaming-v1-1-b7599982c280@ideasonboard.com>
+X-B4-Tracking: v=1; b=H4sIAEg7zWkC/x2MQQqAIBAAvxJ7TrCNEvtKdDDbbA9paEgQ/j3pM
+ jCHmRcSRaYEU/NCpMyJg6/StQ3Yw3hHgrfqgBJH2fed4GxFusNVEcmc7J1AqzWiUqscJNTwirT
+ z80/npZQPwTjivmQAAAA=
+X-Change-ID: 20260331-ivc-stop-streaming-2c992277b050
+To: Daniel Scally <dan.scally@ideasonboard.com>, 
+ =?utf-8?q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5297;
+ i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
+ bh=HBtx5Ghb1fuQs0BuDtBLc5AqBUj4s1eusjaVua2vYCA=;
+ b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBpzTtdNQjZkdljoMmJGmPGD5LZFvoPOuCpBNBOx
+ 3Yt/VgW2cmJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCac07XQAKCRByNAaPFqFW
+ PHYzD/9af6mK4uuN4jtatUOnw67FxXbHGXTpV7XMVcgqJy41/7YWfSRPA58zWFXIuwXK1FSlEp0
+ oWoYHcpyhO1ygYVJ+MfdeilYNrWvdklcnvRJWiB/9CZ4zmQUwhJ8amFBsBlNfV9HUM9eGUbenq4
+ n7G7nXFbSgDOfjDKa+vlFi81HXcbnUfXLueFuPHlPytuhACzJ1JABDEvkok1NPoC1lyDVFovqMx
+ uoytE1jyGbk8oxxP0f2/u663YqktQiIJH4gMozRUdyqYU3J05dNK9s4igvBsZZD1ILvdC6P2M4W
+ YhKs2W8D/9z2ffVjiXUPb4p0wAkNLLCud2sbrK0q4hJP1ztXAnQATv8rxVi2q9HenVPCx9EHpKK
+ fktXlZcLL0bK19p1sB8p9S+FkvGCre6o03c0rsOWB7ejAdY2ag647POfMwL/bYetXQRssLtBNdA
+ jQyVZ2ZZE6Oqg7ZgrigAIRK53ASrmnEA0tUe4sfEOWwkkFac55tjK4yCNKrXpl15kbaVIRLavOG
+ CUJFlArLaHSFp4J2hOuIb6MypIK9wisoIFP4JaPE7oXi2fQnsaZ6/OssZFfvYTb0jH/8Yp/lETw
+ j4gTq1hZXM4o9AlW6k0NjoaaMCH6GHW/45M+5ZYPriDM+15TQAmgAL3eKE0ZlPeeGXL6yVlT7Lv
+ clxYA5ohymZH0Gg==
+X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
+ fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.67)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232803-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[digikod.net:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232804-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[digikod.net];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco,renesas];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: A64AB37D7D5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,10bit:email,10bi:email]
+X-Rspamd-Queue-Id: C37EF37D9A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Thanks Harshit.  BTW, the following commit should also be backported
-(and it was specifically created to ease backports): 6803b6ebb816
-("landlock: Fix cosmetic change").
+From: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 
-The current patch should be backported down to 5.15, but it needs to be
-adapted.  Harshit, I can work on it, please let me know.
+The rzv2h-ivc driver fails to handle back-2-back streaming sessions that
+do not go through a peripheral reset. As the driver uses an autosuspend
+delay of 2 seconds, it is quite possible that two consecutive streaming
+sessions won't go through a suspend/resume sequence.
 
-I'm wondering why I didn't get notified that some Fixes patch couldn't
-automatically be backported.  Greg, is there some way to register for
-this kind of issue?  What are the rules to not automatically backport
-patches?
+If the peripheral is not reset the second streaming session hangs and no
+frames are delivered to the ISP.
 
-I also noticed that other Fixes commits were not backported to stable
-branches whereas they can be cleanly cherry-picked.  I'm also wondering
-why they weren't pick.
+This is because the stop_streaming() procedure implemented in the driver
+doesn't match what's prescribed by the chip datasheet:
 
-FYI, here are the ones that can be backported without needing changes:
-- 602acfb54119 ("landlock: Optimize stack usage when !CONFIG_AUDIT")
-- 60207df2ebf3 ("landlock: Remove useless include")
-- 7aa593d8fb64 ("selftests/landlock: Fix missing semicolon")
+1) The chip manual suggests to poll the RZV2H_IVC_FM_INT_STAT_STPEND bit
+   of RZV2H_IVC_REG_FM_INT_STA instead of polling on RZV2H_IVC_REG_FM_STOP
+   and prescribes to clear the bit after polling has completed
 
-They should all be backported, even if they look like cosmetic fixes
-(because they might be needed for other fixes/backports).
+2) More importantly: the RZV2H_IVC_REG_FM_STOP_FSTOP bit has to be set
+   on RZV2H_IVC_REG_FM_STOP -only- if a frame transfer to the ISP is in
+   progress. Setting the RZV2H_IVC_REG_FM_STOP_FSTOP bit when no frame is
+   being transferred causes the polling routine to timeout and the next
+   streaming session fails to start
 
-Here is the other one that needs to be adapted:
-- e4d82cbce225 ("landlock: Fix TCP handling of short AF_UNSPEC addresses")
+As a frame transfer of an image in 1920x1080@10bi takes 5 milliseconds
+at most, it is quite possible that the frame transfer completion interrupt
+races with the stop procedure.
 
-Thanks,
- Mickaël
+Instead of forcing a frame transfer abort, simply wait for the
+in-progress transfer to complete by polling the ivc->vvalid_ifp status
+variable in an hand-rolled loop that allows to inspect the variable
+while holding the spinlock, to allow the irq handler to complete the
+current buffer.
 
-On Tue, Mar 24, 2026 at 07:04:49AM -0700, Harshit Mogalapalli wrote:
-> From: Mickaël Salaün <mic@digikod.net>
-> 
-> [ Upstream commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1 ]
-> 
-> Disconnected files or directories can appear when they are visible and
-> opened from a bind mount, but have been renamed or moved from the source
-> of the bind mount in a way that makes them inaccessible from the mount
-> point (i.e. out of scope).
-> 
-> Previously, access rights tied to files or directories opened through a
-> disconnected directory were collected by walking the related hierarchy
-> down to the root of the filesystem, without taking into account the
-> mount point because it couldn't be found. This could lead to
-> inconsistent access results, potential access right widening, and
-> hard-to-debug renames, especially since such paths cannot be printed.
-> 
-> For a sandboxed task to create a disconnected directory, it needs to
-> have write access (i.e. FS_MAKE_REG, FS_REMOVE_FILE, and FS_REFER) to
-> the underlying source of the bind mount, and read access to the related
-> mount point.   Because a sandboxed task cannot acquire more access
-> rights than those defined by its Landlock domain, this could lead to
-> inconsistent access rights due to missing permissions that should be
-> inherited from the mount point hierarchy, while inheriting permissions
-> from the filesystem hierarchy hidden by this mount point instead.
-> 
-> Landlock now handles files and directories opened from disconnected
-> directories by taking into account the filesystem hierarchy when the
-> mount point is not found in the hierarchy walk, and also always taking
-> into account the mount point from which these disconnected directories
-> were opened.  This ensures that a rename is not allowed if it would
-> widen access rights [1].
-> 
-> The rationale is that, even if disconnected hierarchies might not be
-> visible or accessible to a sandboxed task, relying on the collected
-> access rights from them improves the guarantee that access rights will
-> not be widened during a rename because of the access right comparison
-> between the source and the destination (see LANDLOCK_ACCESS_FS_REFER).
-> It may look like this would grant more access on disconnected files and
-> directories, but the security policies are always enforced for all the
-> evaluated hierarchies.  This new behavior should be less surprising to
-> users and safer from an access control perspective.
-> 
-> Remove a wrong WARN_ON_ONCE() canary in collect_domain_accesses() and
-> fix the related comment.
-> 
-> Because opened files have their access rights stored in the related file
-> security properties, there is no impact for disconnected or unlinked
-> files.
-> 
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: Günther Noack <gnoack@google.com>
-> Cc: Song Liu <song@kernel.org>
-> Reported-by: Tingmao Wang <m@maowtm.org>
-> Closes: https://lore.kernel.org/r/027d5190-b37a-40a8-84e9-4ccbc352bcdf@maowtm.org
-> Closes: https://lore.kernel.org/r/09b24128f86973a6022e6aa8338945fcfb9a33e4.1749925391.git.m@maowtm.org
-> Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
-> Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
-> Link: https://lore.kernel.org/r/b0f46246-f2c5-42ca-93ce-0d629702a987@maowtm.org [1]
-> Reviewed-by: Tingmao Wang <m@maowtm.org>
-> Link: https://lore.kernel.org/r/20251128172200.760753-2-mic@digikod.net
-> Signed-off-by: Mickaël Salaün <mic@digikod.net>
-> (cherry picked from commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1)
-> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-> ---
->  security/landlock/errata/abi-1.h | 16 +++++++++++++
->  security/landlock/fs.c           | 40 ++++++++++++++++++++++----------
->  2 files changed, 44 insertions(+), 12 deletions(-)
->  create mode 100644 security/landlock/errata/abi-1.h
-> 
-> diff --git a/security/landlock/errata/abi-1.h b/security/landlock/errata/abi-1.h
-> new file mode 100644
-> index 000000000000..e8a2bff2e5b6
-> --- /dev/null
-> +++ b/security/landlock/errata/abi-1.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +/**
-> + * DOC: erratum_3
-> + *
-> + * Erratum 3: Disconnected directory handling
-> + * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> + *
-> + * This fix addresses an issue with disconnected directories that occur when a
-> + * directory is moved outside the scope of a bind mount.  The change ensures
-> + * that evaluated access rights include both those from the disconnected file
-> + * hierarchy down to its filesystem root and those from the related mount point
-> + * hierarchy.  This prevents access right widening through rename or link
-> + * actions.
-> + */
-> +LANDLOCK_ERRATUM(3)
-> diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-> index f0e94cb74fca..a26199568db2 100644
-> --- a/security/landlock/fs.c
-> +++ b/security/landlock/fs.c
-> @@ -899,21 +899,31 @@ static bool is_access_to_paths_allowed(
->  				break;
->  			}
->  		}
-> +
->  		if (unlikely(IS_ROOT(walker_path.dentry))) {
-> -			/*
-> -			 * Stops at disconnected root directories.  Only allows
-> -			 * access to internal filesystems (e.g. nsfs, which is
-> -			 * reachable through /proc/<pid>/ns/<namespace>).
-> -			 */
-> -			if (walker_path.mnt->mnt_flags & MNT_INTERNAL) {
-> +			if (likely(walker_path.mnt->mnt_flags & MNT_INTERNAL)) {
-> +				/*
-> +				 * Stops and allows access when reaching disconnected root
-> +				 * directories that are part of internal filesystems (e.g. nsfs,
-> +				 * which is reachable through /proc/<pid>/ns/<namespace>).
-> +				 */
->  				allowed_parent1 = true;
->  				allowed_parent2 = true;
-> +				break;
->  			}
-> -			break;
-> +
-> +			/*
-> +			 * We reached a disconnected root directory from a bind mount.
-> +			 * Let's continue the walk with the mount point we missed.
-> +			 */
-> +			dput(walker_path.dentry);
-> +			walker_path.dentry = walker_path.mnt->mnt_root;
-> +			dget(walker_path.dentry);
-> +		} else {
-> +			parent_dentry = dget_parent(walker_path.dentry);
-> +			dput(walker_path.dentry);
-> +			walker_path.dentry = parent_dentry;
->  		}
-> -		parent_dentry = dget_parent(walker_path.dentry);
-> -		dput(walker_path.dentry);
-> -		walker_path.dentry = parent_dentry;
->  	}
->  	path_put(&walker_path);
->  
-> @@ -990,6 +1000,9 @@ static access_mask_t maybe_remove(const struct dentry *const dentry)
->   * file.  While walking from @dir to @mnt_root, we record all the domain's
->   * allowed accesses in @layer_masks_dom.
->   *
-> + * Because of disconnected directories, this walk may not reach @mnt_dir.  In
-> + * this case, the walk will continue to @mnt_dir after this call.
-> + *
->   * This is similar to is_access_to_paths_allowed() but much simpler because it
->   * only handles walking on the same mount point and only checks one set of
->   * accesses.
-> @@ -1031,8 +1044,11 @@ static bool collect_domain_accesses(
->  			break;
->  		}
->  
-> -		/* We should not reach a root other than @mnt_root. */
-> -		if (dir == mnt_root || WARN_ON_ONCE(IS_ROOT(dir)))
-> +		/*
-> +		 * Stops at the mount point or the filesystem root for a disconnected
-> +		 * directory.
-> +		 */
-> +		if (dir == mnt_root || unlikely(IS_ROOT(dir)))
->  			break;
->  
->  		parent_dentry = dget_parent(dir);
-> -- 
-> 2.50.1
-> 
+With this change, streaming back-2-back without suspending the
+peripheral works successfully.
+
+Cc: stable@vger.kernel.org
+Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
+Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+---
+As detailed in the commit message, re-starting a streaming session
+without going through a peripheral reset doesn't currently work.
+
+I initially thought this is because the stop_streaming() procedure
+implemented in the rzv2h-ivc driver does not comply with what is
+prescribed by the chip manual.
+
+So I went and modified it according to the manual.
+
+Unfortunately, even by following the suggested procedure, once
+RZV2H_IVC_REG_FM_STOP is set and a forceful frame transfer abort is
+started, the RZV2H_IVC_FM_INT_STAT_STPEND bit takes a long time to
+clear, during which is most often times the case the current in-progress
+transfer completes by itself. If this happen, then a peripheral
+reset is required to restart streaming regardless if I forcefully clear
+the RZV2H_IVC_REG_FM_STOP_FSTOP and RZV2H_IVC_FM_INT_STAT_STPEND bits.
+
+I have tried several strategies to properly forcefully stop an
+in-progress transfer and handle the potential race betwee the
+transfer-complete irq and the polling the RZV2H_IVC_REG_FM_INT_STA
+register (which could potentially sleep), but it's still quite easy to
+get races between frame completion and the forced stop procedure unless
+I hold on to the ivc->spinlock preventing the irq handler to run.
+
+Once I timed the transfer time for a 1920x1080@10bit frame to 5 milli-seconds
+at most I decided to simply wait for the current in-progress transfer to
+complete, as this seems the most reliable way to be able to re-start
+streaming without resetting the peripheral.
+---
+ .../platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c   | 31 ++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+index b167f1bab7ef..932fed38cf3f 100644
+--- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
++++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+@@ -297,12 +297,33 @@ static int rzv2h_ivc_start_streaming(struct vb2_queue *q, unsigned int count)
+ static void rzv2h_ivc_stop_streaming(struct vb2_queue *q)
+ {
+ 	struct rzv2h_ivc *ivc = vb2_get_drv_priv(q);
+-	u32 val = 0;
++	unsigned int loop = 5;
+ 
+-	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_STOP, RZV2H_IVC_REG_FM_STOP_FSTOP);
+-	readl_poll_timeout(ivc->base + RZV2H_IVC_REG_FM_STOP,
+-			   val, !(val & RZV2H_IVC_REG_FM_STOP_FSTOP),
+-			   10 * USEC_PER_MSEC, 250 * USEC_PER_MSEC);
++	/*
++	 * If no frame transfer is in progress, we're done, otherwise, wait for
++	 * the transfer to complete.
++	 *
++	 * Transferring a 1920x1080@10bit frame to the ISP takes less than 5
++	 * msec so sleep for 2.5 msec (+- 25%) and give up after 5 attempts.
++	 */
++	for (; loop > 0; loop--) {
++		unsigned int vvalid_ifp;
++
++		/*
++		 * Inspect the ivc->vvalid_ifp variable holding the spinlock not
++		 * to the race with the rzv2h_ivc_buffer_done() call in the irq
++		 * handler.
++		 */
++		scoped_guard(spinlock_irq, &ivc->spinlock) {
++			vvalid_ifp = ivc->vvalid_ifp;
++		}
++		if (vvalid_ifp < 2)
++			break;
++
++		fsleep(2500);
++	}
++	if (!loop)
++		dev_err(ivc->dev, "Failed to stop streaming\n");
+ 
+ 	rzv2h_ivc_return_buffers(ivc, VB2_BUF_STATE_ERROR);
+ 	video_device_pipeline_stop(&ivc->vdev.dev);
+
+---
+base-commit: 4fbeef21f5387234111b5d52924e77757626faa5
+change-id: 20260331-ivc-stop-streaming-2c992277b050
+
+Best regards,
+-- 
+Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+
 
