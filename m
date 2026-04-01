@@ -1,283 +1,250 @@
-Return-Path: <stable+bounces-232731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6P55Er3gzGm0XAYAu9opvQ
-	(envelope-from <stable+bounces-232731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:09:17 +0200
+	id yE3eOJDgzGm0XAYAu9opvQ
+	(envelope-from <stable+bounces-232732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:08:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AE63774B1
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:09:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9B7377482
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 11:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 34BCD30F384B
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 09:03:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DD64A304065C
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 09:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B192720B80B;
-	Wed,  1 Apr 2026 09:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555F33A9DB6;
+	Wed,  1 Apr 2026 09:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zcaaiwif"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PbLhz+r7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EADC3CE4B2;
-	Wed,  1 Apr 2026 09:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775034182; cv=fail; b=rGg0ikGj9Pudm6M4yTkhCcyI2W0rT0G8D/iqLC2ArruXmoUF57uB+tsyRcF3la44xsFq9cZ5ia2+ZVl8ksRnF+gqW3xq+4o/8Dv2l3GEq2jkYGa9jTWWuUMAXzs5uklPQk7hcl8ja3aJZOgE6CJk1eYriB6SvKuSr+QWo0dKe5Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775034182; c=relaxed/simple;
-	bh=dSKom2dLB0Jv15z3cmQjNbLWze1geEpuM9y3wqkNEgg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gROfY0ezfLAEKCLUzKpdY5x2hJnhT1SKufaX4C64C/a8etF+9gbLiv6h7dgm7HEe/d5JCXVugfbdCwbgJX08RAF/S4Hl+CRUGfUV4rU/EnxDJu1i+maqgJTiAGS6oOXHn3H2iPpL6J9p6yDc+q2h2jmA4sQT7ie7wOqNnGPSq4k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zcaaiwif; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775034178; x=1806570178;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dSKom2dLB0Jv15z3cmQjNbLWze1geEpuM9y3wqkNEgg=;
-  b=ZcaaiwifKzjx1k4FhUmGeX+XfQlomGwy8Y5FOK/hK4R/8Espe21bDb+R
-   33gfIYtdgJiuxtr2Pj6YwP0XF/tWOYLI4XVTSYwUiSeCQSn1hV+YKBfzG
-   kkHbH0fvpQW6iS5cliJeDgG/NpzpBSOZ53B561LPyjNYh8WMzI07yRCD2
-   DOwuWtiJ8pvIvL0ku1qexIRK1sKzz2GFq7mp57IMBy7mPYEZZTq9UPxqI
-   PAphq/a9rIF3ln4QpPSWdKgo1l1Kty9M9dET5TPFnOME8fa1m2klDk5SH
-   zZ2eLytBY1EYj9+auyx6+1qf/xOH9y8ZJyecGiC1+dFqn2gSLiUIY1M9E
-   Q==;
-X-CSE-ConnectionGUID: lyd5YFMBQYWOdtKTTf0S+Q==
-X-CSE-MsgGUID: Gzld7ZwFTzqZUqHEKut3eQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="75237980"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="75237980"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 02:02:56 -0700
-X-CSE-ConnectionGUID: lA/liTR+TPKkEb3Z/ngD3w==
-X-CSE-MsgGUID: zfv4B/iSQCujbMm2GtBqrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="264548812"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 02:02:56 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 1 Apr 2026 02:02:55 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 1 Apr 2026 02:02:55 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.51) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 1 Apr 2026 02:02:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TQZ+YV9lZbFckfaOyYzUsqCczzFzG3d31SumtM7lBfeqKV28w5AFFqumLrIriSG0vOYVHTJlX43MOExM6NY3g3At40tLbXW6wA/4OsFQe9/aO2axAN0cmoW3PY9ZgL/g3mSogowmmOkhKh1zLFwJFZ1JZB5WhCjZXFn6qG7Myj7940uXocq+zwsFh2TcTUic8UupkHdoorfJNYQ9NcCpKpVAQiWIvPiNbkCyfyNMl3PAaPCiSQHyvFB9aeSuabk9aoWLf41qIu4V9Yk00ZgUNCdgucwN9cWlHoP80AigRkI4syxOCWcbRIu30j1NjuvGNiZWAklBkFVKrS4rjG+B4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/vlkRb01YPTKzxybumB0nfxBLcZisv4HS81hB0P6p38=;
- b=SE60ojo1GMwx4RUXIIFKjhNV2ylZcade7sDPEGisM2fBKOtqXX31nECHi8yYehLQM/4ffdrteYs6ahcjUYJB0WYBXGk5jXhv94Nc/Ea7qRc8Q4NsqQKbTpQR1PXtYXo/AXXAHj6E9O4J4lFWckrPlBLReCJVKW2q3qFo5a5S0xhYXm8nV43KTu5JU/QvMkYenBmgzb/gjEKjGEQOjy0bYoJxMy1DspDuYTY2/x1gsAMSUEmH48mpeoznCpiYKWycKoyxzYA3I//pLN7Eg1P3skId6LrbYYHreB+0SfL8tQg/UAbPzQZtANiRq6I1ZsD3N+Sx+tTNZXfIFhs6wSwD2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com (2603:10b6:208:574::12)
- by CY8PR11MB7778.namprd11.prod.outlook.com (2603:10b6:930:76::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.16; Wed, 1 Apr
- 2026 09:02:45 +0000
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::37b4:37a9:4f3:518b]) by IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::37b4:37a9:4f3:518b%5]) with mapi id 15.20.9769.011; Wed, 1 Apr 2026
- 09:02:45 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: "Liu, Yi L" <yi.l.liu@intel.com>, "iommu@lists.linux.dev"
-	<iommu@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: "dwmw2@infradead.org" <dwmw2@infradead.org>, "jgg@ziepe.ca"
-	<jgg@ziepe.ca>, "Tian, Kevin" <kevin.tian@intel.com>, "joro@8bytes.org"
-	<joro@8bytes.org>, "will@kernel.org" <will@kernel.org>,
-	"robin.murphy@arm.com" <robin.murphy@arm.com>, "baolu.lu@linux.intel.com"
-	<baolu.lu@linux.intel.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, Joao Martins <joao.m.martins@oracle.com>
-Subject: RE: [PATCH v2 1/4] iommu/vt-d: Block PASID attachment to nested
- domain with dirty tracking
-Thread-Topic: [PATCH v2 1/4] iommu/vt-d: Block PASID attachment to nested
- domain with dirty tracking
-Thread-Index: AQHcwC2TWknzYZj1oU+OjBg9H+IVFbXIQbeAgAGcnlA=
-Date: Wed, 1 Apr 2026 09:02:45 +0000
-Message-ID: <IA3PR11MB91369A30961F34A25A5E1EC69250A@IA3PR11MB9136.namprd11.prod.outlook.com>
-References: <20260330101108.12594-1-zhenzhong.duan@intel.com>
- <20260330101108.12594-2-zhenzhong.duan@intel.com>
- <2c664395-72b2-4436-b60a-3ba2e73eaf95@intel.com>
-In-Reply-To: <2c664395-72b2-4436-b60a-3ba2e73eaf95@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9136:EE_|CY8PR11MB7778:EE_
-x-ms-office365-filtering-correlation-id: c4969a51-60fe-4419-c919-08de8fcd70da
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700021|56012099003|18002099003|22082099003;
-x-microsoft-antispam-message-info: CCByTp2Hyo7JfNFMUGFBOiKknL6WyYDk4LPtgEAeSwlULuc99fjJhejQLEIxcjijOaGPmZelJ7zFAXINQJMV65hFpBY5mV8ycLqhTc+D8ssk585JgmyioUykyFcwwo0L7kLGC0Pdij4zv4eVRevDVJTLZ3eOd5pDxt38PacTY4GusMS/hxP9dzqaRd/cXmz6KAgK8xqzL922keyADhm9uH9qY/4KCMgEIAAeyb10b5fBaTk9iaxPgJpIO2R4NHZ8zAqCHhJuRHYZjF0h8eDlisK34QhKtqUDM5g6aXElo6/w3FgD58GWCz5x5kKDiEskX2EDES8/XirmNc+yby3K1BKoi+x4TvAmxLSjAW5BgNpHsYZqWOr+j3SU2Kc5AwGUokvbOTToNGlZ8blp4lhwTQUwrQnzrON+//UsNhjQ1Zj8fly9B4zjzJC7SHKFeoHdclaTVwRNq/22clwjXnR+P7WayfwkwjwX2u9UBDizEztyxCpntKJDvuZgVboSjG0lHamhpHUcz/RfrM786UBf2b7O749uU6tjMbFjRFSi66I+Flyla+2XrN0WKo52sv6qooEKXmHuIhQDh+eVdDQ7TWOy9PN6E1IzBQ7WMiw8xdCC9Gk5bER2JfWs1Gl+YEbFw3cGp158xr17PMQU2E2AtUb5ZWRKboBeBgN3ihQnvZAgSEnbYGxLULEETCNiRajNS4n3D8xBAV/8ybKYH/vN1aksD2JQf9wiUxMVwOIzg7D7PUM8wfNSsWSxAYFALZYcrlq7NrqafzfgPZzrrgm7jd1NmYnGrcrawJTlgpGYvEE=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB9136.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?FXMsKRToYA5uUu4Kh2c7SjxyJm2mDUhJP6wBO84X5AM1/Oea9ckwpz1YF2Gt?=
- =?us-ascii?Q?8Jv8ODP3pWkZn+ZIewrj+83gybvIEliGVE490TtebHDPPoK1H1AKKTmxSaYx?=
- =?us-ascii?Q?pOPYRAGJ+8vaHoI3ugj/IqyZivweg38dakDfZI0D5jH9yY+HNPHdaaSTWylh?=
- =?us-ascii?Q?rOhwTzis4JPxC7531UfDF113fNJN/r4PgIuEvinpX1oKeSCtsvbiG87FKLks?=
- =?us-ascii?Q?fIBKj7kpgxq9OfKooit+LxLTXiZhuyNoy3QMEmbSgZng4BYOlFANRGcWUPGv?=
- =?us-ascii?Q?8NwBTq7wZfwpNSv5++EGWbxZwnlk5dG4EQLGaOmAbcekRbCetWNp78BUPIlY?=
- =?us-ascii?Q?TIyXY68GWQLe9abPBBK+jcgBWIXzQLQ7mBplHLvH+FHkhVXyDX0YBD2VvWq9?=
- =?us-ascii?Q?/+0CYinhIDM/jgEybt9+RhpNmuO9mBOSArZEBhUz6/x/pif06vQ/ZEdM+qaa?=
- =?us-ascii?Q?7esEycZSC8fazZugbfAdtQMWisBeDKj8yokAgYh81hVAQqPO9aiGESzWcuEZ?=
- =?us-ascii?Q?1kMSxMaX4RXHfLqEVyLLb75U8giChFEul56MLeb0CYY/qZRtlxJdVb0xVMlO?=
- =?us-ascii?Q?P5UgrTW1QRl0m1b1tQLu1sq8FIpEJq2cvWnbM1DlIVqudZGshuwNnp/ofAsW?=
- =?us-ascii?Q?Z4xC3+IAKkbTlw+zzFf6OCqLP8czVg5D6XupBwfxDaMrw/IBChGhIPT9G7MW?=
- =?us-ascii?Q?FnOY7x2d40aH9RldtJXfF6d/VHoUBD/QY6GsPPimwY1EG9RGPM8cVT14OcVy?=
- =?us-ascii?Q?s8acmk2Tgtam8tNTwl09h+pvk+KL2WiORDGscILhIcWAv17oXcSrFFe6wvpq?=
- =?us-ascii?Q?mZXchOtbeLfkUxulFSPnM0oF37Fo3FJPbsEVmctWm7ABUoasyj4OJQn7hc2l?=
- =?us-ascii?Q?fOM6MNXCNzbjVkXEl7YnUn2YWcdDHyeiekOjnP8kBNMl2WzjN+rTqfAUssgG?=
- =?us-ascii?Q?JsrUBxi1ZfJ2HzIQVVTjroO7wBIlUOaZz39u/bAppKlS1ViRQl5iDAk6F2mZ?=
- =?us-ascii?Q?f3Gky8WpxtNGqCwsymc5gWCIiD60sNTLPYzJ8TOCblhKH1JaQu5+UBcoxYRs?=
- =?us-ascii?Q?KI0jwvzs0ljM+oQmaOCWv7d0N8iPg9wf0QUTZd/izkSn5qOTF6OlZwLq0u73?=
- =?us-ascii?Q?3KrTzuarYYAKLYUxtMFlcxqHr/IrfnkOPwZFF5se/sSvyP3yITUmoAMwS+op?=
- =?us-ascii?Q?uIHi1+O34rsE+DB4Zk5cTMghiIyVqOeYAP3r0xOvVvo/2xsaNuYbDrYrsiaW?=
- =?us-ascii?Q?FeIMJIu/matV4RFsWtzumg1wotO5IsoaFSHsR1sI1WGFjWmpl7deUQ7QyoR/?=
- =?us-ascii?Q?AuUxkwA4P4ziuhVD3TK90OdS9MmdAno9eYFELGZVbu+ONwmIsDXiEwxSrRnx?=
- =?us-ascii?Q?rcRbyZVRJ1Qn15zwVJCWm8sY4QCLzz8utg5Om4Gch2lymHJKfAvvM2lLHzNP?=
- =?us-ascii?Q?cOizy+Sh9FAojCyRiUOPQQGs8Ev/Xv9S0LPTEOhHTCu2IeYe5tHH2xokH7Gh?=
- =?us-ascii?Q?VkW8IhSLI1s7FdBpBxukAMaJexx4B1S25HsrDCOgm0iaOImqw7C2biXQpop7?=
- =?us-ascii?Q?rHDzC/cnmpDKDCMis0Whja8EEvjBagQ1zO7AwpPulP1jiOookcbA6UrG7QNu?=
- =?us-ascii?Q?itUewoh7YSmbEfN1w3bGjbLFgXlg6nGjvULgP4+Gjq7hFCpopMDKZdix2R4P?=
- =?us-ascii?Q?DvR4FdM1HgmXg95rLFyq5PcNLCuiIJ/AvYPu2U5ZDE3Nk21S8V4wwdEjOifp?=
- =?us-ascii?Q?aUp7Vgl9eQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C9636E477
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 09:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775034505; cv=none; b=RTMZ9afWcOknh9mK5l23pGO3cFLOjDKMlTyYFgAnXjdwkMIuozSiNiAfcjtJ/IyELLRXSdE0TCPf96gseUjk8oSwx5HI4c5RfdCjSZ2++sjQTmO8uLGqykcdo4h9EI4ajo2L1Ni4vsZxcecHEYAVuBEmaO9TspLQy/CQhPm3/tw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775034505; c=relaxed/simple;
+	bh=HE8l2eFMGZGC/yaUGKtrjGzh0jGajyAP126vVz0cl28=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jS65bXcI2W6nrohJMWAFF6+VM0NgyfDum740AYcdL/i5ibyJ6qUAY2PcG+y6iH4EdO111EzzC+9FWP7mNr7oqrmG8t8Tr6Bg6z2D2NfxlaPhGBy5gCYS5m/UJZ5JSnbMfSSKDayFJPFrTutbKf0ERGENp2WvwbYQZyXsGuWB9II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PbLhz+r7; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-487012ce896so40840235e9.0
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 02:08:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775034501; x=1775639301; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=KMaIiVr+f/hE5SivT8e6i4Zfgwziv+JOGWcyYdrol2A=;
+        b=PbLhz+r7sHJdsQQ6vGoPWr9F/keBT1mytDZbs6hvwiCDpoz9vSlmwhoIfMhjqThwCX
+         Nsh34gK9n4YUxRkGTOnhOo5jvQk2JR0wj+R8V8HMj8qS07Wa4eRtF/tHuNDZtztvfn6f
+         rPvV3pFFXFap/wssDoBikKbqpAi4b7WoUp3zhOyyZRcGiPvV3pzfc2Gxk5Lapjm0gViy
+         nUmi2wankBWC2+FoXi3CGCxW/tw7pdDxbuBIpL+y8nqjcQwYooZUivmaQn0sKR/MJn1g
+         iJqfm7lKG3mf5XM51h/dTNWu/QW02LXsXL78seXPuqni737qqro0bzOToLqgBMFk6uff
+         1Mtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775034501; x=1775639301;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KMaIiVr+f/hE5SivT8e6i4Zfgwziv+JOGWcyYdrol2A=;
+        b=NHG6yOl6045p9upWks/ByANGWsDYfdZ3MuO2LG+77DIIVyGI2rKnuRRgXU2Oor3t24
+         pZ/dcu+uhtRQofe0+aUl9JOidQ0GAHJyRkkSb5clHOS4Oa+cefRxPwtRAMo8Ngh4TyQf
+         IhBAnWy6a3cWlSpDFe83o6vxPuLtT6CcM8Wws1o8YMF1NbeDpNP7Setn3mK9Gi6/8cLG
+         Wdlvb8MYlpEnzNxCYM/s87kQeOyvazSLHfYFdARvvL+yeXtupVWlilawIjFXZQyEpgTG
+         EKD6Q67Bl0Emjmpk6K3Eucm5sTZLncdG/uyikgn9+DWXfg7cpz+8HNLjhvw4OhJ8JzoJ
+         V9iA==
+X-Forwarded-Encrypted: i=1; AJvYcCWuGEbkY7fIsVKT6rvOPks+Hqm+B0uV8w/JrbzZ+4kpXKahJYxtWZgvl52lnNTpFM47EhGwYZM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxx3rX3enNhp6+T8TOERreG5K4o2t0DS2UB/rQgOSk2edSCwTQc
+	eQe3LZN92Wf7cNnfMyDPOUBsr6hsLoc8h4EpuhlrolNLN1oAJiGjsaDQtGWv2KjgAiE=
+X-Gm-Gg: ATEYQzxtzXewYuu5oERarYqbFSW0QGvz1N0AQBiCA8AcPGrIo+hbv9vX4w9nrbrw3tD
+	b/C7bJKt+cz5hX+K5zjbjZAbdORzjvQdF+g/Aa5GXpNBu2U4NtYOAHcTDV1ueFlqIZrKJ4jiDYt
+	mvb83Ypw9n1HIU/h8Ag3XfSROHt5o9TRaLasAOCYV7X6Lt0korJZx6sLJa6UalKhxZVYofMQfc7
+	biYQEFHYnWDp2Bj+ydP8ITXJMRrm0IZfYHHbevb80ZlIvpyGlBQaxsQT7i0mllKslHUwGggaV6z
+	oCss9lO9H5g3u0BUoN/aYvl6x1RyE/ySqGtsatpkT3ltW/YSjTxRB+p933YrWy9x7apQVTgQWUJ
+	u+KstBtsTbCMt5GYYxt7RiDtpXxCgF28AYCPboBGxS03nBalBYrn8Ec50DiTz5OnSifhjg/b3+M
+	saN5A8iB9pUNo2DyPtlPAfm8Q7f/FmrZAE6q2787gPtkNnRWwzsTaIprIoEcyjmA==
+X-Received: by 2002:a05:600c:4594:b0:485:3b00:f93b with SMTP id 5b1f17b1804b1-488835cd3bcmr45259145e9.31.1775034501270;
+        Wed, 01 Apr 2026 02:08:21 -0700 (PDT)
+Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b25ca51aefsm82227135ad.16.2026.04.01.02.08.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Apr 2026 02:08:20 -0700 (PDT)
+Message-ID: <4259c965-af46-4fb6-b7b6-514e11f34bc8@suse.com>
+Date: Wed, 1 Apr 2026 19:38:14 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: cMJQ1vJMyhlxC0HSl9y8steXkvNXEqy1Fvy/41z2BW1ZqPaS8A19SiOcmJIhRxFd+9GWeIbpLkliSbpGAuagEGI4vxK0aiEf0H8oNjWFDhqLYY2CopIShaanR82eok8EnNxBczUd72ykQbRNxzNI6KQBWln0Gqy3gsOYS35KNbmJqgXSgxvz7+RMSal9ykLHB5BwQkukzBsidV3lkv+VNjIRkXnJxtl5NswfVznw39FBriOA1SS/BeARm3GQYs/0Ln7PN05HudaObJ62DsN9r9AKOGDcSUOiu8JncHsEpZCS/yfsokIFi7GTq+3+vGQ/zS2PrgdmPCgBX0i4SRJ3lg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9136.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4969a51-60fe-4419-c919-08de8fcd70da
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Apr 2026 09:02:45.7579
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: p1HnquRBnDnW6E10spCVR0nxOIrKq9Ejaxw4NdzmfqGqx2+zGt113IzoDhV4hmRN41NtXUzbLvM994S5/kKDpbqDJanxXPJzJAlBvOb+u4o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7778
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] btrfs: fix double free in create_space_info() error path
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Jiasheng Jiang <jiashengjiangcool@gmail.com>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260401031339.1418417-1-lgs201920130244@gmail.com>
+ <aa8c074d-fdce-460f-a9b7-8644880eebb5@suse.com>
+ <CANUHTR_ZgLHj8COyE8S_J+nqUUunxMTH9TcOMsDuN=Y1hPXPEg@mail.gmail.com>
+Content-Language: en-US
+From: Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <CANUHTR_ZgLHj8COyE8S_J+nqUUunxMTH9TcOMsDuN=Y1hPXPEg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232731-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhenzhong.duan@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[fb.com,suse.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232732-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[suse.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: B1AE63774B1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,suse.com:mid]
+X-Rspamd-Queue-Id: 8B9B7377482
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
+> 
+> So the call chain I had in mind is:
+> 
+> `create_space_info()`
+> -> `btrfs_sysfs_add_space_info_type()`
+> -> `kobject_init_and_add()`
+> -> failure
+> -> `kobject_put(&space_info->kobj)`
+> -> `space_info_release()`
+> -> `kfree(space_info)`
+> 
+> and then control returns to `create_space_info()`:
+> 
+> `btrfs_sysfs_add_space_info_type()` returns error
+> -> `goto out_free`
+> -> `kfree(space_info)`
 
->-----Original Message-----
->From: Liu, Yi L <yi.l.liu@intel.com>
->Subject: Re: [PATCH v2 1/4] iommu/vt-d: Block PASID attachment to nested
->domain with dirty tracking
->
->On 3/30/26 18:11, Zhenzhong Duan wrote:
->> Kernel lacks dirty tracking support on nested domain attached to PASID,
->> fails the attachment early if nesting parent domain is dirty tracking
->> configured, otherwise dirty pages would be lost.
+Please add those two parts into the changelog.
+
+Otherwise the current one fix is good to me, for this particular call site.
+
+> 
+> So my concern was that after `kobject_init_and_add()` has been called,
+> the cleanup is already handed to `kobject_put()` /
+> `space_info_release()`, and the later `kfree(space_info)` in
+> `create_space_info()` becomes a second free.
+> 
+> If my understanding of the `kobject_init_and_add()` failure path here
+> is incorrect, please let me know. I may be missing something.
+
+Furthermore, there is a similar bug in create_space_info_sub_group() and 
+all other locations.
+
+Personally speaking, I do not like the idea of releasing the space_info 
+through the callback at all.
+
+It breaks the common scheme where who allocates the memory should free 
+it, now we have different handling before and after 
+kobject_init_and_add(), which is causing all kinds of problems.
+
+But I'm afraid that's the way we have to go.
+
+Thanks,
+Qu
+
+> 
+> Thanks,
+> Guangshuo
+> 
+> Qu Wenruo <wqu@suse.com> 于2026年4月1日周三 12:34写道：
 >>
->> Cc: stable@vger.kernel.org
->> Fixes: f35f22cc760e ("iommu/vt-d: Access/Dirty bit support for SS domain=
-s")
->> Suggested-by: Kevin Tian <kevin.tian@intel.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>   drivers/iommu/intel/nested.c | 6 +++++-
->>   1 file changed, 5 insertions(+), 1 deletion(-)
->
->Good catch. Just one nit. I think the below fix tag is more accurate. SS
->dirty was merged before PASID attachment. So this fix should be
->backported since the first PASID nested domain attachment.
-
-Oh, I see, thanks for sharing the history.
-
->
->Fixes: 67f6f56b5912 ("iommu/vt-d: Add set_dev_pasid callback for nested
->domain")
-
-I'll leave it to Baolu to decide if he want a respin or will pick this dire=
-ctly.
-
-BRs,
-Zhenzhong
-
->
->Reviewed-by: Yi Liu <yi.l.liu@intel.com>
->
->> diff --git a/drivers/iommu/intel/nested.c b/drivers/iommu/intel/nested.c
->> index 2b979bec56ce..16c82ba47d30 100644
->> --- a/drivers/iommu/intel/nested.c
->> +++ b/drivers/iommu/intel/nested.c
->> @@ -148,6 +148,7 @@ static int intel_nested_set_dev_pasid(struct
->iommu_domain *domain,
->>   {
->>   	struct device_domain_info *info =3D dev_iommu_priv_get(dev);
->>   	struct dmar_domain *dmar_domain =3D to_dmar_domain(domain);
->> +	struct iommu_domain *s2_domain =3D &dmar_domain->s2_domain-
->>domain;
->>   	struct intel_iommu *iommu =3D info->iommu;
->>   	struct dev_pasid_info *dev_pasid;
->>   	int ret;
->> @@ -155,10 +156,13 @@ static int intel_nested_set_dev_pasid(struct
->iommu_domain *domain,
->>   	if (!pasid_supported(iommu) || dev_is_real_dma_subdevice(dev))
->>   		return -EOPNOTSUPP;
 >>
->> +	if (s2_domain->dirty_ops)
->> +		return -EINVAL;
->> +
->>   	if (context_copied(iommu, info->bus, info->devfn))
->>   		return -EBUSY;
 >>
->> -	ret =3D paging_domain_compatible(&dmar_domain->s2_domain->domain,
->dev);
->> +	ret =3D paging_domain_compatible(s2_domain, dev);
->>   	if (ret)
->>   		return ret;
+>> 在 2026/4/1 13:43, Guangshuo Li 写道:
+>>> When kobject_init_and_add() fails, btrfs_sysfs_add_space_info_type()
+>>> calls kobject_put(&space_info->kobj).
+>>>
+>>> The kobject release callback space_info_release() frees space_info,
+>>> but the current error path in create_space_info() then calls
+>>> kfree(space_info) again, causing a double free.
+>>
+>> Can you give an example call chain of where such space_info_release() is
+>> triggered?
+>>
+>>>
+>>> Keep the direct kfree(space_info) for the earlier failure path, but
+>>> after btrfs_sysfs_add_space_info_type() has called kobject_put(), let
+>>> the kobject release callback handle the cleanup.
+>>>
+>>> Fixes: a11224a016d6d ("btrfs: fix memory leaks in create_space_info() error paths")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+>>> ---
+>>>    fs/btrfs/space-info.c | 2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+>>> index 3f08e450f796..d7176eb2fcbf 100644
+>>> --- a/fs/btrfs/space-info.c
+>>> +++ b/fs/btrfs/space-info.c
+>>> @@ -311,7 +311,7 @@ static int create_space_info(struct btrfs_fs_info *info, u64 flags)
+>>>
+>>>        ret = btrfs_sysfs_add_space_info_type(space_info);
+>>>        if (ret)
+>>> -             goto out_free;
+>>> +             return ret;
+>>>
+>>>        list_add(&space_info->list, &info->space_info);
+>>>        if (flags & BTRFS_BLOCK_GROUP_DATA)
 >>
 
 
