@@ -1,223 +1,162 @@
-Return-Path: <stable+bounces-232692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIaDOXeozGl3VAYAu9opvQ
-	(envelope-from <stable+bounces-232692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 07:09:11 +0200
+	id GBLjHzmszGnNVAYAu9opvQ
+	(envelope-from <stable+bounces-232693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 07:25:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45AB374D22
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 07:09:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141B7374E09
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 07:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD17D302C56C
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 05:09:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7249C301DF74
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 05:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE80734DCD9;
-	Wed,  1 Apr 2026 05:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D29337F744;
+	Wed,  1 Apr 2026 05:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bLlwu4hx"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Pg41CzKL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A98A2C237C
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 05:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB52337BA1
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 05:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775020143; cv=none; b=WtXFhxOCAeQxIFrCr6uStP95YinXuPGvPH4XhtKIso65OAu68g9812VYeV08LFHdcogaosSc/L3njIyHbVK6qxuRz20kKeN3ynucVCDreoinJ3E3V0iD7Q0JkZ3LNE9ypgE6BslEO8dyjL7KDOeS9WOHKdLW9uJoKunJ6eG1UmA=
+	t=1775021110; cv=none; b=H6j9wiFbCVgpnbjpI4p0S+2/JwjBq/AbntkisDY/9UQez7zlJgSH1SV572b5wUIfqqiqruNSNGRW28LJKSCnHJoMeG08DYKiTdEQkh31jNkkinP9nq1S4lKafa7PAwhjPprBUoRdSE/wVrmgbSuwN18rzRXcf06IKw8E9PA5r20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775020143; c=relaxed/simple;
-	bh=0iOuv2Jk9x6VT70uTCLFtSjtEKSW2vWQw9+L9R9XNyw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBY+5kyPkPn1FlKJBYTvtSoo4XYKnI8ptIrrbdrZyJvs7kRGrfJQrjyJAlk8RuzJVuTaqXSPKaIwpRNlYp1RFY8qr80nEzaJcEQoKFEq71Jlb+pNU69PLDksCygl+Q6vFfGKa6acZrhwK/40lSVz0mEKL36Ss4W1lGMCXTjAKvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bLlwu4hx; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-467161c4a1cso2161431b6e.3
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 22:09:02 -0700 (PDT)
+	s=arc-20240116; t=1775021110; c=relaxed/simple;
+	bh=mPOkvhBm+3qBPW5ESLd17mxXryn+8LaX+fwIs4v0bTI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z28rh+iQv+bUtnJ3QdNeQWRNa3ue7rgX/JBzuhZJQF80Tt+KDXv3T8dXIp1rJskNLpMnZRDBAMT7bZDVD9iTc0gs4K/tADnwc67NLSHqtW5cwkGOgp7o8R7xOnfrszLkYU4RlMftMBNHAYs/MFdr2DN1dyAApcyIXH2VsmtXjMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Pg41CzKL; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43b8982c2f4so3213222f8f.2
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 22:25:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775020141; x=1775624941; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x4ImYOWTG5LWu2AjZ0ViLWPRevzakMzCKB1uXh/hzS0=;
-        b=bLlwu4hxGnKqbqM3eyubQnFER89IlaGgRcUnqrI3u7d3Oi4KXavH5J9s3gjmjAZYWw
-         Kf8xNdcikqXnhqBediZGmSWMrUbYorEwtm/JGWHVLFLTukMxNVPldH6gMSX8LMtFTS6d
-         iXEt9znnUcx8rPaq4Q4RpbUuoFcYpzcnGWg9YJ0u4zF9PC+3xxj03/itaohjENy3Xr7I
-         8Z7SfvzSGH8MOWRge2gl0USsMduw3o+CseJvqqnuP7UMAN4LSFmRKyWhyWblME7cMULV
-         hqsOSfhCvpO5hntuuH3aLT1CJ4CA9kYU0F3iraJbBsFiquSfZMmjQFZyfVXUcms2MBQ2
-         oFow==
+        d=googlemail.com; s=20251104; t=1775021108; x=1775625908; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Uq+oX1D4A8za2quMJgs8dN6OHnBRay6++qyZCC4PMCw=;
+        b=Pg41CzKLzGq/c7cj2ErZptKy7OfGJy7MZ36tBX/dZhs31tBN8ph0lLmoZSZFE/kuDB
+         AfclmcSctBkt1BFXoSmEREn9xUd219iIRXO1aKMqgIzZShGj0zcmwOzvoiOv/IUjtRNU
+         bjUMWBUYtKScQzhkSYz6H6x7xgMP6ha2ggUNROyDbKt5osr51sdzvZK812ph7SdygF75
+         /J0DMPe+37SC3MwMq1b/LhXmioB7x47h5hAwtQwNgkInQdZ8kW+Lnx1gr1Zd9imxro2f
+         zjkEALB20DNqX8MwuVUO6rBigh4ivoFG3r0DrUQigDIGZoWemjCZBx2cimmot4ncAWfd
+         Wnpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775020141; x=1775624941;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=x4ImYOWTG5LWu2AjZ0ViLWPRevzakMzCKB1uXh/hzS0=;
-        b=Px/R5D6XZkGdp8XoSNoeYpDhqm/2RH2ncQj/tVFGHjOaZu7m50e3Kox/vIsog7AMHb
-         /x1WBUeeh8+r2wrEw3zuq22Bj5Y39D+6MYUSdViFE0agw2Y9xn18HcVjuknyejtjCJLf
-         Hqk1eyntZaiehVlnbt+tfZ8MYBOo8+u9/tvGqi4E170kGQGVK3V64M9uRb73QoZ+P2F4
-         j2aauPHSELCTZIrjClQZhNQ8huvcs72j//gLCStagWVAKS5SCYAXiN16QJ2fPdr8XdoQ
-         7QOdAZ/tTokmE7KK+z+7VgwKtDHYfcoAFLlaDAYwfTZUysxNyAQvivPGYzj9cRuWzpi7
-         qZSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVtNwu+K2QSinPC0IS/m2LYxtcpW6MunJ140lgGqhinugfBkDt1hZOCZ2lReuplRsCgUW96Hs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyp2TA97CwezuOkDh3Lvn0M0kyvj0KihlR4mbavOdIWeeZ6c+iJ
-	++c4uCIeizsqjdpCPUiw9OJmejfggHrYwW718yoiO1I4lXndLSQjU93E
-X-Gm-Gg: ATEYQzyXX2Rujr8tO7JkWSg2sOnrCvO4ZD3zoNp135lbuDnx9TUJoGq3kkFlmnoFlNa
-	/4P1u4fLVvV957qz4NhiCRrV8uY+rxZPi8STEJutiphUAn6rqRRoYe2OoNVmu7mpFHOH1Oz1ake
-	HJOQtoVLym9fhiYKV5sqSX7N0/0ZFt+QQDr5kCRAKF+KdLDpdydVkSi0W1XxdYsWIfSKol+Tl9U
-	9jd4Ypoi/X71YnMwDzDVSnjERhDmsuZCXH9cjCC+IQmKtCuqnn8OyxSRTsRQeFT9UozUtoJOuJC
-	Bpj/JzpYZ5wjliZYNsXX1+lNfj+md2MRhs4vkAEkxR7y5LllCjd4vJAJWp8wmikYgHWNtbIQd65
-	f0tLWnbY9SSSNwJywFJkiEIm+AVwmE+nAto1R7iIi6BWMGzW/4NHA5ED2LRKD7VxIZURa+PDtlT
-	Rzax4xkeFZkcPTTUU7B8a9MkW6K3R5G5NZxsu0JY49osOsLEEN59QdpYxJ5I0ERKrFbHYyx0cz+
-	MFN
-X-Received: by 2002:a05:6808:670a:b0:468:12a9:d54e with SMTP id 5614622812f47-46ae01a4d6bmr1037751b6e.44.1775020141070;
-        Tue, 31 Mar 2026 22:09:01 -0700 (PDT)
-Received: from CS-396-Lab-Machine.. (c-24-12-10-127.hsd1.il.comcast.net. [24.12.10.127])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-46aa0efdb75sm8015785b6e.13.2026.03.31.22.08.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 22:08:59 -0700 (PDT)
-From: Tyllis Xu <livelycarpet87@gmail.com>
-X-Google-Original-From: Tyllis Xu <LivelyCarpet87@gmail.com>
-To: haren@linux.ibm.com,
-	ricklind@linux.ibm.com
-Cc: nnac123@linux.ibm.com,
-	sukadev@linux.ibm.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	ychen@northwestern.edu,
-	Tyllis Xu <LivelyCarpet87@gmail.com>,
-	Yuhao Jiang <danisjiang@gmail.com>
-Subject: [PATCH v2] ibmvnic: fix OOB array access in ibmvnic_xmit on queue count reduction
-Date: Wed,  1 Apr 2026 00:08:45 -0500
-Message-ID: <20260401050845.1388145-1-LivelyCarpet87@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAJsYhQJm4mW1FHu2d=Pf8PfFyBWZA43QHpQ2esc0Cfuqqehh4w@mail.gmail.com>
-References: <CAJsYhQJm4mW1FHu2d=Pf8PfFyBWZA43QHpQ2esc0Cfuqqehh4w@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1775021108; x=1775625908;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Uq+oX1D4A8za2quMJgs8dN6OHnBRay6++qyZCC4PMCw=;
+        b=WtF+uCOi+qjlT+ZphF6dYyrTegNDezXrz5k+JriUIvYTVJpnWwU97GEqeWwY5HeZTu
+         KoR4SJMYs5SIl9A0FCB7Oh4qcoaXpHmBzyoS0zcKWjj7wY4/vNkag5aEFBI5MWwRmHTr
+         Ax8zPvGWXPWAkt3eYoN5prTSt8WYgYcDPfXjbtgqKg1ngx4G7TD8Xz+Kv6skvGgFKN8s
+         UqTlUxhHivBwkhQp38F1hIZiigkt/dOGZTAD1UuuMiocCJPakVMu27RX780violPFP9j
+         0eg4njoqW96bDJmZ/LHNgI3uE+kzFnpbSIkL4Rz5NOgFlF6BM4oor9ty5N3XOVU0+3/J
+         m2tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmrShCkUgNLckWwVwkjy3uUOJ4gz6Ev8/ZmF9jn6Cj9d3D9eR9hD7jJLZveidsmSEerwtxoaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywe2mS+Dems2uAQcArDnEJye1+CTm5jb2iO5DetGiC0QO/MGBlR
+	mP3haSX9nqc4Ec4DT04DRh7yhR0JryDOkeifqC1thpQS0t8D1BCmwog=
+X-Gm-Gg: ATEYQzwR5rrzvy1KcHiei75v2wpgeH0Zzl3Lm2KIOQY57nmyMxPGbZK6QquqJgoTZb/
+	Ngt4CdvphbSdh9ig8nXgMCcxJmOBK0W+yfGy9BFVjLQ8yyDl2ep3Cw9EIsbwhVfSm4M6DNNuBU2
+	W9r2x69lblBEEmvu7iqMSZYKmrhF35XTR0GSuWVlAnISsepMLyu68N+z0TlqVOdlUvW3oiN8PQy
+	2xOp+BBzVmrOQNqwDKT8RfAZEwB3tBohkPI2qmXsuccMj4ncgeIauyNM1gOJRopHydQRN4lYAC4
+	2fR1Q3cNpxvfw9h8YfxerAPNVuf+cjSXQMfV6gQjn9XXx0xClDMPOzjDFjI0SEudJ5DDg6hKsFC
+	NV/+Dz6eHVF58qzSFml41gA+24Pmunz02494h1BtgFOaRhqAhJv0LfTN4XwPoDg6fl+gaKD76Vb
+	ytiP8BYvK6FCEppIIyn9fi61fGa3CbsMUg/YltBGzeFtrStzG38qF4z46DwHjRUGfP9kNg8BTFW
+	g==
+X-Received: by 2002:a05:6000:2307:b0:439:c299:4d8f with SMTP id ffacd0b85a97d-43d150ab9f6mr3833908f8f.17.1775021107783;
+        Tue, 31 Mar 2026 22:25:07 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057048.dip0.t-ipconnect.de. [91.5.112.72])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf1db08e6sm46557659f8f.0.2026.03.31.22.25.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 22:25:07 -0700 (PDT)
+Message-ID: <fc84377e-7cde-4260-8655-20009be4cb82@googlemail.com>
+Date: Wed, 1 Apr 2026 07:25:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.18 000/309] 6.18.21-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260331161753.468533260@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,davemloft.net,kernel.org,redhat.com,google.com,lunn.ch,vger.kernel.org,northwestern.edu,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-232693-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-232692-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[livelycarpet87@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E45AB374D22
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:dkim,googlemail.com:mid,mailvelope.com:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 141B7374E09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When the number of TX queues is reduced (e.g., via ethtool -L), the
-Qdisc layer retains previously enqueued skbs with queue mappings from
-before the reduction. After the reset completes and tx_queues_active is
-set to true, netif_tx_start_all_queues() drains these stale skbs through
-ibmvnic_xmit(). The queue index from skb_get_queue_mapping() may exceed
-the newly allocated array bounds, causing out-of-bounds reads on
-tx_scrq[] and tx_pool[]/tso_pool[].
+Am 31.03.2026 um 18:18 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.18.21 release.
+> There are 309 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-The existing tx_queues_active guard does not help here: it is set to
-true by __ibmvnic_open() before netif_tx_start_all_queues() restarts
-queue draining, so stale skbs pass the check with an invalid queue index.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-Fold a bounds check against num_active_tx_scrqs into the tx_queues_active
-guard, reusing the same drop-packet handling. Since tx_stats_buffers[] is
-allocated for IBMVNIC_MAX_QUEUES entries (not just num_active_tx_scrqs),
-all drop paths can safely fall through to the out: label's stats update.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Also move rcu_read_unlock() to after the per-queue stats updates, as the
-RCU critical section is already large and releasing it a few instructions
-earlier provides no practical benefit.
 
-Fixes: 4219196d1f66 ("ibmvnic: fix race between xmit and reset")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
----
-v2: Fold the bounds check into the existing !tx_queues_active guard rather
-    than adding a separate if block with unlikely(), reusing the same
-    drop-packet handling (dev_kfree_skb_any + tx_send_failed/tx_dropped
-    increments + goto out). Remove the dedicated out_unlock: label;
-    tx_stats_buffers[] is allocated for IBMVNIC_MAX_QUEUES entries so all
-    drop paths can safely fall through to the out: stats update. Move
-    rcu_read_unlock() to after the stats updates per maintainer suggestion.
-    (Rick Lindsley)
+Beste Grüße,
+Peter Schneider
 
- drivers/net/ethernet/ibm/ibmvnic.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 5a510eed335e..d5c611c3d9ec 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2444,14 +2444,15 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	 * rcu to ensure reset waits for us to complete.
- 	 */
- 	rcu_read_lock();
--	if (!adapter->tx_queues_active) {
-+	if (!adapter->tx_queues_active ||
-+	    queue_num >= adapter->num_active_tx_scrqs) {
- 		dev_kfree_skb_any(skb);
-
- 		tx_send_failed++;
- 		tx_dropped++;
- 		ret = NETDEV_TX_OK;
- 		goto out;
- 	}
-
- 	tx_scrq = adapter->tx_scrq[queue_num];
- 	txq = netdev_get_tx_queue(netdev, queue_num);
-@@ -2663,14 +2664,13 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 		netif_tx_stop_all_queues(netdev);
- 		netif_carrier_off(netdev);
- 	}
- out:
--	rcu_read_unlock();
- 	adapter->tx_send_failed += tx_send_failed;
- 	adapter->tx_map_failed += tx_map_failed;
- 	adapter->tx_stats_buffers[queue_num].batched_packets += tx_bpackets;
- 	adapter->tx_stats_buffers[queue_num].direct_packets += tx_dpackets;
- 	adapter->tx_stats_buffers[queue_num].bytes += tx_bytes;
- 	adapter->tx_stats_buffers[queue_num].dropped_packets += tx_dropped;
--
-+	rcu_read_unlock();
- 	return ret;
- }
-
---
-2.43.0
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
