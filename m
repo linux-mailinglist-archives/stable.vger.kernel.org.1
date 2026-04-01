@@ -1,293 +1,165 @@
-Return-Path: <stable+bounces-232658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NKXBTeMzGlXTgYAu9opvQ
-	(envelope-from <stable+bounces-232658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:08:39 +0200
+	id t8B8DnyNzGnVTwYAu9opvQ
+	(envelope-from <stable+bounces-232659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:14:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B207037423D
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:08:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F67374267
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D0243039FC3
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 03:07:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A49DF301E9A0
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 03:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8877725393B;
-	Wed,  1 Apr 2026 03:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D57C36DA14;
+	Wed,  1 Apr 2026 03:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zNBhwqk0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UwecOi1B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B253B3242AB;
-	Wed,  1 Apr 2026 03:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62176FBF
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 03:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775012841; cv=none; b=P+767GDMdr3s1Fqe/e/fu7eRscd7quFNjmkbY6YGt8FgI3icj8NriZm2fUY6H0odq9HGvUGtfJET77twxUHeYdskgnws/7yuYH2QCyWwTgyLYyOs+/WugshyQxlKB990adgl3pzqsUs/EBKpUrL95XgwuN9EHXrmDe7fkDzMOVY=
+	t=1775013233; cv=none; b=GFZzZLJarnP8IOt7BLlfS4w+GSp5+dddj7cHe/7eFzrf9swsunehbWYc3YQaKBr8GTNyKel16x6EBqNGgHWlA+B/Ctil6JJ3nFoBHiKjZVfM1Y7xpZ5wcf25KKXkc27ufOpIcnrswxsE7siQwg+HO9TeCkfBw2HVrVMkpHapc0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775012841; c=relaxed/simple;
-	bh=Ms4HYCvfXIWD00rm1B7vS4V3YzQH5ZXl7/tfxZpDXQc=;
-	h=Date:To:From:Subject:Message-Id; b=u4G6HlHcDx91N4+3MGjD0fB358IgrYijFed3tYqxG3N+tvzCGqBWxXld891eJ59XGwJ/znMHeK8w+l/CG36+xapi5g8ZAEKQBidytXGsp0JqCg3IKyUQqM/ixlArw5mVMte/5zPewWe+PZ+78VporxivWKPbbb8QIzZjIV79pcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zNBhwqk0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2690DC19423;
-	Wed,  1 Apr 2026 03:07:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775012841;
-	bh=Ms4HYCvfXIWD00rm1B7vS4V3YzQH5ZXl7/tfxZpDXQc=;
-	h=Date:To:From:Subject:From;
-	b=zNBhwqk01F1n+Bk9hInuY8gAkdwHsj2WF27+d0sK6L5IGcxCVTnYnaY84l6BVL414
-	 0Zokp59Pbak1rpNs+SIuQ0oFUWkKE5qWuS95eJQVPUuarCP7TUWIBbJ+LyvGIfGpSu
-	 6v69Vp8yz/kLguijTodErwfs7smvfxhTETPrRxPE=
-Date: Tue, 31 Mar 2026 20:07:20 -0700
-To: mm-commits@vger.kernel.org,wang.yaxin@zte.com.cn,thomas.orgis@uni-hamburg.de,stable@vger.kernel.org,fan.yu9@zte.com.cn,bsingharora@gmail.com,cyyzero16@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + tools-accounting-handle-truncated-taskstats-netlink-messages.patch added to mm-nonmm-unstable branch
-Message-Id: <20260401030721.2690DC19423@smtp.kernel.org>
+	s=arc-20240116; t=1775013233; c=relaxed/simple;
+	bh=3qmKi+7NGTPmsMSzwTSl7l4uTJjqFPzwWq1vjBmZtio=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PIC7T0GeD0YJRgQXguOIZq0aIXD+G2QGo7zM4lJOSBQ0uFg04D25m0Z9IMM7p44b6c4XrwBerdi+ioYWnmJ9QcvZ+teGI8OX3ZnhgmUmbCE7mUoqWBznSGrIHi+0F4QGHt/ALcYIA5TOpwxQzSvUUFHl4ygUncUzmKjJ0r46B4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UwecOi1B; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35691a231a7so3880325a91.3
+        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 20:13:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775013230; x=1775618030; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BfmezofCFYRgZ5OFemKApUxmmUyvqX/ZDRNGUel5g18=;
+        b=UwecOi1BkDsrv7hCzMJqB2BGQHO+1WvQqkufTt5CXODXslXsz+4WtnMUleRJzkh33Z
+         +o2rjx5HR2qXZJRupu8+hD//e9iGbtwpwjQrH1w/7Rcryp1R1wZrY3NoYnLhmSsMUxmC
+         COsVTUj3/ux6SLUPNOkd+dWm7b2TZTGNqhaOD/f3UTBsfJRIZzDceuBVZ5KaGOR+CWWq
+         52Ay+i5IvmSasj4cY+pS7hE4p6Y5dmdNsogDHiN+LUSljN0JAEH3JuPg5oP9teXPNOfe
+         umlJU/02wF53yYY1PAeiac+75Kbh71QWNPSgIpAcO5LECd+Crscv3/YklLpH86neyaX3
+         seHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775013230; x=1775618030;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BfmezofCFYRgZ5OFemKApUxmmUyvqX/ZDRNGUel5g18=;
+        b=n6Y7S4kKX198PzxBMSPuvXE5rfLnc3EIXAs8H/GckOCvUKJKsgbmmdPMrgLtHQPLnP
+         SoJgnGJtTfEoDylhm3PyeaesDVNM0p9ye0Egx62/HI8a/UsIzCIVk4XTpBlU1OxyY4qH
+         rI+SXUniAL74Z72WMz/dnLuSyRh6J3y6t+xcWPX40qb2bC7cZNBnnqsIGwrUWn8+YClS
+         hOMvIdoLnPDveo/jrre2uuex621QFlHMBd/CQtEiwZZkYubiOs6vlG2CslKsXQTNjxO9
+         ojPYFLvT+T4aFwV0J4zcRfr1FqUGMw0GQuzV0A+daXcv4sfxEbmG7J1CJXIEfVp/RtOl
+         tk2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWfEL/sW6nhlE28o9GewJRMBHAFse1ZOfubeKHxW4+dudTUlqYM4OOyB3qmPzen8/4Azq2V5Z8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZqw3bnJ4OHlXR5ytb8YkLPFS7ObAD+PHjIGIyFJjFck+FEyQT
+	HGznjqG1c4jfksMaJwGBQjVPhlljj7HFFoNH+sq+JHITfya1sOmNNJVR
+X-Gm-Gg: ATEYQzz47kC5cq8d3r/r4cP4b33C6AA3+abxLo+ZraU4q9OLCfDnlUnAVSLWJeCG4AH
+	IYhYO8p0gBN9v6jEEEg/+bD3MSzA+4Fs8OX73dWYQcf0yNe5GrOfw1v4ycTiZDvtZHZu0L58UWg
+	AbnwJbnWSfdSafpm+8QpO7rmKGUv1lfdprM/GG4IAgB/VPXbcaYByFFPCxwFgBhilG2oWMyGyOp
+	UFJldrIAJ2JquZFtx3NtOq6NFlNxGU7cHgh9SnpfNtd8PBlCsUzXgVuSkn/UqPsgXNWu2Iz9AXU
+	mTlu8oOdO6p/qj6wKVdmhuJWUV95c236W2IBiZ9fH0MHwSzg9QyLle/0zcp2o+xjDZWFiv1uyqW
+	Pt725sLC2a3NNn92EguRP6bo0cpmddeunHCt9VmN5GQE4K3/t30n8SLcIwrSwbEvWfaFQhVTASf
+	0pbAXBRO8R/mWqBg5FRvKgtg==
+X-Received: by 2002:a17:90b:1350:b0:35c:b02:b5c1 with SMTP id 98e67ed59e1d1-35dc6e2d00dmr1661679a91.2.1775013229891;
+        Tue, 31 Mar 2026 20:13:49 -0700 (PDT)
+Received: from lgs.. ([2408:8417:e10:5f85:653:6a84:ffc9:685c])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76b986ec97sm1659337a12.30.2026.03.31.20.13.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 20:13:49 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Qu Wenruo <wqu@suse.com>,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: fix double free in create_space_info() error path
+Date: Wed,  1 Apr 2026 11:13:39 +0800
+Message-ID: <20260401031339.1418417-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232658-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,zte.com.cn,uni-hamburg.de,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232659-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[fb.com,suse.com,gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,uni-hamburg.de:email]
-X-Rspamd-Queue-Id: B207037423D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C7F67374267
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+When kobject_init_and_add() fails, btrfs_sysfs_add_space_info_type()
+calls kobject_put(&space_info->kobj).
 
-The patch titled
-     Subject: tools/accounting: handle truncated taskstats netlink messages
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     tools-accounting-handle-truncated-taskstats-netlink-messages.patch
+The kobject release callback space_info_release() frees space_info,
+but the current error path in create_space_info() then calls
+kfree(space_info) again, causing a double free.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/tools-accounting-handle-truncated-taskstats-netlink-messages.patch
+Keep the direct kfree(space_info) for the earlier failure path, but
+after btrfs_sysfs_add_space_info_type() has called kobject_put(), let
+the kobject release callback handle the cleanup.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Yiyang Chen <cyyzero16@gmail.com>
-Subject: tools/accounting: handle truncated taskstats netlink messages
-Date: Mon, 30 Mar 2026 03:00:41 +0800
-
-procacct and getdelays use a fixed receive buffer for taskstats generic
-netlink messages.  A multi-threaded process exit can emit a single
-PID+TGID notification large enough to exceed that buffer on newer kernels.
-
-Switch to recvmsg() so MSG_TRUNC is detected explicitly, increase the
-message buffer size, and report truncated datagrams clearly instead of
-misparsing them as fatal netlink errors.
-
-Also print the taskstats version in debug output to make version
-mismatches easier to diagnose while inspecting taskstats traffic.
-
-Link: https://lkml.kernel.org/r/520308bb4cbbaf8dc2c7296b5f60f11e12fb30a5.1774810498.git.cyyzero16@gmail.com
-Signed-off-by: Yiyang Chen <cyyzero16@gmail.com>
-Cc: Balbir Singh <bsingharora@gmail.com>
-Cc: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-Cc: Fan Yu <fan.yu9@zte.com.cn>
-Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a11224a016d6d ("btrfs: fix memory leaks in create_space_info() error paths")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
+ fs/btrfs/space-info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- tools/accounting/getdelays.c |   41 +++++++++++++++++++++++++++++----
- tools/accounting/procacct.c  |   40 ++++++++++++++++++++++++++++----
- 2 files changed, 73 insertions(+), 8 deletions(-)
-
---- a/tools/accounting/getdelays.c~tools-accounting-handle-truncated-taskstats-netlink-messages
-+++ a/tools/accounting/getdelays.c
-@@ -60,7 +60,7 @@ int print_task_context_switch_counts;
- 	}
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 3f08e450f796..d7176eb2fcbf 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -311,7 +311,7 @@ static int create_space_info(struct btrfs_fs_info *info, u64 flags)
  
- /* Maximum size of response requested or message sent */
--#define MAX_MSG_SIZE	1024
-+#define MAX_MSG_SIZE	2048
- /* Maximum number of cpus expected to be specified in a cpumask */
- #define MAX_CPUS	32
+ 	ret = btrfs_sysfs_add_space_info_type(space_info);
+ 	if (ret)
+-		goto out_free;
++		return ret;
  
-@@ -115,6 +115,32 @@ error:
- 	return -1;
- }
- 
-+static int recv_taskstats_msg(int sd, struct msgtemplate *msg)
-+{
-+	struct sockaddr_nl nladdr;
-+	struct iovec iov = {
-+		.iov_base = msg,
-+		.iov_len = sizeof(*msg),
-+	};
-+	struct msghdr hdr = {
-+		.msg_name = &nladdr,
-+		.msg_namelen = sizeof(nladdr),
-+		.msg_iov = &iov,
-+		.msg_iovlen = 1,
-+	};
-+	int ret;
-+
-+	ret = recvmsg(sd, &hdr, 0);
-+	if (ret < 0)
-+		return -1;
-+	if (hdr.msg_flags & MSG_TRUNC) {
-+		errno = EMSGSIZE;
-+		return -1;
-+	}
-+
-+	return ret;
-+}
-+
- 
- static int send_cmd(int sd, __u16 nlmsg_type, __u32 nlmsg_pid,
- 	     __u8 genl_cmd, __u16 nla_type,
-@@ -633,12 +659,16 @@ int main(int argc, char *argv[])
- 	}
- 
- 	do {
--		rep_len = recv(nl_sd, &msg, sizeof(msg), 0);
-+		rep_len = recv_taskstats_msg(nl_sd, &msg);
- 		PRINTF("received %d bytes\n", rep_len);
- 
- 		if (rep_len < 0) {
--			fprintf(stderr, "nonfatal reply error: errno %d\n",
--				errno);
-+			if (errno == EMSGSIZE)
-+				fprintf(stderr,
-+					"dropped truncated taskstats netlink message, please increase MAX_MSG_SIZE\n");
-+			else
-+				fprintf(stderr, "nonfatal reply error: errno %d\n",
-+					errno);
- 			continue;
- 		}
- 		if (msg.n.nlmsg_type == NLMSG_ERROR ||
-@@ -680,6 +710,9 @@ int main(int argc, char *argv[])
- 							printf("TGID\t%d\n", rtid);
- 						break;
- 					case TASKSTATS_TYPE_STATS:
-+						PRINTF("version %u\n",
-+						       ((struct taskstats *)
-+							NLA_DATA(na))->version);
- 						if (print_delays)
- 							print_delayacct((struct taskstats *) NLA_DATA(na));
- 						if (print_io_accounting)
---- a/tools/accounting/procacct.c~tools-accounting-handle-truncated-taskstats-netlink-messages
-+++ a/tools/accounting/procacct.c
-@@ -71,7 +71,7 @@ int print_task_context_switch_counts;
- 	}
- 
- /* Maximum size of response requested or message sent */
--#define MAX_MSG_SIZE	1024
-+#define MAX_MSG_SIZE	2048
- /* Maximum number of cpus expected to be specified in a cpumask */
- #define MAX_CPUS	32
- 
-@@ -121,6 +121,32 @@ error:
- 	return -1;
- }
- 
-+static int recv_taskstats_msg(int sd, struct msgtemplate *msg)
-+{
-+	struct sockaddr_nl nladdr;
-+	struct iovec iov = {
-+		.iov_base = msg,
-+		.iov_len = sizeof(*msg),
-+	};
-+	struct msghdr hdr = {
-+		.msg_name = &nladdr,
-+		.msg_namelen = sizeof(nladdr),
-+		.msg_iov = &iov,
-+		.msg_iovlen = 1,
-+	};
-+	int ret;
-+
-+	ret = recvmsg(sd, &hdr, 0);
-+	if (ret < 0)
-+		return -1;
-+	if (hdr.msg_flags & MSG_TRUNC) {
-+		errno = EMSGSIZE;
-+		return -1;
-+	}
-+
-+	return ret;
-+}
-+
- 
- static int send_cmd(int sd, __u16 nlmsg_type, __u32 nlmsg_pid,
- 	     __u8 genl_cmd, __u16 nla_type,
-@@ -239,6 +265,8 @@ void handle_aggr(int mother, struct nlat
- 			PRINTF("TGID\t%d\n", rtid);
- 			break;
- 		case TASKSTATS_TYPE_STATS:
-+			PRINTF("version %u\n",
-+			       ((struct taskstats *)NLA_DATA(na))->version);
- 			if (mother == TASKSTATS_TYPE_AGGR_PID)
- 				print_procacct((struct taskstats *) NLA_DATA(na));
- 			if (fd) {
-@@ -347,12 +375,16 @@ int main(int argc, char *argv[])
- 	}
- 
- 	do {
--		rep_len = recv(nl_sd, &msg, sizeof(msg), 0);
-+		rep_len = recv_taskstats_msg(nl_sd, &msg);
- 		PRINTF("received %d bytes\n", rep_len);
- 
- 		if (rep_len < 0) {
--			fprintf(stderr, "nonfatal reply error: errno %d\n",
--				errno);
-+			if (errno == EMSGSIZE)
-+				fprintf(stderr,
-+					"dropped truncated taskstats netlink message, please increase MAX_MSG_SIZE\n");
-+			else
-+				fprintf(stderr, "nonfatal reply error: errno %d\n",
-+					errno);
- 			continue;
- 		}
- 		if (msg.n.nlmsg_type == NLMSG_ERROR ||
-_
-
-Patches currently in -mm which might be from cyyzero16@gmail.com are
-
-taskstats-set-version-in-tgid-exit-notifications.patch
-tools-accounting-handle-truncated-taskstats-netlink-messages.patch
+ 	list_add(&space_info->list, &info->space_info);
+ 	if (flags & BTRFS_BLOCK_GROUP_DATA)
+-- 
+2.43.0
 
 
