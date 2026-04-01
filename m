@@ -1,123 +1,134 @@
-Return-Path: <stable+bounces-232854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGSGB3l+zWnqeAYAu9opvQ
-	(envelope-from <stable+bounces-232854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 22:22:17 +0200
+	id 6G6pDn2BzWmaeQYAu9opvQ
+	(envelope-from <stable+bounces-232855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 22:35:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994E23801B4
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 22:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B813803D1
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 22:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7347E302173A
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 20:20:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92B463045C32
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 20:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F06347FD7;
-	Wed,  1 Apr 2026 20:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTR1wdXu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C883630BF;
+	Wed,  1 Apr 2026 20:30:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7628E258CCC;
-	Wed,  1 Apr 2026 20:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C62A2E9EB5;
+	Wed,  1 Apr 2026 20:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775074815; cv=none; b=aDdNGUxYbeJXGS9pJHLttTD1vgrhsNcDnRlFTM7QI3ZDVqdz22BWbAeeDWFDHx4/z3C+pX3z7jyfGRqyFJ7eniu5QNsKLedvxZzDNMX30eaxCsu5oO9ifbEFXEmOQkQ+oTWhL+D2W+JTdhehqTw3nRCeX+O6KZKqCqIwtyb057I=
+	t=1775075457; cv=none; b=WnQYHrHprMVgef+dUgcgp4rSY0NdAAGVJqMBDpYPgABkaEVfpOUHcPM7kAdwBboejaxiIqQehSj/CMZXpsUeW4LWOKS0rKfYccYmgJsNdjerIOdVpXsdojjCw0A6UW5vt2QYRPFPgW/IwCGOFWddfo3kSF8vS8Y/f90lvNDmoOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775074815; c=relaxed/simple;
-	bh=fxuj2SQ4zAFgYm8BZkUW2BKIyhMwt2J/siG8mDBm/IA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References; b=c/NRVRHBiEfWIOgyzby67MYK49ct+rncbJy6oCxtWZMpM4+OxaCmwKg1NU+HvCKkAZLJmhfdkBIqI2EVQjQ3TF8LFFWysKQGO0/epHqNp+uwE95+HAEHnBIrKVJRTIFdz9MoyQq0LR3/M5A8AiXZ1d3Hj4Tj7/gnCR5aQ6cmkdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTR1wdXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01873C4CEF7;
-	Wed,  1 Apr 2026 20:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775074815;
-	bh=fxuj2SQ4zAFgYm8BZkUW2BKIyhMwt2J/siG8mDBm/IA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LTR1wdXuawTnvw8nOp6Xa+rFm153aVYzl4OjjF06Cn1dbV6j2+sSAMMz6WctWeSZw
-	 566U1GKU/F+CpngARrwDc4jmS5/pvcrfHmMxcg9tuYHPRZ+SDIvgqoTWSJGhffKnpW
-	 RE2SYMFnoFh+tKMNgpB0gIFgnEmBkfJKzJKsF6hX0g0M7wCwmNXueo1kSVWUGbTWKG
-	 j51LgIzcrI2xCq2yDzWzjOUWpYypTOrqyErp8rS6DAhIfri0CJ735ZfxTdIqtfDuRQ
-	 eoJhIik8gbG8UYDnvhA2ZUoX1WY3/6Iaw1Ntjxp+MdNPWhmRzXMbi0W7ZdueTy4Smu
-	 zcLJR3hJa9KSw==
-Date: Wed, 01 Apr 2026 10:20:13 -1000
-Message-ID: <604e3d6aea8767a245160e8c6d3b4b4c@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Waiman Long <longman@redhat.com>,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Carlos Santa <carlos.santa@intel.com>,
- Ryan Neph <ryanneph@google.com>, stable@vger.kernel.org,
- Lai Jiangshan <jiangshanlai@gmail.com>
-Subject: Re: [PATCH v2] workqueue: Add pool_workqueue to pending_pwqs list
- when unplugging multiple inactive works
-In-Reply-To: <20260401010739.1053192-1-matthew.brost@intel.com>
-References: <20260401010739.1053192-1-matthew.brost@intel.com>
+	s=arc-20240116; t=1775075457; c=relaxed/simple;
+	bh=BA8mLCtOUTHR9GqLN4jpWLP5fOE9T597gH67G1tJ3m0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U3mLErHKyZJFvKZBr5Z4abVr8qCkz9GVe8h5yHmGJxBQrAmwrIz3d338fzQpJ6CLj9hSJ22G5EIYsMZgr8feFlS7ZsEOFW0GVpgX7Mt4NLhpxDxXsynogPv+W3gcfoS0QOMziTg7PxjxbeJXPFH+bAJGqaTjdYB4U1tc6kceQbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1w82D7-0008H5-00; Wed, 01 Apr 2026 22:30:45 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id E2BABC0256; Wed,  1 Apr 2026 22:27:43 +0200 (CEST)
+Date: Wed, 1 Apr 2026 22:27:43 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Stefan Wiehler <stefan.wiehler@nokia.com>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mips: mm: Allocate tlb_vpn array atomically
+Message-ID: <ac1_v3KMngpw-FDB@alpha.franken.de>
+References: <20260310104024.3554197-1-stefan.wiehler@nokia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310104024.3554197-1-stefan.wiehler@nokia.com>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,lists.freedesktop.org,vger.kernel.org,intel.com,google.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-232854-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-232855-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[franken.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 994E23801B4
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tsbogend@alpha.franken.de,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alpha.franken.de:mid]
+X-Rspamd-Queue-Id: D0B813803D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+On Tue, Mar 10, 2026 at 11:40:24AM +0100, Stefan Wiehler wrote:
+> Found by DEBUG_ATOMIC_SLEEP:
+> 
+>   BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
+>   in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+>   preempt_count: 1, expected: 0
+>   RCU nest depth: 0, expected: 0
+>   no locks held by swapper/1/0.
+>   irq event stamp: 0
+>   hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+>   hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+>   softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+>   softirqs last disabled at (0): [<0000000000000000>] 0x0
+>   CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
+>   Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
+>           800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
+>           ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
+>           784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
+>           0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
+>           ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
+>           ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
+>           fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
+>           ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
+>           0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
+>           ...
+>   Call Trace:
+>   [<ffffffff80129fd0>] show_stack+0x60/0x158
+>   [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
+>   [<ffffffff8018d3c8>] __might_resched+0x268/0x288
+>   [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
+>   [<ffffffff80302788>] __kmalloc+0x58/0xd0
+>   [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
+>   [<ffffffff80143e8c>] tlb_init+0x7c/0x110
+>   [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
+>   [<ffffffff80133258>] start_secondary+0x28/0x128
+> 
+> Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
+> Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/mips/mm/tlb-r4k.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied to wq/for-7.0-fixes with the comment updated as below.
+applied to mips-fixes
 
-Thanks.
-
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -1852,12 +1852,11 @@
- 		if (pwq_activate_first_inactive(pwq, true)) {
- 			/*
--			 * pwq is unbound. Additional inactive work_items need
--			 * to reinsert the pwq into nna->pending_pwqs, which
--			 * was skipped while pwq->plugged was true. See
--			 * pwq_tryinc_nr_active() for additional details.
-+			 * While plugged, queueing skips activation which
-+			 * includes bumping the nr_active count and adding the
-+			 * pwq to nna->pending_pwqs if the count can't be
-+			 * obtained. We need to restore both for the pwq being
-+			 * unplugged. The first call activates the first
-+			 * inactive work item and the second, if there are more
-+			 * inactive, puts the pwq on pending_pwqs.
- 			 */
+Thomas.
 
 -- 
-tejun
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
 
