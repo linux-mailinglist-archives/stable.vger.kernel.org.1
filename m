@@ -1,168 +1,165 @@
-Return-Path: <stable+bounces-232653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPqQO7qJzGlXTgYAu9opvQ
-	(envelope-from <stable+bounces-232653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 04:58:03 +0200
+	id MLiAD8+KzGlXTgYAu9opvQ
+	(envelope-from <stable+bounces-232654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:02:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F61374124
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 04:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F123741C1
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD95830649DE
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 02:52:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2461230CFB4F
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 02:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632EC360751;
-	Wed,  1 Apr 2026 02:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4377F314D37;
+	Wed,  1 Apr 2026 02:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nriXyjdO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b74buEWd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E5635F5E0
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 02:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3A836E493;
+	Wed,  1 Apr 2026 02:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775011920; cv=none; b=WumStTzAbkKiVW4Pxwjl+40WscZHyo6cY79SYPE/quOGHxL2qbg7if0uLz9dmfpQYjN79ZxwmjLR2FqfbZfubjQScm0oJACpH7HPq4KEuIg7CXCvaCkKdz3AeIKS2ZfWk+hmzfBxD8hKo9V8nGU6xzxlRdUv5W+qiSpDsUJHl24=
+	t=1775012050; cv=none; b=CMHQyRHkCbRRjriSNLNuFfxpsc8OXKhVp2JpW1tte0z7uog6mExQMJusCRghO291tcDQsbcm9Wr40Qawr6JGSwZH7Ql1FYszxhsGLUE2hvQ+9YtqjDg+65E/DIpo2QvuJpKNeK13tFgc2lOo6zw45CDma9dWCNfIzF7Y1eYLMiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775011920; c=relaxed/simple;
-	bh=WY3AvRAFc36q+7OWxrfFT7SCSKFS1B6X3GV2ZaPSSvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jMSt7ObTwyObTOyn4p24kPORgu2/r8T2+2149SD5RH5TcPFMo7P6leErABmxYnWxDomGwcnlvcp7PgSo23vtwTHAa4x/Ws+wxsi7Vbi2p2FCQMlGQn0eOg1WW1raqvz3sl5IUN/K5NYtTvm3YXFVyFqhRGa/n648AkZ6ywRmTgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nriXyjdO; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b24fcc2b5dso20855495ad.1
-        for <stable@vger.kernel.org>; Tue, 31 Mar 2026 19:51:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775011913; x=1775616713; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uAIzS9E7I8NyNd6SbCw+mU0sPZ4qTkkgpCBayASvU8Y=;
-        b=nriXyjdOyxilMVnvirnMMvCkApwFsFZ+HaKJ1G6FTSxZtzCizBWS0ql/PCmrxspqFc
-         GcV3QfsYAk0Xh9e/0YlQ8aQ5QD1aX9jU66WX/mJTSoE5B4aihmOASVDWM6P1Dy4dhnH4
-         zJPgdY0v0aL9PZqkxMpogTjXWkcrwa2N8Fru1mUfCeppITYRuHqlcgTehp9B/ECP0zyQ
-         dC3bNXfng/5URt9dVgcszDDQ0MI/Skp4KUZBDLUzztCl+0Jp4f22wdeYpmGiqlIJPYon
-         6dyg3AlA/sly+Dz8bjruChM0WtDZfVl9d9zrYS0j56TwK+VND9+8RFyPTB5P7Lzq218h
-         +vkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775011913; x=1775616713;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uAIzS9E7I8NyNd6SbCw+mU0sPZ4qTkkgpCBayASvU8Y=;
-        b=OqaU2Q96TwNy2QkLW8Jl5jAA50ZKAg5qu6Zr/phXlbBatQxvXrkb1mzDkn+l1L8VwU
-         RdbYa9r16odb5xddICWFNTnDp8+NKPkh5TN6xYXsRTPc6flODNVUAqpS1Af+k5guVi8U
-         UxGtsYUsUPhIfqRl5RSvMjeRsjoNcKCxpyLLpL0VVdrQdbrXBmIy+3EUNyr0GDOpTzTr
-         ZTuAoi5zBQ2hW1Fe1pQFg/KqWWpZSDZR3YKL9SXBAuuatjLnAX8Eq09lghorJ5smnsr9
-         5Hxa5cyV0j8rF5CEu0k3h8LGZCg6K6rqdFVurC7xoneGbOPc9Xco5t3pBp1orMBW3My6
-         KOlg==
-X-Forwarded-Encrypted: i=1; AJvYcCVf56qGw53bMEyiSi9/4fli7vx/KR6asZr5FXSt3iR3qWElclnjGejMHg1xoOeyi+ciywR9JAY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkD2QbGS3Y8n8+4A5Vdq+lsSeWxZvc1eXuyDvHsmv98nOa+qcS
-	ojmTcGuazIcjdLycadheQOGZumksTxyfzDuMWnR3GL4pJ9dGhUF82u87
-X-Gm-Gg: ATEYQzxak9FUlqKpwo7RbkhlSS2GUTRz4Vl7pikBnk5pgiEj4QXyCcEyDXdhTs9Bscm
-	XU+CPtJY078LQ17H9MZbD17aSuUnQb1XUDFPtjxiEeXyBseMfImqNs4ClcIuMcZpPt5cMwmGTTz
-	HXGXUmplbhO4HdGcqyBNwP19rcljw0NXx8T+VzWI4A6g330mhs1W/eOpvwVH/gnH5utpJlApJUN
-	AROmkiuHfIjXvaZT7GMJQcabSJ7GZAK7Hx/vIIVy2xQnl7NIP8KRB7wVhkKFEYEBBnCtQTDOtFY
-	virKg8GXaBgd/zDQUvkLcisAReJ9Qjf4pVAy+MUPnZO09fWhBt/16fzcpB7CZft+QRcqoRJqdKR
-	dPDKL3RuqBpR1tF2uivDxFTcV0xMbAJyRK6YOxxicMAL/ygM5vMXhsnxz1FvkIzpoH9McppNwLU
-	aux5AZkTVvULs4rg==
-X-Received: by 2002:a17:903:2c04:b0:2b0:5d60:7f3f with SMTP id d9443c01a7336-2b269ab37d4mr14882825ad.16.1775011912933;
-        Tue, 31 Mar 2026 19:51:52 -0700 (PDT)
-Received: from lgs.. ([101.32.189.54])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2427660c7sm127730725ad.44.2026.03.31.19.51.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 19:51:52 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	David Cohen <david.a.cohen@linux.intel.com>,
-	Felipe Balbi <balbi@ti.com>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	s=arc-20240116; t=1775012050; c=relaxed/simple;
+	bh=O5X7lcPD1ZDeQusDyz2Ikf6zqk7JQPK0rRhOMxOXdCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YHfTEdwEND0v38AcYbb/k/aMSZ3DSekGSq+iHoZ5SMMPni/bK0rI3U+BpdA38IJXwgVvc3mVvEDheFQGCiDBrXOdxlqOJZ4BDhKXZvbBWRltPbMfjBD7lRAyiOhSo9HB7d9hTQSTQwJfoAAEj/QQYMlt3ldvpnSZYF9aM7wT2fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b74buEWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CA3C19423;
+	Wed,  1 Apr 2026 02:54:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775012049;
+	bh=O5X7lcPD1ZDeQusDyz2Ikf6zqk7JQPK0rRhOMxOXdCU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b74buEWdygfOrK+ixxWQUDq9hejQGdBedmKFt3pdBIDh3+QJNLjJvWYC+Emv6rXNR
+	 38L3jvRrz64Vm3jiFgGvoojpOT42Fz8OAu/xhNuFUlLQ/YthHo7/Z/dQY76lSia4Ax
+	 4C8DpoC/7HDcoxEq8KXpf5+IGLuL7XFOO9IQHW/JQKlo6FxSZeX0jd1cG3rNSWHEeo
+	 HFVJKUDEdVf2tcRYNaJpQaQvfcQT3orfnp2gdpt/EASmvdqmnkmlxSBx9JLnitStm2
+	 9IlzAA25z3D6PrNJM/0mndmapWKhRPgO0c2V6AgzXVLMLCHR1dfAinx0GQhIRhl2rI
+	 Us4/JtizU1UKA==
+Date: Tue, 31 Mar 2026 21:54:05 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, 
+	Srinivas Kandagatla <srini@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Vinod Koul <vkoul@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: [PATCH] usb: ulpi: fix double free in ulpi_register_interface() error path
-Date: Wed,  1 Apr 2026 10:51:42 +0800
-Message-ID: <20260401025142.1398996-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH 0/7] slimbus: qcom-ngd-ctrl: Fix some race conditions and
+ deadlocks
+Message-ID: <acyEDJK4nkqsOHvM@baldur>
+References: <20260309-slim-ngd-dev-v1-0-5843e3ed62a3@oss.qualcomm.com>
+ <noodhyin3en2l5xravmt5l6dslcz74na5akin24zod2zhmsevo@pqtxi5ydbidx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <noodhyin3en2l5xravmt5l6dslcz74na5akin24zod2zhmsevo@pqtxi5ydbidx>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-232653-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232654-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 55F61374124
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 89F123741C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When device_register() fails, ulpi_register() calls put_device() on
-ulpi->dev.
+On Wed, Mar 11, 2026 at 03:40:46AM +0200, Dmitry Baryshkov wrote:
+> On Mon, Mar 09, 2026 at 11:09:01PM -0500, Bjorn Andersson wrote:
+> > When the qcom-ngd-ctrl driver is probed after the ADSP remoteproc, the
+> > SSR notifier will fire immediately, which results in
+> > qcom_slim_ngd_ssr_pdr_notify() attempting to schedule_work() on an
+> > unitialized work_struct.
+> > 
+> > The concrete result of this is that my db845c/RB3 now fails to boot 100%
+> > of the time.
+> > 
+> > In reviewing the problematic code, a few other problems where
+> > discovered, such that platform_driver_unregister() is used to unregister
+> > the child device.
+> > 
+> > Lastly, with the db845c booting, it was determined that attempting to
+> > stop the ADSP remoteproc causes the slimbus driver to deadlock.
+> > 
+> > Note that while this solves the problems described above, and unblock
+> > boot as well as restart of the remoteproc, this stack needs more love.
+> > 
+> > Upon tearing down the slimbus controller (when the ADSP goes down), the
+> > slimbus devices attempts to access their slimbus devices - which is
+> > prevented by the controller being runtime suspended. This results in a
+> > wall of errors in the log, about failing transactions.
+> > 
+> > Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+> > ---
+> > Bjorn Andersson (7):
+> >       slimbus: qcom-ngd-ctrl: Fix up platform_driver registration
+> >       slimbus: qcom-ngd-ctrl: Fix probe error path ordering
+> >       slimbus: qcom-ngd-ctrl: Correct PDR and SSR cleanup ownership
+> >       slimbus: qcom-ngd-ctrl: Register callbacks after creating the ngd
+> >       slimbus: qcom-ngd-ctrl: Initialize controller resources in controller
+> >       slimbus: qcom-ngd-ctrl: Balance pm_runtime enablement for NGD
+> >       slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
+> > 
+> >  drivers/slimbus/qcom-ngd-ctrl.c | 127 +++++++++++++++++++++++++---------------
+> >  1 file changed, 80 insertions(+), 47 deletions(-)
+> > ---
+> > base-commit: a0ae2a256046c0c5d3778d1a194ff2e171f16e5f
+> > change-id: 20260211-slim-ngd-dev-74166f29f035
+> > 
+> > Best regards,
+> > -- 
+> > Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+> 
+> Bjorn,
+> 
+> While you are at it, it looks like there is another possible issue:
+> ngd->base is set after platform_device_add(), possibly letting NGD
+> driver to use uninitialized base.
+> 
 
-The device release callback ulpi_dev_release() drops the OF node
-reference and frees ulpi, but the current error path in
-ulpi_register_interface() then calls kfree(ulpi) again, causing a
-double free.
+ngd->base is only dereferences from qcom_slim_ngd_up_worker() and
+qcom_slim_ngd_runtime_resume(), so at this time there's no concrete
+problem here.
 
-Let put_device() handle the cleanup through ulpi_dev_release() and
-avoid freeing ulpi again in ulpi_register_interface().
+I'll keep it in mind as I continue to poke at the driver.
 
-Fixes: 289fcff4bcdb1 ("usb: add bus type for USB ULPI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/usb/common/ulpi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Regards,
+Bjorn
 
-diff --git a/drivers/usb/common/ulpi.c b/drivers/usb/common/ulpi.c
-index 4a2ee447b213..d895cf6532a2 100644
---- a/drivers/usb/common/ulpi.c
-+++ b/drivers/usb/common/ulpi.c
-@@ -331,10 +331,9 @@ struct ulpi *ulpi_register_interface(struct device *dev,
- 	ulpi->ops = ops;
- 
- 	ret = ulpi_register(dev, ulpi);
--	if (ret) {
--		kfree(ulpi);
-+	if (ret)
- 		return ERR_PTR(ret);
--	}
-+
- 
- 	return ulpi;
- }
--- 
-2.43.0
-
+> -- 
+> With best wishes
+> Dmitry
 
