@@ -1,242 +1,228 @@
-Return-Path: <stable+bounces-232804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JIBKYVBzWkkbAYAu9opvQ
-	(envelope-from <stable+bounces-232804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:02:13 +0200
+	id QGWIGAVBzWkkbAYAu9opvQ
+	(envelope-from <stable+bounces-232805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:00:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37EF37D9A2
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC3F37D936
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CAFE315A094
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 15:36:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 137BB3232067
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 15:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5133B0AD8;
-	Wed,  1 Apr 2026 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A681139EF0C;
+	Wed,  1 Apr 2026 15:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="vdbB9F7z"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZDFzZzej"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021119.outbound.protection.outlook.com [52.101.95.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7669A3A9DB2;
-	Wed,  1 Apr 2026 15:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775057762; cv=none; b=FuzfXZeIBsl+CirQmmylNaZlTz3dpvO2LHao7+xZvpvAoWj51WOvCnN6o1MWXS0I1MidQNbX8woJckhq3nebBN5Zv5vo1RbEvLdCaUM8cn+wi/qh+XhLA8psUWGIx2J4LxK7oy6fKqLdFZu6tS9bPRbnQ1HEPF5RgzVYI4jdtgk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775057762; c=relaxed/simple;
-	bh=62fiRzIlB0LuN2BoHoHtPdkZTJJ0p6SufQDIUY7eSro=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=U9Rpvl5BPuUrHpQCuhTSkRgHdtTXwevuaDRrr57tU/fRGvINF1MpnI8LifHqLibepkakM0D5uYnr/P8zImRG1wic2D5wNb7ZP0Nkz9mI7XQKDu+zK3yYA5LiSU4n6HCC5vfKJ/FDNUCOqwaDcd5iZGCgPjNb7eyyvwJAITapj+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=vdbB9F7z; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [100.93.44.16] (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D5D7BE4E;
-	Wed,  1 Apr 2026 17:34:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1775057675;
-	bh=62fiRzIlB0LuN2BoHoHtPdkZTJJ0p6SufQDIUY7eSro=;
-	h=From:Date:Subject:To:Cc:From;
-	b=vdbB9F7zHabSQcfi7ZBO4x70vJI4suGHMXB/GRd32COapSwpnLWdkp8QArjeYgNCf
-	 mcwo1oKmDxBeMqhljCXIr1VyW8ojSgaa6yjNMNOME5A+WKBJ+o29zkTq/AXVAMPGZW
-	 OOWGjXOZ+HDLntUtbSaM2nIg3xC8nh13+S/NB1Kc=
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Date: Wed, 01 Apr 2026 17:35:37 +0200
-Subject: [PATCH] media: rzv2h-ivc: Wait for frame end in stop_streaming
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C8036D9FE;
+	Wed,  1 Apr 2026 15:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.119
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775057806; cv=fail; b=oSKEFf9FxeQhoiTPgH1fyjN5u4+QrFeaYE8hl8GCsUS7vZfwE4kHi/UBXsaxg3/giUby1mGbAL2KknDAAx4+joWYfVON5k0uzvSO3FrUWE6YKXuTfkvDDqNidqtjlYN4pmhXNPXJtV++KEqywAm3CPdscFCvUk7oqXVCEm+VgK4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775057806; c=relaxed/simple;
+	bh=1V0GwvuS2zdl89iDXmGSGMMvQBksIDNw3T5eANlpUB0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Pf7zVNxxvIXdxzugSTJwQvGURYjsMU82D563F5XfPIXrbK4Pu5h2YoVPuuvkeG9RsJPVQX7T1L2LI7RwkvYlaVA+Yo3YZ1g6cmgxlZGHiyeWZqPPDUH31Y5KEFfGkU25kRuZv1Q9q1n4nEss8WUXs4h5jScwJ6A+g1TF5+MWieE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZDFzZzej; arc=fail smtp.client-ip=52.101.95.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UG6tXZDBvorWDfvTNtWEtZiDNVkFtrm61PRT6mk8f9T9s/c2YFMaek6qW5ETqIizsUqMUtCJHHa43IuG+oy+ROmYjbjZV82B4f67YsEmucbFrUsrNgJWWsipo2nFT4a2gBmRt2BXkNhlqUlNzK12WVWe/RHpC76ikxTyWJFM0Ix2RrRdWC+A8Bnmm6/jcEvUHEO+5bDPCVBZBhpRoQM/ZvzupGu1ewHLyxqBpZT1wMcXbsSRa+OSf4sTqopVZMH0awn0uZHmrY0mLiqi42R0PXCpQWIInBYzqHeUXSv+H1jD8u7lmC/GvlyN9UqXzJWqNQP6Ai6WnDe8fIDAVhFeRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1V0GwvuS2zdl89iDXmGSGMMvQBksIDNw3T5eANlpUB0=;
+ b=FS+nyiVWX5DPIgjZbD8zh+x88DBDZQfLkSM04IRVX5kCJ9Uq1Xp5CPuF8FPriPcayiMBankPgQs2FzuKtaSS9Fc7d2moTxfSlwj0u0L7UabXU4zCWwmeceN/iiVpMPXW8gJSRiTH0trNkxoYgcorhsGRqdIx2+1WCCQG1y35gKRaXgWsalT9GyCfdfn0WwS/LVQWUMUKxBxzqo4r5A9lz77SdLdWmHUbKDrhJ3B1WWiED/qXxuAbfQsjZei/EEAlpFZkqeM7VzJNm23JrclOA5T494Eznw63IobqAtUPUa3nGnfz2O8Jb/3AoDH3OPzPt9umViYlJtSlxbKzjxCP6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1V0GwvuS2zdl89iDXmGSGMMvQBksIDNw3T5eANlpUB0=;
+ b=ZDFzZzejYIREyTAtooGJJKWJHa5tOAE/Ir3urnnMmLJ1ENDZKKiSoTjKwDYv8Yh2R+bOpKQwo0GHUWlp2bVZHtK61UQwI2OdTThPLyekoky6aiNjy6dZZ9o9AiJNiP0r/tppL8csowEdY+ebSyqSE3/dz4263YGTCUZLVlNbAQk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CW1P265MB8797.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27a::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
+ 2026 15:36:42 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.014; Wed, 1 Apr 2026
+ 15:36:42 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 01 Apr 2026 16:36:41 +0100
+Message-Id: <DHHXH4LMU5QT.18SOC1FSR41JL@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez"
+ <da.gomez@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Nathan
+ Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "Aaron Tomlin" <atomlin@atomlin.com>,
+ <linux-modules@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
+From: "Gary Guo" <gary@garyguo.net>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260331205849.498295-1-ojeda@kernel.org>
+ <DHH9VRFULJST.383BKVSWUTZ3E@garyguo.net>
+ <CANiq72=wsdJf1_qwAADhmKA2i7y9U+3WOm+9utE2rv52_eqnpQ@mail.gmail.com>
+ <DHHANEJI7LQ0.3PGBQH34QK0DJ@garyguo.net>
+ <CANiq72=8d03wo3_28Q91DpHs=LF8D5N3pmuZtAsr8gLuco5hKQ@mail.gmail.com>
+In-Reply-To: <CANiq72=8d03wo3_28Q91DpHs=LF8D5N3pmuZtAsr8gLuco5hKQ@mail.gmail.com>
+X-ClientProxiedBy: LO2P265CA0431.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a0::35) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260401-ivc-stop-streaming-v1-1-b7599982c280@ideasonboard.com>
-X-B4-Tracking: v=1; b=H4sIAEg7zWkC/x2MQQqAIBAAvxJ7TrCNEvtKdDDbbA9paEgQ/j3pM
- jCHmRcSRaYEU/NCpMyJg6/StQ3Yw3hHgrfqgBJH2fed4GxFusNVEcmc7J1AqzWiUqscJNTwirT
- z80/npZQPwTjivmQAAAA=
-X-Change-ID: 20260331-ivc-stop-streaming-2c992277b050
-To: Daniel Scally <dan.scally@ideasonboard.com>, 
- =?utf-8?q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5297;
- i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
- bh=HBtx5Ghb1fuQs0BuDtBLc5AqBUj4s1eusjaVua2vYCA=;
- b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBpzTtdNQjZkdljoMmJGmPGD5LZFvoPOuCpBNBOx
- 3Yt/VgW2cmJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCac07XQAKCRByNAaPFqFW
- PHYzD/9af6mK4uuN4jtatUOnw67FxXbHGXTpV7XMVcgqJy41/7YWfSRPA58zWFXIuwXK1FSlEp0
- oWoYHcpyhO1ygYVJ+MfdeilYNrWvdklcnvRJWiB/9CZ4zmQUwhJ8amFBsBlNfV9HUM9eGUbenq4
- n7G7nXFbSgDOfjDKa+vlFi81HXcbnUfXLueFuPHlPytuhACzJ1JABDEvkok1NPoC1lyDVFovqMx
- uoytE1jyGbk8oxxP0f2/u663YqktQiIJH4gMozRUdyqYU3J05dNK9s4igvBsZZD1ILvdC6P2M4W
- YhKs2W8D/9z2ffVjiXUPb4p0wAkNLLCud2sbrK0q4hJP1ztXAnQATv8rxVi2q9HenVPCx9EHpKK
- fktXlZcLL0bK19p1sB8p9S+FkvGCre6o03c0rsOWB7ejAdY2ag647POfMwL/bYetXQRssLtBNdA
- jQyVZ2ZZE6Oqg7ZgrigAIRK53ASrmnEA0tUe4sfEOWwkkFac55tjK4yCNKrXpl15kbaVIRLavOG
- CUJFlArLaHSFp4J2hOuIb6MypIK9wisoIFP4JaPE7oXi2fQnsaZ6/OssZFfvYTb0jH/8Yp/lETw
- j4gTq1hZXM4o9AlW6k0NjoaaMCH6GHW/45M+5ZYPriDM+15TQAmgAL3eKE0ZlPeeGXL6yVlT7Lv
- clxYA5ohymZH0Gg==
-X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
- fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB8797:EE_
+X-MS-Office365-Filtering-Correlation-Id: 701daa85-4fe1-431f-ca0e-08de90047934
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	55MgyCsUtR9uM7LdoP/etNBAAi239uS7PqHN8a2EuL0sueB9zQovNuIGAW2nNKfkiMaW0eExqdngzfhctFR68bDGl4yqSr3pUrNLGreZiwfU5rvzEEbjESiodOYMUfI6SQMmTm1LVzA3cxF3HFE2jSlPRfM3B1kaHHJPQ4ZiUv7ZgJ/Cg5V1X6qHUmh/MqLPmu2UALC+jYkCt0WjWhKMV76TlGf/GkyXNeAK04c1jOaE0EcO6KMFtU7g+Rbk7MsEC58080MyYTl6R5kaCVbiRbkOlE6+4hkKz0Nz9HjazYy9aap2QmEYvAh187Jdx4XM8+uXk+XL6QdJJ9Y6ifn5XS0dfEqmggzx7fnmMgImlqgH/EMP2W40xZB6lr923SBCwRWELye/8yZT0xILGaL/Khv7E42UJ4CF4smOd7Os/X+rEk++uTck6mnv/wVFQhQMpCyfknPD67ndUgDSqNe1FEZUfFZZwnIM5wINXSz53HH78n+rGqAJYwrySPibk0bkZvKdvpjBKAsS3DnHw0gxIjqtAfkf4qna3+1GEUEb4V37uEo603n3gS8d/YVEquYZmrJPegi8M3ce5gMR+SiSelXMv0EC7VOEsOa0Vv9H6PByOG52EaOIM4xTxHmL+ODKy3VF2vzs/teI23hSZpFV/e1Xi/vDYnO/pDCWAXO9YQEslzKSwEbTCsin5QeuEXRBPKkv12VK9k8N6JYrZUeUXNEXCaZTVwTSIWNg9NK65Lk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZzFDdjhld09nMFE2N3FIdmpjTVlqdDFXdk5iU2xWenFPVlQ0bnMvcUFvTitR?=
+ =?utf-8?B?aHk3eksyTkptc1J6ZmpZcVhpUGVURzF3bVJsTWlpbVp6M3ZaZ09mQmRxRTcw?=
+ =?utf-8?B?cTZ4YTNHOFR0cHdkemNFYVk0NVdXckJQSzIvTmZTSWZkTlQzVDJoYktEOFZF?=
+ =?utf-8?B?UmRZVG9uaGxrNlB6TXhHMmcvWEU3RldDZ0R2MDIyTmlDWGx0eEszTWpyVXRP?=
+ =?utf-8?B?U0toNDEwc3lUVjJIYlJ1eWVidjRVYnhKOHdBQ2NnWWpjR1pPWGVMQmxsMFhU?=
+ =?utf-8?B?LzNHOHpNTnpvOUp3NmRXeHlkN0JDSmdCRXErcGpKcDdkU1Q3dUR4U0ZFaXYy?=
+ =?utf-8?B?Q2VKTWxIU1UwUHd4Ymp3OFJ4MUtNSXY4U3JQaDVnOURSVVJQR25JZXUxcExX?=
+ =?utf-8?B?SEIvVjUyY1hZczAwYzJmODFLVE9pTnBqby83NHkzS3E2cFRuVDhzWVJPQkxo?=
+ =?utf-8?B?UFFRMWE5WmxyWGlBdHYvRENoL3NKWVdLQUFhTDg4bWk0Um0vbVljc0tXT3dv?=
+ =?utf-8?B?VzVpWmxuQXdsVkxVd2pqZ240SHhubVNPdmxxd2VqUlVlVEx4bnBpa0M3T0RG?=
+ =?utf-8?B?aGdobnFKeDhtZnFXT0U3dHhBaXA2UEt4NGJlNTZmdTJ1RStIRmthUnF5VUNh?=
+ =?utf-8?B?WThQZmJENHdDVS9ieEd3T095S2NudzIyTnlkdytYeUtQcUZmK1NVREZyNmlZ?=
+ =?utf-8?B?T21JZkdqMnBLU2h2SU5KTUV4bHRlWTFQdyswdU1ieGtoS3ZjMVUyeW5iR1E4?=
+ =?utf-8?B?M00vTmJuTldkWkY0RlNpQmprNEg3ZTNNYnVvN09hYTlLcTBtRkUrRkZDc0kz?=
+ =?utf-8?B?S3RnSUFtb1ZPN0FwdWdoVlRqa1ZjVVlveUJTVmFqSFBZQjJUQWw5R0xZK2pS?=
+ =?utf-8?B?ZkxpQzV0aSt2VW12VWNYdXBob3h1TmN6UTJjQ1VLbmoxS3V3bmF2RzZ2Yk5G?=
+ =?utf-8?B?UnFERS9LVUcwSGlkRk5rUHpYd1EySFh3TEJ1MDNlQ3hKLyt3QlhmYUI0eXY3?=
+ =?utf-8?B?N0FHVHVTa3BFZXVZMDdTRzBta2R4MEFIcis0TW9KR0lrYXE2K0RnRU1lYkt3?=
+ =?utf-8?B?YmtMV05jSmpGR0JUbkZTd2pBODB3RFdkTlByMC9mT2R6TjNNQzk3RkFLTVQ3?=
+ =?utf-8?B?WEdDYXpwNE0yUGZYWUNLendZbXpTbmZCL0NxL3c0YXJYS1ZFSldZL211ajM3?=
+ =?utf-8?B?VWFRaEdGdFdvKzVFTzVkWVBCK3h1UkFBWTJBUStObWJwMWRBL1IveHlra3ox?=
+ =?utf-8?B?QWNRV3YzNW82cWFWTUs4WVkzS0FmZWhla1lCN09JN3NQSFByWlVVSDJ4QkE5?=
+ =?utf-8?B?NGdQbXdnVVIyNnpRWG1YN1o1eGpiU002WXlHU0podGZOVnBROFlBd015TUkw?=
+ =?utf-8?B?WkZ0a2M2ckFIYWU2ZzVoeTF1OE1rSHlWaTRDUW96TVJBbDVrRkpXV3VuajZF?=
+ =?utf-8?B?TWp2Qzlmenh5VDUyN254NWc3ZzdLcUtDSy80S2JTcVA1eXdETHB6SVFGa1Qz?=
+ =?utf-8?B?bkZZN0RCS3FxMjlzS2Y3WkZPUmNYOXVhLzdEQXZPS296YkFCQm1qaVpxV3hl?=
+ =?utf-8?B?SWhFYUZqb3c4OG9iaWNFbUorZFk5R0FSWnNXdlk4U1ZzSmlrL1p0a3RPSHA2?=
+ =?utf-8?B?WmRyYXV3N3FPazNXUktBcFoxMnEzbUxNVjdXSzBFYXZhWWE5a0VpdzZHZHpo?=
+ =?utf-8?B?eC9GM3gya2hWMmRyenE5RGRzc1k5cDJoZThhcW80WjFMVTVnRjMydC9SSDkw?=
+ =?utf-8?B?dmNZR0IreE9CTnBRZVdKNTQ2V1hGSTdCM2hVeVBVM2NPZ3I0UElmY21CK0ZF?=
+ =?utf-8?B?ZzNISzRveXh1VkhkSFBVMFlybUlHYXpyQ3VCV002eVJOTDlFTGZYU2xTcHNx?=
+ =?utf-8?B?eEM2RENQT09IL29mOUI2Njlqb2dYUlBOb29haVkxWlA3NThMQkRJSldBMHAr?=
+ =?utf-8?B?UjVvVXlJd1luS1JVUWtBK2U0WTh0RTlWblE4OWFGcU1uR09vVnJKVWwwN3Nz?=
+ =?utf-8?B?aDhHU0VvU0ZTcm44S2xqQmNDM3lQSTNQdmpvbUF6eEpXTHV4WXgyVEdNNTBO?=
+ =?utf-8?B?U2xQWlhmUDlQdGVWbXNyYVhvQUJSdk5KSHJpNnBDS0hQeDRYWGR6V21QZTRs?=
+ =?utf-8?B?VU9ReXJzN21UazF0blk1UHRCWCtSaFllR2o1Tk9mTnlMeWQzbVpoRFRxZU5W?=
+ =?utf-8?B?SmU3Y2hyWGRQNDd4ei9Kb01aK3JKb1NkWEM4YXNwRHZFYlo2Z1FOZ1BaMDdI?=
+ =?utf-8?B?Sk92NVRhdEZZMHhmNGo2ckRjelFBUlBrNVRqRjNxcHNDVEhNcUtMNXVidFkv?=
+ =?utf-8?B?S3BvZXpNRFRwdFltRmpwZU1mZDJxUnpkSmg5dHRHaWxBTk5sWjJHZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 701daa85-4fe1-431f-ca0e-08de90047934
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 15:36:42.1709
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z94J+C6R2CZ/wMVeYWJl9rr6l43Kk0DtsahILARr6rsL/0H3wC6WzdIFE2r2MvsX0Q/E3JDrBIpTu1iEKt9n2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB8797
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[garyguo.net,none];
+	R_DKIM_ALLOW(-0.20)[garyguo.net:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232804-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232805-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[gmail.com,garyguo.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,suse.com,google.com,protonmail.com,umich.edu,vger.kernel.org,atomlin.com];
+	DKIM_TRACE(0.00)[garyguo.net:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gary@garyguo.net,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco,renesas];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,10bit:email,10bi:email]
-X-Rspamd-Queue-Id: C37EF37D9A2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:dkim,garyguo.net:email,garyguo.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ABC3F37D936
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+On Tue Mar 31, 2026 at 10:53 PM BST, Miguel Ojeda wrote:
+> On Tue, Mar 31, 2026 at 11:43=E2=80=AFPM Gary Guo <gary@garyguo.net> wrot=
+e:
+>>
+>> I mean the lint is kinda useful, and I don't want to disable it just bec=
+ause
+>> it doesn't exist in older versions of rustc.
+>
+> Yeah, personally I like the inlined way, i.e. I use it myself, so I
+> don't mind enabling it everywhere if people is happy that it only
+> applies to some cases.
+>
+> Another consideration is that the issue linked mentions that they
+> don't want to mix inline and not (for field access cases), so that
+> could be annoying for some, which is why they moved it back.
 
-The rzv2h-ivc driver fails to handle back-2-back streaming sessions that
-do not go through a peripheral reset. As the driver uses an autosuspend
-delay of 2 seconds, it is quite possible that two consecutive streaming
-sessions won't go through a suspend/resume sequence.
+For mixed cases I suppose it's really up to personal taste. In that case we=
+ can
+say it does have "false positive" and allow the lint.
 
-If the peripheral is not reset the second streaming session hangs and no
-frames are delivered to the ISP.
+Best,
+Gary
 
-This is because the stop_streaming() procedure implemented in the driver
-doesn't match what's prescribed by the chip datasheet:
-
-1) The chip manual suggests to poll the RZV2H_IVC_FM_INT_STAT_STPEND bit
-   of RZV2H_IVC_REG_FM_INT_STA instead of polling on RZV2H_IVC_REG_FM_STOP
-   and prescribes to clear the bit after polling has completed
-
-2) More importantly: the RZV2H_IVC_REG_FM_STOP_FSTOP bit has to be set
-   on RZV2H_IVC_REG_FM_STOP -only- if a frame transfer to the ISP is in
-   progress. Setting the RZV2H_IVC_REG_FM_STOP_FSTOP bit when no frame is
-   being transferred causes the polling routine to timeout and the next
-   streaming session fails to start
-
-As a frame transfer of an image in 1920x1080@10bi takes 5 milliseconds
-at most, it is quite possible that the frame transfer completion interrupt
-races with the stop procedure.
-
-Instead of forcing a frame transfer abort, simply wait for the
-in-progress transfer to complete by polling the ivc->vvalid_ifp status
-variable in an hand-rolled loop that allows to inspect the variable
-while holding the spinlock, to allow the irq handler to complete the
-current buffer.
-
-With this change, streaming back-2-back without suspending the
-peripheral works successfully.
-
-Cc: stable@vger.kernel.org
-Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
-Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
----
-As detailed in the commit message, re-starting a streaming session
-without going through a peripheral reset doesn't currently work.
-
-I initially thought this is because the stop_streaming() procedure
-implemented in the rzv2h-ivc driver does not comply with what is
-prescribed by the chip manual.
-
-So I went and modified it according to the manual.
-
-Unfortunately, even by following the suggested procedure, once
-RZV2H_IVC_REG_FM_STOP is set and a forceful frame transfer abort is
-started, the RZV2H_IVC_FM_INT_STAT_STPEND bit takes a long time to
-clear, during which is most often times the case the current in-progress
-transfer completes by itself. If this happen, then a peripheral
-reset is required to restart streaming regardless if I forcefully clear
-the RZV2H_IVC_REG_FM_STOP_FSTOP and RZV2H_IVC_FM_INT_STAT_STPEND bits.
-
-I have tried several strategies to properly forcefully stop an
-in-progress transfer and handle the potential race betwee the
-transfer-complete irq and the polling the RZV2H_IVC_REG_FM_INT_STA
-register (which could potentially sleep), but it's still quite easy to
-get races between frame completion and the forced stop procedure unless
-I hold on to the ivc->spinlock preventing the irq handler to run.
-
-Once I timed the transfer time for a 1920x1080@10bit frame to 5 milli-seconds
-at most I decided to simply wait for the current in-progress transfer to
-complete, as this seems the most reliable way to be able to re-start
-streaming without resetting the peripheral.
----
- .../platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c   | 31 ++++++++++++++++++----
- 1 file changed, 26 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-index b167f1bab7ef..932fed38cf3f 100644
---- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-+++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-@@ -297,12 +297,33 @@ static int rzv2h_ivc_start_streaming(struct vb2_queue *q, unsigned int count)
- static void rzv2h_ivc_stop_streaming(struct vb2_queue *q)
- {
- 	struct rzv2h_ivc *ivc = vb2_get_drv_priv(q);
--	u32 val = 0;
-+	unsigned int loop = 5;
- 
--	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_STOP, RZV2H_IVC_REG_FM_STOP_FSTOP);
--	readl_poll_timeout(ivc->base + RZV2H_IVC_REG_FM_STOP,
--			   val, !(val & RZV2H_IVC_REG_FM_STOP_FSTOP),
--			   10 * USEC_PER_MSEC, 250 * USEC_PER_MSEC);
-+	/*
-+	 * If no frame transfer is in progress, we're done, otherwise, wait for
-+	 * the transfer to complete.
-+	 *
-+	 * Transferring a 1920x1080@10bit frame to the ISP takes less than 5
-+	 * msec so sleep for 2.5 msec (+- 25%) and give up after 5 attempts.
-+	 */
-+	for (; loop > 0; loop--) {
-+		unsigned int vvalid_ifp;
-+
-+		/*
-+		 * Inspect the ivc->vvalid_ifp variable holding the spinlock not
-+		 * to the race with the rzv2h_ivc_buffer_done() call in the irq
-+		 * handler.
-+		 */
-+		scoped_guard(spinlock_irq, &ivc->spinlock) {
-+			vvalid_ifp = ivc->vvalid_ifp;
-+		}
-+		if (vvalid_ifp < 2)
-+			break;
-+
-+		fsleep(2500);
-+	}
-+	if (!loop)
-+		dev_err(ivc->dev, "Failed to stop streaming\n");
- 
- 	rzv2h_ivc_return_buffers(ivc, VB2_BUF_STATE_ERROR);
- 	video_device_pipeline_stop(&ivc->vdev.dev);
-
----
-base-commit: 4fbeef21f5387234111b5d52924e77757626faa5
-change-id: 20260331-ivc-stop-streaming-2c992277b050
-
-Best regards,
--- 
-Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+>
+> Either way sounds fine for me.
+>
+> Anyway, if we enable it, I should apply the other suggestion too, put
+> the Cc: stable@ on them, and switch to `-W` here and remove the Cc:
+> stable@.
+>
+> Thanks for taking a look!
+>
+> Cheers,
+> Miguel
 
 
