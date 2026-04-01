@@ -1,170 +1,211 @@
-Return-Path: <stable+bounces-232784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gC2qNIgjzWlkaQYAu9opvQ
-	(envelope-from <stable+bounces-232784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:54:16 +0200
+	id 6LR0B50fzWnOaAYAu9opvQ
+	(envelope-from <stable+bounces-232787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:37:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C3437BA23
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:54:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8AD37B56E
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 15:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2C3930D01FB
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:34:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 76846301463E
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 13:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969C243C042;
-	Wed,  1 Apr 2026 13:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9802243CECE;
+	Wed,  1 Apr 2026 13:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUrVP3HD"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="H1da6gtD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com [3.221.209.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579DE429800
-	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 13:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAEB429800;
+	Wed,  1 Apr 2026 13:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.221.209.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775050468; cv=none; b=mwHFxiyK9Vt89ONIUE8QRUyrAeu945sPpWOWe4hHNtUJAnoQI8oyKikdc1Rv0+j/SNDlIcsUsjreBEDknWV3T+/7Ic7+eeSeCuhzxND/m13iww17nx8d2cUvik0Jam9AivvmXTqNNzYr8PS2hrF1W0CD404hAhV2QvDaUCokXZ0=
+	t=1775050625; cv=none; b=scXdNCvNo5bry0JXB51NzGRMUqNxfD0AlyzjGpaiP9HyDvluE20YdG7TqSn8jupkpsUXNj46cqOqlTAYy5rSy1yu1Yy2lEk2bviQ2kbeaTI+WDWSRsbYpflpucU76autdERALPwCSIAVfMSbQTU6b9vDStnCna0XLRNKolMBDC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775050468; c=relaxed/simple;
-	bh=ZgUeRnpR4DATl3Sbw883f5UTNjMmFhqtg9CURPQiQXM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=sNUTj08kTd3KXxxYg524lLud+OhBmgYVnm3t7WvfOVXCtKFINDex8+6oDdjVsKjBONPoaGzzhw1Emo8heu/PAj3tA7ZiBOeGlFU57lQVQodSfW43Cyj9WPRl8oarb3/GSje4V0V7efGLTXub501rjQ3n63ZI+zYiNz9s5GHB0mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUrVP3HD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C201DC2BCB0;
-	Wed,  1 Apr 2026 13:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775050468;
-	bh=ZgUeRnpR4DATl3Sbw883f5UTNjMmFhqtg9CURPQiQXM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=ZUrVP3HDWATxjX+UNJxVTmHekvvRwtN9LN+JW++iezUbDfU2aV0ukICgXJaFimRq5
-	 Nlx5ojqFkVeSksxNi12dSpW00cU81KvcWXUE98/yOpZN47p0NleQJqKzEXmUjCcSVe
-	 4LXJU8FzZLTNcIkRN5s+Orx0HFlV8nYB0I8MZFvRuZIZePVKfNpNKq5u8VP+SVqbAp
-	 AKBNkfwWme8JuQh42wC9ag/2yJQtvmsPfWb/VJxR8XhpjMKiR962AHzF8kWfKrX42y
-	 QAXhq4V13YPRv7H6Idwee2zBmtu6DIbiuIYxMy7iogcR468Eau+9BOiX/j11fMH1js
-	 ZhQRQlKR1WIrQ==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BF8E6F4007C;
-	Wed,  1 Apr 2026 09:34:26 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Wed, 01 Apr 2026 09:34:26 -0400
-X-ME-Sender: <xms:4h7Nafyx5c5Ox6zroyRUHQ79ixV3CoGkN-oMkA58x0jwtajmLJDvvg>
-    <xme:4h7NaSEElO1zezXPWvItF_AKHkm2g7r-nP_f2Mz_pcusaSeO9-x2Dr-BeboDXACrU
-    POjGyhgvy-ZeWUsSksNFoh6xAg7Benc-tKt2IjV9FRxD80EbIDxo8X2>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefvdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedfvehhuhgtkhcu
-    nfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    fghfeguedtieeiveeugfevtdejfedukeevgfeggfeugfetgfeltdetueelleelteenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegthhhutghklh
-    gvvhgvrhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeifeegleelleeh
-    ledqfedvleekgeegvdefqdgtvghlpeepkhgvrhhnvghlrdhorhhgsehfrghsthhmrghilh
-    drtghomhdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    ohepnhgvihhlsegsrhhofihnrdhnrghmvgdprhgtphhtthhopeduuddvkeekiedusegsuh
-    hgshdruggvsghirghnrdhorhhgpdhrtghpthhtohepuhhklhgvihhnvghkseguvggsihgr
-    nhdrohhrghdprhgtphhtthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehrvghgrhgvshhsihhonhhssehlvggvmhhhuhhishdrihhnfhhopdhrtghpthht
-    ohepthhjrdhirghmrdhtjhesphhrohhtohhnrdhmvgdprhgtphhtthhopehokhhorhhnih
-    gvvhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhinhhugidqnhhfshesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnh
-    gvlhdrohhrgh
-X-ME-Proxy: <xmx:4h7NaRQeQ18NF5vaHjDbeNzkQv0yRp_-B-LRxxF-kWcpXnlwZp44gw>
-    <xmx:4h7NaXWt1WZdadTLftydoIAJ7HPjw54NayHtHUxu_9jQ5SPhCRrzAQ>
-    <xmx:4h7NabQxVJQd81L_-g6JtKYWl7JW0xARWpJIg3y6kTOVQE_ps9bf6A>
-    <xmx:4h7Naf3i5eaVv-evV5UsgFmtiwUN1yx9IT0zOq0VWkZn9X-0lIJKNA>
-    <xmx:4h7NabfLKt0WHosy2lNz-Ukix0U8MGuiwdJHl-HggqmI_Tg9DYBPoNo2>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 993CA780070; Wed,  1 Apr 2026 09:34:26 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1775050625; c=relaxed/simple;
+	bh=UaRyzaZAw8cAufiE/beqodKLHP7EHgerfpo6Kh0DMFE=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=c4kZ2vqs/iVXXowXzoAfBxr5kvfdBTm4TSoZgikxNdotbgZH//97QqeJhDi1pcxYTrnnDXcsoRE1AipzfUd1at7OMnmyD8hFahdjlROWZJbmGeA+A4qLwx8+YeelmQpbxojTBoHUGFFk9QLyYoCJCgoJeQWUXm0QaALXmXrYUmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=H1da6gtD; arc=none smtp.client-ip=3.221.209.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1775050624; x=1806586624;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eECRtkLdb1g6Rdy8JYnmlSQYVnKt6oeRbBYfuuRf+YQ=;
+  b=H1da6gtD0tIFF7SgW0oP+kMi/Wzg+qV4Nh03/DK3pH2iOsjtd7sO43/4
+   x4S6uZw7OzWLHO7OfEamRH6f7EQLmn/wGJaWBT02HHkYA69ToSE2+y/AW
+   aDweDItQK5qNI0HAy9RN9PrNRhnlbAhukFYG4vWf6qp0uc9zorbfm72Ss
+   mD9VaLJk6V7HEybGpH7ap5YNgp9TVPjpq75XLxHwf2womj3WXeZfoS8AP
+   i6JIC1MxBiu5u0q5trDxG3uEShQ1J6Nxu3LDGz8oIinA/96SEOFvC2Suo
+   LSc5YDPWLfO4kVq3/YFk413NzhtbFYAUcI77tEEYisIe2/TGk0Y/NeRu4
+   g==;
+X-CSE-ConnectionGUID: 694XnSJxShO0NhfHByps2g==
+X-CSE-MsgGUID: ZX07A88/RO6AxJBRbXwRoA==
+X-IronPort-AV: E=Sophos;i="6.23,153,1770595200"; 
+   d="scan'208";a="15299610"
+Received: from ip-10-4-17-41.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.17.41])
+  by internal-iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 13:36:57 +0000
+Received: from EX19MTAUEC001.ant.amazon.com [52.94.133.134:25533]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.17.255:2525] with esmtp (Farcaster)
+ id f8ee6624-5584-41dc-b791-6710bae090c0; Wed, 1 Apr 2026 13:36:57 +0000 (UTC)
+X-Farcaster-Flow-ID: f8ee6624-5584-41dc-b791-6710bae090c0
+Received: from EX19D012UEC003.ant.amazon.com (10.252.135.160) by
+ EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Wed, 1 Apr 2026 13:36:55 +0000
+Received: from EX19D012UEC003.ant.amazon.com (10.252.135.160) by
+ EX19D012UEC003.ant.amazon.com (10.252.135.160) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Wed, 1 Apr 2026 13:36:55 +0000
+Received: from EX19D012UEC003.ant.amazon.com ([fe80::67ea:859:1e17:25a9]) by
+ EX19D012UEC003.ant.amazon.com ([fe80::67ea:859:1e17:25a9%3]) with mapi id
+ 15.02.2562.037; Wed, 1 Apr 2026 13:36:55 +0000
+From: "Heyne, Maximilian" <mheyne@amazon.de>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: "Heyne, Maximilian" <mheyne@amazon.de>, Jens Axboe <axboe@kernel.dk>,
+	Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>, "Alyssa
+ Rosenzweig" <alyssa@rosenzweig.io>, Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, "James E.J.
+ Bottomley" <jejb@linux.ibm.com>, "Martin K. Petersen"
+	<martin.petersen@oracle.com>, Alim Akhtar <alim.akhtar@samsung.com>, "Avri
+ Altman" <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, "Sasha
+ Levin" <sashal@kernel.org>, Peter Wang <peter.wang@mediatek.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Thomas Yen
+	<thomasyen@google.com>, Bean Huo <beanhuo@micron.com>, Brian Kao
+	<powenkao@google.com>, Seunghui Lee <sh043.lee@samsung.com>, Sanjeev Yadav
+	<sanjeev.y@mediatek.com>, Wonkon Kim <wkon.kim@samsung.com>, Ming Lei
+	<ming.lei@redhat.com>, Hannes Reinecke <hare@suse.de>, Chaitanya Kulkarni
+	<kch@nvidia.com>, "linux-block@vger.kernel.org"
+	<linux-block@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "asahi@lists.linux.dev"
+	<asahi@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-nvme@lists.infradead.org"
+	<linux-nvme@lists.infradead.org>, "linux-scsi@vger.kernel.org"
+	<linux-scsi@vger.kernel.org>
+Subject: [PATCH 6.1.y 0/8] nvme: correctly fix admin request_queue lifetime
+Thread-Topic: [PATCH 6.1.y 0/8] nvme: correctly fix admin request_queue
+ lifetime
+Thread-Index: AQHcwdyaXGNYIO/hmUiMYmXEd9VHmw==
+Date: Wed, 1 Apr 2026 13:36:55 +0000
+Message-ID: <20260401-defer-gleam-5226cb65@mheyne-amazon>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A_jyC0Lb0WUR
-Date: Wed, 01 Apr 2026 09:34:06 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
- 1128861@bugs.debian.org
-Cc: NeilBrown <neil@brown.name>, "Jeff Layton" <jlayton@kernel.org>,
- "Thorsten Leemhuis" <regressions@leemhuis.info>, Tj <tj.iam.tj@proton.me>,
- linux-nfs@vger.kernel.org, "Olga Kornievskaia" <okorniev@redhat.com>,
- stable@vger.kernel.org
-Message-Id: <856a0051-131e-4847-9b8c-2c377c375da7@app.fastmail.com>
-In-Reply-To: <ac0U4P92l-TkQvnh@monoceros>
-References: <177266540127.7472.3460090956713656639@noble.neil.brown.name>
- <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>
- <cf78feb7ffaee6ed478afb734d2ede149597de86.camel@kernel.org>
- <177434721528.7102.13514118512738778346@noble.neil.brown.name>
- <d4773958-5ae5-42d4-b785-6598b5c9b27a@app.fastmail.com>
- <177442248735.2237155.773724155681455344@noble.neil.brown.name>
- <a6e6a731-2885-4510-87dd-45e6a8f4fbd7@app.fastmail.com>
- <177456522377.1851489.16395975485525163031@noble.neil.brown.name>
- <177187492815.425331.14320091315652332093.reportbug@nimble>
- <465012d6-c824-4d8d-b6f6-8a2d85e30154@app.fastmail.com>
- <ac0U4P92l-TkQvnh@monoceros>
-Subject: Re: Bug#1128861: [PATCH v2] lockd: fix TEST handling when not all permissions
- are available.
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-232784-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232787-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[32];
+	DKIM_TRACE(0.00)[amazon.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cel@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.979];
+	FROM_NEQ_ENVFROM(0.00)[mheyne@amazon.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 32C3437BA23
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: ED8AD37B56E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+The initial attempt to backport upstream commit 03b3bcd319b3 ("nvme: fix
+admin request_queue lifetime") was not correct leading to refcount
+underflows and not even fixing the problem.
 
-On Wed, Apr 1, 2026, at 8:54 AM, Uwe Kleine-K=C3=B6nig wrote:
-> Hello Chuck,
->
-> On Fri, Mar 27, 2026 at 09:56:38AM -0400, Chuck Lever wrote:
->> I think the stable folks will insist on this fix going into
->> upstream first. However, this version of the fix does not
->> apply to nfsd-testing because that branch has the NLMv4
->> xdrgen rewrite.
->
-> This is not the first time a bug is fixed by changes that are too
-> intrusive for backport. Usually the stable maintainers can be talked to
-> accept a small targeted fix even if it's not upstream. The discussion =
-is
-> simplified by people claiming to have tested the fix and confirm it
-> helps.
+I've tested the reproduction steps from [1] (adding a delay to
+nvme_submit_user_cmd and 'echo 1 | sudo tee
+/sys/class/nvme/nvme0/delete_controller') on the nvme-tcp driver which
+printed the KASAN UAF blurb.
 
-Sorry I wasn't clear. Neil and I have also been down this road before
-so I wasn't explicit about my request.
+Fixing the issue in the 6.1 series requires a few dependent patches.
+This is mainly the upstream commit 2b3f056f72e5 ("blk-mq: move the call
+to blk_put_queue out of blk_mq_destroy_queue") which allows to move the
+blk_put_queue to a different location. While at it, I'm backporting the
+whole patch series for completeness. However, the scsi and apple patches
+are not strictly required and could be dropped from this series.
 
-I'd like Neil to provide a patch for upstream against nfsd-testing.
-Once that is merged, he can present the patch from this thread to
-the stable/LTS maintainers.
+The backport of commit 03b3bcd319b3 ("nvme: fix admin
+request_queue lifetime") needed a tweak to the nvme pci driver.
+
+Furthermore, in this patch series I've also included a follow-up fixup
+from upstream commit b84bb7bd913d ("nvme: fix admin queue leak on
+controller reset"), again with an adaption to the nvme pci driver. This
+issue could easily be reproduced by resetting the controller (no need to
+run full blktests):
+
+  echo 1 > /sys/class/nvme/nvme0/reset_controller
+
+[1] https://lore.kernel.org/all/20251029210853.20768-1-cachen@purestorage.c=
+om/
+
+Christoph Hellwig (5):
+  blk-mq: move the call to blk_put_queue out of blk_mq_destroy_queue
+  scsi: remove an extra queue reference
+  nvme-pci: remove an extra queue reference
+  nvme-apple: remove an extra queue reference
+  nvme-pci: put the admin queue in nvme_dev_remove_admin
+
+Keith Busch (1):
+  nvme: fix admin request_queue lifetime
+
+Maximilian Heyne (1):
+  Revert "nvme: fix admin request_queue lifetime"
+
+Ming Lei (1):
+  nvme: fix admin queue leak on controller reset
+
+ block/blk-mq.c            |  4 +---
+ block/bsg-lib.c           |  2 ++
+ drivers/nvme/host/apple.c |  8 --------
+ drivers/nvme/host/core.c  | 16 ++++++++++++++--
+ drivers/nvme/host/pci.c   | 14 +++++++-------
+ drivers/scsi/scsi_scan.c  |  1 -
+ drivers/ufs/core/ufshcd.c |  2 ++
+ 7 files changed, 26 insertions(+), 21 deletions(-)
+
+-- =
+
+2.50.1
 
 
---=20
-Chuck Lever
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
