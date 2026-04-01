@@ -1,240 +1,170 @@
-Return-Path: <stable+bounces-232808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YF9yHrhEzWkkbAYAu9opvQ
-	(envelope-from <stable+bounces-232808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:15:52 +0200
+	id 4FqLNP1CzWkkbAYAu9opvQ
+	(envelope-from <stable+bounces-232807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:08:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93AC37DC6E
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:15:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42AB737DB5C
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 18:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2581C3168602
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 16:04:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03CD830360B5
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 15:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FE6478864;
-	Wed,  1 Apr 2026 16:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582193F7E9D;
+	Wed,  1 Apr 2026 15:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b="LTDUoNM7"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="DShwVEvK"
 X-Original-To: stable@vger.kernel.org
-Received: from os-cillation.de (mx.os-c.de [213.165.83.196])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053303D6CA4;
-	Wed,  1 Apr 2026 16:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.165.83.196
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775059410; cv=none; b=iZWkrzBpZfbZ9sx87uyY6w0a/OMnS/BHKIecKUF1ljei49Xiasw1kIoTHXKA6aO/ucHK9C+wOniFDrpNHCh9rIg2uZPgmp1T3NZ62z11E5SmkyaEdsOrwRyUGnzRuBDwdCDWJfBBrZHLq+SqhzMXB1Ph7PWtFEY71wRMXXhAB9k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775059410; c=relaxed/simple;
-	bh=ryT7EeE1+YNFuE51+HAXkF5VlZc6nZnjsyF/z/9eI1U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aDOEtRxQbw7QN5iqBdNrnaveDuMW/cdzh1nFKOD8tAdF8T5hdE+ocihJwDtVLWrdYEkbI0p9SpT3rZKl8OeT1jHOKgbB08/JqaJl9zm05dutMnSsWymGK4mtJ1x4Yznypn7ZKz2qFJ8lvfCtzAf4f4xa7F6knvH/mVhKWVgzMy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de; spf=pass smtp.mailfrom=os-cillation.de; dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b=LTDUoNM7; arc=none smtp.client-ip=213.165.83.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os-cillation.de
-Received: from core2024.osc.gmbh (ip-094-079-177-042.um30.pools.vodafone-ip.de [94.79.177.42])
-	by os-cillation.de (Postfix) with ESMTPSA id EAA44C03BA;
-	Wed,  1 Apr 2026 17:53:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=os-cillation.de;
-	s=202409; t=1775058826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nk9pGpxh0vWpesmCd7JlzF8g1U7htln7n+QL1w8SFVM=;
-	b=LTDUoNM7VHDIgWwa+2JHihO22XOPOp7Z4UdbimU83p0qFyyAFDqEyeUon/15HVJ7C9uKNC
-	k1Lg46IhZMP2Sg3idbWDTDa3UjC4A8McrevfSIpc8VVYp4MQahvm52GyaEceiG/Bk/2Zut
-	H3R89nVZKZAbTt2E0rMGHkucQ5NxdCYLRIqb1LNdn/0VByONAsSOiauLvzXXYUpZZx+bVY
-	VTPoDtDWo42StKCQ1VU8mGUlH6OMvmAN5v2wD35F20EJnaA0cZL62nAV6NqWdwxzIDJRGo
-	ux7LZSB96L0LlRlMX8LLhWOzmw2vMoLz+cte8hh+lYTVy5KLBU+1J2I5l+QNRg==
-Authentication-Results: os-cillation.de;
-	auth=pass smtp.auth=os-c@schweissgut.net smtp.mailfrom=hd@os-cillation.de
-Received: from [192.168.3.45] (hd2022.osc.gmbh [192.168.3.45])
-	by core2024.osc.gmbh (Postfix) with ESMTPSA id 5ACAD20010D;
-	Wed,  1 Apr 2026 17:53:40 +0200 (CEST)
-Message-ID: <40364d66-f8a2-4efb-a4d3-70f0aa3137e2@os-cillation.de>
-Date: Wed, 1 Apr 2026 17:53:40 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD1F36922D
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 15:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775059137; cv=pass; b=RlTr5A0o6i4NEb2/jrue8SogSUubvSfD4eNCY3XRDpt7SfoeXvhpPK9qZy3m4Q1yHk4nfybBRMeBTqCbpGFhF94jLUq6yc0mm5CZKK1tGduMg9VMIVulcHFpFS/nPwzFlfpE/nu7xmNTD206YpxbQ5vr0u2vBKOzsy5gHneFQqM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775059137; c=relaxed/simple;
+	bh=+SNyJtqnsHkXb/MqyOkimza1yNnqGZoQb7403XYFCqo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VQcumkC7OSmk3qSpdBG61jeMMPfK2Q4rSBEN/hlCm9TT605sF9UxT+1eJMS+tIAi+W247YmjQBIfzOgFQkkSdWB/sEqRRx0vUXyhei3A1RVTlxIy85to2Dvt326vGKhVcSKkW6zTH/50OndnXu1bri7pYApycCFq0NV/sSmJSlI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=DShwVEvK; arc=pass smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b9961e4f71bso1048854466b.3
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 08:58:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775059134; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JLBqqa+vilFg32Iqc9XewfwC0tsleJ/hSs0Yu3uleDYvZF2GnpXkJrHZIpiy7cKPjR
+         pwdbTLwvdwkk6Fi49N5/xEcCi745NqUM/gYJpmMPJhwgwnuLNCYTZUdBBBZp9FotFzi9
+         fXxVgAWbX/AODH6WS6UosWpiHx3UzJ+nIisUXmKT0sAI8e/8d3qWN9geREHYTFKIoXnq
+         DAS12juhiBHTEtXGt6kSw4XCzgtCcVH7lrM4C0Ubl/6M9aKExZ6fgTigYpRtFRo03JyC
+         rbNV56vKTyARs9RLT8+69+XQz78w0NY4cGvS6MxzHfr1xvGJl1rrNdMz5dzTxT9Yat7B
+         9XdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ofZWgwy6iDaHBYYItk0VakheI0zjgXnoCfAl8Suh6U8=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=aO65XLaIYt3+FbBrkIJihVYHSTao//z3fGypRa+duLpibO5zbxUxnp38VVW+DoH3O/
+         DpLCkEe3G+GV4ofQc06eoLeHF7G1R/vOXqKCLooQzaO9a60M+GSfeaeMUjgLpMHQAQIS
+         qm7m9COHEuMzZQf7jIfTf+ODaCaqDrESJjehsA0qQSs3mu+GjOiOyNfYu11RvooDSXO8
+         Q83EYOwDbez6nkR4TL4N2CmS3jYHXfjxmOl9qVpJ3bkN30UF5asBVgTmTpTxeysIn5qa
+         V0qngvXGGp+9MdQCs+ud3+AMp6S84UfO8lsQnd/KYuGYungXZFjd/5rGJFAzZc/x/Lji
+         1C1A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1775059134; x=1775663934; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ofZWgwy6iDaHBYYItk0VakheI0zjgXnoCfAl8Suh6U8=;
+        b=DShwVEvKa5t1VZ6xJNKNxMuLeUMXTqjm5uKdieP35eBrasux4dm29ayzVIjU5yWS17
+         agHk7C42+CacYetAMaaFD7Rb6Arcra0kvhPaAIoEJpp7NU9Al18zMly8++3sEJvhe2r7
+         54CRpBaLvTyXC2b3Z+LR68RTn+zTs+Qh86B284d7VKfjIhVkJPS7nTiqS61vF8NyO5a4
+         0nGuWVNb4sB8ICzgNBm7Hp6SKD7T1Au6dUwUZtJdySVt5sR8Lcf5mDq9yOrBGyYlolQC
+         CZKyq/ELDqYUeVIeXTKJQMIuDj2v9IfrLEhtOdbkq33OVPqabhrR3JWqR8JejZVC+3Hu
+         zGEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775059134; x=1775663934;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ofZWgwy6iDaHBYYItk0VakheI0zjgXnoCfAl8Suh6U8=;
+        b=GCUulAHqWMh+n2puedsQsnxW65AetBczVSTEkbHQdjUW1euUuIv2NjeyKsaudv8Ick
+         Rhckt4++Dquo83qgIhqAnGeMkUVWoly3QQEYOJbld/HnGK78i8FGejjfki+sK2pDu6us
+         pSRH8KbUbQEyZoJ/WKKWQE43+tYLPILIiRlyNoJjw/6OqrLGM6HWspY7gDT+bTy4yOLz
+         G87rNBWJfgxsryfACnUuUtgYAFUen/IudHwf1iwHXa7Vq0Zs+xUYOLHhfurrCu+m2nj9
+         jdaQ7aH/GU1PWR2ioU65DWK3SqKAb5b0hvkdbw3n2xmaXrHsS2xwf7i8EZtUujt65DqA
+         90Yg==
+X-Gm-Message-State: AOJu0Yx7nVr1ebosiOaH1JVDkCwa8kdQBPL/Qzi0PlskjRQmSrrI8hDL
+	51MJKDMelIp/KbdxqYvARYedD5iHX00y6DLS81Ttj5SWj0XmtsvEP2PQ5SjLX4UdWSO8zK6cp7h
+	ibznCkPTV6t7CrTBQ4Ie2vWI7T19S+OG0zh13bZf/hw==
+X-Gm-Gg: ATEYQzy71BBHooSDOw8F6XebeVMMr87gU4ylTPP06cA2P16yaOPDFlWeXWiCwS3aJzy
+	MAD5zO35NdDqwDPjKRzKCjUxZs+tLs2y+owa3JTdwIoGBw1U7sxeWb9SXgLzi0z1JbDX2JSoYps
+	JTi220RLSa+u5eINw3pp1ZftYys8bTfvDQIgtoepubqs+J/CmCj3aZKNRCxbVSZyx/L2SPb+2PN
+	Dnt8j5KGWaDeqsoYYrMwHIVb1rOkjxuRidlPHPKxALty4tqbcCIghZF96OL1mpheNOvdAnEDI1e
+	uKU69PmBgKYx99p4ES4aGrv9f5pynXrTlJMIaVBrB2DKv4YxqjCY6r10QVGvOQTxt9AV
+X-Received: by 2002:a17:907:a688:b0:b96:e593:fd32 with SMTP id
+ a640c23a62f3a-b9c138e1fd1mr315996366b.12.1775059133943; Wed, 01 Apr 2026
+ 08:58:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mtd: spi-nor: Fix SST AAI write mode opcode handling
-To: Sanjaikumar V S <sanjaikumarvs@gmail.com>, mwalle@kernel.org,
- pratyush@kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
- miquel.raynal@bootlin.com, richard@nod.at, sanjaikumar.vs@dicortech.com,
- stable@vger.kernel.org, tudor.ambarus@linaro.org, vigneshr@ti.com
-References: <20260331095026.38-1-sanjaikumarvs@gmail.com>
-Content-Language: en-US
-From: Hendrik Donner <hd@os-cillation.de>
-Autocrypt: addr=hd@os-cillation.de; keydata=
- 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 li+2
-In-Reply-To: <20260331095026.38-1-sanjaikumarvs@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[os-cillation.de,reject];
-	R_DKIM_ALLOW(-0.20)[os-cillation.de:s=202409];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+References: <20260331161758.909578033@linuxfoundation.org>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Wed, 1 Apr 2026 21:28:14 +0530
+X-Gm-Features: AQROBzDKW8-Anb0EFwwtUyt6qA-W2aGf7GbHuxZGpnDMV6eYneZuJAyMWTsQiKw
+Message-ID: <CAG=yYwm3YQ_yUFd_u5sQLYqMNnPP4uxcfuQT3vHJZVVZHjj+GQ@mail.gmail.com>
+Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[os-cillation.de:+];
-	TAGGED_FROM(0.00)[bounces-232808-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232807-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hd@os-cillation.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,os-cillation.de:dkim,os-cillation.de:email,os-cillation.de:mid,dicortech.com:email]
-X-Rspamd-Queue-Id: E93AC37DC6E
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,rajagiritech-edu-in.20230601.gappssmtp.com:dkim,rajagiritech.edu.in:email]
+X-Rspamd-Queue-Id: 42AB737DB5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+ hello,
 
-On 3/31/26 11:50, Sanjaikumar V S wrote:
-> From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-> 
-> When the SPI controller lacks direct mapping support, the fallback path
-> in spi_nor_spimem_write_data() uses nor->write_proto based operation
-> template. However, this template uses the standard page program opcode
-> set during probe, not the AAI opcode required for SST flash.
-> 
-> Additionally, controllers that do support direct mapping will also use
-> the wrong opcode since the dirmap template is created at probe time
-> with the standard page program opcode.
-> 
-> Fix this by:
-> 1. Checking the nodirmap flag in spi_nor_spimem_write_data() to ensure
->     the code falls through to spi_nor_spimem_exec_op() path which builds
->     the operation at runtime with the correct program_opcode.
-> 2. Setting nodirmap=true for SST AAI devices in sst_nor_late_init() to
->     disable dirmap and force the runtime opcode path.
-> 
-> This only affects SST devices with SST_WRITE flag. Other SST devices
-> that use standard page program can still benefit from dirmap.
-> 
-> Fixes: df5c21002cf4 ("mtd: spi-nor: use spi-mem dirmap API")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-> ---
-> Changes since v4:
-> - Disable dirmap for SST AAI devices in sst_nor_late_init() to fix
->    the case when controller supports direct mapping (Pratyush)
-> - Updated commit message and subject to reflect the broader fix
-> 
-> Note: Patch 1/2 from v4 series is already in spi-nor/next.
-> 
-> I don't have hardware to test the new sst.c change. Hendrik, could you
-> please verify this on your SST25VF032B setup?
-> 
+$sudo dmesg -l err
+[sudo] password for jeffrin:
+[   11.985734] nouveau 0000:01:00.0: drm: failed to create ce channel, -22
+[   33.336996] nouveau 0000:01:00.0: msvld: unable to load firmware data
+[   33.337001] nouveau 0000:01:00.0: msvld: init failed, -19
+[   33.366460] nouveau 0000:01:00.0: gr: TRAP ch 3 [007fb90000
+gst-plugin-scan[1242]]
+[   33.366485] nouveau 0000:01:00.0: gr: GPC0/PROP trap: 00000020
+[RT_HEIGHT_OVERRUN] x = 48, y = 16, format = 37, storage type = 0
+[   43.524931] nouveau 0000:01:00.0: msvld: unable to load firmware data
+[   43.524937] nouveau 0000:01:00.0: msvld: init failed, -19
+$
 
-retested, works the same as v4 on the SST25VF032B, don't have other SST
-flashes at hand to test though.
 
-Tested-by: Hendrik Donner <hd@os-cillation.de>
-Reviewed-by: Hendrik Donner <hd@os-cillation.de>
 
-Regards,
-Hendrik
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
 
->   drivers/mtd/spi-nor/core.c |  2 +-
->   drivers/mtd/spi-nor/sst.c  | 10 +++++++++-
->   2 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-> index e6c1fda61f57..2e4b167cab57 100644
-> --- a/drivers/mtd/spi-nor/core.c
-> +++ b/drivers/mtd/spi-nor/core.c
-> @@ -281,7 +281,7 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t to,
->   	if (spi_nor_spimem_bounce(nor, &op))
->   		memcpy(nor->bouncebuf, buf, op.data.nbytes);
->   
-> -	if (nor->dirmap.wdesc) {
-> +	if (nor->dirmap.wdesc && !nor->dirmap.wdesc->nodirmap) {
->   		nbytes = spi_mem_dirmap_write(nor->dirmap.wdesc, op.addr.val,
->   					      op.data.nbytes, op.data.buf.out);
->   	} else {
-> diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
-> index db02c14ba16f..cd2f04830a6b 100644
-> --- a/drivers/mtd/spi-nor/sst.c
-> +++ b/drivers/mtd/spi-nor/sst.c
-> @@ -267,8 +267,16 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->   
->   static int sst_nor_late_init(struct spi_nor *nor)
->   {
-> -	if (nor->info->mfr_flags & SST_WRITE)
-> +	if (nor->info->mfr_flags & SST_WRITE) {
->   		nor->mtd._write = sst_nor_write;
-> +		/*
-> +		 * AAI mode requires dynamic opcode changes (BP vs AAI_WP).
-> +		 * Disable dirmap to ensure spi_nor_spimem_exec_op() uses
-> +		 * the runtime opcode instead of the dirmap template.
-> +		 */
-> +		if (nor->dirmap.wdesc)
-> +			nor->dirmap.wdesc->nodirmap = true;
-> +	}
->   
->   	return 0;
->   }
 
+--
+software engineer
+rajagiri school of engineering and technology
 
