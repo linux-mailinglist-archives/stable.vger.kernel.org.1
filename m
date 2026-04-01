@@ -1,161 +1,209 @@
-Return-Path: <stable+bounces-232748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDTZIqbuzGknYAYAu9opvQ
-	(envelope-from <stable+bounces-232748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 12:08:38 +0200
+	id sPLxH6HtzGknYAYAu9opvQ
+	(envelope-from <stable+bounces-232747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 12:04:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD7C3783B2
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 12:08:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E282C3782D9
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 12:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56145305C8CB
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 09:51:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2BFB30F34BE
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 09:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9963B19B7;
-	Wed,  1 Apr 2026 09:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D5439BFF5;
+	Wed,  1 Apr 2026 09:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ST4emp8p"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA3B3382F7;
-	Wed,  1 Apr 2026 09:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B685C384242
+	for <stable@vger.kernel.org>; Wed,  1 Apr 2026 09:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775037115; cv=none; b=V5jqNJmNLvjFp+2vSfooxTpuqkucCw28s41etVIW5M304uAaaE1DwSlw+Mn1yeJe7yBaMqAfNiVBtwBlvMak0ies+AO2aFK49eIREhDuI5rEyxYt27H7lS+XKQQlTOGPP3THn5gamGdUkD+NaZBb581oxXApuk1KIl5mCD4Fhjo=
+	t=1775036886; cv=none; b=NfrqyTicHzoVgi6cA+0YbMT8hfk3D27Mody+sFcAuUIeH06J5adhWSPadHD/2U4Kyycue0eO4IY1F94QbYdMzg5/CKUZHNSwn1JI/5omniWZBeE05uf0yKvZ3rKBDZAUaULvEs95Q0umzTJrPLqHFK8KBAxHB3wkBFrpU50+On0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775037115; c=relaxed/simple;
-	bh=U97ebIvudxTv88YtYZfzy5ZrlchjEOPs2mSLzLQmu6Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IV6uAds9llZUTb+//22S/ah4+eJe4KnqD5dVSZi26xrgZf6k5/0ygUBN7r9rrGS56EwYwXq1H9mZnhB76zTR5b7PyXi5n9pitvH5S9bmVsMDJdVX+T71DnupAQ+qYYOKOwdhgMkz08AL+e1jyEnOPaYpKLZl7zBTlI0AFYXO5vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=intel.corp-partner.google.com; spf=fail smtp.mailfrom=intel.corp-partner.google.com; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=intel.corp-partner.google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=intel.corp-partner.google.com
-X-CSE-ConnectionGUID: LKJLZTZ+QM2+ozNZRH+TsQ==
-X-CSE-MsgGUID: HrWPrAQ3Sv6Zg9p864WfiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76083234"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="76083234"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 02:51:53 -0700
-X-CSE-ConnectionGUID: IoCaRfFXTbiEaY64u7Hknw==
-X-CSE-MsgGUID: 3y5qohERTs2JU2HsZyHR+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="226497065"
-Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2026 02:51:49 -0700
-From: Sonam Sanju <sonam.sanju@intel.corp-partner.google.com>
-To: "Paul E . McKenney" <paulmck@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Vineeth Pillai <vineeth@bitbyteword.org>,
-	Dmitry Maluka <dmaluka@chromium.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	rcu@vger.kernel.org,
-	Sonam Sanju <sonam.sanju@intel.com>
-Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu out of resampler_lock
-Date: Wed,  1 Apr 2026 15:17:14 +0530
-Message-Id: <20260401094714.2533621-1-sonam.sanju@intel.corp-partner.google.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2d080c02-9602-4b22-94ce-1f7a71cc19a4@paulmck-laptop>
-References: <2d080c02-9602-4b22-94ce-1f7a71cc19a4@paulmck-laptop>
+	s=arc-20240116; t=1775036886; c=relaxed/simple;
+	bh=j7Vt/jlDtbxn7mqZMpxforSUGE7x43cWhuQ/GjEoAh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fB/7Z664VIsUWzaPhQ65bY/kcW+naq6zS2XyQwEvsty8g2yHyiy1CpM58toq317v+yltG524Ez/E3ri71qIyNBbkeJhQT1UDtYnF7UCebowTnQGRT44QaDFUPEd7gvCEkyzWZZhGrUB6Q11ZhLcdcCbPzxsdlgJIE6shCJ6FtlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ST4emp8p; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775036883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P5Fn2UlyTzbBubxoJbwHjMcPOZ/geBIS1AM3iCXfMrc=;
+	b=ST4emp8p0HfbFaxElkURR+xQXozyTbNouQuvW2cnmy1Dm0Ymx5FFd+l3Fnf3dmvuSEgWbX
+	oAxxg8qIBthI6hUsqc7HUiOoTuDZlM4R5tNY7tMsoP7URTbeOQ18t5HK/hcdFvtpz/OFSK
+	LSrVKAlDNw60sQdPWrQOewM/e4maWMM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-OchIZal7PCWIHHQhgfKtSQ-1; Wed,
+ 01 Apr 2026 05:48:00 -0400
+X-MC-Unique: OchIZal7PCWIHHQhgfKtSQ-1
+X-Mimecast-MFC-AGG-ID: OchIZal7PCWIHHQhgfKtSQ_1775036879
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1A33418005BF;
+	Wed,  1 Apr 2026 09:47:59 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.128])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D1FF819560AB;
+	Wed,  1 Apr 2026 09:47:57 +0000 (UTC)
+Date: Wed, 1 Apr 2026 17:47:53 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+	lirongqing <lirongqing@baidu.com>
+Subject: Re: [PATCH v3] mm/vmalloc: Use dedicated unbound workqueues for vmap
+ drain
+Message-ID: <aczpyc7sxzBL4MQn@fedora>
+References: <20260331202352.879718-1-urezki@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [2.04 / 15.00];
-	DMARC_POLICY_REJECT(2.00)[google.com : SPF not aligned (relaxed), No valid DKIM,reject];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331202352.879718-1-urezki@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[redhat.com,bitbyteword.org,chromium.org,gmail.com,joshtriplett.org,goodmis.org,efficios.com,vger.kernel.org,intel.com];
-	TAGGED_FROM(0.00)[bounces-232748-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[sonam.sanju@intel.corp-partner.google.com,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.985];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-232747-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bhe@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DFD7C3783B2
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E282C3782D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sonam Sanju <sonam.sanju@intel.com>=0D
+On 03/31/26 at 10:23pm, Uladzislau Rezki (Sony) wrote:
+> drain_vmap_area_work() function can take >10ms to complete
+> when there are many accumulated vmap areas in a system with
+> high CPU count, causing workqueue watchdog warnings when run
+> via schedule_work():
+> 
+>   workqueue: drain_vmap_area_work hogged CPU for >10000us
+> 
+> Move the top-level drain work to a dedicated WQ_UNBOUND
+> workqueue so the scheduler can run this background work
+> on any available CPU, improving responsiveness. Use the
+> WQ_MEM_RECLAIM to ensure forward progress under memory
+> pressure.
+> 
+> Move purge helpers to separate WQ_UNBOUND | WQ_MEM_RECLAIM
+> workqueue. This allows drain_vmap_work to wait for helpers
+> completion without creating dependency on the same rescuer
+> thread and avoid a potential parent/child deadlock.
+...snip...  
+> @@ -2385,29 +2390,31 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+>  		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
+>  		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
+>  
+> -		for_each_cpu(i, &purge_nodes) {
+> -			vn = &vmap_nodes[i];
+> +		for_each_vmap_node(vn) {
+> +			vn->work_queued = false;
+> +
+> +			if (list_empty(&vn->purge_list))
+> +				continue;
+>  
+>  			if (nr_purge_helpers > 0) {
+>  				INIT_WORK(&vn->purge_work, purge_vmap_node);
+> +				vn->work_queued = schedule_drain_vmap_work(
+> +					READ_ONCE(drain_vmap_helpers_wq), &vn->purge_work);
 
-On Tue, Mar 31, 2026 at 01:51:00PM -0700, Paul E. McKenney wrote:=0D
-> On Tue, Mar 31, 2026 at 11:17:19AM -0700, Sean Christopherson wrote:=0D
-> > Please don't post subsequent versions In-Reply-To previous versions, it=
- tends to=0D
-> > muck up tooling.=0D
-=0D
-Noted, will send future versions as new top-level threads. Sorry about=0D
-that.=0D
-=0D
-> > Unless I'm misunderstanding the bug, "fixing" in this in KVM is paperin=
-g over an=0D
-> > underlying flaw.  Essentially, this would be establishing a rule that=0D
-> > synchronize_srcu_expedited() can *never* be called while holding a mute=
-x.  That's=0D
-> > not viable.=0D
->=0D
-> First, it is OK to invoke synchronize_srcu_expedited() while holding=0D
-> a mutex.  Second, the synchronize_srcu_expedited() function's use of=0D
-> workqueues is the same as that of synchronize_srcu(), so in an alternate=
-=0D
-> universe where it was not OK to invoke synchronize_srcu_expedited() while=
-=0D
-> holding a mutex, it would also not be OK to invoke synchronize_srcu()=0D
-> while holding that same mutex.  Third, it is also OK to acquire that=0D
-> same mutex within a workqueue handler.  Fourth, SRCU and RCU use their=0D
-> own workqueue, which no one else should be using (and that prohibition=0D
-> most definitely includes the irqfd workers).=0D
-=0D
-Thank you for clarifying this. =0D
-=0D
-> As a result, I do have to ask...  When you say "multiple irqfd workers",=
-=0D
-> exactly how many such workers are you running?=0D
-=0D
-While running cold reboot/ warm reboot cycling in our Android platforms =0D
-with 6.18 kernel, the hung_task traces consistently show 8-15 =0D
-kvm-irqfd-cleanup workers in D state.  These are crosvm instances with =0D
-roughly 10-16 irqfd lines per VM (virtio-blk, virtio-net, virtio-input,=0D
-virtio-snd, etc., each with a resampler).=0D
-=0D
-Vineeth Pillai (Google) reproduced a related scenario under a VM=0D
-create/destroy stress test where the workqueue reached active=3D1024=0D
-refcnt=3D2062, though that is a much more extreme case than what we see=0D
-during normal shutdown.=0D
-=0D
-The first part of the deadlock is genuinely there. One worker holds =0D
-resampler_lock and blocks in synchronize_srcu_expedited() while the=0D
-remaining 8-15 workers block on __mutex_lock at =0D
-irqfd_resampler_shutdown.  =0D
-=0D
-Thanks,=0D
-Sonam=0D
+The new schedule_drain_vmap_work() could submit all purge_work on one
+CPU, do we need use queue_work_on(cpu, wq, work) instead?
+
+>  
+> -				if (cpumask_test_cpu(i, cpu_online_mask))
+> -					schedule_work_on(i, &vn->purge_work);
+> -				else
+> -					schedule_work(&vn->purge_work);
+> -
+> -				nr_purge_helpers--;
+> -			} else {
+> -				vn->purge_work.func = NULL;
+> -				purge_vmap_node(&vn->purge_work);
+> -				nr_purged_areas += vn->nr_purged;
+> +				if (vn->work_queued) {
+> +					nr_purge_helpers--;
+> +					continue;
+> +				}
+>  			}
+> -		}
+>  
+> -		for_each_cpu(i, &purge_nodes) {
+> -			vn = &vmap_nodes[i];
+> +			/* Sync path. Process locally. */
+> +			purge_vmap_node(&vn->purge_work);
+> +			nr_purged_areas += vn->nr_purged;
+> +		}
+>  
+> -			if (vn->purge_work.func) {
+> +		/* Wait for completion if queued any. */
+> +		for_each_vmap_node(vn) {
+> +			if (vn->work_queued) {
+>  				flush_work(&vn->purge_work);
+>  				nr_purged_areas += vn->nr_purged;
+>  			}
+...snip...
+> +
+> +static int __init vmalloc_init_workqueue(void)
+> +{
+> +	struct workqueue_struct *drain_wq, *helpers_wq;
+
+Maybe there's one local variable is enough like below:
+
+	struct workqueue_struct *wq;
+	unsigned int flags = WQ_UNBOUND | WQ_MEM_RECLAIM;
+
+	wq = alloc_workqueue("vmap_drain", flags, 0);
+	WARN_ON_ONCE(wq == NULL);
+	WRITE_ONCE(drain_vmap_wq, wq);
+
+	wq = alloc_workqueue("vmap_drain_helpers", flags, 0);
+	WARN_ON_ONCE(wq == NULL);
+	WRITE_ONCE(drain_vmap_helpers_wq, wq);
+
+	return 0;
+}
+
+Just personal preference on nitpick, not strong opionion.
+
 
