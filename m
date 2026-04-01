@@ -1,160 +1,166 @@
-Return-Path: <stable+bounces-232677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ED3AELOTzGmbUAYAu9opvQ
-	(envelope-from <stable+bounces-232677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:40:35 +0200
+	id v5cjIsCbzGntUQYAu9opvQ
+	(envelope-from <stable+bounces-232685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 06:14:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA183747A2
-	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 05:40:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A7737497C
+	for <lists+stable@lfdr.de>; Wed, 01 Apr 2026 06:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8918B3018BD3
-	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 03:36:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B17813029FF1
+	for <lists+stable@lfdr.de>; Wed,  1 Apr 2026 04:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2B937F01A;
-	Wed,  1 Apr 2026 03:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20108363C7C;
+	Wed,  1 Apr 2026 04:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="r/yfbhYL"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="dQaI+ftg"
+X-Original-To: Stable@vger.kernel.org
+Received: from mail-m19731102.qiye.163.com (mail-m19731102.qiye.163.com [220.197.31.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF5337E317;
-	Wed,  1 Apr 2026 03:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C6518859B;
+	Wed,  1 Apr 2026 04:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775014585; cv=none; b=h5KHAi4p8YCn76Guzx5Ibhg2lXgeCYD7H8Zb7ELNMQGUEFm+l+YgwaDqZiik+CKvzQY7ADbsYxtkit5XLyQaf0Y7VG4QFbQL/NcU+ZfUfQ47VV5sFFjs8LDWlxHhrPVoARc49qYLwGju0tvAx3LkLYkVSfLictlvDBaVfkyn8sc=
+	t=1775016892; cv=none; b=qkzD8pgW7xVQsrzZCOPdnxTN4tFN8eHcmg6D0ktYmREF/ln/o62weUzacoHe7ZL9bMLaxvvvGxlznFSzzgppNBqE9Eaw3i5Yah/d44jr2cjRMuhnc9r5vnwZL3xqlybPwt2K1CR0verk1TUJcXNz2wNinuzG9CKzChsmtWP+yWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775014585; c=relaxed/simple;
-	bh=xqcgULTzfzyjxVvlL2LFRENO/FlO1kKGjbHJgUP8/2w=;
-	h=Date:To:From:Subject:Message-Id; b=ifq69sq0HZkAbRTTWkdLriijO4cdimtJlhEoet4iBCL3bunP/eu6Sw4DXPpG7PaZ3UQeMO2za/dqBWwvoUOXbLlYdPHc+sKyF4YDrdAMtRISavlsuOVBbQsCnnnIFILVL8eilkBYLzAeCRDoVzQ3dQgt3oBiufnJwp6cCqPvHA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=r/yfbhYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78374C4CEF7;
-	Wed,  1 Apr 2026 03:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775014584;
-	bh=xqcgULTzfzyjxVvlL2LFRENO/FlO1kKGjbHJgUP8/2w=;
-	h=Date:To:From:Subject:From;
-	b=r/yfbhYLJCoGsg3GPbNq+1DlPCz9mYGLv726kf9WjCITmwLnbS18COJaYUDl+Ih+H
-	 VKXPLFDJ5M1szjy1ADfKBToXqncxJGgubMTwZLs5iQn7huysdUTRboHJyGUnq9kXI1
-	 6mswOeiTXGpVtEyZKNEprQVvZE9HqGP2F9UIVVZg=
-Date: Tue, 31 Mar 2026 20:36:23 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + docs-admin-guide-mm-damon-lru_sort-warn-commit_inputs-vs-param-updates-race.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260401033624.78374C4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1775016892; c=relaxed/simple;
+	bh=YTfTTHtSG1X1IpecAI50O2D5rbXS9XkRphm9GjFATWY=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=s55h52rDfBqozkMFy8awhxFZFzycobgjrwyh7EDuiHbRq7F67F5ywahGqs11OpY0mmmdA9ttmBMNM7j8pRnzY95MYeMvRmtVWovwTV2nZrhdFqPcV0MgGULwNFHINjPAsUvX4SA1R2c4pD3ksBhrydOITrH9kKh+w7xASLQkWqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=dQaI+ftg; arc=none smtp.client-ip=220.197.31.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 39161e4ac;
+	Wed, 1 Apr 2026 11:39:19 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Stable@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-of-dwcmshc: Disable clock before DLL configuration
+Date: Wed,  1 Apr 2026 11:39:02 +0800
+Message-Id: <1775014742-233407-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
+X-HM-Tid: 0a9d471fc9a809cckunm8e6c8db9f9ecc3
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0ofH1YZTEsaSUhMSUtNGEpWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=dQaI+ftgg1eYWObfz6PRRtDPMhRS58iTrkgwWKukB4yolJqAwd/RKQgiayyTKD8G2ukxfJfDlAsp7zfNDAavmwok8+XvckCKcKNnIzsb8F8roKKhaMJM12pUWmacpyWXYWg6b6OVt3tSLyhghlqk04wpec0mqbwG1FPE+oRtnfY=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=6QJPJMz3AqhAVdrPV8Pt/icupjEt5XdhBpOtcqOFyFg=;
+	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232677-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-232685-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 9DA183747A2
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[shawn.lin@rock-chips.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[rock-chips.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A2A7737497C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+According to the ASIC design recommendations, the clock must be
+disabled before operating the DLL to prevent glitches that could
+affect the internal digital logic. In extreme cases, failing to
+do so may cause the controller to malfunction completely.
 
-The patch titled
-     Subject: Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     docs-admin-guide-mm-damon-lru_sort-warn-commit_inputs-vs-param-updates-race.patch
+Adds a step to disable the clock before DLL configuration and
+re-enables it at the end.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/docs-admin-guide-mm-damon-lru_sort-warn-commit_inputs-vs-param-updates-race.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
-Date: Sun, 29 Mar 2026 08:30:50 -0700
-
-DAMON_LRU_SORT handles commit_inputs request inside kdamond thread,
-reading the module parameters.  If the user updates the module
-parameters while the kdamond thread is reading those, races can happen.
-To avoid this, the commit_inputs parameter shows whether it is still in
-the progress, assuming users wouldn't update parameters in the middle of
-the work.  Some users might ignore that.  Add a warning about the
-behavior.
-
-The issue was discovered in [1] by sashiko.
-
-Link: https://lkml.kernel.org/r/20260329153052.46657-3-sj@kernel.org
-Link: https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org [1]
-Fixes: 6acfcd0d7524 ("Docs/admin-guide/damon: add a document for DAMON_LRU_SORT")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.0.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 ---
+This is bascially a code sync with the downstream vendor kernel which was been
+done this way and tested for some years to confirm it could fix the issues in
+all corner cases.
 
- Documentation/admin-guide/mm/damon/lru_sort.rst |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/Documentation/admin-guide/mm/damon/lru_sort.rst~docs-admin-guide-mm-damon-lru_sort-warn-commit_inputs-vs-param-updates-race
-+++ a/Documentation/admin-guide/mm/damon/lru_sort.rst
-@@ -79,6 +79,10 @@ of parametrs except ``enabled`` again.
- parameter is set as ``N``.  If invalid parameters are found while the
- re-reading, DAMON_LRU_SORT will be disabled.
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index 6139516..e3ae334 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -783,12 +783,15 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 	extra |= BIT(4);
+ 	sdhci_writel(host, extra, reg);
  
-+Once ``Y`` is written to this parameter, the user must not write to any
-+parameters until reading ``commit_inputs`` again returns ``N``.  If users
-+violate this rule, the kernel may exhibit undefined behavior.
++	/* Disable clock while config DLL */
++	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
 +
- active_mem_bp
- -------------
+ 	if (clock <= 52000000) {
+ 		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
+ 		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
+ 			dev_err(mmc_dev(host->mmc),
+ 				"Can't reduce the clock below 52MHz in HS200/HS400 mode");
+-			return;
++			goto enable_clk;
+ 		}
  
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-sysfs-dealloc-repeat_call_control-if-damon_call-fails.patch
-mm-damon-core-fix-damon_call-vs-kdamond_fn-exit-race.patch
-mm-damon-core-fix-damos_walk-vs-kdamond_fn-exit-race.patch
-mm-damon-core-validate-damos_quota_goal-nid-for-node_mem_usedfree_bp.patch
-mm-damon-core-validate-damos_quota_goal-nid-for-node_memcg_usedfree_bp.patch
-mm-damon-core-use-time_in_range_open-for-damos-quota-window-start.patch
-docs-admin-guide-mm-damon-reclaim-warn-commit_inputs-vs-param-updates-race.patch
-docs-admin-guide-mm-damon-lru_sort-warn-commit_inputs-vs-param-updates-race.patch
+ 		/*
+@@ -808,7 +811,7 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 			DLL_STRBIN_DELAY_NUM_SEL |
+ 			DLL_STRBIN_DELAY_NUM_DEFAULT << DLL_STRBIN_DELAY_NUM_OFFSET;
+ 		sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
+-		return;
++		goto enable_clk;
+ 	}
+ 
+ 	/* Reset DLL */
+@@ -835,7 +838,7 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 				 500 * USEC_PER_MSEC);
+ 	if (err) {
+ 		dev_err(mmc_dev(host->mmc), "DLL lock timeout!\n");
+-		return;
++		goto enable_clk;
+ 	}
+ 
+ 	extra = 0x1 << 16 | /* tune clock stop en */
+@@ -868,6 +871,9 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 		DLL_STRBIN_TAPNUM_DEFAULT |
+ 		DLL_STRBIN_TAPNUM_FROM_SW;
+ 	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
++
++enable_clk:
++	sdhci_enable_clk(host, 0);
+ }
+ 
+ static void rk35xx_sdhci_reset(struct sdhci_host *host, u8 mask)
+-- 
+2.7.4
 
 
