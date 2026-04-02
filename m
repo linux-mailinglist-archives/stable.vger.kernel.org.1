@@ -1,199 +1,435 @@
-Return-Path: <stable+bounces-233073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFuSGT2jzmlZpAYAu9opvQ
-	(envelope-from <stable+bounces-233073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 19:11:25 +0200
+	id 0MhqJBukzmlZpAYAu9opvQ
+	(envelope-from <stable+bounces-233074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 19:15:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACD738C66E
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 19:11:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28C738C719
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 19:15:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6C5E330013AE
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:58:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA90F310C9DC
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 17:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643F13DA7E6;
-	Thu,  2 Apr 2026 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0993921CD;
+	Thu,  2 Apr 2026 17:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Bf26WH+/";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IcTyj9ba"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jPS1WL29"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85773DA7C6
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 16:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A93363091
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 17:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775149091; cv=none; b=ous9pDoTlZrZ+uwu9cvl/HjjalPz4QoLDwT3Nx1l2ANZgEkS1jkPQfRJ/aacV0Tzmti7Kw0jJjcBbp8ofyNaEfO8h6RR2n7yDlTzFJMyHpZMh+F2FefL1CFfrLYZmhwedl6R8tbdtr2ScfrDh+avFOzeFqu9LGxkOPIStmd4XKw=
+	t=1775149668; cv=none; b=dsAWNoA1uX6xlo+byNtzE+ZKXX79/R+PH/uqoKa+Bs9O/XkgCKr1HECwCV1HhBEU7Fh8sKjAqExNxQHo2v8kfS6qOtntul/yhT198Giwb5QS1IYWRDzhzntAlL8epCqpLyo/3cXONq6awruQp8q5tUvE1QMltLWsTNkkMeb/Isk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775149091; c=relaxed/simple;
-	bh=iVO6CClRzCDCdn9sT/whLwtwO1UaSpLvldz8M7JrZ60=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=FFVNHLFvFe91Idv764WjkWX3J3N4vRP+ukNuu/zAXtTFU5+li1OZl1arbUa3WUNOclRdd6CJxDHYmCZ2i342Ph2a9BW/xJoJPeApkay1cGdLt7YqmZXmdOIGpsJp8Ty9pVtUQN6F72TBPiwGfjgvsk6BbxxR/8J6TIGYr+n7ipI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Bf26WH+/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IcTyj9ba; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 632G4lGu2528211
-	for <stable@vger.kernel.org>; Thu, 2 Apr 2026 16:58:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	hFJkuoa7ytoLT1UO6Pac5qwA/yzIHHAaZ9JrTM5bhGc=; b=Bf26WH+/dBfUSx3V
-	tP2v+J4ciOrokkWLfCXaLAhUJJLbLcXurHv0PNuPz4p3/qhtOi2ycFQCI4OIZPIn
-	AmXTTvMY57lGOJr1x6jVC6sU19Dtp1+jV5HbGgtKthH6gECVzjwjqJM25/r9VP/P
-	JEIYvnTvC4E6b+G36a2rzMChKKNo1Ugrgh5FF+sIw2D7eoUO0wunrsLoL9WGfPFW
-	D4QiquEpKupq/dKcoh0Iva+/il+iRmFvvNlNjBkcMMwYKejhLtkiqXW8NvYv58Oc
-	ZiYrp0fhJTwcFR1VCPb80v19P//GghsHJpK8+sS6qKzyr/k7EdJf9x0Hq/2nBmqv
-	hs5Ywg==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d9txc8cqc-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 02 Apr 2026 16:58:06 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c769e2b1bd0so549960a12.2
-        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 09:58:06 -0700 (PDT)
+	s=arc-20240116; t=1775149668; c=relaxed/simple;
+	bh=iboUIMrr4ZTwXaB6GUMUN1CNFh7FqDUbG1ISIooTYNY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XMw7h5e0arF8HMnO2x+OqvGNDmct51k2elDZ/+Hsod2XAGL1CJUSMboifWmfjzMCRBFMBhysPTepa7I3m5d684++5EpdXR+KYTz4N+Kppd2yv3r7cx9/ZsVPioC8bW1z4kCCDXSr6BLcOfwBGa5uzcIG2O0/VeKy7ik5Ig8mytI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jPS1WL29; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c709551ec08so1597978a12.3
+        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 10:07:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775149086; x=1775753886; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hFJkuoa7ytoLT1UO6Pac5qwA/yzIHHAaZ9JrTM5bhGc=;
-        b=IcTyj9baAD1Uqqds/Uhs/qxwoXUsUMurymsnrD/zNlQOh6CNMUz5/SupU6ExF4ATfQ
-         D0D9K5eHzUw60rMRM6Ufc7/5t5fT7LmknhzqGlEnV0CXpRyujnIafE8h/OR573PmQ5re
-         0Qy8AugJJydCf6SHRcvzCfpy2b/0l14u1SGaoSbECdT8+r/rsoprxhdFjghq31uTVOfF
-         uHwAhZTtMMqcSVvVzVbJJvJixXLR3Mwm3KzJoeXeE3FUDcibAC1hTVIGAPoipWBwfoVm
-         c+07cWFg/5EAdyjwtfj8SglRH6e5wbJMnUVmhX3uIf9O3e4PsckY518kslQxF3jLsQQd
-         m3MA==
+        d=google.com; s=20251104; t=1775149661; x=1775754461; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qe/ZA3cS06JPwazJ5lT2X5nq3OydOwSen9aJipTvAo8=;
+        b=jPS1WL29f9SHjnLowWyzlGHdFBOkTmMT5TYQQ2ay8qCl3RXGGXj7ZD2C5ihMdpdsEP
+         rpDLedBTSkB12gZ567FyKnGS0pA/TomU8kTLOyAVWY3wxgy5uJPD8uNQiDVgrM+NOXpY
+         puxEjssJaelwP+rtiOCvpIH5Il+rfuhAcoJ3goRIAg2DrsWOgJfD5V8j64zsod5TO7jG
+         C3h5L23NQAPW+7FGUil0h3s0+pKLADFv6SsnPE9Gmg+00pLKmr2CJLvYCxSChzLRxhDd
+         X+t1GnRbiea4kBpdAWtGC8wuBS64uhEm3kGABVViFYQmt1GdJZdMv+G4Rmy0kOWKSkQe
+         /dVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775149086; x=1775753886;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hFJkuoa7ytoLT1UO6Pac5qwA/yzIHHAaZ9JrTM5bhGc=;
-        b=jIhn/qfbCtdf3xGo0G8vQbcGNd5gBgXv6oste3vXxTgImG1iOoiC9G5N5rjZ8XXrNn
-         ysNHWnRQtQFsCbQyGcDX3aOavQHHp9ftX+EytCH137YW3iZ7u7HThE+dZSIwNep00Gqm
-         53YYgaEqhGNtASkBKL3sqSBavUD8Pnki0T6RFjWDOV6wZjnP6zs5WIaPVJg0LiX0FGDm
-         LCdjhvAj7MpqY1ErgxJFQQjOCoZSMWBB6xe4UPAYUnqQcevxGnxo3ZhoUq+vKZz90Ftj
-         5qB1j5I3YeT2c3Kr+0hYt1eRtWxc62cCvS7BGcj3TDNo1qXGpNNaw5URZivVoRN7GncF
-         Y51w==
-X-Forwarded-Encrypted: i=1; AJvYcCUIfos85oycTXmN/hkl9pIvVUTzOWyIGZ1IremRlQwpCI2cZ/nx9W/o04gyEY88z9c3AP956nw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKWCvJiUz4io2+v7sL9rZR2r50+VbD79jELW+ePtnVpqIkuttC
-	67kvEwuNI9NYSS2ulJQp82NT6JikY36D8T5sScCtHy1kJtRxH2JTUxjIi//Eu1rWi15v11uYXQa
-	nyygYaSMkO3EoGp615sntZzIwOHolQrJBdw03dNPaCzovBx7zWytaijja74k=
-X-Gm-Gg: ATEYQzzbYjD7/Ah2v6Q8yvIC8/A7PFVKxQ6DrjUcq6GkAiHVndqjIjxerN8VRnEY8T+
-	J1Abl1nb7NvJ1rbT9qiGapGu1WOop5nVTQDPQ2nPMVafsy8Me7bUjtT+ruzkLvod3pBwo/glbGT
-	7z0ERNnAWjnon1TCAUx/X/ZWY2qJXQNcj6Gr8wG2OpLrowWj/CCpqiUMEyj11fBcBu4doqBbhVo
-	mDGm5sOG9n0g5vW9D06qN2vfEk1kykZWpN9wqmBGPnuAzRTAYrp/xIn8Qtv3MPET3v7b+hFQg31
-	1ThFNZ41tZ7dwIonjd8kqGNH/ns+bRO8dVldRdf1qEQIwtClsI8dauBEjyNdn3zdTa6lL2EVSm3
-	kkL4qLIM2YuiXONosDSU=
-X-Received: by 2002:a05:6a20:7288:b0:39b:d5f1:4ff with SMTP id adf61e73a8af0-39ef73de98bmr9045357637.20.1775149086041;
-        Thu, 02 Apr 2026 09:58:06 -0700 (PDT)
-X-Received: by 2002:a05:6a20:7288:b0:39b:d5f1:4ff with SMTP id adf61e73a8af0-39ef73de98bmr9045314637.20.1775149085388;
-        Thu, 02 Apr 2026 09:58:05 -0700 (PDT)
-Received: from [192.168.1.102] ([120.60.79.18])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c65a3f08sm3262932a12.31.2026.04.02.09.57.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 09:58:04 -0700 (PDT)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-X-Google-Original-From: Manivannan Sadhasivam <mani@kernel.org>
-To: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-        kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        Richard Zhu <hongxing.zhu@nxp.com>
-Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-In-Reply-To: <20260331085252.1243108-1-hongxing.zhu@nxp.com>
-References: <20260331085252.1243108-1-hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v3] PCI: imx6: Don't remove MSI capability for
- i.MX7D/i.MX8M
-Message-Id: <177514907977.11779.10857136002766145178.b4-ty@b4>
-Date: Thu, 02 Apr 2026 22:27:59 +0530
+        d=1e100.net; s=20251104; t=1775149661; x=1775754461;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qe/ZA3cS06JPwazJ5lT2X5nq3OydOwSen9aJipTvAo8=;
+        b=QwrICV6mL5ihGroVg/Jj04rkNLiynKLB8TLbY83KkFNf0c/k3TiS8pQ7hogDRpIhrd
+         5hkthgVpKnTpRpG1+ydbob/1baf295k9XZZxik54eVUAe5K4/TAMc3wW4l9Ymd2ebKUF
+         rnKelgvRWKtsmqyKOb1gZUMQlH1DPzG0Zd90hPZD9CnXPLFG4nIKfMe7ZgdZNBe8eeb3
+         Fh08fCV8ri3HT/iUQgAWX3v6t8o/lr0DozlVlAPsVgMsLci76uHQa1/IJnd6/tE++MOY
+         CbzUHQSGg0CTtKliP9HRpTXL6Na8ndYGlhqM8w1SUhRJTwrcbDaFMU49yeV1SyyQrvHq
+         Ki6g==
+X-Forwarded-Encrypted: i=1; AJvYcCW4Ig9X1H++BDE/bcLkURq7bmg1Ig8hboUyVseUuyM2Msmd+IP5l5WzdPJWUb3dwMyAlpXk3kg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCq+cSsMzCh9O1PRrPVHJyjTxmiDtPGrttJQ3/Q3bBK4OtM612
+	EXZ7/2vOKENlCQ6snLw48gS0k+tWzhH9ej3NuRMFgDSeoUG7qad2OwaMHmiDh1JlfueSeSeU7xC
+	zs2ocnP+HHvTacGTf/yyMWOhlVg==
+X-Received: from pgww5.prod.google.com ([2002:a05:6a02:2c85:b0:c73:9919:c4f8])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:32a0:b0:398:98ab:71a8 with SMTP id adf61e73a8af0-39ef773e0a1mr9207386637.47.1775149661098;
+ Thu, 02 Apr 2026 10:07:41 -0700 (PDT)
+Date: Thu,  2 Apr 2026 17:06:40 +0000
+In-Reply-To: <20260402170641.2082547-1-joonwonkang@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.0
-X-Proofpoint-GUID: ZeAbuC3KByANZhuu92sD8vXNT-w436CC
-X-Proofpoint-ORIG-GUID: ZeAbuC3KByANZhuu92sD8vXNT-w436CC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDE1MCBTYWx0ZWRfX5WVII5YU9+fk
- zUkeg7p88cOWndUyX6sMEttd42yEUm7lhvMOgrWGty8d71R/h471yPO8F1mfuKQwbzqjKIEyaC6
- Euv/HRyLisQqxNq5/ZCFCNdweFq7mEdYnX3v0l+OJ6YKDnDmANnCBjutDNB/5l6gYCfbA+AlDDC
- EZeorPRdIX9ls2msLDEbZJRFKtVUsvJU4vjy64gg2wN8lJTnQVrX/rGy1bK87cZ8fOeoAMKofE1
- 1wQ/mdW/F4zm9NIE3RV759jna2WXItlcHKN/NhRr03tR+CcxElAqlfihMS3u7jQv5a5TZ1RI1A0
- sNLgRhbRPLdt7v1qkssGN4nOkaGobDXMTTVSCpOc1Jlv5CDglOMpOQoNWJ59P/dY7cYJ2pU8DYd
- QY6ZuzzYJHuQ+3Cj8nrCYjZjLP9yGkGDqdpCHNUChvj6H6knKj5MBPi8D7Ypp/BMalWC1DRJcui
- AOYK5semC3qDFplqg5Q==
-X-Authority-Analysis: v=2.4 cv=HKXO14tv c=1 sm=1 tr=0 ts=69cea01e cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=+KsUAYeLG1mN9JXONzlAbw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=VwQbUJbxAAAA:8 a=kxgfuGgQFWlVBPJi97AA:9 a=QEXdDO2ut3YA:10
- a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-02_02,2026-04-02_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 malwarescore=0
- suspectscore=0 priorityscore=1501 adultscore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020150
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Mime-Version: 1.0
+References: <20260402170641.2082547-1-joonwonkang@google.com>
+X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
+Message-ID: <20260402170641.2082547-2-joonwonkang@google.com>
+Subject: [PATCH v3 1/2] mailbox: Use per-thread completion to fix wrong
+ completion order
+From: Joonwon Kang <joonwonkang@google.com>
+To: jassisinghbrar@gmail.com, matthias.bgg@gmail.com, 
+	angelogioacchino.delregno@collabora.com, thierry.reding@gmail.com, 
+	jonathanh@nvidia.com
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	Joonwon Kang <joonwonkang@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-233074-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[nxp.com,pengutronix.de,kernel.org,google.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233073-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_TO(0.00)[gmail.com,collabora.com,nvidia.com];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oss.qualcomm.com:dkim];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[manivannan.sadhasivam@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 5ACD738C66E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F28C738C719
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Previously, a sender thread in mbox_send_message() could be woken up at
+a wrong time in blocking mode. It is because there was only a single
+completion for a channel whereas messages from multiple threads could be
+sent in any order; since the shared completion could be signalled in any
+order, it could wake up a wrong sender thread.
 
-On Tue, 31 Mar 2026 16:52:52 +0800, Richard Zhu wrote:
-> The MSI trigger mechanism for endpoint devices connected to i.MX7D,
-> i.MX8MM, and i.MX8MQ PCIe root complex ports depends on the MSI
-> capability register settings in the root complex. Removing the MSI
-> capability breaks MSI functionality for these endpoints.
-> 
-> Add keep_rp_msi_en flag to indicate platforms (i.MX7D, i.MX8MM, i.MX8MQ)
-> that should preserve the MSI capability during initialization.
-> 
-> [...]
+This commit resolves the false wake-up issue with the following changes:
+- Completions are created just as many as the number of concurrent sender
+  threads
+- A completion is created on a sender thread's stack
+- Each slot of the message queue, i.e. `msg_data`, contains a pointer to
+  its target completion
+- tx_tick() signals the completion of the currently active slot of the
+  message queue
 
-Applied, thanks!
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/1490809381-28869-1-git-send-email-jaswinder.singh@linaro.org
+Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+---
+ drivers/mailbox/mailbox.c          | 86 +++++++++++++++++++-----------
+ drivers/mailbox/mtk-vcp-mailbox.c  |  2 +-
+ drivers/mailbox/tegra-hsp.c        |  2 +-
+ include/linux/mailbox_controller.h | 20 ++++---
+ 4 files changed, 72 insertions(+), 38 deletions(-)
 
-[1/1] PCI: imx6: Don't remove MSI capability for i.MX7D/i.MX8M
-      commit: a9de12c04779729f6d404192a5320c2e4dac0968
-
-Best regards,
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 138ffbcd4fde..d63386468982 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -21,7 +21,7 @@
+ static LIST_HEAD(mbox_cons);
+ static DEFINE_MUTEX(con_mutex);
+ 
+-static int add_to_rbuf(struct mbox_chan *chan, void *mssg)
++static int add_to_rbuf(struct mbox_chan *chan, void *mssg, struct completion *tx_complete)
+ {
+ 	int idx;
+ 
+@@ -32,7 +32,8 @@ static int add_to_rbuf(struct mbox_chan *chan, void *mssg)
+ 		return -ENOBUFS;
+ 
+ 	idx = chan->msg_free;
+-	chan->msg_data[idx] = mssg;
++	chan->msg_data[idx].data = mssg;
++	chan->msg_data[idx].tx_complete = tx_complete;
+ 	chan->msg_count++;
+ 
+ 	if (idx == MBOX_TX_QUEUE_LEN - 1)
+@@ -50,24 +51,33 @@ static void msg_submit(struct mbox_chan *chan)
+ 	int err = -EBUSY;
+ 
+ 	scoped_guard(spinlock_irqsave, &chan->lock) {
+-		if (!chan->msg_count || chan->active_req != MBOX_NO_MSG)
++		if (chan->active_req >= 0)
+ 			break;
+ 
+-		count = chan->msg_count;
+-		idx = chan->msg_free;
+-		if (idx >= count)
+-			idx -= count;
+-		else
+-			idx += MBOX_TX_QUEUE_LEN - count;
++		while (chan->msg_count > 0) {
++			count = chan->msg_count;
++			idx = chan->msg_free;
++			if (idx >= count)
++				idx -= count;
++			else
++				idx += MBOX_TX_QUEUE_LEN - count;
+ 
+-		data = chan->msg_data[idx];
++			data = chan->msg_data[idx].data;
++			if (data != MBOX_NO_MSG)
++				break;
++
++			chan->msg_count--;
++		}
++
++		if (!chan->msg_count)
++			break;
+ 
+ 		if (chan->cl->tx_prepare)
+ 			chan->cl->tx_prepare(chan->cl, data);
+ 		/* Try to submit a message to the MBOX controller */
+ 		err = chan->mbox->ops->send_data(chan, data);
+ 		if (!err) {
+-			chan->active_req = data;
++			chan->active_req = idx;
+ 			chan->msg_count--;
+ 		}
+ 	}
+@@ -79,27 +89,35 @@ static void msg_submit(struct mbox_chan *chan)
+ 	}
+ }
+ 
+-static void tx_tick(struct mbox_chan *chan, int r)
++static void tx_tick(struct mbox_chan *chan, int r, int idx)
+ {
+-	void *mssg;
++	struct mbox_message mssg = {MBOX_NO_MSG, NULL};
+ 
+ 	scoped_guard(spinlock_irqsave, &chan->lock) {
+-		mssg = chan->active_req;
+-		chan->active_req = MBOX_NO_MSG;
++		if (idx >= 0 && idx != chan->active_req) {
++			chan->msg_data[idx].data = MBOX_NO_MSG;
++			chan->msg_data[idx].tx_complete = NULL;
++			return;
++		}
++
++		if (chan->active_req >= 0) {
++			mssg = chan->msg_data[chan->active_req];
++			chan->active_req = -1;
++		}
+ 	}
+ 
+ 	/* Submit next message */
+ 	msg_submit(chan);
+ 
+-	if (mssg == MBOX_NO_MSG)
++	if (mssg.data == MBOX_NO_MSG)
+ 		return;
+ 
+ 	/* Notify the client */
+ 	if (chan->cl->tx_done)
+-		chan->cl->tx_done(chan->cl, mssg, r);
++		chan->cl->tx_done(chan->cl, mssg.data, r);
+ 
+ 	if (r != -ETIME && chan->cl->tx_block)
+-		complete(&chan->tx_complete);
++		complete(mssg.tx_complete);
+ }
+ 
+ static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
+@@ -112,10 +130,10 @@ static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
+ 	for (i = 0; i < mbox->num_chans; i++) {
+ 		struct mbox_chan *chan = &mbox->chans[i];
+ 
+-		if (chan->active_req != MBOX_NO_MSG && chan->cl) {
++		if (chan->active_req >= 0 && chan->cl) {
+ 			txdone = chan->mbox->ops->last_tx_done(chan);
+ 			if (txdone)
+-				tx_tick(chan, 0);
++				tx_tick(chan, 0, -1);
+ 			else
+ 				resched = true;
+ 		}
+@@ -168,7 +186,7 @@ void mbox_chan_txdone(struct mbox_chan *chan, int r)
+ 		return;
+ 	}
+ 
+-	tx_tick(chan, r);
++	tx_tick(chan, r, -1);
+ }
+ EXPORT_SYMBOL_GPL(mbox_chan_txdone);
+ 
+@@ -188,7 +206,7 @@ void mbox_client_txdone(struct mbox_chan *chan, int r)
+ 		return;
+ 	}
+ 
+-	tx_tick(chan, r);
++	tx_tick(chan, r, -1);
+ }
+ EXPORT_SYMBOL_GPL(mbox_client_txdone);
+ 
+@@ -266,11 +284,19 @@ EXPORT_SYMBOL_GPL(mbox_chan_tx_slots_available);
+ int mbox_send_message(struct mbox_chan *chan, void *mssg)
+ {
+ 	int t;
++	int idx;
++	struct completion tx_complete;
+ 
+ 	if (!chan || !chan->cl || mssg == MBOX_NO_MSG)
+ 		return -EINVAL;
+ 
+-	t = add_to_rbuf(chan, mssg);
++	if (chan->cl->tx_block) {
++		init_completion(&tx_complete);
++		t = add_to_rbuf(chan, mssg, &tx_complete);
++	} else {
++		t = add_to_rbuf(chan, mssg, NULL);
++	}
++
+ 	if (t < 0) {
+ 		dev_err(chan->mbox->dev, "Try increasing MBOX_TX_QUEUE_LEN\n");
+ 		return t;
+@@ -287,10 +313,11 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
+ 		else
+ 			wait = msecs_to_jiffies(chan->cl->tx_tout);
+ 
+-		ret = wait_for_completion_timeout(&chan->tx_complete, wait);
++		ret = wait_for_completion_timeout(&tx_complete, wait);
+ 		if (ret == 0) {
++			idx = t;
+ 			t = -ETIME;
+-			tx_tick(chan, t);
++			tx_tick(chan, t, idx);
+ 		}
+ 	}
+ 
+@@ -321,7 +348,7 @@ int mbox_flush(struct mbox_chan *chan, unsigned long timeout)
+ 
+ 	ret = chan->mbox->ops->flush(chan, timeout);
+ 	if (ret < 0)
+-		tx_tick(chan, ret);
++		tx_tick(chan, ret, -1);
+ 
+ 	return ret;
+ }
+@@ -340,9 +367,8 @@ static int __mbox_bind_client(struct mbox_chan *chan, struct mbox_client *cl)
+ 	scoped_guard(spinlock_irqsave, &chan->lock) {
+ 		chan->msg_free = 0;
+ 		chan->msg_count = 0;
+-		chan->active_req = MBOX_NO_MSG;
++		chan->active_req = -1;
+ 		chan->cl = cl;
+-		init_completion(&chan->tx_complete);
+ 
+ 		if (chan->txdone_method	== TXDONE_BY_POLL && cl->knows_txdone)
+ 			chan->txdone_method = TXDONE_BY_ACK;
+@@ -498,7 +524,7 @@ void mbox_free_channel(struct mbox_chan *chan)
+ 	/* The queued TX requests are simply aborted, no callbacks are made */
+ 	scoped_guard(spinlock_irqsave, &chan->lock) {
+ 		chan->cl = NULL;
+-		chan->active_req = MBOX_NO_MSG;
++		chan->active_req = -1;
+ 		if (chan->txdone_method == TXDONE_BY_ACK)
+ 			chan->txdone_method = TXDONE_BY_POLL;
+ 	}
+@@ -553,7 +579,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
+ 
+ 		chan->cl = NULL;
+ 		chan->mbox = mbox;
+-		chan->active_req = MBOX_NO_MSG;
++		chan->active_req = -1;
+ 		chan->txdone_method = txdone;
+ 		spin_lock_init(&chan->lock);
+ 	}
+diff --git a/drivers/mailbox/mtk-vcp-mailbox.c b/drivers/mailbox/mtk-vcp-mailbox.c
+index 1b291b8ea15a..a7bab06ac686 100644
+--- a/drivers/mailbox/mtk-vcp-mailbox.c
++++ b/drivers/mailbox/mtk-vcp-mailbox.c
+@@ -84,7 +84,7 @@ static int mtk_vcp_mbox_send_data(struct mbox_chan *chan, void *data)
+ 
+ static bool mtk_vcp_mbox_last_tx_done(struct mbox_chan *chan)
+ {
+-	struct mtk_ipi_info *ipi_info = chan->active_req;
++	struct mtk_ipi_info *ipi_info = chan->msg_data[chan->active_req].data;
+ 	struct mtk_vcp_mbox *priv = chan->con_priv;
+ 
+ 	return !(readl(priv->base + priv->cfg->set_in) & BIT(ipi_info->index));
+diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
+index 7b1e1b83ea29..efe0033cb5c5 100644
+--- a/drivers/mailbox/tegra-hsp.c
++++ b/drivers/mailbox/tegra-hsp.c
+@@ -495,7 +495,7 @@ static int tegra_hsp_mailbox_flush(struct mbox_chan *chan,
+ 			mbox_chan_txdone(chan, 0);
+ 
+ 			/* Wait until channel is empty */
+-			if (chan->active_req != MBOX_NO_MSG)
++			if (chan->active_req >= 0)
+ 				continue;
+ 
+ 			return 0;
+diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
+index e3896b08f22e..912499ad08ed 100644
+--- a/include/linux/mailbox_controller.h
++++ b/include/linux/mailbox_controller.h
+@@ -113,16 +113,25 @@ struct mbox_controller {
+  */
+ #define MBOX_TX_QUEUE_LEN	20
+ 
++/**
++ * struct mbox_message - Internal representation of a mailbox message
++ * @data:		Data packet
++ * @tx_complete:	Pointer to the transmission completion
++ */
++struct mbox_message {
++	void *data;
++	struct completion *tx_complete;
++};
++
+ /**
+  * struct mbox_chan - s/w representation of a communication chan
+  * @mbox:		Pointer to the parent/provider of this channel
+  * @txdone_method:	Way to detect TXDone chosen by the API
+  * @cl:			Pointer to the current owner of this channel
+- * @tx_complete:	Transmission completion
+- * @active_req:		Currently active request hook
++ * @active_req:		Index of the currently active slot in the queue
+  * @msg_count:		No. of mssg currently queued
+  * @msg_free:		Index of next available mssg slot
+- * @msg_data:		Hook for data packet
++ * @msg_data:		Queue of data packets
+  * @lock:		Serialise access to the channel
+  * @con_priv:		Hook for controller driver to attach private data
+  */
+@@ -130,10 +139,9 @@ struct mbox_chan {
+ 	struct mbox_controller *mbox;
+ 	unsigned txdone_method;
+ 	struct mbox_client *cl;
+-	struct completion tx_complete;
+-	void *active_req;
++	int active_req;
+ 	unsigned msg_count, msg_free;
+-	void *msg_data[MBOX_TX_QUEUE_LEN];
++	struct mbox_message msg_data[MBOX_TX_QUEUE_LEN];
+ 	spinlock_t lock; /* Serialise access to the channel */
+ 	void *con_priv;
+ };
 -- 
-Manivannan Sadhasivam <mani@kernel.org>
+2.53.0.1185.g05d4b7b318-goog
 
 
