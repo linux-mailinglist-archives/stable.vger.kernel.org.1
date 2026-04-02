@@ -1,137 +1,207 @@
-Return-Path: <stable+bounces-232903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEO0BkTnzWmuiwYAu9opvQ
-	(envelope-from <stable+bounces-232903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 05:49:24 +0200
+	id MH6tF+PuzWkzjQYAu9opvQ
+	(envelope-from <stable+bounces-232904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:21:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 826AF3833FA
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 05:49:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 569BB383832
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67A493020E96
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 03:49:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9436D303D28C
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 04:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30942FFF8F;
-	Thu,  2 Apr 2026 03:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BC13612F6;
+	Thu,  2 Apr 2026 04:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pXJM0xf"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CPl95Xi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6124286D60
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 03:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960C32EC0A2;
+	Thu,  2 Apr 2026 04:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775101760; cv=none; b=sGNx4faVNdyyk+mSK8VZAWWZPt1m2wwsPFg/zy7FPIYm2nki+C8jFOqcuj13OY0x5wsGPczskL3GmDDdnBZ9k5m0VJqCumZ0DyYTqfY28+MImtbYgfkKswwK2Gp/05nBpOa75RGYQnSvMWM/8Tq8aOPrE2a/YLymr+PZEgoAiDw=
+	t=1775103424; cv=none; b=HlIQ7Ck0xRw5E80AdCit2hlrWtc2umdsk6ShmITeT5Ydc3Q6l1RvnAFa6fuofP5BL5wN7RagchlIcJ+eo0KS0Ypp/FeJSRXjRBt+z7CmdFTv2jwfFPhvwEVeHxezEWCJIeguPgUOX5V8ks8q92dPxGnPF9oIeHvNQecvkCJxmLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775101760; c=relaxed/simple;
-	bh=VDnWPcoBIlQIIRSgUcq27iSNIl8mCGAJPwcz7A0FH/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uSgbWxp6QCNB9HKlnBfIvHm+VoWMnbHAN9TOp3tOZRSlfA4PH5+ojO46FYw9MFSEX9oB0Radeh587kmGEPSdoRuqPVCaSHcNP9+x98FHdQKhQKkObqYYEm6zle5RwgXMfws91bgdqVXIRRWrFNMXt55Td1b4ywbt4wu/oXDCgSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pXJM0xf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F64C19423;
-	Thu,  2 Apr 2026 03:49:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775101760;
-	bh=VDnWPcoBIlQIIRSgUcq27iSNIl8mCGAJPwcz7A0FH/g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1pXJM0xfhgVgvuLFX4UgtT9S59hWW2n76eplYn8aON9cJNHJvN3FBOjinxOWANMfF
-	 FRawI1GgwsAmNRd+2Goiij3rXihuZazGHePJ00y5HeEnlMoH+5Epvx/5YpygkOgtLi
-	 Y2dfFZ28FV/vxTpxnlH9wsesT9ZUh46Nshlj09Ys=
-Date: Thu, 2 Apr 2026 05:49:17 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: bkov@amazon.com, fgriffo@amazon.co.uk, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] KVM: x86/mmu: Drop/zap existing present
- SPTE even when" failed to apply to 5.10-stable tree
-Message-ID: <2026040202-confusion-deepness-720f@gregkh>
-References: <2026033039-occupy-slush-db02@gregkh>
- <ac2NRUTLk-yX13va@google.com>
+	s=arc-20240116; t=1775103424; c=relaxed/simple;
+	bh=awFoLWkQ8BuHAli93Y5A7C0YLpFtjzyD8P6Wm93Jy7w=;
+	h=Date:To:From:Subject:Message-Id; b=tChJvzikkUccfZHyDJWgnNtUD5peEyKwvZ50piE/FKmN3W9ybIlBUv6qUkSMEqshRtCqBLFn2K5liwqZu86hz2mEbu5Mclunr34myhrfihEU4v7rgAqCWz/LBd6SKlaY2FsknFklwt6J4ad+DcAzGFflRbn08QLjE64LALxrGSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CPl95Xi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F02EC19423;
+	Thu,  2 Apr 2026 04:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775103424;
+	bh=awFoLWkQ8BuHAli93Y5A7C0YLpFtjzyD8P6Wm93Jy7w=;
+	h=Date:To:From:Subject:From;
+	b=CPl95Xi23FU4LCrrnEARnuE/dGbA8Aobm+fT2uYPOFIKacBGaLBmT7OGZ9J4I50VH
+	 weHAWQw0jXOIuGR0CCegfcLtj1gJ0ndDI919koL0iBdjleLvnWs+i+6abimAWEKQLP
+	 8r1usoFYepldFgeED5uykh1kzHRLZBcTY8rg7EVw=
+Date: Wed, 01 Apr 2026 21:17:03 -0700
+To: mm-commits@vger.kernel.org,tejas.bharambe@outlook.com,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,thbharam@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch added to mm-nonmm-unstable branch
+Message-Id: <20260402041704.0F02EC19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ac2NRUTLk-yX13va@google.com>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232903-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 826AF3833FA
+	TAGGED_FROM(0.00)[bounces-232904-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,outlook.com,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 569BB383832
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 01, 2026 at 02:25:25PM -0700, Sean Christopherson wrote:
-> On Mon, Mar 30, 2026, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 5.10-stable tree.
-> 
-> ...
-> 
-> > Fixes: a54aa15c6bda3 ("KVM: x86/mmu: Handle MMIO SPTEs directly in mmu_set_spte()")
-> > Cc: stable@vger.kernel.org
-> 
-> Partially out of curiosity, partially to reduce the probability of future goofs,
-> why did the tooling try to apply a patch to a kernel without the Fixes commit?
-> 5.10 doesn't have a54aa15c6bda3 and so doesn't need this fix.
-> 
-> I assumed that having an explicit Fixes would implicit scope the backport to
-> kernels with that commit (or a backport of that commit).
 
-Yeah, my fault, I still "manually" read that, and my script properly
-spit out:
+The patch titled
+     Subject: ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
 
-	Commit id aad885e774966e97b675dfe928da164214a71605
-		queued in:	queue-6.19/kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creating-an-mmio-spte.patch
-		queued in:	queue-6.18/kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creating-an-mmio-spte.patch
-		queued in:	queue-6.12/kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creating-an-mmio-spte.patch
-		queued in:	queue-6.6/kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creating-an-mmio-spte.patch
-		fixed in:	5.13
-	> ○ 6.19
-	  ○ 6.18
-	  ○ 6.12
-	  ○ 6.6
-	  ○ 6.1
-	  ○ 5.15
-	  ○ 5.10
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
 
-But I guess I seleced "5.10" accidentally as well.
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Sorry about that, my fault, one of these days I'll make the script a bit
-smarter to "pre-populate" the checkboxes with what it thinks should be
-happening here, and not require me to actually read values :)
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-thanks,
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-greg k-h
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Tejas Bharambe <thbharam@gmail.com>
+Subject: ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
+Date: Wed, 1 Apr 2026 21:02:34 -0700
+
+filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
+as documented in mm/filemap.c:
+
+  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
+  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
+
+When this happens, a concurrent munmap() can call remove_vma() and free
+the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
+becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
+dereferences it -- a use-after-free.
+
+Fix this by saving the inode reference before calling filemap_fault(),
+and removing vma from the trace event. The inode remains valid across
+the lock drop since the file is still open, so the trace can fire in
+all cases without dereferencing the potentially freed vma.
+
+Link: https://lkml.kernel.org/r/20260402040234.92432-1-tejas.bharambe@outlook.com
+Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
+Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/mmap.c        |    6 +++---
+ fs/ocfs2/ocfs2_trace.h |   10 ++++------
+ 2 files changed, 7 insertions(+), 9 deletions(-)
+
+--- a/fs/ocfs2/mmap.c~ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry
++++ a/fs/ocfs2/mmap.c
+@@ -30,7 +30,7 @@
+ 
+ static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
+ {
+-	struct vm_area_struct *vma = vmf->vma;
++	struct inode *inode = file_inode(vmf->vma->vm_file);
+ 	sigset_t oldset;
+ 	vm_fault_t ret;
+ 
+@@ -38,8 +38,8 @@ static vm_fault_t ocfs2_fault(struct vm_
+ 	ret = filemap_fault(vmf);
+ 	ocfs2_unblock_signals(&oldset);
+ 
+-	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
+-			  vma, vmf->page, vmf->pgoff);
++	trace_ocfs2_fault(OCFS2_I(inode)->ip_blkno,
++			  vmf->page, vmf->pgoff);
+ 	return ret;
+ }
+ 
+--- a/fs/ocfs2/ocfs2_trace.h~ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry
++++ a/fs/ocfs2/ocfs2_trace.h
+@@ -1246,22 +1246,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
+ 
+ TRACE_EVENT(ocfs2_fault,
+ 	TP_PROTO(unsigned long long ino,
+-		 void *area, void *page, unsigned long pgoff),
+-	TP_ARGS(ino, area, page, pgoff),
++		 void *page, unsigned long pgoff),
++	TP_ARGS(ino, page, pgoff),
+ 	TP_STRUCT__entry(
+ 		__field(unsigned long long, ino)
+-		__field(void *, area)
+ 		__field(void *, page)
+ 		__field(unsigned long, pgoff)
+ 	),
+ 	TP_fast_assign(
+ 		__entry->ino = ino;
+-		__entry->area = area;
+ 		__entry->page = page;
+ 		__entry->pgoff = pgoff;
+ 	),
+-	TP_printk("%llu %p %p %lu",
+-		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
++	TP_printk("%llu %p %lu",
++		  __entry->ino, __entry->page, __entry->pgoff)
+ );
+ 
+ /* End of trace events for fs/ocfs2/mmap.c. */
+_
+
+Patches currently in -mm which might be from thbharam@gmail.com are
+
+ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
+
 
