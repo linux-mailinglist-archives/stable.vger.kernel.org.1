@@ -1,178 +1,156 @@
-Return-Path: <stable+bounces-232957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOI8Lqg7zmmAmAYAu9opvQ
-	(envelope-from <stable+bounces-232957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:49:28 +0200
+	id EJPQBJs7zmmAmAYAu9opvQ
+	(envelope-from <stable+bounces-232956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:49:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B703872C2
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:49:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806383872AB
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA37B30A44DB
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 09:44:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 80E733041147
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 09:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A123DD53F;
-	Thu,  2 Apr 2026 09:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797C03D8116;
+	Thu,  2 Apr 2026 09:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="phjoInpt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DdKPsCGk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgwMRDCL"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24C43914ED;
-	Thu,  2 Apr 2026 09:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23AA38BF80;
+	Thu,  2 Apr 2026 09:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775123049; cv=none; b=jTTCyoyDxgjyRNiH4hsBms6tBrearh3osRlwjLAjMMNjJnex5dAT0GW20SJkwqOoOOIrfn0sCiPmTtM96pTfNqmuhDwGAVvbYDQJLCsqaE9WRYzh/RAPtMd9uDx8P2bYorFRRh1jqKbPkA66w1s53o5nAC8L+Aw4cVkwA2GArOU=
+	t=1775123044; cv=none; b=jKWFXtZUL0DHINZPIsIC6NYYScTgFaBY7HynCYnYq5RtuNxd0Qk9fEVbkoW02Nv6GF3kKFurcGBKjE61QP59w1wHitFw+KBJ0+056Q/S2d6aUOUALPID7x9lEBr3zyy38m3fOJzau/DwsBjEjdl/mWwA8xCtAHBdj0mQOna71aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775123049; c=relaxed/simple;
-	bh=wRecm6QuDoU+cHrxvmv/K10KdpFKrXBHy8y9ZpizY7U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=seu8blwtpzFtLmqL5rRAvo6MA69ICR1XFG8gEyqRZVo1dQgdPzRxIFzNbiY7aT5w6gaMMTYERbbUmhMq5fmrwrIkeKgJG3D3zpS9kCGDwYVAg9t2Yp77Eoe3BMn8RXMAYNC8L7k1mBzGwC5CEgsnBbM+9fM12Z++eQQaOv66gy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=phjoInpt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DdKPsCGk; arc=none smtp.client-ip=202.12.124.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id E65B77A02FE;
-	Thu,  2 Apr 2026 05:43:59 -0400 (EDT)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-04.internal (MEProxy); Thu, 02 Apr 2026 05:44:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1775123039;
-	 x=1775209439; bh=ZhYhxTY4U9xfdMvUe8c1GDNmyJB8rxZmOqwnOhKpqhk=; b=
-	phjoInptya4PFMD6jE5NvYFrOlRw9WOoL3j9ef4D2CLl0w98CWV+5fVJ/pICyfrh
-	VkOE5hxly+HiXXIKZ4w3YpQxd1VwjAhwiBkbHOqaWnKzJRl4clJai5rZxhGpi4qC
-	B3QYbVn7HrNxOSK+uRZHL3tZqHLfD8aHaESvt1pOr5OOlRCJ45TaHLpLO7Gm5Zxd
-	RPbdjAfI4RZigGBc3sP6SVLWVKJfSaln9jwJCEMzpY16lQUQHgUefe0WcruRb1v3
-	XVfvqTD3W4jdO21ValB7apKDvqGIx2x4k4OdiAdO2AW23sYv2ufEpEjKu+4PaXb9
-	i0JanyinclkfzTb76EX8SA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775123039; x=
-	1775209439; bh=ZhYhxTY4U9xfdMvUe8c1GDNmyJB8rxZmOqwnOhKpqhk=; b=D
-	dKPsCGkVYirlD6xrzzWCBtIinGn6SbnkiAvdRrEzUyWLc/Bh4BavWeNVdTK1Lcqm
-	DC4c4r+CAcFvYeb0zWu9pN7iirENJxZ0SHQOVhANO/8ZWEjRLwfpSLFOb/JaP4uF
-	PKvJqFgWmdzlGPB3npcSf+7Og6jLTq2lytFt3f07eyIA1xRwDj73REloJUz61UzP
-	yZf0FSumm8rcML0dXAP3rYWggz8WOeEx3oXc4MgJVWKheQZX/r4+fwBZiqf0MQ/+
-	ZThsHV6e5IRNkA25jgyTGhxmkNFky16sPnlR44NvR5kcKcrEWkCZ6UVcS5KwQCIL
-	RyczZ3meJO8lnyF9k55DA==
-X-ME-Sender: <xms:XjrOaTB8lDW0IbDngKg4Y9Gpw02hrxn2fhlCutwsgwS6o5C6KoszSA>
-    <xme:XjrOaXPnH127j2GEon3j0Lvji5tdKjPe0JllOkjRpRAW3DVdsWwvEl-A8xhdBH-Aw
-    ZQJckjAkzpm51ajAX2O4WQoE9ptZ8MlTByceH47XR5Xvfca1dBvMxc>
-X-ME-Received: <xmr:XjrOaQXI_bul8OF9ymtRF7qfdb71y20WAO66lPjNfWn7TjLo0FqVUddcBP11Ibr6TottabqtUCY6JB7rMJRGyVbbeVF64dzK>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehieelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhrhicu
-    mfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleetgefg
-    fefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgtohhm
-    pdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepgh
-    hrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepshht
-    rggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthhgvsh
-    eslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgv
-    lhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgusheslh
-    hinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhn
-    uhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehrohgvtg
-    hkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehprghttghhvghssehkvghrnhgvlhgtihdrohhrgh
-X-ME-Proxy: <xmx:XjrOaSRhykJvd7wor8nu-Qighu2LFb8TlDBPnvMhoBeS-NCc_MA9Rg>
-    <xmx:XzrOae1K_ci9GBRM3cJH0wyrF2n_yik61Ryc0VWsUTTP_4R61WtIcQ>
-    <xmx:XzrOaXj2b8fN_Uu0RDk1Kdg7GyzrC1ApZNoAkxV7sO-qIFSS36PtpQ>
-    <xmx:XzrOaUZ1ypJwG5Y9w6-CF1HCyImbO9tCAG2acqRJWyb_Q7L6_FXeuA>
-    <xmx:XzrOaadPIxpb1Qn95hoWEUPAJNus9Fcd_q2qE4TuGLeMZK7YncJlDpZ_>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Apr 2026 05:43:57 -0400 (EDT)
-Message-ID: <f06f2716-9253-4be0-a2ae-d555125c1457@pobox.com>
-Date: Thu, 2 Apr 2026 02:43:55 -0700
+	s=arc-20240116; t=1775123044; c=relaxed/simple;
+	bh=DkQkTR4cOeM81ijaClZAEHyxAqOKn5Kstf56snNni5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UP6WtLHfQAS/GgWPaHjK6aqzVhd5vpYSdq4A5oxEpmkcYPxS8FoZei2scp5qifv8fZW2WN7ejHjdKKkAXrzJoJPrKdf1yiw9P0xvdZINI8HPO/280opkw4/KehphfOSHLbmoxavfXyuMTWhFC8rAZMDeGc8qSYGrS4xeLmfSlRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgwMRDCL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19B7C116C6;
+	Thu,  2 Apr 2026 09:44:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775123043;
+	bh=DkQkTR4cOeM81ijaClZAEHyxAqOKn5Kstf56snNni5M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GgwMRDCLItLtjdL7S6FD8bFOzF15zJEeVIbSiXW/42hY/r/rEwkDhEQnFhQ/paXi+
+	 aMxDvXgSpue/hxDMNcjkFSSRfotDbunp9UJ8bJH8ff37788H3taruZh/h+VBNgA3qo
+	 NSnL9ZX4pMc1kBSO9q7hwuRTCbl1ewDIevNZB4GNWxGR2ATnKtSEcSeyWKepHyKHWI
+	 9L/9ato6ZS+5z1Wp0BH26fHBXtLGpO3WIu2fupRbkFbZTBDpmDDlMzL8xIVzHQ3jaT
+	 bkIHiBYV+gXQWra8VMHJZgEOcilNS8Y5r9sAaGjME3LXudWVDU5MxSYowUQWjAUPTm
+	 Ix3fRAo+HYw9w==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1w8Ean-00000009qqy-32iT;
+	Thu, 02 Apr 2026 11:44:01 +0200
+Date: Thu, 2 Apr 2026 11:44:01 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] USB: serial: option: add Telit Cinterion FN990A MBIM
+ composition
+Message-ID: <ac46YeSJeYVvm0Hn@hovoldconsulting.com>
+References: <20260402083722.100973-1-fabio.porcedda@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260331161758.909578033@linuxfoundation.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260402083722.100973-1-fabio.porcedda@gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-232957-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-232956-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.980];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pobox.com:dkim,pobox.com:email,pobox.com:mid,messagingengine.com:dkim]
-X-Rspamd-Queue-Id: 31B703872C2
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,hovoldconsulting.com:mid]
+X-Rspamd-Queue-Id: 806383872AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/31/26 09:17, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.11 release.
-> There are 342 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, Apr 02, 2026 at 10:37:22AM +0200, Fabio Porcedda wrote:
+> Add the following Telit Cinterion FN990A MBIM composition:
 > 
-> Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
-> Anything received after that time might be too late.
+> 0x1074: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (diag) +
+>         DPL (Data Packet Logging) + adb
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
-> and the diffstat can be found below.
+> T:  Bus=01 Lev=01 Prnt=04 Port=06 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+> D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+> P:  Vendor=1bc7 ProdID=1074 Rev=05.04
+> S:  Manufacturer=Telit Wireless Solutions
+> S:  Product=FN990
+> S:  SerialNumber=70628d0c
+> C:  #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
+> I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+> E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+> I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+> E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+> E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+> E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+> I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+> E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+> I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+> E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 > 
-> thanks,
-> 
-> greg k-h
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-Tested on 4 systems (3 amd64, 1 arm64). Working well, no regressions
-observed.
+> @@ -1383,6 +1383,8 @@ static const struct usb_device_id option_ids[] = {
+>  	  .driver_info = NCTRL(2) | RSVD(3) },
+>  	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
+>  	  .driver_info = NCTRL(0) | RSVD(1) },
+> +	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1074, 0xff),	/* Telit FN990A (MBIM) */
+> +	  .driver_info = NCTRL(5) | RSVD(6) | RSVD(7) },
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
+There is no adb interface in the usb-devices output in the commit
+message. Do you still need to reserve interface 7?
 
--- 
--Barry K. Nathan  <barryn@pobox.com>
+>  	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
+>  	  .driver_info = RSVD(0) },
+>  	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1077, 0xff),	/* Telit FN990A (rmnet + audio) */
+
+Johan
 
