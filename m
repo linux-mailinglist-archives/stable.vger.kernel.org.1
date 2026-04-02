@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-232898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJDaNL7hzWlVigYAu9opvQ
-	(envelope-from <stable+bounces-232898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 05:25:50 +0200
+	id wAklEevhzWlVigYAu9opvQ
+	(envelope-from <stable+bounces-232899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 05:26:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501AD3831B8
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 05:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC1A73831DD
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 05:26:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E4BB3040FBD
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 03:24:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34D94306C879
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 03:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D89345CD0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D254335F60A;
 	Thu,  2 Apr 2026 03:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hUw/J7E4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gvB7N8yA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1453328FA
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 03:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231BA3563DD
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 03:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775100271; cv=none; b=fBhG7clAdxiqj8C+0L8UF2LPl1WmYmoaWOtfoL3MpXnqP2D3cXzOImmMJ06XaHij/4u1A1ZijTX/vHi/AJqf2/jcASJmD+XDbJHCxdhmRcVYM/RiRvblEmIfYDQoY7BVoe0eLHem4ZjJGJC2uKxTF4o/JfB9+LumqxhKwmUlIfA=
+	t=1775100272; cv=none; b=Jl4cQS+hLW8JhQMaLWKfKiLKGfjyaX5O3HopxOWXqmVUeIVMsGA4EH1Wnq4+1TUTSyDCPi+G298iEDovHFEwOzFRA3tyzbzWrQaC2L9fI5AxLhTCBgYuA02z9FdDrX3DOBH4LCoLw/s0jzG8PEWbJFs3LqkWStJVub/KxqxwVgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775100271; c=relaxed/simple;
-	bh=A5nBMBkWkafHNY7USWwQbGA1Gg3Rjn8l3CkT7z4RWhQ=;
+	s=arc-20240116; t=1775100272; c=relaxed/simple;
+	bh=fqoWirm15gyR2T5vILMgWW6g7wMD/2DlfAbl65EnpPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPPagICWj/8EMNOyh3HwjshVp6WD+jZDfWsujwMW32w91+4NrcyUOhtYhIVyKSI4X3tVHuXEZfGFDygjwmM6yheAAQV+iLGFxVzCUQXF5ozJu5Dln715ECGYAyno/Fmfy0sZvmaiymGsDrrmy7MnCoy+JzxoaZDdOZS40sXH7Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hUw/J7E4; arc=none smtp.client-ip=74.125.82.173
+	 MIME-Version; b=PNZ+/NQP5YC6XXc5CX9H6g5fJ90M+0hA0/ufLFl/mzrNcHNtXZCX2v3zxY5ALTBvIyQdqbzh+vNoeyDRphDYy16bzeHwOi635JmVZv3tFyzb7lCwblUozNlX1FWo1RPrt6HrHe0jtC9zBQYRR2ITzu21ZeuO+CDBkXP65snwC1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gvB7N8yA; arc=none smtp.client-ip=74.125.82.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2ba895adfeaso560957eec.0
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 20:24:30 -0700 (PDT)
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2b4520f6b32so598370eec.0
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 20:24:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1775100270; x=1775705070; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c2sfsoM3eXXD/i3TYQHRzXUhUiniPGPfrTop9I4lCjo=;
-        b=hUw/J7E4U1BhrHIYa3Pmfgd/JKI+CLxkxZpt8bWa7Y2tEcOA+pF3rpncf6Vw6fU1to
-         ujNF6k9XWW1RSGFW3S8JACg4lvAi1pfYQyYXShDXOm2d3ZhiptWXJqj7p4flMKACo3gK
-         7SDluwTG2VfGwvjM1xLtYCHoDOoxcjoqHhVF6aS+rKsI8BF3fwFNR9N5Py1vXIV5kSDe
-         0Op7IPpw9J1Byo1wQrUoqVLWoaUhS+cZCtJGdKDJMqxVpJTcDQFkO9dilkSIXuz8U/QF
-         Rx/zFC1Lf0fPEAbCTfXgooml3m2yZYk56jRgtKIPyrcKRfvbHDDGbHnsE0C3xnvsUf4c
-         JWaA==
+        bh=3yX9dP9ip8JwFkjEQDaOaU6XeU3b97kM6xm6qGhhPLg=;
+        b=gvB7N8yAGoxM3WrpDbg2sVtW5HbAqlsLuFc2brd/PlqVWs6qBIqJBVOIZ9y+C+HrLB
+         fDTdNK188Pny2zh5PYGLrD5/Bno/odfFU9dzwXBvUts4h9bafYT0i3zmsDz0F+vbaPzv
+         2RHcSMjVMhWaTcMuatbvFEtDEppdQoo0LjQVeazyLHotLvxYz6HsZ/RAgctPmONIoNJj
+         3xjrpNSHlm/TDhJinJBUKkALGn4b8YENqOqoOEqQcID9H4V374kaxiJqxDNf59psKHel
+         hLdlEeebwT4+pwuhBy5RyD5Qc9UPV6qcOBYp16h1kzaphNkxPO5ySpMcUxClTx/Hit26
+         7OGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1775100270; x=1775705070;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=c2sfsoM3eXXD/i3TYQHRzXUhUiniPGPfrTop9I4lCjo=;
-        b=MxmHcbhn4AXzdQ8Nz719KoM1mnO50w8bcruI3quQfQxfV0bgBHAbwRVX1vgpijkVaG
-         7LLvPj8+pnnwnQUfLJlzHmyoTaS3wk91VBhvpLpM9zVv/Z2yaB4q5ZMZ6LCAd5guSCg6
-         shkKeBaWvRR+GGHsYpv274Nzenc2rTfbnFsQ+aWQPCeiJHytUW+D42UwkPrTNNV+KFjx
-         jHM1JVJjvu3b4QWd9vKwbJgX1duAfDwzxDljvexnrC8EsVb4Fxn8e3ylUJn1IZV92Ehr
-         YX0pWoxGMMMahHO/p7MbSbBxklkFtrYRgIe0PT5GpX76DcmUqgJBS3yiQ4zugq8iu32t
-         aQsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXpc7pJ0AFfMP9MAP5aN1QV4h+JdOPZn8VJsKeWkAzVkWLJ5xtJcnUVhNTE7jWtoZRC895YjfA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUYZNJ6999YXIZbVJAIwryvfMDn1KFyqlCApWNgFEWnIC7fCsZ
-	xWiPtcgXF0eXg3i9VgKB9QCz4CNjtNKL7zXzc0cJL3x1q82KZN3ohLOn
-X-Gm-Gg: ATEYQzyj+Py86ADt849qzm/U/3CG6XO0I9ULOi84WH32clbl9zgSAKpwjgm4qONhbA5
-	touJAY5oKZOzEcXEFL5yF+cGigHzkzDcFZ64rVvYGTk0TyxcIghVufSBwTEMtM33vWCqmpvvwN/
-	h2O2RJY4zUq+iwbCnvi8gLaMvG+EG88J0kEZL0UAhP2vHLt8uPCWB0tRq9S+eSwZ5su8celV9EU
-	4uNWzsRgjCTZaTAUCpDUG//Gfdef1TjLK/nig8zQUxKaY4jDGuRCHAxTMzkyJGPwXVku02o27Zk
-	vx7KXjp/5+tq3DJxt/jKLF+kTY2klWgr80XNQx1OlurFTjdLA4J9AW8h4S/FdK50KbAXf8xX7Lv
-	5CMorUwrqYyzOLkxa5sicEIQ452Xqgfgq0zs0hvMgFqLPtNGDcesf+iIhelSZUlAUQYt2slo076
-	Aw62vRz2xHfInuQhTjURrRKso2wyPYeLnd0FfGovEdke6/N95Rkrep0m9wVS0syj3UlbBV68eGS
-	dsa
-X-Received: by 2002:a05:7300:6413:b0:2c0:dc7e:ed17 with SMTP id 5a478bee46e88-2c93116f5d6mr3146575eec.10.1775100269336;
-        Wed, 01 Apr 2026 20:24:29 -0700 (PDT)
+        bh=3yX9dP9ip8JwFkjEQDaOaU6XeU3b97kM6xm6qGhhPLg=;
+        b=eAO5RKoqGn+1ByeC63Q9bPGO7Hoe+4+OCxGaWdqd7nS2t3GQW5ofJU784EZcNvyiz2
+         +zTrHTtEKuiLRA4jlOdL9AzEosGawF7SOUyhntbjj9fkF0xQEHHzk7A4/MIcv6zu5Y30
+         z84sqWbiY4sKnVEqG3GiaHl3UMYPTpdL9zTSuAvfwYUBexCW8a3MT9B5Ecy+t/w2e6Ck
+         9WfUXQu9hfxgv7vPL8z8eVe5d89K3+u8Ybm1lQZbUC0hYUDz9zRKlRNXytSlchm/bYOi
+         3QlHREF3YbMZhQCDGN/F2ixMuY0kpwCKYwaMMKtJvFh9XCNEYUg/XTLrFXjNstvb43WW
+         0GEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfIEz8BSWHN2ZC4bF/8Bmdm65v/9mSKd/7tJ5Jgc++Jqa+GmCCsnng4hEH7qAqXyLKPbYwv18=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3iU1rnNsJrYfw4W67GJgWQGnr9GMLbR1IJ5/z1plZQFqTX3rZ
+	JQTrz3PhCqb2yf8p5oznT7Wkmdk49p6C8jceU1h3Uai0BV7Ls0s1qRSU
+X-Gm-Gg: ATEYQzy4bR8UEYfq/tYcGxJSP+YeG+ZsJu3NSEt8GYSEX4/Mzc00emAiMwGLA9L4a+y
+	KmqfIy0YnigcQK0IoRsMqc1/Qql6jAfBZHTvbt4n0OvkwiCDitolY87uONJV0UiQ3+7vOFOSrGu
+	Mw70/vQjSCvq1Eyskob8P29jNu3M8Z3Tur8GvrT3OVkLnlLHV85ssylMlzneodATPxM7Sh+OMm0
+	WeI+J3Pw62lSZRJO63DU0+dxNqwH+0RcxNjZ9g4aXNwbCX0kKH1ubI51Ezt8KQbB3DwUjwfNC4m
+	Rr6k44tDwNUuqPDcbncJiIoxEoCrb+5LD/rjimkDzZ8yx0hl7FZsD/dKj9nAuc+qns/egw77Dh6
+	hIPBvQtDSYM725FMlTynQu1TZLKRp5/tP1n1LlZCSWlqbryGuj8w1LK1zVdI8myI92bYiX0s9Ef
+	HAM1wcy6j75k3XGB7SLQeVZb/9CgtTi400ZGyp7CmPa650tW/vzTnOlJyhji5UANlhpLU5hIr2O
+	Trz
+X-Received: by 2002:a05:7301:fa0d:b0:2c1:85a:d25d with SMTP id 5a478bee46e88-2c930e6bc1emr3147985eec.1.1775100270216;
+        Wed, 01 Apr 2026 20:24:30 -0700 (PDT)
 Received: from lappy (108-228-232-20.lightspeed.sndgca.sbcglobal.net. [108.228.232.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7cae9e9esm1265981eec.23.2026.04.01.20.24.28
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7cae9e9esm1265981eec.23.2026.04.01.20.24.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 01 Apr 2026 20:24:29 -0700 (PDT)
 From: "Derek J. Clark" <derekjohn.clark@gmail.com>
@@ -89,9 +89,9 @@ Cc: Mark Pearson <mpearson-lenovo@squebb.ca>,
 	platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v7 03/16] platform/x86: lenovo-wmi-other: Balance component bind and unbind
-Date: Thu,  2 Apr 2026 03:24:11 +0000
-Message-ID: <20260402032424.678528-4-derekjohn.clark@gmail.com>
+Subject: [PATCH v7 04/16] platform/x86: lenovo-wmi-other: Zero initialize WMI arguments
+Date: Thu,  2 Apr 2026 03:24:12 +0000
+Message-ID: <20260402032424.678528-5-derekjohn.clark@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260402032424.678528-1-derekjohn.clark@gmail.com>
 References: <20260402032424.678528-1-derekjohn.clark@gmail.com>
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232898-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232899-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[derekjohnclark@gmail.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -131,46 +131,76 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 501AD3831B8
+X-Rspamd-Queue-Id: CC1A73831DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Rong Zhang <i@rong.moe>
-
-When lwmi_om_master_bind() fails, the master device's components are
-left bound, with the aggregate device destroyed due to the failure
-(found by sashiko.dev [1]).
-
-Balance calls to component_bind_all() and component_unbind_all() when an
-error is propagated to the component framework.
+Adds explicit initialization of wmi_method_args_32 declarations with
+zero values to prevent uninitialized data from being sent to the device
+BIOS when passed.
 
 No functional change intended.
 
+Fixes: 22024ac5366f ("platform/x86: Add Lenovo Gamezone WMI Driver")
 Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver")
+Reported-by: Rong Zhang <i@rong.moe>
+Closes: https://lore.kernel.org/platform-driver-x86/95c7e7b539dd0af41189c754fcd35cec5b6fe182.camel@rong.moe/
 Cc: stable@vger.kernel.org
-Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.clark%40gmail.com [1]
-Signed-off-by: Rong Zhang <i@rong.moe>
+Reviewed-by: Rong Zhang <i@rong.moe>
+Tested-by: Rong Zhang <i@rong.moe>
+Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
 ---
- drivers/platform/x86/lenovo/wmi-other.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+v7:
+  - Include lwmi_gz_profile_set() fix as well.
+---
+ drivers/platform/x86/lenovo/wmi-gamezone.c | 2 +-
+ drivers/platform/x86/lenovo/wmi-other.c    | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.c b/drivers/platform/x86/lenovo/wmi-gamezone.c
+index 381836d29a96..ca559e6c031d 100644
+--- a/drivers/platform/x86/lenovo/wmi-gamezone.c
++++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
+@@ -203,7 +203,7 @@ static int lwmi_gz_profile_set(struct device *dev,
+ 			       enum platform_profile_option profile)
+ {
+ 	struct lwmi_gz_priv *priv = dev_get_drvdata(dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	enum thermal_mode mode;
+ 	int ret;
+ 
 diff --git a/drivers/platform/x86/lenovo/wmi-other.c b/drivers/platform/x86/lenovo/wmi-other.c
-index b47418df099f..4b47b5886e33 100644
+index 4b47b5886e33..985cb9859b44 100644
 --- a/drivers/platform/x86/lenovo/wmi-other.c
 +++ b/drivers/platform/x86/lenovo/wmi-other.c
-@@ -1068,8 +1068,11 @@ static int lwmi_om_master_bind(struct device *dev)
+@@ -166,7 +166,7 @@ MODULE_PARM_DESC(relax_fan_constraint,
+  */
+ static int lwmi_om_fan_get_set(struct lwmi_om_priv *priv, int channel, u32 *val, bool set)
+ {
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	u32 method_id, retval;
+ 	int err;
  
- 	priv->cd00_list = binder.cd00_list;
- 	priv->cd01_list = binder.cd01_list;
--	if (!priv->cd00_list || !priv->cd01_list)
-+	if (!priv->cd00_list || !priv->cd01_list) {
-+		component_unbind_all(dev, NULL);
-+
- 		return -ENODEV;
-+	}
- 
- 	lwmi_om_fan_info_collect_cd00(priv);
- 
+@@ -773,7 +773,7 @@ static ssize_t attr_current_value_store(struct kobject *kobj,
+ 					struct tunable_attr_01 *tunable_attr)
+ {
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(tunable_attr->dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	struct capdata01 capdata;
+ 	enum thermal_mode mode;
+ 	u32 attribute_id;
+@@ -836,7 +836,7 @@ static ssize_t attr_current_value_show(struct kobject *kobj,
+ 				       struct tunable_attr_01 *tunable_attr)
+ {
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(tunable_attr->dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	enum thermal_mode mode;
+ 	u32 attribute_id;
+ 	int retval;
 -- 
 2.53.0
 
