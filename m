@@ -1,237 +1,201 @@
-Return-Path: <stable+bounces-232973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKtuKnBFzmlQmQYAu9opvQ
-	(envelope-from <stable+bounces-232973-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:31:12 +0200
+	id 6DqZIP5GzmlQmQYAu9opvQ
+	(envelope-from <stable+bounces-232974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:37:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2A5387C16
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:31:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3802387CBC
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 728C1301602A
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 10:31:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8965301FA72
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 10:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290BE3DFC8B;
-	Thu,  2 Apr 2026 10:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C908D3DD51F;
+	Thu,  2 Apr 2026 10:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UTxuec0E"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="JLMZwRa2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C133DEFF2
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 10:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775125865; cv=pass; b=lUWNwo6qN//9g/W+HJJY34u8/MMOXy182MkX1gCwTg9RVtXo0oFolQop8uAOqKs1JcgObmCK2d+7+wwej9QLrvTyFj1dQVvlobQT2X13qxCI53L7tw5mW8DSY+cqcLk0fzxuTz05duI5wezQr7ZpRWMA8CkfUgfApbrZjCC4Ptk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775125865; c=relaxed/simple;
-	bh=MUZx4Y9OyelgL3hyVBr4k6AAzEQS/l7Wd93ZjmObqWg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eS3/QS3YIekQMtNjQa8Vfn//GCuTtj2A0LniMGkfIJboFntWjX7xKMV8Ffyu67AFdlP/5lHMAGEknEw9hULZDbo/y0CZMyJOqa/F5ZyA8IEH5+AG2ivMyWvaFeGX9BAU6EKB47jbuma+IE1Mb1YEauItuECjq54sih04uBQ66/A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UTxuec0E; arc=pass smtp.client-ip=209.85.222.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-9539d9f1675so450474241.2
-        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 03:31:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775125863; cv=none;
-        d=google.com; s=arc-20240605;
-        b=f+CKEyw0j8zs260UURJjjwScQwl1P0YHsqXapM75+ELu/qQh6j/PoQnJ2x1uj9nkSc
-         CBedIT8NkAZptdB7LOzg1eHYtdgUxDCXzfoA3jYeZzBx/tDQ4E4984gl1C6a+kgy0NlW
-         89fx1fTTHszGPvuWZrWP8oWPik7mFJWdWvUlrA4mr4lI8ARqJxds47qgDdw1mD6+cMxc
-         j4mMubDZL2bmvN4jGdF80wQ8zn2Fa6s4VQ5RKxnsvJtlzUP+1BG+tQ5AZz9jYO352dIO
-         nHeRp+WfLZbsuso+JXURWq2bAijpc8wI0hEoLb8s835KZBbcUY9TXqzoWWGig05DyXCq
-         iEww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4Ob4WvASBXKLoNDxbRXnh3mN8JCXap6XQdaiWgxzkgI=;
-        fh=aOL0ddPt6E7N/7IkWwsEr5zJ/rkvE3UANBTaueRo0Ck=;
-        b=dR51zuutTC+GpH7rdSkTv0gpre42+gkMfXcfGZ7g97colpKPFFfv70RaA9cb+IeCWC
-         L7M0Nc8B94YTRgN+F4p1rRP2T6GzUmLR92aSzicQU1qC3QjTHT0lkj2Zl+LoGeO5MLuY
-         2yfOk+O7aE6Lh+47KA+8/NDY3QROSwmA0EthhFiWum+xESdVobxxV2OubXHrxXmb8uZI
-         htOAS1mbab0CgJxyR0a622QFx//IplECyQIjRDlh53glcM8pjIWhL+kNrlJNoPQ5o+1V
-         l2usapl1OxfoMAgJDpeVwvceQPHSJbR+8Su7SYgl8LZfyOIodJVCvksPLu0NjI5mJUmU
-         E6Fg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775125863; x=1775730663; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Ob4WvASBXKLoNDxbRXnh3mN8JCXap6XQdaiWgxzkgI=;
-        b=UTxuec0EMljOElkQdGAzDus6SYqvMppVh9GQZVaCS9Vy8i/LrsHJMDQrYO9CBPBiY4
-         4n3tgBvjxhz/jP2KybP1b4APUcm900XPsGEld37rYe8hJZc2XKHInjZcFm/r9NS2IIzS
-         EgFnCSJqwqBjpEGebQmNhnCiKcAtULdOja8UQ8MaV0GYygeaTwgwMpaswyE0fL+IWQCc
-         Q1qH/i2pcy3MiS8IQY64gMPkxBvjuNw2aBq705zgWD9/Bh43bArg9KYKOhGRFqYAB1GK
-         xDIWNZ/chFP8Ep6TevUE1zSYZTcivEbdBZgh39hINlW3g68r2wDb5oWPg7Ac7KAF31x0
-         SFLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775125863; x=1775730663;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4Ob4WvASBXKLoNDxbRXnh3mN8JCXap6XQdaiWgxzkgI=;
-        b=IZRFa+2f7hiZk/feGzhKcheZBmLP4chA7bQE2wBS1wd3rKej9AweQPJfC21Cy2H1mj
-         6R8iyxv7k5ilhx+u15EQhxIW06GBdEFWuuSFXLoR2G8c7Xb7uJgKJRSJogGpalLcQk5s
-         HkNv4cZk0K6uIMiU356cjk7JIZ1qdeKtSuwbZNx7o49S0yrnrXab8/ZLlQz+TtmfmaEf
-         yqxoueh5S8xVjfz+ynOBWlp8k/0S4RLVbGHVcMJVfzmPBl8iVuvrfsKCPTuec36S+/gX
-         8qMdoaVXtUQqmOaL0mgiubyXWB+tPzWwcUsdf4EPl2w/LlE3SmyL8RFHcFab8IYgJzZM
-         bevg==
-X-Forwarded-Encrypted: i=1; AJvYcCUHGJY1ZYys3f5eqc+RmOigmJ4JWIUr6d+/O0zZB/qu+8OxDV0gUMMQmXc2t5dwQnJK3xJiGEA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSOjV75iaSRYDn1z48/bCBwKgeHE7kTmFyDxieXpg4+3eDBIvV
-	8Fu5jl7xpynltQHI5QKFqrEWKOiu3tK/3+t8+1pTKwjrh4d5Lr+SMpqCljjaxjKInKqsbiMOac6
-	gzOVXlLpJ4uv4VG2e7Q0ps2LuZVSuohs=
-X-Gm-Gg: ATEYQzy1UjHqnEqTfNkGbAp3F1qQTm+irXjxPrCsuux+uqynbKCDwhlYgsoO6/mZsH+
-	JL0sg2jnKJOdSun/E/NiUgRe5NvxnzPDmkY2vV6okLdONvBfiw6uiJOmrU4cFv8zLSyk63mBT9/
-	KYCypybSLT0izDMhZpZi7vY9+yqVIleiQIDN9v7nIP7kr23hPuDctpPtKYVklu3IYeu0xRtLaBw
-	NsCwkuUoRmqHnG7fdSEVpCOrBCV9X1CgQUqGVttLSmbcgNEuWelYXvy4thGn0/lAYK8VoQDqwjB
-	WC0GvmOWDpPQWHeGYzUJs5aOdIu0cSz1kCiWmjE=
-X-Received: by 2002:a05:6102:5343:b0:605:17b8:16db with SMTP id
- ada2fe7eead31-605681ba7d8mr2632044137.25.1775125862274; Thu, 02 Apr 2026
- 03:31:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D29390202;
+	Thu,  2 Apr 2026 10:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775126183; cv=none; b=pxRiHy6xQ0qBXLCZTPDm9gdJqEMDpwMwO5SevF1g2MIDJuFWGoeZ2LBfIQ5PJHOiKfe9fcDNu8R6gLgpdifLS+OwBwkM5MZKOjXBvK1tXr0whQtF/MP8ogTVAekrdS89xoBobBTtEOMG0uQB3out+A9KR+6zrMhQLLaZofhcpT4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775126183; c=relaxed/simple;
+	bh=9Wc6ROuu5V5/mprEKXHhfQhjY1T4tghAo8keRHUSsgU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MMFjS2VoEye28QUm5T1Akl6KFGM1hTANNR3raRPnFwWo1if0nub4f7gCWPBOX0nbSOmm4FCefYoi3y1D3F26G1MG3xIXXpsKxQaHKRepF9t15y2fKsywkNYEo9wKFfwDzldYjB/9w9IM4eP8aBg8nTQuPVBuQVMvEU7vlqjO7lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=JLMZwRa2; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 9CB7320860;
+	Thu,  2 Apr 2026 12:36:13 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id RvzUvPjydIEV; Thu,  2 Apr 2026 12:36:13 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 0267A207C6;
+	Thu,  2 Apr 2026 12:36:13 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0267A207C6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1775126173;
+	bh=fWDNKElwiQ/JqB2uB+47rxe5MZP5V8yE3BYukSUhMyM=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=JLMZwRa2FmTh4pJywEf3KDKCyTmdm08di2oSjvQ+2bKLELu2KeEbXdzpc/hKvM0hs
+	 U5BPn7KLpcCa6fZ6SwLIVlzmTrYPszPlteBAcPnd2DGBeLKGojDpMvairEdPlaFDCr
+	 QYQOAyCR75srl1JKgOViC5/ZRucFCQyB4WPWbWSGfbC/6AFyjNjsxM3DPE3ZwcxBxV
+	 5mIEhTFmkCojMj6UUtwGTcKRPLrTgpTL6f1PqbHmb2U1qHseKtmQpaQw7JBBxtdwrz
+	 Ipf6Oujgk8KmpaOQ0zdYA+x2oiOkGv/O0V36lYkG8E7nI0r0uDdnF8J7qwPMrtnTZc
+	 blU6DUzbErT5Q==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 2 Apr
+ 2026 12:36:12 +0200
+Received: (nullmailer pid 3738832 invoked by uid 1000);
+	Thu, 02 Apr 2026 10:36:12 -0000
+Date: Thu, 2 Apr 2026 12:36:12 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Qi Tang <tpluszz77@gmail.com>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	<netdev@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] xfrm: delay dev_put in xfrm_input to after transport
+ reinject
+Message-ID: <ac5GnMeqSeNlzBp7@secunet.com>
+References: <20260331092737.1937-1-tpluszz77@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331171248.973014-1-gaohan@iscas.ac.cn> <20260331171248.973014-3-gaohan@iscas.ac.cn>
- <MA5PR01MB12500707BE1C6E11EC3F4B94FFE51A@MA5PR01MB12500.INDPRD01.PROD.OUTLOOK.COM>
-In-Reply-To: <MA5PR01MB12500707BE1C6E11EC3F4B94FFE51A@MA5PR01MB12500.INDPRD01.PROD.OUTLOOK.COM>
-From: Han Gao <rabenda.cn@gmail.com>
-Date: Thu, 2 Apr 2026 18:30:49 +0800
-X-Gm-Features: AQROBzCGzBaggmtPSR3_A5qLKsf5xg9SqM3fnlQMsletNH9S6oyqQ5RfqOQtIhM
-Message-ID: <CAAT7Ki_BkfYCN_AJtksOEopU2r0iYPybuEQfm+pMLpsm8+EJkA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] riscv: dts: sophgo: Add dma-coherent to SG2042 PCIe controllers
-To: Chen Wang <unicorn_wang@outlook.com>
-Cc: Han Gao <gaohan@iscas.ac.cn>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Inochi Amaoto <inochiama@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Zixian Zeng <sycamoremoon376@gmail.com>, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, sophgo@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260331092737.1937-1-tpluszz77@gmail.com>
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+ (10.32.0.171)
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[secunet.com,none];
+	R_DKIM_ALLOW(-0.20)[secunet.com:s=202301];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232974-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232973-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[secunet.com:+];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[iscas.ac.cn,google.com,kernel.org,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rabendacn@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,dt];
+	FROM_NEQ_ENVFROM(0.00)[steffen.klassert@secunet.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: CF2A5387C16
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: D3802387CBC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 2, 2026 at 4:44=E2=80=AFPM Chen Wang <unicorn_wang@outlook.com>=
- wrote:
->
->
-> On 4/1/2026 1:12 AM, Han Gao wrote:
-> > SG2042's PCIe root complexes are cache-coherent with the CPU. Mark all
-> > four PCIe controller nodes (pcie_rc0 through pcie_rc3) as dma-coherent
-> > so the kernel uses coherent DMA mappings instead of non-coherent bounce
-> > buffering.
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Han Gao <gaohan@iscas.ac.cn>
-> > ---
-> >   arch/riscv/boot/dts/sophgo/sg2042.dtsi | 4 ++++
-> >   1 file changed, 4 insertions(+)
-> >
-> > diff --git a/arch/riscv/boot/dts/sophgo/sg2042.dtsi b/arch/riscv/boot/d=
-ts/sophgo/sg2042.dtsi
-> > index 9fddf3f0b3b9..3af770549742 100644
-> > --- a/arch/riscv/boot/dts/sophgo/sg2042.dtsi
-> > +++ b/arch/riscv/boot/dts/sophgo/sg2042.dtsi
-> > @@ -417,6 +417,7 @@ pcie_rc0: pcie@7060000000 {
-> >                       vendor-id =3D <0x1f1c>;
-> >                       device-id =3D <0x2042>;
-> >                       cdns,no-bar-match-nbits =3D <48>;
-> > +                     dma-coherent;
-> >                       msi-parent =3D <&msi>;
-> >                       status =3D "disabled";
-> >               };
-> > @@ -439,6 +440,7 @@ pcie_rc1: pcie@7060800000 {
-> >                       vendor-id =3D <0x1f1c>;
-> >                       device-id =3D <0x2042>;
-> >                       cdns,no-bar-match-nbits =3D <48>;
-> > +                     dma-coherent;
-> >                       msi-parent =3D <&msi>;
-> >                       status =3D "disabled";
-> >               };
-> > @@ -461,6 +463,7 @@ pcie_rc2: pcie@7062000000 {
-> >                       vendor-id =3D <0x1f1c>;
-> >                       device-id =3D <0x2042>;
-> >                       cdns,no-bar-match-nbits =3D <48>;
-> > +                     dma-coherent;
-> >                       msi-parent =3D <&msi>;
-> >                       status =3D "disabled";
-> >               };
-> > @@ -483,6 +486,7 @@ pcie_rc3: pcie@7062800000 {
-> >                       vendor-id =3D <0x1f1c>;
-> >                       device-id =3D <0x2042>;
-> >                       cdns,no-bar-match-nbits =3D <48>;
-> > +                     dma-coherent;
-> >                       msi-parent =3D <&msi>;
-> >                       status =3D "disabled";
-> >               };
-> For binding changes, LGTM. But I have a question regarding this change
-> in dtsi.
->
->  From your patch description, I understand that enabling the
-> `dma-coherent` attribute requires upgrading the firmware `fip.bin`. If a
-> user only updates the kernel (which is relatively easy) but forgets or
-> doesn't know how to upgrade the firmware, enabling `coherent` might
-> cause the kernel to skip all explicit cache maintenance operations.
-> Could this pose a subtle risk?
->
-> Wouldn't it be safer to leave the upstream unchanged in dtsi and allow
-> users to add the `dma-coherent` attribute themselves after they upgrade
-> the firmware?
+On Tue, Mar 31, 2026 at 05:27:37PM +0800, Qi Tang wrote:
+> diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
+> index f28cfd88eaf5..9765fdc63ffc 100644
+> --- a/net/ipv4/xfrm4_input.c
+> +++ b/net/ipv4/xfrm4_input.c
+> @@ -46,6 +46,28 @@ static inline int xfrm4_rcv_encap_finish(struct net *net, struct sock *sk,
+>  	return NET_RX_DROP;
+>  }
+>  
+> +static int xfrm4_rcv_encap_finish_async(struct net *net, struct sock *sk,
+> +					struct sk_buff *skb)
+> +{
+> +	if (!skb_dst(skb)) {
+> +		const struct iphdr *iph = ip_hdr(skb);
+> +
+> +		if (ip_route_input_noref(skb, iph->daddr, iph->saddr,
+> +					 ip4h_dscp(iph), skb->dev))
+> +			goto drop;
+> +	}
+> +
+> +	if (xfrm_trans_queue_net(dev_net(skb->dev), skb,
+> +				 xfrm4_rcv_encap_finish2, true))
+> +		goto drop;
+> +
+> +	return 0;
+> +drop:
+> +	dev_put(skb->dev);
+> +	kfree_skb(skb);
+> +	return NET_RX_DROP;
+> +}
+> +
+>  int xfrm4_transport_finish(struct sk_buff *skb, int async)
+>  {
+>  	struct xfrm_offload *xo = xfrm_offload(skb);
+> @@ -74,7 +96,8 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+>  
+>  	NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
+>  		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
+> -		xfrm4_rcv_encap_finish);
+> +		async ? xfrm4_rcv_encap_finish_async :
+> +			xfrm4_rcv_encap_finish);
 
-In the firmware, fip.bin and devicetree are distributed together.
-So matching issues are unlikely.
+What happens if the PRE_ROUTING hook returns NF_DROP, NF_QUEUE, or
+NF_STOLEN before the okfn runs? Looks like we leak the dev refcnt
+then.
 
->
-> I would greatly appreciate your guidance.
->
-> Thanks,
->
-> Chen
->
->
+> diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+> index 9005fc156a20..d4eede5315ac 100644
+> --- a/net/ipv6/xfrm6_input.c
+> +++ b/net/ipv6/xfrm6_input.c
+> @@ -40,6 +40,19 @@ static int xfrm6_transport_finish2(struct net *net, struct sock *sk,
+>  	return 0;
+>  }
+>  
+> +static int xfrm6_transport_finish2_async(struct net *net, struct sock *sk,
+> +					 struct sk_buff *skb)
+> +{
+> +	if (xfrm_trans_queue_net(dev_net(skb->dev), skb, ip6_rcv_finish,
+> +				 true)) {
+> +		dev_put(skb->dev);
+> +		kfree_skb(skb);
+> +		return NET_RX_DROP;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  int xfrm6_transport_finish(struct sk_buff *skb, int async)
+>  {
+>  	struct xfrm_offload *xo = xfrm_offload(skb);
+> @@ -69,7 +82,8 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+>  
+>  	NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
+>  		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
+> -		xfrm6_transport_finish2);
+> +		async ? xfrm6_transport_finish2_async :
+> +			xfrm6_transport_finish2);
 
-Thanks,
-Han
+Same here.
+
 
