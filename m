@@ -1,149 +1,175 @@
-Return-Path: <stable+bounces-232913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMiBHoQAzmntkAYAu9opvQ
-	(envelope-from <stable+bounces-232913-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:37:08 +0200
+	id yMBRNN8Bzmk/kQYAu9opvQ
+	(envelope-from <stable+bounces-232915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:42:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BE13840A5
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:37:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4FA38418F
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03E793034DC7
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 05:37:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07BCA3069D72
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 05:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C923A3659F9;
-	Thu,  2 Apr 2026 05:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vEKoZVEm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0E1370D74;
+	Thu,  2 Apr 2026 05:40:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3FC175A92;
-	Thu,  2 Apr 2026 05:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B8C242D70;
+	Thu,  2 Apr 2026 05:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775108220; cv=none; b=Mi1I3pe7bgJFZJPdwb6laIDXwBQaNxnzk7mJnwpMCIhEp2SqVkPT2VaDc1SwcrVbf1fCazXomUJrQX0IgSy/Pb7OiecW2QoOZ4ZK8S/PwRex78dsE0GVUKQ73CQsm8Jkdnw+kmwC0sJHZ57MkCXDk0Z6BtuH4XLML8+IGAsBCQY=
+	t=1775108426; cv=none; b=fytCnmVHsaX6mM8V2SaNWOzJbQMEExzncIwRWPVnmT+97UOgeYuUKtk7hA49WWI17Vjnuja8Ih8904+MsBYbTlqxIcrPzYkngdjVIQBm1tTPAzqVz4YRXesun11eQVqy26xhz6OP5PP3uVAkrPJdgJ7Sbyj2tUBTmmwjmzcTH98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775108220; c=relaxed/simple;
-	bh=xZVGlTPTiBBef2iARx0bzLIZG1HD0uA8NNBbqan+D9U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aXoBhUb1pa911344bjkVF1WeY9k/2A/NVvrB7nbtm1WB4FK7RFPzayvJGjIKZASHeYF+fjQuTRcQQYWM4tUzv5GCyDA6so+bE3Kf6HzkqH9pBn9x4KpCrGIH5DN95fCIByg6vm4mY7/erfZUFY2VoajbhLKGONPBbGEDqi7bLko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vEKoZVEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1E51DC19423;
-	Thu,  2 Apr 2026 05:37:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1775108220; bh=xZVGlTPTiBBef2iARx0bzLIZG1HD0uA8NNBbqan+D9U=;
-	h=From:Date:Subject:To:Cc:From;
-	b=vEKoZVEmWxoGRzwZVrq05zgRE2eslBBrh33ToF9pXGRlYvAJbLrEjbCCdKO/k8aPQ
-	 G8LAQfRC5s/I5FfejpyNFJCJ+0H77qK4Bq8XfAb0twVyQ37WluD4VXdjX55S6HHBfd
-	 nGBLRQTxG6XpFarPolw+NRoe5hGrAmxrC97vwvpE=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 113DACC6B03;
-	Thu,  2 Apr 2026 05:37:00 +0000 (UTC)
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Date: Thu, 02 Apr 2026 13:36:57 +0800
-Subject: [PATCH] ALSA: usb-audio: apply quirk for MOONDROP JU Jiu
+	s=arc-20240116; t=1775108426; c=relaxed/simple;
+	bh=RlWXLzbu9xrIUqlOY90vMNqryRL8/cs5dVpsRxXxeyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nWwB0Yx7rYm73t47ADprMWpSpBL1ckXl1WQ5rZgEi+0cWF3DDZMWohlZE9vfT9vQEKVcNGlM6UGjc1k7eWSQ4gorq28awMvFt9Cohw0/gGuua8JYrP+p1/r0LBStZXyOD/t6lf35GRXMFb6T+we4DFAhA8mZ3Gds7B/NRPYDS4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.245.197])
+	by APP-01 (Coremail) with SMTP id qwCowAB3IW0_Ac5pOvbxCw--.16287S2;
+	Thu, 02 Apr 2026 13:40:16 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Gyeyoung Baek <gye976@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pengpeng@iscas.ac.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] iio: chemical: mhz19b: reject oversized serial replies
+Date: Thu,  2 Apr 2026 13:40:15 +0800
+Message-ID: <20260402054015.38565-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-syy-v1-1-068d3bc30ddc@linux.dev>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDEwMj3eLKSt00IMvcJDnRzNzCSAmosqAoNS2zAmxKdCyEX1yalJWaXAL
- SqlRbCwCXVPFBZwAAAA==
-X-Change-ID: 20260402-syy-f04074ca6782
-To: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- zhanjun@uniontech.com, niecheng1@uniontech.com, kernel@uniontech.com, 
- =?utf-8?q?=E8=83=A1=E8=BF=9E=E5=8B=A4?= <hulianqin@vivo.com>, 
- Kagura <me@mail.kagurach.uk>, stable@vger.kernel.org, 
- Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775108219; l=1249;
- i=cryolitia.pukngae@linux.dev; s=20260401; h=from:subject:message-id;
- bh=xZVGlTPTiBBef2iARx0bzLIZG1HD0uA8NNBbqan+D9U=;
- b=mN3VdwexnabeNtKme5CRAJUjMvNNN1boW1QiGM2+lyrdAETxPdhUbqOUPZwxKGaze+gHotoHZ
- NY8El/k505lBjtBAc29jTvff3lv6XwLH0SNoh7rBQtVFVtjk0ENHwwr
-X-Developer-Key: i=cryolitia.pukngae@linux.dev; a=ed25519;
- pk=kF6wBkp7j9167keuk8Q9RvPgMRPuHlJztbLy0vbJ3K0=
-X-Endpoint-Received: by B4 Relay for cryolitia.pukngae@linux.dev/20260401
- with auth_id=712
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAB3IW0_Ac5pOvbxCw--.16287S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw4xKr47ury3ZF1kZr4fKrg_yoW8tw4fpF
+	45JF15CFy8Xr4xKr1vkrnrCFy5uFWFyayDAF4xAa43ZF15J34qkFykKFyrXr4IyrWrCa42
+	vryDKrWY9ay5ZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	tVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUqeHgUUU
+	UU=
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232913-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cryolitia.pukngae@linux.dev,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232915-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.944];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
-X-Rspamd-Queue-Id: F3BE13840A5
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
+X-Rspamd-Queue-Id: 3F4FA38418F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-It(ID 31b2:0111 JU Jiu) reports a MIN value -12800 for volume control, but
-will mute when setting it less than -10880.
+mhz19b_receive_buf() appends each serdev chunk into the fixed
+MHZ19B_CMD_SIZE receive buffer and advances buf_idx by len without
+checking that the chunk fits in the remaining space. A large callback
+can therefore overflow st->buf before the command path validates the
+reply.
 
-Thanks to my girlfriend Kagura for reporting this issue.
+Reset the reply state before each command and reject oversized serial
+replies before copying them into the fixed buffer. When an oversized
+reply is detected, wake the waiter and report -EMSGSIZE instead of
+overwriting st->buf.
 
-Cc: Kagura <me@mail.kagurach.uk>
+Fixes: 4572a70b3681 ("iio: chemical: Add support for Winsen MHZ19B CO2 sensor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
-Btw, is it a good idea for turn the volume_control_quirks from
-switch-case to a table and sort it accroding to USB VID&PID?
----
- sound/usb/mixer.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iio/chemical/mhz19b.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 69026cf54979..a25e8145af67 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1204,6 +1204,13 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
- 			cval->min = -11264; /* Mute under it */
- 		}
- 		break;
-+	case USB_ID(0x31b2, 0x0111): /* MOONDROP JU Jiu */
-+		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
-+			usb_audio_info(chip,
-+				       "set volume quirk for MOONDROP JU Jiu\n");
-+			cval->min = -10880; /* Mute under it */
-+		}
-+		break;
- 	}
- }
+diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
+index 3c64154918b1..90c997191c83 100644
+--- a/drivers/iio/chemical/mhz19b.c
++++ b/drivers/iio/chemical/mhz19b.c
+@@ -52,6 +52,7 @@ struct mhz19b_state {
+ 	struct completion buf_ready;
  
-
----
-base-commit: 872c7433582a3570dd0c827967ba291450096bf0
-change-id: 20260402-syy-f04074ca6782
-
-Best regards,
---  
-Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-
+ 	u8 buf_idx;
++	bool buf_overflow;
+ 	/*
+ 	 * Serdev receive buffer.
+ 	 * When data is received from the MH-Z19B,
+@@ -106,6 +107,10 @@ static int mhz19b_serdev_cmd(struct iio_dev *indio_dev, int cmd, u16 arg)
+ 	cmd_buf[8] = mhz19b_get_checksum(cmd_buf);
+ 
+ 	/* Write buf to uart ctrl synchronously */
++	st->buf_idx = 0;
++	st->buf_overflow = false;
++	reinit_completion(&st->buf_ready);
++
+ 	ret = serdev_device_write(serdev, cmd_buf, MHZ19B_CMD_SIZE, 0);
+ 	if (ret < 0)
+ 		return ret;
+@@ -121,6 +126,9 @@ static int mhz19b_serdev_cmd(struct iio_dev *indio_dev, int cmd, u16 arg)
+ 		if (!ret)
+ 			return -ETIMEDOUT;
+ 
++		if (st->buf_overflow)
++			return -EMSGSIZE;
++
+ 		if (st->buf[8] != mhz19b_get_checksum(st->buf)) {
+ 			dev_err(dev, "checksum err");
+ 			return -EINVAL;
+@@ -240,6 +248,14 @@ static size_t mhz19b_receive_buf(struct serdev_device *serdev,
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
+ 	struct mhz19b_state *st = iio_priv(indio_dev);
++	size_t remaining = MHZ19B_CMD_SIZE - st->buf_idx;
++
++	if (len > remaining) {
++		st->buf_idx = 0;
++		st->buf_overflow = true;
++		complete(&st->buf_ready);
++		return len;
++	}
+ 
+ 	memcpy(st->buf + st->buf_idx, data, len);
+ 	st->buf_idx += len;
+-- 
+2.50.1 (Apple Git-155)
 
 
