@@ -1,289 +1,219 @@
-Return-Path: <stable+bounces-232987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEUaFM9XzmnrmwYAu9opvQ
-	(envelope-from <stable+bounces-232987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 13:49:35 +0200
+	id LEDlLQxYzmkxnAYAu9opvQ
+	(envelope-from <stable+bounces-232988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 13:50:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B07B3888F6
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 13:49:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DADA338891C
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 13:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B79E306A1FF
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 11:44:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 15C2830A328A
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 11:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5292A3CD8C9;
-	Thu,  2 Apr 2026 11:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7553C6616;
+	Thu,  2 Apr 2026 11:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SD780Z5+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UPhOcr/Q";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="enP1a3Or"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15B73CB2DC
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 11:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD703DEAF0
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 11:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775130261; cv=none; b=dKr3+d6oKFdP6ruQmrWY0Hyr+LOhtDNh36FHZulxxyG8KPUeOTu03xzlMiZJpY2vDOJ8EkKMxows1j2gfqDdxv8wwFn2aDDlkHvfA6KEVeit8pZ02qlhFI5wHFYF8dFZxCPuutjR4NZXr7Ppm77+NqhGt8AdJkJYCt7y6Mj1oFw=
+	t=1775130399; cv=none; b=NG4J7lN+qJ/365SooHbDxGDVbVs9xBzkSfO/zNj33x9OAvmA3UryUsm6HxA6V5redY13t2+H+WV3LpXkThZMejS01P4oEQ0W3KtJ4drnbJuZe+gP29zUfAX1207kcpfRF9Y/L14xguMOiRktaEhrJP7kvfA1wLfOoj4G4awuj1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775130261; c=relaxed/simple;
-	bh=zfBn1cRNNhumvyiV8rBtCw2nXZZgpuvd0gyg+7iLZWk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p1bzTgoBjm0Q3mt9G43eu9DTK1m4gB2mF2lPAqbZfP+SrODCvTYsfKmBbutPKtEMm+qQejs46bA6xtbrT7ggrUVbaxOJSTjnHZ1mtRm8NecaPK0yfK+p3seTN2EoUL2hznqvmQfYvWuY6E+vsnjRebSw2v0uZjM3UDiiuF2eoVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SD780Z5+; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2aae4816912so4551395ad.2
-        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 04:44:13 -0700 (PDT)
+	s=arc-20240116; t=1775130399; c=relaxed/simple;
+	bh=96/WVMIDSBKKgJSfQ4EIO42g3fE0wTNJnou+Effn79M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=USBicsBVcrMlUcJRfU5mDavmJzULjRpoGAicrEfKrka7XC9Ef6FehjfArcHF6Agcp4BqBvfWZJ1k0e8FIOLva2lEmPXziJBwBBRVISvVaHrfLhT27etQtkJPFyCe3S8m4imAID4yJwulRb5JMntokA4PSI+pnSprmh/Igy2ojFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UPhOcr/Q; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=enP1a3Or; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775130389;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WURTvV+4CxxPQ1jYB89C/0nV6RrkAMgvkGrvpp0Vmfk=;
+	b=UPhOcr/QGPtWmNzdv/wi2PljI+aNH2/qsv4IVAGrlw7A8fVIXWrOanGr655u5O/kWwm/C8
+	3uiUIhSQ331Vw81W0kGa20EAFxrfNdaD8hmvTSo/3Icv1F8zsrEz7pq92g1674EcSr5DBM
+	R0l4tQmV5GqcdfPumjrGUGXKeXf49xw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-519-hzz3cBorPVWOZtx8fLA_0w-1; Thu, 02 Apr 2026 07:46:28 -0400
+X-MC-Unique: hzz3cBorPVWOZtx8fLA_0w-1
+X-Mimecast-MFC-AGG-ID: hzz3cBorPVWOZtx8fLA_0w_1775130387
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48544725bdeso9450115e9.2
+        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 04:46:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775130252; x=1775735052; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lXUpdPPA2BsBrA+T+Hk9V88yl+Ek0GfjSeEmssGlqH0=;
-        b=SD780Z5+VehTzpXrlK2yBjsiHNxR8BZcoeI1p+twD6eJBQJ08ST3owE5Ynjwc8ujcL
-         o9Sg7RJQ4Yhk4uN0GWR/cKDmGuzfteeh/Zwx5doUWjFP916/it7a6YtganRtODANHLqz
-         Nd3P/KasdgkAEXIQhuZ8YW8bqNvmGbXHrQKRA+4/Eztc7wMLSHYrSwpruG3gRYMQOviT
-         3eSDAT2uQhpGQhrhyAiAHodZWLpawWzMhPHizt8kfS2KH/+r1RqefWaxGHigdE1VUEIN
-         ANq7OgR+2yrI1AbmtMq9zcAO1icHpFsz3tUNNT9xsqVlB+i4cXJDBIPH2wLUrGpoRxsx
-         rwfQ==
+        d=redhat.com; s=google; t=1775130387; x=1775735187; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WURTvV+4CxxPQ1jYB89C/0nV6RrkAMgvkGrvpp0Vmfk=;
+        b=enP1a3OrP3GpfEEarv4+JTv3C0WAGcaypormI5DRQkQ5YXwR7ky3e+AFOu1sjrnvzh
+         9cPQDCzWeN2b31nlCHoOf7LMNSGO7zMtmHNhZ6CSOWHa3bzZmUx4x2kfs1DlHv/+lH6g
+         zgqCE4VCWfAqrFuA+BwVmuZwTEjXd5dijRpvrLtt+bN0KDpJ2cMNImME1kxkwAFVZFhi
+         iNL3vRXdE+mTi+vcHzNFfHtRF0IIzuo1JwhOEIekOFDT1JqfiRcGK7CA5fD3+3HlfQ7l
+         yKQlr15Qr8m1ygIf+FjX/EBQcgBwL6N04bb1KpzBntxJS0GVg5ha2OU8Rm9YSxpHGYF6
+         q1EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775130252; x=1775735052;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lXUpdPPA2BsBrA+T+Hk9V88yl+Ek0GfjSeEmssGlqH0=;
-        b=PDId81qXoku9clxRwhZ0Pwo+Rx8C73It938Oabo2aXB5TpzYYD9AQNTs44lkoIW/vO
-         ebydA0SW/IveIXagIHmraVIU/Z+ovgd8P+0dTFGUmByeMg4moAD3satylRmGU6N/2EwJ
-         LI5EncKykZYiKT80GrWSgyba+RgVChJ4ul0i0bHHqo7Jng0FNyscprrVrFfqRhL4v9/+
-         pXz4V08qVckIwDw4vQgCfss7TrMUOvz9v4ZTeRQahkR3CTwjNUSj0wi6+gV/Oh8M1RQf
-         p840BEuAJH4GKtS2D7IaLG2G051TkxXR/S0f4js1cBfH7P1Pc3xL/tYdkuMecqs4Xw6r
-         e/qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXRRqdNidLfB1NMob5KTEjnx1+iAJ5Ntwc/GS4AtgsnTqj1EGsOb/VTC0UflH0Tr9zzxBg92lo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGXb5p65CBmuj7LhF3b4Wqw7X+jbWzdnbTNLvmEY4gNyCjmBVB
-	8DdFcATVTi3GEtMTrOV0GzH6ab+VWpGDRGPw5EqmORG70mTj2uuQe/L6
-X-Gm-Gg: AeBDietQQPVsp1VSPyr4t340tAbT6mzaJLJQ5t06LAHMsj1EShjChvKMvOr7sSl4+fy
-	GKh2LK5EBuRqjDUuZSmn/B5qQ5MwBvfhTDV05MssOBWXpbCsvqJWBoz64ZeMJ7VeLidQN6ESsi0
-	WaBh4EpgLlmFlOrMlWI8751IoIewBUQnDtPcZNXpR8/6BfH4aRqR4toyQT0HZmTigCAzPrDl/2r
-	6x69jNwfYNpl3VJVpRlxRDV3hw9ef68Ctaj7Iy1XtKq4xvuTGPKiHfhx5/g1XfZWnydX0urhOA9
-	QNipfXwN2358nXOvYKdlr3EhQi2o5lA83CF8a/Omq+25gfle+o9btPDKWHcnGm+yGkL88YdvTGb
-	zZGyELUtKOwkAT/9uswQpQXg2vIPq1VgtXvW5qdSzIfnomkFqOAhoIlhpWqpBxKTES4a5r40wCS
-	8TckwmmeUbnsD5ldO7DvWyVnvOb/CLmJN087c=
-X-Received: by 2002:a17:902:ef4e:b0:2b2:5840:80d3 with SMTP id d9443c01a7336-2b269c6e2e8mr68361245ad.33.1775130252451;
-        Thu, 02 Apr 2026 04:44:12 -0700 (PDT)
-Received: from localhost.localdomain ([47.236.127.140])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b274979525sm32553295ad.45.2026.04.02.04.44.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 04:44:12 -0700 (PDT)
-From: Qi Tang <tpluszz77@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Florian Westphal <fw@strlen.de>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	netdev@vger.kernel.org,
-	Qi Tang <tpluszz77@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] xfrm: hold dev ref until after transport_finish NF_HOOK
-Date: Thu,  2 Apr 2026 19:44:01 +0800
-Message-ID: <20260402114401.62212-1-tpluszz77@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1775130387; x=1775735187;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WURTvV+4CxxPQ1jYB89C/0nV6RrkAMgvkGrvpp0Vmfk=;
+        b=mCZFuFyoU29qx90yJnmeTdmh7+QwKipJkp94jXj2OSToHB4cEM6xerI7modX/twCt6
+         Izsw0tV0eDrejEZtPGS1i7CLhSYj5nakmmF4CLBenusXxRx6cZPB24Ytgddt76zy9BvF
+         cyGyompVarmb3miwdMhFNS4cSTtcB6YlXnzhHEYGNlmRmRZzetRPXDIOMsDusC0oO/qm
+         6thj988IrCUWGWebSV35Rd76Tz+WkZ4Emt/u1c0mMhlXoSE79/LmB3Rv+xegvOZzsSIR
+         zdLoC8pl9SegLQlJkargovnvnebOwGiXFoGTZJTwYSLMm9pSU7R/ycLq6s8/Y5HofpGH
+         pC+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUUTfdNbNlXwN2WJsxJThAB+16tCv2b8LiY02D2kXJvqeYXMmmcj71qr6qOFJFyJ+Jo2GzZ2ms=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0aM9jgS5/kK2QP26Qto9LtwtW5cQgS9jSE/kztst3wuVi/5U1
+	aLxQspRlaIFWC5oNelAMbULBbpugFSW6J2tkIr4sL2dJvuHfs7rOYixITNa/jEEfLl/dc4QL9EK
+	2Hhh0jzOEdgfh13/rwtHDR98yPxAkUl2YUaUwq3BN9+Uccxrfw6YyqnLeng==
+X-Gm-Gg: ATEYQzwOQZVurD1PvyzgegdNrtBfsovkwckt+EpMyAzyZxE41OkRquwNRIsfqLqwoJj
+	bar66ZhFu48TfSdo0q1kibr7M9ZLDEy7WcsgkFn/35V/0i6jtAXUVgPugv26OQ8c1FfgjZV6JlP
+	btZpsT4j6Q3EwUkbmR0OiySPY+kGLm6lL7CZOxnTfONFY6p6DnwKVc8KquWNkmKbb0bMQnbBfBv
+	NHPCT8VOHdwiqBkHKUKp9G+bZo+uNRhf4XvLcn/2e5rikTG1QsjE3V8k4ewTk8ml3ifkC+5ZlZY
+	0e0YQ9zF24XGMPyP5005YMdlsfTN6IC0XFoVgM6vP2l2wTuEVqL8MMywsIh2JDwT+/tFGAVzQ+7
+	cXOxuvz6J2bohMcS3jPNPwWGP1nz2U+d38sNJ/JjeN3GDGLLxkn1NtOFSfQ==
+X-Received: by 2002:a05:600c:a406:b0:483:709e:f238 with SMTP id 5b1f17b1804b1-4888b7a0b07mr41585465e9.29.1775130387301;
+        Thu, 02 Apr 2026 04:46:27 -0700 (PDT)
+X-Received: by 2002:a05:600c:a406:b0:483:709e:f238 with SMTP id 5b1f17b1804b1-4888b7a0b07mr41585005e9.29.1775130386828;
+        Thu, 02 Apr 2026 04:46:26 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.153.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a63c9b1sm62293295e9.5.2026.04.02.04.46.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Apr 2026 04:46:26 -0700 (PDT)
+Message-ID: <d088beb8-d957-48a9-85c6-85775fef2ef4@redhat.com>
+Date: Thu, 2 Apr 2026 13:46:24 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] bnxt_en: fix out-of-bounds write in
+ bnxt_alloc_vf_resources()
+To: Junrui Luo <moonafterrain@outlook.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Prashant Sreedharan <prashant@broadcom.com>,
+ Jeffrey Huang <huangjw@broadcom.com>, Eddie Wai <eddie.wai@broadcom.com>
+Cc: Michael Chan <mchan@broadcom.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+ stable@vger.kernel.org
+References: <SYBPR01MB78817B7EE349BB2CF0FC6873AF53A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <SYBPR01MB78817B7EE349BB2CF0FC6873AF53A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[strlen.de,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-232987-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232988-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[outlook.com,broadcom.com,lunn.ch,davemloft.net,google.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tpluszz77@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[broadcom.com,vger.kernel.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-0.993];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: 8B07B3888F6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,outlook.com:email]
+X-Rspamd-Queue-Id: DADA338891C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-After async crypto completes, xfrm_input_resume() calls dev_put()
-immediately on re-entry before the skb reaches transport_finish.
-The skb->dev pointer is then used inside NF_HOOK and its okfn,
-which can race with device teardown.
+On 3/31/26 11:57 AM, Junrui Luo wrote:
+> bnxt_alloc_vf_resources() derives the number of DMA pages for VF HWRM
+> command buffers from num_vfs and stores them in the fixed-size arrays
+> hwrm_cmd_req_addr[4] and hwrm_cmd_req_dma_addr[4]. The vf_event_bmap
+> bitmap is similarly fixed at 128 bits.
+> 
+> If num_vfs exceeds 128, the allocation loop writes past the arrays,
+> corrupting adjacent fields in bnxt_pf_info.
+> 
+> Add BNXT_MAX_VFS to cap num_vfs at 128, matching the existing array and
+> bitmap capacity.
+> 
+> Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+> ---
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.h       | 2 ++
+>  drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c | 6 ++++++
+>  2 files changed, 8 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+> index a97d651130df..cee67ca2955d 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+> @@ -1398,6 +1398,8 @@ struct bnxt_vf_info {
+>  };
+>  #endif
+>  
+> +#define BNXT_MAX_VFS	128
+> +
+>  struct bnxt_pf_info {
+>  #define BNXT_FIRST_PF_FID	1
+>  #define BNXT_FIRST_VF_FID	128
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
+> index 7f9829287c49..18ac0aaf4166 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
+> @@ -459,6 +459,12 @@ static int bnxt_alloc_vf_resources(struct bnxt *bp, int num_vfs)
+>  	struct pci_dev *pdev = bp->pdev;
+>  	u32 nr_pages, size, i, j, k = 0;
+>  
+> +	if (num_vfs > BNXT_MAX_VFS) {
+> +		netdev_warn(bp->dev, "Too many VFs (%d), max is %d\n",
+> +			    num_vfs, BNXT_MAX_VFS);
+> +		return -EINVAL;
+> +	}
+> +
+>  	bp->pf.vf = kzalloc_objs(struct bnxt_vf_info, num_vfs);
+>  	if (!bp->pf.vf)
+>  		return -ENOMEM;
+> 
 
-Remove the dev_put from the async resumption entry and instead
-drop the reference after the NF_HOOK call in transport_finish,
-using a saved device pointer since NF_HOOK may consume the skb.
-This covers NF_DROP, NF_QUEUE and NF_STOLEN paths that skip
-the okfn.
+Makes sense to me. It would be nice some explicit ack/testing from
+someone @broadcom.
 
-For non-transport exits (decaps, gro, drop) and secondary
-async return points, release the reference inline when
-async is set.
+Thanks,
 
-Suggested-by: Florian Westphal <fw@strlen.de>
-Fixes: acf568ee859f ("xfrm: Reinject transport-mode packets through tasklet")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
----
-Changes in v3:
-  - Drop refcount after NF_HOOK instead of in async okfn variant
-    (Florian, Steffen)
-  - Remove xfrm_trans_cb.dev_held, async okfn variants, and
-    xfrm_trans_queue_net parameter change from v2
-
-Changes in v2:
-  - Reuse existing dev_hold, delay dev_put instead of adding
-    extra hold/put pair (Steffen)
-
-Link: https://lore.kernel.org/netdev/20260331092737.1937-1-tpluszz77@gmail.com/ (v2)
-Link: https://lore.kernel.org/all/20260320073023.21873-1-tpluszz77@gmail.com/ (v1)
----
- net/ipv4/xfrm4_input.c |  5 ++++-
- net/ipv6/xfrm6_input.c |  5 ++++-
- net/xfrm/xfrm_input.c  | 18 ++++++++++++++----
- 3 files changed, 22 insertions(+), 6 deletions(-)
-
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index f28cfd88eaf5..c2eac844bcdb 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -50,6 +50,7 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
- {
- 	struct xfrm_offload *xo = xfrm_offload(skb);
- 	struct iphdr *iph = ip_hdr(skb);
-+	struct net_device *dev = skb->dev;
- 
- 	iph->protocol = XFRM_MODE_SKB_CB(skb)->protocol;
- 
-@@ -73,8 +74,10 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
- 	}
- 
- 	NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
--		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
-+		dev_net(dev), NULL, skb, dev, NULL,
- 		xfrm4_rcv_encap_finish);
-+	if (async)
-+		dev_put(dev);
- 	return 0;
- }
- 
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 9005fc156a20..699a001ac166 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -43,6 +43,7 @@ static int xfrm6_transport_finish2(struct net *net, struct sock *sk,
- int xfrm6_transport_finish(struct sk_buff *skb, int async)
- {
- 	struct xfrm_offload *xo = xfrm_offload(skb);
-+	struct net_device *dev = skb->dev;
- 	int nhlen = -skb_network_offset(skb);
- 
- 	skb_network_header(skb)[IP6CB(skb)->nhoff] =
-@@ -68,8 +69,10 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
- 	}
- 
- 	NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
--		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
-+		dev_net(dev), NULL, skb, dev, NULL,
- 		xfrm6_transport_finish2);
-+	if (async)
-+		dev_put(dev);
- 	return 0;
- }
- 
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index dc1312ed5a09..f65291eba1f6 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -506,7 +506,6 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		/* An encap_type of -1 indicates async resumption. */
- 		if (encap_type == -1) {
- 			async = 1;
--			dev_put(skb->dev);
- 			seq = XFRM_SKB_CB(skb)->seq.input.low;
- 			spin_lock(&x->lock);
- 			goto resume;
-@@ -659,8 +658,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			dev_hold(skb->dev);
- 
- 			nexthdr = x->type->input(x, skb);
--			if (nexthdr == -EINPROGRESS)
-+			if (nexthdr == -EINPROGRESS) {
-+				if (async)
-+					dev_put(skb->dev);
- 				return 0;
-+			}
- 
- 			dev_put(skb->dev);
- 			spin_lock(&x->lock);
-@@ -695,9 +697,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		XFRM_MODE_SKB_CB(skb)->protocol = nexthdr;
- 
- 		err = xfrm_inner_mode_input(x, skb);
--		if (err == -EINPROGRESS)
-+		if (err == -EINPROGRESS) {
-+			if (async)
-+				dev_put(skb->dev);
- 			return 0;
--		else if (err) {
-+		} else if (err) {
- 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMODEERROR);
- 			goto drop;
- 		}
-@@ -734,6 +738,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			sp->olen = 0;
- 		if (skb_valid_dst(skb))
- 			skb_dst_drop(skb);
-+		if (async)
-+			dev_put(skb->dev);
- 		gro_cells_receive(&gro_cells, skb);
- 		return 0;
- 	} else {
-@@ -753,6 +759,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 				sp->olen = 0;
- 			if (skb_valid_dst(skb))
- 				skb_dst_drop(skb);
-+			if (async)
-+				dev_put(skb->dev);
- 			gro_cells_receive(&gro_cells, skb);
- 			return err;
- 		}
-@@ -763,6 +771,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- drop_unlock:
- 	spin_unlock(&x->lock);
- drop:
-+	if (async)
-+		dev_put(skb->dev);
- 	xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr, -1);
- 	kfree_skb(skb);
- 	return 0;
--- 
-2.43.0
+Paolo
 
 
