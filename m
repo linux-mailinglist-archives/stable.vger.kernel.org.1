@@ -1,194 +1,223 @@
-Return-Path: <stable+bounces-232969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKx0DFxBzmlQmQYAu9opvQ
-	(envelope-from <stable+bounces-232969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:13:48 +0200
+	id ADrwB21CzmlQmQYAu9opvQ
+	(envelope-from <stable+bounces-232970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:18:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8CD38789F
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:13:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 473E238797C
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7C5D730AA1A1
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 10:11:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A4AB30977E2
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 10:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BB83DD50B;
-	Thu,  2 Apr 2026 10:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5E23DDDB6;
+	Thu,  2 Apr 2026 10:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="h6YBBQXB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZOf7cWci"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HIL7rr97"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B69339658D;
-	Thu,  2 Apr 2026 10:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F053F39658D
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 10:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775124631; cv=none; b=ULYb+PPiMxlbrB4X5wQjU6hMxSSTH3Q63QmvgMuoHjJB7fvruM7tASu9zLH59eLtUXTb9+vYMD4Dv/wLuONMv071H4gfCYqx49vGqOcmjZ9CT7YCwhYLo8BPMgEGVKeGF0Q5WrwwiZ9tjJbJBb7k2tDc8zMjjHvGDR48fXmv4j0=
+	t=1775124658; cv=none; b=ImkO+MnblY7HmV+YfnmVssE7n8FpLxR9rXRfdv9IahyLArhGPgV5CLmWzJ+V+1gYNE/OQ0w83FT2fBcxVyxD3u+eHBHKfqA2PdG02VkSAhdDMRAJoSQvPzzh5hKwlcmqk4zTll6XJ09tCr7pE2d0rMMOzUgtYN5KgyPjTMai0+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775124631; c=relaxed/simple;
-	bh=xVmuycfLwNQ3omqbTqjnro+8/vcCy2B12kgtgX0L4NA=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=S0DCDyu5WwrO0tSQjN3hzV0lz8Kt56jYLmaTOOJMxg6xCY4uKLkm87zIR2E0lka208msbIufj5lZHO0Bbj4Z/qoHOnaEsiPB0ECESAmtl5wpoTP1THyYWtLmQXB0yZx1dY8GCSTr6NlNeCaNOUEZeOAt+0tvvendKy0SfAMiIAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=h6YBBQXB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZOf7cWci; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 5997E1400263;
-	Thu,  2 Apr 2026 06:10:29 -0400 (EDT)
-Received: from phl-imap-04 ([10.202.2.82])
-  by phl-compute-06.internal (MEProxy); Thu, 02 Apr 2026 06:10:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1775124629;
-	 x=1775211029; bh=rwb3s0na1s2ywJgMpNsKHLX3L30KxLLtCh5OfR6KMk4=; b=
-	h6YBBQXBTTDAS9ApX8flPbZrtidNKscqpwngIOaMvE5TgU9iwA0D7eQFZfq5jb98
-	qRTuopiVXWNtIWrRFEikiFmqWm9Yh/glq6O0RGQOIkkHxI++jpwIMPXUYJvRaOiZ
-	AmMyOaKCfafYWELV28paM5A+cqpHKJfhX6bvPiysbCCTh0AMaELmBoHEQPDE7SIC
-	fjVlJgbC/mVJZpmNvbt/3jJSQDvmy47WtYvnmpiiNa6sCGcu3ecOwmQgPgAghaB7
-	28KfpUA4tpRvN2CcyKg3rHfkSi/Eaah55eL/YHx1eVX7+HMyySGQ+57c4EVVHrml
-	RzUAABGsMjI8Rs7meTVW9g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775124629; x=
-	1775211029; bh=rwb3s0na1s2ywJgMpNsKHLX3L30KxLLtCh5OfR6KMk4=; b=Z
-	Of7cWciTKnisiIO3L+jHbMY2KJlkhQF5BSnX3VN/WDwltcZqtctjUpCkLqhb0YJC
-	wOabT3VE3Ovw9CkvaVgKlDkHxx51J64RRagiGjVY44KAGVZ8rbDsVwhVXUNaqglK
-	l9zl3HlYgi142ttsnjeyOJyAgvGsch73PtGf0MrNTn4dGlc33biZARaSGo7NXXu+
-	oPqyMI4jewTZHwhTiei5smFWZIJByzGnKxRZYP4Yz8DPaSHixuevjMcgIgBiB/sf
-	7hQAojeAHGudiL5oF+4OHezUECvOqaqRhbpIN9qoyX9TOtjpmCaioHG1pjGP7Y/y
-	p5nHCjQsIRYQ0T9obZ7zg==
-X-ME-Sender: <xms:lEDOadoQhealPPHbGXOcPE9Ex1L_kuVxIcbIKqiJaEX1-CEABZDnOQ>
-    <xme:lEDOaafcUiSkr6V3Ys9VgDyYuwqkPQsRP-Mr3My6NRXflJTpw8QFEv3U9CZoHCoe-
-    QnJUYa0wGlspplArdR2Zjqs15SjLuqL7Vk21G4mTWrS6TUgbBFGpaVE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehjeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtre
-    dttdenucfhrhhomhepfdfrihgvrhhrvgcuuegrrhhrvgdfuceophhivghrrhgvsegsrghr
-    rhgvrdhshheqnecuggftrfgrthhtvghrnhepteegiedvfffhieehvdekfeeukeegiedvke
-    ehkeejueeijeeitdfftdejtedvffejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghr
-    rghmpehmrghilhhfrhhomhepphhivghrrhgvsegsrghrrhgvrdhshhdpnhgspghrtghpth
-    htohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghsmhgruggvuhhssegt
-    ohguvgifrhgvtghkrdhorhhgpdhrtghpthhtoheplhhinhhugigpohhsshestghruhguvg
-    gshihtvgdrtghomhdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgt
-    phhtthhopegvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhelfhhsse
-    hlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshgrnhguvggvnhesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhg
-X-ME-Proxy: <xmx:lEDOaUa6wZf2WeS_a0R5R6WZD5D2xefUEn6Trb-fw0SxHCw8PXTF4g>
-    <xmx:lEDOaR8UE0oama8_Rf-zd4FfeyCYrWaRdbCPTdy0PT-IvtAGbwLY5w>
-    <xmx:lEDOaSlA5aOLBriLI3U-TOlzelbi_w7HzvV8R9k1lYGPw615VdoDjw>
-    <xmx:lEDOaezcmYHdRWNRdUSSPncSsrcXSatshlbd5U98uOK3OfOcGGbKZA>
-    <xmx:lUDOaa0nGR1eoSSmzH3xnI2cZe_t0F4Cuw-c-oPoZC9P6o4xzXKcPwc5>
-Feedback-ID: i97614980:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B0555B6006E; Thu,  2 Apr 2026 06:10:28 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1775124658; c=relaxed/simple;
+	bh=ld4vEBoarSlIT7OFMTIUbe5OFEt29JLwOkrBDv4i7lg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QRnmhcmINyJ6nPDQgim2J7FblaA/3UqEufFEnjlJ+DlkKShMF2YOtQPdCssCrvbo7y59pnqx3pRMMPsZ59moqsqc+PYH4tgRbDfeIkfvzXwRUwH2SQVD2EZt2Ur+0kLaA1xQ91LcFDxyjbyCs1iHkMuBaOBjzRtYrvVVWtpd8s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HIL7rr97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152FDC116C6;
+	Thu,  2 Apr 2026 10:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775124657;
+	bh=ld4vEBoarSlIT7OFMTIUbe5OFEt29JLwOkrBDv4i7lg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HIL7rr973asudfGUGNTCfeRtH6mXOLi3llxiCRPt1HSxtMHuQ6Rm36zAEGDSrOzDP
+	 ncoPbyhQjgrXUjfmoKYWRtTNEtRmX758180x19KTKRqyYKVQ+z2JbvqNEAbEEk3NWC
+	 s+ti4mesIQTyy3bAaZjTisojlifnZDOc7KJsCjG932n6/Fmz6fPXDSwJ/ryIC+aXC5
+	 HkwvUHzhxY0jxLwvS4SQ7CgAddtJeZ7luw/Ow2SqMNYuavNCF835tcrRx0VW9OS6PC
+	 vbE11EwkAzK5LgJ88ypOz1PzuvlFWba6ngHYouXuMjANDcrvLJrCG1++DtoEIsxW4Y
+	 7/HxssunDpbLg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/3] xfs: factor out xfs_attr3_node_entry_remove
+Date: Thu,  2 Apr 2026 06:10:53 -0400
+Message-ID: <20260402101055.771010-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033024-poach-sequester-14e1@gregkh>
+References: <2026033024-poach-sequester-14e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A7SXi_NfNDDB
-Date: Thu, 02 Apr 2026 12:10:08 +0200
-From: "Pierre Barre" <pierre@barre.sh>
-To: ericvh@kernel.org, lucho@ionkov.net, asmadeus <asmadeus@codewreck.org>
-Cc: "Christian Schoenebeck" <linux_oss@crudebyte.com>, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, sandeen@redhat.com
-Message-Id: <e1802c64-3193-41de-ada6-625bee8fe8fb@app.fastmail.com>
-In-Reply-To: <0ddc72da-d196-4f01-8755-0086f670e779@app.fastmail.com>
-References: <0ddc72da-d196-4f01-8755-0086f670e779@app.fastmail.com>
-Subject: Re: [PATCH] 9p: fix access mode flags being ORed instead of replaced
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.65 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[barre.sh:s=fm1,messagingengine.com:s=fm2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232969-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[barre.sh:+,messagingengine.com:+];
+	TAGGED_FROM(0.00)[bounces-232970-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[barre.sh];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pierre@barre.sh,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.977];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,messagingengine.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,barre.sh:dkim,barre.sh:email]
-X-Rspamd-Queue-Id: AF8CD38789F
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 473E238797C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-To reproduce: mount a 9P2000.L filesystem with access=user on kernel 6.19+:
+From: Long Li <leo.lilong@huawei.com>
 
-# mount -t 9p -o trans=tcp,port=5564,version=9p2000.L,access=user 127.0.0.1 /mnt/9p
+[ Upstream commit ce4e789cf3561c9fac73cc24445bfed9ea0c514b ]
 
-Then as root:
+Factor out wrapper xfs_attr3_node_entry_remove function, which
+exported for external use.
 
-  touch /mnt/9p/test
-  chown root:root /mnt/9p/test
-  
-# chown: changing ownership of '/mnt/9p/test': Operation not permitted
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: b854e1c4eff3 ("xfs: close crash window in attr dabtree inactivation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/xfs/libxfs/xfs_da_btree.c | 53 ++++++++++++++++++++++++++++--------
+ fs/xfs/libxfs/xfs_da_btree.h |  2 ++
+ 2 files changed, 44 insertions(+), 11 deletions(-)
 
-Tracing the server side confirms the attach arrives with uid=65534 (nobody) instead of 0 (root).
+diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
+index 90f7fc219fccc..d85bca22d6857 100644
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -1506,21 +1506,20 @@ xfs_da3_fixhashpath(
+ }
+ 
+ /*
+- * Remove an entry from an intermediate node.
++ * Internal implementation to remove an entry from an intermediate node.
+  */
+ STATIC void
+-xfs_da3_node_remove(
+-	struct xfs_da_state	*state,
+-	struct xfs_da_state_blk	*drop_blk)
++__xfs_da3_node_remove(
++	struct xfs_trans	*tp,
++	struct xfs_inode	*dp,
++	struct xfs_da_geometry  *geo,
++	struct xfs_da_state_blk *drop_blk)
+ {
+ 	struct xfs_da_intnode	*node;
+ 	struct xfs_da3_icnode_hdr nodehdr;
+ 	struct xfs_da_node_entry *btree;
+ 	int			index;
+ 	int			tmp;
+-	struct xfs_inode	*dp = state->args->dp;
+-
+-	trace_xfs_da_node_remove(state->args);
+ 
+ 	node = drop_blk->bp->b_addr;
+ 	xfs_da3_node_hdr_from_disk(dp->i_mount, &nodehdr, node);
+@@ -1536,17 +1535,17 @@ xfs_da3_node_remove(
+ 		tmp  = nodehdr.count - index - 1;
+ 		tmp *= (uint)sizeof(xfs_da_node_entry_t);
+ 		memmove(&btree[index], &btree[index + 1], tmp);
+-		xfs_trans_log_buf(state->args->trans, drop_blk->bp,
++		xfs_trans_log_buf(tp, drop_blk->bp,
+ 		    XFS_DA_LOGRANGE(node, &btree[index], tmp));
+ 		index = nodehdr.count - 1;
+ 	}
+ 	memset(&btree[index], 0, sizeof(xfs_da_node_entry_t));
+-	xfs_trans_log_buf(state->args->trans, drop_blk->bp,
++	xfs_trans_log_buf(tp, drop_blk->bp,
+ 	    XFS_DA_LOGRANGE(node, &btree[index], sizeof(btree[index])));
+ 	nodehdr.count -= 1;
+ 	xfs_da3_node_hdr_to_disk(dp->i_mount, node, &nodehdr);
+-	xfs_trans_log_buf(state->args->trans, drop_blk->bp,
+-	    XFS_DA_LOGRANGE(node, &node->hdr, state->args->geo->node_hdr_size));
++	xfs_trans_log_buf(tp, drop_blk->bp,
++	    XFS_DA_LOGRANGE(node, &node->hdr, geo->node_hdr_size));
+ 
+ 	/*
+ 	 * Copy the last hash value from the block to propagate upwards.
+@@ -1554,6 +1553,38 @@ xfs_da3_node_remove(
+ 	drop_blk->hashval = be32_to_cpu(btree[index - 1].hashval);
+ }
+ 
++/*
++ * Remove an entry from an intermediate node.
++ */
++STATIC void
++xfs_da3_node_remove(
++	struct xfs_da_state	*state,
++	struct xfs_da_state_blk	*drop_blk)
++{
++	trace_xfs_da_node_remove(state->args);
++
++	__xfs_da3_node_remove(state->args->trans, state->args->dp,
++			state->args->geo, drop_blk);
++}
++
++/*
++ * Remove an entry from an intermediate attr node at the specified index.
++ */
++void
++xfs_attr3_node_entry_remove(
++	struct xfs_trans	*tp,
++	struct xfs_inode	*dp,
++	struct xfs_buf		*bp,
++	int			index)
++{
++	struct xfs_da_state_blk blk = {
++		.index		= index,
++		.bp		= bp,
++	};
++
++	__xfs_da3_node_remove(tp, dp, dp->i_mount->m_attr_geo, &blk);
++}
++
+ /*
+  * Unbalance the elements between two intermediate nodes,
+  * move all Btree elements from one node into another.
+diff --git a/fs/xfs/libxfs/xfs_da_btree.h b/fs/xfs/libxfs/xfs_da_btree.h
+index 354d5d65043e4..afcf2d3c7a21c 100644
+--- a/fs/xfs/libxfs/xfs_da_btree.h
++++ b/fs/xfs/libxfs/xfs_da_btree.h
+@@ -184,6 +184,8 @@ int	xfs_da3_split(xfs_da_state_t *state);
+ int	xfs_da3_join(xfs_da_state_t *state);
+ void	xfs_da3_fixhashpath(struct xfs_da_state *state,
+ 			    struct xfs_da_state_path *path_to_to_fix);
++void	xfs_attr3_node_entry_remove(struct xfs_trans *tp, struct xfs_inode *dp,
++			    struct xfs_buf *bp, int index);
+ 
+ /*
+  * Routines used for finding things in the Btree.
+-- 
+2.53.0
 
-On Thu, Apr 2, 2026, at 12:03, Pierre Barre wrote:
-> Since commit 1f3e4142c0eb ("9p: convert to the new mount API"),
-> v9fs_apply_options() applies parsed mount flags with |= onto flags
-> already set by v9fs_session_init(). For 9P2000.L, session_init sets
-> V9FS_ACCESS_CLIENT as the default, so when the user mounts with
-> "access=user", both bits end up set. Access mode checks compare
-> against exact values, so having both bits set matches neither mode.
->
-> This causes v9fs_fid_lookup() to fall through to the default switch
-> case, using INVALID_UID (nobody/65534) instead of current_fsuid()
-> for all fid lookups. Root is then unable to chown or perform other
-> privileged operations.
->
-> Fix by clearing the access mask before applying the user's choice.
->
-> Fixes: 1f3e4142c0eb ("9p: convert to the new mount API")
-> Signed-off-by: Pierre Barre <pierre@barre.sh>
-> ---
->  fs/9p/v9fs.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-> index 057487efaaeb..05a5e1c4df35 100644
-> --- a/fs/9p/v9fs.c
-> +++ b/fs/9p/v9fs.c
-> @@ -413,7 +413,11 @@ static void v9fs_apply_options(struct 
-> v9fs_session_info *v9ses,
->         /*
->          * Note that we must |= flags here as session_init already
->          * set basic flags. This adds in flags from parsed options.
-> +        * Access flags are mutually exclusive, so clear any access
-> +        * bits set by session_init before applying the user's choice.
->          */
-> +       if (ctx->session_opts.flags & V9FS_ACCESS_MASK)
-> +               v9ses->flags &= ~V9FS_ACCESS_MASK;
->         v9ses->flags |= ctx->session_opts.flags;
->  #ifdef CONFIG_9P_FSCACHE
->         v9ses->cachetag = ctx->session_opts.cachetag;
-> --
-> 2.51.0
 
