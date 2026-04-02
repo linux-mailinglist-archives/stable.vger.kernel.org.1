@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-232924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOfWHNAYzmmnkgYAu9opvQ
-	(envelope-from <stable+bounces-232924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:20:48 +0200
+	id wMdMIdQezml7lAYAu9opvQ
+	(envelope-from <stable+bounces-232925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:46:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01EE3850D0
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:20:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3B43855FD
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 93A2630678F6
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 07:12:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 51BE430999E0
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 07:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8DC38759C;
-	Thu,  2 Apr 2026 07:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843333890F9;
+	Thu,  2 Apr 2026 07:35:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2728248166;
-	Thu,  2 Apr 2026 07:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24480384235;
+	Thu,  2 Apr 2026 07:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775113959; cv=none; b=eu/xsN6Bo3nFpC07tsvFxA7UAxnI+SNg9ocFOJVoEeKJYmMD+4t/BZEjq6b6bGvfY2R5tdfyG0J1DL35VbE3nsb6ALuXdOQmfeGgfMJqaQEV63SuPhXc2aHPKyo9UydsyQubi1LwNtito0THSMKlDIQc6ElNsc9Fx78EBHDOyD0=
+	t=1775115350; cv=none; b=d1FbNDrRr5maK2hcgMPdE8l5fQbwO8sPr9cKY6Ns6s6PPOkaf2enDyXZqLyT8rmyJKPao1humj4+bV9yDnttQkcqbkgL5ZS/IJN9B9+m/NN/nz0eMgM+mor2D6DJ4BxSWv7380LI2wVr61hBniZBIscFk/6TlWw3Cn8+Kebh/tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775113959; c=relaxed/simple;
-	bh=cifMcKVqHYHY+DlglYL+hlGOyoWlPUkkv3WM47LKj/U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pL6QIKvkmNmFzNGaixyEzMYai/BuOZpdbDP5RE5cgJ5HC+IYYQdd4RwIMFQ9P4TdRnR7OkJX5hDkvSF5Q9yj1l5yYvTkUAkjiGwW+lb8ZhWEh0XKcrbdT5ID69tptBt4G5FI/xAoo5B7Damd8WO1CTvk+zvHtgkB59KEjJgtAO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+	s=arc-20240116; t=1775115350; c=relaxed/simple;
+	bh=pATpZTFLY7t5pFMre5yAN1qit6F2aA38hDMRZNZBVUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N/UMm8k7mweONY0AJHkZDjrcSOaJect47SnuLssyM6L7aFfVf35zAuGaUC4UxUdGbnIARVeoEHmw/Pq0zNWbJeL+RqxGdUeOghtKt26VXn7JnbivyAsYAvne5BO0/ZRA2FmUfLykL9unYZcNEf+3N9QLOMHQ9QqPM/qWBkOFZh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.245.197])
-	by APP-05 (Coremail) with SMTP id zQCowADHWQ3IFs5pCDFCDA--.19527S2;
-	Thu, 02 Apr 2026 15:12:08 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
+Received: from ubuntu.. (unknown [202.112.113.208])
+	by APP-03 (Coremail) with SMTP id rQCowABnh95DHM5px6GjDA--.18453S2;
+	Thu, 02 Apr 2026 15:35:42 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: mchehab@kernel.org,
+	mingo@kernel.org,
+	tglx@kernel.org,
+	make24@iscas.ac.cn,
+	jai.luthra@linux.dev,
+	laurent.pinchart+renesas@ideasonboard.com,
+	hverkuil+cisco@kernel.org
+Cc: linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	pengpeng@iscas.ac.cn,
+	akpm@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH] net: qualcomm: qca_uart: report the consumed byte on RX skb allocation failure
-Date: Thu,  2 Apr 2026 15:12:07 +0800
-Message-ID: <20260402071207.4036-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+Subject: [PATCH v2] media: aa7134: Fix a possible memory leak in saa7134_video_init1
+Date: Thu,  2 Apr 2026 15:35:29 +0800
+Message-ID: <20260402073529.652126-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,90 +57,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADHWQ3IFs5pCDFCDA--.19527S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw4rKF1Dtw1UXFWrWF43trb_yoW8Xry3pa
-	yDKa4kCw1vkr17JanrJr1xXFZxCa9Yyry3GFZ8Aw1fZwnxJrW2gF98Ka4jgw1DXay8CFW2
-	yF4qvr43C3Z5JaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:rQCowABnh95DHM5px6GjDA--.18453S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCr47JrW7Wr1kAr1xZry3twb_yoW5XrWxpa
+	97tF9ayw15Jw4kGan7Xa18CF1fC3y8Wr43WFZFg340kw15Cw18AF1Yq34j9FZ8ArsrAF1j
+	9r40vr4kCr1UWaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
 	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUqeHgUUUUU=
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmx.net,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232924-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232925-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.894];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.988];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: B01EE3850D0
+X-Rspamd-Queue-Id: 8A3B43855FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-qca_tty_receive() consumes each input byte before checking whether a
-completed frame needs a fresh receive skb. When the current byte completes
-a frame, the driver delivers that frame and then allocates a new skb for
-the next one.
+In saa7134_video_init1(), the return value of the first
+saa7134_pgtable_alloc() is not checked. If it fails, the function
+continues as if successful, leaving the driver with an invalid page
+table. Additionally, if vb2_queue_init() for the VBI queue fails after
+the video queue page table has been allocated, the allocated memory is
+not freed before returning. The second saa7134_pgtable_alloc() also
+lacks a return value check. Errors occur during device probing before
+the device is fully registered, the normal cleanup path in
+saa7134_finidev() is not executed, leading to memory leaks and
+potential use of uninitialized DMA resources.
 
-If that allocation fails, the current code returns i even though data[i]
-has already been consumed and may already have completed the delivered
-frame. Since serdev interprets the return value as the number of accepted
-bytes, this under-reports progress by one byte and can replay the final
-byte of the completed frame into a fresh parser state on the next call.
+Check the return value of both saa7134_pgtable_alloc() calls and
+propagate errors. On failure of any later step, free allocated page
+tables to avoid memory leaks. Ensure control handlers are also
+released on error to prevent further resource leakage.
 
-Return i + 1 in that failure path so the accepted-byte count matches the
-actual receive-state progress.
+Found by code review.
 
-Fixes: dfc768fbe618 ("net: qualcomm: add QCA7000 UART driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Fixes: a00e68888d5d ("[media] saa7134: move saa7134_pgtable to saa7134_dmaqueue")
 ---
- drivers/net/ethernet/qualcomm/qca_uart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- modified the subject as suggestions.
+---
+ drivers/media/pci/saa7134/saa7134-video.c | 25 ++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_uart.c b/drivers/net/ethernet/qualcomm/qca_uart.c
-index 37efb1ea9fcd..847a5f928e41 100644
---- a/drivers/net/ethernet/qualcomm/qca_uart.c
-+++ b/drivers/net/ethernet/qualcomm/qca_uart.c
-@@ -100,7 +100,7 @@ qca_tty_receive(struct serdev_device *serdev, const u8 *data, size_t count)
- 			if (!qca->rx_skb) {
- 				netdev_dbg(netdev, "recv: out of RX resources\n");
- 				n_stats->rx_errors++;
--				return i;
-+				return i + 1;
- 			}
- 		}
- 	}
+diff --git a/drivers/media/pci/saa7134/saa7134-video.c b/drivers/media/pci/saa7134/saa7134-video.c
+index 4a51b873e47a..2b1672737d84 100644
+--- a/drivers/media/pci/saa7134/saa7134-video.c
++++ b/drivers/media/pci/saa7134/saa7134-video.c
+@@ -1714,8 +1714,10 @@ int saa7134_video_init1(struct saa7134_dev *dev)
+ 	q->dev = &dev->pci->dev;
+ 	ret = vb2_queue_init(q);
+ 	if (ret)
+-		return ret;
+-	saa7134_pgtable_alloc(dev->pci, &dev->video_q.pt);
++		goto err_free_ctrl;
++	ret = saa7134_pgtable_alloc(dev->pci, &dev->video_q.pt);
++	if (ret)
++		goto err_free_ctrl;
+ 
+ 	q = &dev->vbi_vbq;
+ 	q->type = V4L2_BUF_TYPE_VBI_CAPTURE;
+@@ -1732,11 +1734,24 @@ int saa7134_video_init1(struct saa7134_dev *dev)
+ 	q->lock = &dev->lock;
+ 	q->dev = &dev->pci->dev;
+ 	ret = vb2_queue_init(q);
+-	if (ret)
+-		return ret;
+-	saa7134_pgtable_alloc(dev->pci, &dev->vbi_q.pt);
++	if (ret) {
++		saa7134_pgtable_free(dev->pci, &dev->video_q.pt);
++		goto err_free_ctrl;
++	}
++
++	ret = saa7134_pgtable_alloc(dev->pci, &dev->vbi_q.pt);
++	if (ret) {
++		saa7134_pgtable_free(dev->pci, &dev->video_q.pt);
++		goto err_free_ctrl;
++	}
+ 
+ 	return 0;
++
++err_free_ctrl:
++	v4l2_ctrl_handler_free(&dev->ctrl_handler);
++	if (card_has_radio(dev))
++		v4l2_ctrl_handler_free(&dev->radio_ctrl_handler);
++	return ret;
+ }
+ 
+ void saa7134_video_fini(struct saa7134_dev *dev)
 -- 
-2.50.1 (Apple Git-155)
+2.43.0
 
 
