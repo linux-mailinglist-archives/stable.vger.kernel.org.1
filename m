@@ -1,395 +1,203 @@
-Return-Path: <stable+bounces-233049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8F7LEt+SzmkbogYAu9opvQ
-	(envelope-from <stable+bounces-233049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:01:35 +0200
+	id gDIYJpCTzmkBowYAu9opvQ
+	(envelope-from <stable+bounces-233050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:04:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC38438B986
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:01:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2521138BA06
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E2FD301DC1A
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 15:59:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0A734302F1A2
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0FB313283;
-	Thu,  2 Apr 2026 15:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765D133B6DF;
+	Thu,  2 Apr 2026 16:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="X1fFpyjZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGJi8eZB"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE602D0603
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 15:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378092D47F1;
+	Thu,  2 Apr 2026 16:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775145581; cv=none; b=AD7QXHFbcTyTudRhablZYewTDCEkNoFtl+7dMoQgVKQBq2m5skgiobj4aJzqCb3XUTUkhUxIW1oVVj8bl0waGkrBfj2Je6PPjEq4Tkjzrjuar+voU+4QChnzfPCGLkzkKb8zoi1G92Pycta4fdJSPMiPq8aBQcT9Mm8F4go6tTw=
+	t=1775145824; cv=none; b=UtbrH2+RH7HHP1F+LmNdDhfjEsmA7JZ6VjsherWkjkzTRJAVAvI7VpCHqQf9xZMCSE38+1cVWrCJA/YHSX7ETwfp66VPuV4/SBZ5Rw0bZHLg8VJMRhWLMqvgAVHrct0TgDS5BQGbHKncomGkRz2cViulu+uLA3eE6Zxk7AlHSFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775145581; c=relaxed/simple;
-	bh=i132jaYTi+ixjxc06WKFSsZBQkYSpy9Al36njUn136A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gwl23WslTJv1aZF596Qn0l0UoxX0BGtLEes7yRF4NuJHHTS1Ms9ukCkCLNxfQstqN7Vz3Zv+HDgF/PocsndoWXE5cNIEWwohygIFzgex9opDsycf3dFi67jkw4BRYSIdn5cXVDuFAa8lTNuto8+ydRekUe/xUnkjJ0gvCoGIPxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=X1fFpyjZ; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AF68119F6;
-	Thu,  2 Apr 2026 08:59:31 -0700 (PDT)
-Received: from [10.57.75.194] (unknown [10.57.75.194])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE0733F7D8;
-	Thu,  2 Apr 2026 08:59:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775145577; bh=i132jaYTi+ixjxc06WKFSsZBQkYSpy9Al36njUn136A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=X1fFpyjZioXy4emzPkjym3elHmat0r+NzfnNyuFOL1OkZZkHFO799zWiDOc+QsG89
-	 RvckoTATbUkXYGvBcdbyyGatOV5TQ8U7m5+c3/BHSMv29HSpGqfCfDH9T1FFCyGT6l
-	 ixQ85owst4jhClEz/N9TGMke5/DtJjAEVGacLBjw=
-Message-ID: <70a128f9-d6f0-41b6-8fef-e249c0507149@arm.com>
-Date: Thu, 2 Apr 2026 16:59:29 +0100
+	s=arc-20240116; t=1775145824; c=relaxed/simple;
+	bh=7s0FCBwPiK9ZKXXZdjHXWa/K+jGeNaF4H9YU4zoPjRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQJTPMTW58PIgyQEc+Et+3nsgWg9oUP05HBud8M7n2D7aWeD5eGsggTUmlAs3tW7am3dDow+pg5PA2HiWd3z5tRaIaz5xx+4DYofQsj8ZpG5ImUxA60Kl9elBBLSAdyPD3HdiRNM4d/SsjE/secC5yh90O7zh8H/qTtcshZ3HNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGJi8eZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C790C116C6;
+	Thu,  2 Apr 2026 16:03:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775145823;
+	bh=7s0FCBwPiK9ZKXXZdjHXWa/K+jGeNaF4H9YU4zoPjRs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZGJi8eZBK6qnty3rzYF0ewmxO/bQ+pG70FhrUMXH/YYSgYAxxHnQ+med6E79iXyqB
+	 hQgXxI6ZJqbVor6DgOEZ/KEDcbl7vjbLKQrPaJcST/MHcehak8D1z1Ivqpm/VqpNMy
+	 1V1mqn2RzXSWFyc6yneB98ZhzKNTGmbLtpdygfb0=
+Date: Thu, 2 Apr 2026 18:03:40 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Cc: linux-fpga@vger.kernel.org, yilun.xu@linux.intel.com,
+	conor.dooley@microchip.com, mdf@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] fpga: microchip-spi: add bounds checks in
+ mpf_ops_parse_header()
+Message-ID: <2026040223-quilt-astute-d24c@gregkh>
+References: <20260402125446.3776153-3-sebasjosue84@gmail.com>
+ <20260402153752.3793055-1-sebasjosue84@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iommu: Always fill in gather when unmapping
-To: Jason Gunthorpe <jgg@nvidia.com>, Alexandre Ghiti <alex@ghiti.fr>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
- Baolin Wang <baolin.wang@linux.alibaba.com>, iommu@lists.linux.dev,
- Janne Grunau <j@jannau.net>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Joerg Roedel <joro@8bytes.org>, Jean-Philippe Brucker <jpb@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev,
- Matthias Brugger <matthias.bgg@gmail.com>, Neal Gompa <neal@gompa.dev>,
- Orson Zhai <orsonzhai@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel@sholland.org>,
- Sven Peter <sven@kernel.org>, virtualization@lists.linux.dev,
- Chen-Yu Tsai <wens@kernel.org>, Will Deacon <will@kernel.org>,
- Yong Wu <yong.wu@mediatek.com>, Chunyan Zhang <zhang.lyra@gmail.com>
-Cc: Lu Baolu <baolu.lu@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Joerg Roedel <joerg.roedel@amd.com>, Jon Hunter <jonathanh@nvidia.com>,
- patches@lists.linux.dev, Pranjal Shrivastava <praan@google.com>,
- Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org,
- Vasant Hegde <vasant.hegde@amd.com>
-References: <0-v2-b24668f107b2+11bbe-iommu_gather_always_jgg@nvidia.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <0-v2-b24668f107b2+11bbe-iommu_gather_always_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260402153752.3793055-1-sebasjosue84@gmail.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233049-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[nvidia.com,ghiti.fr,collabora.com,eecs.berkeley.edu,lists.linux.dev,linux.alibaba.com,jannau.net,gmail.com,8bytes.org,kernel.org,lists.infradead.org,gompa.dev,dabbelt.com,sholland.org,mediatek.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[36];
+	TAGGED_FROM(0.00)[bounces-233050-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[arm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.990];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,arm.com:dkim,arm.com:mid,msgid.link:url]
-X-Rspamd-Queue-Id: BC38438B986
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2521138BA06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 2026-04-02 3:25 pm, Jason Gunthorpe wrote:
-> The fixed commit assumed that the gather would always be populated if an
-> iotlb_sync was required.
+On Thu, Apr 02, 2026 at 09:37:52AM -0600, Sebastian Alba Vives wrote:
+> From: Sebastian Josue Alba Vives <sebasjosue84@gmail.com>
 > 
-> arm-smmu-v3, amd, VT-d, riscv, s390, and mtk all use information from the
-> gather during their iotlb_sync() and this approach works for them.
+> mpf_ops_parse_header() reads several fields from the bitstream file
+> and uses them as offsets and sizes without validating them against the
+> buffer size, leading to multiple out-of-bounds read vulnerabilities:
 > 
-> However, arm-smmu, qcom_iommu, ipmmu-vmsa, sun50i, sprd, virtio, and
-> apple-dart all ignore the gather during their iotlb_sync(). They mostly
-> issue a full flush.
+> 1. There is no check that count is large enough to read header_size
+>    at MPF_HEADER_SIZE_OFFSET (24). Add a minimum count check.
 > 
-> Unfortunately the latter set of drivers often don't bother to add anything
-> to the gather since they don't intend on using it. Since the core code now
-> blocks gathers that were never filled, this caused those drivers to stop
-> getting their iotlb_sync() calls and breaks them.
+> 2. When header_size (u8 from file) is 0, the expression
+>    *(buf + header_size - 1) reads one byte before the buffer.
+>    Return -EINVAL since retrying with a larger buffer cannot fix
+>    a zero header_size.
 > 
-> Since it is impossible to tell the difference between gathers that are
-> empty because there is nothing to do and gathers that are empty because
-> they are not used, fill in the gathers for the missing cases.
+> 3. In the block lookup loop, block_id_offset and block_start_offset
+>    advance by MPF_LOOKUP_TABLE_RECORD_SIZE (9) each iteration with
+>    blocks_num (u8) controlling the count. With a small buffer, these
+>    offsets exceed count, causing OOB reads via get_unaligned_le32().
+>    Return -EAGAIN since a larger buffer may resolve the issue.
 > 
-> mtk uses io-pgtable-arm-v7s but added the range to the gather in the unmap
-> callback. Move this into the io-pgtable-arm-v7s unmap itself. That will
-> fix all the armv7 using drivers (arm-smmu, qcom_iommu, ipmmu-vmsa).
+> 4. components_size_start (from file) and component_size_byte_num
+>    (derived from components_num, u16 from file) are used as offsets
+>    into buf without validation, allowing arbitrary OOB reads.
 > 
-> io-pgtable-arm needs to accommodate drivers like arm-smmu that don't want
-> to use the gather by just adding a simple range, and drivers like SMMUv3
-> that need to use gather->pgsize and also have a disjoint check. Move
-> SMMUv3 to a new tlb_add_range() op which replaces calling
-> iommu_iotlb_gather_add_page() in a loop with a single call to update the
-> gather with the range and required pgsize.
+> Add bounds checks for all four cases.
 > 
-> iommu_iotlb_gather_add_page() is repurposed since nothing but SMMUv3 uses it
-> now that amd, VT-d and riscv are using iommupt.
-> 
-> Add a trivial gather population to io-pgtable-dart.
-> 
-> Add trivial populations to sprd, sun50i and virtio-iommu in their unmap
-> functions.
-> 
-> Fixes: 90c5def10bea ("iommu: Do not call drivers for empty gathers")
-> Reported-by: Jon Hunter <jonathanh@nvidia.com>
-> Closes: https://lore.kernel.org/r/8800a38b-8515-4bbe-af15-0dae81274bf7@nvidia.com
-> Tested-by: Jon Hunter <jonathanh@nvidia.com>
-> Acked-by: Pranjal Shrivastava <praan@google.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> Fixes: 5f8d4a9008307 ("fpga: microchip-spi: add Microchip MPF FPGA manager")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
 > ---
->   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 11 ++++++-----
->   drivers/iommu/io-pgtable-arm-v7s.c          |  4 ++++
->   drivers/iommu/io-pgtable-arm.c              | 19 ++++++++++++++++---
->   drivers/iommu/io-pgtable-dart.c             |  3 +++
->   drivers/iommu/mtk_iommu.c                   |  1 -
->   drivers/iommu/sprd-iommu.c                  |  1 +
->   drivers/iommu/sun50i-iommu.c                |  1 +
->   drivers/iommu/virtio-iommu.c                |  2 ++
->   include/linux/io-pgtable.h                  |  3 +++
->   include/linux/iommu.h                       | 19 ++++++++++---------
->   10 files changed, 46 insertions(+), 18 deletions(-)
+>  drivers/fpga/microchip-spi.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> v2:
->   - Add missed hunk for io-pgtable-armv7
->   - Revise the commit message to fix the miss about smmuv3's gather flow
->   - Make smmuv3 push its gather with a range instead of per-page
-> v1: https://patch.msgid.link/r/0-v1-664d3acaabb9+78b-iommu_gather_always_jgg@nvidia.com
+> diff --git a/drivers/fpga/microchip-spi.c b/drivers/fpga/microchip-spi.c
+> index 6134cea..00fa2d6 100644
+> --- a/drivers/fpga/microchip-spi.c
+> +++ b/drivers/fpga/microchip-spi.c
+> @@ -115,7 +115,13 @@ static int mpf_ops_parse_header(struct fpga_manager *mgr,
+>  		return -EINVAL;
+>  	}
+>  
+> +	if (count < MPF_HEADER_SIZE_OFFSET + 1)
+> +		return -EINVAL;
+> +
+>  	header_size = *(buf + MPF_HEADER_SIZE_OFFSET);
+> +	if (!header_size)
+> +		return -EINVAL;
+> +
+>  	if (header_size > count) {
+>  		info->header_size = header_size;
+>  		return -EAGAIN;
+> @@ -139,6 +145,10 @@ static int mpf_ops_parse_header(struct fpga_manager *mgr,
+>  	bitstream_start = 0;
+>  
+>  	while (blocks_num--) {
+> +		if (block_id_offset >= count ||
+> +		    block_start_offset + sizeof(u32) > count)
+> +			return -EAGAIN;
+> +
+>  		block_id = *(buf + block_id_offset);
+>  		block_start = get_unaligned_le32(buf + block_start_offset);
+>  
+> @@ -183,6 +193,10 @@ static int mpf_ops_parse_header(struct fpga_manager *mgr,
+>  		component_size_byte_off =
+>  			(i * MPF_BITS_PER_COMPONENT_SIZE) % BITS_PER_BYTE;
+>  
+> +		if (components_size_start + component_size_byte_num +
+> +		    sizeof(u32) > count)
+> +			return -EINVAL;
+> +
+>  		component_size = get_unaligned_le32(buf +
+>  						    components_size_start +
+>  						    component_size_byte_num);
+> -- 
+> 2.43.0
 > 
 > 
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index e8d7dbe495f030..97e78a351cf35b 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -2775,14 +2775,15 @@ void arm_smmu_domain_inv_range(struct arm_smmu_domain *smmu_domain,
->   	rcu_read_unlock();
->   }
->   
-> -static void arm_smmu_tlb_inv_page_nosync(struct iommu_iotlb_gather *gather,
-> -					 unsigned long iova, size_t granule,
-> -					 void *cookie)
-> +static void arm_smmu_tlb_inv_range_nosync(struct iommu_iotlb_gather *gather,
-> +					  unsigned long iova, size_t size,
-> +					  size_t granule, void *cookie)
->   {
->   	struct arm_smmu_domain *smmu_domain = cookie;
->   	struct iommu_domain *domain = &smmu_domain->domain;
->   
-> -	iommu_iotlb_gather_add_page(domain, gather, iova, granule);
-> +	iommu_iotlb_gather_add_range_pgsize(domain, gather, iova, size,
-> +					    granule);
->   }
->   
->   static void arm_smmu_tlb_inv_walk(unsigned long iova, size_t size,
-> @@ -2796,7 +2797,7 @@ static void arm_smmu_tlb_inv_walk(unsigned long iova, size_t size,
->   static const struct iommu_flush_ops arm_smmu_flush_ops = {
->   	.tlb_flush_all	= arm_smmu_tlb_inv_context,
->   	.tlb_flush_walk = arm_smmu_tlb_inv_walk,
-> -	.tlb_add_page	= arm_smmu_tlb_inv_page_nosync,
-> +	.tlb_add_range	= arm_smmu_tlb_inv_range_nosync,
->   };
->   
->   static bool arm_smmu_dbm_capable(struct arm_smmu_device *smmu)
-> diff --git a/drivers/iommu/io-pgtable-arm-v7s.c b/drivers/iommu/io-pgtable-arm-v7s.c
-> index 40e33257d3c2c5..87292a7f094687 100644
-> --- a/drivers/iommu/io-pgtable-arm-v7s.c
-> +++ b/drivers/iommu/io-pgtable-arm-v7s.c
-> @@ -596,6 +596,10 @@ static size_t __arm_v7s_unmap(struct arm_v7s_io_pgtable *data,
->   
->   		__arm_v7s_set_pte(ptep, 0, num_entries, &iop->cfg);
->   
-> +		if (!iommu_iotlb_gather_queued(gather))
-> +			iommu_iotlb_gather_add_range(gather, iova,
-> +						     num_entries * blk_size);
-> +
->   		for (i = 0; i < num_entries; i++) {
->   			if (ARM_V7S_PTE_IS_TABLE(pte[i], lvl)) {
->   				/* Also flush any partial walks */
-> diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-arm.c
-> index 0208e5897c299a..d51531330f8dea 100644
-> --- a/drivers/iommu/io-pgtable-arm.c
-> +++ b/drivers/iommu/io-pgtable-arm.c
-> @@ -666,9 +666,22 @@ static size_t __arm_lpae_unmap(struct arm_lpae_io_pgtable *data,
->   		/* Clear the remaining entries */
->   		__arm_lpae_clear_pte(ptep, &iop->cfg, i);
->   
-> -		if (gather && !iommu_iotlb_gather_queued(gather))
-> -			for (int j = 0; j < i; j++)
-> -				io_pgtable_tlb_add_page(iop, gather, iova + j * size, size);
-> +		if (gather && !iommu_iotlb_gather_queued(gather)) {
-> +			if (iop->cfg.tlb && iop->cfg.tlb->tlb_add_range) {
-> +				iop->cfg.tlb->tlb_add_range(gather, iova,
-> +							    i * size, size,
-> +							    iop->cookie);
-> +
-> +			} else {
-> +				iommu_iotlb_gather_add_range(gather, iova,
-> +							     i * size);
-> +
-> +				for (int j = 0; j < i; j++)
-> +					io_pgtable_tlb_add_page(iop, gather,
-> +								iova + j * size,
-> +								size);
-> +			}
-> +		}
 
-NAK, this is insane.
+Hi,
 
-If you'd rather make gathers mandatory for all drivers than fix it in 
-the core code, then for goodness' sake just add the trivial one-liner to 
-the handful of .unamp_pages implementations which need it, consistenly 
-with those which already exist, plus the ones you're also adding here 
-anyway. The entire diff should still be smaller than this absurd hunk 
-alone...
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-Thanks,
-Robin.
+You are receiving this message because of the following common error(s)
+as indicated below:
 
->   		return i * size;
->   	} else if (iopte_leaf(pte, lvl, iop->fmt)) {
-> diff --git a/drivers/iommu/io-pgtable-dart.c b/drivers/iommu/io-pgtable-dart.c
-> index cbc5d6aa2daa23..75d699dc28e7b0 100644
-> --- a/drivers/iommu/io-pgtable-dart.c
-> +++ b/drivers/iommu/io-pgtable-dart.c
-> @@ -330,6 +330,9 @@ static size_t dart_unmap_pages(struct io_pgtable_ops *ops, unsigned long iova,
->   		i++;
->   	}
->   
-> +	if (i && !iommu_iotlb_gather_queued(gather))
-> +		iommu_iotlb_gather_add_range(gather, iova, i * pgsize);
-> +
->   	return i * pgsize;
->   }
->   
-> diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-> index 2be990c108de2b..a2f80a92f51f2c 100644
-> --- a/drivers/iommu/mtk_iommu.c
-> +++ b/drivers/iommu/mtk_iommu.c
-> @@ -828,7 +828,6 @@ static size_t mtk_iommu_unmap(struct iommu_domain *domain,
->   {
->   	struct mtk_iommu_domain *dom = to_mtk_domain(domain);
->   
-> -	iommu_iotlb_gather_add_range(gather, iova, pgsize * pgcount);
->   	return dom->iop->unmap_pages(dom->iop, iova, pgsize, pgcount, gather);
->   }
->   
-> diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
-> index c1a34445d244fb..893ea67d322644 100644
-> --- a/drivers/iommu/sprd-iommu.c
-> +++ b/drivers/iommu/sprd-iommu.c
-> @@ -340,6 +340,7 @@ static size_t sprd_iommu_unmap(struct iommu_domain *domain, unsigned long iova,
->   	spin_lock_irqsave(&dom->pgtlock, flags);
->   	memset(pgt_base_iova, 0, pgcount * sizeof(u32));
->   	spin_unlock_irqrestore(&dom->pgtlock, flags);
-> +	iommu_iotlb_gather_add_range(iotlb_gather, iova, size);
->   
->   	return size;
->   }
-> diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
-> index be3f1ce696ba29..b9aa4bbc82acad 100644
-> --- a/drivers/iommu/sun50i-iommu.c
-> +++ b/drivers/iommu/sun50i-iommu.c
-> @@ -655,6 +655,7 @@ static size_t sun50i_iommu_unmap(struct iommu_domain *domain, unsigned long iova
->   
->   	memset(pte_addr, 0, sizeof(*pte_addr));
->   	sun50i_table_flush(sun50i_domain, pte_addr, 1);
-> +	iommu_iotlb_gather_add_range(gather, iova, SZ_4K);
->   
->   	return SZ_4K;
->   }
-> diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
-> index 587fc13197f122..5865b8f6c6e67a 100644
-> --- a/drivers/iommu/virtio-iommu.c
-> +++ b/drivers/iommu/virtio-iommu.c
-> @@ -897,6 +897,8 @@ static size_t viommu_unmap_pages(struct iommu_domain *domain, unsigned long iova
->   	if (unmapped < size)
->   		return 0;
->   
-> +	iommu_iotlb_gather_add_range(gather, iova, unmapped);
-> +
->   	/* Device already removed all mappings after detach. */
->   	if (!vdomain->nr_endpoints)
->   		return unmapped;
-> diff --git a/include/linux/io-pgtable.h b/include/linux/io-pgtable.h
-> index e19872e37e067f..b109c95b5ff53d 100644
-> --- a/include/linux/io-pgtable.h
-> +++ b/include/linux/io-pgtable.h
-> @@ -42,6 +42,9 @@ struct iommu_flush_ops {
->   			       void *cookie);
->   	void (*tlb_add_page)(struct iommu_iotlb_gather *gather,
->   			     unsigned long iova, size_t granule, void *cookie);
-> +	void (*tlb_add_range)(struct iommu_iotlb_gather *gather,
-> +			      unsigned long iova, size_t size, size_t granule,
-> +			      void *cookie);
->   };
->   
->   /**
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index e587d4ac4d3310..d8fcdb61e44c42 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -1034,30 +1034,31 @@ static inline void iommu_iotlb_gather_add_range(struct iommu_iotlb_gather *gathe
->   }
->   
->   /**
-> - * iommu_iotlb_gather_add_page - Gather for page-based TLB invalidation
-> + * iommu_iotlb_gather_add_range_pgsize - Include pgsize in the gather
->    * @domain: IOMMU domain to be invalidated
->    * @gather: TLB gather data
->    * @iova: start of page to invalidate
->    * @size: size of page to invalidate
-> + * @pgsize: page granularity of the invalidation
->    *
-> - * Helper for IOMMU drivers to build invalidation commands based on individual
-> - * pages, or with page size/table level hints which cannot be gathered if they
-> - * differ.
-> + * Helper for IOMMU drivers to build invalidation commands when using the pgsize
-> + * hint. Unlike iommu_iotlb_gather_add_range() this also flushes if the range is
-> + * disjoint.
->    */
-> -static inline void iommu_iotlb_gather_add_page(struct iommu_domain *domain,
-> -					       struct iommu_iotlb_gather *gather,
-> -					       unsigned long iova, size_t size)
-> +static inline void iommu_iotlb_gather_add_range_pgsize(
-> +	struct iommu_domain *domain, struct iommu_iotlb_gather *gather,
-> +	unsigned long iova, size_t size, size_t pgsize)
->   {
->   	/*
->   	 * If the new page is disjoint from the current range or is mapped at
->   	 * a different granularity, then sync the TLB so that the gather
->   	 * structure can be rewritten.
->   	 */
-> -	if ((gather->pgsize && gather->pgsize != size) ||
-> +	if ((gather->pgsize && gather->pgsize != pgsize) ||
->   	    iommu_iotlb_gather_is_disjoint(gather, iova, size))
->   		iommu_iotlb_sync(domain, gather);
->   
-> -	gather->pgsize = size;
-> +	gather->pgsize = pgsize;
->   	iommu_iotlb_gather_add_range(gather, iova, size);
->   }
->   
-> 
-> base-commit: 23f3682fd3605da81b90738ad3d2a30f18c46e98
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
 
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
 
