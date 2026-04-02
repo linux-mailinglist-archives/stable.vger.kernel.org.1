@@ -1,156 +1,166 @@
-Return-Path: <stable+bounces-233018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yE+pJXRyzmnxngYAu9opvQ
-	(envelope-from <stable+bounces-233018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 15:43:16 +0200
+	id 6GpoEq9xzmnxngYAu9opvQ
+	(envelope-from <stable+bounces-233019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 15:39:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35C0389EC9
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 15:43:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B5B389E1C
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 15:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24E413052BB7
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 13:38:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0B0263026F5A
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 13:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912C830C35F;
-	Thu,  2 Apr 2026 13:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046D717DFE7;
+	Thu,  2 Apr 2026 13:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+k+oG10"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJdcTe5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543D117DFE7;
-	Thu,  2 Apr 2026 13:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFDA1A275;
+	Thu,  2 Apr 2026 13:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775137093; cv=none; b=Un0OGrvF6x0sdHrQtXrbnMqLrb1FUMdthlKCYgJyL9KIY2GYJ9EeDobu8py2wGqsEJdnjoxrhF8vDG5LilQdbyy66JullFiB2O8rEh8LhhSBXP9weaUFc/tylvDCwTdVSKniR2+62zp6ACWJtSJnSoJYq/uqJ1WBveFEnUgT/o0=
+	t=1775137194; cv=none; b=KZqfx9yl1yk8+9EUdbTFvOIpa1m7ZR1rMCFl7e1NcpjZA43xyWAx1cbk6BGqhWshsN21weBpkxoMurvZa6WxtERl0IU1zssgKkeiHQrvqM8DpmQX+fK2vXq6RcXhKNLaJxS40EEAxLLon4tJeVwdT/e/m9Ihuu8JtKL5HFTsbBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775137093; c=relaxed/simple;
-	bh=Td3icuELWGGH1yowg86doR00XdlTWwQNfYSLOJ4dNIM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ty+y7hQJzJ5g3CPhqcjq4qvMX6jsYaIzb0PnaVv8334lSHNg5jSQ1S4bTpWzpOaL90Chqaawd86a099iqxlZdP4EI56HHmRwJ9GXjkT9vtlOMVS4KL2K1e8D4b43kA34f4ybmj8Ko1/M9Gwvcu1omcio4QQ3Hn+fcPTZ4C9pI5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+k+oG10; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AD1C116C6;
-	Thu,  2 Apr 2026 13:38:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775137093;
-	bh=Td3icuELWGGH1yowg86doR00XdlTWwQNfYSLOJ4dNIM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=y+k+oG108+OiylRehuyrynpOsaprc8BZLqXtR3U4nShVEF9DeJp8RjRw74tNRdSZ0
-	 xIgw3Kw/Jv3uBRheElktp6a/les9zm01JEqaFZ23UFW15IgSEWQSt2dN5AbUWDmL8P
-	 5o22/scL7UvjYOoaLmPqm91YWLI5dFWSHrhJRit0=
-Date: Thu, 2 Apr 2026 15:38:10 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: achill@achill.org, akpm@linux-foundation.org, broonie@kernel.org,
-	conor@kernel.org, f.fainelli@gmail.com, hargar@microsoft.com,
-	jonathanh@nvidia.com, linux-kernel@vger.kernel.org,
-	linux@roeck-us.net, lkft-triage@lists.linaro.org,
-	patches@kernelci.org, patches@lists.linux.dev, pavel@nabladev.com,
-	rwarsow@gmx.de, shuah@kernel.org, sr@sladewatkins.com,
-	stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org, Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>
-Subject: Re: [PATCH 6.12 000/244] 6.12.80-rc1 review
-Message-ID: <2026040254-spoiled-refinance-5b48@gregkh>
-References: <20260331161741.651718120@linuxfoundation.org>
- <20260402132540.124376-1-ojeda@kernel.org>
+	s=arc-20240116; t=1775137194; c=relaxed/simple;
+	bh=/vV7QgRPjd/cFFW6MPTAF/7Og2G5QIqkY8LRGSNz3vc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HBgYnTPz1lXdBg9jIAbiwlgyuuTyQi3Y55RZOTTIYfZ0dKjgXlDG0UmlORTGMfPw3MOW4RCZmuLgYaNyr0dsHo6t52GjQO9ex9uXxFCTQDkUSgQ8EmOMSo/3/s9BpK+OGHDCEjspAU2orW8ovPzCCymnOvBTGUTQPb8HLwC15Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJdcTe5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3BFC19423;
+	Thu,  2 Apr 2026 13:39:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775137194;
+	bh=/vV7QgRPjd/cFFW6MPTAF/7Og2G5QIqkY8LRGSNz3vc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GJdcTe5n2tfoDUpcFMISLHnOjaNqUmDlD3CyDUSVPrmeCVH9MkCJDIHQMLwslr1Qp
+	 YUU2hP4biPI4Hui74POwe7kKk0bQSrs4R/Mgs6D+Qct/pXPbEn9kTigyRcg5y/iQyW
+	 MdiXNZ6rqNJh3QHOfoDuEHnINamel/G0/Mhdp93zoQrT571kVp+ni1cxAYjeJ55Jzz
+	 3jJzuuyc/e1dQ1wnNsNx39GCSHUQXLZDsUXYjIi85jXtNKZUv9CcDk6AebBjv/kS0W
+	 P2JfTC/jHrvoqm4hxVME1qFKwM0aUrLK/jnfJum55SDN5+EdYQPWRsRNzUIzfjxym2
+	 Jjvbz1vMThKbQ==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 17 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH] mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+Date: Thu,  2 Apr 2026 06:39:51 -0700
+Message-ID: <20260402133952.73301-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260402045928.71170-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260402132540.124376-1-ojeda@kernel.org>
-X-Spamd-Result: default: False [13.34 / 15.00];
-	URIBL_BLACK(7.50)[rust-lang.github.io:url];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233018-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	GREYLIST(0.00)[pass,meta];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-233019-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,garyguo.net];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	NEURAL_SPAM(0.00)[1.000];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,rust-lang.github.io:url,garyguo.net:email]
-X-Rspamd-Queue-Id: D35C0389EC9
-X-Rspamd-Action: add header
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D2B5B389E1C
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-On Thu, Apr 02, 2026 at 03:25:40PM +0200, Miguel Ojeda wrote:
-> On Tue, 31 Mar 2026 18:19:10 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.12.80 release.
-> > There are 244 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
-> > Anything received after that time might be too late.
-> 
-> Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-> for loongarch64:
-> 
-> Tested-by: Miguel Ojeda <ojeda@kernel.org>
-> 
-> There are a bunch of `CLIPPY=1` warnings (errors with `CONFIG_WERROR`)
-> like this one on the pin-init change:
-> 
->     warning: unsafe block missing a safety comment
->         --> rust/kernel/init/macros.rs:1015:25
->          |
->     1015 |                         unsafe { ::core::pin::Pin::new_unchecked(slot) }
->          |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->          |
->         ::: rust/kernel/block/mq/tag_set.rs:27:1
->          |
->     27   | #[pin_data(PinnedDrop)]
->          | ----------------------- in this procedural macro expansion
->          |
->          = help: consider adding a safety comment on the preceding line
->          = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
->          = note: requested on the command line with `-W clippy::undocumented-unsafe-blocks`
->          = note: this warning originates in the macro `$crate::__pin_data` which comes from the expansion of the attribute macro `pin_data` (in Nightly builds, run with -Z macro-backtrace for more info)
-> 
-> It is not a huge deal, since they are just `CLIPPY=1` warnings, but we
-> nevertheless try to keep them clean.
-> 
-> Apart from that, the rest looks OK.
-> 
-> Cc: Benno Lossin <lossin@kernel.org>
-> Cc: Gary Guo <gary@garyguo.net>
+TL; DR: sashiko didn't find a real issue here.  I will post non-RFC patch soon.
 
-Ok, I can live with clippy warnings, but will gladly take a fix-up patch
-to resolve them :)
+Forwarding Sashiko review in a usual reply format, with my inline comment for
+doing discussions via mails.
 
-thanks,
+> # review url: https://sashiko.dev/#/patchset/20260402045928.71170-1-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit 8adb3c95d68d8448c8f57865d9874a5277cc1540
+> Author: SeongJae Park <sj@kernel.org>
+> 
+> mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+> 
+> This commit attempts to fix a memory leak of the damon_ctx object when
+> damon_call() fails, by deferring deallocation to a subsequent start call
+> to avoid a use-after-free with the terminating kdamond thread.
+> 
+> Link: https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org
+> 
+> > diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+> > --- a/mm/damon/stat.c
+> > +++ b/mm/damon/stat.c
+> > @@ -245,6 +245,12 @@ static int damon_stat_start(void)
+> >  {
+> >  	int err;
+> >  
+> > +	if (damon_stat_context) {
+> > +		if (damon_is_running(damon_stat_context))
+> > +			return -EAGAIN;
+> 
+> If the user retries while the background thread is still terminating, this
+> will return -EAGAIN. Does this break standard sysfs boolean expectations,
+> forcing userspace scripts to implement arbitrary retry loops?
 
-greg k-h
+I don't think that's a problem.
+
+> 
+> Also, if the user never writes "Y" to the "enabled" sysfs parameter again,
+> does the memory remain permanently leaked?
+
+In a sense someone can argue so.  Someone else may also argue it as "cached".
+Anyway the total amount of "leaked" or "cached" memory is just single damon_ctx
+object.  No problem in my opinion.
+
+> 
+> Could this be fixed synchronously by calling damon_stat_stop() in the error
+> path of damon_stat_start() instead? Since damon_stop() safely blocks via
+> kthread_stop_put() until the thread has fully exited, it seems it would
+> allow immediate and safe deallocation without returning -EAGAIN.
+
+damon_stop() was not designed for the purpose.  Calling damon_stop() for
+terminating kdamond also feels odd.  For a hotfix, I think the current patch is
+good.
+
+> 
+> > +		damon_destroy_ctx(damon_stat_context);
+> > +	}
+> > +
+> >  	damon_stat_context = damon_stat_build_ctx();
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260402045928.71170-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
