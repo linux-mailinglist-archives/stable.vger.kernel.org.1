@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-232890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOB8BXnPzWnghgYAu9opvQ
-	(envelope-from <stable+bounces-232890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 04:07:53 +0200
+	id oMbuMevUzWmWiAYAu9opvQ
+	(envelope-from <stable+bounces-232891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 04:31:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A827D3828AB
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 04:07:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F268382AC2
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 04:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB3D8303FECE
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 02:07:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D29A6303766F
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 02:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14351CAA68;
-	Thu,  2 Apr 2026 02:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5F2317160;
+	Thu,  2 Apr 2026 02:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pSbYePcU"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="PIVM6dvo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63776E56A;
-	Thu,  2 Apr 2026 02:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E31C27816C;
+	Thu,  2 Apr 2026 02:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775095667; cv=none; b=oO/45qza2VD23NwI+HCO/Pr4W4zZBluntRtW1CpoqT2tXsJ7VpxhNR5+3iXWNKiJ8Qqy6wb2umYRj4vGcoN9YQA4u0cn+6odn7dh6r1yYJSMcdhJnedAQAboj6GaGRY8+Sz3pvU/Fxuh1LoIkt/kLLcY4s+mmmM6R0dm+assmVY=
+	t=1775097057; cv=none; b=bkwf2NyogAfz2oz/FecwlxouiC/eBTtyG1Yp1jJvEKjx9DKkkO5VMNyMvJelD/4abqix5xTIh4UxZsZAClYQYCM74CTQpB4AoHSa2COFr3CMvKbK5nuwAv5VVmHQuvG2KYE1+kgYey4/RnsF8NWcXgSwOp9Mun4VmP81J9C6KNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775095667; c=relaxed/simple;
-	bh=7fWpk4Gb6mbBCpnHLamijCOUzylF/piEazB2Sm2XryY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMr7c8Kvfocxs5PLk57EoLiiBCfjzehf4yYvUFVSQ1fXLqSi+1zbt681DHndoSHUrKIycW/+hWLwJc/ZJbv+SapgWNu/LLaytNUWYlHnBBUV3LoMuLLwS+8DjuRwt2Gi60Y7XhFviWRBm9r8GWvODI9hJ3u2ESbXHIBzpQzL4qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pSbYePcU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AE1C4CEF7;
-	Thu,  2 Apr 2026 02:07:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775095667;
-	bh=7fWpk4Gb6mbBCpnHLamijCOUzylF/piEazB2Sm2XryY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSbYePcUY+Qt+QuSS5KrYUfKigRw7zQGPLR7J2Kldh27J8+A0Vn/ST2v3YvTJ5Pio
-	 JTB96YQ3t4ES/UK//c5Kic324Idu+t5CygT3Yh4FEnsmXWxg8YWPDygSfaIlwjnMJR
-	 Rb5+pE96AgpXfmFgxVkYFb6UCK+G9bPZyTIe5+uJJKmfDKjmq3bxLFgw1sQAtv6GO/
-	 oB921pAGMCysuTxzf0t8dQF01o+vrwHpJCBIbr1DCY6qDc6aE7XfMyam0buLcHxqZw
-	 3RP4hEqME3uL89XZRxeFIPPPC0j2vpBA+DWcquCfRgD8iNvSnxOT4C1QMaUkZNT2ae
-	 cGM/PimH3Sh5g==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH] mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
-Date: Wed,  1 Apr 2026 19:07:44 -0700
-Message-ID: <20260402020745.68554-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260402010457.66860-1-sj@kernel.org>
-References: 
+	s=arc-20240116; t=1775097057; c=relaxed/simple;
+	bh=cL9d/g5H2eGaA46MZsWELROvX2hIzGq8tdljfeI/WX8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cRLdkUUxzjXTq+GatgLjEXstSVtg6Wq3esY/YZy6dy71vAnaAJB466eAAxdyoDFr+4nh7g5u/BoECiJwmO0GDFKhciWbMmETidfLB/P6ibzIEDcLmTidXnoUU76gRC9U66xCVP/kgsP7cjrYu5NleYzUclfxtT/vRHE45XeJ6Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=PIVM6dvo; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=VL
+	vZ5+J9fhHIVHd/lJM225n+FUEh9xIZfi616T/QPE4=; b=PIVM6dvoRsMpdsCQ+P
+	kUZsAqgOp2PP/HrJU2K3VtJRBiBDbKLfPuP2YowEZQITG8JEhc+b7DQmF8tPwT2L
+	ALqD/Kqd5ZbYYjVXKp7h+intPqJh3AWfr/F+jtXoy8x0u6NYgGPTMccxjScVHDvk
+	BQHK5y6ioXMJcMGwUJ8A4RttQ=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3313K1M1pZPYoCw--.606S2;
+	Thu, 02 Apr 2026 10:30:35 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Zheng Qixing <zhengqixing@huawei.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Robert Garcia <rob_garcia@163.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1.y] block: fix resource leak in blk_register_queue() error path
+Date: Thu,  2 Apr 2026 10:30:34 +0800
+Message-Id: <20260402023034.3027538-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,112 +62,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3313K1M1pZPYoCw--.606S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF1fuw1kXrW3ZFyxJF4ktFb_yoW8Gw13pr
+	43Ca1UWryvgr48Wr4DCa17Ga47Ga1DKr4xurWfJ34avFZFkryjkr4v93y7Wr18A397CFWS
+	qFs8Ar4rKa4UCaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_ID7rUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5Qs1oGnN1MtmIQAA3H
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232890-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-232891-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.dk,163.com,lst.de,huawei.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[163.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,call_control.data:url]
-X-Rspamd-Queue-Id: A827D3828AB
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 7F268382AC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Andrew, please drop this patch.  sashiko found an issue, so I will respin.
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-More details below.
+[ Upstream commit 40f2eb9b531475dd01b683fdaf61ca3cfd03a51e ]
 
-Forwarding Sashiko review in the usual reply format with my inline comments,
-for doing discussions via mails.
+When registering a queue fails after blk_mq_sysfs_register() is
+successful but the function later encounters an error, we need
+to clean up the blk_mq_sysfs resources.
 
-> # review url: https://sashiko.dev/#/patchset/20260402010457.66860-1-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit 1d53bb9291d3fde393f37b143e637f0d25b6634e
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
-> 
-> This commit addresses a memory leak by deallocating damon_stat_context if
-> damon_call() fails during stat startup.
-> 
-> Link: https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org
-> 
-> > diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-> > --- a/mm/damon/stat.c
-> > +++ b/mm/damon/stat.c
-> > @@ -257,7 +257,12 @@ static int damon_stat_start(void)
-> >  
-> >  	damon_stat_last_refresh_jiffies = jiffies;
-> >  	call_control.data = damon_stat_context;
-> > -	return damon_call(damon_stat_context, &call_control);
-> > +	err = damon_call(damon_stat_context, &call_control);
-> > +	if (err) {
-> > +		damon_destroy_ctx(damon_stat_context);
-> 
-> Can this cause a use-after-free?
-> 
-> Earlier in damon_stat_start(), damon_start() is called, which creates
-> and starts the kdamond_fn kernel thread. This thread actively uses the
-> damon_stat_context.
-> 
-> If damon_call() fails, the kdamond_fn thread might still be running or
-> in its teardown phase. If we free the context directly using
-> damon_destroy_ctx() before the kthread has fully exited, the kthread
-> might access freed memory.
+Add the missing blk_mq_sysfs_unregister() call in the error path
+to properly clean up these resources and prevent a memory leak.
 
-Nice catch.
+Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250412092554.475218-1-zhengqixing@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Minor context change fixed. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ block/blk-sysfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-FYI, I initially thought damon_call() of DAMON_STAT cannot fail, because it
-synchronizes its damon_start()/damon_stop() calls with module parameter
-handling function, and it doesn't update the context internal state, which
-means the damon_ctx->maybe_corrupted cannot be set.  If that's true, this patch
-itself is not needed since the memory leak cannot exist.
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index c74e8273511a..c2418e9fb45a 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -867,6 +867,8 @@ int blk_register_queue(struct gendisk *disk)
+ 	elv_unregister_queue(q);
+ 	disk_unregister_independent_access_ranges(disk);
+ 	mutex_unlock(&q->sysfs_lock);
++	if (queue_is_mq(q))
++		blk_mq_sysfs_unregister(disk);
+ 	mutex_unlock(&q->sysfs_dir_lock);
+ 	kobject_del(&q->kobj);
+ 
+-- 
+2.34.1
 
-But, kdamond can fail for its internal memory allocation failures.
-Specifically, if ctx->region_score_histogram allocation is failed, it will be
-terminated.  So, yes, sashiko is right.  There is a chance.
-
-> 
-> Should we call damon_stop() here to wait for the thread to safely exit
-> before destroying the context, similar to the teardown sequence in
-> damon_stat_stop()?
-
-Seems that is a workable option.  But given the fact that kdamond is already in
-its termination step, it feels odd to me.  I'll take more time to think about.
-
-> 
-> > +		damon_stat_context = NULL;
-> > +	}
-> > +	return err;
-> >  }
-> 
-> 
-> # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260402010457.66860-1-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
 
