@@ -1,152 +1,149 @@
-Return-Path: <stable+bounces-232912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGXPE3D5zWkdkAYAu9opvQ
-	(envelope-from <stable+bounces-232912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:06:56 +0200
+	id sMiBHoQAzmntkAYAu9opvQ
+	(envelope-from <stable+bounces-232913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:37:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBEC5383D88
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:06:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BE13840A5
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA8E4305D4FF
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 05:06:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03E793034DC7
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 05:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F0F361DD0;
-	Thu,  2 Apr 2026 05:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C923A3659F9;
+	Thu,  2 Apr 2026 05:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="co7KDZZq"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vEKoZVEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FC927FB35;
-	Thu,  2 Apr 2026 05:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3FC175A92;
+	Thu,  2 Apr 2026 05:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775106413; cv=none; b=mnXfFkgKZ2jRq8WpbWeq+TkMbjmi/u3KO8oMvkUbSFMBRS7a/kmuRVvpu+7NpfK32VbjtUdx2B7ifn2nGxuB22U7u0w1tDbH2S/tPd2rZkx7MsETHzrCe2D8J5E8KDqRo6WUz9FoGlbYhEaho4BBq7cjiS8GFb5o0qMsgKi2kRU=
+	t=1775108220; cv=none; b=Mi1I3pe7bgJFZJPdwb6laIDXwBQaNxnzk7mJnwpMCIhEp2SqVkPT2VaDc1SwcrVbf1fCazXomUJrQX0IgSy/Pb7OiecW2QoOZ4ZK8S/PwRex78dsE0GVUKQ73CQsm8Jkdnw+kmwC0sJHZ57MkCXDk0Z6BtuH4XLML8+IGAsBCQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775106413; c=relaxed/simple;
-	bh=wihPoKshCRvDn2VzvCkTU4pBOlXbXSfjJCzi/3jsd+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwPmtRLrhf1fBYcz1r+9X6msirMRRK/qU8FECpOT/ubnnq+wR1sJv7Ak5y5XltDBLMFReD73ga2/w7Sr4H/0o2sdF/FFplLjQGMsMWcIzIKXFFtKdzQ/j4dHG7GkNxwQdI+zgh+VL7rmfrIAwbpgXlIOL3VINIsSlO/333XMGUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=co7KDZZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46573C19423;
-	Thu,  2 Apr 2026 05:06:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775106412;
-	bh=wihPoKshCRvDn2VzvCkTU4pBOlXbXSfjJCzi/3jsd+g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=co7KDZZqve8xBji8Vx9xt+xu/QeOhAumYCbmZnbRfc1ZRlVL8afw3jM5MFPCMhrK6
-	 Q4SLY905C2hRhXGbNil4KA9HvtW/7wMkNC09FrMd6Vm+Lz/8ayG0YGNLb3mlo5nhJJ
-	 VI5kO/sTpUW74IthDq3x5UuEvctp+4DJiiIXzcd8G8Oz1foOtrgYTVDP58z0GcSCwT
-	 rUlp7gMqPbO3hZQXKtPBnPDgb92f7F5e3CKzC3fbqITeaGeR7nz6o+pkwnD8ZJUL74
-	 xBdHmBxI7Pe3W+iX4rCYvQIKJ7I+0tSpLEBdJeVqxtwkWc/wTNyBznMpv6Xx6dLZuQ
-	 Sr4/SB/ONuvtA==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH] mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
-Date: Wed,  1 Apr 2026 22:06:50 -0700
-Message-ID: <20260402050650.72289-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260402020745.68554-1-sj@kernel.org>
-References: 
+	s=arc-20240116; t=1775108220; c=relaxed/simple;
+	bh=xZVGlTPTiBBef2iARx0bzLIZG1HD0uA8NNBbqan+D9U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aXoBhUb1pa911344bjkVF1WeY9k/2A/NVvrB7nbtm1WB4FK7RFPzayvJGjIKZASHeYF+fjQuTRcQQYWM4tUzv5GCyDA6so+bE3Kf6HzkqH9pBn9x4KpCrGIH5DN95fCIByg6vm4mY7/erfZUFY2VoajbhLKGONPBbGEDqi7bLko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vEKoZVEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1E51DC19423;
+	Thu,  2 Apr 2026 05:37:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
+	t=1775108220; bh=xZVGlTPTiBBef2iARx0bzLIZG1HD0uA8NNBbqan+D9U=;
+	h=From:Date:Subject:To:Cc:From;
+	b=vEKoZVEmWxoGRzwZVrq05zgRE2eslBBrh33ToF9pXGRlYvAJbLrEjbCCdKO/k8aPQ
+	 G8LAQfRC5s/I5FfejpyNFJCJ+0H77qK4Bq8XfAb0twVyQ37WluD4VXdjX55S6HHBfd
+	 nGBLRQTxG6XpFarPolw+NRoe5hGrAmxrC97vwvpE=
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 113DACC6B03;
+	Thu,  2 Apr 2026 05:37:00 +0000 (UTC)
+From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Date: Thu, 02 Apr 2026 13:36:57 +0800
+Subject: [PATCH] ALSA: usb-audio: apply quirk for MOONDROP JU Jiu
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260402-syy-v1-1-068d3bc30ddc@linux.dev>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDEwMj3eLKSt00IMvcJDnRzNzCSAmosqAoNS2zAmxKdCyEX1yalJWaXAL
+ SqlRbCwCXVPFBZwAAAA==
+X-Change-ID: 20260402-syy-f04074ca6782
+To: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ zhanjun@uniontech.com, niecheng1@uniontech.com, kernel@uniontech.com, 
+ =?utf-8?q?=E8=83=A1=E8=BF=9E=E5=8B=A4?= <hulianqin@vivo.com>, 
+ Kagura <me@mail.kagurach.uk>, stable@vger.kernel.org, 
+ Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775108219; l=1249;
+ i=cryolitia.pukngae@linux.dev; s=20260401; h=from:subject:message-id;
+ bh=xZVGlTPTiBBef2iARx0bzLIZG1HD0uA8NNBbqan+D9U=;
+ b=mN3VdwexnabeNtKme5CRAJUjMvNNN1boW1QiGM2+lyrdAETxPdhUbqOUPZwxKGaze+gHotoHZ
+ NY8El/k505lBjtBAc29jTvff3lv6XwLH0SNoh7rBQtVFVtjk0ENHwwr
+X-Developer-Key: i=cryolitia.pukngae@linux.dev; a=ed25519;
+ pk=kF6wBkp7j9167keuk8Q9RvPgMRPuHlJztbLy0vbJ3K0=
+X-Endpoint-Received: by B4 Relay for cryolitia.pukngae@linux.dev/20260401
+ with auth_id=712
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232912-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232913-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BBEC5383D88
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cryolitia.pukngae@linux.dev,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
+X-Rspamd-Queue-Id: F3BE13840A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed,  1 Apr 2026 19:07:44 -0700 SeongJae Park <sj@kernel.org> wrote:
-[...]
-> > > --- a/mm/damon/stat.c
-> > > +++ b/mm/damon/stat.c
-> > > @@ -257,7 +257,12 @@ static int damon_stat_start(void)
-> > >  
-> > >  	damon_stat_last_refresh_jiffies = jiffies;
-> > >  	call_control.data = damon_stat_context;
-> > > -	return damon_call(damon_stat_context, &call_control);
-> > > +	err = damon_call(damon_stat_context, &call_control);
-> > > +	if (err) {
-> > > +		damon_destroy_ctx(damon_stat_context);
-> > 
-> > Can this cause a use-after-free?
-> > 
-> > Earlier in damon_stat_start(), damon_start() is called, which creates
-> > and starts the kdamond_fn kernel thread. This thread actively uses the
-> > damon_stat_context.
-> > 
-> > If damon_call() fails, the kdamond_fn thread might still be running or
-> > in its teardown phase. If we free the context directly using
-> > damon_destroy_ctx() before the kthread has fully exited, the kthread
-> > might access freed memory.
-> 
-> Nice catch.
-> 
-> FYI, I initially thought damon_call() of DAMON_STAT cannot fail, because it
-> synchronizes its damon_start()/damon_stop() calls with module parameter
-> handling function, and it doesn't update the context internal state, which
-> means the damon_ctx->maybe_corrupted cannot be set.  If that's true, this patch
-> itself is not needed since the memory leak cannot exist.
-> 
-> But, kdamond can fail for its internal memory allocation failures.
-> Specifically, if ctx->region_score_histogram allocation is failed, it will be
-> terminated.  So, yes, sashiko is right.  There is a chance.
-> 
-> > 
-> > Should we call damon_stop() here to wait for the thread to safely exit
-> > before destroying the context, similar to the teardown sequence in
-> > damon_stat_stop()?
-> 
-> Seems that is a workable option.  But given the fact that kdamond is already in
-> its termination step, it feels odd to me.  I'll take more time to think about.
+It(ID 31b2:0111 JU Jiu) reports a MIN value -12800 for volume control, but
+will mute when setting it less than -10880.
 
-I just posted another approach [1] that can avoid the use-after-free, with RFC
-tag for getting sashiko review before being merged.
+Thanks to my girlfriend Kagura for reporting this issue.
 
-[1] https://lore.kernel.org/20260402045928.71170-1-sj@kernel.org
+Cc: Kagura <me@mail.kagurach.uk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+---
+Btw, is it a good idea for turn the volume_control_quirks from
+switch-case to a table and sort it accroding to USB VID&PID?
+---
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 69026cf54979..a25e8145af67 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1204,6 +1204,13 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
+ 			cval->min = -11264; /* Mute under it */
+ 		}
+ 		break;
++	case USB_ID(0x31b2, 0x0111): /* MOONDROP JU Jiu */
++		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
++			usb_audio_info(chip,
++				       "set volume quirk for MOONDROP JU Jiu\n");
++			cval->min = -10880; /* Mute under it */
++		}
++		break;
+ 	}
+ }
+ 
+
+---
+base-commit: 872c7433582a3570dd0c827967ba291450096bf0
+change-id: 20260402-syy-f04074ca6782
+
+Best regards,
+--  
+Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
 
 
-Thanks,
-SJ
-
-[...]
 
