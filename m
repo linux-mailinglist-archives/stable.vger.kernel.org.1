@@ -1,187 +1,182 @@
-Return-Path: <stable+bounces-233110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MwfLvfRzmnKqQYAu9opvQ
-	(envelope-from <stable+bounces-233110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 22:30:47 +0200
+	id sPxgHofVzmloqgYAu9opvQ
+	(envelope-from <stable+bounces-233117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 22:45:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8533538DFF2
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 22:30:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB8D38E1F5
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 22:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 66DFB301A325
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 20:30:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A90A30247F8
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 20:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0123F26A08F;
-	Thu,  2 Apr 2026 20:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838AA3537D7;
+	Thu,  2 Apr 2026 20:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gun54JpY"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="rMISpFzg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB1A235C01
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 20:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20772E2665;
+	Thu,  2 Apr 2026 20:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775161842; cv=none; b=IHbtvzziMgSGElaS2HofYKSSOAajjK0v8WA1ywvYAqRZDUSpUa0qHpcP3F+1OtE1lKB5V0ktOwrqby34O1LOpyAwHHsjfXUQ9YxU3frwenAqRJKCwJ477WEq7br7tbJNK2gp6Jqgp5ZalG6WE/JKSaGSxo/It26EbsXHIVeqx2c=
+	t=1775162647; cv=none; b=O7tftvEa7Ynj6Vv8IKAZeBwFS5zAiUNPbJnUI6x9p89rvqbfSBMuWTCpYP/HRKM6bWldFtrg1mSNwCELNdIOEj+V0Gp+MDfG4BfHgs1bkajWUdbp9voA4EEsTPHAEsQW9ZTxDmq8YiUY6dPoDXcyYz5dfWYzi+rU1OSeH4VplkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775161842; c=relaxed/simple;
-	bh=gdFmDy5c0jrATO0ZaV40UIMaul6zbEjW48AU2qrMLIw=;
+	s=arc-20240116; t=1775162647; c=relaxed/simple;
+	bh=cjEZkKQ+ODVU3DKbmEDkBuKAPPbwImPNm5BnHCLYCdA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ILRigiwcWctfmMgIL9mzjbu96543+JxQ1mY8/f0Sbhx+iQPHlFlSKRqEGjvvWZ/5cA72Y8hdWaeYWhO7ORGzyDJFcfFeUPazfRm7W/cQymFEd7fmMw2mkFFnycSpN64YM7kfkAOYdk31e43zOYIUwMXmmX9RkUX5QcMYA+Y9a9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gun54JpY; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43cfd1f9fd1so801385f8f.3
-        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 13:30:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775161839; x=1775766639; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZoZIuXbaOTq6CxvkGG5/h8HZq/8fo5h4kB+aDed2D4U=;
-        b=Gun54JpYKF0b2nRJUOZNr6+40+G04rFghB8wKGbqxG+erbrDmwxNYrnFtqpn2hE2ZY
-         n+y+NJwdU1kdgj6mjFk1oRAypeE0J5u//ItEhG/zApufdyQoHCZZ4qsmuMBKF6MqfFor
-         GkybrLhznf9bx5f3TY5IQfLSjmoKH3JCU/fVGMxi8NlbZz4JoiCVSOOCiTQYC8ByXdrl
-         y9bYxt9tGz6cxK0ujBInXj5sPkHZLCVTbtrw+O7uQH+nht5tZ2pIwvZqXXaU2MJsu6Ck
-         hwnAES2uRHKeePXZPlFZWpCcmZlFkBKbGKOs+joDSrFu1qZiX+Z6CRDclvF5sst3B24t
-         8nKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775161839; x=1775766639;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZoZIuXbaOTq6CxvkGG5/h8HZq/8fo5h4kB+aDed2D4U=;
-        b=Ni1qTjlQ3T+q859fyiHy0qh8uvvR4v08vjgo4iu+Ax1gPMbiPFPYU9uqRXpRbzaPky
-         YiKl0hMcovLw/teSfyKr+PsZAo10zA79cRtyum/WZ0thIaasUJyFINJLZeZ4ORyQDAMx
-         bjAystjFUEtTYACy3z11y1v8vQyBMJFOZVxduma9Vk2d48dTAlIp+L1jEfugc/M6cLjr
-         KHGkYKHLDr2Lp0yOXB8nB2QRNUCADf0+lzptmDO5dXTRFn2BMd1A3nO7dmaBTGN9AZJR
-         7rtP7P8lUDv3slQk7oY6lwi/Li8JcbvZgBv/b6ZAFe23QyX5ONcbl+C4mugFoSJZHVtQ
-         M2Qg==
-X-Forwarded-Encrypted: i=1; AJvYcCWJpjOYjHN0OG/d8v8fltJHfOmAj1MBDpGphxODsi8B5Cy/ZcakeE+X8ajFjlKUac5OXwb+kCA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT1VwOHHAlvmK0GfKifKOaTQh+cl4qm1PmR61JNSNiRnOPeO+t
-	5IHvgPUM8+rjqziJAXdHQXjEVa7+sxWNnnVrd60ft9xu+8VSZHIZF1Bt
-X-Gm-Gg: AeBDies7JouqP+Fx5m/mFFoAOYc/x2fqvRIQ4+WAr+OjU49oYK4DhH1FhQ2him7+pjl
-	UCGmzruu+B6WzZk+K+M4EQwjZM3S5X8JJQDxZKj9oU0vx8cHp7VySwfJ3avpwhHapC6TsTfU2AX
-	NrOA04a/7+J5ET7G+bMfixQLGy9sHfRwqQJiqzutaErGScuwJd+r/McdxD4xgq9Jzi2km1TstKl
-	ugUyed8IxH2Ed3x6o6uUHHt/8A6bRYexyKfukH+3tEQv1lz/f77vICVJZsJSrt7/5qjGJ+qn7c5
-	PhAE8FjQgTYRDBC026L6ZKVX/gsxPLdaNS2GFTscRH4fO8wAk76U1ceJkQ3+vomZHIpQU9+WWRX
-	HBHnhWiQn15TxIuPbOOu6tQLHGQV2PfsMLSxiQqHDw5/si7R9m96vHaNcGBdt9IQn3glW685JY9
-	Jkjd1E0ECgNlLdhbvhZXSve+2Vk1pwlvO7bztwlq0++SW6ScP+
-X-Received: by 2002:a05:6000:18a9:b0:43b:9227:bc6e with SMTP id ffacd0b85a97d-43d292e1935mr700218f8f.24.1775161838691;
-        Thu, 02 Apr 2026 13:30:38 -0700 (PDT)
-Received: from localhost (ip87-106-108-193.pbiaas.com. [87.106.108.193])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2a6f73sm11320543f8f.8.2026.04.02.13.30.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 13:30:38 -0700 (PDT)
-Date: Thu, 2 Apr 2026 22:30:36 +0200
-From: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
-To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
-	linux-security-module@vger.kernel.org,
-	Justin Suess <utilityemal77@gmail.com>, Tingmao Wang <m@maowtm.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=mvFSkT/a8h6gPW62H/uDEcF47aGO6qHf5oanUDZAADw3scAQSznEiwSyvckDy7RV6+wDBGI8ZfwHRg9CCT3kymw3eAaCimZrD9SH2RSvBxbrtZXCHXUyysqRDmAlymf9PWt3GZ+3E+rPgTcV95pDerGfOO5V4aHqyDmlnfLgrbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rMISpFzg; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 192EA176B;
+	Thu,  2 Apr 2026 13:43:58 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3ED233F915;
+	Thu,  2 Apr 2026 13:44:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775162643; bh=cjEZkKQ+ODVU3DKbmEDkBuKAPPbwImPNm5BnHCLYCdA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rMISpFzgJPXbGvKghDviAPSjcuME2BDYXFgSL9AnIbxA4cAcDMShJErC2ayBI5Wdz
+	 4AXjfquKWnELfq3rw5MB99YKMgHGZNzxLt9DFqQHuEXzExkBF9z5zR0fl/jfkORk1r
+	 1hkhnj8rf6S/kx7qKb9lbVJe0u0k8T0CUysryFhI=
+Date: Thu, 2 Apr 2026 21:43:59 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Will Deacon <will@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Dev Jain <dev.jain@arm.com>, Yang Shi <yang@os.amperecomputing.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] selftests/landlock: Fix snprintf truncation
- checks in audit helpers
-Message-ID: <20260402.554667d35637@gnoack.org>
-References: <20260402192608.1458252-1-mic@digikod.net>
- <20260402192608.1458252-2-mic@digikod.net>
+Subject: Re: [PATCH v2 1/3] arm64: mm: Fix rodata=full block mapping support
+ for realm guests
+Message-ID: <ac7VD4Z85nS30GCp@arm.com>
+References: <20260330161705.3349825-1-ryan.roberts@arm.com>
+ <20260330161705.3349825-2-ryan.roberts@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260402192608.1458252-2-mic@digikod.net>
+In-Reply-To: <20260330161705.3349825-2-ryan.roberts@arm.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233110-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[google.com,vger.kernel.org,gmail.com,maowtm.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233117-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gnoack3000@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[digikod.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gnoack.org:mid]
-X-Rspamd-Queue-Id: 8533538DFF2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:dkim,arm.com:mid]
+X-Rspamd-Queue-Id: CDB8D38E1F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 02, 2026 at 09:26:02PM +0200, Mickaël Salaün wrote:
-> snprintf() returns the number of characters that would have been
-> written, excluding the terminating NUL byte.  When the output is
-> truncated, this return value equals or exceeds the buffer size.  Fix
-> matches_log_domain_allocated() and matches_log_domain_deallocated() to
-> detect truncation with ">=" instead of ">".
-> 
-> Cc: Günther Noack <gnoack@google.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 6a500b22971c ("selftests/landlock: Add tests for audit flags and domain IDs")
-> Reviewed-by: Günther Noack <gnoack@google.com>
-> Signed-off-by: Mickaël Salaün <mic@digikod.net>
-> ---
-> 
-> Changes since v1:
-> https://lore.kernel.org/r/20260312100444.2609563-8-mic@digikod.net
-> - New patch (split from the drain fix).
-> ---
->  tools/testing/selftests/landlock/audit.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/landlock/audit.h b/tools/testing/selftests/landlock/audit.h
-> index 44eb433e9666..1049a0582af5 100644
-> --- a/tools/testing/selftests/landlock/audit.h
-> +++ b/tools/testing/selftests/landlock/audit.h
-> @@ -309,7 +309,7 @@ static int __maybe_unused matches_log_domain_allocated(int audit_fd, pid_t pid,
+On Mon, Mar 30, 2026 at 05:17:02PM +0100, Ryan Roberts wrote:
+>  int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
+>  {
+>  	int ret;
 >  
->  	log_match_len =
->  		snprintf(log_match, sizeof(log_match), log_template, pid);
-> -	if (log_match_len > sizeof(log_match))
-> +	if (log_match_len >= sizeof(log_match))
->  		return -E2BIG;
+> -	/*
+> -	 * !BBML2_NOABORT systems should not be trying to change permissions on
+> -	 * anything that is not pte-mapped in the first place. Just return early
+> -	 * and let the permission change code raise a warning if not already
+> -	 * pte-mapped.
+> -	 */
+> -	if (!system_supports_bbml2_noabort())
+> -		return 0;
+> -
+>  	/*
+>  	 * If the region is within a pte-mapped area, there is no need to try to
+>  	 * split. Additionally, CONFIG_DEBUG_PAGEALLOC and CONFIG_KFENCE may
+>  	 * change permissions from atomic context so for those cases (which are
+>  	 * always pte-mapped), we must not go any further because taking the
+> -	 * mutex below may sleep.
+> +	 * mutex below may sleep. Do not call force_pte_mapping() here because
+> +	 * it could return a confusing result if called from a secondary cpu
+> +	 * prior to finalizing caps. Instead, linear_map_requires_bbml2 gives us
+> +	 * what we need.
+>  	 */
+> -	if (force_pte_mapping() || is_kfence_address((void *)start))
+> +	if (!linear_map_requires_bbml2 || is_kfence_address((void *)start))
+>  		return 0;
 >  
->  	return audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
-> @@ -326,7 +326,7 @@ static int __maybe_unused matches_log_domain_deallocated(
->  
->  	log_match_len = snprintf(log_match, sizeof(log_match), log_template,
->  				 num_denials);
-> -	if (log_match_len > sizeof(log_match))
-> +	if (log_match_len >= sizeof(log_match))
->  		return -E2BIG;
->  
->  	return audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
-> -- 
-> 2.53.0
-> 
+> +	if (!system_supports_bbml2_noabort()) {
+> +		/*
+> +		 * !BBML2_NOABORT systems should not be trying to change
+> +		 * permissions on anything that is not pte-mapped in the first
+> +		 * place. Just return early and let the permission change code
+> +		 * raise a warning if not already pte-mapped.
+> +		 */
+> +		if (system_capabilities_finalized())
+> +			return 0;
+> +
+> +		/*
+> +		 * Boot-time: split_kernel_leaf_mapping_locked() allocates from
+> +		 * page allocator. Can't split until it's available.
+> +		 */
+> +		if (WARN_ON(!page_alloc_available))
+> +			return -EBUSY;
+> +
+> +		/*
+> +		 * Boot-time: Started secondary cpus but don't know if they
+> +		 * support BBML2_NOABORT yet. Can't allow splitting in this
+> +		 * window in case they don't.
+> +		 */
+> +		if (WARN_ON(num_online_cpus() > 1))
+> +			return -EBUSY;
+> +	}
 
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+I think sashiko is over cautions here
+(https://sashiko.dev/#/patchset/20260330161705.3349825-1-ryan.roberts@arm.com)
+but it has a somewhat valid point from the perspective of
+num_online_cpus() semantics. We have have num_online_cpus() == 1 while
+having a secondary CPU just booted and with its MMU enabled. I don't
+think we can have any asynchronous tasks running at that point to
+trigger a spit though. Even async_init() is called after smp_init().
 
-(I noticed the Reviewed-by tag was already there, re-sending to
-confirm that this also applies to this subset of the original patch)
+An option may be to attempt cpus_read_trylock() as this lock is taken by
+_cpu_up(). If it fails, return -EBUSY, otherwise check num_online_cpus()
+and unlock (and return -EBUSY if secondaries already started).
 
-–Günther
+Another thing I couldn't get my head around - IIUC is_realm_world()
+won't return true for map_mem() yet (if in a realm). Can we have realms
+on hardware that does not support BBML2_NOABORT? We may not have
+configuration with rodata_full set (it should be complementary to realm
+support).
+
+I'll add the patches to for-next/core to give them a bit of time in
+-next but let's see next week if we ignore this (with an updated
+comment) or we try to avoid the issue altogether.
+
+-- 
+Catalin
 
