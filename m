@@ -1,194 +1,220 @@
-Return-Path: <stable+bounces-233067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMJ+CEqczmnfowYAu9opvQ
-	(envelope-from <stable+bounces-233067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:41:46 +0200
+	id wIefDoSdzmnfowYAu9opvQ
+	(envelope-from <stable+bounces-233068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:47:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7812C38C141
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:41:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A267D38C25E
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F09F430D01DF
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:32:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 62FD23027348
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EA83F0774;
-	Thu,  2 Apr 2026 16:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D44361DA9;
+	Thu,  2 Apr 2026 16:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKd0tRpw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SsWhQUDO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB85D3E1232
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 16:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775147542; cv=pass; b=A0ycSK0oX/oCM5L0zU/PaRZk9+ozwrlSBgHsVhXr72vWTSX3lqp2SZBRMMHlKEQYlxU1QYD8wjiM3cXM3DvOkz+qwEUHjOtYh2JJIrEDZMHdRBRKMiFpOBsfqbGk8SINORRj6cra8wIUtUx+nrincgU0miAT5d+RrMbwgXcwN6I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775147542; c=relaxed/simple;
-	bh=3rGC5t73vzjsE4isLGN6gcRfLVqx2vV7zj/l2qnrfbw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hlEdm1o3rHBv8RxWgDZI4soQWbHXEwGBm3FhRf3QY4lZROKrh72X2/pLhKJ+p/nPyBFkFjiDpnGR67YCg9vEh8CC135XloNLFfGkEGhl8jwfs5AqdMFTg3YWJBOoEca8QMMoCAF/PwjBKLc2p7dB1qmiGqqgF7aTu+7wmdk7gpA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKd0tRpw; arc=pass smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43cf3ee0fc1so1603166f8f.1
-        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 09:32:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775147539; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bQZkLia4n0Dinto3H/aJrt2o2N8VyRP+s5LxQGRh6wCo8+IViMhxslHK/TzdDem+ds
-         Cvfa/mlkpoEp8yQwq/U6NodFCMKgLu905pvOUFCYJmL1CPlRA1gyOP+xNbaIKCHgSWnx
-         j4qKnMqKq8lGr137Mqh316naTXsclaoCnnnPIZI9X3QYs94w/YeBbPvz0VDk5EVswpgv
-         V5o7f3REDz286oj174BtT+QoS0kLjvxl7/bJBS2NM+02X7/Z2WxxmeiJ+UKHbDStOTfK
-         6LvPLqM8KoDoDypu6f32xe3aGDfSUrPw1KJ0Tf+CUVCn18DTo+pWAQ3YZBiQ9G74jXwu
-         wP6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vp4MNzcCedf5x2a4aXVZOAyoExIlbvVQis++ipw9Jbc=;
-        fh=qNUekZFJL2HKPC6b7bRYyylFbjS4rzFCmOJE/rDaZOs=;
-        b=kxMl25wRsQ3AKlv6RVUKps9Y4B1QyIOS4Q8xa8KUHfjosELyrt3PCOZDtCwqiOTdM7
-         6d9G3lRapBA9cm3cCRORCleVdvtbqifgCztlSVphn3urFXFV32bBkmJgNaVxAXrPj+LR
-         M6+iK/OlXlJG+CY4dwza/YopawXJDpPnHvtW0VdohseGXmzCCn3yXBPrwIKYuzGg0oYQ
-         B3b5Zub9wWNxE8UM90MJLpVaatBnfXcYIzhT/kuFKPEi9Oj2qZm2PYc3cEdYAQ3qPHno
-         0VlfhMdrS/AP2FUZu3Q+IDa0rT3duMerud5Cx0XYQRcvGPVaSy9SZdqy7zGDV3QfmlKh
-         Y0EQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775147539; x=1775752339; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vp4MNzcCedf5x2a4aXVZOAyoExIlbvVQis++ipw9Jbc=;
-        b=OKd0tRpwK5qVV7VkNnB+9HEO22EeEFLIKqaZrSAn6Rbpg+sYBkMNEruT2IsWLnKOu4
-         XisoLDB6lU3lGd3vrKiiYik/6lWDfP/A3decFfBKLuDDbXV+p8E29lYoWhzWiAbphpyC
-         InZsTiL2Yrz3jvaUKM54crVEg+nMelkhklEDO4PqrovCBGKVICDVOTHR229fd0wl0jZW
-         KRqX4i/x7ESSwsb5FCksjjZFuHaLYs/Iii5DfPrDD2sJdfpEVpmj72/jmPKXzdEFf5A4
-         pbcWXoSb4fbmaaoFQpVzBoj6q1nP6WPGjid/K16J/tqwTie8yg6rXcAHrw6g56YJKONJ
-         YYEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775147539; x=1775752339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vp4MNzcCedf5x2a4aXVZOAyoExIlbvVQis++ipw9Jbc=;
-        b=iA7k2Br05LpxB1IEKcbc7RJgovZk2U06NrT8rOUaoSDL4wkq4uJ4fcngEF3BVb1BPc
-         N2glI5j0EdXuwq5RlX6XmwDlOb2tT5OlcGrpyCyhDAFWGABKSO6MMyuI3ypI8YYrvl76
-         b4edATV0M0sUP8YCAeiGemVhsLI6QRCZ/qii86DkCUFaFkeI8skl+OoR8jCGYPUAMtkY
-         qGY6J4VvVctE8tumx8IWYhVt5R5qUiI6ai6gC2sduDNCQdWpkdPMeQhJYWAFWDuQbA2u
-         /7rXNfDWzN1ixcAFFHXcTtb6//NaEZRW5fmb/451PZkW1OYK5ruz889jbY8A822VSV4+
-         6wyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMf1bkM+wCxKwMffxnTsBJBWW4BeAeGnAIpLL8QtHzgP4Zbdk1qm8LrAXq6dezb9c65sXYgKE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3/PwlYuhoboHmOKMWhW4dY2nXov7GKaLWhOGWmJOgKlr6yn1R
-	UUJ/AR0DHig+k5+T7BXnGXmH50uwxwLVGnpCNcyYFAmrbC49hWjnIOgZLb4GDa8SwH6YE8m1tMP
-	fCYkQ+fgFL+zfslLsgpwjwMpL2AxSU6M=
-X-Gm-Gg: AeBDietOy6R1WYjyFsuCudaFOCOKJ+69lzC6/USahumMF3C+L16+lmG1IaixA8wDU2B
-	Xph+dHKsbJQrUaD2bNeOOjijqeQ40qx/dOQjf0NaZ4ACgiEuqla7ljQX6qiwiSjGYVVLR6IGGPi
-	046m9shc6e9jbCqMsq+/yOH+2DlGTO/oJnlBG7EiVFXmgeRCAlHCowuYTE+0mSbrWAapsVnhGqM
-	tZR4Pm8LyV4KMq2JYGzuMz4F+6eOKwC0GMikJya0fqJ/u8vlOPzDo7XGwL1UOKzz5sWAQ/1quS9
-	w+/fSg==
-X-Received: by 2002:a05:6000:144d:b0:439:bee4:8a93 with SMTP id
- ffacd0b85a97d-43d21199d74mr5350789f8f.12.1775147538819; Thu, 02 Apr 2026
- 09:32:18 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9612F3F23AE
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 16:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775147863; cv=none; b=eJnWSAjtJLgPvpmxriG2R12FLUMUZQVJYpg4TqCgjmtyIYcemv27Ccd2qXJ1HNTozXIKPermR4JIzk50W//AF8ky2qY/qUptACZr7W8fo/kW8TpDX6NU+69YLGqr0drHPT8/3wnAztzdidV5D769Sax7B7/RJivt15AeS3fzGQg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775147863; c=relaxed/simple;
+	bh=zDrM3WFhaUfffdL9KS0yQheID4gCwoh1TPDNejl7DLw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N78gaq2loBaoKYlfCSwEadPkSFVJlHKJ4s6xlzAe1Euba47+7WMzkS5x+1RsotUVc+ylVfWR+2IJPSIP2jR0Kz89y9Xq3GvsUd8MLPE5xcEpgbiFdd/E0tnQzLASrmX3OfsQThQiCfeAqRwEyBYV/8fad77KXWcrbkoY0sJZ9+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SsWhQUDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50847C19423;
+	Thu,  2 Apr 2026 16:37:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775147863;
+	bh=zDrM3WFhaUfffdL9KS0yQheID4gCwoh1TPDNejl7DLw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SsWhQUDOtonsDv2CmO39xQL2IbVa3uLHVSvPOLG1GPF0Y5jr1V3Ywskdxy5Xr5TmC
+	 d1fC5oYiQStMtbv7+Pl5HUvhBBlx3b8aE8RSCpX+pEvt0JZ3ImsJFSx9oC7EzeXvDv
+	 sorw8IlKpSosFO6wYp5rY5IUVPoMv3upeIyvkUz/dUs0ANhgKmFtKmMQSV2TYP7Odq
+	 pGjVoxXGLL2ejgxd2NB41ahxE53uEwPTpVBEVLI6GBFuLY9KXT2cwRrR99oPmfLGV0
+	 Kq8DX6Cewx7lO5VZYttBAm83v/11jk2eSs+Y64skEGhhTCWmO51bkXDG2OITyRIcDq
+	 D6L09HBeKZsMw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] ext4: fix use-after-free in update_super_work when racing with umount
+Date: Thu,  2 Apr 2026 12:37:40 -0400
+Message-ID: <20260402163740.1407640-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033054-vascular-atom-023e@gregkh>
+References: <2026033054-vascular-atom-023e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260401184915.747714-1-joannelkoong@gmail.com>
- <278724ec-0c5a-4b3b-b4d7-c5a3c0ceef3b@bsbernd.com> <CAJnrk1bH2_hk=mfbk0Ac+9UQV7bPHuD9CseWDhj623um7NmdgQ@mail.gmail.com>
- <33b0c367-d1de-470f-8e26-4c66a54cf48a@bsbernd.com>
-In-Reply-To: <33b0c367-d1de-470f-8e26-4c66a54cf48a@bsbernd.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 2 Apr 2026 09:32:07 -0700
-X-Gm-Features: AQROBzA22XfKoWfe1Zi3PBMxICAwbta_mmHrPbZpD1WLQSerKVqwm8XyCFfVB7E
-Message-ID: <CAJnrk1YFU7vb3DRhxqD7p7VZfiza3UY+vDhFZmX+ov-pU+HzUQ@mail.gmail.com>
-Subject: Re: [PATCH v1] fuse: fix io-uring background queue stall on request completion
-To: Bernd Schubert <bernd@bsbernd.com>
-Cc: miklos@szeredi.hu, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, 
-	Horst Birthelmer <hbirthelmer@ddn.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[shopee.com,linux.dev,suse.cz,gmail.com,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233067-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233068-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bsbernd.com:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 7812C38C141
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,shopee.com:email,linux.dev:email]
+X-Rspamd-Queue-Id: A267D38C25E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 1, 2026 at 2:11=E2=80=AFPM Bernd Schubert <bernd@bsbernd.com> w=
-rote:
->
->
->
-> On 4/1/26 22:35, Joanne Koong wrote:
-> > On Wed, Apr 1, 2026 at 12:49=E2=80=AFPM Bernd Schubert <bernd@bsbernd.c=
-om> wrote:
-> >>
-> > Hi Bernd,
-> >
-> > Thanks for taking a look at this.
-> >>
-> >> On 4/1/26 20:49, Joanne Koong wrote:
-> >>> When a background request completes via the io_uring path, the
-> >>> background queue gets flushed to dispatch pending background requests=
-,
-> >>> but this is done before the connection-level background counters
-> >>> (fc->num_background, fc->active_background) are properly accounted,
-> >>> which can leave pending background requests stuck in the per-queue
-> >>> background queue.
-> >>
-> >> I don't think it ever gets stuck. In fuse_uring_flush_bg()
-> >>
-> >>         while ((fc->active_background < fc->max_background ||
-> >>                 !queue->active_background) &&
-> >>
-> >
-> > If the queue already has other background requests in-flight, then
-> > this check never passes due to the stale fc->active_background value
-> > and all pending background requests on the queue are stuck until that
-> > in-flight background request completes, no? I'm rereading my commit
-> > message, maybe the wording is unclear - do you prefer it to be
-> > reworded to "which can leave pending background requests in the
-> > per-queue background queue stalled"?
->
-> From my point of view "which might reduce effective queue depth to 1". I
-> certainly agree with the fix, just not on the word "stalled".
->
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Sounds good,m I'll send out a v2 that uses your wording.
+[ Upstream commit d15e4b0a418537aafa56b2cb80d44add83e83697 ]
 
-Thanks,
-Joanne
->
-> Cheers,
-> Bernd
+Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
+filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
+to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
+reads during unmount. However, this introduced a use-after-free because
+update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
+accesses the kobject's kernfs_node after it has been freed by kobject_del()
+in ext4_unregister_sysfs():
+
+  update_super_work                ext4_put_super
+  -----------------                --------------
+                                   ext4_unregister_sysfs(sb)
+                                     kobject_del(&sbi->s_kobj)
+                                       __kobject_del()
+                                         sysfs_remove_dir()
+                                           kobj->sd = NULL
+                                         sysfs_put(sd)
+                                           kernfs_put()  // RCU free
+  ext4_notify_error_sysfs(sbi)
+    sysfs_notify(&sbi->s_kobj)
+      kn = kobj->sd              // stale pointer
+      kernfs_get(kn)             // UAF on freed kernfs_node
+                                   ext4_journal_destroy()
+                                     flush_work(&sbi->s_sb_upd_work)
+
+Instead of reordering the teardown sequence, fix this by making
+ext4_notify_error_sysfs() detect that sysfs has already been torn down
+by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
+in that case. A dedicated mutex (s_error_notify_mutex) serializes
+ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
+to prevent TOCTOU races where the kobject could be deleted between the
+state_in_sysfs check and the sysfs_notify() call.
+
+Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ adapted mutex_init placement ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/ext4/ext4.h  |  1 +
+ fs/ext4/super.c |  1 +
+ fs/ext4/sysfs.c | 10 +++++++++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index d2158866a4b52..d99eabf846b8e 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1540,6 +1540,7 @@ struct ext4_sb_info {
+ 	struct proc_dir_entry *s_proc;
+ 	struct kobject s_kobj;
+ 	struct completion s_kobj_unregister;
++	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
+ 	struct super_block *s_sb;
+ 	struct buffer_head *s_mmp_bh;
+ 
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 05f1f9b7ad0c4..170bc58b61577 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -4621,6 +4621,7 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 
+ 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
+ 	spin_lock_init(&sbi->s_error_lock);
++	mutex_init(&sbi->s_error_notify_mutex);
+ 	INIT_WORK(&sbi->s_error_work, flush_stashed_error_work);
+ 
+ 	/* Register extent status tree shrinker */
+diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
+index aa07b78ba9104..492f5351e267b 100644
+--- a/fs/ext4/sysfs.c
++++ b/fs/ext4/sysfs.c
+@@ -513,7 +513,10 @@ static struct kobj_type ext4_feat_ktype = {
+ 
+ void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
+ {
+-	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
++	mutex_lock(&sbi->s_error_notify_mutex);
++	if (sbi->s_kobj.state_in_sysfs)
++		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
++	mutex_unlock(&sbi->s_error_notify_mutex);
+ }
+ 
+ static struct kobject *ext4_root;
+@@ -526,8 +529,10 @@ int ext4_register_sysfs(struct super_block *sb)
+ 	int err;
+ 
+ 	init_completion(&sbi->s_kobj_unregister);
++	mutex_lock(&sbi->s_error_notify_mutex);
+ 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
+ 				   "%s", sb->s_id);
++	mutex_unlock(&sbi->s_error_notify_mutex);
+ 	if (err) {
+ 		kobject_put(&sbi->s_kobj);
+ 		wait_for_completion(&sbi->s_kobj_unregister);
+@@ -560,7 +565,10 @@ void ext4_unregister_sysfs(struct super_block *sb)
+ 
+ 	if (sbi->s_proc)
+ 		remove_proc_subtree(sb->s_id, ext4_proc_root);
++
++	mutex_lock(&sbi->s_error_notify_mutex);
+ 	kobject_del(&sbi->s_kobj);
++	mutex_unlock(&sbi->s_error_notify_mutex);
+ }
+ 
+ int __init ext4_init_sysfs(void)
+-- 
+2.53.0
+
 
