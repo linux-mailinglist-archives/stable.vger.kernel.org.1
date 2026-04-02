@@ -1,177 +1,200 @@
-Return-Path: <stable+bounces-233005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8N8uMxlczmmgnAYAu9opvQ
-	(envelope-from <stable+bounces-233005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 14:07:53 +0200
+	id 0BrgKmVdzmnvnAYAu9opvQ
+	(envelope-from <stable+bounces-233006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 14:13:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25174388D15
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 14:07:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A74F388E6C
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 14:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B2750301D6F6
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 12:07:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46B1E3091FC5
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 12:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B723CEBAD;
-	Thu,  2 Apr 2026 12:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AD73C8721;
+	Thu,  2 Apr 2026 12:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUcolV0M"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ABjT3/v7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B5E39D6E8;
-	Thu,  2 Apr 2026 12:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775131636; cv=none; b=BZ9UCaJOD14+VoqZD/PBlkfIExSaRUUpaPVuc5i4v4Ulyb7eMhu6w1BQbGGQYfL1DyEH9gq7/9xb7NX71lecF+hmYH8qU6+cYmBWQ5Fp4c7n7wGLIOkbavAXwsvxkLtk7+VVlHIxGZ9BHY0BLLvbGodvzcsNIQY7Bre3mN2iEk0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775131636; c=relaxed/simple;
-	bh=EWnmxLQmqRlCZ8CAZ8QFKkobjO3CVb7rGcpVWxRQqqc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=iEMmThbMROhtjXs/Sttw/JmkGMpGAjjQ6Y4Ej0HdjJAp7iXJpAZ0GelXCHrC496QWKgT1sQ+u7guS58YIY1/MzVaKFMdBT2vNtfLb761Yo9JLZ+Fgthb5V3orcaejfHLA0KtXj07ifulsqvZSROPNqJjWULkkwA0TatMXc/LO50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUcolV0M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94913C116C6;
-	Thu,  2 Apr 2026 12:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775131635;
-	bh=EWnmxLQmqRlCZ8CAZ8QFKkobjO3CVb7rGcpVWxRQqqc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NUcolV0MVu5yQo0LxuoiC5EPVoctbJWANW7LB40tn/OwN0GvDgSgryn76Gxwa51fV
-	 tHBt97JyphLNChg0qn1GLuZRNcaPqrRLJOpdNrBbN3Qy/pxdek7f8oKK/fXwOdeP+O
-	 YOBcJ6tSVYbOye8iqWGvvoDUiIDj/uc/Jfhf+BJaQcrj5zq6YVcEB8s3nmqPlfp2u7
-	 VZgX4mhdcr/ESCKrQr5Mh5WBlFbxVo0o2SwGnW9oZyOVc8eanBEltHWdKygknzw8Up
-	 qzaiE9BYwUr7iUmD8PjZXELGloVCvfpWTAiS53gCwyMu915M/NaxZzQQI18+jVI7PF
-	 bqHNX7TbrTwuQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FA23DCDA6
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 12:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775131853; cv=pass; b=nYZ8Pc+CkqLamenu280NBnQidul15Q4AgWCSqt6/UPP6uminaeLNz34PWgFFZKUiE5lMI54b5ZGN8vCl634zjrs4Uwe8aAvJu7Kmr9NZ3TuR6C9D4yi15jTupIjXOYPtBUxf6RsLWCRcMF9SDSuKYVMyJe0W7MYudg9Z0mncm4E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775131853; c=relaxed/simple;
+	bh=Jx2vOZ3aK+H94UvwlSlpY2GIR8TTTJNpCM772tGT+EA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h9ktWxPhN5NRujCocLg7QacCTQyALBvwGMLNaXT8Od6QCY9xeAhH36/gpxyFIJMY68OmM43pP7tXsBhAm5fWH6HG09vDA1HRrKDVvmR3RL0exMst8ez3kXDKVDxCfi4J00xQk4feUx+RF0G8mQlcF/fnPZVs/CIcOHULLF6F6a8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ABjT3/v7; arc=pass smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-64eee7b83cfso644546d50.3
+        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 05:10:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775131851; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K0Gt6i026JOzLlzrxf7/jp8kkGi3/ckdOtRB7CARdIqE3gDlqh7kxrAPhkgQUBeJZW
+         VM0uxMxcnrsfgmIO2xJkotNwIKwgpAV7deyMKLq5GUUtl9yDEJmaYfNHhfs69+/3iu6Q
+         1dwAasBwV9Vl4ikzPl8Zj2hEQdXGvuhBg9uglax+1nRK4NAuYheSBGtYzCOqcFukJvxS
+         XHl9oP9ti7jcr/Ty9Ejw/hT4nTgAYp1TnWrGOtlxzMv/kFeqlgLELdmRVltCZipSpKD3
+         7wvNV/HsNPiTbQK9FZuFMmtlQwJuRpQQpPNhFe+bQ/HOHcf52gGA4Ucr+zZ9aNXYKqM0
+         gEVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vXGE4RWiA7WqJLGf36CVelIpTJ6eR3ehqb3g2RtbVMY=;
+        fh=SjxGodSC78YX0EDHDfpVtHx1L7DdO+gU2tCymzxp0KI=;
+        b=WKj3cGxK6EKYVCdTE/HlJGqapcpKC52ZTx/ok9vDigl2HBEkKjpUA0wazyrL+JcyAR
+         ZH5Rtzbq054Mc9kV3RkHLlkPszLHwtqts+nY/jlkkQZqlvYF0s5xItFvjKgTnQKbGDYx
+         yPikGMgvm8E/BFG3lTiXligZCsZWtCW5CONoYu5btt7IvbThHtkClOtuXsCxluavQY93
+         1a6wccAF5ihEw9V4S7VclLoYNdWXxDTZoT5apaTJlHobxS/lJZUsFXUpZgG5rvOOmqch
+         HHQx2PCPJL8GMQ8gGanVb006XrhNctmpyC2d4fy3E6qXl5ARUr01z0kw24EUhco/3RDe
+         SAoQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775131851; x=1775736651; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vXGE4RWiA7WqJLGf36CVelIpTJ6eR3ehqb3g2RtbVMY=;
+        b=ABjT3/v7Q+q0SfPTQH7M/1bch9ddn6IaqKesPw8cpoJPeDfxQJwQWZ9KRv0tgBC747
+         ybFTcNBJC0YUYRRxrp842L6w9huXIjRl7mu7uV4X5/QqCkHuyLVQFg2wOOGGqVa3hMlI
+         00xmHzi97DSzYZd4NHz+0tq21PB+9UNUzjfm99BPQT+iH8FWQqBbUl2IN1PDfhSTLs+r
+         CiBtpPr7EQFUXmorM2RbwawnO0JyB9nlsraYf/wBwc3EgCbmsIIeS09EC2Um6jwQQsFP
+         27LH8tfRkc3x63ZhF4OZSVrci5m+E8+nv0aXy4Tw4ffeme/n/q7wcCkm1dHyzOr7/X8W
+         vlHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775131851; x=1775736651;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vXGE4RWiA7WqJLGf36CVelIpTJ6eR3ehqb3g2RtbVMY=;
+        b=MreytVjjaDEpykzSXa0lc6pMgdg/q0PcXjD8/MDCtk+ZCKUjwuRKLszskCuRjnH8ry
+         BRTWwhbqxe60oqnR5eslIads4qjg7ksVQszAlKw9xtupgmvx+02FsiAfnhd+W4VLsOsU
+         R/PYkE7p+FNrSyiC4bkt4tIzaHq9JGYtkwEW3+NqzPu+F7D8fgx8T4U2XYzdun/4sdqQ
+         58i/sKpJ2lqaT5xSjYh8kBiRvPgRlg+gu24ymXLGKNtdWOEQ3fyQUfFxk//1pUhDZBE8
+         LaRIa1UuiIZ9K3fdPo0nm1xuUl+rlKAndXsgF95FRjnTOximFks5+knvHLKKpmYHlGRr
+         d4vQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTmQgv2PRT8Eyr6ufk0JUuY6Q35Zqiq34l5Rl96rkg4pxlni9O4mZYwQKsayDF+FvoLQl35Cw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxjk0PtQ86kUZiWDOrAbKik1BLU9DDuKsOS1kpVlEq9cWXOPCWu
+	6zAPVAc3tYS0KQkgovwS8xbv59dmcCnc1dDW0ioqrnv74hjcS7+hV9zXkdH4aZcOZDrffTOuCRf
+	NDMl5uoqSiTusKxo0hrgezKc0PjyufQQ=
+X-Gm-Gg: AeBDietXnAGQPz9KYXmElEeaLNOekRtFhBwuIcMDvbFEw8ogW3ALytGHkkBboLaDles
+	bv0S9f/UMmjtvjJ+m9uAdH1ji7nMmTW6ZxJrQYb+WzZKTJaGFJiQjdBXkl5CS0ituKE+Mt6ZsxI
+	OC7exauSyceG+2sN10QTa5BPnDV4z/UA36q/MsF1oGn2uY/M3J5ovJVIcrIpZX7JRljC06zYrGP
+	musE5+qfx39FNdvroNnmnTovHxWr9cwUzTpEYyL6m3EPDDE34mz8W1miS8rh2BqIlnJgrAVyVqh
+	Pz7SGT6W
+X-Received: by 2002:a05:690e:12c2:b0:650:3e1f:9079 with SMTP id
+ 956f58d0204a3-6503e1f945emr1607300d50.10.1775131850932; Thu, 02 Apr 2026
+ 05:10:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260401094003.1482794-1-lgs201920130244@gmail.com> <87h5puxoa2.fsf@intel.com>
+In-Reply-To: <87h5puxoa2.fsf@intel.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Thu, 2 Apr 2026 20:10:41 +0800
+X-Gm-Features: AQROBzAgDXLDasVS5yX_W4qD-ueX2Hms7568bo3hSjKUDmVrOGa4_8H56gZoHPc
+Message-ID: <CANUHTR94+ZEO6d3+Pm1cdHw3firrAaVqxO90XwfHGrAkx37wsg@mail.gmail.com>
+Subject: Re: [PATCH] dmaengine: idxd: fix double free in idxd_alloc() error path
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>, 
+	Shuai Xue <xueshuai@linux.alibaba.com>, Fenghua Yu <fenghuay@nvidia.com>, 
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Apr 2026 14:07:09 +0200
-Message-Id: <DHINN8SUUZSW.2LM7XEUJ2M2B0@kernel.org>
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>, "Greg KH" <gregkh@linuxfoundation.org>,
- "Miguel Ojeda" <ojeda@kernel.org>
-Cc: <achill@achill.org>, <akpm@linux-foundation.org>, <broonie@kernel.org>,
- <conor@kernel.org>, <f.fainelli@gmail.com>, <hargar@microsoft.com>,
- <jonathanh@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <linux@roeck-us.net>, <lkft-triage@lists.linaro.org>,
- <patches@kernelci.org>, <patches@lists.linux.dev>, <pavel@nabladev.com>,
- <rwarsow@gmx.de>, <shuah@kernel.org>, <sr@sladewatkins.com>,
- <stable@vger.kernel.org>, <sudipm.mukherjee@gmail.com>,
- <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 6.6 000/175] 6.6.131-rc1 review
-X-Mailer: aerc 0.21.0
-References: <20260331161729.779738837@linuxfoundation.org>
- <20260402112712.110869-1-ojeda@kernel.org>
- <2026040247-stimuli-surreal-edf1@gregkh>
- <DHINJ6CUHNLM.3RD5BA5313NKK@garyguo.net>
-In-Reply-To: <DHINJ6CUHNLM.3RD5BA5313NKK@garyguo.net>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233005-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233006-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lossin@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 25174388D15
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5A74F388E6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu Apr 2, 2026 at 2:01 PM CEST, Gary Guo wrote:
-> On Thu Apr 2, 2026 at 12:52 PM BST, Greg KH wrote:
->> On Thu, Apr 02, 2026 at 01:27:12PM +0200, Miguel Ojeda wrote:
->>> On Tue, 31 Mar 2026 18:19:44 +0200 Greg Kroah-Hartman <gregkh@linuxfoun=
-dation.org> wrote:
->>> >
->>> > This is the start of the stable review cycle for the 6.6.131 release.
->>> > There are 175 patches in this series, all will be posted as a respons=
-e
->>> > to this one.  If anyone has any issues with these being applied, plea=
-se
->>> > let me know.
->>> >
->>> > Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
->>> > Anything received after that time might be too late.
->>>=20
->>> The pin-init change does not build:
->>>=20
->>>     error[E0425]: cannot find value `__refcount_guard` in this scope
->>>         --> rust/kernel/init/macros.rs:1320:25
->>>          |
->>>     1320 |                   @guards([< __ $field _guard >], $($guards,=
-)*),
->>>          |                           ^^^^^^^^^^^^^^^^^^^^^^ not found i=
-n this scope
->>>          |
->>>         ::: rust/kernel/sync/arc.rs:529:49
->>>          |
->>>     529  |           let inner =3D Box::try_init::<AllocError>(try_init=
-!(ArcInner {
->>>          |  _________________________________________________-
->>>     530  | |             // SAFETY: There are no safety requirements fo=
-r this FFI call.
->>>     531  | |             refcount: Opaque::new(unsafe { bindings::REFCO=
-UNT_INIT(1) }),
->>>     532  | |             data <- init::uninit::<T, AllocError>(),
->>>     533  | |         }? AllocError))?;
->>>          | |______________________- in this macro invocation
->>>          |
->>>          =3D note: this error originates in the macro `$crate::__init_i=
-nternal` which comes from the expansion of the macro `try_init` (in Nightly=
- builds, run with -Z macro-backtrace for more info)
->>>=20
->>> (among other errors)
->>>=20
->>> I would suggest dropping these for now:
->>>=20
->>>     0565326613fa ("rust: pin-init: internal: init: document load-bearin=
-g fact of field accessors")
->>>     66655aacfa42 ("rust: pin-init: add references to previously initial=
-ized fields")
->>>=20
->>> Cc: Benno Lossin <lossin@kernel.org>
->>> Cc: Gary Guo <gary@garyguo.net>
->>
->> Crap, I just did a realease.  Let me go revert these and do a new
->> release with that fixed, sorry about that, I guess my builds weren't
->> testing rust on older kernels, my fault :(
+Hi Vinicius,
 
-I don't know what happened with this series :( Sorry for the extra work.
+Thanks for reviewing  =E2=80=94 the feedback is helpful.
 
-> It is probably missing a dependency patch. I could take a look next week,=
- but
-> perhaps not backporting to 6.6 is an easier solution :)
+I'm working on top of v6.19-rc8-214-ge7aa57247700.
 
-Yeah let's do that.
+Regarding the concern about put_device(conf_dev) triggering
+idxd_conf_device_release() and hitting a NULL idxd->wq in
+destroy_workqueue():
 
+idxd_conf_device_release() does not call destroy_workqueue(). That
+call lives in idxd_cleanup_internals(), which is a separate code path.
+The actual release callback is:
 
-Cheers,
-Benno
+static void idxd_conf_device_release(struct device *dev)
+{
+    struct idxd_device *idxd =3D confdev_to_idxd(dev);
+
+    kfree(idxd->groups);
+    bitmap_free(idxd->wq_enable_map);
+    kfree(idxd->wqs);
+    kfree(idxd->engines);
+    kfree(idxd->evl);
+    kmem_cache_destroy(idxd->evl_cache);
+    ida_free(&idxd_ida, idxd->id);
+    bitmap_free(idxd->opcap_bmap);
+    kfree(idxd);
+}
+
+At the err_name point in idxd_alloc(), idxd was allocated with
+kzalloc_node(), so all uninitialized fields are zero/NULL. Every
+function in the release callback handles NULL safely:
+
+kfree(NULL) =E2=80=94 safe
+bitmap_free(NULL) =E2=80=94 safe (wraps kfree)
+kmem_cache_destroy(NULL) =E2=80=94 safe (explicit NULL check at entry)
+ida_free(&idxd_ida, idxd->id) =E2=80=94 id is already allocated at this poi=
+nt
+bitmap_free(idxd->opcap_bmap) =E2=80=94 already allocated at this point
+So relying on put_device() =E2=86=92 idxd_conf_device_release() to clean up=
+ is
+correct for this error path.
+
+Regarding the other points:
+
+I agree the patches should be sent as a numbered series.
+For the put_device()-then-kfree() double-free pattern in
+idxd_clean_wqs(), idxd_clean_engines(), idxd_clean_groups(), and
+idxd_free(), I'll address those in the same series.
+Will send a v2 series shortly.
+
+Thanks,
+Guangshuo
 
