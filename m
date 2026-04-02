@@ -1,92 +1,91 @@
-Return-Path: <stable+bounces-232917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM6yKZYEzml+kQYAu9opvQ
-	(envelope-from <stable+bounces-232917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:54:30 +0200
+	id oAIEGN8Ezml+kQYAu9opvQ
+	(envelope-from <stable+bounces-232918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:55:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7A6384353
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:54:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF45338438B
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:55:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58AB9304994C
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 05:53:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C2B33036087
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 05:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F25B36607F;
-	Thu,  2 Apr 2026 05:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1953750BD;
+	Thu,  2 Apr 2026 05:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="BG4jFXhk"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NO42xkJM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f99.google.com (mail-ua1-f99.google.com [209.85.222.99])
+Received: from mail-qv1-f99.google.com (mail-qv1-f99.google.com [209.85.219.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DE5366570
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 05:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9640632BF5D
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 05:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775109238; cv=none; b=rHRGmgo7y2wBfc8HYzZdJOzWuD+K27NI78y2dfgGmYGolOnNaJnldaQTpNxsSY8G492SbDmmqxgUz6OCEfeVOhyDGxLUE9OUIAvbMPAq7WcBDUSCY/c0wA5+hI5rKYu6KVt1Ba8AozA6O+WkLNqTu2l4jczLL5tDv7QAxvF3oSo=
+	t=1775109268; cv=none; b=ZfELLgMkpksa2+Kn02pY7Gf461h9NFcnAPo1T1fFuV49tqJ0xmQngGfvypQHtppVGhy1YTxrvCmGtQWo23dkZ5sPGUxjeDjTMuC0zFu18JX4Hjazf29+3ZLVkBPDiKGTuqq32/+iObPScCktUn4VqOT3w7zUYBpM+YFIrduEsb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775109238; c=relaxed/simple;
-	bh=0C8xk+345SX9ejuaWyFE+tCyFjEXUYoECt072z2BA2Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dOtVbmWkFGbV19YvzNJNH6LiXqwGPGoL2qvvCnKUVT2hnQozXjrYQHg+ShYvbdzD+mj7H1DXJjGVhpwU8i6joo+J4C0EB1jgBlrsUTotJGJqJ4IHtff+4alHnYBA4IJKJPa7nGwnlSoN5R+EWHLdn4pT+dOTmqA4W8Q/t0JZE1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=BG4jFXhk; arc=none smtp.client-ip=209.85.222.99
+	s=arc-20240116; t=1775109268; c=relaxed/simple;
+	bh=6lMYEDk/4SORjeMQTREdR5RVJx70X24NOfnAF6DUR8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h+O5xsqlMlBMezvj6XbqnrNZ4jInhI7o3/8UhatseqwoUJY3NEvIbyMcOa9Hlw8FRZSoNQPmZfm53vmqeZOgR8vblAQrNkR8UYsyKUij+E40LIM/0aojFcYuHzwyE/uLwgStTb29iEFjI+8LRiQrFY75MqxqYTdcTss7f9scwoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NO42xkJM; arc=none smtp.client-ip=209.85.219.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ua1-f99.google.com with SMTP id a1e0cc1a2514c-95393ca9cb3so16211241.3
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 22:53:56 -0700 (PDT)
+Received: by mail-qv1-f99.google.com with SMTP id 6a1803df08f44-8a0f848bebfso1015516d6.0
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 22:54:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775109236; x=1775714036;
+        d=1e100.net; s=20251104; t=1775109266; x=1775714066;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iVFmR/coGugPGOD5D8t57xuLW0pWKEfclUCRJYgoO14=;
-        b=jRoPzzqLE6VPaP9wy8sltv97doeQtVNjexFyPYHzk2qlyZG+kpyw7dg8OZ11Ey+Djo
-         3zBWj1rbgbUsdwjNzGwHr7GXQI5RqfsKAYQsWDLxRGdp83n9/UyDjwTt7DtiRGlgRvQm
-         d1JHNQJ5l/nzqmCQalhrebwTXK5HkctwazUiVzLD7UoLHqMLAOL71qHcBkM+ECYFOirC
-         3sv+PX52tVmoWYFMCr209k8UffX/cBkfoxSa+rcAk5LrHb+2Ax2Rm5Nzb2zxjzPWU9OO
-         RfBCUxDt0ZTtreX2nVpwGhaieqmszaWick+/G4s+zCAOCLcUfsHUW0Lt9NMjcQDd2TTm
-         xMoQ==
-X-Gm-Message-State: AOJu0YxHu7AVfl1X8rwHeicKcWffjRhuiZd3I3rtxWtgiR3bHRwkvLtx
-	4XEbdNRThptlqMWYMpeFiuH+Pn6sFpMT44Q1GpN9ojOXcVig3BZvzaFJW3pvJ0XZgDKtBfTFRbQ
-	twAsjEUVhth7CNoo1YayZdzPwenRSRkC0tFVz65wbZFPrI85LEg2RqR1M4m0/iSN4KldF5vDX77
-	ShuUyvXAcX3gMCMCvnqFG7Gax7yF8abSpb42gnGTjenwiB1JKc/7vuVmqEocP56WS+duiVSa71T
-	4m+ullu9M9BK/mTvJPNO1oCGLFi7M0=
-X-Gm-Gg: ATEYQzw/KR/LJv5Z8dknGGdlGD2EolO0ZsW5Y0/cZMBPYaTPoHsyZx44cskVnL6pBKG
-	AnwjVMtu3qOm+grcflKtSuvvhdg1BNHWkMvqcL+bRBNx14Zbax0QuucmPDE58hqpJsD8eTGLnsd
-	xm83HE78BPBRioz1tt9EqYkZqz8uQ+WNVhsB3jhVHVcEhhPnqKSqkec/dN6dN0uREu7OH7Kaonb
-	WYfdioEiL7jSzztVx1yL5a0ITMrRdVcdWCcA7HTVbBBkcakCy7qeacM5Eejf3xATSemIq7QW81+
-	F0zGOXE2FELddybGuaC5rC5SqnDLfvIyZq1N4HasKNBZJnF3MpAAUyYS2vzgMev+FUidZNXJOa4
-	FnS25teqFZ6dirVC9I+P0viScQehz4aMRLwRErAPr3qPA0jqZSuQmdKY7Zrwlx/gXNOBw0WHgoC
-	8zlMZSs9qUvteXuaxU8InJOF43yV4cM7S8PFRGDJB1S1oZD4kxfQufG2c6IxEQilqDB8Th/z9Jr
-	z+R
-X-Received: by 2002:a05:6102:1150:b0:605:5c61:4371 with SMTP id ada2fe7eead31-6056817fb6emr896942137.3.1775109235644;
-        Wed, 01 Apr 2026 22:53:55 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-118.dlp.protect.broadcom.com. [144.49.247.118])
-        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-60583028351sm145053137.22.2026.04.01.22.53.55
+        bh=un0TrhH26CUN0UWgks1V0cLvA+RLLEZ2+uAxYkzc7Bs=;
+        b=MSxV5J0yCA7SCI0VDqoW2rBHd7qdQsQEJSzYDFarVB7Uoe7NvrYPU46hv00u1XIMOq
+         wqdt6SKnPKbTom7jd0lyYNN+5VR7JB33A3UWcb2GSnC9REr4mxWGtsFlEXgghlxwMWBv
+         aRZZYgeP7UThxMDrFiQ3A4DRh/IIaWsRD2D0Ux6efxsxD9oToEiQQqXJd7hS/pSmAr2d
+         4uR/HaMZPbcMfvElmvCwDWiE8JRlg/HMpXgWIRX9HuWlBuCuhpjNqfU8+cZocS79TJ+8
+         liaDS5twVSfKe9zuUzBVXxq6VeXfxjCAeh6NLqyUs3RvyoXG+9vknMuJATR4r1m73PDr
+         svpg==
+X-Gm-Message-State: AOJu0Yxk3efDVYL4hB+0QV6T4Sxb3OYHhQQKxkrS7fqw1JxpCIkuQW8J
+	F61CxY/JxTNlB0xfTKdNA18DefRqC827XBvBE8AScc13kO37IWtS7FqEqpFQvmyT1AN6Te6no/6
+	1oQoFeAtMBa8IgBeIrTDB/uKnS7N95v4DdpL1yESpreWI/CrXeNzH7UHfu/F4vwD5B7AHlL4RBZ
+	xJjvles8RjnTJdplhMZOBpnOqUOtn5NcgmpJmyxUeiRgDCst5olDPIKbbxXi6K8Wqw08dJbrbQx
+	hjFHozlj3Qh4Shopk/TA/5XKn0j
+X-Gm-Gg: ATEYQzxu+pBvE+c74WEEtk4heiiUpW0jAbRL0w+vRcZ2jTJ9PQcaGM4fntPxwiH/StA
+	1eyG+u2uxcpyeNdsOnY++p4E4K2c5XdyqNF09UCMzHo/5muQFSuT2sclWUzja2r/7NyGF8Gq1/0
+	2y7pq7COLgVweKVWFvyB2AIWlanMYY69fClmUmT0ZaIWzq72Mc7Dd6qQnX3ssgxUJ2m8a4PZPx5
+	ltx/uyz3XQYYppmqhO482tHCXxVy/qyJ7SLrNoCIkHzvUPnD1vX65bDh07oUor/xsE3/YRkHT/k
+	ZzvXTmlQEbVNuGqxStzTKCirDeZ0NWWryA1VO/EOVK5CxI2wnD8MdCASN2Kpzv76AQbGiFgotTz
+	Zv/G9h0h5v2xsrNzJ/TvWXMRA6ZRa44V4sZ6ibV4Hrakq10uuSIpjql6xqJlc1mURQRaD7W36WX
+	1JN/BR10MP24TRRcBNEQa4mg==
+X-Received: by 2002:a05:622a:5a1b:b0:509:2a92:8088 with SMTP id d75a77b69052e-50d3bb89968mr70426321cf.1.1775109265417;
+        Wed, 01 Apr 2026 22:54:25 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com ([144.49.247.127])
+        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-8a593cef875sm1884396d6.11.2026.04.01.22.54.25
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 01 Apr 2026 22:53:55 -0700 (PDT)
+        Wed, 01 Apr 2026 22:54:25 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-2c98235c243so103004eec.1
-        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 22:53:55 -0700 (PDT)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-128d6d82b8aso112614c88.0
+        for <stable@vger.kernel.org>; Wed, 01 Apr 2026 22:54:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1775109234; x=1775714034; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1775109264; x=1775714064; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iVFmR/coGugPGOD5D8t57xuLW0pWKEfclUCRJYgoO14=;
-        b=BG4jFXhkqaG1FgHSP6E1aYT6cI5UPls6SOgBabO/3CAZPFPfSGIhwLCSbQKGKS/kyD
-         6ovFNNbVobjC7EZ6+GPkqI9eopnFWGomleJXiFMZf5iJ9w+KsWxFNCfC9K8qRUjvNbYt
-         7e+35gPKfwpgwSX9UC5TSHDdHBL9J+DHz+Hk4=
-X-Received: by 2002:a05:7300:d70e:b0:2c4:ec89:bdb with SMTP id 5a478bee46e88-2c930798a42mr1523908eec.2.1775109233948;
-        Wed, 01 Apr 2026 22:53:53 -0700 (PDT)
-X-Received: by 2002:a05:7300:d70e:b0:2c4:ec89:bdb with SMTP id 5a478bee46e88-2c930798a42mr1523884eec.2.1775109232974;
-        Wed, 01 Apr 2026 22:53:52 -0700 (PDT)
+        bh=un0TrhH26CUN0UWgks1V0cLvA+RLLEZ2+uAxYkzc7Bs=;
+        b=NO42xkJMI3wMShk5W+8m8CIF/dAKDcMS8HmLOqjB0FM2Xvk0evmkcw5lceZNpkRBfe
+         KxvYrJckhLAXNWjrLxFYNHJ0vJShpXb2VmQBiYSyqOgl8JrRovfcRQbF+COK7x/TFQFZ
+         gTjyN0EWMjxmohIsV2W8lw7coLEv2D6ynVlyE=
+X-Received: by 2002:a05:7300:d50c:b0:2be:681:91b2 with SMTP id 5a478bee46e88-2c9326ad3c3mr1519636eec.6.1775109263676;
+        Wed, 01 Apr 2026 22:54:23 -0700 (PDT)
+X-Received: by 2002:a05:7300:d50c:b0:2be:681:91b2 with SMTP id 5a478bee46e88-2c9326ad3c3mr1519610eec.6.1775109262899;
+        Wed, 01 Apr 2026 22:54:22 -0700 (PDT)
 Received: from keerthanak-ph5-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7cf1271asm2180380eec.26.2026.04.01.22.53.50
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7cf126c9sm1634662eec.27.2026.04.01.22.54.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 22:53:51 -0700 (PDT)
+        Wed, 01 Apr 2026 22:54:22 -0700 (PDT)
 From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -108,9 +107,9 @@ Cc: john.johansen@canonical.com,
 	Qualys Security Advisory <qsa@qualys.com>,
 	Salvatore Bonaccorso <carnil@debian.org>,
 	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH v6.1] apparmor: fix unprivileged local user can do privileged policy management
-Date: Thu,  2 Apr 2026 05:47:00 +0000
-Message-ID: <20260402054700.2798707-1-keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v5.10-v5.15] apparmor: fix unprivileged local user can do privileged policy management
+Date: Thu,  2 Apr 2026 05:47:31 +0000
+Message-ID: <20260402054731.2798726-1-keerthana.kalyanasundaram@broadcom.com>
 X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -125,15 +124,15 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232917-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232918-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualys.com:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,canonical.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,qualys.com:email];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[20];
@@ -144,10 +143,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[broadcom.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 4F7A6384353
+X-Rspamd-Queue-Id: CF45338438B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -196,10 +195,10 @@ Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
  3 files changed, 44 insertions(+), 9 deletions(-)
 
 diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
-index fa518cd82366..fa4a6f20f58e 100644
+index e736936f4f0b..3053e5731b02 100644
 --- a/security/apparmor/apparmorfs.c
 +++ b/security/apparmor/apparmorfs.c
-@@ -412,7 +412,8 @@ static struct aa_loaddata *aa_simple_write_to_buffer(const char __user *userbuf,
+@@ -409,7 +409,8 @@ static struct aa_loaddata *aa_simple_write_to_buffer(const char __user *userbuf,
  }
  
  static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
@@ -209,7 +208,7 @@ index fa518cd82366..fa4a6f20f58e 100644
  {
  	struct aa_loaddata *data;
  	struct aa_label *label;
-@@ -423,7 +424,7 @@ static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
+@@ -420,7 +421,7 @@ static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
  	/* high level check about policy management - fine grained in
  	 * below after unpack
  	 */
@@ -218,7 +217,7 @@ index fa518cd82366..fa4a6f20f58e 100644
  	if (error)
  		goto end_section;
  
-@@ -444,7 +445,8 @@ static ssize_t profile_load(struct file *f, const char __user *buf, size_t size,
+@@ -441,7 +442,8 @@ static ssize_t profile_load(struct file *f, const char __user *buf, size_t size,
  			    loff_t *pos)
  {
  	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
@@ -228,7 +227,7 @@ index fa518cd82366..fa4a6f20f58e 100644
  
  	aa_put_ns(ns);
  
-@@ -462,7 +464,7 @@ static ssize_t profile_replace(struct file *f, const char __user *buf,
+@@ -459,7 +461,7 @@ static ssize_t profile_replace(struct file *f, const char __user *buf,
  {
  	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
  	int error = policy_update(AA_MAY_LOAD_POLICY | AA_MAY_REPLACE_POLICY,
@@ -237,7 +236,7 @@ index fa518cd82366..fa4a6f20f58e 100644
  	aa_put_ns(ns);
  
  	return error;
-@@ -486,7 +488,7 @@ static ssize_t profile_remove(struct file *f, const char __user *buf,
+@@ -483,7 +485,7 @@ static ssize_t profile_remove(struct file *f, const char __user *buf,
  	/* high level check about policy management - fine grained in
  	 * below after unpack
  	 */
@@ -246,7 +245,7 @@ index fa518cd82366..fa4a6f20f58e 100644
  	if (error)
  		goto out;
  
-@@ -1808,7 +1810,7 @@ static int ns_mkdir_op(struct user_namespace *mnt_userns, struct inode *dir,
+@@ -1796,7 +1798,7 @@ static int ns_mkdir_op(struct inode *dir, struct dentry *dentry, umode_t mode)
  	int error;
  
  	label = begin_current_label_crit_section();
@@ -255,7 +254,7 @@ index fa518cd82366..fa4a6f20f58e 100644
  	end_current_label_crit_section(label);
  	if (error)
  		return error;
-@@ -1857,7 +1859,7 @@ static int ns_rmdir_op(struct inode *dir, struct dentry *dentry)
+@@ -1845,7 +1847,7 @@ static int ns_rmdir_op(struct inode *dir, struct dentry *dentry)
  	int error;
  
  	label = begin_current_label_crit_section();
@@ -265,24 +264,23 @@ index fa518cd82366..fa4a6f20f58e 100644
  	if (error)
  		return error;
 diff --git a/security/apparmor/include/policy.h b/security/apparmor/include/policy.h
-index 639b5b248e63..3f776f5e8de4 100644
+index b5aa4231af68..f6682a31df23 100644
 --- a/security/apparmor/include/policy.h
 +++ b/security/apparmor/include/policy.h
-@@ -308,7 +308,7 @@ static inline int AUDIT_MODE(struct aa_profile *profile)
- bool aa_policy_view_capable(struct aa_label *label, struct aa_ns *ns);
- bool aa_policy_admin_capable(struct aa_label *label, struct aa_ns *ns);
+@@ -304,6 +304,6 @@ static inline int AUDIT_MODE(struct aa_profile *profile)
+ bool policy_view_capable(struct aa_ns *ns);
+ bool policy_admin_capable(struct aa_ns *ns);
  int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns,
 -			 u32 mask);
 +			 const struct cred *ocred, u32 mask);
- bool aa_current_policy_view_capable(struct aa_ns *ns);
- bool aa_current_policy_admin_capable(struct aa_ns *ns);
  
+ #endif /* __AA_POLICY_H */
 diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
-index 4ee5a450d118..e7412a221551 100644
+index e59bdb750ef0..f2bc865bc7b6 100644
 --- a/security/apparmor/policy.c
 +++ b/security/apparmor/policy.c
-@@ -712,14 +712,42 @@ bool aa_current_policy_admin_capable(struct aa_ns *ns)
- 	return res;
+@@ -671,14 +671,42 @@ bool policy_admin_capable(struct aa_ns *ns)
+ 	return policy_view_capable(ns) && capable && !aa_g_lock_policy;
  }
  
 +static bool is_subset_of_obj_privilege(const struct cred *cred,
@@ -325,7 +323,7 @@ index 4ee5a450d118..e7412a221551 100644
  {
  	const char *op;
  
-@@ -735,6 +763,11 @@ int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns, u32 mask)
+@@ -694,6 +722,11 @@ int aa_may_manage_policy(struct aa_label *label, struct aa_ns *ns, u32 mask)
  		return audit_policy(label, op, NULL, NULL, "policy_locked",
  				    -EACCES);
  
@@ -334,7 +332,7 @@ index 4ee5a450d118..e7412a221551 100644
 +				    "not privileged for target profile",
 +				    -EACCES);
 +
- 	if (!aa_policy_admin_capable(label, ns))
+ 	if (!policy_admin_capable(ns))
  		return audit_policy(label, op, NULL, NULL, "not policy admin",
  				    -EACCES);
 -- 
