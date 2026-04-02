@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-233055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GCaNqWVzmkBowYAu9opvQ
-	(envelope-from <stable+bounces-233055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:13:25 +0200
+	id CJagG8OWzmkBowYAu9opvQ
+	(envelope-from <stable+bounces-233056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:18:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90B038BB11
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:13:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2D038BBDA
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4B93B3032329
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:13:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 79FBA30B7ACD
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6608E3EDAB6;
-	Thu,  2 Apr 2026 16:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D57E3EF0C1;
+	Thu,  2 Apr 2026 16:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="Pa2AKbHT"
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="bs8QSxHL"
 X-Original-To: stable@vger.kernel.org
 Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010047.outbound.protection.outlook.com [52.101.84.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735113EDADB;
-	Thu,  2 Apr 2026 16:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880B83EF0B3;
+	Thu,  2 Apr 2026 16:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775146402; cv=fail; b=G0IBmkrqjZnNO5D96++0Y4/VkDSSO+ynD6cDA/b5NoQnWmsAG2NaBkdOlWzNjXGykWNx8SFuOHxm1v3HICNrHyueisyOTImBrDsHHAxnpILFJXOlgxWKSl7Hq3vX1QMD/l0BNkegGq6UYJ3vrIS98MROT+YOPYa5tDUxoW3PPbc=
+	t=1775146405; cv=fail; b=Gu8h/aYrq1CGutsBNxUzLx4Qk621zFCgf+tQ5j0a+dva7b8VAaSfQMH94aKGUJJMZPDqFRZPeVdSrfGdbNa1fXrtbJHggeuygudtcfHeTWsrl9txQLeybNjS7gVB12TKVOGXGQBoSvKlt7BLfwKBypLGOLrQBvKg+x9bmAYNcyU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775146402; c=relaxed/simple;
-	bh=dPOnEYWB5l+V4d7mO09kmDxlHkpGHiLdOX3/lEjFWAk=;
+	s=arc-20240116; t=1775146405; c=relaxed/simple;
+	bh=wKjvX4A5ii3gy2R5kMntEbYOr8JYQWpmhCTx84xG590=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jFl+OgP5uJatMWgiloibZ0c5dhvIWHn0ptxWYOWSr1JLdIov0th9NeasDlURCdC/mP7q7FDcmj2i2jaHL/scyTkdFDiXwmOIok0xaq+RTHh2zM/ddVa/f2SWyJLrsDGyOZMxUYuXgKZBWUDsHy9Cklj3Hj/fYaWSlNFYkplOxs0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=Pa2AKbHT; arc=fail smtp.client-ip=52.101.84.47
+	 Content-Type:MIME-Version; b=Yri5nuw7Ky8jvGv462dsQJCe+zRfW+CblL6snKmHxovmYzgHk1u/mJHfloynsOkM98PItV6u6xxh2iT2/mfn7gpj9YGcTGu18gCGkd66DKm+9o2hHMqQ7t7WDPRobIm20A6BHUKh28an0/nVI89kllLVh0DpUT1Ghn7f9HM+TbE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=bs8QSxHL; arc=fail smtp.client-ip=52.101.84.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=i5Px2xyB26TAWFTnzV7ua3TcBXi2p5Q15z6UDxEoBMBVuB2DQHfrkQScIlt9dnFTQw6GNm250bIsAZKltlHW2+ZGog9bCbxEwFBYvxatync/sjs5DrYyeMJ5BCt1UbO1HAoDKFq0E3taJiCF5a04n4v2xErewWUBTtMYxIhDrAFA2w6jY2VuaPa+1xXXKs4OLgNPxx9/Jq1X+FN+esn/HHDLfhsDCNWDIyUxHPOG31BwvLh6/va8aVtQ10JmepwtvkAcKtTk19vPlOLXw/Q52MikILQHMo7UUYTREJQmGOtD1Cp537Slnv8SJqd2h0qHKl6gsqQT+6lmQGUtyywZgg==
+ b=DrJBCvpDwNN+gUY/w5vhsZypx2tFQGgNIauzSPjms2E02m/aSmvbuivRLDk9fe/3sPtwTIymVpxCgUKQ6pHKf/UjCrYYhWlkwy0OyD3PEWYdU2fakbmjXEr++0yRESy0vTZXrErSCOWX04YHjvg1Wm1IjpS1wdsvSy5QLk9Plm8wx6Uo3MKXi82vlhalNr18oRRrwqlD3wwyy/qGRoGLcC1I90IleKuhj+4ORaAWz5rdMpSvfNMt9jhHOTOoiBTjqTryCVeNkgaE8I4ZfQ4RFQatXiMAQYzX+eKYUmjT2VGH+baJw1s7/cPso2xSQWDOC+P5YCOM4a0WRw1crPMs2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W+J6M7Xf3RRkbvALcDgcTy2z46GpeZS26iQuUWBuKL0=;
- b=ax8BolZaZvYtH5cUsmRnUK3uunE6iMGuP5Y3R6UE3XfMDu5VQSWf5ohQpfg0WhBfw7n2mW8PeMqgeWaSPvHLFCy8K5pws2tBSzeNwB+B9nLpVsnB2AjgEFR3/JQEcuaJ4dSYBXF1LlOziu2oT4u3ZprZ8EZKSGLwfJOVcfP3VCHA/C92OwjDOWJXRNLNCZ7GLvQ8q6bi1ziQx4tJYKeYcWloeGtoFc78tgca6ypznee2LCmZrEkJwphIaWbaeOWqmuHpxqK64zVLEtL/o62oIzf48fHWUH6UzRsieJgw9o1DHbPd3CXazjRAlE8HxhDffpyq5DrzeJxT6plObKnzDA==
+ bh=kwwucJ8yKRf8flv1O4l7hOnMbE2qDtKIcAyEDWgAC9I=;
+ b=Y+Qol9+4Je1VgiI+GY2i5v/Z6tAdq+DPgP5IgW0vXLBHMMsS97wEu5mRxHEgu8tx9a1zlS9R4Jy0c2YEY6TQeppuZzBV0yt9uNpVeRCzKEh59zj7t5GC7uQ60QXMZ82Gt1MsufFtQ6SaWo8N1IdOyD0Q0bFQAd8Iv5KGmBkgB5xbFpS7TxtfzxMBetlRqs8LCnzbShVUvw9oQ8a3/EQXThAhLmOybQWs4Qi7NjWvVnhs9k4d+5vqLbauE46lqqVAbXekUTit4LARUT0Zb5tUkTx671JAqigzsELSp5AfENuuplS3ElM34NxjMCpAsTG5fV+eQsnq5LFPqaokuAQPfw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W+J6M7Xf3RRkbvALcDgcTy2z46GpeZS26iQuUWBuKL0=;
- b=Pa2AKbHT7gyySk9LeZ4/HqPaIZTi5dKyG65mARvH3g14+xxyDdGrMQGPMuqEkO2eI9RFixQWykAtS8ux8FZRuqBaph5fJx/cabphMXafBqbXxBB2F+F3mw+WNEN6a2QkzAp0RC78um4kdFoui8VfrGOWJDX2rMQuZC1D50Hsy7QQeSi2k2JNkPyP1MydpFveuIjSMeclpXFUAhmIhjBU3jLujM/rRwpVKxJlLTw7EssfoeJutl7abo0U+F6nvh3HEwsp7Gc1yiyhQkfkTGsr745kq3WjeN4cH9G94RI0hRN+IJZToqeMyH+MXyPOI28WgzDoq4V2fdjmYa/ded3Uew==
+ bh=kwwucJ8yKRf8flv1O4l7hOnMbE2qDtKIcAyEDWgAC9I=;
+ b=bs8QSxHLQP0UJufUlHDJQB1sTkzBCyANjYB8H/47KKuIKTKsYBW3CYtORMEehxCxaajWjw2Hq1e+JOqOu2bb17+jgu2WETI9S0+LA7pM+JXbvqYzuGud2xORU3lqGYGmQvpuY8QI9Zk0TKcwqDb61jJUociX6JiMtho6ezQHm/FnVQGNEPHdyPttUWC7dJuJ9Clg0KuiHilHq3SifGq2HG35YULeqqJSONaTfCZop0TAAT7QEVKhx/JzFk7TpW/yHLVi5GtpeeUud3GzgrYK8CH1V078hcIvabVJL+/56Fs1pYmC8yqjapBryxN+263nCAA4r5DEw9iTbDt2sjsbjw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=est.tech;
 Received: from DB8P189MB0966.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:16b::8) by
  PAXP189MB1952.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:28c::21) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.20; Thu, 2 Apr 2026 16:13:15 +0000
+ 15.20.9769.20; Thu, 2 Apr 2026 16:13:16 +0000
 Received: from DB8P189MB0966.EURP189.PROD.OUTLOOK.COM
  ([fe80::48c:33b2:d870:d0ca]) by DB8P189MB0966.EURP189.PROD.OUTLOOK.COM
  ([fe80::48c:33b2:d870:d0ca%4]) with mapi id 15.20.9769.016; Thu, 2 Apr 2026
- 16:13:15 +0000
+ 16:13:16 +0000
 From: tugrul.kukul@est.tech
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org,
@@ -76,16 +76,16 @@ Cc: alex.williamson@redhat.com,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	david.nystrom@est.tech
-Subject: [PATCH 6.6.y 1/4] vfio: Create vfio_fs_type with inode per device
-Date: Thu,  2 Apr 2026 18:13:08 +0200
-Message-Id: <20260402161311.63484-2-tugrul.kukul@est.tech>
+Subject: [PATCH 6.6.y 2/4] vfio/pci: Use unmap_mapping_range()
+Date: Thu,  2 Apr 2026 18:13:09 +0200
+Message-Id: <20260402161311.63484-3-tugrul.kukul@est.tech>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260402161311.63484-1-tugrul.kukul@est.tech>
 References: <20260402161311.63484-1-tugrul.kukul@est.tech>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: LO4P265CA0020.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ae::16) To DB8P189MB0966.EURP189.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P265CA0167.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:312::12) To DB8P189MB0966.EURP189.PROD.OUTLOOK.COM
  (2603:10a6:10:16b::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -95,65 +95,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB8P189MB0966:EE_|PAXP189MB1952:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb8801af-eb37-4de1-9a0a-08de90d2bea8
+X-MS-Office365-Filtering-Correlation-Id: c31d12bf-d45b-4648-3c73-08de90d2bf72
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	jRucQv/Dol8/Rp/7uEb0B99+NmHoMcrAqc5Pm7e3fnnpd2OvT5ki0P4Lahg5k7gBbAQGbvSTtomKaOLioEf2wDT1shhPC9yavcIvLnVcUcn04UZT+1MUk/VIC2V+8Ymb7I0QNRrIfoGEk36G5VjMy25XRjbl0tIhCb/bN9rgjmlv0UldC0WfjMoZEHFXS7c1sWPmnf+nRl/bL/1aNe/DNWBJqD1/Ol5xzR7dC3B9+6JFw+HuQNcPnEQj0WKcmS633jvu/OxspjEhqVjedHr7fLh607Jc0tn4N3teRfsckeRcKMJdt4hD2fbUFkhJtPesWOo9OiUGMnquGcaTe4Msbkhe1MYfhCoequDtNKlG0xY6mHxrWt0+L3+5xaZ0aEcir9c72a4tvviHYVWMwc8MdDTZzAcMG1Iw7zfEMSG2/lguNOxpDeWXQsopWfzNEEDqornSAm0osxBqM4QJhiHRBZNW9lfOARFRgGObtS3cqy8duk/USwUE1JSmMiErDR1m2e736qA46id1F3g9HFXOBPLx2kxArLvpFgwZRPhzbCDXql+kdStauqdkQACf8DClUVofCGYEppvI4efuxhsZM0AFOwQIyPAWkAX9hPOcDFMKeflwu0RJypkS7LUlE7oWj9QyqFvjNZSE6MThk3NM+oK1pPrGloIywMMFuVPCGm8/d0KuuxPrkwNc3baalzIwqYK4zlhosk2kO9io4dIHxMdeJbnuW+IsGpw9koKWvO0=
+	8hcQXbTfPJ2cfGkUY0M3TmtvjLfqNGgVMa0xCQdndnUGLsgvHkwK/Z0WoK3KbGGxY14ukvYdN9yq9w2y/HlyjExJYtr6/GEDMbxILriAN2mscwZnXTHfNEAbKCbNvMv4At2mnqvdaBM/k5isEwCSalldkxP/k3K3UKfunJhpylMUhz8v4vk5NK1aLEOclXsWCQQuK+gfSjsmVdCAXWUCySCRznWMusqstL3BTr66iPZvoYyRRR+CLMu3fwYLAk8XTmxI+j8Y7pmgIYKPwRoa7Bws9C9QXFQNrdEQkz86dt36qikk+uGeGAbhNGmVHEtwr9cAypjlb4Z9K2Bv/4WIyjLXAYVpPJcOT/F74PgNHXJ9fIBkfLEzNOvQz6yVeCFSC7IQ1UrcfB07Hx6TlaYI1R+7K2jatc3HeaLKrNXNo08kS04QD76+Z7muMgNddhApX8sPC2s12OGF98tPD2JmyPG2A2xpg02qd9vIde4tTvF0qKxe7hGr7RqOqJDqYc7qDGlvKpVdg57PTajOiCLC7NH4Tm2sYlmwaTkVn4yhtvVuV0MSUFzYh2R4QkdudVAu/qtxqhenJJ18zUQvY9E6WdsgQQUMj2J9yxB4wJTzk44S74NYRFksH+dtSUj/km2eODQV8NOx+zkT4Bf58LSHuhJPKU75Ytb2Npp6q7XGUUICi7TYproH6qgnFfqnf156YlP0TEzy4+KQPTl9DydOhfXYA5UdnMcKbQbNfGxZ1N4=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8P189MB0966.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Y1i+vp7RUgfx/Km+Hd7eLCZJKXwmbnmXRknfBYHxoh0oZGGQ9t9rjhMOZ9cG?=
- =?us-ascii?Q?95eFuzb+9alUxHfIhN0XkAgHrKT02Ln7mYkJtKQldGck8DWHFvF4CQX9IQeR?=
- =?us-ascii?Q?ILxNjK8A4mlQfps/e5xAZigj6Q2UOlF5MxpQZy9i9nwpoqgntLyqwiEtody/?=
- =?us-ascii?Q?lXU4ChncWcf3aEYC/86cCMM9L3qU7FK+CeXGGk5mOQEzM0FVqVHCTrur72/7?=
- =?us-ascii?Q?GZLmyCpHHU3LJmFzY/LqAll91MNzUP9LPaEfKVo/QvbAqron5KE9JJfsiXw2?=
- =?us-ascii?Q?1iDxVx9AlRI5GLTa+i7x+BvCAmcUUd6SUWRLeshbErBN5aXlLqSoC+FM6xVy?=
- =?us-ascii?Q?9nEJVUKXBKkawSe0QLBEz/muyw6LvwpjcFy0cBemCqWTW0RErahtd00LSu3/?=
- =?us-ascii?Q?/d5CZFUkuPnERQ1vlTCrx3KhUNBy3ZJKYSW3RAWdvEOZZugN+jwFz1YIjlPY?=
- =?us-ascii?Q?N0/sHPBJXfKxtyirXRFXDU3iViCCFdLRFPzOKfrnN9uIDHezFhFLMe05n4sC?=
- =?us-ascii?Q?jG7xYu2nca/niCVRrqHY5p5Dvl7e4N2z/LKhHY9Wsq7VJVbvsuEjVYHf51BA?=
- =?us-ascii?Q?5L9bwErCLkqkVGKKbo827MpjaSZXsyWIgOB2LLfDlIIdsnt+GbXgZrziI2IO?=
- =?us-ascii?Q?ibO/qiui4fXs8zG+XeZ8yxAMKRCVZntTlvFVqIo7GqbhXp6QiFTo44LXX+mW?=
- =?us-ascii?Q?ba/X5oOLwQTzwAg0JmflXGxzCzEGnQfZwYRpuRa8985MclCVbp0opPRdEWRq?=
- =?us-ascii?Q?Ly/CKVVV519Im1n3hiO7wAdFiqUAet8vzPrcrBZStakcsblOJ07T/h1odfQu?=
- =?us-ascii?Q?Ngx4GDZZegQojQo2WODA9FNw5wR73aj2QqxFANGhSQ4XGHftnQIawlFYRnPF?=
- =?us-ascii?Q?dUh/+9KCAw1wgiiLBxBFe74whBNemC+q2ygAvMuxeaSUxj9LhcwB3Z+/vUVn?=
- =?us-ascii?Q?pYK6OKuH4K6XwJZnV+gabffO/BJekJW0NTcKqvzbwiv34C0XTIhZ9MmV+aPz?=
- =?us-ascii?Q?LgB0ECb65LGIZFWZjtUfx0EzcgljUAPOUDx+O0DC9wzaoOGYAtcqgi7mN0Va?=
- =?us-ascii?Q?Z4EuLdSWMbq5NhGKtzVkCt3Vv4wdDikjLuBgfjC8v0kEKoGKDKbSrePY0vZZ?=
- =?us-ascii?Q?4pN4kSKcu8x8tf1pvuhiX80C9MdCH5sl7cHSLkK3CLbwx+9ZICVzr9QYm6Dd?=
- =?us-ascii?Q?z4puiuWNC379M2Bw7ojXUHvnYEvX+PrUkJWZSLOyg/ESYOObRJtGaXbqcCDH?=
- =?us-ascii?Q?hu3/Nf+m1LgToK6IS4arbPlhc+Xju+zXIjSaLgPosWWGpEidjehb5beFJUQp?=
- =?us-ascii?Q?IpFap2flHWeQgI2Eg0Ykl8uwC07JONroP36S03p1orZ7o6SXemfhtbF/f+ss?=
- =?us-ascii?Q?u+WwK9u5VjW1RkxLPGKCjGX2eW1X+13kiz9NFDIs0+ENZkNUoDMtiyGUNdyT?=
- =?us-ascii?Q?3jJgviMS9ot4RSZmB8yXI2rfNcdnPhBTJbN0MfOZ2z3Jta7r2RNwfODbZE0v?=
- =?us-ascii?Q?WRITnWDY4LPUW5268WfAGuhZCU5yLOb7sCGJRB+ydtfLE1V9qDyET4DWR2x9?=
- =?us-ascii?Q?nNNS5qGVbkPLtW06S4BGx59rpWypptfXdJ2VV7CS9Rxm1JiSlPSkIHRGr/Jw?=
- =?us-ascii?Q?mgBgCJS3QG0yJA+q7Z/YgX4bcfMB+0L6Yjh32qlxTB6vvUwEk2YpYG0BjPxR?=
- =?us-ascii?Q?sDdmbnnaJmWOi9siXInsJOLFNulcakus22kl1zg2QMwbRWZpz94OCUnXuFSW?=
- =?us-ascii?Q?RX6ZLSm6SA=3D=3D?=
+	=?us-ascii?Q?kPoloO5x5UuoK5dadzwCDo3jRpJZbPagbqjlKf9bw19SXbdxHs+Jr4QAx4XU?=
+ =?us-ascii?Q?pPO3n8Z8ok/a3c9aJTcfMqLh0MO9Zz9IFNuCHCoddhYK9kYzbT4PT4LFDYbJ?=
+ =?us-ascii?Q?qlwZa/IO5Gzk8nkeoCczI1kBgfRkwJdWQJm6Q9iMmqIafcLccFTf8HdMBhoD?=
+ =?us-ascii?Q?nFnWW7ASFZXQ3ivxnxYGIzTwXjEuJxdHmj2kjLT8Di7MT1wcQqEGqWyPHJ/A?=
+ =?us-ascii?Q?1MZE5s7q0lNSpYWUalaLvjdU24YhWxyGFWs1VGNFhQKoAmnpAh/TXrRQdFMj?=
+ =?us-ascii?Q?KN4fSamjGEdK5PaN0Uk9TcAs5hbSb2NEucxWej9M/GLfDHzSTbpQm/iMVBYe?=
+ =?us-ascii?Q?ruBYuhqBbmFS51BmiSzi6/TLNnqf2tgSmfBCcop6Rd+/vmTafimNdxBTNuJ3?=
+ =?us-ascii?Q?lCmc2SuIgIaEhF2icv+qmQ7pI8+gmjUK0VVWyWol4f6smBO24gG2o6woL6im?=
+ =?us-ascii?Q?W9O1hX2pEZR8KTEAmt+zpqNOCHRXqs2Xc4Gsz3jmQIZjcB0DcN5CSx4bFFlG?=
+ =?us-ascii?Q?3r07uxfN1jnOtkEjwS0kl2skJ6WYZUl7fsUgw2sKEfNbRzYT8XzMI8+Mh2+p?=
+ =?us-ascii?Q?k4y7VxTs6jtdZwE0ddUFgdP3i1M+swR7/K9Xn7a+2G0AZm9V/40SUorJko8Z?=
+ =?us-ascii?Q?zoy+MI9HxYeVx846eRy88chHNi1Ro9XYJv/douQdZ7UVLn2LpBRMIgBMgXcL?=
+ =?us-ascii?Q?rdjhOxYX+SBy8qVQbmls7DagBOtSmEBq0K9LthOb/9ZQkwTTCoxXoOa+u8hS?=
+ =?us-ascii?Q?Us1vHEI+LwoHsofBKLlOQjxURlKGNUYURnC7NY3W1APKMD/kd4XeNeE2rTS4?=
+ =?us-ascii?Q?FYBay/lXdEdwdixDKSzf41Yvs+vFfQAghqFtZhG0vooHc+SsycG6B5KwJpN1?=
+ =?us-ascii?Q?FtJoZ1HYr1FEutdTikgn4in617oNW+K5CQhfgsJJvSDgQr1mZakBwMiLIBzL?=
+ =?us-ascii?Q?/LhS/boZaqBevCe+QDgo6xqajp5PVDvBYcb/NRq5XWsOgb92WNLDkmWoKhpR?=
+ =?us-ascii?Q?ABaNMmEUeKcpZxkfuJ8dURhKl9jYZ+7DHXQyDe5CWZFTvK3C2iN1rGFTvYxp?=
+ =?us-ascii?Q?CFNOze3i7CAs4KW4DvHBrS6IU21sNfCVvlYU9Pu7thLYb3W/LV7s8F0lepFZ?=
+ =?us-ascii?Q?HIzorHZs6EWDxJDQeD6qew2oFZyAxKJAk+HPa8ttD8GN6FhwvfbHNrL2BiNW?=
+ =?us-ascii?Q?zOBGK6RkBxI/BlqRNxAyV9ZxN7sfB2sxbyla4zZO49qcQEH66c6WNQcrw+qG?=
+ =?us-ascii?Q?GlDnWigRs5yODRTkJ25Cy0jQ1zcOXQEUf2KbUNQsri1nqz8iXpzCCdVR5bnN?=
+ =?us-ascii?Q?xvzVlPELOyv0X6uABCfgNjzuKdXhNdJ/zMRYIpAvhtEcHuLJXy5O7PdkTIxO?=
+ =?us-ascii?Q?8VEfS+2OepaocIQ4DDcHqWYerquKfseCJ6uwfWad3O/5WAbptv+SpGuuilO0?=
+ =?us-ascii?Q?iZo5SL1KL8C0JQtVY4OW7T36FyX1Q79b0fgl8le6URR9Pm7BhBvm9D1YBgOr?=
+ =?us-ascii?Q?a79xtZHBudKjEtSpCP0HXh9Tgo7biqv7z76VDFi6WAUGjRPdZNqyi5wmCuBG?=
+ =?us-ascii?Q?FedoWrYf6l7SZocGkRTGpiBtwf++hOjKAdjAKQkK9Z2W1+ce0zStkbT72OWY?=
+ =?us-ascii?Q?9BzN7/wAAoEzJpkCB+0Pm6KymWE3pIvkU/ot7puc8OGuEcQH/Mj0u5IwqGGm?=
+ =?us-ascii?Q?Se3xWEZnqBWTEzvw36BC7sjDdqbCIey/yoKXJMBo7LN/+wLL3k5XGaMmUXrZ?=
+ =?us-ascii?Q?Er6qAZFMBQ=3D=3D?=
 X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb8801af-eb37-4de1-9a0a-08de90d2bea8
+X-MS-Exchange-CrossTenant-Network-Message-Id: c31d12bf-d45b-4648-3c73-08de90d2bf72
 X-MS-Exchange-CrossTenant-AuthSource: DB8P189MB0966.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 16:13:15.0671
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 16:13:16.3918
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +5y1cuFV8n2wRs+R1gt6ddeQDMn9wxrtBQ+6fY5UnbtLvzPOMieKXS3N9O3W3r03Ioa7Ac/SnJxQuDjEU1IATg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Tpm2jbU+5AkW//bWqY1Dpl4Bbg9Cl5kzZXuD8kahg6JdC9nqBN1LxqCi+zogowwbqENvxYGNLmLB6r6ZzH5zlw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP189MB1952
 X-Spamd-Result: default: False [3.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_REJECT(1.00)[cv is fail on i=2];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[est.tech:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -162,187 +162,462 @@ X-Spamd-Result: default: False [3.34 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[redhat.com,intel.com,ziepe.ca,oracle.com,linux-foundation.org,huawei.com,google.com,gmail.com,vger.kernel.org,est.tech];
-	TAGGED_FROM(0.00)[bounces-233055-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233056-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[17];
-	TO_DN_NONE(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tugrul.kukul@est.tech,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[est.tech:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NO_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tugrul.kukul@est.tech,stable@vger.kernel.org]
-X-Rspamd-Queue-Id: A90B038BB11
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[est.tech:dkim,est.tech:email,est.tech:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: EA2D038BBDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Alex Williamson <alex.williamson@redhat.com>
 
-commit b7c5e64fecfa88764791679cca4786ac65de739e upstream.
+commit aac6db75a9fc2c7a6f73e152df8f15101dda38e6 upstream.
 
-By linking all the device fds we provide to userspace to an
-address space through a new pseudo fs, we can use tools like
-unmap_mapping_range() to zap all vmas associated with a device.
+With the vfio device fd tied to the address space of the pseudo fs
+inode, we can use the mm to track all vmas that might be mmap'ing
+device BARs, which removes our vma_list and all the complicated lock
+ordering necessary to manually zap each related vma.
+
+Note that we can no longer store the pfn in vm_pgoff if we want to use
+unmap_mapping_range() to zap a selective portion of the device fd
+corresponding to BAR mappings.
+
+This also converts our mmap fault handler to use vmf_insert_pfn()
+because we no longer have a vma_list to avoid the concurrency problem
+with io_remap_pfn_range().  The goal is to eventually use the vm_ops
+huge_fault handler to avoid the additional faulting overhead, but
+vmf_insert_pfn_{pmd,pud}() need to learn about pfnmaps first.
+
+Also, Jason notes that a race exists between unmap_mapping_range() and
+the fops mmap callback if we were to call io_remap_pfn_range() to
+populate the vma on mmap.  Specifically, mmap_region() does call_mmap()
+before it does vma_link_file() which gives a window where the vma is
+populated but invisible to unmap_mapping_range().
 
 Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240530045236.1005864-2-alex.williamson@redhat.com
+Link: https://lore.kernel.org/r/20240530045236.1005864-3-alex.williamson@redhat.com
 Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
 Signed-off-by: Tugrul Kukul <tugrul.kukul@est.tech>
 ---
- drivers/vfio/device_cdev.c |  7 ++++++
- drivers/vfio/group.c       |  7 ++++++
- drivers/vfio/vfio_main.c   | 44 ++++++++++++++++++++++++++++++++++++++
- include/linux/vfio.h       |  1 +
- 4 files changed, 59 insertions(+)
+ drivers/vfio/pci/vfio_pci_core.c | 264 +++++++------------------------
+ include/linux/vfio_pci_core.h    |   2 -
+ 2 files changed, 55 insertions(+), 211 deletions(-)
 
-diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-index e75da0a70d1f8..bb1817bd4ff31 100644
---- a/drivers/vfio/device_cdev.c
-+++ b/drivers/vfio/device_cdev.c
-@@ -39,6 +39,13 @@ int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 3f139360752e2..e05d6ee9d4cab 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1599,100 +1599,20 @@ ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *bu
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_write);
  
- 	filep->private_data = df;
+-/* Return 1 on zap and vma_lock acquired, 0 on contention (only with @try) */
+-static int vfio_pci_zap_and_vma_lock(struct vfio_pci_core_device *vdev, bool try)
++static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
+ {
+-	struct vfio_pci_mmap_vma *mmap_vma, *tmp;
++	struct vfio_device *core_vdev = &vdev->vdev;
++	loff_t start = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_BAR0_REGION_INDEX);
++	loff_t end = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_ROM_REGION_INDEX);
++	loff_t len = end - start;
  
-+	/*
-+	 * Use the pseudo fs inode on the device to link all mmaps
-+	 * to the same address space, allowing us to unmap all vmas
-+	 * associated to this device using unmap_mapping_range().
-+	 */
-+	filep->f_mapping = device->inode->i_mapping;
-+
- 	return 0;
- 
- err_put_registration:
-diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
-index 54c3079031e16..4cd857ff0259b 100644
---- a/drivers/vfio/group.c
-+++ b/drivers/vfio/group.c
-@@ -285,6 +285,13 @@ static struct file *vfio_device_open_file(struct vfio_device *device)
- 	 */
- 	filep->f_mode |= (FMODE_PREAD | FMODE_PWRITE);
- 
-+	/*
-+	 * Use the pseudo fs inode on the device to link all mmaps
-+	 * to the same address space, allowing us to unmap all vmas
-+	 * associated to this device using unmap_mapping_range().
-+	 */
-+	filep->f_mapping = device->inode->i_mapping;
-+
- 	if (device->group->type == VFIO_NO_IOMMU)
- 		dev_warn(device->dev, "vfio-noiommu device opened by user "
- 			 "(%s:%d)\n", current->comm, task_pid_nr(current));
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 6dfb290c339f9..ec4fbd993bf00 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -22,8 +22,10 @@
- #include <linux/list.h>
- #include <linux/miscdevice.h>
- #include <linux/module.h>
-+#include <linux/mount.h>
- #include <linux/mutex.h>
- #include <linux/pci.h>
-+#include <linux/pseudo_fs.h>
- #include <linux/rwsem.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-@@ -43,9 +45,13 @@
- #define DRIVER_AUTHOR	"Alex Williamson <alex.williamson@redhat.com>"
- #define DRIVER_DESC	"VFIO - User Level meta-driver"
- 
-+#define VFIO_MAGIC 0x5646494f /* "VFIO" */
-+
- static struct vfio {
- 	struct class			*device_class;
- 	struct ida			device_ida;
-+	struct vfsmount			*vfs_mount;
-+	int				fs_count;
- } vfio;
- 
- #ifdef CONFIG_VFIO_NOIOMMU
-@@ -186,6 +192,8 @@ static void vfio_device_release(struct device *dev)
- 	if (device->ops->release)
- 		device->ops->release(device);
- 
-+	iput(device->inode);
-+	simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
- 	kvfree(device);
+-	/*
+-	 * Lock ordering:
+-	 * vma_lock is nested under mmap_lock for vm_ops callback paths.
+-	 * The memory_lock semaphore is used by both code paths calling
+-	 * into this function to zap vmas and the vm_ops.fault callback
+-	 * to protect the memory enable state of the device.
+-	 *
+-	 * When zapping vmas we need to maintain the mmap_lock => vma_lock
+-	 * ordering, which requires using vma_lock to walk vma_list to
+-	 * acquire an mm, then dropping vma_lock to get the mmap_lock and
+-	 * reacquiring vma_lock.  This logic is derived from similar
+-	 * requirements in uverbs_user_mmap_disassociate().
+-	 *
+-	 * mmap_lock must always be the top-level lock when it is taken.
+-	 * Therefore we can only hold the memory_lock write lock when
+-	 * vma_list is empty, as we'd need to take mmap_lock to clear
+-	 * entries.  vma_list can only be guaranteed empty when holding
+-	 * vma_lock, thus memory_lock is nested under vma_lock.
+-	 *
+-	 * This enables the vm_ops.fault callback to acquire vma_lock,
+-	 * followed by memory_lock read lock, while already holding
+-	 * mmap_lock without risk of deadlock.
+-	 */
+-	while (1) {
+-		struct mm_struct *mm = NULL;
+-
+-		if (try) {
+-			if (!mutex_trylock(&vdev->vma_lock))
+-				return 0;
+-		} else {
+-			mutex_lock(&vdev->vma_lock);
+-		}
+-		while (!list_empty(&vdev->vma_list)) {
+-			mmap_vma = list_first_entry(&vdev->vma_list,
+-						    struct vfio_pci_mmap_vma,
+-						    vma_next);
+-			mm = mmap_vma->vma->vm_mm;
+-			if (mmget_not_zero(mm))
+-				break;
+-
+-			list_del(&mmap_vma->vma_next);
+-			kfree(mmap_vma);
+-			mm = NULL;
+-		}
+-		if (!mm)
+-			return 1;
+-		mutex_unlock(&vdev->vma_lock);
+-
+-		if (try) {
+-			if (!mmap_read_trylock(mm)) {
+-				mmput(mm);
+-				return 0;
+-			}
+-		} else {
+-			mmap_read_lock(mm);
+-		}
+-		if (try) {
+-			if (!mutex_trylock(&vdev->vma_lock)) {
+-				mmap_read_unlock(mm);
+-				mmput(mm);
+-				return 0;
+-			}
+-		} else {
+-			mutex_lock(&vdev->vma_lock);
+-		}
+-		list_for_each_entry_safe(mmap_vma, tmp,
+-					 &vdev->vma_list, vma_next) {
+-			struct vm_area_struct *vma = mmap_vma->vma;
+-
+-			if (vma->vm_mm != mm)
+-				continue;
+-
+-			list_del(&mmap_vma->vma_next);
+-			kfree(mmap_vma);
+-
+-			zap_vma_ptes(vma, vma->vm_start,
+-				     vma->vm_end - vma->vm_start);
+-		}
+-		mutex_unlock(&vdev->vma_lock);
+-		mmap_read_unlock(mm);
+-		mmput(mm);
+-	}
++	unmap_mapping_range(core_vdev->inode->i_mapping, start, len, true);
  }
  
-@@ -228,6 +236,34 @@ struct vfio_device *_vfio_alloc_device(size_t size, struct device *dev,
+ void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev)
+ {
+-	vfio_pci_zap_and_vma_lock(vdev, false);
+ 	down_write(&vdev->memory_lock);
+-	mutex_unlock(&vdev->vma_lock);
++	vfio_pci_zap_bars(vdev);
  }
- EXPORT_SYMBOL_GPL(_vfio_alloc_device);
  
-+static int vfio_fs_init_fs_context(struct fs_context *fc)
-+{
-+	return init_pseudo(fc, VFIO_MAGIC) ? 0 : -ENOMEM;
-+}
-+
-+static struct file_system_type vfio_fs_type = {
-+	.name = "vfio",
-+	.owner = THIS_MODULE,
-+	.init_fs_context = vfio_fs_init_fs_context,
-+	.kill_sb = kill_anon_super,
-+};
-+
-+static struct inode *vfio_fs_inode_new(void)
-+{
-+	struct inode *inode;
-+	int ret;
-+
-+	ret = simple_pin_fs(&vfio_fs_type, &vfio.vfs_mount, &vfio.fs_count);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	inode = alloc_anon_inode(vfio.vfs_mount->mnt_sb);
-+	if (IS_ERR(inode))
-+		simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
-+
-+	return inode;
-+}
-+
- /*
-  * Initialize a vfio_device so it can be registered to vfio core.
-  */
-@@ -246,6 +282,11 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
- 	init_completion(&device->comp);
- 	device->dev = dev;
- 	device->ops = ops;
-+	device->inode = vfio_fs_inode_new();
-+	if (IS_ERR(device->inode)) {
-+		ret = PTR_ERR(device->inode);
-+		goto out_inode;
-+	}
+ u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev)
+@@ -1714,99 +1634,41 @@ void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev, u16 c
+ 	up_write(&vdev->memory_lock);
+ }
  
- 	if (ops->init) {
- 		ret = ops->init(device);
-@@ -260,6 +301,9 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
- 	return 0;
+-/* Caller holds vma_lock */
+-static int __vfio_pci_add_vma(struct vfio_pci_core_device *vdev,
+-			      struct vm_area_struct *vma)
+-{
+-	struct vfio_pci_mmap_vma *mmap_vma;
+-
+-	mmap_vma = kmalloc(sizeof(*mmap_vma), GFP_KERNEL_ACCOUNT);
+-	if (!mmap_vma)
+-		return -ENOMEM;
+-
+-	mmap_vma->vma = vma;
+-	list_add(&mmap_vma->vma_next, &vdev->vma_list);
+-
+-	return 0;
+-}
+-
+-/*
+- * Zap mmaps on open so that we can fault them in on access and therefore
+- * our vma_list only tracks mappings accessed since last zap.
+- */
+-static void vfio_pci_mmap_open(struct vm_area_struct *vma)
+-{
+-	zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+-}
+-
+-static void vfio_pci_mmap_close(struct vm_area_struct *vma)
++static unsigned long vma_to_pfn(struct vm_area_struct *vma)
+ {
+ 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+-	struct vfio_pci_mmap_vma *mmap_vma;
++	int index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
++	u64 pgoff;
  
- out_uninit:
-+	iput(device->inode);
-+	simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
-+out_inode:
- 	vfio_release_device_set(device);
- 	ida_free(&vfio.device_ida, device->index);
+-	mutex_lock(&vdev->vma_lock);
+-	list_for_each_entry(mmap_vma, &vdev->vma_list, vma_next) {
+-		if (mmap_vma->vma == vma) {
+-			list_del(&mmap_vma->vma_next);
+-			kfree(mmap_vma);
+-			break;
+-		}
+-	}
+-	mutex_unlock(&vdev->vma_lock);
++	pgoff = vma->vm_pgoff &
++		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
++
++	return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
+ }
+ 
+ static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+-	struct vfio_pci_mmap_vma *mmap_vma;
+-	vm_fault_t ret = VM_FAULT_NOPAGE;
++	unsigned long pfn, pgoff = vmf->pgoff - vma->vm_pgoff;
++	vm_fault_t ret = VM_FAULT_SIGBUS;
+ 
+-	mutex_lock(&vdev->vma_lock);
+-	down_read(&vdev->memory_lock);
++	pfn = vma_to_pfn(vma);
+ 
+-	/*
+-	 * Memory region cannot be accessed if the low power feature is engaged
+-	 * or memory access is disabled.
+-	 */
+-	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev)) {
+-		ret = VM_FAULT_SIGBUS;
+-		goto up_out;
+-	}
++	down_read(&vdev->memory_lock);
+ 
+-	/*
+-	 * We populate the whole vma on fault, so we need to test whether
+-	 * the vma has already been mapped, such as for concurrent faults
+-	 * to the same vma.  io_remap_pfn_range() will trigger a BUG_ON if
+-	 * we ask it to fill the same range again.
+-	 */
+-	list_for_each_entry(mmap_vma, &vdev->vma_list, vma_next) {
+-		if (mmap_vma->vma == vma)
+-			goto up_out;
+-	}
++	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
++		goto out_disabled;
+ 
+-	if (io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
+-			       vma->vm_end - vma->vm_start,
+-			       vma->vm_page_prot)) {
+-		ret = VM_FAULT_SIGBUS;
+-		zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+-		goto up_out;
+-	}
++	ret = vmf_insert_pfn(vma, vmf->address, pfn + pgoff);
+ 
+-	if (__vfio_pci_add_vma(vdev, vma)) {
+-		ret = VM_FAULT_OOM;
+-		zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+-	}
+-
+-up_out:
++out_disabled:
+ 	up_read(&vdev->memory_lock);
+-	mutex_unlock(&vdev->vma_lock);
++
  	return ret;
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 5ac5f182ce0bb..514a7f9b3ef4b 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -64,6 +64,7 @@ struct vfio_device {
- 	struct completion comp;
- 	struct iommufd_access *iommufd_access;
- 	void (*put_kvm)(struct kvm *kvm);
-+	struct inode *inode;
- #if IS_ENABLED(CONFIG_IOMMUFD)
- 	struct iommufd_device *iommufd_device;
- 	u8 iommufd_attached:1;
+ }
+ 
+ static const struct vm_operations_struct vfio_pci_mmap_ops = {
+-	.open = vfio_pci_mmap_open,
+-	.close = vfio_pci_mmap_close,
+ 	.fault = vfio_pci_mmap_fault,
+ };
+ 
+@@ -1869,11 +1731,12 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
+ 
+ 	vma->vm_private_data = vdev;
+ 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-	vma->vm_pgoff = (pci_resource_start(pdev, index) >> PAGE_SHIFT) + pgoff;
++	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
+ 
+ 	/*
+-	 * See remap_pfn_range(), called from vfio_pci_fault() but we can't
+-	 * change vm_flags within the fault handler.  Set them now.
++	 * Set vm_flags now, they should not be changed in the fault handler.
++	 * We want the same flags and page protection (decrypted above) as
++	 * io_remap_pfn_range() would set.
+ 	 */
+ 	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
+ 	vma->vm_ops = &vfio_pci_mmap_ops;
+@@ -2173,8 +2036,6 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+ 	mutex_init(&vdev->ioeventfds_lock);
+ 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
+ 	INIT_LIST_HEAD(&vdev->ioeventfds_list);
+-	mutex_init(&vdev->vma_lock);
+-	INIT_LIST_HEAD(&vdev->vma_list);
+ 	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
+ 	init_rwsem(&vdev->memory_lock);
+ 	xa_init(&vdev->ctx);
+@@ -2190,7 +2051,6 @@ void vfio_pci_core_release_dev(struct vfio_device *core_vdev)
+ 
+ 	mutex_destroy(&vdev->igate);
+ 	mutex_destroy(&vdev->ioeventfds_lock);
+-	mutex_destroy(&vdev->vma_lock);
+ 	kfree(vdev->region);
+ 	kfree(vdev->pm_save);
+ }
+@@ -2468,26 +2328,15 @@ static int vfio_pci_dev_set_pm_runtime_get(struct vfio_device_set *dev_set)
+ 	return ret;
+ }
+ 
+-/*
+- * We need to get memory_lock for each device, but devices can share mmap_lock,
+- * therefore we need to zap and hold the vma_lock for each device, and only then
+- * get each memory_lock.
+- */
+ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 				      struct vfio_pci_group_info *groups,
+ 				      struct iommufd_ctx *iommufd_ctx)
+ {
+-	struct vfio_pci_core_device *cur_mem;
+-	struct vfio_pci_core_device *cur_vma;
+-	struct vfio_pci_core_device *cur;
++	struct vfio_pci_core_device *vdev;
+ 	struct pci_dev *pdev;
+-	bool is_mem = true;
+ 	int ret;
+ 
+ 	mutex_lock(&dev_set->lock);
+-	cur_mem = list_first_entry(&dev_set->device_list,
+-				   struct vfio_pci_core_device,
+-				   vdev.dev_set_list);
+ 
+ 	pdev = vfio_pci_dev_set_resettable(dev_set);
+ 	if (!pdev) {
+@@ -2504,7 +2353,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 	if (ret)
+ 		goto err_unlock;
+ 
+-	list_for_each_entry(cur_vma, &dev_set->device_list, vdev.dev_set_list) {
++	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list) {
+ 		bool owned;
+ 
+ 		/*
+@@ -2528,38 +2377,38 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 		 * Otherwise, reset is not allowed.
+ 		 */
+ 		if (iommufd_ctx) {
+-			int devid = vfio_iommufd_get_dev_id(&cur_vma->vdev,
++			int devid = vfio_iommufd_get_dev_id(&vdev->vdev,
+ 							    iommufd_ctx);
+ 
+ 			owned = (devid > 0 || devid == -ENOENT);
+ 		} else {
+-			owned = vfio_dev_in_groups(&cur_vma->vdev, groups);
++			owned = vfio_dev_in_groups(&vdev->vdev, groups);
+ 		}
+ 
+ 		if (!owned) {
+ 			ret = -EINVAL;
+-			goto err_undo;
++			break;
+ 		}
+ 
+ 		/*
+-		 * Locking multiple devices is prone to deadlock, runaway and
+-		 * unwind if we hit contention.
++		 * Take the memory write lock for each device and zap BAR
++		 * mappings to prevent the user accessing the device while in
++		 * reset.  Locking multiple devices is prone to deadlock,
++		 * runaway and unwind if we hit contention.
+ 		 */
+-		if (!vfio_pci_zap_and_vma_lock(cur_vma, true)) {
++		if (!down_write_trylock(&vdev->memory_lock)) {
+ 			ret = -EBUSY;
+-			goto err_undo;
++			break;
+ 		}
++
++		vfio_pci_zap_bars(vdev);
+ 	}
+-	cur_vma = NULL;
+ 
+-	list_for_each_entry(cur_mem, &dev_set->device_list, vdev.dev_set_list) {
+-		if (!down_write_trylock(&cur_mem->memory_lock)) {
+-			ret = -EBUSY;
+-			goto err_undo;
+-		}
+-		mutex_unlock(&cur_mem->vma_lock);
++	if (!list_entry_is_head(vdev,
++				&dev_set->device_list, vdev.dev_set_list)) {
++		vdev = list_prev_entry(vdev, vdev.dev_set_list);
++		goto err_undo;
+ 	}
+-	cur_mem = NULL;
+ 
+ 	/*
+ 	 * The pci_reset_bus() will reset all the devices in the bus.
+@@ -2570,25 +2419,22 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+ 	 * cause the PCI config space reset without restoring the original
+ 	 * state (saved locally in 'vdev->pm_save').
+ 	 */
+-	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list)
+-		vfio_pci_set_power_state(cur, PCI_D0);
++	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
++		vfio_pci_set_power_state(vdev, PCI_D0);
+ 
+ 	ret = pci_reset_bus(pdev);
+ 
++	vdev = list_last_entry(&dev_set->device_list,
++			       struct vfio_pci_core_device, vdev.dev_set_list);
++
+ err_undo:
+-	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list) {
+-		if (cur == cur_mem)
+-			is_mem = false;
+-		if (cur == cur_vma)
+-			break;
+-		if (is_mem)
+-			up_write(&cur->memory_lock);
+-		else
+-			mutex_unlock(&cur->vma_lock);
+-	}
++	list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
++					 vdev.dev_set_list)
++		up_write(&vdev->memory_lock);
++
++	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
++		pm_runtime_put(&vdev->pdev->dev);
+ 
+-	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list)
+-		pm_runtime_put(&cur->pdev->dev);
+ err_unlock:
+ 	mutex_unlock(&dev_set->lock);
+ 	return ret;
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 562e8754869da..4f283514a1ed6 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -93,8 +93,6 @@ struct vfio_pci_core_device {
+ 	struct list_head		sriov_pfs_item;
+ 	struct vfio_pci_core_device	*sriov_pf_core_dev;
+ 	struct notifier_block	nb;
+-	struct mutex		vma_lock;
+-	struct list_head	vma_list;
+ 	struct rw_semaphore	memory_lock;
+ };
+ 
 -- 
 2.34.1
 
