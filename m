@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-232915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232914-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMBRNN8Bzmk/kQYAu9opvQ
-	(envelope-from <stable+bounces-232915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:42:55 +0200
+	id 0FsbDs4BzmkwkQYAu9opvQ
+	(envelope-from <stable+bounces-232914-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:42:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4FA38418F
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4EC38417F
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 07:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07BCA3069D72
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 05:40:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F6E730632BF
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 05:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0E1370D74;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953BC36D9FE;
 	Thu,  2 Apr 2026 05:40:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B8C242D70;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CDE31F9BD;
 	Thu,  2 Apr 2026 05:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775108426; cv=none; b=fytCnmVHsaX6mM8V2SaNWOzJbQMEExzncIwRWPVnmT+97UOgeYuUKtk7hA49WWI17Vjnuja8Ih8904+MsBYbTlqxIcrPzYkngdjVIQBm1tTPAzqVz4YRXesun11eQVqy26xhz6OP5PP3uVAkrPJdgJ7Sbyj2tUBTmmwjmzcTH98=
+	t=1775108426; cv=none; b=N0mOK1vYZejAan36PGaQsHzJbuEFS34Js7bZVRGszsut0Jdp7hCIvTY4aIg6LUkr4S3YAh7cdOzd/WygTSnz0+n80wZpOAEP+gAfIpQ9seCXmgeyWW2pwuaVqhYbhGpDEeSGOly7A+TcOb7LFNsaNKj3+4Mj5f8NFhQmlGY3rvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775108426; c=relaxed/simple;
-	bh=RlWXLzbu9xrIUqlOY90vMNqryRL8/cs5dVpsRxXxeyA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nWwB0Yx7rYm73t47ADprMWpSpBL1ckXl1WQ5rZgEi+0cWF3DDZMWohlZE9vfT9vQEKVcNGlM6UGjc1k7eWSQ4gorq28awMvFt9Cohw0/gGuua8JYrP+p1/r0LBStZXyOD/t6lf35GRXMFb6T+we4DFAhA8mZ3Gds7B/NRPYDS4E=
+	bh=1Iwvy48/RbM9QRATKSbaUJ5lMy2jZeyas1apvJIHrmw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o4VbYSvoUpEszzCXIug97Hu5Z7pW1Ryf20t8/xSRqWWKPIlZ++m8ASaQFvmXCLAd2uOIiA3JI7XPfJWliCVRNU57/b89fvGEXKeamnbJUEIDw8pQTErrH+p+kW81mv/XaF/BDNGx8ENXcMy4MByjNVNKXMdwJ4ysH20c/2oP6tw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [111.196.245.197])
-	by APP-01 (Coremail) with SMTP id qwCowAB3IW0_Ac5pOvbxCw--.16287S2;
-	Thu, 02 Apr 2026 13:40:16 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowADHbGhAAc5pT_bxCw--.8160S2;
+	Thu, 02 Apr 2026 13:40:17 +0800 (CST)
 From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Gyeyoung Baek <gye976@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	linux-iio@vger.kernel.org,
+To: Ayush Singh <ayushdevel1325@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Cc: Alex Elder <elder@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	greybus-dev@lists.linaro.org,
 	linux-kernel@vger.kernel.org,
 	pengpeng@iscas.ac.cn,
 	stable@vger.kernel.org
-Subject: [PATCH] iio: chemical: mhz19b: reject oversized serial replies
-Date: Thu,  2 Apr 2026 13:40:15 +0800
-Message-ID: <20260402054015.38565-1-pengpeng@iscas.ac.cn>
+Subject: [PATCH] greybus: gb-beagleplay: bound bootloader receive buffering
+Date: Thu,  2 Apr 2026 13:40:16 +0800
+Message-ID: <20260402054016.38587-1-pengpeng@iscas.ac.cn>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,22 +54,22 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAB3IW0_Ac5pOvbxCw--.16287S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw4xKr47ury3ZF1kZr4fKrg_yoW8tw4fpF
-	45JF15CFy8Xr4xKr1vkrnrCFy5uFWFyayDAF4xAa43ZF15J34qkFykKFyrXr4IyrWrCa42
-	vryDKrWY9ay5ZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:qwCowADHbGhAAc5pT_bxCw--.8160S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KryDtw17Kry3tF4kAFW8WFg_yoW8GrWfpF
+	9xKFy8trn5J3WfJan3X3W3uFyFyaykZFWakFW8Awn7ZFs8XFn2934DGFWYqa95Jr1xJry2
+	qF4jgF92kF4DJF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
 	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
 	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
 	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	tVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
 	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
 	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUqeHgUUU
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUvXd8UUU
 	UU=
 X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 X-Spamd-Result: default: False [0.04 / 15.00];
@@ -87,88 +86,57 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232915-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-232914-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.944];
+	NEURAL_HAM(-0.00)[-0.942];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: 3F4FA38418F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8E4EC38417F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-mhz19b_receive_buf() appends each serdev chunk into the fixed
-MHZ19B_CMD_SIZE receive buffer and advances buf_idx by len without
-checking that the chunk fits in the remaining space. A large callback
-can therefore overflow st->buf before the command path validates the
-reply.
+cc1352_bootloader_rx() appends each serdev chunk into the fixed
+rx_buffer before parsing bootloader packets. The helper can keep
+leftover bytes between callbacks and may receive multiple packets in one
+callback, so a single count value is not constrained by one packet
+length.
 
-Reset the reply state before each command and reject oversized serial
-replies before copying them into the fixed buffer. When an oversized
-reply is detected, wake the waiter and report -EMSGSIZE instead of
-overwriting st->buf.
+Check that the incoming chunk fits in the remaining receive buffer space
+before memcpy(). If it does not, drop the staged data and consume the
+bytes instead of overflowing rx_buffer.
 
-Fixes: 4572a70b3681 ("iio: chemical: Add support for Winsen MHZ19B CO2 sensor")
+Fixes: 0cf7befa3ea2 ("greybus: gb-beagleplay: Add firmware upload API")
 Cc: stable@vger.kernel.org
 Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- drivers/iio/chemical/mhz19b.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/greybus/gb-beagleplay.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
-index 3c64154918b1..90c997191c83 100644
---- a/drivers/iio/chemical/mhz19b.c
-+++ b/drivers/iio/chemical/mhz19b.c
-@@ -52,6 +52,7 @@ struct mhz19b_state {
- 	struct completion buf_ready;
+diff --git a/drivers/greybus/gb-beagleplay.c b/drivers/greybus/gb-beagleplay.c
+index 87186f891a6a..e70787146c4f 100644
+--- a/drivers/greybus/gb-beagleplay.c
++++ b/drivers/greybus/gb-beagleplay.c
+@@ -535,6 +535,13 @@ static size_t cc1352_bootloader_rx(struct gb_beagleplay *bg, const u8 *data,
+ 	int ret;
+ 	size_t off = 0;
  
- 	u8 buf_idx;
-+	bool buf_overflow;
- 	/*
- 	 * Serdev receive buffer.
- 	 * When data is received from the MH-Z19B,
-@@ -106,6 +107,10 @@ static int mhz19b_serdev_cmd(struct iio_dev *indio_dev, int cmd, u16 arg)
- 	cmd_buf[8] = mhz19b_get_checksum(cmd_buf);
- 
- 	/* Write buf to uart ctrl synchronously */
-+	st->buf_idx = 0;
-+	st->buf_overflow = false;
-+	reinit_completion(&st->buf_ready);
-+
- 	ret = serdev_device_write(serdev, cmd_buf, MHZ19B_CMD_SIZE, 0);
- 	if (ret < 0)
- 		return ret;
-@@ -121,6 +126,9 @@ static int mhz19b_serdev_cmd(struct iio_dev *indio_dev, int cmd, u16 arg)
- 		if (!ret)
- 			return -ETIMEDOUT;
- 
-+		if (st->buf_overflow)
-+			return -EMSGSIZE;
-+
- 		if (st->buf[8] != mhz19b_get_checksum(st->buf)) {
- 			dev_err(dev, "checksum err");
- 			return -EINVAL;
-@@ -240,6 +248,14 @@ static size_t mhz19b_receive_buf(struct serdev_device *serdev,
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
- 	struct mhz19b_state *st = iio_priv(indio_dev);
-+	size_t remaining = MHZ19B_CMD_SIZE - st->buf_idx;
-+
-+	if (len > remaining) {
-+		st->buf_idx = 0;
-+		st->buf_overflow = true;
-+		complete(&st->buf_ready);
-+		return len;
++	if (count > sizeof(bg->rx_buffer) - bg->rx_buffer_len) {
++		dev_warn(&bg->sd->dev,
++			 "dropping oversized bootloader receive chunk");
++		bg->rx_buffer_len = 0;
++		return count;
 +	}
++
+ 	memcpy(bg->rx_buffer + bg->rx_buffer_len, data, count);
+ 	bg->rx_buffer_len += count;
  
- 	memcpy(st->buf + st->buf_idx, data, len);
- 	st->buf_idx += len;
 -- 
 2.50.1 (Apple Git-155)
 
