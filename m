@@ -1,226 +1,156 @@
-Return-Path: <stable+bounces-232966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +J4aMCpBzmlQmQYAu9opvQ
-	(envelope-from <stable+bounces-232966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:12:58 +0200
+	id yLXfLlBAzmlQmQYAu9opvQ
+	(envelope-from <stable+bounces-232968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:09:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3660638788A
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:12:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 264493877C9
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:09:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7CEE3018C03
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 10:05:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7555F3044798
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 10:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299B638B14C;
-	Thu,  2 Apr 2026 10:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EB43DCD8B;
+	Thu,  2 Apr 2026 10:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UkUjSIHI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fa+JH8A7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13CE3D16FB
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 10:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775124315; cv=pass; b=VEAGDAldZ0b8nMVmZGoam1CBdEdRuYNrp3KEqVzCbYd0TC/ydAwMqHQIhd0ZPm/AmZAJoO8+yIsfRnYNiQSVDep47I7E+jVkFD5pJnFBoZLJ+n7do4NXYFg2O5yS2ygy/SWfB+6nqN5y8ue0XpTA/qPb3w7A4KnJreDG+ipAZE8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775124315; c=relaxed/simple;
-	bh=OsiL/1pwgaLk9UGEMEVqaS1tHbhO879gXMnD9GeFmM4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gOEk8NoR+tdlWqxeoEu5M4fGEEL/X4ILd72H0X8QXbC5brjuTmr1HU1M45gu2WWT2gO5M5a76XSZu8gK7TusD/CGlBfiZPE9VjS2KvyXsjRd+jXsaNx9JExt52qSkHlM/A9cypYrqMtB7zhvs4xyPj8enAEScdhgbQY/Tvryw3s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UkUjSIHI; arc=pass smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-67e23011c93so248344eaf.3
-        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 03:05:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775124313; cv=none;
-        d=google.com; s=arc-20240605;
-        b=T380da9tQcrsD99VaMdv2oyWSMZltlgdnMPBe65oc2Mv2lPJGn0GpmDBebfJ8reqNC
-         AUFXGZeB5pSZMGeaL2j2SmQyuIiRzfIGX8yAI5JgvzUosQ9abb/SGMvKhaKAPAiPpx5X
-         LazrcVrl/AUwiHBXAe4H5Ww8ZRnPnJx7ci0g9TyjWF6GVNXehj65Ur3BJbBuvbKyx+DA
-         izqANAk4tnh7l2DF4gPucYPkToS4dxM3+P/h6GW+086g9Y66HPONT7PLUjQe8jxL4Try
-         CNWezs5GuCMFaCsCaADFOfa3wu5CBx42cCa880Q3I68/bFuRGYNOKdkDZX3wmh1PQIyp
-         90lA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6Z0F0LSV4rb0+tEeskaVV3h52HTcTsqrrJt52KWcr8c=;
-        fh=lDEEfhhSAMDKKJBvj5fxoM3omncMHluDkNRg7x0hOkg=;
-        b=Muw+2oN7xt6cPMzN/mIqKr/2b/KwJi6k/RPuFjZvGaV53bTYtB84rfymjGJJaSdEmb
-         0IuKGeRlpHI7flklQmq3jH6tSgKouNcwuhUlRG930CMO1lWDsIrHv1fCCLrU0b+B4c8t
-         eWGi/rv54XtuJ3Q1+J8OjmlyzfW4wSLzkOevjoPGsmXv1UKydBWy3pIxDFRvMGu1dT2a
-         igIeIXmhQh46PgxJYwJU4gPss/9T/HFHTItsOWiePQnmzd2FlfN4rPOxT394yN4wkzLc
-         /qmU+pkEXxyufZouQl1f/NcmnHo9l4QWiXyeD5N7kC8VdNBSDvJHTQQVJSCA8N1MZntE
-         919w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775124313; x=1775729113; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6Z0F0LSV4rb0+tEeskaVV3h52HTcTsqrrJt52KWcr8c=;
-        b=UkUjSIHI1U703viqbTydlU4JHi7AFAl51AUpCMx9b+wVryiST9od87YB4RwLXhKC7u
-         l1jt1voRP5Mgg0J9rUDkORvIYjtHKc1q4cFgy9vQowZ1mSYQLEYH22A6IRr1yCaQ6t6H
-         8hd0UZ5DO1+4d/OzgIsSmaLeoLGZj+cdrf7jySzpiknlouXB2ZZsjsycsIo3y8Ft5IGp
-         evKaQJbKktL19N/SqAtcNIy3qOD7QOcIA7LKwPnBtPbNcEq7z6OzA3CGT+ZBJlW9r+Hg
-         Ul0KYMmbBXL1u2qAVj6FsUqGa5Ir4a2xrVKODmmTypPrRYTgIc7iZLKRoS//MYNeC7JU
-         pOvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775124313; x=1775729113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6Z0F0LSV4rb0+tEeskaVV3h52HTcTsqrrJt52KWcr8c=;
-        b=QSreQDDBoYCsNpNPg8SB+ylJtjW0RF7EjFtKu0Fz0tp1me/vgDrvVptMwZ7fsLjvTq
-         wfTB4vIYg+/Jub3wWqQIchhsf+r2p3hO04PmsNS0kGSdHcTwlHGaECAQUVLaY+g15stI
-         BhSpBziOlXnxIJ/dbTpz6qDtX7YUOWyN/v6bUqTVpl8GxFIdu8XZLj2WzcU2bAFWUBjn
-         cCofTVCSwBn1dADZxCdtdPAyoEa745ga3i9VGCxug8kJkV+qRPpHkRJFISN8W/qq9ucp
-         MxqIzl7/zGlPu9zrN3D4sn35v1EN2c3UpTE9pTsBWssXuhvKeC8snUFOnCDb1yJxHtXg
-         p+Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCXkbby8VHqX/rL2gSO3Vvemr979bkLtxMVKVEnTenXeA5Oj6eqhwk1hhEEP/EQOn76vzwAvBIg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxll0FY3VpZHp1hHwyaH5Uaom7n3oWsTEAkgUMNopqnVjKhJlho
-	n1Kim1Iy3t2VmTIv5/9YuUnrfn9rd/K64YiAZ/ha8fUpDtKoGnG2KWgLzn2hivK1WKcXUXgR31d
-	eBewjOMus3Wh64pY2uKD2W7cjcJrDPC0=
-X-Gm-Gg: ATEYQzyrqEs6qsjgiol+tOHRgVB6X4ktXJ6wDd6fhJPdIUR9KTVERWF1wNMQwGlmect
-	LIlpahb2u8JMkVjF9CMxDI11CrJtTUxgRGrjBrYor7py0aLgBpnsLEky9oQ0PcXiGgDz72JDQzs
-	DrM77vo6sJrqMFasMCLzjsAPCwNOsO7MnXiijE7I4UGF7WQZHs5gDyBy3tqW/WwTY6lbATjcMMl
-	UDh8Wq21KxHyAf82pDOaZZc+rqNqfxj7s9kvtGaCmmNtujzZya1r+czVBI/OjYMbWBEc16yj/bl
-	qlkq7UEHDjsRcwUFE5pgzg6Fb9FY9tx7ba85U8jIlcbHE3qFQjlKJOI98ey7w0K/ab+1uQ==
-X-Received: by 2002:a05:6820:3087:b0:67e:3265:1659 with SMTP id
- 006d021491bc7-67fabd0ee58mr3470951eaf.62.1775124313530; Thu, 02 Apr 2026
- 03:05:13 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43833A544D;
+	Thu,  2 Apr 2026 10:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775124400; cv=none; b=VMgCoXfsT+96X2WhQh5bcVjsLgB8qhUQTIGdGROM5HbhUhQYEuiK5pW98Nzv0WH3PY3tjFmMwReE0Gx26Wuwin9SrRp6HahgfpEvo6YIhM+Mb5E87/EA+PAxZqs2tfzqtVGpL4NWCDGcCn/5CGD42GzoDs7JuF4RBvfSztqN+DE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775124400; c=relaxed/simple;
+	bh=SiMI7LRImQA5vrlzkfg8JrjdbDvFzFk+MVw41oq4XJM=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=d0Z0fUfz9vstn0lEX3cmKfa4BISLOZNkzmSvEWHaszBXoaJJEYlQwOz4L2OUBcSe3uxEmtu5PQMdu28fVcgal8OZ6f0WqeKd43P1XgM9EzuasPd03U9Y0uVUCZJ0PlUWZoxveRpyoulj44nu9BHhSrXJVUhwo0sQ+DpenXxwmHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fa+JH8A7; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775124398; x=1806660398;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=SiMI7LRImQA5vrlzkfg8JrjdbDvFzFk+MVw41oq4XJM=;
+  b=fa+JH8A7YJ4P5wPTy/SwSYArEOjn0VCs/CHl+ZoquZNPu1aYQIBdEKpx
+   Vc3MKTyyE2hBDdzF6kLg9li0kdD8gMZ+17WezCFKANdlXp7B0CacgwEIn
+   g+rdrCJDkc4LIeAynxpoWcXvenhwSMhYvoR45pvvkRE/jfB4YtOsa3b+C
+   h1mPl9DtnAx3QeLD0drGucHi/cdUiH1rzfxIulxW5FJRgOIS+6NURq48n
+   HoxF2I7kM6PTeHJcPMIwdXsk5RxtyvbjUjq91v1hTAuusUVzGlb1rIf8T
+   IgiZemiSX1Fq5+VT0H63wc0Ok8SzyaW/Q4fmUSbUr2kpXinkQsfRyz4Vl
+   w==;
+X-CSE-ConnectionGUID: qiOA99Q+QKKQJwATNGI5Lw==
+X-CSE-MsgGUID: ODQ8NWNHS/aIQ8u/KFNwJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="87639010"
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
+   d="scan'208";a="87639010"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 03:06:37 -0700
+X-CSE-ConnectionGUID: wOd5QWhmQMqS11WcYxyvGg==
+X-CSE-MsgGUID: Dc23DyLRRgyt9SwoEeWHvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
+   d="scan'208";a="231344094"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.76])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 03:06:34 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Thu, 2 Apr 2026 13:06:30 +0300 (EEST)
+To: Rong Zhang <i@rong.moe>
+cc: "Derek J . Clark" <derekjohn.clark@gmail.com>, 
+    Hans de Goede <hansg@kernel.org>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
+    Armin Wolf <W_Armin@gmx.de>, Jonathan Corbet <corbet@lwn.net>, 
+    Kurt Borja <kuurtb@gmail.com>, platform-driver-x86@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] platform/x86: lenovo-wmi-helpers: Fix memory leak
+ in lwmi_dev_evaluate_int()
+In-Reply-To: <20260401190221.1595264-1-i@rong.moe>
+Message-ID: <d1fe81a6-9814-d070-fbdf-66bd5e647a80@linux.intel.com>
+References: <499fa3efd5be054ffdda77dd00ad4d8d3391e073.camel@rong.moe> <20260401190221.1595264-1-i@rong.moe>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260402083722.100973-1-fabio.porcedda@gmail.com> <ac46YeSJeYVvm0Hn@hovoldconsulting.com>
-In-Reply-To: <ac46YeSJeYVvm0Hn@hovoldconsulting.com>
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Thu, 2 Apr 2026 12:04:33 +0200
-X-Gm-Features: AQROBzDG6MB7MLj_5-xfUluKajqLUUg8YfN3uzie3Tuh6LKnQWHoKmLCh6Jmgto
-Message-ID: <CAHkwnC8avsKQFdbGZ=sTgjhWgoykjH+nLm=si8J5siwr=DkB7Q@mail.gmail.com>
-Subject: Re: [PATCH v2] USB: serial: option: add Telit Cinterion FN990A MBIM composition
-To: Johan Hovold <johan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, 
-	Daniele Palmas <dnlplm@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232966-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,squebb.ca,gmx.de,lwn.net,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-232968-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fabioporcedda@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 3660638788A
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim,sashiko.dev:url,linux.intel.com:mid]
+X-Rspamd-Queue-Id: 264493877C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 2, 2026 at 11:44=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
-te:
->
-> On Thu, Apr 02, 2026 at 10:37:22AM +0200, Fabio Porcedda wrote:
-> > Add the following Telit Cinterion FN990A MBIM composition:
-> >
-> > 0x1074: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (diag) +
-> >         DPL (Data Packet Logging) + adb
-> >
-> > T:  Bus=3D01 Lev=3D01 Prnt=3D04 Port=3D06 Cnt=3D01 Dev#=3D  3 Spd=3D480=
-  MxCh=3D 0
-> > D:  Ver=3D 2.10 Cls=3Def(misc ) Sub=3D02 Prot=3D01 MxPS=3D64 #Cfgs=3D  =
-1
-> > P:  Vendor=3D1bc7 ProdID=3D1074 Rev=3D05.04
-> > S:  Manufacturer=3DTelit Wireless Solutions
-> > S:  Product=3DFN990
-> > S:  SerialNumber=3D70628d0c
-> > C:  #Ifs=3D 7 Cfg#=3D 1 Atr=3De0 MxPwr=3D500mA
-> > I:  If#=3D 0 Alt=3D 0 #EPs=3D 1 Cls=3D02(commc) Sub=3D0e Prot=3D00 Driv=
-er=3Dcdc_mbim
-> > E:  Ad=3D81(I) Atr=3D03(Int.) MxPS=3D  64 Ivl=3D32ms
-> > I:  If#=3D 1 Alt=3D 1 #EPs=3D 2 Cls=3D0a(data ) Sub=3D00 Prot=3D02 Driv=
-er=3Dcdc_mbim
-> > E:  Ad=3D0f(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > E:  Ad=3D8e(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > I:  If#=3D 2 Alt=3D 0 #EPs=3D 3 Cls=3Dff(vend.) Sub=3Dff Prot=3D60 Driv=
-er=3Doption
-> > E:  Ad=3D01(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > E:  Ad=3D82(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > E:  Ad=3D83(I) Atr=3D03(Int.) MxPS=3D  10 Ivl=3D32ms
-> > I:  If#=3D 3 Alt=3D 0 #EPs=3D 3 Cls=3Dff(vend.) Sub=3Dff Prot=3D40 Driv=
-er=3Doption
-> > E:  Ad=3D02(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > E:  Ad=3D84(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > E:  Ad=3D85(I) Atr=3D03(Int.) MxPS=3D  10 Ivl=3D32ms
-> > I:  If#=3D 4 Alt=3D 0 #EPs=3D 3 Cls=3Dff(vend.) Sub=3Dff Prot=3D40 Driv=
-er=3Doption
-> > E:  Ad=3D03(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > E:  Ad=3D86(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > E:  Ad=3D87(I) Atr=3D03(Int.) MxPS=3D  10 Ivl=3D32ms
-> > I:  If#=3D 5 Alt=3D 0 #EPs=3D 2 Cls=3Dff(vend.) Sub=3Dff Prot=3D30 Driv=
-er=3Doption
-> > E:  Ad=3D04(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > E:  Ad=3D88(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> > I:  If#=3D 6 Alt=3D 0 #EPs=3D 1 Cls=3Dff(vend.) Sub=3Dff Prot=3D80 Driv=
-er=3D(none)
-> > E:  Ad=3D8f(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
->
-> > @@ -1383,6 +1383,8 @@ static const struct usb_device_id option_ids[] =
-=3D {
-> >         .driver_info =3D NCTRL(2) | RSVD(3) },
-> >       { USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),    /=
-* Telit FN990A (ECM) */
-> >         .driver_info =3D NCTRL(0) | RSVD(1) },
-> > +     { USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1074, 0xff),    /=
-* Telit FN990A (MBIM) */
-> > +       .driver_info =3D NCTRL(5) | RSVD(6) | RSVD(7) },
->
-> There is no adb interface in the usb-devices output in the commit
-> message. Do you still need to reserve interface 7?
+On Thu, 2 Apr 2026, Rong Zhang wrote:
 
-The output of usb-devices was not complete, I've sent a new version
-with the full output:
-https://lore.kernel.org/linux-usb/20260402095727.108281-1-fabio.porcedda@gm=
-ail.com
+> lwmi_dev_evaluate_int() leaks output.pointer when retval == NULL (found
+> by sashiko.dev [1]).
+> 
+> Fix it by moving `ret_obj = output.pointer' outside of the `if (retval)'
+> block so that it is always freed by the __free cleanup callback.
+> 
+> No functional change intended.
+> 
+> Fixes: e521d16e76cd ("platform/x86: Add lenovo-wmi-helpers")
+> Cc: stable@vger.kernel.org
+> Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.clark%40gmail.com [1]
+> Signed-off-by: Rong Zhang <i@rong.moe>
+> ---
+>  drivers/platform/x86/lenovo/wmi-helpers.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/lenovo/wmi-helpers.c b/drivers/platform/x86/lenovo/wmi-helpers.c
+> index 7379defac500..80021f59d1ef 100644
+> --- a/drivers/platform/x86/lenovo/wmi-helpers.c
+> +++ b/drivers/platform/x86/lenovo/wmi-helpers.c
+> @@ -55,8 +55,9 @@ int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
+>  	if (ACPI_FAILURE(status))
+>  		return -EIO;
+>  
+> +	ret_obj = output.pointer;
 
-> >       { USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),    /=
-* Telit FN990A (PCIe) */
-> >         .driver_info =3D RSVD(0) },
-> >       { USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1077, 0xff),    /=
-* Telit FN990A (rmnet + audio) */
->
-> Johan
+To follow the best practice, could you please also place the variable 
+declaration here as well so there's no separate ret_obj = NULL line.
 
-Thanks
---=20
-Fabio Porcedda
+> +
+>  	if (retval) {
+> -		ret_obj = output.pointer;
+>  		if (!ret_obj)
+>  			return -ENODATA;
+
+-- 
+ i.
+
 
