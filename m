@@ -1,143 +1,144 @@
-Return-Path: <stable+bounces-233093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JpZKCS0zmlVpgYAu9opvQ
-	(envelope-from <stable+bounces-233093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 20:23:32 +0200
+	id KFRlFO+yzml+pQYAu9opvQ
+	(envelope-from <stable+bounces-233094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 20:18:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB47738D09A
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 20:23:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DA738D001
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 20:18:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5B1230B6E50
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 18:15:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 565B13023D4D
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 18:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB5B3033C6;
-	Thu,  2 Apr 2026 18:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EDB314B73;
+	Thu,  2 Apr 2026 18:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="mP230O7G"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wJzBnGdH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89E4317148
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 18:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2AC40DFAD;
+	Thu,  2 Apr 2026 18:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775153726; cv=none; b=CKk3+R6cAFg51fGpn+FxpNBpKx9m0DmNcWlbx83vq+siRAZPx24OWkMVhFAQGykyHdwXzBy3PowKOw7RbudBQpAgZ7+RLtlLFzd5RJMHRFreaExFsE7Oxt/Qvbl7UtgYmSuuBEpGFwjEZzeENr8LFju538IJ0yQ10nreCSFCsVU=
+	t=1775153814; cv=none; b=eFEJNcv2ppZNgUMXL10Ka9pP0j2nBfSfkXZwVItUhZSi0Ggm3n25/he2+vB8NyRCSJpZe1XvdARt2rGxIt7Xnyq9j4/uO+j/0XwI+Vz3a4BhuEsXK5fc9z5cXasX6/8GPm3oMpRDWQXNRr3WR1eDzZy1ANBjK76Q/vTvVGnl/qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775153726; c=relaxed/simple;
-	bh=uiqCnhe7JFhzANWyg1lhqpRP1xpTm0+lrlk872mdWpw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hfGed93MY0TkmabXFpyey8ORc9UBKFjvgVTQxI4z8HGRrFy2mUt9vImNaDNZiYIC9DRvbjHUDkTlnU0Nl418Ike5i6Pa5NpeNJQIgxDZDRIEeM4CoP0ns2wO/jcYiFmulftMBq8KHR9lxSSmV+NDLtiFwwUX94VBYt8Gu8mhZew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=mP230O7G; arc=none smtp.client-ip=157.90.84.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
-Received: from [192.168.178.25] (i5C75F65A.versanet.de [92.117.246.90])
-	(Authenticated sender: wse@tuxedocomputers.com)
-	by mail.tuxedocomputers.com (Postfix) with ESMTPSA id ED1D82FC0215;
-	Thu,  2 Apr 2026 20:15:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-	s=default; t=1775153716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HClUk7kEUh+F8u20b5Cp4UK+o9jbxVwWDZQO8RU9YBU=;
-	b=mP230O7G4e91fJS9MNlzbRZCD4FJob8KilRl1td9aN/qu5/6Yfsowy2L3+AWE6mROYPJiv
-	oZ5ZSVCT0ChSoe9badkv7x3+lqmFi/alNw9TwlwulJ/fKwWoJzPN+wKqfXgHWPmuFmh4iv
-	eYGOXVrgmWhx/GsK9V+o9sLzHj2tfBM=
-Authentication-Results: mail.tuxedocomputers.com;
-	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
-Message-ID: <34721017-9541-42c2-baee-d7d0aed6ac60@tuxedocomputers.com>
-Date: Thu, 2 Apr 2026 20:15:15 +0200
+	s=arc-20240116; t=1775153814; c=relaxed/simple;
+	bh=1HUIFxw7IEVSVQfSYHCrsFERzjTsfVDyFOwcnC9cNSA=;
+	h=Date:To:From:Subject:Message-Id; b=COGtiKdZ8HyKt6wSLk9zBmtfAd2DBpem7k+NuroGzuNOhcgB5hJGzJcmMS5qinqvARWGNidVXBmwlQ7OwQudBbz8Em/s24NydNFwxr5qwMY9sLDmt5yLBVV+orhv88N6JpdDPJIFqonaYcIFKjIIo3Ta1J+olmu1JY1LZG/sTFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wJzBnGdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C913C116C6;
+	Thu,  2 Apr 2026 18:16:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775153814;
+	bh=1HUIFxw7IEVSVQfSYHCrsFERzjTsfVDyFOwcnC9cNSA=;
+	h=Date:To:From:Subject:From;
+	b=wJzBnGdHrj69LwG5yPIjfMwCRzPtcvpX82Rz2rC38zg/I4PWQHlQSl9Dma1sdQgdo
+	 jQSDvSF3jBsUQXzS2asNwY3bkEhKQ+JcJKc3d7aSbeQOz8M7u6uShoQ/91BRToqZ5L
+	 xyDiyeJpBx2bltnsts1uiQZLf5hUt+YqJD6cNvwk=
+Date: Thu, 02 Apr 2026 11:16:53 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-damon-stat-deallocate-damon_call-failure-leaking-damon_ctx.patch removed from -mm tree
+Message-Id: <20260402181654.2C913C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ALSA: hda/hdmi: Add quirk for TUXEDO IBS14G6
-To: stable@vger.kernel.org
-Cc: Aaron Erhardt <aer@tuxedocomputers.com>
-References: <20260303185944.48669-1-wse@tuxedocomputers.com>
-Content-Language: en-US
-From: Werner Sembach <wse@tuxedocomputers.com>
-In-Reply-To: <20260303185944.48669-1-wse@tuxedocomputers.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[tuxedocomputers.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[tuxedocomputers.com:s=default];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-233094-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233093-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[tuxedocomputers.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wse@tuxedocomputers.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EB47738D09A
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 47DA738D001
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
 
-Am 03.03.26 um 19:56 schrieb Werner Sembach:
-> From: Aaron Erhardt <aer@tuxedocomputers.com>
->
-> [ Upstream commit d649c58bcad8fb9b749e3837136a201632fa109d ]
->
-> Depending on the timing during boot, the BIOS might report wrong pin
-> capabilities, which can lead to HDMI audio being disabled. Therefore,
-> force HDMI audio connection on TUXEDO InfinityBook S 14 Gen6.
->
-> Signed-off-by: Aaron Erhardt <aer@tuxedocomputers.com>
-> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-> Link: https://patch.msgid.link/20260218213234.429686-1-wse@tuxedocomputers.com
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> ---
-> Change from upstream commit: The file was renamed sometime after v6.12.
-> There is already a pending patch for 6.18.y and 6.19.y. This is for all
-> stable released including 6.12.y and before with the old filename.
+The quilt patch titled
+     Subject: mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+has been removed from the -mm tree.  Its filename was
+     mm-damon-stat-deallocate-damon_call-failure-leaking-damon_ctx.patch
 
-Just a gentle bump, hope it can land soon. Still applies cleanly to 6.12.y.
+This patch was dropped because an updated version will be issued
 
-Best regards,
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+Date: Wed, 1 Apr 2026 18:04:55 -0700
 
-Werner
+DAMON_STAT does not deallocate its dynamically allocated damon_ctx object
+when damon_call() is failed.  As a result, the memory is leaked.  Check
+the failure and deallocate the damon_ctx object.
 
->
->   sound/pci/hda/patch_hdmi.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
-> index 70a90117361c5..a5ebd2a9a1116 100644
-> --- a/sound/pci/hda/patch_hdmi.c
-> +++ b/sound/pci/hda/patch_hdmi.c
-> @@ -1999,6 +1999,7 @@ static const struct snd_pci_quirk force_connect_list[] = {
->   	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
->   	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
->   	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
-> +	SND_PCI_QUIRK(0x1558, 0x14a1, "TUXEDO InfinityBook S 14 Gen6", 1),
->   	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
->   	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
->   	{}
+The issue was discovered [1] by sashiko.
+
+
+Link: https://lkml.kernel.org/r/20260402010457.66860-1-sj@kernel.org
+Link: https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org [1]
+Fixes: 405f61996d9d ("mm/damon/stat: use damon_call() repeat mode instead of damon_callback")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/stat.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+--- a/mm/damon/stat.c~mm-damon-stat-deallocate-damon_call-failure-leaking-damon_ctx
++++ a/mm/damon/stat.c
+@@ -254,7 +254,12 @@ static int damon_stat_start(void)
+ 
+ 	damon_stat_last_refresh_jiffies = jiffies;
+ 	call_control.data = damon_stat_context;
+-	return damon_call(damon_stat_context, &call_control);
++	err = damon_call(damon_stat_context, &call_control);
++	if (err) {
++		damon_destroy_ctx(damon_stat_context);
++		damon_stat_context = NULL;
++	}
++	return err;
+ }
+ 
+ static void damon_stat_stop(void)
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-sysfs-dealloc-repeat_call_control-if-damon_call-fails.patch
+mm-damon-core-fix-damon_call-vs-kdamond_fn-exit-race.patch
+mm-damon-core-fix-damos_walk-vs-kdamond_fn-exit-race.patch
+mm-damon-core-validate-damos_quota_goal-nid-for-node_mem_usedfree_bp.patch
+mm-damon-core-validate-damos_quota_goal-nid-for-node_memcg_usedfree_bp.patch
+mm-damon-core-use-time_in_range_open-for-damos-quota-window-start.patch
+docs-admin-guide-mm-damon-reclaim-warn-commit_inputs-vs-param-updates-race.patch
+docs-admin-guide-mm-damon-lru_sort-warn-commit_inputs-vs-param-updates-race.patch
+
 
