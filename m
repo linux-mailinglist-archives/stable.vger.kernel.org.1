@@ -1,193 +1,180 @@
-Return-Path: <stable+bounces-232926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SB7VBVYhzmnElAYAu9opvQ
-	(envelope-from <stable+bounces-232926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:57:10 +0200
+	id 4CUIM+8fzmnElAYAu9opvQ
+	(envelope-from <stable+bounces-232927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:51:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC94385825
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:57:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE1938570D
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 946A43019F18
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 07:46:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A8B57303B5F9
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 07:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D60B363C65;
-	Thu,  2 Apr 2026 07:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD87338945A;
+	Thu,  2 Apr 2026 07:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8aXiaFB"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f5OOnei2";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="emzyjofX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7F631F9B8;
-	Thu,  2 Apr 2026 07:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775115931; cv=none; b=oY+MEW2Z0Yh2ucQvk4TlyzKTtJBEgV8TgXHPSIboJCrE7c1A0UnteZj6gbtlEuAlY5KOhvxw/fzZfV8vEC2102rEAm3WZ4D/VSHROCtXnZqNA2b1iiFBYuy+qHpZNwoUQrcVfpOdjDstG5FH+nkHyNRelpZW7CMQvME63gzTbaU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775115931; c=relaxed/simple;
-	bh=L9PtbiHVcjP1nfTjjXupJxIUPL/K74latiizMZHOzk0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oCU20HgMn3sf2/b78fj76YJGt7uB1PAQDOhRWH3QA0l9sYyd0CzYzPnNJW2q2zSL5oD7ifo5CUqdK6Euuz6eg33MrMtO5PKp9o+AxCaKxdtdRqbuCInv7hxYHJy0ByLX23ckgWRUVxQak9Dd65J0fivgw6IeA7qwhfei5MM25JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8aXiaFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E52C19423;
-	Thu,  2 Apr 2026 07:45:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775115930;
-	bh=L9PtbiHVcjP1nfTjjXupJxIUPL/K74latiizMZHOzk0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g8aXiaFBflMZSSIMOvUkPQT6eLGTUxFv6rtaRDIjUK7GRYqPS/ycnXwKOb0dYGT0F
-	 1Sw3HmGKgrXt/oMK07s/DvI81FBv0h5Pg2xNkPe5VJPi0lQmxDJPsfre4W+vuJQBWa
-	 XOWeeSMeMpzulWFRMbiyt6uo3YNDD4UvBcB8UYpw=
-Date: Thu, 2 Apr 2026 09:45:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Nathan Rebello <nathan.c.rebello@gmail.com>, linux-usb@vger.kernel.org,
-	addcontent08@gmail.com, kyungtae.kim@dartmouth.edu,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usbip: vhci: reject RET_SUBMIT with inflated
- number_of_packets
-Message-ID: <2026040220-defeat-jokester-22dc@gregkh>
-References: <20260327064449.735-1-nathan.c.rebello@gmail.com>
- <34da1928-f6e7-43fb-a436-6bc02e262698@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C553822A9
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 07:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775116232; cv=pass; b=gogwl01yxswycOjlQB4kpYfKJPdj2sIXQRl3mR5ePQ4xq4uBJ8lDzmWXVMP/ipLzW2/cBg2ai/uL6JADl2o/oXXO2tULV6GmZZqwGfwfYZ0WfKv6swtGis2agwCJBnU+fhG8wkTbFnU0SMB0oufMlJt6QbL/23+sw7ISxPtdE9w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775116232; c=relaxed/simple;
+	bh=uktUuzl1PzMgmxaCTzaoE3jKTWjufVd1l+xKRsPkEb4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o0vqrfKgdbbW4F1OKQZOpXK83q/R/x6Kn7riZDTVP7OhVrhNLVmLGx3MkROh/tSNZ6nyQqAjG+nvL3JZsmP9GeBkblY0jV+3iMEnIcUb8NxzXVySsRlbuqN+bTkZWH5dERb3mrRncIZdQhe9gcPopyuL59oLTelPtjYVncelb7I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f5OOnei2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=emzyjofX; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775116230;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uktUuzl1PzMgmxaCTzaoE3jKTWjufVd1l+xKRsPkEb4=;
+	b=f5OOnei2wtjnpzCDhCLHlgfVL4oCRdxtGaDAdgkGNwxN1bpfnMnlvSezB6OkbZyavGqrCh
+	y57POcKYDBWMmr91h8SJIRdW7xWzYNKXHAZoiZHcUn9gH2PpPsTua1QdJH3WAWg7pvjQUB
+	rvvNNA6W+37MI0Y4LIJCNZJm5M6xN5U=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-64-b_GEPK3dOt6t7EYeYayMzw-1; Thu, 02 Apr 2026 03:50:29 -0400
+X-MC-Unique: b_GEPK3dOt6t7EYeYayMzw-1
+X-Mimecast-MFC-AGG-ID: b_GEPK3dOt6t7EYeYayMzw_1775116228
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d0c06c232so563150f8f.1
+        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 00:50:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775116227; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FOi+6NuEeAcEU6/+d6aTXPmukZyqvAKSGEIhZdpclepBUDsFvwgi3KEZ8S5bvP0tJF
+         xqXUEzqB6Azd7l7adgMhy76ed+lcKdDOEP/YMeITyzWr8MnxffI4y0wiBMtbtgAURhYK
+         /oZSNcepWrkqIB/a3CTFxyxfKxd1mdF2B0j3AidllYkW77Dq/Aw1HYZ8lUvWXl1RenwM
+         Wj6hsEwnyNaIjf1CVUKNymxsk/kPWt54r0ID/5vg0uwSYd0ER5FxNRFYCxgdeLKksE9Q
+         h2cTf9sXnng+pJYLeCAe/m7DVZhDUqSlZv+PKcErw9hNzXjg5cHmUheQFlhLdOPvvgiK
+         Gixg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uktUuzl1PzMgmxaCTzaoE3jKTWjufVd1l+xKRsPkEb4=;
+        fh=qqa2TSMh5ichaWwB/Rur9Bpxsj3IERRVJHigZ41o9Eo=;
+        b=VBfNKe2X3/qJXpY5f3zZInnlQoZMGloty6XXuBZV5qpyaCByzHWp8ZovbSq4oWXP0b
+         a6elpReL54wUIPKZ5mqjHLDo3G+Y/NHoMLO3fvwaGfOU9DH3DHgzG/R8cxRPev+QVHZF
+         XUh7IVqkFwTFICmC80QmrbXh/mYo/AfkkLIR9hAmsLQ5e++FoHWfOALA+5WxCKjXOBPs
+         wBxvwRU0TJx/VxNUbQNmG5hnlRyMCn7Rd/yUzDO33CEQNxH5QF+IdGpRIE4l36bopJnV
+         J3y8b6vCkykON0xJ88eij0loVyz0RphUafr9XqixAu4aMEeYzfVtAAtxsNDyfo/Xr6UT
+         lzAg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1775116227; x=1775721027; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uktUuzl1PzMgmxaCTzaoE3jKTWjufVd1l+xKRsPkEb4=;
+        b=emzyjofXilzMg1u5dVyR7UKzywnhHYvZHAG2ujeLwD8/jL61tybr78gS0hOGWnhuCQ
+         UgHzfQOBbmmGBdNAyOg40Jc963bqYwdageHFoCRTHtyM4aHRwYXch6CtCF08faHkgHnh
+         ZMiAVmvEeqsC8ye1RrM0TFPsN7j18aPPZiDmWhbZWHVp4oj01yZd03UjoY+G+AaP+Z3r
+         Z+0xq10GSkBIxEzvM3MZ0HGWxXeM5C/xjPgs+YOxJBxA3UPlzqshD8+1HJ80Tn2N4zu7
+         mgXiYm08cNC+Bjs7gAagG8OOmn0TcC8i72j3aH10d0CRrqF1lXyfITkbnP83Sdfz+Tnn
+         YrYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775116227; x=1775721027;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uktUuzl1PzMgmxaCTzaoE3jKTWjufVd1l+xKRsPkEb4=;
+        b=Rltjmtf3R5St4fJDpUxD1MTnRmVPgdt2arZqwcCi3+A2bv/m8SKMv9eBlwG3A73WbF
+         Wsr6lwna6BT1/FD7QFXSquIw/OO4K87mJQCCf+YghRfyA/waTkXqPNUyPGoxDGWvJwav
+         tMjrEWCuZTa/gYBB8PaOW09g2RGfioOol47tNOoFav6trmv6S+CcGxsvd+cWxIFlQlYr
+         c9PUj0FDNDSZUilXj9qaFDd/d09YJpmUpNuJOQQ6iThFtpSFAPiEbvHIn5YhfVBmaws+
+         PSLP9NS21eGXiYdgvkfrnsD/bhLUB9nCSTAnR9eF7zG4ADzIxlQhh8h/7IHqnHYz27d/
+         rdIg==
+X-Forwarded-Encrypted: i=1; AJvYcCUy96+rtFBcN9PXITar+g6Knzb9iNl/s/3WBG0zKzehRiynC/vTxSvS/VrOCwWjHtNzcJULJmM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjKdV6NQ+ziofMHU6sFdfmCeAPQ6Ldp6tWfTJXC8g7Vr5qYL0R
+	cU2XQmZlKJtF7xRZAu/OjjJwTvEdeUNL8oXH8vXIRs1LCDxkDTrViyfgMVd8Naa88qHesAhfv+9
+	K5A9iR/gbTYqwCihjMZLf05IzLVwmBWi4FaZ1RGXgciBVsiF6fvTy8fEgPCi7/1dcs9wDFleW2s
+	lHmlT9CmbCro6pdic/ZH2gWR7UHdQMXEvhrvJ0OiBP
+X-Gm-Gg: ATEYQzzfcYRuSGjXMuZbvgkp/1mJp8khn8rz8M/rUy2xdOaXQzctA8ZpzLTIaNduH6k
+	23Rm6g5TDtiZ7aGxXlmX8R1h+TgYhUycvc2IcCIrTn3xNAJD5xeO0dSN3ZYdXcysB909ugVEVOf
+	v2xouvp26szlxRosNtsbp+Mt8CXGGzl11vYTDIbCt7hFlFtsm5D78eE73Xj8CTa6wkVV6/5qe4L
+	hQse7/vrPziTPfZ2dj7VjcS/diHcHTryjYow/TWKPgSZSosdy0pTdBZpfkHgm/a5cIfq2BMmxqp
+	BMOY
+X-Received: by 2002:a05:6000:184f:b0:43c:f793:f1b0 with SMTP id ffacd0b85a97d-43d150f704fmr12485817f8f.40.1775116226973;
+        Thu, 02 Apr 2026 00:50:26 -0700 (PDT)
+X-Received: by 2002:a05:6000:184f:b0:43c:f793:f1b0 with SMTP id
+ ffacd0b85a97d-43d150f704fmr12485782f8f.40.1775116226538; Thu, 02 Apr 2026
+ 00:50:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <34da1928-f6e7-43fb-a436-6bc02e262698@linuxfoundation.org>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+References: <CAB29vr=U=SaQR9m_O_cZwEKAG2LTnbYGjE+uT0snUT7Jco_3bQ@mail.gmail.com>
+ <ac1OXbMbAY4snEPg@google.com> <CAO9r8zODkS5sViRaED9DS5UhuP2+wvUzCmF2L7MJuG0RUyEuRQ@mail.gmail.com>
+In-Reply-To: <CAO9r8zODkS5sViRaED9DS5UhuP2+wvUzCmF2L7MJuG0RUyEuRQ@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 2 Apr 2026 09:50:13 +0200
+X-Gm-Features: AQROBzDbo_UB8L7t9EPUKPw2yAJ2OO_yY6p1Y0aGStcwdRXgVDozYg2-lZSXuhE
+Message-ID: <CABgObfazpG=V6rxn-=6Y2rv24zeMhK0L_AuAtXaHGXuMj5BnGA@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nSVM: Snapshot vmcb12 save.rip to prevent TOCTOU race
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, =?UTF-8?B?7ZmN6ri464+Z?= <jeon1691951@gmail.com>, 
+	kvm@vger.kernel.org, gregkh@linuxfoundation.org, yosryahmed@google.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232926-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[google.com,gmail.com,vger.kernel.org,linuxfoundation.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	TAGGED_FROM(0.00)[bounces-232927-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,dartmouth.edu];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.990];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 6DC94385825
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 8CE1938570D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 05:17:44PM -0600, Shuah Khan wrote:
-> On 3/27/26 00:44, Nathan Rebello wrote:
-> > When a USB/IP client receives a RET_SUBMIT response,
-> > usbip_pack_ret_submit() unconditionally overwrites
-> > urb->number_of_packets from the network PDU. This value is
-> > subsequently used as the loop bound in usbip_recv_iso() and
-> > usbip_pad_iso() to iterate over urb->iso_frame_desc[], a flexible
-> > array whose size was fixed at URB allocation time based on the
-> > *original* number_of_packets from the CMD_SUBMIT.
-> > 
-> > A malicious USB/IP server can set number_of_packets in the response
-> > to a value larger than what was originally submitted, causing a heap
-> > out-of-bounds write when usbip_recv_iso() writes to
-> > urb->iso_frame_desc[i] beyond the allocated region.
-> > 
-> > KASAN confirmed this with kernel 7.0.0-rc5:
-> > 
-> >    BUG: KASAN: slab-out-of-bounds in usbip_recv_iso+0x46a/0x640
-> >    Write of size 4 at addr ffff888106351d40 by task vhci_rx/69
-> > 
-> >    The buggy address is located 0 bytes to the right of
-> >     allocated 320-byte region [ffff888106351c00, ffff888106351d40)
-> > 
-> > The server side (stub_rx.c) and gadget side (vudc_rx.c) already
-> > validate number_of_packets in the CMD_SUBMIT path since commits
-> > c6688ef9f297 ("usbip: fix stub_rx: harden CMD_SUBMIT path to handle
-> > malicious input") and b78d830f0049 ("usbip: fix vudc_rx: harden
-> > CMD_SUBMIT path to handle malicious input"). The server side validates
-> > against USBIP_MAX_ISO_PACKETS because no URB exists yet at that point.
-> > On the client side we have the original URB, so we can use the tighter
-> > bound: the response must not exceed the original number_of_packets.
-> > 
-> > This mirrors the existing validation of actual_length against
-> > transfer_buffer_length in usbip_recv_xbuff(), which checks the
-> > response value against the original allocation size.
-> > 
-> > Kelvin Mbogo's series ("usb: usbip: fix integer overflow in
-> > usbip_recv_iso()", v2) hardens the receive-side functions themselves;
-> > this patch complements that work by catching the bad value at its
-> > source -- in usbip_pack_ret_submit() before the overwrite -- and
-> > using the tighter per-URB allocation bound rather than the global
-> > USBIP_MAX_ISO_PACKETS limit.
-> > 
-> > Fix this by checking rpdu->number_of_packets against
-> > urb->number_of_packets in usbip_pack_ret_submit() before the
-> > overwrite. On violation, clamp to zero so that usbip_recv_iso() and
-> > usbip_pad_iso() safely return early.
-> > 
-> > Fixes: 0775a9cbc798 ("staging: usbip: vhci extension: modifications to the client side")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
-> > ---
-> >   drivers/usb/usbip/usbip_common.c | 13 ++++++++++++-
-> >   1 file changed, 12 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/usb/usbip/usbip_common.c b/drivers/usb/usbip/usbip_common.c
-> > --- a/drivers/usb/usbip/usbip_common.c
-> > +++ b/drivers/usb/usbip/usbip_common.c
-> > @@ -470,7 +470,18 @@ static void usbip_pack_ret_submit(struct usbip_header *pdu, struct urb *urb,
-> >   		urb->status		= rpdu->status;
-> >   		urb->actual_length	= rpdu->actual_length;
-> >   		urb->start_frame	= rpdu->start_frame;
-> > -		urb->number_of_packets = rpdu->number_of_packets;
-> > +		/*
-> > +		 * The number_of_packets field determines the length of
-> > +		 * iso_frame_desc[], which is a flexible array allocated
-> > +		 * at URB creation time. A response must never claim more
-> > +		 * packets than originally submitted; doing so would cause
-> > +		 * an out-of-bounds write in usbip_recv_iso() and
-> > +		 * usbip_pad_iso(). Clamp to zero on violation so both
-> > +		 * functions safely return early.
-> > +		 */
-> > +		if (rpdu->number_of_packets < 0 ||
-> > +		    rpdu->number_of_packets > urb->number_of_packets)
-> > +			rpdu->number_of_packets = 0;
-> > +		urb->number_of_packets = rpdu->number_of_packets;
-> >   		urb->error_count	= rpdu->error_count;
-> >   	}
-> >   }
-> 
-> Look good to me.
-> 
-> Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+On Wed, Apr 1, 2026 at 11:49=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+> That being said, I personally do not object to LTS-specific patches
+> (e.g. like the one attached), if Sean and Paolo think it's worth it. I
+> don't really have time to do that, but I can help with reviews
+> (although I will be OOO for the next 2 weeks). As Paolo said, be
+> careful that some older LTS trees do not even have the cached save
+> area, so they are broken in a much bigger way.
 
-This patch is somehow corrupted and can not be applied at all.  Nathan,
-how did you generate it?
+After the merge window, I will reevaluate submitting this patch to
+stable. But that's all we need to do.
 
-You can tell something is wrong as it shows you removing, and then
-adding, the same line, which is a huge hint something went wrong.
+Paolo
 
-Can you regenerate this against my latest usb-testing branch and resend?
-
-thanks,
-
-greg k-h
 
