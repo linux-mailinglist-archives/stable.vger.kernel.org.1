@@ -1,187 +1,154 @@
-Return-Path: <stable+bounces-233069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Ic6IZCfzmlZpAYAu9opvQ
-	(envelope-from <stable+bounces-233069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:55:44 +0200
+	id eIt2HCifzmlZpAYAu9opvQ
+	(envelope-from <stable+bounces-233070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:54:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE2A38C3D7
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:55:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2A838C37D
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E3F833094065
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:38:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79AF930D3E4E
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7B628851C;
-	Thu,  2 Apr 2026 16:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CD93CF046;
+	Thu,  2 Apr 2026 16:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3vICxvM"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aI1lH+bW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17933F211C;
-	Thu,  2 Apr 2026 16:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102AE336EDA
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 16:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775147922; cv=none; b=FbaFtfGcVj5hvu0EG91QWcIvhLRWtwJl71zVKo3h0adLC/nRqeOPpU4dAIxIztuRAyk0C42wysbW9f3CN+LZVc+aVHQjA1p6DvNQ9UXaaMr2k5zqnGieb32BIcUE3neka4AooLfCB+qZZ97KhJCLQSYUr9AHsm+O/4p853czvK4=
+	t=1775148184; cv=none; b=iWsCIByeZmi0PbnTZgCAkfyKFNaq9kUl3UJjIVfh2kcQZaZIOAKb3uEcMljgaIGqmhci89fLEuUxigmb+z0+6E/Vyc9oNzyyjjC9cW0GxmsGTBXzS9qifvkIclf3ktdp4haCYJYZWYEteYXQ5ubVxpw2tK1Zp6YTxtheEAcxuFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775147922; c=relaxed/simple;
-	bh=SS+BtVdttMvo6X20fLR3JClq/W5wC0bvQxoXCy/55dc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ltqt2wDRJoBK05JjK+J50RfPayuCabZr4F35/tbp8WHV2iKyDBBKZ1MwYlOlmFXbKe2ZHdoNHZC10f0d3BlPCf3UjRAjjgEJuyo6E5klux5X1MqMCtbfge3LptRFCzx0jD5WpsXSi6ZI0fJ5AGQq1oegr6SenPZSJaib+qEJbhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3vICxvM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE30C116C6;
-	Thu,  2 Apr 2026 16:38:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775147922;
-	bh=SS+BtVdttMvo6X20fLR3JClq/W5wC0bvQxoXCy/55dc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=U3vICxvMqgBh7amR+oCizO3AJ7YOv3bxzO8OCsh6ZNB5XW45uHJ/8h8WJx54f1P91
-	 xDmPSvdX9WiW9SuHdR2YUbGunbzjakgfC9lpI1iEHTaYHIZ3/27UQhAdF5d8lWlB1x
-	 Pd5ZE1JHkCSZ9qd9lw5ug60ehF3zJp/hs6R1OwWeq/rWlnIZq277RkUEVs2UadCRmq
-	 K58kn3MHghtAlrqMVicW2YdHuCFzNec/LSZEHYXCPZmAh/+BkYJmoaCfBR6PS8wfU8
-	 uWou+k7OQkgxGJ5V+67qVIGW3r+gVfCohHAvry1cjRT3YXi9BZAFZ34kvNTES8g39K
-	 D+hKMQ+afiejw==
-Date: Thu, 2 Apr 2026 11:38:40 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Gerd Bayer <gbayer@linux.ibm.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Jay Cornwall <Jay.Cornwall@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v7 0/3] PCI: AtomicOps: Fix
- pci_enable_atomic_ops_to_root()
-Message-ID: <20260402163840.GA279690@bhelgaas>
+	s=arc-20240116; t=1775148184; c=relaxed/simple;
+	bh=0yorz4CxLkCvg/X29aqII5erKaUABM45cGY91XwGERE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jzNrTAZ0wzLH0ZwgtJI/cevc+Qckv3x/5rDYGPhqAIErNbKBcafVHtHQOMA9w6Zb9JGhDNbOR2HlxF//LFtTMieWgwynDUnN/Vnmj7HT2OxFrbim6qNtc2gDZub0Wj1NBWn1OuOQOUoLyzISM844GG5PGLofwVI7jyCu/zHgdi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aI1lH+bW; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6FBEE4E428BE;
+	Thu,  2 Apr 2026 16:42:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1F32D602CD;
+	Thu,  2 Apr 2026 16:42:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 08A2010450136;
+	Thu,  2 Apr 2026 18:42:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1775148171; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=tklQU7AmBlgtiJ+7oB3wdNKyKDgrfZerlBF58NV2zpU=;
+	b=aI1lH+bWdLYmRJTxHRR+pIdws10RauOS5winQ+NM0YLyeI13XLP7oUlcmPY/l1+bKzdLOY
+	zdiKdHc3XZEz36LxEa0BZdJsMdXeZpUgt1nm4rM/VVk6oqVfDh5fDbp2taygRRsn36va87
+	Rme6ewzHC+S+6FHCf8AuRh+vSWSJfHzwkZd4gBjOt5MNXhbWGVy2K5GoENMY13+bU2p7xc
+	QsTm6qb0SK5tIWeiIVlczU1eSvD4bfZhuilg1V20iwtzAMfuMn7iTpXHHWWxHZgwE/nFXJ
+	lVEv5vMh3c+p+0uIsecyNNmix15R5ijnioKY+Es9MWeUw8Q208UoOwbcjKk3Mg==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Thu, 02 Apr 2026 18:42:20 +0200
+Subject: [PATCH v2] drm/arcpgu: fix device node leak
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330-fix_pciatops-v7-0-f601818417e8@linux.ibm.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAGuczmkC/42NQQ6CMBBFr0Jm7RimiZi68h6GBW2nMBFa0iLRE
+ O5u5QQu38//72+QOQlnuFUbJF4lSwwF1KkCO3ShZxRXGFStLkSk0aUJu2T7+YVe3ujKxjKG6Bh
+ H7p7oda2NJX/1xkCxzIlL73h4tIUHyUtMn+NwpV/6v3slJKwbpTQ767nhu4lxGSWcbZyg3ff9C
+ +9vfEjQAAAA
+X-Change-ID: 20251119-drm-arcgpu-fix-device-node-leak-f909bc1f7fbb
+To: Simona Vetter <simona.vetter@ffwll.ch>, 
+ Alexey Brodkin <abrodkin@synopsys.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ Ian Ray <ian.ray@gehealthcare.com>, stable@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.15.1
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-233070-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233069-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[ffwll.ch,synopsys.com,linux.intel.com,kernel.org,suse.de,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: BEE2A38C3D7
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:email,bootlin.com:mid]
+X-Rspamd-Queue-Id: BA2A838C37D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 03:09:43PM +0200, Gerd Bayer wrote:
-> Hi Bjorn et al.
-> 
-> On s390, AtomicOp Requests are enabled on a PCI function that supports
-> them, despite the helper being ignorant about the root port's capability
-> to supporting their completion.
-> 
-> Patch 1: Do not enable AtomicOps Requests on RCiEPs
-> Patch 2: Fix the logic in pci_enable_atomic_ops_to_root()
-> Patch 3: Update references to PCIe spec in that function.
-> 
-> I did test that the issue is fixed with these patches. Also, I verified
-> that on a Mellanox/Nvidia ConnectX-6 adapter plugged straight into the
-> root port of a x86 system still gets AtomicOp Requests enabled.
-> 
-> Due to a lack of the required hardware, I did not test this with any PCIe
-> switches between root port and endpoint. So test exposure in other
-> environments is highly appreciated.
-> 
-> Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+This function gets a device_node reference via
+of_graph_get_remote_port_parent() and stores it in encoder_node, but never
+puts that reference. Add it.
 
-Thanks, applied to pci/atomics for v7.1 with minor rework of 2/3.
+There used to be a of_node_put(encoder_node) but it has been removed by
+mistake during a rework in commit 3ea66a794fdc ("drm/arc: Inline
+arcpgu_drm_hdmi_init").
 
-> ---
-> Changes in v7:
-> - Prepend series with a patch to explicitly exclude RCiEPs from
->   enablement of AtomicOps Requests
-> - Limit the core patch 2 to enforce a full check of the entire
->   PCIe hierarchy for support of AtomicOps capabilities.
-> - Rebase to v7.0-rc6
-> - Link to v6: https://lore.kernel.org/r/20260325-fix_pciatops-v6-0-10bf19d76dd1@linux.ibm.com
-> 
-> Changes in v6:
-> - Incorporate Ilpo's editorial comments.
-> - Correct logic in pci_is_atomicops_capable_rp() (annotated by Sashiko)
-> - Link to v5: https://lore.kernel.org/r/20260323-fix_pciatops-v5-0-fada7233aea8@linux.ibm.com
-> 
-> Changes in v5:
-> - Introduce new pcibios_connects_to_atomicops_capable_rc() so arch's can
->   declare AtomicOps support outside of PCIe config space. Defaults to
->   "true" - except s390.
-> - rebase to 7.0-rc5
-> - Link to v4: https://lore.kernel.org/r/20260313-fix_pciatops-v4-0-93bc70a63935@linux.ibm.com
-> 
-> Changes in v4:
-> - drop patch 1 - it will become the base of a new series
-> - previous patch 2, now 1: reword commit message
-> - add a new patch to update references to PCI spec within
->   pci_enable_atomic_ops_to_root()
-> - rebase to latest master
-> - Link to v3: https://lore.kernel.org/r/20260306-fix_pciatops-v3-0-99d12bcafb19@linux.ibm.com
-> 
-> Changes in v3:
-> - rebase to 7.0-rc2
-> - gentle ping
-> - add netdev and rdma lists for awareness
-> - Link to v2: https://lore.kernel.org/r/20251216-fix_pciatops-v2-0-d013e9b7e2ee@linux.ibm.com
-> 
-> Changes in v2:
-> - rebase to 6.19-rc1
-> - otherwise unchanged to v1
-> - Link to v1: https://lore.kernel.org/r/20251110-fix_pciatops-v1-0-edc58a57b62e@linux.ibm.com
-> 
-> ---
-> Gerd Bayer (3):
->       PCI: AtomicOps: Do not enable requests by RCiEPs
->       PCI: AtomicOps: Do not enable without support in root port
->       PCI: AtomicOps: Update references to PCIe spec
-> 
->  drivers/pci/pci.c | 48 ++++++++++++++++++++++++++----------------------
->  1 file changed, 26 insertions(+), 22 deletions(-)
-> ---
-> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-> change-id: 20251106-fix_pciatops-7e8608eccb03
-> 
-> Best regards,
-> -- 
-> Gerd Bayer <gbayer@linux.ibm.com>
-> 
+Fixes: 3ea66a794fdc ("drm/arc: Inline arcpgu_drm_hdmi_init")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Changes in v2:
+- fix typos in commit message
+---
+ drivers/gpu/drm/tiny/arcpgu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
+index 505888497482..c93d61ac0bb7 100644
+--- a/drivers/gpu/drm/tiny/arcpgu.c
++++ b/drivers/gpu/drm/tiny/arcpgu.c
+@@ -250,7 +250,8 @@ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
+ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ {
+ 	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
+-	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
++	struct device_node *encoder_node __free(device_node) = NULL;
++	struct device_node *endpoint_node = NULL;
+ 	struct drm_connector *connector = NULL;
+ 	struct drm_device *drm = &arcpgu->drm;
+ 	int ret;
+
+---
+base-commit: 4b9c36c83b34f710da9573291404f6a2246251c1
+change-id: 20251119-drm-arcgpu-fix-device-node-leak-f909bc1f7fbb
+
+Best regards,
+--  
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
 
