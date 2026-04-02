@@ -1,265 +1,139 @@
-Return-Path: <stable+bounces-232909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFs4LMbzzWlLjgYAu9opvQ
-	(envelope-from <stable+bounces-232909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:42:46 +0200
+	id GCjlJUX0zWlLjgYAu9opvQ
+	(envelope-from <stable+bounces-232910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:44:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B84383B3F
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1525F383B94
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01025303339D
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 04:42:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8443B30254DE
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 04:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18117366550;
-	Thu,  2 Apr 2026 04:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1B936657B;
+	Thu,  2 Apr 2026 04:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vWXGzyn1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IurlPxyt"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ineCa20N"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B0A366060;
-	Thu,  2 Apr 2026 04:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B393366800;
+	Thu,  2 Apr 2026 04:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775104958; cv=none; b=mnLs4aWBf6iOK7W4i6wBW9ej7d3FmqI5bph6FmEyeKmf2mVz8CeTJ+yLQCzTF2LqLi/8ClIXMxFlJhOyfDIVucLggw0CrBETgEmtjcDncqFILJQ5vHAGICqhceV0nr88xY5ZxBj0HlR/x4u+s9CVVfa7rk4cK7vbpukG/hMGaH0=
+	t=1775105069; cv=none; b=nVsTozOBVbACzGy9ulOQW529os7RgLzSlGJGFwGCnMK4QuX07pm+ijhs5sY2QkvIE4v5RBSqxE7AiCJuTgpjpHiZtPiaTt+RZBSfeTBnhUUlp8BaQbG8JnC1XdsjtvleenO0DI9cGA7FiH9njvi4r9N46WtR3Skj8ngFmkrxru0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775104958; c=relaxed/simple;
-	bh=XIVO2rDhF7vl2myZmgFd67wiPZXQ7C/T7hTBVST245I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qqxidG+4BXu2XvZDrPu/kW1j/CZm8ACOXyr5JdH7OUkRyfSYdPMypDCNxROD0IQJgWAQwbnfCyTuOjFSlci0gtMvtf2JGmcxmHT7WGEFzs246daPgWWyUjEaRvRw8Rv6L9brHJ83YchcHAagrpNHjeczxoZvGInxYL9CG7psk5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vWXGzyn1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IurlPxyt; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1775104955;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MJvxgmla7GJ40kGY75h8wil3XQl50FCUl05/E1jznUo=;
-	b=vWXGzyn1Ah4NVW1Mlx6bVWLSBj6AYX9pCd9DrDOplQTmbGujEMKDfVdk9UuQSy4q/EB+8j
-	JbSoHM0OO3CXsGn4pqDs8ysla/YeDW81rKvL9oMlDSU/wJwEwNXBwVEXmKQxttdHCCtWHo
-	7bMByldcwMuRdSwyAqbIbVhr09Nh5iOZuF3dTgEvAYv8muo0576uG3wW0ftYbyCT+1GWyq
-	gsQhjmiz6dYjOVC7gzheLv3qXVvheTKJr8qE9ktdT2m9XlyVi9m5J2OKt1IAYR7+G81PSc
-	Ccn6ATCGsbpr6A2imtJGqLjtn/4UiXtw+q2mleqWmx/aU5fGJJjqJADChxr5xg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1775104955;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MJvxgmla7GJ40kGY75h8wil3XQl50FCUl05/E1jznUo=;
-	b=IurlPxyt1Bfb+kV3Q+c8hoyBvdrj8JLeMIg7p9Kgwjh781UgDqCuCKKy/ODbWXkRUht4Vn
-	3iR/ddfJc1aykxAQ==
-To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>,
- jan.kiszka@siemens.com
-Cc: crwood@redhat.com, florian.bezdeka@siemens.com,
- ionut.nechita@windriver.com, brauner@kernel.org,
- linux-fsdevel@vger.kernel.org, linux-rt-users@vger.kernel.org,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- frederic@kernel.org, vschneid@redhat.com, gregkh@linuxfoundation.org,
- chris.friesen@windriver.com, viorel-catalin.rapiteanu@windriver.com,
- iulian.mocanu@windriver.com
-Subject: Re: [REGRESSION] osnoise: "eventpoll: Replace rwlock with spinlock"
- causes ~50us noise spikes on isolated PREEMPT_RT cores
-In-Reply-To: <20260401165841.532687-1-ionut.nechita@windriver.com>
-References: <22ffc044-4cc7-468c-b11d-9b838c92e82b@siemens.com>
- <20260401165841.532687-1-ionut.nechita@windriver.com>
-Date: Thu, 02 Apr 2026 06:42:32 +0200
-Message-ID: <878qb6x9af.fsf@yellow.woof>
+	s=arc-20240116; t=1775105069; c=relaxed/simple;
+	bh=5jZatumzTwetQf+a59y3hc8iMuwSoHglSHKuz1ZMO6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Oa9VqMieORR57wo3A5xq8PTQHuUPWUghuleI+Cpbtptm1oN2qNFDf413rc7w93saCK2bg+v4OhTr88TQohUGwhCH6VmpqhKjRqq9q1RD9zOZW1ZRPSpd/IUNjY4u8KLpIpJse70tw+gC67/mm/He3sNTa88Wo3TICk2CzjsH/E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ineCa20N; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [192.168.0.12] (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 2534420B710C;
+	Wed,  1 Apr 2026 21:44:25 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2534420B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1775105068;
+	bh=RcOVBpXNTnGFlAFScnVQtoQRFGOne0v6JKfhc+RakUc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ineCa20NM4HZqc0TncOKDKzndmknUsUaT4SESR1NpsC+/YiPuCXiNRVDZEyXScrOF
+	 dD/RjraEHSzAd7ujlfenUYiUHVJgvMIVtCufOQ2T/D5W8edCY0Ms1ktYHvKJI3o4TR
+	 UaAmQBhgjSwwUu2dmhQ/DxmVthOuMti2ZgrMcHgA=
+Message-ID: <12005a02-a1cd-46ca-8782-c727a7d5e5c6@linux.microsoft.com>
+Date: Thu, 2 Apr 2026 10:14:24 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
+ trigger path
+To: Alex Williamson <alex@shazbot.org>, "Gupta, Nipun" <nipun.gupta@amd.com>
+Cc: nikhil.agarwal@amd.com, pieter.jansen-van-vuuren@amd.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+ <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
+ <20260401122254.363d93c2@shazbot.org>
+Content-Language: en-US
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+In-Reply-To: <20260401122254.363d93c2@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-232910-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232909-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[namcao@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linutronix.de:dkim,yellow.woof:mid]
-X-Rspamd-Queue-Id: 13B84383B3F
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1525F383B94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-"Ionut Nechita (Wind River)" <ionut.nechita@windriver.com> writes:
-> Crystal, Jan, Florian, thanks for the detailed feedback. I've redone
-> all testing addressing each point raised. All tests below use HT
-> disabled (sibling cores offlined), as Jan requested.
->
-> Setup:
->   - Hardware: Intel Xeon Gold 6338N (Ice Lake, single socket,
->     32 cores, HT disabled via sibling cores offlined)
->   - Boot: nohz_full=3D1-16 isolcpus=3Dnohz,domain,managed_irq,1-16
->     rcu_nocbs=3D1-31 kthread_cpus=3D0 irqaffinity=3D17-31
->     iommu=3Dpt nmi_watchdog=3D0 intel_pstate=3Dnone skew_tick=3D1
->   - eosnoise run with: ./osnoise -c 1-15
->   - Duration: 120s per test
->
-> Tested kernels (all vanilla, built from upstream sources):
->   - 6.18.20-vanilla      (non-RT, PREEMPT_DYNAMIC)
->   - 6.18.20-vanilla      (PREEMPT_RT, with and without rwlock revert)
->   - 7.0.0-rc6-next-20260331 (PREEMPT_RT, with and without rwlock revert)
->
-> I tested 6 configurations to isolate the exact failure mode:
->
->   #  Kernel          Config   Tool            Revert  Result
->   -- --------------- -------- --------------- ------- ----------------
->   1  6.18.20         non-RT   eosnoise        no      clean (100%)
->   2  6.18.20         RT       eosnoise        no      D state (hung)
->   3  6.18.20         RT       eosnoise        yes     clean (100%)
->   4  6.18.20         RT       kernel osnoise  no      clean (99.999%)
->   5  7.0-rc6-next    RT       eosnoise        no      93% avail, 57us
->   6  7.0-rc6-next    RT       eosnoise        yes     clean (99.99%)
 
-Thanks for the detailed analysis.
 
-> Key findings:
->
-> 1. On 6.18.20-rt with spinlock, eosnoise hangs permanently in D state.
->
->    The process blocks in do_epoll_ctl() during perf_buffer__new() setup
->    (libbpf's perf_event_open + epoll_ctl loop). strace shows progressive
->    degradation as fds are added to the epoll instance:
->
->      CPU  0-13:  epoll_ctl  ~8 us     (normal)
->      CPU 14:     epoll_ctl  16 ms     (2000x slower)
->      CPU 15:     epoll_ctl  80 ms     (10000x slower)
->      CPU 16:     epoll_ctl  80 ms
->      CPU 17:     epoll_ctl  20 ms
->      CPU 18:     epoll_ctl  -- hung, never returns --
->
->    Kernel stack of the hung process (3+ minutes in D state):
->
->      [<0>] do_epoll_ctl+0xa57/0xf20
->      [<0>] __x64_sys_epoll_ctl+0x5d/0xa0
->      [<0>] do_syscall_64+0x7c/0xe30
->      [<0>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
->
-> 2. On 7.0-rc6-next-rt with spinlock, eosnoise runs but with severe
->    noise. The difference from 6.18 is likely additional fixes in
->    linux-next that prevent the complete deadlock but not the contention.
->
-> 3. Kernel osnoise tracer (test #4) shows zero noise on the same
->    6.18.20-rt+spinlock kernel where eosnoise hangs. This confirms the
->    issue is specifically in the epoll rt_mutex path, not in osnoise
->    measurement methodology.
->
->    Kernel osnoise output (6.18.20-rt, spinlock, no revert):
->      99.999% availability, 1-4 ns max noise, RES=3D6 total in 120s
->
-> 4. Non-RT kernel (test #1) with the same spinlock change shows zero
->    noise. This confirms the issue is the spinlock-to-rt_mutex conversion
->    on PREEMPT_RT, not the spinlock change itself.
->
-> IRQ deltas on isolated CPU1 (120s):
->
->                     6.18.20-rt   6.18.20-rt   6.18.20      6.18.20-rt
->                     spinlock     rwlock(rev)  non-RT       kernel osnoise
->   RES (IPI):        (D state)    3            1            6
->   LOC (timer):      (D state)    3,325        1,185        245
->   IWI (irq work):   (D state)    565,988      1,433        121
->
->                     7.0-rc6-rt   7.0-rc6-rt
->                     spinlock     rwlock(rev)
->   RES (IPI):        330,000+     2
->   LOC (timer):      120,585      120,585
->   IWI (irq work):   585,785      585,785
->
-> The mechanism, refined:
->
-> Crystal was right that this is specific to the BPF perf_event_output +
-> epoll pattern, not any arbitrary epoll user. I verified this: a plain
-> perf_event_open + epoll_ctl program without BPF does not trigger the
-> issue.
->
-> What triggers it is libbpf's perf_buffer__new(), which creates one
-> PERF_COUNT_SW_BPF_OUTPUT perf_event per CPU, mmaps the ring buffer,
-> and adds all fds to a single epoll instance. When BPF programs are
-> attached to high-frequency tracepoints (irq_handler_entry/exit,
-> softirq_entry/exit, sched_switch), every interrupt on every CPU calls
-> bpf_perf_event_output() which invokes ep_poll_callback() under
-> ep->lock.
->
-> On PREEMPT_RT, ep->lock is an rt_mutex. With 15+ CPUs generating
-> callbacks simultaneously into the same epoll instance, the rt_mutex
-> PI mechanism creates unbounded contention.  On 6.18 this results in
-> a permanent D state hang. On 7.0 it results in ~330,000 reschedule
-> IPIs hitting isolated cores over 120 seconds (~2,750/s per core).
->
-> With rwlock, ep_poll_callback() uses read_lock which allows concurrent
-> readers without cross-CPU contention =E2=80=94 the callbacks execute in
-> parallel without generating IPIs.
+On 01-04-2026 23:52, Alex Williamson wrote:
+> On Wed, 1 Apr 2026 15:11:17 +0530
+> "Gupta, Nipun" <nipun.gupta@amd.com> wrote:
+> 
+>> On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
+>>> Add validation to ensure MSI is configured before accessing cdx_irqs
+>>> array in vfio_cdx_set_msi_trigger(). Without this check, userspace
+>>> can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
+>>> with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
+>>> ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
+>>>
+>>> The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
+>>> sets config_msi to 1 only when called through the EVENTFD path. The
+>>> trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
+>>> done, but there was no enforcement of this call ordering.
+>>>
+>>> This matches the protection used in the PCI VFIO driver where
+>>> vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
+>>>
+>>> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+>>
+>> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
+> 
+> It's an improvement, but I think it also highlights that interrupt
+> setup for vfio-cdx devices is racy.  I think it should adopt a mutex on
+> the vfio_cdx_device that is acquired with a guard in
+> vfio_cdx_set_irqs_ioctl().  That would make config_msi stable for this
+> test.  Thanks,
+> 
+> Alex
 
-These IPIs do not exist without eosnoise running. eosnoise introduces
-these noises into the system. For a noise tracer tool, it is certainly
-eosnoise's responsibility to make sure it does not measure noises
-originating from itself.
+This patch is fixing a specific problem. User space can make VFIO_* 
+calls in a specific order to trigger NULL pointer access. This will not 
+get fixed with a mutex.
 
-> This pattern (BPF tracepoint programs + perf ring buffer + epoll) is
-> the standard architecture used by BCC tools (opensnoop, execsnoop,
-> biolatency, tcpconnect, etc.), bpftrace, and any libbpf-based
-> observability tool. A permanent D state hang when running such tools
-> on PREEMPT_RT is a significant regression.
-
-7.0-rc6-next is still using spin lock but has no hang problem. Likely
-you are hitting a different problem here which appears when spin lock is
-used, which has been fixed somewhere between 6.18.20 and 7.0-rc6-next.
-
-If you still have the energy for it, a git bisect between 6.18.20 and
-7.0-rc6-next will tell us which commit made the hang issue disappear.
-
-> I'm not proposing a specific fix -- the previous suggestions
-> (raw_spinlock trylock, lockless path) were rightly rejected. But the
-> regression exists and needs to be addressed. The ep->lock contention
-> under high-frequency BPF callbacks on PREEMPT_RT is a new problem
-> that the rwlock->spinlock conversion introduced.
->
-> Separate question: could eosnoise itself be improved to avoid this
-> contention? For example, using one epoll instance per CPU instead of
-> a single shared one, or using BPF ring buffer (BPF_MAP_TYPE_RINGBUF)
-> instead of the per-cpu perf buffer which requires epoll. If the
-> consensus is that the kernel side is working as intended and the tool
-> should adapt, I'd like to understand what the recommended pattern is
-> for BPF observability tools on PREEMPT_RT.
-
-I am not familiar with eosnoise, I can't tell you. I tried compiling
-eosnoise but that failed. I managed to fix the compile failure, then I
-got run-time failure.
-
-It depends on what eosnoise is using epoll for. If it is just waiting
-for PERF_COUNT_SW_BPF_OUTPUT to happen, perhaps we can change to some
-sort of polling implementation (e.g. wake up every 100ms to check for
-data).
-
-Best regards,
-Nam
+Regards,
+Prasanna Kumar
 
