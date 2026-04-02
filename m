@@ -1,148 +1,175 @@
-Return-Path: <stable+bounces-232889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFG6I6jKzWnihQYAu9opvQ
-	(envelope-from <stable+bounces-232889-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 03:47:20 +0200
+	id cOB8BXnPzWnghgYAu9opvQ
+	(envelope-from <stable+bounces-232890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 04:07:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E71638256A
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 03:47:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A827D3828AB
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 04:07:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 905A23053DCF
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 01:44:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB3D8303FECE
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 02:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D161D327C09;
-	Thu,  2 Apr 2026 01:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14351CAA68;
+	Thu,  2 Apr 2026 02:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="mW3vkzYG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pSbYePcU"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC9A4A0C;
-	Thu,  2 Apr 2026 01:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63776E56A;
+	Thu,  2 Apr 2026 02:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775094268; cv=none; b=LztYzU3Mr8YR/vs8sFp4gDOtzShZdfeYTDnY6Ol9IFeDfUnvFXOHDC30MJ5zZvjJXqnLOvux+niyrTIAisoOKY4SeF2cf29ywMYCEIx+WmgbUKUk31MoyEIE5QLe+LOb6z3x2S2lViLBhv5i3EfZjAyZ/GMq5vDxRhRuhtvenxs=
+	t=1775095667; cv=none; b=oO/45qza2VD23NwI+HCO/Pr4W4zZBluntRtW1CpoqT2tXsJ7VpxhNR5+3iXWNKiJ8Qqy6wb2umYRj4vGcoN9YQA4u0cn+6odn7dh6r1yYJSMcdhJnedAQAboj6GaGRY8+Sz3pvU/Fxuh1LoIkt/kLLcY4s+mmmM6R0dm+assmVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775094268; c=relaxed/simple;
-	bh=0ziVZCkfU9TwIz4uE9xbIFnLRBqTPsjmOD+lzHvwjGw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EPJ15tYTmt1ZRNPDkZV6EEiq23sum0wAsJeYV8+EYY54D16o/qc04ZEy/9REzeICUIn7aV8zPNnJCsce2WDpr1flQ7qJgP2whRmEuGQPlWc6Jn+7SsvNODQLliF+Z7pnT0b/gJXpSBeJZ5XdBHRzC0g5LaQI27sUuMRonHLZTdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=mW3vkzYG; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775094263; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=js7KGxfJDNLAxsrWIZM9nWKXhhbMNQJFw7Ui8QveSFY=;
-	b=mW3vkzYG3vkdrsNLIMvmGQiuDivbKSSJA1x29ATNZPGt8HK4dS2NSZFbXs707343KKqehoW6qTQdhgrC0l0cxjynSGAxahO5pV21lMjah4dXv3t/lnA7aAh+DKM0F6CbkTkOisOUoiFFLUPDfWnknqsq5lMFjdkwakKXq+XGnIA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X0FP-xh_1775094262;
-Received: from 30.246.177.235(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0X0FP-xh_1775094262 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 02 Apr 2026 09:44:23 +0800
-Message-ID: <c08c7151-b696-45e3-9465-fb92b3dd9958@linux.alibaba.com>
-Date: Thu, 2 Apr 2026 09:44:35 +0800
+	s=arc-20240116; t=1775095667; c=relaxed/simple;
+	bh=7fWpk4Gb6mbBCpnHLamijCOUzylF/piEazB2Sm2XryY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aMr7c8Kvfocxs5PLk57EoLiiBCfjzehf4yYvUFVSQ1fXLqSi+1zbt681DHndoSHUrKIycW/+hWLwJc/ZJbv+SapgWNu/LLaytNUWYlHnBBUV3LoMuLLwS+8DjuRwt2Gi60Y7XhFviWRBm9r8GWvODI9hJ3u2ESbXHIBzpQzL4qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pSbYePcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AE1C4CEF7;
+	Thu,  2 Apr 2026 02:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775095667;
+	bh=7fWpk4Gb6mbBCpnHLamijCOUzylF/piEazB2Sm2XryY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pSbYePcUY+Qt+QuSS5KrYUfKigRw7zQGPLR7J2Kldh27J8+A0Vn/ST2v3YvTJ5Pio
+	 JTB96YQ3t4ES/UK//c5Kic324Idu+t5CygT3Yh4FEnsmXWxg8YWPDygSfaIlwjnMJR
+	 Rb5+pE96AgpXfmFgxVkYFb6UCK+G9bPZyTIe5+uJJKmfDKjmq3bxLFgw1sQAtv6GO/
+	 oB921pAGMCysuTxzf0t8dQF01o+vrwHpJCBIbr1DCY6qDc6aE7XfMyam0buLcHxqZw
+	 3RP4hEqME3uL89XZRxeFIPPPC0j2vpBA+DWcquCfRgD8iNvSnxOT4C1QMaUkZNT2ae
+	 cGM/PimH3Sh5g==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [PATCH] mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+Date: Wed,  1 Apr 2026 19:07:44 -0700
+Message-ID: <20260402020745.68554-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260402010457.66860-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dmaengine: idxd: fix double free in idxd_setup_groups()
- error path
-To: Guangshuo Li <lgs201920130244@gmail.com>,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>,
- Dave Jiang <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>,
- Fenghua Yu <fenghuay@nvidia.com>, dmaengine@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260401033622.1446904-1-lgs201920130244@gmail.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20260401033622.1446904-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-9.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232889-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232890-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,intel.com,kernel.org,nvidia.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xueshuai@linux.alibaba.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.alibaba.com:dkim,linux.alibaba.com:mid]
-X-Rspamd-Queue-Id: 2E71638256A
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,call_control.data:url]
+X-Rspamd-Queue-Id: A827D3828AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Andrew, please drop this patch.  sashiko found an issue, so I will respin.
 
+More details below.
 
-On 4/1/26 11:36 AM, Guangshuo Li wrote:
-> When an error happens after device_initialize(), idxd_setup_groups()
-> calls put_device(conf_dev).
+Forwarding Sashiko review in the usual reply format with my inline comments,
+for doing discussions via mails.
+
+> # review url: https://sashiko.dev/#/patchset/20260402010457.66860-1-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit 1d53bb9291d3fde393f37b143e637f0d25b6634e
+> Author: SeongJae Park <sj@kernel.org>
 > 
-> The device release callback idxd_conf_group_release() frees group, but
-> the current error paths then call kfree(group) again, causing a double
-> free.
+> mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
 > 
-> Keep the cleanup in idxd_conf_group_release() after put_device() and
-> avoid freeing group again in idxd_setup_groups().
+> This commit addresses a memory leak by deallocating damon_stat_context if
+> damon_call() fails during stat startup.
 > 
-> Fixes: aa6f4f945b10 ("dmaengine: idxd: fix memory leak in error handling path of idxd_setup_groups")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->   drivers/dma/idxd/init.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> Link: https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org
 > 
-> diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-> index b782eb3c191d..d9a9d56dd277 100644
-> --- a/drivers/dma/idxd/init.c
-> +++ b/drivers/dma/idxd/init.c
-> @@ -374,7 +374,7 @@ static int idxd_setup_groups(struct idxd_device *idxd)
->   		rc = dev_set_name(conf_dev, "group%d.%d", idxd->id, group->id);
->   		if (rc < 0) {
->   			put_device(conf_dev);
-> -			kfree(group);
-> +
->   			goto err;
->   		}
->   
-> @@ -399,7 +399,7 @@ static int idxd_setup_groups(struct idxd_device *idxd)
->   	while (--i >= 0) {
->   		group = idxd->groups[i];
->   		put_device(group_confdev(group));
-> -		kfree(group);
-> +
->   	}
->   	kfree(idxd->groups);
->   
+> > diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+> > --- a/mm/damon/stat.c
+> > +++ b/mm/damon/stat.c
+> > @@ -257,7 +257,12 @@ static int damon_stat_start(void)
+> >  
+> >  	damon_stat_last_refresh_jiffies = jiffies;
+> >  	call_control.data = damon_stat_context;
+> > -	return damon_call(damon_stat_context, &call_control);
+> > +	err = damon_call(damon_stat_context, &call_control);
+> > +	if (err) {
+> > +		damon_destroy_ctx(damon_stat_context);
+> 
+> Can this cause a use-after-free?
+> 
+> Earlier in damon_stat_start(), damon_start() is called, which creates
+> and starts the kdamond_fn kernel thread. This thread actively uses the
+> damon_stat_context.
+> 
+> If damon_call() fails, the kdamond_fn thread might still be running or
+> in its teardown phase. If we free the context directly using
+> damon_destroy_ctx() before the kthread has fully exited, the kthread
+> might access freed memory.
 
-Note that idxd_clean_groups() and idxd_clean_engines() have the same pattern.
-It should be fixed in the same patch as well.
+Nice catch.
 
-Thanks.
-Shuai
+FYI, I initially thought damon_call() of DAMON_STAT cannot fail, because it
+synchronizes its damon_start()/damon_stop() calls with module parameter
+handling function, and it doesn't update the context internal state, which
+means the damon_ctx->maybe_corrupted cannot be set.  If that's true, this patch
+itself is not needed since the memory leak cannot exist.
 
+But, kdamond can fail for its internal memory allocation failures.
+Specifically, if ctx->region_score_histogram allocation is failed, it will be
+terminated.  So, yes, sashiko is right.  There is a chance.
+
+> 
+> Should we call damon_stop() here to wait for the thread to safely exit
+> before destroying the context, similar to the teardown sequence in
+> damon_stat_stop()?
+
+Seems that is a workable option.  But given the fact that kdamond is already in
+its termination step, it feels odd to me.  I'll take more time to think about.
+
+> 
+> > +		damon_stat_context = NULL;
+> > +	}
+> > +	return err;
+> >  }
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260402010457.66860-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
