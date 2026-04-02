@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-233047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLtsE5CRzmkbogYAu9opvQ
-	(envelope-from <stable+bounces-233047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 17:56:00 +0200
+	id gEiNBHaRzmkbogYAu9opvQ
+	(envelope-from <stable+bounces-233045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 17:55:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C407A38B86E
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 17:55:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 766F538B863
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 17:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56CC630AB039
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 15:49:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60656302AE27
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 15:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915AF3EC2EB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324383E1D19;
 	Thu,  2 Apr 2026 15:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBwm3z/r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pL230CIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159ED3CBE72;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CBE35F165;
 	Thu,  2 Apr 2026 15:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775144989; cv=none; b=MKoOqbYJfHd7ZlbPlQ6/Y/qxA8gJZUEc1Cf3fylxwU5itheDjbaX9wIuv9powMDM4buZJKvvg44m8QqTFjKQD38R3W2ZIS5g82aOEGGkwDZ1kcm5k2XtykxPq7gCDFZoJvzh4A/ZZk9LvBNHLbNaVrOlQPHhvj2Smb4W5Zna5K4=
+	t=1775144989; cv=none; b=aE4vbXu/atvNee7SjQAmDSHGCQ7Hlo2vgPRTb1IKFYeIZxhAqGQ5/KU2iOsToFK2ClJvr6vklHeor7OGdSTRluJzfUu1o6YWV+fEwM+McOzobZPImqXQws9gq4bK0I71nhJixIfP6HqX6k4dROknl1JHg0ZGsr0Lyeh7cf73hks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775144989; c=relaxed/simple;
-	bh=XpuoG8mvycp03fgAimW2iAGcsycTMXVNftW28CIwid0=;
+	bh=5w5cMnbQ8S9gKwWMF2Qihh0+orwPNLrNq9f+yaKIYbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCAdXs1MJKCoUCnC39MUCIdSwD1ezEmS2NvQr1X5aJys1h+MECBz8zEhPLRNOnyaZ1hqPV7IQ6u+iYKkSTEryoby5+vFpmENiWcSsowiWwM9KaNq9C5DTZR871HJilRamdlY6VvOsgChFfwVgpi1IE5NYFjljkkxHTeUpTd+aZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBwm3z/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18A8C116C6;
+	 MIME-Version; b=IO2FoBpvw4cv9ayY7+ouPAljzQUs5mLFdvD7kO+Zm0cXYB2CHwhTHqlle/VgPX9NsOa4sapOlFaKvs7N9uy2k3OsOXlCzHMDt4/vF3NLFqcIKWDWkmIkjsJKq3R8K5HE1OMBJZbsXrIMRWEub5Rtn8g5sLKKm8I6lIezi7AOdKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pL230CIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C273AC4AF0C;
 	Thu,  2 Apr 2026 15:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775144988;
-	bh=XpuoG8mvycp03fgAimW2iAGcsycTMXVNftW28CIwid0=;
+	bh=5w5cMnbQ8S9gKwWMF2Qihh0+orwPNLrNq9f+yaKIYbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBwm3z/rNqQW8v6IflGSzqUxuShah55UPnHwpll5A1z28si50HEtea1N3umg+vmuW
-	 afaqx+Smv0aWg9UbeV86RmUwAtke4XUuhxtHQteeAUSKF5B0uX9E2cfqE+p8T+8gdn
-	 yjop/11TaknCUtVY1Q3lTrBE72Z1I4ZThMXD+u5WvXIEXsQd0Qp+oa0y/p0linwMo+
-	 tfmB1sLghiC6mlBINTA9CU6VPTW7j+h1ZDUo1C6ZBYPB7QL74kxhyFndmBoGebDKl4
-	 XLCGEqdUDCUdDIh/6okVAEAPh8/PDiQERWOwk90FzvbTyS2d9k1leXgwKEuTk/bt0w
-	 SXB/V1Xz9/36A==
+	b=pL230CIx5VX20b1Wj67I/WC8L9e0cYR/10pRMzqSWsiGbt+D8M/25YmUPHNCcNqeb
+	 x3IYnl3P4zlbwYyV5h2VDEG1CyS7qsZvTG6QrBxsey32I1Nbf67h4YFgqPXWOCZBZZ
+	 Cwg4zU6vlweUoW1FvXZ6vgyY7vt537a1Q518pBbnhHg/LtPMEd9S0DomwRtsADCaKf
+	 nF0os2i6MU62ZVfTursHjeUOS4JkGVqHD1jIQi3nBrL7i5TrKMyTYxXc/5D8sdnV6F
+	 lUKpbwIq9SEHqUjx+tppjmV77I2+JuEzSQaRMOTkiB/c6Do/0KLfdW0ejIFEM3917u
+	 6dcX8cZmrLfSw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w8KIk-0000000ALvQ-27LT;
+	id 1w8KIk-0000000ALvS-29mI;
 	Thu, 02 Apr 2026 17:49:46 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
@@ -56,9 +56,9 @@ Cc: linux-bluetooth@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
 	Rajat Jain <rajatja@google.com>
-Subject: [PATCH v3 2/5] Bluetooth: btusb: fix use-after-free on marvell probe failure
-Date: Thu,  2 Apr 2026 17:48:07 +0200
-Message-ID: <20260402154810.2467291-3-johan@kernel.org>
+Subject: [PATCH v3 3/5] Bluetooth: btusb: fix wakeup source leak on probe failure
+Date: Thu,  2 Apr 2026 17:48:08 +0200
+Message-ID: <20260402154810.2467291-4-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260402154810.2467291-1-johan@kernel.org>
 References: <20260402154810.2467291-1-johan@kernel.org>
@@ -75,13 +75,13 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_TO(0.00)[gmail.com,holtmann.org];
-	TAGGED_FROM(0.00)[bounces-233047-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233045-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -91,70 +91,48 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
-X-Rspamd-Queue-Id: C407A38B86E
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 766F538B863
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Make sure to stop any TX URBs submitted during Marvell OOB wakeup
-configuration on later probe failures to avoid use-after-free in the
-completion callback.
+Make sure to disable wakeup on probe failure to avoid leaking the wakeup
+source.
 
-This issue was reported by Sashiko while reviewing a fix for a wakeup
-source leak in the btusb probe errors paths.
-
-Link: https://sashiko.dev/#/patchset/20260402092704.2346710-1-johan%40kernel.org
-Fixes: a4ccc9e33d2f ("Bluetooth: btusb: Configure Marvell to use one of the pins for oob wakeup")
+Fixes: fd913ef7ce61 ("Bluetooth: btusb: Add out-of-band wakeup support")
 Cc: stable@vger.kernel.org	# 4.11
 Cc: Rajat Jain <rajatja@google.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 97de6e6e7dbc..b6f2bed7d1b8 100644
+index b6f2bed7d1b8..cb0d40a7af8f 100644
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -4183,7 +4183,7 @@ static int btusb_probe(struct usb_interface *intf,
- 	if (id->driver_info & BTUSB_INTEL_COMBINED) {
- 		err = btintel_configure_setup(hdev, btusb_driver.name);
+@@ -4146,7 +4146,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 	if (id->driver_info & BTUSB_MARVELL && data->oob_wake_irq) {
+ 		err = marvell_config_oob_wake(hdev);
  		if (err)
 -			goto out_free_dev;
-+			goto err_kill_tx_urbs;
- 
- 		/* Transport specific configuration */
- 		hdev->send = btusb_send_frame_intel;
-@@ -4346,7 +4346,7 @@ static int btusb_probe(struct usb_interface *intf,
- 		err = usb_set_interface(data->udev, 0, 0);
- 		if (err < 0) {
- 			BT_ERR("failed to set interface 0, alt 0 %d", err);
--			goto out_free_dev;
-+			goto err_kill_tx_urbs;
- 		}
++			goto err_disable_wakeup;
  	}
- 
-@@ -4354,7 +4354,7 @@ static int btusb_probe(struct usb_interface *intf,
- 		err = usb_driver_claim_interface(&btusb_driver,
- 						 data->isoc, data);
- 		if (err < 0)
--			goto out_free_dev;
-+			goto err_kill_tx_urbs;
+ #endif
+ 	if (id->driver_info & BTUSB_CW6622)
+@@ -4392,6 +4392,9 @@ static int btusb_probe(struct usb_interface *intf,
  	}
- 
- 	if (IS_ENABLED(CONFIG_BT_HCIBTUSB_BCM) && data->diag) {
-@@ -4390,6 +4390,8 @@ static int btusb_probe(struct usb_interface *intf,
- 		usb_set_intfdata(data->isoc, NULL);
- 		usb_driver_release_interface(&btusb_driver, data->isoc);
- 	}
-+err_kill_tx_urbs:
-+	usb_kill_anchored_urbs(&data->tx_anchor);
+ err_kill_tx_urbs:
+ 	usb_kill_anchored_urbs(&data->tx_anchor);
++err_disable_wakeup:
++	if (data->oob_wake_irq)
++		device_init_wakeup(&data->udev->dev, false);
  out_free_dev:
  	if (data->reset_gpio)
  		gpiod_put(data->reset_gpio);
