@@ -1,231 +1,208 @@
-Return-Path: <stable+bounces-233098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCFWK827zmmTpgYAu9opvQ
-	(envelope-from <stable+bounces-233098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 20:56:13 +0200
+	id iOtZAEi9zmmTpgYAu9opvQ
+	(envelope-from <stable+bounces-233099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 21:02:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD9638D7C2
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 20:56:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC2038D869
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 21:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 914473083016
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 18:49:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C27D3014743
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 19:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5AC371CF5;
-	Thu,  2 Apr 2026 18:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BB5353EDF;
+	Thu,  2 Apr 2026 19:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="VTnpKIq5"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="cTICuSfR"
 X-Original-To: stable@vger.kernel.org
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11020092.outbound.protection.outlook.com [52.101.201.92])
+Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B1913FEE;
-	Thu,  2 Apr 2026 18:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.92
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775155773; cv=fail; b=p0OiyIjvENh1RyLA6mdvC/xoMSIFID3mU4CrihDKZvEiwHe52sr1qWtS20fP8I/pMieheflAON0y0VbiD11RzNyfEvoJdcAg8OgfMA74pqMUzi2Wa3zAtQeyp+RSohvE0MAHWUIWJThOIHtXPTsCCauHxtpNNpe7pmghdxuQFOI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775155773; c=relaxed/simple;
-	bh=cjBAteypZZligV8rxpCStTjdsd3Y1JloU5xHOF4dgAE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QQwct9DksUTQVbelfeZ/ReyyyUCdxlD83NjDHW+YSuRY60Nec4WPqyx010bXyNQCAU75+Mv0CJa4wNtkT6D35oFF7j+jRSRgbPchGniReqBfm0/bh5c+ZOzFHu6wJccThGfoLfZOC++i/usXk22Ooa/1nihBwmXGHv3g4mkd14w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=VTnpKIq5; arc=fail smtp.client-ip=52.101.201.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QKX5LkpVCgi53R5tY83scYWQqA1wTGuPb5eEhj9YG6TUV9QapKocYyFfasewybaXMJMkHmFkgSkIU2hdgLQkhS7apWJD8c9yb3nly4Q8q4wdHpT12Ajj1KNd+LhU2QVNajAI/05ow5KLSGOiwmXkVZoa7HfBm/VrxQDAV0It8PS+6U5j8Hrn1Hf+8OhrbS1vwXzyRBUBrvctpKQOL/3+DTyrCDRB/3yPozT2L0NEYwassgyeA6jg1yFkS7hrIo/PosAX8rXCpOo/h67cn9AGexxu6aWhoc8hZowOMqYN/X6BUuJ6wk1m8oWNBnKs/RQELMBWrKC4BJRw78FQnkwpEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mu0Jq9y4DvwLYip+tmR90/Sboo6ZKO5c+IZXPo0fHT8=;
- b=Ol0htvpaPz1j3NXT21wY2tb3maVNCjOCGw/DuSRSEDXXgOMuAFKE98t5SywgYzI2KVkoIHY0sSxJNhXz8hR2HNK39xsmADvOQ6yS4q6/ljcsg63dxcN6az9yKdNaxKZUHc+eTqCxgfsfsxNq94Q3XGMLjHYbvPVgQ+0bv5vaJ5nHLDiV+CQJa0y1NP3DPcXdQyHCpQg4d2MN+f1+loEQ3SBHlhVIHVBRDB+gR2Jaj7gu/Dgsqm7HX5m5tuxEUtqm/WjOGVVXGU7dkFscSSpgTmQyv6td5dggpwhxQqeNk/UaRWoiS6XUdsTUdqFS9xRn7QDhPsxGVeTB45bAZItpyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mu0Jq9y4DvwLYip+tmR90/Sboo6ZKO5c+IZXPo0fHT8=;
- b=VTnpKIq56nqnd2IIze7XTj65jr9jqm9xM6tSM7BL540XSY/3hKWjedv30gJZb2r1+2KIjwnQiaAzL2xw/IgFK01Dlt1o/91Ted9ikrIYgtlfD1BZ7elCQ1xow2nlcB0wbls8P/u6VPZb/+mURVZ+GgeKnGpnKJo2af/lSlpJY7g=
-Received: from SA1PR21MB6921.namprd21.prod.outlook.com (2603:10b6:806:4a7::11)
- by SA1PR21MB6272.namprd21.prod.outlook.com (2603:10b6:806:4ac::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Thu, 2 Apr
- 2026 18:49:28 +0000
-Received: from SA1PR21MB6921.namprd21.prod.outlook.com
- ([fe80::51cf:497c:e5df:f6d]) by SA1PR21MB6921.namprd21.prod.outlook.com
- ([fe80::51cf:497c:e5df:f6d%2]) with mapi id 15.20.9769.014; Thu, 2 Apr 2026
- 18:49:28 +0000
-From: Dexuan Cui <DECUI@microsoft.com>
-To: Michael Kelley <mhklinux@outlook.com>, Matthew Ruffell
-	<matthew.ruffell@canonical.com>
-CC: "bhelgaas@google.com" <bhelgaas@google.com>, Haiyang Zhang
-	<haiyangz@microsoft.com>, Jake Oshins <jakeo@microsoft.com>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, KY Srinivasan
-	<kys@microsoft.com>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, Long Li <longli@microsoft.com>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "mani@kernel.org"
-	<mani@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "wei.liu@kernel.org"
-	<wei.liu@kernel.org>
-Subject: RE: [PATCH] PCI: hv: Allocate MMIO from above 4GB for the config
- window
-Thread-Topic: [PATCH] PCI: hv: Allocate MMIO from above 4GB for the config
- window
-Thread-Index:
- AQHci0NePIGSa/9NGkCUvIR93cd3gLVdwUXwgADOvQCAABBuYIAAnjqAgAALUwCAbTsFEA==
-Date: Thu, 2 Apr 2026 18:49:28 +0000
-Message-ID:
- <SA1PR21MB6921BADC87FF09BA8231800DBF51A@SA1PR21MB6921.namprd21.prod.outlook.com>
-References:
- <SN6PR02MB4157545DAFDCCE0028439DB2D497A@SN6PR02MB4157.namprd02.prod.outlook.com>
- <20260123053909.95584-1-matthew.ruffell@canonical.com>
- <SN6PR02MB41573CD2EA6CD82A0C238F66D494A@SN6PR02MB4157.namprd02.prod.outlook.com>
-In-Reply-To:
- <SN6PR02MB41573CD2EA6CD82A0C238F66D494A@SN6PR02MB4157.namprd02.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=4d1d8d16-9b07-46b6-8a12-10b2e002d5f7;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-04-02T18:23:13Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB6921:EE_|SA1PR21MB6272:EE_
-x-ms-office365-filtering-correlation-id: 0073102a-9e9d-4923-0eb7-08de90e891ea
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021|22082099003|18002099003|56012099003;
-x-microsoft-antispam-message-info:
- ODcceD75LddH4NS6vVObezD+/EjlexO7zDRFhQ9BTNvStWud+gwkkwfh2X6HzMWCGZwRL3jgmyd32Fp+EP02hz8Q/f1DCQHQGTFAD33sOmEB3hYGKE4ivBVw8argAAlvrggftHIHKMyrDvZ/f0N0cSwa/BUN45z3dqay2Js4bl8x9PT01bPq/OhW8VuO8GHVuWzBD/oah2zQ3uphVmILt4bcszMTLpRygndNOE8bYtfH8Lmgv5uLCCOhHGr25pfEhnq/HDFtO3sT9snh/g7CzJOHYDm9585Aw44O2b1eIGzGHugmjI3OlR7AS0HPhaqGMRjqrxvyL83J1Zm6aNCICh0R6+GWzpy4kHG5x4Q+yZhI62hoU/I/4E3akWu15CCS0j8lvn653F+ictVpT4jr/9JsBzId6NxFUeX4lt589WBXWuPO5gGkt2k5osRiddNWUJbUeAT6+SBcSzsVK9e4Ckc4OcxSP0Gb6b1vEJ0Kk+vZwsNLH42OYlMHegVWaMQ44rD+zadWJmPB960stPbIrClH3k2CrnxRF+BobBfIMKGiUnMIkRT1rJqmyLItmXhB9Ou4vYF4gUK0VDAakl04VQjNCkhGx1t3acwxVj3kh7G73iCicYilBa0vNpK24V6tH5Y7YdoXixfZbxJG9i6i5rukgOj5QlWjEDLBdCk6CjwG4gDzhd/RjKWmGe3UwgQii3FPlu2r9PT63qWrWUV8O/J3lEBZkbB/d1cVHqP/U1hOECreoT6KWB1cCMaFH8za
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6921.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?I2p86R9YdtHvGoDeD5XqEPps7nk9AVguu8AU/cyH3zXwXFzmA9cTB9dj5aoC?=
- =?us-ascii?Q?Al/AwADOJUYFnovlrEa0GCj0g6jZcitLZMZV4Lb3g+Ww+Akj8HLJG17j8tmQ?=
- =?us-ascii?Q?s67AOh13bxLpqwv4XTaMQHd2IILZ1YdESdH9mnj7bZpvtZG4rfwktXyGL6yT?=
- =?us-ascii?Q?rQIO4UwyTvErORQXLNpCIPUjuXtpXCTAcgxIdjcGzrcYoenE024fbi0Poo+2?=
- =?us-ascii?Q?cmI0zmaso0VNn0vcNZD93UHbi+sN/6j0w0L94ENHktyq/EOOCJEjOXrSDFMo?=
- =?us-ascii?Q?g92kjtElJMMTi6973XL+wC8Z1l9t2bLWQQEAZ2sregYlm8ftTbbpXFMR1ep4?=
- =?us-ascii?Q?V0q9CrSxZASfKPy5lPbGy4iL6N7mFLJ30b68V/x36jsdCVMb5fWmp/A8KqXs?=
- =?us-ascii?Q?rwdlWMA7OClxHozqxh3Y1zZbfS70FEeoLLLjdpnr7ER1tOCe0EMjF8yL65HM?=
- =?us-ascii?Q?MzdbSy70SQLUlzs7ASdPgctJ80ET81gCoPWpH5P8DEakRNzF+5ab/5Az8I8Z?=
- =?us-ascii?Q?cq6Xs94mXryFP/WBn8+A5K0pRhF4hGGaM1ik4jpFUoTFgb88+Qb9hkhO/Pio?=
- =?us-ascii?Q?98tUCGj9FNJlCuITU5zr2ne7UcZ9aM09lCw5tASHEG6FHx/jnIAA0d7iQw1O?=
- =?us-ascii?Q?aw/5Xt2mSds9mrcyRDnfTOvF7lbGZh0464rt03MinG49omaFMlF/g5Kb+qOQ?=
- =?us-ascii?Q?UUoSR+XKOUxCOpPEMKTt/yEJMFV0pUF9nyccdm0eSDq6BFZEK96+gGNQQE5a?=
- =?us-ascii?Q?F/f3LZBIB41LuCF+roeBxdLYy9/1zOgtmJJOF7bxwHtGC58V2YdCdR1fGfiM?=
- =?us-ascii?Q?YwP5shs8BTd3SOgI45t/4aGpC3sju78qqYV//RL4lhq+YCHoca4NvXCZt2wJ?=
- =?us-ascii?Q?XmKQwqUYsU9vyLbsNam2FsGsmburvejfGaQ7mUrQlkkxrCBkYkP/ERtdjs5I?=
- =?us-ascii?Q?+dCiVUWk16FOnr8fzGK7gTiXb5NW2G3CokFdP8te8a6D1dhfH4GRO8bQYRbE?=
- =?us-ascii?Q?dYOgQSSw5+/TRCMISCW6SPFkDmFZPaVFkntObXbnU/jEOZq3ITngi1iHRamj?=
- =?us-ascii?Q?wyc/miXwA+ft01IdQ4uXj0Ze7v91sLdWNI6LMtq8hQ1J7lhZlaMxsw3DjNys?=
- =?us-ascii?Q?1wkLzIXkvZ5JKeX4RJaeZ5A2GDgoWzS6N8Y7Qvt+Dt/bF1gLGX7tUL5IjM3h?=
- =?us-ascii?Q?ntopn8k6/z4CWKZTL+iIKbqlQe+eyi6bC6mpAw8euPM3AWkdR2hRfTDc7Cwp?=
- =?us-ascii?Q?7/E/R9Cjvn/MBGcZOXTr0Bfinja9jof5E2E4pEnkMAeiEEflV8nsYb3n76X6?=
- =?us-ascii?Q?2vEfw7uJOQQj5tFWcYpww0eNplWbAJOoeCDosTHAu5/+HcjsN9oHx1+LjbXm?=
- =?us-ascii?Q?4J4/ME4rxezsGTx3B/P5znSzziLz3J/F+KebeSs07IRgjuOvxpJMn5iryhkL?=
- =?us-ascii?Q?uyHT1WsnOqmkNL22LgV8zumMPZmnku07ioeZGQmuW0d8u5xGBFZjqruMobyn?=
- =?us-ascii?Q?2iHepTo6My+Y2Aou95xndGa788r2KZXaQwIT6GunVOYs7Gz9acpU/pEWunLp?=
- =?us-ascii?Q?gIUSi/GARYchDi7JFcTxoIP6UWfCdeR2IEW3nsnhGDd8EIoe9GwJUNgD0aJJ?=
- =?us-ascii?Q?bwmqOAR0NchdA7+g/H2HrEiqCmcNGAkJrr2iWnoIIFBVxtzOxuaK9uJC3HXJ?=
- =?us-ascii?Q?ISFrUuYU0tMg1Y/gOy6IfbZABTB8Eod0Z7XN+XVL+1qDiAqX?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559D3355803
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 19:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775156513; cv=none; b=hTnQm0NqIMKSE1PJoHbQhLnMlQPgidNYH0q3zI6/sGiytc4NxdDrm1yVLHaLqgHNtnLLWd/AywN6xiq8gYmEXV1u+CkG4REXzO5hYNly0QP3r4oohPgyYGFGFS3fVLAifl9LCBQ3tcRn7Q4HL5CqQqWdwEDqe7ZPwcFvhHZmzR8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775156513; c=relaxed/simple;
+	bh=5gvDNIZh56fnPyMYqOFq5V8DvAaa2psRL0YCTSOjWiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Am9OwZcQ3/C2Riuj+5ZIBKg5vdc185gMgCrrJUam9IVEDgoMGIi5cey6xCLAORdKc+Cl3RANvd/++XllZ4DInPLbOv1DNpWS59ij8HbMJpNVK77sG/AwggruhnrYb5K3AYx/n5/Wj6BrYW0NRBgkuGI+D0AGmbWtcYkG4ZZ1a+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=cTICuSfR; arc=none smtp.client-ip=45.157.188.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fmrZn6P9yz4Pn;
+	Thu,  2 Apr 2026 20:52:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1775155969;
+	bh=9z4Xc7uCSmWKhTHQuyiwO6u+N2VzB0/CNlB8zYdL2F8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cTICuSfR73kB9ORWQNr9KBMF6+SyWYtWmfmi2Z4HFm6Le89ESCV6aJ+wJjIYmnz8A
+	 b2RlF2JNE78uROR/CM/YsqtMLHs+oZI2sJSZWkjerDMOgBSSpnK1PTbFbdiIuuJpy0
+	 EidnU9UFOn4zYvOeuXBZDLc0E6/dJzneerG06ocQ=
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fmrZn29NrzWNL;
+	Thu,  2 Apr 2026 20:52:49 +0200 (CEST)
+Date: Thu, 2 Apr 2026 20:52:45 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	stable@vger.kernel.org, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Tingmao Wang <m@maowtm.org>, Matthieu Buffet <matthieu@buffet.re>
+Subject: Re: [PATCH 6.12.y 2/9] landlock: Fix handling of disconnected
+ directories
+Message-ID: <20260402.chiniey9Beex@digikod.net>
+References: <20260324140456.832964-1-harshit.m.mogalapalli@oracle.com>
+ <20260324140456.832964-3-harshit.m.mogalapalli@oracle.com>
+ <20260401.Ahd4leZ5Dix3@digikod.net>
+ <e5296586-c00d-437d-b7b5-bca4ee3a330a@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6921.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0073102a-9e9d-4923-0eb7-08de90e891ea
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Apr 2026 18:49:28.7446
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vpAnx81dBVHXNQcOrl3XmVbDKT5jywHXFeF17Pt4v30f4Bwbnwrn6gC4Us4974QleYNTqcpLctb5U2Ps4pGfIg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR21MB6272
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[microsoft.com,reject];
-	R_DKIM_ALLOW(-0.20)[microsoft.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e5296586-c00d-437d-b7b5-bca4ee3a330a@oracle.com>
+X-Infomaniak-Routing: alpha
+X-Spamd-Result: default: False [-0.99 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MIXED_CHARSET(0.67)[subject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233098-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com,canonical.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[microsoft.com:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233099-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[digikod.net:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[DECUI@microsoft.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[digikod.net];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:email,lwn.net:url,SA1PR21MB6921.namprd21.prod.outlook.com:mid]
-X-Rspamd-Queue-Id: BDD9638D7C2
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8FC2038D869
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> From: Michael Kelley <mhklinux@outlook.com>
-> Sent: Thursday, January 22, 2026 10:39 PM
->  ...
-> This is good info, and definitely a clue. So to be clear, the problem rep=
-ros
-> only when kexec_load() is used. With kexec_file_load(), it does not repro=
-. Is
-> that right?
+On Thu, Apr 02, 2026 at 12:31:13AM +0530, Harshit Mogalapalli wrote:
+> Hi Mickaël,
+> 
+> On 01/04/26 20:54, Mickaël Salaün wrote:
+> > Thanks Harshit.  BTW, the following commit should also be backported
+> > (and it was specifically created to ease backports): 6803b6ebb816
+> > ("landlock: Fix cosmetic change").
+> > 
+> 
+> I did see this as an approach, but I felt like for CVE backports keep the
+> cherry-picks minimal if they don't really help resolving conflicts. I had no
+> conflicts while cherry-picking and its a cosmetic change so according to
+> stable rules I didn't take it as cherry-picking the final fix is clean.
 
-Yes and no. The answer depends on the combination of the version of
-kdump-tools, and the architecture (x86-64 vs. ARM64), and the hypercall
-(KEXEC_LOAD vs. KEXEC_FILE_LOAD)  and the Linux kernel version (there
-have been patches fixing and breaking kdump over the past several years...)
+Ok, makes sense.
 
-Please see the reply I posted about 2 hours ago for all the details.=20
+> 
+> 
+> > The current patch should be backported down to 5.15, but it needs to be
+> > adapted.  Harshit, I can work on it, please let me know.
+> > 
+> 
+> I agree and will give it a try, and if I can't do it I will let you know.
+> (just was focusing on new branches first)
 
-> I saw a similar distinction when working on commit 304386373007,
-> though in the opposite direction!
-I think this happens because you're using Ubuntu 20.04:
+Great, thanks!
 
-> https://lwn.net/ml/linux-kernel/SN6PR02MB41572155B6D139C499814EB7D4F12@SN=
-6PR02MB4157.namprd02.prod.outlook.com/
-> To further complicate matters, the kexec on Oracle Linux 9.4 seems to
-> have a bug when the -c option forces the use of kexec_load() instead
-> of kexec_file_load(). As an experiment, I modified the kdumpctl shell
-> script to add the "-c" option to kexec, but in that case the value "0x0"
-> is passed as the framebuffer address, which is wrong.
+> 
+> > I'm wondering why I didn't get notified that some Fixes patch couldn't
+> > automatically be backported.  Greg, is there some way to register for
+> > this kind of issue?  What are the rules to not automatically backport
+> > patches?
+> > 
+> 
+> Greg can answer this better probably but just sharing my learnings, Fixes
+> tag is never an assurance for getting a patch backported to stable or
+> getting a failed patch notification when it fails to apply, CC:stable is the
+> only way to request backporting a patch to stable.
 
-Before commit 304386373007, hyperv_fb relocates the framebuffer
-MMIO base,  so KEXEC_FILE_LOAD doesn't work for you, because the kdump
-kernel's screen_info.lfb_base still points to the initial MMIO, and hence
-the kdump kernel's efifb driver fails to work properly; KEXEC_LOAD works
-for you because the kdump-tools v2.0.18 in Ubuntu 20.04 doesn't have that
-commit (see the other reply from me)
+Ok, I couldn't figure out in which case a Fixes commit would not make
+sense to backport, but I'll add CC:stable next times.
 
-The kexec on Oracle Linux 9.4 has that commit, and it's not buggy -- unless
-we'd like to claim that all the recent kdump-tools versions are buggy :-)
+> 
+> Commits with Fixes tag only(without stable tag) are not guaranteed to be
+> backported and particularly if they have conflicts. So, for making sure
+> these get to stable I suggest to use CC:stable that way you will also be
+> notified if the patch fails to apply.
 
-Thanks,
-Dexuan
+Good to know.
+
+> 
+> > I also noticed that other Fixes commits were not backported to stable
+> > branches whereas they can be cleanly cherry-picked.  I'm also wondering
+> > why they weren't pick.
+> > 
+> 
+> They might be clean cherry-picks now but not when they appeared upstream,
+> that is one case, and Fixes tag doesn't always ensure a patch is backported
+> to stable.
+
+I'm genuinely wondering in which case a backport would not be needed.
+
+> 
+> > FYI, here are the ones that can be backported without needing changes:
+> > - 602acfb54119 ("landlock: Optimize stack usage when !CONFIG_AUDIT")
+> > - 60207df2ebf3 ("landlock: Remove useless include")
+> > - 7aa593d8fb64 ("selftests/landlock: Fix missing semicolon")
+> > 
+> 
+> The first one doesn't apply on 6.12.y(6.12.77) , maybe that's the reason.
+> 
+> 
+> > They should all be backported, even if they look like cosmetic fixes>
+> (because they might be needed for other fixes/backports).
+> > 
+> > Here is the other one that needs to be adapted:
+> > - e4d82cbce225 ("landlock: Fix TCP handling of short AF_UNSPEC addresses")
+> > 
+> 
+> I think the way to get these to stable is include CC:stable along with Fixes
+> tag. As documented in Option 1 of [1]
+> 
+> Now that we have missing fixes, I think the best way is to send backports to
+> stable@vger.kernel.org
+
+Yes, I'll do that.
+
+> 
+> I wonder if it would be helpful to make this explicitly stated: "Fixes tag
+> alone is not a trigger for stable backports, CC:stable is needed if you want
+> you patch to be backported to stable kernels(and also get notified if it
+> fails to apply)" ?
+
+I think yes. My understanding was that if there is a Fixes tag, it will
+be backported.  The same for CC:stable, but in this case in a
+best-effort way because the fixed commit wasn't specified.
+
+> 
+> [1] https://www.kernel.org/doc/html/v6.19/process/stable-kernel-rules.html
+> 
+> > Thanks,
+> >   Mickaël
+> > 
 
