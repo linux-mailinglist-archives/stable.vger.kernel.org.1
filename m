@@ -1,220 +1,187 @@
-Return-Path: <stable+bounces-233068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIefDoSdzmnfowYAu9opvQ
-	(envelope-from <stable+bounces-233068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:47:00 +0200
+	id 4Ic6IZCfzmlZpAYAu9opvQ
+	(envelope-from <stable+bounces-233069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:55:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A267D38C25E
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:46:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE2A38C3D7
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 62FD23027348
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:37:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E3F833094065
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D44361DA9;
-	Thu,  2 Apr 2026 16:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7B628851C;
+	Thu,  2 Apr 2026 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SsWhQUDO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3vICxvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9612F3F23AE
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 16:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17933F211C;
+	Thu,  2 Apr 2026 16:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775147863; cv=none; b=eJnWSAjtJLgPvpmxriG2R12FLUMUZQVJYpg4TqCgjmtyIYcemv27Ccd2qXJ1HNTozXIKPermR4JIzk50W//AF8ky2qY/qUptACZr7W8fo/kW8TpDX6NU+69YLGqr0drHPT8/3wnAztzdidV5D769Sax7B7/RJivt15AeS3fzGQg=
+	t=1775147922; cv=none; b=FbaFtfGcVj5hvu0EG91QWcIvhLRWtwJl71zVKo3h0adLC/nRqeOPpU4dAIxIztuRAyk0C42wysbW9f3CN+LZVc+aVHQjA1p6DvNQ9UXaaMr2k5zqnGieb32BIcUE3neka4AooLfCB+qZZ97KhJCLQSYUr9AHsm+O/4p853czvK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775147863; c=relaxed/simple;
-	bh=zDrM3WFhaUfffdL9KS0yQheID4gCwoh1TPDNejl7DLw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N78gaq2loBaoKYlfCSwEadPkSFVJlHKJ4s6xlzAe1Euba47+7WMzkS5x+1RsotUVc+ylVfWR+2IJPSIP2jR0Kz89y9Xq3GvsUd8MLPE5xcEpgbiFdd/E0tnQzLASrmX3OfsQThQiCfeAqRwEyBYV/8fad77KXWcrbkoY0sJZ9+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SsWhQUDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50847C19423;
-	Thu,  2 Apr 2026 16:37:42 +0000 (UTC)
+	s=arc-20240116; t=1775147922; c=relaxed/simple;
+	bh=SS+BtVdttMvo6X20fLR3JClq/W5wC0bvQxoXCy/55dc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ltqt2wDRJoBK05JjK+J50RfPayuCabZr4F35/tbp8WHV2iKyDBBKZ1MwYlOlmFXbKe2ZHdoNHZC10f0d3BlPCf3UjRAjjgEJuyo6E5klux5X1MqMCtbfge3LptRFCzx0jD5WpsXSi6ZI0fJ5AGQq1oegr6SenPZSJaib+qEJbhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3vICxvM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE30C116C6;
+	Thu,  2 Apr 2026 16:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775147863;
-	bh=zDrM3WFhaUfffdL9KS0yQheID4gCwoh1TPDNejl7DLw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsWhQUDOtonsDv2CmO39xQL2IbVa3uLHVSvPOLG1GPF0Y5jr1V3Ywskdxy5Xr5TmC
-	 d1fC5oYiQStMtbv7+Pl5HUvhBBlx3b8aE8RSCpX+pEvt0JZ3ImsJFSx9oC7EzeXvDv
-	 sorw8IlKpSosFO6wYp5rY5IUVPoMv3upeIyvkUz/dUs0ANhgKmFtKmMQSV2TYP7Odq
-	 pGjVoxXGLL2ejgxd2NB41ahxE53uEwPTpVBEVLI6GBFuLY9KXT2cwRrR99oPmfLGV0
-	 Kq8DX6Cewx7lO5VZYttBAm83v/11jk2eSs+Y64skEGhhTCWmO51bkXDG2OITyRIcDq
-	 D6L09HBeKZsMw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] ext4: fix use-after-free in update_super_work when racing with umount
-Date: Thu,  2 Apr 2026 12:37:40 -0400
-Message-ID: <20260402163740.1407640-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033054-vascular-atom-023e@gregkh>
-References: <2026033054-vascular-atom-023e@gregkh>
+	s=k20201202; t=1775147922;
+	bh=SS+BtVdttMvo6X20fLR3JClq/W5wC0bvQxoXCy/55dc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=U3vICxvMqgBh7amR+oCizO3AJ7YOv3bxzO8OCsh6ZNB5XW45uHJ/8h8WJx54f1P91
+	 xDmPSvdX9WiW9SuHdR2YUbGunbzjakgfC9lpI1iEHTaYHIZ3/27UQhAdF5d8lWlB1x
+	 Pd5ZE1JHkCSZ9qd9lw5ug60ehF3zJp/hs6R1OwWeq/rWlnIZq277RkUEVs2UadCRmq
+	 K58kn3MHghtAlrqMVicW2YdHuCFzNec/LSZEHYXCPZmAh/+BkYJmoaCfBR6PS8wfU8
+	 uWou+k7OQkgxGJ5V+67qVIGW3r+gVfCohHAvry1cjRT3YXi9BZAFZ34kvNTES8g39K
+	 D+hKMQ+afiejw==
+Date: Thu, 2 Apr 2026 11:38:40 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Gerd Bayer <gbayer@linux.ibm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Jay Cornwall <Jay.Cornwall@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v7 0/3] PCI: AtomicOps: Fix
+ pci_enable_atomic_ops_to_root()
+Message-ID: <20260402163840.GA279690@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330-fix_pciatops-v7-0-f601818417e8@linux.ibm.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[shopee.com,linux.dev,suse.cz,gmail.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233068-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233069-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,shopee.com:email,linux.dev:email]
-X-Rspamd-Queue-Id: A267D38C25E
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: BEE2A38C3D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+On Mon, Mar 30, 2026 at 03:09:43PM +0200, Gerd Bayer wrote:
+> Hi Bjorn et al.
+> 
+> On s390, AtomicOp Requests are enabled on a PCI function that supports
+> them, despite the helper being ignorant about the root port's capability
+> to supporting their completion.
+> 
+> Patch 1: Do not enable AtomicOps Requests on RCiEPs
+> Patch 2: Fix the logic in pci_enable_atomic_ops_to_root()
+> Patch 3: Update references to PCIe spec in that function.
+> 
+> I did test that the issue is fixed with these patches. Also, I verified
+> that on a Mellanox/Nvidia ConnectX-6 adapter plugged straight into the
+> root port of a x86 system still gets AtomicOp Requests enabled.
+> 
+> Due to a lack of the required hardware, I did not test this with any PCIe
+> switches between root port and endpoint. So test exposure in other
+> environments is highly appreciated.
+> 
+> Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit d15e4b0a418537aafa56b2cb80d44add83e83697 ]
+Thanks, applied to pci/atomics for v7.1 with minor rework of 2/3.
 
-Commit b98535d09179 ("ext4: fix bug_on in start_this_handle during umount
-filesystem") moved ext4_unregister_sysfs() before flushing s_sb_upd_work
-to prevent new error work from being queued via /proc/fs/ext4/xx/mb_groups
-reads during unmount. However, this introduced a use-after-free because
-update_super_work calls ext4_notify_error_sysfs() -> sysfs_notify() which
-accesses the kobject's kernfs_node after it has been freed by kobject_del()
-in ext4_unregister_sysfs():
-
-  update_super_work                ext4_put_super
-  -----------------                --------------
-                                   ext4_unregister_sysfs(sb)
-                                     kobject_del(&sbi->s_kobj)
-                                       __kobject_del()
-                                         sysfs_remove_dir()
-                                           kobj->sd = NULL
-                                         sysfs_put(sd)
-                                           kernfs_put()  // RCU free
-  ext4_notify_error_sysfs(sbi)
-    sysfs_notify(&sbi->s_kobj)
-      kn = kobj->sd              // stale pointer
-      kernfs_get(kn)             // UAF on freed kernfs_node
-                                   ext4_journal_destroy()
-                                     flush_work(&sbi->s_sb_upd_work)
-
-Instead of reordering the teardown sequence, fix this by making
-ext4_notify_error_sysfs() detect that sysfs has already been torn down
-by checking s_kobj.state_in_sysfs, and skipping the sysfs_notify() call
-in that case. A dedicated mutex (s_error_notify_mutex) serializes
-ext4_notify_error_sysfs() against kobject_del() in ext4_unregister_sysfs()
-to prevent TOCTOU races where the kobject could be deleted between the
-state_in_sysfs check and the sysfs_notify() call.
-
-Fixes: b98535d09179 ("ext4: fix bug_on in start_this_handle during umount filesystem")
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260319120336.157873-1-jiayuan.chen@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ adapted mutex_init placement ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ext4/ext4.h  |  1 +
- fs/ext4/super.c |  1 +
- fs/ext4/sysfs.c | 10 +++++++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index d2158866a4b52..d99eabf846b8e 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1540,6 +1540,7 @@ struct ext4_sb_info {
- 	struct proc_dir_entry *s_proc;
- 	struct kobject s_kobj;
- 	struct completion s_kobj_unregister;
-+	struct mutex s_error_notify_mutex; /* protects sysfs_notify vs kobject_del */
- 	struct super_block *s_sb;
- 	struct buffer_head *s_mmp_bh;
- 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 05f1f9b7ad0c4..170bc58b61577 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -4621,6 +4621,7 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
- 
- 	timer_setup(&sbi->s_err_report, print_daily_error_info, 0);
- 	spin_lock_init(&sbi->s_error_lock);
-+	mutex_init(&sbi->s_error_notify_mutex);
- 	INIT_WORK(&sbi->s_error_work, flush_stashed_error_work);
- 
- 	/* Register extent status tree shrinker */
-diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-index aa07b78ba9104..492f5351e267b 100644
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -513,7 +513,10 @@ static struct kobj_type ext4_feat_ktype = {
- 
- void ext4_notify_error_sysfs(struct ext4_sb_info *sbi)
- {
--	sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_lock(&sbi->s_error_notify_mutex);
-+	if (sbi->s_kobj.state_in_sysfs)
-+		sysfs_notify(&sbi->s_kobj, NULL, "errors_count");
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- }
- 
- static struct kobject *ext4_root;
-@@ -526,8 +529,10 @@ int ext4_register_sysfs(struct super_block *sb)
- 	int err;
- 
- 	init_completion(&sbi->s_kobj_unregister);
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	err = kobject_init_and_add(&sbi->s_kobj, &ext4_sb_ktype, ext4_root,
- 				   "%s", sb->s_id);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- 	if (err) {
- 		kobject_put(&sbi->s_kobj);
- 		wait_for_completion(&sbi->s_kobj_unregister);
-@@ -560,7 +565,10 @@ void ext4_unregister_sysfs(struct super_block *sb)
- 
- 	if (sbi->s_proc)
- 		remove_proc_subtree(sb->s_id, ext4_proc_root);
-+
-+	mutex_lock(&sbi->s_error_notify_mutex);
- 	kobject_del(&sbi->s_kobj);
-+	mutex_unlock(&sbi->s_error_notify_mutex);
- }
- 
- int __init ext4_init_sysfs(void)
--- 
-2.53.0
-
+> ---
+> Changes in v7:
+> - Prepend series with a patch to explicitly exclude RCiEPs from
+>   enablement of AtomicOps Requests
+> - Limit the core patch 2 to enforce a full check of the entire
+>   PCIe hierarchy for support of AtomicOps capabilities.
+> - Rebase to v7.0-rc6
+> - Link to v6: https://lore.kernel.org/r/20260325-fix_pciatops-v6-0-10bf19d76dd1@linux.ibm.com
+> 
+> Changes in v6:
+> - Incorporate Ilpo's editorial comments.
+> - Correct logic in pci_is_atomicops_capable_rp() (annotated by Sashiko)
+> - Link to v5: https://lore.kernel.org/r/20260323-fix_pciatops-v5-0-fada7233aea8@linux.ibm.com
+> 
+> Changes in v5:
+> - Introduce new pcibios_connects_to_atomicops_capable_rc() so arch's can
+>   declare AtomicOps support outside of PCIe config space. Defaults to
+>   "true" - except s390.
+> - rebase to 7.0-rc5
+> - Link to v4: https://lore.kernel.org/r/20260313-fix_pciatops-v4-0-93bc70a63935@linux.ibm.com
+> 
+> Changes in v4:
+> - drop patch 1 - it will become the base of a new series
+> - previous patch 2, now 1: reword commit message
+> - add a new patch to update references to PCI spec within
+>   pci_enable_atomic_ops_to_root()
+> - rebase to latest master
+> - Link to v3: https://lore.kernel.org/r/20260306-fix_pciatops-v3-0-99d12bcafb19@linux.ibm.com
+> 
+> Changes in v3:
+> - rebase to 7.0-rc2
+> - gentle ping
+> - add netdev and rdma lists for awareness
+> - Link to v2: https://lore.kernel.org/r/20251216-fix_pciatops-v2-0-d013e9b7e2ee@linux.ibm.com
+> 
+> Changes in v2:
+> - rebase to 6.19-rc1
+> - otherwise unchanged to v1
+> - Link to v1: https://lore.kernel.org/r/20251110-fix_pciatops-v1-0-edc58a57b62e@linux.ibm.com
+> 
+> ---
+> Gerd Bayer (3):
+>       PCI: AtomicOps: Do not enable requests by RCiEPs
+>       PCI: AtomicOps: Do not enable without support in root port
+>       PCI: AtomicOps: Update references to PCIe spec
+> 
+>  drivers/pci/pci.c | 48 ++++++++++++++++++++++++++----------------------
+>  1 file changed, 26 insertions(+), 22 deletions(-)
+> ---
+> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+> change-id: 20251106-fix_pciatops-7e8608eccb03
+> 
+> Best regards,
+> -- 
+> Gerd Bayer <gbayer@linux.ibm.com>
+> 
 
