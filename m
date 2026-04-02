@@ -1,139 +1,162 @@
-Return-Path: <stable+bounces-232910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCjlJUX0zWlLjgYAu9opvQ
-	(envelope-from <stable+bounces-232910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:44:53 +0200
+	id CPKLFbj3zWmrjwYAu9opvQ
+	(envelope-from <stable+bounces-232911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:59:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1525F383B94
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:44:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1994383CBD
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:59:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8443B30254DE
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 04:44:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1DE5301CF83
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 04:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1B936657B;
-	Thu,  2 Apr 2026 04:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6AD3346B2;
+	Thu,  2 Apr 2026 04:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ineCa20N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQNSxGvJ"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B393366800;
-	Thu,  2 Apr 2026 04:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDA0175A92;
+	Thu,  2 Apr 2026 04:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775105069; cv=none; b=nVsTozOBVbACzGy9ulOQW529os7RgLzSlGJGFwGCnMK4QuX07pm+ijhs5sY2QkvIE4v5RBSqxE7AiCJuTgpjpHiZtPiaTt+RZBSfeTBnhUUlp8BaQbG8JnC1XdsjtvleenO0DI9cGA7FiH9njvi4r9N46WtR3Skj8ngFmkrxru0=
+	t=1775105970; cv=none; b=BMP0vJmdRmfhujQFQekbzksK46Y160ulgMMiMarZyspyXL9ng7coG2CJufDk3mgl9caVPfDEvsmAskqxDmX7J+0T9SLoAg7Aq/TC0TCSGq1Tr6FET00pMl0sQ25fNUJXzUncztA/yrOiK2Ipq9xuw6APQRDZGmmi3sWDzbSV16w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775105069; c=relaxed/simple;
-	bh=5jZatumzTwetQf+a59y3hc8iMuwSoHglSHKuz1ZMO6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Oa9VqMieORR57wo3A5xq8PTQHuUPWUghuleI+Cpbtptm1oN2qNFDf413rc7w93saCK2bg+v4OhTr88TQohUGwhCH6VmpqhKjRqq9q1RD9zOZW1ZRPSpd/IUNjY4u8KLpIpJse70tw+gC67/mm/He3sNTa88Wo3TICk2CzjsH/E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ineCa20N; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [192.168.0.12] (unknown [4.194.122.162])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 2534420B710C;
-	Wed,  1 Apr 2026 21:44:25 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2534420B710C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1775105068;
-	bh=RcOVBpXNTnGFlAFScnVQtoQRFGOne0v6JKfhc+RakUc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ineCa20NM4HZqc0TncOKDKzndmknUsUaT4SESR1NpsC+/YiPuCXiNRVDZEyXScrOF
-	 dD/RjraEHSzAd7ujlfenUYiUHVJgvMIVtCufOQ2T/D5W8edCY0Ms1ktYHvKJI3o4TR
-	 UaAmQBhgjSwwUu2dmhQ/DxmVthOuMti2ZgrMcHgA=
-Message-ID: <12005a02-a1cd-46ca-8782-c727a7d5e5c6@linux.microsoft.com>
-Date: Thu, 2 Apr 2026 10:14:24 +0530
+	s=arc-20240116; t=1775105970; c=relaxed/simple;
+	bh=6b8L0fz6vN2/1FdAdwuuqgyRC2q1kGbwXl4DDedgmOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YEdCLCc77AFILfAfwPlAExJcd3SHPe1WihMOonyjHQCn0AcvQUB/Q01ipCnYUB+t94H4HvPxSg9Lf/IZVJjMD6/6Ip+omvH1fljjW2yGnIcjg5lOcT1L499Xbx1PJda0C11Ha1VpMviu5bx9LAL0VnWGMz0XXAfKcd9nAsNtJyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQNSxGvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3824C19423;
+	Thu,  2 Apr 2026 04:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775105969;
+	bh=6b8L0fz6vN2/1FdAdwuuqgyRC2q1kGbwXl4DDedgmOI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GQNSxGvJXNxyEJ8v1iJtxRdhpFpT1UYFKJ2nnOYJl+ulwa6klYQoB6lX5VLEG+JCF
+	 4iGHNsT1VIi/PO83r/d2jEJjs9so9qxp1loeCIPhgDZ5Fcn6FOF4M6Zt5uBSKj5DX2
+	 LDdEXkgxEY7Flg/ZYxqN41UwCVFiOY4w++btd031t1Odw9qIlxV/TP4wzgSAk3Wa50
+	 fVuq9QOr3nyRik1CAnheYNYAHjU3JkiE5g5MtwalsHw0d/Y91Dcf2pwdiCRxmnYdSb
+	 X72Eaifh5mxpADuWsJOClBuFA1CTpt6uBcyCaDLYL5sjLBPpatQko5uXVL9ONmHQRp
+	 75aHoyYgf7eEQ==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH] mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+Date: Wed,  1 Apr 2026 21:59:26 -0700
+Message-ID: <20260402045928.71170-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
- trigger path
-To: Alex Williamson <alex@shazbot.org>, "Gupta, Nipun" <nipun.gupta@amd.com>
-Cc: nikhil.agarwal@amd.com, pieter.jansen-van-vuuren@amd.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
- <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
- <20260401122254.363d93c2@shazbot.org>
-Content-Language: en-US
-From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-In-Reply-To: <20260401122254.363d93c2@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232910-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232911-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1525F383B94
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A1994383CBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+damon_stat_start() always allocates the module's damon_ctx object
+(damon_stat_context).  Meanwhile, if damon_call() in the function fails,
+the damon_ctx object is not deallocated.  Hence, if the damon_call() is
+failed, and the user writes Y to “enabled” again, the previously
+allocated damon_ctx object is leaked.
 
+This cannot simply be fixed by deallocating the damon_ctx object when
+damon_call() fails.  That's because damon_call() failure doesn't
+guarantee the kdamond main function, which accesses the damon_ctx
+object, is completely finished.  In other words, if damon_stat_start()
+deallocates the damon_ctx object after damon_call() failure, the
+not-yet-terminated kdamond could access the freed memory
+(use-after-free).
 
-On 01-04-2026 23:52, Alex Williamson wrote:
-> On Wed, 1 Apr 2026 15:11:17 +0530
-> "Gupta, Nipun" <nipun.gupta@amd.com> wrote:
-> 
->> On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
->>> Add validation to ensure MSI is configured before accessing cdx_irqs
->>> array in vfio_cdx_set_msi_trigger(). Without this check, userspace
->>> can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
->>> with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
->>> ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
->>>
->>> The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
->>> sets config_msi to 1 only when called through the EVENTFD path. The
->>> trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
->>> done, but there was no enforcement of this call ordering.
->>>
->>> This matches the protection used in the PCI VFIO driver where
->>> vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
->>>
->>> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
->>
->> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
-> 
-> It's an improvement, but I think it also highlights that interrupt
-> setup for vfio-cdx devices is racy.  I think it should adopt a mutex on
-> the vfio_cdx_device that is acquired with a guard in
-> vfio_cdx_set_irqs_ioctl().  That would make config_msi stable for this
-> test.  Thanks,
-> 
-> Alex
+Fix the leak while avoiding the use-after-free by keeping returning
+damon_stat_start() without deallocating the damon_ctx object after
+damon_call() failure, but deallocating it when the function is invoked
+again and the kdamond is completely terminated.  If the kdamond is not
+yet terminated, simply return -EAGAIN, as the kdamond will soon be
+terminated.
 
-This patch is fixing a specific problem. User space can make VFIO_* 
-calls in a specific order to trigger NULL pointer access. This will not 
-get fixed with a mutex.
+The issue was discovered [1] by sashiko.
 
-Regards,
-Prasanna Kumar
+[1] https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org
+
+Fixes: 405f61996d9d ("mm/damon/stat: use damon_call() repeat mode instead of damon_callback")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from v1
+(https://lore.kernel.org/20260402010457.66860-1-sj@kernel.org)
+- Avoid use-after-free.
+- Add RFC tag.
+
+ mm/damon/stat.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index 5a742fc157e4..99ba346f9e32 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -245,6 +245,12 @@ static int damon_stat_start(void)
+ {
+ 	int err;
+ 
++	if (damon_stat_context) {
++		if (damon_is_running(damon_stat_context))
++			return -EAGAIN;
++		damon_destroy_ctx(damon_stat_context);
++	}
++
+ 	damon_stat_context = damon_stat_build_ctx();
+ 	if (!damon_stat_context)
+ 		return -ENOMEM;
+@@ -264,6 +270,7 @@ static void damon_stat_stop(void)
+ {
+ 	damon_stop(&damon_stat_context, 1);
+ 	damon_destroy_ctx(damon_stat_context);
++	damon_stat_context = NULL;
+ }
+ 
+ static int damon_stat_enabled_store(
+
+base-commit: 4fd04f750d79667937931314ed64c9d79b0d82ef
+-- 
+2.47.3
 
