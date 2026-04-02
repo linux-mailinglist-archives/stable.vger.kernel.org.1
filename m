@@ -1,192 +1,213 @@
-Return-Path: <stable+bounces-232944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IH+bCw4wzmnIlQYAu9opvQ
-	(envelope-from <stable+bounces-232944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 10:59:58 +0200
+	id eAXDBTUvzml+lwYAu9opvQ
+	(envelope-from <stable+bounces-232943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 10:56:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7607138664B
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 10:59:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE9C3865CF
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 10:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14F8E30610CA
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 08:53:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 620AF302FF3C
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 08:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229D33CB2FE;
-	Thu,  2 Apr 2026 08:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F083C9EFB;
+	Thu,  2 Apr 2026 08:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N5tHyB74"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040933C7DF0;
-	Thu,  2 Apr 2026 08:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273753C6A46
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 08:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775119999; cv=none; b=mbUal5AAx4p9bEdc1fZxCpPrkN5B2aAzNW3arOA2asRJU0Evy1vac/y5WqF0EQWUHqshYo/Htj9YmBYXhSbrnC6IUajGj0mFD4Fy9YvRmXRluqgc64THqy+UVollcSCJkR7umBn9B6fdihLT7t0KGMQVCBs01xks1A8Bp2IcQeA=
+	t=1775119996; cv=none; b=vDHEDrJ+JlhsyQ+mEPJw/lnIvNHjEEUPc9mgTKq6uju/64n6wV0hVNdknJpi6bELQcBQNCW8fRoC3of5yuJTIquNPaHavk2GjRcapcIXsRTuI3MHmsfypRgTKxwvK6d0q4GjbNOuyFxawktOIlJSKYgxl3lGcn0mmzNhnqpU02k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775119999; c=relaxed/simple;
-	bh=PiGcvs5N9hrHZIfnormmBCpThQzK61Fj0nV/QvJSIfE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PjkUkc+ITpg3DHIFtZXsC+usDGb2fIoPGZJ0/eek9FjOMAr7VF8qGwo4P+poqapjHAt39HO9bmLxyoNOWaHaK4SY2AN6lL5akXBis9YBuVTTEIgVJ1hGeYYSOg8P/dq1PZ197hajVCRiFa0a5FYSqnWFzIsZcPS1+uz8ZnuDvuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 2045772C8CC;
-	Thu,  2 Apr 2026 11:44:09 +0300 (MSK)
-Received: from pony.office.basealt.ru (unknown [193.43.10.9])
-	by imap.altlinux.org (Postfix) with ESMTPSA id 15DC236D00D4;
-	Thu,  2 Apr 2026 11:44:09 +0300 (MSK)
-Received: by pony.office.basealt.ru (Postfix, from userid 500)
-	id E5851360D79D; Thu,  2 Apr 2026 11:44:08 +0300 (MSK)
-Date: Thu, 2 Apr 2026 11:44:08 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Sasha Levin <sashal@kernel.org>, 
-	Matt Roper <matthew.d.roper@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	gregkh@linuxfoundation.org, regressions@lists.linux.dev
-Subject: [regression] Re: Linux 6.12.75
-Message-ID: <ac4lw9tTNn4baO_h@altlinux.org>
-References: <20260304131402.83200-1-sashal@kernel.org>
- <20260304131402.83200-2-sashal@kernel.org>
+	s=arc-20240116; t=1775119996; c=relaxed/simple;
+	bh=nD5pJ6t0iPgbSDk4MiAKLhLc2K497D4OPy81R4OU6T4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YE6ozhmfyiBxw4DRQN9OKFcvhSV0+cooeE4CrzMjqEZbl8PEaR0SNiqKj+bSNrGw4shIDTkzWy0tlENqxAiziSgMkiDT9ZKwtpd1IEhepaQ5TiuDsKdkpAwNCK1o+mN6SGv8eEdOLuIu7EHEImF8ss6Sa4sscwH71X3QK9FGVyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N5tHyB74; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-506a6cf8242so5763901cf.1
+        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 01:53:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775119993; x=1775724793; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OwBCIwxrNlJiEdT3Pl3xjUbsa64rptRCzck0YDPH76w=;
+        b=N5tHyB74XFUK61ze43qVIwy/4AH9uBtLYxt/ZEddYZthFLLnYXyD1DpCIDeh3+S261
+         OVCQQdSXwSCXmrXoWrKWQbYxqNtRi9vSf87Mxnkb1WNW/KuLdoPxbce66a3KxKdHWfTp
+         oqYevYy5Zv+Fe5qgLRNOtZ3M6MlUkwe+iBZhLIxAXE4X4Z8NK4kksiuDNtWD7kvQa5wa
+         RVqlN1anm30RLrdyi7EUGtIuYtDNCaja4706rRv48QirN5AivwIx6VeZhVlue3TMD5hS
+         xppKb4DSD/uuMEOQQfUlN4pWqUIElOwXzLKmwiooVCUWjm3PDyJ5L1Oa0qyS7nIorenx
+         dmGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775119993; x=1775724793;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OwBCIwxrNlJiEdT3Pl3xjUbsa64rptRCzck0YDPH76w=;
+        b=qh0wNZhgmQ2cfHe6++ClHtVM7kpynYXzC5FmVKOuTFZTBnI90htZURENCOH5LwiKrl
+         SxJZ92hYLUS/Z6uCi/zysEJnGZTWp+jWRFSzUpjVTgSSRex79xV1LjjdVT8Z8KAvtTgT
+         4wyCJtLc+1AVBJ70qRKNTfHQxzZGwSKNMiOozPOuMKPOxoor02TdWWpYbCDY1ZPpkd+X
+         HI1bGQ3Ql7mp8JodNOsiwMvtdgGlHRQgpmTAU8XA24e7Yl5PFASngu9/58uBPL9bB+ld
+         /35Y97i9Bkw/I2vsJ+QGTrpQLM9En5+ZLk4eRzYhcFSBIdpVux6oMCxy5fbmq3YxuaMV
+         2+aw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRuVvgL95iqEdbfQzpjvpu3gE6HbQaKuL18BqysJ9gjFWc33cjWUipU4UWO2mPaE/QYxQwVmM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPIzjJmVzUR08wvGIcQX/CGcp7SOHKzZPbfU0l3/Q1KM85zKiK
+	1HcB9y88eViVIjfp1+gWYdLA8aj7EAYSvRe/ZqfmmH3bMyupFoGl75sx
+X-Gm-Gg: ATEYQzzQhJU6zutJz0vyPuFxsosOgnplKTiXWnlOBLirvESxxsBcJ27byAMiv7B2k7H
+	jC2S+JoChDsvIpnUYhNDwJQXJ+wsXSReYp7FTJYPai56Cxz1d+0/az6GV2zvKFVsZJTIeQHQTUa
+	Zko8EjgeEbM7ZZ6z/C09uB2EBEKlI4bV32JYHAibmxo0XxCE8dz3Dw+U3KaEJ8l5HF17QYKwjiU
+	iPIUVgNZ9/T+zyaerugoCHmVvQslpKZl0Iyi+TyLGbLLmsivKcfQdwbOEga9ir0ekRu9iB+tH1h
+	U8p5M5WJ0AyHwFgacmokGiclQgV1/Afg9IQ3mRaNqbznvnh8t8G3pbMyWsPA7fMnxvSKKcVlHmm
+	3zRVn6gZYLSB1GYmOeEQHx47ikQWc85QzoZ657Af2vMh6OnYi2qpd+KM1Y/bWmFVQOh0yVYlS/6
+	PueHjtcBxn4CFuPHY6jc7JUJvCkT6ClRraZuy4YIbhXGAgW3ld9wVtRH1/BXYlzrjgDv/ySVspL
+	TDZmNNTx8A07+MllocB
+X-Received: by 2002:a05:622a:259a:b0:509:379b:d4e with SMTP id d75a77b69052e-50d3bcd2630mr105863161cf.32.1775119992828;
+        Thu, 02 Apr 2026 01:53:12 -0700 (PDT)
+Received: from localhost.localdomain ([129.170.197.116])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50d4b88914csm18051841cf.23.2026.04.02.01.53.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 01:53:12 -0700 (PDT)
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
+To: linux-usb@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	addcontent08@gmail.com,
+	skhan@linuxfoundation.org,
+	kyungtae.kim@dartmouth.edu,
+	stable@vger.kernel.org,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH v2] usbip: validate number_of_packets in usbip_pack_ret_submit()
+Date: Thu,  2 Apr 2026 04:52:59 -0400
+Message-ID: <20260402085259.234-1-nathan.c.rebello@gmail.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304131402.83200-2-sashal@kernel.org>
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DMARC_NA(0.00)[altlinux.org];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232944-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,dartmouth.edu,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-232943-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vt@altlinux.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[nathancrebello@gmail.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.975];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url,intel.com:email,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: 7607138664B
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EDE9C3865CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Sasha,
+When a USB/IP client receives a RET_SUBMIT response,
+usbip_pack_ret_submit() unconditionally overwrites
+urb->number_of_packets from the network PDU. This value is
+subsequently used as the loop bound in usbip_recv_iso() and
+usbip_pad_iso() to iterate over urb->iso_frame_desc[], a flexible
+array whose size was fixed at URB allocation time based on the
+*original* number_of_packets from the CMD_SUBMIT.
 
-1. I cannot find this commit posted on lore.kernel.org to report to
-exact patch.
+A malicious USB/IP server can set number_of_packets in the response
+to a value larger than what was originally submitted, causing a heap
+out-of-bounds write when usbip_recv_iso() writes to
+urb->iso_frame_desc[i] beyond the allocated region.
 
-| From: Matt Roper <matthew.d.roper@intel.com>
-| Date: Tue, 10 Sep 2024 16:47:29 -0700
-| Subject: [PATCH 6.12/sisyphus] drm/xe: Switch MMIO interface to take xe_mmio
-|  instead of xe_gt
-| 
-| [ Upstream commit a84590c5ceb354d2e9f7f6812cfb3a9709e14afa ]
-| 
-| Since much of the MMIO register access done by the driver is to non-GT
-| registers, use of 'xe_gt' in these interfaces has been a long-standing
-| design flaw that's been hard to disentangle.
-| 
-| To avoid a flag day across the whole driver, munge the function names
-| and add temporary compatibility macros with the original function names
-| that can accept either the new xe_mmio or the old xe_gt structure as a
-| parameter.  This will allow us to slowly convert parts of the driver
-| over to the new interface independently.
-| 
-| Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-| Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-| Link: https://patchwork.freedesktop.org/patch/msgid/20240910234719.3335472-54-matthew.d.roper@intel.com
-| Stable-dep-of: 4a9b4e1fa52a ("drm/xe/mmio: Avoid double-adjust in 64-bit reads")
-| Signed-off-by: Sasha Levin <sashal@kernel.org>
-| ---
-|  drivers/gpu/drm/xe/xe_mmio.h  |  72 +++++++++++++++----
-|  drivers/gpu/drm/xe/xe_trace.h |   7 +-
-|  drivers/gpu/drm/xe/xe_mmio.c  | 131 ++++++++++++++++------------------
-|  3 files changed, 124 insertions(+), 86 deletions(-)
+KASAN confirmed this with kernel 7.0.0-rc5:
 
-2. After this patch applied to 6.12.75 there is kernel NULL pointer
-dereference BUG on MSI MAG H670 12th Gen Intel(R) Core(TM) i5-12600K
-with ASRock Intel Arc B580 Challenger [Alchemist], 12GB:
+  BUG: KASAN: slab-out-of-bounds in usbip_recv_iso+0x46a/0x640
+  Write of size 4 at addr ffff888106351d40 by task vhci_rx/69
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 8 UID: 0 PID: 310 Comm: (udev-worker) Not tainted 6.12.79-6.12-alt1 #1
-  Hardware name: Micro-Star International Co., Ltd. MS-7D25/MAG H670 TOMAHAWK WIFI DDR4(MS-7D25), BIOS H.N0 07/31/2025
-  RIP: 0010:__xe_mmio_read32+0x23/0xe0 [xe]
+  The buggy address is located 0 bytes to the right of
+   allocated 320-byte region [ffff888106351c00, ffff888106351d40)
 
-The commit is found not by a git bisect (since it's reported by end
-user and I cannot reproduce it on my hardware) but (by analyzing dmesg)
-with:
+The server side (stub_rx.c) and gadget side (vudc_rx.c) already
+validate number_of_packets in the CMD_SUBMIT path since commits
+c6688ef9f297 ("usbip: fix stub_rx: harden CMD_SUBMIT path to handle
+malicious input") and b78d830f0049 ("usbip: fix vudc_rx: harden
+CMD_SUBMIT path to handle malicious input"). The server side validates
+against USBIP_MAX_ISO_PACKETS because no URB exists yet at that point.
+On the client side we have the original URB, so we can use the tighter
+bound: the response must not exceed the original number_of_packets.
 
-  (gdb) list *__xe_mmio_read32+0x23
-  0x35723 is in __xe_mmio_read32 (drivers/gpu/drm/xe/xe_mmio.c:195).
-  190     static void mmio_flush_pending_writes(struct xe_mmio *mmio)
-  191     {
-  192     #define DUMMY_REG_OFFSET        0x130030
-  193             int i;
-  194
-  195             if (mmio->tile->xe->info.platform != XE_LUNARLAKE)
-  196                     return;
-  197
-  198             /* 4 dummy writes */
-  199             for (i = 0; i < 4; i++)
+This mirrors the existing validation of actual_length against
+transfer_buffer_length in usbip_recv_xbuff(), which checks the
+response value against the original allocation size.
 
-Then finding the suspecting commit:
+Kelvin Mbogo's series ("usb: usbip: fix integer overflow in
+usbip_recv_iso()", v2) hardens the receive-side functions themselves;
+this patch complements that work by catching the bad value at its
+source -- in usbip_pack_ret_submit() before the overwrite -- and
+using the tighter per-URB allocation bound rather than the global
+USBIP_MAX_ISO_PACKETS limit.
 
-  $ git log --oneline -G'XE_LUNARLAKE' v6.12.74..v6.12.75
-  26a40327c25c drm/xe: Switch MMIO interface to take xe_mmio instead of xe_gt
+Fix this by checking rpdu->number_of_packets against
+urb->number_of_packets in usbip_pack_ret_submit() before the
+overwrite. On violation, clamp to zero so that usbip_recv_iso() and
+usbip_pad_iso() safely return early.
 
-6.18 and above are not affected by the bug. Also, they have another commit
-modifying the line which is not present in 6.12 branch:
+Fixes: 1325f85fa49f ("staging: usbip: bugfix add number of packets for isochronous frames")
+Cc: stable@vger.kernel.org
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+---
+Changes in v2:
+  - Fixed patch whitespace corruption
+  - Corrected Fixes tag commit hash
 
-  ac596dee8008 drm/xe: Move Wa_15015404425 to use the new XE_DEVICE_WA macro
+ drivers/usb/usbip/usbip_common.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Thanks,
+diff --git a/drivers/usb/usbip/usbip_common.c b/drivers/usb/usbip/usbip_common.c
+index 8ebaaeaf848e..a5837c0feb05 100644
+--- a/drivers/usb/usbip/usbip_common.c
++++ b/drivers/usb/usbip/usbip_common.c
+@@ -470,6 +470,18 @@ static void usbip_pack_ret_submit(struct usbip_header *pdu, struct urb *urb,
+ 		urb->status		= rpdu->status;
+ 		urb->actual_length	= rpdu->actual_length;
+ 		urb->start_frame	= rpdu->start_frame;
++		/*
++		 * The number_of_packets field determines the length of
++		 * iso_frame_desc[], which is a flexible array allocated
++		 * at URB creation time. A response must never claim more
++		 * packets than originally submitted; doing so would cause
++		 * an out-of-bounds write in usbip_recv_iso() and
++		 * usbip_pad_iso(). Clamp to zero on violation so both
++		 * functions safely return early.
++		 */
++		if (rpdu->number_of_packets < 0 ||
++		    rpdu->number_of_packets > urb->number_of_packets)
++			rpdu->number_of_packets = 0;
+ 		urb->number_of_packets = rpdu->number_of_packets;
+ 		urb->error_count	= rpdu->error_count;
+ 	}
+-- 
+2.43.0.windows.1
 
-#regzbot introduced: v6.12.75
-
-Related drm/xe bug report https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7661
-
-On Wed, Mar 04, 2026 at 08:14:02AM -0500, Sasha Levin wrote:
-> diff --git a/drivers/gpu/drm/xe/xe_mmio.c b/drivers/gpu/drm/xe/xe_mmio.c
-> index 3fd462fda6255..449e6c5636712 100644
-> --- a/drivers/gpu/drm/xe/xe_mmio.c
-> +++ b/drivers/gpu/drm/xe/xe_mmio.c
-> @@ -172,122 +180,118 @@ int xe_mmio_init(struct xe_device *xe)
-> -static void mmio_flush_pending_writes(struct xe_gt *gt)
-> +static void mmio_flush_pending_writes(struct xe_mmio *mmio)
->  {
->  #define DUMMY_REG_OFFSET	0x130030
-> -	struct xe_tile *tile = gt_to_tile(gt);
->  	int i;
->  
-> -	if (tile->xe->info.platform != XE_LUNARLAKE)
-> +	if (mmio->tile->xe->info.platform != XE_LUNARLAKE)
->  		return;
->  
->  	/* 4 dummy writes */
->  	for (i = 0; i < 4; i++)
-> -		writel(0, tile->mmio.regs + DUMMY_REG_OFFSET);
-> +		writel(0, mmio->regs + DUMMY_REG_OFFSET);
->  }
->  
 
