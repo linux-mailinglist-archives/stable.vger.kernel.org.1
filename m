@@ -1,68 +1,100 @@
-Return-Path: <stable+bounces-232955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEKhH6w6zmmAmAYAu9opvQ
-	(envelope-from <stable+bounces-232955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:45:16 +0200
+	id MOI8Lqg7zmmAmAYAu9opvQ
+	(envelope-from <stable+bounces-232957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:49:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A888387231
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:45:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B703872C2
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4324730DCC33
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 09:29:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA37B30A44DB
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 09:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C297A3932CE;
-	Thu,  2 Apr 2026 09:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A123DD53F;
+	Thu,  2 Apr 2026 09:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dUErAqnl"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="phjoInpt";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DdKPsCGk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B59139B97A
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 09:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24C43914ED;
+	Thu,  2 Apr 2026 09:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775122084; cv=none; b=NQHJu766NfbzvpdRWlPERPFdUnuvkSGdU1Bv2jvJFL4HFA8U6WdfLuNv/GMSBVRC7SW6/khgRtiob/e07hjBYsTQA7kaqVnSAHLYRs6Z/EW/UcZyTg5sU21uXxq9eAipg9DaOvp/48D5ozrlY2T9qZLSyIslcuMIdTM05v+EV+c=
+	t=1775123049; cv=none; b=jTTCyoyDxgjyRNiH4hsBms6tBrearh3osRlwjLAjMMNjJnex5dAT0GW20SJkwqOoOOIrfn0sCiPmTtM96pTfNqmuhDwGAVvbYDQJLCsqaE9WRYzh/RAPtMd9uDx8P2bYorFRRh1jqKbPkA66w1s53o5nAC8L+Aw4cVkwA2GArOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775122084; c=relaxed/simple;
-	bh=klwNKV48BjDQnzhLT0czwxW1UGoTMOPzQeGUWvNL5Uo=;
+	s=arc-20240116; t=1775123049; c=relaxed/simple;
+	bh=wRecm6QuDoU+cHrxvmv/K10KdpFKrXBHy8y9ZpizY7U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kcGXYBCe8FFmESHaQ6dEjT1PXMHegOz7e4W1LmH6c5vKQX3nGtWhF1HpApwtqqCGDL5aI858Glt7VZwAFf7ImEAR7oBWHHnxsNYpl+NqOinEtGjN1kenG7LaJHtLxFKJneryvYqw9C9Yxo4MTcleKeGCjDZpScVTKRSqcPhfNmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dUErAqnl; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775122075; x=1806658075;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=klwNKV48BjDQnzhLT0czwxW1UGoTMOPzQeGUWvNL5Uo=;
-  b=dUErAqnlTcTaeEpPEq6CVyaCclSiIyKG1XBADYbGtSHFu+25OjgK+7Eb
-   HkLQ4tHLB1e7v5MZ/KXJczONY59Zaw9bwJcyy8XXPx+4IYH1ex49lv533
-   8ZpWw/hN1SiwXqj9VKL9LPcRW0QDU3v2utFstErwlvU4/wGOrX4Djlj0L
-   IWh08wtAM3kOJMEBGGXqZg39jwf0/XvvDM+m7Kqp6VglwxxWsuj8zlPqh
-   MCPfz1B/Co3UFXZwHJiLmicRJ1Gk4q4/iwFs84xXDOamfHHo1kPMPUb3D
-   /oPRaDG0+r5sFDxnHWJqZJUFNi6rPelSxiBYjatspcq0AHIujuXU1n1lR
-   g==;
-X-CSE-ConnectionGUID: cRkMOOjzQSmthBpjqWmgNA==
-X-CSE-MsgGUID: mlw6liUzRQugjzMgPWqe1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="98790133"
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
-   d="scan'208";a="98790133"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 02:27:54 -0700
-X-CSE-ConnectionGUID: XS3ZfqYPQxS9ySkaxOMlpg==
-X-CSE-MsgGUID: F9nwgGqtQ1+SDOAO7gAAZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
-   d="scan'208";a="257411207"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO [10.245.245.52]) ([10.245.245.52])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 02:27:54 -0700
-Message-ID: <9a7b9651-c818-457c-b52d-7fc2544e0b56@intel.com>
-Date: Thu, 2 Apr 2026 10:27:50 +0100
+	 In-Reply-To:Content-Type; b=seu8blwtpzFtLmqL5rRAvo6MA69ICR1XFG8gEyqRZVo1dQgdPzRxIFzNbiY7aT5w6gaMMTYERbbUmhMq5fmrwrIkeKgJG3D3zpS9kCGDwYVAg9t2Yp77Eoe3BMn8RXMAYNC8L7k1mBzGwC5CEgsnBbM+9fM12Z++eQQaOv66gy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=phjoInpt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DdKPsCGk; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id E65B77A02FE;
+	Thu,  2 Apr 2026 05:43:59 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-04.internal (MEProxy); Thu, 02 Apr 2026 05:44:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1775123039;
+	 x=1775209439; bh=ZhYhxTY4U9xfdMvUe8c1GDNmyJB8rxZmOqwnOhKpqhk=; b=
+	phjoInptya4PFMD6jE5NvYFrOlRw9WOoL3j9ef4D2CLl0w98CWV+5fVJ/pICyfrh
+	VkOE5hxly+HiXXIKZ4w3YpQxd1VwjAhwiBkbHOqaWnKzJRl4clJai5rZxhGpi4qC
+	B3QYbVn7HrNxOSK+uRZHL3tZqHLfD8aHaESvt1pOr5OOlRCJ45TaHLpLO7Gm5Zxd
+	RPbdjAfI4RZigGBc3sP6SVLWVKJfSaln9jwJCEMzpY16lQUQHgUefe0WcruRb1v3
+	XVfvqTD3W4jdO21ValB7apKDvqGIx2x4k4OdiAdO2AW23sYv2ufEpEjKu+4PaXb9
+	i0JanyinclkfzTb76EX8SA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775123039; x=
+	1775209439; bh=ZhYhxTY4U9xfdMvUe8c1GDNmyJB8rxZmOqwnOhKpqhk=; b=D
+	dKPsCGkVYirlD6xrzzWCBtIinGn6SbnkiAvdRrEzUyWLc/Bh4BavWeNVdTK1Lcqm
+	DC4c4r+CAcFvYeb0zWu9pN7iirENJxZ0SHQOVhANO/8ZWEjRLwfpSLFOb/JaP4uF
+	PKvJqFgWmdzlGPB3npcSf+7Og6jLTq2lytFt3f07eyIA1xRwDj73REloJUz61UzP
+	yZf0FSumm8rcML0dXAP3rYWggz8WOeEx3oXc4MgJVWKheQZX/r4+fwBZiqf0MQ/+
+	ZThsHV6e5IRNkA25jgyTGhxmkNFky16sPnlR44NvR5kcKcrEWkCZ6UVcS5KwQCIL
+	RyczZ3meJO8lnyF9k55DA==
+X-ME-Sender: <xms:XjrOaTB8lDW0IbDngKg4Y9Gpw02hrxn2fhlCutwsgwS6o5C6KoszSA>
+    <xme:XjrOaXPnH127j2GEon3j0Lvji5tdKjPe0JllOkjRpRAW3DVdsWwvEl-A8xhdBH-Aw
+    ZQJckjAkzpm51ajAX2O4WQoE9ptZ8MlTByceH47XR5Xvfca1dBvMxc>
+X-ME-Received: <xmr:XjrOaQXI_bul8OF9ymtRF7qfdb71y20WAO66lPjNfWn7TjLo0FqVUddcBP11Ibr6TottabqtUCY6JB7rMJRGyVbbeVF64dzK>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehieelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhrhicu
+    mfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleetgefg
+    fefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgtohhm
+    pdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepgh
+    hrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepshht
+    rggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthhgvsh
+    eslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgv
+    lhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgusheslh
+    hinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhn
+    uhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehrohgvtg
+    hkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehprghttghhvghssehkvghrnhgvlhgtihdrohhrgh
+X-ME-Proxy: <xmx:XjrOaSRhykJvd7wor8nu-Qighu2LFb8TlDBPnvMhoBeS-NCc_MA9Rg>
+    <xmx:XzrOae1K_ci9GBRM3cJH0wyrF2n_yik61Ryc0VWsUTTP_4R61WtIcQ>
+    <xmx:XzrOaXj2b8fN_Uu0RDk1Kdg7GyzrC1ApZNoAkxV7sO-qIFSS36PtpQ>
+    <xmx:XzrOaUZ1ypJwG5Y9w6-CF1HCyImbO9tCAG2acqRJWyb_Q7L6_FXeuA>
+    <xmx:XzrOaadPIxpb1Qn95hoWEUPAJNus9Fcd_q2qE4TuGLeMZK7YncJlDpZ_>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 2 Apr 2026 05:43:57 -0400 (EDT)
+Message-ID: <f06f2716-9253-4be0-a2ae-d555125c1457@pobox.com>
+Date: Thu, 2 Apr 2026 02:43:55 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,97 +102,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe: Fix slab-out-of-bounds on PT update ops retry
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>, stable@vger.kernel.org
-References: <20260402091539.4114-1-thomas.hellstrom@linux.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20260402091539.4114-1-thomas.hellstrom@linux.intel.com>
+Subject: Re: [PATCH 6.19 000/342] 6.19.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260331161758.909578033@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260331161758.909578033@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232955-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-232957-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.980];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7A888387231
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pobox.com:dkim,pobox.com:email,pobox.com:mid,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: 31B703872C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 02/04/2026 10:15, Thomas Hellström wrote:
-> xe_pt_update_ops_prepare() calls xe_pt_update_ops_init() at the start of
-> each invocation to reset per-attempt state, but current_op was not
-> included in that reset. When vm_bind_ioctl_ops_execute() retries due to
-> ww-mutex contention (drm_exec_retry_on_contention), ops_execute() calls
-> xe_pt_update_ops_prepare() again. The second call walks the same op list
-> and fills ops[] starting from current_op, which still holds the value
-> from the first attempt. This indexes past the end of the ops array
-> allocated by xe_vma_ops_alloc(), whose size was computed for a single
-> pass.
+On 3/31/26 09:17, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.19.11 release.
+> There are 342 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> KASAN reported:
->    BUG: KASAN: slab-out-of-bounds in bind_op_prepare+0x89c/0xae0 [xe]
->    Write of size 8 at addr ffff88812e72bae8 by task xe_evict/2848
->    [...]
->    bind_op_prepare+0x89c/0xae0 [xe]
->    xe_pt_update_ops_prepare+0xbd0/0x1570 [xe]
->    ops_execute+0x3ae/0x2030 [xe]
->    vm_bind_ioctl_ops_execute+0x4d5/0xed0 [xe]
+> Responses should be made by Thu, 02 Apr 2026 16:16:56 +0000.
+> Anything received after that time might be too late.
 > 
-> The write lands at ops[1].vma (offset 360 into the second element of a
-> one-element 384-byte allocation) because entries[] is exactly 360 bytes
-> and current_op was 1 at the start of the retried prepare pass.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.11-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
+> and the diffstat can be found below.
 > 
-> Fix by resetting current_op to 0 in xe_pt_update_ops_init().
+> thanks,
 > 
-> Fixes: e8babb280b5e ("drm/xe: Convert multiple bind ops into single job")
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.12+
-> Assisted-by: GitHub Copilot:claude-sonnet-4.6
+> greg k-h
 
-Out of curiosity, was it able to suggest the fix given the KASAN splat?
+Tested on 4 systems (3 amd64, 1 arm64). Working well, no regressions
+observed.
 
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-> ---
->   drivers/gpu/drm/xe/xe_pt.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-> index 8e5f4f0dea3f..3607cd57fc4c 100644
-> --- a/drivers/gpu/drm/xe/xe_pt.c
-> +++ b/drivers/gpu/drm/xe/xe_pt.c
-> @@ -2291,6 +2291,7 @@ xe_pt_update_ops_init(struct xe_vm_pgtable_update_ops *pt_update_ops)
->   	init_llist_head(&pt_update_ops->deferred);
->   	pt_update_ops->start = ~0x0ull;
->   	pt_update_ops->last = 0x0ull;
-> +	pt_update_ops->current_op = 0;
->   	xe_page_reclaim_list_init(&pt_update_ops->prl);
->   }
->   
-
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
