@@ -1,184 +1,193 @@
-Return-Path: <stable+bounces-232925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMdMIdQezml7lAYAu9opvQ
-	(envelope-from <stable+bounces-232925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:46:28 +0200
+	id SB7VBVYhzmnElAYAu9opvQ
+	(envelope-from <stable+bounces-232926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:57:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3B43855FD
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:46:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC94385825
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 09:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 51BE430999E0
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 07:36:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 946A43019F18
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 07:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843333890F9;
-	Thu,  2 Apr 2026 07:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D60B363C65;
+	Thu,  2 Apr 2026 07:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8aXiaFB"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24480384235;
-	Thu,  2 Apr 2026 07:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7F631F9B8;
+	Thu,  2 Apr 2026 07:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775115350; cv=none; b=d1FbNDrRr5maK2hcgMPdE8l5fQbwO8sPr9cKY6Ns6s6PPOkaf2enDyXZqLyT8rmyJKPao1humj4+bV9yDnttQkcqbkgL5ZS/IJN9B9+m/NN/nz0eMgM+mor2D6DJ4BxSWv7380LI2wVr61hBniZBIscFk/6TlWw3Cn8+Kebh/tM=
+	t=1775115931; cv=none; b=oY+MEW2Z0Yh2ucQvk4TlyzKTtJBEgV8TgXHPSIboJCrE7c1A0UnteZj6gbtlEuAlY5KOhvxw/fzZfV8vEC2102rEAm3WZ4D/VSHROCtXnZqNA2b1iiFBYuy+qHpZNwoUQrcVfpOdjDstG5FH+nkHyNRelpZW7CMQvME63gzTbaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775115350; c=relaxed/simple;
-	bh=pATpZTFLY7t5pFMre5yAN1qit6F2aA38hDMRZNZBVUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N/UMm8k7mweONY0AJHkZDjrcSOaJect47SnuLssyM6L7aFfVf35zAuGaUC4UxUdGbnIARVeoEHmw/Pq0zNWbJeL+RqxGdUeOghtKt26VXn7JnbivyAsYAvne5BO0/ZRA2FmUfLykL9unYZcNEf+3N9QLOMHQ9QqPM/qWBkOFZh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from ubuntu.. (unknown [202.112.113.208])
-	by APP-03 (Coremail) with SMTP id rQCowABnh95DHM5px6GjDA--.18453S2;
-	Thu, 02 Apr 2026 15:35:42 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: mchehab@kernel.org,
-	mingo@kernel.org,
-	tglx@kernel.org,
-	make24@iscas.ac.cn,
-	jai.luthra@linux.dev,
-	laurent.pinchart+renesas@ideasonboard.com,
-	hverkuil+cisco@kernel.org
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
+	s=arc-20240116; t=1775115931; c=relaxed/simple;
+	bh=L9PtbiHVcjP1nfTjjXupJxIUPL/K74latiizMZHOzk0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oCU20HgMn3sf2/b78fj76YJGt7uB1PAQDOhRWH3QA0l9sYyd0CzYzPnNJW2q2zSL5oD7ifo5CUqdK6Euuz6eg33MrMtO5PKp9o+AxCaKxdtdRqbuCInv7hxYHJy0ByLX23ckgWRUVxQak9Dd65J0fivgw6IeA7qwhfei5MM25JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8aXiaFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E52C19423;
+	Thu,  2 Apr 2026 07:45:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775115930;
+	bh=L9PtbiHVcjP1nfTjjXupJxIUPL/K74latiizMZHOzk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g8aXiaFBflMZSSIMOvUkPQT6eLGTUxFv6rtaRDIjUK7GRYqPS/ycnXwKOb0dYGT0F
+	 1Sw3HmGKgrXt/oMK07s/DvI81FBv0h5Pg2xNkPe5VJPi0lQmxDJPsfre4W+vuJQBWa
+	 XOWeeSMeMpzulWFRMbiyt6uo3YNDD4UvBcB8UYpw=
+Date: Thu, 2 Apr 2026 09:45:28 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Nathan Rebello <nathan.c.rebello@gmail.com>, linux-usb@vger.kernel.org,
+	addcontent08@gmail.com, kyungtae.kim@dartmouth.edu,
 	stable@vger.kernel.org
-Subject: [PATCH v2] media: aa7134: Fix a possible memory leak in saa7134_video_init1
-Date: Thu,  2 Apr 2026 15:35:29 +0800
-Message-ID: <20260402073529.652126-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH] usbip: vhci: reject RET_SUBMIT with inflated
+ number_of_packets
+Message-ID: <2026040220-defeat-jokester-22dc@gregkh>
+References: <20260327064449.735-1-nathan.c.rebello@gmail.com>
+ <34da1928-f6e7-43fb-a436-6bc02e262698@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABnh95DHM5px6GjDA--.18453S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCr47JrW7Wr1kAr1xZry3twb_yoW5XrWxpa
-	97tF9ayw15Jw4kGan7Xa18CF1fC3y8Wr43WFZFg340kw15Cw18AF1Yq34j9FZ8ArsrAF1j
-	9r40vr4kCr1UWaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
-	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
-X-Spamd-Result: default: False [1.54 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <34da1928-f6e7-43fb-a436-6bc02e262698@linuxfoundation.org>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232925-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-232926-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable,renesas,cisco];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: 8A3B43855FD
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,dartmouth.edu];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.990];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 6DC94385825
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In saa7134_video_init1(), the return value of the first
-saa7134_pgtable_alloc() is not checked. If it fails, the function
-continues as if successful, leaving the driver with an invalid page
-table. Additionally, if vb2_queue_init() for the VBI queue fails after
-the video queue page table has been allocated, the allocated memory is
-not freed before returning. The second saa7134_pgtable_alloc() also
-lacks a return value check. Errors occur during device probing before
-the device is fully registered, the normal cleanup path in
-saa7134_finidev() is not executed, leading to memory leaks and
-potential use of uninitialized DMA resources.
+On Tue, Mar 31, 2026 at 05:17:44PM -0600, Shuah Khan wrote:
+> On 3/27/26 00:44, Nathan Rebello wrote:
+> > When a USB/IP client receives a RET_SUBMIT response,
+> > usbip_pack_ret_submit() unconditionally overwrites
+> > urb->number_of_packets from the network PDU. This value is
+> > subsequently used as the loop bound in usbip_recv_iso() and
+> > usbip_pad_iso() to iterate over urb->iso_frame_desc[], a flexible
+> > array whose size was fixed at URB allocation time based on the
+> > *original* number_of_packets from the CMD_SUBMIT.
+> > 
+> > A malicious USB/IP server can set number_of_packets in the response
+> > to a value larger than what was originally submitted, causing a heap
+> > out-of-bounds write when usbip_recv_iso() writes to
+> > urb->iso_frame_desc[i] beyond the allocated region.
+> > 
+> > KASAN confirmed this with kernel 7.0.0-rc5:
+> > 
+> >    BUG: KASAN: slab-out-of-bounds in usbip_recv_iso+0x46a/0x640
+> >    Write of size 4 at addr ffff888106351d40 by task vhci_rx/69
+> > 
+> >    The buggy address is located 0 bytes to the right of
+> >     allocated 320-byte region [ffff888106351c00, ffff888106351d40)
+> > 
+> > The server side (stub_rx.c) and gadget side (vudc_rx.c) already
+> > validate number_of_packets in the CMD_SUBMIT path since commits
+> > c6688ef9f297 ("usbip: fix stub_rx: harden CMD_SUBMIT path to handle
+> > malicious input") and b78d830f0049 ("usbip: fix vudc_rx: harden
+> > CMD_SUBMIT path to handle malicious input"). The server side validates
+> > against USBIP_MAX_ISO_PACKETS because no URB exists yet at that point.
+> > On the client side we have the original URB, so we can use the tighter
+> > bound: the response must not exceed the original number_of_packets.
+> > 
+> > This mirrors the existing validation of actual_length against
+> > transfer_buffer_length in usbip_recv_xbuff(), which checks the
+> > response value against the original allocation size.
+> > 
+> > Kelvin Mbogo's series ("usb: usbip: fix integer overflow in
+> > usbip_recv_iso()", v2) hardens the receive-side functions themselves;
+> > this patch complements that work by catching the bad value at its
+> > source -- in usbip_pack_ret_submit() before the overwrite -- and
+> > using the tighter per-URB allocation bound rather than the global
+> > USBIP_MAX_ISO_PACKETS limit.
+> > 
+> > Fix this by checking rpdu->number_of_packets against
+> > urb->number_of_packets in usbip_pack_ret_submit() before the
+> > overwrite. On violation, clamp to zero so that usbip_recv_iso() and
+> > usbip_pad_iso() safely return early.
+> > 
+> > Fixes: 0775a9cbc798 ("staging: usbip: vhci extension: modifications to the client side")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+> > ---
+> >   drivers/usb/usbip/usbip_common.c | 13 ++++++++++++-
+> >   1 file changed, 12 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/usb/usbip/usbip_common.c b/drivers/usb/usbip/usbip_common.c
+> > --- a/drivers/usb/usbip/usbip_common.c
+> > +++ b/drivers/usb/usbip/usbip_common.c
+> > @@ -470,7 +470,18 @@ static void usbip_pack_ret_submit(struct usbip_header *pdu, struct urb *urb,
+> >   		urb->status		= rpdu->status;
+> >   		urb->actual_length	= rpdu->actual_length;
+> >   		urb->start_frame	= rpdu->start_frame;
+> > -		urb->number_of_packets = rpdu->number_of_packets;
+> > +		/*
+> > +		 * The number_of_packets field determines the length of
+> > +		 * iso_frame_desc[], which is a flexible array allocated
+> > +		 * at URB creation time. A response must never claim more
+> > +		 * packets than originally submitted; doing so would cause
+> > +		 * an out-of-bounds write in usbip_recv_iso() and
+> > +		 * usbip_pad_iso(). Clamp to zero on violation so both
+> > +		 * functions safely return early.
+> > +		 */
+> > +		if (rpdu->number_of_packets < 0 ||
+> > +		    rpdu->number_of_packets > urb->number_of_packets)
+> > +			rpdu->number_of_packets = 0;
+> > +		urb->number_of_packets = rpdu->number_of_packets;
+> >   		urb->error_count	= rpdu->error_count;
+> >   	}
+> >   }
+> 
+> Look good to me.
+> 
+> Acked-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Check the return value of both saa7134_pgtable_alloc() calls and
-propagate errors. On failure of any later step, free allocated page
-tables to avoid memory leaks. Ensure control handlers are also
-released on error to prevent further resource leakage.
+This patch is somehow corrupted and can not be applied at all.  Nathan,
+how did you generate it?
 
-Found by code review.
+You can tell something is wrong as it shows you removing, and then
+adding, the same line, which is a huge hint something went wrong.
 
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Cc: stable@vger.kernel.org
-Fixes: a00e68888d5d ("[media] saa7134: move saa7134_pgtable to saa7134_dmaqueue")
----
-Changes in v2:
-- modified the subject as suggestions.
----
- drivers/media/pci/saa7134/saa7134-video.c | 25 ++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+Can you regenerate this against my latest usb-testing branch and resend?
 
-diff --git a/drivers/media/pci/saa7134/saa7134-video.c b/drivers/media/pci/saa7134/saa7134-video.c
-index 4a51b873e47a..2b1672737d84 100644
---- a/drivers/media/pci/saa7134/saa7134-video.c
-+++ b/drivers/media/pci/saa7134/saa7134-video.c
-@@ -1714,8 +1714,10 @@ int saa7134_video_init1(struct saa7134_dev *dev)
- 	q->dev = &dev->pci->dev;
- 	ret = vb2_queue_init(q);
- 	if (ret)
--		return ret;
--	saa7134_pgtable_alloc(dev->pci, &dev->video_q.pt);
-+		goto err_free_ctrl;
-+	ret = saa7134_pgtable_alloc(dev->pci, &dev->video_q.pt);
-+	if (ret)
-+		goto err_free_ctrl;
- 
- 	q = &dev->vbi_vbq;
- 	q->type = V4L2_BUF_TYPE_VBI_CAPTURE;
-@@ -1732,11 +1734,24 @@ int saa7134_video_init1(struct saa7134_dev *dev)
- 	q->lock = &dev->lock;
- 	q->dev = &dev->pci->dev;
- 	ret = vb2_queue_init(q);
--	if (ret)
--		return ret;
--	saa7134_pgtable_alloc(dev->pci, &dev->vbi_q.pt);
-+	if (ret) {
-+		saa7134_pgtable_free(dev->pci, &dev->video_q.pt);
-+		goto err_free_ctrl;
-+	}
-+
-+	ret = saa7134_pgtable_alloc(dev->pci, &dev->vbi_q.pt);
-+	if (ret) {
-+		saa7134_pgtable_free(dev->pci, &dev->video_q.pt);
-+		goto err_free_ctrl;
-+	}
- 
- 	return 0;
-+
-+err_free_ctrl:
-+	v4l2_ctrl_handler_free(&dev->ctrl_handler);
-+	if (card_has_radio(dev))
-+		v4l2_ctrl_handler_free(&dev->radio_ctrl_handler);
-+	return ret;
- }
- 
- void saa7134_video_fini(struct saa7134_dev *dev)
--- 
-2.43.0
+thanks,
 
+greg k-h
 
