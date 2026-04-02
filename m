@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-232960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sK72J4U6zmmAmAYAu9opvQ
-	(envelope-from <stable+bounces-232960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:44:37 +0200
+	id UN9AOow6zmmAmAYAu9opvQ
+	(envelope-from <stable+bounces-232961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:44:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9BA38720D
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:44:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95100387214
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 11:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48B7D3033892
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 09:44:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B0FF30329A4
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 09:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9994E3D6693;
-	Thu,  2 Apr 2026 09:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABE1392C56;
+	Thu,  2 Apr 2026 09:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cs12fyqF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glkHUTaw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604183D16FB
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 09:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C5D3D16FB
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 09:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775123058; cv=none; b=i9cl7A1yJt8jHrg2eF19YIoEn5MXLkuiz8y3EPjHgOuouM1Gmkpj5rCBQZDKrZORldqkPzy/Uas0a9I4Zw4DJK2lo/uynKjqPgWHpsjMP0TGQuZ/ljzCdlGzGm6rWdE9eRye6jDLKrIqvfwp8wPYYU/aoRezgZXqpmOxO50fuhs=
+	t=1775123060; cv=none; b=aecRBNgBoJgV93ByFNfnIJZ6yl/AFJl/XzEjHGTnWowMTXyHf8pZFOxACdsDjABCjqqNL6mNC+90VV9ryZCoNu4MolhMRUpTBBDiLjbgGGdwAmOdu7XZ8+Q+WHO+mNSqCl7dyzmTA/I2kS4brqIkACXtiDSGE7Rg7OLQJi7QGhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775123058; c=relaxed/simple;
-	bh=GQSHx7Iq5ZhJZK0OC6WChvzbgMjjsym2u+STNGQrf+g=;
+	s=arc-20240116; t=1775123060; c=relaxed/simple;
+	bh=n9v6p6NOTbgbdyYmQUhOvO+aCdE8AUkTKYmWrUIJp44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXfUGVZSWHq1mEbaoXmhho1Xl13DbFSxiMo55mb/d+rY7havxuhpEsZ28tRzpPYesu9agDDVPxTqHK+Qyt2My13/jRF+mmJSi8VJDwfveTUTiUju49N9/ogFisPxUFfLHlsPEFoCtO4ccsL4diN/9c51eTMd2fhr8oWNBRBEEIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cs12fyqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE3EC2BC9E;
-	Thu,  2 Apr 2026 09:44:16 +0000 (UTC)
+	 MIME-Version; b=dlnUTYg5Q+09+joagnwxsBfTcktnNzD3ml7TY5xQq8E2AAK8mhtF4FdKxsslJI0AQY/yQsm0ctuNdrRqs95rP+Ma5jZwxTyT53U2PLQNH6tOrnSWljYvTNc8CbDWfIg77ODBDcDKOGN3/tbQsZ6MMeG+AR8J7z2tuqfYDSfuBbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glkHUTaw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCF4C2BC9E;
+	Thu,  2 Apr 2026 09:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775123057;
-	bh=GQSHx7Iq5ZhJZK0OC6WChvzbgMjjsym2u+STNGQrf+g=;
+	s=k20201202; t=1775123059;
+	bh=n9v6p6NOTbgbdyYmQUhOvO+aCdE8AUkTKYmWrUIJp44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cs12fyqFTg6DLEoMnOs5vLTMyTzUZyBRuSYlQWLwVyBv8o+Z+kvxuqBDeHs6rKDFm
-	 G47xuL1LxDdU0eEEtP4QYkOBLN/qIuBucMDBUfWCua89jHpXIcog7X4QQr0JN7qbhR
-	 GCNJvVV6gCKaTgzxv4QdgCw/QSOMOq0yllOGDcFDS9P0nYaXbO8pmzDub9kmaSIKiy
-	 IsxB7SpoWGPlWb6JKn0brDuMDRiYNgbHx9Kwc9UeBwoIEAjMAxAyOS5RIyKY8zvrrY
-	 on0/o/i9DexlvVrWI3ddxODGFs2XEubwSisKw1XleWdNmp8uLXgTc3TNvn+LkYSpj6
-	 Sq9mKfrbKaMVA==
+	b=glkHUTawNJo1N3beOmr1C/23vt8AVQDwIRjCJdWVwdjKNmHCOh4SIW9mKoJ+/47Nd
+	 fy4xGZdl4dzDYZxFKqWJk18dRRyFhWrcMgpmHedZVAXnX6JSD+juiJk3yQXjS3ZKK0
+	 oUy2l4f8nc6NgjJjwJdC5hZBOX50ypELjvn1LRHlDXnC5TUBdwPBrsRc8JxCk8fH36
+	 Q/FQ41JPIl5iMc/rrO2ryDrjcHhuc9EiPWiSLw294Qz1JJdeFzhoDR5d+k+IVPx4FF
+	 lwvpinSxlGXOTEgWbyfw1Zl3f7tF8QCb9FyYqdXQNSopDegbWpVKOwaTIllx3E9YZw
+	 SIrgLWbxSk0tg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Long Li <leo.lilong@huawei.com>,
+Cc: Yuto Ohnuki <ytohnuki@amazon.com>,
+	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
 	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
 	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y 3/3] xfs: close crash window in attr dabtree inactivation
-Date: Thu,  2 Apr 2026 05:44:12 -0400
-Message-ID: <20260402094412.717776-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y] xfs: save ailp before dropping the AIL lock in push callbacks
+Date: Thu,  2 Apr 2026 05:44:17 -0400
+Message-ID: <20260402094417.718088-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260402094412.717776-1-sashal@kernel.org>
-References: <2026033022-mumps-pronto-1d74@gregkh>
- <20260402094412.717776-1-sashal@kernel.org>
+In-Reply-To: <2026033014-speak-undiluted-7499@gregkh>
+References: <2026033014-speak-undiluted-7499@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,293 +65,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232960-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232961-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EA9BA38720D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: 95100387214
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Long Li <leo.lilong@huawei.com>
+From: Yuto Ohnuki <ytohnuki@amazon.com>
 
-[ Upstream commit b854e1c4eff3473b6d3a9ae74129ac5c48bc0b61 ]
+[ Upstream commit 394d70b86fae9fe865e7e6d9540b7696f73aa9b6 ]
 
-When inactivating an inode with node-format extended attributes,
-xfs_attr3_node_inactive() invalidates all child leaf/node blocks via
-xfs_trans_binval(), but intentionally does not remove the corresponding
-entries from their parent node blocks.  The implicit assumption is that
-xfs_attr_inactive() will truncate the entire attr fork to zero extents
-afterwards, so log recovery will never reach the root node and follow
-those stale pointers.
+In xfs_inode_item_push() and xfs_qm_dquot_logitem_push(), the AIL lock
+is dropped to perform buffer IO. Once the cluster buffer no longer
+protects the log item from reclaim, the log item may be freed by
+background reclaim or the dquot shrinker. The subsequent spin_lock()
+call dereferences lip->li_ailp, which is a use-after-free.
 
-However, if a log shutdown occurs after the leaf/node block cancellations
-commit but before the attr bmap truncation commits, this assumption
-breaks.  Recovery replays the attr bmap intact (the inode still has
-attr fork extents), but suppresses replay of all cancelled leaf/node
-blocks, maybe leaving them as stale data on disk.  On the next mount,
-xlog_recover_process_iunlinks() retries inactivation and attempts to
-read the root node via the attr bmap. If the root node was not replayed,
-reading the unreplayed root block triggers a metadata verification
-failure immediately; if it was replayed, following its child pointers
-to unreplayed child blocks triggers the same failure:
+Fix this by saving the ailp pointer in a local variable while the AIL
+lock is held and the log item is guaranteed to be valid.
 
- XFS (pmem0): Metadata corruption detected at
- xfs_da3_node_read_verify+0x53/0x220, xfs_da3_node block 0x78
- XFS (pmem0): Unmount and run xfs_repair
- XFS (pmem0): First 128 bytes of corrupted metadata buffer:
- 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- XFS (pmem0): metadata I/O error in "xfs_da_read_buf+0x104/0x190" at daddr 0x78 len 8 error 117
-
-Fix this in two places:
-
-In xfs_attr3_node_inactive(), after calling xfs_trans_binval() on a
-child block, immediately remove the entry that references it from the
-parent node in the same transaction.  This eliminates the window where
-the parent holds a pointer to a cancelled block.  Once all children are
-removed, the now-empty root node is converted to a leaf block within the
-same transaction. This node-to-leaf conversion is necessary for crash
-safety. If the system shutdown after the empty node is written to the
-log but before the second-phase bmap truncation commits, log recovery
-will attempt to verify the root block on disk. xfs_da3_node_verify()
-does not permit a node block with count == 0; such a block will fail
-verification and trigger a metadata corruption shutdown. on the other
-hand, leaf blocks are allowed to have this transient state.
-
-In xfs_attr_inactive(), split the attr fork truncation into two explicit
-phases.  First, truncate all extents beyond the root block (the child
-extents whose parent references have already been removed above).
-Second, invalidate the root block and truncate the attr bmap to zero in
-a single transaction.  The two operations in the second phase must be
-atomic: as long as the attr bmap has any non-zero length, recovery can
-follow it to the root block, so the root block invalidation must commit
-together with the bmap-to-zero truncation.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
+Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
+Cc: stable@vger.kernel.org # v5.9
 Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
 Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_attr_inactive.c | 95 +++++++++++++++++++++++---------------
- 1 file changed, 57 insertions(+), 38 deletions(-)
+ fs/xfs/xfs_dquot_item.c | 9 +++++++--
+ fs/xfs/xfs_inode_item.c | 9 +++++++--
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/fs/xfs/xfs_attr_inactive.c b/fs/xfs/xfs_attr_inactive.c
-index 319004bf089fa..2305ddad8a13a 100644
---- a/fs/xfs/xfs_attr_inactive.c
-+++ b/fs/xfs/xfs_attr_inactive.c
-@@ -140,7 +140,7 @@ xfs_attr3_node_inactive(
- 	xfs_daddr_t		parent_blkno, child_blkno;
- 	struct xfs_buf		*child_bp;
- 	struct xfs_da3_icnode_hdr ichdr;
--	int			error, i;
-+	int			error;
- 
- 	/*
- 	 * Since this code is recursive (gasp!) we must protect ourselves.
-@@ -152,7 +152,7 @@ xfs_attr3_node_inactive(
- 		return -EFSCORRUPTED;
- 	}
- 
--	xfs_da3_node_hdr_from_disk(dp->i_mount, &ichdr, bp->b_addr);
-+	xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
- 	parent_blkno = xfs_buf_daddr(bp);
- 	if (!ichdr.count) {
- 		xfs_trans_brelse(*trans, bp);
-@@ -167,7 +167,7 @@ xfs_attr3_node_inactive(
- 	 * over the leaves removing all of them.  If this is higher up
- 	 * in the tree, recurse downward.
- 	 */
--	for (i = 0; i < ichdr.count; i++) {
-+	while (ichdr.count > 0) {
- 		/*
- 		 * Read the subsidiary block to see what we have to work with.
- 		 * Don't do this in a transaction.  This is a depth-first
-@@ -218,29 +218,32 @@ xfs_attr3_node_inactive(
- 		xfs_trans_binval(*trans, child_bp);
- 		child_bp = NULL;
- 
-+		error = xfs_da3_node_read_mapped(*trans, dp,
-+				parent_blkno, &bp, XFS_ATTR_FORK);
-+		if (error)
-+			return error;
-+
- 		/*
--		 * If we're not done, re-read the parent to get the next
--		 * child block number.
-+		 * Remove entry from parent node, prevents being indexed to.
- 		 */
--		if (i + 1 < ichdr.count) {
--			struct xfs_da3_icnode_hdr phdr;
-+		xfs_attr3_node_entry_remove(*trans, dp, bp, 0);
-+
-+		xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
-+		bp = NULL;
- 
--			error = xfs_da3_node_read_mapped(*trans, dp,
--					parent_blkno, &bp, XFS_ATTR_FORK);
-+		if (ichdr.count > 0) {
-+			/*
-+			 * If we're not done, get the next child block number.
-+			 */
-+			child_fsb = be32_to_cpu(ichdr.btree[0].before);
-+
-+			/*
-+			 * Atomically commit the whole invalidate stuff.
-+			 */
-+			error = xfs_trans_roll_inode(trans, dp);
- 			if (error)
- 				return error;
--			xfs_da3_node_hdr_from_disk(dp->i_mount, &phdr,
--						  bp->b_addr);
--			child_fsb = be32_to_cpu(phdr.btree[i + 1].before);
--			xfs_trans_brelse(*trans, bp);
--			bp = NULL;
- 		}
--		/*
--		 * Atomically commit the whole invalidate stuff.
--		 */
--		error = xfs_trans_roll_inode(trans, dp);
--		if (error)
--			return  error;
- 	}
- 
- 	return 0;
-@@ -257,10 +260,8 @@ xfs_attr3_root_inactive(
- 	struct xfs_trans	**trans,
- 	struct xfs_inode	*dp)
+diff --git a/fs/xfs/xfs_dquot_item.c b/fs/xfs/xfs_dquot_item.c
+index 8ed47b739b6cc..f2cef1470373c 100644
+--- a/fs/xfs/xfs_dquot_item.c
++++ b/fs/xfs/xfs_dquot_item.c
+@@ -124,6 +124,7 @@ xfs_qm_dquot_logitem_push(
  {
--	struct xfs_mount	*mp = dp->i_mount;
- 	struct xfs_da_blkinfo	*info;
- 	struct xfs_buf		*bp;
--	xfs_daddr_t		blkno;
+ 	struct xfs_dquot	*dqp = DQUOT_ITEM(lip)->qli_dquot;
+ 	struct xfs_buf		*bp = lip->li_buf;
++	struct xfs_ail		*ailp = lip->li_ailp;
+ 	uint			rval = XFS_ITEM_SUCCESS;
  	int			error;
  
- 	/*
-@@ -272,7 +273,6 @@ xfs_attr3_root_inactive(
- 	error = xfs_da3_node_read(*trans, dp, 0, &bp, XFS_ATTR_FORK);
- 	if (error)
- 		return error;
--	blkno = xfs_buf_daddr(bp);
- 
- 	/*
- 	 * Invalidate the tree, even if the "tree" is only a single leaf block.
-@@ -283,10 +283,26 @@ xfs_attr3_root_inactive(
- 	case cpu_to_be16(XFS_DA_NODE_MAGIC):
- 	case cpu_to_be16(XFS_DA3_NODE_MAGIC):
- 		error = xfs_attr3_node_inactive(trans, dp, bp, 1);
-+		/*
-+		 * Empty root node block are not allowed, convert it to leaf.
-+		 */
-+		if (!error)
-+			error = xfs_attr3_leaf_init(*trans, dp, 0);
-+		if (!error)
-+			error = xfs_trans_roll_inode(trans, dp);
- 		break;
- 	case cpu_to_be16(XFS_ATTR_LEAF_MAGIC):
- 	case cpu_to_be16(XFS_ATTR3_LEAF_MAGIC):
- 		error = xfs_attr3_leaf_inactive(trans, dp, bp);
-+		/*
-+		 * Reinit the leaf before truncating extents so that a crash
-+		 * mid-truncation leaves an empty leaf rather than one with
-+		 * entries that may reference freed remote value blocks.
-+		 */
-+		if (!error)
-+			error = xfs_attr3_leaf_init(*trans, dp, 0);
-+		if (!error)
-+			error = xfs_trans_roll_inode(trans, dp);
- 		break;
- 	default:
- 		xfs_dirattr_mark_sick(dp, XFS_ATTR_FORK);
-@@ -295,21 +311,6 @@ xfs_attr3_root_inactive(
- 		xfs_trans_brelse(*trans, bp);
- 		break;
+@@ -152,7 +153,7 @@ xfs_qm_dquot_logitem_push(
+ 		goto out_unlock;
  	}
--	if (error)
--		return error;
--
--	/*
--	 * Invalidate the incore copy of the root block.
--	 */
--	error = xfs_trans_get_buf(*trans, mp->m_ddev_targp, blkno,
--			XFS_FSB_TO_BB(mp, mp->m_attr_geo->fsbcount), 0, &bp);
--	if (error)
--		return error;
--	xfs_trans_binval(*trans, bp);	/* remove from cache */
--	/*
--	 * Commit the invalidate and start the next transaction.
--	 */
--	error = xfs_trans_roll_inode(trans, dp);
  
- 	return error;
+-	spin_unlock(&lip->li_ailp->ail_lock);
++	spin_unlock(&ailp->ail_lock);
+ 
+ 	error = xfs_qm_dqflush(dqp, &bp);
+ 	if (!error) {
+@@ -162,7 +163,11 @@ xfs_qm_dquot_logitem_push(
+ 	} else if (error == -EAGAIN)
+ 		rval = XFS_ITEM_LOCKED;
+ 
+-	spin_lock(&lip->li_ailp->ail_lock);
++	/*
++	 * The buffer no longer protects the log item from reclaim, so
++	 * do not reference lip after this point.
++	 */
++	spin_lock(&ailp->ail_lock);
+ out_unlock:
+ 	xfs_dqunlock(dqp);
+ 	return rval;
+diff --git a/fs/xfs/xfs_inode_item.c b/fs/xfs/xfs_inode_item.c
+index 3aba4559469f1..38b59e8070acc 100644
+--- a/fs/xfs/xfs_inode_item.c
++++ b/fs/xfs/xfs_inode_item.c
+@@ -514,6 +514,7 @@ xfs_inode_item_push(
+ 	struct xfs_inode_log_item *iip = INODE_ITEM(lip);
+ 	struct xfs_inode	*ip = iip->ili_inode;
+ 	struct xfs_buf		*bp = lip->li_buf;
++	struct xfs_ail		*ailp = lip->li_ailp;
+ 	uint			rval = XFS_ITEM_SUCCESS;
+ 	int			error;
+ 
+@@ -529,7 +530,7 @@ xfs_inode_item_push(
+ 	if (!xfs_buf_trylock(bp))
+ 		return XFS_ITEM_LOCKED;
+ 
+-	spin_unlock(&lip->li_ailp->ail_lock);
++	spin_unlock(&ailp->ail_lock);
+ 
+ 	/*
+ 	 * We need to hold a reference for flushing the cluster buffer as it may
+@@ -553,7 +554,11 @@ xfs_inode_item_push(
+ 		rval = XFS_ITEM_LOCKED;
+ 	}
+ 
+-	spin_lock(&lip->li_ailp->ail_lock);
++	/*
++	 * The buffer no longer protects the log item from reclaim, so
++	 * do not reference lip after this point.
++	 */
++	spin_lock(&ailp->ail_lock);
+ 	return rval;
  }
-@@ -328,6 +329,7 @@ xfs_attr_inactive(
- {
- 	struct xfs_trans	*trans;
- 	struct xfs_mount	*mp;
-+	struct xfs_buf          *bp;
- 	int			lock_mode = XFS_ILOCK_SHARED;
- 	int			error = 0;
  
-@@ -363,10 +365,27 @@ xfs_attr_inactive(
- 	 * removal below.
- 	 */
- 	if (dp->i_af.if_nextents > 0) {
-+		/*
-+		 * Invalidate and truncate all blocks but leave the root block.
-+		 */
- 		error = xfs_attr3_root_inactive(&trans, dp);
- 		if (error)
- 			goto out_cancel;
- 
-+		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK,
-+				XFS_FSB_TO_B(mp, mp->m_attr_geo->fsbcount));
-+		if (error)
-+			goto out_cancel;
-+
-+		/*
-+		 * Invalidate and truncate the root block and ensure that the
-+		 * operation is completed within a single transaction.
-+		 */
-+		error = xfs_da_get_buf(trans, dp, 0, &bp, XFS_ATTR_FORK);
-+		if (error)
-+			goto out_cancel;
-+
-+		xfs_trans_binval(trans, bp);
- 		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK, 0);
- 		if (error)
- 			goto out_cancel;
 -- 
 2.53.0
 
