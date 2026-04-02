@@ -1,186 +1,227 @@
-Return-Path: <stable+bounces-233044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNjgFSaQzmkbogYAu9opvQ
-	(envelope-from <stable+bounces-233044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 17:49:58 +0200
+	id kLRlKCWRzmkbogYAu9opvQ
+	(envelope-from <stable+bounces-233048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 17:54:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF17438B745
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 17:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F87238B827
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 17:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0402530157D3
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 15:49:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01C133028346
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 15:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA24B3BED22;
-	Thu,  2 Apr 2026 15:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B6D3D6484;
+	Thu,  2 Apr 2026 15:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDcw1prI"
+	dkim=pass (2048-bit key) header.d=p2p.industries header.i=@p2p.industries header.b="ldnRa4Fz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F492E266C;
-	Thu,  2 Apr 2026 15:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF33F3570DF
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 15:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775144959; cv=none; b=ACpzS8lWFFuqojrPdBBZBIep2l5Gwd0MvxwfPPx/aPCbAUrb09ZsmRHbk4kPG7Fc+AMK/jAhrB7wYY8181Ete1OeAuMu6enjnv/FX6aHyX76ZBzoI3HZ7sd+QFjFMp6scH0efbf60pJTQ/ucEcMMXDa5t83gZocSHrNMGQH7Ku8=
+	t=1775145225; cv=none; b=RzswTxjppYZIsl52Pz+WQuFL+2bXmuta87eiuWujHDfoRDIall+1idLGiaxqHVKjCqbu9YH+BYLItonqh4ueD773Tvpn18/er0MwAI1cHAliDguodAwcqEK74BXnRuIyt7V8ETTie9OoFc+wDZ3x4xwW3jRnzHXT9cK+v3EA2aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775144959; c=relaxed/simple;
-	bh=ETKq7zpXTNX+jfpHKOz+WPkBvuAndyFKqifyTs989fQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AzAQDvPcFm676Y4YLiwbdWLoFzFUVVk1q2ISNDnLGXOLjVUb4sENMCa1DwVt0g3YyUTiQIU/eAb4h9OyC4IFy89y02JoQy+sXJFZKd8lmjQq08KH33WDoXcF5K5/hoNRqlvNKBAD58SH0vdaMxqt4FGkfYUV5V96dQxpQdn7SA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDcw1prI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4634CC19423;
-	Thu,  2 Apr 2026 15:49:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775144959;
-	bh=ETKq7zpXTNX+jfpHKOz+WPkBvuAndyFKqifyTs989fQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vDcw1prILIQAXHJowYDTJb6Nn1rk2kMRffrcqcdVG1vKoLbLy61HSdGnHVqlkKx4q
-	 ylg/MMGiQlKZe28tTkDSkOan0AGo1g+dPj/2nlK4S1pZ/d6kp0OuWyo/d0fkH2NCF6
-	 xDn8/HO4hkB4cT2GGVpv80jHaaYSdWeTyjMVyo1o=
-Date: Thu, 2 Apr 2026 17:49:10 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, iommu@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jean-Philippe Brucker <jpb@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Neal Gompa <neal@gompa.dev>, Orson Zhai <orsonzhai@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel@sholland.org>, Sven Peter <sven@kernel.org>,
-	virtualization@lists.linux.dev, Chen-Yu Tsai <wens@kernel.org>,
-	Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Jon Hunter <jonathanh@nvidia.com>, patches@lists.linux.dev,
-	Pranjal Shrivastava <praan@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org,
-	Vasant Hegde <vasant.hegde@amd.com>
-Subject: Re: [PATCH v2] iommu: Always fill in gather when unmapping
-Message-ID: <2026040202-uneaten-nutrient-b6e1@gregkh>
-References: <0-v2-b24668f107b2+11bbe-iommu_gather_always_jgg@nvidia.com>
+	s=arc-20240116; t=1775145225; c=relaxed/simple;
+	bh=KYoX6gKN6gt3nY8hNo/FfNtKjn/EfpgeJwnbJ6NulPE=;
+	h=From:Content-Type:Mime-Version:Subject:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=K5y38gPv6++fPk5E2+itFyMSHRHRMBZHUVd4jZAYCnIOSaiflg4Zw3Rb9qVweLBmV4XHm3rDegX405m7R4wvglxmPOPAM1/3cB2/y8MT7btUSYaq7ycbWW+IYpf6IGMXvijmZt3O/VqS8stth/GPFu/nCea/yEQR3+tai6qAE5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=p2p.industries; spf=pass smtp.mailfrom=p2p.industries; dkim=pass (2048-bit key) header.d=p2p.industries header.i=@p2p.industries header.b=ldnRa4Fz; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=p2p.industries
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=p2p.industries
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48541edecf9so12378775e9.1
+        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 08:53:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=p2p.industries; s=google; t=1775145221; x=1775750021; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:subject:mime-version:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e5SEopH7qoOVm2O4AeVWA5YO/SyHxUnzqAKH92QpDAU=;
+        b=ldnRa4FzLKlCGCtxlZzrL4XkXisDYJzYd04thKOZLnRb78SaTFsialiV0v4tBZjdvP
+         qlZBz8uAb1EPsil0UYunEw6WLQDFB3ORwma629u9dJntrCllkRcKaaxqnGzhSRFXmzZa
+         xp10hYYXto9kHrkbubiEwdHAwVnuvKnFth+CsckWEkJ9fSxinn0P4K1UFcHL3RQbeUtQ
+         INbaLq3k5ZgEQ+8hXkt5Z534eO8L8IMocB+zDCOW5ll1aiJj3Y6qq46hmfSrIe7geTns
+         DUUWK7LX3OchCSLya27PCig5n3C8e4hA8M9z7OFe6id3sifj/gAvg7iBXUvguzNyhkEs
+         X4Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775145221; x=1775750021;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:subject:mime-version:from:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e5SEopH7qoOVm2O4AeVWA5YO/SyHxUnzqAKH92QpDAU=;
+        b=NCl60g0QeOHMuv5lAiMeZ3s3pvlM5S2if/UjIo8wAcsrsd2BnxIqen9GjuWZXqXxRY
+         YChB8zJUcYaosavKyZbvIqn043IXgN07686gPU7hBY26VGT2JLKDVta7gAu6ZKQhQkxz
+         xl8SJSE/cocoPom2rwHEEoUpVZ5zbwvqkuiT4VOm7OrrG92G5qNClOzxqllVqeRMKUf8
+         UHoWKTkKM9gZd1mlQk3gj5HEa6d3qsTZM+MqsNEXxxEi/5r643D3+L3w4BDM4CCrhXqn
+         +YcR6bAB87g/Ocns1jDOixs93pH/AJf0fhf/5VSTkuHeKxcuqV9Jg5R88EvnsEdtyAHL
+         4Mpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUshGAnP9TGFkFEJnP1FjKkP1EnNMvnLzOYyOq4RDSpuLKnAW8CWnEZKBStWdaMQexy/EmsmRI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHnH7/Wu5rRhPmUq8UmPicjOjtTTGTyXM2Tqf7nDJOv1ceJX0J
+	cWyulxG+buhYP87Ao2InwyERkd7rb5GBtnDKm4qGc+pAor5zMVdDq10+KoGMknT2T7DkONIUgCS
+	67Ppe1F0=
+X-Gm-Gg: ATEYQzwrNoM95hjFDSYoQdzaQjNtTAh6/7gSi6UqkHnz0hwbNhwSrv45jdXuzgy7OM5
+	qEbfZni1yGWifCPPV0gsvsfX8UVc5KogvWMLwbD7AWxVQ2hOpb/JSpzuNbht1qi+aiBOXQv+mGO
+	SMZ1ya5NDn/oLpMUe2aAXDhnfJkDI/XejGrdew3A2SLljJOsRhFyhCdSOqr6O92Gt0Aqrp8vdhL
+	5yWSDD6ucqa83gyYx+lcilgrYUGsYbbNzI4hL7ct0wfzUSbsTJU7vOpBSVQRHftCRL4brytK2Hh
+	nOI8v8z3eLWTngDfPJSd88MXeKgCuV7RKFNeXNEfVcuIAth78qJjWpkA/dsZZpCpPa9huhCVBFV
+	8IlviizS3XK9bsqOLTMCRADshAPgUzFW3kKVXXqxXYxiC1YgFnilagXsSapPJUFgLUYgXtOM0/5
+	NsomYNsgNMPngQ/JJ+jm0XGD6zGQOoZPku2URrKdoEm3y+X4KtYkqLMZl6Kw2sG/S5udLQSHVTp
+	ZlFV42xoaxclznWNWxhhG87
+X-Received: by 2002:a05:600c:3e87:b0:486:fba7:b150 with SMTP id 5b1f17b1804b1-4888359cfc8mr148410665e9.15.1775145221141;
+        Thu, 02 Apr 2026 08:53:41 -0700 (PDT)
+Received: from smtpclient.apple (mob-194-230-144-149.cgn.sunrise.net. [194.230.144.149])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887eb5aff3sm285397555e9.15.2026.04.02.08.53.39
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 02 Apr 2026 08:53:40 -0700 (PDT)
+From: Hannes Furmans <hannes@p2p.industries>
+X-Google-Original-From: Hannes Furmans <hannes@stillwind.ai>
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0-v2-b24668f107b2+11bbe-iommu_gather_always_jgg@nvidia.com>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v2] io_uring/net: don't check MSG_CTRUNC for
+ IORING_OP_RECV
+In-Reply-To: <20260227162730.79355-1-hannes@stillwind.ai>
+Date: Thu, 2 Apr 2026 17:53:27 +0200
+Cc: Stefan Metzmacher <metze@samba.org>,
+ io-uring@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9651A09E-97B6-4EF2-806C-4EAAF96C9C93@stillwind.ai>
+References: <20260226220310.758404-1-hannes@stillwind.ai>
+ <20260227162730.79355-1-hannes@stillwind.ai>
+To: Jens Axboe <axboe@kernel.dk>
+X-Mailer: Apple Mail (2.3864.500.181)
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[p2p.industries,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[p2p.industries:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233044-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[37];
-	FREEMAIL_CC(0.00)[ghiti.fr,collabora.com,eecs.berkeley.edu,lists.linux.dev,linux.alibaba.com,jannau.net,gmail.com,8bytes.org,kernel.org,lists.infradead.org,gompa.dev,dabbelt.com,sholland.org,mediatek.com,linux.intel.com,amd.com,nvidia.com,google.com,arm.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.985];
+	TAGGED_FROM(0.00)[bounces-233048-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[p2p.industries:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[hannes@p2p.industries,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	APPLE_MAILER_COMMON(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: EF17438B745
+	DBL_BLOCKED_OPENRESOLVER(0.00)[p2p.industries:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,stillwind.ai:email,stillwind.ai:mid]
+X-Rspamd-Queue-Id: 1F87238B827
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 02, 2026 at 11:25:16AM -0300, Jason Gunthorpe wrote:
-> The fixed commit assumed that the gather would always be populated if an
-> iotlb_sync was required.
-> 
-> arm-smmu-v3, amd, VT-d, riscv, s390, and mtk all use information from the
-> gather during their iotlb_sync() and this approach works for them.
-> 
-> However, arm-smmu, qcom_iommu, ipmmu-vmsa, sun50i, sprd, virtio, and
-> apple-dart all ignore the gather during their iotlb_sync(). They mostly
-> issue a full flush.
-> 
-> Unfortunately the latter set of drivers often don't bother to add anything
-> to the gather since they don't intend on using it. Since the core code now
-> blocks gathers that were never filled, this caused those drivers to stop
-> getting their iotlb_sync() calls and breaks them.
-> 
-> Since it is impossible to tell the difference between gathers that are
-> empty because there is nothing to do and gathers that are empty because
-> they are not used, fill in the gathers for the missing cases.
-> 
-> mtk uses io-pgtable-arm-v7s but added the range to the gather in the unmap
-> callback. Move this into the io-pgtable-arm-v7s unmap itself. That will
-> fix all the armv7 using drivers (arm-smmu, qcom_iommu, ipmmu-vmsa).
-> 
-> io-pgtable-arm needs to accommodate drivers like arm-smmu that don't want
-> to use the gather by just adding a simple range, and drivers like SMMUv3
-> that need to use gather->pgsize and also have a disjoint check. Move
-> SMMUv3 to a new tlb_add_range() op which replaces calling
-> iommu_iotlb_gather_add_page() in a loop with a single call to update the
-> gather with the range and required pgsize.
-> 
-> iommu_iotlb_gather_add_page() is repurposed since nothing but SMMUv3 uses it
-> now that amd, VT-d and riscv are using iommupt.
-> 
-> Add a trivial gather population to io-pgtable-dart.
-> 
-> Add trivial populations to sprd, sun50i and virtio-iommu in their unmap
-> functions.
-> 
-> Fixes: 90c5def10bea ("iommu: Do not call drivers for empty gathers")
-> Reported-by: Jon Hunter <jonathanh@nvidia.com>
-> Closes: https://lore.kernel.org/r/8800a38b-8515-4bbe-af15-0dae81274bf7@nvidia.com
-> Tested-by: Jon Hunter <jonathanh@nvidia.com>
-> Acked-by: Pranjal Shrivastava <praan@google.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Gentle ping on this. This is a one-line fix for a real bug where =
+IORING_OP_RECV on kTLS sockets spuriously fails linked ops due to =
+MSG_CTRUNC being sent by put_cmsg() when no cmsg buffer is provided.
+Stefan indicated the approach looks correct. Would be great to get this =
+into 7.0 if possible, as we=E2=80=99re in the RC window and this is a =
+straightforward bug fix.
+
+> On 27. Feb 2026, at 17:27, Hannes Furmans <hannes@stillwind.ai> wrote:
+>=20
+> IORING_OP_RECV sets up the msghdr with msg_control=3DNULL and
+> msg_controllen=3D0, as it has no cmsg support. Any socket layer that
+> calls put_cmsg() will find no buffer space and set MSG_CTRUNC in
+> msg_flags. This is expected =E2=80=94 the caller didn't ask for =
+control data.
+>=20
+> However, io_recv checks:
+>=20
+>    if ((flags & MSG_WAITALL) && (msg_flags & (MSG_TRUNC | =
+MSG_CTRUNC)))
+>        req_set_fail(req);
+>=20
+> This sets REQ_F_FAIL on a fully successful recv (ret >=3D min_ret) =
+when
+> MSG_CTRUNC is set, which causes io_disarm_next() to cancel all linked
+> operations with -ECANCELED. The recv CQE shows the full requested byte
+> count, yet linked operations are cancelled.
+>=20
+> This is triggered by kTLS, which calls put_cmsg(SOL_TLS,
+> TLS_GET_RECORD_TYPE) for every record in tls_record_content_type()
+> (tls_sw.c), but it affects any protocol that delivers cmsg data on
+> the kernel side.
+>=20
+> The MSG_CTRUNC check was introduced by commit 0031275d119e ("io_uring:
+> call req_set_fail_links() on short send[msg]()/recv[msg]() with
+> MSG_WAITALL") whose commit message states "For IORING_OP_RECVMSG we
+> also check for the MSG_TRUNC and MSG_CTRUNC flags", but the code
+> applied the check to IORING_OP_RECV as well. MSG_CTRUNC is meaningful
+> for IORING_OP_RECVMSG where the user provides a cmsg buffer =E2=80=94
+> truncation there means lost metadata. It is meaningless for
+> IORING_OP_RECV which never provides a cmsg buffer.
+>=20
+> Remove MSG_CTRUNC from the io_recv check. The io_recvmsg check is
+> left unchanged as MSG_CTRUNC is meaningful there.
+>=20
+> Fixes: 0031275d119e ("io_uring: call req_set_fail_links() on short =
+send[msg]()/recv[msg]() with MSG_WAITALL")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hannes Furmans <hannes@stillwind.ai>
 > ---
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 11 ++++++-----
->  drivers/iommu/io-pgtable-arm-v7s.c          |  4 ++++
->  drivers/iommu/io-pgtable-arm.c              | 19 ++++++++++++++++---
->  drivers/iommu/io-pgtable-dart.c             |  3 +++
->  drivers/iommu/mtk_iommu.c                   |  1 -
->  drivers/iommu/sprd-iommu.c                  |  1 +
->  drivers/iommu/sun50i-iommu.c                |  1 +
->  drivers/iommu/virtio-iommu.c                |  2 ++
->  include/linux/io-pgtable.h                  |  3 +++
->  include/linux/iommu.h                       | 19 ++++++++++---------
->  10 files changed, 46 insertions(+), 18 deletions(-)
-> 
+> v2: v1 incorrectly guarded req_set_fail() for all done_io > 0 cases.
+>    Stefan Metzmacher correctly pointed out that short MSG_WAITALL
+>    reads should still sever the link chain.
+>=20
+>    Root-caused via ftrace + msg_flags inspection on a real kTLS
+>    connection (TLS 1.3, AES-128-GCM, S3 download):
+>=20
+>    ftrace shows io_uring_fail_link firing immediately after
+>    io_uring_complete with result=3D67108864 (full 64MB), from io-wq:
+>=20
+>      iou-wrk-52242 io_uring_complete: req ..., result 67108864
+>      iou-wrk-52242 io_uring_fail_link: opcode RECV, link ...
+>=20
+>    A debug recvmsg on the same kTLS socket shows:
+>=20
+>      recvmsg: ret=3D67108864 msg_flags=3D0x88 (MSG_EOR | MSG_CTRUNC)
+>=20
+>    MSG_CTRUNC is always set because kTLS calls put_cmsg() but
+>    IORING_OP_RECV provides no cmsg buffer.
+>=20
+> io_uring/net.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/io_uring/net.c b/io_uring/net.c
+> index 8576c6cb2236..8baaf74e8f8d 100644
+> --- a/io_uring/net.c
+> +++ b/io_uring/net.c
+> @@ -1221,7 +1221,7 @@ int io_recv(struct io_kiocb *req, unsigned int =
+issue_flags)
+> if (ret =3D=3D -ERESTARTSYS)
+> ret =3D -EINTR;
+> req_set_fail(req);
+> - } else if ((flags & MSG_WAITALL) && (kmsg->msg.msg_flags & =
+(MSG_TRUNC | MSG_CTRUNC))) {
+> + } else if ((flags & MSG_WAITALL) && (kmsg->msg.msg_flags & =
+MSG_TRUNC)) {
+> out_free:
+> req_set_fail(req);
+> }
+> --=20
+> 2.53.0
+>=20
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
 
