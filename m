@@ -1,248 +1,229 @@
-Return-Path: <stable+bounces-233071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFH6CsyfzmlZpAYAu9opvQ
-	(envelope-from <stable+bounces-233071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:56:44 +0200
+	id KEtqCaCgzmlZpAYAu9opvQ
+	(envelope-from <stable+bounces-233072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 19:00:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9070438C42B
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 18:56:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C7038C48E
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 19:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0205C306DD7E
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:51:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F9CF3016EC3
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 16:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAF13C13FE;
-	Thu,  2 Apr 2026 16:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A1835F176;
+	Thu,  2 Apr 2026 16:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fXIrMarD"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fQDyJAqS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012061.outbound.protection.outlook.com [52.101.43.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7CF3B52F0
-	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 16:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775148682; cv=none; b=ip5KCGEh6F46rf/yW/FubUj4ZEBHvHTuhss8x5vPF9OeFL43BVmGGlDvwglCRRzs39QFZ1d+NbfvWQTu2sEyWq3QBeuUEdSJTi66SjPrkHjRz2FYaQMVsGHO6jY/kJJQA6ueoSyljwrIL9XFBoZuIgxelHpVomrIC5p56bGbwyg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775148682; c=relaxed/simple;
-	bh=cfPHypPsTAyk5BrdXJH/XsdupzO755bHeMVkkuXim2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USQOecvU+cLJcP2skOIcsidnpMOqD6kndkLS/RRDZCr+ncAvyftCYfGgr+Im+YV8nY7YZDkxMigKTnCZo7wKqvLx9mYCL2jrOr7XitGDsMN2AbCW7gZXXv+Sd2Tdta++0WLxmRf5vXcD89TJPNKi0tXI/hPTvDD7FB94f0nLb/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fXIrMarD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89B9C116C6;
-	Thu,  2 Apr 2026 16:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775148681;
-	bh=cfPHypPsTAyk5BrdXJH/XsdupzO755bHeMVkkuXim2g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fXIrMarD5AkN5uDEE99AYJ2o9CZCDky7AwfErTzM45/DsNqTU8IQU7+sFoqaSdgVm
-	 zAB+WU8pk9anmreZ6lFzXypESpLsYJmol7weZhC3hsnzcG0Ej3SnZvvi6ghdzu9dFZ
-	 Zvgou1YXuU5tPqW4fXnK/u1Nhugmwe0kRVpdhwqTBE+3P8L9zANPgtR77w1iquHZ9W
-	 s5TJAqmBNi7J3KLmSoGP5nAUCDo6jQ4nMZQyN3RFq4zir4QkVPXeyG6xBbrCsDCSRy
-	 cDEWiSAepzFcWOYYDZA0967LkbzMx/QV75mymyC5tBb3aglipBhnMnUkJy4k6tY1+K
-	 Cqz5InQ4O7lPQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Li Chen <me@linux.beauty>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] ext4: publish jinode after initialization
-Date: Thu,  2 Apr 2026 12:51:19 -0400
-Message-ID: <20260402165119.1482773-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033001-abstract-hangup-400d@gregkh>
-References: <2026033001-abstract-hangup-400d@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155712046BA
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 16:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775148696; cv=fail; b=SO+q7ew1Zaxsb5echFckTntE3A7zYRCqlmpcuwOIUahOymoc36YDRNwXCNwcu+D4jvxJR1bg85Ey12HM+HIBC8IW+8KMAj3g4SbNPqrifcB0vsP0p1FtBJn0khvatyTe287j/KhDiPi+kzthvrShCkmsljM4Mst6v5smbVi7hi8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775148696; c=relaxed/simple;
+	bh=5wVxDKSI8dIeJDQd13lwYInamtzVRF476Ri78XCc2BY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Yva6dwMq41y2Xk9w0725QOgGVEUWjR+JzxscPtUvAMRcuRJJyYEWWGIy1YlmLZSgV42BQkCkUb2hCN+1UD3zDuOQUsVXSwE1KiXwstqlqT2PSbLRi6BLQjjTNqdV8c2mCj3YipQy57Z1+FxBu74o4LldkL/IflGLj0JAreeUGrk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fQDyJAqS; arc=fail smtp.client-ip=52.101.43.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YxVgv/a5FBKUEMGOwAyZZQ+/9ATFx1rxCHbK2fXsszMd9I/Oz6wFdYMxcbYVQtn6EiB/jPzdYvI+48gmNFm8xJmpGwW3sIPfr48J4p4SIsyz7E+sVJ2/exJaZ2RSqmV0NyFyU75LNGqT37xZZOU4xBcUZ470ocPBo15lmjphKmUBei4RtYQSsWTiDlFbVg94oV8joP+XdJ+yDL247JUk6rRgka4NZ1tAf2R1x1DRbw92b4LZsXLxrSXkWAYWGfDvVXF7lHyrmIJNawZ3TCMszvGZlUULsKlGjI5DinhIRcabdSseEKa9eNm3/ecMuHcgD0PyOHwdCtO040OD0U8Czg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RBizT6dITzOWs3PxefUJhuMVHGKPHsRS7LDlIgolVHA=;
+ b=T2GzLxBtOdF1SM6L0TtHSIZXsj/HYSzYP2UWfIpXDUOgfGbDpXHEV6UD30Yxm1pKG+4WGmD5PIxcRvGKo2WoptfHQYiAIAYKZYpprwqUgAkGACcI6T8ratzPu9IvynuGB0D2SxYMsK6ueGB+ONhe9txfS9Tr81ORwzS7MBJcoqb+kMEGQUgT48nsBoZtMG80TmQqF1oLuHKx+Z3umgdtXzl98FUw8tIm3WJOZd2Nqbli55rzLRSV9Hh12RqOEOrh9t6AP3hKyBvSEuEMf2AYh8b4RQrdT/d3DKDP3Ckvn7cpqwUnB8mAlv/bRiyOqTpZSqrmH9XdnDEkQR3xpozsfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RBizT6dITzOWs3PxefUJhuMVHGKPHsRS7LDlIgolVHA=;
+ b=fQDyJAqSkJyMHoiYKTaK32SJvdJQCDaUpLB7molXDt67shG25G/IDhdZMnvZBUNJYdR3eqkPuRY45T6410bkmzo5QUud2JAe7GqdT8nVqPalZCO9CjUCOj1lDWp9+y/mc2qxOgBBOPjIpjcxpGQ9MyRjEXyL6MIdbFSymTUTbhzTvnlypWSXvbwF7y2SRmEBU9nKYAPntiYaZaiClSO/iQw0Mf4/titxp/Bm+gy28cgzf7/iMt/uAkTwH4Z8xGgBI4zlnj89tAwNVgHLCOg9Ffm9IOLxNun5+3oqGRPOojh0hEzDYrwpggrJRYtoNWqu1FmXrY4Oxpgw//ZBN2v9fw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by SJ2PR12MB7918.namprd12.prod.outlook.com (2603:10b6:a03:4cc::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Thu, 2 Apr
+ 2026 16:51:25 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9769.017; Thu, 2 Apr 2026
+ 16:51:25 +0000
+Date: Thu, 2 Apr 2026 13:51:23 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, iommu@lists.linux.dev,
+	Janne Grunau <j@jannau.net>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jean-Philippe Brucker <jpb@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Neal Gompa <neal@gompa.dev>, Orson Zhai <orsonzhai@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel@sholland.org>, Sven Peter <sven@kernel.org>,
+	virtualization@lists.linux.dev, Chen-Yu Tsai <wens@kernel.org>,
+	Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Jon Hunter <jonathanh@nvidia.com>, patches@lists.linux.dev,
+	Pranjal Shrivastava <praan@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org,
+	Vasant Hegde <vasant.hegde@amd.com>
+Subject: Re: [PATCH v2] iommu: Always fill in gather when unmapping
+Message-ID: <20260402165123.GG310919@nvidia.com>
+References: <0-v2-b24668f107b2+11bbe-iommu_gather_always_jgg@nvidia.com>
+ <70a128f9-d6f0-41b6-8fef-e249c0507149@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <70a128f9-d6f0-41b6-8fef-e249c0507149@arm.com>
+X-ClientProxiedBy: YT4PR01CA0221.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:eb::12) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SJ2PR12MB7918:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12a523e2-26d5-4294-88b9-08de90d8134d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	nv3eWcfPVgqpwumndzHvGpmiicpJDjcAupVRIpfFppJ2h7nneXAjiVLiFGyeE4haqMRus50NmE12DLDx17tyEnunLBqV8UmPT4tLbrneF0rT/eAV21uGRn/GuBvUFqUsmC1sqhCpuvVNT7VLjmq/FM+unJaz4ODfhfFYcGFmXhekMU0Mcbv/yhEGWNTLNSCvbJ7dctJLsoFVEHdBAaYo1Bs6sgpibI6hiH5bFCd/wlGalQVwCP4wyYb1ei2oo13wmYFHTl17b5UracBRe/KJXNIw/ytFWpS3PwldMhUm+0lBo4KB8bW+S3I5fcZmmYUeZvcHJLaJ9KS4MiWwcDF1ffU9GmRsKc4FbHh7dNVf14pDCqURXkhcPpiYYTZKBoymIaQwV/S47darmEMQlQppF3EgCRVv/U4t9Ggv4XmG9PRBNekTnIrsGNDRcu/HnnWsMktw3VZw0ChZhv75Py//1uwfnJnLadX6ida5RGFhzBc0dHhkNbV3GR+2Q+4FB1tLQuBL3zWxY5WLrTpsS9AfytOh70B2mAlw8DW3SVk2/E5NanfFOZhhjELsEdMXnfy32biCvThZP6+JZS4Qi2vh3LVAwrd6Njs5hbm9nEkugeB1MWsdxlWfxD7pcv7ZJpiKKpARakWf9ltiPzp8iXJrD8qBQNE8u9YyhYIdJtIEYZyjPDCDuDO7VyIOqk8U9HzmRGwJbnp/EOX3+dh6ZCsUpoaDjukpn3QBshEgQFya3gc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?pdbny2mjmDm0DkpF0XzFDwQxA68zQu5QwbhUMLKNfLKme00Sg/a6r5XvOfes?=
+ =?us-ascii?Q?im0OPbWN1UvQ8UCgyrT1j12USyPoFHyHs/Fx/SkIj6ApzeE2vWV1X0mud7Y7?=
+ =?us-ascii?Q?gR00yHrP1ZyNESt8HjZs3pU6/DWjo1vScfe6Uqo/6lEWzhAdfi16MX1eLVwY?=
+ =?us-ascii?Q?cY3L78dmNLtarQb4N3GcnqRcKWxKihxU0wTMkv+kK3oQ/vgaVvW7M1jWmtWC?=
+ =?us-ascii?Q?KROIBGArjPls1SzS23QiCEukolq4jRYALAskNgWVw/R05nG8YfwdCbNgQvJ4?=
+ =?us-ascii?Q?ZRZeGqgChoLIorgKfx/1KOBOP9maqIY4ZJvPdIaLBsIpBimo76uYfGW4r65O?=
+ =?us-ascii?Q?pg5X45F++0cejh5ZeyauVHKAKDZgoJdty7fVH1o+nsDSHFV1IMBsh35Ik5yp?=
+ =?us-ascii?Q?CPfY+CLr6MMJTiFwgCiIhp74zNzT7oOFlQVfPiLbVgNWmJNXu+lJq5mfaKp1?=
+ =?us-ascii?Q?d2a+5NwxpCL9NQzMrAyFCgY/ryZWc5i1XKfftV+i6ZkkbUKRaa/wE8sUcFRN?=
+ =?us-ascii?Q?aQ864kCbB5iIcqsGCV19D6LPwCKxnwzTQJrBk1Ks1oqojGYLTv93qphcevcg?=
+ =?us-ascii?Q?YjiDyhigMkpDDmb4oMhOYEKFG/AFgcW8S+QlICtl4oOTJsLqOWlMP9N3HAtg?=
+ =?us-ascii?Q?AVSRJU+kQ598+yfbKxAYwDEaHYfBhY8luoV5f5mYbqd0cwMn4gm9iLdyQ7of?=
+ =?us-ascii?Q?lYK3yx8mLA8LyOSzgQoHSLGy7jd+WgB1B8Oib5nWd4skxBDFuugYKl4wWnwd?=
+ =?us-ascii?Q?Wfa4uMj4YFUPNUdVEGjq2DO5u5wFtoEoCs4bzXsctQoBlR141JLOY0wY+RaB?=
+ =?us-ascii?Q?eB1vYcjNHXJ+nPbqAsEUIMQ6DQuu/WAns4gZxNzP2K3OF3oKfkkUnJwvcjrF?=
+ =?us-ascii?Q?TPF40m68jGlpJndufvibmvEj25qpctsdic6YdnzTh8nIHRZ5nuGBdWQAQZAz?=
+ =?us-ascii?Q?cM9/aYtN4qPo+9JWu0m5OPThky/7gOyUbuZAGkowR/2WsxiUHamuV4llEvHJ?=
+ =?us-ascii?Q?FcbqvdqlAALlw7JZxzNyCWtmkzF97aLTsB/NmVzOADgg+A0R/Nw/tW0RhZYC?=
+ =?us-ascii?Q?HaXILRGz91th53gEY1KibxpohW7jStXl1RLunTbPtO7984Vu4fwI9rWD0+L1?=
+ =?us-ascii?Q?0hO5nrr3RMWn1hw4QzWBrL90bWGoikfu+kZd9e0JMsM/hw13s8qrq2BsqUvD?=
+ =?us-ascii?Q?OCDsL5gAf2VX3eXswdqaT4CibT9ZneNWIIdVh4LDenzpLxOVocYa3307kj6P?=
+ =?us-ascii?Q?yKyYt4JMfbI8YucN9AI+BywLGCEgrfF5TCNIwOgVtHj1KYHBzwvzE3NfC2CN?=
+ =?us-ascii?Q?p0CMEOa7JBS/meGYrMSy9hCtBEsiY5ROZuGYTLXuTNoUleY1ZXS4ES5DCQ8Y?=
+ =?us-ascii?Q?wGrb3AgZ1wr1hgu8E6NNJH8ood37t/cEW5jDyZW2e9DQuOWiouGE4TWEWn0v?=
+ =?us-ascii?Q?x9zXnl+zijnvb8gCzMxm6t1t66xbtu7RMqfgeVHePsDS8B3YRGPiXmafAeOC?=
+ =?us-ascii?Q?g/d09J0jN/Ob9A7Jxl2J/8lFhsTjfAEq+jBct5tsYjyByiSxquBn7AKJHz3a?=
+ =?us-ascii?Q?6ZapIxGHhDG/msQYrybHwvI/aWpv9ZBOVWaBaVSB33NRPIiMZZKp81JCNV8t?=
+ =?us-ascii?Q?zwj//5BOBrS25GQpRohQKKE3wcpsRz1AJ2w9lVnRUXUhqQxxPF37EsLdD7E0?=
+ =?us-ascii?Q?qVrkwoV4aVjNm71KJR9mNtY1xHmbhYD7Kqdf9hQrrxGc+9Vh?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12a523e2-26d5-4294-88b9-08de90d8134d
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 16:51:24.8765
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tcdTlflq2fhu3zOHc9hj1v+tRAfHusMO9e0IMxmC8dO1XOBn7eHcnxYH4UWKaoji
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7918
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233071-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[36];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233072-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[ghiti.fr,collabora.com,eecs.berkeley.edu,lists.linux.dev,linux.alibaba.com,jannau.net,gmail.com,8bytes.org,kernel.org,lists.infradead.org,gompa.dev,dabbelt.com,sholland.org,mediatek.com,linux.intel.com,amd.com,nvidia.com,google.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,suse.cz:email,linux.beauty:email]
-X-Rspamd-Queue-Id: 9070438C42B
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 84C7038C48E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Li Chen <me@linux.beauty>
+On Thu, Apr 02, 2026 at 04:59:29PM +0100, Robin Murphy wrote:
+> > @@ -666,9 +666,22 @@ static size_t __arm_lpae_unmap(struct arm_lpae_io_pgtable *data,
+> >   		/* Clear the remaining entries */
+> >   		__arm_lpae_clear_pte(ptep, &iop->cfg, i);
+> > -		if (gather && !iommu_iotlb_gather_queued(gather))
+> > -			for (int j = 0; j < i; j++)
+> > -				io_pgtable_tlb_add_page(iop, gather, iova + j * size, size);
+> > +		if (gather && !iommu_iotlb_gather_queued(gather)) {
+> > +			if (iop->cfg.tlb && iop->cfg.tlb->tlb_add_range) {
+> > +				iop->cfg.tlb->tlb_add_range(gather, iova,
+> > +							    i * size, size,
+> > +							    iop->cookie);
+> > +
+> > +			} else {
+> > +				iommu_iotlb_gather_add_range(gather, iova,
+> > +							     i * size);
+> > +
+> > +				for (int j = 0; j < i; j++)
+> > +					io_pgtable_tlb_add_page(iop, gather,
+> > +								iova + j * size,
+> > +								size);
+> > +			}
+> > +		}
+> 
+> NAK, this is insane.
 
-[ Upstream commit 1aec30021edd410b986c156f195f3d23959a9d11 ]
+This quite an optimization for SMMUv3 so it doesn't have to fit into
+the ill fitting add_page api. What is "insane" here?
 
-ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
-It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
-allowing a reader to observe a non-NULL jinode with i_vfs_inode
-still unset.
+> If you'd rather make gathers mandatory for all drivers than fix it in the
+> core code, then for goodness' sake just add the trivial one-liner to the
+> handful of .unamp_pages implementations which need it, 
 
-The fast commit flush path can then pass this jinode to
-jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
-may crash.
+Do I understand this right, you want to not touch io-pgtable and
+instead the unmap trampolines will fix the gather like mkt is doing?
 
-Below is the crash I observe:
-```
-BUG: unable to handle page fault for address: 000000010beb47f4
-PGD 110e51067 P4D 110e51067 PUD 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
-RIP: 0010:xas_find_marked+0x3d/0x2e0
-Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
-RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
-RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
-RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
-RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
-R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
-R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
-FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
-<TASK>
-filemap_get_folios_tag+0x87/0x2a0
-__filemap_fdatawait_range+0x5f/0xd0
-? srso_alias_return_thunk+0x5/0xfbef5
-? __schedule+0x3e7/0x10c0
-? srso_alias_return_thunk+0x5/0xfbef5
-? srso_alias_return_thunk+0x5/0xfbef5
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-? cap_safe_nice+0x37/0x70
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-filemap_fdatawait_range_keep_errors+0x12/0x40
-ext4_fc_commit+0x697/0x8b0
-? ext4_file_write_iter+0x64b/0x950
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-? vfs_write+0x356/0x480
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-ext4_sync_file+0xf7/0x370
-do_fsync+0x3b/0x80
-? syscall_trace_enter+0x108/0x1d0
-__x64_sys_fdatasync+0x16/0x20
-do_syscall_64+0x62/0x2c0
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-...
-```
-
-Fix this by initializing the jbd2_inode first.
-Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
-initialization. Readers use READ_ONCE() to fetch the pointer.
-
-Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Chen <me@linux.beauty>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ adapted READ_ONCE(ei->jinode) to use pos->jinode ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ext4/fast_commit.c |  4 ++--
- fs/ext4/inode.c       | 15 +++++++++++----
- 2 files changed, 13 insertions(+), 6 deletions(-)
-
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index 6fb0cd4aeaefe..3ee282c8d2481 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -997,7 +997,7 @@ static int ext4_fc_submit_inode_data_all(journal_t *journal)
- 			finish_wait(&ei->i_fc_wait, &wait);
- 		}
- 		spin_unlock(&sbi->s_fc_lock);
--		ret = jbd2_submit_inode_data(journal, ei->jinode);
-+		ret = jbd2_submit_inode_data(journal, READ_ONCE(ei->jinode));
- 		if (ret)
- 			return ret;
- 		spin_lock(&sbi->s_fc_lock);
-@@ -1022,7 +1022,7 @@ static int ext4_fc_wait_inode_data_all(journal_t *journal)
- 			continue;
- 		spin_unlock(&sbi->s_fc_lock);
- 
--		ret = jbd2_wait_inode_data(journal, pos->jinode);
-+		ret = jbd2_wait_inode_data(journal, READ_ONCE(pos->jinode));
- 		if (ret)
- 			return ret;
- 		spin_lock(&sbi->s_fc_lock);
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 6b679c638128d..a0b68b9d96266 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -128,6 +128,8 @@ void ext4_inode_csum_set(struct inode *inode, struct ext4_inode *raw,
- static inline int ext4_begin_ordered_truncate(struct inode *inode,
- 					      loff_t new_size)
- {
-+	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
-+
- 	trace_ext4_begin_ordered_truncate(inode, new_size);
- 	/*
- 	 * If jinode is zero, then we never opened the file for
-@@ -135,10 +137,10 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
- 	 * jbd2_journal_begin_ordered_truncate() since there's no
- 	 * outstanding writes we need to flush.
- 	 */
--	if (!EXT4_I(inode)->jinode)
-+	if (!jinode)
- 		return 0;
- 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
--						   EXT4_I(inode)->jinode,
-+						   jinode,
- 						   new_size);
- }
- 
-@@ -4120,8 +4122,13 @@ int ext4_inode_attach_jinode(struct inode *inode)
- 			spin_unlock(&inode->i_lock);
- 			return -ENOMEM;
- 		}
--		ei->jinode = jinode;
--		jbd2_journal_init_jbd_inode(ei->jinode, inode);
-+		jbd2_journal_init_jbd_inode(jinode, inode);
-+		/*
-+		 * Publish ->jinode only after it is fully initialized so that
-+		 * readers never observe a partially initialized jbd2_inode.
-+		 */
-+		smp_wmb();
-+		WRITE_ONCE(ei->jinode, jinode);
- 		jinode = NULL;
- 	}
- 	spin_unlock(&inode->i_lock);
--- 
-2.53.0
-
+Jason
 
