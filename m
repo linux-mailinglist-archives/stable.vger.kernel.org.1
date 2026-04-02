@@ -1,173 +1,226 @@
-Return-Path: <stable+bounces-232967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOQWMiFAzmlQmQYAu9opvQ
-	(envelope-from <stable+bounces-232967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:08:33 +0200
+	id +J4aMCpBzmlQmQYAu9opvQ
+	(envelope-from <stable+bounces-232966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:12:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063DC387781
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:08:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3660638788A
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 12:12:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CCDB303527A
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 10:05:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7CEE3018C03
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 10:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AEE3DD50D;
-	Thu,  2 Apr 2026 10:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299B638B14C;
+	Thu,  2 Apr 2026 10:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="ErXhcK0R";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="P1mtd33L"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UkUjSIHI"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE053D3D09;
-	Thu,  2 Apr 2026 10:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775124342; cv=none; b=sAHfoL1wt+fH9Vku0w5VZQdMp+jzsozsVQx+G2fwaqLB25fDfSYhvlHimVI07TjZr0WS3lzbe+WxhUJC7AuU15yE2e2vs5iQJyb9LH06dumX6f1lmEHXUuPuaY8OlDjxDUEPsDQCAIMdh2ENlCI8jqrrRXMl5d6ok3qvc7ysGiU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775124342; c=relaxed/simple;
-	bh=b2JNMs0NZ18PorNCvdnpqWu24AHCLQdIaeRbgJrvROE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:Subject:Content-Type; b=dvRdmCRUxg6RdmrCAsNQ9YsUr857ctBxjBTr4TRjh9wQx4sGx9h+nZmH1jtq1nmAKe4CCM4DQuZlDP3+j3sdqUr+b3FiHMHM3Xzj19Q8mBVtB+RN+Qmz7R0QYLYLsnByj0YIdLk2L9jzY9mxqljSupLGeJTAhXb92LUhc/XXihU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=ErXhcK0R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=P1mtd33L; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 2ED5E1400034;
-	Thu,  2 Apr 2026 06:05:40 -0400 (EDT)
-Received: from phl-imap-04 ([10.202.2.82])
-  by phl-compute-06.internal (MEProxy); Thu, 02 Apr 2026 06:05:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm1; t=1775124340; x=1775210740; bh=OB
-	IVJ+q0wfIwTSriESzZgxCy2O/5HaujjjBF4P444r8=; b=ErXhcK0RECxP2OB3on
-	tW9Tzcd5SZESNv+s9HtDTpHY34Y4sSAjz62inSyLtIg4FUt75oDRWog9iaHGI/Li
-	X5KIgSnVqlHOEkhTyscjSCuSn2yzclGm6bDUNCEfIEn6yiMzHZ9x+S1zVM1dISXC
-	qpKF8DvhbNcsPOdN84zV00nD80IEJkTSh6QVlomXht+Cudscev929a04E/wcTruQ
-	pKdQ1norj0HSiwD0Hxjx912PsnYmiVjkAbDgb2oKUmn+oa8qvRnGpdGJSiY6/B0C
-	E64e5iL8dP66UdP9utW+MNZglq5LyVxwRinRbKO9n9YaIMrjZO8lBhzKydPPsX1s
-	1mDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1775124340; x=1775210740; bh=OBIVJ+q0wfIwTSriESzZgxCy2O/5
-	HaujjjBF4P444r8=; b=P1mtd33LjSCeV7UO7GiTLidBqXgmJI9MlI6Jt+40A+Np
-	Meu3zWI9D/kj7xjf9/3PYpfGu8tnMBclxxTKI6lqPTYXT1M6LMBbMU2DQ4Womkeg
-	rktgu8cvNB/tJNCde1xiKTP3JctDyaMfTq243FkKgIgh8LvQImdVRJvNFtpncpm+
-	b1kgQHP+Rcm8eGfNXuf1LAJFWmiQr+skUecW04yzlQ6c8SRQsFuLxHhl6JqkVmLW
-	QOS0eMp1S3Cg3Oz+13AbgQz5eMVaIiFQYPboQWN2jQLNq7judKpGeLU30SNcoewI
-	l6oi9v8eppFgXFoAi/EYWn8ntoDUdI54Hnm9H/IgwA==
-X-ME-Sender: <xms:cz_Oad3FWf8mIl_q_tjrsplR3G6K9ScU-PvmqHHwxurtDCTwhVzevQ>
-    <xme:cz_Oae6gSEqELibO7c_vSRqHGdJGGHIdpNCYJ9HtjVpD9ZqcuTjZ4SUi0Wd2E4cLp
-    R23Qqi8ZzDyiX1ZDsRakaClt-0fWVxhsw29EfxWmwQXMr8D86wxPds>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehjeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucenucfjughrpefoggffhffvvefkufgtgfesthejredtredttd
-    enucfhrhhomhepfdfrihgvrhhrvgcuuegrrhhrvgdfuceophhivghrrhgvsegsrghrrhgv
-    rdhshheqnecuggftrfgrthhtvghrnhepjeffuefggfeuieehtdegfedujeektedugffhge
-    dukeegfeeggfeludfhteefhfeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghm
-    pehmrghilhhfrhhomhepphhivghrrhgvsegsrghrrhgvrdhshhdpnhgspghrtghpthhtoh
-    epkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghsmhgruggvuhhssegtohgu
-    vgifrhgvtghkrdhorhhgpdhrtghpthhtoheplhhinhhugigpohhsshestghruhguvggshi
-    htvgdrtghomhdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnhgvthdprhgtphht
-    thhopegvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhelfhhssehlih
-    hsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshgrnhguvggvnhesrhgvughhrght
-    rdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:cz_OaemYHESD7Dy3sisVS7d8GUP3lOf7T0WwbBZa3aw2FtatnKJmZw>
-    <xmx:cz_OaYZRDun6q6Y5OKr24vz2DbWNGTk2989AIiOIOVlNuXV99GpX9w>
-    <xmx:cz_OaQTv_PrcAIPaKlmfVCAsJ-ReNadjyHEGxNw4nvMuFqc2C9aH5Q>
-    <xmx:cz_OaSsSrPnuiwyKMWcw-GI_bxsbh1BdMCEaz98OuUjIQRSryNyg6w>
-    <xmx:dD_OaWSn6LGsGTk_NoCo5EOoG__rPn2EV44qiFEXswBS2tnqzLaBqXeu>
-Feedback-ID: i97614980:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 87FE8B6006E; Thu,  2 Apr 2026 06:05:39 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13CE3D16FB
+	for <stable@vger.kernel.org>; Thu,  2 Apr 2026 10:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775124315; cv=pass; b=VEAGDAldZ0b8nMVmZGoam1CBdEdRuYNrp3KEqVzCbYd0TC/ydAwMqHQIhd0ZPm/AmZAJoO8+yIsfRnYNiQSVDep47I7E+jVkFD5pJnFBoZLJ+n7do4NXYFg2O5yS2ygy/SWfB+6nqN5y8ue0XpTA/qPb3w7A4KnJreDG+ipAZE8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775124315; c=relaxed/simple;
+	bh=OsiL/1pwgaLk9UGEMEVqaS1tHbhO879gXMnD9GeFmM4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gOEk8NoR+tdlWqxeoEu5M4fGEEL/X4ILd72H0X8QXbC5brjuTmr1HU1M45gu2WWT2gO5M5a76XSZu8gK7TusD/CGlBfiZPE9VjS2KvyXsjRd+jXsaNx9JExt52qSkHlM/A9cypYrqMtB7zhvs4xyPj8enAEScdhgbQY/Tvryw3s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UkUjSIHI; arc=pass smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-67e23011c93so248344eaf.3
+        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 03:05:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775124313; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T380da9tQcrsD99VaMdv2oyWSMZltlgdnMPBe65oc2Mv2lPJGn0GpmDBebfJ8reqNC
+         AUFXGZeB5pSZMGeaL2j2SmQyuIiRzfIGX8yAI5JgvzUosQ9abb/SGMvKhaKAPAiPpx5X
+         LazrcVrl/AUwiHBXAe4H5Ww8ZRnPnJx7ci0g9TyjWF6GVNXehj65Ur3BJbBuvbKyx+DA
+         izqANAk4tnh7l2DF4gPucYPkToS4dxM3+P/h6GW+086g9Y66HPONT7PLUjQe8jxL4Try
+         CNWezs5GuCMFaCsCaADFOfa3wu5CBx42cCa880Q3I68/bFuRGYNOKdkDZX3wmh1PQIyp
+         90lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6Z0F0LSV4rb0+tEeskaVV3h52HTcTsqrrJt52KWcr8c=;
+        fh=lDEEfhhSAMDKKJBvj5fxoM3omncMHluDkNRg7x0hOkg=;
+        b=Muw+2oN7xt6cPMzN/mIqKr/2b/KwJi6k/RPuFjZvGaV53bTYtB84rfymjGJJaSdEmb
+         0IuKGeRlpHI7flklQmq3jH6tSgKouNcwuhUlRG930CMO1lWDsIrHv1fCCLrU0b+B4c8t
+         eWGi/rv54XtuJ3Q1+J8OjmlyzfW4wSLzkOevjoPGsmXv1UKydBWy3pIxDFRvMGu1dT2a
+         igIeIXmhQh46PgxJYwJU4gPss/9T/HFHTItsOWiePQnmzd2FlfN4rPOxT394yN4wkzLc
+         /qmU+pkEXxyufZouQl1f/NcmnHo9l4QWiXyeD5N7kC8VdNBSDvJHTQQVJSCA8N1MZntE
+         919w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775124313; x=1775729113; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6Z0F0LSV4rb0+tEeskaVV3h52HTcTsqrrJt52KWcr8c=;
+        b=UkUjSIHI1U703viqbTydlU4JHi7AFAl51AUpCMx9b+wVryiST9od87YB4RwLXhKC7u
+         l1jt1voRP5Mgg0J9rUDkORvIYjtHKc1q4cFgy9vQowZ1mSYQLEYH22A6IRr1yCaQ6t6H
+         8hd0UZ5DO1+4d/OzgIsSmaLeoLGZj+cdrf7jySzpiknlouXB2ZZsjsycsIo3y8Ft5IGp
+         evKaQJbKktL19N/SqAtcNIy3qOD7QOcIA7LKwPnBtPbNcEq7z6OzA3CGT+ZBJlW9r+Hg
+         Ul0KYMmbBXL1u2qAVj6FsUqGa5Ir4a2xrVKODmmTypPrRYTgIc7iZLKRoS//MYNeC7JU
+         pOvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775124313; x=1775729113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6Z0F0LSV4rb0+tEeskaVV3h52HTcTsqrrJt52KWcr8c=;
+        b=QSreQDDBoYCsNpNPg8SB+ylJtjW0RF7EjFtKu0Fz0tp1me/vgDrvVptMwZ7fsLjvTq
+         wfTB4vIYg+/Jub3wWqQIchhsf+r2p3hO04PmsNS0kGSdHcTwlHGaECAQUVLaY+g15stI
+         BhSpBziOlXnxIJ/dbTpz6qDtX7YUOWyN/v6bUqTVpl8GxFIdu8XZLj2WzcU2bAFWUBjn
+         cCofTVCSwBn1dADZxCdtdPAyoEa745ga3i9VGCxug8kJkV+qRPpHkRJFISN8W/qq9ucp
+         MxqIzl7/zGlPu9zrN3D4sn35v1EN2c3UpTE9pTsBWssXuhvKeC8snUFOnCDb1yJxHtXg
+         p+Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCXkbby8VHqX/rL2gSO3Vvemr979bkLtxMVKVEnTenXeA5Oj6eqhwk1hhEEP/EQOn76vzwAvBIg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxll0FY3VpZHp1hHwyaH5Uaom7n3oWsTEAkgUMNopqnVjKhJlho
+	n1Kim1Iy3t2VmTIv5/9YuUnrfn9rd/K64YiAZ/ha8fUpDtKoGnG2KWgLzn2hivK1WKcXUXgR31d
+	eBewjOMus3Wh64pY2uKD2W7cjcJrDPC0=
+X-Gm-Gg: ATEYQzyrqEs6qsjgiol+tOHRgVB6X4ktXJ6wDd6fhJPdIUR9KTVERWF1wNMQwGlmect
+	LIlpahb2u8JMkVjF9CMxDI11CrJtTUxgRGrjBrYor7py0aLgBpnsLEky9oQ0PcXiGgDz72JDQzs
+	DrM77vo6sJrqMFasMCLzjsAPCwNOsO7MnXiijE7I4UGF7WQZHs5gDyBy3tqW/WwTY6lbATjcMMl
+	UDh8Wq21KxHyAf82pDOaZZc+rqNqfxj7s9kvtGaCmmNtujzZya1r+czVBI/OjYMbWBEc16yj/bl
+	qlkq7UEHDjsRcwUFE5pgzg6Fb9FY9tx7ba85U8jIlcbHE3qFQjlKJOI98ey7w0K/ab+1uQ==
+X-Received: by 2002:a05:6820:3087:b0:67e:3265:1659 with SMTP id
+ 006d021491bc7-67fabd0ee58mr3470951eaf.62.1775124313530; Thu, 02 Apr 2026
+ 03:05:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 02 Apr 2026 12:03:12 +0200
-From: "Pierre Barre" <pierre@barre.sh>
-To: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org
-Cc: linux_oss@crudebyte.com, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, sandeen@redhat.com
-Message-Id: <0ddc72da-d196-4f01-8755-0086f670e779@app.fastmail.com>
-Subject: [PATCH] 9p: fix access mode flags being ORed instead of replaced
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.65 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[barre.sh:s=fm1,messagingengine.com:s=fm2];
+References: <20260402083722.100973-1-fabio.porcedda@gmail.com> <ac46YeSJeYVvm0Hn@hovoldconsulting.com>
+In-Reply-To: <ac46YeSJeYVvm0Hn@hovoldconsulting.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Thu, 2 Apr 2026 12:04:33 +0200
+X-Gm-Features: AQROBzDG6MB7MLj_5-xfUluKajqLUUg8YfN3uzie3Tuh6LKnQWHoKmLCh6Jmgto
+Message-ID: <CAHkwnC8avsKQFdbGZ=sTgjhWgoykjH+nLm=si8J5siwr=DkB7Q@mail.gmail.com>
+Subject: Re: [PATCH v2] USB: serial: option: add Telit Cinterion FN990A MBIM composition
+To: Johan Hovold <johan@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, 
+	Daniele Palmas <dnlplm@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	DKIM_TRACE(0.00)[barre.sh:+,messagingengine.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-232967-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-232966-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[barre.sh];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pierre@barre.sh,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.986];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim,app.fastmail.com:mid]
-X-Rspamd-Queue-Id: 063DC387781
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fabioporcedda@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 3660638788A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Since commit 1f3e4142c0eb ("9p: convert to the new mount API"),
-v9fs_apply_options() applies parsed mount flags with |= onto flags
-already set by v9fs_session_init(). For 9P2000.L, session_init sets
-V9FS_ACCESS_CLIENT as the default, so when the user mounts with
-"access=user", both bits end up set. Access mode checks compare
-against exact values, so having both bits set matches neither mode.
+On Thu, Apr 2, 2026 at 11:44=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> On Thu, Apr 02, 2026 at 10:37:22AM +0200, Fabio Porcedda wrote:
+> > Add the following Telit Cinterion FN990A MBIM composition:
+> >
+> > 0x1074: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (diag) +
+> >         DPL (Data Packet Logging) + adb
+> >
+> > T:  Bus=3D01 Lev=3D01 Prnt=3D04 Port=3D06 Cnt=3D01 Dev#=3D  3 Spd=3D480=
+  MxCh=3D 0
+> > D:  Ver=3D 2.10 Cls=3Def(misc ) Sub=3D02 Prot=3D01 MxPS=3D64 #Cfgs=3D  =
+1
+> > P:  Vendor=3D1bc7 ProdID=3D1074 Rev=3D05.04
+> > S:  Manufacturer=3DTelit Wireless Solutions
+> > S:  Product=3DFN990
+> > S:  SerialNumber=3D70628d0c
+> > C:  #Ifs=3D 7 Cfg#=3D 1 Atr=3De0 MxPwr=3D500mA
+> > I:  If#=3D 0 Alt=3D 0 #EPs=3D 1 Cls=3D02(commc) Sub=3D0e Prot=3D00 Driv=
+er=3Dcdc_mbim
+> > E:  Ad=3D81(I) Atr=3D03(Int.) MxPS=3D  64 Ivl=3D32ms
+> > I:  If#=3D 1 Alt=3D 1 #EPs=3D 2 Cls=3D0a(data ) Sub=3D00 Prot=3D02 Driv=
+er=3Dcdc_mbim
+> > E:  Ad=3D0f(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > E:  Ad=3D8e(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > I:  If#=3D 2 Alt=3D 0 #EPs=3D 3 Cls=3Dff(vend.) Sub=3Dff Prot=3D60 Driv=
+er=3Doption
+> > E:  Ad=3D01(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > E:  Ad=3D82(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > E:  Ad=3D83(I) Atr=3D03(Int.) MxPS=3D  10 Ivl=3D32ms
+> > I:  If#=3D 3 Alt=3D 0 #EPs=3D 3 Cls=3Dff(vend.) Sub=3Dff Prot=3D40 Driv=
+er=3Doption
+> > E:  Ad=3D02(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > E:  Ad=3D84(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > E:  Ad=3D85(I) Atr=3D03(Int.) MxPS=3D  10 Ivl=3D32ms
+> > I:  If#=3D 4 Alt=3D 0 #EPs=3D 3 Cls=3Dff(vend.) Sub=3Dff Prot=3D40 Driv=
+er=3Doption
+> > E:  Ad=3D03(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > E:  Ad=3D86(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > E:  Ad=3D87(I) Atr=3D03(Int.) MxPS=3D  10 Ivl=3D32ms
+> > I:  If#=3D 5 Alt=3D 0 #EPs=3D 2 Cls=3Dff(vend.) Sub=3Dff Prot=3D30 Driv=
+er=3Doption
+> > E:  Ad=3D04(O) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > E:  Ad=3D88(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> > I:  If#=3D 6 Alt=3D 0 #EPs=3D 1 Cls=3Dff(vend.) Sub=3Dff Prot=3D80 Driv=
+er=3D(none)
+> > E:  Ad=3D8f(I) Atr=3D02(Bulk) MxPS=3D 512 Ivl=3D0ms
+> >
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+>
+> > @@ -1383,6 +1383,8 @@ static const struct usb_device_id option_ids[] =
+=3D {
+> >         .driver_info =3D NCTRL(2) | RSVD(3) },
+> >       { USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),    /=
+* Telit FN990A (ECM) */
+> >         .driver_info =3D NCTRL(0) | RSVD(1) },
+> > +     { USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1074, 0xff),    /=
+* Telit FN990A (MBIM) */
+> > +       .driver_info =3D NCTRL(5) | RSVD(6) | RSVD(7) },
+>
+> There is no adb interface in the usb-devices output in the commit
+> message. Do you still need to reserve interface 7?
 
-This causes v9fs_fid_lookup() to fall through to the default switch
-case, using INVALID_UID (nobody/65534) instead of current_fsuid()
-for all fid lookups. Root is then unable to chown or perform other
-privileged operations.
+The output of usb-devices was not complete, I've sent a new version
+with the full output:
+https://lore.kernel.org/linux-usb/20260402095727.108281-1-fabio.porcedda@gm=
+ail.com
 
-Fix by clearing the access mask before applying the user's choice.
+> >       { USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),    /=
+* Telit FN990A (PCIe) */
+> >         .driver_info =3D RSVD(0) },
+> >       { USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1077, 0xff),    /=
+* Telit FN990A (rmnet + audio) */
+>
+> Johan
 
-Fixes: 1f3e4142c0eb ("9p: convert to the new mount API")
-Signed-off-by: Pierre Barre <pierre@barre.sh>
----
- fs/9p/v9fs.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index 057487efaaeb..05a5e1c4df35 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -413,7 +413,11 @@ static void v9fs_apply_options(struct v9fs_session_info *v9ses,
-        /*
-         * Note that we must |= flags here as session_init already
-         * set basic flags. This adds in flags from parsed options.
-+        * Access flags are mutually exclusive, so clear any access
-+        * bits set by session_init before applying the user's choice.
-         */
-+       if (ctx->session_opts.flags & V9FS_ACCESS_MASK)
-+               v9ses->flags &= ~V9FS_ACCESS_MASK;
-        v9ses->flags |= ctx->session_opts.flags;
- #ifdef CONFIG_9P_FSCACHE
-        v9ses->cachetag = ctx->session_opts.cachetag;
---
-2.51.0
+Thanks
+--=20
+Fabio Porcedda
 
