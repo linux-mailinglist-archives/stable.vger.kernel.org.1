@@ -1,207 +1,156 @@
-Return-Path: <stable+bounces-232906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-232907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mH2WNXHvzWkzjQYAu9opvQ
-	(envelope-from <stable+bounces-232906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:24:17 +0200
+	id aPYoHu3vzWkzjQYAu9opvQ
+	(envelope-from <stable+bounces-232907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:26:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513F13838A3
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:24:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F73E383914
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 06:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D5CD31068AF
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 04:19:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BDFD2303CF87
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 04:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFD535F8B7;
-	Thu,  2 Apr 2026 04:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AJIFOSh8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B11361DBE;
+	Thu,  2 Apr 2026 04:22:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F2F35AC20;
-	Thu,  2 Apr 2026 04:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8428635F193;
+	Thu,  2 Apr 2026 04:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775103561; cv=none; b=drvYx0tPBBzKazSBzsIXr7IigSIgTrId8cApAXrGRk13vkcbKW5hZiPR2Uv6OC55EfmxnquXQjUGimNKWTIzXH72HtQkyh3lam9xUKPWgDROp07V5dQUR5grwiVCr82JDVtnSLTRP0Wabolb1/Hfo3DODq57aM7Roj5PBSaZhdg=
+	t=1775103721; cv=none; b=kxJOVjbyHUl0sx7NH1+FB7r+rh4wNezGq2q2dAqR890euktMjMa7/t9xCx4EuhjN1XHuc4TckpZoGNYgMqd5P+7JxbLEZoEd98OGlncLM4rZbxA4PP3sA1gQETus4PHHsGF3LIS36odPGlw8VznVYmSFzyR3tUhAbTQbUmjkpBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775103561; c=relaxed/simple;
-	bh=pbttv0jIUfUSpVVJLpViiZ1oN89HGmE0PqXa2mJNB7s=;
-	h=Date:To:From:Subject:Message-Id; b=MIw/3SixjVSS+KIURxy0FabpMJISmynEIH1nZXoSRortik9Sov3wRqNTsIh976rJw6I2ynXuBxeSPz4iwO0lNVsguzUnPr+3GKJ7fcTEkLEcQV170HAY1NGqRfb8TDSJ2XozMy/WwvCwgRYl3FiVfUDJyWvn6UjmTiyIylzFG/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AJIFOSh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49BB4C19423;
-	Thu,  2 Apr 2026 04:19:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775103561;
-	bh=pbttv0jIUfUSpVVJLpViiZ1oN89HGmE0PqXa2mJNB7s=;
-	h=Date:To:From:Subject:From;
-	b=AJIFOSh8RD7WoDCXXg1aVWzR5UWV+9s6SNfY7cl0DXfH/s2NiqDbf5O/jE1YMyGcX
-	 XgMMVPp8QE1Q+F7afkzLO2eiSaChX8TF8IQN+bXULN0DSB0Md3YmfkvWe1h0Czv+pA
-	 0XsWh7oThTWDi5LkJs6FFBrmosPlXk3xU8OTmy2I=
-Date: Wed, 01 Apr 2026 21:19:20 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,tejas.bharambe@outlook.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch added to mm-nonmm-unstable branch
-Message-Id: <20260402041921.49BB4C19423@smtp.kernel.org>
+	s=arc-20240116; t=1775103721; c=relaxed/simple;
+	bh=Ll+mejS5nwkcS0c9qW1Zj2uBUg2oi79+k8wAAp6wGS0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l8iR+tr7y3gl/JLToGaObVDJpfU2J3Yf/pV8pe5kDTb17n25cHJGPuZ+5B0bVYCuIMjsPtLP+RccvKfr5W62AyptnRKfmQeMiM0cD/BKrKalsHPZo0mmqGSnxmh+MjuTmTOplcSGmeuP385tup2CdOjGSn8Ur6qUcBWzfCx1CQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.245.197])
+	by APP-01 (Coremail) with SMTP id qwCowAAXvWjc7s1pfkzwCw--.800S2;
+	Thu, 02 Apr 2026 12:21:48 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: netdev@vger.kernel.org
+Cc: Lars Poeschel <poeschel@lemonage.de>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Rikard Falkeborn <rikard.falkeborn@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	pengpeng@iscas.ac.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] nfc: pn533: allocate rx skb before consuming bytes
+Date: Thu,  2 Apr 2026 12:21:48 +0800
+Message-ID: <20260402042148.65251-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAXvWjc7s1pfkzwCw--.800S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZryUuFWruFyxKFy5Jw43ZFb_yoW8Ar17pF
+	Z3GF1rtryUXr47JwsrCw1rWFy5Ca4kAFWrGrWvka47urn3JFW3GFWaga42vFZ5XFWkXF4a
+	vFWDXF48CFyrua7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUGVWUXwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU-0eJUUU
+	UU=
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-232906-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-232907-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,outlook.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 513F13838A3
+	FREEMAIL_CC(0.00)[lemonage.de,zju.edu.cn,gmail.com,vger.kernel.org,iscas.ac.cn];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.959];
+	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
+X-Rspamd-Queue-Id: 7F73E383914
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+pn532_receive_buf() reports the number of accepted bytes to the serdev
+core. The current code consumes bytes into recv_skb and may already
+hand a complete frame to pn533_recv_frame() before allocating a fresh
+receive buffer.
 
-The patch titled
-     Subject: ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
+If that alloc_skb() fails, the callback returns 0 even though it has
+already consumed bytes, and it leaves recv_skb as NULL for the next
+receive callback. That breaks the receive_buf() accounting contract and
+can also lead to a NULL dereference on the next skb_put_u8().
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
+Allocate the receive skb lazily before consuming the next byte instead.
+If allocation fails, return the number of bytes already accepted.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+Cc: stable@vger.kernel.org
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Tejas Bharambe <tejas.bharambe@outlook.com>
-Subject: ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
-Date: Wed, 1 Apr 2026 21:02:34 -0700
-
-filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
-as documented in mm/filemap.c:
-
-  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
-  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
-
-When this happens, a concurrent munmap() can call remove_vma() and free
-the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
-becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
-dereferences it -- a use-after-free.
-
-Fix this by saving the inode reference before calling filemap_fault(),
-and removing vma from the trace event. The inode remains valid across
-the lock drop since the file is still open, so the trace can fire in
-all cases without dereferencing the potentially freed vma.
-
-Link: https://lkml.kernel.org/r/20260402040234.92432-1-tejas.bharambe@outlook.com
-Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
-Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
-Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
+ drivers/nfc/pn533/uart.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
- fs/ocfs2/mmap.c        |    6 +++---
- fs/ocfs2/ocfs2_trace.h |   10 ++++------
- 2 files changed, 7 insertions(+), 9 deletions(-)
-
---- a/fs/ocfs2/mmap.c~ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry
-+++ a/fs/ocfs2/mmap.c
-@@ -30,7 +30,7 @@
+diff --git a/drivers/nfc/pn533/uart.c b/drivers/nfc/pn533/uart.c
+index 6d2f520a5bc8..412d341602aa 100644
+--- a/drivers/nfc/pn533/uart.c
++++ b/drivers/nfc/pn533/uart.c
+@@ -211,14 +211,19 @@ static size_t pn532_receive_buf(struct serdev_device *serdev,
  
- static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
- {
--	struct vm_area_struct *vma = vmf->vma;
-+	struct inode *inode = file_inode(vmf->vma->vm_file);
- 	sigset_t oldset;
- 	vm_fault_t ret;
+ 	timer_delete(&dev->cmd_timeout);
+ 	for (i = 0; i < count; i++) {
++		if (!dev->recv_skb) {
++			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
++						  GFP_KERNEL);
++			if (!dev->recv_skb)
++				return i;
++		}
++
+ 		skb_put_u8(dev->recv_skb, *data++);
+ 		if (!pn532_uart_rx_is_frame(dev->recv_skb))
+ 			continue;
  
-@@ -38,8 +38,8 @@ static vm_fault_t ocfs2_fault(struct vm_
- 	ret = filemap_fault(vmf);
- 	ocfs2_unblock_signals(&oldset);
+ 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
+-		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
+-		if (!dev->recv_skb)
+-			return 0;
++		dev->recv_skb = NULL;
+ 	}
  
--	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
--			  vma, vmf->page, vmf->pgoff);
-+	trace_ocfs2_fault(OCFS2_I(inode)->ip_blkno,
-+			  vmf->page, vmf->pgoff);
- 	return ret;
- }
- 
---- a/fs/ocfs2/ocfs2_trace.h~ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry
-+++ a/fs/ocfs2/ocfs2_trace.h
-@@ -1246,22 +1246,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
- 
- TRACE_EVENT(ocfs2_fault,
- 	TP_PROTO(unsigned long long ino,
--		 void *area, void *page, unsigned long pgoff),
--	TP_ARGS(ino, area, page, pgoff),
-+		 void *page, unsigned long pgoff),
-+	TP_ARGS(ino, page, pgoff),
- 	TP_STRUCT__entry(
- 		__field(unsigned long long, ino)
--		__field(void *, area)
- 		__field(void *, page)
- 		__field(unsigned long, pgoff)
- 	),
- 	TP_fast_assign(
- 		__entry->ino = ino;
--		__entry->area = area;
- 		__entry->page = page;
- 		__entry->pgoff = pgoff;
- 	),
--	TP_printk("%llu %p %p %lu",
--		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
-+	TP_printk("%llu %p %lu",
-+		  __entry->ino, __entry->page, __entry->pgoff)
- );
- 
- /* End of trace events for fs/ocfs2/mmap.c. */
-_
-
-Patches currently in -mm which might be from tejas.bharambe@outlook.com are
-
-ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
+ 	return i;
+-- 
+2.50.1 (Apple Git-155)
 
 
