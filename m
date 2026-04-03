@@ -1,174 +1,208 @@
-Return-Path: <stable+bounces-233144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAnXAoxQz2mjvAYAu9opvQ
-	(envelope-from <stable+bounces-233144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 07:30:52 +0200
+	id 4F3QHuFPz2mHvAYAu9opvQ
+	(envelope-from <stable+bounces-233142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 07:28:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647BB39117A
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 07:30:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09B0391160
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 07:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE2D4302883C
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 05:29:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 158163028B12
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 05:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18BDD34D3B0;
-	Fri,  3 Apr 2026 05:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B6734D3B0;
+	Fri,  3 Apr 2026 05:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HHeyPn9J"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="s37K6hzZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1C8345CDD
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 05:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E28345CDD;
+	Fri,  3 Apr 2026 05:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775194162; cv=none; b=S9caDBcSDG+28nfVvaonfHL1ubM0LMVHuUGqV5mfRqLOuQaAqpgO6HFYrOcXj4z119DeNEek4KsykSA6/GaJ6B6LQFA/qGS3P5YtR0X1QSjFGgzegExhd0F6LW4nGqJGTGjklPn9OEDf6RQDseWA6LWJSHwcBdCbN+2cSz1I4Bo=
+	t=1775194076; cv=none; b=CGqDK9VxlN3WI2BgY+eGPXeup9+E9Dxa9SX8eB5MdyVfMhYLUALf8fTEx4vGSRVuEal5fsMijaN7vMkhNCpPQM3mSzbcJ4LTvPS8vk9o1qQUnkdRR+FaYQBbDl+H9+stR54VMU9foindKalMmQzHefENmFS6Tl+LlfgDkhPlSBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775194162; c=relaxed/simple;
-	bh=nnz7rfBh4E/7qdvu4h6qKKfTn2Jhn2jRQqSVmtYrHV4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZqboNRvjtbJON4euVIU70sEEgZW3NKJC3f5LZ9Qdxn8nKYMjoW6LEbJRR/YSBw039kVB62qrGjx+vD0WU1USMsINKrH+TzEphgeIdJzvTt8TxTiuIBRQQfpxS+OpsHuz7n1pYKEexAYW9d3lBP7pyTm5++268Fe1kRNVByj1Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HHeyPn9J; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82cd70febc7so1229649b3a.2
-        for <stable@vger.kernel.org>; Thu, 02 Apr 2026 22:29:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775194161; x=1775798961; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7DhGk7ekX3JpECpQ0RXFDeILDJMOxG359GUgFUbcyx0=;
-        b=HHeyPn9JtX84knO1PHKCVv3/oDK4QYXPR9c/eZx4AOtgYGEQeZXDQrGS2L8wjQOP80
-         NCNqzIBAIR6T7Yeao5h3+3AY/PfoYRJRoF7t2K+9x6z4NVb7Oo7GxbKY91HicG+Bwt+b
-         UcBVKWmNvkKbXWEOdZ3pEdJUOyZbpz7PKUcVr9a7WPtxSP7uVci+y2QoKhWvLp9Lm7G4
-         sw+qIK1YF22Bp2y1WnvEojt81qY9xjcU2iXiSqbdY4o9GA7KWj6wFjUsKVnoO+cHRsin
-         H3R+8mxNauKo8Nlmlroa3YBwXvJTqGM8dDT2b/uVSCPShGWdmPoPKk4+gAkjvOaBwXIk
-         WVkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775194161; x=1775798961;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7DhGk7ekX3JpECpQ0RXFDeILDJMOxG359GUgFUbcyx0=;
-        b=ZEeS2NevShq75Wr/EW0yeA7/tKvxk1KJ849UHNk+12JwlJwsP6Xy3vCZpo+QNdXXSu
-         wCreBmFQdRuF7RuL43beky1djqUJRokBRs1aFFX9V7uozptxd7vwm9Rl0atXj7Hor1BN
-         u2DRiXmOmqlmXqUPHoqBoEoNmpFHoctHeUeqAa9zuswyWcCGwTBt1vsDbSUa0doNMwcn
-         NVASpop6/pM6ofV8UWq+hW+OIBXEK8Xesy/a89m1GohzBhKjrajEEcL24WMwb7PpXDoJ
-         gLG7SZo+uhyjY27v9/bCsIT+l7gLV9wa09kYEqYTxqD0EIVwx7MesD4svgl8O9ags3PX
-         JwqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjkvQikNEWYMmTJ0a0nRSLhx0/E57cKslcDGUZCKQR4LwEW79B5RaqvRlTGZuj5GYslF71pQs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaQHYDih07lojvPxFSswbedDv/qI/VFQX4uCU+WGgm6Ti6/nY3
-	oc6rbgCBgYD3LsR+BQDiZ7Dwit8yDPT20atvHH4+ucF0c5z9L9QsY/Zf
-X-Gm-Gg: ATEYQzzmdlAPA+eqQBbc5AtQUY0hH0xlzhyIig2GLecBzjYrljR1+TcTzbYY3vSOrv+
-	lHQfAPfMKElJbk9PaNs1W6K7wZql0g5ZAc7i/L5d/hcxwS+8XvEZ0KU23tQ1uCJD8MlIWbWEset
-	/0rQXlBEO9koqeK2VEmHP6NAmLdnkZ5Ci7g0WNHK3+Ayc43qQBK5n3lKCKkp1MLYR2wLO3zghrf
-	eWeYa8nwxqHcx5u5kA5h8kdinyJhA96nmEf6OkenT6l765NzIGyOXTNUKMENaIwn4VhAJC37+gD
-	GW31KAbhJIS9yQS+MO4XwoFArK1SlS6l3XdorDtCooYZv7U+U1UOXdtdg0XGiO9+DiVKPgT5sVX
-	peVJREItaYxBhyyNuH/lyEhXnYu2V4dpM4BmaqdDImmtVq4NdSxNDzAEPUC6gRTNZa8E/5lUfc8
-	CbYMS32q57/KWEUvEAGGyOQ0/3uf21hkceJFghfQ==
-X-Received: by 2002:a05:6a00:6ca8:b0:82c:28e8:a009 with SMTP id d2e1a72fcca58-82d0dbc7a68mr1847464b3a.51.1775194161239;
-        Thu, 02 Apr 2026 22:29:21 -0700 (PDT)
-Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82d11cd2ce2sm782120b3a.6.2026.04.02.22.29.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 22:29:20 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: yanquanmin1@huawei.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] mm/damon/reclaim: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 13:23:50 +0800
-Message-ID: <20260403052837.58063-3-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260403052837.58063-1-aethernet65535@gmail.com>
-References: <20260403052837.58063-1-aethernet65535@gmail.com>
+	s=arc-20240116; t=1775194076; c=relaxed/simple;
+	bh=FISPdyOFrZe+ATdMVkGKeWhDuCEENstA4r+bEa9c9Aw=;
+	h=Date:To:From:Subject:Message-Id; b=aiTthFlN/LXycxer5P1ZPUOBPEejlkLddIAdLUYR7+q3SKQiazyOpGr6gMxZeyW7QgAZLeu6IMn6FtJRokX9oEID36ZyC2Tuk+WhjLdi3jioAqYECfyM2mNbXgI9ZiONkToqaH0qoXPqISh9twatcNyetguwp0uLoD2+sSlXYzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=s37K6hzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A022DC4CEF7;
+	Fri,  3 Apr 2026 05:27:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775194075;
+	bh=FISPdyOFrZe+ATdMVkGKeWhDuCEENstA4r+bEa9c9Aw=;
+	h=Date:To:From:Subject:From;
+	b=s37K6hzZr2dNVWSjS0S0tNWVWsrp0drmBD6WpYNWOkHtx5uF3ZbHFPr99K/y6hVN5
+	 QUtA+cXcXpS4zFOm1OOWitI/w95RJjTxT06sI2d1pvJoR/rttnRp5jIu7mc2epeIz9
+	 byAHriGnv2yC0JPihbyviazYM+OFrjK7QbSNhetU=
+Date: Thu, 02 Apr 2026 22:27:54 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,tejas.bharambe@outlook.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch added to mm-nonmm-unstable branch
+Message-Id: <20260403052755.A022DC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[huawei.com,lists.linux.dev,kvack.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-233144-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233142-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,outlook.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aethernet65535@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 647BB39117A
+X-Rspamd-Queue-Id: D09B0391160
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The damon_commit_ctx() checks if 'min_region_sz' is a power-of-2.
-However, if an invalid input is provided via the DAMON_RECLAIM interface,
-the validation failure occurs too late, causing kdamond to terminate
-unexpectedly.
 
-To reproduce:
-1. Enable DAMON_RECLAIM.
-2. Set an invalid 'addr_unit' (e.g., addr_unit=3) so that
-   'min_region_sz = DAMON_MIN_REGION_SZ / addr_unit' becomes
-   non-power-of-2.
-3. Commit parameters, and observe kdamond termination.
+The patch titled
+     Subject: ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
 
-This patch adds an early check in damon_reclaim_apply_parameters() to
-validate 'min_region_sz' and return -EINVAL immediately if it is not a
-power-of-2, preventing unexpected kdamond termination.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
 
-Fixes: 7db551fcfb2a ("mm/damon/reclaim: support addr_unit for DAMON_RECLAIM")
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Tejas Bharambe <tejas.bharambe@outlook.com>
+Subject: ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
+Date: Wed, 1 Apr 2026 21:02:34 -0700
+
+filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
+as documented in mm/filemap.c:
+
+  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
+  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
+
+When this happens, a concurrent munmap() can call remove_vma() and free
+the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
+becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
+dereferences it -- a use-after-free.
+
+Fix this by saving the inode reference before calling filemap_fault(),
+and removing vma from the trace event. The inode remains valid across
+the lock drop since the file is still open, so the trace can fire in
+all cases without dereferencing the potentially freed vma.
+
+Link: https://lkml.kernel.org/r/20260403035333.136824-1-tejas.bharambe@outlook.com
+Link: https://lkml.kernel.org/r/20260402040234.92432-1-tejas.bharambe@outlook.com
+Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
+Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/damon/reclaim.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 86da14778658..2747eef5919d 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -204,6 +204,11 @@ static int damon_reclaim_apply_parameters(void)
- 	param_ctx->addr_unit = addr_unit;
- 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+ fs/ocfs2/mmap.c        |    6 +++---
+ fs/ocfs2/ocfs2_trace.h |   10 ++++------
+ 2 files changed, 7 insertions(+), 9 deletions(-)
+
+--- a/fs/ocfs2/mmap.c~ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry
++++ a/fs/ocfs2/mmap.c
+@@ -30,7 +30,7 @@
  
-+	if (!is_power_of_2(param_ctx->min_region_sz)) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (!damon_reclaim_mon_attrs.aggr_interval) {
- 		err = -EINVAL;
- 		goto out;
--- 
-2.53.0
+ static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
+ {
+-	struct vm_area_struct *vma = vmf->vma;
++	struct inode *inode = file_inode(vmf->vma->vm_file);
+ 	sigset_t oldset;
+ 	vm_fault_t ret;
+ 
+@@ -38,8 +38,8 @@ static vm_fault_t ocfs2_fault(struct vm_
+ 	ret = filemap_fault(vmf);
+ 	ocfs2_unblock_signals(&oldset);
+ 
+-	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
+-			  vma, vmf->page, vmf->pgoff);
++	trace_ocfs2_fault(OCFS2_I(inode)->ip_blkno,
++			  vmf->page, vmf->pgoff);
+ 	return ret;
+ }
+ 
+--- a/fs/ocfs2/ocfs2_trace.h~ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry
++++ a/fs/ocfs2/ocfs2_trace.h
+@@ -1246,22 +1246,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
+ 
+ TRACE_EVENT(ocfs2_fault,
+ 	TP_PROTO(unsigned long long ino,
+-		 void *area, void *page, unsigned long pgoff),
+-	TP_ARGS(ino, area, page, pgoff),
++		 void *page, unsigned long pgoff),
++	TP_ARGS(ino, page, pgoff),
+ 	TP_STRUCT__entry(
+ 		__field(unsigned long long, ino)
+-		__field(void *, area)
+ 		__field(void *, page)
+ 		__field(unsigned long, pgoff)
+ 	),
+ 	TP_fast_assign(
+ 		__entry->ino = ino;
+-		__entry->area = area;
+ 		__entry->page = page;
+ 		__entry->pgoff = pgoff;
+ 	),
+-	TP_printk("%llu %p %p %lu",
+-		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
++	TP_printk("%llu %p %lu",
++		  __entry->ino, __entry->page, __entry->pgoff)
+ );
+ 
+ /* End of trace events for fs/ocfs2/mmap.c. */
+_
+
+Patches currently in -mm which might be from tejas.bharambe@outlook.com are
+
+ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
 
 
