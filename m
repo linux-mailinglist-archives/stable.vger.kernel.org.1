@@ -1,188 +1,248 @@
-Return-Path: <stable+bounces-233176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFF2BC+pz2lxywYAu9opvQ
-	(envelope-from <stable+bounces-233176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:49:03 +0200
+	id 057iIuKpz2noywYAu9opvQ
+	(envelope-from <stable+bounces-233178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:52:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44AAF393CEE
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1BE4393CFA
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 096473037ED1
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 11:48:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CFE930131C4
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 11:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98F73B7B69;
-	Fri,  3 Apr 2026 11:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001F43BBA14;
+	Fri,  3 Apr 2026 11:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aKa+m0+G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uB9OvT8/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469813B19C5
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 11:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775216892; cv=pass; b=WeTd3JA14GBi0tyRY8U88pmlzinjBrbkHXqafwMClnYiFA4aOc7VIKmquTOpRFxRvLgWyhURdEEl/vRSy164WWpo+xR9X2771/Rx3i65oPXTw6keKATnqooE0PhVRaFg3siOMiDOg78ZS6rESZDG6U05jKBLdI9HS6ViiOmFkMc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775216892; c=relaxed/simple;
-	bh=URfO4qXQmNwqn6yWmUmDTG0PuGd0UKqDBdiR0nFIs0o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CaJ1rWo3LI8YwLAwiQdeaZolQEJuqOeSyURgXqjBGiCsXkdlqjZFCwSCNNg1uD4x4azI06ka9cW9qLrYQ3EGduHHIl4uz03TcyDg5oPgtMlXPipWBB11kLZre2i9menAJMeU/D3nGn/0u3jY4Y6iYTnRv383pnJPr4mHeLLaJ0c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aKa+m0+G; arc=pass smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-40429b1d8baso681524fac.0
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 04:48:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775216890; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Uu7v1tH1XVpElu6R2QGl3lE1KuKf0f3EG+5CSsfuz9GGMpW6hPz4nArfNkbmP+Z3pX
-         ddxlTQHICzAAOx0yP3t4vcSqC8Uxn3svUBvsV+NvtqvMMM9PA0S79TA/e7dKiPxcMBRC
-         tqS6dEWMFIfkDXHyNbtE0n0xpt38CEAuiwnm9BCIEpJ4MWg3NUrf9VA3Dkwvgh3qbc5u
-         BJl1IsboF9/ch0tJOTv/qiHQAtedK+7jRYqecd5xgP6XRpstr/RfVtN/d2iPWpbbJc//
-         rOmfJXOJ99UVzkKQTBjwYDRzK8TW88/wBDoBGf5iCuewByqLFheI1zAjZ9qRSjavbg72
-         YhWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9zwNrIRDyDXomtxBsiInc7L3dN6ekhzZYrvMJHKrhcE=;
-        fh=ClwabMB8uzJsa3bX46mpLQpsbC9Xhi7Jz1DfX+AMHhU=;
-        b=NSV1axEeFMumcJLRJhzWxZG6qPY0YAuzN/NsOgyK1mLdqeEt664OL4HRd29nI+9PYY
-         XryAqnUpeUxMS4BFOxYXOqEdktmI2OAMaCS+lGTJHjxS3YqJxfDXGmnk6QPSjyDLa2Xi
-         cxwHbCc08cNPPjayh8L3hHhSDcxH4CopnDXLuACuKtoLrgAm0ovwJpiwj9AfD787kluI
-         5JzUqpfWE7Qq1trMpECgAmjWQz5rjUbv5+BpkMo1Qx2O0IccSWKKzCW4BglT5xymCRHl
-         HxB6L9uOPbqg8yNj3rQ2amh075PUimp4IZb92JPhVNaa0sArf0s6ZltUVFt9HGafC4vN
-         iySw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775216890; x=1775821690; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9zwNrIRDyDXomtxBsiInc7L3dN6ekhzZYrvMJHKrhcE=;
-        b=aKa+m0+GY2iLL9slBEtgLVhT7mFnRDVZm3O/5OnPDoB5g7V5CJNhQhYPgjNK8XhxOz
-         hvlkHgJbKu+DlDr68MSK71jkYy4KAJLM+R2zJkaD8g/Rtfu/E+7SE/hTgOEqzMRkZ2Wy
-         tYzws9CM7Fv2DWDBQnuLsV8oCX8HhVy881EgK4p13e8e8uDA01fPqCS0oSFwikYFgdB9
-         +A0PloJv/LAmCswn4OFo3y7s58WN78fnl03YTMcATGbL82Gth9y+eS3OSjhwMpehga8J
-         7Nb3+nQ50gDIlYWfe9tZqR35c89udzMUPFMkqwQ1/gufp5bkg3DDxhwMix97DoOMpxYA
-         0D6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775216890; x=1775821690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9zwNrIRDyDXomtxBsiInc7L3dN6ekhzZYrvMJHKrhcE=;
-        b=Hr1qgGeAdkT202ZSw55eTJ3Z2zOvikd1jPeoWm2NjnfVKRkn2uylv/CI/VPkpEfFcQ
-         uLlMMy3tQdQk/II33lfZjH6TNszh2j5FoxTzk5NAJGTFOTjlLdYarks0fwyXiU2G8hej
-         vO9elpE70cLpMo2q7QeXnt3tzppwSo3taMItfQfrftjo+8Y+VJXB/0y4IjB63vUmBIEK
-         8Tl/ND2vv47W2DMEt+WFbyriSALXtF5fAoi05SjZqZxx8ndtILC/gWHt4NbQeRIf++bZ
-         ee/xVh7ayK8fLJWIiLS6DwG3cT6NTcjS3DBP2ymTniLZmri5PSlTcP5RLuqiQaOxZF2B
-         HB0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWvnsqV7S0w0GFBlT1crkEX7ChwZZExYZZWUSa10r7c8VEj8xE9uNOkgFxjRAVU0qikGXJzhx4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyfRGDr2hz7bm3R3nWDbT/WCARJkfHLYfqIRbTmlyKUXbluEZk
-	KEuyinn5Seyu5YQZh5s2VF9G7WuYWvfnSUNoI7XaYOgoYZxq66ZH+XN6G2HVOuxDHQeapoQncKu
-	kenAQI7z4k7AezBdHJOqWtFXj6INjQ3k=
-X-Gm-Gg: ATEYQzx46AFYAM0CZ66v6nUZIgSiKE4Z7qp2HS7lCrPyzBM70GZaPr3tMha2Lzo9HVo
-	7DPnbePXhePpUrVVrMYqDuuIcHzXnnqs1s5erdmHSRnUg46YVlDLOWruwpvKaSgfJWW6JIsRQPC
-	FIH3rkr3bRYeV19K2it7uazR/lZz5WnQNXgiuy0bMkYHJipofyyw6esFPlHlyjnYlpeoRBehBrF
-	8wy5ZHvTMJcgxusuX729fjvO71bphf60S7joy7r2tONtlFODjm07ypRlGBIs1kVV5PcXkOBztN+
-	jjo3T+/14QeCwR8mhMaWKwDUUvvfcZc+EQzo8Q==
-X-Received: by 2002:a05:6871:79b:b0:423:1a33:c275 with SMTP id
- 586e51a60fabf-4231a342d07mr837578fac.9.1775216890130; Fri, 03 Apr 2026
- 04:48:10 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B872A31D375
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 11:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775216950; cv=none; b=W/OnVZoM7TVCNt5vvMSEjBQ6GA/scvXaGru9xqKN6zsjkFVgppZPG7/Ho4pNZM8zPzd9bj88JHIOc/V97Ql6e7NKIUJA/C1fxPe1lfqwL3IGf+x62RiwMq1wtftmLTgzYNV1pkZmn0Y4vCb+pnFvwS4LCkEs27n1ve6tgZqhqnA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775216950; c=relaxed/simple;
+	bh=ecFeDn5sURtJyHXCSgymxWN6uiroXcpu6AiNMeaWHjM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Nyjjh+6L7TfMj/qaAdc4+jLlV/F7xSwFKJRhbSiHc7ZGN3+M4RvWCCit6pISXDSa8/942zqMfGpJl2uu6Z0C6tfA/11PS2wWZ/SkdGppJIlrYFNdDu5faebmUWbUubK0z1r5/snyKRp4tOQIfxedauR/uLgG5OPSp9vEknTZahk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uB9OvT8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB10BC4CEF7;
+	Fri,  3 Apr 2026 11:49:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775216950;
+	bh=ecFeDn5sURtJyHXCSgymxWN6uiroXcpu6AiNMeaWHjM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uB9OvT8/jxeqmsu+bO2+PSAa85xaMVIsayJsX3awNug77fdDGE5HPsMgukn65kmnn
+	 f33iQZSHQ9H/o7hyqLovjqJRk7oWFxuQqjLAbJJRkN0YmGqYiaGhlI0PSZD+rsLjIn
+	 30AjYQywgxnW3UXcniiY/tUkd6OFZR+sPGN9vR/BlYs+igEjDjA0AZQlB7tojSv7q9
+	 22GviovaidfvB6wZI8ch1lyNeo1wkfXnKRp5q5i7+d0jsze4rdISmZ04hXBjyBde5O
+	 eK40LRvB5ROquZkQhKnTuGSmxt0lFhrFW37MFPQIwd5Vo0POCavvILSyJfXz/oyM6i
+	 nHSrkKerM4/zA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Li Chen <me@linux.beauty>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] ext4: publish jinode after initialization
+Date: Fri,  3 Apr 2026 07:49:07 -0400
+Message-ID: <20260403114907.2051129-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033005-camping-marbles-bf44@gregkh>
+References: <2026033005-camping-marbles-bf44@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260403110238.16596-1-devnexen@gmail.com> <CANn89iJiB6QQ6qPQSnXLOqG_NhsqV-5J5ndSyKcf27pN3EeiMw@mail.gmail.com>
-In-Reply-To: <CANn89iJiB6QQ6qPQSnXLOqG_NhsqV-5J5ndSyKcf27pN3EeiMw@mail.gmail.com>
-From: David CARLIER <devnexen@gmail.com>
-Date: Fri, 3 Apr 2026 12:47:58 +0100
-X-Gm-Features: AQROBzAV-cZ7Lwo6cZ6k65vh0g1kAjYjcFfMc1jdULr6qoX4UM3ku51haJ1XjHk
-Message-ID: <CA+XhMqyYo8WwCwRg2kUv=HNo0bGXe+kOTDFH8rg2keDFJmvxhg@mail.gmail.com>
-Subject: Re: [PATCH] net/sched: act_nat: fix inner IP header checksum in ICMP
- error packets
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, netdev@vger.kernel.org, 
-	stable@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233176-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233178-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 44AAF393CEE
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.cz:email]
+X-Rspamd-Queue-Id: D1BE4393CFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi eric,
+From: Li Chen <me@linux.beauty>
 
-On Fri, 3 Apr 2026 at 12:38, Eric Dumazet <edumazet@google.com> wrote:
->
-> On Fri, Apr 3, 2026 at 4:02=E2=80=AFAM David Carlier <devnexen@gmail.com>=
- wrote:
-> >
-> > Update the inner IP header checksum when rewriting addresses
-> > inside ICMP error payloads, matching netfilter's nf_nat_ipv4_manip_pkt(=
-)
-> > behavior.
-> >
-> > Fixes: b4219952356b ("[PKT_SCHED]: Add stateless NAT")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: David Carlier <devnexen@gmail.com>
-> > ---
-> >  net/sched/act_nat.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/net/sched/act_nat.c b/net/sched/act_nat.c
-> > index abb332dee836..cd1d299da57c 100644
-> > --- a/net/sched/act_nat.c
-> > +++ b/net/sched/act_nat.c
-> > @@ -242,7 +242,9 @@ TC_INDIRECT_SCOPE int tcf_nat_act(struct sk_buff *s=
-kb,
-> >                 new_addr &=3D mask;
-> >                 new_addr |=3D addr & ~mask;
-> >
-> > -               /* XXX Fix up the inner checksums. */
-> > +               /* Update inner IP header checksum after address rewrit=
-e */
-> > +               csum_replace4(&iph->check, addr, new_addr);
-> > +
->
-> ~20 years old code, are we sure this fix is needed?
-> How was this patch was tested?
->
-> A selftest would be great.
+[ Upstream commit 1aec30021edd410b986c156f195f3d23959a9d11 ]
 
-Ok sounds fair
+ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
+It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
+allowing a reader to observe a non-NULL jinode with i_vfs_inode
+still unset.
+
+The fast commit flush path can then pass this jinode to
+jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
+may crash.
+
+Below is the crash I observe:
+```
+BUG: unable to handle page fault for address: 000000010beb47f4
+PGD 110e51067 P4D 110e51067 PUD 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+RIP: 0010:xas_find_marked+0x3d/0x2e0
+Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
+RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
+RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
+RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
+RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
+R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
+R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
+FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+<TASK>
+filemap_get_folios_tag+0x87/0x2a0
+__filemap_fdatawait_range+0x5f/0xd0
+? srso_alias_return_thunk+0x5/0xfbef5
+? __schedule+0x3e7/0x10c0
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? cap_safe_nice+0x37/0x70
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+filemap_fdatawait_range_keep_errors+0x12/0x40
+ext4_fc_commit+0x697/0x8b0
+? ext4_file_write_iter+0x64b/0x950
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? vfs_write+0x356/0x480
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+ext4_sync_file+0xf7/0x370
+do_fsync+0x3b/0x80
+? syscall_trace_enter+0x108/0x1d0
+__x64_sys_fdatasync+0x16/0x20
+do_syscall_64+0x62/0x2c0
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+...
+```
+
+Fix this by initializing the jbd2_inode first.
+Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
+initialization. Readers use READ_ONCE() to fetch the pointer.
+
+Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Chen <me@linux.beauty>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ adapted READ_ONCE(jinode) wrapping to split ext4_fc_submit_inode_data_all() and ext4_fc_wait_inode_data_all() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/ext4/fast_commit.c |  4 ++--
+ fs/ext4/inode.c       | 15 +++++++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index be768ef1fd168..05ae66ad580c5 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -902,7 +902,7 @@ static int ext4_fc_submit_inode_data_all(journal_t *journal)
+ 			finish_wait(&ei->i_fc_wait, &wait);
+ 		}
+ 		spin_unlock(&sbi->s_fc_lock);
+-		ret = jbd2_submit_inode_data(ei->jinode);
++		ret = jbd2_submit_inode_data(READ_ONCE(ei->jinode));
+ 		if (ret)
+ 			return ret;
+ 		spin_lock(&sbi->s_fc_lock);
+@@ -927,7 +927,7 @@ static int ext4_fc_wait_inode_data_all(journal_t *journal)
+ 			continue;
+ 		spin_unlock(&sbi->s_fc_lock);
+ 
+-		ret = jbd2_wait_inode_data(journal, pos->jinode);
++		ret = jbd2_wait_inode_data(journal, READ_ONCE(pos->jinode));
+ 		if (ret)
+ 			return ret;
+ 		spin_lock(&sbi->s_fc_lock);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 719d9a2bc5a73..31631dd36ddf9 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -121,6 +121,8 @@ void ext4_inode_csum_set(struct inode *inode, struct ext4_inode *raw,
+ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 					      loff_t new_size)
+ {
++	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
++
+ 	trace_ext4_begin_ordered_truncate(inode, new_size);
+ 	/*
+ 	 * If jinode is zero, then we never opened the file for
+@@ -128,10 +130,10 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 	 * jbd2_journal_begin_ordered_truncate() since there's no
+ 	 * outstanding writes we need to flush.
+ 	 */
+-	if (!EXT4_I(inode)->jinode)
++	if (!jinode)
+ 		return 0;
+ 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
+-						   EXT4_I(inode)->jinode,
++						   jinode,
+ 						   new_size);
+ }
+ 
+@@ -4231,8 +4233,13 @@ int ext4_inode_attach_jinode(struct inode *inode)
+ 			spin_unlock(&inode->i_lock);
+ 			return -ENOMEM;
+ 		}
+-		ei->jinode = jinode;
+-		jbd2_journal_init_jbd_inode(ei->jinode, inode);
++		jbd2_journal_init_jbd_inode(jinode, inode);
++		/*
++		 * Publish ->jinode only after it is fully initialized so that
++		 * readers never observe a partially initialized jbd2_inode.
++		 */
++		smp_wmb();
++		WRITE_ONCE(ei->jinode, jinode);
+ 		jinode = NULL;
+ 	}
+ 	spin_unlock(&inode->i_lock);
+-- 
+2.53.0
+
 
