@@ -1,150 +1,161 @@
-Return-Path: <stable+bounces-233172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qO34NIWZz2nmxQYAu9opvQ
-	(envelope-from <stable+bounces-233172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 12:42:13 +0200
+	id AEYMA1mez2kTyAYAu9opvQ
+	(envelope-from <stable+bounces-233173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:02:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258723935F3
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 12:42:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96687393785
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:02:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1E9D3008D25
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 10:41:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 05151302623E
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 11:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5990137F8DB;
-	Fri,  3 Apr 2026 10:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E823242BC;
+	Fri,  3 Apr 2026 11:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kA7zDbdd"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF6D17A30A
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 10:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADA62DB7A9
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 11:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775212882; cv=none; b=rKmYw5TBq6/jZCO2Q9QIFig+Cophl6MVeiPHz8wZcTJ2FtD3HtSwtZPiPJo/qh62z2BosoJyYbvzuMjepTY8o5AowzZDN/6iXHdBd6LGP58eWajq6FQCdFV2Q9iLBNAf+WVHYd6+xIgeSzYnEh31K89nl6QguiZEu1UOxaFgZSU=
+	t=1775214164; cv=none; b=nZAsxcERaDhvNQLYSjBfVHGbtyxe71sK/JD/R++RIZls/s2eURgeznf+KY0wHUcLLMHS7xcqYZ78RudlN15BvPLHyAai7Ot8A13UcDfVizbZerPTNr9/ZkvLJeq4VjS+mVRjMtRu06H+lZiHS3AHD3eSPDWlxBSjyXcdAZLbdyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775212882; c=relaxed/simple;
-	bh=Kz7WJ+/+/baXengwQU/uSiLdel+R/yWrbYT0KjI0pp4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ahJ3COkmW16XNdAAQQhb6eR4405PSjEgH3BRMSUJKr8oNMe6tMddg1UH0ERyB5PcWMawe4TfSzpXboTdh+DoFxaApnUK/TDX0DT4h8wOncaM7QKLl8G7OIXECI1ZlhupgQ889rjSSXwnmv5OklfMTZJ4ARXIm0JYSDb5d5xwqcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1w8bxg-00320O-36;
-	Fri, 03 Apr 2026 10:41:12 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1w8bxe-00000001Epm-24GU;
-	Fri, 03 Apr 2026 12:41:10 +0200
-Message-ID: <20fe79e3624386fe646e703e7a178fde899886eb.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10.y] x86/cpu: Enable FSGSBASE early in
- cpu_init_exception_handling()
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Nikunj A Dadhania <nikunj@amd.com>, Borislav Petkov <bp@alien8.de>, 
- Sohil Mehta <sohil.mehta@intel.com>, stable@kernel.org
-Date: Fri, 03 Apr 2026 12:41:05 +0200
-In-Reply-To: <20260331142533.2463086-1-sashal@kernel.org>
-References: <2026033008-surfboard-squirt-5661@gregkh>
-	 <20260331142533.2463086-1-sashal@kernel.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-0Yy9UR+Ah+HoV7O+CF/A"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1775214164; c=relaxed/simple;
+	bh=eedoNAwJwYaHwcpnoaYa8ahQY44WwzEPaEBlIDppj6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bXPsihVvw7NevhlFR6hJAtuGX6M9vOcYS7dkIFCNl+7plSpmQ2737a0rmhaTne/jsJD/OmXjL04OqKCUp5DqGAT7LsjAuFV0FCFoo/cfohFUbLn5inEgF4+o6xXgnM2TRhWuEtld84bc03BFS0/MEd1XdQEA61tdVTlQD2Bx+Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kA7zDbdd; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4889e045bc6so3115975e9.2
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 04:02:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775214161; x=1775818961; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Adrct6pMYPSwu3pxZgxpJsWW0ral4Y4beVwmsP0F2Ys=;
+        b=kA7zDbdd/WVQ4Xx/q55U/dn1i9eFgYKUiJ511MB7LYzhsrkw/nZk5aDMbW33rP59Lk
+         EVmBdMyA05nLQSe86QRJcLwMrHkBtoB7k5mnNic2toVIA/5uGSFZgP5tvkW65J2Q6Q7G
+         OPyRx4bL+xDFcpII5yvbJ9XQNXiMVFbHB5EJB3acnlKSygiMhudrkv8LhbYLnwt12LwK
+         tKNPanZEXE477mtVoXzCmkLVNkprcaIblo8uEEOrkNgAK78bHKCXkCwUAjFVFIkQC0Pa
+         ed2r2ofVdWTtgvn8h/easI5qusjQBsuo4ieTgaCJMz2Qlb4VnpwPhLD4j5b16LGw/KnF
+         HOZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775214161; x=1775818961;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Adrct6pMYPSwu3pxZgxpJsWW0ral4Y4beVwmsP0F2Ys=;
+        b=H5/OU+QmCFf0V94bzmsyCQUu0q4RuiyxXaP/ftwcpOVnm7u/JzSahyW+3qNfbaM6fz
+         oPrBhTuKFgeEIsvsrBkbyUkLRk5wkiRIh703rFURYlmjsqzi+3Zr/TtAk5loe+0c49gt
+         Q8H6hX5liAQWTava1AxrNz2fLjonrInqmUPr5kaR+rGS+YjiATXH0JAz6M63EBU30VRq
+         vqH/U0U+a3ek9/g9ULsMiE1xWP/cfhtopuju2RydoxtC3PDXBiDxJ4lcsmgl7/VeORih
+         gi1LB2kB6MDlLoD0w2IUUPxLgqud1TXJ9KLL7gnZY+OVSjZtk33nwl5Iez5y9JN3BQu+
+         CWoA==
+X-Forwarded-Encrypted: i=1; AJvYcCVYNXkqzePsT0YsQz0EIPeLkBEP69+4CIcOCmrvRqlrCWe3kA107rho3KwsNuv1Iu0esDhPASs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxIQ1o4QAhib8l43aEOByI+zvzdQSJyrK5PoO8XNj29Qn34x/8
+	tZgKbuUsT5aoIM+jSnbm4uK50/qZzPg+qf0CvAjnBCKa/8woeNV6M8JP
+X-Gm-Gg: ATEYQzyI9R2FVkNVgf1K75GnF7OID0Wna5yZ/ay8EYoScE05WxNuYl1p0Xj8EAlio71
+	nP6OglNNgYq7cVjd/IQS2T943TyrFILmsnj1jWzNO//oGfGDpuEkhVruslysfd25sc0myE24l10
+	/9nx0TVeQxH7ZbNJwQVcvGI0Y6FYjDbGSkenJ0xQ0gYfgkKBabu77as8RjcBqaHXhxAi1+0yVL2
+	5tRGJvlIiPifYloHH5bK7ccpKtmRJx6yG2a5/2DYCRcjL2Td0t+q74C1TV53j5cDe36fwRSSzXd
+	ChbbNzwc+WV+KUQOZZDt2+TXrtETI9qAdKkmdzUfnV8qhrJACp1dnQi4jCqdoe7k0dfBEsjVLoB
+	ye6+NuhR+tW0HBJC5Wserk+bQ2jL9PINJ+fvx7yaUS7yEL+y3DYAa3Rzn9JuQsgGhD7nEql8o4B
+	D76fsKJE3KzIdXPQg/5jq6kbKVfyVndh/oBtodIfORAI92rJo4tCYmLN699DCBaA6e6b4miQnpz
+	qg20V9rVeUyE8WHME5gOyo=
+X-Received: by 2002:a05:600c:8b33:b0:485:3fa9:358c with SMTP id 5b1f17b1804b1-488997b2291mr46130995e9.17.1775214161385;
+        Fri, 03 Apr 2026 04:02:41 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4889f6843dfsm18108325e9.12.2026.04.03.04.02.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 04:02:40 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: "'David S . Miller'" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: netdev@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] net/sched: act_nat: fix inner IP header checksum in ICMP error packets
+Date: Fri,  3 Apr 2026 12:02:38 +0100
+Message-ID: <20260403110238.16596-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233172-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[decadent.org.uk];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-233173-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.974];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,decadent.org.uk:mid]
-X-Rspamd-Queue-Id: 258723935F3
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 96687393785
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Update the inner IP header checksum when rewriting addresses
+inside ICMP error payloads, matching netfilter's nf_nat_ipv4_manip_pkt()
+behavior.
 
---=-0Yy9UR+Ah+HoV7O+CF/A
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Fixes: b4219952356b ("[PKT_SCHED]: Add stateless NAT")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ net/sched/act_nat.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On Tue, 2026-03-31 at 10:25 -0400, Sasha Levin wrote:
-> From: Nikunj A Dadhania <nikunj@amd.com>
->=20
-> [ Upstream commit 05243d490bb7852a8acca7b5b5658019c7797a52 ]
->=20
-> Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handli=
-ng()
-> to ensure it is enabled before any exceptions can occur on both boot and
-> secondary CPUs.
+diff --git a/net/sched/act_nat.c b/net/sched/act_nat.c
+index abb332dee836..cd1d299da57c 100644
+--- a/net/sched/act_nat.c
++++ b/net/sched/act_nat.c
+@@ -242,7 +242,9 @@ TC_INDIRECT_SCOPE int tcf_nat_act(struct sk_buff *skb,
+ 		new_addr &= mask;
+ 		new_addr |= addr & ~mask;
+ 
+-		/* XXX Fix up the inner checksums. */
++		/* Update inner IP header checksum after address rewrite */
++		csum_replace4(&iph->check, addr, new_addr);
++
+ 		if (egress)
+ 			iph->daddr = new_addr;
+ 		else
+-- 
+2.53.0
 
-[...]
-> Upcoming changes to CR pinning
-> behavior will break the implicit dependency, causing secondary CPUs to
-> generate #UD.
-[...]
-
-Unless those "changs to CR pinning behavior" also need to be backported
-to fix a bug, it doesn't seem like this is needed in stable.
-
-Ben.
-
---=20
-Ben Hutchings
-Nothing is ever a complete failure;
-it can always serve as a bad example.
-
---=-0Yy9UR+Ah+HoV7O+CF/A
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnPmUEACgkQ57/I7JWG
-EQloRQ//aPaz7g5IN6fOO6V9Xygh9JwKmYt5zEkO9hMQka8snn2Tx/zmpKpOZzF1
-U99tQ3nysAVQRpIVVSKrchpa5OaWYDSonE8QywJcJQttZOLNHuFYOgdtggQbL9ex
-VYhCycihRyXaKOMdHSvEXpR0O2Qh7oQA1OMGlNtSdaS33JSLPmKpgep71YeX2w2I
-gnV4gDiNkkHgKu3FBciBzNGZaIGTgmQikrjJQaIk0lZXSk+UhGB2nQd3r+FOcWKF
-8Js8tEqejdsiozrAUnxA/Yetxpe/sh8jR4icULrBzm6khcsTNH7MZJAjvOg14Hhz
-0O6JDVL9fd8uZVsmNHDdqhn1X2+s5SGMNFdGx1qnwzC+kcoboDHWmfYj5eZG0Nvy
-LlyCNCZ1oFAe/3WOyKrAxQaqPOTcWRd6dA0hgGOHZJXG86bYvsDwI8wdSkLVpVaD
-5qY5CevTRBVoiyK/bvTIqXTUHSXz+YpCn9DrCv4M52KygKmbX5u6/2YmMf/tL3Ub
-hBCl4Dp0Iiexo6wK3pBVFwyHJJrSq5zY0Ip3dnK8vt6H6uk7kbGJ82KGFOxXh9M3
-OWfCoc7txiGSgPI2UrjSgN1VdA8/X5iZUVXNzItHCNVIXJmD3bhTrAFtYtn5Gcpr
-zZM4bVb381vXnXQbkcAgIDTiy6QFmXc+ylE9Nkvl5dfMeisuSBY=
-=LdtF
------END PGP SIGNATURE-----
-
---=-0Yy9UR+Ah+HoV7O+CF/A--
 
