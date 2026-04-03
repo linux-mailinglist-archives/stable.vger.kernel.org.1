@@ -1,160 +1,184 @@
-Return-Path: <stable+bounces-233180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPLcDuypz2noywYAu9opvQ
-	(envelope-from <stable+bounces-233180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:52:12 +0200
+	id 4AiVBLerz2kPzAYAu9opvQ
+	(envelope-from <stable+bounces-233181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:59:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94327393D11
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 657C5393DFE
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6339E3028B0E
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 11:51:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D557300BC83
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 11:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB67238C2DE;
-	Fri,  3 Apr 2026 11:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAAB3B47D1;
+	Fri,  3 Apr 2026 11:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="odx/KUTp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXHTqBBq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD8B1D5160
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 11:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8993B7746
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 11:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775217072; cv=none; b=N+4nEnjaHhG6DM1Sav5mTl0SuvYA/iqsyIRAC6v8bsHudfRZlKQdKckq8btQmND6dVzPKZ1dmtuWIMTzo6ssHdejqkOCMexPInl2nnQXrj3ASwj1180J7kADuNby6m21FmQpCbpGd/jDzm26QqrWbb3258bulXipfdrYYLQoQEw=
+	t=1775217514; cv=none; b=i8zqSwmuYXMjnIl1DYXbDzHDG1UXnJJk9vJbrwYW2L9eow4mH/e4dehHS98LJXuyhaPuc0tzNDDVjyKJTv8pjJSjUJE4U+Xj2HrrU6Fp1XW/rtFZ55U06ONpQkyHSiWk7j02+QcEZBQEJ9zHJhbGkuGbHk/HYwUun5+CZpL80OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775217072; c=relaxed/simple;
-	bh=PtVXxQMu1XCqLQE3Ta/Rr+nOPLfeF/uyX7a+P5rUXjQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M6CgMYqLjiOz+tyQEi6tG1NaHjB26gu9w63LLW1y5WZSwamuckjkZ8vV3JRpVXSmLTAUwnmx6jraHWoHA5L8mG8Et76GdtAu/MBmDx4e00X1JN28IhTg2cjeiISLg77OmKw7FZFZuzJP1C7G2CTn0l5UqQW8ec/Y6CaQm0gq7aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=odx/KUTp; arc=none smtp.client-ip=209.85.160.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40974bf7781so2513540fac.0
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 04:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1775217069; x=1775821869; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AZ/fEHoV5W/nGzj71vUwg8RTluJd/NuseGmKhwyWzDg=;
-        b=odx/KUTp0FPvB0hCdmo/VSHY2/+3NSZzZ3mrpvLYSjxsxBaqMS6BbL/qvgQdCiAeyw
-         aEZrw9D+fY/3iU4JYQ49KPQz9cUPx33ZBI9DODWk3uCiyCtwz8t25dpKZR3/2ERdCSrV
-         LhmY/hW+2aytfqtDaEo1PCQowWB+sr8KGdkwU6yZq0pddn1mFPSnleoTfLeLPiMetaMp
-         HJu8RE9KEW6WzjAv4dGLI69rmsWhmJy2wpDUEMCXeRhszCAssVVKS7g46MsgqsThjWq9
-         k94Sy4vn6hqi9q4RRRtsn4eZXXJo+rPcB1/X8p6B99h7Jm9BHCjdL3uUME9HvS1X10fY
-         sliw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775217069; x=1775821869;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AZ/fEHoV5W/nGzj71vUwg8RTluJd/NuseGmKhwyWzDg=;
-        b=IHc1SeeABpvrAkc3t7Sgq90H4uFqNLCBFmAmq9iUNA0lctACEwSOaspqTGeGW2lbyu
-         zyCUc13Ys/a+MRPxs9Ij9QdhZfD0CfgWE49btsfEt/wKMrSf5v6nwtDqpcRbLN1/SpnS
-         5tnk7UNJQeHvVDbE/Mwv0UWgC6BT1I4xyty54NBr8wkNUctTeTVMXh2h96mtUk1s7U2Z
-         FuEptQaGlP9i/ocoU1wBunNKKbHPRr5ozrNZqBwyqGYknBUXsI1wFjlEN0oNJZ/73ZhZ
-         bzFOuf1XHU1B3pQ4aoxw9EsuAF5JbDfzP4JFJrYravSSrmEl++82AtEbZdANoQ0dW7Vk
-         HSXg==
-X-Gm-Message-State: AOJu0Yx/PjtfERf/i4Ri0As7+tro8HO/Q7WIrKlVEzHiigGBbil9PEyY
-	CyshcMqswozl6EhJlmNwDeRk0xszDz6Gga6B7C3/tvEv00OVnF36gBE4ObHjLdaxgAnw9M4VD7L
-	t5DRH
-X-Gm-Gg: ATEYQzyDByOvWCfWHaTrl2cr0iSvM/srrsgNUUbj/gwMr6VnlKKhiGRbnW9pcnUuq0E
-	oIK6uZwqSQdfAm51/DF0Tw0YctOlXyQrCoc0N6icyMWL+esLuSmUgd3HLjnk4VlIMMBz+5N2/RD
-	QrJSIX6Msz/qcKGeK6wDwLRhJXBdEKwfPA4Xtc9txDg9+yQrDIIY6dCtwvERcg8D4/0EIzkhCAh
-	YtTgnn+5B7rZjZuxbJ1nZTicI1F8bL4iUZitjI+Esod0M2HUWgPPM0NCo8UhrfbS+VpVX7AZDeK
-	GGA3j7d3/i2MLR1T4WTYrzDRjPOncyHfT2io6PS6+sYJ8y4C6AvNFL/p+HyEzQbyTy8uIW2j6/G
-	McR5EijSTiPD2ZeNsPmi3H5/ue7kBqOG/x0Fa/uRVclB+gjgMGwmHXdAbW2ahgpav9Ym71gMB0f
-	aSliHrZ2NdDeFf0HyJpUMy869qSSfMWwyzd+nqR0ECGoeBHl1YWUT2u1daipgwDIdH2JDtOWg2u
-	Fv0TEJbFw==
-X-Received: by 2002:a05:6870:506b:b0:417:6f:9679 with SMTP id 586e51a60fabf-422f37e1b4cmr2969417fac.19.1775217069361;
-        Fri, 03 Apr 2026 04:51:09 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-422eaed47easm4841032fac.4.2026.04.03.04.51.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Apr 2026 04:51:08 -0700 (PDT)
-Message-ID: <58056f1e-fa49-49c0-8688-da6f11e492d7@kernel.dk>
-Date: Fri, 3 Apr 2026 05:51:08 -0600
+	s=arc-20240116; t=1775217514; c=relaxed/simple;
+	bh=bicwKsHvC2UxsH+zyn9ohrV2LsUzzi3uoLgxoxQZUN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VC4v70sCe7+Yg8xZcnMftyRrB7Pabu3MmMgqIzqY84X47s7N4gSOtFl8JyaAYU724pos6XDHGkC/kpkXNjYfJEE/yQgs6h22DZ5emdyqT1SYU+5BbtWXSSMPNFw4BWP+L+tgqSNRtusHQHaImhwS36NgSjA6GCQ5mrFe9nC5awY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXHTqBBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67714C4CEF7;
+	Fri,  3 Apr 2026 11:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775217514;
+	bh=bicwKsHvC2UxsH+zyn9ohrV2LsUzzi3uoLgxoxQZUN4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pXHTqBBqlDnDixnNrZOX+oTySpJQ1h3JHJ17Ks9ZO5PEBxPSMc+6teku9cdrpRT1H
+	 zyyaqzMEOP5qtUB6jIUEoz07bVQwvHJDnqfOykvI1+4s0gjsQxVkKnoVPr6icRO2h3
+	 e6itli/JnHOsA70pJUpyhVLuaah6MsCU4LGybn1TcygVPg/NoimENu0FvzlVG46JM+
+	 1q3LJ4ayVyd7B4t8CRT41NzZHl0n4dA4worgbosLpl5ihXTCxP3phM4h/VcfFqa5Ix
+	 chCgYtCyu2BTYcJXK2zN/aXqi4LPz/I3EUP5dCpbytM97uBGxFD7kgSZWqU0Pq0IQW
+	 /4IK9l1ld2U+w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Baokun Li <libaokun@linux.alibaba.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
+Date: Fri,  3 Apr 2026 07:58:31 -0400
+Message-ID: <20260403115831.2109038-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026033001-credibly-reclining-650d@gregkh>
+References: <2026033001-credibly-reclining-650d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: 6.12-stable series inclusion
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable <stable@vger.kernel.org>
-References: <493b91ff-32f2-48fc-88e4-0e9f7dd645d8@kernel.dk>
- <2026040344-payee-uncut-9696@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2026040344-payee-uncut-9696@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233180-lists,stable=lfdr.de];
-	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	RCPT_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233181-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:mid,kernel-dk.20251104.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 94327393D11
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,iloc.bh:url,suse.cz:email]
+X-Rspamd-Queue-Id: 657C5393DFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/3/26 5:47 AM, Greg Kroah-Hartman wrote:
-> On Fri, Apr 03, 2026 at 05:28:01AM -0600, Jens Axboe wrote:
->> Hi,
->>
->> 6.18 change how ring selected buffers are handled for io_uring, in an
->> attempt to harden that feature. It'd be nice to have this in 6.12 as
->> well, as it's a long term release. The actual hardening series isn't
->> that large, 12 patches, but it depends on a previous smaller series as
->> well. On top of these two series are a few kbuf related fixes that
->> either ended up in mainline as fixes the former two series, or just
->> fixes that haven't been backported to 6.12-stable yet.
->>
->> Apologize for the big series, but it's always better to keep the stable
->> bases closer to current upstream than it is to diverge them and end up
->> with different bugs in -stable than in upstream.
->>
->> On top of that, this actually kills a lot more code than it adds, which
->> is always a good thing!
->>
->>  8 files changed, 290 insertions(+), 379 deletions(-)
->>
->> Please apply, thanks.
-> 
-> All now queued up, thanks!
+From: Baokun Li <libaokun@linux.alibaba.com>
 
-That was quick, thanks Greg!
+[ Upstream commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 ]
 
+During code review, Joseph found that ext4_fc_replay_inode() calls
+ext4_get_fc_inode_loc() to get the inode location, which holds a
+reference to iloc.bh that must be released via brelse().
+
+However, several error paths jump to the 'out' label without
+releasing iloc.bh:
+
+ - ext4_handle_dirty_metadata() failure
+ - sync_dirty_buffer() failure
+ - ext4_mark_inode_used() failure
+ - ext4_iget() failure
+
+Fix this by introducing an 'out_brelse' label placed just before
+the existing 'out' label to ensure iloc.bh is always released.
+
+Additionally, make ext4_fc_replay_inode() propagate errors
+properly instead of always returning 0.
+
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/ext4/fast_commit.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index be768ef1fd168..5565ba89b2457 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1480,19 +1480,21 @@ static int ext4_fc_replay_inode(struct super_block *sb, struct ext4_fc_tl *tl,
+ 	/* Immediately update the inode on disk. */
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = sync_dirty_buffer(iloc.bh);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 	ret = ext4_mark_inode_used(sb, ino);
+ 	if (ret)
+-		goto out;
++		goto out_brelse;
+ 
+ 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
+ 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
+ 	if (IS_ERR(inode)) {
+ 		jbd_debug(1, "Inode not found.");
+-		return -EFSCORRUPTED;
++		inode = NULL;
++		ret = -EFSCORRUPTED;
++		goto out_brelse;
+ 	}
+ 
+ 	/*
+@@ -1508,13 +1510,14 @@ static int ext4_fc_replay_inode(struct super_block *sb, struct ext4_fc_tl *tl,
+ 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
+ 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
+ 	sync_dirty_buffer(iloc.bh);
++out_brelse:
+ 	brelse(iloc.bh);
+ out:
+ 	iput(inode);
+ 	if (!ret)
+ 		blkdev_issue_flush(sb->s_bdev, GFP_KERNEL);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /*
 -- 
-Jens Axboe
+2.53.0
 
 
