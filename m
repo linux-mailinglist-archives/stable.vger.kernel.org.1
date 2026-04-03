@@ -1,164 +1,169 @@
-Return-Path: <stable+bounces-233164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id tkXxLoCQz2lqxQYAu9opvQ
-	(envelope-from <stable+bounces-233164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 12:03:44 +0200
+	id WCroDUOPz2kzxQYAu9opvQ
+	(envelope-from <stable+bounces-233165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 11:58:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023833931AF
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 12:03:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBB13930FB
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 11:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3BEE3067594
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 09:53:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1787A309E03B
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 09:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446783947A3;
-	Fri,  3 Apr 2026 09:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE3E3A7588;
+	Fri,  3 Apr 2026 09:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TYLizsVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFXzBAJt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701623A169E
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 09:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D293921CD;
+	Fri,  3 Apr 2026 09:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775209835; cv=none; b=qE0TrooSbJoVqcpzB6Su8pNS+l0AMGWpfUg/kKGKOWZUVOYj6LaQIMTYX7sM7Dp8RBkrYWjf3coT0HoiCsZAfW5kl/2A2JmrDwvGfw3JNH8btiPEaUoLDyoC4DbBcTgmGQ+Tfme1bfuzWYnsM2kiD2gHFyr0cMsEUh4QsJuEX3A=
+	t=1775209950; cv=none; b=jgJ4uJpR8AWJLUc930Q1/GbySIXkm2q30x7/xBIhInzqf+csveFsvDG2SpwX6r52ouzDLVXgxUwjcq0WFKj88NmwwBnCeMe4zX2Mc91YwBSEi+avLlsK0XnsMS4MutHKnSCdyYpyZJEu3UJljQ1lCG6F1NrVp2FP8LAnuZUDALk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775209835; c=relaxed/simple;
-	bh=4wAOxts4EStG6lpegLK0Ji5fza/gxnnRX+GBzYLxjCA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XxUeFx49LpWb3QNmz6YoWmpg8lRxbBqdwBoDCmbYv7gQeRh+QxFEhEvXUbd3yglEQYqDtjbdYZHkVWmZdEGLD8GSJM8ZfZ6Yvtd3UWLkrCw8hFMj8r/rzp8SdKXZn4CT+nBwmkoaNRkpzvG5rjwZPD2NoJFKnjXiM0yQzonR+tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TYLizsVG; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c76bde70ec9so702106a12.2
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 02:50:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775209821; x=1775814621; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4KReXkppPG3uNOMveoUqnh+3H0YwKOe6D48GuF2fODs=;
-        b=TYLizsVGH3d5oXqQzlhtBWQDF8SenJDWOIyl2JM6+j7/M5CIu8ohvSm5NJtH5jLTpo
-         ZcdvwpZs99osHJMIhCNGKkWtjBo/wTwSJT6rWxFSrfGX1iS7tSXdDWPD726ac9WJ9PzQ
-         7LUvs6L9A0yhKLXtgDdKbWPmXSqwfygbHo00Hy5/DT6xoWXftf/XEEb//M1gbcOOVugy
-         lWAj4CDN8VoJOgRaSD5+qb4G7D66rxl2xlPxLl5U923r0nxl5g/IPSsmZMtMrML0n87R
-         3eXXXRoZGe3YPx4bKJ79Y+mhgG3mRyrJB9mD2wQ3CX1Q8MA5EtJQTTjSo4CR8ivLq4DE
-         gUMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775209821; x=1775814621;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4KReXkppPG3uNOMveoUqnh+3H0YwKOe6D48GuF2fODs=;
-        b=LDVmJOuAKAR6tYTA50slsHCAjgpEGN5O8x3CBnP5PfMPvTk9MMRl9E8BfCAX+r9nIO
-         xO2RwzzxVqZES3yo2P74UZIXendXi5HiMIRhyrD/UaB2BIBEGNDYybzk4glxHc117nB0
-         IARsGMvwQxoYFmWcWPhg5UGIOw+cvKaWOBqtSyM5hug9pomcc9ZzFoQXMDDEankcE38s
-         JLXJrNubGVbFxsie9XlmnT39GOmUDIOw/abP09BGfdtXB4UBE8wICo21QL+pT2l3pB8d
-         9WwWQP45do4kiS94W3eRntamRy3BEMtwi5jMa40S02SINhdylPVe9eKO5hpvS4qfifK2
-         9v/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXDvAHTvUjh0I2QkSyE3V9GDej3+o2/+uq7uVmCTN9P0HBHV4DvwSV94xzBPlau6xwHZvRFKBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1QlNn2G3rxyI9V+C8TLtduGQrqRuBj/9u5Da+SKwxi7OzF4t8
-	3TZkfnVe/xpmBY1+uT5Ko4FSKR8bB3TZZigjc2vO6TAoFu3W3VLXmTrr
-X-Gm-Gg: ATEYQzzo4uvDzCISZosugYv+evER+ciyRYOSQfH4SRaHvG17sLy9GJ0ouqktBF6DgOR
-	JhoGktDDut0CLzFmjjDRv/a2aIsTTmU8aU6xuoNUV3y0HfY190tvKT7SR/BlZZoptymtmLE7hZ8
-	+Kf6fBFuqaiBjcuj3DsHxiDbaa+wjoyBGeCKxdgSBONcSs/kdNAc8QylgKqUvJB6bYaNDwWS2Sa
-	YpRoW2+Aukx98yKofpUyIi4+voOK/kbnvrnR0LnGffUGas8lWR6q7+lwnqSfPWv/PlQKgfCScCy
-	1nUvWetHWMeOak80gHKYw+IMv1yRrx6xw1O9H4rbPT5Gw3X9MqeNWDQJ4lM4IUC9+SctlaREe36
-	+sbHuXu+wA15bmUyMsh/mOIcBIju+Q/P6v0rIsKI1pmU2HkViVYEAKeYnYc4XyHqxQuQbxByd7w
-	LcW0xZbrqVgMOfmd8LA6laIDYZJk0rUh5GwtJrHGl3K73wVwUXYzc=
-X-Received: by 2002:a05:6a20:7d8a:b0:39b:81bf:15ed with SMTP id adf61e73a8af0-39f2f3358c6mr2215246637.52.1775209821060;
-        Fri, 03 Apr 2026 02:50:21 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c6561fe9sm4612331a12.15.2026.04.03.02.50.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 02:50:20 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: yanquanmin1@huawei.com
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 17:50:19 +0800
-Message-ID: <20260403095019.29222-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <8a902208-675d-4564-bb31-fdefcaebb752@huawei.com>
-References: <8a902208-675d-4564-bb31-fdefcaebb752@huawei.com>
+	s=arc-20240116; t=1775209950; c=relaxed/simple;
+	bh=xiVT3gj/2E+pbcwqXN32TQj4dBsR1wOkLVWLoPsjit0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I8j6pjFFpCwIhJRsWMji8LP88RoP7CTAaMf62Ox3Lzim0aMnL24YU3HZ1hl3RWFDVRugQN6tO+Lw4Mm1gWcOjNWPtcB9YM+SZrhInLULJSYUR5OAxe+NfzUiIdEzBOV/31gKhCzXgmFyU6vPgHz0uEpe/qoW+lGo9u1/0VbUlTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFXzBAJt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92BFC4CEF7;
+	Fri,  3 Apr 2026 09:52:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775209949;
+	bh=xiVT3gj/2E+pbcwqXN32TQj4dBsR1wOkLVWLoPsjit0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EFXzBAJt2ddUEyUQ/YRZn4xFCcf7zpjcZFo86tApebE3YqWw9diNizTS69eYCv4Re
+	 efXTlIMhteOKh2IjTvVQwIC3GBA0jKTMbZmdZqivTW0Po7S4gwvZlGORvjlOif8oko
+	 5H5hbbNYitGhTSmZfS1SoNWQdXkudiNmS3gt/Xtc=
+Date: Fri, 3 Apr 2026 11:52:19 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "Igor Klochko (Nokia)" <igor.klochko@nokia.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Philippe Belet (Nokia)" <philippe.belet@nokia.com>
+Subject: Re: [PATCH v4] uio: fix unregister_device
+Message-ID: <2026040353-nautical-struggle-f43b@gregkh>
+References: <8927c7a9-e23b-4a02-a88e-1eb47fe287e6@nokia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8927c7a9-e23b-4a02-a88e-1eb47fe287e6@nokia.com>
+X-Spamd-Result: default: False [3.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	FROM_DN_EQ_ADDR(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233164-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,lists.linux.dev,kvack.org,kernel.org,vger.kernel.org];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233165-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[aethernet65535@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-0.984];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 023833931AF
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,outlook.com:url,lore:url]
+X-Rspamd-Queue-Id: CCBB13930FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Quanmin,
-
-On Fri, 3 Apr 2026 16:59:38 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
-> [...]
+On Thu, Apr 02, 2026 at 04:19:09PM +0000, Igor Klochko (Nokia) wrote:
+> uio: mirrored uio_register/unregister_device
 > 
-> I'm a little confused, what does "causing kdamond to terminate
-> unexpectedly" mean? The damon_lru_sort_apply_parameters function will
-> eventually call damon_commit_ctx, and the power-of-2 check is always
-> performed. Is the early check here to prevent some more broken case
-> or am I missing something?
+> When uio devices are created end removed in parallel, then we sometimes
+> encounter kernel traces along the following lines:
+> 
+>   sysfs: cannot create duplicate filename '/class/uio/uio899'
+> 
+> which stem from:
+> 
+>   sysfs_create_link+0x24/0x50
+>   device_add+0x2f0/0x780
+>   __uio_register_device+0x18c/0x550
+> 
+> The sysfs directory creation is performed synchronously as part of the
+> device_add call. The high level sequence for uio registration is:
+> 
+>   1. uio_get_minor (idr call, in critical section)
+>   2. device_add (leads to sysfs directory)
+>   3. manage attributes (popuplates part of the sysfs directory)
+> 
+> For unregistration we have by default the following flow:
+> 
+>   1. clean-up attributes
+>   2. uio_free_minor (idr call, in critical section)
+>   3. device_unregister (cleans up sysfs directory)
+> 
+> This creates a racing problem when we are in parallel creating and
+> removing uio devices.
+> The uio-minor that is freed when calling uio_free_minor can be
+> claimed by a subsequent uio_get_minor call.
+> The problem is that the device_add flow can end up triggered,
+> leading to a sysfs directory creation; while the
+> device_unregister flow has not yet cleaned up the sysfs directory.
+> 
+> This patch cleans up this problem by mirroring the registration and
+> Unregistration flow correctly.
+> After this patch, the unregistration flow becomes:
+> 
+>   1. clean-up attributes
+>   2. device_unregister
+>   3. uio_free_minor
+> 
+> Fixes: 0c9ae0b86050 ("uio: Fix use-after-free in uio_open")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Philippe Belet <philippe.belet@nokia.com>
+> Reviewed-by: Igor Klochko <igor.klochko@nokia.com>
 
-terminate unexpectedly means - termination not initiated by the user.
-(e.g., not by echo N > enabled)
+You sent this patch, so you too must sign off on it.
 
-The issue is not about whether the check exists, but about when it
-happens.
+> ---
+>  v4:
+>   - reformat the patch
+>  v3:
+>   - Updated email subject
+>  v2:
+>    - Fixed commit message wrapping
+>    - Placed 12 char sha1 in "fixes"
+>    - cc'd stable
+>  v1:
+>  https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore
+>  .kernel.org%2Flkml%2FAM9PR07MB720434A2B0CC99BC0BDCD74E8D61A%40AM9PR07M
+>  B7204.eurprd07.prod.outlook.com%2F%23&data=05%7C02%7Cigor.klochko%40no
+>  kia.com%7C065fe0dc34a742a815d208de90bee494%7C5d4717519675428d917b70f44
+>  f9630b0%7C0%7C0%7C639107346738079714%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0e
+>  U1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIld
+>  UIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=2h7wcsPPy0iiFG0jCYCTgl3iRzan%2FSIP2F5
+>  xDJrzHc4%3D&reserved=0
 
-In damon_commit_ctx():
+Not really a valid url :(
 
-    dst->maybe_corrupted = true;
-    if (!is_power_of_2(src->min_region_sz))
-        return -EINVAL;
+thanks,
 
-Even though -EINVAL is returned, the 'maybe_corrupted' flag has already
-been set. When kdamond sees this flag, it terminates.
-
-My patch prevents this by rejecting invalid 'min_region_sz' before
-damon_commit_ctx() is called, so 'maybe_corrupted' never gets set for
-invalid inputs.
-
-Best regards,
-Rui Yan
+greg k-h
 
