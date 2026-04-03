@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-233152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Ie5Kpxmz2ngvwYAu9opvQ
-	(envelope-from <stable+bounces-233152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 09:05:00 +0200
+	id CGu7MEd8z2mvwgYAu9opvQ
+	(envelope-from <stable+bounces-233153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 10:37:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442BB391905
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 09:05:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 269EB3922F5
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 10:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5F657302FF08
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 07:04:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 722F830BC407
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 08:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF13332EC8;
-	Fri,  3 Apr 2026 07:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE62A37BE75;
+	Fri,  3 Apr 2026 08:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztYzWYrz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJx9s9Ij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A1D18DB01;
-	Fri,  3 Apr 2026 07:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9492E1F06;
+	Fri,  3 Apr 2026 08:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775199896; cv=none; b=OPsuzG0LjRB765WD/m+NhZS9vZHDCnphlVYUCLXtfFquk50zwt5H/+r/428+waKIaKItFYGkhv0YeY6NVmTy+UmuVGwOZmj6w3QE2oIMXvB13ZDkbMDdOVeEhELN+NEGiTn4kdybWA1lJIig0Y413U6FTA+D4hqQtQ/BvIePTuc=
+	t=1775205014; cv=none; b=kFuN93iFC6Rhw+Ta2buLKeHx/ciqIpprFwijB0iOUufBqF88c97luroPUydAhJf+WrMPbin7Up9HwpnETygUQt95EriSKCM94Jw5OFYuuwtCvJkbwt+MDqYXENY/Q2Q6kpR6yLjfDk3dnfBAEWky4Xly7q8TMI5l4gTCgfIE7kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775199896; c=relaxed/simple;
-	bh=zIq4bRUdbB9hChVlNkwCmJZfurFLFqGlwxfhps8H2eg=;
+	s=arc-20240116; t=1775205014; c=relaxed/simple;
+	bh=Cd1EZ76xkf/x2fz9/IYK6lBMjtKYjfEikACFflOtBW0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EuTarrzYmfJ+ZX/8tTVTfAkxIfe+9LVAKzH5E5orUzcJMtVDV2lhI0WYx4niU0LiZqGAp9vwYfaPtiMrz/j8MonU6vaw+K8SsrNWWbG6Ni22dNugGdXBXYB6LBDUsFeJlZzp+6A2ZSIem8jA09YRk2WZ0bktLbTa1IZPzPl0a1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztYzWYrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E427EC4CEF7;
-	Fri,  3 Apr 2026 07:04:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775199895;
-	bh=zIq4bRUdbB9hChVlNkwCmJZfurFLFqGlwxfhps8H2eg=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=ofIJwxykgjjocwz9CclgkIMnHt+Y0rqaHknIvRt3BD+M54s3KLMCw3HnHQb13TVvG6kbZmuP5NslntULeFeKOUxlcmN8/+KbzeHrWTXXt2zkUZEcKWD7a7G1m1DXL6PPGvhBmdV1VEtkYnoIxHAIHK2e1xqfcqM4+3KDNL2qztQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJx9s9Ij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91EEC4CEF7;
+	Fri,  3 Apr 2026 08:30:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775205014;
+	bh=Cd1EZ76xkf/x2fz9/IYK6lBMjtKYjfEikACFflOtBW0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ztYzWYrz09zJhbTpz6iFRo71bGRCF0ougbZNSvKkCFcWt3eoRNMgWLYU2p+FXVE2L
-	 XViWaezTRngGPU3xm/pdGnfnfQqm4Nki1Rwd0y+LMoFuHMf/Xnp/rWzF8MR/Ae6wyT
-	 OJe2XCpmRZlhMFHQq42XXvEEiUmxBV8VR8o9vMSQ=
-Date: Fri, 3 Apr 2026 09:04:52 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Paul Burton <paul.burton@mips.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Eric Dumazet <edumazet@google.com>, Toshi Kani <toshi.kani@hp.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Alexey Kardashevskiy <aik@ozlabs.ru>,
-	Johan Hovold <johan@kernel.org>, stable@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/9] driver core: Don't let a device probe until it's
- ready
-Message-ID: <2026040319-seventeen-humorless-5541@gregkh>
-References: <20260403005005.30424-1-dianders@chromium.org>
- <20260402174925.v3.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+	b=BJx9s9Ijnd3WYIlzq+9eC5jyjv5XIWfpQzQ5SvH7iVQcsBHm6h3SN2ad1110jvuWd
+	 bMnVTfBPmFp7gUltNJ2jUKy5HVCDcwMaqWPq8u05RCXMBx3rB0BePm65f0lM+i8FTW
+	 jrginlok22FrxLXRsBNqv3l2I4Wtmdzr2fJFxtqaBCNz61Zq81BLWhx6ApV8HC9PRD
+	 9hL/udhzm/BoqyKQlXBQg8t2syDTeWxK+5ZOpeYMgH9CWxI5UD15xSIXxgsQal2pFJ
+	 F8syoL7Ugpx/zV0Snia938z1XZWEeVrbtX0WJIDHIlaD7jGjQL97cmZlprkXWSQsHT
+	 WTFku4cedjzRA==
+Date: Fri, 3 Apr 2026 09:30:09 +0100
+From: Simon Horman <horms@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	andersson@kernel.org, yimingqian591@gmail.com,
+	chris.lew@oss.qualcomm.com, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] net: qrtr: ns: Limit the maximum server registration
+ per node
+Message-ID: <20260403083009.GA11973@horms.kernel.org>
+References: <20260325104415.104972-1-manivannan.sadhasivam@oss.qualcomm.com>
+ <20260325104415.104972-2-manivannan.sadhasivam@oss.qualcomm.com>
+ <20260327095832.GC111839@horms.kernel.org>
+ <as3zucfwr4z2x5pxww6ognmqcujkwnhppulm7jquex6fy6sqn5@qa33h5mxxdz7>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,215 +68,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260402174925.v3.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+In-Reply-To: <as3zucfwr4z2x5pxww6ognmqcujkwnhppulm7jquex6fy6sqn5@qa33h5mxxdz7>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233152-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233153-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 442BB391905
+X-Rspamd-Queue-Id: 269EB3922F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 02, 2026 at 05:49:47PM -0700, Douglas Anderson wrote:
-> The moment we link a "struct device" into the list of devices for the
-> bus, it's possible probe can happen. This is because another thread
-> can load the driver at any time and that can cause the device to
-> probe. This has been seen in practice with a stack crawl that looks
-> like this [1]:
+On Fri, Mar 27, 2026 at 03:40:01PM +0530, Manivannan Sadhasivam wrote:
+> On Fri, Mar 27, 2026 at 09:58:32AM +0000, Simon Horman wrote:
+> > On Wed, Mar 25, 2026 at 04:14:14PM +0530, Manivannan Sadhasivam wrote:
+> > > Current code does no bound checking on the number of servers added per
+> > > node. A malicious client can flood NEW_SERVER messages and exhaust memory.
+> > > 
+> > > Fix this issue by limiting the maximum number of server registrations to
+> > > 256 per node. If the NEW_SERVER message is received for an old port, then
+> > > don't restrict it as it will get replaced.
+> > > 
+> > > Note that the limit of 256 is chosen based on the current platform
+> > > requirements. If requirement changes in the future, this limit can be
+> > > increased.
+> > > 
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+> > > Reported-by: Yiming Qian <yimingqian591@gmail.com>
+> > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > 
+> > Reviewed-by: Simon Horman <horms@kernel.org>
+> > 
+> > > ---
+> > >  net/qrtr/ns.c | 24 ++++++++++++++++++++----
+> > >  1 file changed, 20 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+> > > index 3203b2220860..fb4e8a2d370d 100644
+> > > --- a/net/qrtr/ns.c
+> > > +++ b/net/qrtr/ns.c
+> > > @@ -67,8 +67,14 @@ struct qrtr_server {
+> > >  struct qrtr_node {
+> > >  	unsigned int id;
+> > >  	struct xarray servers;
+> > > +	u32 server_count;
+> > >  };
+> > >  
+> > > +/* Max server limit is chosen based on the current platform requirements. If the
+> > > + * requirement changes in the future, this value can be increased.
+> > > + */
+> > > +#define QRTR_NS_MAX_SERVERS 256
+> > > +
+> > >  static struct qrtr_node *node_get(unsigned int node_id)
+> > >  {
+> > >  	struct qrtr_node *node;
+> > > @@ -229,6 +235,17 @@ static struct qrtr_server *server_add(unsigned int service,
+> > >  	if (!service || !port)
+> > >  		return NULL;
+> > >  
+> > > +	node = node_get(node_id);
+> > > +	if (!node)
+> > > +		return NULL;
+> > 
+> > This is not new behaviour added by patch, but If I understand things
+> > correctly, node_get will allocate a new node if one doesn't already exist
+> > for the node_id.
+> > 
 > 
->   really_probe()
->   __driver_probe_device()
->   driver_probe_device()
->   __driver_attach()
->   bus_for_each_dev()
->   driver_attach()
->   bus_add_driver()
->   driver_register()
->   __platform_driver_register()
->   init_module() [some module]
->   do_one_initcall()
->   do_init_module()
->   load_module()
->   __arm64_sys_finit_module()
->   invoke_syscall()
+> Yes!
 > 
-> As a result of the above, it was seen that device_links_driver_bound()
-> could be called for the device before "dev->fwnode->dev" was
-> assigned. This prevented __fw_devlink_pickup_dangling_consumers() from
-> being called which meant that other devices waiting on our driver's
-> sub-nodes were stuck deferring forever.
+> > I am wondering if any bounds are placed on the number of nodes that can be
+> > created. And, if not, is this a point of concern from a memory exhaustion
+> > perspective?
+> > 
 > 
-> It's believed that this problem is showing up suddenly for two
-> reasons:
-> 1. Android has recently (last ~1 year) implemented an optimization to
->    the order it loads modules [2]. When devices opt-in to this faster
->    loading, modules are loaded one-after-the-other very quickly. This
->    is unlike how other distributions do it. The reproduction of this
->    problem has only been seen on devices that opt-in to Android's
->    "parallel module loading".
-> 2. Android devices typically opt-in to fw_devlink, and the most
->    noticeable issue is the NULL "dev->fwnode->dev" in
->    device_links_driver_bound(). fw_devlink is somewhat new code and
->    also not in use by all Linux devices.
-> 
-> Even though the specific symptom where "dev->fwnode->dev" wasn't
-> assigned could be fixed by moving that assignment higher in
-> device_add(), other parts of device_add() (like the call to
-> device_pm_add()) are also important to run before probe. Only moving
-> the "dev->fwnode->dev" assignment would likely fix the current
-> symptoms but lead to difficult-to-debug problems in the future.
-> 
-> Fix the problem by preventing probe until device_add() has run far
-> enough that the device is ready to probe. If somehow we end up trying
-> to probe before we're allowed, __driver_probe_device() will return
-> -EPROBE_DEFER which will make certain the device is noticed.
-> 
-> In the race condition that was seen with Android's faster module
-> loading, we will temporarily add the device to the deferred list and
-> then take it off immediately when device_add() probes the device.
-> 
-> Instead of adding another flag to the bitfields already in "struct
-> device", instead add a new "flags" field and use that. This allows us
-> to freely change the bit from different thread without holding the
-> device lock and without worrying about corrupting nearby bits.
-> 
-> [1] Captured on a machine running a downstream 6.6 kernel
-> [2] https://cs.android.com/android/platform/superproject/main/+/main:system/core/libmodprobe/libmodprobe.cpp?q=LoadModulesParallel
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2023c610dc54 ("Driver core: add new device to bus's list before probing")
-> Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-> Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> v1: https://lore.kernel.org/r/20260320200656.RFC.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid
-> v2: https://lore.kernel.org/r/20260330072839.v2.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid
-> 
-> As of v2 this feels like a very safe change. It doesn't change the
-> ordering of any steps of probe and it _just_ prevents the early probe
-> from happening.
-> 
-> I ran tests where I turned the printout "Device not ready_to_probe" on
-> and I could see the printout happening, evidence of the race occurring
-> from other printouts, and things successfully being resolved.
-> 
-> I kept Alan and Rafael's Reviewed-by tags in v3 even though I changed
-> the implementation to use "flags" as per Danilo's request. This didn't
-> seem like a major enough change to remove tags, but please shout if
-> you'd like your tag removed.
-> 
-> Changes in v3:
-> - Use a new "flags" bitfield
-> - Add missing \n in probe error message
-> 
-> Changes in v2:
-> - Instead of adjusting the ordering, use "ready_to_probe" flag
-> 
->  drivers/base/core.c    | 13 +++++++++++++
->  drivers/base/dd.c      | 12 ++++++++++++
->  include/linux/device.h | 15 +++++++++++++++
->  3 files changed, 40 insertions(+)
-> 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 09b98f02f559..8d4028a2165f 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -3688,6 +3688,19 @@ int device_add(struct device *dev)
->  		fw_devlink_link_device(dev);
->  	}
->  
-> +	/*
-> +	 * The moment the device was linked into the bus's "klist_devices" in
-> +	 * bus_add_device() then it's possible that probe could have been
-> +	 * attempted in a different thread via userspace loading a driver
-> +	 * matching the device. "DEV_FLAG_READY_TO_PROBE" being unset would have
-> +	 * blocked those attempts. Now that all of the above initialization has
-> +	 * happened, unblock probe. If probe happens through another thread
-> +	 * after this point but before bus_probe_device() runs then it's fine.
-> +	 * bus_probe_device() -> device_initial_probe() -> __device_attach()
-> +	 * will notice (under device_lock) that the device is already bound.
-> +	 */
-> +	set_bit(DEV_FLAG_READY_TO_PROBE, &dev->flags);
-> +
->  	bus_probe_device(dev);
->  
->  	/*
-> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-> index 37c7e54e0e4c..3aead51173f8 100644
-> --- a/drivers/base/dd.c
-> +++ b/drivers/base/dd.c
-> @@ -848,6 +848,18 @@ static int __driver_probe_device(const struct device_driver *drv, struct device
->  	if (dev->driver)
->  		return -EBUSY;
->  
-> +	/*
-> +	 * In device_add(), the "struct device" gets linked into the subsystem's
-> +	 * list of devices and broadcast to userspace (via uevent) before we're
-> +	 * quite ready to probe. Those open pathways to driver probe before
-> +	 * we've finished enough of device_add() to reliably support probe.
-> +	 * Detect this and tell other pathways to try again later. device_add()
-> +	 * itself will also try to probe immediately after setting
-> +	 * "DEV_FLAG_READY_TO_PROBE".
-> +	 */
-> +	if (!test_bit(DEV_FLAG_READY_TO_PROBE, &dev->flags))
-> +		return dev_err_probe(dev, -EPROBE_DEFER, "Device not ready to probe\n");
-> +
->  	dev->can_match = true;
->  	dev_dbg(dev, "bus: '%s': %s: matched device with driver %s\n",
->  		drv->bus->name, __func__, drv->name);
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index e65d564f01cd..5b7ace5921aa 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -458,6 +458,18 @@ struct device_physical_location {
->  	bool lid;
->  };
->  
-> +/**
-> + * enum struct_device_flags - Flags in struct device
-> + *
-> + * Should be accessed with thread-safe bitops.
-> + *
-> + * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished enough
-> + *		initialization that probe could be called.
-> + */
-> +enum struct_device_flags {
-> +	DEV_FLAG_READY_TO_PROBE,
-> +};
+> That's true. I plan to send a followup for that. This series just limits the
+> scope in addressing the reported issue.
 
-If you are going to want this to be a bit value, please use BIT(X) and
-not an enum, as that's going to just get confusing over time.
+Thanks, sounds good to me.
 
-Also, none of this manual test_bit()/set_bit() stuff, please give us
-real "accessors" for this like:
-	bool device_ready_to_probe(struct device *dev);
+For this patch, feel free to add:
 
-so that it's obvious what is happening.
-
-thanks,
-
-greg k-h
+Reviewed-by: Simon Horman <horms@kernel.org>
 
