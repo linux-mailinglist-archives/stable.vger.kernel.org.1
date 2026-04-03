@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-233245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOsVGWdI0Glu5gYAu9opvQ
-	(envelope-from <stable+bounces-233245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 01:08:23 +0200
+	id EPW4KEFI0Glu5gYAu9opvQ
+	(envelope-from <stable+bounces-233246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 01:07:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F403E398EFB
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 01:08:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C44398EE5
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 01:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E9AB304C2C9
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 23:07:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4E0D9300B9D5
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 23:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5626438B7C4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB3A38C2BD;
 	Fri,  3 Apr 2026 23:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="da8e4PIV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ln3CJhCC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF6538A29A
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 23:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389B338947A
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 23:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775257646; cv=none; b=Tyg0ZYg9llTMQiXrzSEtmWwO6NxKqBVW2NRx2wJo4yLpm/5sLwMOyLj3d8sJ2ii2TEYnt3QdwAFE9TQKC2yTV+EqyqdaDJJsRiLUNVb6CBXFc/xyxe5+Z1+oXRYzVuzVLXvfiH8Au5KPJ5olWIVHv68qpC9eVU+ZxGOJO91+YVo=
+	t=1775257646; cv=none; b=uvRYZ5PmRO0V/yX3J5p1NSlSb/wi09yhVrH0W//qefkJsjdjh+X3COa+26iOXDVrXaUtegDD4Kh6unPnWqdP3ihHzFiFzVDa3inj02RY9zuRSLbU+XiK+cluTPnTDwqRcScDAYASCdAoKp1MlywTIxadDru8hAMBsNNPqqLvOWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775257646; c=relaxed/simple;
-	bh=6XTjPc1Lb1fLIVViZE6tdIzfmgnICDpV2y3bO3Ij+cA=;
+	bh=kO50n60u5cKMLMq7RE6Byr6qxzOcZmTtOgxcHMgoYbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=diTnygOaJ8yZpgcPIy5flcBXofZjVGOTtae8AHIOhyGYIX9rzmG0dXoINdpcYpLSmZJoNH70Pu5c8VslB1llwiXmThq3Ue7HC/l7xnlUFd/wqPKxlshaUeVBW2x7GJxEiZ1teKkvuMrEFKluKKdDDS7vGMM/wUsFTohNBXlzO44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=da8e4PIV; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version; b=Jo2M2crHdqPlEL4VVCHC6tvmKY/Y3EngThrw8d1+hhQ+7U2VuFvCGYacWE2vZYKumrB6COIei/tGffkBrxLEM/PEp8/akuGFD4VcJ6ULMImpOw3Ychp22hHw+KvvTl6JF7RKmXbkCm3e8HySDO/g6+QMORZZH3yqdaEfPw0MqzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ln3CJhCC; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43cfde3c3f3so2116060f8f.3
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 16:07:23 -0700 (PDT)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so20071005e9.0
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 16:07:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775257641; x=1775862441; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775257642; x=1775862442; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GOEofDb75q5DY4mpfrtmz9omvpmNusDfp4+owj8UO2I=;
-        b=da8e4PIVnCwmwSTT/jl6K36s9yumduItM3wWLz2KwqoHEJ2K4Q0/gZBNbEMFfuBSYn
-         ZKXRy0feNjWR/wXq5DncIeG/+94WeYDhgOgPwIPq34ZgkVT/9JLgfUiUnKJ+5AWqvXmm
-         zJTNExZdGOGUF+Ef5RjpFk6TdquITTE0PV3dSmUptRY4uQouX3L//wEL/ghiUtkiLgtJ
-         husDtx+n6XMq5id4VVVunWJXXaY0Aby4DlrFjOrYnd3gXzQ45z4xdNJP3UUuWGY4IihM
-         NJaw/nJrLPynqtXm0b2arh9UA49sgA9yBr0EQdkrXqzxGxNoH0OO0vPkkQiMDZxPWHbW
-         DQcw==
+        bh=LW4zLdxlBcXiJ8+qk/5YoKQ6P7XuOl6e7flfCk5XlwM=;
+        b=ln3CJhCCKgk9pqt20DmevWCsSeNLu1Zy6CrgB855d0og+kmbm3JYEMOQDUPczGl3fR
+         JR4oHIQ+zyE17zYEdQkCq6Ub8vFWUXCh6Kox64rGDMduNjorbdGZv2Obynv3gibmzJjO
+         Wjyv2wHO9le0BG139R9RewEO8LE9DX1QuIIQSt3jexUL7vY+1OnCyCcxuyZeehV2KKpT
+         o1kvk9z1NDQc9YUAheNTD3sAA99UEnet8h/NJZu5v/qFXz87TKBh+pbXecLrC0xWAPZ8
+         xu+wON8SQG0mlh00Ql377COha1yv1kkydnVlQ2pKAXtCeGrH6+0nYkxlOoDrNOR4PnGu
+         kpqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775257641; x=1775862441;
+        d=1e100.net; s=20251104; t=1775257642; x=1775862442;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GOEofDb75q5DY4mpfrtmz9omvpmNusDfp4+owj8UO2I=;
-        b=pRt2KrEe3P9rJq/gbJYW/rEYBYWe9d0kdSOV9bZpi02ZCeSwew0VUQsTWkyGSnneqB
-         OnyX3tNFLGbrdNqCm5Yqb+5+t23eSvP+wja2019trqdmMk4daBE07pZAZTcbkQjGr4IC
-         htSYi2mY/oLJ3vC88QtITryQ/Y86saP0BRhsuje1icDnNx4BYateSpGagxIJq5WqcnyX
-         t7spE86C2uLaEfWtOsHIah/mqBSVZN2B6zPYHQfTdkXXJ/yonzN3CMLRyOIHVG2MKEGs
-         0K6FFZv1SdY8txqPW7MStHNAo5r/n6B6100G8b1d0XhdEIifQKMn/8hP5zNtzogSOw9d
-         9ebw==
-X-Gm-Message-State: AOJu0YxqWvZP+Gy3V1HtjaAXx3fyVfFzE+vZjDtqpbAKXDDjcmWrI47w
-	IQ32nMN/BEeL6tomCrNohhKMi4oAGRdIb9v46eBe8RISr71T/chF2ZjM
-X-Gm-Gg: AeBDiesY9y7RmooZDNpFaYKYNtXWF/WEhA+q9TM0vXus8R9VsYya2uN3OHtMncvFZLy
-	K56VyR28Ielkq5YhB8SH3LYaHq9oAEQfAEsOnqDY/Mdwf55uJVgbEv0IhTQ9Z4bx/VINDdawVWH
-	Dc3zuEFVUWB7vhZsZ1+CsGgLGi35btc2yng5tAWk91p1lUnuO8gNM0kE/GzQ006AOYZqb01h5BW
-	qe7ElPXjJ3FGze6QhnlD7zVbf8O3Tn9QhbalMbw2Oz7NO4NsvAi66QhCyeze8SvCaRfxzMsmQPc
-	Tdart25JPYiAdmtcuO7wPEkEX3v6F2Xt2ViH5QtwLqMqh5ieKXTReGm2EeebcHX9+NFsAU3AoGg
-	ZTsiM6qSQYFvdSsP8rljtlqKWaeitIUtVs8RAuvZTl+aki4PJJfGCuFtGj2mHdpU1u5Nwbi7627
-	R3aZaI1YwmdLT1DBLCFgqj5xow0n//9Sg3x2AuvOLNSpuEyr+OFSsofHrARd3De0tqOzSUn7A5I
-	vOrkvrXBQYE
-X-Received: by 2002:a5d:588c:0:b0:43c:fbde:310f with SMTP id ffacd0b85a97d-43d292e40bfmr7213997f8f.36.1775257641423;
-        Fri, 03 Apr 2026 16:07:21 -0700 (PDT)
+        bh=LW4zLdxlBcXiJ8+qk/5YoKQ6P7XuOl6e7flfCk5XlwM=;
+        b=fxckBNa7OF4vIJgL7jXFJAFrmDGSjmj8/0tBBJBY0J4SPIDMF4tl05+BRt6n0kBtKV
+         Y1ACapuskGu0atK10OYww4a9jApffeBF+557/x2KIpCynHZKbQFCOI7xW+MG6QK+0Hl9
+         htIuEy+gVVsolT+RBQlTiW8H6c3ZRGDM7miaRKrHuU+lMwB0b04Ebk4GFmoYViYW9cF7
+         S5G8ZrhRYpzlpJKWbnxjzO2J08HgGwGnCl7Yuc3OsliZR1qhxXvsvGftpmQHqwA8vEgo
+         r01F+WCRPPjPBJIsEMd9q92ZmJsJFWkl+tNTyszy487lUj5FNvJlDWsOBsfVvT/vv0tD
+         19ng==
+X-Gm-Message-State: AOJu0Yx2F90W5y0x32liAs+za8b/tIR0+4xVjQeyle4TBw3IUrQuNrVZ
+	WZdla1RWTZYKyFgbSmdrSv3wgEcA43oYafvPcFGy2R7oUqJsUt2gwFyf
+X-Gm-Gg: ATEYQzx0LJ9oNYJMFFug3RgsZUGT8AjsK8QBi+w3+Tkd6SIcoSmL5Sue//TBRshpv1K
+	d1kodiW9X4B34A0cCx96XoKcKecwIbE0r1QUFY9ugr8gsAnsVEnOVFFognH+iHwYcmAHQNepIzm
+	iFsusvZSvwY48dFXho3uUtfN0hNqoF4xn+grHk+Myj6C1++RoAY1yvpfqk2zOlL4nRElmYoRqF2
+	vi8lpA56aJNYytU8OMef2QthQbfmKFG1n/+LhSEPmItEudTEhXpvPMsjnnXc/zoRn0PH/LISWBN
+	H993+yRmQ4S4BWuIBEN3fkM1cApeMkKX0jHzswYz7e/d/7LFT78NBHCvY2uDrRWuAQkZxPLcmKw
+	EqdMAMR+BfBo+FJ7uy0+K1khLMyCaVSb4YMaGug8yZdMelXKk8NvjA2zvTVV+45PszW0y+NiKus
+	aC4Gd10+lSjbksFdeYscfPZlDSN5xkrYF6ACmnzUBu+EZ+Ms/sA1TbjMmGClpuufPmG2irbSCe4
+	7qXOeFXw8Bf
+X-Received: by 2002:a05:600c:1c11:b0:487:e2d:f649 with SMTP id 5b1f17b1804b1-488997c1c46mr62311855e9.26.1775257642481;
+        Fri, 03 Apr 2026 16:07:22 -0700 (PDT)
 Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2c60a2sm18830924f8f.10.2026.04.03.16.07.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2c60a2sm18830924f8f.10.2026.04.03.16.07.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 16:07:21 -0700 (PDT)
+        Fri, 03 Apr 2026 16:07:22 -0700 (PDT)
 From: David Carlier <devnexen@gmail.com>
 To: horatiu.vultur@microchip.com,
 	UNGLinuxDriver@microchip.com,
@@ -88,9 +88,9 @@ To: horatiu.vultur@microchip.com,
 	linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org,
 	David Carlier <devnexen@gmail.com>
-Subject: [PATCH v2 2/3] net: lan966x: fix page pool and resources leak in error paths
-Date: Sat,  4 Apr 2026 00:07:13 +0100
-Message-ID: <20260403230714.10667-2-devnexen@gmail.com>
+Subject: [PATCH v2 3/3] net: lan966x: fix use-after-free and leak in lan966x_fdma_reload()
+Date: Sat,  4 Apr 2026 00:07:14 +0100
+Message-ID: <20260403230714.10667-3-devnexen@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260403230714.10667-1-devnexen@gmail.com>
 References: <20260403230714.10667-1-devnexen@gmail.com>
@@ -107,7 +107,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -115,11 +115,11 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233245-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233246-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
@@ -130,53 +130,95 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F403E398EFB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 69C44398EE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-lan966x_fdma_rx_alloc() creates a page pool but does not destroy it if
-the subsequent fdma_alloc_coherent() call fails, leaking the pool and
-leaving a dangling pointer in rx->page_pool.
+When lan966x_fdma_reload() fails to allocate new RX buffers, the restore
+path restarts DMA using old descriptors whose pages were already freed
+via lan966x_fdma_rx_free_pages(). Since page_pool_put_full_page() can
+release pages back to the buddy allocator, the hardware may DMA into
+memory now owned by other kernel subsystems.
 
-Similarly, lan966x_fdma_init() frees the coherent DMA memory when
-lan966x_fdma_tx_alloc() fails but does not destroy the page pool that
-was successfully created by lan966x_fdma_rx_alloc(), leaking it.
+Additionally, on the restore path, the newly created page pool (if
+allocation partially succeeded) is overwritten without being destroyed,
+leaking it.
 
-Add the missing page_pool_destroy() calls in both error paths and
-NULL-out rx->page_pool after destruction to avoid a dangling pointer.
+Fix both issues by deferring the release of old pages until after the
+new allocation succeeds. Save the old page array before the allocation
+so old pages can be freed on the success path. On the failure path, the
+old descriptors, pages and page pool are all still valid, making the
+restore safe. Also ensure the restore path re-enables NAPI and wakes
+the netdev, matching the success path.
 
-Fixes: 11871aba1974 ("net: lan96x: Use page_pool API")
+Fixes: 89ba464fcf54 ("net: lan966x: refactor buffer reload function")
 Cc: stable@vger.kernel.org
 Signed-off-by: David Carlier <devnexen@gmail.com>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../ethernet/microchip/lan966x/lan966x_fdma.c | 22 ++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-index 34bbcae2f068..b985ce64bb50 100644
+index b985ce64bb50..fd6718a23676 100644
 --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
 +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-@@ -120,8 +120,11 @@ static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
- 		return PTR_ERR(rx->page_pool);
+@@ -814,9 +814,16 @@ static int lan966x_qsys_sw_status(struct lan966x *lan966x)
  
- 	err = fdma_alloc_coherent(lan966x->dev, fdma);
--	if (err)
-+	if (err) {
-+		page_pool_destroy(rx->page_pool);
-+		rx->page_pool = NULL;
- 		return err;
-+	}
+ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
+ {
++	struct page *(*old_pages)[FDMA_RX_DCB_MAX_DBS];
+ 	struct page_pool *page_pool;
+ 	struct fdma fdma_rx_old;
+-	int err;
++	int err, i, j;
++
++	old_pages = kmemdup(lan966x->rx.page, sizeof(lan966x->rx.page),
++			   GFP_KERNEL);
++
++	if (!old_pages)
++		return -ENOMEM;
  
- 	fdma_dcbs_init(fdma, FDMA_DCB_INFO_DATAL(fdma->db_size),
- 		       FDMA_DCB_STATUS_INTR);
-@@ -958,6 +961,7 @@ int lan966x_fdma_init(struct lan966x *lan966x)
- 	err = lan966x_fdma_tx_alloc(&lan966x->tx);
- 	if (err) {
- 		fdma_free_coherent(lan966x->dev, &lan966x->rx.fdma);
-+		page_pool_destroy(lan966x->rx.page_pool);
- 		return err;
- 	}
+ 	/* Store these for later to free them */
+ 	memcpy(&fdma_rx_old, &lan966x->rx.fdma, sizeof(struct fdma));
+@@ -827,7 +834,6 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
+ 	lan966x_fdma_stop_netdev(lan966x);
+ 
+ 	lan966x_fdma_rx_disable(&lan966x->rx);
+-	lan966x_fdma_rx_free_pages(&lan966x->rx);
+ 	lan966x->rx.page_order = round_up(new_mtu, PAGE_SIZE) / PAGE_SIZE - 1;
+ 	lan966x->rx.max_mtu = new_mtu;
+ 	err = lan966x_fdma_rx_alloc(&lan966x->rx);
+@@ -835,6 +841,11 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
+ 		goto restore;
+ 	lan966x_fdma_rx_start(&lan966x->rx);
+ 
++	for (i = 0; i < fdma_rx_old.n_dcbs; ++i)
++		for (j = 0; j < fdma_rx_old.n_dbs; ++j)
++			page_pool_put_full_page(page_pool,
++						old_pages[i][j], false);
++
+ 	fdma_free_coherent(lan966x->dev, &fdma_rx_old);
+ 
+ 	page_pool_destroy(page_pool);
+@@ -842,12 +853,17 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
+ 	lan966x_fdma_wakeup_netdev(lan966x);
+ 	napi_enable(&lan966x->napi);
+ 
+-	return err;
++	kfree(old_pages);
++	return 0;
+ restore:
+ 	lan966x->rx.page_pool = page_pool;
+ 	memcpy(&lan966x->rx.fdma, &fdma_rx_old, sizeof(struct fdma));
+ 	lan966x_fdma_rx_start(&lan966x->rx);
+ 
++	lan966x_fdma_wakeup_netdev(lan966x);
++	napi_enable(&lan966x->napi);
++
++	kfree(old_pages);
+ 	return err;
+ }
  
 -- 
 2.53.0
