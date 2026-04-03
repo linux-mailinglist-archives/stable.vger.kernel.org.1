@@ -1,220 +1,241 @@
-Return-Path: <stable+bounces-233194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHRlDl/ez2mn1QYAu9opvQ
-	(envelope-from <stable+bounces-233194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:35:59 +0200
+	id 2B8/BTnez2mn1QYAu9opvQ
+	(envelope-from <stable+bounces-233195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:35:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A802C395D1A
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:35:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A20EF395CE3
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DF0B3034A2F
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 15:34:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC868300753B
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 15:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07CB1D61A3;
-	Fri,  3 Apr 2026 15:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229A61D61A3;
+	Fri,  3 Apr 2026 15:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nguVPwDY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MFzm0UMl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE2D3BC689
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 15:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E4B29C325
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 15:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775230478; cv=none; b=qBSZbfKJtPtxnS3zE/bZ0fZ0NJakfuXe9nnCdh9a3OkE31PKKCNRb05wmDxCy+7o2DMcgIsHv+QS/DP0EVAhBXZQ8Od+tkwZ+2wraZHjEaZQlRrSfFFC0bZC3FB5RIk84vxdbbP7YRwn0UoPOAHx4J5fQaEUCMx22fi0f2V9aGA=
+	t=1775230517; cv=none; b=H9lWUwiJxuXleAP3/KmSmGz2G137jSfPJoKyDQh1WciojyRxROWNGI2MoDsm/5UCWZdeXeA/oHR5NhwewaTJUZZk3QI+Ho0dxdwymBe0UcUg/+JaoC7Uer8/Hf/GowInIrynduPHORNwLyF0y2SEFht0XOKV6IZsT0c1U8sqw4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775230478; c=relaxed/simple;
-	bh=pnTONFLO++i9o+h4aHJcqHOAz1eTweHpgY38cxWoQ64=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mnp+gEKazA+ANNKUuP6m4yNTZ4GRPd5Oyt4ShiVYu0I8GXffs+FhXFdbtRNjZvTwyLYHvJhEm5u09+LxHP8Mmoar3HjawBhcYrVkH9aCo0Rz/lRuBUG59EvjYafFgnCBLQwaRKng9KA6TUePeI0NhP6UpKAC3VTOywTB+TBSxAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nguVPwDY; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b9c11eba219so243273366b.2
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 08:34:36 -0700 (PDT)
+	s=arc-20240116; t=1775230517; c=relaxed/simple;
+	bh=/qXGPqxuZuzFUKXFwMaKnp17rwob3oDV39p/bkWtKoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h0mr9LlMBZ+2c0F0gYM+N62qADci4Drp5q6rj91aQ86fY8CJPKHNq+BQcdB6UWLh32kVtDbUall4MxiQKWYqedO3VaSwFrbBu7rqPKlnz9GvLN38Gyxr1ceevhUt79jOGPD1+9EvgRQH5bQBq9PPobzH3lsGvvMFlXwVdq8yGSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MFzm0UMl; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488879b2e6aso17959495e9.1
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 08:35:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1775230473; x=1775835273; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7re9TIHgFQF++cPTDonCe06+mmw8C8DISy7Otb13OfU=;
-        b=nguVPwDYqRKNDkt11FMGshFKvtpmGQ3qRT8AMBnheHlI+SbVzIgqYInQIhZjuDzXD3
-         wlvqaz7yXeavserEI212wFCIx6ajFQ+nedentqYRDoLEysliJvcMvkX139vgnqigzzDa
-         BqXqVtBzYdwjBG3Z7+1LQym+/OvGB7Af/gcvI=
+        d=gmail.com; s=20251104; t=1775230515; x=1775835315; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7ULP8DbOuEXZhN3CexgIC4rE4TGyJM/8Cix5w8Cv44c=;
+        b=MFzm0UMlrRVvkFD/zg8TsbEBtGuEpuEKJB0JqGSfYIrBpAcgLYuV2qKk1xHdGmxTKE
+         5lr6uIa8f9cqJ2hjEGzLya27ZArj1Z6TLc58RVe8hUY5VGp3wOK0h/3LcKxh+Pnvvq4u
+         ah6pgRY0H1Z45e0UUwy9AwkWW931tjGqsssoT0rIWg9Gppgwqpm1VFcSMba1wjW5H+ka
+         FQYxDKFXnnT2JIcS9bg/OkBpt7UvhBY2B/+Ybc3yAcyFYBa3MXlfPNNpmoV6fZMmhbuL
+         nS4GCm+SZA7Dt5tcjyj1dg+x2CgizxbkRKLa7BGVj2OcU/Z+o6A596SxCqCIoaRFXH9l
+         knfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775230473; x=1775835273;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7re9TIHgFQF++cPTDonCe06+mmw8C8DISy7Otb13OfU=;
-        b=Nsmv2xm/QQpNXw8GdaZ0r481JLTFn+Nwxk/D63MbOQMP6o9M3LVAEV0NMEMeorW/li
-         GhD4wxHWC9hyx6OExwt1aTY9Y4jU5xTcTI0wNwrl8f6P3Tuc5wjEAAoQzyZokbJSyWH5
-         eURSnZ/WByvG15UNBqGaLW2dGdNu1ZCttdDQb+orG91fbS8IhNiWN0kAahSQDCM91gcA
-         hjFFdCOMDDkYjptSlM/R4A5zCwwKFUNbcnAOndEssCkXDdb9hnNslya0UAYPxAI78vZM
-         /l2ImC6Q/qZDv268GNvcI4OVGq7iesyJNmciv1JicbFB+6PuaoaeR8c1cUhOncaR8UFO
-         ekXg==
-X-Forwarded-Encrypted: i=1; AJvYcCVH6k5MMv7FgHyOe4/fQpK2VBv3S0gVeyYehCzz14VquchG9ORSdhXTqbkUM7F52fWe55ZHO54=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQC6kGmHDINbGhk4X+LLAjJ7reNcr32hEEfOS+Bs7JODjzuKjd
-	RlkVAmMzn34rrEQVHfQLY/1pMvce5AXz5yjHPhFiVQl4jhEW6nf2+28MqeHKTFPVK/Hd6m/hv+J
-	bEktMzg==
-X-Gm-Gg: AeBDieuADAeRm+C4bn5NqlMFsPbhEP8I+jGcX8R/uZ+SR0ZO1Feudtxusp0fV2/x0wV
-	YxShAq9s73SoLvxyMAnkgk3nGRLU5fWiyU/ln+5aisKogfYX4iFkDYhj+4aQ0l273bATU7AdXA5
-	gdZFcxghL103PKRqZ4ucI/soysZB+mnyEfENU6NXBLe1pP0Wqbix/NJ6Z9fdNLBKDI7o6oQhb3M
-	RonHT+CaxhwViMpKOFGInOEWzRoNvZ1cQVNva6jU90tnlfxffIOGexhqb7PRwynyAivGobNqdhO
-	wNl29FPMUz0z62MkG/GXxmyB5+ymAeqg2YquBNewJULJy3Zg89aWLh4ogDsbrjIOhtHLBpxn2Cj
-	2dLTGEQAd409dsKbcn1px4/42v90ZO88/l8CAVohR7hvjYcgUGzwJ6vvfkfmHp/EEF2hEuQ2Tro
-	RPsS1EBT6FuV97jSfDgDcHEIhQVO1lEguvchHD22DRXxHt1woLgAeQ4VO8Rv5/f6drrQdhvMZ+
-X-Received: by 2002:a17:907:3d51:b0:b98:7f7:50f1 with SMTP id a640c23a62f3a-b9c6793b40fmr180523566b.27.1775230473420;
-        Fri, 03 Apr 2026 08:34:33 -0700 (PDT)
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3c97229esm205710766b.4.2026.04.03.08.34.32
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Apr 2026 08:34:32 -0700 (PDT)
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43cf8d550bdso1715349f8f.0
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 08:34:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW1oRIJiWXHn8Y73aTIYDuSduhiMnU/MMN7UIt27+BN5tFjqhPwtW7UnW1h+ShHDYXrBZUPECY=@vger.kernel.org
-X-Received: by 2002:a05:6000:2485:b0:43d:121c:37d9 with SMTP id
- ffacd0b85a97d-43d29268a8dmr5512092f8f.1.1775230471524; Fri, 03 Apr 2026
- 08:34:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775230515; x=1775835315;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7ULP8DbOuEXZhN3CexgIC4rE4TGyJM/8Cix5w8Cv44c=;
+        b=dsXhcJbvroxDxqiiruHYAzGOzns3J0DF4TVjuiwOoUoWZtzypcdngupzHcwCerusfS
+         5rHAc2dY9/CGxx5Wvwu9H1c/RbY6rV0vPLOkJvMaTLY1F2z3dPDkhNCLVbqkB4HI3Xse
+         1mw4CMZ6bnKLG7RKcLpQ7PEDm3LO+hjIKFCMqB0wbPCNqPDtLKM1owIadT3yOGmh9bly
+         cVApmT2fhgWg5XkULFUeAb7A2PyluiNcJpGzMfKsDO9xGm6LC4Cf92R73PE6IBff2PbL
+         P0wUevrVJebLBY82yAyAB3dXtuK9NEW0Qd6HXpbFU/IMQSoFiYnaLln+icQH5dPJqTLC
+         K/5Q==
+X-Gm-Message-State: AOJu0Yzlt1l3GMTs54cEZ4iYM7LxVFDcDZraPhv5kVL/yaZAcs/afB3f
+	HMbjKzc0LG9OtiMZoIwV8oQ5rcyhEi75oT1W7Z1H/dBJhVBaUriFTeofZYyNldTM
+X-Gm-Gg: ATEYQzzLJP4VlVwRZvlSbCWVqxfn5gfeiZMkRe96OUVur9OelUjFcFLcY93dQ3fe8Ee
+	Ke240z2euIShUndTXnmRT/rKdJ0azD2BdkXWla4DpTv9LMIfea0QaAY8GlusquExulvAJmeZE5I
+	8dy39Orn6/kmayGc/tBcZN1ZVtaSV5dWT9B6pr2h2mEwYCtwd3BM6RTEv0UTnQyMNwgsRTvfYeF
+	OgKss6OnLrcKPw0M8an4hA11MRP3HjoV16pIc9F4fLHx3z8inANz3eOCYN7lBjcULb+pGt+/nXa
+	5oOxP2Tp33d1RRrCF/4wIXtWssMyJ6QVNnL8htf9Jvjk6L949C9XLSvpEU2Ks98veljddmwE7tR
+	ocC/jjkslplCQTxBrenmOur0Yln/J56FIz4aOP5s3q3S+AohojL49xcpHH6jE5GzUIhBW+VzoKw
+	PULL4oAC4NSUdLBzAKjZNNFi1zdinFCwsyi6tS3uyQ5NI88cUQ0+Fyap1Hm4e7d7jq30lR0wPv5
+	CTli95vE5d/GsvWA/sHuXV4fzRQHOez6e/cjtVQpaUeXAdoNrMu9dCfZWNMQYjo81VPnKd1YmBC
+	ibPj84IQbFBTixjEC/VNMGcnaxp9HW9awcvYmzrydZpyPYyTuXacCw==
+X-Received: by 2002:a05:600c:c8f:b0:487:243f:dc3e with SMTP id 5b1f17b1804b1-488996d23e7mr46694585e9.6.1775230514532;
+        Fri, 03 Apr 2026 08:35:14 -0700 (PDT)
+Received: from mail.gmail.com (2a01cb0889497e00c96ae484ac75459c.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:c96a:e484:ac75:459c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4889cb46adcsm47487565e9.4.2026.04.03.08.35.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 08:35:13 -0700 (PDT)
+Date: Fri, 3 Apr 2026 17:35:12 +0200
+From: Paul Chaignon <paul.chaignon@gmail.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH stable 6.6 1/6] bpf: Improve bounds when s64 crosses sign
+ boundary
+Message-ID: <0f6da4f74ebc491dd651dfcf3ba984bbd3dc566f.1775206731.git.paul.chaignon@gmail.com>
+References: <cover.1775206731.git.paul.chaignon@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260403005005.30424-1-dianders@chromium.org> <20260402174925.v3.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
- <2026040319-seventeen-humorless-5541@gregkh>
-In-Reply-To: <2026040319-seventeen-humorless-5541@gregkh>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 3 Apr 2026 08:34:20 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XmnWjVzQcr13GmRKX3cvRortA==5C8TH5D-jRBe0VBqw@mail.gmail.com>
-X-Gm-Features: AQROBzBI3qbsutVdmrxjY8uO9-3m7vo2V5fLwzycPlllzj8W2kmat6R3FSfkHcs
-Message-ID: <CAD=FV=XmnWjVzQcr13GmRKX3cvRortA==5C8TH5D-jRBe0VBqw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/9] driver core: Don't let a device probe until it's ready
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, 
-	Robin Murphy <robin.murphy@arm.com>, Leon Romanovsky <leon@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
-	Eric Dumazet <edumazet@google.com>, Christoph Hellwig <hch@lst.de>, Alexey Kardashevskiy <aik@ozlabs.ru>, 
-	Johan Hovold <johan@kernel.org>, stable@vger.kernel.org, driver-core@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1775206731.git.paul.chaignon@gmail.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233194-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,suse.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-233195-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[paulchaignon@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: A802C395D1A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Rspamd-Queue-Id: A20EF395CE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+[ Upstream commit 00bf8d0c6c9be0c481fc45a3f7d87c7f8812f229 ]
 
-On Fri, Apr 3, 2026 at 12:04=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> > @@ -458,6 +458,18 @@ struct device_physical_location {
-> >       bool lid;
-> >  };
-> >
-> > +/**
-> > + * enum struct_device_flags - Flags in struct device
-> > + *
-> > + * Should be accessed with thread-safe bitops.
-> > + *
-> > + * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished eno=
-ugh
-> > + *           initialization that probe could be called.
-> > + */
-> > +enum struct_device_flags {
-> > +     DEV_FLAG_READY_TO_PROBE,
-> > +};
->
-> If you are going to want this to be a bit value, please use BIT(X) and
-> not an enum, as that's going to just get confusing over time.
+__reg64_deduce_bounds currently improves the s64 range using the u64
+range and vice versa, but only if it doesn't cross the sign boundary.
 
-I don't believe I can do that. BIT(x) is not compatible with the
-atomic bitops API. BIT(x) will turn the bit number (x) into a hex
-value, but the atomic bitops API needs the bit number.
+This patch improves __reg64_deduce_bounds to cover the case where the
+s64 range crosses the sign boundary but overlaps with the u64 range on
+only one end. In that case, we can improve both ranges. Consider the
+following example, with the s64 range crossing the sign boundary:
 
-If you wish, I can turn this into something like:
+    0                                                   U64_MAX
+    |  [xxxxxxxxxxxxxx u64 range xxxxxxxxxxxxxx]              |
+    |----------------------------|----------------------------|
+    |xxxxx s64 range xxxxxxxxx]                       [xxxxxxx|
+    0                     S64_MAX S64_MIN                    -1
 
-#define DEV_FLAG_READY_TO_PROBE         0
-#define DEV_FLAG_CAN_MATCH              1
-#define DEV_FLAG_DMA_IOMMU              2
-...
+The u64 range overlaps only with positive portion of the s64 range. We
+can thus derive the following new s64 and u64 ranges.
 
-...but that seemed worse (to me) than the enum. Please shout if I
-misunderstood or you disagree.
+    0                                                   U64_MAX
+    |  [xxxxxx u64 range xxxxx]                               |
+    |----------------------------|----------------------------|
+    |  [xxxxxx s64 range xxxxx]                               |
+    0                     S64_MAX S64_MIN                    -1
 
+The same logic can probably apply to the s32/u32 ranges, but this patch
+doesn't implement that change.
 
-> Also, none of this manual test_bit()/set_bit() stuff, please give us
-> real "accessors" for this like:
->         bool device_ready_to_probe(struct device *dev);
->
-> so that it's obvious what is happening.
+In addition to the selftests, the __reg64_deduce_bounds change was
+also tested with Agni, the formal verification tool for the range
+analysis [1].
 
-Sure, that matches Rafael's request and is a nice improvement. To keep
-from having to replicate a bunch of boilerplate code, I'll have macros
-define the accessors:
+Link: https://github.com/bpfverif/agni [1]
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/933bd9ce1f36ded5559f92fdc09e5dbc823fa245.1753695655.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+---
+ kernel/bpf/verifier.c | 52 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-#define __create_dev_flag_accessors(accessor_name, flag_name) \
-static inline bool dev_##accessor_name(const struct device *dev) { \
-        return test_bit(flag_name, &dev->flags); \
-} \
-static inline void dev_set_##accessor_name(struct device *dev) { \
-        set_bit(flag_name, &dev->flags); \
-} \
-static inline void dev_clear_##accessor_name(struct device *dev) { \
-        clear_bit(flag_name, &dev->flags); \
-} \
-static inline void dev_assign_##accessor_name(struct device *dev, bool
-value) { \
-        assign_bit(flag_name, &dev->flags, value); \
-} \
-static inline bool dev_test_and_set_##accessor_name(struct device *dev) { \
-        return test_and_set_bit(flag_name, &dev->flags); \
-}
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 68fa30852051..6448f9eeede0 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2129,6 +2129,58 @@ static void __reg64_deduce_bounds(struct bpf_reg_state *reg)
+ 	if ((u64)reg->smin_value <= (u64)reg->smax_value) {
+ 		reg->umin_value = max_t(u64, reg->smin_value, reg->umin_value);
+ 		reg->umax_value = min_t(u64, reg->smax_value, reg->umax_value);
++	} else {
++		/* If the s64 range crosses the sign boundary, then it's split
++		 * between the beginning and end of the U64 domain. In that
++		 * case, we can derive new bounds if the u64 range overlaps
++		 * with only one end of the s64 range.
++		 *
++		 * In the following example, the u64 range overlaps only with
++		 * positive portion of the s64 range.
++		 *
++		 * 0                                                   U64_MAX
++		 * |  [xxxxxxxxxxxxxx u64 range xxxxxxxxxxxxxx]              |
++		 * |----------------------------|----------------------------|
++		 * |xxxxx s64 range xxxxxxxxx]                       [xxxxxxx|
++		 * 0                     S64_MAX S64_MIN                    -1
++		 *
++		 * We can thus derive the following new s64 and u64 ranges.
++		 *
++		 * 0                                                   U64_MAX
++		 * |  [xxxxxx u64 range xxxxx]                               |
++		 * |----------------------------|----------------------------|
++		 * |  [xxxxxx s64 range xxxxx]                               |
++		 * 0                     S64_MAX S64_MIN                    -1
++		 *
++		 * If they overlap in two places, we can't derive anything
++		 * because reg_state can't represent two ranges per numeric
++		 * domain.
++		 *
++		 * 0                                                   U64_MAX
++		 * |  [xxxxxxxxxxxxxxxxx u64 range xxxxxxxxxxxxxxxxx]        |
++		 * |----------------------------|----------------------------|
++		 * |xxxxx s64 range xxxxxxxxx]                    [xxxxxxxxxx|
++		 * 0                     S64_MAX S64_MIN                    -1
++		 *
++		 * The first condition below corresponds to the first diagram
++		 * above.
++		 */
++		if (reg->umax_value < (u64)reg->smin_value) {
++			reg->smin_value = (s64)reg->umin_value;
++			reg->umax_value = min_t(u64, reg->umax_value, reg->smax_value);
++		} else if ((u64)reg->smax_value < reg->umin_value) {
++			/* This second condition considers the case where the u64 range
++			 * overlaps with the negative portion of the s64 range:
++			 *
++			 * 0                                                   U64_MAX
++			 * |              [xxxxxxxxxxxxxx u64 range xxxxxxxxxxxxxx]  |
++			 * |----------------------------|----------------------------|
++			 * |xxxxxxxxx]                       [xxxxxxxxxxxx s64 range |
++			 * 0                     S64_MAX S64_MIN                    -1
++			 */
++			reg->smax_value = (s64)reg->umax_value;
++			reg->umin_value = max_t(u64, reg->umin_value, reg->smin_value);
++		}
+ 	}
+ }
+ 
+-- 
+2.43.0
 
-__create_dev_flag_accessors(ready_to_probe, DEV_FLAG_READY_TO_PROBE);
-__create_dev_flag_accessors(can_match, DEV_FLAG_CAN_MATCH);
-__create_dev_flag_accessors(dma_iommu, DEV_FLAG_DMA_IOMMU);
-__create_dev_flag_accessors(dma_skip_sync, DEV_FLAG_DMA_SKIP_SYNC);
-__create_dev_flag_accessors(dma_ops_bypass, DEV_FLAG_DMA_OPS_BYPASS);
-__create_dev_flag_accessors(state_synced, DEV_FLAG_STATE_SYNCED);
-__create_dev_flag_accessors(dma_coherent, DEV_FLAG_DMA_COHERENT);
-__create_dev_flag_accessors(of_node_reused, DEV_FLAG_OF_NODE_REUSED);
-__create_dev_flag_accessors(offline_disabled, DEV_FLAG_OFFLINE_DISABLED);
-__create_dev_flag_accessors(offline, DEV_FLAG_OFFLINE);
-
-Happy to tweak the above if desired.
-
--Doug
 
