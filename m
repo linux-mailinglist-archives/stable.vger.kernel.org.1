@@ -1,96 +1,71 @@
-Return-Path: <stable+bounces-233234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFuxH5Ee0Glk3gYAu9opvQ
-	(envelope-from <stable+bounces-233234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 22:09:53 +0200
+	id mKRGIi0j0Gkp3wYAu9opvQ
+	(envelope-from <stable+bounces-233235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 22:29:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284F4398137
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 22:09:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 832AF3982CC
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 22:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9067230479CE
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 20:07:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 41986301DA5E
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 20:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CE13D5662;
-	Fri,  3 Apr 2026 20:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB0D3D811F;
+	Fri,  3 Apr 2026 20:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qi+FBY7T"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="kOolXopk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409D534B19F
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 20:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BC7303C9C;
+	Fri,  3 Apr 2026 20:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775246858; cv=none; b=CjFLzTv5WUE8fOAhxoYsW2fNbZGMJrJYpAHBwS2nTeUtd6Vh9PHQVhm7BXGkLNWyEu8RIEu6AJE6ZpziaopAUOOH0jLkSw6EFARtynPCkvZgX5GpNDBHPX3JJAKoGyGccNiRHDwQhWfmUlBrUiCTTXquvVUx1DMYm7JVOtK+5C4=
+	t=1775248146; cv=none; b=caibZ9/HS4Gf3vfHsCt62Z3eGnS6/KXt3+B1kqst+f8JZcKQWP3g91T+kVEZw0Cymb86ViiWnw5rbkODCcjfnzRDapmcF6dhXsj+e4npa76gV6ssco4LnYCm3Q0PjHxkG4L5leYT6jJpH2x0c62KtaPH8q691NE2M08wfBmRDn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775246858; c=relaxed/simple;
-	bh=2EWNeglDkNZGr2Gg1mnutn0NEb1fsT8qNPLfPzONX6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ioijJk8dNww1D/IG1tu4htrnnI1BwIkHqhqs1zNLNOFjDu6YwI0qeWZdihXiHDEr5E15PMwL3pAWlYGG/edeGL6/3gPF3L0RKxSxr18MO90sv3N15AzNz2IDqx4SdilqURC7KNoRetnSg4tgbRxHwxrZYoRAx1JuDpBWWRokns4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qi+FBY7T; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso20304475e9.1
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 13:07:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775246855; x=1775851655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CTa3SMNP51BcljfrASeQns+9o2oJfvoBuCifvUwOAm0=;
-        b=Qi+FBY7T3N+t9Z6zyYyUvToT2W2yH71BCPwTWhey5+NXD7bS1WOb7pIflMLgBATccf
-         oUqBb//GKWACMjVeoXpHeDrGHCODJmsOr1ReJjA4hkQogb1luLXks+SQLgSOPWBRrDDB
-         70o99J93FpAQqptCcxju1oyEb/jZUyJyIGF08T8Inn4Fu53VcZZs3k1EormV/97vHJxT
-         eQwlFKwdsRaxqST4MRtR+EdLJEyxleFjMJQtQ9yT0t2ewh3i+Fb/HO83Q3OMFMH1tzAs
-         1wJxeAItkG1+6dE3SlGLy9qWfADIXu1TTKxPrIPVDDjaHZ3+uJU7GtwEY288H+8uDJHt
-         q0+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775246855; x=1775851655;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CTa3SMNP51BcljfrASeQns+9o2oJfvoBuCifvUwOAm0=;
-        b=Hi2JkTfsBxPwS/bx4FZz9iE+D01eJP+yLCOBEs03JiX+qjlZ3iUdto4akDk+3W/u9r
-         lnOU2quqdv1vrPXr6Hol4acXhMzfU2Vif1TnWmYC+YaSDFxk9jHyCyIou7Z3oywq/q2U
-         UAMTsiwq8YyaAo7nvZGeihyrNA2KM/tQNsHohIwy7t9KGeGk58E1NDJDUQhzTpIucwqx
-         EmCXyNDEvDCXmUx8g69qwh+ioHnUNuB0BzJ96o2FeVYkcJ2mh0XEhvS6ZABgkME0bygO
-         tLWOMYKm6+FZU3/wAan6AMHBuKgWGR3YweQegwNQxRMtAhqbiXCQNDQsbzW6W2z42Dae
-         7bWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVamicesfP0SkVZZ9IKlMlR4kFQXWFlfrJPNuQ6XUjCLtRUVdqpCIuhJFPCU3pyBFGTrP5pXzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5vAElbKkh5AhvNmAtuas4++//ZHAYjoiWjvq+6z70hae1tetw
-	zJNJOSiXwC1KyolXm2Gt9J+4BCGv3fYtCEKTyw/+u7Ju6ATlMuVRRkU4
-X-Gm-Gg: ATEYQzwVsV5ieApYxlypT3JeEVeLlIsPwchIPaLbv408lnJoBkhnKXl1hpZdwi+oQoc
-	k7i6JCbJcUiLOdDCrr9hiXBurwHSumc/Egu4648knfDD6TZpEJZ5sQs0kHtd+Ixpn+KUjzvvthh
-	n3m9gtLDrXBlWR4fBpS4uIZS8fKlLe4QBgS05rGbQQ7NN24mC0pesB6U43FbsdtOV0TE+pi+nbu
-	VFD7Mf9LJZgmt5ZJnd+Peln617mp4pDhgK/4DVFYT8YReULrKyNX7fTnzdu5JqeorI2Fff8rQSV
-	n8x+eAqhfjgy/+EQlfoY4FnRGgpswNmMKHJAcB6kN8l1/oxuH5AklIvE5AO5KWHIdy2nf7JXAuZ
-	DlfjGnNM6LjWTPRN6o8JMTEwODWgk1JVzluyhnjGJjstJp20DPuM3NNVXdh25cMZGkpETLFsd3u
-	lQUex3Q1hJss1VJKlEP/UO0GE5Hl74wC6+qY4pJN1WIjcQW2RV6uZIMBphI9au8BCJ8qY98gPrr
-	Rh3kc3YaC49
-X-Received: by 2002:a05:600c:6290:b0:488:869c:ed9e with SMTP id 5b1f17b1804b1-488997c1c18mr70132855e9.23.1775246855414;
-        Fri, 03 Apr 2026 13:07:35 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48899d1c148sm43199695e9.5.2026.04.03.13.07.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 13:07:35 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Veerasenareddy Burru <vburru@marvell.com>,
-	Sathesh Edara <sedara@marvell.com>,
-	Shinas Rasheed <srasheed@marvell.com>,
-	Satananda Burla <sburla@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>,
+	s=arc-20240116; t=1775248146; c=relaxed/simple;
+	bh=3unORSCN4s2sh8aP3asXtDv5qrrMJJ2xu+YUzP+1EUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BgK0BVPLszctDc1UDDreVveVCiVa7LUHNrXFZTO//i9f8jJNHE5jSSorBQyn4zGvhUc0mCIk4WLaTeZiww9Rmh+xSjgujA9mhGOWjM7ZNJZEeqxZ0WVNEKesSckVAATgnzzG4J+pAbWTJJ5EC19prEJKn2iGADudd9AtornXtzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=kOolXopk; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from debian.lan (unknown [79.139.252.175])
+	by mail.ispras.ru (Postfix) with ESMTPSA id CB3C045A1D06;
+	Fri,  3 Apr 2026 20:29:01 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru CB3C045A1D06
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1775248142;
+	bh=rkMgPId7pYnnvNbAuwYM5wExpHWHyYhMeO7FUfW2+ho=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kOolXopkJtnCfd+9m8RNpBDmXydllXw3oykDCDNbEpSHP0DisAbGRJiGpW3FTRp6p
+	 0dkuNbDhU9KFyGKb4JdvMVGzHOOgLGFHuABWqABZOiVj6x0yAlJKaigNotN5Es24jh
+	 j9xqoW7gspk2ovsJBViM+PvF5ADZlvItRSQhTTgs=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	"Heyne, Maximilian" <mheyne@amazon.de>,
+	asahi@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-nvme@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
 	stable@vger.kernel.org
-Subject: [PATCH] octeon_ep_vf: add NULL check for napi_build_skb()
-Date: Fri,  3 Apr 2026 21:07:32 +0100
-Message-ID: <20260403200732.497307-1-devnexen@gmail.com>
+Subject: [PATCH] nvme-apple: drop invalid put of admin queue reference count
+Date: Fri,  3 Apr 2026 23:27:00 +0300
+Message-ID: <20260403202701.991276-1-pchelkin@ispras.ru>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -99,110 +74,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-233235-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-233234-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	DKIM_TRACE(0.00)[ispras.ru:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 284F4398137
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ispras.ru:dkim,ispras.ru:email,ispras.ru:mid,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 832AF3982CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-napi_build_skb() can return NULL on allocation failure. In
-__octep_vf_oq_process_rx(), the result is used directly without a NULL
-check in both the single-buffer and multi-fragment paths, leading to a
-NULL pointer dereference.
+Commit 03b3bcd319b3 ("nvme: fix admin request_queue lifetime") moved the
+admin queue reference ->put call into nvme_free_ctrl() - a controller
+device release callback performed for every nvme driver doing
+nvme_init_ctrl().
 
-Add NULL checks after both napi_build_skb() calls, properly advancing
-descriptors and consuming remaining fragments on failure.
+nvme-apple sets refcount of the admin queue to 1 at allocation during the
+probe function and then puts it twice now:
 
-Fixes: 1cd3b407977c ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
+nvme_free_ctrl()
+  blk_put_queue(ctrl->admin_q) // #1
+  ->free_ctrl()
+    apple_nvme_free_ctrl()
+      blk_put_queue(anv->ctrl.admin_q) // #2
+
+Note that there is a commit 941f7298c70c ("nvme-apple: remove an extra
+queue reference") which intended to drop having an extra admin queue
+reference.  Looks like at that moment it accidentally fixed a refcount
+leak, which existed since the driver's introduction.  There were an
+initial ->set and an extra ->get call at driver's probe function, and only
+a single ->put inside apple_nvme_free_ctrl().
+
+However now after commit 03b3bcd319b3 ("nvme: fix admin request_queue
+lifetime") the refcount is imbalanced again.  Fix it by removing extra
+->put call from apple_nvme_free_ctrl().  Compile tested only.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime")
+Cc: stable@vger.kernel.org # depends on 941f7298c70c
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
- .../marvell/octeon_ep_vf/octep_vf_rx.c        | 34 ++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-index b579d5b545c4..97b836c1f5d2 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-@@ -409,10 +409,18 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
- 			data_offset = OCTEP_VF_OQ_RESP_HW_SIZE;
- 			rx_ol_flags = 0;
- 		}
--		rx_bytes += buff_info->len;
+Also nvme-apple seems not to have a blk_mq_destroy_queue() call for
+admin queue since introduction - if it's needed, the proper place would
+be in apple_nvme_remove() just before calling nvme_uninit_ctrl(), I guess?
+
+ drivers/nvme/host/apple.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
+index ed61b97fde59..1d82f0541b0b 100644
+--- a/drivers/nvme/host/apple.c
++++ b/drivers/nvme/host/apple.c
+@@ -1269,8 +1269,6 @@ static void apple_nvme_free_ctrl(struct nvme_ctrl *ctrl)
+ {
+ 	struct apple_nvme *anv = ctrl_to_apple_nvme(ctrl);
  
- 		if (buff_info->len <= oq->max_single_buffer_size) {
- 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
-+			if (!skb) {
-+				oq->stats->alloc_failures++;
-+				read_idx++;
-+				desc_used++;
-+				if (read_idx == oq->max_count)
-+					read_idx = 0;
-+				continue;
-+			}
-+			rx_bytes += buff_info->len;
- 			skb_reserve(skb, data_offset);
- 			skb_put(skb, buff_info->len);
- 			read_idx++;
-@@ -424,6 +432,30 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
- 			u16 data_len;
+-	if (anv->ctrl.admin_q)
+-		blk_put_queue(anv->ctrl.admin_q);
+ 	put_device(anv->dev);
+ }
  
- 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
-+			if (!skb) {
-+				oq->stats->alloc_failures++;
-+				read_idx++;
-+				desc_used++;
-+				if (read_idx == oq->max_count)
-+					read_idx = 0;
-+				data_len = buff_info->len - oq->max_single_buffer_size;
-+				while (data_len) {
-+					dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
-+							PAGE_SIZE, DMA_FROM_DEVICE);
-+					buff_info = (struct octep_vf_rx_buffer *)&oq->buff_info[read_idx];
-+					buff_info->page = NULL;
-+					if (data_len < oq->buffer_size)
-+						data_len = 0;
-+					else
-+						data_len -= oq->buffer_size;
-+					read_idx++;
-+					desc_used++;
-+					if (read_idx == oq->max_count)
-+						read_idx = 0;
-+				}
-+				continue;
-+			}
-+			rx_bytes += buff_info->len;
- 			skb_reserve(skb, data_offset);
- 			/* Head fragment includes response header(s);
- 			 * subsequent fragments contains only data.
 -- 
 2.53.0
 
