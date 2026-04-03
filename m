@@ -1,166 +1,220 @@
-Return-Path: <stable+bounces-233193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233194-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AohOhXez2mn1QYAu9opvQ
-	(envelope-from <stable+bounces-233193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:34:45 +0200
+	id kHRlDl/ez2mn1QYAu9opvQ
+	(envelope-from <stable+bounces-233194-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:35:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F156395CC5
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:34:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A802C395D1A
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1023A300B5AE
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 15:34:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7DF0B3034A2F
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 15:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB023793B1;
-	Fri,  3 Apr 2026 15:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07CB1D61A3;
+	Fri,  3 Apr 2026 15:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YNtMpbAc"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nguVPwDY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8EE1A3166
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 15:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE2D3BC689
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 15:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775230445; cv=none; b=rsqZcHD6sBcKJu+GCMu7n8Z+pBsBseJhjvooObSLhb/QioXmVxv5WRapu09dpVbWwx3pk+a65F2DySj5w2bWP0Q/VBCA0mgwGbLCr/zv+IDVNr6Wcx1Xgseliy15IUSF1orDMT+YWaCrWGCxVtP3afUFNho1GEfSUZD0mU5WfHw=
+	t=1775230478; cv=none; b=qBSZbfKJtPtxnS3zE/bZ0fZ0NJakfuXe9nnCdh9a3OkE31PKKCNRb05wmDxCy+7o2DMcgIsHv+QS/DP0EVAhBXZQ8Od+tkwZ+2wraZHjEaZQlRrSfFFC0bZC3FB5RIk84vxdbbP7YRwn0UoPOAHx4J5fQaEUCMx22fi0f2V9aGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775230445; c=relaxed/simple;
-	bh=3SpeUw/IezxhhEw/OMLS4tDxYj5A4Yt7t6aUoVs9BB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=US/lNhs486ZBC6Ok+vCaDEOL5WpeYH6aNFqWPvCVDhfz4fEVMF0gVQPyBXsvfc2RJyEc2WHtYo1gEoTf4PknTFVu5YU49FA6/qVL7SdBTEI3vllMucI+tuhdWUw1aCdo2lY/Ugojsuq/5YdEViBfvxhZVt3bU4u8N5pRPljLf3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YNtMpbAc; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-482f454be5bso33451605e9.0
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 08:34:03 -0700 (PDT)
+	s=arc-20240116; t=1775230478; c=relaxed/simple;
+	bh=pnTONFLO++i9o+h4aHJcqHOAz1eTweHpgY38cxWoQ64=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mnp+gEKazA+ANNKUuP6m4yNTZ4GRPd5Oyt4ShiVYu0I8GXffs+FhXFdbtRNjZvTwyLYHvJhEm5u09+LxHP8Mmoar3HjawBhcYrVkH9aCo0Rz/lRuBUG59EvjYafFgnCBLQwaRKng9KA6TUePeI0NhP6UpKAC3VTOywTB+TBSxAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nguVPwDY; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b9c11eba219so243273366b.2
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 08:34:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775230442; x=1775835242; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RHNdw2dyYsz31h4qKYc2LNjmW6JHeLmR4hJnhOhLhl4=;
-        b=YNtMpbAcr7ZQFfmzbnDYTGWODR4jPfT67LwN9ZaBvnjNgSTfbNiRtoBnc27X9AnL3Y
-         qRX3IkyO+HaDOyplHopjYNf1TDZ5V/iFL9F+ohGHE4vMp1KiL+o/XQ+gBq0CEA+uH5fv
-         OD6PU2yfCsoqOM7euK3/bNAMsT5Kv6KRmFgTX04l738IzLYqsACLrEdQWbSAYoxoi5sr
-         5fWcemoxKHBaGpLkvukQQHWKzw9Us3Zl5agerf+wLGsN35srxhd5gF4QgpQz3eWQIv/F
-         xe4HVe0N/zDycny5OrwhU/f/dzWxVAUZBPFCIWMPbkwaD3whG61l4pmBSwJ4MzwKxJWk
-         QQxQ==
+        d=chromium.org; s=google; t=1775230473; x=1775835273; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7re9TIHgFQF++cPTDonCe06+mmw8C8DISy7Otb13OfU=;
+        b=nguVPwDYqRKNDkt11FMGshFKvtpmGQ3qRT8AMBnheHlI+SbVzIgqYInQIhZjuDzXD3
+         wlvqaz7yXeavserEI212wFCIx6ajFQ+nedentqYRDoLEysliJvcMvkX139vgnqigzzDa
+         BqXqVtBzYdwjBG3Z7+1LQym+/OvGB7Af/gcvI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775230442; x=1775835242;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RHNdw2dyYsz31h4qKYc2LNjmW6JHeLmR4hJnhOhLhl4=;
-        b=gpLViQzsiTd28JNq1AOYdMcvVp35fryM2Pd/wLBrRIERqEEIrNKT+tF0zpFd2VbakS
-         Yn6iT0eRtI2JZOuH9O9i6R0pCk3EVUF98dJyl7Jt0Ldth266xpeqxGEjOkUfLdYYof09
-         WMw8SIXn42nzFSpouh6EE6ZeHHNSqesh7w+8vVKip/A7NqoP+Wz1p9dGeePvt+S14L2q
-         2TE9n7H+FDn6U/jq8ylvQOcylrcVqggdCM3dbVu5gzD9R16fh6ljeCyRh1r/9snGvGkj
-         d0/sM0/zUHjxk15Xxpd8jtO9Wv6odYw8V/cm64esUCLXJanVa+qm7wQRIlF+Eeb8uybA
-         XzLw==
-X-Gm-Message-State: AOJu0YyALfxWHYgQzRLreNrl4df/bQlHJNf3iaA7iY98qGGM/xouXe8n
-	AOdJuUBpgV9sglf54/A8kWmnDNWy8MxQPz22xhRw8sZnngyc4UTOOv/K9EGyVjJu
-X-Gm-Gg: ATEYQzyOG5cfM6TRCDh9UD00ilquBkIdOHLP3d2gNcdHHDVAFsSFPjux/1QwVUfEtlg
-	SGmgeFpCXKc6vKFciLOwwMptZs+IQaRHZwQGT7RLfuXswse9mMOt7ieU69qfk736UHj6n7nF3nt
-	SS9AiEPpOoi4uPdCTCWgz9jEdqTCf1DFSag9tjxegiNjM/80sbf8JE1Kcvbe1H3ljAYsNVVLi6b
-	Np7YjRigsV8tQ0zmTLK1x8CN85HoUeZNvYxzBu8aWTmutFf7hc2NMk/psYUbd+Y2NCGyH59SW79
-	/BjTqT+ps8yhmryahHWyGlX+28InaJsYzQo76M3fyIRYQXbM/h88mc+qGvAJCnldvIeJVeXZuRJ
-	32RT98Z6jOrowGl4+nS9zQ2n+nakWDTPKQ0t+vS0ZNyKshuPFqJSz25ZLyLyPu11fXBMtNxk2P/
-	wsL+bHV5ucljqOOIJBo6rvnnVREgwR/d8MKlF90oaGiGz4o7P20eKFlydU1cXCKuLpUDjBKzdIy
-	ylhs5cMMZ3KdiiBLR9wnNTIdh8vumRBevexQ2zKNR2QcBUTDjQOCCJz+r2b5yjm7sSNTkmHr365
-	yY1bAkkKNKhZVWBNF4iGVUliZz5igIo/fxIn7Pd3KeM=
-X-Received: by 2002:a05:600c:45cf:b0:477:9890:9ab8 with SMTP id 5b1f17b1804b1-4889945f8c3mr51593825e9.3.1775230442049;
-        Fri, 03 Apr 2026 08:34:02 -0700 (PDT)
-Received: from mail.gmail.com (2a01cb0889497e00c96ae484ac75459c.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:c96a:e484:ac75:459c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48899eb50cfsm21702745e9.32.2026.04.03.08.34.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 08:34:01 -0700 (PDT)
-Date: Fri, 3 Apr 2026 17:33:59 +0200
-From: Paul Chaignon <paul.chaignon@gmail.com>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 6.6 0/6] bpf: Fix bounds when ranges cross sign
- boundary
-Message-ID: <cover.1775206731.git.paul.chaignon@gmail.com>
+        d=1e100.net; s=20251104; t=1775230473; x=1775835273;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7re9TIHgFQF++cPTDonCe06+mmw8C8DISy7Otb13OfU=;
+        b=Nsmv2xm/QQpNXw8GdaZ0r481JLTFn+Nwxk/D63MbOQMP6o9M3LVAEV0NMEMeorW/li
+         GhD4wxHWC9hyx6OExwt1aTY9Y4jU5xTcTI0wNwrl8f6P3Tuc5wjEAAoQzyZokbJSyWH5
+         eURSnZ/WByvG15UNBqGaLW2dGdNu1ZCttdDQb+orG91fbS8IhNiWN0kAahSQDCM91gcA
+         hjFFdCOMDDkYjptSlM/R4A5zCwwKFUNbcnAOndEssCkXDdb9hnNslya0UAYPxAI78vZM
+         /l2ImC6Q/qZDv268GNvcI4OVGq7iesyJNmciv1JicbFB+6PuaoaeR8c1cUhOncaR8UFO
+         ekXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVH6k5MMv7FgHyOe4/fQpK2VBv3S0gVeyYehCzz14VquchG9ORSdhXTqbkUM7F52fWe55ZHO54=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQC6kGmHDINbGhk4X+LLAjJ7reNcr32hEEfOS+Bs7JODjzuKjd
+	RlkVAmMzn34rrEQVHfQLY/1pMvce5AXz5yjHPhFiVQl4jhEW6nf2+28MqeHKTFPVK/Hd6m/hv+J
+	bEktMzg==
+X-Gm-Gg: AeBDieuADAeRm+C4bn5NqlMFsPbhEP8I+jGcX8R/uZ+SR0ZO1Feudtxusp0fV2/x0wV
+	YxShAq9s73SoLvxyMAnkgk3nGRLU5fWiyU/ln+5aisKogfYX4iFkDYhj+4aQ0l273bATU7AdXA5
+	gdZFcxghL103PKRqZ4ucI/soysZB+mnyEfENU6NXBLe1pP0Wqbix/NJ6Z9fdNLBKDI7o6oQhb3M
+	RonHT+CaxhwViMpKOFGInOEWzRoNvZ1cQVNva6jU90tnlfxffIOGexhqb7PRwynyAivGobNqdhO
+	wNl29FPMUz0z62MkG/GXxmyB5+ymAeqg2YquBNewJULJy3Zg89aWLh4ogDsbrjIOhtHLBpxn2Cj
+	2dLTGEQAd409dsKbcn1px4/42v90ZO88/l8CAVohR7hvjYcgUGzwJ6vvfkfmHp/EEF2hEuQ2Tro
+	RPsS1EBT6FuV97jSfDgDcHEIhQVO1lEguvchHD22DRXxHt1woLgAeQ4VO8Rv5/f6drrQdhvMZ+
+X-Received: by 2002:a17:907:3d51:b0:b98:7f7:50f1 with SMTP id a640c23a62f3a-b9c6793b40fmr180523566b.27.1775230473420;
+        Fri, 03 Apr 2026 08:34:33 -0700 (PDT)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3c97229esm205710766b.4.2026.04.03.08.34.32
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Apr 2026 08:34:32 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43cf8d550bdso1715349f8f.0
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 08:34:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW1oRIJiWXHn8Y73aTIYDuSduhiMnU/MMN7UIt27+BN5tFjqhPwtW7UnW1h+ShHDYXrBZUPECY=@vger.kernel.org
+X-Received: by 2002:a05:6000:2485:b0:43d:121c:37d9 with SMTP id
+ ffacd0b85a97d-43d29268a8dmr5512092f8f.1.1775230471524; Fri, 03 Apr 2026
+ 08:34:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260403005005.30424-1-dianders@chromium.org> <20260402174925.v3.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+ <2026040319-seventeen-humorless-5541@gregkh>
+In-Reply-To: <2026040319-seventeen-humorless-5541@gregkh>
+From: Doug Anderson <dianders@chromium.org>
+Date: Fri, 3 Apr 2026 08:34:20 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=XmnWjVzQcr13GmRKX3cvRortA==5C8TH5D-jRBe0VBqw@mail.gmail.com>
+X-Gm-Features: AQROBzBI3qbsutVdmrxjY8uO9-3m7vo2V5fLwzycPlllzj8W2kmat6R3FSfkHcs
+Message-ID: <CAD=FV=XmnWjVzQcr13GmRKX3cvRortA==5C8TH5D-jRBe0VBqw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/9] driver core: Don't let a device probe until it's ready
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, 
+	Robin Murphy <robin.murphy@arm.com>, Leon Romanovsky <leon@kernel.org>, 
+	Saravana Kannan <saravanak@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	Eric Dumazet <edumazet@google.com>, Christoph Hellwig <hch@lst.de>, Alexey Kardashevskiy <aik@ozlabs.ru>, 
+	Johan Hovold <johan@kernel.org>, stable@vger.kernel.org, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,kernel.org,suse.com];
-	TAGGED_FROM(0.00)[bounces-233193-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233194-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[paulchaignon@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 8F156395CC5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: A802C395D1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-As discussed in [1] yesterday, this series backports two sets of fixes
-for BPF, with their selftests:
-- 00bf8d0c6c9b ("bpf: Improve bounds when s64 crosses sign boundary")
-- 26e5e346a52c ("selftests/bpf: Test cross-sign 64bits range
-  refinement")
-- f96841bbf4a1 ("selftests/bpf: Test invariants on JSLT crossing sign")
-- 5dbb19b16ac4 ("bpf: Add third round of bounds deduction")
-- fbc7aef517d8 ("bpf: Fix u32/s32 bounds when ranges cross min/max
-  boundary")
-- f81fdfd16771 ("selftests/bpf: test refining u32/s32 bounds when
-  ranges cross min/max boundary")
+Hi,
 
-Using Shung-Hsi's stable CI repo [2], I verified the BPF selftests pass
-with these commits applied on top of v6.12.
+On Fri, Apr 3, 2026 at 12:04=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> > @@ -458,6 +458,18 @@ struct device_physical_location {
+> >       bool lid;
+> >  };
+> >
+> > +/**
+> > + * enum struct_device_flags - Flags in struct device
+> > + *
+> > + * Should be accessed with thread-safe bitops.
+> > + *
+> > + * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished eno=
+ugh
+> > + *           initialization that probe could be called.
+> > + */
+> > +enum struct_device_flags {
+> > +     DEV_FLAG_READY_TO_PROBE,
+> > +};
+>
+> If you are going to want this to be a bit value, please use BIT(X) and
+> not an enum, as that's going to just get confusing over time.
 
-1: https://lore.kernel.org/stable/2026040240-friday-gurgling-7088@gregkh/
-2: https://github.com/pchaigno/stable-bpf-ci/actions/runs/23940850516/job/69826632354
+I don't believe I can do that. BIT(x) is not compatible with the
+atomic bitops API. BIT(x) will turn the bit number (x) into a hex
+value, but the atomic bitops API needs the bit number.
 
-Eduard Zingerman (2):
-  bpf: Fix u32/s32 bounds when ranges cross min/max boundary
-  selftests/bpf: test refining u32/s32 bounds when ranges cross min/max
-    boundary
+If you wish, I can turn this into something like:
 
-Paul Chaignon (4):
-  bpf: Improve bounds when s64 crosses sign boundary
-  selftests/bpf: Test cross-sign 64bits range refinement
-  selftests/bpf: Test invariants on JSLT crossing sign
-  bpf: Add third round of bounds deduction
+#define DEV_FLAG_READY_TO_PROBE         0
+#define DEV_FLAG_CAN_MATCH              1
+#define DEV_FLAG_DMA_IOMMU              2
+...
 
- kernel/bpf/verifier.c                         |  77 +++++++++
- .../selftests/bpf/prog_tests/reg_bounds.c     |  62 ++++++-
- .../selftests/bpf/progs/verifier_bounds.c     | 159 +++++++++++++++++-
- 3 files changed, 292 insertions(+), 6 deletions(-)
+...but that seemed worse (to me) than the enum. Please shout if I
+misunderstood or you disagree.
 
--- 
-2.43.0
 
+> Also, none of this manual test_bit()/set_bit() stuff, please give us
+> real "accessors" for this like:
+>         bool device_ready_to_probe(struct device *dev);
+>
+> so that it's obvious what is happening.
+
+Sure, that matches Rafael's request and is a nice improvement. To keep
+from having to replicate a bunch of boilerplate code, I'll have macros
+define the accessors:
+
+#define __create_dev_flag_accessors(accessor_name, flag_name) \
+static inline bool dev_##accessor_name(const struct device *dev) { \
+        return test_bit(flag_name, &dev->flags); \
+} \
+static inline void dev_set_##accessor_name(struct device *dev) { \
+        set_bit(flag_name, &dev->flags); \
+} \
+static inline void dev_clear_##accessor_name(struct device *dev) { \
+        clear_bit(flag_name, &dev->flags); \
+} \
+static inline void dev_assign_##accessor_name(struct device *dev, bool
+value) { \
+        assign_bit(flag_name, &dev->flags, value); \
+} \
+static inline bool dev_test_and_set_##accessor_name(struct device *dev) { \
+        return test_and_set_bit(flag_name, &dev->flags); \
+}
+
+__create_dev_flag_accessors(ready_to_probe, DEV_FLAG_READY_TO_PROBE);
+__create_dev_flag_accessors(can_match, DEV_FLAG_CAN_MATCH);
+__create_dev_flag_accessors(dma_iommu, DEV_FLAG_DMA_IOMMU);
+__create_dev_flag_accessors(dma_skip_sync, DEV_FLAG_DMA_SKIP_SYNC);
+__create_dev_flag_accessors(dma_ops_bypass, DEV_FLAG_DMA_OPS_BYPASS);
+__create_dev_flag_accessors(state_synced, DEV_FLAG_STATE_SYNCED);
+__create_dev_flag_accessors(dma_coherent, DEV_FLAG_DMA_COHERENT);
+__create_dev_flag_accessors(of_node_reused, DEV_FLAG_OF_NODE_REUSED);
+__create_dev_flag_accessors(offline_disabled, DEV_FLAG_OFFLINE_DISABLED);
+__create_dev_flag_accessors(offline, DEV_FLAG_OFFLINE);
+
+Happy to tweak the above if desired.
+
+-Doug
 
