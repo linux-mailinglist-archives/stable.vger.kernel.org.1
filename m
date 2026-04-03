@@ -1,167 +1,153 @@
-Return-Path: <stable+bounces-233190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INkhCPfTz2kQ1AYAu9opvQ
-	(envelope-from <stable+bounces-233190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 16:51:35 +0200
+	id YPNwNinWz2kQ1AYAu9opvQ
+	(envelope-from <stable+bounces-233191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:00:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA72395610
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 16:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FB339576E
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 17:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D75C3025F4C
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 14:51:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17306302DE16
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 14:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313613C4568;
-	Fri,  3 Apr 2026 14:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KFEIvQTc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8869392815;
+	Fri,  3 Apr 2026 14:59:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB50E39FCD1
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 14:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9283C457D;
+	Fri,  3 Apr 2026 14:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775227883; cv=none; b=lPRF3prb3udWblPC+7BzmeBog4ALWslf1vFahDtTtZoWCLpuYP2Wj+qdLVgBx4iyYLJqOYCCb/tEkSFuWuK98gRZphClrvvaVwI85B49/Y6/9R1diKtRc9h5YxhXngahtEeW5kZNvuPk7McBOJszd6Av56bXKCNJjzBNTjwpYhk=
+	t=1775228340; cv=none; b=SXJFjl9rhnMYrt7TrlxIc4zFcl3c+UpuSM3u39W4PxfdQOnN4pt31oy1KLKKHw4HKg3ZHccH5XaQ1aCXk3uDumTPKxgjNZBXemICd515kpHtM0Mie6rApraUvaGep1b5eghUztx7Nk17/ZZDafHEfg4z02QSbSy5jh1hKSGRqoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775227883; c=relaxed/simple;
-	bh=lzi8vanqoY23RZvoxmfl6DfLoVT0+U5Of4Av0npR8KQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nDoJZIpM8EMJAe48aptnJ0gA5JX5Erd8nyDlDIbi8yTqcv+D5GjBn+Zbu7SWQwIjzqaoQtenFB2sXg/ICXVHtkeJ2dzLkjx4McwXJ7UfZSAFOFyzCrvVaNubbszT9NUXk2Pqm2xDUbGtyidnkDX0CxoHppLb9PV/2y+1wG79YPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KFEIvQTc; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b24af7ca99so23416395ad.1
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 07:51:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775227881; x=1775832681; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UsueJAB8iWMZmH12hTqYKPYVxfUoBPtsPuD5qctzJns=;
-        b=KFEIvQTcxayFA/382PfH+WayA5yJekNqxGLlSBajU76J27sEf46lei5Xn8zQp6OeUH
-         KcZ9BhTcHPVTIclssmpgmbDtjcubOh9DafzEdXeOdKl7gHH0FeWYqI5NSm3cpOKbWEr9
-         g3dDWzcg4VmaapDUKTcDPLUr5KMiKBFnjnA6Ch7XDYdA3EUDl0gJvSYnjhkA83Ue/kYi
-         6T+U7b9OPCkDeff3OtbBCIpxETm7ZUxBlUeFEVKoKWg8ar4InveULdQjyVpD5zKBWJwu
-         bIJDhSlOvohto8w6zSO9T1c2TlYp/Puc6DPLAscxTH5dNXTpCF2kErmxfqJoaPdroSJ+
-         kU4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775227881; x=1775832681;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UsueJAB8iWMZmH12hTqYKPYVxfUoBPtsPuD5qctzJns=;
-        b=sWeAxEfI7ztHd4/KHPP20NbzTHGU77DXhKdfWziYapQX/KoIMqLS62VWUjGbxvPP8L
-         OnYJ7ZbNcEcL3xULieoGQenIyFyszIgvRIVAiCWqYWdY/WptUkPK6Z9seSMtObKCk9m+
-         oVf2fSc83FIWbdT729xInbfWJVcgtMZ05E+zb1L4TIWlFFKz92PZsJuMtThNHdh4c3SL
-         gVuGZasaRAj1BmKuP2HFYF1FxucFe35Bxjj5O+H/ix8gENH52YTV5IamsWejcBqxJpU6
-         /aYg4Ny929xsSkRXkKH5YWZDB1fgZkPx4XSICyIk0gR0gzFDeIaq4ZpcAo5ruucCR+26
-         z5sg==
-X-Forwarded-Encrypted: i=1; AJvYcCXYRtDh6Ui2knO1ZfrkgsQktIbhulJmLFIilZzsokH1fTAg49C6BLkH3s0/uLqSrk/Rj9g3Jsg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRzcS9Q2Ik0Ex1C5tQo50IhnhpaXUXxqbbqn4+9cRiFYZVDiHC
-	cN22sIUrehqqONolGVpxRi1z4VaeshoywbbioOZcNlhbakEUa9R5hR4mAIcPuGxyG+aAj/s42hM
-	LW86ia59b9oqVlmUVc54aGKJmnQ==
-X-Received: from plblw8.prod.google.com ([2002:a17:903:2ac8:b0:2b0:af9b:aa3c])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2ac5:b0:2b2:42da:25cc with SMTP id d9443c01a7336-2b28163ad55mr35530115ad.1.1775227881118;
- Fri, 03 Apr 2026 07:51:21 -0700 (PDT)
-Date: Fri,  3 Apr 2026 14:51:18 +0000
-In-Reply-To: <CABb+yY0ub51k-eFpPfgARXtwYjWzRSjbPDLtoMD77YQR8JH+=Q@mail.gmail.com>
+	s=arc-20240116; t=1775228340; c=relaxed/simple;
+	bh=3Rkb0g97Ceob67GFEhQG4wUs08kRFoCi/DEvg7lzIjk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bo4jWr83cHsazM4GdzfLkufEFBt5jMPVmX2jFqtafLgfLXPiNalQTfEgUfwgKrdYKPWJ3dPSFVz6Zl68MY3fn3FVamYvIi0kHGaY1/ZH1aoPqz7EqqOr8xWCgg+UXSZWBFwCRbfgF5c863y7atBLOr2EkMZ0/OTKRcW+oOqNdJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id A343810DC6;
+	Fri, 03 Apr 2026 16:58:49 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 845C16000EC2; Fri,  3 Apr 2026 16:58:49 +0200 (CEST)
+Date: Fri, 3 Apr 2026 16:58:49 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Bernd Schumacher <bernd@bschu.de>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@debian.org>,
+	1131025@bugs.debian.org, Salvatore Bonaccorso <carnil@debian.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	regressions@lists.linux.dev, stable@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alex Williamson <alex@shazbot.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: Bug#1131025: [6.12.y regression] Regression with 58130e7ce6cb
+ ("PCI/ERR: Ensure error recoverability at all times"): echo vfio-pci
+ >driver_override does not work for DVB Adapter
+Message-ID: <ac_VqcBbKRDkHp69@wunner.de>
+References: <74bcd84500e5efcca035624f325e400dd8a21f44.camel@bschu.de>
+ <acgohjvBpVcR7HcK@wunner.de>
+ <5f9386146f426e2847550681cb7188471205607f.camel@bschu.de>
+ <aclRwznwq6KpA2qA@wunner.de>
+ <177373189751.7987.7156982489427825197.reportbug@obelix-trixie.bs.de>
+ <ecf9b2dd96ff97cc035ba297266b8dd05eea88da.camel@bschu.de>
+ <ac0Y85OShbK6mHEV@monoceros>
+ <8275e5b86696dec133889713258c2e158a443496.camel@bschu.de>
+ <ac19pxEZKvQuQwFV@wunner.de>
+ <7173609c404c5444e634dd3ab26f55f2788d82e4.camel@bschu.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CABb+yY0ub51k-eFpPfgARXtwYjWzRSjbPDLtoMD77YQR8JH+=Q@mail.gmail.com>
-X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260403145119.2581034-1-joonwonkang@google.com>
-Subject: Re: [PATCH v3 1/2] mailbox: Use per-thread completion to fix wrong
- completion order
-From: Joonwon Kang <joonwonkang@google.com>
-To: jassisinghbrar@gmail.com
-Cc: angelogioacchino.delregno@collabora.com, jonathanh@nvidia.com, 
-	joonwonkang@google.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, matthias.bgg@gmail.com, stable@vger.kernel.org, 
-	thierry.reding@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7173609c404c5444e634dd3ab26f55f2788d82e4.camel@bschu.de>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[collabora.com,nvidia.com,google.com,lists.infradead.org,vger.kernel.org,gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-233190-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-233191-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8AA72395610
+	RCPT_COUNT_TWELVE(0.00)[13];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.349];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 57FB339576E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> On Thu, Apr 2, 2026 at 12:07=E2=80=AFPM Joonwon Kang <joonwonkang@google.=
-com> wrote:
-> >
-> > Previously, a sender thread in mbox_send_message() could be woken up at
-> > a wrong time in blocking mode. It is because there was only a single
-> > completion for a channel whereas messages from multiple threads could b=
-e
-> > sent in any order; since the shared completion could be signalled in an=
-y
-> > order, it could wake up a wrong sender thread.
-> >
-> > This commit resolves the false wake-up issue with the following changes=
-:
-> > - Completions are created just as many as the number of concurrent send=
-er
-> >   threads
-> > - A completion is created on a sender thread's stack
-> > - Each slot of the message queue, i.e. `msg_data`, contains a pointer t=
-o
-> >   its target completion
-> > - tx_tick() signals the completion of the currently active slot of the
-> >   message queue
-> >
-> I think I reviewed it already or is this happening on
-> one-channel-one-client usage? Because mailbox api does not support
-> channels shared among multiple clients.
+[cc += Alex, Ilpo]
 
-Yes, this patch is handling the one-channel-one-client usage but when that
-single channel is shared between multiple threads. From my understanding, t=
-he
-discussion back then ended with how to circumvent the issue rather than whe=
-ther
-we will eventually solve this in the mailbox framework or not, and if yes, =
-how
-we will, and if not, why. I think it should still be resolved in the framew=
-ork
-for the reasons in the cover letter. Could you help to give a second review
-with regards to those aspects?
+On Thu, Apr 02, 2026 at 07:53:09AM +0200, Bernd Schumacher wrote:
+> dmesg with patch is now attached
+
+Thank you Bernd!
+
+If you cherry-pick these two upstream commits onto v6.12.73,
+does the issue go away?
+
+  4d4c10f763d7 ("PCI: Explicitly put devices into D0 when initializing")
+  907a7a2e5bf4 ("PCI/PM: Set up runtime PM even for devices without PCI PM")
+
+The second one is a fix for the first one.
+
+I suspect that the first one is the reason why you are seeing
+the issue on v6.12.73 but not on current mainline.  The commit
+went into v6.16 but was not backported to LTS kernels.
+
+@Alex:
+The commit sets pci_dev->current_state to PCI_D0 on device enumeration,
+whereas previously it was PCI_UNKNOWN.  This changes code paths in
+a number of places.  In particular:
+
+  vfio_pci_core_register_device()
+    vfio_pci_set_power_state()
+
+... calls pci_restore_state() without a prior pci_save_state() if
+current_state is PCI_UNKNOWN.  The function doesn't do that for PCI_D0.
+
+Also, there is a code comment in vfio_pci_core_register_device()
+claiming that "pci-core sets the device power state to an unknown value
+at bootup" which is no longer true since commit 4d4c10f763d7.
+
+I recently had to deal with a regression in ASPM code which was
+likewise caused by the subtle change of current_state from PCI_UNKNOWN
+to PCI_D0, so my non-artificial neural network was trained to recognize
+this pattern and seeing the current_state checks in vfio code thus
+immediately looked suspicious to me:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=220705
 
 Thanks,
-Joonwon Kang
+
+Lukas
 
