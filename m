@@ -1,131 +1,119 @@
-Return-Path: <stable+bounces-233230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IRXMK4H0GnB2gYAu9opvQ
-	(envelope-from <stable+bounces-233230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 20:32:14 +0200
+	id eFq3Fi8V0GmV3AYAu9opvQ
+	(envelope-from <stable+bounces-233231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 21:29:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2046A397518
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 20:32:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7F6397A4E
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 21:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28E55308DE13
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 18:30:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25A3F300B9E7
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 19:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73125366569;
-	Fri,  3 Apr 2026 18:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04E833EB17;
+	Fri,  3 Apr 2026 19:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5Y3EZmA"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XmHcnQM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E77633C19E;
-	Fri,  3 Apr 2026 18:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609D234B19F;
+	Fri,  3 Apr 2026 19:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775241043; cv=none; b=BjBsTHDOXMncWvSN2tEJ7W50m+vr2od76S7S5NIxM/haaPJbOqDw2uyBTWXbRXOFDIHMXzOSdDz9XYscVlXkqWR4tjzpn7rWMytP3CQHST643BA3bltnvlKUykZLIotUBioHFrzsvoeD3qdiBFbx2lzWsE0ZscQcNOga0duyYhk=
+	t=1775244588; cv=none; b=cxsokldVssavROWiPNN6X6zlXawgYbJsUK2GuqgIDExunrPbVfvskuXLDRjSXkUpGmXEYxYb2c+WALoUHMAQsPUhrFK1vWVRSpCZWUOXOJ8W3QETiZqCTeb7BqzUpVwyBAwVIgOtlF0bKYI0ESzCj7q03Zn9YEv5ugPQHNn1fsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775241043; c=relaxed/simple;
-	bh=seumy+Ex/xkdEGqEG0CGT2kkxLikn6nOTs522DJNckg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JF4kPrx056WeKhLn3hz5W3o9BZt1xTa40fCGeB7O9xso7PhxibazbGi9IuXC/LmCuZVpzWr8G2G8+7cuINqVLFfgUwKqIv1gxnCB5T3wsxCF+qU7x/bsjFUZNjgygU0FDz6KTn+rmoA7oG04jcAfEeoOcJYAZdMaB6ynsL8ihLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5Y3EZmA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87E6C2BCB0;
-	Fri,  3 Apr 2026 18:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775241040;
-	bh=seumy+Ex/xkdEGqEG0CGT2kkxLikn6nOTs522DJNckg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=c5Y3EZmAaJfU0qvwu6OtHikdYU9/ckZeC7ffNJeF4CR+o7CPSTAXhIKj618lgIzLb
-	 DS905l5kvPGhtzYxSXSKs5pZxrlUfAFO2Nam0nWpsAa35jhhF0oSlpJToajlEt0n/U
-	 cqR6fyHzYpaX/j4ELCh1JV6OMLRBBDwOKuBNfgCuDhb+p5wGk6YB05wVFbcoEhNLsX
-	 YHTTKaKCgOx2guDFkfZ6rPXMR2x2yfOYfrffjb//RHSeIHXdyKGJBu/Z0U2NoVyLBf
-	 oGufvZSFp8St9ACmCknWEgLZJ5Z4F0kMZiwXW+YQ8g3UTGqICNnR62NgsOl9O987pO
-	 CW5sjiBwSpmcA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F933809A14;
-	Fri,  3 Apr 2026 18:30:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1775244588; c=relaxed/simple;
+	bh=KVUOBm/XJXH3v16GB6JhY07VnRDXsYp6At0wwZo7LgE=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ewBgLiuwcms/l61Rp8cWIA/8zUKlZzcY0Ulood4GWMdwrB/+CNVD5aQp7IkRMVsmJKPDJH4cV5YxkK71aogS0ptwbnEn1Wja4sDkgZqUxRvWGnCiTotRUTaP3n3tO8in1zyAd96phmxrchJY9fvDkkuVPQCJlKb4Jo25v+NaZwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XmHcnQM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C000BC4CEF7;
+	Fri,  3 Apr 2026 19:29:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775244588;
+	bh=KVUOBm/XJXH3v16GB6JhY07VnRDXsYp6At0wwZo7LgE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XmHcnQM5tBJuavm3UYXl1I6gZ5Do35IbN8BEgTgDFOl/a5894drXD1hbbWQK6iTpj
+	 +Ha1GPT3mv4EEfaQBjwPAzscrG9qAf+gOQp+9xsdIGG8Xp2CDRsMNNjzwMRPuIMDcW
+	 sHyZPIm96xsFvjd8bdUlJEDnb7qR47gDf8GZB9wQ=
+Date: Fri, 3 Apr 2026 12:29:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Tejas Bharambe <thbharam@gmail.com>
+Cc: ocfs2-devel@lists.linux.dev, mark@fasheh.com, jlbec@evilplan.org,
+ joseph.qi@linux.alibaba.com, linux-kernel@vger.kernel.org,
+ syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com, Tejas Bharambe
+ <tejas.bharambe@outlook.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4] ocfs2: fix use-after-free in ocfs2_fault() when
+ VM_FAULT_RETRY
+Message-Id: <20260403122947.2afc337b5333fb1990a78a65@linux-foundation.org>
+In-Reply-To: <20260403035333.136824-1-tejas.bharambe@outlook.com>
+References: <20260403035333.136824-1-tejas.bharambe@outlook.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 0/2] riscv: mm: Define DIRECT_MAP_PHYSMEM_END, fix
- ZONE_DEVICE
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <177524102228.1406513.593562525700646994.git-patchwork-notify@kernel.org>
-Date: Fri, 03 Apr 2026 18:30:22 +0000
-References: 
- <20260309-riscv-sparsemem-vmemmap-limits-v1-0-f40efe18e3cd@iscas.ac.cn>
-In-Reply-To: 
- <20260309-riscv-sparsemem-vmemmap-limits-v1-0-f40efe18e3cd@iscas.ac.cn>
-To: Vivian Wang <wangruikang@iscas.ac.cn>
-Cc: linux-riscv@lists.infradead.org, pjw@kernel.org, palmer@dabbelt.com,
- alex@ghiti.fr, linux-kernel@vger.kernel.org, sophgo@lists.linux.dev,
- stable@vger.kernel.org, gaohan@iscas.ac.cn
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-233231-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233230-lists,stable=lfdr.de,linux-riscv];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NO_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,fasheh.com,evilplan.org,linux.alibaba.com,vger.kernel.org,syzkaller.appspotmail.com,outlook.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2046A397518
+	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:mid,sashiko.dev:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BB7F6397A4E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
+On Thu,  2 Apr 2026 20:53:33 -0700 Tejas Bharambe <thbharam@gmail.com> wrote:
 
-This series was applied to riscv/linux.git (for-next)
-by Paul Walmsley <pjw@kernel.org>:
-
-On Mon, 09 Mar 2026 19:09:36 +0800 you wrote:
-> With HSA_AMD_SVM=y, RISC-V runs into the same problem as arm64 at one
-> point did [1], where it tries to use a struct page that is outside of
-> vmemmap. See log near the end.
+> filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
+> as documented in mm/filemap.c:
 > 
-> On RISC-V, the actual mappable range of physical addresses is dependent
-> on the current MMU mode i.e. satp_mode. Define DIRECT_MAP_PHYSMEM_END to
-> expose this information to get_free_mem_region().
+>   "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
+>   may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
 > 
-> [...]
+> When this happens, a concurrent munmap() can call remove_vma() and free
+> the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
+> becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
+> dereferences it -- a use-after-free.
+> 
+> Fix this by saving the inode reference before calling filemap_fault(),
+> and removing vma from the trace event. The inode remains valid across
+> the lock drop since the file is still open, so the trace can fire in
+> all cases without dereferencing the potentially freed vma.
 
-Here is the summary with links:
-  - [1/2] riscv: mm: WARN_ON() for bad addresses in vmemmap_populate()
-    https://git.kernel.org/riscv/c/49a5cb2dc86c
-  - [2/2] riscv: mm: Define DIRECT_MAP_PHYSMEM_END
-    (no matching commit)
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+There's one question from the Sashiko AI reviewbot:
+	https://sashiko.dev/#/patchset/20260403035333.136824-1-tejas.bharambe@outlook.com
 
