@@ -1,185 +1,209 @@
-Return-Path: <stable+bounces-233233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKudCcUW0GmV3AYAu9opvQ
-	(envelope-from <stable+bounces-233233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 21:36:37 +0200
+	id iFuxH5Ee0Glk3gYAu9opvQ
+	(envelope-from <stable+bounces-233234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 22:09:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E48397B64
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 21:36:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284F4398137
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 22:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C3D82300D4D3
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 19:36:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9067230479CE
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 20:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE92A3D6CC1;
-	Fri,  3 Apr 2026 19:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CE13D5662;
+	Fri,  3 Apr 2026 20:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.it header.i=@amazon.it header.b="c2Ae9m58"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qi+FBY7T"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5110C3D669F;
-	Fri,  3 Apr 2026 19:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409D534B19F
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 20:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775244982; cv=none; b=Tx1zABw9UeuGLWLejPvR4s3pp2sxu04HYfuEmk0TVJVwOC+Whpwh/X3I/hK5n7+CZLRYhKiZWg1xhJqlUxRyZCDmjg3ZEhYiIcHh+OG5ogqx+vjtfylnXu5jpZKgf3cxUZEcYqfyyQ/P6jRMlwCd9j+6MFOYkc337QPmoCBs1TE=
+	t=1775246858; cv=none; b=CjFLzTv5WUE8fOAhxoYsW2fNbZGMJrJYpAHBwS2nTeUtd6Vh9PHQVhm7BXGkLNWyEu8RIEu6AJE6ZpziaopAUOOH0jLkSw6EFARtynPCkvZgX5GpNDBHPX3JJAKoGyGccNiRHDwQhWfmUlBrUiCTTXquvVUx1DMYm7JVOtK+5C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775244982; c=relaxed/simple;
-	bh=ycG1vAoajTYWTQidO+jgNfLzn8hwwFmi4Xb0pSLdzKA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CMPMgK6UYfCz1/htTfiIKrqg6ZrbR8k8u2jnjyZmY3zbvq/hGZ1MNY+bQWMe4pOmGL0gsf9GrtuupBHIwionbFWI9ZULdUdfZwELsBw2ZJiRPMLdouTkHUVLwaUN4Y1p8+RfYT2JSoy5aCpw7nDqOJeBx+P7OGQDCpg2UXk2Sfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.it; spf=pass smtp.mailfrom=amazon.it; dkim=pass (2048-bit key) header.d=amazon.it header.i=@amazon.it header.b=c2Ae9m58; arc=none smtp.client-ip=34.218.115.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.it
+	s=arc-20240116; t=1775246858; c=relaxed/simple;
+	bh=2EWNeglDkNZGr2Gg1mnutn0NEb1fsT8qNPLfPzONX6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ioijJk8dNww1D/IG1tu4htrnnI1BwIkHqhqs1zNLNOFjDu6YwI0qeWZdihXiHDEr5E15PMwL3pAWlYGG/edeGL6/3gPF3L0RKxSxr18MO90sv3N15AzNz2IDqx4SdilqURC7KNoRetnSg4tgbRxHwxrZYoRAx1JuDpBWWRokns4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qi+FBY7T; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso20304475e9.1
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 13:07:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1775244981; x=1806780981;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=EyFJJlejxGzTWLtg5fvYIh3yb3XlIEjqtxfx4waTmGo=;
-  b=c2Ae9m589rlrdT4TE9NYUecvxjQ3SxuI7EDiK395LO8dVjRWPXg6ibO3
-   SjV2oe4CYCwRsd/qwGio/bP/t/AIsSTgzNh/GhiFKLiJCL0lbWBwHFIaA
-   5E9wn+Fq8/BW8ATclG93fBvG8FAXFTLbJwlyu3f4yZCY5/0y6UgWRLk7T
-   H23DzGTohamRc6+zFghiAtnbV8XuiFGc1vNvr9z8BQUHzEw3XCQpl7pL5
-   xN8PV5kLfn4kCgX2cW9cr5tGnSE3mvuBrjkprzBxwbvx1U/XnoHDmMEzI
-   JLKMb9IFcTMw6XEMpHkRDJfa9SEjpXsKpc49J52UKhiJPl4/mi938w3gl
-   w==;
-X-CSE-ConnectionGUID: sFefx9B8RsmiP8qCy2pInA==
-X-CSE-MsgGUID: 5HIbpn5wRSadE6H9a9+3oQ==
-X-IronPort-AV: E=Sophos;i="6.23,158,1770595200"; 
-   d="scan'208";a="16311994"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 19:36:18 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:3519]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.38.240:2525] with esmtp (Farcaster)
- id 96d4a6f2-3ad3-4cad-8eeb-a12490913bd4; Fri, 3 Apr 2026 19:36:17 +0000 (UTC)
-X-Farcaster-Flow-ID: 96d4a6f2-3ad3-4cad-8eeb-a12490913bd4
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 3 Apr 2026 19:36:13 +0000
-Received: from dev-dsk-dipiets-2b-fa1865ee.us-west-2.amazon.com
- (172.22.139.101) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Fri, 3 Apr 2026
- 19:36:13 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <linux-kernel@vger.kernel.org>
-CC: <dipiets@amazon.it>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
-	<abuehaze@amazon.de>, <dipietro.salvatore@gmail.com>, <willy@infradead.org>,
-	<stable@vger.kernel.org>, Christian Brauner <brauner@kernel.org>, "Darrick J.
- Wong" <djwong@kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>
-Subject: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
-Date: Fri, 3 Apr 2026 19:35:34 +0000
-Message-ID: <20260403193535.9970-2-dipiets@amazon.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260403193535.9970-1-dipiets@amazon.it>
-References: <20260403193535.9970-1-dipiets@amazon.it>
+        d=gmail.com; s=20251104; t=1775246855; x=1775851655; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CTa3SMNP51BcljfrASeQns+9o2oJfvoBuCifvUwOAm0=;
+        b=Qi+FBY7T3N+t9Z6zyYyUvToT2W2yH71BCPwTWhey5+NXD7bS1WOb7pIflMLgBATccf
+         oUqBb//GKWACMjVeoXpHeDrGHCODJmsOr1ReJjA4hkQogb1luLXks+SQLgSOPWBRrDDB
+         70o99J93FpAQqptCcxju1oyEb/jZUyJyIGF08T8Inn4Fu53VcZZs3k1EormV/97vHJxT
+         eQwlFKwdsRaxqST4MRtR+EdLJEyxleFjMJQtQ9yT0t2ewh3i+Fb/HO83Q3OMFMH1tzAs
+         1wJxeAItkG1+6dE3SlGLy9qWfADIXu1TTKxPrIPVDDjaHZ3+uJU7GtwEY288H+8uDJHt
+         q0+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775246855; x=1775851655;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CTa3SMNP51BcljfrASeQns+9o2oJfvoBuCifvUwOAm0=;
+        b=Hi2JkTfsBxPwS/bx4FZz9iE+D01eJP+yLCOBEs03JiX+qjlZ3iUdto4akDk+3W/u9r
+         lnOU2quqdv1vrPXr6Hol4acXhMzfU2Vif1TnWmYC+YaSDFxk9jHyCyIou7Z3oywq/q2U
+         UAMTsiwq8YyaAo7nvZGeihyrNA2KM/tQNsHohIwy7t9KGeGk58E1NDJDUQhzTpIucwqx
+         EmCXyNDEvDCXmUx8g69qwh+ioHnUNuB0BzJ96o2FeVYkcJ2mh0XEhvS6ZABgkME0bygO
+         tLWOMYKm6+FZU3/wAan6AMHBuKgWGR3YweQegwNQxRMtAhqbiXCQNDQsbzW6W2z42Dae
+         7bWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVamicesfP0SkVZZ9IKlMlR4kFQXWFlfrJPNuQ6XUjCLtRUVdqpCIuhJFPCU3pyBFGTrP5pXzQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5vAElbKkh5AhvNmAtuas4++//ZHAYjoiWjvq+6z70hae1tetw
+	zJNJOSiXwC1KyolXm2Gt9J+4BCGv3fYtCEKTyw/+u7Ju6ATlMuVRRkU4
+X-Gm-Gg: ATEYQzwVsV5ieApYxlypT3JeEVeLlIsPwchIPaLbv408lnJoBkhnKXl1hpZdwi+oQoc
+	k7i6JCbJcUiLOdDCrr9hiXBurwHSumc/Egu4648knfDD6TZpEJZ5sQs0kHtd+Ixpn+KUjzvvthh
+	n3m9gtLDrXBlWR4fBpS4uIZS8fKlLe4QBgS05rGbQQ7NN24mC0pesB6U43FbsdtOV0TE+pi+nbu
+	VFD7Mf9LJZgmt5ZJnd+Peln617mp4pDhgK/4DVFYT8YReULrKyNX7fTnzdu5JqeorI2Fff8rQSV
+	n8x+eAqhfjgy/+EQlfoY4FnRGgpswNmMKHJAcB6kN8l1/oxuH5AklIvE5AO5KWHIdy2nf7JXAuZ
+	DlfjGnNM6LjWTPRN6o8JMTEwODWgk1JVzluyhnjGJjstJp20DPuM3NNVXdh25cMZGkpETLFsd3u
+	lQUex3Q1hJss1VJKlEP/UO0GE5Hl74wC6+qY4pJN1WIjcQW2RV6uZIMBphI9au8BCJ8qY98gPrr
+	Rh3kc3YaC49
+X-Received: by 2002:a05:600c:6290:b0:488:869c:ed9e with SMTP id 5b1f17b1804b1-488997c1c18mr70132855e9.23.1775246855414;
+        Fri, 03 Apr 2026 13:07:35 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48899d1c148sm43199695e9.5.2026.04.03.13.07.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 13:07:35 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Veerasenareddy Burru <vburru@marvell.com>,
+	Sathesh Edara <sedara@marvell.com>,
+	Shinas Rasheed <srasheed@marvell.com>,
+	Satananda Burla <sburla@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] octeon_ep_vf: add NULL check for napi_build_skb()
+Date: Fri,  3 Apr 2026 21:07:32 +0100
+Message-ID: <20260403200732.497307-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D039UWA004.ant.amazon.com (10.13.139.68) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [0.34 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.it,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[amazon.it:s=amazoncorp2];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[amazon.it,amazon.com,amazon.de,gmail.com,infradead.org,vger.kernel.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-233233-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.it:dkim,amazon.it:email,amazon.it:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-233234-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dipiets@amazon.it,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amazon.it:+];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: B9E48397B64
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 284F4398137
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-introduced high-order folio allocations in the buffered write
-path. When memory is fragmented, each failed allocation triggers
-compaction and drain_all_pages() via __alloc_pages_slowpath(),
-causing a 0.75x throughput drop on pgbench (simple-update) with 
-1024 clients on a 96-vCPU arm64 system.
+napi_build_skb() can return NULL on allocation failure. In
+__octep_vf_oq_process_rx(), the result is used directly without a NULL
+check in both the single-buffer and multi-fragment paths, leading to a
+NULL pointer dereference.
 
-Strip __GFP_DIRECT_RECLAIM from folio allocations in
-iomap_get_folio() when the order exceeds PAGE_ALLOC_COSTLY_ORDER,
-making them purely opportunistic.
+Add NULL checks after both napi_build_skb() calls, properly advancing
+descriptors and consuming remaining fragments on failure.
 
-Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+Fixes: 1cd3b407977c ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+Signed-off-by: David Carlier <devnexen@gmail.com>
 ---
- fs/iomap/buffered-io.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ .../marvell/octeon_ep_vf/octep_vf_rx.c        | 34 ++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 92a831cf4bf1..cb843d54b4d9 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -715,6 +715,7 @@ EXPORT_SYMBOL_GPL(iomap_is_partially_uptodate);
- struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
- {
- 	fgf_t fgp = FGP_WRITEBEGIN | FGP_NOFS;
-+	gfp_t gfp;
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+index b579d5b545c4..97b836c1f5d2 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+@@ -409,10 +409,18 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
+ 			data_offset = OCTEP_VF_OQ_RESP_HW_SIZE;
+ 			rx_ol_flags = 0;
+ 		}
+-		rx_bytes += buff_info->len;
  
- 	if (iter->flags & IOMAP_NOWAIT)
- 		fgp |= FGP_NOWAIT;
-@@ -722,8 +723,20 @@ struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
- 		fgp |= FGP_DONTCACHE;
- 	fgp |= fgf_set_order(len);
+ 		if (buff_info->len <= oq->max_single_buffer_size) {
+ 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
++			if (!skb) {
++				oq->stats->alloc_failures++;
++				read_idx++;
++				desc_used++;
++				if (read_idx == oq->max_count)
++					read_idx = 0;
++				continue;
++			}
++			rx_bytes += buff_info->len;
+ 			skb_reserve(skb, data_offset);
+ 			skb_put(skb, buff_info->len);
+ 			read_idx++;
+@@ -424,6 +432,30 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
+ 			u16 data_len;
  
-+	gfp = mapping_gfp_mask(iter->inode->i_mapping);
-+
-+	/*
-+	 * If the folio order hint exceeds PAGE_ALLOC_COSTLY_ORDER,
-+	 * strip __GFP_DIRECT_RECLAIM to make the allocation purely
-+	 * opportunistic.  This avoids compaction + drain_all_pages()
-+	 * in __alloc_pages_slowpath() that devastate throughput
-+	 * on large systems during buffered writes.
-+	 */
-+	if (FGF_GET_ORDER(fgp) > PAGE_ALLOC_COSTLY_ORDER)
-+		gfp &= ~__GFP_DIRECT_RECLAIM;
-+
- 	return __filemap_get_folio(iter->inode->i_mapping, pos >> PAGE_SHIFT,
--			fgp, mapping_gfp_mask(iter->inode->i_mapping));
-+			fgp, gfp);
- }
- EXPORT_SYMBOL_GPL(iomap_get_folio);
- 
+ 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
++			if (!skb) {
++				oq->stats->alloc_failures++;
++				read_idx++;
++				desc_used++;
++				if (read_idx == oq->max_count)
++					read_idx = 0;
++				data_len = buff_info->len - oq->max_single_buffer_size;
++				while (data_len) {
++					dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
++							PAGE_SIZE, DMA_FROM_DEVICE);
++					buff_info = (struct octep_vf_rx_buffer *)&oq->buff_info[read_idx];
++					buff_info->page = NULL;
++					if (data_len < oq->buffer_size)
++						data_len = 0;
++					else
++						data_len -= oq->buffer_size;
++					read_idx++;
++					desc_used++;
++					if (read_idx == oq->max_count)
++						read_idx = 0;
++				}
++				continue;
++			}
++			rx_bytes += buff_info->len;
+ 			skb_reserve(skb, data_offset);
+ 			/* Head fragment includes response header(s);
+ 			 * subsequent fragments contains only data.
 -- 
-2.50.1 (Apple Git-155)
-
-
-
-
-AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
-
-
+2.53.0
 
 
