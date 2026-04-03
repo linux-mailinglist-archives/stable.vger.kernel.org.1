@@ -1,166 +1,169 @@
-Return-Path: <stable+bounces-233222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNLUI7X3z2lT2AYAu9opvQ
-	(envelope-from <stable+bounces-233222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 19:24:05 +0200
+	id MAlkHIb5z2lT2AYAu9opvQ
+	(envelope-from <stable+bounces-233223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 19:31:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E8D396F67
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 19:24:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5D3397038
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 19:31:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3F7AA300A24D
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 17:24:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05B72301BA46
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 17:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F51C3C6A43;
-	Fri,  3 Apr 2026 17:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A955C3D3324;
+	Fri,  3 Apr 2026 17:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1EgGrJq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C3J5uPYJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C655120D4FF;
-	Fri,  3 Apr 2026 17:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775237037; cv=none; b=GRS7Q045I010OQ36Z9ORdddpl0bcfujb1mdXTgjABd8M6GQHX5nlBVJIusWdVqxVdOG8gcXRWDlOKoh/N4i+baiY5KvTZ283AckYQ1mwc2MW36xnOyRjHl7TMVE4G5mBdk586kBoVHsys5s5JzojTii0vR8l6MT6LA5IOCAoaYg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775237037; c=relaxed/simple;
-	bh=i0k6scjtDXpcSb7+aoPkR9B9XsU3fxvXvmnpM2MepR4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LrVKV8d1VzFcpXOkRKOM+BO7BaP6B2c19c/ONl0avx4YU3fylP1s1k8hCRkNTCLztQKxSuBQTa6RScC2Img5xsG7V7Oogoi54KKSSZgjwWp6gbhpL/WBH1U4sOs0QBDsxgmE4OLWJVn/hykhenvmZO1CQxVBS4atIpU3wkx00VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1EgGrJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72D0C4CEF7;
-	Fri,  3 Apr 2026 17:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775237037;
-	bh=i0k6scjtDXpcSb7+aoPkR9B9XsU3fxvXvmnpM2MepR4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X1EgGrJqqracFSSipsQ71kZq6yJF7Ssn/1KJf8LYxLdG6cIE6/iACMaqmTQul8KeU
-	 8d9fpglNjFm6tnyX+ij08ZP/ODwOSlWZZyBtekTfIJYomcWo3R0pu4XK5f3TN1+S/M
-	 jLi+xDs/imIrd6kH15h2pEmeunsE46zxWTwJLaVo=
-Date: Fri, 3 Apr 2026 19:23:30 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Eric Dumazet <edumazet@google.com>, Christoph Hellwig <hch@lst.de>,
-	Alexey Kardashevskiy <aik@ozlabs.ru>,
-	Johan Hovold <johan@kernel.org>, stable@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/9] driver core: Don't let a device probe until it's
- ready
-Message-ID: <2026040322-expert-willow-462d@gregkh>
-References: <20260403005005.30424-1-dianders@chromium.org>
- <20260402174925.v3.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
- <2026040319-seventeen-humorless-5541@gregkh>
- <CAD=FV=XmnWjVzQcr13GmRKX3cvRortA==5C8TH5D-jRBe0VBqw@mail.gmail.com>
- <2026040353-glamour-repacking-0e53@gregkh>
- <CAD=FV=XvqPH7FkRh16u7EE3LAuw-oUYbAdiL1nZxizVft2TqKQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6746738A71C
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 17:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775237480; cv=pass; b=WLtn0VoZPoaAuWliTXwPONG2SfQMKOGofMc/Hw40jKxkPzsBQJCEfM/E+QpULl+a6PUJQ6CAr6fALzXnEQdi6Lk/Jp0euZCCt+UKhOBA0qOcFpK6yHrRY0xP9olkP/Reuo+cb7qGUhTnVMA92H+UreVSxJahoTitulnNMNOUNQU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775237480; c=relaxed/simple;
+	bh=A1TThcqxkmPRTc4liPUJFeM2RDiMHK5vI8dYvpyttFs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qElxEtrrJNQ6Xofi8tocS8vQHLoqWJknnk2k10DsYRsVGDg7A2xigLUnnDHrcOrw9BND5E5MQqE4eqSHSfmfzR3P4lYXVXvSWPC6Bz2Rz/Qg64TaEgjeZ+GjAtZ4SMl4YsxnYHPINL2MlHnGTMwvkYxQVEJU3lTGJXhuMiCelTg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C3J5uPYJ; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3591cc98871so933148a91.3
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 10:31:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775237479; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LgcD6q3PwykNCjiw/J2NxSI/wIDV/1JQwyS9f2Fj2JKEBDlItzxgJ1vBOCTC5DYIcb
+         cjIKZxHrtlynK61jFGZUMuvVBzw2gf95IFOaP0Kc4Ib80griRKHUwBWlEnjzEY32oA09
+         SZpF0DnJnyhQA5THbm5b4fXTXsI03ljRzJLrmdjdBKrQy0QpQDBE6zlotd6l6Q4LZ4lU
+         ZENb0vf9F/vHPh9yWmOWEciZYnP5oRHjp5hqYAlHuQYdtRqWLRk2xtG4NGlbaHg28tvQ
+         0pSZWMs6fzhDDfoivlJ93p8o0Ew4VP+4Dr9LJYl8OLckxkjRgWkSwsCQ7D9ZzXlP9pYL
+         IeGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=A1TThcqxkmPRTc4liPUJFeM2RDiMHK5vI8dYvpyttFs=;
+        fh=iYLGYNuyn1jgST74VXY6N5LBQuCPmC7jPGH+NDkDq1g=;
+        b=LXj4ghx5lZhNv3uXuDdqtEo5hUZSKv2hYAEOeztjabpETqw/QtLG5hElDoha85/qOD
+         zFJZDfd12yoolaChbysbphTAvh3yisaWlOcQpwjT9LansEVt6U7nhaepyf5SV4hbnPl8
+         rjwIFW69rmh6Xu/nsGPzR88pyf5Cq/Jxi41c31UoCx1dJMdDUa3X39GSw1/R6kmdb2J2
+         Bz0xi/6EWXdWx5kGBD6BQAtkr5xcYcNF5VB5qYn/0gi2TapuQPCH62zNMTHJY677c2kx
+         ItWmOK4ZjMWAzi0ldwBYiI2m7rIQluagA/M6NIr5Z5RUnT3e2RKCy5crv5wjyMJcnXqU
+         YqeQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775237479; x=1775842279; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A1TThcqxkmPRTc4liPUJFeM2RDiMHK5vI8dYvpyttFs=;
+        b=C3J5uPYJmJawMmS6sg7uvvgM41FC1lNsbFGRX++lI8QUwCsgUtCWmkmhqt+pDbqZNR
+         Y/BQ8oLqG7ml0xqm+u1ZNCqDQQ0MJI3WiSWx6Ugm8uRESBIUWvD3qQEVkq/SxLlAEIDs
+         Nj0Sz+Pw2nlmJv6zmpSbKSfCCTRnKjWBdO9WfHz3h0xi0+Mv/7W7sxzBh3aGqCcqjuI0
+         maRVJGSjxZU8zR+lqpWi3lGqNOZVCVA8Fun1cPr7P0QqSkB7uYId0ZCpErkNlMxxvkmj
+         tDjaci0IPkXNfpN8BBdz+nxsNUhqAY6OXq1qI8lBWzg1r+dHB9JoLy2F3KDh9r/TFRiy
+         6jAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775237479; x=1775842279;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=A1TThcqxkmPRTc4liPUJFeM2RDiMHK5vI8dYvpyttFs=;
+        b=Wn2BpIQD+64Tp6i5KGw6y+tEuUv/ljm/qoAc3KXOX6Kt4PDtHtUXOGWorFa8glO6b7
+         38ttkOgh6AhkwA7bgrEDtN3ssHZKSZjZ9adheAKgaHwhCBy+1FqQs2nD+sWV+jATYucK
+         ySgLLs8lvrhADSwg0ZTj95t+38nPP/fNTWq0IaDRHLeOHp02OOxLs+r9a6XoPlE+B2RT
+         8Vi2KLiQq3hEDDbZMHkEpIIPlyhVor4x66YZNdKixIClAwXvLNeNuqU6Iu7tqG50f+Kl
+         0eQDQndg16du+V+lyXqpDbnVpsZP/BQzlGcdj5hJZ3/7uDEb5g2qhufLVZIeVe8XTeAm
+         k1aQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzkvDHT59VtsWFVIXFXur7zrUpQe43+UOe5nQGUesDKCj/QVIcO9L1vRIobOC0Dk3q22bwTGA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziZPzImGfjCt2mEUMN9hEkL4Il4aOu5s2TffnGKRW3mai7Dfpk
+	dW1gHKVcpv8kuRB4pG9gCDC9jqpvLXQtFgJsyfP0j9vvkcz50sKHGfLxd6JbG0YpzU0EnoRuNAr
+	xvTJNNmGp3xzs1LTJJBQcoRKhoHRrJ3c=
+X-Gm-Gg: AeBDiet6E1DtC7KVEZ5DdYx1RjXbkgTcl75nkuE3RzHIwf2nN6LvTDL7f9pQD3olYEI
+	chMtiRIhgRfdsUQUJKlpLuNfhr6f+S97W0l6Ppw8JGg2pPqKTd4kosislPN7fQmoBmEqcHVKEqn
+	1DW6rl8iwlN88Z23bORVQlWYJyDhybvkgm+yDDujWNk5VpUA18uaRqkKuor/Ou2jbu3ciqqdi9W
+	aX9g+JTXRkfjNh7BVc7yZlrL2XzmP3LzHwIx2i0mCy5/q9R0SpG1xmuRosfWICd4rnL5ud/3hwD
+	LJtLEw==
+X-Received: by 2002:a17:90b:3c06:b0:35c:cba:3453 with SMTP id
+ 98e67ed59e1d1-35de695812bmr3439780a91.22.1775237478766; Fri, 03 Apr 2026
+ 10:31:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=XvqPH7FkRh16u7EE3LAuw-oUYbAdiL1nZxizVft2TqKQ@mail.gmail.com>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+References: <20260402054015.38565-1-pengpeng@iscas.ac.cn>
+In-Reply-To: <20260402054015.38565-1-pengpeng@iscas.ac.cn>
+From: Gyeyoung Baek <gye976@gmail.com>
+Date: Sat, 4 Apr 2026 02:31:07 +0900
+X-Gm-Features: AQROBzBq-G3K7Iu3SdUwQAauw-NXAjNW1cKYpe7UpnGAu1jlS1PY2GUWpTnAkOg
+Message-ID: <CAKbEznuqCs+4VKgyup2N4T2xf_Mz10xNE344DhmwUnic2=ofkQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: chemical: mhz19b: reject oversized serial replies
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233222-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233223-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 82E8D396F67
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gye976@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: DD5D3397038
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 03, 2026 at 09:26:58AM -0700, Doug Anderson wrote:
-> Hi,
-> 
-> On Fri, Apr 3, 2026 at 8:44 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > > If you wish, I can turn this into something like:
-> > >
-> > > #define DEV_FLAG_READY_TO_PROBE         0
-> > > #define DEV_FLAG_CAN_MATCH              1
-> > > #define DEV_FLAG_DMA_IOMMU              2
-> > > ...
-> > >
-> > > ...but that seemed worse (to me) than the enum. Please shout if I
-> > > misunderstood or you disagree.
-> >
-> > If you make it a numbered enum, that's fine (I hate unnumbered ones),
-> 
-> Sounds like a plan.
-> 
-> 
-> > and a comment somewhere saying we will "max out" at 63, or have a
-> > DEV_FLAG_MAX_BIT entry in there.
-> 
-> Sure. To be compatible across all architectures, it should probably
-> max at 31, right? Atomic bitops works with an "unsigned long" which
-> might be only 32-bits. Oh, actually I should just add "DEV_FLAG_COUNT"
-> at the end of the enum and declare flags with DECLARE_BITMAP(). Then
-> there is no max.
-> 
-> In total, I've now got this:
-> 
-> enum struct_device_flags {
->         DEV_FLAG_READY_TO_PROBE = 0,
->         DEV_FLAG_CAN_MATCH = 1,
->         DEV_FLAG_DMA_IOMMU = 2,
->         DEV_FLAG_DMA_SKIP_SYNC = 3,
->         DEV_FLAG_DMA_OPS_BYPASS = 4,
->         DEV_FLAG_STATE_SYNCED = 5,
->         DEV_FLAG_DMA_COHERENT = 6,
->         DEV_FLAG_OF_NODE_REUSED = 7,
->         DEV_FLAG_OFFLINE_DISABLED = 8,
->         DEV_FLAG_OFFLINE = 9,
-> 
->         DEV_FLAG_COUNT
-> };
-> 
-> ...and "flags" is now:
-> 
-> DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
-> 
-> Yell if you want anything changed. I'll restart my allmodconfig
-> compile tests now.
+Hello,
 
-That looks much better, thanks!
+On Thu, Apr 2, 2026 at 2:40=E2=80=AFPM Pengpeng Hou <pengpeng@iscas.ac.cn> =
+wrote:
+>
+> mhz19b_receive_buf() appends each serdev chunk into the fixed
+> MHZ19B_CMD_SIZE receive buffer and advances buf_idx by len without
+> checking that the chunk fits in the remaining space. A large callback
+> can therefore overflow st->buf before the command path validates the
+> reply.
+>
+> Reset the reply state before each command and reject oversized serial
+> replies before copying them into the fixed buffer. When an oversized
+> reply is detected, wake the waiter and report -EMSGSIZE instead of
+> overwriting st->buf.
+>
 
-greg k-h
+Acked-by: Gyeyoung Baek <gye976@gmail.com>
+
+--=20
+Thanks,
+Gyeyoung
 
