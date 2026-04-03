@@ -1,184 +1,181 @@
-Return-Path: <stable+bounces-233181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AiVBLerz2kPzAYAu9opvQ
-	(envelope-from <stable+bounces-233181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:59:51 +0200
+	id 4CbbNhS8z2mj0AYAu9opvQ
+	(envelope-from <stable+bounces-233182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 15:09:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657C5393DFE
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 13:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FE6394559
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 15:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D557300BC83
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 11:58:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 952CD305AD62
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 13:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAAB3B47D1;
-	Fri,  3 Apr 2026 11:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D6F3A9D93;
+	Fri,  3 Apr 2026 13:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXHTqBBq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZBA7C0LY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8993B7746
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 11:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775217514; cv=none; b=i8zqSwmuYXMjnIl1DYXbDzHDG1UXnJJk9vJbrwYW2L9eow4mH/e4dehHS98LJXuyhaPuc0tzNDDVjyKJTv8pjJSjUJE4U+Xj2HrrU6Fp1XW/rtFZ55U06ONpQkyHSiWk7j02+QcEZBQEJ9zHJhbGkuGbHk/HYwUun5+CZpL80OE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775217514; c=relaxed/simple;
-	bh=bicwKsHvC2UxsH+zyn9ohrV2LsUzzi3uoLgxoxQZUN4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VC4v70sCe7+Yg8xZcnMftyRrB7Pabu3MmMgqIzqY84X47s7N4gSOtFl8JyaAYU724pos6XDHGkC/kpkXNjYfJEE/yQgs6h22DZ5emdyqT1SYU+5BbtWXSSMPNFw4BWP+L+tgqSNRtusHQHaImhwS36NgSjA6GCQ5mrFe9nC5awY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXHTqBBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67714C4CEF7;
-	Fri,  3 Apr 2026 11:58:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775217514;
-	bh=bicwKsHvC2UxsH+zyn9ohrV2LsUzzi3uoLgxoxQZUN4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXHTqBBqlDnDixnNrZOX+oTySpJQ1h3JHJ17Ks9ZO5PEBxPSMc+6teku9cdrpRT1H
-	 zyyaqzMEOP5qtUB6jIUEoz07bVQwvHJDnqfOykvI1+4s0gjsQxVkKnoVPr6icRO2h3
-	 e6itli/JnHOsA70pJUpyhVLuaah6MsCU4LGybn1TcygVPg/NoimENu0FvzlVG46JM+
-	 1q3LJ4ayVyd7B4t8CRT41NzZHl0n4dA4worgbosLpl5ihXTCxP3phM4h/VcfFqa5Ix
-	 chCgYtCyu2BTYcJXK2zN/aXqi4LPz/I3EUP5dCpbytM97uBGxFD7kgSZWqU0Pq0IQW
-	 /4IK9l1ld2U+w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Baokun Li <libaokun@linux.alibaba.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
-Date: Fri,  3 Apr 2026 07:58:31 -0400
-Message-ID: <20260403115831.2109038-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026033001-credibly-reclining-650d@gregkh>
-References: <2026033001-credibly-reclining-650d@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DD237AA81
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 13:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775221650; cv=pass; b=DBu0paQccVOD99XO1rLsu7RRtCXbDlqwmXcWJrDYFKO/ky2U/X1UuTvl18TDU8M1cgxnfB7Ku/QAt36gUOXoNp2REMSGpSX9S8q0Pha6gHRIuLpfj3sOue0fa/ATsV+dFgTwtgQdsviSNx1Pm0XVPrsgLJKDVa3Y4DSRM9vyk+c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775221650; c=relaxed/simple;
+	bh=+uZaDMP/AozcYqTZf/oaFF3EszPbfJb/aEebqbPHujU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KF91kgTXau3V8mnz4+x+iMn+If2vqQ5tysw5ojoF5Wsed8dx93MHhbEAHJNAC0LXbprS6R7tUsauAWbi5ejjLlzUOyFI7j4CyJ3zYu7ferJZ14a6nuXBKVYlZVh+MCn8NbVTBsz7CqeyzidJqyTFq1Wu5Nltm1PRFMwJdtgIJLQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZBA7C0LY; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2bd801b40dbso166948eec.0
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 06:07:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775221646; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IBeyiQriwxkCfGfoLH8TGAyhriLC+zM1+//hAoEL2M1yICzye4ayMbJonWWlMNhhOv
+         0GgdmijIMd4DTwhzcTtsilHFmSSjb1Jh5skiXejEDMuFI4K37jnMWwU4HRJgpoPNm6M0
+         4Z7KlJVRaP/dyEdKXi7eMa57ObZerq+RrtZEmdUbI5Ph6nvCIeyS4QHmKgXkNn+IyZCY
+         RvMa0lZ6Q4p4jCSJvP7zqfTM4nsGFAqcpr3m/bCjuLC4UQiAgYuA0pLH6Qz8zwGqMm+P
+         dl7A6sUsAr+i5knCe1tjlXOFq+GhEZVYA22ijsJCVoQNx1mIDp6jCJ6R8SSGF5BzdSX9
+         orgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8LexMMltL/kK/wLwnO1jphEmsYhPwoj9kNcnexg4bI8=;
+        fh=CiPka628RN/XwvnbLd6N0OK90ndupJA6A/HIenM1Z1s=;
+        b=UrRB5Lyofup5BWezwOzwnAAt/jrSzm2JgcBwOb5mxzkHX0bJIvs3rbh379vApo+IUr
+         NGSb1SMGCSSSaAfhK/p/mWUEYnssmFwhb1cfihCTHFJeg95tyH/mUmKvG5uUZYjRcXil
+         Upa20Jy5ux2ZgSi/h9lBPr/gW2AJTeepL19+3P47DJS1NwK0xsKz+6xY/e6swK8pOmrq
+         KhjhjfJxalsaz1muVJivRAZnTG0pN+b/lUe7yHSN3EO4/J8ABIwzuXh+P6xOg3okbFQL
+         79fyTI859pU1BrHJhmJ+8BYre2LPeAgP/FK69wrDKGSIj+NVqF+P+XPo7XiI8jgdjct9
+         YeQg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775221646; x=1775826446; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8LexMMltL/kK/wLwnO1jphEmsYhPwoj9kNcnexg4bI8=;
+        b=ZBA7C0LYezdbT1eDixqh2nwBPi6Y/sO93F7TCx7DyANmm6gIDgbFFxef+JZijrv975
+         tduR58jh/u2ErihNLY/8s8OYU6/ZS1qhZpd8bmVLN/XbQxAHNCJuNZRIUIklqojelYHi
+         vS9Fg5Axg+GG3RAVC+mIeO7hWo/YSw4e3LV8savuLGj5CFn0Jnjwgqz6IcoDyMMbdq1I
+         1nsLQt+VePCtm/wEcXJHvN9yTpOol7iPLAgmvSeh2rEg2CHOxCqH2pVrPJlCkimfCj2i
+         TWe5j561urXIGJJT/jppo89HR6EQcRqD41zUbjkkZCNjMneOy3Q2I0euYG3eBbXyF8vq
+         QoaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775221646; x=1775826446;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8LexMMltL/kK/wLwnO1jphEmsYhPwoj9kNcnexg4bI8=;
+        b=IkYCms8/Tn+eek5vDMk7ceYCE/180Fw8XS9Og1hv8hV+nGkhknmYgZnPXVT+lvE3cr
+         j1Dsl+M+NADPlUd442HxA/nRBDINiok9u+0omcQQvEJnCIFcoVmXgd1LJJkjCO7H6kO3
+         Be7543zvxfSc5Hu9acWJoThNyQn4DxBNok8P+m/5iRm9vEs1XupKMWvkR0nCkcp7HSo+
+         xVmEqrAI3tT2BCK2UXpuS+iPBqY3yFlqZUzjcQwxwNYg3RlO7evCyA9a0TKx9Q8L5nzo
+         3+OAV4Q8xikJijD7W/9EzL39Xcew/Lw0hrQqQJGTK64Mg1cwf1Fu3mGcBguAMa8Mm/o0
+         anCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWI9jlDcOjAAv01+u7VJpWMAdZGgfiR/MsnOkMKtUv0i5L5w2ROH0q9L0OcVXxU9/6NmXc6iMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEC1VF4Qv46Vhbupt3Sp+7j+iFWMNN5UN7LIjCRPxu9aP664eF
+	hQr+aTHvJqwu4u+Ih5Y3BLnBp6jbO3Ymt+gyTCPvwj5JCxJF1fH6OuRtiyUQO59lAemH9yiVQ64
+	MYD9gjiV7S5lGLv8Szv5xvfT0uNxl2zk=
+X-Gm-Gg: AeBDiesOMRxoEt9XrjUV9wjyaqOaxKs8JVWowqz7hUhLU39VjACUYGa8AWi9n0lEemM
+	LDEq5/cbV6yHuPY3QIxOT7f0izrga8Y6pOG2AmVauhRKeReRlGy7j7ji2Xx+4u2GrOmxyuAUOaS
+	Ip1xm2/YM14pJ4hDHLgN/q/F9XjI16s7dV5MvO8VXJk3HHWx4JgSQKdFBxX8TQ6iSkqjNOvnhKj
+	iVD5E8dPFBj6oft7X0Nr9MIZuXW47+Qo+98xO1EdLT5pdEQaNVtl9fL3a6pUkZdxQen+pokE7Ow
+	8bXRDsTlbrVIgXuQDTG6JrkqSPBvUOuWlda9w2YXvd/SpOEPpE5mNkdmhnHFe8eWupYMwBxqQzd
+	kQ8zYcduF7gyO0W5YcW0y6V8=
+X-Received: by 2002:a05:7301:6093:b0:2c0:c55c:156f with SMTP id
+ 5a478bee46e88-2cbfbc82969mr602584eec.4.1775221646195; Fri, 03 Apr 2026
+ 06:07:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+References: <20260331205849.498295-1-ojeda@kernel.org> <CAJ-ks9nqv30SOiCia8LE6XbKEURNCa9qwwcszsQ0a8FRxR0Msg@mail.gmail.com>
+In-Reply-To: <CAJ-ks9nqv30SOiCia8LE6XbKEURNCa9qwwcszsQ0a8FRxR0Msg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 3 Apr 2026 15:07:12 +0200
+X-Gm-Features: AQROBzAi7I-5aiPFC3vwoZZjn0KQTGSqr8-BroXwKxkn5hps7t8T0SwwfFMqiV4
+Message-ID: <CANiq72mKuQgK_R=xs6270nwYigzCvJiFJ1PcOB+WT3OdXO7E0A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Aaron Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-233182-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233181-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,suse.com,google.com,garyguo.net,protonmail.com,umich.edu,vger.kernel.org,atomlin.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,iloc.bh:url,suse.cz:email]
-X-Rspamd-Queue-Id: 657C5393DFE
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 40FE6394559
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Baokun Li <libaokun@linux.alibaba.com>
+On Fri, Apr 3, 2026 at 12:25=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
+>
+> Seeing this patch a bit late but in clippy 1.85.0 there is
+> `#[clippy::format_args]` which would permit us to make the lint work
+> with our custom macros.
 
-[ Upstream commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 ]
++1, that may be good to consider, especially with the bump -- added
+and backlinked in:
 
-During code review, Joseph found that ext4_fc_replay_inode() calls
-ext4_get_fc_inode_loc() to get the inode location, which holds a
-reference to iloc.bh that must be released via brelse().
+  https://github.com/Rust-for-Linux/linux/issues/349
 
-However, several error paths jump to the 'out' label without
-releasing iloc.bh:
+Maybe an issue would be good to create too.
 
- - ext4_handle_dirty_metadata() failure
- - sync_dirty_buffer() failure
- - ext4_mark_inode_used() failure
- - ext4_iget() failure
+It is good to see Clippy adding more attributes, because I requested a
+similar one for other lints involving macros in that list, e.g.
 
-Fix this by introducing an 'out_brelse' label placed just before
-the existing 'out' label to ensure iloc.bh is always released.
+  https://github.com/rust-lang/rust-clippy/issues/11303
 
-Additionally, make ext4_fc_replay_inode() propagate errors
-properly instead of always returning 0.
+So hopefully we will eventually get those too.
 
-Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
-Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ext4/fast_commit.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Thanks!
 
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index be768ef1fd168..5565ba89b2457 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -1480,19 +1480,21 @@ static int ext4_fc_replay_inode(struct super_block *sb, struct ext4_fc_tl *tl,
- 	/* Immediately update the inode on disk. */
- 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
- 	ret = sync_dirty_buffer(iloc.bh);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
- 	ret = ext4_mark_inode_used(sb, ino);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
- 
- 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
- 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
- 	if (IS_ERR(inode)) {
- 		jbd_debug(1, "Inode not found.");
--		return -EFSCORRUPTED;
-+		inode = NULL;
-+		ret = -EFSCORRUPTED;
-+		goto out_brelse;
- 	}
- 
- 	/*
-@@ -1508,13 +1510,14 @@ static int ext4_fc_replay_inode(struct super_block *sb, struct ext4_fc_tl *tl,
- 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
- 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
- 	sync_dirty_buffer(iloc.bh);
-+out_brelse:
- 	brelse(iloc.bh);
- out:
- 	iput(inode);
- 	if (!ret)
- 		blkdev_issue_flush(sb->s_bdev, GFP_KERNEL);
- 
--	return 0;
-+	return ret;
- }
- 
- /*
--- 
-2.53.0
-
+Cheers,
+Miguel
 
