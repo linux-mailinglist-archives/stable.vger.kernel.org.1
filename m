@@ -1,191 +1,227 @@
-Return-Path: <stable+bounces-233167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCzuIQiQz2kzxQYAu9opvQ
-	(envelope-from <stable+bounces-233167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 12:01:44 +0200
+	id 8DLdLFqUz2nmxQYAu9opvQ
+	(envelope-from <stable+bounces-233168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 12:20:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAFB39319B
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 12:01:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2376D3933C4
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 12:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B96A5302C347
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 10:01:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E850D3052445
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 10:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B853D396593;
-	Fri,  3 Apr 2026 10:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B245737B019;
+	Fri,  3 Apr 2026 10:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ber0jQCC";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tZAaVAYY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="djt6QZTR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB208388E5D
-	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 10:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775210500; cv=none; b=GCJTnUPOTncf+PAAuBOk2x+BbnD3N0T0ra/07aAhkSKvaQjZjsf4XmEKd1SjxSuipZJTw90NyXOpQMdcgQW53DJQ7vmIwBvOn35dDMsh2FXik9f8JHrlBBPeaK6FrHxCWNNYWvragSI7Dq87cBjfx5uE7/KjJNnDE8JnaknoHDA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775210500; c=relaxed/simple;
-	bh=L2JksKLbPNVq8Ac0770BvTv7J3yhCMVk8PpHriFElNM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R1iKgIazB2sg8UUnal0eWtJvu4sdhX499vYUH9DXhjN093AxJwht0wgquG5I1umOy2x+ZJCOR6zIMIZOIDcj1h3jxL1uNHg//JFNlcV4pd6/X15HHHKKTUt5jVOwqFiht9EfKFwxWMI1NXqFsNDF5lwuz44N17Jm9tMuNYQwgrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ber0jQCC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tZAaVAYY; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775210492;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JpVYK1kYMsSmb0glYSul7QEcfCfzZZ/MPpQITA6+2SA=;
-	b=ber0jQCCECPWvjhDqUHvJsByuTPZ1b0RP6+ISAlRPSt0QRzzVaTAcWMDBjj3rWqvO7naXj
-	kb/DM7MDHe7QKGDhg1sWAv7qdqqVk+tzIZBWfXQiKlKlvIOda7NwaUNRqJ348oubz9f7Z8
-	8zKpfG8CLQ25MgoF9TfiQcz5gReubPE=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-573-USX1oS11P2qLUqeSCZ8xLQ-1; Fri, 03 Apr 2026 06:01:31 -0400
-X-MC-Unique: USX1oS11P2qLUqeSCZ8xLQ-1
-X-Mimecast-MFC-AGG-ID: USX1oS11P2qLUqeSCZ8xLQ_1775210490
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2b258636d16so17788365ad.2
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 03:01:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151DE38423B
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 10:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775210839; cv=pass; b=WedNE6Kzrv7G56m36HyUPz0/2rWuDumRRPL6wP8dKNC4ThDKrVguv71jI6vcBnEmzdhZKP585AnBO4k1KvaSNom1yHZ/4wKrmKn8cnrMJzniUejbctqKT8rcoyhgLwUTf3xrjNMeBzLaQF2mFvqZb7O1lQM6RU5WaXmngKOJ+co=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775210839; c=relaxed/simple;
+	bh=l6iFZzW+AWF3/QEU6LglpEwpw23G8B8xolbXTX0zh2s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TU4xSK3Y2rOepfNawIxy0jgvuWkVvxLdBAPoN/0ymEEMPKyD7eLXRJ05FVZ/7hd7enRXK4DSmQrFDRwcu1hoGpOTZ20qepaF2ANL9NYVJDrSDp+Wo+f0PXUAAXkHmzl1ngL11woDGnBWzrfxGAhU7NtFR6GF7f3WploTvNfGzCs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=djt6QZTR; arc=pass smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38a42d3fb6bso1653021fa.1
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 03:07:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775210832; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ABofX3RuC2vBG4sATvB3270/tCb0oJ4xf1qEV3nvlAZQUN31064jOcQl9L/svz+GoZ
+         kSG+Y77aWt9mU8xEljtQ2gzr9qnHIaP2tVF07NQvKx2v/+clSTFqzge8RJsSxkroOLA2
+         ZrEPa/n6uXCFT7cDYFiXiWJvH0ZKWaQzGUYhSIQGfpHSmR02W5RbOU+ymjIoRLgH6ACz
+         CVBYvwKa7v+cSuoulH4Yf1EAcS9K7Z8XDCfHaPy4FyNlfumDrC/DqQyYUXAAre6xfknj
+         kNqmkMXAdcPAouEGOjnXuNuk8R9E6mzkyRx9azntdgJdfCjYhpDPwDt0ZyfALE7Aoiqg
+         kn3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oPJMJaHpZbFcRCyZeIIkk5jL0cCGPysTlsDPbLnYuac=;
+        fh=YjVNbZwuXT475M72hnub2bAKUjbSO4tDh4R0GTsgSY4=;
+        b=S4OlHDm+3wwp6OZAB2EzmuW+QsSUhi0/vwBgDFQvW0QZpymZMAMZKhJnxBrMz4ZLoX
+         SbUHICRptLLFv4CAGEvcpbUVbLA1BES5HoprodGYnwxf+SHamaNhrWlQVNIXFW49iYqb
+         YbjOZOfxartFhe+DjVWrqZaOKU3h68vcMVKdwM853Gas4odWVv2T3tSv+ru+RdA/REVH
+         BfHBDfnQfcsgPysL6bCxsnaLu7LNDZ59wpbKDa7GOmeYmbs0sAOIwgeI9N18i/F29wMN
+         jAh6KGbAWR53dQuHBALc58dPwc0rdS1AFTysykfUL8wPD8n2wFJOdjlO4eTPBCogNjyk
+         17aQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1775210490; x=1775815290; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JpVYK1kYMsSmb0glYSul7QEcfCfzZZ/MPpQITA6+2SA=;
-        b=tZAaVAYYb0137VzbY+O1YgVmN3tMuFJ4KX2MFnwnYn0J/KXGHZQgjEPgdmmAGR5VhE
-         95BmTEzFK29jH8EkDIM6kAUurd9xi+oOiWmeGkjSAL8Ct0tux+2ESva4XslxdqCdMGYQ
-         aEUgG+BqqUtA5wh/XMBoN0LAdh+YVYR2iSIvQOr5TP8yyW9RBKoKzQ3d0DHHEb+Zb5/T
-         lQtEfDwu/7bqpPqKmbjpyxVuQHCnt6OyRFhGNyAbflb/WyWS8meZE7b+QHttzYOeb0oT
-         zL/r7QK9FNlUzbJPasycKPRisYXsmQjU2zrP1UxZcpprp8r3BszNFU/JUlOsqRC/8qMu
-         wN8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775210490; x=1775815290;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775210832; x=1775815632; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JpVYK1kYMsSmb0glYSul7QEcfCfzZZ/MPpQITA6+2SA=;
-        b=PzIQovxxpnB3web2DoizShwBJX2ekIfdHCWtAOk3W0eZ8H28SEjSIbmn/97PeQ0u+K
-         gG5RA3tqrU1VAoxyPH8Dpw1tHoRGDy5NT9b6y4dqfOSWvMjJDX8cC/MXhwZskux99nK1
-         c1F+b/zXikqZuNdn83U23NBny3pIhV0/T0w6su9oS60lT9UKGxm+IUQNa7HR6OmuJTmA
-         5F92iWTSp9Imd4rKpR6HsKqh5yRejJLmst3KNTB55pwHxtBgyj5a4PIT4QQc0xsRP6V1
-         BhqmVi/f7m1Kp10SXE47gzNrEfUCAYVsgdcG8ndGQ1Qy0PYS+e+MflPqpPK1T3JzfxYu
-         wa0g==
-X-Gm-Message-State: AOJu0YxpinNxMwU/dgW/wWTwe1xKwbbfVDwASDzkVBt3/iDceUZU0q8K
-	Z2+Zk4+wp/1PVOby9Yr2V3dnxuZZ0aYmRimlOwCWlKAY2bQfT1Lcj8HOrHQmZx/gXO3QD9XgR0k
-	Fzy7NVn9fGxG3itlm8WBnMuMMXGjckygtJsiKqtOM0UdOM74wieZBoqxUAA==
-X-Gm-Gg: AeBDieuhLeQmrhj3TsoLCMFB6iWml3iBoIyvum+Y6T0MWucQ8Ir7UVLLF0Ori9kEmYU
-	D1KAKyQ5pzFj7UxG7kpBRVyWq3D7/X5frVw6ZcaruPPEnkRocigmsVL+1bwJ7WGFYkSePoecwuQ
-	D4xCebkzVgi9BgH5mdYQn/9Qvj5NgUapuyOPueU7D75GCkbpryrN8FZo0I4M7WPYXIREouqAItD
-	yk9N6kl6jXtCkMEPvFg7a2tXOjeb9iv+o6O8l8MHj86ufKTbP0NyErELX5k4JuRjK/8RJXm19aY
-	9BiV9vo7Jn5X0c24P35+nlEAdlKsNVahQ+z2GobndfXLncKivxODh4jEOIkixd8AievsJHd2xbn
-	+gjjegIZjh4qj
-X-Received: by 2002:a17:903:94e:b0:2b0:7026:24bf with SMTP id d9443c01a7336-2b28180530fmr27122935ad.14.1775210490279;
-        Fri, 03 Apr 2026 03:01:30 -0700 (PDT)
-X-Received: by 2002:a17:903:94e:b0:2b0:7026:24bf with SMTP id d9443c01a7336-2b28180530fmr27122265ad.14.1775210489564;
-        Fri, 03 Apr 2026 03:01:29 -0700 (PDT)
-Received: from localhost ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749a1e9csm58846095ad.55.2026.04.03.03.01.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 03:01:29 -0700 (PDT)
-From: Coiby Xu <coxu@redhat.com>
-To: kexec@lists.infradead.org
-Cc: stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Baoquan He <bhe@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] crash_dump: Fix potential double free and UAF of keys_header
-Date: Fri,  3 Apr 2026 18:01:25 +0800
-Message-ID: <20260403100126.1468200-1-coxu@redhat.com>
-X-Mailer: git-send-email 2.53.0
+        bh=oPJMJaHpZbFcRCyZeIIkk5jL0cCGPysTlsDPbLnYuac=;
+        b=djt6QZTRfT+XcEa1NxzzaJE1gUQlCKaKO6cK/w6rS80EpPop3wYhW02DcP4gx/OMZ6
+         yMOvMJMI6seSsYr53wjzyZ5u3r4cd4EXtwf9wRNLRUpgxbDLwI8BNEH0tJG4zkPyX2am
+         5khpWbmWgBOe0AfPhHD1CirtkaPoet0ny8l9uSKSrHxiS+DHLiBZmVa41briIfrMxbP5
+         gRePp3b4PvkWE4FhUxRkDjnABs/c2zamHosaduIZbyFCb6sXEd5bNVeArrt8kIbLjSu9
+         1KazumvICrWNBZWF0T9eFIkwJTD4Bz3CP+qSwmJx2PRff/bUHuHf3QDKBc/iYdidY1il
+         UDpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775210832; x=1775815632;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oPJMJaHpZbFcRCyZeIIkk5jL0cCGPysTlsDPbLnYuac=;
+        b=GY5vnYIj28rhjz2jXBXPwY5plr/cINj4yEgInYlEO47CQrpI9kAI4y23ar5If5HITO
+         saajWvw3z+wEHq35tbUkLktGyoHDHCTfVCb6Qn5fvugqTybsq2+MnBh42ctcn9cSiu/L
+         BdJR5cj3MP/LsI7H9YtOykgeZAHoo/TRjK9M6kkXEQO6UwL/+dPMRNFLHjOSrgk1h1PR
+         Sjs/zS1o5QCYX8Jku/2rVUiIdPwTJYvA7ZTm1fr6Ki2IPVzjEFi6B2T3+O9YacyFJKSQ
+         ZlddnfnAsCrB0HWRZ5Wy/a6q27VlNoiChfzqoRmdB3l91NfKuObIbN1qsZXbNRfZAjVb
+         raJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIud0kG1JAZ51789fkP6TKRAeBdKWzidQ4IZd0AjevvxO1kFn1DoBY0IkWW4p9k/h8YGeDw24=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqUtZSevOTuGY5kre1O/apAPafLYyD16Rn+HfY0V6WOLZtlEab
+	vuN7UWVUfPtgBAZjnWp79esy8Z3ZaOulS/wO+x5js38Wyrzuk6LL1OWHo6aGmvKQepZP4G/TfY8
+	80zJ1r5R6DoGBh0rKHjI17AiNwJsxMuA=
+X-Gm-Gg: AeBDieuaVNI2AJZlhn8ce8gYWquAIyNFTYqTMFsdnVTVrEbnT71fqpl0ptUAQjuAgXi
+	zmC5dalfQVg41MuaLNGIvZNziNXXWYkYjnj8e4CWY7JwegWHdhHm58Bf4BgLFpAXQnmd7AJssNS
+	9Kg5xzJGi19k6cj3+qLKMUztUxOYZArK50lZukPCeRfNJ/Fm76HSBnU/DMkoY2F+xJtRzgga/Qp
+	70RHXi18+E3KraSFk2stIpbFzI1ruugdrJsS5YRy/IoYjDusbpZ1wKAhgfSPRgGZLnxRYDJwSDG
+	Kj/wf3i0hUshIf2T4aU9MsadIpVpV8GRUsVYjlMIRCq3Avfb8R7XwzIG/D/rB0kAHzFbwgldaAm
+	hcRu0md+55+nm+n6Wn+BUFJA=
+X-Received: by 2002:a05:6512:31d6:b0:5a1:4712:376a with SMTP id
+ 2adb3069b0e04-5a33759184amr467862e87.8.1775210832087; Fri, 03 Apr 2026
+ 03:07:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+References: <20260331205849.498295-1-ojeda@kernel.org>
+In-Reply-To: <20260331205849.498295-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 3 Apr 2026 12:06:56 +0200
+X-Gm-Features: AQROBzBBW7rQ85ZJif0nroczUc04Z6h0dVRy0ZiPuatyp9TJcZiZGUSTP9K1ZwE
+Message-ID: <CANiq72=-vxjqPPiAPrN8Oxcs8ExhHY2qvhN_Qd5JnxGGKEOOcw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Aaron Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [7.34 / 15.00];
+	URIBL_BLACK(7.50)[rust-lang.github.io:url];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233168-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	R_DKIM_ALLOW(0.00)[gmail.com:s=20251104];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233167-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[coxu@redhat.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	GREYLIST(0.00)[pass,body];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_CC(0.00)[kernel.org,suse.com,google.com,garyguo.net,protonmail.com,umich.edu,vger.kernel.org,atomlin.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EBAFB39319B
-X-Rspamd-Action: no action
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	NEURAL_SPAM(0.00)[0.989];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rust-lang.github.io:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 2376D3933C4
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-If kexec_add_buffer fails, keys_header will be freed. And depending on
-/sys/kernel/config/crash_dm_crypt_key/reuse, it will lead to the
-following two problems if the kexec_file_load syscall is called again,
-  1. Double free of keys_header if reuse=false
-  2. UAF of keys_header if reuse=true
+On Tue, Mar 31, 2026 at 10:59=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
+>
+> Clippy in Rust 1.88.0 (only) reports [1]:
+>
+>     warning: variables can be used directly in the `format!` string
+>        --> rust/macros/module.rs:112:23
+>         |
+>     112 |         let content =3D format!("{param}:{content}", param =3D =
+param, content =3D content);
+>         |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^
+>         |
+>         =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/master/index.html#uninlined_format_args
+>         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
+y::all`
+>         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
+ined_format_args)]`
+>     help: change this to
+>         |
+>     112 -         let content =3D format!("{param}:{content}", param =3D =
+param, content =3D content);
+>     112 +         let content =3D format!("{param}:{content}");
+>
+>     warning: variables can be used directly in the `format!` string
+>        --> rust/macros/module.rs:198:14
+>         |
+>     198 |         t =3D> panic!("Unsupported parameter type {}", t),
+>         |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>         |
+>         =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/master/index.html#uninlined_format_args
+>         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
+y::all`
+>         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
+ined_format_args)]`
+>     help: change this to
+>         |
+>     198 -         t =3D> panic!("Unsupported parameter type {}", t),
+>     198 +         t =3D> panic!("Unsupported parameter type {t}"),
+>         |
+>
+> The reason it only triggers in that version is that the lint was moved
+> from `pedantic` to `style` in Rust 1.88.0 and then back to `pedantic`
+> in Rust 1.89.0 [2][3].
+>
+> In the first case, the suggestion is fair and a pure simplification, thus
+> we will clean it up separately.
+>
+> To keep the behavior the same across all versions, and since the lint
+> does not work for all macros (e.g. custom ones like `pr_info!`), disable
+> it globally.
+>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72=3DdrAtf3y_DZ-2o4jb6A=
+z9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com/ [1]
+> Link: https://github.com/rust-lang/rust-clippy/pull/15287 [2]
+> Link: https://github.com/rust-lang/rust-clippy/issues/15151 [3]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Address these problems by setting keys_header to NULL after freeing
-kbuf.buffer and re-building keys_header when necessary respectively.
+Applied series to `rust-next` -- thanks everyone!
 
-Fixes: 479e58549b0f ("crash_dump: store dm crypt keys in kdump reserved memory")
-Fixes: 9ebfa8dcaea7 ("crash_dump: reuse saved dm crypt keys for CPU/memory hot-plugging")
-Cc: stable@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Coiby Xu <coxu@redhat.com>
----
- kernel/crash_dump_dm_crypt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+(If wanted by modules, I can drop the top commit.)
 
-diff --git a/kernel/crash_dump_dm_crypt.c b/kernel/crash_dump_dm_crypt.c
-index a20d4097744a..92eebef27156 100644
---- a/kernel/crash_dump_dm_crypt.c
-+++ b/kernel/crash_dump_dm_crypt.c
-@@ -417,7 +417,7 @@ int crash_load_dm_crypt_keys(struct kimage *image)
- 		return -ENOENT;
- 	}
- 
--	if (!is_dm_key_reused) {
-+	if (!is_dm_key_reused || !keys_header) {
- 		image->dm_crypt_keys_addr = 0;
- 		r = build_keys_header();
- 		if (r)
-@@ -433,6 +433,7 @@ int crash_load_dm_crypt_keys(struct kimage *image)
- 	r = kexec_add_buffer(&kbuf);
- 	if (r) {
- 		kvfree((void *)kbuf.buffer);
-+		keys_header = NULL;
- 		return r;
- 	}
- 	image->dm_crypt_keys_addr = kbuf.mem;
-
-base-commit: d8a9a4b11a137909e306e50346148fc5c3b63f9d
--- 
-2.53.0
-
+Cheers,
+Miguel
 
