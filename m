@@ -1,84 +1,84 @@
-Return-Path: <stable+bounces-233112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELrqCVrUzmkkqgYAu9opvQ
-	(envelope-from <stable+bounces-233112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 22:40:58 +0200
+	id SMrUMWXUzmkkqgYAu9opvQ
+	(envelope-from <stable+bounces-233113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 22:41:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E7D538E162
-	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 22:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA2C38E179
+	for <lists+stable@lfdr.de>; Thu, 02 Apr 2026 22:41:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38BB63020D7D
-	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 20:40:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49E2B302C6CE
+	for <lists+stable@lfdr.de>; Thu,  2 Apr 2026 20:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DE43264EC;
-	Thu,  2 Apr 2026 20:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6559933D6CA;
+	Thu,  2 Apr 2026 20:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EiPwsbaA"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Idy3yldb"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08BA1DED63;
-	Thu,  2 Apr 2026 20:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ECE2D3ED1;
+	Thu,  2 Apr 2026 20:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775162437; cv=none; b=YZJ56rHWGb82HL5KMM0VuR5AMZOeaKtCN5VmB6qAYd8UWfuWjt7mjlZBX9yBxzYKe9JhoxicrK6ehr+KNjMUlJtZBgw0iutTn1q2wj2/VK6aYfON2zL6VJQ4zCfNMFHDpBc4RYFnmu/hoWSVeVfallRLZQKA9hihVCm3NkY0Zvo=
+	t=1775162443; cv=none; b=JbLeQivi1OUwq9jzDFtBL41Kd1T5iPBF/DS0fPz8DfIdB937mdlTG30tiq1ehpv4KYJI7g2mBDZqb4h6dccok2wqWUABRjJKvhN2PoADYdNPBJzsN2dn8nb7Ggbs/JZBktnjDOaMkIjHjU8BWLWAS4jSdmh+QDdmOCZ3KAMlalc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775162437; c=relaxed/simple;
-	bh=e3d9PeUAGTohSnq67qGaW0Bvw38mVE9i3uJubaf3dn0=;
+	s=arc-20240116; t=1775162443; c=relaxed/simple;
+	bh=CO1y18S92LPX99r+Qu/QVvC//hncvdv5wKF0A0XEYiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcaWeKoyQjSha2soddD1yUgk8hkFMaFpil967L5oHccB3pOX/65VjlOFUC4RY8TCisPEZC0+DVTcOZQxvtIKz2IWtXldAyFcI+Y+OwFjqz8BXfCXWNNyeBtIaZ3oaURPPQ3+eQdpRfLKd46eYoiFzHcXMD+VaExMH0kSlDzo2c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EiPwsbaA; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=mOBE3v3v+LLxNyyWbXnC6PFUW/qsyg2n6TLa3k8ATe/CTVJTeAg5Sb0D9XGRtaA77hZypSRubSGyH3Y5OkD5ctWqs+y/LSv4V8ic45cD9xvec/h2DJksEUrT7xWLs+SRklqCkHx4GO55ACHqslbjkeCCNcnGabLn8szdr0ZQwaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Idy3yldb; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 632Cxu51445873;
-	Thu, 2 Apr 2026 20:40:20 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 632EdjJc442944;
+	Thu, 2 Apr 2026 20:40:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=ElHlGoYhMZvaZJfev
-	YH+kkwmc//+8gdtGxhxzXKnApM=; b=EiPwsbaA+s6lTI7ubGfA/2/pU5aQJgoO9
-	BUa5bt4X4oCLZnkyGSQz2mGeM1jadR9PnYTIXHxJ5Sb2ojJEN22WzPTAeiZ0qtx0
-	H/4/FfpteHeZnHc/37PZFVMhI1gOQR2XPiHqXJw3CzD6jF+Z3cvYyeLSwpMka7ng
-	dx31VHHbcTJHqswcNQ9YyzhLGL8+0lONphlDvBO4Odjb+akHGfUlg0uR8UPw5Tu1
-	u167KEsAqHhDm2eNR+cSXQiZ6VOfZu9KZbgtIxmjokGMNxVwX4BYvx0sOoL15BMf
-	nQr56C+4X4nxCp6N5Ezja3HMnzPNj9WfzvhtwMeIerjGkEjhWbgow==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66g26m19-1
+	:mime-version:references:subject:to; s=pp1; bh=RvBpPQTGVv6dENSoy
+	735WQwLmRTTon1KkOG8SOahmj0=; b=Idy3yldbOXNGE6avuaTRl7hObKvtC6521
+	5MbhwLU2FtuTbZu2YEEZ6Yj2p6iU0i6Z+tBL8V3OXchJXFkipYzRvaUNLJtONtLJ
+	XkvJVXVdq9eElOoRXHfe0RE1iGF8rxOy8C83+9ncCR9WqXiiJ5OivmlkCXVnzFjo
+	lrPkZi8J2ci63zbUDXrmlSmSv4lRW5pq7TCwnrD80ik3SbGByEn1zXOLnctNMBfd
+	fuqxngWRiz7zMl8zZnBFxy7HPQGZTn2VgAsp9wKFuK2gzhqKIi6ltreLyvLR5OuR
+	P4RUeV6u9dDawm0TpD8WMtzyj2MPwDnun7JrbjpwFODeHYRd2oVsA==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66g26m1m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Apr 2026 20:40:19 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 632JwgmV006362;
-	Thu, 2 Apr 2026 20:40:18 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6spybr1y-1
+	Thu, 02 Apr 2026 20:40:27 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 632GjZch022291;
+	Thu, 2 Apr 2026 20:40:26 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6tanbmbq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Apr 2026 20:40:18 +0000
+	Thu, 02 Apr 2026 20:40:26 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 632KeEUj49021192
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 632KeMTl59638232
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Apr 2026 20:40:14 GMT
+	Thu, 2 Apr 2026 20:40:22 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8BBD120043;
-	Thu,  2 Apr 2026 20:40:14 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 220BE20043;
+	Thu,  2 Apr 2026 20:40:22 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 86F2720040;
-	Thu,  2 Apr 2026 20:40:12 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1B84B20040;
+	Thu,  2 Apr 2026 20:40:20 +0000 (GMT)
 Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Apr 2026 20:40:12 +0000 (GMT)
+	Thu,  2 Apr 2026 20:40:19 +0000 (GMT)
 From: adubey@linux.ibm.com
 To: linuxppc-dev@lists.ozlabs.org
 Cc: hbathini@linux.ibm.com, bpf@vger.kernel.org, maddy@linux.ibm.com,
         ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
         shuah@kernel.org, linux-kselftest@vger.kernel.org,
         stable@vger.kernel.org, Abhishek Dubey <adubey@linux.ibm.com>
-Subject: [PATCH v2 1/5] powerpc/bpf: fix alignment of long branch trampoline address
-Date: Thu,  2 Apr 2026 20:40:07 -0400
-Message-ID: <20260403004011.44417-2-adubey@linux.ibm.com>
+Subject: [PATCH v2 2/5] powerpc/bpf: Move out dummy_tramp_addr after Long branch stub
+Date: Thu,  2 Apr 2026 20:40:08 -0400
+Message-ID: <20260403004011.44417-3-adubey@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260403004011.44417-1-adubey@linux.ibm.com>
 References: <20260403004011.44417-1-adubey@linux.ibm.com>
@@ -90,21 +90,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Fdo6BZ+6 c=1 sm=1 tr=0 ts=69ced433 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Authority-Analysis: v=2.4 cv=Fdo6BZ+6 c=1 sm=1 tr=0 ts=69ced43b cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=3Zv-X24pnbuftgYs6HsA:9
-X-Proofpoint-ORIG-GUID: 2HHi8Yon406oz8mEtFKepZSgvswjWp5o
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDE4MSBTYWx0ZWRfX+IJgG9XwO4SI
- fTAGKUMZX2D1hK51ehKXbqwoI1LH67ldPfpxgqIzNlQGIJRQ6f/KXJuRCGvE33D6Iwy86Zdfo08
- POoPWvo++Nc2Hi6axiZfZpE0GOB/LCGkc41zSGllxnm+I69g27PTuGF/+PdnLSrGG1DnCuNtpdV
- jrmJFAbgHK9rAS8a378GWgyYFr5QViC5cfLC0B3FFTsEMQgKeIu9443f58m0gxxvgtcIRuUOb88
- lWjharVqxoJS/dqWvtF5CphPvyv82xLN1Bd6h/0hhEpj3qxmcQOvMpbkiWkn6eeMLbcrInn7zgB
- SmRzwQb9Xb0Kwj4fhfHu57HKYtFY3V5hq7tWdZWUSYry4UzjYO1pId1U/JPceJLjBV/I+WWj8Nr
- uTsCr5KESqBSVBurqFm6xxBeqabTYnWKtQ/+a7ALZJpagPgOyeHkxOfid27rijH8kWs2/g+Tl7g
- 1oUdIENH8nqQxlNqhtg==
-X-Proofpoint-GUID: 2HHi8Yon406oz8mEtFKepZSgvswjWp5o
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=2TgXZs7zRl4deLkxamQA:9
+X-Proofpoint-ORIG-GUID: 5SRogSnlLtghnkEnHb7WE_NyNHuSCe_e
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDE4MSBTYWx0ZWRfX3oJhtaBEHr9K
+ +JohFLncZ5w0k2RH3F9dYrzR8p+82ZAVhtg6DKsvsm3tkwfMy+GVykQ95S5OgLzsJe+z+lh+GUr
+ N+1BmrnhITZBYTyBwvXzn4DU5+s4TuevDTUa+cmHEWzz63bU5ccv3JNyt4Na32ut6tRXZuuJiOJ
+ gWhetz5mbWwhanXojubYhgsjr2+5D1YuS0vkB2qjMFva312Up3y/LIdVjrP7/LREacU2mKUhNju
+ 1AvBFUprn0xCrpPyYSeAzGe/1qyx4Fd5LLf5ErhQfhDRKl+xpsgG3RPHKbImpj42JhcNMpomVN5
+ fv/V6JjkVkzjkAieWm73HToQzW26NzXnQIGAqCtvOVUFs3W2Ez0GOnJ2kGo5KEY47lnH5moTaXI
+ FxNdCydQ80UAagaQyU35hscTlW7v4qu66n9Cf33XH2n5N7KqAj1fuPkZuE1x96LJI2+XOwX05HB
+ jRKWjOJ2Av7BtjNKXcg==
+X-Proofpoint-GUID: 5SRogSnlLtghnkEnHb7WE_NyNHuSCe_e
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-02_03,2026-04-02_05,2025-10-01_01
@@ -126,7 +125,7 @@ X-Spamd-Result: default: False [3.34 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233112-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233113-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[ibm.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
@@ -140,146 +139,137 @@ X-Spamd-Result: default: False [3.34 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 7E7D538E162
+X-Rspamd-Queue-Id: 3AA2C38E179
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Abhishek Dubey <adubey@linux.ibm.com>
 
-Ensure the dummy trampoline address field present between the OOL stub
-and the long branch stub is 8-byte aligned, for compatibility when
-loaded into a register.
+Move the long branch address space to the bottom of the long
+branch stub. This allows uninterrupted disassembly until the
+last 8 bytes. Exclude these last bytes from the overall
+program length to prevent failure in assembly generation.
+Also, align dummy_tramp_addr field with 8-byte boundary.
 
-Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
-Cc: stable@vger.kernel.org
+Following is disassembler output for test program with moved down
+dummy_tramp_addr field:
+.....
+.....
+pc:68    left:44     a6 03 08 7c  :  mtlr 0
+pc:72    left:40     bc ff ff 4b  :  b .-68
+pc:76    left:36     a6 02 68 7d  :  mflr 11
+pc:80    left:32     05 00 9f 42  :  bcl 20, 31, .+4
+pc:84    left:28     a6 02 88 7d  :  mflr 12
+pc:88    left:24     14 00 8c e9  :  ld 12, 20(12)
+pc:92    left:20     a6 03 89 7d  :  mtctr 12
+pc:96    left:16     a6 03 68 7d  :  mtlr 11
+pc:100   left:12     20 04 80 4e  :  bctr
+pc:104   left:8      c0 34 1d 00  :
+
+Failure log:
+Can't disasm instruction at offset 104: c0 34 1d 00 00 00 00 c0
+Disassembly logic can truncate at 104, ignoring last 8 bytes.
+
+Update the dummy_tramp_addr field offset calculation from the end
+of the program to reflect its new location, for bpf_arch_text_poke()
+to update the actual trampoline's address in this field.
+
+All BPF trampoline selftests continue to pass with this patch applied.
+
 Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
 ---
- arch/powerpc/net/bpf_jit.h        |  4 ++--
- arch/powerpc/net/bpf_jit_comp.c   | 34 ++++++++++++++++++++++++++-----
- arch/powerpc/net/bpf_jit_comp64.c |  4 ++--
- 3 files changed, 33 insertions(+), 9 deletions(-)
+ arch/powerpc/net/bpf_jit_comp.c | 35 ++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index f32de8704d4d..71e6e7d01057 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -214,8 +214,8 @@ int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *
- int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct codegen_context *ctx,
- 		       u32 *addrs, int pass, bool extra_pass);
- void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx);
--void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx);
--void bpf_jit_build_fentry_stubs(u32 *image, struct codegen_context *ctx);
-+void bpf_jit_build_epilogue(u32 *image, u32 *fimage, struct codegen_context *ctx);
-+void bpf_jit_build_fentry_stubs(u32 *image, u32 *fimage, struct codegen_context *ctx);
- void bpf_jit_realloc_regs(struct codegen_context *ctx);
- int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg, long exit_addr);
- void prepare_for_fsession_fentry(u32 *image, struct codegen_context *ctx, int cookie_cnt,
 diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index 9b2b456b0765..3cbb3647f7a0 100644
+index 3cbb3647f7a0..00abad48fa6c 100644
 --- a/arch/powerpc/net/bpf_jit_comp.c
 +++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -49,11 +49,34 @@ asm (
- "	.popsection				;"
- );
- 
--void bpf_jit_build_fentry_stubs(u32 *image, struct codegen_context *ctx)
-+void bpf_jit_build_fentry_stubs(u32 *image, u32 *fimage, struct codegen_context *ctx)
- {
- 	int ool_stub_idx, long_branch_stub_idx;
- 
- 	/*
-+	 * In the final pass, align the mis-aligned dummy tramp address
-+	 * in the fimage. The alignment NOP must appear before OOL stub,
-+	 * to make ool_stub_idx & long_branch_stub_idx constant from end.
-+	 *
-+	 * Need alignment NOP in following conditions:
-+	 *
-+	 * OOL stub aligned	CONFIG_PPC_FTRACE_OUT_OF_LINE	Alignment NOP
-+	 *      Y                               Y                     N
-+	 *      Y                               N                     Y
-+	 *      N                               Y                     Y
-+	 *      N                               N                     N
-+	 */
-+#ifdef CONFIG_PPC64
-+	if (fimage && image) {
-+		unsigned long pc = (unsigned long)fimage + CTX_NIA(ctx);
-+
-+		if (IS_ALIGNED(pc, 8) ^
-+			IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
-+			EMIT(PPC_RAW_NOP());
-+	}
-+#endif
-+
-+	/*      nop     // optional, for alignment of dummy_tramp_addr
- 	 * Out-of-line stub:
- 	 *	mflr	r0
- 	 *	[b|bl]	tramp
-@@ -70,7 +93,7 @@ void bpf_jit_build_fentry_stubs(u32 *image, struct codegen_context *ctx)
+@@ -93,27 +93,36 @@ void bpf_jit_build_fentry_stubs(u32 *image, u32 *fimage, struct codegen_context
  
  	/*
  	 * Long branch stub:
--	 *	.long	<dummy_tramp_addr>
-+	 *	.long	<dummy_tramp_addr>  // 8-byte aligned
+-	 *	.long	<dummy_tramp_addr>  // 8-byte aligned
  	 *	mflr	r11
  	 *	bcl	20,31,$+4
- 	 *	mflr	r12
-@@ -81,6 +104,7 @@ void bpf_jit_build_fentry_stubs(u32 *image, struct codegen_context *ctx)
+-	 *	mflr	r12
+-	 *	ld	r12, -8-SZL(r12)
++	 *	mflr	r12	// lr/r12 stores current pc
++	 *	ld	r12, 20(r12) // offset(dummy_tramp_addr) from prev inst. is 20
+ 	 *	mtctr	r12
+-	 *	mtlr	r11 // needed to retain ftrace ABI
++	 *	mtlr	r11	// needed to retain ftrace ABI
+ 	 *	bctr
++	 *	nop		// for alignment of following address field
++	 *	.long	<dummy_tramp_addr>  // 8-byte aligned
  	 */
- 	if (image)
- 		*((unsigned long *)&image[ctx->idx]) = (unsigned long)dummy_tramp;
-+
- 	ctx->idx += SZL / 4;
+-	if (image)
+-		*((unsigned long *)&image[ctx->idx]) = (unsigned long)dummy_tramp;
+-
+-	ctx->idx += SZL / 4;
  	long_branch_stub_idx = ctx->idx;
  	EMIT(PPC_RAW_MFLR(_R11));
-@@ -107,7 +131,7 @@ int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg,
- 		PPC_JMP(ctx->alt_exit_addr);
- 	} else {
- 		ctx->alt_exit_addr = ctx->idx * 4;
--		bpf_jit_build_epilogue(image, ctx);
-+		bpf_jit_build_epilogue(image, NULL, ctx);
- 	}
+ 	EMIT(PPC_RAW_BCL4());
+ 	EMIT(PPC_RAW_MFLR(_R12));
+-	EMIT(PPC_RAW_LL(_R12, _R12, -8-SZL));
++	EMIT(PPC_RAW_LL(_R12, _R12, 20));
+ 	EMIT(PPC_RAW_MTCTR(_R12));
+ 	EMIT(PPC_RAW_MTLR(_R11));
+ 	EMIT(PPC_RAW_BCTR());
++	/*
++	 * The start of Long branch stub is guaranteed to be aligned as
++	 * result of optional NOP injection before OOL stub above.
++	 * Append tail NOP to re-gain 8-byte alignment disturbed by odd
++	 * instruction count in Long branch stub.
++	 */
++	EMIT(PPC_RAW_NOP());
++
++	if (image)
++		*((unsigned long *)&image[ctx->idx]) = (unsigned long)dummy_tramp;
++
++	ctx->idx += SZL / 4;
  
- 	return 0;
-@@ -308,7 +332,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+ 	if (!bpf_jit_ool_stub) {
+ 		bpf_jit_ool_stub = (ctx->idx - ool_stub_idx) * 4;
+@@ -1309,6 +1318,7 @@ static void do_isync(void *info __maybe_unused)
+  * bpf_func:
+  *	[nop|b]	ool_stub
+  * 2. Out-of-line stub:
++ *	nop	// optional nop for alignment
+  * ool_stub:
+  *	mflr	r0
+  *	[b|bl]	<bpf_prog>/<long_branch_stub>
+@@ -1316,7 +1326,6 @@ static void do_isync(void *info __maybe_unused)
+  *	b	bpf_func + 4
+  * 3. Long branch stub:
+  * long_branch_stub:
+- *	.long	<branch_addr>/<dummy_tramp>
+  *	mflr	r11
+  *	bcl	20,31,$+4
+  *	mflr	r12
+@@ -1324,6 +1333,8 @@ static void do_isync(void *info __maybe_unused)
+  *	mtctr	r12
+  *	mtlr	r11 // needed to retain ftrace ABI
+  *	bctr
++ *	nop	// nop for mem alignment of dummy_tramp_addr
++ *	.long	<branch_addr>/<dummy_tramp>
+  *
+  * dummy_tramp is used to reduce synchronization requirements.
+  *
+@@ -1425,10 +1436,12 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type old_t,
+ 	 * 1. Update the address in the long branch stub:
+ 	 * If new_addr is out of range, we will have to use the long branch stub, so patch new_addr
+ 	 * here. Otherwise, revert to dummy_tramp, but only if we had patched old_addr here.
++	 *
++	 * dummy_tramp_addr moved to bottom of long branch stub.
  	 */
- 	bpf_jit_build_prologue(NULL, &cgctx);
- 	addrs[fp->len] = cgctx.idx * 4;
--	bpf_jit_build_epilogue(NULL, &cgctx);
-+	bpf_jit_build_epilogue(NULL, NULL, &cgctx);
- 
- 	fixup_len = fp->aux->num_exentries * BPF_FIXUP_LEN * 4;
- 	extable_len = fp->aux->num_exentries * sizeof(struct exception_table_entry);
-@@ -343,7 +367,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 			fp = org_fp;
- 			goto out_addrs;
- 		}
--		bpf_jit_build_epilogue(code_base, &cgctx);
-+		bpf_jit_build_epilogue(code_base, fcode_base, &cgctx);
- 
- 		if (bpf_jit_enable > 1)
- 			pr_info("Pass %d: shrink = %d, seen = 0x%x\n", pass,
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index d39241444cd9..57992c1e8386 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -398,7 +398,7 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
- 	}
- }
- 
--void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
-+void bpf_jit_build_epilogue(u32 *image, u32 *fimage, struct codegen_context *ctx)
- {
- 	bpf_jit_emit_common_epilogue(image, ctx);
- 
-@@ -407,7 +407,7 @@ void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
- 
- 	EMIT(PPC_RAW_BLR());
- 
--	bpf_jit_build_fentry_stubs(image, ctx);
-+	bpf_jit_build_fentry_stubs(image, fimage, ctx);
- }
- 
- /*
+ 	if ((new_addr && !is_offset_in_branch_range(new_addr - ip)) ||
+ 	    (old_addr && !is_offset_in_branch_range(old_addr - ip)))
+-		ret = patch_ulong((void *)(bpf_func_end - bpf_jit_long_branch_stub - SZL),
++		ret = patch_ulong((void *)(bpf_func_end - SZL), /* SZL: dummy_tramp_addr offset */
+ 				  (new_addr && !is_offset_in_branch_range(new_addr - ip)) ?
+ 				  (unsigned long)new_addr : (unsigned long)dummy_tramp);
+ 	if (ret)
 -- 
 2.52.0
 
