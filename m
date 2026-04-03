@@ -1,208 +1,301 @@
-Return-Path: <stable+bounces-233142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4F3QHuFPz2mHvAYAu9opvQ
-	(envelope-from <stable+bounces-233142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 07:28:01 +0200
+	id kEMPNpJWz2llvQYAu9opvQ
+	(envelope-from <stable+bounces-233146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 07:56:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09B0391160
-	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 07:28:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9416D391484
+	for <lists+stable@lfdr.de>; Fri, 03 Apr 2026 07:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 158163028B12
-	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 05:27:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 89AAC308E48E
+	for <lists+stable@lfdr.de>; Fri,  3 Apr 2026 05:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B6734D3B0;
-	Fri,  3 Apr 2026 05:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922EE352C4F;
+	Fri,  3 Apr 2026 05:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="s37K6hzZ"
+	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="QLcXtchu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-82.freemail.mail.aliyun.com (out30-82.freemail.mail.aliyun.com [115.124.30.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E28345CDD;
-	Fri,  3 Apr 2026 05:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CA3346FB0
+	for <stable@vger.kernel.org>; Fri,  3 Apr 2026 05:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775194076; cv=none; b=CGqDK9VxlN3WI2BgY+eGPXeup9+E9Dxa9SX8eB5MdyVfMhYLUALf8fTEx4vGSRVuEal5fsMijaN7vMkhNCpPQM3mSzbcJ4LTvPS8vk9o1qQUnkdRR+FaYQBbDl+H9+stR54VMU9foindKalMmQzHefENmFS6Tl+LlfgDkhPlSBM=
+	t=1775195577; cv=none; b=Bd/ZOuLHryoFWSJN+xwwSNxIXCBV4ygXlBYiI503JFZB0s8onKfPZJPlYgMevdemkMtCw2Y38pMrSyVL0Z9q0llV2PMQMOVSgdrdycZlqxxCZVE7UZt/tBGQvOjk+pLwun7Na3Y7cAsbXfARmweYVdcQ55S/1Cevq3sMvn3XxsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775194076; c=relaxed/simple;
-	bh=FISPdyOFrZe+ATdMVkGKeWhDuCEENstA4r+bEa9c9Aw=;
-	h=Date:To:From:Subject:Message-Id; b=aiTthFlN/LXycxer5P1ZPUOBPEejlkLddIAdLUYR7+q3SKQiazyOpGr6gMxZeyW7QgAZLeu6IMn6FtJRokX9oEID36ZyC2Tuk+WhjLdi3jioAqYECfyM2mNbXgI9ZiONkToqaH0qoXPqISh9twatcNyetguwp0uLoD2+sSlXYzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=s37K6hzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A022DC4CEF7;
-	Fri,  3 Apr 2026 05:27:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775194075;
-	bh=FISPdyOFrZe+ATdMVkGKeWhDuCEENstA4r+bEa9c9Aw=;
-	h=Date:To:From:Subject:From;
-	b=s37K6hzZr2dNVWSjS0S0tNWVWsrp0drmBD6WpYNWOkHtx5uF3ZbHFPr99K/y6hVN5
-	 QUtA+cXcXpS4zFOm1OOWitI/w95RJjTxT06sI2d1pvJoR/rttnRp5jIu7mc2epeIz9
-	 byAHriGnv2yC0JPihbyviazYM+OFrjK7QbSNhetU=
-Date: Thu, 02 Apr 2026 22:27:54 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,tejas.bharambe@outlook.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch added to mm-nonmm-unstable branch
-Message-Id: <20260403052755.A022DC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1775195577; c=relaxed/simple;
+	bh=K+1Vk/EScwzbYzFH2PwVne4ZUe89t9TnyUXhoOtmmeQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oPbLuRQLeKCwm0KWCeVQJHIWqJHOBibIFMpPDHqReN7h+HXXhYMgN/qgVLNs+IA89j4L/qEmK4MIhSQYXPsDhunwPIQUa9KH+sinrVi2PhJeXS6fQP50cZq2ZqSUPfi5g1P8c0qp29X9OxlmHS0pAT7Ni6hJ6eDuI2GL3tkbkYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=QLcXtchu; arc=none smtp.client-ip=115.124.30.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=aliyun.com; s=s1024;
+	t=1775195569; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=F14/zbN3MzqJprfKOVCmDvcD1KixWC33CEkNXyYB7Nc=;
+	b=QLcXtchuAAMcsm3fszXJo5+b9sKtKvqhdXaZyC5pzhSV31GYNiiTlQc6FtldIOrnTbN5QUmIqc+ABXNyj4pJ14bp2RksBhrtjL9xanxIrFjLQIW8RM5uRAmlPEM1s/n25znmxo6ks1Kh6g9vadX1CRl6KwJ48QM/ODrY1ni3/4U=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07357557|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.031584-0.000368737-0.968047;FP=10562964253813786066|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=ruohanlan@aliyun.com;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---0X0JIJ0c_1775195566;
+Received: from Ubuntu24(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0X0JIJ0c_1775195566 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 03 Apr 2026 13:52:49 +0800
+From: Ruohan Lan <ruohanlan@aliyun.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: gfs2@lists.linux.dev,
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 6.6.y 1/2] gfs2: Improve gfs2_consist_inode() usage
+Date: Fri,  3 Apr 2026 13:51:53 +0800
+Message-ID: <20260403055154.4206-1-ruohanlan@aliyun.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[aliyun.com,reject];
+	R_DKIM_ALLOW(-0.20)[aliyun.com:s=s1024];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233142-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,outlook.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D09B0391160
+	FREEMAIL_FROM(0.00)[aliyun.com];
+	TAGGED_FROM(0.00)[bounces-233146-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[aliyun.com:+];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ruohanlan@aliyun.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,redhat.com,aliyun.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9416D391484
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Andrew Price <anprice@redhat.com>
 
-The patch titled
-     Subject: ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
+[ Upstream commit 10398ef57aa189153406c110f5957145030f08fe ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
+gfs2_consist_inode() logs an error message with the source file and line
+number. When we jump before calling it, the line number becomes less
+useful as it no longer relates to the source of the error. To aid
+troubleshooting, replace the gotos with the gfs2_consist_inode() calls
+so that the error messages are more informative.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Tejas Bharambe <tejas.bharambe@outlook.com>
-Subject: ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
-Date: Wed, 1 Apr 2026 21:02:34 -0700
-
-filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
-as documented in mm/filemap.c:
-
-  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
-  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
-
-When this happens, a concurrent munmap() can call remove_vma() and free
-the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
-becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
-dereferences it -- a use-after-free.
-
-Fix this by saving the inode reference before calling filemap_fault(),
-and removing vma from the trace event. The inode remains valid across
-the lock drop since the file is still open, so the trace can fire in
-all cases without dereferencing the potentially freed vma.
-
-Link: https://lkml.kernel.org/r/20260403035333.136824-1-tejas.bharambe@outlook.com
-Link: https://lkml.kernel.org/r/20260402040234.92432-1-tejas.bharambe@outlook.com
-Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
-Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
-Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
 ---
+ fs/gfs2/dir.c   | 31 +++++++++++++++++--------------
+ fs/gfs2/glops.c | 34 ++++++++++++++++++++--------------
+ fs/gfs2/xattr.c | 28 ++++++++++++++++------------
+ 3 files changed, 53 insertions(+), 40 deletions(-)
 
- fs/ocfs2/mmap.c        |    6 +++---
- fs/ocfs2/ocfs2_trace.h |   10 ++++------
- 2 files changed, 7 insertions(+), 9 deletions(-)
-
---- a/fs/ocfs2/mmap.c~ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry
-+++ a/fs/ocfs2/mmap.c
-@@ -30,7 +30,7 @@
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index 3a2a10d6d43d..c252400e5999 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -562,15 +562,18 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 	int ret = 0;
  
- static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
- {
--	struct vm_area_struct *vma = vmf->vma;
-+	struct inode *inode = file_inode(vmf->vma->vm_file);
- 	sigset_t oldset;
- 	vm_fault_t ret;
+ 	ret = gfs2_dirent_offset(GFS2_SB(inode), buf);
+-	if (ret < 0)
+-		goto consist_inode;
+-
++	if (ret < 0) {
++		gfs2_consist_inode(GFS2_I(inode));
++		return ERR_PTR(-EIO);
++	}
+ 	offset = ret;
+ 	prev = NULL;
+ 	dent = buf + offset;
+ 	size = be16_to_cpu(dent->de_rec_len);
+-	if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size, len, 1))
+-		goto consist_inode;
++	if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size, len, 1)) {
++		gfs2_consist_inode(GFS2_I(inode));
++		return ERR_PTR(-EIO);
++	}
+ 	do {
+ 		ret = scan(dent, name, opaque);
+ 		if (ret)
+@@ -582,8 +585,10 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 		dent = buf + offset;
+ 		size = be16_to_cpu(dent->de_rec_len);
+ 		if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size,
+-				      len, 0))
+-			goto consist_inode;
++				      len, 0)) {
++			gfs2_consist_inode(GFS2_I(inode));
++			return ERR_PTR(-EIO);
++		}
+ 	} while(1);
  
-@@ -38,8 +38,8 @@ static vm_fault_t ocfs2_fault(struct vm_
- 	ret = filemap_fault(vmf);
- 	ocfs2_unblock_signals(&oldset);
- 
--	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
--			  vma, vmf->page, vmf->pgoff);
-+	trace_ocfs2_fault(OCFS2_I(inode)->ip_blkno,
-+			  vmf->page, vmf->pgoff);
- 	return ret;
+ 	switch(ret) {
+@@ -597,10 +602,6 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 		BUG_ON(ret > 0);
+ 		return ERR_PTR(ret);
+ 	}
+-
+-consist_inode:
+-	gfs2_consist_inode(GFS2_I(inode));
+-	return ERR_PTR(-EIO);
  }
  
---- a/fs/ocfs2/ocfs2_trace.h~ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry
-+++ a/fs/ocfs2/ocfs2_trace.h
-@@ -1246,22 +1246,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
+ static int dirent_check_reclen(struct gfs2_inode *dip,
+@@ -609,14 +610,16 @@ static int dirent_check_reclen(struct gfs2_inode *dip,
+ 	const void *ptr = d;
+ 	u16 rec_len = be16_to_cpu(d->de_rec_len);
  
- TRACE_EVENT(ocfs2_fault,
- 	TP_PROTO(unsigned long long ino,
--		 void *area, void *page, unsigned long pgoff),
--	TP_ARGS(ino, area, page, pgoff),
-+		 void *page, unsigned long pgoff),
-+	TP_ARGS(ino, page, pgoff),
- 	TP_STRUCT__entry(
- 		__field(unsigned long long, ino)
--		__field(void *, area)
- 		__field(void *, page)
- 		__field(unsigned long, pgoff)
- 	),
- 	TP_fast_assign(
- 		__entry->ino = ino;
--		__entry->area = area;
- 		__entry->page = page;
- 		__entry->pgoff = pgoff;
- 	),
--	TP_printk("%llu %p %p %lu",
--		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
-+	TP_printk("%llu %p %lu",
-+		  __entry->ino, __entry->page, __entry->pgoff)
- );
+-	if (unlikely(rec_len < sizeof(struct gfs2_dirent)))
+-		goto broken;
++	if (unlikely(rec_len < sizeof(struct gfs2_dirent))) {
++		gfs2_consist_inode(dip);
++		return -EIO;
++	}
+ 	ptr += rec_len;
+ 	if (ptr < end_p)
+ 		return rec_len;
+ 	if (ptr == end_p)
+ 		return -ENOENT;
+-broken:
++
+ 	gfs2_consist_inode(dip);
+ 	return -EIO;
+ }
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 4a169c60bce6..2ec0b6871ae9 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -412,10 +412,14 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	struct inode *inode = &ip->i_inode;
+ 	bool is_new = inode->i_state & I_NEW;
  
- /* End of trace events for fs/ocfs2/mmap.c. */
-_
-
-Patches currently in -mm which might be from tejas.bharambe@outlook.com are
-
-ocfs2-fix-use-after-free-in-ocfs2_fault-when-vm_fault_retry.patch
+-	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr)))
+-		goto corrupt;
+-	if (unlikely(!is_new && inode_wrong_type(inode, mode)))
+-		goto corrupt;
++	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr))) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
++	if (unlikely(!is_new && inode_wrong_type(inode, mode))) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_no_formal_ino = be64_to_cpu(str->di_num.no_formal_ino);
+ 	inode->i_mode = mode;
+ 	if (is_new) {
+@@ -451,26 +455,28 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	/* i_diskflags and i_eattr must be set before gfs2_set_inode_flags() */
+ 	gfs2_set_inode_flags(inode);
+ 	height = be16_to_cpu(str->di_height);
+-	if (unlikely(height > sdp->sd_max_height))
+-		goto corrupt;
++	if (unlikely(height > sdp->sd_max_height)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_height = (u8)height;
+ 
+ 	depth = be16_to_cpu(str->di_depth);
+-	if (unlikely(depth > GFS2_DIR_MAX_DEPTH))
+-		goto corrupt;
++	if (unlikely(depth > GFS2_DIR_MAX_DEPTH)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_depth = (u8)depth;
+ 	ip->i_entries = be32_to_cpu(str->di_entries);
+ 
+-	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip))
+-		goto corrupt;
+-
++	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	if (S_ISREG(inode->i_mode))
+ 		gfs2_set_aops(inode);
+ 
+ 	return 0;
+-corrupt:
+-	gfs2_consist_inode(ip);
+-	return -EIO;
+ }
+ 
+ /**
+diff --git a/fs/gfs2/xattr.c b/fs/gfs2/xattr.c
+index 2117011c8c57..27b9dd1179c2 100644
+--- a/fs/gfs2/xattr.c
++++ b/fs/gfs2/xattr.c
+@@ -96,30 +96,34 @@ static int ea_foreach_i(struct gfs2_inode *ip, struct buffer_head *bh,
+ 		return -EIO;
+ 
+ 	for (ea = GFS2_EA_BH2FIRST(bh);; prev = ea, ea = GFS2_EA2NEXT(ea)) {
+-		if (!GFS2_EA_REC_LEN(ea))
+-			goto fail;
++		if (!GFS2_EA_REC_LEN(ea)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
+ 		if (!(bh->b_data <= (char *)ea && (char *)GFS2_EA2NEXT(ea) <=
+-						  bh->b_data + bh->b_size))
+-			goto fail;
+-		if (!gfs2_eatype_valid(sdp, ea->ea_type))
+-			goto fail;
++						  bh->b_data + bh->b_size)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
++		if (!gfs2_eatype_valid(sdp, ea->ea_type)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
+ 		error = ea_call(ip, bh, ea, prev, data);
+ 		if (error)
+ 			return error;
+ 
+ 		if (GFS2_EA_IS_LAST(ea)) {
+ 			if ((char *)GFS2_EA2NEXT(ea) !=
+-			    bh->b_data + bh->b_size)
+-				goto fail;
++			    bh->b_data + bh->b_size) {
++				gfs2_consist_inode(ip);
++				return -EIO;
++			}
+ 			break;
+ 		}
+ 	}
+ 
+ 	return error;
+-
+-fail:
+-	gfs2_consist_inode(ip);
+-	return -EIO;
+ }
+ 
+ static int ea_foreach(struct gfs2_inode *ip, ea_call_t ea_call, void *data)
+-- 
+2.43.0
 
 
