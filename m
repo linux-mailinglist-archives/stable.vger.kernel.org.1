@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-233302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLKdAYyX0Wl4LgcAu9opvQ
-	(envelope-from <stable+bounces-233302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 00:58:20 +0200
+	id 8L1ZEdCY0Wm1LgcAu9opvQ
+	(envelope-from <stable+bounces-233303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 01:03:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DCF39CCBF
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 00:58:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE5A39CD18
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 01:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AC9063004D13
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 22:58:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 502713006790
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 23:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECBE36B06D;
-	Sat,  4 Apr 2026 22:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB41035CB6F;
+	Sat,  4 Apr 2026 23:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZvERzFc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T/ujG4VB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34193612F6
-	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 22:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F60F347BD4
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 23:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775343497; cv=none; b=UJnawXe/LItRw68DBbJSS5yhT8R7KAIE4A6TsXHjtCxP2ltGS4SJq3VWDGJ+QZ005sAPPjV1nnOFjeZ0io3SVh6uVIEk1w8GGrU+PaGzgTwsnXECp7xBz1QPoUkEXoXpqhnGREiuYLfjD1HdMc58cbLOKJbDbA/nCQUCTyw18Mo=
+	t=1775343798; cv=none; b=uGN8UpNMn1j1XDx/24Ra6FzYAEVKBeULtHaxESv++NfGkTGFocV/x6/ULeI1ou/AAiMcVcEtdj9B8sbzbBq/S7bpcENKiai0WrZDPvrpP5Y0htLZZ437cxjn9grTKfseBGZkEH0nUAMJFW5cINP+5I99IRp31dqwcVP6FtE/l3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775343497; c=relaxed/simple;
-	bh=jGjQZBs0WdJOuCBt0m7HdHT/tOJU/5J/G4uFScR5Owg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dwQe4l1e0YoN1vj1jWdbT2S4XQyNzeNq3S6aY33cfaLxBc+YyrAEPhwrgXxebZ3fOx5DSzKMWLrNMIYOIeoG0izBfxq1NBIqoWHYjCKf4rdCAjNxt7syBdWicEBpyW4862RWqlKeWuYcpoX34fXZGt+Zlvm5ZsWWGDSZyFr3vQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aZvERzFc; arc=none smtp.client-ip=209.85.221.170
+	s=arc-20240116; t=1775343798; c=relaxed/simple;
+	bh=HL1mwJBzaIwo1zGTYraOLa0fIAhVfWpdcbVPs6RmyZ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tFRIH4enPVHnAprk/BahUuAzubZDNzY2KiEkA/Uhn3GmzsC4FJfB46bT/+h79tyPNH6h6ASD0oNPcZlgDXGD0V1AGMFWhl1g20FARCGWXk6BLkOCs7HBAmAV8e1TRpNu6IywGGBohv0xjS+xITWlqfvz4hcwP4pUDRZKZm4g7Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T/ujG4VB; arc=none smtp.client-ip=209.85.221.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56a9076813bso1177802e0c.3
-        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 15:58:15 -0700 (PDT)
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-56d89f35940so985445e0c.2
+        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 16:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775343495; x=1775948295; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775343795; x=1775948595; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tCgSx5WdM/i+Hg88DXCQUL/vgC4TdcSzM3NNt+8nb8Q=;
-        b=aZvERzFcrGce73LP/QLLetPV4KsDnULCqrt/0U0h5t2A+RdpZ826rxLAcWukkOb88n
-         BhXeH9/SUFAQRc0vsEP20geW2e8jj9JXcys6BXTZSMuQiP04hl4Jo0DIhk7Pz6hSfXvH
-         GfPzdtxv/lSG49wRGX7snbUq/vi23R95sfztrNsmJP+xgyuKcKqu5iLL9wAhayQFuJXN
-         OWJ9zqTfWmRHZXAM6E6P/KpBRz3W+yoRRJJ0qKeHETTtR5efJa0ghLDsOfUGdqUQzCIC
-         ZheD72CH7drqaA08qMi8NHQJ/Rrf2bUeLFbBSfawkmyGhDqIsyoZgOBdh0SbFBITvUXf
-         0PBQ==
+        bh=VT54FeMbxqX21ddtIQHdTpaD4nSQybFIj5pVbkZZyL0=;
+        b=T/ujG4VBFv35IlIXHi6wjnHgBY2HB0KGUtcYw1biu8St9yjzlaCU2KAA3dYk/tHIdS
+         R1/XSzgGynqekuvS7RM1KMotwBjvzx5nazzxGhSDRAKQ1zj9ygC4qulmwg/IYRDi4Q3B
+         Nq/K/5lYU5HFLZpZ87aqoPf7hgYCJcSVEiJvi+/EkOqdRRS88I3XyQAVFGyt2X2TZ3BC
+         T1pCobnt0lnXMDDmKtTafHU7NTAV+/yU3fBxR/6XWDA9eZo5xU5lsM8BP6xdqDx7Xri3
+         JmtKaM+S3PNYs3W+3OA2Sqjv3WkuyFC/Xv9VnTG7iV3p+nkfUWvKnVW7DJ+sztNymDbF
+         mH9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775343495; x=1775948295;
+        d=1e100.net; s=20251104; t=1775343795; x=1775948595;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tCgSx5WdM/i+Hg88DXCQUL/vgC4TdcSzM3NNt+8nb8Q=;
-        b=LnVPDybmwMWJvK/L577WnjtAJ10jUJwC1xMMVKPzHlMfcIPG5mXaSDedYbro6PtQJo
-         QM1W23q2H9a1kpQZ/F2w9MIKBz55KNQzC0EF82eRDM+i9xRcJJ/USrqHWkrmOo7OY8TI
-         t/BRE6au2856w97bChQSSrJ69FHFwkY48guPwMpwOdmtqr8jT1nmrjXFf7rAomgLdQrJ
-         dDTPdLVkdXWmYYrclhif4aPNhfSzBx2bXzNypLI7AIzdZCTW1NYxzUwIIwpHRzgzAuVd
-         utDq+Fd4V6UmOsDI2xNmzv4eH9EI29kEW1LDO0xZyslJVr6ILIvcMMcOmiDb5+OyQZXn
-         hiLw==
-X-Forwarded-Encrypted: i=1; AJvYcCWa/QfhPH82t1vR1MSjLEDQ2PAYh1DCLhdnkE20c73PIwdDQCwc7WMlv1CspAi6UJtP8mvPSQg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrHlPhKo1Q4vxZ5dIZgogLAgZ0wcvbp2evgUR/dWhrT/oovk+k
-	5ctKxV66vAoAw9sV7NV8yfCH+iTDqLkVwqLr8uZtKVH0We4keHrwtum7
-X-Gm-Gg: AeBDies20kAsyK3AFqgmVrDxgVngWGsxLLBj64u0dyRVeObx3Cde5afORxOQUlXwHAs
-	dXvKzP/Ji/vxJrDfm1MmTczrSlydkZBv7daxTz63KtGKXKpa9ySk3aoYj5ScS6C8PJ/yio3pTUL
-	t6q9FmFBMwRsO2ftMKEieIYo0e4YCPV2NR6jbJvVbzDDGU7WYLBqEF5kBqZ7cXbv71LV7pgnXKn
-	p2tCOsHpMTG/rqBEaIKdSnPQLGDtm3AU4fkvIGVdtvjnJi85dMNek87ad+EZSll+ubIATndhpvI
-	P0D+Ma32LUCoN24HeCCrIReoAO9o1JGxb1iHm0fxhrnDyRHHPwgEwkAI8paMNb6pHu3o7q4+Yws
-	izcAIfW9bNzKkCN2mdY0uVLoJJJ0DXPy3oN1/NZHJi3hZe85O9XG9OtmtCbk4Clnzx9d2Xr/ZnA
-	NCHmQUFE87fXVB3splkuhnKJLu14wb8pHSb+aCizTG
-X-Received: by 2002:a05:6102:5093:b0:605:4ff8:fc21 with SMTP id ada2fe7eead31-605a4e92bc8mr2314437137.8.1775343494660;
-        Sat, 04 Apr 2026 15:58:14 -0700 (PDT)
+        bh=VT54FeMbxqX21ddtIQHdTpaD4nSQybFIj5pVbkZZyL0=;
+        b=lgbFS6AgFoxh5uY2SV+b1dLjtzxFiINvRh9KdsEzm8w/2HDla3/s69QyA/B45DLprG
+         seaHJywHYWqkAVAujMhG8zy3wmmHRjmPrOXLBldQ/+wqcbmYAwng8UPj6x+HP4XumkNo
+         oqfwUqgn+zzOtngE8/1sBP+uG6fD7Kg/BKeZUARcmB7CQK6hY2BYnfLQHDpPybNwV7eG
+         XWRiEgYq11naoIeztBv942gRbzqm4TTycoxwjFpiumvUTVQEk7rYhhEbw5+9ZLiqFvic
+         ambwVNnAkUtOZQqQRZujqB+nJcswFSs+1DGi3KaTLQDVnuZUeKNTbB3uY7+mtjdX0kex
+         O/lg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWd3v8ObWAMp+JZb5Zk/cOCAh8+NFjzCA0n17NeuvpE1BFyHQya+4PXqVvQoIWvRBXJwJL8QY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUuq3KWn27KPgm6nKsFk2GZrthCrxDRubv1PtMy26mX35etnqb
+	dTzn7L4gfjzwIe4Ag4286VbI9jRcAQREkLbPUd1UM9F9k7dygWyjosIz
+X-Gm-Gg: AeBDieu9DhzgyqgFLm/RMxOgtxhJmATKjoVHmEUASi/REvyLb5zWFaH8Z7XN17ZWCvD
+	dzcGS/YkLb6FfUT+Yguo545QOKfJ2+Mtxuds59yQtIZQevbhWodCgSWpuEQ4L1tIPtc9wi/SzYh
+	iL0pBE5MYJ5PTRjZLUF1a0mbq/uNA5PdVCpDto6M7Y0BYpfZK1YiBL7R7jKeVenhP4dZNS0PgMg
+	iRM97vonL6Q/uB2zk3RpNf6nxfRdAc4gHNysoajiOvAhdrugLE2pG1l4+jMiEFgzptOMSi741RW
+	nxkTDQVn/7zmd1ySnkGmuUfd2Ihq7Wjr7O1+bENH/S1c48A+zMWBuZWlktaR7IxyXHuZ3c0208T
+	Dy7RmJuJWVI50On0L4oTHv0YjOZcW+OtC0RCLbhkXFXoACy8GN+gefgtACRjaoy3IFMzF+/ncbu
+	7eV/CuUuSeJ33baKMwrmDydfyB+an075NPdVYooOiR
+X-Received: by 2002:a05:6122:e1b2:b0:56c:ce0b:fecd with SMTP id 71dfb90a1353d-56dab9d6df7mr2638405e0c.12.1775343795382;
+        Sat, 04 Apr 2026 16:03:15 -0700 (PDT)
 Received: from localhost.localdomain ([102.244.98.15])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-60582e1d1edsm11692040137.1.2026.04.04.15.58.12
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56d9ba80290sm11317699e0c.3.2026.04.04.16.03.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 15:58:14 -0700 (PDT)
+        Sat, 04 Apr 2026 16:03:14 -0700 (PDT)
 From: Delene Tchio Romuald <delenetchior1@gmail.com>
 To: gregkh@linuxfoundation.org
 Cc: linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Delene Tchio Romuald <delenetchior1@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] staging: rtl8723bs: fix integer underflow in TKIP MIC verification
-Date: Sat,  4 Apr 2026 23:57:52 +0100
-Message-ID: <20260404225752.61297-1-delenetchior1@gmail.com>
+Subject: [PATCH] staging: rtl8723bs: fix negative length in WEP decryption
+Date: Sun,  5 Apr 2026 00:02:48 +0100
+Message-ID: <20260404230248.62203-1-delenetchior1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -97,18 +97,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-233302-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233303-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[delenetchior1@gmail.com,stable@vger.kernel.org];
@@ -119,48 +119,49 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 96DCF39CCBF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AAE5A39CD18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In recvframe_chkmic(), datalen is computed as:
+In rtw_wep_decrypt(), length is declared as signed int and computed as:
 
-  datalen = len - hdrlen - iv_len - icv_len - 8;
+  length = len - hdrlen - iv_len;
 
-All operands are unsigned, so if the frame is shorter than the sum of
-header, IV, ICV, and MIC lengths, the subtraction wraps to a very
-large value. This corrupted datalen is then passed to
-rtw_seccalctkipmic() and used as a pointer offset, leading to
-out-of-bounds reads on kernel heap memory.
+If the received frame is shorter than the combined header and IV
+lengths, length becomes negative. It is then passed to arc4_crypt()
+which takes a u32 parameter, causing the negative value to be
+implicitly cast to a very large unsigned value (e.g., -8 becomes
+4294967288). This results in a massive out-of-bounds read and write
+on the heap via arc4_crypt(), and a similar overflow at the
+subsequent crc32_le() call using length - 4.
 
-Add a minimum frame length check before the subtraction to prevent
-the unsigned integer underflow.
+Add a minimum frame length check before the subtraction to ensure
+length is always positive.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Delene Tchio Romuald <delenetchior1@gmail.com>
 ---
- drivers/staging/rtl8723bs/core/rtw_recv.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/staging/rtl8723bs/core/rtw_security.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_recv.c b/drivers/staging/rtl8723bs/core/rtw_recv.c
-index 337671b12..8d3c6761a 100644
---- a/drivers/staging/rtl8723bs/core/rtw_recv.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_recv.c
-@@ -390,6 +390,13 @@ static signed int recvframe_chkmic(struct adapter *adapter,  union recv_frame *p
- 				mickey = &stainfo->dot11tkiprxmickey.skey[0];
- 			}
- 
-+			/* Ensure the frame is large enough for TKIP MIC verification */
-+			if (precvframe->u.hdr.len <= prxattrib->hdrlen +
-+			    prxattrib->iv_len + prxattrib->icv_len + 8) {
-+				res = _FAIL;
-+				goto exit;
-+			}
+diff --git a/drivers/staging/rtl8723bs/core/rtw_security.c b/drivers/staging/rtl8723bs/core/rtw_security.c
+index b489babe7..807f4f3c7 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_security.c
++++ b/drivers/staging/rtl8723bs/core/rtw_security.c
+@@ -113,6 +113,12 @@ void rtw_wep_decrypt(struct adapter  *padapter, u8 *precvframe)
+ 		memcpy(&wepkey[0], iv, 3);
+ 		/* memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[psecuritypriv->dot11PrivacyKeyIndex].skey[0], keylength); */
+ 		memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[keyindex].skey[0], keylength);
 +
- 			datalen = precvframe->u.hdr.len-prxattrib->hdrlen-prxattrib->iv_len-prxattrib->icv_len-8;/* icv_len included the mic code */
- 			pframe = precvframe->u.hdr.rx_data;
- 			payload = pframe+prxattrib->hdrlen+prxattrib->iv_len;
++		/* Ensure the frame is long enough for WEP decryption */
++		if (((union recv_frame *)precvframe)->u.hdr.len <=
++		    prxattrib->hdrlen + prxattrib->iv_len)
++			return;
++
+ 		length = ((union recv_frame *)precvframe)->u.hdr.len - prxattrib->hdrlen - prxattrib->iv_len;
+ 
+ 		payload = pframe + prxattrib->iv_len + prxattrib->hdrlen;
 -- 
 2.43.0
 
