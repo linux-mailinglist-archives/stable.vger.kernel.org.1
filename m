@@ -1,206 +1,144 @@
-Return-Path: <stable+bounces-233255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233256-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFE8BeNx0Gmo7gYAu9opvQ
-	(envelope-from <stable+bounces-233255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 04:05:23 +0200
+	id sGJvD3Z30Gnf7wYAu9opvQ
+	(envelope-from <stable+bounces-233256-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 04:29:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F8039997C
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 04:05:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99410399A5F
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 04:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20EF63055805
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 02:00:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 423413020A7A
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 02:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18484279792;
-	Sat,  4 Apr 2026 02:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8218929DB6C;
+	Sat,  4 Apr 2026 02:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hWLRJ/EX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gDQVb9eX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AA322D792
-	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 02:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43307296BBC
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 02:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775268043; cv=none; b=UGgZcOu37bemPO+O/SbmnHBGb+UsqnKi8S5LaElNd64rrwEgVikNNOMertFzdkH3P0BXu8ZTRdAgPkvd0RAfayp/PeNSmGWxN8KCNSr9ZWjSUitw//LIQ7NW/mlvgWU8zNMV5uPryvYAMLjiRkHK8Mp3v/zlMZKMfAHQzTIwt1M=
+	t=1775269715; cv=none; b=R2qL3bcGhESePS0IYp0i2I6KNbglT8IUf1mg8vJDuz2mpi3CsWzuKkXvq88OHHrWJEqAvS8vWj9ZrbIW/m+wXJ4z6vcS67GVFF7etxzjuyItebqtWstu/EEjnKV8K4lDJ/BJ+zd/uTly1dh0EG+f6/PXhbX2lTRWbqvEHdtKVgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775268043; c=relaxed/simple;
-	bh=xwE5t0LG/3F20TNNrUtGY613jux+lpvRpheRVJYPn+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsLEOsAzWHSM0jqRKvpub2n6SSk83G3keixDCPlwQbWtz67T6eL+Lr4DljxcFdkS3uAAey690ptEs1EfLainIME6p0ZoYBYhevlApikoM222S3rqpuCge/nye5rX6YAdSqhfp4HkWp0OFvvVMurUc928xHFpDAJp4huB6PMUfHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hWLRJ/EX; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-89f87257904so21372096d6.1
-        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 19:00:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775268041; x=1775872841; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nna7XikjSIt8v38EvLKlFvQXyQgfQaOAHmwwtVCsG/8=;
-        b=hWLRJ/EXn/1tAjQOg963jjsfgHXbWzeWHQTQPL7bqmcId7VWgX9EXYesozgO3/iGPY
-         ZslA9wfKXPv2YTVzfmxlM7sZLMHm6+EnYwcLflRcazi5scOIbJ2wWkh9FkAXNqwEokIh
-         4bFl+r9PkRDarA/4mavR78vnFYABDtxVkmx4fqSKwDgZAY9ngi2sjeMm6vEWzHO0dxSx
-         qJbHEu6BKYsOXmiNmBZXF5hZrXiSIaHejkzZNuXXQqbRi9bO026js3zKcPd6DYSygvNx
-         xovUJuccHspS5bC0ruwopIoVG+f4HIkqTJ0/GDAhpZGeVAe5jE/4+mUuuEzfHUJLBqa3
-         9oFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775268041; x=1775872841;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nna7XikjSIt8v38EvLKlFvQXyQgfQaOAHmwwtVCsG/8=;
-        b=ovvu3wR+4a4xByLgOj5HK2BbeorfaX2nEcrezUqQHBvv7RK/vYv5F1zLBOmLn7KwG8
-         TpqBNkBxFdISClm5hi2RIkcL175D5NpjYoBGMrPegm28fnrPa//gNQUcQEyoQlYo7kQ6
-         JQGNLzuYTtKKNFLNArLpWs3uavP/pB5wxwy+Fc7bXzWjb7TDHZzlCaC+mbjupmR98jj3
-         x4LIncN6Z1/qHD+Wm0P7D1J3mg6oG53YBkOkyQfCylCd3A3ISBKK9LJPSQeDQQZMsYv2
-         Msovu+pm9HdD2H63Qefa2iKY9OERMM9+Vtj2w8PXmbe7IuCSwTFoC5/kIFuAFYAl7RmD
-         uM2g==
-X-Forwarded-Encrypted: i=1; AJvYcCUT9rkk+vpqyR0crPdgGDvfw5VyVIDpLoBqPspPBwnLpm9OL5ODXGUzoemq602NzrSPIxCdegw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfRDG/qbTfl58TAP86usBvKyRnKDRVLf5lHhXX06+zQEJvIQWS
-	0QsQXztUCAebFsVeORq4pEVtTSo1F/tsBXsEdJTRwrBkczGmNZyYM34o
-X-Gm-Gg: AeBDiesiGQt0+vBxFJFtX2mohYJfPc131KzASOrLyQKnglPiBEtGi2pdvYDEkpZBZIt
-	BTGbHsC6cuCm/7IX48oxnTe9F4jzclLq2ivjK2+C2QBd1iGjB2vFUpNSV+kF3CYLXHeaAcqDwf9
-	hwnwkXcfjFro2BZLEkat9nlzo3tKJc300tyf6IEYRqdiC5XZzBy/M8p80VBrDusVNbwD7kVvLoT
-	svCJsnsgq2maUsAIcmZe0SGK/fC7Rt78y8/Pe0+ZZIkq9TG1hELZlNgppvEsWuyqKSBtFdRai64
-	zbIt1ELjWDBhUGfEDus7DTTb0oKpSsaZ09in879DuZWrGBbTOzgCKeYE2TKZmnwHLbjsyOuXv5u
-	jtOneMiEIePEipVLh1edAvnzQZ+Po5Ekl2+nhD3+6KuAFngukGbpKVdY9KT/ERXZP/8clmxbPCJ
-	P/7rKsOI0QX9fSAoki2yh0FQwp/XLvdjhomJYZgKQWZy4=
-X-Received: by 2002:ac8:7dc2:0:b0:4ee:13d0:d02b with SMTP id d75a77b69052e-50d62c8a32cmr75557921cf.50.1775268041390;
-        Fri, 03 Apr 2026 19:00:41 -0700 (PDT)
-Received: from desktop.. ([2607:fea8:d681:2400:aac2:af07:379d:ffaa])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50d4b8a8f38sm57316941cf.24.2026.04.03.19.00.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 19:00:40 -0700 (PDT)
-From: Tushar Sariya <tushar.sariya77@gmail.com>
-To: Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>
-Cc: linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tushar Sariya <tushar.97@hotmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] NFSv4.1: Apply session size limits on clone path
-Date: Fri,  3 Apr 2026 23:30:25 -0230
-Message-ID: <20260404020027.3327248-2-tushar.sariya77@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260404020027.3327248-1-tushar.sariya77@gmail.com>
-References: <20260404020027.3327248-1-tushar.sariya77@gmail.com>
+	s=arc-20240116; t=1775269715; c=relaxed/simple;
+	bh=u4CUB0iQJSw1BJ7hyMEtZYGmMQ3t+SQ2foySZre2HZw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ljSWjd/y51+rfjIOKktBlvX0T0U5KV3prPY5ci+btYM5IUHEKgvmSAb8bx/fbYgZFIo+CNkiUPIyZFG5zBas+/y1CyVLjRIXz7iE4ryF/uSwyKx7VZbL+yE80zdbxdA6vdfBUnA/BGKmxhq0ju3UGt5corXrRfuJJ9e7x/mAOEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gDQVb9eX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5EEC19421
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 02:28:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775269714;
+	bh=u4CUB0iQJSw1BJ7hyMEtZYGmMQ3t+SQ2foySZre2HZw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gDQVb9eX6Bwhl5GDqaCu6tSisRgJ+8IQGCOzkui+hdgmKld077AJSh48IGztuc46D
+	 VE+icQo736qDPHVxLA84GxkHRu2x13y1EGBdY39DP1UOwr0De07Br6KkvR0AbRjFSp
+	 TFI8sqX7/ZLy9yJocYQGXOilYi5qe5Yw6tgqEv28QZT/k1QnVWkqq7rQRYUOMnhdHS
+	 GtdjtMk9IY0EVTNp6FSxLu+6sy1FZOTNnypV1N8bz+S++gzk4AFeJGlGDf2dnhnrY5
+	 UbcyFrDJxHSdEuYMcD7qjs7tG/lxriUtadgEsJTXawCBVRFLLYdjzbqdlZNlXvH/O+
+	 BxABeuFLdyGBA==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-66a33f61d80so4222043a12.0
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 19:28:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXvEK7/m4vdhtOEj2gazKDxaQV32n9pnWk3ShlZ5myJmUf1SyzvKlf7S/Q6GtDLn3VjEk7uCpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykU8qz2dRlWj9k57/vaBnDE9uyD7LzhstbRsjPU+g24qH1iYEn
+	y+H8OUl6zRVqJmT+Z9j3022e39QbmlQ5jVOyB3OIpUrfciickOiTmuOXWouxuICSIWFoW6Yb3aa
+	K9P3g8yTHh8Pu2k3Ru+glnYspYC53Uig=
+X-Received: by 2002:a05:6402:26d3:b0:66e:8ce7:5461 with SMTP id
+ 4fb4d7f45d1cf-66e8ce7565fmr201222a12.16.1775269713325; Fri, 03 Apr 2026
+ 19:28:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+References: <20260402083912.457676-1-munanevil@gmail.com>
+In-Reply-To: <20260402083912.457676-1-munanevil@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Sat, 4 Apr 2026 11:28:21 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd9Qnq6YgTfbS-59YATBvnbtKrX3w+D+WNk=izZVvQOoVQ@mail.gmail.com>
+X-Gm-Features: AQROBzCSnlJK3jQXwHW0ZwawgQUy3hrfgEGqFuO6mYbofu7ZSWzZ9MVCsRM4g4g
+Message-ID: <CAKYAXd9Qnq6YgTfbS-59YATBvnbtKrX3w+D+WNk=izZVvQOoVQ@mail.gmail.com>
+Subject: Re: [PATCH] ksmbd: fix use-after-free in __ksmbd_close_fd() lock cleanup
+To: munan Huang <munanevil@gmail.com>
+Cc: smfrench@gmail.com, senozhatsky@chromium.org, tom@talpey.com, 
+	linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233255-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,hotmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,chromium.org,talpey.com,vger.kernel.org];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,mail.gmail.com:server fail];
+	TAGGED_FROM(0.00)[bounces-233256-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tusharsariya77@gmail.com,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 64F8039997C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 99410399A5F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tushar Sariya <tushar.97@hotmail.com>
-
-nfs4_clone_server() builds a child nfs_server for same-server
-automounted submounts but never calls nfs4_session_limit_rwsize()
-or nfs4_session_limit_xasize() after nfs_clone_server(). This means
-the child mount can end up with rsize/wsize values that exceed the
-negotiated session channel limits, causing NFS4ERR_REQ_TOO_BIG and
-EIO on servers that enforce tight max_request_size budgets.
-
-Top-level mounts go through nfs4_server_common_setup() which calls
-these limiters after nfs_probe_server(). Apply the same clamping on
-the clone path for consistency.
-
-Fixes: 2b092175f5e3 ("NFS: Fix inheritance of the block sizes when automounting")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tushar Sariya <tushar.97@hotmail.com>
----
- fs/nfs/internal.h   | 2 ++
- fs/nfs/nfs4client.c | 4 ++--
- fs/nfs/nfs4proc.c   | 3 +++
- 3 files changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 63e09dfc27a8..0338603e9674 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -253,6 +253,8 @@ extern struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
- 					     u32 minor_version);
- extern struct rpc_clnt *nfs4_find_or_create_ds_client(struct nfs_client *,
- 						struct inode *);
-+extern void nfs4_session_limit_rwsize(struct nfs_server *server);
-+extern void nfs4_session_limit_xasize(struct nfs_server *server);
- extern struct nfs_client *nfs3_set_ds_client(struct nfs_server *mds_srv,
- 			const struct sockaddr_storage *ds_addr, int ds_addrlen,
- 			int ds_proto, unsigned int ds_timeo,
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index c211639949c2..71c271a1700a 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -855,7 +855,7 @@ EXPORT_SYMBOL_GPL(nfs4_set_ds_client);
-  * Limit the mount rsize, wsize and dtsize using negotiated fore
-  * channel attributes.
-  */
--static void nfs4_session_limit_rwsize(struct nfs_server *server)
-+void nfs4_session_limit_rwsize(struct nfs_server *server)
- {
- 	struct nfs4_session *sess;
- 	u32 server_resp_sz;
-@@ -878,7 +878,7 @@ static void nfs4_session_limit_rwsize(struct nfs_server *server)
- /*
-  * Limit xattr sizes using the channel attributes.
-  */
--static void nfs4_session_limit_xasize(struct nfs_server *server)
-+void nfs4_session_limit_xasize(struct nfs_server *server)
- {
- #ifdef CONFIG_NFS_V4_2
- 	struct nfs4_session *sess;
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 91bcf67bd743..655617ffca8d 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -10618,6 +10618,9 @@ static struct nfs_server *nfs4_clone_server(struct nfs_server *source,
- 	if (IS_ERR(server))
- 		return server;
- 
-+	nfs4_session_limit_rwsize(server);
-+	nfs4_session_limit_xasize(server);
-+
- 	error = nfs4_delegation_hash_alloc(server);
- 	if (error) {
- 		nfs_free_server(server);
--- 
-2.43.0
-
+On Thu, Apr 2, 2026 at 5:39=E2=80=AFPM munan Huang <munanevil@gmail.com> wr=
+ote:
+>
+> In __ksmbd_close_fd(), when cleaning up byte-range locks on a durable
+> file handle closed by the scavenger, the lock cleanup loop
+> unconditionally dereferences fp->conn->llist_lock to remove each lock
+> from the connection's list:
+>
+>   list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
+>       spin_lock(&fp->conn->llist_lock);
+>       list_del(&smb_lock->clist);
+>       spin_unlock(&fp->conn->llist_lock);
+>   }
+>
+> However, when a client disconnects without SMB2 LOGOFF, ksmbd preserves
+> durable file handles via session_fd_check(), which sets fp->conn to
+> NULL and arms the durable scavenger timeout, but does not detach the
+> byte-range locks from the dying connection's lock list.
+>
+> When the scavenger timeout expires, ksmbd_durable_scavenger() calls
+> __ksmbd_close_fd(NULL, fp). At this point fp->conn is NULL and the
+> original connection object has already been freed by ksmbd_conn_free(),
+> so it would cause a use-after-free or NULL pointer dereference.
+>
+> Fix by checking fp->conn for NULL before accessing fp->conn->llist_lock
+> in the lock cleanup loop.
+>
+> Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: munan Huang <munanevil@gmail.com>
+I will apply the following patch instead of your patch. Let me know if
+I am missing something.
+https://github.com/smfrench/smb3-kernel/commit/319ca5432460b0749e420f7cff63=
+7dfbc7e16be3
+Thanks.
 
