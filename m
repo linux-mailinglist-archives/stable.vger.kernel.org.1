@@ -1,140 +1,143 @@
-Return-Path: <stable+bounces-233258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0a49N1qQ0Gll9AYAu9opvQ
-	(envelope-from <stable+bounces-233258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 06:15:22 +0200
+	id aDPZOpmb0Gkd9wYAu9opvQ
+	(envelope-from <stable+bounces-233259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 07:03:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2F8399E12
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 06:15:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B09399F45
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 07:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 661B3300833F
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 04:15:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A71703031E99
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 05:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C53F334C20;
-	Sat,  4 Apr 2026 04:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DDB36D51E;
+	Sat,  4 Apr 2026 05:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kv6MfH97"
+	dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b="nCBdwPR3"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDFB332EDE;
-	Sat,  4 Apr 2026 04:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063FD3246EF
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 05:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775276116; cv=none; b=rkII2J4r7V1FZrtv/qH1GnMhiJ65dYHWloc77RKgKZqqjd7hVAAxLO3yn8Z+pJf9QVQAzFu48ZQzPL0oFnxw9YnXt3z8RQW9GHf2NOZ3n+88PGUZLZqBr7ikWNpzfH7pVan83UO5zfoG757O2TNa7Bz9DV2xMRS1x5qOWywhvhw=
+	t=1775278991; cv=none; b=PN/8bBF06BEBTlZKWkCAKmRTcfzmfuduec0iLr3m3gku0Bl389dI5bKCtx92N4JSDTYYZWUvuS41siQMMRTCZBIC5gEEWVfwcN5cGsQBh6g9KC4F4iPn9GTCfrOAQcPCXaUeDKMuQSH8vvLM9Ba9L0dGC/7MDKBxQAIc8QZZr7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775276116; c=relaxed/simple;
-	bh=L3BqPG7Rkb+GwjjVV/0ER1SVM/id0u09GjDsQYVrZxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HGPLhZ5pUU6bgldPajHoG8L+KY8SuibyGTAyorzz8eISK6mgNQ5Ch8LKrFZ4qapQbOPXx3cxehrKQieoZZ9tn0aTygBljlOev6hgrNsiNUBFgwdrDtzFPexVsqoD6CbPTIwy11HlJUxd/owfVcbFPvwIeOybZEOvg8Q6uUH8C0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kv6MfH97; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=prgjruknzedrN/FySTUns/2cxrd1Ek5UwRzTS2GVwtQ=; b=kv6MfH97kDKvbWs8u/DfmlPLjB
-	5VO90TEEKgWCAeJJxC9SIn1GUrL/irrN3MiSJPxvH11ki6Gl4DulTzSMKHfC7PsuL8Wjl7goHueEV
-	sPCgxGOvoZFxpMbC1AbqJwQ6y0P4YjChWmmGbbXXCFKBx3UfqsuRboj6Dx1OeXjjeSvbMibkQbGli
-	cTyM035nMVVDAk4pq/XHZAQGxPmh6Q1oFikGKjEF2JZ36/fUzqMvWJF7Ib2j+fb9+fpCPdFTn7+R+
-	qZQSwsX5UgYG/q5pkUtH5iu2ijNCIT6xhDm186revhAwa5YMGW2ccgsRTj4FmC58HMqUZj8GgMyHY
-	YI1lbzHg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w8sPd-0000000FSmQ-0Veb;
-	Sat, 04 Apr 2026 04:15:09 +0000
-Date: Sat, 4 Apr 2026 05:15:08 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Salvatore Dipietro <dipiets@amazon.it>
-Cc: linux-kernel@vger.kernel.org, alisaidi@amazon.com, blakgeof@amazon.com,
-	abuehaze@amazon.de, dipietro.salvatore@gmail.com,
-	stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order
- allocation
-Message-ID: <adCQTF1PQnlbNMO8@casper.infradead.org>
-References: <20260403193535.9970-1-dipiets@amazon.it>
- <20260403193535.9970-2-dipiets@amazon.it>
+	s=arc-20240116; t=1775278991; c=relaxed/simple;
+	bh=ljLqHN4/YU54zGex0W8bOwmzab78gDAvWCE9IC2QNmc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=scPg+T5FKM/SKpiYyYe/uwXqw0Zqwd99+Ovr7Ludppo0iamafi4/EEkHZ6EfUp6wPLABwIvhgsPx2AJLUYIb20b+zxjGaFmtep1jZ6PqlA9lhbriKwIXRb/h874iPPlokCPX8tdAWSTSHlEPNjOMHNmxyvwaT+Mz7wHMgvPgmtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b=nCBdwPR3; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
+Message-ID: <904cb9a8-2ff5-4725-8ce2-f70c4f98791e@chenxiaosong.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chenxiaosong.com;
+	s=key1; t=1775278977;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1U6dk8yrKlB+wf4qSWlG//ZdhnWAEAWP8rEKm7hKPZo=;
+	b=nCBdwPR379jAGtjbyJXkAU75EJIIo5aFPgZMv4MModTb9rEN7HGKo5+c9qgZvSFEN0059b
+	6X7VG63byGYf9Kmf6LEtZ9x76KeVT3frDZaTxcl/7t/b2923QqTTq/nFRHvTQgaPtxwdyQ
+	K9pU2z81l/wwOR1opkyRmG4S+gQMUmJbrSMKPTERf4YG99rmjGlvPNnMUJZPwAkfZlF7jB
+	nRdb1HjH7fmeQ4lpJFOnx8IxQ6l8FvKZnj7kBBBMPKYu51RGYRniX81jrUVriy2Bz26fN+
+	5Qqqxc8qnzHSA1B6y69Ay+N0jHzUVv/UATYOPWGsXbDFmE3N4qu+c6cQNOxqBg==
+Date: Sat, 4 Apr 2026 13:02:07 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260403193535.9970-2-dipiets@amazon.it>
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
+Subject: Re: [PATCH] ksmbd: fix use-after-free in __ksmbd_close_fd() lock
+ cleanup
+To: Namjae Jeon <linkinjeon@kernel.org>, munan Huang <munanevil@gmail.com>
+Cc: smfrench@gmail.com, senozhatsky@chromium.org, tom@talpey.com,
+ linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260402083912.457676-1-munanevil@gmail.com>
+ <CAKYAXd9Qnq6YgTfbS-59YATBvnbtKrX3w+D+WNk=izZVvQOoVQ@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAKYAXd9Qnq6YgTfbS-59YATBvnbtKrX3w+D+WNk=izZVvQOoVQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[chenxiaosong.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[chenxiaosong.com:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233258-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,amazon.com,amazon.de,gmail.com,kernel.org,kvack.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233259-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,chromium.org,talpey.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[chenxiaosong.com:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[casper.infradead.org:mid]
-X-Rspamd-Queue-Id: 4F2F8399E12
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenxiaosong@chenxiaosong.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,chenxiaosong.com:dkim,chenxiaosong.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 53B09399F45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 03, 2026 at 07:35:34PM +0000, Salvatore Dipietro wrote:
-> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> introduced high-order folio allocations in the buffered write
-> path. When memory is fragmented, each failed allocation triggers
-> compaction and drain_all_pages() via __alloc_pages_slowpath(),
-> causing a 0.75x throughput drop on pgbench (simple-update) with 
-> 1024 clients on a 96-vCPU arm64 system.
+Hi Namjae and munan,
+
+In `ksmbd_reopen_durable_fd()`, when -EBADF is returned, should 
+`list_del(&smb_lock->clist)` be called?
+
+If my understanding is incorrect, please let me know.
+
 > 
-> Strip __GFP_DIRECT_RECLAIM from folio allocations in
-> iomap_get_folio() when the order exceeds PAGE_ALLOC_COSTLY_ORDER,
-> making them purely opportunistic.
+> int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
+> {
+> 	...
+> 	fp->conn = conn;
+> 	...
+> 
+> 	list_for_each_entry(smb_lock, &fp->lock_list, flist) {
+> 		spin_lock(&conn->llist_lock);
+> 		list_add_tail(&smb_lock->clist, &conn->lock_list);
+> 		spin_unlock(&conn->llist_lock);
+> 	}
+> 	...
+> 	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
+> 	if (!has_file_id(fp->volatile_id)) {
+> 		fp->conn = NULL;
+> 		fp->tcon = NULL;
+> 		return -EBADF;
+> 	}
+> 	return 0;
+> }
 
-If you look at __filemap_get_folio_mpol(), that's kind of being tried
-already:
+Thanks,
+ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-                        if (order > min_order)
-                                alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
+On 4/4/26 10:28, Namjae Jeon wrote:
+> I will apply the following patch instead of your patch. Let me know if
+> I am missing something.
+> https://github.com/smfrench/smb3-kernel/ 
+> commit/319ca5432460b0749e420f7cff637dfbc7e16be3
+> Thanks.
 
- * %__GFP_NORETRY: The VM implementation will try only very lightweight
- * memory direct reclaim to get some memory under memory pressure (thus
- * it can sleep). It will avoid disruptive actions like OOM killer. The
- * caller must handle the failure which is quite likely to happen under
- * heavy memory pressure. The flag is suitable when failure can easily be
- * handled at small cost, such as reduced throughput.
-
-which, from the description, seemed like the right approach.  So either
-the description or the implementation should be updated, I suppose?
-
-Now, what happens if you change those two lines to:
-
-			if (order > min_order) {
-				alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
-				alloc_gfp |= __GFP_NOWARN;
-			}
-
-Do you recover the performance?
 
