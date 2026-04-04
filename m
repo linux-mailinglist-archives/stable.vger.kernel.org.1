@@ -1,226 +1,153 @@
-Return-Path: <stable+bounces-233253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAZoH45f0GmB7AYAu9opvQ
-	(envelope-from <stable+bounces-233253-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 02:47:10 +0200
+	id 2KKvB+hs0Gkd7gYAu9opvQ
+	(envelope-from <stable+bounces-233254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 03:44:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EFAC39962A
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 02:47:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B77D399819
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 03:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 78871300AD87
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 00:46:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09034303FAF1
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 01:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B029F137923;
-	Sat,  4 Apr 2026 00:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D5428CF5D;
+	Sat,  4 Apr 2026 01:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WWoDSJj6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nXr3C9g2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C977260D;
-	Sat,  4 Apr 2026 00:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D9328850D
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 01:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775263588; cv=none; b=AxQGCMXGv63SGD9r/n5oNRcXOI6j0/VJpZh1vNVaHPe87RaCOcShBFlHz99kP57WkdC6CkjA50eyBBeCQwx8ysFlukkBDQGKrJwOLwP8RYFMFIr1WsW/cB5cPlr4nqw40+P6ibH0UECthhemUp51KHrvsJydmxIiLzm8Mo6ke18=
+	t=1775267038; cv=none; b=fnWYTinq+k5/64MyVRicLj3lW9YD+duM0UmEyqDat1EFmP+8e60mLseEja2VroCiRSX34VsoBr3hAzAVWG2rzXhFQfLPosSHyXtShF1IVEYJza5g4gmpsrlUPk+lMTPfujIZo7d95PmNeW+EcDYHgJE22By4tRyTB0Wpzi/J5vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775263588; c=relaxed/simple;
-	bh=0lr4Uc0ZB3+GM0nP2kJSz4JktA5qM9temyX0uKIZjTk=;
-	h=Date:To:From:Subject:Message-Id; b=Onq/DUIaKjHGsp8G0+kvSnpkbSHpEPIwjSSKsJSc6i0JCi4kfb+hbRjIllXoAPoZaqjMtBr2WmZB3t/+AIKbJBFG1JaCEwTAJ2BVPC+KDPbMixQofmZOTDETeDc2uxnSmhuvuR2ml5GIiAd4o32t3lv+iKkZonCiv/WNZQyBKGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WWoDSJj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D6AC4CEF7;
-	Sat,  4 Apr 2026 00:46:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775263588;
-	bh=0lr4Uc0ZB3+GM0nP2kJSz4JktA5qM9temyX0uKIZjTk=;
-	h=Date:To:From:Subject:From;
-	b=WWoDSJj62juNkhPKJbKUiEz24JUzd6ylrGhhQZgoH8s8BRHq6veNNAe9lzHCCVQN5
-	 ZkesjW90HqvG4GHhP14NIeG3cOwcLLMBltLkaOsrd+EeZc1pRMO6zY9J3HJ4dk/5yF
-	 IfR/PZL224dA/a3NdTZ1N+Xr/CMZSe+yrvogiUng=
-Date: Fri, 03 Apr 2026 17:46:27 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,usama.arif@linux.dev,stable@vger.kernel.org,ryan.roberts@arm.com,richard.weiyang@gmail.com,rakie.kim@sk.com,npache@redhat.com,matthew.brost@intel.com,ljs@kernel.org,liam.howlett@oracle.com,kartikey406@gmail.com,joshua.hahnjy@gmail.com,gourry@gourry.net,dev.jain@arm.com,david@kernel.org,byungchul@sk.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,apopple@nvidia.com,lance.yang@linux.dev,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-fix-deferred-split-queue-races-during-migration.patch removed from -mm tree
-Message-Id: <20260404004628.03D6AC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1775267038; c=relaxed/simple;
+	bh=o+mXn+mO3TOBOhs6Vj4ImptTHtx9x7UXnCndYtnzSCE=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=mHciysPF8Os9ARDNja8B1kJJPNsy6sEWnbXqKrsAxPRyUf+a/F+sUYHGPEf+pNiFlICWL1npPyO+xAIALFJjcOeUw06sItBM47BtncC4L/n2WZpIAbZGh7y3bqbxM3Y7dS98wI6UpETCyDedGTglE8DY6NHg8SqnfMslNkOYI8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nXr3C9g2; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ad9516a653so11335135ad.0
+        for <stable@vger.kernel.org>; Fri, 03 Apr 2026 18:43:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775267037; x=1775871837; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mSmUlQx+7wcM8hvk6KgWAN6mYWx05Ua8pH5lZ6mYZjw=;
+        b=nXr3C9g2rOFq3lOWtfJXdm1R3NpHTu0T5mbjoqhvOlZ9h18+ISrPrL4zOUB/n+NNrB
+         SHEf23xnLEPX/yTwckXO60RlK5cx6bJLu4CLZpJ6GRhUnAxc/ARpRIN/ziZy4zLNrCEq
+         PCptii73YhlofADub/f6Z7mOeowVBjS+LTCtxtGz3wN+g06GowochDaJUc8f5zh5mQOG
+         fjydkerhn2of1EDtc9N2L+ThYnMV4qQxlC7UvyjzTDE7lwNh5Xis44qUOW9+i/MyDdRm
+         IV+BXh6LNwwnHlFIGbXi8u0atoU76iTmq8pLH/Vd/9uhYE51qLVGibdJ41EWk3AlGhKv
+         dFKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775267037; x=1775871837;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mSmUlQx+7wcM8hvk6KgWAN6mYWx05Ua8pH5lZ6mYZjw=;
+        b=UpDdYVxkTa1V7OhK2CLQ07AVgnE9rpZN8986kNlBDEoP2Zz4v+Bo3Xogez4VktrdzC
+         wIXf3vjiMM9v+xQMg8yRAFGDJPGLwnbMUcj/K/RQla6B4fySTf6dnhKoqNMHM3txXWMX
+         oA8OtU59b9F0wYiWOFoT6eDFXkxAjVEouo/Naqr1u7P4zI7C21DB4Hsyc+f+03vbD5rJ
+         jDlQg2ircTtqZSKDcaYzjqckG77q6Xf48jZ76i1g9dXlP01SCCox33MOVwTq8TRw9N+v
+         iKE7hgQFx3AbIQVNjYC5RNtEVx9hWMNZfCp2FYC7TVJzBAG86AjG+g7QCXHYzZhb6f07
+         MGPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXnlV6Qhq8f0hhMiY7sUrPXH+P0uTpSJauJr/txYPpUjxs/ISQGwfGz4vmLKF5IzDUxQoa3jck=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZCAtXFzzBse1FyGc25m1ztEkzHz6RdERiIRX0GqF4ABAcYXY4
+	65tjls470wtvSU4uaPCkjHUstKbDuSz4NG3rwCczAMUrS7Tct7MC8lg5
+X-Gm-Gg: AeBDievnrdaPlDvzTHAahsGPjcscNVboMFUgmIilVrEmV7O/XVLgadSNXoqWU326wfC
+	BWbGasNSmzgSlmAbg41Lg39ROR6shJDdS5+z+e23xHhyk1KluP7MfatjAhk9TjwafCG77+GFOwa
+	tzScuJXOS/CdA09ZknRoIF9Ewo/HCZfqoMn7cbr3UH23UqEvCuTPDD1i1AzbmfSaXzxbZrqKaaP
+	a2E7X2yVxcdfGVm/B7iuiw5E549T7DKqJU+8b5kwo3RUBKwQCEU5kOYnfQ66o/4gD/MUtqu4Ccy
+	o04X3PbO+AvZBgT6XsTjAgdmoYQhZwfXMPVdMfZpH5bMFrYIj9XYabhTEZMXm7Xzw3ddd5XDz7y
+	nOxo4qAkQoeVFdasWTJ6It8Y0v3O2PLtOJPUmx7+rdBH3D0g5J3J19fnO7sEcgwZd1OgAD/fYEP
+	5ZweAkZFeLeJFH7KAWp3hIzH0/kEObYM31
+X-Received: by 2002:a17:903:1ae3:b0:2b0:afad:7aad with SMTP id d9443c01a7336-2b2818016c3mr52841215ad.45.1775267036795;
+        Fri, 03 Apr 2026 18:43:56 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749cbca2sm65157255ad.73.2026.04.03.18.43.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 18:43:56 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Salvatore Dipietro <dipiets@amazon.it>, linux-kernel@vger.kernel.org
+Cc: dipiets@amazon.it, alisaidi@amazon.com, blakgeof@amazon.com, abuehaze@amazon.de, dipietro.salvatore@gmail.com, willy@infradead.org, stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>, "Darrick J.
+ Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
+In-Reply-To: <20260403193535.9970-2-dipiets@amazon.it>
+Date: Sat, 04 Apr 2026 06:43:06 +0530
+Message-ID: <bjfzmst9.ritesh.list@gmail.com>
+References: <20260403193535.9970-1-dipiets@amazon.it> <20260403193535.9970-2-dipiets@amazon.it>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233253-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[amazon.it,amazon.com,amazon.de,gmail.com,infradead.org,vger.kernel.org,kernel.org,kvack.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233254-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.alibaba.com,linux.dev,arm.com,gmail.com,sk.com,redhat.com,intel.com,kernel.org,oracle.com,gourry.net,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[23];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6EFAC39962A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.it:email]
+X-Rspamd-Queue-Id: 7B77D399819
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The quilt patch titled
-     Subject: mm: fix deferred split queue races during migration
-has been removed from the -mm tree.  Its filename was
-     mm-fix-deferred-split-queue-races-during-migration.patch
+Let's cc: linux-mm too.
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Salvatore Dipietro <dipiets@amazon.it> writes:
 
-------------------------------------------------------
-From: Lance Yang <lance.yang@linux.dev>
-Subject: mm: fix deferred split queue races during migration
-Date: Wed, 1 Apr 2026 21:10:32 +0800
+> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> introduced high-order folio allocations in the buffered write
+> path. When memory is fragmented, each failed allocation triggers
 
-migrate_folio_move() records the deferred split queue state from src and
-replays it on dst.  Replaying it after remove_migration_ptes(src, dst, 0)
-makes dst visible before it is requeued, so a concurrent rmap-removal path
-can mark dst partially mapped and trip the WARN in deferred_split_folio().
+Isn't it the right thing to do i.e. run compaction, when memory is
+fragmented? 
 
-Move the requeue before remove_migration_ptes() so dst is back on the
-deferred split queue before it becomes visible again.
+> compaction and drain_all_pages() via __alloc_pages_slowpath(),
+> causing a 0.75x throughput drop on pgbench (simple-update) with 
+> 1024 clients on a 96-vCPU arm64 system.
+>
 
-Because migration still holds dst locked at that point, teach
-deferred_split_scan() to requeue a folio when folio_trylock() fails. 
-Otherwise a fully mapped underused folio can be dequeued by the shrinker
-and silently lost from split_queue.
+I think removing the __GFP_DIRECT_RECLAIM flag unconditionally at the
+caller may cause -ENOMEM. Note that it is the __filemap_get_folio()
+which retries with smaller order allocations, so instead of changing the
+callers, shouldn't this be fixed in __filemap_get_folio() instead?
 
-[ziy@nvidia.com: move the comment]
-  Link: https://lkml.kernel.org/r/FB71A764-0F10-4E5A-B4A0-BA4C7F138408@nvidia.com
-Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
-Link: https://lkml.kernel.org/r/20260401131032.13011-1-lance.yang@linux.dev
-Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: Usama Arif <usama.arif@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+Maybe in there too, we should keep the reclaim flag (if passed by
+caller) at least for <= PAGE_ALLOC_COSTLY_ORDER + 1
 
- mm/huge_memory.c |   15 ++++++++++-----
- mm/migrate.c     |   18 +++++++++---------
- 2 files changed, 19 insertions(+), 14 deletions(-)
+Thoughts?
 
---- a/mm/huge_memory.c~mm-fix-deferred-split-queue-races-during-migration
-+++ a/mm/huge_memory.c
-@@ -4542,7 +4542,7 @@ retry:
- 				goto next;
- 		}
- 		if (!folio_trylock(folio))
--			goto next;
-+			goto requeue;
- 		if (!split_folio(folio)) {
- 			did_split = true;
- 			if (underused)
-@@ -4551,13 +4551,18 @@ retry:
- 		}
- 		folio_unlock(folio);
- next:
-+		/*
-+		 * If thp_underused() returns false, or if split_folio()
-+		 * succeeds, or if split_folio() fails in the case it was
-+		 * underused, then consider it used and don't add it back to
-+		 * split_queue.
-+		 */
- 		if (did_split || !folio_test_partially_mapped(folio))
- 			continue;
-+requeue:
- 		/*
--		 * Only add back to the queue if folio is partially mapped.
--		 * If thp_underused returns false, or if split_folio fails
--		 * in the case it was underused, then consider it used and
--		 * don't add it back to split_queue.
-+		 * Add back partially mapped folios, or underused folios that
-+		 * we could not lock this round.
- 		 */
- 		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
- 		if (list_empty(&folio->_deferred_list)) {
---- a/mm/migrate.c~mm-fix-deferred-split-queue-races-during-migration
-+++ a/mm/migrate.c
-@@ -1384,6 +1384,15 @@ static int migrate_folio_move(free_folio
- 		goto out;
- 
- 	/*
-+	 * Requeue the destination folio on the deferred split queue if
-+	 * the source was on the queue.  The source is unqueued in
-+	 * __folio_migrate_mapping(), so we recorded the state from
-+	 * before move_to_new_folio().
-+	 */
-+	if (src_deferred_split)
-+		deferred_split_folio(dst, src_partially_mapped);
-+
-+	/*
- 	 * When successful, push dst to LRU immediately: so that if it
- 	 * turns out to be an mlocked page, remove_migration_ptes() will
- 	 * automatically build up the correct dst->mlock_count for it.
-@@ -1399,15 +1408,6 @@ static int migrate_folio_move(free_folio
- 	if (old_page_state & PAGE_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
- 
--	/*
--	 * Requeue the destination folio on the deferred split queue if
--	 * the source was on the queue.  The source is unqueued in
--	 * __folio_migrate_mapping(), so we recorded the state from
--	 * before move_to_new_folio().
--	 */
--	if (src_deferred_split)
--		deferred_split_folio(dst, src_partially_mapped);
--
- out_unlock_both:
- 	folio_unlock(dst);
- 	folio_set_owner_migrate_reason(dst, reason);
-_
-
-Patches currently in -mm which might be from lance.yang@linux.dev are
-
-
+-ritesh
 
