@@ -1,508 +1,227 @@
-Return-Path: <stable+bounces-233276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCJEMlXS0GlBAwcAu9opvQ
-	(envelope-from <stable+bounces-233276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 10:56:53 +0200
+	id mE+wK7Ld0GkPBgcAu9opvQ
+	(envelope-from <stable+bounces-233277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 11:45:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5163C39A79D
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 10:56:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583AF39A93C
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 11:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 848E930065E8
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 08:56:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BDF530180BA
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 09:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385B0356A38;
-	Sat,  4 Apr 2026 08:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C13E3A8748;
+	Sat,  4 Apr 2026 09:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="QzagD4BS"
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="fJq44Y5f"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-42ad.mail.infomaniak.ch (smtp-42ad.mail.infomaniak.ch [84.16.66.173])
+Received: from MA0PR01CU012.outbound.protection.outlook.com (mail-southindiaazolkn19011025.outbound.protection.outlook.com [52.103.67.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97383A5444
-	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 08:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775293008; cv=none; b=SVA7yKcwgnriMTFgDJZo+AyuVZ1uD0ULK+kutS9tQZgJdib9sIQaTid4dtHVwNBGE8q6crXzxDkN91wLE7PNWiWB9kEAwWpSfdVn2dtRwOESTGA4F207P240xUN6gDITRggWXLenpqDUy4bwV/oVKuH/dt0GHzlskk7UnxqWTpE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775293008; c=relaxed/simple;
-	bh=te9taUu33WNDkL8yJbwE7rHh+TgdW2Vpw2+f2tyLhtw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tpFWWExFtWGT4fb5gXWLI1YgwB0KiwwU1Cyg6k+H8F9ApETW5f8ztEp0x5EQKFqZaa51wbCjj+AhQujOIdgZzIGYrjO/Rn9Q6u6WNiHQdgO+usrXn5r6tptlDj/lDtpMupmmZf+vyixFb8Bv1ahX3pF1g8dAEal30LwmSwL0u7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=QzagD4BS; arc=none smtp.client-ip=84.16.66.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fnq6V35k7zKwJ;
-	Sat,  4 Apr 2026 10:50:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1775292610;
-	bh=A+Xb3VXjs/ZCWBcnUudRLtw/qRMjOhNeEIpC/6IdfdI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzagD4BS95SMm9taRIAOvOAwmaGbVqyJ54fch1ogIvLAT+idwULi1dHDLxvTU5J9S
-	 hpPmnrQWB8OyD10NZ7bwO42ysz0RbmSwlV8SwnJ8oliUk48PJAFsGzlnMecfIIPHGo
-	 mGOkxv9a9ZNayRL6RWePnwE+ifBlfnBk3i/FECYw=
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fnq6V05mjzLjm;
-	Sat,  4 Apr 2026 10:50:10 +0200 (CEST)
-From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-To: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
-Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	linux-security-module@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v1 2/2] landlock: Allow TSYNC with LOG_SUBDOMAINS_OFF and fd=-1
-Date: Sat,  4 Apr 2026 10:49:58 +0200
-Message-ID: <20260404085001.1604405-2-mic@digikod.net>
-In-Reply-To: <20260404085001.1604405-1-mic@digikod.net>
-References: <20260404085001.1604405-1-mic@digikod.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5951C3A7F48;
+	Sat,  4 Apr 2026 09:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.67.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775295915; cv=fail; b=OxM5jWwKeLZIolo4bNNl1i0yCQjiDJ0vKB4gO7CSpf6o1md04c3vO5923zMUtbaHfbeG/ykQgOqsY4E7xQvExqZxoF7+vCffz6QKZryzyXt5ecH5v2O6nTGY+CGhnPSiWOSjqSneOLdxDIAdZ95Tr/x2Y5XwgDPRvHD/9JdAFlo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775295915; c=relaxed/simple;
+	bh=ETyRZexaccSo1y+lj8UN+EyYdey064NQXdVLI95w0tA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kYdl7tKMxIggCLBnsykdZBqqGUXgjGY9ztDtWBSNIW1Eg0wS9R0gUbi03itn966SRMprrVJPiVwLV9j6tcWJFKERoUguUyMc3iaIPSpTUzRKaE25PcOhnncWv8LH5kCu63M4NmfMMi7k6EoM+fmeAYoIYFwnxlHDl0DnCk5quBo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=fJq44Y5f; arc=fail smtp.client-ip=52.103.67.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FI4umOQEcmEFU5fwr7lHwGiv6l2ge0YM1ZsnCLj4FeW6vy3vGEObs7bvFksZ/mMwCFfR6fAo+fc6S3q2fiaUvuJi4uxdi7vorwXLBLzVcEo8qGwu23LzSwwUx7inoqSMUEKNFb8fyp9FR5hUs1joYWtZYtd+FNTPeWX4tJWI/1nM5qW8QFLurMtOEJRIXEnli4Fj9iCyEtEqZvgU7/zplBbQ/ioY0W7dnFjY3hfOHX08h+DnVaLE4k2XPVGRhuT0h3zYl4sBhnNugZ+rGHaB96dYd2XdKRh63pQMriOtFOt2+28jvMc7nd5YDg8WnneWvyKMC1uE4W649h2WhBFrBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5w5QYwHIZLxTST7EjuflNQlu9HEiffUx9lGy4RKW4Vc=;
+ b=pZgx3eYXmUNmZsF4Dy72QZtS3tx1y0t5cGbCgX/3v4VYpSzD9XZPzRTsyco5vgRnUwCAqmWS6QlofUr9DgdD3gEBqvFWtoFdEudGf4PQAGruAtd8+A42G+KT8dHuWA5Ysu3VRXJq3WE88CtkIYdhzxV7LZCf7ECO3prJ04gNt8HJ0Tf89rphebOnw1ZvIR2AGmtOQ6MgomRBfojT/d3oV9QDrIt7/i3Q02Jq888zKibywXbyATCalemdSXsw3vARC9x9ky92IRj1kz1tTnUa6BGo5NN/XpfNubYDNaQh8ARqKfYtqgUsailzCqr+Qd0EP2E06IgQ6crBFiKySdf2Pg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5w5QYwHIZLxTST7EjuflNQlu9HEiffUx9lGy4RKW4Vc=;
+ b=fJq44Y5frWRzb2brDJwCVUJ6ib+sa33vlsOpdyWSd9jH6yoXSLnAjwNYD/Tdichg8R8EqziuNrqvbyxFhUiWsU1UVMoNGvwxiEyjxFsJzog1jpovYjVPBHKVcKcvT7idJQuVSsQffBS/xTmmlf/2PLfjr9TaA5M/pVq4Vo+Kkq+BCGGb7DqoZ8+AA15RvA15ML0JergGornQ0yzBIBsiHMWdvjxQ/YC3WqJSXRjdUK9s/Ywi0wMdpnYWWrjJXfjJJgZTVJQQt1xy7pIdo/UEkjl+eIZS1zdE1tKFqzb/ezGJCth9zfwM7axU1Q66ZxabWphxiHlS2oRTs832xfdILQ==
+Received: from MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:19c::18) by PN3PR01MB7000.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:ab::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Sat, 4 Apr
+ 2026 09:45:10 +0000
+Received: from MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::1fed:9b0b:69b:9295]) by MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::1fed:9b0b:69b:9295%6]) with mapi id 15.20.9769.018; Sat, 4 Apr 2026
+ 09:45:09 +0000
+From: Aditya Garg <gargaditya08@live.com>
+To: Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Cc: linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Andr=C3=A9=20Eikmeyer?= <andre.eikmeyer@gmail.com>
+Subject: [PATCH] HID: apple: ensure the keyboard backlight is off if suspending
+Date: Sat,  4 Apr 2026 15:14:34 +0530
+Message-ID:
+ <MAUPR01MB115467C51E492BD620ED390B6B85FA@MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.53.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN4PR01CA0057.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:274::16) To MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:19c::18)
+X-Microsoft-Original-Message-ID: <20260404094442.6040-1-gargaditya08@live.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-X-Spamd-Result: default: False [0.01 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MIXED_CHARSET(0.67)[subject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MAUPR01MB11546:EE_|PN3PR01MB7000:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44f12d1a-993e-468a-7dd5-08de922edbc8
+X-MS-Exchange-SLBlob-MailProps:
+	WaIXnCbdHrPy8Gg0T1tV+ubdyTLMpos/xYcxR7TY+ceHg3Nhq89ATvKlWbc7Is4EQmpoGttsMu97EeMHRvEygKxOjAy1ePkt21NogoRTmY5b6pRRXmhs0HckjcpJ5Ea9LKHZuN4Jui857nPv4yqG7SJuByWSF0anDy3Y4YX7zE8s+z189y9oYnjcTdAPFiOFVPayTyyh6kP2wNRP3dkRa2m4GyhLBjqUhEunXevrRRKXU/NmuV3JFD69edII8LtN/bxcmyt37Se3Cck3LZdLQE9e55bTrB74K/4vVJLMBHBq5w2cZkS+nwC5pLDjrG/FbPoYTDyN1Bkm7OxwXEco0udIJSONPufzEN/bTzVtPyenUCjUA5HLkrlM9Z8do5XeWHx1PSs4zJCR5GmwPoOCwjySx3oab4fNbaJTL7WoBDlYx0VzcqnJXZFuHKcvAdBNUIpDGFMvK4knhFCGfA+9lVCT/l9MllygUxHzXli8PzWouQMAvc06rYkQMGIEY8QGoIhfO3yMubKlyVM9l61H5ehGH/k2AbdwYEffO+3jyRM0rpPadh51V3popojRzaBeRP1KPcv+PvqGzdgcwXeFyFCCxAUyTURar7/GM52dvhI+71GJhv6EWyir1Pv0wwPMm0jdOTbjtC/yWzT1f+QstPUBPD841p2+RU8Xyu9LqWaBK4x+VCeyabsAy4KZRCQ54RovBsGeb4ZSV1A+atO0Fn8gx7jFbN8QwCLno/D0k/tZywyeZLJf5OJhIZHavegkolxEW6MyRLQ=
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5072599009|5062599005|19110799012|25031999004|6090799003|23021999003|8060799015|461199028|15080799012|40105399003|52005399003|440099028|3412199025|26121999003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?S3dRQks1TUhOcDNFS0QyeHBXVTFwVFIzWTVhRS9MODNGbHJCVm9ZQXJUSDM4?=
+ =?utf-8?B?NGVuM1hUNkk1a2s4bVFiYW1SdVZ3WnB6YnZ5YTMvZ2dFU1JocldyKzAxZ1lt?=
+ =?utf-8?B?UWxlV005N1dZT0Fpc25SbWd4T0tQclNsSU1yRE5hdlJpZEtBYVdZQVhwQTJ0?=
+ =?utf-8?B?SXorT3drOHVEcklzYmpGODROQlI2bVI3RlFVc0IwZlgvWVpZQU1EZWMwM3gw?=
+ =?utf-8?B?VnJKL0NSOFJsUVI3eHhFUGs0b0t6OU9yTUZlVnNmUkhtbkwyVjdPZ0xkWWVj?=
+ =?utf-8?B?a1Z5dWdic0VSYlcxdncyWHYyK29ucWxadllRZWVNalByeS9SbUJhakhPa0F6?=
+ =?utf-8?B?M1plZ1lYY2tuS3czc2RBZkNNQVlGRDhUV0dtQkhRVUhFY0FUZVZtVFZUUkpj?=
+ =?utf-8?B?ZHVJQ2FtbE8weS9ZcWpQZnl5R1dIM3VhcEZqa2h0T1EvbzlmMkRNVy9oNDdU?=
+ =?utf-8?B?MVFWaTFxSjZORUR4Nm4reEVOTWJITy9PcS92Z1V1ZTEzNXBJaUtNUmJzUWQx?=
+ =?utf-8?B?OFRyZUtISE4wS0ovWUpBNHc4dUg1Wkphc0F2SzBMd1hhaU83YURMQTdzdXYv?=
+ =?utf-8?B?R3RFRTNuQVdGd3B4b3VQeS9SNFIvTkRDZzVXbjh1cUZvYXk5RHVtWWc2UXNV?=
+ =?utf-8?B?YzVFNHA3azZsZGY3N3pxQ3hnbUZoaXFSK0RoRDFsQzJvblZQV2hYUkF2UWRo?=
+ =?utf-8?B?cGg2UjNoYjUzMzZmRkRTdmp3Y2MxMEFXK05uZzgwSjNMNTgyb2gzb2J1UEdx?=
+ =?utf-8?B?ZWUwYXN6YWZzYTVtUERtbHpUc2FQWGlUbWlVcm9MZ2IxNFFuNXFIRUM4T2NR?=
+ =?utf-8?B?VWQ0MU56ZWlSYmtYcGhSWUFYZENaWC9CSWZ5K3lkYkdWMlVjekZJL05MUVYx?=
+ =?utf-8?B?bTJYV3BpdWprSHRJaER1VlNhQXE1d3grL1kxMjBsSVQyODNrLzlxb2FBK3p5?=
+ =?utf-8?B?djhGRk5DZmpxR1pmSDd0OVFpZGtnYi8yQVVLYXNEcHpaZUlJb0dmeWVPb0hS?=
+ =?utf-8?B?S1EyQnJGdWdhVDNQZ1hrN0VsajZza0Q5eDFzR0FodHVpSVFzMEkzOWVmaFJR?=
+ =?utf-8?B?OHNPMlJaM0Q5TWVaV0toK0xCa0ZoeW9tQmhJOVRYc1N4R3ZmVWJpVURLS2xi?=
+ =?utf-8?B?c3Y2ZEZOU3hmc1FQUWl2WjdwelhGeHphUmdHcGdkRGhUdzc3bGpNc25naEhk?=
+ =?utf-8?B?azNIaCtiTDBUenA3bmxRUnhDTDFlVE1HalBtSU5SYmVHRFlQSkFOaVZ1NVRI?=
+ =?utf-8?B?MTJGYWZxOE5XSEM5SldiWnBKR3RDV3dxTXRIN1RTUERpdWlOaVRMdVlXTlFn?=
+ =?utf-8?B?V3VoUEQ2R2E5cmxwckhGK3VXbk1KQ0g1RTlEV2FFajl1dTVPTWlFamlQQ0RM?=
+ =?utf-8?B?R2Z3QUxxY3VBa3c9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V05oZUV5NVpycXhqZHh2aGlXZ09uSTJpSUt3RnZRZllqZ2JleGxkN0JDdFZs?=
+ =?utf-8?B?M3FZZVdNOGtCcC8wRWk0L1lpeEpIRENFUUpxQXUxZGNmSkthQkhFWjh1U0dP?=
+ =?utf-8?B?dHl1ay9yMWdPK1ptY21Fc1FNS1dQVDVnSnA3bWFmMUFKbytKWVc2Q2JtWm51?=
+ =?utf-8?B?YWhpcmlhZG1EczNmbzJnUkR5YnFpZnZEalNkQ2ExczFkTCtVMUxtYkJZRHhj?=
+ =?utf-8?B?RGhwTjMyMXVNa2NteEhqNkpRY2R2T3hjY0p4TXBCbk9KL1BFMEE1QzZvb2pG?=
+ =?utf-8?B?WDRrdTZjUjVJWG5CdjRYV1FLSjZEdm01L3U2Z2JEWUo1ZVY1blBxYXhTTHcz?=
+ =?utf-8?B?WUI2ZS9uWjgzN3FIY0piRThnZ3lTcEZ2cm5DL2VMMnB6My9XZjdrOXRTMnJk?=
+ =?utf-8?B?VnhTR0FmWjZ1NEdieUxaUlU1ZVI3UVU2dTQ0SVlOWmFxK2NHZG1UOHp4ZHNw?=
+ =?utf-8?B?MXZmM0FaNzMxcVE1c2JxN1haWHozZXNZYWhnaXJjb2VqaGtvczRNdlNHb1ZV?=
+ =?utf-8?B?T2tiNXlJcTVrTDVWMEVFZElzei9iWnBGRHRIUzhaVGtRRFBJdlYrdXNrTjBo?=
+ =?utf-8?B?NUFJT1BaZmFoRnJMU0VEZnpJS3VXbGwzaG1wY0tXVE9NZGtwWFB4MnJOTDdq?=
+ =?utf-8?B?MFFlaUZOUkpxV3dyVlZYdkoydVpRdHlwQnk1OWp3U2VaRm0zWEJ0SUQyWXdW?=
+ =?utf-8?B?aU4vVGowenN2dWwwazdSK0lEeHhoRDZVN1hxRDdyeitwb2QyZ3h5YmY1NS9H?=
+ =?utf-8?B?UEswak50SndPN25IZ0NidUhCUlJyZG5DK1MwWm0weUZ4eWF2MWpZNFRiTXRC?=
+ =?utf-8?B?NWI4RFY0ZVQvUTU0MlBadXpoNEpIajY4ZjNOaU9pTlh4TmVVc3hlc0lHYjNR?=
+ =?utf-8?B?aktLUWVLVTlwS0tlZEdLRDY2MFJybE0xKzBTSEpJUlRUVzVyNUs4VDlrSXFh?=
+ =?utf-8?B?RHhNNThUQld5TzVFRnNTSWVEc0p5am82QTAwM1VpKytzZHE5VGYvK0J4OVc3?=
+ =?utf-8?B?T2hZSnBKdDBrUUJDaThLM01odmpoNnRLM1Zzai9PREF4aWhsMWJQTEpQZHJx?=
+ =?utf-8?B?alFrS0pmQlV3Nk1vcnlCUlF1MkpBeGZ1M0NpMDE4QllPOFpTMmdxZVBaditj?=
+ =?utf-8?B?dC9GZ0swZHp0UXpzb24wWW5Vc2hBYU9YRmU0cnVCTEs4U3NMbzVPb3o0cXZx?=
+ =?utf-8?B?c3VUZndRQVZrbCtQUW1wUFpydTBPU2RKZVRQQ250Z1lqWkgwMGlGUndNSi9O?=
+ =?utf-8?B?eWZ3Nk9BWmcvQlI0dzZ4WHJTUC9SSS9uU1krbE1yelNRMlRGdWNkZDREWGh3?=
+ =?utf-8?B?ZG1HNk5QVkZXSEJma1FpbnNqdWFJZGU2RVdTUzYwNGl3Q2JDUHljenVvYzZH?=
+ =?utf-8?B?MGM5YzZoQW9yQVNlcjh0SVJvMUVyWTl0eTIwalhjK2w2cGRTbHZkbEx5N3Rt?=
+ =?utf-8?B?c1V5ZThCSzVTYUJOVnk5RW1JSjhyeGkyZlRPR3UzMW1YdWhQR2srYkg2RGtR?=
+ =?utf-8?B?bHhmUlNzUHlKV2c5U1A3SldqMHQ2VmYvMDlnSWNHVW82dG9Ld3BSdE1hR1pm?=
+ =?utf-8?B?Zjk1QlQwQ1BXMjE4SWg5NFpIVlhuL3ExQ3pwVlVFUHZ4L3NPQWpIS2ZPVzNH?=
+ =?utf-8?B?VVdISFJRTVNoaWVUN3l1MWFGak9TK2lBQjJnRk5oNEp6VjR5N1Yrb05KNGto?=
+ =?utf-8?B?bVNGOU9yRS9OaFJoVndjdkc5VHMxbG03cnF3bldpOXFrVzFJclIxQm1wTXd0?=
+ =?utf-8?B?b0s3b0NhaGZNZnNwNTdwZktrOEtrdjQ3YUk4L0VhT3FCSXlSVjNvdmVGc09u?=
+ =?utf-8?B?aUJLR1JIN2llWnp3QXN6ZlhxeVRvQzBEQ1V2U2VRMWVuWU8yckNCUllwM3FG?=
+ =?utf-8?B?NkxsNXlmK1BuUTN3aG4wOFk3RzZFUmRzUzVWUTI0RGJtL3FKL0dZWXJiRmUr?=
+ =?utf-8?Q?L7m1aYjAE8xnQoeRYHWL4ioaMJfSqX9s?=
+X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-63b91.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44f12d1a-993e-468a-7dd5-08de922edbc8
+X-MS-Exchange-CrossTenant-AuthSource: MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2026 09:45:09.2317
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN3PR01MB7000
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[live.com,none];
+	R_DKIM_ALLOW(-0.20)[live.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233276-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[digikod.net];
+	TAGGED_FROM(0.00)[bounces-233277-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[digikod.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[digikod.net:dkim,digikod.net:email,digikod.net:mid]
-X-Rspamd-Queue-Id: 5163C39A79D
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[live.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[live.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gargaditya08@live.com,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM:mid,live.com:dkim,live.com:email]
+X-Rspamd-Queue-Id: 583AF39A93C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-LANDLOCK_RESTRICT_SELF_TSYNC does not allow
-LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF with ruleset_fd=-1, preventing
-a multithreaded process from atomically propagating subdomain log muting
-to all threads without creating a domain layer.  Relax the fd=-1
-condition to accept TSYNC alongside LOG_SUBDOMAINS_OFF, and update the
-documentation accordingly.
+Some users reported that upon suspending their keyboard backlight
+remained on. Fix this by adding the missing LED_CORE_SUSPENDRESUME flag.
 
-Add flag validation tests for all TSYNC combinations with ruleset_fd=-1,
-and audit tests verifying both transition directions: muting via TSYNC
-(logged to not logged) and override via TSYNC (not logged to logged).
-
-Cc: Günther Noack <gnoack@google.com>
 Cc: stable@vger.kernel.org
-Fixes: 42fc7e6543f6 ("landlock: Multithreading support for landlock_restrict_self()")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Fixes: 394ba612f941 ("HID: apple: Add support for magic keyboard backlight on T2 Macs")
+Fixes: 9018eacbe623 ("HID: apple: Add support for keyboard backlight on certain T2 Macs.")
+Reported-by: André Eikmeyer <andre.eikmeyer@gmail.com>
+Tested-by: André Eikmeyer <andre.eikmeyer@gmail.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
 ---
- include/uapi/linux/landlock.h                 |   4 +-
- security/landlock/syscalls.c                  |  14 +-
- tools/testing/selftests/landlock/audit_test.c | 233 ++++++++++++++++++
- tools/testing/selftests/landlock/tsync_test.c |  74 ++++++
- 4 files changed, 319 insertions(+), 6 deletions(-)
+ drivers/hid/hid-apple.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/uapi/linux/landlock.h b/include/uapi/linux/landlock.h
-index f88fa1f68b77..d37603efc273 100644
---- a/include/uapi/linux/landlock.h
-+++ b/include/uapi/linux/landlock.h
-@@ -116,7 +116,9 @@ struct landlock_ruleset_attr {
-  *     ``LANDLOCK_RESTRICT_SELF_LOG_SAME_EXEC_OFF``, this flag only affects
-  *     future nested domains, not the one being created. It can also be used
-  *     with a @ruleset_fd value of -1 to mute subdomain logs without creating a
-- *     domain.
-+ *     domain.  When combined with %LANDLOCK_RESTRICT_SELF_TSYNC and a
-+ *     @ruleset_fd value of -1, this configuration is propagated to all threads
-+ *     of the current process.
-  *
-  * The following flag supports policy enforcement in multithreaded processes:
-  *
-diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
-index 0d66a68677b7..a0bb664e0d31 100644
---- a/security/landlock/syscalls.c
-+++ b/security/landlock/syscalls.c
-@@ -512,10 +512,13 @@ SYSCALL_DEFINE2(landlock_restrict_self, const int, ruleset_fd, const __u32,
+diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
+index fc5897a6b..2eb45fac8 100644
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -858,6 +858,7 @@ static int apple_backlight_init(struct hid_device *hdev)
+ 	asc->backlight->cdev.name = "apple::kbd_backlight";
+ 	asc->backlight->cdev.max_brightness = rep->backlight_on_max;
+ 	asc->backlight->cdev.brightness_set_blocking = apple_backlight_led_set;
++	asc->backlight->cdev.flags = LED_CORE_SUSPENDRESUME;
  
- 	/*
- 	 * It is allowed to set LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF with
--	 * -1 as ruleset_fd, but no other flag must be set.
-+	 * -1 as ruleset_fd, optionally combined with
-+	 * LANDLOCK_RESTRICT_SELF_TSYNC to propagate this configuration to all
-+	 * threads.  No other flag must be set.
- 	 */
- 	if (!(ruleset_fd == -1 &&
--	      flags == LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF)) {
-+	      (flags & ~LANDLOCK_RESTRICT_SELF_TSYNC) ==
-+		      LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF)) {
- 		/* Gets and checks the ruleset. */
- 		ruleset = get_ruleset_from_fd(ruleset_fd, FMODE_CAN_READ);
- 		if (IS_ERR(ruleset))
-@@ -537,9 +540,10 @@ SYSCALL_DEFINE2(landlock_restrict_self, const int, ruleset_fd, const __u32,
+ 	ret = apple_backlight_set(hdev, 0, 0);
+ 	if (ret < 0) {
+@@ -926,6 +927,7 @@ static int apple_magic_backlight_init(struct hid_device *hdev)
+ 	backlight->cdev.name = ":white:" LED_FUNCTION_KBD_BACKLIGHT;
+ 	backlight->cdev.max_brightness = backlight->brightness->field[0]->logical_maximum;
+ 	backlight->cdev.brightness_set_blocking = apple_magic_backlight_led_set;
++	backlight->cdev.flags = LED_CORE_SUSPENDRESUME;
  
- 	/*
- 	 * The only case when a ruleset may not be set is if
--	 * LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF is set and ruleset_fd is -1.
--	 * We could optimize this case by not calling commit_creds() if this flag
--	 * was already set, but it is not worth the complexity.
-+	 * LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF is set (optionally with
-+	 * LANDLOCK_RESTRICT_SELF_TSYNC) and ruleset_fd is -1.  We could
-+	 * optimize this case by not calling commit_creds() if this flag was
-+	 * already set, but it is not worth the complexity.
- 	 */
- 	if (ruleset) {
- 		/*
-diff --git a/tools/testing/selftests/landlock/audit_test.c b/tools/testing/selftests/landlock/audit_test.c
-index 20099b8667e7..a193d8a97560 100644
---- a/tools/testing/selftests/landlock/audit_test.c
-+++ b/tools/testing/selftests/landlock/audit_test.c
-@@ -162,6 +162,7 @@ TEST_F(audit, layers)
- struct thread_data {
- 	pid_t parent_pid;
- 	int ruleset_fd, pipe_child, pipe_parent;
-+	bool mute_subdomains;
- };
+ 	apple_magic_backlight_set(backlight, 0, 0);
  
- static void *thread_audit_test(void *arg)
-@@ -367,6 +368,238 @@ TEST_F(audit, log_subdomains_off_fork)
- 	EXPECT_EQ(0, close(ruleset_fd));
- }
- 
-+/*
-+ * Thread function: runs two rounds of (create domain, trigger denial, signal
-+ * back), waiting for the main thread before each round.  When mute_subdomains
-+ * is set, phase 1 also mutes subdomain logs via the fd=-1 path before creating
-+ * the domain.  The ruleset_fd is kept open across both rounds so each
-+ * restrict_self call stacks a new domain layer.
-+ */
-+static void *thread_sandbox_deny_twice(void *arg)
-+{
-+	const struct thread_data *data = (struct thread_data *)arg;
-+	uintptr_t err = 0;
-+	char buffer;
-+
-+	/* Phase 1: optionally mutes, creates a domain, and triggers a denial. */
-+	if (read(data->pipe_parent, &buffer, 1) != 1) {
-+		err = 1;
-+		goto out;
-+	}
-+
-+	if (data->mute_subdomains &&
-+	    landlock_restrict_self(-1,
-+				   LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF)) {
-+		err = 2;
-+		goto out;
-+	}
-+
-+	if (landlock_restrict_self(data->ruleset_fd, 0)) {
-+		err = 3;
-+		goto out;
-+	}
-+
-+	if (kill(data->parent_pid, 0) != -1 || errno != EPERM) {
-+		err = 4;
-+		goto out;
-+	}
-+
-+	if (write(data->pipe_child, ".", 1) != 1) {
-+		err = 5;
-+		goto out;
-+	}
-+
-+	/* Phase 2: stacks another domain and triggers a denial. */
-+	if (read(data->pipe_parent, &buffer, 1) != 1) {
-+		err = 6;
-+		goto out;
-+	}
-+
-+	if (landlock_restrict_self(data->ruleset_fd, 0)) {
-+		err = 7;
-+		goto out;
-+	}
-+
-+	if (kill(data->parent_pid, 0) != -1 || errno != EPERM) {
-+		err = 8;
-+		goto out;
-+	}
-+
-+	if (write(data->pipe_child, ".", 1) != 1) {
-+		err = 9;
-+		goto out;
-+	}
-+
-+out:
-+	close(data->ruleset_fd);
-+	close(data->pipe_child);
-+	close(data->pipe_parent);
-+	return (void *)err;
-+}
-+
-+/*
-+ * Verifies that LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF with
-+ * LANDLOCK_RESTRICT_SELF_TSYNC and ruleset_fd=-1 propagates log_subdomains_off
-+ * to a sibling thread, suppressing audit logging on domains it subsequently
-+ * creates.
-+ *
-+ * Phase 1 (before TSYNC) acts as an inline baseline: the sibling creates a
-+ * domain and triggers a denial that IS logged.
-+ *
-+ * Phase 2 (after TSYNC) verifies suppression: the sibling stacks another domain
-+ * and triggers a denial that is NOT logged.
-+ */
-+TEST_F(audit, log_subdomains_off_tsync)
-+{
-+	const struct landlock_ruleset_attr ruleset_attr = {
-+		.scoped = LANDLOCK_SCOPE_SIGNAL,
-+	};
-+	struct audit_records records;
-+	struct thread_data child_data;
-+	int pipe_child[2], pipe_parent[2];
-+	char buffer;
-+	pthread_t thread;
-+	void *thread_ret;
-+
-+	child_data.parent_pid = getppid();
-+	ASSERT_EQ(0, pipe2(pipe_child, O_CLOEXEC));
-+	child_data.pipe_child = pipe_child[1];
-+	ASSERT_EQ(0, pipe2(pipe_parent, O_CLOEXEC));
-+	child_data.pipe_parent = pipe_parent[0];
-+	child_data.ruleset_fd =
-+		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
-+	ASSERT_LE(0, child_data.ruleset_fd);
-+
-+	ASSERT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
-+
-+	/* Creates the sibling thread. */
-+	ASSERT_EQ(0, pthread_create(&thread, NULL, thread_sandbox_deny_twice,
-+				    &child_data));
-+
-+	/*
-+	 * Phase 1: the sibling creates a domain and triggers a denial before
-+	 * any log muting.  This proves the audit path works.
-+	 */
-+	ASSERT_EQ(1, write(pipe_parent[1], ".", 1));
-+	ASSERT_EQ(1, read(pipe_child[0], &buffer, 1));
-+
-+	/* The denial must be logged. */
-+	EXPECT_EQ(0, matches_log_signal(_metadata, self->audit_fd,
-+					child_data.parent_pid, NULL));
-+
-+	/* Drains any remaining records (e.g. domain allocation). */
-+	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
-+
-+	/*
-+	 * Mutes subdomain logs and propagates to the sibling thread via TSYNC,
-+	 * without creating a domain.
-+	 */
-+	ASSERT_EQ(0, landlock_restrict_self(
-+			     -1, LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF |
-+					 LANDLOCK_RESTRICT_SELF_TSYNC));
-+
-+	/*
-+	 * Phase 2: the sibling stacks another domain and triggers a denial.
-+	 * Because log_subdomains_off was propagated via TSYNC, the new domain
-+	 * has log_status=LANDLOCK_LOG_DISABLED.
-+	 */
-+	ASSERT_EQ(1, write(pipe_parent[1], ".", 1));
-+	ASSERT_EQ(1, read(pipe_child[0], &buffer, 1));
-+
-+	/* No denial record should appear. */
-+	EXPECT_EQ(-EAGAIN, matches_log_signal(_metadata, self->audit_fd,
-+					      child_data.parent_pid, NULL));
-+
-+	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
-+	EXPECT_EQ(0, records.access);
-+
-+	EXPECT_EQ(0, close(pipe_child[0]));
-+	EXPECT_EQ(0, close(pipe_parent[1]));
-+	ASSERT_EQ(0, pthread_join(thread, &thread_ret));
-+	EXPECT_EQ(NULL, thread_ret);
-+}
-+
-+/*
-+ * Verifies that LANDLOCK_RESTRICT_SELF_TSYNC without
-+ * LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF overrides a sibling thread's
-+ * log_subdomains_off, re-enabling audit logging on domains the sibling
-+ * subsequently creates.
-+ *
-+ * Phase 1: the sibling sets log_subdomains_off, creates a muted domain, and
-+ * triggers a denial that is NOT logged.
-+ *
-+ * Phase 2 (after TSYNC without LOG_SUBDOMAINS_OFF): the sibling stacks another
-+ * domain and triggers a denial that IS logged, proving the muting was
-+ * overridden.
-+ */
-+TEST_F(audit, tsync_override_log_subdomains_off)
-+{
-+	const struct landlock_ruleset_attr ruleset_attr = {
-+		.scoped = LANDLOCK_SCOPE_SIGNAL,
-+	};
-+	struct audit_records records;
-+	struct thread_data child_data;
-+	int pipe_child[2], pipe_parent[2];
-+	char buffer;
-+	pthread_t thread;
-+	void *thread_ret;
-+
-+	child_data.parent_pid = getppid();
-+	ASSERT_EQ(0, pipe2(pipe_child, O_CLOEXEC));
-+	child_data.pipe_child = pipe_child[1];
-+	ASSERT_EQ(0, pipe2(pipe_parent, O_CLOEXEC));
-+	child_data.pipe_parent = pipe_parent[0];
-+	child_data.ruleset_fd =
-+		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
-+	ASSERT_LE(0, child_data.ruleset_fd);
-+
-+	ASSERT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
-+
-+	child_data.mute_subdomains = true;
-+
-+	/* Creates the sibling thread. */
-+	ASSERT_EQ(0, pthread_create(&thread, NULL, thread_sandbox_deny_twice,
-+				    &child_data));
-+
-+	/*
-+	 * Phase 1: the sibling mutes subdomain logs, creates a domain, and
-+	 * triggers a denial.  The denial must not be logged.
-+	 */
-+	ASSERT_EQ(1, write(pipe_parent[1], ".", 1));
-+	ASSERT_EQ(1, read(pipe_child[0], &buffer, 1));
-+
-+	EXPECT_EQ(-EAGAIN, matches_log_signal(_metadata, self->audit_fd,
-+					      child_data.parent_pid, NULL));
-+
-+	/* Drains any remaining records. */
-+	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
-+	EXPECT_EQ(0, records.access);
-+
-+	/*
-+	 * Overrides the sibling's log_subdomains_off by calling TSYNC without
-+	 * LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF.
-+	 */
-+	ASSERT_EQ(0, landlock_restrict_self(child_data.ruleset_fd,
-+					    LANDLOCK_RESTRICT_SELF_TSYNC));
-+
-+	/*
-+	 * Phase 2: the sibling stacks another domain and triggers a denial.
-+	 * Because TSYNC replaced its log_subdomains_off with 0, the new domain
-+	 * has log_status=LANDLOCK_LOG_PENDING.
-+	 */
-+	ASSERT_EQ(1, write(pipe_parent[1], ".", 1));
-+	ASSERT_EQ(1, read(pipe_child[0], &buffer, 1));
-+
-+	/* The denial must be logged. */
-+	EXPECT_EQ(0, matches_log_signal(_metadata, self->audit_fd,
-+					child_data.parent_pid, NULL));
-+
-+	EXPECT_EQ(0, close(pipe_child[0]));
-+	EXPECT_EQ(0, close(pipe_parent[1]));
-+	ASSERT_EQ(0, pthread_join(thread, &thread_ret));
-+	EXPECT_EQ(NULL, thread_ret);
-+}
-+
- FIXTURE(audit_flags)
- {
- 	struct audit_filter audit_filter;
-diff --git a/tools/testing/selftests/landlock/tsync_test.c b/tools/testing/selftests/landlock/tsync_test.c
-index 2b9ad4f154f4..abc290271a1a 100644
---- a/tools/testing/selftests/landlock/tsync_test.c
-+++ b/tools/testing/selftests/landlock/tsync_test.c
-@@ -247,4 +247,78 @@ TEST(tsync_interrupt)
- 	EXPECT_EQ(0, close(ruleset_fd));
- }
- 
-+/* clang-format off */
-+FIXTURE(tsync_without_ruleset) {};
-+/* clang-format on */
-+
-+FIXTURE_VARIANT(tsync_without_ruleset)
-+{
-+	const __u32 flags;
-+	const int expected_errno;
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(tsync_without_ruleset, tsync_only) {
-+	/* clang-format on */
-+	.flags = LANDLOCK_RESTRICT_SELF_TSYNC,
-+	.expected_errno = EBADF,
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(tsync_without_ruleset, subdomains_off_same_exec_off) {
-+	/* clang-format on */
-+	.flags = LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF |
-+		 LANDLOCK_RESTRICT_SELF_LOG_SAME_EXEC_OFF |
-+		 LANDLOCK_RESTRICT_SELF_TSYNC,
-+	.expected_errno = EBADF,
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(tsync_without_ruleset, subdomains_off_new_exec_on) {
-+	/* clang-format on */
-+	.flags = LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF |
-+		 LANDLOCK_RESTRICT_SELF_LOG_NEW_EXEC_ON |
-+		 LANDLOCK_RESTRICT_SELF_TSYNC,
-+	.expected_errno = EBADF,
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(tsync_without_ruleset, all_flags) {
-+	/* clang-format on */
-+	.flags = LANDLOCK_RESTRICT_SELF_LOG_SAME_EXEC_OFF |
-+		 LANDLOCK_RESTRICT_SELF_LOG_NEW_EXEC_ON |
-+		 LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF |
-+		 LANDLOCK_RESTRICT_SELF_TSYNC,
-+	.expected_errno = EBADF,
-+};
-+
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(tsync_without_ruleset, subdomains_off) {
-+	/* clang-format on */
-+	.flags = LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF |
-+		 LANDLOCK_RESTRICT_SELF_TSYNC,
-+	.expected_errno = 0,
-+};
-+
-+FIXTURE_SETUP(tsync_without_ruleset)
-+{
-+}
-+
-+FIXTURE_TEARDOWN(tsync_without_ruleset)
-+{
-+}
-+
-+TEST_F(tsync_without_ruleset, check)
-+{
-+	int ret;
-+
-+	ret = landlock_restrict_self(-1, variant->flags);
-+	if (variant->expected_errno) {
-+		EXPECT_EQ(-1, ret);
-+		EXPECT_EQ(variant->expected_errno, errno);
-+	} else {
-+		EXPECT_EQ(0, ret);
-+	}
-+}
-+
- TEST_HARNESS_MAIN
 -- 
-2.53.0
+2.52.0
 
 
