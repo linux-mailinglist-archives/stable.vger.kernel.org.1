@@ -1,90 +1,94 @@
-Return-Path: <stable+bounces-233272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id n2/aJgvJ0GmfAAcAu9opvQ
-	(envelope-from <stable+bounces-233272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 10:17:15 +0200
+	id gCxKCVbJ0GmfAAcAu9opvQ
+	(envelope-from <stable+bounces-233273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 10:18:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B764F39A5E0
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 10:17:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D07839A60E
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 10:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A419A300EF4A
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 08:13:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 560B3302D10C
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 08:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193EF3A4F31;
-	Sat,  4 Apr 2026 08:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4B63A4525;
+	Sat,  4 Apr 2026 08:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ATSLLOgr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="evtK5q6d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAAD3A4537
-	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 08:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008F82DB7BF
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 08:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775290401; cv=none; b=MG5kR8adPDiTkFXWcXh2CF/LApcMupYZKXGpw8nIHQA4KYIE80FRSr8mSemdwvCftBP+UGZ7qEsauLK1aQBjZILBxPygwKSoPj47ebT0NFSM09BLX8pQQ2pDgoVnDTt53AOncqilet6hz1SYFUagR+lmKn+rAucJTn+g0j5WTEs=
+	t=1775290466; cv=none; b=MSneFBXoyUL+v2C0/2tam2WeQ42dUp8QzfOnQqQBaoZ3Hb/mKPyG3iHdc0nZ8OE9MSrf0JZ/sI/q0ux8ts5rl7xIiiDoUwADXpQBzB3Ukgw2u4XRiUHVaALVtKfIhnqWJhkcWDIVXoqAUeGu//x44BxX1/l6Wlv2Gnfyl/qXkA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775290401; c=relaxed/simple;
-	bh=lZcdYyUNO6qKrlc0H/wzPdy7I6FQutqTRMvIhN4J1oo=;
+	s=arc-20240116; t=1775290466; c=relaxed/simple;
+	bh=3I/iYhSSY8eYyI/8nNGRyX9wMATo2c3VveSwY3uI4zA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k/oSeEfon2SvD08cBozb5gK+86nSMjPNKwDc2whh2JFLqebhvlVPHjtifsO7vuQyneyffS2NSRq1JrEL1/XH1NhWC1JwgonpVua2KVHAn0orKAvDjuyom1Vh59gCymMN/x7MY4t8tX6kiZb03VbZgqiFfxcWY8MMSmy0kz8/RrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ATSLLOgr; arc=none smtp.client-ip=209.85.128.41
+	 Content-Type:Content-Disposition:In-Reply-To; b=gXZFPYEFrmoLKy6B/4sJSbxgl03+l4ZSSldC+sImdWB3xRNnLYRkLfibAVUqowSOteQlZaOON2HXpLUL0NtXPsA7nU13SFTm8jy/bwcXyThA1L5C1bzKlsYqOpTWBGtLE1R4E9tTwY45uVZFzHGb/7nN2AwILIOrR+RkhIpT74M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=evtK5q6d; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48374014a77so32150025e9.3
-        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 01:13:20 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48374014a77so32158085e9.3
+        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 01:14:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775290399; x=1775895199; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f1R65QIWg8P00g8Izukhg397E8WDefcCvMk+OI3vPV8=;
-        b=ATSLLOgr6NL2db0TscKqhLWZfw8SSLk16hA3MNUNzFmb/mlJmEkSfLLwxbIx+fcwFm
-         4St0whwHV+IW60K9dfUuiXY655p33317MBK7sfKu1mJcvbMgeXrJ5x3wRUFSuCuMP+G+
-         ZAXHztADzx7JSJO6w7zv78Tnox/T7lVtdD9KGhPtl/o7bIeMn1m5rRBFIyzrshTUZDel
-         lfh3Q2uInD6m8eNrzLBhKmHTVasmM+StepcobPA0wG3S6Xt3uiGd7NVEuwjcJz4BOuqT
-         9h/ltb/MhDaMBBCIvzSDwHiWRSjAZs1wpcGfahTSpOQ10YozimQwSN0fl7cTwkft9w6a
-         C42Q==
+        d=gmail.com; s=20251104; t=1775290463; x=1775895263; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MNbYrGuEYoTVG4MtfibMM0DzA2cXMVoUV7CDQ9g5nUg=;
+        b=evtK5q6dPjMubNgzNtjBb9g+b6A/dKyD4O7QxfDvUZjUtvbbQiJgmgIC+8Nh5bTnUX
+         HfInOJr9+VWM49J3cLtL6kjQ5LH2Zlvfmt4LuVtxVF1sS8/uLS1IJ15k3sPC9Vx4gXLO
+         FWEAbOmWGt4+YIrqjVqDwVlMuezIj1mDJa1OyTQontHEwmM1+Uhtthq1gMok1zgAIUr6
+         SVU/i5hI1reb8mq17P1lXkLJ55RuqfkkVBQcWub4Vn/vhgowxUztiFHhpQc+zGqH2Wa7
+         C7e0LZ3FG8/4gHKsDj9I27IWajjq5TKmJ7bwBqaFDgv8Jx/1hHSNf+v/aTc3PtM7tpXu
+         Ks6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775290399; x=1775895199;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f1R65QIWg8P00g8Izukhg397E8WDefcCvMk+OI3vPV8=;
-        b=S8eWxsPkoKG8Kb6Zl/upOayAK0L4gIJTXZpbJ70c/Kj6LWn3bD1A2wsVRucbnaEOne
-         wjKEA+E5oesknh1DfmB+raPnjMoQoU/uB2LdBPcTSg34P5/JknhXqovSZQtOe4xdaHoM
-         brPNGonAvLYqaQGLj6M5mUDr02j3XT4FTZ2inHeDksoQNuZEugdVEYN2sAOdojE5XEYy
-         YVSodiLcqS7njksuCl/xO94S8bRHL42WYhf8qew5DhxzKWxfEOd6wxgHB2OnZ7d9vMb4
-         /vB570ZHpnMJqOS74+kvIC55vsj5j6dHcU7QYz+Kha8d8bZbr56MthiPJjQFJDknyQRt
-         0TTQ==
-X-Gm-Message-State: AOJu0YzqQfendumiNNGv4wPI5/Wg7Xha3pfVUAYfthZduLZ8mKlZOhax
-	9Fnzfnd20jP3LJ2wvzSrzKF8RQlLFkxP7N4Tfe00vLYXEyKjyyG0nf2yzsgpONXn
-X-Gm-Gg: AeBDietdNVg35cjTSRJahOwPBZcChxE97zBVny5tXBYkSiAUSCcpTu6Q3MCHpGQQMeS
-	WE531b1tJhZwXrer/HVzUlqMrc5wrnIQqE9w++wLf8wcVdOIll1vJxGxaNlhFSpi9xcTOlZNRa2
-	q8Zz8YfoX3lAgcbg8IHGzuwnjCWu1X6k59ynryruMNwOg7hLrdDU7dGro2jqr1Po7NTvwP0KfFk
-	gMVm31GAE5ECvPK/Hou9+V3384/I80v9h3KlCgsZXvJ2wb4zSupSyD5hdXcZnj6s3fd4ex+ftYv
-	nRIafejw0hRQWmYfLn0DAC5vOuX6b82o6+2kv8GbyViduBSdwQ63GsB0gasiCw7TQ5vF7lhGhbY
-	XImu5azk/8yJbwJ+haQqRBZwrMcrCaApPgnpRiK3bVyRKHqPs5pdmovaFDAzil4TBzvYQDZftVl
-	TUvflP2svWG6d3jHKA7ui7xpnZr+DfOmGzzf3YGXgR827bx6g0b68SzpcdiGxr9TzzeAUxg0FrJ
-	Zz2YYAJOjElVfo6BT2ZRzcZRqYjM32bkO6F9yDVvs3kSRWe1MIpTA+jYAsPI7q776IMZ9sMOt20
-	p5dyrmop/55V85XJcIIqvLs3vN+cXDrCdfoJaJArIpY=
-X-Received: by 2002:a05:600c:4593:b0:485:33ad:3c9f with SMTP id 5b1f17b1804b1-488997de1c6mr91937315e9.25.1775290398685;
-        Sat, 04 Apr 2026 01:13:18 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775290463; x=1775895263;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MNbYrGuEYoTVG4MtfibMM0DzA2cXMVoUV7CDQ9g5nUg=;
+        b=n4GTfI6iu/8WKyAJ1OU1EsGf3mO9cfvzqENyPlUnXMn12NS9J3MSVyMZyLbQ8eDlVU
+         NtvvKxMn9ms5rRxx36kjRZZrjUtx/kvWHM9ZdwBuAPurGnr+3WmhYSJ8zd6XrC6oTUJK
+         ntZ5Xh1lmVrhzf61Bj6/HgzkM1UdAzrFrkJs/ncrR3Vf7Z6KvXSnVsmGV5FdIxEvzVFX
+         SBg40qKHF9y4EhztWahNOzbXhP5rGzG7+uq54SCHnohCAhnrbErIcYhFqhtMJC1l1WN7
+         WVUol+0kE7z9iJHb8+/iTQ26bQT9BnN7ETBX5GP8170k090Pa7QmKYjl0b2638glvKxv
+         tM/Q==
+X-Gm-Message-State: AOJu0Yz6S8bfRzSlitSZmFFfqi1Xl4Zd9ZJjh5pPLLOax6t+il5CdtVJ
+	0AVzMi6pcdotGjmJKvG+Ic01q9u8i54B98pllmwwsQvj6w4CEkOtcZTpIYh8OPLJ
+X-Gm-Gg: AeBDiesqlnUhs4mo8xm1bBqqrbiXGVQ5LkB895t7Y7JRN9i2SWG+gZZ+tFWXNXQQiN7
+	YrG1Qib8iUx5b5rnGs0QxlGBALSiWra8TApgP4rUJvnUq3DM62z3DSNcyDETB/AZohEQMdA5e2o
+	t0T3jw28F8PmXhDxEeFuJz3UHPKBoUMn1L/11CskLXalgJx/w1zdQMbYcSM/CxizJ7Buv3Ng9cS
+	YGONyvbEw0MphFJlTCN0jrdyDaFNGc/N/NwGO6bpaI59qFWA6TSFMYWSidpNgLEd96HypfAEQpA
+	XvOdiX09Lcp3mrzz4eOC/zWpjof/6K1qtkDN1xifAIM5ddgeur/zKteianJJp9Rj01iiovO583G
+	eN30NNkSUKbpx4D429Qbj2wiKYRwPlZdl1TX7XlL62vi7jt3Q0gE+Qv5dOBnr++2X4rWMWpDG3m
+	WOuaHPSl6/g2vewcOpWRKo390iIfpNlztoETSn/bty3kBpP3RbAi01AeZl6yW7PmVCOi6n5lzU8
+	cqRyD5h+k7zlfwsSFpGe5gR8Z5Er4WcaoYCQGiy18ASiv3IjDEHnI0SlHVF6H1cBHiFsVFGVVMB
+	rYtrmeHPw5BREDPH20cWpNjS2PwfVWrOLiARb7f/hDs=
+X-Received: by 2002:a05:600c:a104:b0:485:3a27:a960 with SMTP id 5b1f17b1804b1-488995d5ed1mr67030965e9.0.1775290463068;
+        Sat, 04 Apr 2026 01:14:23 -0700 (PDT)
 Received: from mail.gmail.com (2a01cb0889497e00359acd79a267583c.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:359a:cd79:a267:583c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488a3d6944bsm35528045e9.11.2026.04.04.01.13.18
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4d27a8sm23479052f8f.17.2026.04.04.01.14.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 01:13:18 -0700 (PDT)
-Date: Sat, 4 Apr 2026 10:13:16 +0200
+        Sat, 04 Apr 2026 01:14:22 -0700 (PDT)
+Date: Sat, 4 Apr 2026 10:14:20 +0200
 From: Paul Chaignon <paul.chaignon@gmail.com>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Eduard Zingerman <eddyz87@gmail.com>,
 	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH stable 6.12 4/6] bpf: Add third round of bounds deduction
-Message-ID: <c3ad9d44dbf14a110f85902bdc6e119a762e932a.1775289842.git.paul.chaignon@gmail.com>
+	Alexei Starovoitov <ast@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Andrea Righi <arighi@nvidia.com>
+Subject: [PATCH stable 6.12 5/6] bpf: Fix u32/s32 bounds when ranges cross
+ min/max boundary
+Message-ID: <b9a0f1832723f3881833a1c466af998749292d05.1775289842.git.paul.chaignon@gmail.com>
 References: <cover.1775289842.git.paul.chaignon@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -92,127 +96,233 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1775289842.git.paul.chaignon@gmail.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,suse.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-233272-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,suse.com,kernel.org,etsalapatis.com,nvidia.com];
+	TAGGED_FROM(0.00)[bounces-233273-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[paulchaignon@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B764F39A5E0
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 8D07839A60E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[ Upstream commit 5dbb19b16ac498b0b7f3a8a85f9d25d6d8af397d ]
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-Commit d7f008738171 ("bpf: try harder to deduce register bounds from
-different numeric domains") added a second call to __reg_deduce_bounds
-in reg_bounds_sync because a single call wasn't enough to converge to a
-fixed point in terms of register bounds.
+[ Upstream commit fbc7aef517d8765e4c425d2792409bb9bf2e1f13 ]
 
-With patch "bpf: Improve bounds when s64 crosses sign boundary" from
-this series, Eduard noticed that calling __reg_deduce_bounds twice isn't
-enough anymore to converge. The first selftest added in "selftests/bpf:
-Test cross-sign 64bits range refinement" highlights the need for a third
-call to __reg_deduce_bounds. After instruction 7, reg_bounds_sync
-performs the following bounds deduction:
+Same as in __reg64_deduce_bounds(), refine s32/u32 ranges
+in __reg32_deduce_bounds() in the following situations:
 
-  reg_bounds_sync entry:          scalar(smin=-655,smax=0xeffffeee,smin32=-783,smax32=-146)
-  __update_reg_bounds:            scalar(smin=-655,smax=0xeffffeee,smin32=-783,smax32=-146)
-  __reg_deduce_bounds:
-      __reg32_deduce_bounds:      scalar(smin=-655,smax=0xeffffeee,smin32=-783,smax32=-146,umin32=0xfffffcf1,umax32=0xffffff6e)
-      __reg64_deduce_bounds:      scalar(smin=-655,smax=0xeffffeee,smin32=-783,smax32=-146,umin32=0xfffffcf1,umax32=0xffffff6e)
-      __reg_deduce_mixed_bounds:  scalar(smin=-655,smax=0xeffffeee,umin=umin32=0xfffffcf1,umax=0xffffffffffffff6e,smin32=-783,smax32=-146,umax32=0xffffff6e)
-  __reg_deduce_bounds:
-      __reg32_deduce_bounds:      scalar(smin=-655,smax=0xeffffeee,umin=umin32=0xfffffcf1,umax=0xffffffffffffff6e,smin32=-783,smax32=-146,umax32=0xffffff6e)
-      __reg64_deduce_bounds:      scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e)
-      __reg_deduce_mixed_bounds:  scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e)
-  __reg_bound_offset:             scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))
-  __update_reg_bounds:            scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))
+- s32 range crosses U32_MAX/0 boundary, positive part of the s32 range
+  overlaps with u32 range:
 
-In particular, notice how:
-1. In the first call to __reg_deduce_bounds, __reg32_deduce_bounds
-   learns new u32 bounds.
-2. __reg64_deduce_bounds is unable to improve bounds at this point.
-3. __reg_deduce_mixed_bounds derives new u64 bounds from the u32 bounds.
-4. In the second call to __reg_deduce_bounds, __reg64_deduce_bounds
-   improves the smax and umin bounds thanks to patch "bpf: Improve
-   bounds when s64 crosses sign boundary" from this series.
-5. Subsequent functions are unable to improve the ranges further (only
-   tnums). Yet, a better smin32 bound could be learned from the smin
-   bound.
+  0                                                   U32_MAX
+  |  [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]              |
+  |----------------------------|----------------------------|
+  |xxxxx s32 range xxxxxxxxx]                       [xxxxxxx|
+  0                     S32_MAX S32_MIN                    -1
 
-__reg32_deduce_bounds is able to improve smin32 from smin, but for that
-we need a third call to __reg_deduce_bounds.
+- s32 range crosses U32_MAX/0 boundary, negative part of the s32 range
+  overlaps with u32 range:
 
-As discussed in [1], there may be a better way to organize the deduction
-rules to learn the same information with less calls to the same
-functions. Such an optimization requires further analysis and is
-orthogonal to the present patchset.
+  0                                                   U32_MAX
+  |              [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]  |
+  |----------------------------|----------------------------|
+  |xxxxxxxxx]                       [xxxxxxxxxxxx s32 range |
+  0                     S32_MAX S32_MIN                    -1
 
-Link: https://lore.kernel.org/bpf/aIKtSK9LjQXB8FLY@mail.gmail.com/ [1]
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Co-developed-by: Eduard Zingerman <eddyz87@gmail.com>
+- No refinement if ranges overlap in two intervals.
+
+This helps for e.g. consider the following program:
+
+   call %[bpf_get_prandom_u32];
+   w0 &= 0xffffffff;
+   if w0 < 0x3 goto 1f;    // on fall-through u32 range [3..U32_MAX]
+   if w0 s> 0x1 goto 1f;   // on fall-through s32 range [S32_MIN..1]
+   if w0 s< 0x0 goto 1f;   // range can be narrowed to  [S32_MIN..-1]
+   r10 = 0;
+1: ...;
+
+The reg_bounds.c selftest is updated to incorporate identical logic,
+refinement based on non-overflowing range halves:
+
+  ((x ∩ [0, smax]) ∩ (y ∩ [0, smax])) ∪
+  ((x ∩ [smin,-1]) ∩ (y ∩ [smin,-1]))
+
+Reported-by: Andrea Righi <arighi@nvidia.com>
+Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
+Closes: https://lore.kernel.org/bpf/aakqucg4vcujVwif@gpd4/T/
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/79619d3b42e5525e0e174ed534b75879a5ba15de.1753695655.git.paul.chaignon@gmail.com
+Link: https://lore.kernel.org/r/20260306-bpf-32-bit-range-overflow-v3-1-f7f67e060a6b@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
 ---
- kernel/bpf/verifier.c                               | 1 +
- tools/testing/selftests/bpf/progs/verifier_bounds.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c                         | 24 +++++++
+ .../selftests/bpf/prog_tests/reg_bounds.c     | 62 +++++++++++++++++--
+ 2 files changed, 82 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 6448f9eeede0..4ae3032f42e5 100644
+index 4ae3032f42e5..7769a2a47bcb 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -2292,6 +2292,7 @@ static void reg_bounds_sync(struct bpf_reg_state *reg)
- 	/* We might have learned something about the sign bit. */
- 	__reg_deduce_bounds(reg);
- 	__reg_deduce_bounds(reg);
-+	__reg_deduce_bounds(reg);
- 	/* We might have learned some bits from the bounds. */
- 	__reg_bound_offset(reg);
- 	/* Intersecting with the old var_off might have improved our bounds
-diff --git a/tools/testing/selftests/bpf/progs/verifier_bounds.c b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-index 3924b1d1421b..e6297e9dd2ed 100644
---- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-@@ -1223,7 +1223,7 @@ l0_%=:	r0 = 0;						\
- SEC("socket")
- __description("bounds deduction cross sign boundary, negative overlap")
- __success __log_level(2) __flag(BPF_F_TEST_REG_INVARIANTS)
--__msg("7: (1f) r0 -= r6 {{.*}} R0=scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))")
-+__msg("7: (1f) r0 -= r6 {{.*}} R0=scalar(smin=smin32=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,umin32=0xfffffd71,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))")
- __retval(0)
- __naked void bounds_deduct_negative_overlap(void)
+@@ -2046,6 +2046,30 @@ static void __reg32_deduce_bounds(struct bpf_reg_state *reg)
+ 	if ((u32)reg->s32_min_value <= (u32)reg->s32_max_value) {
+ 		reg->u32_min_value = max_t(u32, reg->s32_min_value, reg->u32_min_value);
+ 		reg->u32_max_value = min_t(u32, reg->s32_max_value, reg->u32_max_value);
++	} else {
++		if (reg->u32_max_value < (u32)reg->s32_min_value) {
++			/* See __reg64_deduce_bounds() for detailed explanation.
++			 * Refine ranges in the following situation:
++			 *
++			 * 0                                                   U32_MAX
++			 * |  [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]              |
++			 * |----------------------------|----------------------------|
++			 * |xxxxx s32 range xxxxxxxxx]                       [xxxxxxx|
++			 * 0                     S32_MAX S32_MIN                    -1
++			 */
++			reg->s32_min_value = (s32)reg->u32_min_value;
++			reg->u32_max_value = min_t(u32, reg->u32_max_value, reg->s32_max_value);
++		} else if ((u32)reg->s32_max_value < reg->u32_min_value) {
++			/*
++			 * 0                                                   U32_MAX
++			 * |              [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]  |
++			 * |----------------------------|----------------------------|
++			 * |xxxxxxxxx]                       [xxxxxxxxxxxx s32 range |
++			 * 0                     S32_MAX S32_MIN                    -1
++			 */
++			reg->s32_max_value = (s32)reg->u32_max_value;
++			reg->u32_min_value = max_t(u32, reg->u32_min_value, reg->s32_min_value);
++		}
+ 	}
+ }
+ 
+diff --git a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
+index 39d42271cc46..ac4e2557f739 100644
+--- a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
++++ b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
+@@ -422,15 +422,69 @@ static bool is_valid_range(enum num_t t, struct range x)
+ 	}
+ }
+ 
+-static struct range range_improve(enum num_t t, struct range old, struct range new)
++static struct range range_intersection(enum num_t t, struct range old, struct range new)
  {
+ 	return range(t, max_t(t, old.a, new.a), min_t(t, old.b, new.b));
+ }
+ 
++/*
++ * Result is precise when 'x' and 'y' overlap or form a continuous range,
++ * result is an over-approximation if 'x' and 'y' do not overlap.
++ */
++static struct range range_union(enum num_t t, struct range x, struct range y)
++{
++	if (!is_valid_range(t, x))
++		return y;
++	if (!is_valid_range(t, y))
++		return x;
++	return range(t, min_t(t, x.a, y.a), max_t(t, x.b, y.b));
++}
++
++/*
++ * This function attempts to improve x range intersecting it with y.
++ * range_cast(... to_t ...) looses precision for ranges that pass to_t
++ * min/max boundaries. To avoid such precision loses this function
++ * splits both x and y into halves corresponding to non-overflowing
++ * sub-ranges: [0, smin] and [smax, -1].
++ * Final result is computed as follows:
++ *
++ *   ((x ∩ [0, smax]) ∩ (y ∩ [0, smax])) ∪
++ *   ((x ∩ [smin,-1]) ∩ (y ∩ [smin,-1]))
++ *
++ * Precision might still be lost if final union is not a continuous range.
++ */
++static struct range range_refine_in_halves(enum num_t x_t, struct range x,
++					   enum num_t y_t, struct range y)
++{
++	struct range x_pos, x_neg, y_pos, y_neg, r_pos, r_neg;
++	u64 smax, smin, neg_one;
++
++	if (t_is_32(x_t)) {
++		smax = (u64)(u32)S32_MAX;
++		smin = (u64)(u32)S32_MIN;
++		neg_one = (u64)(u32)(s32)(-1);
++	} else {
++		smax = (u64)S64_MAX;
++		smin = (u64)S64_MIN;
++		neg_one = U64_MAX;
++	}
++	x_pos = range_intersection(x_t, x, range(x_t, 0, smax));
++	x_neg = range_intersection(x_t, x, range(x_t, smin, neg_one));
++	y_pos = range_intersection(y_t, y, range(x_t, 0, smax));
++	y_neg = range_intersection(y_t, y, range(y_t, smin, neg_one));
++	r_pos = range_intersection(x_t, x_pos, range_cast(y_t, x_t, y_pos));
++	r_neg = range_intersection(x_t, x_neg, range_cast(y_t, x_t, y_neg));
++	return range_union(x_t, r_pos, r_neg);
++
++}
++
+ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t, struct range y)
+ {
+ 	struct range y_cast;
+ 
++	if (t_is_32(x_t) == t_is_32(y_t))
++		x = range_refine_in_halves(x_t, x, y_t, y);
++
+ 	y_cast = range_cast(y_t, x_t, y);
+ 
+ 	/* If we know that
+@@ -444,7 +498,7 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
+ 	 */
+ 	if (x_t == S64 && y_t == S32 && y_cast.a <= S32_MAX  && y_cast.b <= S32_MAX &&
+ 	    (s64)x.a >= S32_MIN && (s64)x.b <= S32_MAX)
+-		return range_improve(x_t, x, y_cast);
++		return range_intersection(x_t, x, y_cast);
+ 
+ 	/* the case when new range knowledge, *y*, is a 32-bit subregister
+ 	 * range, while previous range knowledge, *x*, is a full register
+@@ -462,11 +516,11 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
+ 		x_swap = range(x_t, swap_low32(x.a, y_cast.a), swap_low32(x.b, y_cast.b));
+ 		if (!is_valid_range(x_t, x_swap))
+ 			return x;
+-		return range_improve(x_t, x, x_swap);
++		return range_intersection(x_t, x, x_swap);
+ 	}
+ 
+ 	/* otherwise, plain range cast and intersection works */
+-	return range_improve(x_t, x, y_cast);
++	return range_intersection(x_t, x, y_cast);
+ }
+ 
+ /* =======================
 -- 
 2.43.0
 
