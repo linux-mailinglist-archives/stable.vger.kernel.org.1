@@ -1,210 +1,189 @@
-Return-Path: <stable+bounces-233285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id D2sYL7MH0WmXDwcAu9opvQ
-	(envelope-from <stable+bounces-233285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 14:44:35 +0200
+	id aFjXIWEL0WmmEAcAu9opvQ
+	(envelope-from <stable+bounces-233286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 15:00:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5159439B188
-	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 14:44:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09E739B28A
+	for <lists+stable@lfdr.de>; Sat, 04 Apr 2026 15:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 496A03006161
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 12:44:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5CC6300D303
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 13:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF6633F5AC;
-	Sat,  4 Apr 2026 12:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60ED333F598;
+	Sat,  4 Apr 2026 13:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KjDDAt5k"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="o39tLpN/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F23F309DAF
-	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 12:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A507223ABB9
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 13:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775306672; cv=none; b=d56Em5L57xbEjW0eZ0UGjjKQTMRxP/CE2zQnyV9T8XtlX6TDxumg1bTsGSw9uRH9JHEVoxUG1p4F+J3ZVyX0X5160t6byZq0HSubf7cd78ZYSMH3GVBxyiOBng/BAwt5N22vqYpDV1V0Ps7CmwIYV/zOzylhEGOZSoZTdGzIKK0=
+	t=1775307613; cv=none; b=bZy1Gb/jcZlPYSrOZPVNaed6APqXDhfziyh1U92d3IV7x9JBp2DgRVXBdXKfFtaFIKW6etnl1EDzbyphA/Ucytu/VvvvmAf6fc5BH7QH4vZikdnZbf35BXCYTYU55bxk/seUUmurUtaFaT8ov/mbNuwevtx/8aHmcbumTAWxbag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775306672; c=relaxed/simple;
-	bh=6x4+gdTKW6z5iGkG21DDDihOqybDWtH12NpDzzaC5ZI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Y2kllAK0dDj8dmp+3RQjj1BTSNpVnGL8fkdK/YfppLlRK+c0xuBG+ULDInTSUnQSxnNa1bqyEzc581gVissxPlSm5yhGHatJcCMbJcETdImOkYjbUr50UwLq1XZR//pSdmgocTLmBvDnaeLaeGwsWqln89CjX95A0HItXhZX3KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KjDDAt5k; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b0c30b51bfso62059095ad.0
-        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 05:44:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775306671; x=1775911471; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q1l0x4W+UvoXzUmEv9e5e/HxO0/QK/ip62Tt8sY3EdQ=;
-        b=KjDDAt5kGR0Iuq0ShmJgU1XnUrSQJ5FwFnWfziq13bwtnVB/cmgvoslH9ulhtJ5I1v
-         dQHuVgT2N/JAZttz+ofOadtku+MW9ZTQoYYmYwmCnYAupr3xZBfiU1yxm4fvUbSgrwnf
-         5HCHX8optEwRaXmDDQ5OvgA5XQLUM185mL4meaWIyEj6juTDSWwoYZECBHsEAVZTgSYG
-         8Qg/dFQmbvYljuP+ghE+GQz++KCtw91Zx6szxXmZikfnJ6rOytUil3ZGxuOm2lsqa0Rs
-         dAgNIkQ+1fdosVhMPrSQoL4cpPamogRdawdWD4nAVqbwdR7DblRHjoLzCeN5XJEJQF53
-         7Csw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775306671; x=1775911471;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=q1l0x4W+UvoXzUmEv9e5e/HxO0/QK/ip62Tt8sY3EdQ=;
-        b=OmCqhD2avS0fuWuiBlHWkv4yBP+borWprSy4uyGojkysOS5w3a+yS1LBPausakHJ5h
-         XkC6Mi8bSNcnJuwsrQknje4UfdauwR2+gQEFzWwLdC03+Ryjmw1/L5DoYzxzTkT5lSxq
-         ss7hNcRxpafFDuMjq/NFdZ4kwZBsDW8OwPpiKUuVlWp/NQewkouqTv9Wc2ytHfbe75+L
-         f3U+2+Y8kP6IUSczq0ihOMtHnqo6ej5UZOrOQ4gB03lTirM1Pq+XtJx2ZtcdBxJoAu9C
-         4lws7wpWpOPLXJ8s5F+ASFAcbn7pTNaWywZpxESx4/meU7QgtIntRiLf7ZZwGizSbvSb
-         BrWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKrLqyswmXR+yyYDAZHQ8LEY6xgM0Nd+KX5lymzz5sq7zOo2w03wpfr+rqHOMfEDKkGQDqy6M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8vFxg9FHM53xNhYkcRAaoXBW3RulLqGe4Waj7o21ATRyYbaz5
-	5HHC4gXM/fklMU3Nd6Y11kEuwiR//Shvfr9trTYWsFspu0u0tPW0Uw4zNcETDtBJibYQBUk4Krb
-	GWfhWpi57EOUd7EIowy2uOK3Fzw==
-X-Received: from plwg14.prod.google.com ([2002:a17:902:f74e:b0:2b0:5b0d:f4db])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e748:b0:2b2:50bd:83b3 with SMTP id d9443c01a7336-2b281706f12mr64261875ad.10.1775306670477;
- Sat, 04 Apr 2026 05:44:30 -0700 (PDT)
-Date: Sat,  4 Apr 2026 12:44:27 +0000
-In-Reply-To: <CABb+yY0uDQh-3cadPQONV=NJKjMtc4mJekgjmHYVaHnfHXvGZQ@mail.gmail.com>
+	s=arc-20240116; t=1775307613; c=relaxed/simple;
+	bh=bUvYYTszXjZFoQTKFYXwgkahooMtzfKCCJ0Kn1vx64c=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=a1idHMgMITrfNh39iK0GG+OdfMjPIsSizcIEyDWwNRm0zBeOTBTTbFzTiZFXUsghHKBmi0S40CfIVq05J47xB2tjLVkgJlpFZzzmdaXrvdMcjX6mdCEK9f6/yyAAavs5WckPgT34QYakFqLf2zdW6TTuQc3e4VsQq5dLlZktoXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=o39tLpN/; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775307608;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+/xCFsixabF/oYHDluWmOQqI46QTrRWpFhihHLF3f6w=;
+	b=o39tLpN/X1/ghIr3SpkvRvoAfOqlCyzm7GTaiBFhBY90D+7jvG6B8D8jg8fCn6yXJKMxbA
+	j4q9WKRLEtu1oWfFCVkkTWFGlDV/3j6QAxqJKeb3p3l6jOXtXplsd3/K1cEQL5/owIdvpn
+	wr5A04yiVv/SGp8tA9domOBWJf43wJU=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CABb+yY0uDQh-3cadPQONV=NJKjMtc4mJekgjmHYVaHnfHXvGZQ@mail.gmail.com>
-X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-Message-ID: <20260404124428.3077670-1-joonwonkang@google.com>
-Subject: Re: [PATCH v3 1/2] mailbox: Use per-thread completion to fix wrong
- completion order
-From: Joonwon Kang <joonwonkang@google.com>
-To: jassisinghbrar@gmail.com
-Cc: angelogioacchino.delregno@collabora.com, jonathanh@nvidia.com, 
-	joonwonkang@google.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, matthias.bgg@gmail.com, stable@vger.kernel.org, 
-	thierry.reding@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH] mm/hugetlb: restore reservation on error in
+ hugetlb_mfill_atomic_pte() resubmission path
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260322052120.14021-1-devnexen@gmail.com>
+Date: Sat, 4 Apr 2026 20:59:11 +0800
+Cc: Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ YueHaibing <yuehaibing@huawei.com>,
+ Mina Almasry <almasrymina@google.com>,
+ linux-mm@kvack.org,
+ stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Message-Id: <EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
+References: <20260322052120.14021-1-devnexen@gmail.com>
+To: David Carlier <devnexen@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[collabora.com,nvidia.com,google.com,lists.infradead.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-233285-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-233286-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: 5159439B188
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
+X-Rspamd-Queue-Id: E09E739B28A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> On Fri, Apr 3, 2026 at 9:51=E2=80=AFAM Joonwon Kang <joonwonkang@google.c=
-om> wrote:
-> >
-> > > On Thu, Apr 2, 2026 at 12:07=E2=80=AFPM Joonwon Kang <joonwonkang@goo=
-gle.com> wrote:
-> > > >
-> > > > Previously, a sender thread in mbox_send_message() could be woken u=
-p at
-> > > > a wrong time in blocking mode. It is because there was only a singl=
-e
-> > > > completion for a channel whereas messages from multiple threads cou=
-ld be
-> > > > sent in any order; since the shared completion could be signalled i=
-n any
-> > > > order, it could wake up a wrong sender thread.
-> > > >
-> > > > This commit resolves the false wake-up issue with the following cha=
-nges:
-> > > > - Completions are created just as many as the number of concurrent =
-sender
-> > > >   threads
-> > > > - A completion is created on a sender thread's stack
-> > > > - Each slot of the message queue, i.e. `msg_data`, contains a point=
-er to
-> > > >   its target completion
-> > > > - tx_tick() signals the completion of the currently active slot of =
-the
-> > > >   message queue
-> > > >
-> > > I think I reviewed it already or is this happening on
-> > > one-channel-one-client usage? Because mailbox api does not support
-> > > channels shared among multiple clients.
-> >
-> > Yes, this patch is handling the one-channel-one-client usage but when t=
-hat
-> > single channel is shared between multiple threads.
+
+
+> On Mar 22, 2026, at 13:21, David Carlier <devnexen@gmail.com> wrote:
 >=20
-> hmm.... how is this not single-channel-multiple-clients ?
-> A channel is returned as an opaque token to the clients, if that
-> client shares that with other threads - they will race.
-
-They will race because of the current blocking mode implementation. With th=
-is
-patch, they should not race as it handles the known racing point. So, I thi=
-nk
-it will be important to decide whether to support multi-threads in blocking
-mode or not.
-
-> It is the job of the original client to serialize its threads' access
-> to the channel.
-
-I can see the disparity with the non-blocking mode here. Currently, the cli=
-ent
-does not need to serialize its threads' access to the channel in non-blocki=
-ng
-mode whereas it needs to in blocking mode. It would be nice if the client d=
-oes
-not need to in both modes, but it may also depend on the necessity as you s=
-aid.
-
-> > From my understanding, the
-> > discussion back then ended with how to circumvent the issue rather than=
- whether
-> > we will eventually solve this in the mailbox framework or not, and if y=
-es, how
-> > we will, and if not, why.
+> When the resubmission path in hugetlb_mfill_atomic_pte() allocates a =
+new
+> hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is =
+consumed. If
+> copy_user_large_folio() subsequently fails, folio_put() restores the =
+global
+> hugetlb pool count through free_huge_folio(), but the per-VMA =
+reservation
+> map entry is left in an inconsistent state.
 >=20
-> It will be interesting to see how many current clients actually need
-> to share channels. If there are enough, it makes sense to implement
-> some helper api
-> on top of existing code, instead of changing its nature totally.
+> Add the missing restore_reserve_on_error() call before folio_put(), =
+matching
+> the first-attempt error path which already handles this correctly.
+>=20
+> Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow =
+on UFFDIO_COPY")
 
-I agree that we may need research on the current uses of channels and the
-necessity of shared channels. However, it may require non-trivial amount of
-time since it requires thorough understanding of the context of every clien=
-t
-driver. At this point, I think we at least need a clear documentation in te=
-rms
-of multi-threads support as we have none now. Since it is obvious that
-multi-threads is not supported for now, I can create another patch to add t=
-his
-to the API doc to be clear. How do you think?
+Hi David,
+
+Thanks for this fix. The patch looks good to me and clearly solves the
+reservation leak in the resubmission path of hugetlb_mfill_atomic_pte().
+
+However, I'm a bit curious about the Fixes tag. While commit =
+8cc5fcbb5be8
+did introduce this code structure and the retry path, it seems the bug
+wasn't actually introduced there. At that time, copy_huge_page() =
+returned
+void, so the failure path simply did not exist.
+
+Instead, looking at the git history, the failure branch `if (ret)` was
+added later by commit 1cb9dc4b475c ("mm: hwpoison: support recovery from
+HugePage copy-on-write faults"). It modified copy_user_large_folio() to
+return an int and introduced error handling paths that unfortunately
+missed restoring the reservations. Should the Fixes tag perhaps point to
+1cb9dc4b475c instead?
+
+Furthermore, if commit 1cb9dc4b475c is indeed the root cause, I noticed
+it also introduced similar error handling paths in other places. For
+example, in copy_hugetlb_page_range():
+
+        ret =3D copy_user_large_folio(new_folio, pte_folio, addr, =
+dst_vma);
+        folio_put(pte_folio);
+        if (ret) {
+                folio_put(new_folio);
+                break;
+        }
+
+Here, new_folio was allocated with alloc_hugetlb_folio(), which consumes
+reservations. But if the copy fails, new_folio is freed via folio_put()
+without calling restore_reserve_on_error() first.
+
+Does this imply we might have similar reservation leaks in other error
+paths touched by 1cb9dc4b475c? I'd love to hear your thoughts on this.
 
 Thanks,
-Joonwon Kang
+Muchun
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> ---
+> mm/hugetlb.c | 1 +
+> 1 file changed, 1 insertion(+)
+>=20
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 88009cd2a846..d6ea11113f1d 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6295,6 +6295,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+> 	folio_put(*foliop);
+> 	*foliop =3D NULL;
+> 	if (ret) {
+> + 		restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+> 		folio_put(folio);
+> 		goto out;
+> 	}
+> --=20
+> 2.53.0
+>=20
+
 
