@@ -1,158 +1,189 @@
-Return-Path: <stable+bounces-233305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKyKF3eb0WkYLwcAu9opvQ
-	(envelope-from <stable+bounces-233305-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 01:15:03 +0200
+	id KC7VM4yb0WkYLwcAu9opvQ
+	(envelope-from <stable+bounces-233306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 01:15:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B8739CD8D
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 01:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6353239CD95
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 01:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02AB4300B479
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 23:14:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C66613009FA4
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 23:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322CC372EE2;
-	Sat,  4 Apr 2026 23:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF30F377574;
+	Sat,  4 Apr 2026 23:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AfH0A7GE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TQqDWV2Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D370C372B41
-	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 23:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D4F3750DB
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 23:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775344492; cv=none; b=L4mn+SBBcVEG7bVAmOneHld3SgnXABNU0TrRifA6VK7ARID3kxaRO7yiZU9zGIAxBQ+HreidiLbDcvPf98X5f/k4SQ1oTT7ZjNUzJRU7PPZFlfQfHL9sWxUhAISM4PbnB+nOlLVIwzaAtVYMa1IWd2Vn3YUvoum0KeTRuuB8mSA=
+	t=1775344517; cv=none; b=u2vakFBHSEi0SVf4YDxpe9YjeFcWCwkws8BGNWF3K8KCXzucMDueySvGn9AiHgmKW45pzFbcj2SPMiAZycKokDfSfbN6dqD49Fo/IFFipzcTK7p+9JIacHdUbKFHKCHiT5PDojVkKEbm8smrAJQ1kCEWwe2S6YKLW9zfIUYmyKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775344492; c=relaxed/simple;
-	bh=fKEcs7RHUYZ+YrPUGaxpiUx0Ao/tqo0DnKgDaoUiZWc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=Ix8/T/x4Hv2PnnVE1I5DJOyFnwtXVTH6je9PrAYwG4+K3PgbeYV0rwQa6Blgt4vR5371mvdb7vVwQAqCYG+vlL5ZPYLJu+qDbxzHX+H/6slDjuB/Y1Skz6WYUzhUhxiIURCMNSOLta9tlcAF/MsTJReLdrUCOZcQrSQyaRFhCXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AfH0A7GE; arc=none smtp.client-ip=74.125.224.44
+	s=arc-20240116; t=1775344517; c=relaxed/simple;
+	bh=BFfEBHoOQD9zKHEK3USgxGLRzNVMUlg5LDU4MWxYSFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ur27WGlrqHkQ2U+Se50tz94SoEPYnCxalWdkEW8o5/x4I5HIWAb4j2FmoKUYUInNp0g5GVYeyC4+TcqW9HXoshWDhp1BiwngrZUgYpm7N8TJ/xNGqFS8qrgS6rYHq87g+Y/J1hB8UV7GHG5st/FzVjNKisk/mpuamH+uWwII6Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TQqDWV2Z; arc=none smtp.client-ip=209.85.221.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-65005a8840dso2891242d50.0
-        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 16:14:50 -0700 (PDT)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-56db1b3626bso1074508e0c.1
+        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 16:15:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775344490; x=1775949290; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jUrR0i7q2QNv73SNpsilSqIp/Q7gwAlZF+cW1e3Grq8=;
-        b=AfH0A7GEyzvctDgcNsOoJ3BASgj3FFY8T4xPRfeQgEP+Qo2f3EqaaP9qXBw8SMdNuX
-         aXCOoLU0EyspGmevRG6OT/CmWRBS2Hy7rAwpXDAcnxr/Yl/lSvHlMNYGvjycV9NcFA04
-         TV+/AcbL9iflqcMCZgF/p8AQ/gyHic6OUvovMistmEFPikETd2k/HWUM+iWJaplB374n
-         zMQOZSjZ4URRfP41c0Rnrcd3q8J48cPBn71Ec7OtUbnf8U6Fwig+oMHu6VQ4Xaawx3dq
-         j0ZeGYMvaXs/PxWSHAo4bKZJzb0DdEK/QV7s9VJ1IqcPjYwcprQ0jVGWoxSnciwN/6uk
-         bDXg==
+        d=gmail.com; s=20251104; t=1775344515; x=1775949315; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IsyZtp0eCcqVcLwkTIytTvDvI0E5vLNCVUYCrxMKN0s=;
+        b=TQqDWV2ZWtiSia5KTHLrULhdxU10Gk+qRIVrVFJNQxKdS/WxsVPeJaNB1g6Cy2Ww/V
+         0M2YA+5hYcmRERswnQVybfAiBuht+HHjSWIoqShfyKL7NiVZw86H+UcOQnrj/hs65CJH
+         3LY5L/EmgzqCJxp4/LV1r3uExl175xQSAjMljqwYF2gtFtnBVasY9AgSmgDyjFrrhnjN
+         FFE4GL23WOJNTbx0829Z/4K7q3IWCLzDhkOnUvdHM5LynFQq/XnrkaHDi2LNKkvwke/R
+         QIXbk6h6I6iZYhVhrmIuzZbmODQo7udj7fIISLLl7pjdPA00kgNH9Nk8fM13a+S1b+Z+
+         tNrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775344490; x=1775949290;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jUrR0i7q2QNv73SNpsilSqIp/Q7gwAlZF+cW1e3Grq8=;
-        b=TN2P9a8cyoqfYRNSm8lRLySola3QqQc3BpSH5/PyftUeJpHoHGK1O6cb5ly4pKQZrp
-         z8jWMlJQoI60WaieWEXkk6FrEMjqiIY6xG15FB/+gCg65r9MTpsLoKfhDmfl4fLha2vI
-         EjBbVc6WLBIWPwNS9zNyn8vrpKQHuold2zAVb1PPpCbAuePmR8wJ+sPgjLVYB9YWZnOV
-         KfLlnnyCwBZ0XTkk3s0U5xsm9FQouShTk57ivbbcTLwDz4iCnimy00E008Ar2wFl7vps
-         wkY8mXk/5Dwzkga3JJtTzTKUg1CamoTyUelBVicfyGHRnw9HNtV6NMC6ZaTHMHTOazwg
-         dQng==
-X-Forwarded-Encrypted: i=1; AJvYcCUauVzSMEqIu4YMMuD6AmFMHerLwC1ZXCVizNXquRWK9YMI/g2pz8OfFBxNe8Gh/jxVpOp2ric=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL8gBg03VWTquiAHOMBifidVPNMNs7shfVPXakroEaan8zkQVp
-	SOHkodWy8fWxgZ6uBrvN94NSrVur/hzlIXhwPJOa7v0a84CkZF9ZyLmy
-X-Gm-Gg: AeBDietdqXOVoGZDKi4L8Be7FNmz3iBjNcdfLYGHH6F6E1WXpMRFoZ/Vn0dPYqDsZng
-	2ZfhU4vdqaWwYDOmQTOs5A/d1Fi/GrL9YMKqxlP6o5HcfH4Jyd9nrVl+S2l7hg9aP1mz0fzEget
-	9WSRPOWOTIRBSNawExlOQROvkKTnCJPM1ACmbqIXQS5WRpESIePSvXBZk2FLvYliRzpMwaWeMRn
-	xqPC4Ti/tiEgJfCyGb9UhQdOFsVY1O7Yiz7dWGDfrV9KS5PgM1rG+1QxrVGBQ7ycOgqiJZneioF
-	qWIuazoUfwGOcqSaicaa+fLBYLW7XMzAXc4ux+tUgng8VOW8qgG9+2F2haen8Ztu4C4TJrwjarf
-	iQ72Vf0XADm3IBntU71qreG0RSPv1TfaJiPMH9nlFGjXZ4iob0pNFcpFvwCPf5Pw4oK0M1XmFqX
-	5Bi+Qkj//Y54KrBWCWCuOhx+cSuGxjLkTtS/fRpHWjlDiv/4l78SwgIWyKshyGKVRmQa2Hll2gN
-	5O++dekIc+SEKUk6luef3UyjB1zcY+C
-X-Received: by 2002:a05:690e:1481:b0:64e:a0e7:2e34 with SMTP id 956f58d0204a3-650486870dfmr7177639d50.9.1775344489736;
-        Sat, 04 Apr 2026 16:14:49 -0700 (PDT)
-Received: from localhost ([2601:7c0:c37e:2360::17e2])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6503a978b7csm4079778d50.11.2026.04.04.16.14.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 04 Apr 2026 16:14:49 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775344515; x=1775949315;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IsyZtp0eCcqVcLwkTIytTvDvI0E5vLNCVUYCrxMKN0s=;
+        b=RndU17NXFkqweRdB0Srf4ekcYSGfc8gsygnTMgysFhp5o5R9WUIyQD8Df8fvAg0WWa
+         JeUbOvr2W/CwTMHBKHs33y/EvwLjg7qLA8cZNLBrMZ53iKqbulyn51ygdZl1bxuI7HaD
+         B8IzXM3cU0Z/ORyBPZTOiVjkBsOaOyUyYcFOtbt/HH6MtXDYwLYeIAmcADI5+zo7GG+N
+         zJbjiqNHKsNlgp+z5bfo1O6LF7SBNXcLa8bS04t4kanaEZbYOrnTbmuYlkvt75jss+Fr
+         oQvDH5xCBOgTCtvrihB8XeM8hIwnf5xjDrWXft8AUVzMsaGaUE9zinEy+iHnNF/I2YRP
+         EjAw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFN/cVhjDhLso2I5c+c6lZEIEWFjCPaJUxU4RMhMVj8ftMGwoQPD/SM6Awc6OMXyGX/E6ZhRM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2M/ibgyTnYTdrlr9BqJj4VamIVmcUvbdAQFDdeNx6P7l/29p7
+	RizcFWDfNlI7IfY160mrnEmcKX2NzvvwHTmMEqsHsnqSQTzjCdMGm8tK
+X-Gm-Gg: AeBDiet0TYkv76VL4CoUTxW8/FwuZ838ZhyCdxBBFHD7gWaLC6gYnka8kjWdxjgMdBz
+	ACvVyh0zMKc5MDGMW55osMWQoDylsiXkJwv8sErNf0QUGEPxCALUrCuxG1zG8X9QNDkvm9IJMTY
+	Z+WMb8lb9qcEuKJ+24IsQGoX3f9NbOVYzKe82n36ECHo7tBzVj6jxxIlA6kS4Ymxz2MDp966i4Z
+	Bq0+IXQ4GMcug8YrdK5Np9g2SjlX8Gzzz97S2lietN8UuGPhkN3faTevjkYFlEHYM6kRkmA/+2K
+	UQiUlz3IzPTi1mLYEiuadwvMYdGayaht4U7S34BqdhJdRBcK4pMdxNopBl6XE3g4iMF4aL0wUsU
+	ajMaatzAo5KtJf3yQU0AcFORrXvIsd4Rz7QQAY8ageR6GrfAR9DBbv8BLlJIW9ZyNizM1wksKoa
+	zKd0wJGC+Ny/yLKLVMnHef2Cg/mHttCbDOtYuV2TAj
+X-Received: by 2002:a05:6122:4b8a:b0:56a:f34d:f225 with SMTP id 71dfb90a1353d-56dab9b2575mr2856867e0c.11.1775344515249;
+        Sat, 04 Apr 2026 16:15:15 -0700 (PDT)
+Received: from localhost.localdomain ([102.244.98.15])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56d9bd0a8a3sm11835630e0c.17.2026.04.04.16.15.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Apr 2026 16:15:14 -0700 (PDT)
+From: Delene Tchio Romuald <delenetchior1@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Delene Tchio Romuald <delenetchior1@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] staging: rtl8723bs: fix out-of-bounds read in portctrl()
+Date: Sun,  5 Apr 2026 00:14:49 +0100
+Message-ID: <20260404231449.63661-1-delenetchior1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 04 Apr 2026 18:14:47 -0500
-Message-Id: <DHKR3I6KLZWY.3VWMBF46Y41ZB@gmail.com>
-To: "Delene Tchio Romuald" <delenetchior1@gmail.com>,
- <gregkh@linuxfoundation.org>
-Cc: <linux-staging@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] staging: rtl8723bs: fix integer underflow in TKIP MIC
- verification
-From: "Ethan Tidmore" <ethantidmore06@gmail.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260404225752.61297-1-delenetchior1@gmail.com>
-In-Reply-To: <20260404225752.61297-1-delenetchior1@gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MV_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233305-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	SURBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:query timed out];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-233306-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ethantidmore06@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[delenetchior1@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F2B8739CD8D
+X-Rspamd-Queue-Id: 6353239CD95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat Apr 4, 2026 at 5:57 PM CDT, Delene Tchio Romuald wrote:
-> In recvframe_chkmic(), datalen is computed as:
->
->   datalen =3D len - hdrlen - iv_len - icv_len - 8;
->
-> All operands are unsigned, so if the frame is shorter than the sum of
-> header, IV, ICV, and MIC lengths, the subtraction wraps to a very
-> large value. This corrupted datalen is then passed to
-> rtw_seccalctkipmic() and used as a pointer offset, leading to
-> out-of-bounds reads on kernel heap memory.
->
-> Add a minimum frame length check before the subtraction to prevent
-> the unsigned integer underflow.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Delene Tchio Romuald <delenetchior1@gmail.com>
-> ---
+In portctrl(), the pointer is advanced by hdrlen + iv_len +
+LLC_HEADER_LENGTH and then 2 bytes are read via memcpy() to extract
+the ether_type field. There is no check that the frame is large
+enough to contain these fields, so a short frame leads to an
+out-of-bounds read on kernel heap memory.
 
-Doesn't apply to staging-next.
+This code is reachable during 802.1X authentication when the station
+is in the ieee8021x_blocked state.
 
-Thanks,
+Add a frame length check before the pointer arithmetic and wrap the
+existing ether_type extraction in the else branch so that short
+frames are dropped safely.
 
-ET
+Cc: stable@vger.kernel.org
+Signed-off-by: Delene Tchio Romuald <delenetchior1@gmail.com>
+---
+ drivers/staging/rtl8723bs/core/rtw_recv.c | 28 +++++++++++++++--------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/staging/rtl8723bs/core/rtw_recv.c b/drivers/staging/rtl8723bs/core/rtw_recv.c
+index 337671b12..1c84a5f6d 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_recv.c
++++ b/drivers/staging/rtl8723bs/core/rtw_recv.c
+@@ -532,17 +532,25 @@ static union recv_frame *portctrl(struct adapter *adapter, union recv_frame *pre
+ 
+ 			prtnframe = precv_frame;
+ 
+-			/* get ether_type */
+-			ptr = ptr + pfhdr->attrib.hdrlen + pfhdr->attrib.iv_len + LLC_HEADER_LENGTH;
+-			memcpy(&be_tmp, ptr, 2);
+-			ether_type = ntohs(be_tmp);
+-
+-			if (ether_type == eapol_type)
+-				prtnframe = precv_frame;
+-			else {
+-				/* free this frame */
+-				rtw_free_recvframe(precv_frame, &adapter->recvpriv.free_recv_queue);
++			/* Ensure frame has LLC header and ether_type */
++			if (pfhdr->len < pattrib->hdrlen +
++			    pattrib->iv_len + LLC_HEADER_LENGTH + 2) {
++				rtw_free_recvframe(precv_frame,
++						   &adapter->recvpriv.free_recv_queue);
+ 				prtnframe = NULL;
++			} else {
++				/* get ether_type */
++				ptr += pattrib->hdrlen +
++				       pattrib->iv_len +
++				       LLC_HEADER_LENGTH;
++				memcpy(&be_tmp, ptr, 2);
++				ether_type = ntohs(be_tmp);
++
++				if (ether_type != eapol_type) {
++					rtw_free_recvframe(precv_frame,
++							   &adapter->recvpriv.free_recv_queue);
++					prtnframe = NULL;
++				}
+ 			}
+ 		} else {
+ 			/* allowed */
+-- 
+2.43.0
+
 
