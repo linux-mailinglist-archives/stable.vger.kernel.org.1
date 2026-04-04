@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-233301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233302-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 1Q9fOWyR0Wl7LQcAu9opvQ
-	(envelope-from <stable+bounces-233301-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 00:32:12 +0200
+	id QLKdAYyX0Wl4LgcAu9opvQ
+	(envelope-from <stable+bounces-233302-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 00:58:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318E639CC25
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 00:32:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DCF39CCBF
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 00:58:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 148EC300BCB6
-	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 22:32:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC9063004D13
+	for <lists+stable@lfdr.de>; Sat,  4 Apr 2026 22:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B23A1B4223;
-	Sat,  4 Apr 2026 22:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECBE36B06D;
+	Sat,  4 Apr 2026 22:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qAQs4R7q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZvERzFc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8863212566
-	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 22:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34193612F6
+	for <stable@vger.kernel.org>; Sat,  4 Apr 2026 22:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775341928; cv=none; b=bIKr1IEcLJnFLi6qHIupWDrOEVYTgg2MVflptt459v/LXIUGXzVTzsDUdmqzerTdaWgoyYwfUTCeDt3zd3a+im8mwbMNv2VRngQcl0bibNmvN1FEPXBPjGcIw5kBOWotJJtmV65x2y3nenl3pKVKUYL4z60oMRcCiaJIE62uPOo=
+	t=1775343497; cv=none; b=UJnawXe/LItRw68DBbJSS5yhT8R7KAIE4A6TsXHjtCxP2ltGS4SJq3VWDGJ+QZ005sAPPjV1nnOFjeZ0io3SVh6uVIEk1w8GGrU+PaGzgTwsnXECp7xBz1QPoUkEXoXpqhnGREiuYLfjD1HdMc58cbLOKJbDbA/nCQUCTyw18Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775341928; c=relaxed/simple;
-	bh=ZFOY+U8fUTrYq9I+LJFqUKM/5/KC4WNw5rgtdpRO39E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hgi8/oE+pbQp6XGUM8B5dpKL0MjiOLUMw7gqCcp9aKohNd9E2sVi6Vd9HfX4MUVSGXf6eWRzmC6c1H5ms9fjc8ardZKCPUHH0zd3louvdAd18WuIJoupcOEPWsnPgIIcAmvlXuupsPmjuUyfW5vNC8cuoIU8fYuGDeiQvQoAZ6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qAQs4R7q; arc=none smtp.client-ip=209.85.222.51
+	s=arc-20240116; t=1775343497; c=relaxed/simple;
+	bh=jGjQZBs0WdJOuCBt0m7HdHT/tOJU/5J/G4uFScR5Owg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dwQe4l1e0YoN1vj1jWdbT2S4XQyNzeNq3S6aY33cfaLxBc+YyrAEPhwrgXxebZ3fOx5DSzKMWLrNMIYOIeoG0izBfxq1NBIqoWHYjCKf4rdCAjNxt7syBdWicEBpyW4862RWqlKeWuYcpoX34fXZGt+Zlvm5ZsWWGDSZyFr3vQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aZvERzFc; arc=none smtp.client-ip=209.85.221.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-953a8eed138so1745117241.3
-        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 15:32:06 -0700 (PDT)
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56a9076813bso1177802e0c.3
+        for <stable@vger.kernel.org>; Sat, 04 Apr 2026 15:58:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775341925; x=1775946725; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775343495; x=1775948295; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=s7M/wb5ZE+bi0m58cYsS3oHIi0wg7WyajZ80sRcwVHU=;
-        b=qAQs4R7quS0wgfiJokbTC0jMq8Dwq199m6U0eFuTlmcyi2tQTXvPmX3Tq0XsA5yrrS
-         buwQY02/dC97Nm5RkP1RAsvOVxRLaX/otbkNvjGQVh3aQLQmpE/q6K5gagZX15RU6+t0
-         iAmuO/lxKf31EXtN/tBovD9qLtdQ1WxnozRBuhU7vXBwkGLwLvdMGMHHJ6oCVsERa20y
-         uhT9QXkeXlyCfBBVWTkOJywcO/CmFBhNT9lJrANOPDzjKqPQn0VEvQQVJH86TiK3029i
-         Y82ZXotqJmfRqEHso8yuXpYWzsVzW3O/C7Kllb6UFDgnitt3Tqn+jcIlhZOKd/TB3yOJ
-         lN1A==
+        bh=tCgSx5WdM/i+Hg88DXCQUL/vgC4TdcSzM3NNt+8nb8Q=;
+        b=aZvERzFcrGce73LP/QLLetPV4KsDnULCqrt/0U0h5t2A+RdpZ826rxLAcWukkOb88n
+         BhXeH9/SUFAQRc0vsEP20geW2e8jj9JXcys6BXTZSMuQiP04hl4Jo0DIhk7Pz6hSfXvH
+         GfPzdtxv/lSG49wRGX7snbUq/vi23R95sfztrNsmJP+xgyuKcKqu5iLL9wAhayQFuJXN
+         OWJ9zqTfWmRHZXAM6E6P/KpBRz3W+yoRRJJ0qKeHETTtR5efJa0ghLDsOfUGdqUQzCIC
+         ZheD72CH7drqaA08qMi8NHQJ/Rrf2bUeLFbBSfawkmyGhDqIsyoZgOBdh0SbFBITvUXf
+         0PBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775341925; x=1775946725;
+        d=1e100.net; s=20251104; t=1775343495; x=1775948295;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s7M/wb5ZE+bi0m58cYsS3oHIi0wg7WyajZ80sRcwVHU=;
-        b=q+SPQKFQ72BAMlJ/9z+RrprGkAdUF1kRn1Mm1hEMWCowl6hTnWRSZuiDn4VEMuAoGn
-         ollHvC6JMIOd9OBqodyAJkp5bcVnaHrLOn/3fxChXmH1c9yy8ede6AIny+NQ4ECbsy8W
-         WcE2/CZKKMOyE/E1YLQnspJjTvIFZaItWgeoRmudSwQQRqa/a545cYVbiUqiYQ2HpaSB
-         IVvYm2KvxexCDKLuHLnhbxxxrY4HC6sS0RJCecYonxifyfSCk7iAehuysw9lWNK0L8A2
-         vmZQ5q+iDpH3FccXiLzuAhZm3jU7hetgy+JYwDAG9d+uSg75Ma7svUn8D8eF6lXDzNs4
-         Gqzg==
-X-Forwarded-Encrypted: i=1; AJvYcCXnvNaCAfH2I3dHZ1rVJBQW9HrAN0sIS6We3tp5flkLNQoT0NwjR0xO7v+CxJA3Xcm5Ae9G/GY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGvBgko6+itC+tHr9P84Edj3oLidCOnipwugWOboT+zKzBgFUj
-	kjKo/69Tb7zJFmhCPBKXXlbHL0RDn0tZnBiUV/3d5wHkWQBWgdbnDcN2
-X-Gm-Gg: AeBDietGn4fVZcmawHwf9V+UwQitDyV0W94s3+gcG8vwp213DBtol7sCVS21fsO7vT7
-	k+Sz+a4VOXsuYoKki/QtZ9EQIFQSWdS7Dd+n9TwPyQmoGa5IWn/uNDNyHczKdU2CBgL9cLLm09/
-	bSyKVu4XUUnBWXeJYvLXBa2BE41jDX+g9VnzFNMbQEuJg3HRfz3sAxIl58EfQE8ercv8HHjfA79
-	ObCWn8lriQ3d1REVuxRbt5prrTc6l1OdrAnbZ2+TCmmttYNl8p/NOW5AfUZraFEhnz0AnIoafL9
-	wvmfppNVaiLJnoRRTJV4LJXAPVjckXIVsp/d7vuhqU2Xj4xe+9FonyurGY0Y+2WtzIm7T4fmpia
-	/ka1QBbQPxkuiv02ku0S9JizvqcPGrNqjTcpHADv6IftE1dO8zCO+sCBL2SsYqWRIZvnaPP0Pn8
-	7784WLXuSd+y1V4VC9aaprZN1SPyx3WT+X06cfPur6
-X-Received: by 2002:a05:6102:801a:b0:600:106f:5fa8 with SMTP id ada2fe7eead31-605a4e0b2f6mr2965878137.15.1775341925479;
-        Sat, 04 Apr 2026 15:32:05 -0700 (PDT)
+        bh=tCgSx5WdM/i+Hg88DXCQUL/vgC4TdcSzM3NNt+8nb8Q=;
+        b=LnVPDybmwMWJvK/L577WnjtAJ10jUJwC1xMMVKPzHlMfcIPG5mXaSDedYbro6PtQJo
+         QM1W23q2H9a1kpQZ/F2w9MIKBz55KNQzC0EF82eRDM+i9xRcJJ/USrqHWkrmOo7OY8TI
+         t/BRE6au2856w97bChQSSrJ69FHFwkY48guPwMpwOdmtqr8jT1nmrjXFf7rAomgLdQrJ
+         dDTPdLVkdXWmYYrclhif4aPNhfSzBx2bXzNypLI7AIzdZCTW1NYxzUwIIwpHRzgzAuVd
+         utDq+Fd4V6UmOsDI2xNmzv4eH9EI29kEW1LDO0xZyslJVr6ILIvcMMcOmiDb5+OyQZXn
+         hiLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWa/QfhPH82t1vR1MSjLEDQ2PAYh1DCLhdnkE20c73PIwdDQCwc7WMlv1CspAi6UJtP8mvPSQg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrHlPhKo1Q4vxZ5dIZgogLAgZ0wcvbp2evgUR/dWhrT/oovk+k
+	5ctKxV66vAoAw9sV7NV8yfCH+iTDqLkVwqLr8uZtKVH0We4keHrwtum7
+X-Gm-Gg: AeBDies20kAsyK3AFqgmVrDxgVngWGsxLLBj64u0dyRVeObx3Cde5afORxOQUlXwHAs
+	dXvKzP/Ji/vxJrDfm1MmTczrSlydkZBv7daxTz63KtGKXKpa9ySk3aoYj5ScS6C8PJ/yio3pTUL
+	t6q9FmFBMwRsO2ftMKEieIYo0e4YCPV2NR6jbJvVbzDDGU7WYLBqEF5kBqZ7cXbv71LV7pgnXKn
+	p2tCOsHpMTG/rqBEaIKdSnPQLGDtm3AU4fkvIGVdtvjnJi85dMNek87ad+EZSll+ubIATndhpvI
+	P0D+Ma32LUCoN24HeCCrIReoAO9o1JGxb1iHm0fxhrnDyRHHPwgEwkAI8paMNb6pHu3o7q4+Yws
+	izcAIfW9bNzKkCN2mdY0uVLoJJJ0DXPy3oN1/NZHJi3hZe85O9XG9OtmtCbk4Clnzx9d2Xr/ZnA
+	NCHmQUFE87fXVB3splkuhnKJLu14wb8pHSb+aCizTG
+X-Received: by 2002:a05:6102:5093:b0:605:4ff8:fc21 with SMTP id ada2fe7eead31-605a4e92bc8mr2314437137.8.1775343494660;
+        Sat, 04 Apr 2026 15:58:14 -0700 (PDT)
 Received: from localhost.localdomain ([102.244.98.15])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-60582e1d1edsm11631603137.1.2026.04.04.15.32.03
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-60582e1d1edsm11692040137.1.2026.04.04.15.58.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 15:32:05 -0700 (PDT)
+        Sat, 04 Apr 2026 15:58:14 -0700 (PDT)
 From: Delene Tchio Romuald <delenetchior1@gmail.com>
 To: gregkh@linuxfoundation.org
 Cc: linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Delene Tchio Romuald <delenetchior1@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] staging: rtl8723bs: fix out-of-bounds reads in IE parsing functions
-Date: Sat,  4 Apr 2026 23:31:44 +0100
-Message-ID: <20260404223144.59168-1-delenetchior1@gmail.com>
+Subject: [PATCH] staging: rtl8723bs: fix integer underflow in TKIP MIC verification
+Date: Sat,  4 Apr 2026 23:57:52 +0100
+Message-ID: <20260404225752.61297-1-delenetchior1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -97,18 +97,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-233301-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233302-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[delenetchior1@gmail.com,stable@vger.kernel.org];
@@ -119,78 +119,48 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 318E639CC25
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 96DCF39CCBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The IE parsing loops in rtw_get_wapi_ie(), rtw_get_sec_ie(), and
-rtw_get_wps_ie() check only that the element ID byte is within bounds
-(cnt < in_len), but then immediately access the length byte at
-in_ie[cnt+1] and data bytes at in_ie[cnt+2] and beyond without
-verifying that these offsets are within the buffer.
+In recvframe_chkmic(), datalen is computed as:
 
-A malicious access point can send beacon or probe response frames with
-truncated Information Elements, triggering out-of-bounds reads on
-kernel heap memory. No authentication is required.
+  datalen = len - hdrlen - iv_len - icv_len - 8;
 
-Add two bounds checks to each function:
- - Ensure at least 2 bytes remain for the IE header (cnt + 1 < in_len)
- - Validate the full IE fits in the buffer before accessing its data
-   (cnt + 2 + ie_len <= in_len)
+All operands are unsigned, so if the frame is shorter than the sum of
+header, IV, ICV, and MIC lengths, the subtraction wraps to a very
+large value. This corrupted datalen is then passed to
+rtw_seccalctkipmic() and used as a pointer offset, leading to
+out-of-bounds reads on kernel heap memory.
+
+Add a minimum frame length check before the subtraction to prevent
+the unsigned integer underflow.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Delene Tchio Romuald <delenetchior1@gmail.com>
 ---
- drivers/staging/rtl8723bs/core/rtw_ieee80211.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_recv.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-index 3e2b5e6b0..0c1138b90 100644
---- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-@@ -582,9 +582,12 @@ int rtw_get_wapi_ie(u8 *in_ie, uint in_len, u8 *wapi_ie, u16 *wapi_len)
+diff --git a/drivers/staging/rtl8723bs/core/rtw_recv.c b/drivers/staging/rtl8723bs/core/rtw_recv.c
+index 337671b12..8d3c6761a 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_recv.c
++++ b/drivers/staging/rtl8723bs/core/rtw_recv.c
+@@ -390,6 +390,13 @@ static signed int recvframe_chkmic(struct adapter *adapter,  union recv_frame *p
+ 				mickey = &stainfo->dot11tkiprxmickey.skey[0];
+ 			}
  
- 	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
- 
--	while (cnt < in_len) {
-+	while (cnt + 1 < in_len) {
- 		authmode = in_ie[cnt];
- 
-+		if (cnt + 2 + in_ie[cnt + 1] > in_len)
-+			break;
++			/* Ensure the frame is large enough for TKIP MIC verification */
++			if (precvframe->u.hdr.len <= prxattrib->hdrlen +
++			    prxattrib->iv_len + prxattrib->icv_len + 8) {
++				res = _FAIL;
++				goto exit;
++			}
 +
- 		/* if (authmode == WLAN_EID_BSS_AC_ACCESS_DELAY) */
- 		if (authmode == WLAN_EID_BSS_AC_ACCESS_DELAY && (!memcmp(&in_ie[cnt+6], wapi_oui1, 4) ||
- 					!memcmp(&in_ie[cnt+6], wapi_oui2, 4))) {
-@@ -616,9 +619,12 @@ void rtw_get_sec_ie(u8 *in_ie, uint in_len, u8 *rsn_ie, u16 *rsn_len, u8 *wpa_ie
- 
- 	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
- 
--	while (cnt < in_len) {
-+	while (cnt + 1 < in_len) {
- 		authmode = in_ie[cnt];
- 
-+		if (cnt + 2 + in_ie[cnt + 1] > in_len)
-+			break;
-+
- 		if ((authmode == WLAN_EID_VENDOR_SPECIFIC) && (!memcmp(&in_ie[cnt+2], &wpa_oui[0], 4))) {
- 			if (wpa_ie)
- 				memcpy(wpa_ie, &in_ie[cnt], in_ie[cnt+1]+2);
-@@ -662,9 +668,12 @@ u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen)
- 
- 	cnt = 0;
- 
--	while (cnt < in_len) {
-+	while (cnt + 1 < in_len) {
- 		eid = in_ie[cnt];
- 
-+		if (cnt + 2 + in_ie[cnt + 1] > in_len)
-+			break;
-+
- 		if ((eid == WLAN_EID_VENDOR_SPECIFIC) && (!memcmp(&in_ie[cnt+2], wps_oui, 4))) {
- 			wpsie_ptr = &in_ie[cnt];
- 
+ 			datalen = precvframe->u.hdr.len-prxattrib->hdrlen-prxattrib->iv_len-prxattrib->icv_len-8;/* icv_len included the mic code */
+ 			pframe = precvframe->u.hdr.rx_data;
+ 			payload = pframe+prxattrib->hdrlen+prxattrib->iv_len;
 -- 
 2.43.0
 
