@@ -1,155 +1,133 @@
-Return-Path: <stable+bounces-233313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOy6CNfF0WntNAcAu9opvQ
-	(envelope-from <stable+bounces-233313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 04:15:51 +0200
+	id uJ7LI++x0Wk+MgcAu9opvQ
+	(envelope-from <stable+bounces-233311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 02:50:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C4F39D15E
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 04:15:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E472E39CFA4
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 02:50:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 329813017263
-	for <lists+stable@lfdr.de>; Sun,  5 Apr 2026 02:15:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69825300EA9C
+	for <lists+stable@lfdr.de>; Sun,  5 Apr 2026 00:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD2332ED27;
-	Sun,  5 Apr 2026 02:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87532F12B3;
+	Sun,  5 Apr 2026 00:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2m6T1DQq"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEB82E1746;
-	Sun,  5 Apr 2026 02:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521232EF67A;
+	Sun,  5 Apr 2026 00:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775355310; cv=none; b=WUSOlsG9eT+31wW1CDus1INuqF/dG0YIWS7vAVaC51g7eeg5tqjYlxXqfdkEIHIEVDEz9Jedxwc1jyAWYqNvGJWV07ke5lHstKQ+H6hkzs/RTJwtMwdtLs+cyZJcmLy+kcU2JrxQe5H2q2CeY6rtNlqklMMbD6dsV7Y+5r3xCe4=
+	t=1775350241; cv=none; b=UZxPJDhsjDP9B+t55HKAvAT4ZU2sYYEsiyc3m47qB+ordJM7vKM8gYemD8acMzpFf1pFXPJA+4TSY436jIlSHphPSCfjxamDvlQrPjhaNSFgq90LcH0wWSgFeEJH6QUr8b+s/ORqL/paIqwD9JjTnxl8n/mgbrwdE7N517h7Pbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775355310; c=relaxed/simple;
-	bh=7OOma5hn6cWCzif1BFZM+8WKH508jp5M99D4hlA8H7Q=;
-	h=From:Date:Message-ID:To:Cc:In-Reply-To:References:Subject; b=VKTtrqvY8v1jYcHJW9BL91iQetpuU0yOs7oKIzI74+x378zIv4dvrZzbXw8UYwqzQuFpkwYgR34MAT3xCr1aoOZUqTq/u7mYsuWLZ20yQBHeu+r/nt/AxZz7z82zrDqaHqzmWYN67c/+RsROo8eKoNhqfJA8tlQGfq+vOrV2QiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from 0003-pn533-v2.eml (unknown [111.196.245.197])
-	by APP-01 (Coremail) with SMTP id qwCowADHbGihxdFpRgU5DA--.1680S2;
-	Sun, 05 Apr 2026 10:14:57 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Date: Sun, 5 Apr 2026 08:40:00 +0800
-Message-ID: <20260405094003.3-pn533-v2-pengpeng@iscas.ac.cn>
-To: netdev@vger.kernel.org
-Cc: Lars Poeschel <poeschel@lemonage.de>, Duoming Zhou <duoming@zju.edu.cn>, Rikard Falkeborn <rikard.falkeborn@gmail.com>, linux-kernel@vger.kernel.org, pengpeng@iscas.ac.cn, stable@vger.kernel.org
-In-Reply-To: <20260402042148.65251-1-pengpeng@iscas.ac.cn>
-References: <20260402042148.65251-1-pengpeng@iscas.ac.cn>
-Subject: [PATCH net v2] nfc: pn533: allocate rx skb before consuming bytes
-X-CM-TRANSID:qwCowADHbGihxdFpRgU5DA--.1680S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZryUuFWruFyxKFy5Jw43ZFb_yoW8CrWrpF
-	ZxGFy5tryUJr47GwsrCw1rWa45CayvyrWrGrWqk347Z3sxJFW3GFW3Ka42vrZ5JFWkXF4a
-	vFWDXF4UCFyrua7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkm14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_
-	Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOgAwDUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+	s=arc-20240116; t=1775350241; c=relaxed/simple;
+	bh=SbhhwNVrp5/1gtDGXdM4lR4GcyYNdAQxRJjqoBWzZmA=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=D27y9XOzruCNr1CXgIBWPrVcj270FqmkR1XKTIsrxiajEeQ0squKrsq+5c8445x8TyRqCoLhC/mVKefTTMew76uY1ASz5UxlGcEplYkTfRDV32QDmL2UjUPs8T2Uod8cgfnPgMG676aJHuSXAbLtxdHhhq72y8UYTZeSAcKAHZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2m6T1DQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA12BC19421;
+	Sun,  5 Apr 2026 00:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775350241;
+	bh=SbhhwNVrp5/1gtDGXdM4lR4GcyYNdAQxRJjqoBWzZmA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=2m6T1DQqjrw8r/6ngKXdQeZczTLQKb8wO1GsPAJFmbdPajTgmy9jQyRxio3uNyW9w
+	 hnq38ISvUa5LCSv84I+9uwfDq7Ej4uo4BPFkP+poDUtAsbx4AGfXT2MfWSEbjtspYc
+	 nr/NN5HZzHW3SLiLVIcc7hShhAnAFuroORgf0KJI=
+Date: Sat, 4 Apr 2026 17:50:40 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: tejas bharambe <tejas.bharambe@outlook.com>
+Cc: Tejas Bharambe <thbharam@gmail.com>, "ocfs2-devel@lists.linux.dev"
+ <ocfs2-devel@lists.linux.dev>, "mark@fasheh.com" <mark@fasheh.com>,
+ "jlbec@evilplan.org" <jlbec@evilplan.org>, "joseph.qi@linux.alibaba.com"
+ <joseph.qi@linux.alibaba.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>,
+ "syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com"
+ <syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v4] ocfs2: fix use-after-free in ocfs2_fault() when
+ VM_FAULT_RETRY
+Message-Id: <20260404175040.40a746040ddb0cb5ce347fe3@linux-foundation.org>
+In-Reply-To: <JH0PR06MB66320ABCFAD8F239FE5112B2895CA@JH0PR06MB6632.apcprd06.prod.outlook.com>
+References: <20260403035333.136824-1-tejas.bharambe@outlook.com>
+	<20260403122947.2afc337b5333fb1990a78a65@linux-foundation.org>
+	<JH0PR06MB66320ABCFAD8F239FE5112B2895CA@JH0PR06MB6632.apcprd06.prod.outlook.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [1.54 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lemonage.de,zju.edu.cn,gmail.com,vger.kernel.org,iscas.ac.cn];
-	TAGGED_FROM(0.00)[bounces-233313-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.947];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 75C4F39D15E
+	TAGGED_FROM(0.00)[bounces-233311-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[outlook.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,lists.linux.dev,fasheh.com,evilplan.org,linux.alibaba.com,vger.kernel.org,syzkaller.appspotmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,sashiko.dev:url,linux-foundation.org:dkim,linux-foundation.org:mid]
+X-Rspamd-Queue-Id: E472E39CFA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-pn532_receive_buf() reports the number of accepted bytes to the serdev
-core. The current code consumes bytes into recv_skb and may already hand
-a complete frame to pn533_recv_frame() before allocating a fresh receive
-buffer.
+On Sun, 5 Apr 2026 00:30:14 +0000 tejas bharambe <tejas.bharambe@outlook.com> wrote:
 
-If that alloc_skb() fails, the callback returns 0 even though it has
-already consumed bytes, and it leaves recv_skb as NULL for the next
-receive callback. That breaks the receive_buf() accounting contract and
-can also lead to a NULL dereference on the next skb_put_u8().
+> Following is my response for question posted on https://sashiko.dev/#/patchset/20260403035333.136824-1-tejas.bharambe%40outlook.com
+> 
+> 
+> No. For ocfs2_fault() to be executing, the file must be open and
+> the process holds an active file descriptor. The inode's lifetime
+> is tied to the file's reference count, which remains held by the
+> file descriptor for the duration of the fault handler. munmap()
+> can free the VMA (decrementing vm_file's refcount) but cannot
+> free the inode as long as the file descriptor is open. The faulting
+> thread cannot call close() while it is inside the fault handler,
+> so the inode is guaranteed to outlive the trace call.
 
-Allocate the receive skb lazily before consuming the next byte instead.
-If allocation fails, return the number of bytes already accepted.
+I don't think that's the scenario which Sashiko is suggesting.
 
-Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
-Changes since v1:
-- rebase on `net/main`
-- keep the same fix shape on top of the current tailroom handling
+Suppose userspace does
 
- drivers/nfc/pn533/uart.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+	fd = open(...);
+	p = mmap(fd, ...);
+	close(fd);
 
-diff --git a/drivers/nfc/pn533/uart.c b/drivers/nfc/pn533/uart.c
-index 1b82b7b2..e0d67cd2 100644
---- a/drivers/nfc/pn533/uart.c
-+++ b/drivers/nfc/pn533/uart.c
-@@ -211,6 +211,13 @@ static size_t pn532_receive_buf(struct serdev_device *serdev,
- 
- 	timer_delete(&dev->cmd_timeout);
- 	for (i = 0; i < count; i++) {
-+		if (!dev->recv_skb) {
-+			dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN,
-+						  GFP_KERNEL);
-+			if (!dev->recv_skb)
-+				return i;
-+		}
-+
- 		if (unlikely(!skb_tailroom(dev->recv_skb)))
- 			skb_trim(dev->recv_skb, 0);
- 
-@@ -219,9 +226,7 @@ static size_t pn532_receive_buf(struct serdev_device *serdev,
- 			continue;
- 
- 		pn533_recv_frame(dev->priv, dev->recv_skb, 0);
--		dev->recv_skb = alloc_skb(PN532_UART_SKB_BUFF_LEN, GFP_KERNEL);
--		if (!dev->recv_skb)
--			return 0;
-+		dev->recv_skb = NULL;
- 	}
- 
- 	return i;
--- 
-2.50.1
+Now, that mmap is the only ref against fd.
+
+Now, suppose that userspace does munmap() while another thread is in
+the fault handler.
 
 
