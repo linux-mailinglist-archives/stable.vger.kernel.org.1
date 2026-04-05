@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-233332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHZXAIlL0mnbVgcAu9opvQ
-	(envelope-from <stable+bounces-233332-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 13:46:17 +0200
+	id uKanDZZL0mmLVgcAu9opvQ
+	(envelope-from <stable+bounces-233333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 13:46:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D38839E31B
-	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 13:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A32BF39E329
+	for <lists+stable@lfdr.de>; Sun, 05 Apr 2026 13:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3929300A122
-	for <lists+stable@lfdr.de>; Sun,  5 Apr 2026 11:46:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 061B4300F13F
+	for <lists+stable@lfdr.de>; Sun,  5 Apr 2026 11:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777424C6C;
-	Sun,  5 Apr 2026 11:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777E1243951;
+	Sun,  5 Apr 2026 11:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kramkow.ski header.i=@kramkow.ski header.b="k+LA1N07"
+	dkim=pass (2048-bit key) header.d=kramkow.ski header.i=@kramkow.ski header.b="fNOqmVgg"
 X-Original-To: stable@vger.kernel.org
 Received: from erebus.slow.network (erebus.slow.network [109.74.205.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962DD25A2C6;
-	Sun,  5 Apr 2026 11:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF53326D65;
+	Sun,  5 Apr 2026 11:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.74.205.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775389563; cv=none; b=WNbnOOlWfOx3vN9cJAPXFnzIUDrr3PS6s8vUwlKFxGqZ+xXHmjc096Xb/qTBeKnR4vfioP42mBV0mEkhXP3Ds07uBERZGjcrBxRMrCcZEwo1qLNva04zjieYgcI5ckX11/cre2rFFzBfHLpPLSvfAKckbZtMU5h5IYGY+cAu4fI=
+	t=1775389567; cv=none; b=QBuH/MJVtrg34TFhW9yyREAvsS10cLa0M5YpcvY+HQW1O1RJFj7n7/AE2OYjhvp+Kv94aa5A48AG3Qo1QZXXGg3hgRH3cqq1tJG0fSE5xZacA7DBNhiqGqzgd7Xb6BpeppVZoN6xde3ozP3TUcLMvHG1Fjg3QnAbOyqFdRSV/E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775389563; c=relaxed/simple;
-	bh=FM9YMsn6Yz6m1J9QEPf+8V7JwFT6Rqu5ikPJSt0xaMo=;
+	s=arc-20240116; t=1775389567; c=relaxed/simple;
+	bh=EbiHYeDwemDRMIXMMn52TDVPdSdhxmHxQ7JV7c6bDPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDC2U08gxIw9mmv53Gn1KQ2tHVw85WF+Fg6SN4yZQyUOOPNdQ7usvzYL6RO9fI1TxmKoWrQmhwo9GT43usi5/hbVQF9Z8mc9iJgLBokzjPbWCelI/ywVjNKhDYIm4HOHl690BeMf52iOi9kyswR4oC090rP5ETqXHFE2VKsUAAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kramkow.ski; spf=pass smtp.mailfrom=kramkow.ski; dkim=pass (2048-bit key) header.d=kramkow.ski header.i=@kramkow.ski header.b=k+LA1N07; arc=none smtp.client-ip=109.74.205.187
+	 MIME-Version; b=lP8xtymzwrs3Xse7OCQaeOdD66G0Fk8rzj0ldZyf2IkJn6JNELpUvxGZBxyJXfNPA7Iallc/Tn0zcvhAuKC2hddj0+jmhI980HgblBv4/b3o44peqGi5JbBZG2ywV5tsfGlcQmZVG1RPL9LliKbk0AYKFqX8uWUzzFifgwC/fgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kramkow.ski; spf=pass smtp.mailfrom=kramkow.ski; dkim=pass (2048-bit key) header.d=kramkow.ski header.i=@kramkow.ski header.b=fNOqmVgg; arc=none smtp.client-ip=109.74.205.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kramkow.ski
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kramkow.ski
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=20220506; bh=FM9YMsn6Yz6
-	m1J9QEPf+8V7JwFT6Rqu5ikPJSt0xaMo=; h=references:in-reply-to:date:
-	subject:cc:to:from; d=kramkow.ski; b=k+LA1N07cGClqCuRE/8GFNZHgiuxzBr8E
-	uETV2HeS3YIc+WVghOydMoMpnl6CL4+I6xwr6p5KukA/Uz4AvOnIBXeKzntzzZ7DXsZgR5
-	XbfDtuBNfQX9k6ebiVlocHTOq4nzZwmtqcjbIXb9AWCJncdLh3OSGRa8GVJ19SkADgEBNx
-	VgG0wEng87hNRDT3NPujH2Lvoxu9nwCm/ZEHpjc0QR3aZvE4xieFpd2REJyh0Rr+lv8yKz
-	Dq89Bdg2H54PjhQ71+wFcmeI5Vv8D63SYQRnkrKdcJmnVL4QIX/JhkryQ9AE6BF9esfH1D
-	mg37lt9prXukCU6Huy/Yy8gl6SI1A==
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=20220506; bh=EbiHYeDwemD
+	RMIXMMn52TDVPdSdhxmHxQ7JV7c6bDPo=; h=references:in-reply-to:date:
+	subject:cc:to:from; d=kramkow.ski; b=fNOqmVgg0ml1sQywzL28Bim6jnUxMz/Go
+	LmTnp+oJTbAaxbwqYLbyIBgm6tFc2dPluFteKN5bbR57Je47tagoptZ1wFe4LkxlU3t/Sv
+	IaF+kC0tLG09ILw933KQIKZfrPX1ymbVnjdIZW8/llc+9ZRtq8Rw2giwRiPGrmkjLPkRYY
+	eoaHMS1oUYCgUKhbEStnOUzlydyL14S+5NPjm/JYK0Tvg5t2yvrYEKd5U20RIyo6KW0dPG
+	glMtKvt1psaaIQkT391e8X0JIc3rTKW7Cwx7FokN8AmmEeebfC9sJrtsvdvllv5kBbAqvC
+	Pw5TmHqsnT4zIfS9JLUHpFkI7K9yw==
 Received: from localhost (flit-04-b2-v4wan-169180-cust382.vm32.cable.virginm.net [81.96.161.127])
-	by erebus.slow.network (OpenSMTPD) with ESMTPSA id 1891b1af (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Sun, 5 Apr 2026 11:45:54 +0000 (UTC)
+	by erebus.slow.network (OpenSMTPD) with ESMTPSA id 6f07a027 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Sun, 5 Apr 2026 11:46:00 +0000 (UTC)
 From: Tomasz Kramkowski <tomasz@kramkow.ski>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@vger.kernel.org
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>,
 	linux-fsdevel@vger.kernel.org,
-	Tomasz Kramkowski <tomasz@kramkow.ski>,
-	Brad Spengler <spender@grsecurity.net>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6.y v2 1/2] Revert "xattr: switch to CLASS(fd)"
-Date: Sun,  5 Apr 2026 12:45:04 +0100
-Message-ID: <20260405114505.568530-2-tomasz@kramkow.ski>
+	Tomasz Kramkowski <tomasz@kramkow.ski>
+Subject: [PATCH 6.6.y v2 2/2] xattr: switch to CLASS(fd)
+Date: Sun,  5 Apr 2026 12:45:05 +0100
+Message-ID: <20260405114505.568530-3-tomasz@kramkow.ski>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260405114505.568530-1-tomasz@kramkow.ski>
 References: <20260405114505.568530-1-tomasz@kramkow.ski>
@@ -77,116 +75,117 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,vger.kernel.org,kramkow.ski,grsecurity.net,foxmail.com];
-	TAGGED_FROM(0.00)[bounces-233332-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233333-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tomasz@kramkow.ski,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kramkow.ski:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,x.com:url,kramkow.ski:dkim,kramkow.ski:email,kramkow.ski:mid,foxmail.com:email]
-X-Rspamd-Queue-Id: 2D38839E31B
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kramkow.ski:dkim,kramkow.ski:email,kramkow.ski:mid,linux.org.uk:email]
+X-Rspamd-Queue-Id: A32BF39E329
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This reverts commit 5a1e865e51063d6c56f673ec8ad4b6604321b455 which is
-commit a71874379ec8c6e788a61d71b3ad014a8d9a5c08 upstream.
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-A backporting mistake erroneously removed file descriptor checks for
-`fgetxattr`, `flistxattr`, `fremovexattr`, and `fsetxattr` which lead to
-kernel panics when those functions were called from userspace with a
-file descriptor which did not reference an open file.
+[ Upstream commit a71874379ec8c6e788a61d71b3ad014a8d9a5c08 ]
 
-Reported-by: Brad Spengler <spender@grsecurity.net>
-Closes: https://x.com/spendergrsec/status/2040049852793450561
-Cc: Alva Lan <alvalan9@foxmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://lore.kernel.org/all/20241002012230.4174585-1-viro@zeniv.linux.org.uk/
+[ Neither `fd_file` nor `fd_empty` are available in 6.6.y, so the
+  changes to the check are dropped. Kept the minor formatting change. ]
 Signed-off-by: Tomasz Kramkowski <tomasz@kramkow.ski>
 ---
- fs/xattr.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ fs/xattr.c | 27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
 diff --git a/fs/xattr.c b/fs/xattr.c
-index 5f2d74332ea6..7574d24b982e 100644
+index 7574d24b982e..20a038b06d12 100644
 --- a/fs/xattr.c
 +++ b/fs/xattr.c
-@@ -698,6 +698,8 @@ SYSCALL_DEFINE5(fsetxattr, int, fd, const char __user *, name,
+@@ -698,9 +698,9 @@ SYSCALL_DEFINE5(fsetxattr, int, fd, const char __user *, name,
  	int error;
  
  	CLASS(fd, f)(fd);
-+	if (!f.file)
-+		return -EBADF;
- 
++
+ 	if (!f.file)
+ 		return -EBADF;
+-
  	audit_file(f.file);
  	error = setxattr_copy(name, &ctx);
-@@ -808,11 +810,16 @@ SYSCALL_DEFINE4(lgetxattr, const char __user *, pathname,
+ 	if (error)
+@@ -810,16 +810,13 @@ SYSCALL_DEFINE4(lgetxattr, const char __user *, pathname,
  SYSCALL_DEFINE4(fgetxattr, int, fd, const char __user *, name,
  		void __user *, value, size_t, size)
  {
--	CLASS(fd, f)(fd);
-+	struct fd f = fdget(fd);
-+	ssize_t error = -EBADF;
+-	struct fd f = fdget(fd);
+-	ssize_t error = -EBADF;
++	CLASS(fd, f)(fd);
  
-+	if (!f.file)
-+		return error;
+ 	if (!f.file)
+-		return error;
++		return -EBADF;
  	audit_file(f.file);
--	return getxattr(file_mnt_idmap(f.file), f.file->f_path.dentry,
-+	error = getxattr(file_mnt_idmap(f.file), f.file->f_path.dentry,
+-	error = getxattr(file_mnt_idmap(f.file), f.file->f_path.dentry,
++	return getxattr(file_mnt_idmap(f.file), f.file->f_path.dentry,
  			 name, value, size);
-+	fdput(f);
-+	return error;
+-	fdput(f);
+-	return error;
  }
  
  /*
-@@ -879,10 +886,15 @@ SYSCALL_DEFINE3(llistxattr, const char __user *, pathname, char __user *, list,
+@@ -886,15 +883,12 @@ SYSCALL_DEFINE3(llistxattr, const char __user *, pathname, char __user *, list,
  
  SYSCALL_DEFINE3(flistxattr, int, fd, char __user *, list, size_t, size)
  {
--	CLASS(fd, f)(fd);
-+	struct fd f = fdget(fd);
-+	ssize_t error = -EBADF;
+-	struct fd f = fdget(fd);
+-	ssize_t error = -EBADF;
++	CLASS(fd, f)(fd);
  
-+	if (!f.file)
-+		return error;
+ 	if (!f.file)
+-		return error;
++		return -EBADF;
  	audit_file(f.file);
--	return listxattr(f.file->f_path.dentry, list, size);
-+	error = listxattr(f.file->f_path.dentry, list, size);
-+	fdput(f);
-+	return error;
+-	error = listxattr(f.file->f_path.dentry, list, size);
+-	fdput(f);
+-	return error;
++	return  listxattr(f.file->f_path.dentry, list, size);
  }
  
  /*
-@@ -939,10 +951,12 @@ SYSCALL_DEFINE2(lremovexattr, const char __user *, pathname,
+@@ -951,12 +945,12 @@ SYSCALL_DEFINE2(lremovexattr, const char __user *, pathname,
  
  SYSCALL_DEFINE2(fremovexattr, int, fd, const char __user *, name)
  {
--	CLASS(fd, f)(fd);
-+	struct fd f = fdget(fd);
+-	struct fd f = fdget(fd);
++	CLASS(fd, f)(fd);
  	char kname[XATTR_NAME_MAX + 1];
--	int error;
-+	int error = -EBADF;
+-	int error = -EBADF;
++	int error;
  
-+	if (!f.file)
-+		return error;
+ 	if (!f.file)
+-		return error;
++		return -EBADF;
  	audit_file(f.file);
  
  	error = strncpy_from_user(kname, name, sizeof(kname));
-@@ -957,6 +971,7 @@ SYSCALL_DEFINE2(fremovexattr, int, fd, const char __user *, name)
+@@ -971,7 +965,6 @@ SYSCALL_DEFINE2(fremovexattr, int, fd, const char __user *, name)
  				    f.file->f_path.dentry, kname);
  		mnt_drop_write_file(f.file);
  	}
-+	fdput(f);
+-	fdput(f);
  	return error;
  }
  
