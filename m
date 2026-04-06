@@ -1,117 +1,226 @@
-Return-Path: <stable+bounces-233394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QF2DIEjg02lxngcAu9opvQ
-	(envelope-from <stable+bounces-233394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 18:33:12 +0200
+	id UDHtIsTg02lxngcAu9opvQ
+	(envelope-from <stable+bounces-233395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 18:35:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030E13A5564
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 18:33:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E50F3A558B
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 18:35:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A9F13019118
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 16:31:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D9763007AD0
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 16:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAE538B14B;
-	Mon,  6 Apr 2026 16:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D2138AC7C;
+	Mon,  6 Apr 2026 16:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3Wd8hWQ"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD4038B7AC;
-	Mon,  6 Apr 2026 16:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346EF27E056;
+	Mon,  6 Apr 2026 16:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775493086; cv=none; b=B35uI/SY2HsCkMrlktJPkdy8xVpRTvX2eMrtwIPRZ79/Pq5j0sxgnD5Vd8Xe9D2F+MY1iNnIZr+N9VrXB0ixTdyK0ucLtmDTqk7a5m0lz6J4RRSis7X6QQvD3UFYvPcK+D4sKfYdOe5I1ZeK3WZGUOGBEamk+Q8zFHZpVaiLjnY=
+	t=1775493309; cv=none; b=f49qaSEWqtBCEOq1GUngFOAzORHwN10k38Tb/ihzMnd2Hqh8DCQBteD4TD52FBZxvHrFQ/lYYXrhYLkOawndrDWSLJ5hMQjX+UQHAh5EVLGMnkeL2zF7k1zKwRLFv5zCCnHi6AE5ML6joJaEGcnkj1Bzrxn1YvgyTa9mOWU5szQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775493086; c=relaxed/simple;
-	bh=b4C8M9P7TZeLYRYooFF4o5tEcOh5YaL72dAK+ECRQQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JVNxct7IYR44EWl5jlh2r/atULkz6w4Kva77fxiCf8ZpdRE1gNWXumPykOzdDoO2a0ZM9uJ1CsDmDQStsZN8tiOx6P7Iwt6PRhE7hBlsDxDkIWbHh26LrkG0yd9P67AXXxktBYv6ha2vEXD8YVymL56+gVtQb8/+XiCSEi7Bt1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC1C1160197;
-	Mon,  6 Apr 2026 16:31:22 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id B851119;
-	Mon,  6 Apr 2026 16:31:20 +0000 (UTC)
-Date: Mon, 6 Apr 2026 12:32:32 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel test robot
- <lkp@intel.com>
-Subject: Re: [PATCH] printf: mark errptr() noinline
-Message-ID: <20260406123232.3dacbe94@gandalf.local.home>
-In-Reply-To: <CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
-References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
-	<20260406111531.779571d7@gandalf.local.home>
-	<CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1775493309; c=relaxed/simple;
+	bh=gQNVM0vS0NwKn8hC5VdGPw22C0ngOezWXdkapljDSYs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JDgnP1aQfgTQ+FKhlOHT1R7OeeeRGRAOI2OpgOvlTlScKt+qXHKEcBNE4qivIcqPY0vpkzROlDWjLOsTDm2NsrMXKcYh5fCxosdcRSss0C49NRGc8Hp6qxoStVh6O6Tlt9N0GYO563tjDi9XUvEbZ5ia9pOhmBXYqd/43EM+rTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3Wd8hWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DFEC4CEF7;
+	Mon,  6 Apr 2026 16:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775493309;
+	bh=gQNVM0vS0NwKn8hC5VdGPw22C0ngOezWXdkapljDSYs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=B3Wd8hWQ/VWakkggFk3qhyJFCP03r2YWIu3UTabixMOm91yQF+Kmh+sy9Wx8OX/oX
+	 R10zR6FrTXBMQUS/E6h3Ar6K1KhvRyAHKY3jYLTMrD5M1tYYqGTu70n/Z0nksxVDMW
+	 rhmwqAMz3oAx+GPXI8UK7cMKqzrXAQ6Zw9DMnP8l4Ji9cCs3skNbzX2N8hRL50rChU
+	 4QxBfuATJLcNUrXYCUAC0tUx0u3DF8Ca2sbG9+sQxCSB6oysshJp7yAaDTj1jquixn
+	 Iz7LBWhVAG/PffTA62Kt9rx0vl8dpERmC5bk8qkFkt8qvxTCCuddlrJWUQZWwot4ZM
+	 SMvl4c9CI26xA==
+Received: from cu01147a.smtpx.saremail.com ([195.16.150.122] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1w9muo-00000009GIj-2BDo;
+	Mon, 06 Apr 2026 16:35:06 +0000
+Date: Mon, 06 Apr 2026 17:34:59 +0100
+Message-ID: <871pgscaj0.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Johan Hovold <johan@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Alexey Kardashevskiy <aik@ozlabs.ru>,
+	Robin Murphy <robin.murphy@arm.com>,
+	stable@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/9] driver core: Don't let a device probe until it's ready
+In-Reply-To: <CAD=FV=WV2SJwiC7CHEzG=XQJ=tG0P7JSLzU16f0px4j1qmwxUw@mail.gmail.com>
+References: <20260404000644.522677-1-dianders@chromium.org>
+	<20260403170432.v4.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+	<873418d2fz.wl-maz@kernel.org>
+	<CAD=FV=WV2SJwiC7CHEzG=XQJ=tG0P7JSLzU16f0px4j1qmwxUw@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: w6wwgiws5h5na11491ygfex38f5azhq4
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/9EOO2pqQeQNaEneEBKCiVrrjsav9WGiM=
-X-HE-Tag: 1775493080-84157
-X-HE-Meta: U2FsdGVkX1/231+NmA25h6laTAVK3WmzKUgG/1gKMIADrvjSAaUrGmf2omeTv2OpCiqRVLiEJMOyfp7TzO9vPggUnOCutNRNldgJ4IjHUQLGmFNoMWYV0trBCVPVIR9G2ukocNV8c5QTCFdo3PUtW+EtGr5OKKENrzdttZk7uuxzq1WVTYlQNoAg7CBhI6+ORyfjhF47lJILMC6LXKIBoCLMExMsQSEaQu1xU80Wu6faewf/JDH3yWRlUMbI1hI5GL3KDJqbgUuc/vmmoJ81uENUgUNbVfyxfiNZqQ5r44m7C96kBnRR6dGXsLKZzmDEmJOnfcatPeaZv2QhpNHDZJE7vjcef6vN
-X-Spamd-Result: default: False [-1.36 / 15.00];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 195.16.150.122
+X-SA-Exim-Rcpt-To: dianders@chromium.org, gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, stern@rowland.harvard.edu, saravanak@kernel.org, hch@lst.de, edumazet@google.com, johan@kernel.org, leon@kernel.org, aleksander.lobakin@intel.com, aik@ozlabs.ru, robin.murphy@arm.com, stable@vger.kernel.org, driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[goodmis.org : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-0.963];
-	R_DKIM_NA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rostedt@goodmis.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233395-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233394-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gandalf.local.home:mid]
-X-Rspamd-Queue-Id: 030E13A5564
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8E50F3A558B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 6 Apr 2026 11:21:39 -0400
-Tamir Duberstein <tamird@kernel.org> wrote:
+On Mon, 06 Apr 2026 15:41:08 +0100,
+Doug Anderson <dianders@chromium.org> wrote:
+>=20
+> Hi,
+>=20
+> On Sun, Apr 5, 2026 at 11:32=E2=80=AFPM Marc Zyngier <maz@kernel.org> wro=
+te:
+> >
+> > > +      * blocked those attempts. Now that all of the above initializa=
+tion has
+> > > +      * happened, unblock probe. If probe happens through another th=
+read
+> > > +      * after this point but before bus_probe_device() runs then it'=
+s fine.
+> > > +      * bus_probe_device() -> device_initial_probe() -> __device_att=
+ach()
+> > > +      * will notice (under device_lock) that the device is already b=
+ound.
+> > > +      */
+> > > +     dev_set_ready_to_probe(dev);
+> >
+> > I think this lacks some ordering properties that we should be allowed
+> > to rely on. In this case, the 'ready_to_probe' flag being set should
+> > that all of the data structures are observable by another CPU.
+> >
+> > Unfortunately, this doesn't seem to be the case, see below.
+>=20
+> I agree. I think Danilo was proposing fixing this by just doing:
+>=20
+> device_lock(dev);
+> dev_set_ready_to_probe(dev);
+> device_unlock(dev);
+>=20
+> While that's a bit of an overkill, it also works I think. Do folks
+> have a preference for what they'd like to see in v5?
 
-> Thanks Steve. IMO that is a very big hammer and not warranted in this
-> case. There's been talk of encouraging distros to enable CONFIG_KUNIT
-> by default [0], which would probably interact poorly with the change
-> you propose.
-> 
+It would work, but I find the construct rather obscure, and it implies
+that there is a similar lock taken on the read path. Looking at the
+code for a couple of minutes doesn't lead to an immediate clue that
+such lock is indeed taken on all read paths.
 
-Branch profiling is really just a niche that is enabled specifically for
-seeing all branches taken in the kernel. It hooks to all "if" statements!
-As you can imagine, it causes a rather large overhead in performance.
+>
+>=20
+> > > @@ -675,8 +691,34 @@ struct device {
+> > >  #ifdef CONFIG_IOMMU_DMA
+> > >       bool                    dma_iommu:1;
+> > >  #endif
+> > > +
+> > > +     DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
+> > >  };
+> > >
+> > > +#define __create_dev_flag_accessors(accessor_name, flag_name) \
+> > > +static inline bool dev_##accessor_name(const struct device *dev) \
+> > > +{ \
+> > > +     return test_bit(flag_name, dev->flags); \
+> > > +} \
+> > > +static inline void dev_set_##accessor_name(struct device *dev) \
+> > > +{ \
+> > > +     set_bit(flag_name, dev->flags); \
+> >
+> > Atomic operations that are not RMW or that do not return a value are
+> > unordered (see Documentation/atomic_bitops.txt). This implies that
+> > observing the flag being set from another CPU does not guarantee that
+> > the previous stores in program order are observed.
+> >
+> > For that guarantee to hold, you'd need to have an
+> > smp_mb__before_atomic() just before set_bit(), giving it release
+> > semantics. This is equally valid for the test, clear and assign
+> > variants.
+> >
+> > I doubt this issue is visible on a busy system (which would be the
+> > case at boot time), but I thought I'd mention it anyway.
+>=20
+> Are you suggesting I add smp memory barriers directly in all the
+> accessors? ...or just that clients of these functions should use
+> memory barriers as appropriate?
+>=20
+> In other words, would I do:
+>=20
+> smp_mb__before_atomic();
+> dev_set_ready_to_probe(dev);
+>=20
+> ...or add the barrier into all of the accessor?
+>=20
+> My thought was to not add the barrier into the accessors since at
+> least one of the accessors talks about being run from a hot path
+> (dma_reset_need_sync()). ...but I just want to make sure.
 
-This option is only used by developers doing special analysis of their code
-(namely me ;-).
+I don't think this needs to be inflicted on all flags, specially the
+ones you are simply moving into the bitmap and that didn't have any
+particular ordering requirements. 'ready_to_probe' is a bit different,
+as it is new and tries to offer ordering semantics.
 
-The only real concern I would have is if the kunit test developers would
-want to use the branch profiling on their code, in which case my suggestion
-would prevent that.
+So an open-coded barrier on both sides would do the trick, unless you
+go for the lock and can convince yourself that it is indeed always
+acquired on all the read paths.
 
--- Steve
+Thanks,
+
+	M.
+
+--=20
+Jazz isn't dead. It just smells funny.
 
