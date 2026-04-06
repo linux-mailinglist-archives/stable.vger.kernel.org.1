@@ -1,365 +1,176 @@
-Return-Path: <stable+bounces-233369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJRXK6CU02lWjQcAu9opvQ
-	(envelope-from <stable+bounces-233369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 13:10:24 +0200
+	id oKAgCFGX02n3jQcAu9opvQ
+	(envelope-from <stable+bounces-233371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 13:21:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7BC3A30F4
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 13:10:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FF13A3153
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 13:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F5083047DF4
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 11:06:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29543300FEFF
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 11:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3AE4334695;
-	Mon,  6 Apr 2026 11:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468B031D381;
+	Mon,  6 Apr 2026 11:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtBN0+TF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WJtRiNKZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3E533343C;
-	Mon,  6 Apr 2026 11:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D414B30F7EF
+	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 11:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775473603; cv=none; b=o3bMewCdfA6+UnSXgbrNxPdA/MP2/cvn31mlfNc00TKSa0RpDT2M2qhu8cs3yt4P84vC4IhmDob8RrddDkG5KPfCw1xkvoiwjgfSMWmRo0fJcQKjipk4TzjSJl5bFpJ+rcan+uasfYhajci5bY+AupymQrDtpBzyj5OC+J+ffTk=
+	t=1775474509; cv=none; b=gULFhBL5hWTFj/VrwutuBko+Oem5fL+ySVklZQKq/Qiqx4Zjdeyqxw1HmpwfWPGhiMQ/a6SZY4t/nV8TTxJj/HdnTCMHVGkmCxa8EORaj4CHAsnt0Gi56wrMgcdc3IL12efrOXahgwjy+pgdGewK9D+IaU/Tzmhq0FvzZj340As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775473603; c=relaxed/simple;
-	bh=eHGNGyvyFt1niKxGrfCB23xPrLsvTdunmgkdKwn6FE0=;
+	s=arc-20240116; t=1775474509; c=relaxed/simple;
+	bh=Gb3nZJX08hSpzm6AWZbXNgCt91twbjLjgMG4piUjSS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ma+EVZNT/pB7Sn1HojQh09NCNfE467RWB+3k2ZuiHN8DSLi7JF33j29bo/EvNm4w8fxg3BXvIKN+rSuqYtgWT3fiY9PZV8tVb1v96IhS8793neQIhzOrI8SICJ52QWiHI1TXjBWTq/Im02pz04HMFx1V2snE5ZjKn027csvgVNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtBN0+TF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE593C4CEF7;
-	Mon,  6 Apr 2026 11:06:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775473602;
-	bh=eHGNGyvyFt1niKxGrfCB23xPrLsvTdunmgkdKwn6FE0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtBN0+TFzZP3cUWB/pf9+zxpXnk+lXXjug23CgLSceFHekR5ik62CF9YaQFVKt9Vk
-	 mO5EQBm1k+B8Tpg17fUDgjImkZCE9G8RGUR6PsSXtmfZRQ5uYnJve0Tm/Wj2QNc8A0
-	 9CLnSpA88FR6/6KEgUJ/r04zMwOAx8Dj+rwHMRgoXkwN4EMs68LxJH0Nmz/Uq9ivOi
-	 k2GIfht9WNMy/4MHJDQfXEBfXRCMW2JrF5uxrR/fc7u6HD9x61vgejkPTOw3EHj1H0
-	 PjWCQaPbry3VdFB3DgSFN+W/N2fAVjOeiJzxKhJVAm5VduWoQnQfj7Is+OyuCW4w+S
-	 dfy8qimchMSGQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
+	 MIME-Version; b=OPOqlJvf6fNxxpmZJhpnXkEDpuLqtthgpr1D8Bfp9LL6LK3tAuxJNWv1z3jETQp7FpqshuL+M7+m1pA48zYEmdBqK1EIp0YSZJDCmGZObQjh4ZUzHWFSHiWxSVmLmfNxbRx4meyeKL92AH4QYiJCF+gy+gvo4AEbZy6xY2gyNz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WJtRiNKZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775474507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cP5EVArCawQIz7cxWEYg9C3osdTcwWJT1kUDvk6U14I=;
+	b=WJtRiNKZtse6gFcyWNNH2diPRfFgivCUUsPtw5FdlTSikv/q+gsKRSRdVNK+98vlWCwZyk
+	QwEB7VITceJh/8pJTFst4yMG+fMm8S5XogPbcjJ0MKlPuT90n6wkGWDI4bGvn+H+sgtQXZ
+	LCsS4nQvqGbW7KqnTSnCERos31Nb0pU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-387-ACMuyeuWO_SqXKnXjyWWrA-1; Mon,
+ 06 Apr 2026 07:21:44 -0400
+X-MC-Unique: ACMuyeuWO_SqXKnXjyWWrA-1
+X-Mimecast-MFC-AGG-ID: ACMuyeuWO_SqXKnXjyWWrA_1775474502
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B65A619560A7;
+	Mon,  6 Apr 2026 11:21:42 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.51])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9718A300019F;
+	Mon,  6 Apr 2026 11:21:38 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: netdev@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org,
+	jesse.brandeburg@intel.com,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
 	stable@vger.kernel.org
-Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] ASoC: soc-core: call missing INIT_LIST_HEAD() for card_aux_list
-Date: Mon,  6 Apr 2026 07:05:45 -0400
-Message-ID: <20260406110553.3783076-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260406110553.3783076-1-sashal@kernel.org>
-References: <20260406110553.3783076-1-sashal@kernel.org>
+Subject: [PATCH net 3/3] iavf: drop netdev lock while waiting for MAC change completion
+Date: Mon,  6 Apr 2026 13:20:57 +0200
+Message-ID: <20260406112057.906685-4-jtornosm@redhat.com>
+In-Reply-To: <20260406112057.906685-1-jtornosm@redhat.com>
+References: <20260406112057.906685-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19.11
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[renesas.com,kernel.org,gmail.com,perex.cz,suse.com,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233369-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233371-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,renesas.com:email]
-X-Rspamd-Queue-Id: 4C7BC3A30F4
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74FF13A3153
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+After commit ad7c7b2172c3 ("net: hold netdev instance lock during sysfs
+operations"), iavf_set_mac() is called with the netdev instance lock
+already held.
 
-[ Upstream commit b9eff9732cb0f86a68c9d1592a98ceab47c01e95 ]
+The function queues a MAC address change request and then waits for
+completion while holding this lock. However, the watchdog task that
+processes admin queue commands (including MAC changes) also needs to
+acquire the netdev lock to run.
 
-Component has "card_aux_list" which is added/deled in bind/unbind aux dev
-function (A), and used in for_each_card_auxs() loop (B).
+This creates a lock contention scenario:
+1. iavf_set_mac() holds netdev lock and waits for MAC change
+2. Watchdog needs netdev lock to process the MAC change request
+3. Watchdog blocks waiting for lock
+4. MAC change times out after 2.5 seconds
+5. iavf_set_mac() returns -EAGAIN
 
-	static void soc_unbind_aux_dev(...)
-	{
-		...
-		for_each_card_auxs_safe(...) {
-			...
-(A)			list_del(&component->card_aux_list);
-		}			     ^^^^^^^^^^^^^
-	}
+This particularly affects VFs during initialization when enslaved to a
+bond. The first VF typically succeeds as it's already fully initialized,
+but subsequent VFs fail as they're still progressing through their state
+machine and need the watchdog to advance.
 
-	static int soc_bind_aux_dev(...)
-	{
-		...
-		for_each_card_pre_auxs(...) {
-			...
-(A)			list_add(&component->card_aux_list, ...);
-		}			     ^^^^^^^^^^^^^
-		...
-	}
+Fix by temporarily dropping the netdev lock before waiting for MAC change
+completion, allowing the watchdog to run and process the request, then
+re-acquiring the lock before returning.
 
-	#define for_each_card_auxs(card, component)	\
-(B)		list_for_each_entry(component, ..., card_aux_list)
-						    ^^^^^^^^^^^^^
+This is safe because:
+- The MAC change request is already queued before we drop the lock
+- iavf_is_mac_set_handled() just checks filter state, doesn't modify it
+- We re-acquire the lock before checking results and returning
 
-But it has been used without calling INIT_LIST_HEAD().
-
-	> git grep card_aux_list sound/soc
-	sound/soc/soc-core.c:           list_del(&component->card_aux_list);
-	sound/soc/soc-core.c:           list_add(&component->card_aux_list, ...);
-
-call missing INIT_LIST_HEAD() for it.
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87341mxa8l.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ad7c7b2172c3 ("net: hold netdev instance lock during sysfs operations")
+cc: stable@vger.kernel.org
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-LLM Generated explanations, may be completely bogus:
-
-Wait - the current mainline code (after this commit was applied) already
-has the fix. The diff in the commit shows `snd_soc_dapm_alloc` context,
-but the current code doesn't have it. That means between the commit and
-now, `snd_soc_dapm_alloc` was removed. In any case, this is a one-line
-addition that can easily be adapted for any stable tree.
-
-Now let me complete the synthesis.
-
----
-
-## Complete Analysis
-
-### PHASE 1: COMMIT MESSAGE FORENSICS
-
-**Step 1.1:** Subsystem: `ASoC: soc-core:`. Action: "call missing" (=
-fix missing initialization). Summary: Adds missing `INIT_LIST_HEAD()`
-for `card_aux_list` in the component initialization function.
-
-**Step 1.2:** Tags:
-- `Signed-off-by: Kuninori Morimoto` (author, primary ASoC contributor
-  and subsystem co-maintainer)
-- `Link:` to patch.msgid.link (patch discussion)
-- `Signed-off-by: Mark Brown` (ASoC subsystem maintainer)
-- No Fixes: tag (expected for our review)
-- No Cc: stable (expected)
-- No Reported-by (the author found this through code inspection)
-
-**Step 1.3:** The commit message clearly explains the bug:
-`card_aux_list` is used in `list_add`/`list_del` operations during aux
-device bind/unbind, and iterated via `for_each_card_auxs()`, but was
-never initialized with `INIT_LIST_HEAD()`. The `git grep` output proves
-the field is used but never initialized.
-
-**Step 1.4:** This is NOT a hidden bug fix - it's an explicit
-initialization bug fix. The "call missing" language is direct.
-
-### PHASE 2: DIFF ANALYSIS
-
-**Step 2.1:** Single file changed: `sound/soc/soc-core.c`, +1 line.
-Single function modified: `snd_soc_component_initialize()`.
-
-**Step 2.2:** Before: `card_aux_list` member of `snd_soc_component` was
-never initialized. After: it's properly initialized via
-`INIT_LIST_HEAD()` alongside the other list heads in the same
-initialization function.
-
-**Step 2.3:** Bug category: **Uninitialized data / missing
-initialization**. The `card_aux_list` `list_head` structure was zeroed
-by `kzalloc` but never properly initialized. A proper `list_head`
-requires `next` and `prev` to point to itself (not be NULL). Operations
-like `list_empty()` check `head->next == head`, which returns false for
-a zeroed list (0 != &self). With `CONFIG_DEBUG_LIST` or
-`CONFIG_LIST_HARDENED`, list operations on uninitialized list heads will
-trigger warnings/BUGs.
-
-**Step 2.4:** Fix is trivially correct - adding one `INIT_LIST_HEAD()`
-call. Zero regression risk. Pattern matches exactly the surrounding
-code.
-
-### PHASE 3: GIT HISTORY
-
-**Step 3.1:** The buggy code was introduced in commit `495efdb01f89a`
-(v5.4, 2019) which consolidated list initializations into
-`snd_soc_component_initialize()` but missed `card_aux_list`. The
-`card_aux_list` field itself was added in commit `d2e3a1358c37c` (v4.10,
-2016).
-
-**Step 3.2:** No Fixes: tag to follow, but the root cause is
-`495efdb01f89a` which moved initialization but missed this list.
-
-**Step 3.3:** The author (Kuninori Morimoto) is the same person who
-wrote `495efdb01f89a` - he's fixing his own oversight.
-
-**Step 3.4:** Kuninori Morimoto is the primary ASoC contributor and
-effectively co-maintains the subsystem with Mark Brown.
-
-**Step 3.5:** No dependencies - this is a standalone one-line fix.
-
-### PHASE 4: EXTERNAL RESEARCH
-
-Lore was unavailable due to anti-bot protection. From MARC archive: only
-the author's patch and Mark Brown's application, no concerns raised.
-
-### PHASE 5: CODE SEMANTIC ANALYSIS
-
-**Step 5.1:** Modified function: `snd_soc_component_initialize()`
-**Step 5.2:** Called from: `snd_soc_register_component()`,
-`snd_soc_add_component()` callers, various driver probe functions (Intel
-AVS, catpt, MediaTek, STM32, topology tests).
-**Step 5.3:** The function initializes component lists and sets up the
-component structure.
-**Step 5.4:** Every ASoC component goes through this initialization
-path. Very widely used.
-**Step 5.5:** All other list heads (`dai_list`, `dobj_list`,
-`card_list`, `list`) are already initialized - `card_aux_list` was the
-only one missing.
-
-### PHASE 6: STABLE TREE ANALYSIS
-
-**Step 6.1:** The `snd_soc_component_initialize()` function exists in
-all active stable trees (v5.10+). The `card_aux_list` field exists since
-v4.10.
-
-**Step 6.2:** The context may differ slightly in older stable trees
-(e.g., `snd_soc_dapm_alloc` in the commit's context is not in current
-code). However, this is a one-line addition that can trivially adapt -
-just add `INIT_LIST_HEAD(&component->card_aux_list);` after the other
-INIT_LIST_HEAD calls.
-
-**Step 6.3:** No related fixes already in stable.
-
-### PHASE 7: SUBSYSTEM CONTEXT
-
-**Step 7.1:** Subsystem: ASoC (ALSA System on Chip) audio subsystem.
-Criticality: IMPORTANT - affects all systems using ASoC (most
-embedded/mobile audio, many laptops).
-
-**Step 7.2:** Very actively developed subsystem.
-
-### PHASE 8: IMPACT AND RISK ASSESSMENT
-
-**Step 8.1:** Affects all users of ASoC auxiliary devices (aux_dev).
-Common on embedded systems (Renesas, Samsung, Intel, MediaTek, STM
-platforms).
-
-**Step 8.2:** Triggered when a component is used as an auxiliary device.
-The uninitialized list could cause issues on: (1) systems with
-`CONFIG_DEBUG_LIST` or `CONFIG_LIST_HARDENED` enabled, (2) potential
-subtle memory corruption if `list_del` is called on a component whose
-`card_aux_list` was never properly linked.
-
-**Step 8.3:** Failure mode: With `CONFIG_LIST_HARDENED`, a `BUG()`
-(kernel crash). Without it, potential NULL pointer dereference or list
-corruption. Severity: HIGH.
-
-**Step 8.4:**
-- Benefit: HIGH - fixes a latent initialization bug that affects all
-  ASoC aux component users and prevents crashes/corruption
-- Risk: VERY LOW - single-line addition of `INIT_LIST_HEAD`, identical
-  pattern to adjacent code
-- Ratio: Strongly favorable for backport
-
-### PHASE 9: FINAL SYNTHESIS
-
-**Evidence FOR backporting:**
-- Fixes a real initialization bug present since 2016/2019
-- One-line, obviously correct fix
-- Zero regression risk
-- Pattern matches adjacent code exactly
-- Author is the subsystem co-maintainer who wrote the original code
-- Accepted by the ASoC maintainer (Mark Brown)
-- Affects all active stable trees
-- Prevents potential crashes with CONFIG_LIST_HARDENED/CONFIG_DEBUG_LIST
-- Standalone fix with no dependencies
-
-**Evidence AGAINST backporting:**
-- No user-reported crash (found by code inspection)
-- In normal operation with kzalloc-zeroed memory and no
-  CONFIG_DEBUG_LIST, the bug may be latent (components are typically
-  added to aux_comp_list before list_del is called)
-
-**Stable rules checklist:**
-1. Obviously correct and tested? **YES** - trivially correct one-line
-   init
-2. Fixes a real bug? **YES** - uninitialized list_head is a real bug
-3. Important issue? **YES** - can cause crashes with hardened list
-   checking, potential corruption
-4. Small and contained? **YES** - 1 line, 1 file
-5. No new features? **YES** - pure initialization fix
-6. Can apply to stable? **YES** - may need minor context adjustment
-
-### Verification:
-- [Phase 1] Parsed tags: Signed-off-by from author (Morimoto) and
-  maintainer (Brown), Link to msgid
-- [Phase 2] Diff analysis: +1 line adding
-  `INIT_LIST_HEAD(&component->card_aux_list)` in
-  `snd_soc_component_initialize()`
-- [Phase 3] git blame: INIT_LIST_HEAD block introduced in
-  `08ff7209faf21` (v5.9 era), moved by `495efdb01f89a` (v5.4 era)
-- [Phase 3] git log -S: Confirmed `INIT_LIST_HEAD` for `card_aux_list`
-  was NEVER present in the kernel before this commit
-- [Phase 3] `card_aux_list` field introduced in `d2e3a1358c37c` (v4.10,
-  2016) - bug present since then
-- [Phase 5] `snd_soc_component_initialize()` called from
-  `snd_soc_register_component()` and multiple driver probes
-- [Phase 6] `snd_soc_component_initialize()` confirmed present in v5.10,
-  v5.15, v6.1, v6.6, v6.12 via `git merge-base`
-- [Phase 6] Component allocated via `devm_kzalloc` at soc-core.c:2929,
-  meaning fields are zeroed but not properly initialized as list heads
-- [Phase 8] Failure mode: BUG() with CONFIG_LIST_HARDENED, potential
-  NULL deref without it. Severity HIGH.
-- UNVERIFIED: Could not access lore.kernel.org discussion due to anti-
-  bot protection
-
-**YES**
-
- sound/soc/soc-core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 23ba821cd759d..c9a6471661ad7 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -2849,6 +2849,7 @@ int snd_soc_component_initialize(struct snd_soc_component *component,
- 	INIT_LIST_HEAD(&component->dobj_list);
- 	INIT_LIST_HEAD(&component->card_list);
- 	INIT_LIST_HEAD(&component->list);
-+	INIT_LIST_HEAD(&component->card_aux_list);
- 	mutex_init(&component->io_mutex);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index dad001abc908..6281858e6f3c 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1068,10 +1068,14 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
+ 	if (ret)
+ 		return ret;
  
- 	if (!component->name) {
++	netdev_unlock(netdev);
++
+ 	ret = wait_event_interruptible_timeout(adapter->vc_waitqueue,
+ 					       iavf_is_mac_set_handled(netdev, addr->sa_data),
+ 					       msecs_to_jiffies(2500));
+ 
++	netdev_lock(netdev);
++
+ 	/* If ret < 0 then it means wait was interrupted.
+ 	 * If ret == 0 then it means we got a timeout.
+ 	 * else it means we got response for set MAC from PF,
 -- 
 2.53.0
 
