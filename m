@@ -1,311 +1,186 @@
-Return-Path: <stable+bounces-233373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFB0Afum02n8jwcAu9opvQ
-	(envelope-from <stable+bounces-233373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 14:28:43 +0200
+	id mD9CImqn02klkAcAu9opvQ
+	(envelope-from <stable+bounces-233374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 14:30:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5897F3A3476
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 14:28:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E17613A3493
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 14:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C98513011862
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 12:28:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04ED4301DCD8
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 12:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB193346BE;
-	Mon,  6 Apr 2026 12:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8293332694F;
+	Mon,  6 Apr 2026 12:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aR+7BghB";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="vW3JMdO5"
+	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="exUuEimw"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7CD2D97A6
-	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 12:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775478518; cv=fail; b=mmE2AqU94yvNoc0+nBaFtlcJjA3zkofMlPTJeA1GyieNylP+jyGEcs7TBc/cWcS5qKWEYtoGgF0Iw5vBjPgDdb4sh29Ou25/M1u1XBRMLVTCsvsHxBOtwK86cpNyWdFMFOCT/nbQ7zD8UJqqcnwjUVABG1g5+B1z7TF8eowYqLM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775478518; c=relaxed/simple;
-	bh=ZOBCXXDbQXScmd9ZGjF0PcblXiZpyNN7rWAU+krSeRQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=rOnGA1qMJVfl3oq9z/NM8BBY+LdTVRAxbJFh+u2msJURi5Ad5GE7GhuiUVfMvnEGMyQR/9b31B5TK6khGg8rcbTVB52XWFUWbKXaDjy+ga0bup6fdhWh9v+Vk3VBGe1KpgUmuAjSa7kO5296qX01lxK/U67TaWjFHja0KxfrAVk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aR+7BghB; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=vW3JMdO5; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6360F15M1854119;
-	Mon, 6 Apr 2026 12:27:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=u/MdhQlSRkd/2BLE1ob0UlbtiCZO6DY6cImdwfFf7Ho=; b=
-	aR+7BghByWE243UADnIkkvEwKZWq1lLVsmhLfztnO0Lwqg/XXnFMsUOT1RvyQbL0
-	zJ1csf4xd30FNPum5SC6QWKwujKIwQ6dZo+WBHgxvwimZ8UCJcSrdHlZALG836L6
-	QI6FuBBI1E89mEqfwCrK1oWYYRKrKnXMwBo3A7eB2N1sEcmmzYu4z77rxKpwbQkP
-	iqBexdEMtlxKfAfhFf4czcLVlZORkQ1E+rhwWupT37VlFLFGX0ciRA/Z4kbvW5X0
-	aVS6k7jnjJ7fkwip7LCakk0+x5b96Y/JhKa+1350WEwbX6BjTy6tL3VW9EyImGOY
-	5qVz/aaHl+ctghBrCaRKoA==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dath5tjf9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 06 Apr 2026 12:27:54 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 636CAqDL040287;
-	Mon, 6 Apr 2026 12:27:54 GMT
-Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012003.outbound.protection.outlook.com [40.107.209.3])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4das38ewva-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 06 Apr 2026 12:27:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cAEwhGvpS1F9pFMwXeTbs+OL1+P6nB6XINLR6OaeSqXd710yej/NGflLM9+anpPFVEb7ayByrHDKKvS5zeXSNu3gbM8K/XcNxfDWd0aI31gq4rMpepl7qED5yBXqAjY4VezfqlUEsnkGFdC/QXFamG/I0B8Mdugk4avnlmWg3pgdfPSy6KxYQQvV2YrP98+8q5czYFwo3xBemR4g7jmHN+Z+Q2BwjVub6hJ/48hI2jP9H8s0TxwR4WT7z4QdWSTV5D8njx9KGDdvaKc5xSm8MkzyLff2RuYI0+eyxMYDmQljWF+PqTDYcWJbc/PSf0NJk+856HuNo9kVZyefPe++IQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u/MdhQlSRkd/2BLE1ob0UlbtiCZO6DY6cImdwfFf7Ho=;
- b=tupl5lSv/5J0PRn0/UM5IxUx/cx0DUyOQi4KQeBReNCnZVn6qdJwDmo1SgAuCOVB8PEJAuI46o3gKjUoTffPQXX0P2NUHFG74rIZ6zHX5ol48nl7HLeYhQkI45B2bYAnaiHA9n5vxZtQnpAJi2iYVC4icayRGD6iQnzKcPgi/PXtA7xMj5hMAT+fRGhHe770iny7gh3M/p00013vxQYOL23ZN9Ki+PpGWaGe/9XvH7wNukukjoZeVGQ1YThe3rX3J8NCpwdkZYhlh9ebr1Efd2xGb7pATVP+fFuwoO2kah6g18f7IglbJ2HPVLFqr5uPRYwoNTfNm24SILXRQRYnDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u/MdhQlSRkd/2BLE1ob0UlbtiCZO6DY6cImdwfFf7Ho=;
- b=vW3JMdO5iBln1DfaqRX7YOCKP0vYyCrJtVIPR+lqm0I+Cc+BNq6jdzvUy9lEyoXbrSD/gK8f9onS5DdGz03fgIY1DTNaboydmMjo4YMPDCXqgWlJ3J9Ve9EJ5Ysq4rYEVhLLBRsDeyuupVtROm8R5C7SJTP2tC0kcyoegBSb+N8=
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
- by DM4PR10MB6813.namprd10.prod.outlook.com (2603:10b6:8:10b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.19; Mon, 6 Apr
- 2026 12:27:46 +0000
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a%6]) with mapi id 15.20.9769.018; Mon, 6 Apr 2026
- 12:27:46 +0000
-Message-ID: <28a3e1fc-b6e7-4d92-b949-7218a74b7231@oracle.com>
-Date: Mon, 6 Apr 2026 17:57:32 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 118/265] LoongArch/orc: Use RCU in all users of
- __module_address().
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, WANG Xuerui <kernel@xen0n.name>,
-        loongarch@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Petr Pavlu <petr.pavlu@suse.com>,
-        Vegard Nossum <vegard.nossum@oracle.com>
-References: <20260312201018.128816016@linuxfoundation.org>
- <20260312201022.504112831@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20260312201022.504112831@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN4P287CA0073.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:26b::9) To DS3PR10MB997700.namprd10.prod.outlook.com
- (2603:10b6:8:347::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36AB3368B0
+	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 12:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775478596; cv=none; b=Vx15sjPAR8l5IzA1u0lBJOZplAYj+g+0hbmA+YZEqzFrp5OWgEC6RoLRp9tFVFVg1nI3GtYXoOFdOUGlBUvtLN6Fshw4H8mzmVK++yNBMyZSYgi++AerqzZeLd8KoIWbCNZNikhRGAz3LJH32jmwUTDRUsplekIpqLHp944Wl2g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775478596; c=relaxed/simple;
+	bh=emRCJyacTnSloKRUbPyqntMfWZ5pD3jQ3P79nsNsgmA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UN8G2+7wJBM3Q8QxPfpCGzNGeQl4stD2ZNRUSEXnjVEqmhfwWzvN2M2FCQQuQNilPw1n5tB3e5nuAg/EbpJgLVDNTXkQm39P7OCHFZ/Nd07RgSGIo5qw3XgSya3LOW4oN+KB1sApaEHbv32pCWfvK/iD+7qRvjKSaX9dxkPERqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=exUuEimw; arc=none smtp.client-ip=49.212.198.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
+Received: from x1 (13.3.31.150.dy.iij4u.or.jp [150.31.3.13])
+	(authenticated bits=0)
+	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 636CTo3j080947
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 6 Apr 2026 21:29:52 +0900 (JST)
+	(envelope-from kohei@enjuk.jp)
+DKIM-Signature: a=rsa-sha256; bh=3OLGYuWueXpAxw4Xwkb7rNrd6HvEWShajiH3l89z4JE=;
+        c=relaxed/relaxed; d=enjuk.jp;
+        h=From:Message-ID:To:Subject:Date;
+        s=rs20251215; t=1775478592; v=1;
+        b=exUuEimwu+3LRSzYhW/E37U5h2mO6GNiVvGmtd5dpgX/MBhWFIRJCLhZbiiqOJDa
+         0qTY6LkjTmVPE4ycnrw8xHlErDa4Lvy/wPiI9NPbZmm7QLuh53Ji8h9boEEkZZrY
+         +8bgVkBfITYXHXECH6t6DfGXldKysJhXceZOAdcFCR5B3sNyXYkf2vTTYTwZZXKg
+         yhR6XtxA81mCXQqIQ1iN0W6C9XTvQhqs14dxL4cnl8XI13cHGjwWN0Jk954uLN7L
+         TjoH7yRrykcjXmbrOW1BOFKavYCawN7taZrMrAR7Siup5IhIzBBQWWOwHAPTl3e8
+         CvTnHpqFoo5nVy8PO9RyUA==
+Date: Mon, 6 Apr 2026 21:29:50 +0900
+From: Kohei Enju <kohei@enjuk.jp>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH net 3/3] iavf: drop netdev lock while waiting for MAC
+ change completion
+Message-ID: <adOjGCms-5PBuNte@x1>
+References: <20260406112057.906685-1-jtornosm@redhat.com>
+ <20260406112057.906685-4-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|DM4PR10MB6813:EE_
-X-MS-Office365-Filtering-Correlation-Id: e956972a-496b-40ad-30c4-08de93d7e8a3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	UvkGxPSsVe2rk3ZwFUnq2MXoBYDDBCN62A0BM3aJ8Xr1xpQkZd0pQ0jouOfM7ppIyz/IiOPcJh8GeBlgIhpKP5yGLIXWIJwU1bFqsj6j+a1fo6GSeIPxLXPqm2RD3aOa+dtFiVjqIZujR31a9vP8VYeZFIjQjZUaz28SuaZ7q6tWGUkU1JzK4pE9/HnPMcdnC3C1iNPrMn3BB4ZdtDm7dLPZWDKC+cModMND9x77Wr9fZ/nRWWvPybqX6z9b5jLg1xAQJBJ5tYnUl3p9i9B298r7m0GRtbnC9y8b7b6+AAf47P3UPP3LkGyT+JPWdVwwmBBgvLY/ALcwcYwuYRm/7rs95wcw81pzBOpsHeWg4rNY3sCl1pgGzsNFy8CaScQRoTm5O9HQA1a9juSVhFKt0LZc8oflLoURV469tTUcBG4sVM4NZxcNdzBK8P2Ue+WnCQpD+p8GT6QER8nBQM1NbpG9hZgopxnI8lrnh0UjJvo/PquY9Lde1GyVVrb1GuNL3FCWfOp8cwIWGZ/Q+aI9tmynnmjlkDxH8wngmKH3TEBfujBfRc8qit2P7KqQqeBfR1Jy8oGX8FSr1x3dwMfvLhlj+7seoH1B1gjnyGfBtlaVaV4SY1ZHJFoBunfpX1I0u6Au2HxdyX62zQJk2F3tUbE3KoV8bLKr10POL9ONzTw96fFgoEE8iuKsYKUnSMD2KWC30xlRLXOhYpu9/7gmJSDbqL/UkjiHoVFauBc5sx5JcIlRrBxNobW/xvauiho+
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SjY1NDVxWjJraVAveUtKUkhUSmxrQjI0LzB2YTI0YzJPYkIvVWZIRGxhRERR?=
- =?utf-8?B?L0dPOWt5SE5YaGkrOWNXRkp2eXBIUGN5SmU3WW5wNVhrOEcrWkREdFhyRG9t?=
- =?utf-8?B?Z3lWTXpWY09uN3dCUndqZUlpS1RDQlFNbEZXTXJyamhtaC95dXRVTEk3V09W?=
- =?utf-8?B?ZHJCbTg1M1QrL3hUZlFwbElwWDJHdU41Z202blV5MHFKcTdPVEtpY05IUGtV?=
- =?utf-8?B?NElrVDA0L09mOUN2QlN6ZDNuMHkzRHV6YmxCRmNSOEh5UWZvaHdZNVljdnh1?=
- =?utf-8?B?eVJpWk9DYVZ4TVF0ZU5MZ1VaYjNxTkQ4dFBvS2NvOTlCMzFqVzdqVC9kVHI1?=
- =?utf-8?B?eGZYekZJSXlxeGdldis0amoxVU5WMmt4V0RBamZvQWdnSzlaWTgyUWtiL3pH?=
- =?utf-8?B?OHZRcWlNWWNaU1RTcmVHNVJEcXpDaTBCVXJ2ZExlUEdNU21YK2hJYkR6UWVp?=
- =?utf-8?B?SmVuVlFHWUdhOHduNnhtYXd6Y1NRUjFTamFwTmFLVXFOWWJaVUs2UUl4dlM4?=
- =?utf-8?B?NklDa05FRUY2MStvT2Q5N1JTN1orbjZSQisrYVA4Y09raXpTcUxTM3JnQlI1?=
- =?utf-8?B?Qk5Nb3Q4dVRmZ1RYYkZWTjY5cHpHL3lSRDA5dExqL3hFTmZMc3l2UDhZWnBu?=
- =?utf-8?B?OWNlZE9vZkpibWlzTTJBYklMS0ZLNDVPWS9lazdqZ0J1YmZpcUlRTnBrSFJm?=
- =?utf-8?B?QW1BUlFrdFhUOXZ3b2ZVMDdRNHBtaWNFeXdNWFJHWjBwbG9hZllVdk1OMmtm?=
- =?utf-8?B?bWpMV0c0cHJJb2hReGlvVnVPMGVTeExYUkVkeTZnM08rVDV4NmQ5TWI1ZFNS?=
- =?utf-8?B?ODV2ZjB0ZjVGV3pzbVJVT01Gd3hucjZ4NE8reXZMeC9NRTFBalBmUFUzOEpk?=
- =?utf-8?B?N0J0Tm0rVThDQXcySkhBbXowVDhrNE9SbmtqUjFHS3VEQ2lDOWFaUURoM2Yz?=
- =?utf-8?B?ajl1c0Y3NStCb1QvNEJWQmdtcUZ5WDFWMHYrUlAvSmUxTkVPbE11cUgrZzl6?=
- =?utf-8?B?RzUvQzhnZmZEMW8vbUlnVG9md3gyd2hDcmZpcXBvNnJDVkM1MHNEd0Y1c09M?=
- =?utf-8?B?RTR6N0tPemQ1S2dPbmFTOFc3T3Y5VDM1d2dmUmRMYWl0MXp3WGxWckxqRFZE?=
- =?utf-8?B?bmxNVUlXQm5TMnNEMm5EQW9PL0lDRWp3OTFTdHZ1Tm9QbXlOWXZCNkU3RHV1?=
- =?utf-8?B?V2JNbGhEeW1WRXBLZGNjYjB1V0ZRNStIVzlsZWJqMTR5MUZicHEwTnpuY2JF?=
- =?utf-8?B?SHkzOXg0dmZzZjdOYWgrODZ4cHVZYmtYd1lUbDJ0alhWZnJJbVhubVRuL05x?=
- =?utf-8?B?UEdZZnhnWWE5SkpHN3JNaUVGVVhoSE52SDc3THdhMFZadERXTlBhdVdYQlRW?=
- =?utf-8?B?ZnJNNno0SUpwZno2TGtYaGxKWlJTN25hOVdpSmpZK2EyZ0llcXlpRnpmY1NK?=
- =?utf-8?B?dFh6TXM3ZXpGRFMyWWNVKzZ6WFM2VG9wMjlPclJvckFXeDE0UHdwdEJaNWVV?=
- =?utf-8?B?citSUDlmWlk1TldpTzR1MUVvdkpPb25UUVp6bDVvRjl1SDJneldCUFJoUis2?=
- =?utf-8?B?dDZzY0UyQTRhQW1lL1JBU3QybCt1WktwcjVZSzMrdDV6TWxPNnk3T1l1MStP?=
- =?utf-8?B?VkhWamMxaTFTZFBVYjdlRDJQSUNrU0tCM2xPOXlaVW9aUHRhQzlycmt2SnND?=
- =?utf-8?B?R0VwdElXdU45VEJwZExlUk9ZbjNhVUpmdmxGRTNzUHRXRDBlVEI3Tmc2NnEz?=
- =?utf-8?B?N0VSMkFnR1FPTVZTWVRIL3lTZnhiZDJ3VEVGZ1B2V2plcVBkczdTbGRjaGl6?=
- =?utf-8?B?MHlIOXZNRGQyemJGQk9HMVM1Q3JraVQ1UzQ2R2FCcGwwRDl6YjExbHB4TVN3?=
- =?utf-8?B?TDM5cHFmTzVqL2dOa1h4Ti9ZdVIyWjdKNDNjZkRCTHN1Qk9JMFNZZGFrWGJN?=
- =?utf-8?B?OUwyRzFIa3hhZG82NnpGZXRmZGVXOUh3UzV6SUNsZWEzckZHMUM1ZFpVSm9t?=
- =?utf-8?B?LysxWGR3T1lHZ1ovN0tOREhVdnFoSVU1MXI1YzhhbEQyNUhrTzJJOGJxWFN1?=
- =?utf-8?B?Wmc4RWd5bW5xdDJzNTlBNGFHUzVtbWNib3NIUmdBbU51QnJsTStmSVl2OXFu?=
- =?utf-8?B?NEY2RUZMWjNwamVQazFjSE5HV0tKZXp6ZTN1NUptblZrRXJXVlZIS3hsNDUz?=
- =?utf-8?B?S3lSdHV6ckt1ZDJJQ1NVOHRBSHFuNFVoY3hRM0poZXNsR1ZRNnRMaitsTlFz?=
- =?utf-8?B?TWpGeDdPanlRWkpWU3p0SE1OVHhnNFNtVm5iNkt3djN6SkpkYlhYSzNPVGsz?=
- =?utf-8?B?dmVYZElMV01UbDBpZWhKRGkySXZDWjd1YW1WOTNFT3k3ZzVOWE14aFlxMzBK?=
- =?utf-8?Q?OP5i8YeYc+sqNRbDIMvO4oFIpiPoOE0PWjDUm?=
-X-Exchange-RoutingPolicyChecked:
-	XHgjQxshK92o7x/ae+O956UQaIHNMgihCZcFpoBBsSGO+5gJVCwj/BYPitqPTTN/QZfd7qIfBeMY48Qpvt/l3zrsFdIveJRpe2SK+fQM7Vx25+ZSVAW+E776dJ4xVHn2geSEB3BjbqjNCgheufiRLnS9VexAJ2gqcYPJTL8tDgiFzbkY2qjX9vPH54wZo2yXeyPU+mhpehXjHDSXACQAiLKQe2udJm2MXeJQfBxAFpQ4ZK6PdLkDhOu0yC7O9xqwhK30XKuzqtXAoZ93541WM7JkW7uzt2xNsksYzdGaqTOaz5eQLhddaRBOHYfcxmkamfVrd1s18pm8ZqS5QQmNGQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	eBWV3X3xLueBr3tsXV53idq37IUv/pw5PB/dppIPxO436aWWNg7sRLF3pglqhpV8GDBh52i4w44n56x0x39aNmdoK5QHL5OWMtBSRhe6ijl5OqXxBlgdisrkxPMS52Sio6FjRBDFyAPxIz7q2YXhi+96v1pRuRYBCC/9rGZOZmxuxiTk4e3iR1gZNRKyV+P+hAe8++qLNc1Jle58aRmpZ3lNWuQSCXHMbv41hKLQiHEuCaZvy7cO9Aja/mkrAjpqfjZhaUDvEAI3apQ9wSb56nhW8GGGGD2PkuB1M/HakV9b/fv3mZinDl9wMABkPo34U9gsUL6SGiwtTEvIblM49cr04d3FP4D31PRFLq8p6paOMKspsueuL+e6FT13tr9E3vV+Tl9lzI99VGeRAmmP0P0lZIJ7Ela4DACy0OUmEK951dsjwsV259EawSHQHFMVfkJ5GNg3XSt+FcIUTyGcq/G5o79iu68cSi9s0sd3pbRJ2N6JfvGtTMrkRPlUKj9q2bd6AjgXuLpsPEn9N14ueTqrSKvk4M2bpk6DeHrTNFHTf6sQIymdw1Ta/J4P1T2gVO98vo/++1OGgvp2QIzxLLIh+C2/eMRkXGeTAUTA9zg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e956972a-496b-40ad-30c4-08de93d7e8a3
-X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 12:27:46.6892
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sjrJnKBI8Hpw70qrhd5kwiT15a2/dh6gs+fcX7D5BcOgpmX52qOdQg4t8qJpufG20BdhcirfWO62qrAIFmh2R685S/LMlb0wGoJQWeT2LVgoYLyBBEuBd2K6XM6pfu/k
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6813
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-06_03,2026-04-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
- suspectscore=0 spamscore=0 mlxscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2603050001 definitions=main-2604060122
-X-Proofpoint-GUID: IZbgfBUmBwQFEwoxCA5Axy-cP-zw7Mt2
-X-Proofpoint-ORIG-GUID: IZbgfBUmBwQFEwoxCA5Axy-cP-zw7Mt2
-X-Authority-Analysis: v=2.4 cv=GvFPO01C c=1 sm=1 tr=0 ts=69d3a6ca cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=EIcjfB9IiI4px24ztqRk:22 a=VwQbUJbxAAAA:8
- a=JfrnYn6hAAAA:8 a=iox4zFpeAAAA:8 a=IPEAgJOmAkQX9OS7OPIA:9 a=QEXdDO2ut3YA:10
- a=1CNFftbPRP8L7MoqJWF3:22 a=WzC6qhA0u3u7Ye7llzcV:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA2MDEyMiBTYWx0ZWRfX0D9KwsF+/+iZ
- 4IVUlx3MRmdGrBp4Kw3Q1RXypxTRoNWDoC+m5f5KhrRibKPjazG6T6Ptt8k2URhDy7q34GKffeL
- g7FrDDkpJJjxDJe6eSUxbmrmKB6rZGm8aju9TJQXSvlSHZHL/cSA/rpun8lUrWziU2fjt8PbSO3
- AjMrcni5+3qbkM0C3fbvJZoee/uuchMqeXXUcJGgQKl0pkU5eaVQMXHQoraQ5SxRU1ohtBbBRQh
- Qql8y89Yv+GA17HPYJ3QMcaSMm6/gYUg9ke4NkumUjInj8WjyJ2Kj0PvbQFBgsPWUamFuTOHPeh
- quiw3oVi0cPxBlx0gf1PrVKCzMGaWVBrJomkXV0khE6PhjdHbtBoCzO4tU+2r77Izy9FaijfaBA
- egMKZGIHyiY/0Y+7FSX21SqZVgqGQkqwPj5tbOU/9aKZ0W2Kzo5o07Ic7TdMWbx5eP9ARS8+RhD
- XF2rl1JaDEDx6Er5r0A==
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260406112057.906685-4-jtornosm@redhat.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[enjuk.jp,none];
+	R_DKIM_ALLOW(-0.20)[enjuk.jp:s=rs20251215];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233373-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,suse.com:email,xen0n.name:email,oracle.onmicrosoft.com:dkim];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233374-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[enjuk.jp:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kohei@enjuk.jp,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 5897F3A3476
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E17613A3493
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi all,
-
-On 13/03/26 01:38, Greg Kroah-Hartman wrote:
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
+On 04/06 13:20, Jose Ignacio Tornos Martinez wrote:
+> After commit ad7c7b2172c3 ("net: hold netdev instance lock during sysfs
+> operations"), iavf_set_mac() is called with the netdev instance lock
+> already held.
 > 
-> ------------------
+> The function queues a MAC address change request and then waits for
+> completion while holding this lock. However, the watchdog task that
+> processes admin queue commands (including MAC changes) also needs to
+> acquire the netdev lock to run.
 > 
-> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> This creates a lock contention scenario:
+> 1. iavf_set_mac() holds netdev lock and waits for MAC change
+> 2. Watchdog needs netdev lock to process the MAC change request
+> 3. Watchdog blocks waiting for lock
+> 4. MAC change times out after 2.5 seconds
+> 5. iavf_set_mac() returns -EAGAIN
 > 
-> [ Upstream commit f99d27d9feb755aee9350fc89f57814d7e1b4880 ]
+> This particularly affects VFs during initialization when enslaved to a
+> bond. The first VF typically succeeds as it's already fully initialized,
+> but subsequent VFs fail as they're still progressing through their state
+> machine and need the watchdog to advance.
 > 
-> __module_address() can be invoked within a RCU section, there is no
-> requirement to have preemption disabled.
+> Fix by temporarily dropping the netdev lock before waiting for MAC change
+> completion, allowing the watchdog to run and process the request, then
+> re-acquiring the lock before returning.
 > 
-> Replace the preempt_disable() section around __module_address() with
-> RCU.
+> This is safe because:
+> - The MAC change request is already queued before we drop the lock
+> - iavf_is_mac_set_handled() just checks filter state, doesn't modify it
+> - We re-acquire the lock before checking results and returning
 > 
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: loongarch@lists.linux.dev
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Link: https://lore.kernel.org/r/20250108090457.512198-19-bigeasy@linutronix.de
-> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-> Stable-dep-of: 055c7e75190e ("LoongArch: Handle percpu handler address for ORC unwinder")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Fixes: ad7c7b2172c3 ("net: hold netdev instance lock during sysfs operations")
+> cc: stable@vger.kernel.org
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 > ---
->   arch/loongarch/kernel/unwind_orc.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
+>  drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
-> index 471652c0c8653..59809c3406c03 100644
-> --- a/arch/loongarch/kernel/unwind_orc.c
-> +++ b/arch/loongarch/kernel/unwind_orc.c
-> @@ -399,7 +399,7 @@ bool unwind_next_frame(struct unwind_state *state)
->   		return false;
->   
->   	/* Don't let modules unload while we're reading their ORC data. */
-> -	preempt_disable();
-> +	guard(rcu)();
->   
->   	if (is_entry_func(state->pc))
->   		goto end;
-> @@ -514,14 +514,12 @@ bool unwind_next_frame(struct unwind_state *state)
->   	if (!__kernel_text_address(state->pc))
->   		goto err;
->   
-> -	preempt_enable();
->   	return true;
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> index dad001abc908..6281858e6f3c 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> @@ -1068,10 +1068,14 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
+>  	if (ret)
+>  		return ret;
 >  
+> +	netdev_unlock(netdev);
+> +
+>  	ret = wait_event_interruptible_timeout(adapter->vc_waitqueue,
+>  					       iavf_is_mac_set_handled(netdev, addr->sa_data),
+>  					       msecs_to_jiffies(2500));
+>  
+> +	netdev_lock(netdev);
+> +
 
+Hi Jose, thank you for the fix and detailed explanation.
 
-Looks like this is dependent on commit: 7d9dda6f628f ("module: Allow 
-__module_address() to be called from RCU section."), so I feel pulling 
-in this patch without the mentioned missing prerequisite is wrong. Can 
-you please help review this ?
+I don't have a great solution for this issue, but dropping the netdev
+lock taken by the networking core in the driver callback might not look
+acceptable.
 
-This is also part of a feature series in 
-https://lore.kernel.org/all/20250108090457.512198-13-bigeasy@linutronix.de/
+FYI, Petr reported the same type of locking issue in
+ndo_change_mtu(), and the v1 approach was really similar to this one.
+https://lore.kernel.org/intel-wired-lan/20260202155813.3f8fbc27@kernel.org/
 
-Thanks,
-Harshit
+IIUC, the issue was eventually fixed by completing the reset
+synchronously in the same context as ndo_change_mtu(), instead of
+dropping the netdev lock and waiting for reset_task.
+https://lore.kernel.org/intel-wired-lan/20260211191855.1532226-1-poros@redhat.com/
 
->   err:
->   	state->error = true;
->   
->   end:
-> -	preempt_enable();
->   	state->stack_info.type = STACK_TYPE_UNKNOWN;
->   	return false;
->   }
+If that applies here as well, maybe iavf_set_mac() needs a similar
+approach, e.g. progressing the relevant virtchnl request/completion
+synchronously with the netdev lock held, rather than dropping the lock
+here?
 
+>  	/* If ret < 0 then it means wait was interrupted.
+>  	 * If ret == 0 then it means we got a timeout.
+>  	 * else it means we got response for set MAC from PF,
+> -- 
+> 2.53.0
+> 
 
