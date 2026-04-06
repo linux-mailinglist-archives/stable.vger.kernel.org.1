@@ -1,167 +1,172 @@
-Return-Path: <stable+bounces-233426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHG2J7z402k4ogcAu9opvQ
-	(envelope-from <stable+bounces-233426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 20:17:32 +0200
+	id uLo4GMT402k4ogcAu9opvQ
+	(envelope-from <stable+bounces-233427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 20:17:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0E93A61D2
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 20:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DBD3A61D9
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 20:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE52B30547F8
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 18:14:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 755F8302C5F0
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 18:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B483909BD;
-	Mon,  6 Apr 2026 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0483914FA;
+	Mon,  6 Apr 2026 18:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XqZnYQpd"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pNYe3k2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B4938F225;
-	Mon,  6 Apr 2026 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA8D38B151;
+	Mon,  6 Apr 2026 18:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775499266; cv=none; b=sNoOQAhCTb+nFdF6mMuFRShVAIhzbVsgaXll/g6btgLqk97YJ81a9RN7BFcn9eBvl2axova6KDaPlgKWW8Jt9TeetJv3px02SP8wf5tDOylz4GBmMOO3yFZfTJjJV/QJ+UuUSfEEZwSSEq714zleDcnNSla9kMWBR4ZfdJ0uBr8=
+	t=1775499268; cv=none; b=Pr7I4fpH6ElLNsZ1/91jhDVU8bvgwMYkWAMIC86VZYBgnEqX+YGbmHucmpAR4oAcfI7mWkKibiuEASpVrOe8rwplJLr/eJreJfxqTGItPR5YvaxnMjQB/QgrXyXffFbqAyK4d0k2Bzsqt0qYASamBl8YrdGIKjkgLsDu4BqD4zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775499266; c=relaxed/simple;
-	bh=ELqwEKtKuo2HvRhGypY4lanBnc/s6u6+NMS9yriKHqg=;
-	h=Date:To:From:Subject:Message-Id; b=htXXzyP4nwTLYE6iI03Yrl6L8fc2qrzDF73Cvp1PQp31NKErg9bPGhI7nnd2NaLS48F6bsRtnIQzeuy9MzQkEstehf/zRHdOztliU8fSB8IXMxRzCuOyU88Eoq90TOgG7rZk4TsyXgGMl8l7mYa2XDhsbraDYXFoA/grobu4jac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XqZnYQpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9D7C4CEF7;
-	Mon,  6 Apr 2026 18:14:26 +0000 (UTC)
+	s=arc-20240116; t=1775499268; c=relaxed/simple;
+	bh=+Gm+/6HacbzoW6TB8Iw0vbddQJwbmOqQUW23cnjV89g=;
+	h=Date:To:From:Subject:Message-Id; b=rrsHFEFT5/f02bPv/HgDkSLZNoCM/WtyCFLrj0mv82WoBD/9lXfsbkw6bxdo5HXBproR4kPaq7HY+bzxpJPdcHAnRD2nEGcwmU8vAuRGe8rF3thcdqgKrOT1ubb6Fjx8+Xg3iXxeXkn9W8hGvPD9lIGVzNQg1zS7uMiFhN81Lnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pNYe3k2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF27CC4CEF7;
+	Mon,  6 Apr 2026 18:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775499266;
-	bh=ELqwEKtKuo2HvRhGypY4lanBnc/s6u6+NMS9yriKHqg=;
+	s=korg; t=1775499267;
+	bh=+Gm+/6HacbzoW6TB8Iw0vbddQJwbmOqQUW23cnjV89g=;
 	h=Date:To:From:Subject:From;
-	b=XqZnYQpddXCalyBpReyYGbXZi+UrJwRIPLL7GRFVyWvayg7dC9lnv5KicdJn5sLmj
-	 LnebHPVpxSBFunT2/KjC6i11wqp605pTbo4DWQqbmir+0mrWVzbVTlq5SXE986HuZw
-	 6NJblU/+JR5w5lYUiavzDqefOr9+ccT2Pj8y9vto=
-Date: Mon, 06 Apr 2026 11:14:25 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+	b=pNYe3k2MrpGoIQP6k5IDuYbqdsCeL0zklSBH/7G1ynZlYcRlUzRfsQoZKOkheMUSz
+	 4sVzpEetcna3sQb65rRcjIsj+n4JGiser3nrcUcxNvTl6E8d857rGhFl8HxJZLSvN3
+	 KaF+F8lRsvaMR/39O5hWqhV1vxIoc+PY5VXCmTLA=
+Date: Mon, 06 Apr 2026 11:14:27 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-damon-stat-deallocate-damon_call-failure-leaking-damon_ctx.patch removed from -mm tree
-Message-Id: <20260406181426.1A9D7C4CEF7@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] ocfs2-fix-out-of-bounds-write-in-ocfs2_write_end_inline.patch removed from -mm tree
+Message-Id: <20260406181427.BF27CC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233426-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-233427-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,evilplan.org,suse.com,live.cn,linux.alibaba.com,linux-foundation.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 2B0E93A61D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 36DBD3A61D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+     Subject: ocfs2: fix out-of-bounds write in ocfs2_write_end_inline
 has been removed from the -mm tree.  Its filename was
-     mm-damon-stat-deallocate-damon_call-failure-leaking-damon_ctx.patch
+     ocfs2-fix-out-of-bounds-write-in-ocfs2_write_end_inline.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
-Date: Thu, 2 Apr 2026 06:44:17 -0700
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: ocfs2: fix out-of-bounds write in ocfs2_write_end_inline
+Date: Fri, 3 Apr 2026 14:38:30 +0800
 
-damon_stat_start() always allocates the module's damon_ctx object
-(damon_stat_context).  Meanwhile, if damon_call() in the function fails,
-the damon_ctx object is not deallocated.  Hence, if the damon_call() is
-failed, and the user writes Y to “enabled” again, the previously
-allocated damon_ctx object is leaked.
+KASAN reports a use-after-free write of 4086 bytes in
+ocfs2_write_end_inline, called from ocfs2_write_end_nolock during a
+copy_file_range splice fallback on a corrupted ocfs2 filesystem mounted on
+a loop device.  The actual bug is an out-of-bounds write past the inode
+block buffer, not a true use-after-free.  The write overflows into an
+adjacent freed page, which KASAN reports as UAF.
 
-This cannot simply be fixed by deallocating the damon_ctx object when
-damon_call() fails.  That's because damon_call() failure doesn't guarantee
-the kdamond main function, which accesses the damon_ctx object, is
-completely finished.  In other words, if damon_stat_start() deallocates
-the damon_ctx object after damon_call() failure, the not-yet-terminated
-kdamond could access the freed memory (use-after-free).
+The root cause is that ocfs2_try_to_write_inline_data trusts the on-disk
+id_count field to determine whether a write fits in inline data.  On a
+corrupted filesystem, id_count can exceed the physical maximum inline data
+capacity, causing writes to overflow the inode block buffer.
 
-Fix the leak while avoiding the use-after-free by keeping returning
-damon_stat_start() without deallocating the damon_ctx object after
-damon_call() failure, but deallocating it when the function is invoked
-again and the kdamond is completely terminated.  If the kdamond is not yet
-terminated, simply return -EAGAIN, as the kdamond will soon be terminated.
+Call trace (crash path):
 
-The issue was discovered [1] by sashiko.
+   vfs_copy_file_range (fs/read_write.c:1634)
+     do_splice_direct
+       splice_direct_to_actor
+         iter_file_splice_write
+           ocfs2_file_write_iter
+             generic_perform_write
+               ocfs2_write_end
+                 ocfs2_write_end_nolock (fs/ocfs2/aops.c:1949)
+                   ocfs2_write_end_inline (fs/ocfs2/aops.c:1915)
+                     memcpy_from_folio     <-- KASAN: write OOB
 
-Link: https://lkml.kernel.org/r/20260402134418.74121-1-sj@kernel.org
-Link: https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org [1]
-Fixes: 405f61996d9d ("mm/damon/stat: use damon_call() repeat mode instead of damon_callback")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.17.x
+So add id_count upper bound check in ocfs2_validate_inode_block() to
+alongside the existing i_size check to fix it.
+
+Link: https://lkml.kernel.org/r/20260403063830.3662739-1-joseph.qi@linux.alibaba.com
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+62c1793956716ea8b28a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=62c1793956716ea8b28a
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/stat.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ocfs2/inode.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/mm/damon/stat.c~mm-damon-stat-deallocate-damon_call-failure-leaking-damon_ctx
-+++ a/mm/damon/stat.c
-@@ -245,6 +245,12 @@ static int damon_stat_start(void)
- {
- 	int err;
+--- a/fs/ocfs2/inode.c~ocfs2-fix-out-of-bounds-write-in-ocfs2_write_end_inline
++++ a/fs/ocfs2/inode.c
+@@ -1505,6 +1505,16 @@ int ocfs2_validate_inode_block(struct su
+ 			goto bail;
+ 		}
  
-+	if (damon_stat_context) {
-+		if (damon_is_running(damon_stat_context))
-+			return -EAGAIN;
-+		damon_destroy_ctx(damon_stat_context);
-+	}
++		if (le16_to_cpu(data->id_count) >
++		    ocfs2_max_inline_data_with_xattr(sb, di)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode #%llu: inline data id_count %u exceeds max %d\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le16_to_cpu(data->id_count),
++					 ocfs2_max_inline_data_with_xattr(sb, di));
++			goto bail;
++		}
 +
- 	damon_stat_context = damon_stat_build_ctx();
- 	if (!damon_stat_context)
- 		return -ENOMEM;
-@@ -261,6 +267,7 @@ static void damon_stat_stop(void)
- {
- 	damon_stop(&damon_stat_context, 1);
- 	damon_destroy_ctx(damon_stat_context);
-+	damon_stat_context = NULL;
- }
- 
- static int damon_stat_enabled_store(
+ 		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
+ 			rc = ocfs2_error(sb,
+ 					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
 
-mm-damon-core-fix-damon_call-vs-kdamond_fn-exit-race.patch
-mm-damon-core-fix-damos_walk-vs-kdamond_fn-exit-race.patch
-mm-damon-core-validate-damos_quota_goal-nid-for-node_mem_usedfree_bp.patch
-mm-damon-core-validate-damos_quota_goal-nid-for-node_memcg_usedfree_bp.patch
-mm-damon-core-use-time_in_range_open-for-damos-quota-window-start.patch
-docs-admin-guide-mm-damon-reclaim-warn-commit_inputs-vs-param-updates-race.patch
-docs-admin-guide-mm-damon-lru_sort-warn-commit_inputs-vs-param-updates-race.patch
+ocfs2-validate-dx_root-extent-list-fields-during-block-read.patch
+ocfs2-remove-empty-extent-list-check-in-ocfs2_dx_dir_lookup_rec.patch
+ocfs2-validate-extent-block-list-fields-during-block-read.patch
+ocfs2-remove-redundant-l_next_free_rec-check-in-__ocfs2_find_path.patch
 
 
