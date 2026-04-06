@@ -1,199 +1,161 @@
-Return-Path: <stable+bounces-233347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WP/CA3wl02lxfAcAu9opvQ
-	(envelope-from <stable+bounces-233347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 05:16:12 +0200
+	id 2Ol6O9Q102l4fwcAu9opvQ
+	(envelope-from <stable+bounces-233348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 06:25:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667A63A14B2
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 05:16:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4E63A16A4
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 06:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD8E630063B1
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 03:15:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 60C5B300720E
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 04:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C4134F246;
-	Mon,  6 Apr 2026 03:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45107353EE5;
+	Mon,  6 Apr 2026 04:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qMppkvCP"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="gfg5nhOG"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C155234887C
-	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 03:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E6F30EF86;
+	Mon,  6 Apr 2026 04:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775445339; cv=none; b=jCmruRm4fpxAnyz54cmT4LnwdHL/DSzMlj2N9COUJd8klKx/a8lS2p7uR3eiAahqkq+KJKvM5fqHSqWC/9KdtI2Mz5y6s32hHPgPOem74+quaUQI2bFFaxMxUW9PYKXihmscZGxbIV8AEtkva3xzgZMVK9s/Lx351nx9axHq8hU=
+	t=1775449536; cv=none; b=YIOqK/YRr1ojfBrPrfBsR/7NLPlKzxcERxabFcdQ2JXG+lnnD6i3zpS8FSmkl3bF/nqCiPwUlD67YFdwmnoyeDfMxtyZRCt+w8yjle6omR9xkXUe7g/wMPqmojfy4xV/qisio/BYGXeiIfUnSx/BWMWWDgROYicTsEZ5K0cEwpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775445339; c=relaxed/simple;
-	bh=VnKcRhtnXmg3esTxutvPiewGjUarJqAT10kc4eGYok4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i0JE7TRaqHjJHlzNHgmXyHVM5agqdmjsCI++i6nVmfgROb3GyLDIjareRj8zjBk9Fy262N+PRlqYwQjn9Ipz+lvDRv9mRA2zVj3qbmcHJkmT6A1QabCMyS0IffpHgDMDFqCSwxBW7IAxYn2ymVQhGVlp7T4B3i7mwSVjLykdWNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qMppkvCP; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775445324;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=pCU31PuVLxnkqkH0Q/gfVj7NOZB8sp1JJeyWvm+opn0=;
-	b=qMppkvCPiJYh+m7P00Vul4Jo2KsY7FUMAzJ7JHiQ0AAMkRusLuXvkSBInX0nzNiYSiQzSi
-	5b+yway8muyT9Hoxbv+KK5va66DvhgtG8FHI00LQa7y1qzFsZpRn2Eb+FmaX8rQRzaDKxI
-	l/HKg/HyeNDl9AP70zAEPbpR2S9VYWo=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: mptcp@lists.linux.dev
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	stable@vger.kernel.org,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] mptcp: fix slab-use-after-free in __inet_lookup_established
-Date: Mon,  6 Apr 2026 11:15:10 +0800
-Message-ID: <20260406031512.189159-1-jiayuan.chen@linux.dev>
+	s=arc-20240116; t=1775449536; c=relaxed/simple;
+	bh=QTIo9VGHz2wxJFdeg6IU5XJtReN5xn5GrLbtzmLjYuw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nz+6EB8/skHhMAZDl0BApoZgqCfwv+ZLYyQsch6R3B6ESp5gwv+XCNH+pgjWPH3hdewchcge2Guzk7yvliBmKphJW9ImeencEWq7mSx7J+Huo9VsUJJ6EpJR79MXL0N1U1zstgxG2AZmIlziTR26nfgiBAVCYQl6bQwzdB91f7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=gfg5nhOG; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [192.168.0.9] (unknown [4.194.122.144])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DD30820B710C;
+	Sun,  5 Apr 2026 21:18:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DD30820B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1775449110;
+	bh=B3diYHHGFQ5W0wbem6CFVCqplPIswsX1zrqcobDFojs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gfg5nhOG3DXzUjyf5Mct9OtDkjEPW9J8TLfEbUwO+vgA/fksEievinNPSuF0jyHy/
+	 CHoRd8jJe2hICR2N/VnJAZJzV5IwY1NaKfwX+TmCP534GwZRYiDzSUGN074dKwweei
+	 pjpPVxrEzKgZp8NxiqxnrVZ1S506JsY64nJZT0CM=
+Message-ID: <3e8a38f3-d309-4bd6-8378-260079aa7024@linux.microsoft.com>
+Date: Mon, 6 Apr 2026 09:48:25 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
+ trigger path
+To: Alex Williamson <alex@shazbot.org>
+Cc: "Gupta, Nipun" <nipun.gupta@amd.com>, nikhil.agarwal@amd.com,
+ pieter.jansen-van-vuuren@amd.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+ <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
+ <20260401122254.363d93c2@shazbot.org>
+ <12005a02-a1cd-46ca-8782-c727a7d5e5c6@linux.microsoft.com>
+ <20260402081632.554fa467@shazbot.org>
+Content-Language: en-US
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+In-Reply-To: <20260402081632.554fa467@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233347-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233348-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[3];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
-X-Rspamd-Queue-Id: 667A63A14B2
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 2F4E63A16A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The ehash table lookups are lockless and rely on
-SLAB_TYPESAFE_BY_RCU to guarantee socket memory stability
-during RCU read-side critical sections. Both tcp_prot and
-tcpv6_prot have their slab caches created with this flag
-via proto_register().
 
-However, MPTCP's mptcp_subflow_init() copies tcpv6_prot into
-tcpv6_prot_override during inet_init() (fs_initcall, level 5),
-before inet6_init() (module_init/device_initcall, level 6) has
-called proto_register(&tcpv6_prot). At that point,
-tcpv6_prot.slab is still NULL, so tcpv6_prot_override.slab
-remains NULL permanently.
 
-This causes MPTCP v6 subflow child sockets to be allocated via
-kmalloc (falling into kmalloc-4k) instead of the TCPv6 slab
-cache. The kmalloc-4k cache lacks SLAB_TYPESAFE_BY_RCU, so
-when these sockets are freed without SOCK_RCU_FREE (which is
-cleared for child sockets by design), the memory can be
-immediately reused. Concurrent ehash lookups under
-rcu_read_lock can then access freed memory, triggering a
-slab-use-after-free in __inet_lookup_established.
+On 02-04-2026 19:46, Alex Williamson wrote:
+> On Thu, 2 Apr 2026 10:14:24 +0530
+> Prasanna Kumar T S M <ptsm@linux.microsoft.com> wrote:
+> 
+>> On 01-04-2026 23:52, Alex Williamson wrote:
+>>> On Wed, 1 Apr 2026 15:11:17 +0530
+>>> "Gupta, Nipun" <nipun.gupta@amd.com> wrote:
+>>>    
+>>>> On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
+>>>>> Add validation to ensure MSI is configured before accessing cdx_irqs
+>>>>> array in vfio_cdx_set_msi_trigger(). Without this check, userspace
+>>>>> can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
+>>>>> with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
+>>>>> ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
+>>>>>
+>>>>> The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
+>>>>> sets config_msi to 1 only when called through the EVENTFD path. The
+>>>>> trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
+>>>>> done, but there was no enforcement of this call ordering.
+>>>>>
+>>>>> This matches the protection used in the PCI VFIO driver where
+>>>>> vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
+>>>>>
+>>>>> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+>>>>
+>>>> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
+>>>
+>>> It's an improvement, but I think it also highlights that interrupt
+>>> setup for vfio-cdx devices is racy.  I think it should adopt a mutex on
+>>> the vfio_cdx_device that is acquired with a guard in
+>>> vfio_cdx_set_irqs_ioctl().  That would make config_msi stable for this
+>>> test.  Thanks,
+>>>
+>>> Alex
+>>
+>> This patch is fixing a specific problem. User space can make VFIO_*
+>> calls in a specific order to trigger NULL pointer access. This will not
+>> get fixed with a mutex.
+> 
+> I'm not saying the fix is wrong, I'm saying it's incomplete.  This
+> fixes the specific case where config_msi is not set prior to the ioctl,
+> but it doesn't consider concurrency where config_msi may be set when
+> tested, but race with a call to vfio_cdx_msi_disable().  I think the fix
+> needs both the validation of config_msi and serialization via a mutex
+> such that the test remains valid through the whole ioctl path.  Thanks,
+> 
+> Alex
 
-Fix this by splitting the IPv6-specific initialization out of
-mptcp_subflow_init() into a new mptcp_subflow_v6_init(), called
-from mptcp_proto_v6_init() before protocol registration. This
-ensures tcpv6_prot_override.slab correctly inherits the
-SLAB_TYPESAFE_BY_RCU slab cache.
+Thanks for the suggestion. Yes, the concurrency issue exists. It exists 
+even before this patch and it has to be fixed.
 
-Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- net/mptcp/protocol.c |  2 ++
- net/mptcp/protocol.h |  1 +
- net/mptcp/subflow.c  | 15 +++++++++------
- 3 files changed, 12 insertions(+), 6 deletions(-)
+The CDX folks will be able to do this faster than me as they have deep 
+expertise on this.
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 65c3bb8016f4..614c3f583ca0 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -4660,6 +4660,8 @@ int __init mptcp_proto_v6_init(void)
- {
- 	int err;
- 
-+	mptcp_subflow_v6_init();
-+
- 	mptcp_v6_prot = mptcp_prot;
- 	strscpy(mptcp_v6_prot.name, "MPTCPv6", sizeof(mptcp_v6_prot.name));
- 	mptcp_v6_prot.slab = NULL;
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 0bd1ee860316..ec15e503da8b 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -875,6 +875,7 @@ static inline void mptcp_subflow_tcp_fallback(struct sock *sk,
- void __init mptcp_proto_init(void);
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- int __init mptcp_proto_v6_init(void);
-+void __init mptcp_subflow_v6_init(void);
- #endif
- 
- struct sock *mptcp_sk_clone_init(const struct sock *sk,
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 6716970693e9..4ff5863aa9fd 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -2165,7 +2165,15 @@ void __init mptcp_subflow_init(void)
- 	tcp_prot_override.psock_update_sk_prot = NULL;
- #endif
- 
-+	mptcp_diag_subflow_init(&subflow_ulp_ops);
-+
-+	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
-+		panic("MPTCP: failed to register subflows to ULP\n");
-+}
-+
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
-+void __init mptcp_subflow_v6_init(void)
-+{
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
- 	 * structures for v4 and v6 have the same size. It should not changed in
- 	 * the future but better to make sure to be warned if it is no longer
-@@ -2204,10 +2212,5 @@ void __init mptcp_subflow_init(void)
- 	/* Disable sockmap processing for subflows */
- 	tcpv6_prot_override.psock_update_sk_prot = NULL;
- #endif
--#endif
--
--	mptcp_diag_subflow_init(&subflow_ulp_ops);
--
--	if (tcp_register_ulp(&subflow_ulp_ops) != 0)
--		panic("MPTCP: failed to register subflows to ULP\n");
- }
-+#endif
--- 
-2.43.0
-
+Thanks,
+Prasanna Kumar
 
