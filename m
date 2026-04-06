@@ -1,187 +1,173 @@
-Return-Path: <stable+bounces-233378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAABC1a402mqkwcAu9opvQ
-	(envelope-from <stable+bounces-233378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 15:42:46 +0200
+	id qCRAOau702mslAcAu9opvQ
+	(envelope-from <stable+bounces-233379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 15:56:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C105F3A3A44
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 15:42:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E88953A3BD8
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 15:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB6933007898
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 13:42:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C94273006030
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 13:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6F01474CC;
-	Mon,  6 Apr 2026 13:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sD1bEh8w"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDF5372671;
+	Mon,  6 Apr 2026 13:56:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF92A1F192E;
-	Mon,  6 Apr 2026 13:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E3D33C532
+	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 13:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775482963; cv=none; b=gtXkLnP9czRqg7j31KLmWTLBeQVTCUZ4pjyFttORpHBACQ25Y39CcsmWGCnRDwsJ5o9quFrkkbakS6opo3TCGYk/uI+UbWuxNZdvIhkreMc0oqmhssPN8wsthukLIw6aMbKD5cYAIzBRbSODUDL/yx/V96YiBK8spk8VTUxOtz8=
+	t=1775483814; cv=none; b=kLzuXFgAX2Hc6n3EyXbdFFQ6h4ZjnFJ+xWSqNl7P9zEf2gnYuPJV5scyyD7dJZMScUVskCSf+iOXLC2WRsUn0ZYlJ0SaoZhuMqiBz7VUa30VkgLXj0MR7ugSEBuk+Y3eRyA0aUBoFKKNW1dRQR9oWYiHvR/lCdVMyeBuQVd4/vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775482963; c=relaxed/simple;
-	bh=jANf0IObKTsu14cOcfV1CkIyvtSt/n5DZrs4qMON/tM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XsfgWGzmoxt+h6/ZfZ5jFeStpJvvVCbj6Nuqy9vtOXFm9zcOpA2R+VEX/p1bWE5+icC/dGdIji/puRAZdwMuRQ2BoNSq++TzsN9YaiGXVHdodwZLy0J0NNt1TPIW84uhmjbH4PWxryGwv1dkMQGfX4IvYoOGyGDykd9M6PXdtKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sD1bEh8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09004C4CEF7;
-	Mon,  6 Apr 2026 13:42:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775482962;
-	bh=jANf0IObKTsu14cOcfV1CkIyvtSt/n5DZrs4qMON/tM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sD1bEh8wpg/TJ3IOolGUORPcsGKlVZTYdefVGhBtzM2h7knswCIKlTYDv7PSO70BL
-	 Fr8QxYa4m925aDzF422fQZmW82TGBGByV2IjIKWv24J5HZ7EZpSdMgu4asbmJepTPG
-	 mRChSfBQ54+zmPOnDWn8EnGLGVFlgkkGRCQhvuyYEi7k1npvSLwQEwDblCUBLgs0UO
-	 vGVTvnPUneQaeqHrI1YB4X3y6sxhMrtbEqcRePpWQmfOx0E2hI0frnBnEflBVuWV0w
-	 lvinEn0h1E/OcnY/ETkoB2V6KVWCzSsQjkNNJvVgeagvG19n4/btwUgBR/Se4Trn8f
-	 ci6t2e7lWCOiQ==
-Message-ID: <63935f53-5701-48d1-815c-02695479bc47@kernel.org>
-Date: Mon, 6 Apr 2026 15:42:36 +0200
+	s=arc-20240116; t=1775483814; c=relaxed/simple;
+	bh=hSrL++7BFKBB2qjBSL6tIqon+XilxF4IH2+bdS1/RC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WjEBcmyjm9ciObaQ/5CkMnoEBDQJxxRPcAg7gh4GTtN/Ppzlh1CrSXk+nOlBkBcD8cH3F2FJ1qKx6kUIVmsHG92KF9b4jG+xzJnr3iR45uyr+YLKZ2KWpuGbx5YXQg3WQ/SDCUHnwa29iowO55LfiOmEtRqLyDzBUQF5dxTIwbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=lvkasz.us; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=lvkasz.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-b941762394aso509961566b.1
+        for <stable@vger.kernel.org>; Mon, 06 Apr 2026 06:56:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775483811; x=1776088611;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OQtUgZBlTwv+xDoaiKb2N7gT+/y7cOGsVK3GMzZHFqc=;
+        b=Gj/FTSMWOOMYB+uJhb+HXUHwo4z0VYBNfg9T9Ui5/uujF58c+wFO+tw+bDtMNAF0ax
+         XgAcOuOT/hoYrsHQiwQ/omwSAd26vG/ARXb4Oziqx/PW7QR4FVulJtu5OVYp+x9RBbe/
+         Cp/a7taduYqju/7TPTqEtHiFvRwi8sn/acGTIaR601R9xD/potH5ozA3ExsA3Wn9eMFx
+         b6W9pLgak1soh6uNtVXvTsuX8iaoGr5B7E3lmRe0E90xhp3JdOCK/2Hy5XxNW/z1VAwS
+         tf7llaVQuKIi92O3lupZigiFDcQSQQv1492r19s3F+gPgfCCs8kh2krsZfKPjW25xF43
+         Ti6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVvNYTi31jxPqG435r+8wcwrRlaRiJk3BVxbVtke47nmOxnLiY9V6EK0KtC+LnCExuUWSCD8zM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycRbRVeNoMHjxf/IthyRoo3GdRW9ncrtbK14UMVMObs4aHEv80
+	yKPUuJTJPI01pW79VofPIHKQc4RGBHwmrT2ANiyKso9RRJwjycb+PErf
+X-Gm-Gg: AeBDievX0VIbZuqW7cMf6U8LM6wb15LS2Sca9Ct1jeTV25OP/LKAnMWEXnO5sWWd79s
+	FPQvtXFsZq4/mmFgspH7cgmTNArwXiinC4SXuIPiDZ/3gyGtFVAlXmsDqJqbxj2gs1I4VlwJ66Y
+	Kpwu1fW3bw3R+u5zyJyGPyWd1BpAfSJUaX+Y5s+hXTRsMDxk/D9g/kBNpc6CEVujQb2byQPDDer
+	5nsyAVKBEQUhZlORzdICFIcFY2h2Dw1DO26T9cdMu88EPoSu62zl/lDk6ugxC3qdZiAVrh5klWP
+	06U/gsfrjpA4SfKIok0VZkyNATrA4k6dudzxax/tFJl/K4xXtqR+Pz7x+fuZHc8B1gwZbcOc0br
+	q5zPTwoscdno3OLaDA5/Ygp/u2un5fHM/1GB+G/DYaoey6FWVawL548V8C0ywqor6ElU7Q6/MEZ
+	NGRNSOxwRyFPEQwk4NegG7kyJ5BvFDWiz93c2BbpnvCjXHdjJOMkHHXrVy39TuXA==
+X-Received: by 2002:a17:907:2d9f:b0:b9c:b3b5:bbf0 with SMTP id a640c23a62f3a-b9cb3b5bc8fmr276106266b.6.1775483810728;
+        Mon, 06 Apr 2026 06:56:50 -0700 (PDT)
+Received: from aorus.localdomain (5.185.72.109.ipv4.public.orange.pl. [5.185.72.109])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3cac0e1asm472921266b.27.2026.04.06.06.56.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2026 06:56:50 -0700 (PDT)
+From: =?UTF-8?q?=C5=81ukasz=20Lebiedzi=C5=84ski?= <kernel@lvkasz.us>
+To: vkoul@kernel.org
+Cc: neil.armstrong@linaro.org,
+	krzk@kernel.org,
+	alim.akhtar@samsung.com,
+	andre.draszik@linaro.org,
+	pritam.sutar@samsung.com,
+	kauschluss@disroot.org,
+	johan@kernel.org,
+	ivo.ivanov.ivanov1@gmail.com,
+	linux-phy@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?utf-8?q?=C5=81ukasz=20Lebiedzi=C5=84ski?= <kernel@lvkasz.us>,
+	stable@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH v2] phy: exynos5-usbdrd: fix USB 2.0 HS PHY tuning values for Exynos7870
+Date: Mon,  6 Apr 2026 15:56:27 +0200
+Message-ID: <20260406135627.234835-1-kernel@lvkasz.us>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net v2] mptcp: fix slab-use-after-free in
- __inet_lookup_established
-Content-Language: fr
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: stable@vger.kernel.org, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, mptcp@lists.linux.dev
-References: <20260406031512.189159-1-jiayuan.chen@linux.dev>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260406031512.189159-1-jiayuan.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.54 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[lvkasz.us : SPF not aligned (relaxed), No valid DKIM,quarantine];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233378-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_CC(0.00)[linaro.org,kernel.org,samsung.com,disroot.org,gmail.com,lists.infradead.org,vger.kernel.org,lvkasz.us,oss.qualcomm.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233379-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kernel@lvkasz.us,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.813];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C105F3A3A44
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lvkasz.us:email,lvkasz.us:mid]
+X-Rspamd-Queue-Id: E88953A3BD8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Jiayuan,
+The existing PHYPARAM0 tuning values for Exynos7870 are incorrect,
+causing the USB 2.0 PHY to fail high-speed negotiation and fall back
+to full-speed (12Mbps) operation.
 
-On 06/04/2026 05:15, Jiayuan Chen wrote:
-> The ehash table lookups are lockless and rely on
-> SLAB_TYPESAFE_BY_RCU to guarantee socket memory stability
-> during RCU read-side critical sections. Both tcp_prot and
-> tcpv6_prot have their slab caches created with this flag
-> via proto_register().
-> 
-> However, MPTCP's mptcp_subflow_init() copies tcpv6_prot into
-> tcpv6_prot_override during inet_init() (fs_initcall, level 5),
-> before inet6_init() (module_init/device_initcall, level 6) has
-> called proto_register(&tcpv6_prot). At that point,
-> tcpv6_prot.slab is still NULL, so tcpv6_prot_override.slab
-> remains NULL permanently.
-> 
-> This causes MPTCP v6 subflow child sockets to be allocated via
-> kmalloc (falling into kmalloc-4k) instead of the TCPv6 slab
-> cache. The kmalloc-4k cache lacks SLAB_TYPESAFE_BY_RCU, so
-> when these sockets are freed without SOCK_RCU_FREE (which is
-> cleared for child sockets by design), the memory can be
-> immediately reused. Concurrent ehash lookups under
-> rcu_read_lock can then access freed memory, triggering a
-> slab-use-after-free in __inet_lookup_established.
-> 
-> Fix this by splitting the IPv6-specific initialization out of
-> mptcp_subflow_init() into a new mptcp_subflow_v6_init(), called
-> from mptcp_proto_v6_init() before protocol registration. This
-> ensures tcpv6_prot_override.slab correctly inherits the
-> SLAB_TYPESAFE_BY_RCU slab cache.
+Fix TXVREFTUNE (transmitter voltage reference) from 14 to 3,
+TXRESTUNE (transmitter impedance) from 3 to 2, and SQRXTUNE
+(squelch threshold) from 6 to 5. Also explicitly set
+TXPREEMPPULSETUNE to 0, which was previously missing from the
+tuning table despite being included in the register mask.
 
-Thank you for this v2, it looks good to me:
+All values are derived from the vendor kernel for the Samsung
+Galaxy A6 (SM-A600FN), as no public hardware documentation is
+available for the Exynos7870 USB DRD PHY. With these corrections,
+the PHY successfully negotiates high-speed (480Mbps) operation.
 
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 588d5d20ca8d ("phy: exynos5-usbdrd: add exynos7870 USBDRD support")
+Cc: stable@vger.kernel.org
+Tested-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Łukasz Lebiedziński <kernel@lvkasz.us>
+---
+ drivers/phy/samsung/phy-exynos5-usbdrd.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-@Netdev maintainers: this patch can be applied in 'net' directly.
-
-Cheers,
-Matt
+diff --git a/drivers/phy/samsung/phy-exynos5-usbdrd.c b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+index 5a181cb4597e..8711a3b62c8e 100644
+--- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
++++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+@@ -1958,13 +1958,14 @@ const struct exynos5_usbdrd_phy_tuning exynos7870_tunes_utmi_postinit[] = {
+ 			      PHYPARAM0_TXPREEMPAMPTUNE | PHYPARAM0_TXHSXVTUNE |
+ 			      PHYPARAM0_TXFSLSTUNE | PHYPARAM0_SQRXTUNE |
+ 			      PHYPARAM0_OTGTUNE | PHYPARAM0_COMPDISTUNE),
+-			     (FIELD_PREP_CONST(PHYPARAM0_TXVREFTUNE, 14) |
++			     (FIELD_PREP_CONST(PHYPARAM0_TXVREFTUNE, 3) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXRISETUNE, 1) |
+-			      FIELD_PREP_CONST(PHYPARAM0_TXRESTUNE, 3) |
++			      FIELD_PREP_CONST(PHYPARAM0_TXRESTUNE, 2) |
++			      FIELD_PREP_CONST(PHYPARAM0_TXPREEMPPULSETUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXPREEMPAMPTUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXHSXVTUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXFSLSTUNE, 3) |
+-			      FIELD_PREP_CONST(PHYPARAM0_SQRXTUNE, 6) |
++			      FIELD_PREP_CONST(PHYPARAM0_SQRXTUNE, 5) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_OTGTUNE, 2) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_COMPDISTUNE, 3))),
+ 	PHY_TUNING_ENTRY_LAST
 -- 
-Sponsored by the NGI0 Core fund.
+2.53.0
 
 
