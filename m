@@ -1,350 +1,378 @@
-Return-Path: <stable+bounces-233382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDwGFDTC02mqlgcAu9opvQ
-	(envelope-from <stable+bounces-233382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:24:52 +0200
+	id KLe2Ix7H02kZmAcAu9opvQ
+	(envelope-from <stable+bounces-233385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:45:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E743A3F86
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:24:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065EF3A45F2
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF0443038CA0
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 14:22:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B71C6301FABE
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 14:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB69386547;
-	Mon,  6 Apr 2026 14:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D3F3822B3;
+	Mon,  6 Apr 2026 14:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VEr4Lfml"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="OLZpHYS+"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp-190a.mail.infomaniak.ch (smtp-190a.mail.infomaniak.ch [185.125.25.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31343803E9;
-	Mon,  6 Apr 2026 14:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CD8385507
+	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 14:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775485273; cv=none; b=K4Chpo5IGLoIMaQkw5hWeCNjAgoWMupQpeghZiOPhVXuMAv22FCmPJaVYcF67ASL/8Bq36ECmJZRSE9TxU/Uvza+lqM60fJ/yS5DKb/l/4FvQwjkXe6aGMLcOIIjb5AkBj+SVzVp58DaYa76W8DpJjMWpsFYbEiP0NPS7vxzzPE=
+	t=1775486688; cv=none; b=jnBCrdEebsIBzhb3RVB7nfz857lDgvAF4OWCCClMsI7PaQcv1grogKbAUnsGM9u3luft7ZF37VPUOXmSL2lzOZi2rdAG+WZVJbJq231Fa/sH7dF+p38WJM8cFuAhL9csjsR6w42IQOXBxaD4ajmSU4tawRqlOkGbHOuOF3FuG8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775485273; c=relaxed/simple;
-	bh=NlPY1wmoPDuqLyfrc221Y74GT+l5hGPZx3VoBnKHRIs=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=XUnsUJZGvpHMrTAoobc+q0b4HXtkVeITIj8OLSVX7DfuXd72fTIRpY4BWKZtFa4atoDcc+nrbii+K8TMwv6/1CnoN58kj+VhA9mZlBt2Itmfzdp8XtpTW3gGSYZn32+nfNTxH9lZIDQScxhSfKMrF6beB/hih/YJWV3mmYizkcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VEr4Lfml; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775486688; c=relaxed/simple;
+	bh=ujga4dFI9dWwHaRfTSBdB+g7VWGx6035MIETE1656U8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pYnD92HQttvLLZjdU2pVq7/WX5ChsPIFkiCn1N5jqplcMHiMRyQ9g0a09G1o3Wc7DKi/IXp2FWq9xpS2nw+dpglD49GwDLf2DYV+w0eJ3FA+mpomMFRNxwNcZRkM1wAPR4L0QPurjnjLyoqHzxG5hCuKChgDQ1zTfnEyeAaJ5fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=OLZpHYS+; arc=none smtp.client-ip=185.125.25.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fqBkV22XWzVgb;
+	Mon,  6 Apr 2026 16:37:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1775486258;
+	bh=JRvB0HadKMRsR9F16YiSQx7UudPxyEJoOVF1nCr4teI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OLZpHYS+PzQZ3B5EAilPYE6RCi4iB5SbLBkj8urPEY2K3TU+nXf0Zt7ak86QOMZ1b
+	 ptnBXnvvz+3E4L1sNiiMIckmODliGbsFw5GV7wV/QkcOi82cKlTlk1fibB32vYNwe3
+	 tL7phBq2rPYhX4TGmMQdTUCVo5+H7XcOAodYyZus=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fqBkT4YC6zYLm;
+	Mon,  6 Apr 2026 16:37:37 +0200 (CEST)
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Jann Horn <jannh@google.com>,
+	Jeff Xu <jeffxu@google.com>,
+	Justin Suess <utilityemal77@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Matthieu Buffet <matthieu@buffet.re>,
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	Tingmao Wang <m@maowtm.org>,
+	kernel-team@cloudflare.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 10/17] landlock: Set audit_net.sk for socket access checks
+Date: Mon,  6 Apr 2026 16:37:08 +0200
+Message-ID: <20260406143717.1815792-11-mic@digikod.net>
+In-Reply-To: <20260406143717.1815792-1-mic@digikod.net>
+References: <20260406143717.1815792-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775485258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ufb+OfzZx201xbCL46vcsGz1STGMVK6+6YxNEx4s/o8=;
-	b=VEr4LfmlWLJGB+HAjT454gCj+fsy9nWNIP8caTukTcS7k8lwrp5OnZlMEJki9wFB9BhUr3
-	n/9eiCvIswjDqIeEAQVFNKx7JF2Hyl7vQv9rAz7emqDMeJzFHeYZicqtSAmAlHtM08a+lJ
-	bsf1Uij37QnQFukoppcEt79nUgC1hqY=
-Date: Mon, 06 Apr 2026 14:20:56 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Kunwu Chan" <kunwu.chan@linux.dev>
-Message-ID: <87add1dc9bb95dc50bc20ce5c8fbfe2999185dd3@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu 
- out of resampler_lock
-To: "Sonam Sanju" <sonam.sanju@intel.corp-partner.google.com>, "Sean 
- Christopherson" <seanjc@google.com>, "Paul E . McKenney"
- <paulmck@kernel.org>
-Cc: "Paolo Bonzini" <pbonzini@redhat.com>, "Vineeth Pillai"
- <vineeth@bitbyteword.org>, "Dmitry Maluka" <dmaluka@chromium.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, rcu@vger.kernel.org, "Sonam Sanju"
- <sonam.sanju@intel.com>
-In-Reply-To: <20260401142456.2632730-1-sonam.sanju@intel.corp-partner.google.com>
-References: <5194cf52-f8a8-4479-a95e-233104272839@linux.dev>
- <20260401142456.2632730-1-sonam.sanju@intel.corp-partner.google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
+X-Spamd-Result: default: False [0.05 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MIXED_CHARSET(0.71)[subject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233382-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FREEMAIL_CC(0.00)[digikod.net,google.com,gmail.com,kernel.org,efficios.com,buffet.re,huawei-partners.com,maowtm.org,cloudflare.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233385-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[digikod.net];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kunwu.chan@linux.dev,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	DKIM_TRACE(0.00)[digikod.net:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E1E743A3F86
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[digikod.net:dkim,digikod.net:email,digikod.net:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,audit_net.sk:url]
+X-Rspamd-Queue-Id: 065EF3A45F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-April 1, 2026 at 10:24 PM, "Sonam Sanju" <sonam.sanju@intel.corp-partner.=
-google.com mailto:sonam.sanju@intel.corp-partner.google.com?to=3D%22Sonam=
-%20Sanju%22%20%3Csonam.sanju%40intel.corp-partner.google.com%3E > wrote:
+Set audit_net.sk in current_check_access_socket() to provide the socket
+object to audit_log_lsm_data().  This makes Landlock consistent with
+AppArmor, which always sets .sk for socket operations, and with
+SELinux's generic socket permission checks.
 
+The socket's local and foreign address information (laddr, lport, faddr,
+fport) is logged by the shared lsm_audit.c infrastructure when the
+socket has bound or connected state.  Fields with zero values are
+suppressed by print_ipv4_addr()/print_ipv6_addr(), so the audit output
+is unchanged for the common case of bind denials on unbound sockets.
+For connect denials after a prior bind, the bound local address (laddr,
+lport) appears before the existing sockaddr fields (daddr, dest).
 
->=20
->=20From: Sonam Sanju <sonam.sanju@intel.com>
->=20
->=20On Wed, Apr 01, 2026 at 05:34:58PM +0800, Kunwu Chan wrote:
->=20
->=20>=20
->=20> Building on the discussion so far, it would be helpful from the SRC=
-U
-> >  side to gather a bit more evidence to classify the issue.
-> >=20
->=20>  Calling synchronize_srcu_expedited() while holding a mutex is gene=
-rally
-> >  valid, so the observed behavior may be workload-dependent.
-> >=20
->=20>  The reported deadlock seems to rely on the assumption that SRCU gr=
-ace
-> >  period progress is indirectly blocked by irqfd workqueue saturation.
-> >  It would be good to confirm whether that assumption actually holds.
-> >=20
->=20I went back through our logs from two independent crash instances and
-> can now provide data for each of your questions.
->=20
->=20>=20
->=20> 1) Are SRCU GP kthreads/workers still making forward progress when
-> >  the system is stuck?
-> >=20
->=20No. In both crash instances, process_srcu work items remain permanent=
-ly
-> "pending" (never "in-flight") throughout the entire hang.
->=20
->=20Instance 1 =E2=80=94 kernel 6.18.8, pool 14 (cpus=3D3):
->=20
->=20 [ 62.712760] workqueue rcu_gp: flags=3D0x108
->  [ 62.717801] pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D2=
- refcnt=3D3
->  [ 62.717801] pending: 2*process_srcu
->=20
->=20 [ 187.735092] workqueue rcu_gp: flags=3D0x108 (125 seconds later)
->  [ 187.735093] pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D=
-2 refcnt=3D3
->  [ 187.735093] pending: 2*process_srcu (still pending)
->=20
->=20 9 consecutive dumps from t=3D62s to t=3D312s =E2=80=94 process_srcu =
-never runs.
->=20
->=20Instance 2 =E2=80=94 kernel 6.18.2, pool 22 (cpus=3D5):
->=20
->=20 [ 93.280711] workqueue rcu_gp: flags=3D0x108
->  [ 93.280713] pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D1=
- refcnt=3D2
->  [ 93.280716] pending: process_srcu
->=20
->=20 [ 309.040801] workqueue rcu_gp: flags=3D0x108 (216 seconds later)
->  [ 309.040806] pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D=
-1 refcnt=3D2
->  [ 309.040806] pending: process_srcu (still pending)
->=20
->=20 8 consecutive dumps from t=3D93s to t=3D341s =E2=80=94 process_srcu =
-never runs.
->=20
->=20In both cases, rcu_gp's process_srcu is bound to the SAME per-CPU poo=
-l
-> where the kvm-irqfd-cleanup workers are blocked. Both pools have idle
-> workers but are marked as hung/stalled:
->=20
->=20 Instance 1: pool 14: cpus=3D3 hung=3D174s workers=3D11 idle: 4046 40=
-38 4045 4039 4043 156 77 (7 idle)
->  Instance 2: pool 22: cpus=3D5 hung=3D297s workers=3D12 idle: 4242 51 4=
-248 4247 4245 435 4244 4239 (8 idle)
->=20
->=20>=20
->=20> 2) How many irqfd workers are active in the reported scenario, and
-> >  can they saturate CPU or worker pools?
-> >=20
->=204 kvm-irqfd-cleanup workers in both instances, consistently across al=
-l
-> dumps:
->=20
->=20Instance 1 ( pool 14 / cpus=3D3):
->=20
->=20 [ 62.831877] workqueue kvm-irqfd-cleanup: flags=3D0x0
->  [ 62.837838] pwq 14: cpus=3D3 node=3D0 flags=3D0x0 nice=3D0 active=3D4=
- refcnt=3D5
->  [ 62.837838] in-flight: 157:irqfd_shutdown ,4044:irqfd_shutdown ,
->  102:irqfd_shutdown ,39:irqfd_shutdown
->=20
->=20Instance 2 ( pool 22 / cpus=3D5):
->=20
->=20 [ 93.280894] workqueue kvm-irqfd-cleanup: flags=3D0x0
->  [ 93.280896] pwq 22: cpus=3D5 node=3D0 flags=3D0x0 nice=3D0 active=3D4=
- refcnt=3D5
->  [ 93.280900] in-flight: 151:irqfd_shutdown ,4246:irqfd_shutdown ,
->  4241:irqfd_shutdown ,4243:irqfd_shutdown
->=20
->=20These are from crosvm instances with multiple virtio devices
-> (virtio-blk, virtio-net, virtio-input, etc.), each registering an irqfd
-> with a resampler. During VM shutdown, all irqfds are detached
-> concurrently, queueing that many irqfd_shutdown work items.
->=20
->=20The 4 workers are not saturating CPU =E2=80=94 they're all in D state=
-. But they
-> ARE all bound to the same per-CPU pool as rcu_gp's process_srcu work.
->=20
->=20>=20
->=20> 3) Do we have a concrete wait-for cycle showing that tasks blocked
-> >  on resampler_lock are in turn preventing SRCU GP completion?
-> >=20
->=20Yes, in both instances the hung task dump identifies the mutex holder
-> stuck in synchronize_srcu, with the other workers waiting on the mutex.
->=20
->=20Instance 1 (t=3D314s):
->=20
->=20 Worker pid 4044 =E2=80=94 MUTEX HOLDER, stuck in synchronize_srcu:
->=20
->=20 [ 315.963979] task:kworker/3:8 state:D pid:4044
->  [ 315.977125] Workqueue: kvm-irqfd-cleanup irqfd_shutdown
->  [ 316.012504] __synchronize_srcu+0x100/0x130
->  [ 316.023157] irqfd_resampler_shutdown+0xf0/0x150 <-- offset 0xf0 (syn=
-chronize_srcu)
->=20
->=20 Workers pid 39, 102, 157 =E2=80=94 MUTEX WAITERS:
->=20
->=20 [ 314.793025] task:kworker/3:4 state:D pid:157
->  [ 314.837472] __mutex_lock+0x409/0xd90
->  [ 314.843100] irqfd_resampler_shutdown+0x23/0x150 <-- offset 0x23 (mut=
-ex_lock)
->=20
->=20Instance 2 (t=3D343s):
->=20
->=20 Worker pid 4241 =E2=80=94 MUTEX HOLDER, stuck in synchronize_srcu:
->=20
->=20 [ 343.193294] task:kworker/5:4 state:D pid:4241
->  [ 343.193299] Workqueue: kvm-irqfd-cleanup irqfd_shutdown
->  [ 343.193328] __synchronize_srcu+0x100/0x130
->  [ 343.193335] irqfd_resampler_shutdown+0xf0/0x150 <-- offset 0xf0 (syn=
-chronize_srcu)
->=20
->=20 Workers pid 151, 4243, 4246 =E2=80=94 MUTEX WAITERS:
->=20
->=20 [ 343.193369] task:kworker/5:6 state:D pid:4243
->  [ 343.193397] __mutex_lock+0x37d/0xbb0
->  [ 343.193397] irqfd_resampler_shutdown+0x23/0x150 <-- offset 0x23 (mut=
-ex_lock)
->=20
->=20Both instances show the identical wait-for cycle:
->=20
->=20 1. One worker holds resampler_lock, blocks in __synchronize_srcu
->  (waiting for SRCU grace period)
->  2. SRCU GP needs process_srcu to run =E2=80=94 but it stays "pending"
->  on the same pool
->  3. Other irqfd workers block on __mutex_lock in the same pool
->  4. The pool is marked "hung" and no pending work makes progress
->  for 250-300 seconds until kernel panic
->=20
->=20>=20
->=20> 4) Is the behavior reproducible in both irqfd_resampler_shutdown()
-> >  and kvm_irqfd_assign() paths?
-> >=20
->=20In our 4 crash instances the stuck mutex holder is always in=20
->=20irqfd_resampler_shutdown() at offset 0xf0 (synchronize_srcu). This=20
->=20is consistent =E2=80=94 these are all VM shutdown scenarios where onl=
-y=20
->=20irqfd_shutdown workqueue items run.
->=20
->=20The kvm_irqfd_assign() path was identified by Vineeth Pillai (Google)
-> during a VM create/destroy stress test where assign and shutdown race.
-> His traces showed kvm_irqfd (the assign path) stuck in
-> synchronize_srcu_expedited with irqfd_resampler_shutdown blocked on
-> the mutex, and workqueue pwq 46 at active=3D1024 refcnt=3D2062.
->=20
->=20>=20
->=20> If SRCU GP remains independent, it would help distinguish whether
-> >  this is a strict deadlock or a form of workqueue starvation / lock
-> >  contention.
-> >=20
->=20Based on the data from both instances, SRCU GP is NOT remaining
-> independent. process_srcu stays permanently pending on the affected
-> per-CPU pool for 250-300 seconds. But it's not just process_srcu =E2=80=
-=94
-> ALL pending work on the pool is stuck, including items from events,
-> cgroup, mm, slub, and other workqueues.
->=20
->=20>=20
->=20> A timestamp-correlated dump (blocked stacks + workqueue state +
-> >  SRCU GP activity) would likely be sufficient to classify this.
-> >=20
->=20I hope the correlated dumps above from both instances are helpful.
-> To summarize the timeline (consistent across both):
->=20
->=20 t=3D0: VM shutdown begins, crosvm detaches irqfds
->  t=3D~14: 4 irqfd_shutdown work items queued on WQ_PERCPU pool
->  One worker acquires resampler_lock, enters synchronize_srcu
->  Other 3 workers block on __mutex_lock
->  t=3D~43: First "BUG: workqueue lockup" =E2=80=94 pool detected stuck
->  rcu_gp: process_srcu shown as "pending" on same pool
->  t=3D~93 Through t=3D~312: Repeated dumps every ~30s
->  process_srcu remains permanently "pending"
->  Pool has idle workers but no pending work executes
->  t=3D~314: Hung task dump confirms mutex holder in __synchronize_srcu
->  t=3D~316: init triggers sysrq crash =E2=86=92 kernel panic
->=20
+No existing fields are removed or reordered, and the new field names
+(laddr, lport, faddr, fport) are standard audit fields already emitted
+by other LSMs through the same lsm_audit.c code path.
 
-Thanks,=20this is useful and much clearer.
+Add net_bind and net_connect audit tests.  The net_bind test verifies
+basic net denial auditing.  The net_connect test binds to an allowed
+port, then connects to a denied port, and verifies that the audit record
+includes laddr/lport from the socket state.
 
-One thing that is still unclear is dispatch behavior:
-`process_srcu` stays pending for a long time, while the same pwq dump sho=
-ws idle workers.
+Fixes: 9f74411a40ce ("landlock: Log TCP bind and connect denials")
+Cc: stable@vger.kernel.org
+Cc: Günther Noack <gnoack@google.com>
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+---
 
-So the key question is: what prevents pending work from being dispatched =
-on that pwq?
-Is it=20due to:
-  1) pwq stalled/hung state,
-  2) worker availability/affinity constraints,
-  3) or another dispatch-side condition?
+Changes since v1:
+- New patch.
+---
+ security/landlock/net.c                       |   1 +
+ tools/testing/selftests/landlock/audit_test.c | 187 ++++++++++++++++++
+ 2 files changed, 188 insertions(+)
 
-Also, for scope:
-- your crash instances consistently show the shutdown path
-  (irqfd_resampler_shutdown + synchronize_srcu),
-- while assign-path evidence, per current thread data, appears to come
-  from a separate stress case.
+diff --git a/security/landlock/net.c b/security/landlock/net.c
+index a2aefc7967a1..d8bc9e0d012a 100644
+--- a/security/landlock/net.c
++++ b/security/landlock/net.c
+@@ -225,6 +225,7 @@ static int current_check_access_socket(struct socket *const sock,
+ 		return 0;
+ 
+ 	audit_net.family = address->sa_family;
++	audit_net.sk = sock->sk;
+ 	landlock_log_denial(subject,
+ 			    &(struct landlock_request){
+ 				    .type = LANDLOCK_REQUEST_NET_ACCESS,
+diff --git a/tools/testing/selftests/landlock/audit_test.c b/tools/testing/selftests/landlock/audit_test.c
+index da0bfd06391e..65dfb272c825 100644
+--- a/tools/testing/selftests/landlock/audit_test.c
++++ b/tools/testing/selftests/landlock/audit_test.c
+@@ -6,14 +6,17 @@
+  */
+ 
+ #define _GNU_SOURCE
++#include <arpa/inet.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <limits.h>
+ #include <linux/landlock.h>
++#include <netinet/in.h>
+ #include <pthread.h>
+ #include <stdlib.h>
+ #include <sys/mount.h>
+ #include <sys/prctl.h>
++#include <sys/socket.h>
+ #include <sys/types.h>
+ #include <sys/wait.h>
+ #include <unistd.h>
+@@ -160,6 +163,190 @@ TEST_F(audit, layers)
+ 	EXPECT_EQ(0, close(ruleset_fd));
+ }
+ 
++static int matches_log_net_bind(struct __test_metadata *const _metadata,
++				int audit_fd, __u16 port, __u64 *domain_id)
++{
++	/*
++	 * The socket is unbound at bind() time, so laddr/lport/faddr/fport from
++	 * the socket object are zero and not printed.  Only the sockaddr fields
++	 * (src) appear.
++	 */
++	static const char log_template[] = REGEX_LANDLOCK_PREFIX
++		" blockers=net\\.bind_tcp src=%u$";
++	char log_match[sizeof(log_template) + 10];
++
++	snprintf(log_match, sizeof(log_match), log_template, port);
++	return audit_match_record(audit_fd, AUDIT_LANDLOCK_ACCESS, log_match,
++				  domain_id);
++}
++
++/*
++ * Verifies that network denial audit records include enriched socket
++ * information (laddr/lport/faddr/fport) from the socket object.
++ */
++TEST_F(audit, net_bind)
++{
++	const struct landlock_ruleset_attr ruleset_attr = {
++		.handled_access_net = LANDLOCK_ACCESS_NET_BIND_TCP,
++	};
++	struct landlock_net_port_attr net_port = {
++		.allowed_access = LANDLOCK_ACCESS_NET_BIND_TCP,
++		.port = 1024,
++	};
++	int status, ruleset_fd;
++	pid_t child;
++	__u64 denial_dom = 1;
++
++	ruleset_fd =
++		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
++	ASSERT_LE(0, ruleset_fd);
++
++	/* Allow port 1024 only. */
++	ASSERT_EQ(0, landlock_add_rule(ruleset_fd, LANDLOCK_RULE_NET_PORT,
++				       &net_port, 0));
++
++	EXPECT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
++
++	child = fork();
++	ASSERT_LE(0, child);
++	if (child == 0) {
++		struct sockaddr_in addr = {
++			.sin_family = AF_INET,
++			.sin_port = htons(1025),
++			.sin_addr.s_addr = htonl(INADDR_ANY),
++		};
++		int sock_fd;
++
++		EXPECT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
++		close(ruleset_fd);
++
++		/* Bind to port 1025 (not allowed). */
++		sock_fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
++		ASSERT_LE(0, sock_fd);
++		EXPECT_EQ(-1, bind(sock_fd, (struct sockaddr *)&addr,
++				   sizeof(addr)));
++		EXPECT_EQ(EACCES, errno);
++		close(sock_fd);
++
++		/* Verify audit record with enriched socket info. */
++		EXPECT_EQ(0, matches_log_net_bind(_metadata, self->audit_fd,
++						  1025, &denial_dom));
++		EXPECT_NE(denial_dom, 1);
++		EXPECT_NE(denial_dom, 0);
++
++		_exit(_metadata->exit_code);
++		return;
++	}
++
++	ASSERT_EQ(child, waitpid(child, &status, 0));
++	if (WIFSIGNALED(status) || !WIFEXITED(status) ||
++	    WEXITSTATUS(status) != EXIT_SUCCESS)
++		_metadata->exit_code = KSFT_FAIL;
++
++	EXPECT_EQ(0, close(ruleset_fd));
++}
++
++static int matches_log_net_connect(struct __test_metadata *const _metadata,
++				   int audit_fd, __u16 denied_port,
++				   __u16 bound_port, __u64 *domain_id)
++{
++	/*
++	 * After bind(), the socket has local address state.  The audit record
++	 * should include laddr/lport from the socket (via audit_net.sk) and
++	 * daddr/dest from the connect sockaddr.
++	 */
++	static const char log_template[] = REGEX_LANDLOCK_PREFIX
++		" blockers=net\\.connect_tcp"
++		" laddr=127\\.0\\.0\\.1 lport=%u"
++		" daddr=127\\.0\\.0\\.1 dest=%u$";
++	char log_match[sizeof(log_template) + 20];
++
++	snprintf(log_match, sizeof(log_match), log_template, bound_port,
++		 denied_port);
++	return audit_match_record(audit_fd, AUDIT_LANDLOCK_ACCESS, log_match,
++				  domain_id);
++}
++
++/*
++ * Verifies that network denial audit records for connect include enriched
++ * socket information (laddr/lport) from the socket object after a prior bind.
++ * This complements net_bind which tests the unbound case.
++ */
++TEST_F(audit, net_connect)
++{
++	const struct landlock_ruleset_attr ruleset_attr = {
++		.handled_access_net = LANDLOCK_ACCESS_NET_BIND_TCP |
++				      LANDLOCK_ACCESS_NET_CONNECT_TCP,
++	};
++	struct landlock_net_port_attr net_port;
++	int status, ruleset_fd;
++	pid_t child;
++	__u64 denial_dom = 1;
++
++	ruleset_fd =
++		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
++	ASSERT_LE(0, ruleset_fd);
++
++	/* Allow bind to port 1024 and connect to port 1024. */
++	net_port.allowed_access = LANDLOCK_ACCESS_NET_BIND_TCP |
++				  LANDLOCK_ACCESS_NET_CONNECT_TCP;
++	net_port.port = 1024;
++	ASSERT_EQ(0, landlock_add_rule(ruleset_fd, LANDLOCK_RULE_NET_PORT,
++				       &net_port, 0));
++
++	EXPECT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
++
++	child = fork();
++	ASSERT_LE(0, child);
++	if (child == 0) {
++		struct sockaddr_in bind_addr = {
++			.sin_family = AF_INET,
++			.sin_port = htons(1024),
++			.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
++		};
++		struct sockaddr_in conn_addr = {
++			.sin_family = AF_INET,
++			.sin_port = htons(1025),
++			.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
++		};
++		int sock_fd, optval = 1;
++
++		EXPECT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
++		close(ruleset_fd);
++
++		sock_fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
++		ASSERT_LE(0, sock_fd);
++		ASSERT_EQ(0, setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR,
++					&optval, sizeof(optval)));
++
++		/* Bind to allowed port 1024 (succeeds). */
++		ASSERT_EQ(0, bind(sock_fd, (struct sockaddr *)&bind_addr,
++				  sizeof(bind_addr)));
++
++		/* Connect to denied port 1025 (fails). */
++		EXPECT_EQ(-1, connect(sock_fd, (struct sockaddr *)&conn_addr,
++				      sizeof(conn_addr)));
++		EXPECT_EQ(EACCES, errno);
++		close(sock_fd);
++
++		/* Verify audit record with laddr/lport from bound socket. */
++		EXPECT_EQ(0, matches_log_net_connect(_metadata, self->audit_fd,
++						     1025, 1024, &denial_dom));
++		EXPECT_NE(denial_dom, 1);
++		EXPECT_NE(denial_dom, 0);
++
++		_exit(_metadata->exit_code);
++		return;
++	}
++
++	ASSERT_EQ(child, waitpid(child, &status, 0));
++	if (WIFSIGNALED(status) || !WIFEXITED(status) ||
++	    WEXITSTATUS(status) != EXIT_SUCCESS)
++		_metadata->exit_code = KSFT_FAIL;
++
++	EXPECT_EQ(0, close(ruleset_fd));
++}
++
+ struct thread_data {
+ 	pid_t parent_pid;
+ 	int ruleset_fd, pipe_child, pipe_parent;
+-- 
+2.53.0
 
-A time-aligned dump with pwq state, pending/in-flight lists, and worker s=
-tates
-should help clarify this.
-
-
-> >=20
->=20> Happy to help look at traces if available.
-> >=20
->=20I can share the full console-ramoops-0 and dmesg-ramoops-0 from both
-> instances. Shall I post them or send them off-list?
->=20
-
-If=20possible, please post sanitized ramoops/dmesg logs on-list so others=
- can validate.
-
-Thanx, Kunwu
-
-> Thanks,
-> Sonam
->
 
