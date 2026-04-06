@@ -1,270 +1,311 @@
-Return-Path: <stable+bounces-233372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGcsHEKb02majgcAu9opvQ
-	(envelope-from <stable+bounces-233372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 13:38:42 +0200
+	id gFB0Afum02n8jwcAu9opvQ
+	(envelope-from <stable+bounces-233373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 14:28:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823F93A31BD
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 13:38:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5897F3A3476
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 14:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6BD4B3004D12
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 11:38:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C98513011862
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 12:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC6A3314D0;
-	Mon,  6 Apr 2026 11:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB193346BE;
+	Mon,  6 Apr 2026 12:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WrJHZZh2"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aR+7BghB";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="vW3JMdO5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2985153BE9
-	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 11:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7CD2D97A6
+	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 12:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775475514; cv=pass; b=XzsB3UE4Rfkz56IyUUEntyKe0ycnAVvaUeBmb8D/h9SscIdBAegnQUBjbOW4xX4N//Hbe4O+XJ0Smv8zEqlGL8TLDQDSw1qCocD34eNmndN3lOEmW2ArOil/tMZ2YPM3zM20GYCmuTeuz1V42lMt9OxM5hMsu+GPQcmZNBUsDHw=
+	t=1775478518; cv=fail; b=mmE2AqU94yvNoc0+nBaFtlcJjA3zkofMlPTJeA1GyieNylP+jyGEcs7TBc/cWcS5qKWEYtoGgF0Iw5vBjPgDdb4sh29Ou25/M1u1XBRMLVTCsvsHxBOtwK86cpNyWdFMFOCT/nbQ7zD8UJqqcnwjUVABG1g5+B1z7TF8eowYqLM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775475514; c=relaxed/simple;
-	bh=bnnbD36JRK1H0WmZABZ2TVcYz5ypqCF3La8J3Y5l9rw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WdjQk/Xh9C9NUQX0QQMPYPSeTjAYpQ47RbzPPkzjE/xXsoK2niM6manih70Z6Ph3TGUDMFTPmn5CbooMtf954VNhdtK1ih0doVi2CoIKHgRlrSECrp/oAXD/vj1Ts4M4tH1B/24zER4j7kEzuQ/E7HrdBloWzLqTIhdOPQbpJJw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WrJHZZh2; arc=pass smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1271195d2a7so8168835c88.0
-        for <stable@vger.kernel.org>; Mon, 06 Apr 2026 04:38:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775475512; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cU0XlWqswmavFpxsPy63EWrClkin/p6Dc5gl+VpNOTAXdmBkOBP6354JM+NEULwW/a
-         wLimAHPF+XB6hW5VYeMgDYv+btgLCKaxwaflLKYfCe9M/Ds1+z56g7TCD/DYtQk0uhcZ
-         sp8fcPj/oCpnImpG/ePnXlofSKd3Tb8DBSwkjPQMr0170VAnRbH5yQu74qEOASgLsKjI
-         cbJEK+jnNjGTSFRmZqravOJESXFkLlIQF25E6zsmPutCUSevAFRxNo5RnB0dovK5ROZO
-         3dHY6zT3lHEyLSefg4sPAAkpoMdXH4TqLkTQN6+VuEC1cgZTOIVk/pd/Rcgx1linXvr7
-         OwhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MTv8dwBsuDw9G43cN+a9fRgKYOA57T1yFLSQo5apy/w=;
-        fh=5j8VGXsnNGG1Sv3GNmGgXjW2hPG33Et1Tw+8HUqZ6Ko=;
-        b=E5BSkGIPoli5gTpgn1HsWbRfK04+9pRhTJ1vlkqQEhWNCN0/AxpX58AEOFbyL6MPPY
-         kuiloWmCXIWHYiW8lGZtuBMIyxACRTvhBrFhXosH2xXe80rhiFNQZGQYAk0xuEkAr36d
-         6wKQcUjLeij9dJvtmUDg5epRR4WAtdaQ81qdFY+dBf8ipLgNMlAjh6Bw/mCtndlqcm1L
-         I8fW5MYElbolBn9Hwh4mlBp/lTbRBG45PcXxSuP8a5cWU/Wc2Ji963UyULiUR2zBKIDo
-         wbjeQ8H5tPBeiSxOBaeZfynjF2haLcP1Z8+/xhxuQ/mHtINCeGS6OXXz9KLwQubEwd1o
-         rbRw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	s=arc-20240116; t=1775478518; c=relaxed/simple;
+	bh=ZOBCXXDbQXScmd9ZGjF0PcblXiZpyNN7rWAU+krSeRQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rOnGA1qMJVfl3oq9z/NM8BBY+LdTVRAxbJFh+u2msJURi5Ad5GE7GhuiUVfMvnEGMyQR/9b31B5TK6khGg8rcbTVB52XWFUWbKXaDjy+ga0bup6fdhWh9v+Vk3VBGe1KpgUmuAjSa7kO5296qX01lxK/U67TaWjFHja0KxfrAVk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aR+7BghB; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=vW3JMdO5; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6360F15M1854119;
+	Mon, 6 Apr 2026 12:27:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=u/MdhQlSRkd/2BLE1ob0UlbtiCZO6DY6cImdwfFf7Ho=; b=
+	aR+7BghByWE243UADnIkkvEwKZWq1lLVsmhLfztnO0Lwqg/XXnFMsUOT1RvyQbL0
+	zJ1csf4xd30FNPum5SC6QWKwujKIwQ6dZo+WBHgxvwimZ8UCJcSrdHlZALG836L6
+	QI6FuBBI1E89mEqfwCrK1oWYYRKrKnXMwBo3A7eB2N1sEcmmzYu4z77rxKpwbQkP
+	iqBexdEMtlxKfAfhFf4czcLVlZORkQ1E+rhwWupT37VlFLFGX0ciRA/Z4kbvW5X0
+	aVS6k7jnjJ7fkwip7LCakk0+x5b96Y/JhKa+1350WEwbX6BjTy6tL3VW9EyImGOY
+	5qVz/aaHl+ctghBrCaRKoA==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dath5tjf9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 06 Apr 2026 12:27:54 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 636CAqDL040287;
+	Mon, 6 Apr 2026 12:27:54 GMT
+Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012003.outbound.protection.outlook.com [40.107.209.3])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4das38ewva-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 06 Apr 2026 12:27:54 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cAEwhGvpS1F9pFMwXeTbs+OL1+P6nB6XINLR6OaeSqXd710yej/NGflLM9+anpPFVEb7ayByrHDKKvS5zeXSNu3gbM8K/XcNxfDWd0aI31gq4rMpepl7qED5yBXqAjY4VezfqlUEsnkGFdC/QXFamG/I0B8Mdugk4avnlmWg3pgdfPSy6KxYQQvV2YrP98+8q5czYFwo3xBemR4g7jmHN+Z+Q2BwjVub6hJ/48hI2jP9H8s0TxwR4WT7z4QdWSTV5D8njx9KGDdvaKc5xSm8MkzyLff2RuYI0+eyxMYDmQljWF+PqTDYcWJbc/PSf0NJk+856HuNo9kVZyefPe++IQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u/MdhQlSRkd/2BLE1ob0UlbtiCZO6DY6cImdwfFf7Ho=;
+ b=tupl5lSv/5J0PRn0/UM5IxUx/cx0DUyOQi4KQeBReNCnZVn6qdJwDmo1SgAuCOVB8PEJAuI46o3gKjUoTffPQXX0P2NUHFG74rIZ6zHX5ol48nl7HLeYhQkI45B2bYAnaiHA9n5vxZtQnpAJi2iYVC4icayRGD6iQnzKcPgi/PXtA7xMj5hMAT+fRGhHe770iny7gh3M/p00013vxQYOL23ZN9Ki+PpGWaGe/9XvH7wNukukjoZeVGQ1YThe3rX3J8NCpwdkZYhlh9ebr1Efd2xGb7pATVP+fFuwoO2kah6g18f7IglbJ2HPVLFqr5uPRYwoNTfNm24SILXRQRYnDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775475512; x=1776080312; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MTv8dwBsuDw9G43cN+a9fRgKYOA57T1yFLSQo5apy/w=;
-        b=WrJHZZh2+FjPL1odYbeYboOTGTwFJnctUETLCoKBDHRrTk/CKgH4HT/XsX2Mn5oVb6
-         ibiz6M8s6F8bELy6wP/0tBzimk+20IJEHs43Is8Q4TbaoUX9RojJShdoykAZrsTY3lfc
-         6CWZFYvmoeK928T8MUTUGKGF32dqNFi2s6AexJ1OdBkPdeZ+y0Yl7p7oyP70uqZqRSUS
-         lazXBQMePoNEePNNPZaeF0AKxxayDGTUS4kwi2TuYRgvcGirCKGKlOy7bOwTCVc7Y/gf
-         kUo6RGs6u4//XcI/IbbFeT7yQBeR0owfV55oiwT1fF0poPFkcTphF0YFbXsBBG78uzpD
-         4Nyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775475512; x=1776080312;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MTv8dwBsuDw9G43cN+a9fRgKYOA57T1yFLSQo5apy/w=;
-        b=HiEdc8YEf/VgUtbp9a9c65TZNVASwUEG686m77G/TzS1t9nz5GJlmGycIuMxvrMl9K
-         fX8wZc8xuaVyf9uj3bDxJAV3LkfESpoOxDzDiPxC714ndmtieb6C1Ki8ASZDzGyo5Dab
-         48SC2NneV9r4hRjCZ18jDR2SWUDQr9gp65piaSAA+KWW0BL0cxdjFDhIdiJzUpWzDbT/
-         pH7XWGdVDU474DBqDgFXYcdoJsIOG9S8hswtuuATn+mA9J3ppj7IiEuckW8fW1MllQ0/
-         aiJOk2s4UXXeYP3JQ292AmdY+2yJ8KG8U/D6nEr0Nm+WpH2Us4IdKIzeeCOkIXUx4VxX
-         1UfA==
-X-Gm-Message-State: AOJu0Yx0GXtegIsj74auoxRpaGU/Ba6GeY0NOAkHNLkZ4jJSMqHTzuES
-	IfHIZoNGY8qi11dfJrGiFCgjNV7J/ZjrEs7DeIST2d3x+VTFO7jR2ytYrko/HnXDxIxdZCQAqQT
-	qddBY9g7YL1jzYKx7G+MQ/VVdUbVv+Rw=
-X-Gm-Gg: AeBDieurLty4ba6T/znjhlbOy8aE+Bc1oLVzMXyixzUPumFICo8gk2C8ekr91wjmVaj
-	GR1fD/UPFrAaE4w1Pf9sVOO+jqwIReJ62anEbe1sEvNZm4CwGQnYIvvL9GDVRoJCi5TZnSs+a4n
-	9nT4ko+WGUEbtRSvB3kHYC7kI+vkuxWzGl3/VmBXBrHdlAgG0pX/0yDojqpVt24uT6xEuqj4Zq/
-	SkeEBwoz1UKvrJL4yR09bgqVnSDLTh7DVPnooq9N6WCgpFsPSOzFGT3w9POoXm+ftjiwmnHM3BK
-	wiLMCo0B
-X-Received: by 2002:a05:7022:6199:b0:128:d107:da0f with SMTP id
- a92af1059eb24-12bfb6fb627mr5618745c88.10.1775475511991; Mon, 06 Apr 2026
- 04:38:31 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u/MdhQlSRkd/2BLE1ob0UlbtiCZO6DY6cImdwfFf7Ho=;
+ b=vW3JMdO5iBln1DfaqRX7YOCKP0vYyCrJtVIPR+lqm0I+Cc+BNq6jdzvUy9lEyoXbrSD/gK8f9onS5DdGz03fgIY1DTNaboydmMjo4YMPDCXqgWlJ3J9Ve9EJ5Ysq4rYEVhLLBRsDeyuupVtROm8R5C7SJTP2tC0kcyoegBSb+N8=
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
+ by DM4PR10MB6813.namprd10.prod.outlook.com (2603:10b6:8:10b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.19; Mon, 6 Apr
+ 2026 12:27:46 +0000
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a%6]) with mapi id 15.20.9769.018; Mon, 6 Apr 2026
+ 12:27:46 +0000
+Message-ID: <28a3e1fc-b6e7-4d92-b949-7218a74b7231@oracle.com>
+Date: Mon, 6 Apr 2026 17:57:32 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 118/265] LoongArch/orc: Use RCU in all users of
+ __module_address().
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, WANG Xuerui <kernel@xen0n.name>,
+        loongarch@lists.linux.dev,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Petr Pavlu <petr.pavlu@suse.com>,
+        Vegard Nossum <vegard.nossum@oracle.com>
+References: <20260312201018.128816016@linuxfoundation.org>
+ <20260312201022.504112831@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20260312201022.504112831@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4P287CA0073.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:26b::9) To DS3PR10MB997700.namprd10.prod.outlook.com
+ (2603:10b6:8:347::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOKsz8yxa3Dj1TGiEwE+2Qkx=F520_pSeVSR6h265jkOxbJGUw@mail.gmail.com>
-In-Reply-To: <CAOKsz8yxa3Dj1TGiEwE+2Qkx=F520_pSeVSR6h265jkOxbJGUw@mail.gmail.com>
-From: chichina c <li17324910702@gmail.com>
-Date: Mon, 6 Apr 2026 19:38:21 +0800
-X-Gm-Features: AQROBzBURXUhSPg04MNKIAyCjYPyDCQNhMaVXd5bT34Mp0qbWqwVU1ZICL-F0CU
-Message-ID: <CAOKsz8zLUQ_AtDWJ9uPfEjj5f1w2P8vFvD9wwWOb9pqJehK7HQ@mail.gmail.com>
-Subject: Re: [BUG] virt: acrn: destroy_workqueue() called before eventfd wait
- queue removal in acrn_irqfd_deinit()
-To: fei1.li@intel.com
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	acrn-dev@lists.projectacrn.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|DM4PR10MB6813:EE_
+X-MS-Office365-Filtering-Correlation-Id: e956972a-496b-40ad-30c4-08de93d7e8a3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	UvkGxPSsVe2rk3ZwFUnq2MXoBYDDBCN62A0BM3aJ8Xr1xpQkZd0pQ0jouOfM7ppIyz/IiOPcJh8GeBlgIhpKP5yGLIXWIJwU1bFqsj6j+a1fo6GSeIPxLXPqm2RD3aOa+dtFiVjqIZujR31a9vP8VYeZFIjQjZUaz28SuaZ7q6tWGUkU1JzK4pE9/HnPMcdnC3C1iNPrMn3BB4ZdtDm7dLPZWDKC+cModMND9x77Wr9fZ/nRWWvPybqX6z9b5jLg1xAQJBJ5tYnUl3p9i9B298r7m0GRtbnC9y8b7b6+AAf47P3UPP3LkGyT+JPWdVwwmBBgvLY/ALcwcYwuYRm/7rs95wcw81pzBOpsHeWg4rNY3sCl1pgGzsNFy8CaScQRoTm5O9HQA1a9juSVhFKt0LZc8oflLoURV469tTUcBG4sVM4NZxcNdzBK8P2Ue+WnCQpD+p8GT6QER8nBQM1NbpG9hZgopxnI8lrnh0UjJvo/PquY9Lde1GyVVrb1GuNL3FCWfOp8cwIWGZ/Q+aI9tmynnmjlkDxH8wngmKH3TEBfujBfRc8qit2P7KqQqeBfR1Jy8oGX8FSr1x3dwMfvLhlj+7seoH1B1gjnyGfBtlaVaV4SY1ZHJFoBunfpX1I0u6Au2HxdyX62zQJk2F3tUbE3KoV8bLKr10POL9ONzTw96fFgoEE8iuKsYKUnSMD2KWC30xlRLXOhYpu9/7gmJSDbqL/UkjiHoVFauBc5sx5JcIlRrBxNobW/xvauiho+
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SjY1NDVxWjJraVAveUtKUkhUSmxrQjI0LzB2YTI0YzJPYkIvVWZIRGxhRERR?=
+ =?utf-8?B?L0dPOWt5SE5YaGkrOWNXRkp2eXBIUGN5SmU3WW5wNVhrOEcrWkREdFhyRG9t?=
+ =?utf-8?B?Z3lWTXpWY09uN3dCUndqZUlpS1RDQlFNbEZXTXJyamhtaC95dXRVTEk3V09W?=
+ =?utf-8?B?ZHJCbTg1M1QrL3hUZlFwbElwWDJHdU41Z202blV5MHFKcTdPVEtpY05IUGtV?=
+ =?utf-8?B?NElrVDA0L09mOUN2QlN6ZDNuMHkzRHV6YmxCRmNSOEh5UWZvaHdZNVljdnh1?=
+ =?utf-8?B?eVJpWk9DYVZ4TVF0ZU5MZ1VaYjNxTkQ4dFBvS2NvOTlCMzFqVzdqVC9kVHI1?=
+ =?utf-8?B?eGZYekZJSXlxeGdldis0amoxVU5WMmt4V0RBamZvQWdnSzlaWTgyUWtiL3pH?=
+ =?utf-8?B?OHZRcWlNWWNaU1RTcmVHNVJEcXpDaTBCVXJ2ZExlUEdNU21YK2hJYkR6UWVp?=
+ =?utf-8?B?SmVuVlFHWUdhOHduNnhtYXd6Y1NRUjFTamFwTmFLVXFOWWJaVUs2UUl4dlM4?=
+ =?utf-8?B?NklDa05FRUY2MStvT2Q5N1JTN1orbjZSQisrYVA4Y09raXpTcUxTM3JnQlI1?=
+ =?utf-8?B?Qk5Nb3Q4dVRmZ1RYYkZWTjY5cHpHL3lSRDA5dExqL3hFTmZMc3l2UDhZWnBu?=
+ =?utf-8?B?OWNlZE9vZkpibWlzTTJBYklMS0ZLNDVPWS9lazdqZ0J1YmZpcUlRTnBrSFJm?=
+ =?utf-8?B?QW1BUlFrdFhUOXZ3b2ZVMDdRNHBtaWNFeXdNWFJHWjBwbG9hZllVdk1OMmtm?=
+ =?utf-8?B?bWpMV0c0cHJJb2hReGlvVnVPMGVTeExYUkVkeTZnM08rVDV4NmQ5TWI1ZFNS?=
+ =?utf-8?B?ODV2ZjB0ZjVGV3pzbVJVT01Gd3hucjZ4NE8reXZMeC9NRTFBalBmUFUzOEpk?=
+ =?utf-8?B?N0J0Tm0rVThDQXcySkhBbXowVDhrNE9SbmtqUjFHS3VEQ2lDOWFaUURoM2Yz?=
+ =?utf-8?B?ajl1c0Y3NStCb1QvNEJWQmdtcUZ5WDFWMHYrUlAvSmUxTkVPbE11cUgrZzl6?=
+ =?utf-8?B?RzUvQzhnZmZEMW8vbUlnVG9md3gyd2hDcmZpcXBvNnJDVkM1MHNEd0Y1c09M?=
+ =?utf-8?B?RTR6N0tPemQ1S2dPbmFTOFc3T3Y5VDM1d2dmUmRMYWl0MXp3WGxWckxqRFZE?=
+ =?utf-8?B?bmxNVUlXQm5TMnNEMm5EQW9PL0lDRWp3OTFTdHZ1Tm9QbXlOWXZCNkU3RHV1?=
+ =?utf-8?B?V2JNbGhEeW1WRXBLZGNjYjB1V0ZRNStIVzlsZWJqMTR5MUZicHEwTnpuY2JF?=
+ =?utf-8?B?SHkzOXg0dmZzZjdOYWgrODZ4cHVZYmtYd1lUbDJ0alhWZnJJbVhubVRuL05x?=
+ =?utf-8?B?UEdZZnhnWWE5SkpHN3JNaUVGVVhoSE52SDc3THdhMFZadERXTlBhdVdYQlRW?=
+ =?utf-8?B?ZnJNNno0SUpwZno2TGtYaGxKWlJTN25hOVdpSmpZK2EyZ0llcXlpRnpmY1NK?=
+ =?utf-8?B?dFh6TXM3ZXpGRFMyWWNVKzZ6WFM2VG9wMjlPclJvckFXeDE0UHdwdEJaNWVV?=
+ =?utf-8?B?citSUDlmWlk1TldpTzR1MUVvdkpPb25UUVp6bDVvRjl1SDJneldCUFJoUis2?=
+ =?utf-8?B?dDZzY0UyQTRhQW1lL1JBU3QybCt1WktwcjVZSzMrdDV6TWxPNnk3T1l1MStP?=
+ =?utf-8?B?VkhWamMxaTFTZFBVYjdlRDJQSUNrU0tCM2xPOXlaVW9aUHRhQzlycmt2SnND?=
+ =?utf-8?B?R0VwdElXdU45VEJwZExlUk9ZbjNhVUpmdmxGRTNzUHRXRDBlVEI3Tmc2NnEz?=
+ =?utf-8?B?N0VSMkFnR1FPTVZTWVRIL3lTZnhiZDJ3VEVGZ1B2V2plcVBkczdTbGRjaGl6?=
+ =?utf-8?B?MHlIOXZNRGQyemJGQk9HMVM1Q3JraVQ1UzQ2R2FCcGwwRDl6YjExbHB4TVN3?=
+ =?utf-8?B?TDM5cHFmTzVqL2dOa1h4Ti9ZdVIyWjdKNDNjZkRCTHN1Qk9JMFNZZGFrWGJN?=
+ =?utf-8?B?OUwyRzFIa3hhZG82NnpGZXRmZGVXOUh3UzV6SUNsZWEzckZHMUM1ZFpVSm9t?=
+ =?utf-8?B?LysxWGR3T1lHZ1ovN0tOREhVdnFoSVU1MXI1YzhhbEQyNUhrTzJJOGJxWFN1?=
+ =?utf-8?B?Wmc4RWd5bW5xdDJzNTlBNGFHUzVtbWNib3NIUmdBbU51QnJsTStmSVl2OXFu?=
+ =?utf-8?B?NEY2RUZMWjNwamVQazFjSE5HV0tKZXp6ZTN1NUptblZrRXJXVlZIS3hsNDUz?=
+ =?utf-8?B?S3lSdHV6ckt1ZDJJQ1NVOHRBSHFuNFVoY3hRM0poZXNsR1ZRNnRMaitsTlFz?=
+ =?utf-8?B?TWpGeDdPanlRWkpWU3p0SE1OVHhnNFNtVm5iNkt3djN6SkpkYlhYSzNPVGsz?=
+ =?utf-8?B?dmVYZElMV01UbDBpZWhKRGkySXZDWjd1YW1WOTNFT3k3ZzVOWE14aFlxMzBK?=
+ =?utf-8?Q?OP5i8YeYc+sqNRbDIMvO4oFIpiPoOE0PWjDUm?=
+X-Exchange-RoutingPolicyChecked:
+	XHgjQxshK92o7x/ae+O956UQaIHNMgihCZcFpoBBsSGO+5gJVCwj/BYPitqPTTN/QZfd7qIfBeMY48Qpvt/l3zrsFdIveJRpe2SK+fQM7Vx25+ZSVAW+E776dJ4xVHn2geSEB3BjbqjNCgheufiRLnS9VexAJ2gqcYPJTL8tDgiFzbkY2qjX9vPH54wZo2yXeyPU+mhpehXjHDSXACQAiLKQe2udJm2MXeJQfBxAFpQ4ZK6PdLkDhOu0yC7O9xqwhK30XKuzqtXAoZ93541WM7JkW7uzt2xNsksYzdGaqTOaz5eQLhddaRBOHYfcxmkamfVrd1s18pm8ZqS5QQmNGQ==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	eBWV3X3xLueBr3tsXV53idq37IUv/pw5PB/dppIPxO436aWWNg7sRLF3pglqhpV8GDBh52i4w44n56x0x39aNmdoK5QHL5OWMtBSRhe6ijl5OqXxBlgdisrkxPMS52Sio6FjRBDFyAPxIz7q2YXhi+96v1pRuRYBCC/9rGZOZmxuxiTk4e3iR1gZNRKyV+P+hAe8++qLNc1Jle58aRmpZ3lNWuQSCXHMbv41hKLQiHEuCaZvy7cO9Aja/mkrAjpqfjZhaUDvEAI3apQ9wSb56nhW8GGGGD2PkuB1M/HakV9b/fv3mZinDl9wMABkPo34U9gsUL6SGiwtTEvIblM49cr04d3FP4D31PRFLq8p6paOMKspsueuL+e6FT13tr9E3vV+Tl9lzI99VGeRAmmP0P0lZIJ7Ela4DACy0OUmEK951dsjwsV259EawSHQHFMVfkJ5GNg3XSt+FcIUTyGcq/G5o79iu68cSi9s0sd3pbRJ2N6JfvGtTMrkRPlUKj9q2bd6AjgXuLpsPEn9N14ueTqrSKvk4M2bpk6DeHrTNFHTf6sQIymdw1Ta/J4P1T2gVO98vo/++1OGgvp2QIzxLLIh+C2/eMRkXGeTAUTA9zg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e956972a-496b-40ad-30c4-08de93d7e8a3
+X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 12:27:46.6892
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sjrJnKBI8Hpw70qrhd5kwiT15a2/dh6gs+fcX7D5BcOgpmX52qOdQg4t8qJpufG20BdhcirfWO62qrAIFmh2R685S/LMlb0wGoJQWeT2LVgoYLyBBEuBd2K6XM6pfu/k
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6813
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-06_03,2026-04-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ suspectscore=0 spamscore=0 mlxscore=0 phishscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2603050001 definitions=main-2604060122
+X-Proofpoint-GUID: IZbgfBUmBwQFEwoxCA5Axy-cP-zw7Mt2
+X-Proofpoint-ORIG-GUID: IZbgfBUmBwQFEwoxCA5Axy-cP-zw7Mt2
+X-Authority-Analysis: v=2.4 cv=GvFPO01C c=1 sm=1 tr=0 ts=69d3a6ca cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=A5OVakUREuEA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=EIcjfB9IiI4px24ztqRk:22 a=VwQbUJbxAAAA:8
+ a=JfrnYn6hAAAA:8 a=iox4zFpeAAAA:8 a=IPEAgJOmAkQX9OS7OPIA:9 a=QEXdDO2ut3YA:10
+ a=1CNFftbPRP8L7MoqJWF3:22 a=WzC6qhA0u3u7Ye7llzcV:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA2MDEyMiBTYWx0ZWRfX0D9KwsF+/+iZ
+ 4IVUlx3MRmdGrBp4Kw3Q1RXypxTRoNWDoC+m5f5KhrRibKPjazG6T6Ptt8k2URhDy7q34GKffeL
+ g7FrDDkpJJjxDJe6eSUxbmrmKB6rZGm8aju9TJQXSvlSHZHL/cSA/rpun8lUrWziU2fjt8PbSO3
+ AjMrcni5+3qbkM0C3fbvJZoee/uuchMqeXXUcJGgQKl0pkU5eaVQMXHQoraQ5SxRU1ohtBbBRQh
+ Qql8y89Yv+GA17HPYJ3QMcaSMm6/gYUg9ke4NkumUjInj8WjyJ2Kj0PvbQFBgsPWUamFuTOHPeh
+ quiw3oVi0cPxBlx0gf1PrVKCzMGaWVBrJomkXV0khE6PhjdHbtBoCzO4tU+2r77Izy9FaijfaBA
+ egMKZGIHyiY/0Y+7FSX21SqZVgqGQkqwPj5tbOU/9aKZ0W2Kzo5o07Ic7TdMWbx5eP9ARS8+RhD
+ XF2rl1JaDEDx6Er5r0A==
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233372-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233373-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,suse.com:email,xen0n.name:email,oracle.onmicrosoft.com:dkim];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[li17324910702@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 823F93A31BD
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 5897F3A3476
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Adding this email address to the thread for
-reference=EF=BC=9Aacrn-dev@lists.projectacrn.org.
-=3D=3D=3D=3D=3D=3D
+Hi all,
+
+On 13/03/26 01:38, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> 
+> [ Upstream commit f99d27d9feb755aee9350fc89f57814d7e1b4880 ]
+> 
+> __module_address() can be invoked within a RCU section, there is no
+> requirement to have preemption disabled.
+> 
+> Replace the preempt_disable() section around __module_address() with
+> RCU.
+> 
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: loongarch@lists.linux.dev
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Link: https://lore.kernel.org/r/20250108090457.512198-19-bigeasy@linutronix.de
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+> Stable-dep-of: 055c7e75190e ("LoongArch: Handle percpu handler address for ORC unwinder")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   arch/loongarch/kernel/unwind_orc.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
+> index 471652c0c8653..59809c3406c03 100644
+> --- a/arch/loongarch/kernel/unwind_orc.c
+> +++ b/arch/loongarch/kernel/unwind_orc.c
+> @@ -399,7 +399,7 @@ bool unwind_next_frame(struct unwind_state *state)
+>   		return false;
+>   
+>   	/* Don't let modules unload while we're reading their ORC data. */
+> -	preempt_disable();
+> +	guard(rcu)();
+>   
+>   	if (is_entry_func(state->pc))
+>   		goto end;
+> @@ -514,14 +514,12 @@ bool unwind_next_frame(struct unwind_state *state)
+>   	if (!__kernel_text_address(state->pc))
+>   		goto err;
+>   
+> -	preempt_enable();
+>   	return true;
+>  
 
 
+Looks like this is dependent on commit: 7d9dda6f628f ("module: Allow 
+__module_address() to be called from RCU section."), so I feel pulling 
+in this patch without the mentioned missing prerequisite is wrong. Can 
+you please help review this ?
 
-Hi,
+This is also part of a feature series in 
+https://lore.kernel.org/all/20250108090457.512198-13-bigeasy@linutronix.de/
 
-I found a teardown ordering bug in the ACRN irqfd cleanup path that can
-lead to a use-after-free (queue_work() on an already-destroyed workqueue)
-when an eventfd is closed concurrently with VM destruction.
+Thanks,
+Harshit
 
-Bug description
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-In acrn_irqfd_deinit() (drivers/virt/acrn/irqfd.c:217-227), the cleanup
-order is:
+>   err:
+>   	state->error = true;
+>   
+>   end:
+> -	preempt_enable();
+>   	state->stack_info.type = STACK_TYPE_UNKNOWN;
+>   	return false;
+>   }
 
-    1. destroy_workqueue(vm->irqfd_wq);          /* line 222 */
-    2. list_for_each ... hsm_irqfd_shutdown(irqfd); /* line 224-225 */
-
-hsm_irqfd_shutdown() calls eventfd_ctx_remove_wait_queue(), which removes
-the irqfd's wait entry from the eventfd's wait queue.  However,
-destroy_workqueue() is called BEFORE this removal, leaving the wait
-entries live across the window between lines 222 and 225.
-
-During that window, if an external process closes (or the kernel delivers
-POLLHUP to) an eventfd that still has an irqfd attached, the wakeup
-callback hsm_irqfd_wakeup() fires (irqfd.c:74-92) and calls:
-
-    queue_work(vm->irqfd_wq, &irqfd->shutdown);   /* line 89 */
-
-At this point vm->irqfd_wq has already been destroyed by
-destroy_workqueue().  destroy_workqueue() sets the internal
-__WQ_DESTROYING flag (kernel/workqueue.c), which causes __queue_work()
-to emit WARN_ONCE and return early rather than corrupt heap directly -
-but the ordering invariant is still violated and on kernels with
-panic_on_warn=3D1 this becomes a kernel panic (denial of service).
-
-Note that hsm_irqfd_wakeup() does not hold irqfds_lock and has no
-synchronization with acrn_irqfd_deinit(), so there is no existing
-mechanism to close this race window.
-
-Compare with KVM's irqfd implementation (virt/kvm/eventfd.c), which
-correctly performs eventfd_ctx_remove_wait_queue() on every irqfd
-*before* flushing/destroying any workqueue infrastructure.
-
-Affected code
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-File: drivers/virt/acrn/irqfd.c
-
-  void acrn_irqfd_deinit(struct acrn_vm *vm)
-  {
-          struct hsm_irqfd *irqfd, *next;
-
-          dev_dbg(acrn_dev.this_device, "VM %u irqfd deinit.\n", vm->vmid);
-          destroy_workqueue(vm->irqfd_wq);         /* BUG: too early */
-          mutex_lock(&vm->irqfds_lock);
-          list_for_each_entry_safe(irqfd, next, &vm->irqfds, list)
-                  hsm_irqfd_shutdown(irqfd);  /* removes wait queue entries=
- */
-          mutex_unlock(&vm->irqfds_lock);
-  }
-
-The invariant that must hold: all call sites that can invoke
-queue_work(vm->irqfd_wq, ...) must be silenced before destroy_workqueue()
-is called.  hsm_irqfd_wakeup() can only be silenced by removing the wait
-queue entry via eventfd_ctx_remove_wait_queue(), which only happens inside
-hsm_irqfd_shutdown().
-
-Proposed fix
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Move the irqfd shutdown loop before destroy_workqueue():
-
---- a/drivers/virt/acrn/irqfd.c
-+++ b/drivers/virt/acrn/irqfd.c
-@@ -217,9 +217,15 @@ void acrn_irqfd_deinit(struct acrn_vm *vm)
- {
-        struct hsm_irqfd *irqfd, *next;
-
-        dev_dbg(acrn_dev.this_device, "VM %u irqfd deinit.\n", vm->vmid);
--       destroy_workqueue(vm->irqfd_wq);
--       mutex_lock(&vm->irqfds_lock);
-+
-+       /*
-+        * Shut down every irqfd first to remove all wait queue entries.
-+        * This ensures hsm_irqfd_wakeup() can no longer call queue_work()
-+        * on irqfd_wq before we destroy it.
-+        */
-+       mutex_lock(&vm->irqfds_lock);
-        list_for_each_entry_safe(irqfd, next, &vm->irqfds, list)
-                hsm_irqfd_shutdown(irqfd);
-        mutex_unlock(&vm->irqfds_lock);
-+
-+       destroy_workqueue(vm->irqfd_wq);
- }
-
-After this change destroy_workqueue() also implicitly flushes any
-hsm_irqfd_shutdown_work instances that were already queued before deinit
-started (e.g. from a racing POLLHUP that arrived before deinit), so the
-flush semantics are preserved.
-
-Additional note
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-The teardown ordering bug above is real, but simply moving
-destroy_workqueue(vm->irqfd_wq) after the deinit loop may still be
-insufficient.
-
-A racing POLLHUP may already have queued irqfd->shutdown before
-acrn_irqfd_deinit() acquires irqfds_lock. If deinit then calls
-hsm_irqfd_shutdown() directly and frees irqfd, a pending or in-flight
-hsm_irqfd_shutdown_work() can later dereference the freed irqfd, turning
-this into a different use-after-free.
-
-So the safe teardown sequence may need to be:
-
-    1. under irqfds_lock, detach each irqfd from vm->irqfds and remove
-       its eventfd wait queue entry;
-    2. keep detached irqfds alive temporarily;
-    3. flush/destroy irqfd_wq so any previously queued shutdown work
-       drains;
-    4. only then drop eventfd references and free the detached irqfds.
-
-This is closer to KVM's two-stage deactivate/cleanup model, where the
-irqfd is first made inactive and unhooked from eventfd, and is freed
-only after shutdown work has been flushed.
 
