@@ -1,173 +1,199 @@
-Return-Path: <stable+bounces-233379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCRAOau702mslAcAu9opvQ
-	(envelope-from <stable+bounces-233379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 15:56:59 +0200
+	id mEUSFWW+02m4lQcAu9opvQ
+	(envelope-from <stable+bounces-233380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:08:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88953A3BD8
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 15:56:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A933A3CA1
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C94273006030
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 13:56:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 587F5300825E
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 14:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDF5372671;
-	Mon,  6 Apr 2026 13:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A8F37E2FC;
+	Mon,  6 Apr 2026 14:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="InQPuYqZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012039.outbound.protection.outlook.com [40.107.209.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E3D33C532
-	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 13:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775483814; cv=none; b=kLzuXFgAX2Hc6n3EyXbdFFQ6h4ZjnFJ+xWSqNl7P9zEf2gnYuPJV5scyyD7dJZMScUVskCSf+iOXLC2WRsUn0ZYlJ0SaoZhuMqiBz7VUa30VkgLXj0MR7ugSEBuk+Y3eRyA0aUBoFKKNW1dRQR9oWYiHvR/lCdVMyeBuQVd4/vY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775483814; c=relaxed/simple;
-	bh=hSrL++7BFKBB2qjBSL6tIqon+XilxF4IH2+bdS1/RC0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WjEBcmyjm9ciObaQ/5CkMnoEBDQJxxRPcAg7gh4GTtN/Ppzlh1CrSXk+nOlBkBcD8cH3F2FJ1qKx6kUIVmsHG92KF9b4jG+xzJnr3iR45uyr+YLKZ2KWpuGbx5YXQg3WQ/SDCUHnwa29iowO55LfiOmEtRqLyDzBUQF5dxTIwbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=lvkasz.us; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=lvkasz.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-b941762394aso509961566b.1
-        for <stable@vger.kernel.org>; Mon, 06 Apr 2026 06:56:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775483811; x=1776088611;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OQtUgZBlTwv+xDoaiKb2N7gT+/y7cOGsVK3GMzZHFqc=;
-        b=Gj/FTSMWOOMYB+uJhb+HXUHwo4z0VYBNfg9T9Ui5/uujF58c+wFO+tw+bDtMNAF0ax
-         XgAcOuOT/hoYrsHQiwQ/omwSAd26vG/ARXb4Oziqx/PW7QR4FVulJtu5OVYp+x9RBbe/
-         Cp/a7taduYqju/7TPTqEtHiFvRwi8sn/acGTIaR601R9xD/potH5ozA3ExsA3Wn9eMFx
-         b6W9pLgak1soh6uNtVXvTsuX8iaoGr5B7E3lmRe0E90xhp3JdOCK/2Hy5XxNW/z1VAwS
-         tf7llaVQuKIi92O3lupZigiFDcQSQQv1492r19s3F+gPgfCCs8kh2krsZfKPjW25xF43
-         Ti6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVvNYTi31jxPqG435r+8wcwrRlaRiJk3BVxbVtke47nmOxnLiY9V6EK0KtC+LnCExuUWSCD8zM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycRbRVeNoMHjxf/IthyRoo3GdRW9ncrtbK14UMVMObs4aHEv80
-	yKPUuJTJPI01pW79VofPIHKQc4RGBHwmrT2ANiyKso9RRJwjycb+PErf
-X-Gm-Gg: AeBDievX0VIbZuqW7cMf6U8LM6wb15LS2Sca9Ct1jeTV25OP/LKAnMWEXnO5sWWd79s
-	FPQvtXFsZq4/mmFgspH7cgmTNArwXiinC4SXuIPiDZ/3gyGtFVAlXmsDqJqbxj2gs1I4VlwJ66Y
-	Kpwu1fW3bw3R+u5zyJyGPyWd1BpAfSJUaX+Y5s+hXTRsMDxk/D9g/kBNpc6CEVujQb2byQPDDer
-	5nsyAVKBEQUhZlORzdICFIcFY2h2Dw1DO26T9cdMu88EPoSu62zl/lDk6ugxC3qdZiAVrh5klWP
-	06U/gsfrjpA4SfKIok0VZkyNATrA4k6dudzxax/tFJl/K4xXtqR+Pz7x+fuZHc8B1gwZbcOc0br
-	q5zPTwoscdno3OLaDA5/Ygp/u2un5fHM/1GB+G/DYaoey6FWVawL548V8C0ywqor6ElU7Q6/MEZ
-	NGRNSOxwRyFPEQwk4NegG7kyJ5BvFDWiz93c2BbpnvCjXHdjJOMkHHXrVy39TuXA==
-X-Received: by 2002:a17:907:2d9f:b0:b9c:b3b5:bbf0 with SMTP id a640c23a62f3a-b9cb3b5bc8fmr276106266b.6.1775483810728;
-        Mon, 06 Apr 2026 06:56:50 -0700 (PDT)
-Received: from aorus.localdomain (5.185.72.109.ipv4.public.orange.pl. [5.185.72.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3cac0e1asm472921266b.27.2026.04.06.06.56.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 06:56:50 -0700 (PDT)
-From: =?UTF-8?q?=C5=81ukasz=20Lebiedzi=C5=84ski?= <kernel@lvkasz.us>
-To: vkoul@kernel.org
-Cc: neil.armstrong@linaro.org,
-	krzk@kernel.org,
-	alim.akhtar@samsung.com,
-	andre.draszik@linaro.org,
-	pritam.sutar@samsung.com,
-	kauschluss@disroot.org,
-	johan@kernel.org,
-	ivo.ivanov.ivanov1@gmail.com,
-	linux-phy@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?utf-8?q?=C5=81ukasz=20Lebiedzi=C5=84ski?= <kernel@lvkasz.us>,
-	stable@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v2] phy: exynos5-usbdrd: fix USB 2.0 HS PHY tuning values for Exynos7870
-Date: Mon,  6 Apr 2026 15:56:27 +0200
-Message-ID: <20260406135627.234835-1-kernel@lvkasz.us>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C47B37E2EF;
+	Mon,  6 Apr 2026 14:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775484514; cv=fail; b=pQHalAMAbHtPbR1qjmBwVjIfluzcK3cAA7ik5oXZShJ0gOwdh42z4vX5X1OLyqaxLKL1ROgNDh83+sFdl+537yrx5T+MUxk7aUFxbOGI4LIehQm+9AKZsMrbdnwBbn3+22uHnlz7f8m45NeEJ6rsmkjF8usg3FgEOR9uciVrr5k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775484514; c=relaxed/simple;
+	bh=RFjAy/KzKX9FJQ2DXv16orm07g7Rfmlu/35Qlta42v4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GMkuI6ggcuCPNAF6TMZHzgPPDxfRvfsnrCrNEAo857a2vPJT86LN46DcEo3DpLplHkWa9HC3qbv+q/bZ7aQt/FAmrXBy8MV9focxiwCaxXPBRDpyyInJmcCweKrLrUwA+gt9QJm8Ci02UodCf2oZ1VR98UCf+5pvTmqIKVb0xqw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=InQPuYqZ; arc=fail smtp.client-ip=40.107.209.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gYtkGQK1Gvvbjh88FWJqBRT8o1N9f+Ipz5nKzqZCmXw8cE/57RUpZEgsaNbPHlmU7HlM5WRgyMFCxXFLiZLc0vGr8DfiSHKN+9gINDe1WnHTqICUWdMugPEl0FSuwEpznaV7gxI30qUcQmyEQx/ZGGDQS6oojNkrrh9yz2tGI/Ig41To2pHD0rvC9zjc4iGv+SBMxxxC+bMJGa6OTeYTcYhj6lF8KxYzOmOvBaC1Nh99HP6xii65IyMqUo+32KkbrTp6KSRzuGlPbe/w2A2O9VWvSDUUaicQaB/rFf96GgzPNG78rJHunKKS1GaB4/hvcytm1frJwcy+ufZNZi9e6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VOKeyxeKGgyLV4uLMeXwtycoYeItW3cGtivo//NHBPI=;
+ b=TzMcgfnWchOEmoTW2xhCT4lhYShHSScjycgYFnWAGSldMzthld/OtgDurxF/EY8/rtLsNJYHHMCw2YAQQyQQ9+EUk38uujuIGaOo2lX62/IkrIOphkrGIa+wWWTOTN77KMgfmdNXh1wezT3UtTVaqYEwy0lAAjS48k1F/8C7ihDKMKfdkyK6HfnIfseSIeHt74QzEk9t1SPzpTw4tru3/6sfJSeJK4jQyEylstRHbl464+Rl0C/l10Zfi2R/gqjMSaAghp6WMmkpTLY70RZgvtX5u3zrJHnljoYxBSn289qH09xeRh6MaYsVMwhHGjHci+QUfzJdbFg01cC/leWB2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VOKeyxeKGgyLV4uLMeXwtycoYeItW3cGtivo//NHBPI=;
+ b=InQPuYqZT++jpnxRurPSvF3SBD9EtERD9QVdV5alhYSSCjGF7zMap+aUl8vRqgapqmn5uXYmRwVl77LDm/pX3nISou9XZUbRbc32j8Nm/LiRjoY/MGdoJS3VGOeFdWmW7od1KFhnVBfrR+tXY0Wt66zb+HGywKP11HkyJ59TmwwDjMLxY8JDWP9NqX3bPNnP0xWSaNlHNwfjSHFzy6J0WF8JnpI3EIkQmTX87o394rW/4tl07hhMTA+EmgxZ8RyZ5DwXmy6j4Gfsf2awJTgjwPnZJXiK8tBFH/viXMtAdVd5a57GxpmtN4tydQwO7LzjsDQS9GwlNqx/qvHbyXTPag==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by PH7PR12MB6443.namprd12.prod.outlook.com (2603:10b6:510:1f9::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Mon, 6 Apr
+ 2026 14:08:27 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9769.017; Mon, 6 Apr 2026
+ 14:08:27 +0000
+Date: Mon, 6 Apr 2026 11:08:25 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v5] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-ID: <20260406140825.GN310919@nvidia.com>
+References: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
+ <adOqU0UDzpxvQuwA@lucifer>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adOqU0UDzpxvQuwA@lucifer>
+X-ClientProxiedBy: MN2PR03CA0005.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::10) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.54 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[lvkasz.us : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH7PR12MB6443:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1475342c-d895-48ad-07ea-08de93e5f917
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	8/GNt2JF1YuBL2Y1/psEBRVIEZUvmXMGOVg/VcO85CneVu0UODOHTgnL0G1i35NRMgqjAG4ZEnSVTYc6NgZRbRMFcfJ8SybwgjJesShnvFf661ZktmidILIQo6cEUasJSYoTrwUHbPIa6kDRE2MPvVIt1UBonJTaHpV0A5KJi9b+0uYeWi+cPpNJj7RbzG1pr2TylLKayiZFGt3ZwJtnZL2x1SWw2qKnIBXRmMP+UmUsPZYJRM7t/CUcpFyvXJUtNnCgfJg17OlPu1EK93EmKD7U/6JnvlGWQcSCRbSipPLfJITYZ6OXrTDgsv1KzLisPRIR2xcJxI8pybJcUpYwUdUUDTvQ5zdIrrh9EXSiKFhNoJ7cBv6sM/ggbdop8XOvW/FVZCtn5m2gT/LbUWNaCnjAH6rr7AwS790HRRRh3nsfTGzdX9GdOm6l1stDNTkjOpslbK2AsMFi1owcW+TcoPs1iBBqCToTA9mjVZ7q7lFLLJ2Spt8OqXerYQPjUvbJel6oT9ClGcAgoGtoKVSIfZe7lVXH0FkEYr2Ym4aDgrkIq7eh/RccfPBGkNxqVfPBCR99iDiwj5L3PVFNqxWbZh9EwLCWqFLIu3JHJXGYimLJn0KZfAQIx7l7d6iy+JNLH/SfSx0SJehxi9gMENtc6JOaVZZcye1d1rMWM3MLWxeNHdHL7Fds+mjr82P4EWvTORwEiVGoEyCM/WXlN+ow5g867T01coqjHbSUkzUolrk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/pRu3OKEvHe8DNs1KGp1W/EwXwKYG24CIY0xy1gEsTbhdnp00B72ALVw04kw?=
+ =?us-ascii?Q?bK46c3pmwbzPtRd5zHCYcpFBPxTVEolbnRJVViPe2udGKFE2/Gu+Gzi8Yq/m?=
+ =?us-ascii?Q?Z0RkFBRYXS4DzSxjeYrqTzPUoviarTIxuzVP8cSkejT3t61Tt1/YZTk7o75K?=
+ =?us-ascii?Q?agd762M9Zl+YHB8+N72LlBq4ch/kdbw1zi61Pd76zKKnunqQNtd7+wGpJTuD?=
+ =?us-ascii?Q?MZoV/cllmv8aNPAE+opeaTFZA3Xu0nph/h1LrxMiRVo3YtSEOU3pqvGttywY?=
+ =?us-ascii?Q?hd/c45X8ssmxm4NJWC7ebZQk0BQtbgrZfZW2I2Ft5OsPTRJn9HZPgDnBJmKs?=
+ =?us-ascii?Q?iCxYZ22zUDn7ikaJUzlv7dJiLRxGnUjeLuohGHP9s6q0YLkMLYRvV/gkFxT7?=
+ =?us-ascii?Q?bC/yGS3UTjL/qCz9p0EjEzxKVBkE6NmT5hYHTYUdZMYzptPRHKDq/lx+6TEh?=
+ =?us-ascii?Q?w7NhE0e76HMZS4Y920ytbGPmtUw42Zcu3lNn7Jze1/gGjaK123RmjJO5jqcA?=
+ =?us-ascii?Q?XMbSJ0p9piQlbcgJhFmSyfXDOhK9J8WCrjD01vHFYBC9y4EmG4pXMixYVSgg?=
+ =?us-ascii?Q?POi1E2HUYo/ZHLq191tTK0eGjGS3HxQchNDaGSd9VypbIDOtrTJkgGhBVzSL?=
+ =?us-ascii?Q?Zs8lgo47hU7PpLeIxF4wDIR3Qtxst7e33p7NwjXdBD7xnLjPhPRMZ7GanB5O?=
+ =?us-ascii?Q?YxXvk/Z34LLS6cHVTh2wz1+uoyQcUoWV1Flf1Ngp2jXbor6BVvqlPRk/3hiS?=
+ =?us-ascii?Q?Od3PyJIoWXX0R1J64TIyuMGhKKoUVdX0/7ODRHDBe+XV1XR3Cf1IANvshtTO?=
+ =?us-ascii?Q?2cc6BCVZTCTI3KMnq3YIgZVbADhG0BjM9DlDTJT/Jxf4i3BEODPmzr7iUJpM?=
+ =?us-ascii?Q?q4aHRZNe0oRozmREvcC/vCzFmk8zWzBMvpJz+W4446GpfENYpi6Wu3zUk4qT?=
+ =?us-ascii?Q?R6oyg/x141+sdL0x6PVa4mq8tijOTY77aknNPb9PDoqed9fK0oNTEKF+D2Mv?=
+ =?us-ascii?Q?69TVSclkF7nHKDxdeu6/N7GXhzOgtXU9lGLSHPpEq32Rxysfa/mNre58xQCO?=
+ =?us-ascii?Q?ZQ1nEAgrUTWKDwhez8Mjnwn/Z1nkACOSQD6/uUnyYIju2dHCiTknIas5DAFm?=
+ =?us-ascii?Q?QVgcTfliSNNBKWbhPu5U+4u+JslPRiYqc/fsSvdXotMwVEeRTysqxzs6TyzU?=
+ =?us-ascii?Q?bvNJgPJYomXuz1/957S6ZmYDH2g62LXZfVfY12wDAGSnJg+fNLiXRvU2cmlu?=
+ =?us-ascii?Q?XPzKKsZXZNKE/agECTp85HkODxsxqkP936cgFMf38Qsp/QTLLHms7yoxAf/Q?=
+ =?us-ascii?Q?yFou9BS5dZMV3bYaLMBEz69wh0H0eqZMBG7FOo3UQUjAOvxBPKx9U0TbQyRW?=
+ =?us-ascii?Q?KlA4xqKzOnQYjL5a08SNWPnT6OAEjlFvWmjG3mMJdDvIiJRKStjqZjeIAcIl?=
+ =?us-ascii?Q?q/LmmL7dGZAhWibnWEXc8KgJ9RksgUe30kycwrv39GqfoT4xyLpLZR2BZn+k?=
+ =?us-ascii?Q?rlnXLL+nsTYu80SEsBE7caGkNFE5rRTubLHm8GuTtC67doH4+IPT2dbqJhfH?=
+ =?us-ascii?Q?QLKOrrx7CI0Sl8NmqHySy2/eJJkW2BWE3FnBXG+uHBOej0hoe2OjfqtPyjTX?=
+ =?us-ascii?Q?3hd+ngVJ7nPMt92g3LsZk3r/akB9DQLpSp4s1tdHCK8BCUpVT2GWxTjdWixc?=
+ =?us-ascii?Q?JLJ2mkYfadsqOviiICL09SyiubGUhpRjqod4Jr65tXRNWLDG?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1475342c-d895-48ad-07ea-08de93e5f917
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 14:08:27.0926
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: c/K5klymPC8+pTNvxXyUhJHIWLN2eUXpElcEMRU70J6yDpArASyaBDLiYXqJDF+N
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6443
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[linaro.org,kernel.org,samsung.com,disroot.org,gmail.com,lists.infradead.org,vger.kernel.org,lvkasz.us,oss.qualcomm.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233379-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233380-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.intel.com,lists.freedesktop.org,nvidia.com,lst.de,kernel.org,linux-foundation.org,intel.com,kvack.org,vger.kernel.org,gmail.com,sk.com,gourry.net,linux.alibaba.com,infradead.org,oracle.com,google.com,suse.com];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kernel@lvkasz.us,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.813];
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lvkasz.us:email,lvkasz.us:mid]
-X-Rspamd-Queue-Id: E88953A3BD8
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 14A933A3CA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The existing PHYPARAM0 tuning values for Exynos7870 are incorrect,
-causing the USB 2.0 PHY to fail high-speed negotiation and fall back
-to full-speed (12Mbps) operation.
+On Mon, Apr 06, 2026 at 01:54:13PM +0100, Lorenzo Stoakes (Oracle) wrote:
+> Hi guys,
+> 
+> +cc missing M/R, fsdevel list
+> 
+> So this was merged upstream, and touches mm/, and even has a mm:
+> prefix... but was taken through a non-mm tree.
 
-Fix TXVREFTUNE (transmitter voltage reference) from 14 to 3,
-TXRESTUNE (transmitter impedance) from 3 to 2, and SQRXTUNE
-(squelch threshold) from 6 to 5. Also explicitly set
-TXPREEMPPULSETUNE to 0, which was previously missing from the
-tuning table despite being included in the register mask.
+Also, how come there is no email on lore reporting someone accepted it?
 
-All values are derived from the vendor kernel for the Samsung
-Galaxy A6 (SM-A600FN), as no public hardware documentation is
-available for the Exynos7870 USB DRD PHY. With these corrections,
-the PHY successfully negotiates high-speed (480Mbps) operation.
-
-Fixes: 588d5d20ca8d ("phy: exynos5-usbdrd: add exynos7870 USBDRD support")
-Cc: stable@vger.kernel.org
-Tested-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Łukasz Lebiedziński <kernel@lvkasz.us>
----
- drivers/phy/samsung/phy-exynos5-usbdrd.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/phy/samsung/phy-exynos5-usbdrd.c b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-index 5a181cb4597e..8711a3b62c8e 100644
---- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
-+++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-@@ -1958,13 +1958,14 @@ const struct exynos5_usbdrd_phy_tuning exynos7870_tunes_utmi_postinit[] = {
- 			      PHYPARAM0_TXPREEMPAMPTUNE | PHYPARAM0_TXHSXVTUNE |
- 			      PHYPARAM0_TXFSLSTUNE | PHYPARAM0_SQRXTUNE |
- 			      PHYPARAM0_OTGTUNE | PHYPARAM0_COMPDISTUNE),
--			     (FIELD_PREP_CONST(PHYPARAM0_TXVREFTUNE, 14) |
-+			     (FIELD_PREP_CONST(PHYPARAM0_TXVREFTUNE, 3) |
- 			      FIELD_PREP_CONST(PHYPARAM0_TXRISETUNE, 1) |
--			      FIELD_PREP_CONST(PHYPARAM0_TXRESTUNE, 3) |
-+			      FIELD_PREP_CONST(PHYPARAM0_TXRESTUNE, 2) |
-+			      FIELD_PREP_CONST(PHYPARAM0_TXPREEMPPULSETUNE, 0) |
- 			      FIELD_PREP_CONST(PHYPARAM0_TXPREEMPAMPTUNE, 0) |
- 			      FIELD_PREP_CONST(PHYPARAM0_TXHSXVTUNE, 0) |
- 			      FIELD_PREP_CONST(PHYPARAM0_TXFSLSTUNE, 3) |
--			      FIELD_PREP_CONST(PHYPARAM0_SQRXTUNE, 6) |
-+			      FIELD_PREP_CONST(PHYPARAM0_SQRXTUNE, 5) |
- 			      FIELD_PREP_CONST(PHYPARAM0_OTGTUNE, 2) |
- 			      FIELD_PREP_CONST(PHYPARAM0_COMPDISTUNE, 3))),
- 	PHY_TUNING_ENTRY_LAST
--- 
-2.53.0
-
+Jason
 
