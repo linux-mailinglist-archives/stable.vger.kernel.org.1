@@ -1,167 +1,213 @@
-Return-Path: <stable+bounces-233386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Pu/IcDJ02m7mAcAu9opvQ
-	(envelope-from <stable+bounces-233386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:57:04 +0200
+	id WN8HKlbK02nomAcAu9opvQ
+	(envelope-from <stable+bounces-233387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:59:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34473A471F
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6343A4746
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 16:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F545300A11B
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 14:57:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCED0301547C
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 14:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5701A382F32;
-	Mon,  6 Apr 2026 14:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E169386452;
+	Mon,  6 Apr 2026 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VZmj8iYE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLkaENd1"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C163B70809
-	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 14:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26793859EC
+	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 14:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775487421; cv=none; b=impSNYZYp1PD4K7qrRDf5qtlMDo+d8GxMBFvdw3KYeJvMDh5W6IeG3yuF1oRe0V5YbahLUeOJjdwE/AczxiQPvzW4sy2pD5cMcqoXad58swRcgq1sB7N0PitTSd5hTYE35JBNIO7OR3hv844Zma9mp7QP38a3RtgEZjg0ihvBsY=
+	t=1775487556; cv=none; b=TpYeyf0J8d69m3yU15Ve0qbsWI4P2yhci3A0RCpkVB4KP/gxwZ3HREVW5FxLtUsSN4SyTmFduZnIjOIuAWN8owl66bblBL2cmX4vpXma0I3P5llgaMSb5dOibNfyiwzNZGOWRnNGtuCQ20uMcsXAe7uo4Sv0VHh6IJ89+fOg598=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775487421; c=relaxed/simple;
-	bh=Lq+x/Mfe4ysFSKnbrZR3svVFTSgb59cVz8m2AINXKpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YgxcbRiwn/yqKqiTtsV4Q8wqmd3WvO9O5UGWIzj/j+8iygl709dbrLpQ5rTi798LAak3QtKG5fwU/0xic913Nze+vyWMGYIPbEpeEYWLLK6zEwrXH/SL3BH6aE4+C6nYTj5q8UDbIdqjCWnVWOqbQey3eGR5Bi2+LVVCg1QjKVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VZmj8iYE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775487418;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0UsJTdLotzHUfNK/rfhKfTZZocm2SY/j7tRKh0ACf/A=;
-	b=VZmj8iYEbVE0nws507EL8NTshwUIQK2S49YtxliYRPsZldiO6mDudvJ1x+9QAaVQwcM1o9
-	/gfWEfDU14Bc147K5TPuIl50oNXw4lkG13uA0m7W/MibAhbd+YjjvXGZLZI7VMGD70nX87
-	JWbho62gKCs6xmHp+avoifqLnhIXA20=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-Ud8GiP5gOFOsWtcJA2JLkw-1; Mon,
- 06 Apr 2026 10:56:57 -0400
-X-MC-Unique: Ud8GiP5gOFOsWtcJA2JLkw-1
-X-Mimecast-MFC-AGG-ID: Ud8GiP5gOFOsWtcJA2JLkw_1775487415
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C169A1800283;
-	Mon,  6 Apr 2026 14:56:54 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.48.51])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C419019540C4;
-	Mon,  6 Apr 2026 14:56:48 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] ice: fix VF queue configuration with low MTU values
-Date: Mon,  6 Apr 2026 16:56:41 +0200
-Message-ID: <20260406145641.1020623-1-jtornosm@redhat.com>
+	s=arc-20240116; t=1775487556; c=relaxed/simple;
+	bh=xQ7o66TtbbwulQnJW5l2ZtOfYQA79hhGSfn9VhPlO6U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A4Uc2hqwsSWX2xiIb1Vxfj1dEls8jNKXRe/iGl0KjoqSj1V2t3Je2uPPoE/DmUqiZ05p7SZ+Qk8rgfCw/AK68wuBj98mqBq0/flVWX/bd8d2VxcvRp2nR2KEXFJThuqTlNastD8U9Y1GPM+O2lsoRUILQwXK/4gLtn4krhIb3ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLkaENd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C689AC2BC9E
+	for <stable@vger.kernel.org>; Mon,  6 Apr 2026 14:59:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775487555;
+	bh=xQ7o66TtbbwulQnJW5l2ZtOfYQA79hhGSfn9VhPlO6U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MLkaENd1y02jG6YsphOhuZTp0iQI96L6WFY5DEmo/DZ6WCfvoSBDZJV2ohYZSu1N9
+	 ac4WV6CKVr3vtjWO5PyYEkAdXK0hp0G+RobW161z0dcu3s/VU0gY22kCs+MYXqUHBH
+	 Liz1EHAuKjE4fTRx4+YsiI+t4vTTDKeLdDI2YZy0dAHG/YzL3nR/Rt8+yoiTCr6Y7R
+	 31IDqYUjMqFbupJ1fx/4xFWsQpHeFVPqQZdMM9fWEudaIkvMRtjafaQw7H2b7xvoYg
+	 xYFQlwgI/yUaOmD2NLJlqgiOeQ45VmSMD64YK+4sRFnv7nXs5NX2dbzF574dvLBFqO
+	 XtniXv49RXROw==
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-470145d7e6fso691449b6e.2
+        for <stable@vger.kernel.org>; Mon, 06 Apr 2026 07:59:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWGkMYl/ROEz/r94Oor3vgPlhujfVwj+C2s681ISMJxwfiRjrGGjQMMlIHAI7dCr2RmjLLfmJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxON1S2apwRQNovQxKFSQ2fqd5U/50l2PTrebmbf+dvZ0a6aFfd
+	ApeRKy5FOPlJ+6SBQglFJ11vE86zBcG0l8+gzkVTsfgzzEMNIW2GuPPsQ6sB3gkmQKQ9uUSmz2K
+	ABytoSaDUs2UGhC1IL4nLRLa0mBaKOmA=
+X-Received: by 2002:a05:6808:1910:b0:468:776:1ead with SMTP id
+ 5614622812f47-46ef5af739fmr6450744b6e.21.1775487554002; Mon, 06 Apr 2026
+ 07:59:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+References: <20260401081640.26875-1-fengchengwen@huawei.com>
+In-Reply-To: <20260401081640.26875-1-fengchengwen@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 6 Apr 2026 16:58:58 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gE9jLbaGy0yJhNZdpQJTR9stE-ABNQVvP5jqss3LQpFw@mail.gmail.com>
+X-Gm-Features: AQROBzDy996ma1a9twY_5lJC3Avr9hchzSyUdEAhSG92k1NHCBaaPp2eIIIoft4
+Message-ID: <CAJZ5v0gE9jLbaGy0yJhNZdpQJTR9stE-ABNQVvP5jqss3LQpFw@mail.gmail.com>
+Subject: Re: [PATCH RESEND v10 0/8] ACPI: Unify CPU UID interface and fix
+ ARM64 TPH steer-tag issue
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Kees Cook <kees@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, 
+	Sean Christopherson <seanjc@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Huth <thuth@redhat.com>, 
+	Thorsten Blum <thorsten.blum@linux.dev>, Kevin Loughlin <kevinloughlin@google.com>, 
+	Zheyun Shen <szy0127@sjtu.edu.cn>, Peter Zijlstra <peterz@infradead.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Xin Li <xin@zytor.com>, 
+	"Ahmed S . Darwish" <darwi@linutronix.de>, Sohil Mehta <sohil.mehta@intel.com>, 
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>, Robin Murphy <robin.murphy@arm.com>, 
+	James Clark <james.clark@linaro.org>, Besar Wicaksono <bwicaksono@nvidia.com>, 
+	Ma Ke <make24@iscas.ac.cn>, Wei Huang <wei.huang2@amd.com>, 
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>, Somnath Kotur <somnath.kotur@broadcom.com>, 
+	punit.agrawal@oss.qualcomm.com, guohanjun@huawei.com, suzuki.poulose@arm.com, 
+	ryan.roberts@arm.com, chenl311@chinatelecom.cn, masahiroy@kernel.org, 
+	wangyuquan1236@phytium.com.cn, anshuman.khandual@arm.com, 
+	heinrich.schuchardt@canonical.com, Eric.VanTassell@amd.com, 
+	wangzhou1@hisilicon.com, wanghuiqiang@huawei.com, liuyonglong@huawei.com, 
+	linux-pci@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, stable@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2600:3c0a:e001:db::12fc:5321:from];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233386-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233387-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D34473A471F
+	RCPT_COUNT_GT_50(0.00)[62];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[100.90.174.1:received,10.30.226.201:received];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 3C6343A4746
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The ice driver's VF queue configuration validation rejects
-databuffer_size values below 1024 bytes, which prevents VFs from
-using MTU values below 871 bytes.
+On Wed, Apr 1, 2026 at 10:16=E2=80=AFAM Chengwen Feng <fengchengwen@huawei.=
+com> wrote:
+>
+> This patchset unifies ACPI Processor UID retrieval across
+> arm64/loongarch/riscv/x86 via acpi_get_cpu_uid() (with input validation)
+> and fixes ARM64 CPU steer-tag retrieval failure in PCI/TPH:
+>
+> 1-4: Add acpi_get_cpu_uid() for arm64/loongarch/riscv/x86 (update
+>      respective users)
+> 5: Centralize acpi_get_cpu_uid() declaration in include/linux/acpi.h
+> 6: Clean up perf/arm_cspmu
+> 7: Clean up ACPI/PPTT and remove unused get_acpi_id_for_cpu()
+> 8: Pass ACPI Processor UID to Cache Locality _DSM
+>
+> The interface refactor ensures consistent CPU UID retrieval across
+> architectures (no functional changes for valid inputs) and provides the
+> unified interface required for the ARM64 TPH fix
+>
+> ---
+> Changes in v10-resend:
+> - Add Catalin's ack-by for arm64 commit
+> - Add CC to x86@kernel.org
+>
+> Changes in v10:
+> - Refine commit header&log according to Punit's and Bjorn's review
+> - Split perf/arm_cspmu as a separate commit which address Punit's
+>   review
+>
+> Changes in v9:
+> - Address Bjorn's review: split commits to each platform so that make
+>   them easy to review
+>
+> Changes in v8:
+> - Moving arm64's get_cpu_for_acpi_id() to kernel/acpi.c which address
+>   Jeremy's review
+>
+> Chengwen Feng (8):
+>   arm64: acpi: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+>   LoongArch: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+>   RISC-V: ACPI: Add acpi_get_cpu_uid() for unified ACPI CPU UID
+>     retrieval
+>   x86/acpi: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+>   ACPI: Centralize acpi_get_cpu_uid() declaration in
+>     include/linux/acpi.h
+>   perf: arm_cspmu: Switch to acpi_get_cpu_uid() from
+>     get_acpi_id_for_cpu()
+>   ACPI: PPTT: Use acpi_get_cpu_uid() and remove get_acpi_id_for_cpu()
+>   PCI/TPH: Pass ACPI Processor UID to Cache Locality _DSM
+>
+>  Documentation/PCI/tph.rst          |  4 +--
+>  arch/arm64/include/asm/acpi.h      | 17 +---------
+>  arch/arm64/kernel/acpi.c           | 30 ++++++++++++++++++
+>  arch/loongarch/include/asm/acpi.h  |  5 ---
+>  arch/loongarch/kernel/acpi.c       |  9 ++++++
+>  arch/riscv/include/asm/acpi.h      |  4 ---
+>  arch/riscv/kernel/acpi.c           | 16 ++++++++++
+>  arch/riscv/kernel/acpi_numa.c      |  9 ++++--
+>  arch/x86/include/asm/cpu.h         |  1 -
+>  arch/x86/include/asm/smp.h         |  1 -
+>  arch/x86/kernel/acpi/boot.c        | 20 ++++++++++++
+>  arch/x86/xen/enlighten_hvm.c       |  5 +--
+>  drivers/acpi/pptt.c                | 50 ++++++++++++++++++++++--------
+>  drivers/acpi/riscv/rhct.c          |  7 ++++-
+>  drivers/pci/tph.c                  | 16 +++++++---
+>  drivers/perf/arm_cspmu/arm_cspmu.c |  6 ++--
+>  include/linux/acpi.h               | 11 +++++++
+>  include/linux/pci-tph.h            |  4 +--
+>  18 files changed, 158 insertions(+), 57 deletions(-)
+>
+> --
 
-The iavf driver calculates databuffer_size based on the MTU using:
-  databuffer_size = ALIGN(MTU + LIBETH_RX_LL_LEN, 128)
+Applied as 7.1 material, but please note that I haven't tagged it
+explicitly for "stable".
 
-where LIBETH_RX_LL_LEN = 26 (ETH_HLEN + 2*VLAN_HLEN + ETH_FCS_LEN).
+The last patch carries a Fixes: tag which should be suitable for
+"stable" to pick it up and you may as well request the whole series to
+be picked up by "stable" when it hits the mainline.
 
-For MTU values below 871:
-  MTU 870: 870 + 26 = 896, aligned to 128 = 896 (< 1024, rejected)
-  MTU 871: 871 + 26 = 897, aligned to 128 = 1024 (>= 1024, accepted)
-
-The 1024-byte minimum seems unnecessarily restrictive, because the hardware
-supports databuffer_size as low as 128 bytes (the alignment boundary),
-which should allow MTU values down to the standard minimum of 68 bytes.
-
-I haven't found the reason why the limit was configured in the commit
-9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message"), so
-with no more information and since it is working, change the minimum
-databuffer_size validation from 1024 to 128 bytes to allow standard low
-MTU values while still preventing invalid configurations.
-
-Fixes: 9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message")
-cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
- drivers/net/ethernet/intel/ice/virt/queues.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/virt/queues.c b/drivers/net/ethernet/intel/ice/virt/queues.c
-index f73d5a3e83d4..31be2f76181c 100644
---- a/drivers/net/ethernet/intel/ice/virt/queues.c
-+++ b/drivers/net/ethernet/intel/ice/virt/queues.c
-@@ -840,7 +840,7 @@ int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 
- 			if (qpi->rxq.databuffer_size != 0 &&
- 			    (qpi->rxq.databuffer_size > ((16 * 1024) - 128) ||
--			     qpi->rxq.databuffer_size < 1024))
-+			     qpi->rxq.databuffer_size < 128))
- 				goto error_param;
- 
- 			ring->rx_buf_len = qpi->rxq.databuffer_size;
--- 
-2.53.0
-
+Thanks!
 
