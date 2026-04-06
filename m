@@ -1,161 +1,259 @@
-Return-Path: <stable+bounces-233348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Ol6O9Q102l4fwcAu9opvQ
-	(envelope-from <stable+bounces-233348-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 06:25:56 +0200
+	id WG26OYhT02nehAcAu9opvQ
+	(envelope-from <stable+bounces-233349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 08:32:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4E63A16A4
-	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 06:25:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9E13A1C73
+	for <lists+stable@lfdr.de>; Mon, 06 Apr 2026 08:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60C5B300720E
-	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 04:25:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D2CA300BD8A
+	for <lists+stable@lfdr.de>; Mon,  6 Apr 2026 06:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45107353EE5;
-	Mon,  6 Apr 2026 04:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8074E3570C8;
+	Mon,  6 Apr 2026 06:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="gfg5nhOG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lF5f8i8b"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E6F30EF86;
-	Mon,  6 Apr 2026 04:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4206C26ED45;
+	Mon,  6 Apr 2026 06:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775449536; cv=none; b=YIOqK/YRr1ojfBrPrfBsR/7NLPlKzxcERxabFcdQ2JXG+lnnD6i3zpS8FSmkl3bF/nqCiPwUlD67YFdwmnoyeDfMxtyZRCt+w8yjle6omR9xkXUe7g/wMPqmojfy4xV/qisio/BYGXeiIfUnSx/BWMWWDgROYicTsEZ5K0cEwpg=
+	t=1775457130; cv=none; b=kFRHIYAAt4rS4M/t0kM6gNl4uMhKAQntAlQzvdDDo4AWiA/BkumbOimLmDGYE6+DxCEmDs4Y3goqJSNO96hrR4h/IBuoOMIUGd7U6Gzre/B87UDcdgfEy7VLf9mjFx55MDCZ4Ij3Fue5drivwX8rXf3SBKisyuptILey5AicSVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775449536; c=relaxed/simple;
-	bh=QTIo9VGHz2wxJFdeg6IU5XJtReN5xn5GrLbtzmLjYuw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nz+6EB8/skHhMAZDl0BApoZgqCfwv+ZLYyQsch6R3B6ESp5gwv+XCNH+pgjWPH3hdewchcge2Guzk7yvliBmKphJW9ImeencEWq7mSx7J+Huo9VsUJJ6EpJR79MXL0N1U1zstgxG2AZmIlziTR26nfgiBAVCYQl6bQwzdB91f7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=gfg5nhOG; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [192.168.0.9] (unknown [4.194.122.144])
-	by linux.microsoft.com (Postfix) with ESMTPSA id DD30820B710C;
-	Sun,  5 Apr 2026 21:18:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DD30820B710C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1775449110;
-	bh=B3diYHHGFQ5W0wbem6CFVCqplPIswsX1zrqcobDFojs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gfg5nhOG3DXzUjyf5Mct9OtDkjEPW9J8TLfEbUwO+vgA/fksEievinNPSuF0jyHy/
-	 CHoRd8jJe2hICR2N/VnJAZJzV5IwY1NaKfwX+TmCP534GwZRYiDzSUGN074dKwweei
-	 pjpPVxrEzKgZp8NxiqxnrVZ1S506JsY64nJZT0CM=
-Message-ID: <3e8a38f3-d309-4bd6-8378-260079aa7024@linux.microsoft.com>
-Date: Mon, 6 Apr 2026 09:48:25 +0530
+	s=arc-20240116; t=1775457130; c=relaxed/simple;
+	bh=FQv8fB3vHkOxqDuIagVsUtI8l6za+9doXbwJzLGtX74=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f2QXACmdiXwX0WmZrSX/jlMr/ALAgBdgUiXLprF4Vvvaq8yO1mgsB0DXZ/p+5gvLD1m2+1vRh1zMQrfQNW5GAExqoAEAt+KhBco78aVxsGcLvgCja42VrMBUdotSrE7jQ+dqP3rk6MviyHlj+8YJVuO8BEj7ybWw8asItHJNUp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lF5f8i8b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA219C4CEF7;
+	Mon,  6 Apr 2026 06:32:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775457129;
+	bh=FQv8fB3vHkOxqDuIagVsUtI8l6za+9doXbwJzLGtX74=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lF5f8i8bifXb6IF8UaZcLgx7ZlpRvr+WuhQoURmM8je7Ilf7X53+1ckVA7U5tJc4W
+	 sM7nPFeswRuiORA/jbzP5HLmiIKjsvi8XAOB8GGN5J5DQGxhI6/r7uhCZkfcz8kXT6
+	 jYGVnl4RKABEWa8hymi7156xvXG7/TUcjbo6hRcQWqZJx+EJukRxy1EEYahenJ/saK
+	 OUt5Fz2sBCLPCe0XcsHnjFEqqBnsNe0GNJLtlOBHLliWoxofbORrdl6z64mt2MMc8g
+	 gogY742T9RU89s9WpD3qLObbBYigoKok+Xg0yhiXpS6h+z7XUaWv9vDdJWcyo0eJc9
+	 8ra1XLMvbl8Bw==
+Received: from cu01147a.smtpx.saremail.com ([195.16.150.122] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1w9dVH-000000099uU-1XBT;
+	Mon, 06 Apr 2026 06:32:07 +0000
+Date: Mon, 06 Apr 2026 07:32:00 +0100
+Message-ID: <873418d2fz.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Johan Hovold <johan@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Alexey Kardashevskiy <aik@ozlabs.ru>,
+	Robin Murphy <robin.murphy@arm.com>,
+	stable@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/9] driver core: Don't let a device probe until it's ready
+In-Reply-To: <20260403170432.v4.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+References: <20260404000644.522677-1-dianders@chromium.org>
+	<20260403170432.v4.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt
- trigger path
-To: Alex Williamson <alex@shazbot.org>
-Cc: "Gupta, Nipun" <nipun.gupta@amd.com>, nikhil.agarwal@amd.com,
- pieter.jansen-van-vuuren@amd.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
- <e9f01579-fd53-50b9-996b-cd1d3342f453@amd.com>
- <20260401122254.363d93c2@shazbot.org>
- <12005a02-a1cd-46ca-8782-c727a7d5e5c6@linux.microsoft.com>
- <20260402081632.554fa467@shazbot.org>
-Content-Language: en-US
-From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-In-Reply-To: <20260402081632.554fa467@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 195.16.150.122
+X-SA-Exim-Rcpt-To: dianders@chromium.org, gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, stern@rowland.harvard.edu, saravanak@kernel.org, hch@lst.de, edumazet@google.com, johan@kernel.org, leon@kernel.org, aleksander.lobakin@intel.com, aik@ozlabs.ru, robin.murphy@arm.com, stable@vger.kernel.org, driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233348-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233349-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 2F4E63A16A4
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 4A9E13A1C73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Doug,
 
-
-On 02-04-2026 19:46, Alex Williamson wrote:
-> On Thu, 2 Apr 2026 10:14:24 +0530
-> Prasanna Kumar T S M <ptsm@linux.microsoft.com> wrote:
+On Sat, 04 Apr 2026 01:04:55 +0100,
+Douglas Anderson <dianders@chromium.org> wrote:
 > 
->> On 01-04-2026 23:52, Alex Williamson wrote:
->>> On Wed, 1 Apr 2026 15:11:17 +0530
->>> "Gupta, Nipun" <nipun.gupta@amd.com> wrote:
->>>    
->>>> On 20-03-2026 15:49, Prasanna Kumar T S M wrote:
->>>>> Add validation to ensure MSI is configured before accessing cdx_irqs
->>>>> array in vfio_cdx_set_msi_trigger(). Without this check, userspace
->>>>> can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
->>>>> with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
->>>>> ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
->>>>>
->>>>> The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
->>>>> sets config_msi to 1 only when called through the EVENTFD path. The
->>>>> trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
->>>>> done, but there was no enforcement of this call ordering.
->>>>>
->>>>> This matches the protection used in the PCI VFIO driver where
->>>>> vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
->>>>>
->>>>> Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
->>>>
->>>> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
->>>
->>> It's an improvement, but I think it also highlights that interrupt
->>> setup for vfio-cdx devices is racy.  I think it should adopt a mutex on
->>> the vfio_cdx_device that is acquired with a guard in
->>> vfio_cdx_set_irqs_ioctl().  That would make config_msi stable for this
->>> test.  Thanks,
->>>
->>> Alex
->>
->> This patch is fixing a specific problem. User space can make VFIO_*
->> calls in a specific order to trigger NULL pointer access. This will not
->> get fixed with a mutex.
-> 
-> I'm not saying the fix is wrong, I'm saying it's incomplete.  This
-> fixes the specific case where config_msi is not set prior to the ioctl,
-> but it doesn't consider concurrency where config_msi may be set when
-> tested, but race with a call to vfio_cdx_msi_disable().  I think the fix
-> needs both the validation of config_msi and serialization via a mutex
-> such that the test remains valid through the whole ioctl path.  Thanks,
-> 
-> Alex
+> The moment we link a "struct device" into the list of devices for the
+> bus, it's possible probe can happen. This is because another thread
+> can load the driver at any time and that can cause the device to
+> probe. This has been seen in practice with a stack crawl that looks
+> like this [1]:
 
-Thanks for the suggestion. Yes, the concurrency issue exists. It exists 
-even before this patch and it has to be fixed.
+[...]
 
-The CDX folks will be able to do this faster than me as they have deep 
-expertise on this.
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 09b98f02f559..f07745659de3 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -3688,6 +3688,19 @@ int device_add(struct device *dev)
+>  		fw_devlink_link_device(dev);
+>  	}
+>  
+> +	/*
+> +	 * The moment the device was linked into the bus's "klist_devices" in
+> +	 * bus_add_device() then it's possible that probe could have been
+> +	 * attempted in a different thread via userspace loading a driver
+> +	 * matching the device. "ready_to_prove" being unset would have
+
+nit; s/prove/probe/
+
+> +	 * blocked those attempts. Now that all of the above initialization has
+> +	 * happened, unblock probe. If probe happens through another thread
+> +	 * after this point but before bus_probe_device() runs then it's fine.
+> +	 * bus_probe_device() -> device_initial_probe() -> __device_attach()
+> +	 * will notice (under device_lock) that the device is already bound.
+> +	 */
+> +	dev_set_ready_to_probe(dev);
+
+I think this lacks some ordering properties that we should be allowed
+to rely on. In this case, the 'ready_to_probe' flag being set should
+that all of the data structures are observable by another CPU.
+
+Unfortunately, this doesn't seem to be the case, see below.
+
+> +
+>  	bus_probe_device(dev);
+>  
+>  	/*
+> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+> index 37c7e54e0e4c..8ec93128ea98 100644
+> --- a/drivers/base/dd.c
+> +++ b/drivers/base/dd.c
+> @@ -848,6 +848,18 @@ static int __driver_probe_device(const struct device_driver *drv, struct device
+>  	if (dev->driver)
+>  		return -EBUSY;
+>  
+> +	/*
+> +	 * In device_add(), the "struct device" gets linked into the subsystem's
+> +	 * list of devices and broadcast to userspace (via uevent) before we're
+> +	 * quite ready to probe. Those open pathways to driver probe before
+> +	 * we've finished enough of device_add() to reliably support probe.
+> +	 * Detect this and tell other pathways to try again later. device_add()
+> +	 * itself will also try to probe immediately after setting
+> +	 * "ready_to_probe".
+> +	 */
+> +	if (!dev_ready_to_probe(dev))
+> +		return dev_err_probe(dev, -EPROBE_DEFER, "Device not ready to probe\n");
+> +
+>  	dev->can_match = true;
+>  	dev_dbg(dev, "bus: '%s': %s: matched device with driver %s\n",
+>  		drv->bus->name, __func__, drv->name);
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index e65d564f01cd..5eb0b22958e4 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -458,6 +458,21 @@ struct device_physical_location {
+>  	bool lid;
+>  };
+>  
+> +/**
+> + * enum struct_device_flags - Flags in struct device
+> + *
+> + * Each flag should have a set of accessor functions created via
+> + * __create_dev_flag_accessors() for each access.
+> + *
+> + * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished enough
+> + *		initialization that probe could be called.
+> + */
+> +enum struct_device_flags {
+> +	DEV_FLAG_READY_TO_PROBE = 0,
+> +
+> +	DEV_FLAG_COUNT
+> +};
+> +
+>  /**
+>   * struct device - The basic device structure
+>   * @parent:	The device's "parent" device, the device to which it is attached.
+> @@ -553,6 +568,7 @@ struct device_physical_location {
+>   * @dma_skip_sync: DMA sync operations can be skipped for coherent buffers.
+>   * @dma_iommu: Device is using default IOMMU implementation for DMA and
+>   *		doesn't rely on dma_ops structure.
+> + * @flags:	DEV_FLAG_XXX flags. Use atomic bitfield operations to modify.
+>   *
+>   * At the lowest level, every device in a Linux system is represented by an
+>   * instance of struct device. The device structure contains the information
+> @@ -675,8 +691,34 @@ struct device {
+>  #ifdef CONFIG_IOMMU_DMA
+>  	bool			dma_iommu:1;
+>  #endif
+> +
+> +	DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
+>  };
+>  
+> +#define __create_dev_flag_accessors(accessor_name, flag_name) \
+> +static inline bool dev_##accessor_name(const struct device *dev) \
+> +{ \
+> +	return test_bit(flag_name, dev->flags); \
+> +} \
+> +static inline void dev_set_##accessor_name(struct device *dev) \
+> +{ \
+> +	set_bit(flag_name, dev->flags); \
+
+Atomic operations that are not RMW or that do not return a value are
+unordered (see Documentation/atomic_bitops.txt). This implies that
+observing the flag being set from another CPU does not guarantee that
+the previous stores in program order are observed.
+
+For that guarantee to hold, you'd need to have an
+smp_mb__before_atomic() just before set_bit(), giving it release
+semantics. This is equally valid for the test, clear and assign
+variants.
+
+I doubt this issue is visible on a busy system (which would be the
+case at boot time), but I thought I'd mention it anyway.
 
 Thanks,
-Prasanna Kumar
+
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
 
