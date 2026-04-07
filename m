@@ -1,288 +1,185 @@
-Return-Path: <stable+bounces-233512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233513-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOd2DJq31GnQwgcAu9opvQ
-	(envelope-from <stable+bounces-233512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:51:54 +0200
+	id EGqXIEu71GlRwwcAu9opvQ
+	(envelope-from <stable+bounces-233513-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 10:07:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E233AAFE1
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD983AB18F
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 10:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C51E43026177
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 07:50:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8E823008A6D
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 08:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3FA3A3E64;
-	Tue,  7 Apr 2026 07:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G13xeWcv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780503A381E;
+	Tue,  7 Apr 2026 08:07:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA40D3A257B
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 07:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B207F211A09
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 08:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775548244; cv=none; b=cP3ymmI6eoyMjK/y0+3SVPANxHnQBTi4RbbuZayFeq9v0xjiprChMapfIn/02o1GNvIN1yImeeGG24tJ9noUeVZRTnlbZtzCUwn0qnjpZeQf9bun/sGsNLhGhlHkrkS1KGvnFsH8WzbV1tJ2e3jeWn9G1wBVpih2mRCw2GpV5eo=
+	t=1775549254; cv=none; b=uQnxy0wl08LnBmEuSQKEo8Di5LB0gYnu6hsfkBQpG81FQ6NHY2/BKGLDJWNEdmK+pCbScr0p5sdzQcU5wvsELqMYVHifQh1ZsYCZLAChfjtsHeSxoo9U/Pe3FK0psB8o0Qb0PuQVLHr+nFuqOxil+2WIjS8sKmFbBnHHX1Ie29c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775548244; c=relaxed/simple;
-	bh=IdWuS85toG2XB88l83aLIKH1J6yNHDj+tjm+o0igdrQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kkdhp7YE6cxt2LH04K3wYpzcOSFFgSsYRqcSVylSKQbC+ywlrUNxVcvzgUPcB2W/e2REM5lX2KFSK+d0gjVJWJE+0SMYFcNe4lFdI/Xy7iTAEOQmxAd5qDD24j88r0ttY7JC1ROqjidbLw8xvUX3CDIyGq7MKfj6vwoewMSm2VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G13xeWcv; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a3d42263e4so2447352e87.2
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 00:50:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775548240; x=1776153040; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=unfP0Io+eWCdwZ48Sql8cCkVMUb4bc5MzgzrzSKUpi4=;
-        b=G13xeWcvZFDw0Xh+1xVbLWgukSCj29I1HQmfZwONtjQXufSiiADJ9iUV3YXk0vO4IV
-         ornxOYJWZ83+XzxCSA4JL0WUi09uji1QYpJ1uvEknMa3qAJjAQpLTtbpJ+CaAVKPB7/m
-         hcllfU6GaJm0cuAuTTHFdAIbmpyQ/7LZHJEcmpKW6wdQo1xXOmT8EGCdj/V347TH0rbc
-         5SJR09E75Nwk/2kX43vEX19J01p3fS6BRSSz49alF6EWTXxTkC2DYQLvTRTTLdSigi2N
-         q20/p700y83oKypb9mY0PdwxxfmwZY+A4J8QxAKGbQf2x7NJBsvbHsp4vRf2OR+TROlH
-         ADjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775548240; x=1776153040;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=unfP0Io+eWCdwZ48Sql8cCkVMUb4bc5MzgzrzSKUpi4=;
-        b=sAb9m2/q+mcGqB+5aO0TzeWbZ5vw0aGH/9VQgdZQq+sYU18Pn0oKi9Ooz2CYfj1E5K
-         k0co0wUlKELXcWH53n7husTaW31yUHDxZwCgAUPC7N+ut4Ec4uaO8/KCnUPKWTw18iMJ
-         BWKi3DNPKN+t0QBx7PK7D8Soywi8RBsAeqijGpyffW9p6Qxfq4MfEqU/LAJrGcat+3w1
-         MmlUsqPkupeKdKB4y/1VRS7BSw9lWYU1l6XSWM3CZxJpjAoRmjlj+sE1gF+QaHgb01g9
-         R+tIrEmaCCGA8OR5T5koQ5JfpX8cxE5NZ8mmbiByrNk/Vzw2YeUgsHUchNYqkWJKduVn
-         RRpg==
-X-Forwarded-Encrypted: i=1; AJvYcCV8ssG3LagU8SK2QxWwJfjqxs3LhuL/q8GQE1QHr1CB5YsJbPH5uYo5tlUSNB3YWhMRpRPCGQA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVqdnPf0eRF4sx3TC1ygJ17QRSJlIT7peRoGOWFTfkJlxuTy53
-	+gLa4N8j3Hlulgg4ZEN3DebWoKs0pllHXM3VPTNDhMBWtdEkxIQD/9xD
-X-Gm-Gg: AeBDiesPeqUBQJW9exurG0m2meoYCkChI4YP8+2c+xLBGgwtp/aA4XQkJPLVmIBYt7+
-	lHhtW085qLAEMxO/9N5bUr3AsYksk3ct8CUGFGcSW1FVOEbGfqQZYATxapNX10lxp3MQBWEz8Rl
-	bk+eCHiQNRn5hzQSlJNmnkYf9qpswEVH2uthxXiSFmQznwMbRxG12XPNM9mNXdwusZcDa+/gt9m
-	DUlT/T7G56qW4lKGVDMnyAzsT+PY6CDI6+r0iuVeT8AChDp5HOa/sFHZ4Ml+C2HSGuez6NrsOUv
-	j8/ucOSGNbb794mL4d2KIyOG8xg+rCFSLsGkMGySyI3oBc0kZzTsr+9rapZOJctTKiLa/RyX8JP
-	dLkv8nEqXbVq4NqAFDUfaDYzP1/iH4pRDIZWqe/kdNsxPrQLP4k5P+QBY/xG03dOSURBFDip4Tf
-	x+OE9UZ1CikrzbQUO1Fo7ScnRYKa6kUpgJ0g==
-X-Received: by 2002:a05:6512:124e:b0:5a2:a753:8f0a with SMTP id 2adb3069b0e04-5a337591ec2mr4435727e87.34.1775548239590;
-        Tue, 07 Apr 2026 00:50:39 -0700 (PDT)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c6c9519bsm3960950e87.8.2026.04.07.00.50.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 00:50:38 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: dmitry.torokhov@gmail.com
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH v2] Input: uinput - fix circular locking dependency with ff-core
-Date: Tue,  7 Apr 2026 12:50:31 +0500
-Message-ID: <20260407075031.38351-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1775549254; c=relaxed/simple;
+	bh=Mb910JIaKwZe2patqm2uCUUaQgXoq+nhCRjppMWfnRM=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KZbB990IuVbguRf/tHYE/TQGXBV8tXbYuKPNnQjI+IAKBl44vFmkLday9o+KUhPl4xc5PDa4hOfLBaWa2s/eeou+5ZRh/rqGs+ZhLp0aduo9x4lXapKpcWLZgwQm9P71x4+zDcQi+WSgmRXVt/lZ6FHe7yYd/QgPZolxO03K+1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas3t1775549243t653t01181
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.220.225.134])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 11981075419421733400
+To: "'Russell King \(Oracle\)'" <linux@armlinux.org.uk>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Abdun Nihaal'" <abdun.nihaal@gmail.com>,
+	<stable@vger.kernel.org>,
+	<netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Abdun Nihaal'" <abdun.nihaal@gmail.com>,
+	<stable@vger.kernel.org>
+References: <D56A7C3379B4DA62+20260331071107.5414-1-jiawenwu@trustnetic.com> <acvHIpPd8BL_wFFU@shell.armlinux.org.uk> <076401dcc17d$905c40b0$b114c210$@trustnetic.com> <acy5evlrUesbcB46@shell.armlinux.org.uk> <096d01dcc657$9ee42b00$dcac8100$@trustnetic.com> <adS0_I_2HBH-gM19@shell.armlinux.org.uk>
+In-Reply-To: <adS0_I_2HBH-gM19@shell.armlinux.org.uk>
+Subject: RE: [PATCH net] net: txgbe: fix RTNL assertion warning when remove module
+Date: Tue, 7 Apr 2026 16:07:22 +0800
+Message-ID: <096e01dcc665$90354900$b09fdb00$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQJzBzpg8BZoKCpC0lQLuqOa6+34FQF9cQKNAr0WQJ0BAb3yuQE9QT7jArzO0LK0XQmB0A==
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MwVR+5AyjF6h5AUCYZAmDnMqVpVzc1DAmGn/hFz11OLT2k+2IrkL+nUv
+	E3fT2QLTCn0R77FOUppVMcTt2i/IvtaFbcRC2fWGxuB0sy/GKlS2DriCoxXTwG3zXTG/c8P
+	sKeMAxxnrMSi5e7PQWBw6woocmjw7R44Z9pTrS/RwvgkP0Jn3Wcf2pa2TuvLfqnf2Z8BO/5
+	ZGDkGefIavbstAazjhaWmukvmJonxDlSIGDOmjtpltW02zCFwA9zf68H+9pSar7SVwhvc2+
+	zGwT2CLhpKWIubPnuqGNFgfirBdyg2fpn/rQIK81ghGWHfY0cs1FuK6p3xL36eeBC0AHAYX
+	Pyfztmwdg6jMfoOkhUSfkbf/7b/ZJlBThXHviN/MWbr6ZynEeOHHfFc0W8E5CwvdyRghZQa
+	8d8mZrv1HBKTfq272AhJYuvzCbIC3cI53MAIl62sUfm/rZANMh7tGvkzCHKpnE3G5fU0SEU
+	0z0xo1zBQ3HfO9xv1WDHPGOS8xJakmTHrOFlz5YLwAsFW5ITVqruP31uD3nk6nmNmzWECMM
+	qrV5ZYhSh/IN+k6ydxDESdL546tRklp2yL/az2NdLVCoO4hKCkJfqQA3ThWAKiACaxSNRI0
+	dXJtI90QA8pNdMCXwaDJneqCEXANLJxs51k+RX5o1V36ciIvoX4IX12UOw8+cNsd90m1cL/
+	29BXmrQolPJvkHpA8OMqMUWmqnR4Xf25hsnRtwqlAW+ILFa2to6HCGbJfmgJfilkPvgOtdE
+	q4d8aqnKsNxLstFQcST2jNf+dDbjfPE6xXsLIN9SJMAEnkWhOdjibGekOJViiIHQaS0JWEK
+	+JlTL4ERu9jnESTRMYb7M4s9NEQf9hWiu26zhBINvcM9NFF6cQ2Z1YWubCwJC5NP91F7Yeu
+	l5kncrrMt0L8AGx7sYreDFpZtmRsvJqJpxktZbozaTRwdAgpeZXCYr8TYwC7xtMvRN7Rhff
+	L0knOKLvS+3WqPSikX+04qfw9HXpOJryFYHAcEandZgk+LUVGRXodRsW+XovsNcu0xcqlIN
+	8gLzKKi2vxNB3tPfqQniGPU4yZuBVRYWnRP8zwgD394Lyc4iQCWBZu6icRY0yNMiKvzBJPH
+	ZBJ8kwqJ9YhK9RfFklkN7ClGPyjm13MPu909/pIXP/aGVh72XoOS/o=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [1.54 / 15.00];
+	FROM_EXCESS_BASE64(1.50)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-233512-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233513-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[trustnetic.com];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,net-swift.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,intel.com,gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_SPAM(0.00)[0.097];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiawenwu@trustnetic.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A6E233AAFE1
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trustnetic.com:mid]
+X-Rspamd-Queue-Id: 8CD983AB18F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-A lockdep circular locking dependency warning can be triggered
-reproducibly when using a force-feedback gamepad with uinput (for
-example, playing ELDEN RING under Wine with a Flydigi Vader 5
-controller):
+On Tue, Apr 7, 2026 3:41 PM, Russell King (Oracle) wrote:
+> On Tue, Apr 07, 2026 at 02:27:34PM +0800, Jiawen Wu wrote:
+> > On Wed, Apr 1, 2026 2:22 PM, Russell King (Oracle) wrote:
+> > > On Wed, Apr 01, 2026 at 10:16:34AM +0800, Jiawen Wu wrote:
+> > > > On Tue, Mar 31, 2026 9:08 PM, Russell King (Oracle) wrote:
+> > > > > On Tue, Mar 31, 2026 at 03:11:07PM +0800, Jiawen Wu wrote:
+> > > > > > For the copper NIC with external PHY, the driver called
+> > > > > > phylink_connect_phy() during probe and phylink_disconnect_phy() during
+> > > > > > remove. It caused an RTNL assertion warning in phylink_disconnect_phy()
+> > > > > > upon module remove.
+> > > > > >
+> > > > > > To fix this, move the phylink connect/disconnect PHY to ndo_open/close.
+> > > > >
+> > > > > Wouldn't it be simpler to just wrap the phylink_disconnect_phy() in the
+> > > > > remove function with rtnl_lock()..rtnl_unlock() ?
+> > > >
+> > > > This is also a solution. But I think it would be nice to unify with other drivers
+> > > > that call the functions in ndo_open/close.
+> > >
+> > > Both approaches are equally valid. Some network drivers attach the PHY
+> > > at probe time (and thus can return -EPROBE_DEFER if the PHY is specified
+> > > but not present). Others attach in .ndo_open which can only fail in this
+> > > circumstance with no retry without userspace manually implementing that.
+> > >
+> > > There are other advantages and disadvantages to each approach.
+> >
+> > Hi,
+> >
+> > So is it still recommended that add rtnl_lock()...rtnl_unlock() instead of moving it?
+> 
+> The reaosn phylink_disconnect_phy() requires the RTNL lock is because it
+> _can_ be called while the netdev is published, and the RTNL lock
+> protects the networking core from the PHY being removed from the netdev,
+> preventing ethtool ops into the PHY driver from running concurrently
+> with the PHY's disconnection and potential later destruction.
+> 
+> Offering two APIs, one which requires the lock to provide that
+> protection and one which doesn't would over-complicate the phylink code
+> and make reviews way more difficult, as we'd now have to spot the
+> wrong function being used in the wrong code path.
+> 
+> It's simpler for drivers that want to connect and disconnect the PHY
+> at probe/remove time for them to just take the RTNL lock briefly over
+> the call to phylink_disconnect_phy().
+> 
+> There is no "recommendation" for connecting and disconnecting the
+> PHY at probe/remove time vs ndo_open/ndo_release. That's entirely up
+> to the driver author. As I've already said, there are advantages and
+> disadvantages of either way and that's a matter for the driver author
+> to consider and select the most appropriate choice for their driver.
 
-  ff->mutex -> udev->mutex -> input_mutex -> dev->mutex -> ff->mutex
-
-The cycle is caused by four lock acquisition paths:
-
-1. ff upload: input_ff_upload() holds ff->mutex and calls
-   uinput_dev_upload_effect() -> uinput_request_submit() ->
-   uinput_request_send(), which acquires udev->mutex.
-
-2. device create: uinput_ioctl_handler() holds udev->mutex and calls
-   uinput_create_device() -> input_register_device(), which acquires
-   input_mutex.
-
-3. device register: input_register_device() holds input_mutex and
-   calls kbd_connect() -> input_register_handle(), which acquires
-   dev->mutex.
-
-4. evdev release: evdev_release() calls input_flush_device() under
-   dev->mutex, which calls input_ff_flush() acquiring ff->mutex.
-
-Fix this by introducing a new state_lock spinlock to protect
-udev->state and udev->dev access in uinput_request_send() instead of
-acquiring udev->mutex.  The function only needs to atomically check
-device state and queue an input event into the ring buffer via
-uinput_dev_event() -- both operations are safe under a spinlock
-(ktime_get_ts64() and wake_up_interruptible() do not sleep).  This
-breaks the ff->mutex -> udev->mutex link since a spinlock is a leaf in
-the lock ordering and cannot form cycles with mutexes.
-
-To keep state transitions visible to uinput_request_send(), protect
-writes to udev->state in uinput_create_device() and
-uinput_destroy_device() with the same state_lock spinlock.
-
-Additionally, move init_completion(&request->done) from
-uinput_request_send() to uinput_request_submit() before
-uinput_request_reserve_slot().  Once the slot is allocated,
-uinput_flush_requests() may call complete() on it at any time from
-the destroy path, so the completion must be initialised before the
-request becomes visible.
-
-Lock ordering after the fix:
-
-  ff->mutex -> state_lock (spinlock, leaf)
-  udev->mutex -> state_lock (spinlock, leaf)
-  udev->mutex -> input_mutex -> dev->mutex -> ff->mutex (no back-edge)
-
-Fixes: ff462551235d ("Input: uinput - switch to the new FF interface")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/CABXGCsMoxag+kEwHhb7KqhuyxfmGGd0P=tHZyb1uKE0pLr8Hkg@mail.gmail.com/
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
----
-
-Changes since v1:
-https://lore.kernel.org/all/20260228223628.472208-1-mikhail.v.gavrilov@gmail.com/
-
-- Use a dedicated state_lock spinlock instead of reusing requests_lock,
-  as suggested by Dmitry Torokhov
-- Add Fixes and Cc: stable tags
-
- drivers/input/misc/uinput.c | 28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/input/misc/uinput.c b/drivers/input/misc/uinput.c
-index e589060db280..e24caf6fc8e8 100644
---- a/drivers/input/misc/uinput.c
-+++ b/drivers/input/misc/uinput.c
-@@ -57,6 +57,7 @@ struct uinput_device {
- 	struct input_dev	*dev;
- 	struct mutex		mutex;
- 	enum uinput_state	state;
-+	spinlock_t		state_lock;
- 	wait_queue_head_t	waitq;
- 	unsigned char		ready;
- 	unsigned char		head;
-@@ -146,19 +147,15 @@ static void uinput_request_release_slot(struct uinput_device *udev,
- static int uinput_request_send(struct uinput_device *udev,
- 			       struct uinput_request *request)
- {
--	int retval;
-+	int retval = 0;
- 
--	retval = mutex_lock_interruptible(&udev->mutex);
--	if (retval)
--		return retval;
-+	spin_lock(&udev->state_lock);
- 
- 	if (udev->state != UIST_CREATED) {
- 		retval = -ENODEV;
- 		goto out;
- 	}
- 
--	init_completion(&request->done);
--
- 	/*
- 	 * Tell our userspace application about this new request
- 	 * by queueing an input event.
-@@ -166,7 +163,7 @@ static int uinput_request_send(struct uinput_device *udev,
- 	uinput_dev_event(udev->dev, EV_UINPUT, request->code, request->id);
- 
-  out:
--	mutex_unlock(&udev->mutex);
-+	spin_unlock(&udev->state_lock);
- 	return retval;
- }
- 
-@@ -175,6 +172,13 @@ static int uinput_request_submit(struct uinput_device *udev,
- {
- 	int retval;
- 
-+	/*
-+	 * Initialize completion before allocating the request slot.
-+	 * Once the slot is allocated, uinput_flush_requests() may
-+	 * complete it at any time, so it must be initialized first.
-+	 */
-+	init_completion(&request->done);
-+
- 	retval = uinput_request_reserve_slot(udev, request);
- 	if (retval)
- 		return retval;
-@@ -289,7 +293,14 @@ static void uinput_destroy_device(struct uinput_device *udev)
- 	struct input_dev *dev = udev->dev;
- 	enum uinput_state old_state = udev->state;
- 
-+	/*
-+	 * Update state under state_lock so that concurrent
-+	 * uinput_request_send() sees the state change before we
-+	 * flush pending requests and tear down the device.
-+	 */
-+	spin_lock(&udev->state_lock);
- 	udev->state = UIST_NEW_DEVICE;
-+	spin_unlock(&udev->state_lock);
- 
- 	if (dev) {
- 		name = dev->name;
-@@ -366,7 +377,9 @@ static int uinput_create_device(struct uinput_device *udev)
- 	if (error)
- 		goto fail2;
- 
-+	spin_lock(&udev->state_lock);
- 	udev->state = UIST_CREATED;
-+	spin_unlock(&udev->state_lock);
- 
- 	return 0;
- 
-@@ -384,6 +397,7 @@ static int uinput_open(struct inode *inode, struct file *file)
- 		return -ENOMEM;
- 
- 	mutex_init(&newdev->mutex);
-+	spin_lock_init(&newdev->state_lock);
- 	spin_lock_init(&newdev->requests_lock);
- 	init_waitqueue_head(&newdev->requests_waitq);
- 	init_waitqueue_head(&newdev->waitq);
--- 
-2.53.0
+OK. I'll change it at v2 patch.
 
 
