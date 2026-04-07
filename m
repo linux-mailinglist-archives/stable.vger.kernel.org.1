@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-233657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLR5Dnsg1Wnr0wcAu9opvQ
-	(envelope-from <stable+bounces-233657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:19:23 +0200
+	id gAncA4Yg1Wnr0wcAu9opvQ
+	(envelope-from <stable+bounces-233658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:19:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AD93B0D1C
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348A23B0D2B
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 097133032CE6
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:14:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45FEE30432F8
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDCC36074B;
-	Tue,  7 Apr 2026 15:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98A33624B3;
+	Tue,  7 Apr 2026 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynrU6xxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHyvvm7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0159A35F602
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 15:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C93A361DAC
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775574890; cv=none; b=R/PDXS9NqCF8QuuHnhULz7AOtf+b5Nw8N/37BrGkvANTR5oxPpS5K4ag90B1pmnRtPnl3fBMsm0NpAxxuKUBpWEvNspdXDch6JlPnF6K9FT3OJyNVV1PzMnRMsFUmZh/3R+JtSaRR6n+w6ZPu5prxeiTA61GaEm063fhZprVaW8=
+	t=1775574930; cv=none; b=PRyJLqGj/ZEMM+YA2LfmmH0u1ESFJ1WjRkgccl67OunmFILjR2Nu2l33Al+RjTMGKZXUOb4uksclrZTYi3TlfkU0uB4nQ5zCXjFWUi6U5CL8h85VhcHyfLrpzxn0uI3xeRZ9HrHvaXICg/neXWKdCRDoTeqIapH9STwahEHhNdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775574890; c=relaxed/simple;
-	bh=0SHrV1f7FomTIuVr1ieVYdSK27pBGVsyOpDDuwt/U1E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HPKfyGZ8QhL0UG+ONlAX27TyciRfoa0KweeAiNVgrsNC9ScKPghrifa1e+blIuAVb4DUa0PH3pyppKb5Dcz3UMa71JF0TnhAedMm7lD/yMwLdCEcp10WCGFOpdXl8jdG7no2jD9WRORA5h0S9Mvg8SsoLrNxB4YtKJytdh2s3wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynrU6xxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D98EC19424;
-	Tue,  7 Apr 2026 15:14:49 +0000 (UTC)
+	s=arc-20240116; t=1775574930; c=relaxed/simple;
+	bh=t9GDYJlcDfcpXZKrmjipqtlPcy/uyYTd36uXbQHOL5o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cG77suJ5itlzFR6lfhaeF0hkIoJMip9qgUMKBSiykGsiHFenOXi9DYf9yrHNTu4HAvpMBL/4Au4Y7M6rL0C0mA2vCkbJ26QD4slXgaAA8oZkP/HeSziHaMbmLn1OTeEOh6iVoRsXFdvmlEk80DbU1DLrVZN6lCE0MVjE08ZpztM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHyvvm7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0659C116C6;
+	Tue,  7 Apr 2026 15:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775574889;
-	bh=0SHrV1f7FomTIuVr1ieVYdSK27pBGVsyOpDDuwt/U1E=;
+	s=korg; t=1775574930;
+	bh=t9GDYJlcDfcpXZKrmjipqtlPcy/uyYTd36uXbQHOL5o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ynrU6xxA9nvBburZzeIDJLN+xM+OJ3oB9Ww0xNFly758Odof/iCBqwoOmBC8L+fxB
-	 oQf62GIb99lRgdku5FqJL+vbXFZeZrFYO8f+vTzCS1nubLY0nY2PEpdECnMDFCy0ge
-	 7+IqHmIZI+rh4szK8XbKT1gmOgNmoJO9Zhe+QRAM=
-Subject: FAILED: patch "[PATCH] drm/i915/dsi: Don't do DSC horizontal timing adjustments in" failed to apply to 5.10-stable tree
-To: ville.syrjala@linux.intel.com,jani.nikula@intel.com,joonas.lahtinen@linux.intel.com
+	b=VHyvvm7O8KyD5KgDNmPbPjVNll4a5t9vKiaUD8bLboMWoOw1z98dNCREYcRyHrvz2
+	 oI9WpxHdQcu2lvEkl8oDQKsXsoMGQBXWgGD5pm2V2woflgWkORfiQYBbsvCeSrX9ee
+	 UA6QEwc8KonlyTuXRF6p7XfwjnMxXtRriewJtLW4=
+Subject: FAILED: patch "[PATCH] drm/amdgpu/userq: fix memory leak in MQD creation error paths" failed to apply to 6.19-stable tree
+To: moonafterrain@outlook.com,Prike.Liang@amd.com,alexander.deucher@amd.com,danisjiang@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 07 Apr 2026 17:14:35 +0200
-Message-ID: <2026040735-chimp-imitate-90a1@gregkh>
+Date: Tue, 07 Apr 2026 17:15:27 +0200
+Message-ID: <2026040727-prepaid-ascend-9c54@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -64,42 +64,43 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233657-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233658-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com,amd.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,intel.com:email,gitlab.freedesktop.org:url,msgid.link:url]
-X-Rspamd-Queue-Id: B3AD93B0D1C
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,amd.com:email,outlook.com:email]
+X-Rspamd-Queue-Id: 348A23B0D2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4dfce79e098915d8e5fc2b9e1d980bc3251dd32c
+git cherry-pick -x ced5c30e47d1cd52d6ae40f809223a6286854086
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040735-chimp-imitate-90a1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040727-prepaid-ascend-9c54@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,59 +112,73 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4dfce79e098915d8e5fc2b9e1d980bc3251dd32c Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Date: Thu, 26 Mar 2026 13:18:10 +0200
-Subject: [PATCH] drm/i915/dsi: Don't do DSC horizontal timing adjustments in
- command mode
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From ced5c30e47d1cd52d6ae40f809223a6286854086 Mon Sep 17 00:00:00 2001
+From: Junrui Luo <moonafterrain@outlook.com>
+Date: Sat, 14 Mar 2026 23:33:53 +0800
+Subject: [PATCH] drm/amdgpu/userq: fix memory leak in MQD creation error paths
 
-Stop adjusting the horizontal timing values based on the
-compression ratio in command mode. Bspec seems to be telling
-us to do this only in video mode, and this is also how the
-Windows driver does things.
+In mes_userq_mqd_create(), the memdup_user() allocations for
+IP-specific MQD structs are not freed when subsequent VA validation
+fails. The goto free_mqd label only cleans up the MQD BO object and
+userq_props.
 
-This should also fix a div-by-zero on some machines because
-the adjusted htotal ends up being so small that we end up with
-line_time_us==0 when trying to determine the vtotal value in
-command mode.
+Fix by adding kfree() before each goto free_mqd on VA validation
+failure in the COMPUTE, GFX, and SDMA branches.
 
-Note that this doesn't actually make the display on the
-Huawei Matebook E work, but at least the kernel no longer
-explodes when the driver loads.
-
+Fixes: 9e46b8bb0539 ("drm/amdgpu: validate userq buffer virtual address and size")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Prike Liang <Prike.Liang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 27f5ff9e4a4150d7cf8b4085aedd3b77ddcc5d08)
 Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12045
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260326111814.9800-2-ville.syrjala@linux.intel.com
-Fixes: 53693f02d80e ("drm/i915/dsi: account for DSC in horizontal timings")
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 0b475e91ecc2313207196c6d7fd5c53e1a878525)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 
-diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
-index fc265f71d72b..298b3a48197c 100644
---- a/drivers/gpu/drm/i915/display/icl_dsi.c
-+++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-@@ -889,7 +889,7 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
- 	 * non-compressed link speeds, and simplifies down to the ratio between
- 	 * compressed and non-compressed bpp.
- 	 */
--	if (crtc_state->dsc.compression_enable) {
-+	if (is_vid_mode(intel_dsi) && crtc_state->dsc.compression_enable) {
- 		mul = fxp_q4_to_int(crtc_state->dsc.compressed_bpp_x16);
- 		div = mipi_dsi_pixel_format_to_bpp(intel_dsi->pixel_format);
- 	}
-@@ -1503,7 +1503,7 @@ static void gen11_dsi_get_timings(struct intel_encoder *encoder,
- 	struct drm_display_mode *adjusted_mode =
- 					&pipe_config->hw.adjusted_mode;
+diff --git a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
+index 8c74894254f7..faac21ee5739 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
+@@ -324,8 +324,10 @@ static int mes_userq_mqd_create(struct amdgpu_usermode_queue *queue,
  
--	if (pipe_config->dsc.compressed_bpp_x16) {
-+	if (is_vid_mode(intel_dsi) && pipe_config->dsc.compressed_bpp_x16) {
- 		int div = fxp_q4_to_int(pipe_config->dsc.compressed_bpp_x16);
- 		int mul = mipi_dsi_pixel_format_to_bpp(intel_dsi->pixel_format);
+ 		r = amdgpu_userq_input_va_validate(adev, queue, compute_mqd->eop_va,
+ 						   2048);
+-		if (r)
++		if (r) {
++			kfree(compute_mqd);
+ 			goto free_mqd;
++		}
  
+ 		userq_props->eop_gpu_addr = compute_mqd->eop_va;
+ 		userq_props->hqd_pipe_priority = AMDGPU_GFX_PIPE_PRIO_NORMAL;
+@@ -365,12 +367,16 @@ static int mes_userq_mqd_create(struct amdgpu_usermode_queue *queue,
+ 
+ 		r = amdgpu_userq_input_va_validate(adev, queue, mqd_gfx_v11->shadow_va,
+ 						   shadow_info.shadow_size);
+-		if (r)
++		if (r) {
++			kfree(mqd_gfx_v11);
+ 			goto free_mqd;
++		}
+ 		r = amdgpu_userq_input_va_validate(adev, queue, mqd_gfx_v11->csa_va,
+ 						   shadow_info.csa_size);
+-		if (r)
++		if (r) {
++			kfree(mqd_gfx_v11);
+ 			goto free_mqd;
++		}
+ 
+ 		kfree(mqd_gfx_v11);
+ 	} else if (queue->queue_type == AMDGPU_HW_IP_DMA) {
+@@ -390,8 +396,10 @@ static int mes_userq_mqd_create(struct amdgpu_usermode_queue *queue,
+ 		}
+ 		r = amdgpu_userq_input_va_validate(adev, queue, mqd_sdma_v11->csa_va,
+ 						   32);
+-		if (r)
++		if (r) {
++			kfree(mqd_sdma_v11);
+ 			goto free_mqd;
++		}
+ 
+ 		userq_props->csa_addr = mqd_sdma_v11->csa_va;
+ 		kfree(mqd_sdma_v11);
 
 
