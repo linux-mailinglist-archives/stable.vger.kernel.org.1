@@ -1,306 +1,259 @@
-Return-Path: <stable+bounces-233508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDmhOPKy1GnvwQcAu9opvQ
-	(envelope-from <stable+bounces-233508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:32:02 +0200
+	id YJGBKFCz1GnvwQcAu9opvQ
+	(envelope-from <stable+bounces-233509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:33:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C8313AACDE
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C403AAD06
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 740BF30315D5
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 07:30:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 991CE300615C
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 07:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE401EA7CE;
-	Tue,  7 Apr 2026 07:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBAB2DECCB;
+	Tue,  7 Apr 2026 07:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TyQpwHU2"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="iB6IpiLM";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="HJ1XnulY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9277825F99F
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 07:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775547051; cv=none; b=M8H0xgmi0pdzo6JZz8WwsHRNObep7oVy53KLNtaT6Rv6q/Z8OuA0ruiw0UG6c1RfWsTW6GxXa3hvgAreaGNMCNLy2/7uUdPbtjJ7Z4SDVUNyHm5PumAdIZEOniW4yFrpONqIjfToByqfz/eLXNq9iRKA5Y7lY86IMyF3TR6fvYQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775547051; c=relaxed/simple;
-	bh=E5y3k0mXPzH/qxF0YXQt/DX16DB+M6XnhTappRzq0Ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jks6bqrB9TxAbnC+S2sWiDmWvc67d1z9O+SucUPRyiS7qOks+unBhaQO/6QPMggVN8nofwo/dkB/kYrzIL4Z4x0UIJGvklPSaHZ8GDyuYBmfai20XTFnhkC3Pocg7T9h6e8UQDe3RojnzYtKt3j3ppAl4IXLjWZ2KECIrw57Kww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TyQpwHU2; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso41605415e9.1
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 00:30:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44671EA7F4;
+	Tue,  7 Apr 2026 07:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775547213; cv=fail; b=Sl6xaAxeUxl/iTLjYlcgAqy6To1ZtZcLay+T5QY2I2IgRlqrReVJWS/RnFx+clIVQrx1QwewRFp7lSKQ2H9z981FgOdzsCxCt0m748rse/B65rFn3spy42gewDJwNlN7mlcNEbBI0e5b4jsO9kheAVsMXq0+GrLTXdLd2tLk32Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775547213; c=relaxed/simple;
+	bh=F20TpsPywGFDrUkcJuEeT7KVcWmqJLiieceUdDZkwvE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lsMaTD5bJhhCoHuf+E6YerLgNqjyJWlyDCyNH4E1JyQKt/6sq3oHHPybHkzRMZpKMXFswWQCQqLFiwbMwu3TSObsc/pFbplePBGENCfXYT6nW6vxbiKj/lsVM7IADYU+MBoMmS4+EmBJDKzd4m7DrDFUJV3YNEM6LAo1yeBZPKE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=iB6IpiLM; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=HJ1XnulY; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6371BepD172591;
+	Tue, 7 Apr 2026 07:33:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=OlRBqZc232HO6oeCVs0xgiJcwzYboZcAKA6ehYBFkBY=; b=
+	iB6IpiLMJexULZYQghGj3gNVOX7F32hFQTY237Lbb6tg8kdNLwOKm3f+Kp/Jndrg
+	+aGgotvu8txS31P60PRjKzDfJ5y/OlJiMoj/KSOOil6WgTH8UYYkXaO223gXe5BL
+	JY06Jvpbpnu/QYEb2fb78BjsEnE8loKmMdYrrobTBSZJutFrPzGpmRWAX+8E5Vcz
+	POALs/Ub1rRxq8Dt7PKR6ShGcRXL0XwP89r0Mt7aQc990KA3pHp7v2ZtIGt6KRbV
+	sGq58ro3c1VTTQNsx0w284FbD47f875Gdq2GCFAGs2EhcjiLPRKsQInVuHiZj5RJ
+	JOtEjonsElgzCpAo9EfSQQ==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dcmqarm46-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 07 Apr 2026 07:33:27 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6377G8DL003534;
+	Tue, 7 Apr 2026 07:33:26 GMT
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010048.outbound.protection.outlook.com [52.101.193.48])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4dcn5uy899-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 07 Apr 2026 07:33:25 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Bq9zny1cfEyP3mrWvjJs5ZPLoOROy56lqWhCk8OIKEwgbtbJevUBJ5DD1IpN9FVypUyVamssZnNdyKkuruhJ0bdkxZK0OgtPzIVjfVT7yk1g73aZrz8NkB+fUax41uvU/TlHBE/hlP8/Gb4uY/FQuL4lVK6OrhW1g1O3THAtouVThp2TJ1EsCta21y0XxkZbiaO4WIe8RZb777rtPP8U4AR3Tm36f+ys7mlBMaB+2E9Xz2xQ/yWr8wKEcNB0U22XoyNmPeUvj62vtqFZnP5+kfl41dko7C9s+Dnx+2LDQX94tTR58ml2U4MDSAo6TLNIObx524+0Lb80+jBIrMuryw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OlRBqZc232HO6oeCVs0xgiJcwzYboZcAKA6ehYBFkBY=;
+ b=Kcc62322Oa/VxhKNC8LBTGD0eXpo7it1dVVW/0BucyC4Bl7Qdh3Viq9yeEABZAfyGr6Abw3/HfRVdDVj3AzDyyT1461io2RA1+QGRU2ujyCQeE0UY+lVR0s7ADdiu/pbM14tBoVxFUViJQxAA5f+BbFY4Wjx6aeqW9CnH2t3u+9M3gcxiVVTBnUxbnkmJd4V5o7I/9wMtnCrOm0jJzG4wt8agsYVm2p3DbGg/W/NigIPTAUNDD5dcRW2ZYNRlbVOTOft53u7AysyaY0MAspkwsLPfUZrQuvmHAV72UHyQcECyCYTq76ufx7UGqduxQbcPLEJ2syhXWsu7r7tEF090A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775547048; x=1776151848; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jTmaz406rgb4TnsgCDoTRBShvc8OZfMO2qi0BTEdttE=;
-        b=TyQpwHU2KH1lemNw0511fliyChdjeUH0wBAbbDX1ioxb0IMazfX9LTcOyMNSS8SIPA
-         OI0zAz0MglLgLv03XO8nRNpNtYHgqvOXOMD3v7PF0COy3FW0fkKi3znl/XuemzvV75/P
-         IuTuC069EQnCwzogCl8QJkVUQ9jEcmb+UgmRyE7E1LEodMjNny7WWod1ihMPfKXnz5ns
-         20gqDuvak62CQ8cGRvycp6FohKG0ltWfQuKoBJFsnXUHBe3OZvmSPJ+IcqainPy0BZzA
-         9XGz/IJLwXLTBfBcreR44MWb6U6Vf8j8dPzB0Pn9zwmjnwIR920RFJ6jbDi/rLFOQDgD
-         okGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775547048; x=1776151848;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jTmaz406rgb4TnsgCDoTRBShvc8OZfMO2qi0BTEdttE=;
-        b=lz9CZwnj8drn4+X1X3jh67qvg1HMObSoJ73ud+lVWSp0uK9mZHL5fB5h8x0PsJpXa0
-         1fMv9m+/rpeKegI9EFD/1MyMeGPqpDdgXfNJvk8QaCBYuMF8axAcyNejp9R6GaeTva3T
-         vIUIuEPJZOzQOxIDgWi3uBhGuLNCDxeON0pDlN7t58BznKERuMfozJVFOZqfc0m92gnp
-         EoPT6A5uOlx2IydcK4qqgPgPwtiWWVsdDJxzNBHDHhzspFjqVRQzsk9u/ciXlerSRWf9
-         KBJm7702Q5QU75tCjFsQ334HYmmPJSMDEQkNkFlqN7zj++kcozfy5mnNcvMVIMcb0BKh
-         oL6g==
-X-Forwarded-Encrypted: i=1; AJvYcCWwbdONa4yRvBtNhJK4R/fc2BKtIjewplDR/VyJHEAjR4iudqG9ygBdG3uptF/xrYdg/EFHvko=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5F20T7Ee2Tn0BcBs1Pbk36Vnhys2tY+xn0xJUXiRKVrpIQ3Kf
-	gbi+hjAYa8FvgtXOh8oXshuNZoCHAiERWZg5u0UGtr1+ijCVtO0x5yx/
-X-Gm-Gg: AeBDieu40MC/AAg6JZEhsJpw4JCCegGvXgrX7cMpkNz+aQG6Jq+rnc8Btb5b6zv0wp7
-	E+bgGotlzVjQkb6il6bjFS2Gnrxn8FAyPzMk6OqxU7FgF5U+SlHzVmpP51f2gKGLIQg/Y48TEEt
-	hdjTQjnk/PATwXlx5hGzsuoK65JnnS4DzYHSCUelFFd4ah2au4EnorKvOr5mB4m/G2F+RZFzPOu
-	jHDOudMgjGdYbDYqfXL3G2DjmH5AdIGrt0vT2lAXLKVjMhXWCrY+VZbpDCgP3Qy8wfUTV2Ykg3a
-	vk6ThJ3lyhdwef4H9TaQf8ZVgyBHzCnr5bJDcm6VAw+ee2tEXDBcheDVBZhlxjBIIVHTAnhxZeQ
-	/zD48M/p77tGDJm9GTvJSKkL1goya3nk7nLfEehAEGkqp8IiI+6YngGwF+nzpcZAqa4C7VZWckw
-	gUqwc7yG/DsZ8nlIN6JRzvW+kbhVru6+Avc0ol6u2dctXvr4nP
-X-Received: by 2002:a05:600c:138f:b0:47e:e076:c7a5 with SMTP id 5b1f17b1804b1-4889970e3c4mr215358595e9.11.1775547047220;
-        Tue, 07 Apr 2026 00:30:47 -0700 (PDT)
-Received: from localhost (ip87-106-108-193.pbiaas.com. [87.106.108.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4889f6843dfsm330139725e9.12.2026.04.07.00.30.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 00:30:46 -0700 (PDT)
-Date: Tue, 7 Apr 2026 09:30:40 +0200
-From: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
-To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
-	linux-security-module@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] landlock: Fix log_subdomains_off inheritance
- across fork()
-Message-ID: <20260407.844e42deb531@gnoack.org>
-References: <20260404085001.1604405-1-mic@digikod.net>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OlRBqZc232HO6oeCVs0xgiJcwzYboZcAKA6ehYBFkBY=;
+ b=HJ1XnulYNX3y7e7T3owqekyKvGsH8Im3dJourQddFo5YaRu0UnjuvoXzlS4zjAU7JL87YGuas3CCRMqP+vE3MyC94Xa8vEQcB+lUufA6p1g8d411IfQ1tlTIU9GI8X3auBGDCDrh9nYzWjVId7wbtbbwkAJFYy5nOA5itCIugBs=
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
+ by BL3PR10MB6187.namprd10.prod.outlook.com (2603:10b6:208:3be::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 7 Apr
+ 2026 07:32:58 +0000
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a%6]) with mapi id 15.20.9769.018; Tue, 7 Apr 2026
+ 07:32:58 +0000
+Message-ID: <6d9cdf5e-a146-424b-bcd2-8c68766d4dea@oracle.com>
+Date: Tue, 7 Apr 2026 13:02:49 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 044/265] PCI: dw-rockchip: Dont wait for link since
+ we can detect Link Up
+To: Sasha Levin <sashal@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+        patches@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Vegard Nossum <vegard.nossum@oracle.com>
+References: <20260312201018.128816016@linuxfoundation.org>
+ <20260312201019.793655649@linuxfoundation.org>
+ <ffb3f43f-ffd0-4e60-9966-a77e8ed611cf@oracle.com> <adPUtsthYnKHekY3@laps>
+ <f1c33cef-b20e-42f2-be2b-7c435796e2de@oracle.com> <adPocsaGAcsKSuR4@laps>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <adPocsaGAcsKSuR4@laps>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0151.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ba::17) To DS3PR10MB997700.namprd10.prod.outlook.com
+ (2603:10b6:8:347::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260404085001.1604405-1-mic@digikod.net>
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|BL3PR10MB6187:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b47aebe-5e5c-423f-3add-08de9477e3cf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	QNMv1hwFzLu8Qmdg5XMSrcN45/MGuyO7/NWIIjM1IY7kEKNKTCkphk7UhiIccYqjLoH7n0d5tqz7i7GAs48dkapSZ2CDS/gTSTPakI3us5KTIkYSkA1Fjq8G0IbmgY2RvZBluiDmblSix14Jmd/fr/iZR3TDAYQuTRhlcd4Q5LVxQbwCkCfDYQv8f3GUeeTjQMcLHvbXbJhb9HV9lgAMsb1FZB8JfwxdirQufSZrdYrBXL2g6MqZT1dMZsQZNLsuaz4bLcQezl+WZ5Bjt/H8o9xfCj71jKsnMV1yRI+01xKfGP0bg0wzbik91uJvfeCk3m0qBS5Q6GDZ7dn/x0/MZDn0fsAuxXcLd88Ua9fgbWwgCn8ivVYklPXHgmBdrc5hZjOyWhh1pzwYBc2jFY6WFqS7zxyUOJ2tKtXShVtT5FehRGm93z0n70qWrGquZb0qln9rC6FlLUz7sqL4/vb6NeyOlsm4/hD+Jdrf9iu64UB3FjrB5t97hvfDHQ3U8fc7v98ABaSKt5vArCUo05TWy3fWueIjxVDqqcAla65fU2zL4Nj69prRgoVZR5rZMaZJGx6kPlf8DtR48yNFD8IzXbl0la4++i3RrLc9tfxYhaYauiVnq/0N4CcA6PJfLOe31BwoxLSlGc+oUCPXrs0iHFxHqVRgKEHIvLSj5bgeyXqbxjDeqjvn9tyksGhXDUfAi6ZMRQroRVN+RDbpLE7vYTV/2dtkqVj2oNekCyzUAW4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cE9jTlVjb3lIMHRSR2tjbFVScnF2R0Ura3JmK1ZzNGJJRzE1ZmJsVk03REF1?=
+ =?utf-8?B?TEtxSkVqYmtETVQvQVExZnlVWVlyd1VmS1F5aExzSjljYzJNbEhXc3lPeDF5?=
+ =?utf-8?B?QjVFN2NkL0lnZWk2RkRCYTRMOERmdlRBdzlkWEthek4vTm02OGp2RU9URkc2?=
+ =?utf-8?B?VllONWNJODRsYXF0ZTZieUxMZlNvbGpVNThkY2czeHBzUzlReWFnK1QrSDZx?=
+ =?utf-8?B?ZHc1V29QeW9rQ0c1LzJTV1ZZRVNWSno2cEI0RUJyM3AybDFwRnp6M0tKUjh4?=
+ =?utf-8?B?WFBTRUlMTWVFR2pXUmlVUGxkREFmcDJadFFrK1JSbVRxcVhPdE5QRDB6SXVj?=
+ =?utf-8?B?dXB3WFZ6d1FBblFpRzF1MlN3cThiQUdTSXZJZk9TbWo2a2tzYTI4bWVtTWdl?=
+ =?utf-8?B?b0MzcnhDY0tjU0RYOHhuM2hVd2UzY0p0OVZSeHJVV1hXUTBQajNYRmJCVmJJ?=
+ =?utf-8?B?TUovcXVZUUNYTlkyWUVaZUdRSFVJL21MazBhcWYzVktkVkxrcUhxZmhXckxs?=
+ =?utf-8?B?UmNLUlp6OEJKbVNvb1ZEbDc3dFFQdytvYjUwN29wTlFtdkZsZ2ZMem0vTXl0?=
+ =?utf-8?B?cEk5ckkxOC9sRGRDc0dpOTRoVm0xWjJ3NCt4b1lQczZWbVBzUWdveXVONmpm?=
+ =?utf-8?B?OFo4UjBwV0prU0N5SFlUOU1GeHRNOGFlSU1mSGRPV255VWpvU00zQnZhMmVl?=
+ =?utf-8?B?eDJNQUdLdWNVN0dwSTZmTXFxT1JSTTNUK0FEKzEzbXpicWVLV2NCZUdSMVJJ?=
+ =?utf-8?B?RVdnLzN0KzJEcVRHdHUvckY0b2JRMzUzZENodEtzclNKZkZqMnl1MnFRdHdt?=
+ =?utf-8?B?eVFuSG5INTdrcjVUYWFneVFyNTh6YlpGaUd3N0F5bnN3N0xzUUtXNTNmczl4?=
+ =?utf-8?B?SGY3cFp2Q2FvVjJqa2ZvRmh4SVlZdGVnTUNCOE1lSFJUVjVKWTg4V2RyQ3BR?=
+ =?utf-8?B?L3RUOS9BRkhyUUhvUyt1b1krS1NuMXVSSG92RUJTMEd2bHY0VW01eGVvK3Br?=
+ =?utf-8?B?L256THA5Nmc2Y2J3KzYrRWJ0aEp4ekxMcUF1clhXZnEvVWF3Q0VNem5kcWRy?=
+ =?utf-8?B?SW5yNVpNU2xUOXNBT2FrQ3hkWDc1RTcxak1wNGdOMDNaRVorclV2YnhPN2xY?=
+ =?utf-8?B?NHFRM0R1eHVyQnlzN29jRTZkUlJTWDVDckhZWndMMTRLVjFrRlI1bWY4Zy92?=
+ =?utf-8?B?Y2tEcEQrV3Z1dWZDVHZXaWVpMHBIazZodEFzdldNUHFvTkZDMG1rc25nWmJu?=
+ =?utf-8?B?clRrMXdsQWVYN1lTV21JQ3kxNVcrczI4VHJLVkMyN3lsdWNzM3k2RFcvSVR5?=
+ =?utf-8?B?VmpKdU5ybW9qdTRhVVNGQUd4ams1VHhWKy82aDk3LzQwdTdUZktKRWNkVHUw?=
+ =?utf-8?B?b2lPSEtZR3JFNEdFQmxVL3NvWWZHaUNxK0FuYW0wSUNMNTZrVVpQYzJ2UDJz?=
+ =?utf-8?B?L2d0VmViV0JoNWxvTXJXZzk1dGU5UEdmZE90RmF6STNPZkYwUUp1SnRFTjN6?=
+ =?utf-8?B?YUZwZHp6L201MmFqa3REUk1CWjJ4eW1MZ1A1bWFjcHIzMWl1aUNweDBGM293?=
+ =?utf-8?B?VmJNa0VDRktGV2tiRS9vWVVTUUtPOVNuc2xzSUJ6azhmMFFIaXZJYThNOXUx?=
+ =?utf-8?B?YWRHanlSZjJMVmdEd2pyZEZXSXY3dU1rWUJtZE5oMEQ3K0tFbzd2WWlDRmsz?=
+ =?utf-8?B?UWZ4RzQwcVRkTlRQU1E0TzBtUGpUakpnYUlYR1Q0VnZhTkI2cWlIMmFDNnVK?=
+ =?utf-8?B?d0hDNGlOWUZvS1c2cld0ODVDRnNlM0J3Y0xYSndjOTMwMzEvL2dXYUUyUkRu?=
+ =?utf-8?B?R213L0QvMEZZc0dGa2lKSFJPdUwyMTJsSmpiRDdHc0xUY2lsUHYySzM0RSty?=
+ =?utf-8?B?U2dvY2g5NE5KRUhubFRSU3diQ2tqS3pIWmJkOEdMOHQ4TGFGOFJyMitsN1Zw?=
+ =?utf-8?B?cFAvcXFWTzJuazJiNlJKRTZPaklWWWgzc3MzNTIxTFVHRGlqVFJVTEN2RW5Y?=
+ =?utf-8?B?L3Q0eE0yeWNaMTZZYWtneVo1cmlaZkpzc0NHd0cwdll3djNwempIWXB2cDhr?=
+ =?utf-8?B?WnVlU29jeVFQdnVWSzBHbHZ3MlcrOVorN1NWeUxTcS9LUFhXSUdZU05DTVl6?=
+ =?utf-8?B?STR6enNDM1lYbWxKMjNGaWk2dUtYaldKWDhJdWhFdjVwNW00VDVOT2kvVzE0?=
+ =?utf-8?B?Rk5ScFdySFBNWUFzdTlRVm5WVG1TS1BuckpXZ2lzZDJ4M3FkSE1QcHpsUkw3?=
+ =?utf-8?B?bWphN3lwWi9qU1RJYURPK3IrMGVwb0RyaWF0NjZtSW55WVVZb1FSYXg5YXZ1?=
+ =?utf-8?B?enZaOS8vNlFQcjZiYVJKMTI1ZnNoS2RjMzYxaTRCN29nYzJDTVU3Vk1nWFFO?=
+ =?utf-8?Q?20McTAsOIdkJZQvEsMfRb8l2xZIoLF1LH3heo?=
+X-Exchange-RoutingPolicyChecked:
+	WRdzX61i/3KDmtJYLDK90Bf4gkWWlgeQXQKX4r8Z747e3/JjPJZRwKAeBi+vWi6CNPejOvH7C3PU5bqbjN0auj/KSDWD40Vg7uGYvkLJj/6ke8T6GgDL3LXIkeu0HoD0rZKbJX1BMfa7lOb2jNSGzW+1ofoBtLxWaa+PiCZpVMMgsBP7a5Qw1EZ+iJzI5XeNMnUtiehlW/ReOTx0PTsz+/dgTZHRJuYhVLD3EaD1xs3EegEMKWJ5UFyvyFigq7Gq17t2AGW2ryBtVqQZRWL2d88oFyFDzL6bE14ns/j0utSwszzXdX7Zmn/+qdhA78AHaaKp6kMbc2EUmKTlFlf2+w==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Vdrz7gvh7gqib2KJ5wBDnFij1XsL1P5AN4NkFA4CnnclJfVSfku9Y6JPcJ6sozb8iRCMEHh/MeLMp2aO+QFQeQlTZWFG8+5h60D5cjTpUFwyUZrDDXT9FfrUfuhgptMaxOAHclZY17fH3IltNN5m6wYDqFmZABUwos9gZmNaybC3ZC+gmhjnrPpCCp1TLvBjWjE8JZxkmfrbpR4pxgj/5AQIH1MhwWM2fbQXkgT8S9FrGEDZx9I8hvV9OE5QaOOz0v0gP7NOqyCTk35KumEK7tEZDu5D0TKgMc6XXGm6NglnjRLQyGMoxwC3tp9l2cboOw/PCB+hShq4Y4xTk+VASpZNgywVo9Ri7AEyyvAoJm6bODwQsN+FcTsV7W+/iv5naOg6U7pZ39/GAVx8PI6N5q1BvzhvhKhIl84kqhhFaejqEI1Z0vod83MnY66VEigwAwZicMhTNtwQq2Rh1W9+jNQSdzSaej4ViH32Z6zoUA/GpZa+NcUy9kI+xJgUL/1mmIflB0On8vvlY3E+Jadu3lyaoKS2Ejfv0NHJCH0D8aaRl128WPG5b56pj6y0DmrcNcjx2QDGCTNErqyOa1PrEL4ZeU4FPJMB+zcHJGBZ1Lc=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b47aebe-5e5c-423f-3add-08de9477e3cf
+X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 07:32:57.9386
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tCbBLOAfn5GZ34KwwrsNK3ovBn6PBY2GQ6W6AZ+8tc2wpy35qmrYAFsfWpWGgdQVqdbycevgPHkIieJYdrTjm+KYPD0R7dzlREF78PYbUAFeEK8RNuvw31VfQ/zysMTj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR10MB6187
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_02,2026-04-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 bulkscore=0
+ mlxlogscore=960 phishscore=0 adultscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2604010000
+ definitions=main-2604070068
+X-Proofpoint-ORIG-GUID: Mo3fcCtY4WssmMuXagg52itf1t4hgrX9
+X-Proofpoint-GUID: Mo3fcCtY4WssmMuXagg52itf1t4hgrX9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDA2NyBTYWx0ZWRfX42dQ7LMQqQlx
+ Z7/UWt0lrAD4Q+wh/avVZMRas2DS/cGO9SXkp8BspxyWbuc3zSf0RRdPhCTaMUTR2TIjkVOWW6c
+ Zsk8wN5fbzBRKiiwLkoGx2Wigrc+rQWkh40BZmOSc2HLIAFsKp8vvEFBHR1suWJXlo0iBB2EFgh
+ t0XtotqTWF2Xj5MicVSw59mTFA3XrW9DLgcQ8FAck9EplBgvQ2epHYXl7UAm3S6IpZhfKtbj0oq
+ mDF5CAXAWHwrY2/neKA0TkYs+YgF4XCDBuPEBvO9Ap4DKExz98+7if7yM7Ptpq4x4wADXLt28+b
+ 8NijugGl6L+Pbo4ew3mK4ghI7fAjp0QB2byvlhAy+PsPux1RNbZA/QJfgvygtdHBYOlEgJbVexN
+ 03KWSuHohL37H1wP45PkjBBDEsSnT9unH7g49KZTFaM3eCQ/zGFOE7ZVDFC6Hg8ka/0lutvP3nu
+ pJKeLzTizhXYINi2g24rlnoNRZ5m8iCUuQNrEYQU=
+X-Authority-Analysis: v=2.4 cv=NZXWEWD4 c=1 sm=1 tr=0 ts=69d4b347 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=A5OVakUREuEA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=EIcjfB9IiI4px24ztqRk:22 a=wVtRmF4uRXkrm_P4lJ8A:9
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:12291
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233508-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233509-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:dkim,oracle.com:mid,oracle.onmicrosoft.com:dkim];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gnoack3000@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,digikod.net:email,gnoack.org:mid]
-X-Rspamd-Queue-Id: 3C8313AACDE
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: F1C403AAD06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello!
+Hi Sasha,
 
-On Sat, Apr 04, 2026 at 10:49:57AM +0200, Mickaël Salaün wrote:
-> hook_cred_transfer() only copies the Landlock security blob when the
-> source credential has a domain.  This is inconsistent with
-> landlock_restrict_self() which can set log_subdomains_off on a
-> credential without creating a domain (via the ruleset_fd=-1 path): the
-> field is committed but not preserved across fork() because the child's
-> prepare_creds() calls hook_cred_transfer() which skips the copy when
-> domain is NULL.
+
+On 06/04/26 22:38, Sasha Levin wrote:
+>> I agree this has no effect, but couldn't we just say, the reason we 
+>> never backported it because we never have the broken commit(vulnerable 
+>> commit) backported ?
 > 
-> This breaks the documented use case where a process mutes subdomain logs
-> before forking sandboxed children: the children lose the muting and
-> their domains produce unexpected audit records.
-> 
-> Fix this by unconditionally copying the Landlock credential blob.
-> landlock_get_ruleset(NULL) is already a safe no-op.
-> 
-> Cc: Günther Noack <gnoack@google.com>
-> Cc: stable@vger.kernel.org
-> Fixes: ead9079f7569 ("landlock: Add LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF")
-> Signed-off-by: Mickaël Salaün <mic@digikod.net>
-> ---
->  security/landlock/cred.c                      |  6 +-
->  tools/testing/selftests/landlock/audit_test.c | 88 +++++++++++++++++++
->  2 files changed, 90 insertions(+), 4 deletions(-)
-> 
-> diff --git a/security/landlock/cred.c b/security/landlock/cred.c
-> index 0cb3edde4d18..cc419de75cd6 100644
-> --- a/security/landlock/cred.c
-> +++ b/security/landlock/cred.c
-> @@ -22,10 +22,8 @@ static void hook_cred_transfer(struct cred *const new,
->  	const struct landlock_cred_security *const old_llcred =
->  		landlock_cred(old);
->  
-> -	if (old_llcred->domain) {
-> -		landlock_get_ruleset(old_llcred->domain);
-> -		*landlock_cred(new) = *old_llcred;
-> -	}
-> +	landlock_get_ruleset(old_llcred->domain);
-> +	*landlock_cred(new) = *old_llcred;
+> That's the correct response we should give, yes, but the question is how 
+> do we
+> store this information in a way that is easily accessible to us later 
+> without
+> having to dig through the tree.
 
-This fix looks correct for the hook_cred_prepare() case (and of
-course, hook_cred_prepare() calls hook_cred_transfer() in Landlock).
+Got it. Will think through as well and share if I get any idea on this.
+
+Thanks for sharing your thoughts.
 
 
-But I'm afraid I might have spotted another issue here:
+Regards,
+Harshit
 
-If I look at the code in security/keys/process_keys.c, where
-security_tranfer_creds() is called, the "old" object is actually
-already initialized, and if we are not checking for that, I think we
-are leaking memory.
-
-I would suggest to use the helper landlock_cred_copy() from cred.h for
-that.  This one is anyway supposed to be the central place for this
-copying logic, and it is safe to use with zeroed-out target objects
-(because the put is safe for the NULL-pointer).
-
-Maybe this is worth updating while we are at it?
-
-
->  }
->  
->  static int hook_cred_prepare(struct cred *const new,
-> diff --git a/tools/testing/selftests/landlock/audit_test.c b/tools/testing/selftests/landlock/audit_test.c
-> index 46d02d49835a..20099b8667e7 100644
-> --- a/tools/testing/selftests/landlock/audit_test.c
-> +++ b/tools/testing/selftests/landlock/audit_test.c
-> @@ -279,6 +279,94 @@ TEST_F(audit, thread)
->  				&audit_tv_default, sizeof(audit_tv_default)));
->  }
->  
-> +/*
-> + * Verifies that log_subdomains_off set via the ruleset_fd=-1 path (without
-> + * creating a domain) is inherited by children across fork().  This exercises
-> + * the hook_cred_transfer() fix: the Landlock credential blob must be copied
-> + * even when the source credential has no domain.
-> + *
-> + * Phase 1 (baseline): a child without muting creates a domain and triggers a
-> + * denial that IS logged.
-> + *
-> + * Phase 2 (after muting): the parent mutes subdomain logs, forks another child
-> + * who creates a domain and triggers a denial that is NOT logged.
-> + */
-> +TEST_F(audit, log_subdomains_off_fork)
-> +{
-> +	const struct landlock_ruleset_attr ruleset_attr = {
-> +		.scoped = LANDLOCK_SCOPE_SIGNAL,
-> +	};
-> +	struct audit_records records;
-> +	int ruleset_fd, status;
-> +	pid_t child;
-> +
-> +	ruleset_fd =
-> +		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
-> +	ASSERT_LE(0, ruleset_fd);
-> +
-> +	ASSERT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
-> +
-> +	/*
-> +	 * Phase 1: forks a child that creates a domain and triggers a denial
-> +	 * before any muting.  This proves the audit path works.
-> +	 */
-> +	child = fork();
-> +	ASSERT_LE(0, child);
-> +	if (child == 0) {
-> +		ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
-> +		ASSERT_EQ(-1, kill(getppid(), 0));
-> +		ASSERT_EQ(EPERM, errno);
-> +		_exit(0);
-> +		return;
-> +	}
-> +
-> +	ASSERT_EQ(child, waitpid(child, &status, 0));
-> +	ASSERT_EQ(true, WIFEXITED(status));
-> +	ASSERT_EQ(0, WEXITSTATUS(status));
-> +
-> +	/* The denial must be logged (baseline). */
-> +	EXPECT_EQ(0, matches_log_signal(_metadata, self->audit_fd, getpid(),
-> +					NULL));
-> +
-> +	/* Drains any remaining records (e.g. domain allocation). */
-> +	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
-> +
-> +	/*
-> +	 * Mutes subdomain logs without creating a domain.  The parent's
-> +	 * credential has domain=NULL and log_subdomains_off=1.
-> +	 */
-> +	ASSERT_EQ(0, landlock_restrict_self(
-> +			     -1, LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF));
-> +
-> +	/*
-> +	 * Phase 2: forks a child that creates a domain and triggers a denial.
-> +	 * Because log_subdomains_off was inherited via fork(), the child's
-> +	 * domain has log_status=LANDLOCK_LOG_DISABLED.
-> +	 */
-> +	child = fork();
-> +	ASSERT_LE(0, child);
-> +	if (child == 0) {
-> +		ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
-> +		ASSERT_EQ(-1, kill(getppid(), 0));
-> +		ASSERT_EQ(EPERM, errno);
-> +		_exit(0);
-> +		return;
-> +	}
-> +
-> +	ASSERT_EQ(child, waitpid(child, &status, 0));
-> +	ASSERT_EQ(true, WIFEXITED(status));
-> +	ASSERT_EQ(0, WEXITSTATUS(status));
-> +
-> +	/* No denial record should appear. */
-> +	EXPECT_EQ(-EAGAIN, matches_log_signal(_metadata, self->audit_fd,
-> +					      getpid(), NULL));
-> +
-> +	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
-> +	EXPECT_EQ(0, records.access);
-> +
-> +	EXPECT_EQ(0, close(ruleset_fd));
-> +}
-> +
->  FIXTURE(audit_flags)
->  {
->  	struct audit_filter audit_filter;
-> -- 
-> 2.53.0
-> 
-
-Test looks fine.
-
-While I do still think we should investigate the memory leak, this
-commit is, as it is, already a strict improvement over what we had
-before, so:
-
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
-
-–Günther
 
