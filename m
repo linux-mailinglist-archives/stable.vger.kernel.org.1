@@ -1,175 +1,177 @@
-Return-Path: <stable+bounces-233685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLj7JpIx1Wly2QcAu9opvQ
-	(envelope-from <stable+bounces-233685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:32:18 +0200
+	id qFUwIlg01WnY2gcAu9opvQ
+	(envelope-from <stable+bounces-233686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:44:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CC13B1E23
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:32:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E54343B1F2B
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A99830036C7
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:31:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5725B3048553
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32DA3CD8A5;
-	Tue,  7 Apr 2026 16:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5E43CB2CF;
+	Tue,  7 Apr 2026 16:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="PCJbXyTj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC4F33BBB1
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 16:31:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB5A270ED7;
+	Tue,  7 Apr 2026 16:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775579501; cv=none; b=LsANNz6/txxFZBswO67kB6RHYezAjDiBs2fg56iAEXKruNEmQKepbCRTJ1VozcTosWLDtSn55Y4IU+fhMS6NxgWrdY/b70CTZ2YfpkP1tduOEBQbCct4ff5tEbxFwsxkmfHSj3gxQBon1hVOjehZFYHvEJlJRH1Rxk6emFBsr5o=
+	t=1775579964; cv=none; b=XekKUELJMkmbw9221vsN41saGtkjHVGTcKTRzPrwZPODaUTL1wwRl71nHV19N7GXn+lLL1R4DX03X/xIoEOA/mwM+ORGlVArlK7snUFhzyfOrxfjH2sP9bnxbim/uXhJG0/6oVM0txaG1Plwjk79150cVSKy6ngk2l0Ym9z8kVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775579501; c=relaxed/simple;
-	bh=RMzOSqw3TdL64CgoGnHs2Ofuy665uMQ/CKn30stnTsg=;
+	s=arc-20240116; t=1775579964; c=relaxed/simple;
+	bh=1Ako3F/RuxhBhPwlL/Z6GVmzMFrpFn4MUzUSk5v2tRc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lhvut4F8/SkL4kg59HIkZq31JTUX1IR9RosIIsgIwJskrttVokJzMXB9P+j7+/7+75A3GheRSl/WgSR1uhHsHxIKxPZqJXUYLKMSXTD6B3A+8URv9+v/yZxs6LVZ+eY6Ry+Y1uRvzO3O257lX+3r0wLUDHIv5yvb6qjqx4Js48s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.2.229] (p5dc55707.dip0.t-ipconnect.de [93.197.87.7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 In-Reply-To:Content-Type; b=SHUadTG+ZxsOla8ippWnbNzz+OKg5NaZOTiLb01UT/kncWklU86Wz/HfJCIXrytjHnHIAsu3QSRQn5h2jCP+0iBu6oVzVVxTyHqlysBbW3ibSYAbOg1Li08lbETYJzVgd6bPDn8wXbSosS0VJh13IrnWmP9gNPmF/wNnvNAFFC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=PCJbXyTj; arc=none smtp.client-ip=67.231.154.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C3B90305F82;
+	Tue,  7 Apr 2026 16:31:38 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 852532C00D4;
+	Tue,  7 Apr 2026 16:31:29 +0000 (UTC)
+Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 15C5C4C2C37D56;
-	Tue, 07 Apr 2026 18:31:17 +0200 (CEST)
-Message-ID: <c6763568-7773-43af-a43f-dcf6fc4ab0eb@molgen.mpg.de>
-Date: Tue, 7 Apr 2026 18:31:15 +0200
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 5859013C2B0;
+	Tue,  7 Apr 2026 09:31:24 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5859013C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1775579484;
+	bh=1Ako3F/RuxhBhPwlL/Z6GVmzMFrpFn4MUzUSk5v2tRc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PCJbXyTjnDxE20IrBFK2EKZ/c81LDM4pKOHtO3dHp649Av3VyhwfxBOOnea0KP6bn
+	 vsxDdeGxbzZV3PTSY2PPyzsZwHbnrbyq9Od6HtnGOlcnNmJbEckCWs5/53SL0KuVRo
+	 yX+ViSJ3XwqiM2zYGw+i3k8wklV8IBDawQd1Iz4s=
+Message-ID: <ddc4ccfe-27e0-7558-9b5b-27b4c4fe54b3@candelatech.com>
+Date: Tue, 7 Apr 2026 09:31:24 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2] i40e: Cleanup PTP pins on
- probe failure
-To: Matt Vollrath <tactii@gmail.com>
-Cc: Kohei Enju <kohei@enjuk.jp>, intel-wired-lan@osuosl.org,
- stable@vger.kernel.org
-References: <20260407161447.43645-1-tactii@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
+ sta_poll RSSI extraction
+To: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+ ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
+ <20260406234739.29926-5-joshuaklinesmith@gmail.com>
+ <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
+ <CANs=ypgdgB_3stm5bCvO8RTat-sxs0N6SAaeYSQ-dyq43U-ZBg@mail.gmail.com>
 Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260407161447.43645-1-tactii@gmail.com>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <CANs=ypgdgB_3stm5bCvO8RTat-sxs0N6SAaeYSQ-dyq43U-ZBg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-MDID: 1775579491-zfUrAYFX0LoG
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;at1;1775579491;zfUrAYFX0LoG;<greearb@candelatech.com>;cd1e1c133c9805f1fc8e076cc471adaa
+X-PPE-TRUSTED: V=1;DIR=OUT;
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233685-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233686-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[mpg.de];
 	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_THREE(0.00)[4];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[candelatech.com:+];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.983];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[enjuk.jp:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 13CC13B1E23
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E54343B1F2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Dear Matt,
-
-
-Thank you for the patch. Should you resend you could spell the verb 
-*clean up* with a space:
-
- > i40e: Clean PTP pins up on probe failure
-
-or
-
- > i40e: Clean up PTP pins on probe failure
-
-But it’s not important.
-
-Am 07.04.26 um 18:14 schrieb Matt Vollrath:
-> PTP pin structs are allocated early in probe, but never cleaned up.
+On 4/7/26 09:00, Joshua Klinesmith wrote:
+> On 4/7/26 11:25, Ben Greear wrote:
+>> How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
+>> at max.  So while the patch may be correct, it may also not matter in practice
+>> and at least may not need to be backported into stable.
 > 
-> Fix this by calling i40e_ptp_free_pins in the error path.
+> Hi Ben,
 > 
-> To support this, i40e_ptp_free_pins is added to the header and
-> pin_config is correctly nullified after being freed.
+> Please accept my apologies. You are correct that the mt7925 is a 2x2
+> chipset, so this does not have a practical impact and should not have
+> been tagged for stable. I did not read the documentation in its
+> entirety before submitting, and that is on me.
 > 
-> This has been an issue since i40e_ptp_alloc_pins was introduced.
+> I will be much more careful and diligent with testing and review going forward.
 > 
-> Fixes: 1050713026a08 ("i40e: add support for PTP external synchronization clock")
-> Reported-by: Kohei Enju <kohei@enjuk.jp>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matt Vollrath <tactii@gmail.com>
-> ---
->   drivers/net/ethernet/intel/i40e/i40e.h      | 1 +
->   drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
->   drivers/net/ethernet/intel/i40e/i40e_ptp.c  | 3 ++-
->   3 files changed, 4 insertions(+), 1 deletion(-)
+> Thanks for the feedback.
 > 
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-> index dcb50c2e1aa2..83e780919ac9 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e.h
-> +++ b/drivers/net/ethernet/intel/i40e/i40e.h
-> @@ -1318,6 +1318,7 @@ void i40e_ptp_restore_hw_time(struct i40e_pf *pf);
->   void i40e_ptp_init(struct i40e_pf *pf);
->   void i40e_ptp_stop(struct i40e_pf *pf);
->   int i40e_ptp_alloc_pins(struct i40e_pf *pf);
-> +void i40e_ptp_free_pins(struct i40e_pf *pf);
->   int i40e_update_adq_vsi_queues(struct i40e_vsi *vsi, int vsi_offset);
->   int i40e_is_vsi_uplink_mode_veb(struct i40e_vsi *vsi);
->   int i40e_get_partition_bw_setting(struct i40e_pf *pf);
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-> index 926d001b2150..c7062aa476dd 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-> @@ -16112,6 +16112,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->   	i40e_clear_interrupt_scheme(pf);
->   	kfree(pf->vsi);
->   err_switch_setup:
-> +	i40e_ptp_free_pins(pf);
->   	i40e_reset_interrupt_capability(pf);
->   	timer_shutdown_sync(&pf->service_timer);
->   err_mac_addr:
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-> index 404a716db8da..7d07c389bb23 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-> @@ -940,12 +940,13 @@ int i40e_ptp_hwtstamp_get(struct net_device *netdev,
->    *
->    * Release memory allocated for PTP pins.
->    **/
-> -static void i40e_ptp_free_pins(struct i40e_pf *pf)
-> +void i40e_ptp_free_pins(struct i40e_pf *pf)
->   {
->   	if (i40e_is_ptp_pin_dev(&pf->hw)) {
->   		kfree(pf->ptp_pins);
->   		kfree(pf->ptp_caps.pin_config);
->   		pf->ptp_pins = NULL;
-> +		pf->ptp_caps.pin_config = NULL;
->   	}
->   }
+> Joshua
 
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+I am more concerned about the trickier patches that you have been posting
+that is utilizing work from upstream vendor code.  How much of that is pure
+AI driven?  How much testing has been done to see if there are actual stability
+or performance improvements when testing actual hardware?
+
+Thanks,
+Ben
+
+> On Tue, Apr 7, 2026 at 11:25 AM Ben Greear <greearb@candelatech.com> wrote:
+>>
+>> On 4/6/26 16:47, Joshua Klinesmith wrote:
+>>> The fourth receive chain RCPI uses GENMASK(31, 14), an 18-bit mask
+>>> spanning bits 14-31. It should be GENMASK(31, 24), an 8-bit mask
+>>> for the fourth byte, consistent with the other three chains and
+>>> with the RCPI3 definitions used elsewhere in the driver
+>>> (MT_PRXV_RCPI3 and MT_TXS7_F0_RCPI_3 both use GENMASK(31, 24)).
+>>
+>> Hello Joshua,
+>>
+>> How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
+>> at max.  So while the patch may be correct, it may also not matter in practice
+>> and at least may not need to be backported into stable.  If it is a minor
+>> cleanup that doesn't actually matter, that should be described more clearly
+>> in the commit message?
+>>
+>> Some of your patches are touching tricky parts of the code and making
+>> subtle comparisons against how the vendor's driver is written.  How well has
+>> this been tested and reviewed by a knowledgeable human in general?
+>>
+>> Thanks,
+>> Ben
 
 
-Kind regards,
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-Paul
+
 
