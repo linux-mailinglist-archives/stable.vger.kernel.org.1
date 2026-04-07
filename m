@@ -1,233 +1,136 @@
-Return-Path: <stable+bounces-233552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPVcID/e1GnzyAcAu9opvQ
-	(envelope-from <stable+bounces-233552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:36:47 +0200
+	id hWZEDY3f1GmZyQcAu9opvQ
+	(envelope-from <stable+bounces-233553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:42:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEED33ACF69
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D072B3AD0E5
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9241C305043F
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:35:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72371303A3E4
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979AA3A9DAD;
-	Tue,  7 Apr 2026 10:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22953A9002;
+	Tue,  7 Apr 2026 10:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6JvjKHN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQzMS9sc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540913A7F46;
-	Tue,  7 Apr 2026 10:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AC63A7839;
+	Tue,  7 Apr 2026 10:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775558115; cv=none; b=j2qJOPwfAey5+Lr4hsVSWNqkJR8Y4R+68MnUVPkq4af2i6O8IBsiTuEZvqWSRANaOoqkjvYocv9w989N3S1gJNigskxOCwO3yePJgOFRwcvewIi6lbvGT5RsTT6wW5cnOVg9BuzD/YHvGVmldy8rpLQawBlMGdAtn3yuxPYxFew=
+	t=1775558474; cv=none; b=MAIHOn5J0t9usedMPpjeX7t9DsoB8d7sQZUGmAV1pYBqBtxM2MObgdlIMjP//xaP3SdxrX4trg1hX9Ve23/K3ZOkpqjh6DdrfWCsalUiaB/ejHouk07n4ZNC/yq1gSTPnbmD4C2/9KYz2XIR92zWQUSNu4rNwpVgcyLdn1TpiUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775558115; c=relaxed/simple;
-	bh=Iw/0ZMUWO2zJVSR27I/5GetL9KxeKyvBcMMEYB7HZ5E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JzQZZVZsC8cYKzM5gEc/DrClkrbnj6hUmQCyukRfJaoCblXatjbIPmDK7xNiLvxLOHSP8zZyJh3Dn5W+tBfAWNPACoTGURncCGueNCCTl0CfEzOaXJjtw/c7qYLGbWib9SKDDVw9aEiIRbvtFpqT3u95jCra/PfqaFx2cAm4fgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6JvjKHN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D36AC116C6;
-	Tue,  7 Apr 2026 10:35:11 +0000 (UTC)
+	s=arc-20240116; t=1775558474; c=relaxed/simple;
+	bh=CiHOQaswtehpidBPcpvulY2cIzBWFPhGas3Jv2R5EH4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HWBcOK8POn8OWDJ9uWgNd0GkZ86V8a9fcOLpjTIi+Ig2JnZ5nXETMCMJXyKjO6ielGV9sCbZPnmFuzc820LdoTOw/na1bbpHWOAy4isOFgeKignnmW0SnEshRKqOvpUOpBGfc49s8qsII8f6uXvrEg1lIUZV20Qw/EHR1S0ygu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQzMS9sc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CF7C116C6;
+	Tue,  7 Apr 2026 10:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775558115;
-	bh=Iw/0ZMUWO2zJVSR27I/5GetL9KxeKyvBcMMEYB7HZ5E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=S6JvjKHNM2UHtrZlMGOU0vQE8t3ifHI72a1z7Fe6yM5HQglG7VUuO6NUvq6tLJlBa
-	 C6oIibc1QsyiADbt9HDKY2ARKrBsogP/ixIw8J6jmXDOKVdKu3SVcE9ci9lTFU00Wq
-	 L7cINQ1i/jr0jshNciD/l1j2TxN60lxYwQjOV6FBb0i374pTeJajhiHt/J8Zx7jiBS
-	 Veer/m+2N6ixvd6XKVfyK/HMLaqR8HQpPK9Vz2SsH7oE33mfV4GWfy0Q0OznC3PoIP
-	 n98cnhmn98eA2q9FBwy0z/x211cXDofi5fQSmaXtlRUfFcNFNXQwW7MYMKdgv6VsL2
-	 K1joXLljddxgg==
-From: bod@kernel.org
-Date: Tue, 07 Apr 2026 11:34:54 +0100
-Subject: [PATCH v3 4/5] media: qcom: camss: Fix RDI streaming for CSID GEN3
+	s=k20201202; t=1775558474;
+	bh=CiHOQaswtehpidBPcpvulY2cIzBWFPhGas3Jv2R5EH4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZQzMS9sc+0IRjiNNX+l9PyO3VQxZpw+g0MNLyA8SKtaXsNJj6JLLGGSwKxyeugaRZ
+	 nA3VCMJkxYEz9QWtgiOmiR9PUJeTAiBz9qNxwCTrWhpiniilN8w5KLQWSwojvgC0WI
+	 V367/W9MBc7RnmDUVXMpxd9yI4GygEh9sLriwxYac2DgAoEc3G5uCcSyhvWz4iU9U3
+	 UOJw420DHXaapVquPdIEx3JaP2gv49V+ebFafTCWcKGs6tqkSiuknDHe3AAGhapgr7
+	 XnkoLfCinVlV3nHgN5UGhoqG6PqCLt/fJAWt/Sk0f+8mExsN2TC8V+pWtbNNwCP19Z
+	 Uwvngc2KYht+w==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wA3rr-0000000B6EI-3HVm;
+	Tue, 07 Apr 2026 12:41:11 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Sebastian Reichel <sre@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Purism Kernel Team <kernel@puri.sm>,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Dzmitry Sankouski <dsankouski@gmail.com>
+Subject: [PATCH] power: supply: fix OF node reference imbalance
+Date: Tue,  7 Apr 2026 12:40:39 +0200
+Message-ID: <20260407104039.2645514-1-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-camss-rdi-fix-v3-4-08f72d1f3442@kernel.org>
-References: <20260407-camss-rdi-fix-v3-0-08f72d1f3442@kernel.org>
-In-Reply-To: <20260407-camss-rdi-fix-v3-0-08f72d1f3442@kernel.org>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil@kernel.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, 
- Gjorgji Rosikopulos <quic_grosikop@quicinc.com>, 
- Milen Mitkov <quic_mmitkov@quicinc.com>, 
- Depeng Shao <quic_depengs@quicinc.com>, Yongsheng Li <quic_yon@quicinc.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Bryan O'Donoghue <bod@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4312; i=bod@kernel.org;
- h=from:subject:message-id; bh=s60sIJaXGpdYqv090mjDLH9kxg4goK1KRKFRBCPJ730=;
- b=owEBbQKS/ZANAwAKASJxO7Ohjcg6AcsmYgBp1N3PPcWeqJzFYPw054Mxzqik+A0Dt6Ff1PTB1
- U7pAfMy6aCJAjMEAAEKAB0WIQTmk/sqq6Nt4Rerb7QicTuzoY3IOgUCadTdzwAKCRAicTuzoY3I
- Oo6lD/wJdiXDtmVuFU+C2RZZO1jj6iYhJG9i695vk/L5nMyL4sPMhl/wi98I75S/SmkhAxQp1Z0
- /V5FgNqZZ6yNuQT95dJKTSIUHO4FPGAB0HG0btmlpT5GlO/7tHZ7gRbzZ3WAn/H1GMCih1HMnAD
- ee4PaKPUHksBruSQFvK+nqvBHkPnZduwZ7DFORowJa8Vd/9c2vHGPgZHbDSFhpY9MWaaRQyWm1Y
- WWeD2XHKlrN9vnMlpTs2nyzDL9PPc+6WJiliLeB/ibjnPR6KBGMcMZgZtYtigTBgHtARxjl06jR
- MpJ9mZxIoIjEIuUr8FGJxDYUGf7Qf13nm8xtDjGu9Gs7g9dlGiotlzKKbt0QqblbMtCqnQ6EmT6
- EkN2WWtxSxI+74lwscxJP1kD0yNQZMAChocFHjPLE2WhQcr7smzDL6tvQBnB3yjWWA0+iF/E1bo
- wk/UBkKVRV0BiQjuZ/u2ZkyzsLXYby/utqdrJj5di+7tTn0rYxiw34wVyTD7VtoHKlT+NJrPPbJ
- FAw7WNnWJVqhSXxCZNjMMa46RI3pP2rtBU5DbSW9o+gIH3iVbcDx97IJOSiksT4ahhct1kkAY+x
- UTyRxacrUlDJFG1DFQVQiJ8oGuuXxr93sjpYB+p03U754sDBSol9l0kTCFzuVfniLuPQhbjvU7i
- M31EY+W+WmRO1Zw==
-X-Developer-Key: i=bod@kernel.org; a=openpgp;
- fpr=E693FB2AABA36DE117AB6FB422713BB3A18DC83A
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233552-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linaro.org,oss.qualcomm.com,quicinc.com];
+	TAGGED_FROM(0.00)[bounces-233553-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,samsung.com,puri.sm,vger.kernel.org,gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[bod@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: EEED33ACF69
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D072B3AD0E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Fix streaming from CSIDn RDI1 and RDI2 to VFEn RDI1 and RDI2. A pattern we
-have replicated throughout CAMSS where we use the VC number to populate
-both the VC fields and port fields of the CSID means that in practice only
-VC = 0 on CSIDn:RDI0 to VFEn:RDI0 works.
+Fix this by using the intended helper for reusing OF nodes.
 
-Fix that for CSID gen3 by separating VC and port. Fix to VC zero as a
-bugfix we will look to properly populate the VC field with follow on
-patches later.
-
-Fixes: d96fe1808dcc ("media: qcom: camss: Add CSID 780 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Fixes: 0cd4f1f77ad4 ("power: supply: max17042: add platform driver variant")
+Cc: stable@vger.kernel.org	# 6.14
+Cc: Dzmitry Sankouski <dsankouski@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- .../media/platform/qcom/camss/camss-csid-gen3.c    | 28 +++++++++++-----------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/power/supply/max17042_battery.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen3.c b/drivers/media/platform/qcom/camss/camss-csid-gen3.c
-index bd059243790ed..ed5c5766efd36 100644
---- a/drivers/media/platform/qcom/camss/camss-csid-gen3.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-gen3.c
-@@ -145,12 +145,12 @@ static void __csid_configure_wrapper(struct csid_device *csid)
- 	writel(val, csid->camss->csid_wrapper_base + CSID_IO_PATH_CFG0(csid->id));
- }
+diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supply/max17042_battery.c
+index acea176101fa..914f18ce79b3 100644
+--- a/drivers/power/supply/max17042_battery.c
++++ b/drivers/power/supply/max17042_battery.c
+@@ -1165,7 +1165,8 @@ static int max17042_platform_probe(struct platform_device *pdev)
+ 	if (!i2c)
+ 		return -EINVAL;
  
--static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8 vc)
-+static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8 port, u8 vc)
- {
- 	u32 val;
- 	u8 lane_cnt = csid->phy.lane_cnt;
- 	/* Source pads matching RDI channels on hardware. Pad 1 -> RDI0, Pad 2 -> RDI1, etc. */
--	struct v4l2_mbus_framefmt *input_format = &csid->fmt[MSM_CSID_PAD_FIRST_SRC + vc];
-+	struct v4l2_mbus_framefmt *input_format = &csid->fmt[MSM_CSID_PAD_FIRST_SRC + port];
- 	const struct csid_format_info *format = csid_get_fmt_entry(csid->res->formats->formats,
- 								   csid->res->formats->nformats,
- 								   input_format->code);
-@@ -163,14 +163,14 @@ static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8
- 	 * the four least significant bits of the five bit VC
- 	 * bitfield to generate an internal CID value.
- 	 *
--	 * CSID_RDI_CFG0(vc)
-+	 * CSID_RDI_CFG0(port)
- 	 * DT_ID : 28:27
- 	 * VC    : 26:22
- 	 * DT    : 21:16
- 	 *
- 	 * CID   : VC 3:0 << 2 | DT_ID 1:0
- 	 */
--	u8 dt_id = vc & 0x03;
-+	u8 dt_id = port & 0x03;
+-	dev->of_node = dev->parent->of_node;
++	device_set_of_node_from_dev(dev, dev->parent);
++
+ 	id = platform_get_device_id(pdev);
+ 	irq = platform_get_irq(pdev, 0);
  
- 	val = RDI_CFG0_TIMESTAMP_EN;
- 	val |= RDI_CFG0_TIMESTAMP_STB_SEL;
-@@ -180,7 +180,7 @@ static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8
- 	val |= format->data_type << RDI_CFG0_DT;
- 	val |= dt_id << RDI_CFG0_DT_ID;
- 
--	writel(val, csid->base + CSID_RDI_CFG0(vc));
-+	writel(val, csid->base + CSID_RDI_CFG0(port));
- 
- 	val = RDI_CFG1_PACKING_FORMAT_MIPI;
- 	val |= RDI_CFG1_PIX_STORE;
-@@ -189,22 +189,22 @@ static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8
- 	val |= RDI_CFG1_CROP_H_EN;
- 	val |= RDI_CFG1_CROP_V_EN;
- 
--	writel(val, csid->base + CSID_RDI_CFG1(vc));
-+	writel(val, csid->base + CSID_RDI_CFG1(port));
- 
- 	val = 0;
--	writel(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PERIOD(vc));
-+	writel(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PERIOD(port));
- 
- 	val = 1;
--	writel(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PATTERN(vc));
-+	writel(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PATTERN(port));
- 
- 	val = 0;
--	writel(val, csid->base + CSID_RDI_CTRL(vc));
-+	writel(val, csid->base + CSID_RDI_CTRL(port));
- 
--	val = readl(csid->base + CSID_RDI_CFG0(vc));
-+	val = readl(csid->base + CSID_RDI_CFG0(port));
- 
- 	if (enable)
- 		val |= RDI_CFG0_EN;
--	writel(val, csid->base + CSID_RDI_CFG0(vc));
-+	writel(val, csid->base + CSID_RDI_CFG0(port));
- }
- 
- static void csid_configure_stream(struct csid_device *csid, u8 enable)
-@@ -213,11 +213,11 @@ static void csid_configure_stream(struct csid_device *csid, u8 enable)
- 
- 	__csid_configure_wrapper(csid);
- 
--	/* Loop through all enabled VCs and configure stream for each */
-+	/* Loop through all enabled ports and configure a stream for each */
- 	for (i = 0; i < MSM_CSID_MAX_SRC_STREAMS; i++)
- 		if (csid->phy.en_vc & BIT(i)) {
--			__csid_configure_rdi_stream(csid, enable, i);
--			__csid_configure_rx(csid, &csid->phy, i);
-+			__csid_configure_rdi_stream(csid, enable, i, 0);
-+			__csid_configure_rx(csid, &csid->phy, 0);
- 			__csid_ctrl_rdi(csid, enable, i);
- 		}
- }
-
 -- 
 2.52.0
 
