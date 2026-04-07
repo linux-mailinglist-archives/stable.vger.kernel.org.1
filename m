@@ -1,183 +1,159 @@
-Return-Path: <stable+bounces-233704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLwIOiZA1Wk73gcAu9opvQ
-	(envelope-from <stable+bounces-233704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 19:34:30 +0200
+	id KKp6HPw/1Wk73gcAu9opvQ
+	(envelope-from <stable+bounces-233703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 19:33:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 949B83B266F
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 19:34:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3AAB3B263A
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 19:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FD1430C3E8A
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 17:31:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15A1C30903CF
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 17:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9330734252B;
-	Tue,  7 Apr 2026 17:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5667D33A032;
+	Tue,  7 Apr 2026 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Qt5VoshN";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pg/wNs+C"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="TNND+m6l"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-y-111.mailbox.org (mout-y-111.mailbox.org [91.198.250.236])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A432342CB4;
-	Tue,  7 Apr 2026 17:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3CA33ADB5;
+	Tue,  7 Apr 2026 17:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775583079; cv=none; b=MpG46yYAip11Gx9WlZufF4SmPNOKFcABYp9lkdYMyQFx3dQUIB4qDaRcOdByeh/4Lo/+nAiGN7lK5nReLXy72yFk1z37YRSyE4wjB69Oj/AIztCPwNp4bAIpwBzRLmlTZGOSDtHeNefCnhZFF38rzOMNBDxFke98kUcqVOnpyP0=
+	t=1775583075; cv=none; b=UbZUMA2L4dH9mCaplrYvySJ14GuLWp4HMBUKhmzFlOc6FO/sPoZgir3bxCRuyUgNIDasn+FLVdvfI6U7diP8iHJUDet8nwaHKxArCGRs4YYB8RH1xep0kPT4zuhmmcY+CCjz4PD/8LMwIoKcD3rvBWNtsa5Zj5ymhsXWk51/bk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775583079; c=relaxed/simple;
-	bh=tlECP4uTLaQqF5M9Il3Phq0WryFOhdvy7fqtkbVffuI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFif9iFd3dvYUFbGqcLZvCf5H6w4ffQLowI0iWlhHVZDz+H06ovTlx34jpHVmsfmavkLtuNNuJnFENXY1Rd/tXAHMk0hIhClw1cBUVAYWuWXzrnuQGpeOQBaDIspz7mzXtfB083agSQyVxQXXC35foiJd8ZBfsfTHM8BJwN3Qng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Qt5VoshN; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pg/wNs+C; arc=none smtp.client-ip=91.198.250.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	s=arc-20240116; t=1775583075; c=relaxed/simple;
+	bh=uYGXrROU4X8csqVd6RltyvUGkSocVHoIvd/scjuPBn8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OsvNZHHew0Ui5zdyAkxmBsuYCZEiMpJdVh+KDUxTmDgjB+LKMExEv1jLHgZHP57SPZNRiJBtmCEUF7yqiGGbsejtY0KU/Hu8fpFii8UX9piaCyvU3vhWHKSJKK9JhLulO5NEh9oh2xAM2N0Bp/aFwW0Fz163+WNZNutIMuHR+NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=TNND+m6l; arc=none smtp.client-ip=67.231.154.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 4BD00180084;
+	Tue,  7 Apr 2026 17:31:07 +0000 (UTC)
+Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4fqtXM3bP8z9ySW;
-	Tue,  7 Apr 2026 19:31:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775583075;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iIg2qhrKVQQuHdMcVdIxvMpdtcCA2y5ngwd5rH7xFHE=;
-	b=Qt5VoshNB9EznJ7DNd9isUBAQR+2o9cswtWIELjvRqwyuUTULsxsoBv1AF4MT/EgC1APuB
-	Um0NsaZyjLthSVGnHPs0a9nE2Ke4n53eWuwJk0MQ+/nHP7XDQJNzcSdfnm7rOJB0n3WTnb
-	W/SJSzwtLvgW4C73L8PlzQVSs3iTkpEngCaPPZ763YPICm/4XhRWaNHl9biB/AtEbGovJf
-	bcXq7jfSCAxe1xTKM1UYXvdVo7CEa3TdcgBjDfspoYeo6wz1vbd6EQhXHc24ghZLl967Y2
-	uedXzOhml7EWHd64fVuC4CNKLONbUjZwO75Qb1bBdRAGvlIAhc9C8DcXHdTaxg==
-From: Mashiro Chen <mashiro.chen@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1775583073;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iIg2qhrKVQQuHdMcVdIxvMpdtcCA2y5ngwd5rH7xFHE=;
-	b=pg/wNs+CAjbAtJTlPpFP258sYpX5AosAsh38/Hy7+YvcDXQS2vOs1HQMipmBFBDPjCnJEJ
-	ofjg2j7JOFVZMGsWidBUnwcMxmVRWiGubEGUpCQbLxFcuBEEN6Zdbb7C8M/+VioizVHSIE
-	OS2EupEx8W0x4hhsPAAbq4JGf5CkyyTTdndBb+Pu6g12zA99fmu/Mybfern+NSR6XCqrx4
-	fDAdAk8mfrvuB83agH+0pes4vWXCEHIyDu2PInCmT04XvekSxZBWuB0IaK38mJLtQLA/8K
-	lv1ciRgXMldgt2nZ8UMlItvwxGl+rdsBs4DozdurSBD7BcuNG3LdDMCXdWh51w==
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-hams@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mashiro Chen <mashiro.chen@mailbox.org>,
-	syzbot+ecdb8c9878a81eb21e54@syzkaller.appspotmail.com
-Subject: [PATCH v2] net: hamradio: 6pack: fix uninit-value in sixpack_receive_buf
-Date: Wed,  8 Apr 2026 01:31:01 +0800
-Message-ID: <20260407173101.107352-1-mashiro.chen@mailbox.org>
-In-Reply-To: <20260407165007.GB469338@kernel.org>
-References: <20260407165007.GB469338@kernel.org>
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 2BD6313C2B0;
+	Tue,  7 Apr 2026 10:31:05 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2BD6313C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1775583065;
+	bh=uYGXrROU4X8csqVd6RltyvUGkSocVHoIvd/scjuPBn8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TNND+m6lrbMgpiQVWTYgIcMMzNWJFCmBgDAo6Q5X5+SPSU0TpxMzL5QXhpIBic+zh
+	 x14Nbq6h5QiulOsAlDH7YGy4J+WK31rBui1anb4SjvIssqAEuvUsjMBMYGe1HHA1tB
+	 IyaU0eG3Gl6xCSorEs04myw2lFeZZM4C3GfcANJ4=
+Message-ID: <5e197844-804e-51d7-a1de-e9e7686bad0a@candelatech.com>
+Date: Tue, 7 Apr 2026 10:31:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: rmpiu6ikw5xibeb9ef3raowfg7e9ej14
-X-MBO-RS-ID: 803d5a9751816110560
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
+ sta_poll RSSI extraction
+Content-Language: en-US
+To: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+ ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
+ <20260406234739.29926-5-joshuaklinesmith@gmail.com>
+ <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
+ <CANs=ypgdgB_3stm5bCvO8RTat-sxs0N6SAaeYSQ-dyq43U-ZBg@mail.gmail.com>
+ <ddc4ccfe-27e0-7558-9b5b-27b4c4fe54b3@candelatech.com>
+ <CANs=ypgceH4NL5xOr2C1FPp8KvDCcUWTu10i+DiXntuOmAfJVA@mail.gmail.com>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <CANs=ypgceH4NL5xOr2C1FPp8KvDCcUWTu10i+DiXntuOmAfJVA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1775583072-8JS1m76odQoM
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;at1;1775583072;8JS1m76odQoM;<greearb@candelatech.com>;cd1e1c133c9805f1fc8e076cc471adaa
+X-PPE-TRUSTED: V=1;DIR=OUT;
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-233703-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233704-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[mailbox.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[candelatech.com:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mashiro.chen@mailbox.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,ecdb8c9878a81eb21e54];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,mailbox.org:dkim,mailbox.org:email,mailbox.org:mid]
-X-Rspamd-Queue-Id: 949B83B266F
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[candelatech.com:dkim,candelatech.com:mid,candelatech.com:email,candelatech.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F3AAB3B263A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-sixpack_receive_buf() does not properly skip bytes with TTY error flags.
-The while loop iterates through the flags buffer but never advances the
-data pointer (cp), and passes the original count (including error bytes)
-to sixpack_decode(). This causes sixpack_decode() to process bytes that
-should have been skipped due to TTY errors.  The TTY layer does not
-guarantee that cp[i] holds a meaningful value when fp[i] is set, so
-passing those positions to sixpack_decode() results in KMSAN reporting
-an uninit-value read.
+On 4/7/26 09:58, Joshua Klinesmith wrote:
+> On 4/7/26 12:31, Ben Greear wrote:
+>> I am more concerned about the trickier patches that you have been posting
+>> that is utilizing work from upstream vendor code.  How much of that is pure
+>> AI driven?  How much testing has been done to see if there are actual stability
+>> or performance improvements when testing actual hardware?
+> 
+> Hi Ben,
+> 
+> To be straightforward: my workflow involves pulling GitHub issues into
+> AI prompts along with firmware analysis tooling to identify potential
+> fixes. I have an MT6000 available, but I have not been doing thorough
+> on-hardware testing before submitting. That is a gap I need to close.
+> 
+> I will hold off on submitting further patches to the mt76 driver until
+> I have a proper test workflow in place and can verify changes on real
+> hardware.
+> 
+> I appreciate you raising this directly.
 
-Fix this by processing bytes one at a time, advancing cp on each
-iteration, and only passing valid (non-error) bytes to sixpack_decode().
-This matches the pattern used by slip_receive_buf() and
-mkiss_receive_buf() for the same purpose.
+Please be sure to add note about using AI to patch submissions,
+and link to original bug reports you are trying to fix.
 
-Reported-by: syzbot+ecdb8c9878a81eb21e54@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ecdb8c9878a81eb21e54
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
----
- drivers/net/hamradio/6pack.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Possibly some of this is useful, but you need to do significant tests
+with real hardware if you are proposing non-trivial changes.
 
-diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
-index 885992951e8a6..c8b2dc5c1becc 100644
---- a/drivers/net/hamradio/6pack.c
-+++ b/drivers/net/hamradio/6pack.c
-@@ -391,7 +391,6 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
- 				const u8 *fp, size_t count)
- {
- 	struct sixpack *sp;
--	size_t count1;
- 
- 	if (!count)
- 		return;
-@@ -401,16 +400,16 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
- 		return;
- 
- 	/* Read the characters out of the buffer */
--	count1 = count;
--	while (count) {
--		count--;
-+	while (count--) {
- 		if (fp && *fp++) {
- 			if (!test_and_set_bit(SIXPF_ERROR, &sp->flags))
- 				sp->dev->stats.rx_errors++;
-+			cp++;
- 			continue;
- 		}
-+		sixpack_decode(sp, cp, 1);
-+		cp++;
- 	}
--	sixpack_decode(sp, cp, count1);
- 
- 	tty_unthrottle(tty);
- }
+If you are referencing publicly available upstream driver source, then
+be clear about that and provide links.  'Reverse Engineering' could mean a lot of things,
+some of which is grey area for patch submission.  If you talked some AI bot
+into finding non public source, or if it can actually generate useful c code out of
+vendor binaries, then I am not sure how legit that is to even post.
+
+Thanks,
+Ben
+
 -- 
-2.53.0
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
 
