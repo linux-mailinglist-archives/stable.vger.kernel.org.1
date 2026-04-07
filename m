@@ -1,216 +1,200 @@
-Return-Path: <stable+bounces-233591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KhKOGr81GnOzQcAu9opvQ
-	(envelope-from <stable+bounces-233591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:45:30 +0200
+	id 4FItNh391GnOzQcAu9opvQ
+	(envelope-from <stable+bounces-233592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:48:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F463AE986
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:45:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB753AEA09
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 812D2304D148
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 12:44:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 428A3300BDA7
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 12:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163843B47D8;
-	Tue,  7 Apr 2026 12:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A514913AD1C;
+	Tue,  7 Apr 2026 12:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dIiZwJMD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfeF99jU"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AE83B38BC
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 12:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682FE39FCAD
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 12:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775565852; cv=none; b=WP/q3hoyVHDRP3aOyOIrWicawng/R2c5f5utpv37zv+kSE8TgrSMZcYYhaikIpQcqG3gaqoLDFCSWGMo+gC6NanWBC+nKDRFTggVUn5f1cGB33v/4DR9YOuKwlhPbRD3twWNkl8h+9y21alxye7Ezp202OuPkNC+KpR+sHpvjvo=
+	t=1775565997; cv=none; b=Bn8XQe0gif12aPKY39ZecAVZNq/EGnMJ8tlFRKrwbacWv3FuO166g7/gt/CZOiOagdLF2fZEanyBCnkwAjlfHFJ1oBmETNvOZTd7xfLME51OT6UQPQ2T5VjvUrUtNA3ehkNXmwsnfBkAJAdAkYyXKmWgobhNMFIbgwzTDTUXOnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775565852; c=relaxed/simple;
-	bh=PdTyfQ+xIxjPYaSSvEQS6lbtcl+3qHEKTwe+sXHN4ec=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fjHUaPkbZitXyEoGPvCQmWuGGt0B11wHFu2VUf0z0yXQBqnQTcM9h9jhurFFmdNj1MvhcQ8W02Zb6lHBBXqLeT///kbGcMEPRUkzf9er6d6g8YXiOrqY9iPnb5G2LKozZwimPol1E9vsWdZjg3yhZxih/zRH25Gp53404iOvxYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dIiZwJMD; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 636Llsr42210133;
-	Tue, 7 Apr 2026 12:44:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=QuRTimfKyt8pOVs8EIgEauakL0kL
-	BkA9knf1zUn5MXA=; b=dIiZwJMD8JnDI9WD90kwWp2FroE0ob3V35vZI+v+9dI1
-	FlqsjFFB90maAPwB9iIh7CiuCU1LBMi1uvWf1nkMATKG3FOQW6O72Tg3pHWTCsXD
-	TqLF70Rfn65ViOb91lr2ouhnG7evnaMKZrgjrzezj4wCAW98Mo663XNqlDzCA/P/
-	RV7rQYFLL0dalquTH38iTzSlnLDxZN1ktGRqWz/FIbu+WMlx/cIIut6NICyEbWiI
-	IncI7CXQk/jRMsUX8fqvqG5THuufzGK5rUpjIEjXTHdWV4tv8w0uvQ7oa3POKd55
-	kEX1vvgOFbMyPzU33q4UDVoIp9ISVJKkhkuO1G3/5w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2hanru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 12:43:59 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 637BNMma014348;
-	Tue, 7 Apr 2026 12:43:58 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcmg4k43r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 12:43:58 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 637ChsNr62456234
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Apr 2026 12:43:54 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 50B0D2004B;
-	Tue,  7 Apr 2026 12:43:54 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7075020049;
-	Tue,  7 Apr 2026 12:43:51 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.bl1-in.ibm.com (unknown [9.123.14.142])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 Apr 2026 12:43:51 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Aditya Gupta <adityag@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>, stable@vger.kernel.org,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [PATCH v3 1/2] powerpc/kdump: fix KASAN sanitization flag for core_$(BITS).o
-Date: Tue,  7 Apr 2026 18:13:44 +0530
-Message-ID: <20260407124349.1698552-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1775565997; c=relaxed/simple;
+	bh=PlWLD5qNONSjz5uDAptenV1FUyAly/9GdpSuevkw+Cc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rRdax+OImGyZnXoXRVbyiOlnyC9pazbI9x7Yx2hE0H20MChOB7zGQ7K6LdVAq/h5JiLHgHifZDPRQXmSphnkvNiKTXP0gm73bk5cqQTMIVCvdLhEubQ2K2BPA1U7GAedWkUWZxyhnXyy4C78GkChlntmSgn9EiPeVcUmSuarvpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfeF99jU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DF2C2BCB1
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 12:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775565997;
+	bh=PlWLD5qNONSjz5uDAptenV1FUyAly/9GdpSuevkw+Cc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YfeF99jUKM5TBG4FLKjTfH9VO6JWho2Srhg2x0FtLZwn5yIZrZRKZo/3dgJNOBUzA
+	 6xoYJ/00O+uQ3NetjsYFKWiPD2/60O2tjoYBUuxaNakpt1C0XzPjrnbu5p4LqFrECG
+	 HMlW38KEChoQZFjf05DGtSJqkCfQ5JpTh14GjJA5SBa/5abknKxncQox0d5IitvNsi
+	 HggBZN9tIDEAUvRXbCtW0ZoXORsatiSAXXDs5yNHrdZiqmQwXxwcy3kKMR0r33Ugx4
+	 7POsVWb8cnkaLubYn15pBDmqOwem99xpukNFACaPY1eyJveCHO0wRXL9xuzTyFL+/n
+	 uswYjP82Q3vdg==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65c0891f4e9so4441148a12.1
+        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 05:46:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXpBRRzAqwldsvqfJkAxalTZAE/GIRcyUiXB6CQcMT32ESdSve9m2QqBKBEk38GGS/b75PWVuw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSw/dsWTqyQzpTJULBElsiLRx7jZ5HXppcSyR6vgUex6/1TOnp
+	Gtw+R3qRqpze2wdNKDrT0M+wpv9sNxKBgAE1i2o5m8eZExxYXPgX7kEsneFwRN3af8l9sJSrB/m
+	DZlT510ILdgw2LJjdgFK0WwCrMUbm+Hw=
+X-Received: by 2002:a17:907:c310:b0:b9b:fa57:d5bb with SMTP id
+ a640c23a62f3a-b9c67b497demr869862366b.46.1775565995561; Tue, 07 Apr 2026
+ 05:46:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDExNSBTYWx0ZWRfX/26bzyeVB4N0
- i2eG5baOE2OJ2OAGgYp4CM3IoF6oKLcPiHflDtbDBEtPPIQvWAnqeXIFMUMyNMyZ8qI/m8yEely
- tVovxqrdRmvtc5JvKyYhUK/U+CpJguTiGqsjyXPvgOaXw5S3F3jcPov6LmDx5wwHEYlmTBzzYSs
- YJEa9sD6o3o5Jy9pUXK5kxWNHGO10nIG9dIwX4M9WOy9ySvMaa5UNufLrzifg2BDqkGBd8HW7QS
- GXz4w7O7H3ffW82WF1PhqxwZEqGrrkGa0UeZyD4QWA2gkawGo+/i5ucnR+eobrKyWkEw7c648sT
- lPG0udebqhMUywALqNBku28LC/++i8gLY9iVx1KDGb8xk5yThiOKBfl3rNaSgkMqM2R6TnreFgE
- RppGZJbSmCUpldbosIxtjpdRb9BOSxrWbIoJNTeuMFiiIM8fSb+axgUzzChTvLQ0zdTY4sOteI9
- hMjNvsWBkC6CBN+DYKA==
-X-Proofpoint-GUID: 9lTQzIf1fjXXYBAXjepwqf7gB1ensLDQ
-X-Authority-Analysis: v=2.4 cv=a/wAM0SF c=1 sm=1 tr=0 ts=69d4fc0f cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=qf4gfuq51q0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=JuTF4qcAAAAA:8 a=pGLkceISAAAA:8 a=Rbr8bO_GjACkDpKrMaMA:9
- a=3ZKOabzyN94A:10 a=k40Crp0UdiQA:10 a=WlT8qwTXB_Kj6um4hl3b:22
-X-Proofpoint-ORIG-GUID: H-DLbFkDn3fwD7ZhmiqJoRA_mnQkMhsv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501
- phishscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070115
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+References: <20260312201018.128816016@linuxfoundation.org> <20260312201022.504112831@linuxfoundation.org>
+ <28a3e1fc-b6e7-4d92-b949-7218a74b7231@oracle.com>
+In-Reply-To: <28a3e1fc-b6e7-4d92-b949-7218a74b7231@oracle.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 7 Apr 2026 20:46:40 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6Jihemh01mXx1wWU4QBw2-x5XwV=a7rUD5ZoJiQ56FDw@mail.gmail.com>
+X-Gm-Features: AQROBzAP6hJ8KuGViv2hx3W2KUVZdWbArqdBMdfBoMgxA0YiwPyuVoOaYFasGdo
+Message-ID: <CAAhV-H6Jihemh01mXx1wWU4QBw2-x5XwV=a7rUD5ZoJiQ56FDw@mail.gmail.com>
+Subject: Re: [PATCH 6.12 118/265] LoongArch/orc: Use RCU in all users of __module_address().
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, 
+	WANG Xuerui <kernel@xen0n.name>, loongarch@lists.linux.dev, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Vegard Nossum <vegard.nossum@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	SUBJECT_HAS_CURRENCY(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,axtens.net,ellerman.id.au,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-233591-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233592-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sourabhjain@linux.ibm.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 39F463AE986
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,oracle.com:email,infradead.org:email]
+X-Rspamd-Queue-Id: 2BB753AEA09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-KASAN instrumentation is intended to be disabled for the kexec core
-code, but the existing Makefile entry misses the object suffix. As a
-result, the flag is not applied correctly to core_$(BITS).o.
+On Mon, Apr 6, 2026 at 8:28=E2=80=AFPM Harshit Mogalapalli
+<harshit.m.mogalapalli@oracle.com> wrote:
+>
+> Hi all,
+>
+> On 13/03/26 01:38, Greg Kroah-Hartman wrote:
+> > 6.12-stable review patch.  If anyone has any objections, please let me =
+know.
+> >
+> > ------------------
+> >
+> > From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> >
+> > [ Upstream commit f99d27d9feb755aee9350fc89f57814d7e1b4880 ]
+> >
+> > __module_address() can be invoked within a RCU section, there is no
+> > requirement to have preemption disabled.
+> >
+> > Replace the preempt_disable() section around __module_address() with
+> > RCU.
+> >
+> > Cc: Huacai Chen <chenhuacai@kernel.org>
+> > Cc: WANG Xuerui <kernel@xen0n.name>
+> > Cc: loongarch@lists.linux.dev
+> > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Link: https://lore.kernel.org/r/20250108090457.512198-19-bigeasy@linutr=
+onix.de
+> > Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+> > Stable-dep-of: 055c7e75190e ("LoongArch: Handle percpu handler address =
+for ORC unwinder")
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >   arch/loongarch/kernel/unwind_orc.c | 4 +---
+> >   1 file changed, 1 insertion(+), 3 deletions(-)
+> >
+> > diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel=
+/unwind_orc.c
+> > index 471652c0c8653..59809c3406c03 100644
+> > --- a/arch/loongarch/kernel/unwind_orc.c
+> > +++ b/arch/loongarch/kernel/unwind_orc.c
+> > @@ -399,7 +399,7 @@ bool unwind_next_frame(struct unwind_state *state)
+> >               return false;
+> >
+> >       /* Don't let modules unload while we're reading their ORC data. *=
+/
+> > -     preempt_disable();
+> > +     guard(rcu)();
+> >
+> >       if (is_entry_func(state->pc))
+> >               goto end;
+> > @@ -514,14 +514,12 @@ bool unwind_next_frame(struct unwind_state *state=
+)
+> >       if (!__kernel_text_address(state->pc))
+> >               goto err;
+> >
+> > -     preempt_enable();
+> >       return true;
+> >
+>
+>
+> Looks like this is dependent on commit: 7d9dda6f628f ("module: Allow
+> __module_address() to be called from RCU section."), so I feel pulling
+> in this patch without the mentioned missing prerequisite is wrong. Can
+> you please help review this ?
+>
+> This is also part of a feature series in
+> https://lore.kernel.org/all/20250108090457.512198-13-bigeasy@linutronix.d=
+e/
+Yes, I have also asked about this:
+https://lore.kernel.org/stable/CAAhV-H7GxtWRZyAT=3DkedLEMu=3DC5wH--NUzRjwi3=
+DKXzUq+QZjA@mail.gmail.com/
 
-So when KASAN is enabled, kexec_copy_flush and copy_segments in
-kexec/core_64.c are instrumented, which can result in accesses to
-shadow memory via normal address translation paths. Since these run
-with the MMU disabled, such accesses may trigger page faults
-(bad_page_fault) that cannot be handled in the kdump path, ultimately
-causing a hang and preventing the kdump kernel from booting. The same
-is true for kexec as well, since the same functions are used there.
+However, no answer and no action for this. I don't know what happened
+to Greg and Sasha. Recently, similar accidents happen again and again.
 
-Update the entry to include the “.o” suffix so that KASAN
-instrumentation is properly disabled for this object file.
+Huacai
 
-Fixes: 2ab2d5794f14 ("powerpc/kasan: Disable address sanitization in kexec paths")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Closes: https://lore.kernel.org/all/1dee8891-8bcc-46b4-93f3-fc3a774abd5b@linux.ibm.com/
-Cc: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Daniel Axtens <dja@axtens.net>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
-Changelog:
-
-v3:
-- Cc stable mailing list
-- No functional changes
-
-v2:
-- Add Reviewed-by, Acked-by and Tested-by tags
-- No functional changes
-- https://lore.kernel.org/all/20260403190123.1383198-1-sourabhjain@linux.ibm.com/
- 
-v1:
-- https://lore.kernel.org/all/20260321053121.614022-1-sourabhjain@linux.ibm.com/
----
- arch/powerpc/kexec/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kexec/Makefile b/arch/powerpc/kexec/Makefile
-index 470eb0453e17..ec7a0eed75dc 100644
---- a/arch/powerpc/kexec/Makefile
-+++ b/arch/powerpc/kexec/Makefile
-@@ -16,4 +16,4 @@ GCOV_PROFILE_core_$(BITS).o := n
- KCOV_INSTRUMENT_core_$(BITS).o := n
- UBSAN_SANITIZE_core_$(BITS).o := n
- KASAN_SANITIZE_core.o := n
--KASAN_SANITIZE_core_$(BITS) := n
-+KASAN_SANITIZE_core_$(BITS).o := n
--- 
-2.52.0
-
+>
+> Thanks,
+> Harshit
+>
+> >   err:
+> >       state->error =3D true;
+> >
+> >   end:
+> > -     preempt_enable();
+> >       state->stack_info.type =3D STACK_TYPE_UNKNOWN;
+> >       return false;
+> >   }
+>
 
