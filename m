@@ -1,177 +1,250 @@
-Return-Path: <stable+bounces-233686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFUwIlg01WnY2gcAu9opvQ
-	(envelope-from <stable+bounces-233686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:44:08 +0200
+	id QB7MILQz1Wly2QcAu9opvQ
+	(envelope-from <stable+bounces-233687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:41:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54343B1F2B
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:44:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DAC3B1F04
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5725B3048553
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:39:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 67194300DF4D
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5E43CB2CF;
-	Tue,  7 Apr 2026 16:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F57F3CD8A5;
+	Tue,  7 Apr 2026 16:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="PCJbXyTj"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="Wi4pxJiF"
 X-Original-To: stable@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-190f.mail.infomaniak.ch (smtp-190f.mail.infomaniak.ch [185.125.25.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB5A270ED7;
-	Tue,  7 Apr 2026 16:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8177133D503
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 16:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775579964; cv=none; b=XekKUELJMkmbw9221vsN41saGtkjHVGTcKTRzPrwZPODaUTL1wwRl71nHV19N7GXn+lLL1R4DX03X/xIoEOA/mwM+ORGlVArlK7snUFhzyfOrxfjH2sP9bnxbim/uXhJG0/6oVM0txaG1Plwjk79150cVSKy6ngk2l0Ym9z8kVw=
+	t=1775580082; cv=none; b=UQMuE2isKAFnAzN7fvYN4wv2eXHHL9a/3BqBAX/ikDbsZqz1cBSsIh8jg6j+h1j2lbbUhleaKmRvCkR2/0das3QcAyptHTJDLhMqiAx+REzw6WYjuJGq61uYwdBH8DKFN5W/WCKroqbvN3WGYJQxy5G+lzFJWnJ/Gky4hxHI24o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775579964; c=relaxed/simple;
-	bh=1Ako3F/RuxhBhPwlL/Z6GVmzMFrpFn4MUzUSk5v2tRc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SHUadTG+ZxsOla8ippWnbNzz+OKg5NaZOTiLb01UT/kncWklU86Wz/HfJCIXrytjHnHIAsu3QSRQn5h2jCP+0iBu6oVzVVxTyHqlysBbW3ibSYAbOg1Li08lbETYJzVgd6bPDn8wXbSosS0VJh13IrnWmP9gNPmF/wNnvNAFFC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=PCJbXyTj; arc=none smtp.client-ip=67.231.154.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C3B90305F82;
-	Tue,  7 Apr 2026 16:31:38 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 852532C00D4;
-	Tue,  7 Apr 2026 16:31:29 +0000 (UTC)
-Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 5859013C2B0;
-	Tue,  7 Apr 2026 09:31:24 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5859013C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1775579484;
-	bh=1Ako3F/RuxhBhPwlL/Z6GVmzMFrpFn4MUzUSk5v2tRc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PCJbXyTjnDxE20IrBFK2EKZ/c81LDM4pKOHtO3dHp649Av3VyhwfxBOOnea0KP6bn
-	 vsxDdeGxbzZV3PTSY2PPyzsZwHbnrbyq9Od6HtnGOlcnNmJbEckCWs5/53SL0KuVRo
-	 yX+ViSJ3XwqiM2zYGw+i3k8wklV8IBDawQd1Iz4s=
-Message-ID: <ddc4ccfe-27e0-7558-9b5b-27b4c4fe54b3@candelatech.com>
-Date: Tue, 7 Apr 2026 09:31:24 -0700
+	s=arc-20240116; t=1775580082; c=relaxed/simple;
+	bh=KW9Z+dWXoZbHQ+Kpu7nKJqDmvtbNS30sfVgLj4yUFSc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rNPfaxRkINk8Z5WIiv+e2icPYdtInKDzFhcE5uL50aifq+E4NQZp/oQHP3bcizMXt/vWfrvlE8LOhS5kkryPmfgfVCPEuZNkAcUOfME+A55u0lmiNXFx0m3WD+tgy36u/3aj+luwY7iXEteSmy5rqOoqoLZsOXvHUwG8xlHEVBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=Wi4pxJiF; arc=none smtp.client-ip=185.125.25.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fqsQd1Nx6zDr4;
+	Tue,  7 Apr 2026 18:41:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1775580073;
+	bh=7JfkIrcrg5YzSoTZZQx5a9A3cN1/JoWif7ZCi9ZSveM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Wi4pxJiFEHcCfz0SfuBqbSBQ2aQCEwzPXnjn5CVZoiUNWciK7nhWBxmuUDhtqz0H1
+	 +EYeD7L5mkHN1q/vtCV3F0kyRjimcrhKweN5ayhiJ875tKvTj/m1yaPjYpdmfe0HVd
+	 jUnPJhgUBUEwdLTJIDx823WducbBx9I7HObHdc/o=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fqsQc5HcgzpN3;
+	Tue,  7 Apr 2026 18:41:12 +0200 (CEST)
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	linux-security-module@vger.kernel.org,
+	Jann Horn <jannh@google.com>,
+	stable@vger.kernel.org,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>
+Subject: [PATCH v2 1/2] landlock: Fix LOG_SUBDOMAINS_OFF inheritance across fork()
+Date: Tue,  7 Apr 2026 18:41:04 +0200
+Message-ID: <20260407164107.2012589-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
- sta_poll RSSI extraction
-To: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
- ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
- <20260406234739.29926-5-joshuaklinesmith@gmail.com>
- <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
- <CANs=ypgdgB_3stm5bCvO8RTat-sxs0N6SAaeYSQ-dyq43U-ZBg@mail.gmail.com>
-Content-Language: en-US
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <CANs=ypgdgB_3stm5bCvO8RTat-sxs0N6SAaeYSQ-dyq43U-ZBg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MDID: 1775579491-zfUrAYFX0LoG
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;at1;1775579491;zfUrAYFX0LoG;<greearb@candelatech.com>;cd1e1c133c9805f1fc8e076cc471adaa
-X-PPE-TRUSTED: V=1;DIR=OUT;
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Infomaniak-Routing: alpha
+X-Spamd-Result: default: False [0.11 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MIXED_CHARSET(0.77)[subject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233686-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[candelatech.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[digikod.net,vger.kernel.org,google.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-233687-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[digikod.net];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[digikod.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E54343B1F2B
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,digikod.net:dkim,digikod.net:email,digikod.net:mid]
+X-Rspamd-Queue-Id: 33DAC3B1F04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/7/26 09:00, Joshua Klinesmith wrote:
-> On 4/7/26 11:25, Ben Greear wrote:
->> How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
->> at max.  So while the patch may be correct, it may also not matter in practice
->> and at least may not need to be backported into stable.
-> 
-> Hi Ben,
-> 
-> Please accept my apologies. You are correct that the mt7925 is a 2x2
-> chipset, so this does not have a practical impact and should not have
-> been tagged for stable. I did not read the documentation in its
-> entirety before submitting, and that is on me.
-> 
-> I will be much more careful and diligent with testing and review going forward.
-> 
-> Thanks for the feedback.
-> 
-> Joshua
+hook_cred_transfer() only copies the Landlock security blob when the
+source credential has a domain.  This is inconsistent with
+landlock_restrict_self() which can set LOG_SUBDOMAINS_OFF on a
+credential without creating a domain (via the ruleset_fd=-1 path): the
+field is committed but not preserved across fork() because the child's
+prepare_creds() calls hook_cred_transfer() which skips the copy when
+domain is NULL.
 
-I am more concerned about the trickier patches that you have been posting
-that is utilizing work from upstream vendor code.  How much of that is pure
-AI driven?  How much testing has been done to see if there are actual stability
-or performance improvements when testing actual hardware?
+This breaks the documented use case where a process mutes subdomain logs
+before forking sandboxed children: the children lose the muting and
+their domains produce unexpected audit records.
 
-Thanks,
-Ben
+Fix this by unconditionally copying the Landlock credential blob.
 
-> On Tue, Apr 7, 2026 at 11:25 AM Ben Greear <greearb@candelatech.com> wrote:
->>
->> On 4/6/26 16:47, Joshua Klinesmith wrote:
->>> The fourth receive chain RCPI uses GENMASK(31, 14), an 18-bit mask
->>> spanning bits 14-31. It should be GENMASK(31, 24), an 8-bit mask
->>> for the fourth byte, consistent with the other three chains and
->>> with the RCPI3 definitions used elsewhere in the driver
->>> (MT_PRXV_RCPI3 and MT_TXS7_F0_RCPI_3 both use GENMASK(31, 24)).
->>
->> Hello Joshua,
->>
->> How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
->> at max.  So while the patch may be correct, it may also not matter in practice
->> and at least may not need to be backported into stable.  If it is a minor
->> cleanup that doesn't actually matter, that should be described more clearly
->> in the commit message?
->>
->> Some of your patches are touching tricky parts of the code and making
->> subtle comparisons against how the vendor's driver is written.  How well has
->> this been tested and reviewed by a knowledgeable human in general?
->>
->> Thanks,
->> Ben
+Cc: Günther Noack <gnoack@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: stable@vger.kernel.org
+Fixes: ead9079f7569 ("landlock: Add LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF")
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+---
 
+Changes since v1:
+https://lore.kernel.org/r/20260404085001.1604405-1-mic@digikod.net
+- Improve subject.
+- Add Reviewed-by Günther.
+---
+ security/landlock/cred.c                      |  6 +-
+ tools/testing/selftests/landlock/audit_test.c | 88 +++++++++++++++++++
+ 2 files changed, 90 insertions(+), 4 deletions(-)
 
+diff --git a/security/landlock/cred.c b/security/landlock/cred.c
+index 0cb3edde4d18..cc419de75cd6 100644
+--- a/security/landlock/cred.c
++++ b/security/landlock/cred.c
+@@ -22,10 +22,8 @@ static void hook_cred_transfer(struct cred *const new,
+ 	const struct landlock_cred_security *const old_llcred =
+ 		landlock_cred(old);
+ 
+-	if (old_llcred->domain) {
+-		landlock_get_ruleset(old_llcred->domain);
+-		*landlock_cred(new) = *old_llcred;
+-	}
++	landlock_get_ruleset(old_llcred->domain);
++	*landlock_cred(new) = *old_llcred;
+ }
+ 
+ static int hook_cred_prepare(struct cred *const new,
+diff --git a/tools/testing/selftests/landlock/audit_test.c b/tools/testing/selftests/landlock/audit_test.c
+index 46d02d49835a..20099b8667e7 100644
+--- a/tools/testing/selftests/landlock/audit_test.c
++++ b/tools/testing/selftests/landlock/audit_test.c
+@@ -279,6 +279,94 @@ TEST_F(audit, thread)
+ 				&audit_tv_default, sizeof(audit_tv_default)));
+ }
+ 
++/*
++ * Verifies that log_subdomains_off set via the ruleset_fd=-1 path (without
++ * creating a domain) is inherited by children across fork().  This exercises
++ * the hook_cred_transfer() fix: the Landlock credential blob must be copied
++ * even when the source credential has no domain.
++ *
++ * Phase 1 (baseline): a child without muting creates a domain and triggers a
++ * denial that IS logged.
++ *
++ * Phase 2 (after muting): the parent mutes subdomain logs, forks another child
++ * who creates a domain and triggers a denial that is NOT logged.
++ */
++TEST_F(audit, log_subdomains_off_fork)
++{
++	const struct landlock_ruleset_attr ruleset_attr = {
++		.scoped = LANDLOCK_SCOPE_SIGNAL,
++	};
++	struct audit_records records;
++	int ruleset_fd, status;
++	pid_t child;
++
++	ruleset_fd =
++		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
++	ASSERT_LE(0, ruleset_fd);
++
++	ASSERT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
++
++	/*
++	 * Phase 1: forks a child that creates a domain and triggers a denial
++	 * before any muting.  This proves the audit path works.
++	 */
++	child = fork();
++	ASSERT_LE(0, child);
++	if (child == 0) {
++		ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
++		ASSERT_EQ(-1, kill(getppid(), 0));
++		ASSERT_EQ(EPERM, errno);
++		_exit(0);
++		return;
++	}
++
++	ASSERT_EQ(child, waitpid(child, &status, 0));
++	ASSERT_EQ(true, WIFEXITED(status));
++	ASSERT_EQ(0, WEXITSTATUS(status));
++
++	/* The denial must be logged (baseline). */
++	EXPECT_EQ(0, matches_log_signal(_metadata, self->audit_fd, getpid(),
++					NULL));
++
++	/* Drains any remaining records (e.g. domain allocation). */
++	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
++
++	/*
++	 * Mutes subdomain logs without creating a domain.  The parent's
++	 * credential has domain=NULL and log_subdomains_off=1.
++	 */
++	ASSERT_EQ(0, landlock_restrict_self(
++			     -1, LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF));
++
++	/*
++	 * Phase 2: forks a child that creates a domain and triggers a denial.
++	 * Because log_subdomains_off was inherited via fork(), the child's
++	 * domain has log_status=LANDLOCK_LOG_DISABLED.
++	 */
++	child = fork();
++	ASSERT_LE(0, child);
++	if (child == 0) {
++		ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
++		ASSERT_EQ(-1, kill(getppid(), 0));
++		ASSERT_EQ(EPERM, errno);
++		_exit(0);
++		return;
++	}
++
++	ASSERT_EQ(child, waitpid(child, &status, 0));
++	ASSERT_EQ(true, WIFEXITED(status));
++	ASSERT_EQ(0, WEXITSTATUS(status));
++
++	/* No denial record should appear. */
++	EXPECT_EQ(-EAGAIN, matches_log_signal(_metadata, self->audit_fd,
++					      getpid(), NULL));
++
++	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
++	EXPECT_EQ(0, records.access);
++
++	EXPECT_EQ(0, close(ruleset_fd));
++}
++
+ FIXTURE(audit_flags)
+ {
+ 	struct audit_filter audit_filter;
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+2.53.0
 
 
