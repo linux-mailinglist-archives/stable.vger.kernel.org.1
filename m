@@ -1,211 +1,180 @@
-Return-Path: <stable+bounces-233568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ASNCiHn1GluygcAu9opvQ
-	(envelope-from <stable+bounces-233568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:14:41 +0200
+	id qOm5Di3q1GkjywcAu9opvQ
+	(envelope-from <stable+bounces-233569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:27:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28503AD8C1
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:14:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327E93ADAD1
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:27:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 740633019144
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 11:14:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF7FB30091F9
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 11:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179763AC0E6;
-	Tue,  7 Apr 2026 11:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938BB3A3E95;
+	Tue,  7 Apr 2026 11:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2qbXuQh"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="drHoTJnR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA363A6B61
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 11:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197683947B6
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 11:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775560475; cv=none; b=DOGDqfORmDf0Q7auGhOe5otW/KWXJtzz67FfDLtfLa0fIjDH2DuTaw4lexvXgHzD9eknmuuGS0Jv6f9Mvb2HMyyz3I7e2bv9A92lH/RSJA61X5i/PiNfoe/v92vJBLLDyxHYp+wQZwUlUfOkyH+nAmQa4WLgiyCOsd5W6pnY8dw=
+	t=1775561255; cv=none; b=sAk+CTDW/bryjMfxOrcQZpkQrVmbhJpQjui+3Hr4mSPLsyDOIySIV56y1HO4QyPT+onbotsDdyH4HeiO4cOjZjHFm4RjRYN2ikSkQgI68L/zb1pOd58YYn8Br40nF/nZPYmFXn3p0PEclmQNVoKLRJ+rG+ehzWNHS9oPz7mVT90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775560475; c=relaxed/simple;
-	bh=lNFupPpF0iAKrOJcOOzlrPcURgHXXQJvrB/SkkWzEis=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GqZCXukDh7Sixb1Sb5aLPbcJ/jtv79SV/YuKtnRc8lijviXW4LttX4pSdXpoH9YAAwsOrsBcyKIaH/sfSbRcp1lIULZZ0pbjT3HWUMcxQQ5Zcr6Qh8uL6LwusktVpJTmz0l4ugFxl/XQ0GmwoTC4iA8mSnh0cAwHRXqKWKGwdsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2qbXuQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330D1C116C6;
-	Tue,  7 Apr 2026 11:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775560475;
-	bh=lNFupPpF0iAKrOJcOOzlrPcURgHXXQJvrB/SkkWzEis=;
-	h=Subject:To:Cc:From:Date:From;
-	b=k2qbXuQh/qy3ZwEngQPWKRbOD1DMdn+imT8IxmFk/BdE/MsRqWDDBIpc7L/SBUOeL
-	 uFdA3sm8TEKMD9pYS+ntcLgG31kxidt8/Uoj4Ht2dLmMuflxPPe6gPf9CZ8zxPqZgF
-	 a0G7jcUgKGFrdssoQIW2fIhvkmD82gPqeBcA2wvM=
-Subject: FAILED: patch "[PATCH] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid" failed to apply to 5.15-stable tree
-To: alex.popov@linux.com,gregkh@linuxfoundation.org,johannes.berg@intel.com,leitao@debian.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 07 Apr 2026 13:14:20 +0200
-Message-ID: <2026040720-gloss-outwit-968c@gregkh>
+	s=arc-20240116; t=1775561255; c=relaxed/simple;
+	bh=m7wojd76kH+JWdkDmFN4R78y4CAglakUEaG5a0Guftc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uWlnTbAM5ybxm+WlTRQw0LeBnwC69ZdgiRkbGkiVFHC8jiK3y3IGdw6wzBi4Hb+VojRFmOBC35dhlp5vPoxIMlYk1PLThkoAURqvx2E6uTJfL/xI2Gt4P8WQKPJ/NK4Haaf1UPSXuvQt1VrHzGnYy9tD1VHgCn/rTgfR7dI4ccY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=drHoTJnR; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cfd1f9fd1so2668784f8f.3
+        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 04:27:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775561252; x=1776166052; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1B8jV9BiU3c4QuVbCZHmuxaJfK0Alye13igtopl4zPg=;
+        b=drHoTJnRCPtQF5E/FbiHizyMyqDsJ46snlBLp2/i+m3TihfXkHhGVwcMPI1+v5GXn1
+         ul540OxXCIoEdZdi0LvuJf7ESMGhj/C7ouXVVw4R58fzkTShtQXuU29im4a9mdyiYj/0
+         1Q8L6PZfQMM8W3/wsKUxViEzdicXxYQz2rTw4SUSO/deDGiPpI9U+B8Cf5l7zxwTSs37
+         GBS2eTrz19lpY5q2JpH+NSg6pIIwPXGD1mN0TSe9KSWA4W5vw9duuOqkSk2MfZtJ7eiC
+         MFh9o7eGLIRBzZ+0N3pgK61FgyRn/wtfG8y9zXYFRHd3v6OEQZvj5/nep/3jpmEmPwRc
+         zsvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775561252; x=1776166052;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1B8jV9BiU3c4QuVbCZHmuxaJfK0Alye13igtopl4zPg=;
+        b=TfqvMTCViohNWjvoxkc7GvIXUmpD58O1fmR0fZNDlwXNf95ynr0WQ7l7FToRHRWgCn
+         CO+9O8I5L33mhqA7QIHRGxwvXd3pq1QYpi5gJTRFOpxHbgRu8aDf0pFYvn9RDGTgYXb/
+         ckydJ4JtF572U1+4Fwcq7TTJEiGQP1sdCwNhwu3c6tPKkIdv2fuCJMVCCTdJxr1n10Y5
+         GUjb9f4AySnJO2L1Xcqjs6iG/OOAV6nMYVUSuQeJH3Bt0swlJVdziKPKAFBXwSXesYhe
+         aKSRCEC/Nv9q0zdoVza2WYEAFPAm7hvhPBjObqGjfCUMe+RVvhZIX9XD4nEMVRp9Ae2c
+         z+SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXF4Q4EZWM29WIvd/PbDc/IVcsz9Qm/lzd1v+KdOif+P501/HLLTQP2n04ZAHJVftY6wLpv4YI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgtQtZ8krK2BJ6iysDvKcVuYCiWeq+ewKs+HxfWI3UCNu0nEgT
+	Bg/SBqIp/sFkWUsMmjy9mR6whAvPiH0Tl0zk7Ddn1u8U/aOGm38zx/F+yKrPuCbUOmM=
+X-Gm-Gg: AeBDietqGJsSFwyFEaMdQiQlqyPxPtsdqp/cjkpPWwsGlbZlfA+yzPvZaFI+ZS6uePw
+	w3jU+tVAH+LYTexa1v9ZQM+HfzAZdulCTh8c80WWXP7EDtMv8u++ClzOS9Mf3ywgRss9XmMfB3x
+	We4IugP4VoSOggoOB/FyppYWRK82rGs9EZe+3s4arPxX5BCZM+blePgHlBxhKFbp8dSk4ZCW0nv
+	yNORgEf+vCsECMkpMfoQFS32S+ouJ/TbspCB0/fluPSupqIBKe/5+FY2orzcRq1Jat9uUpcEiWx
+	+qmfbsh9A3bQ69BPekcHdKQjlN34HBvVsWQVOz1bjPAYHpvQmUfq+C5wGh0TLGU85FkQ/QBtTuK
+	LuXoyDFML4+2abI9z2cSClePzSN1agUhL/Jkc58qsgoKiuvK2+ixLxSwPFFHdyDZo/53PBK5cPl
+	BUv8WDsJHOKTli3DYI0ViJyXSt6j90ob4Ue1n0I7gd
+X-Received: by 2002:a05:6000:4023:b0:439:c661:3245 with SMTP id ffacd0b85a97d-43d292f12a8mr23837109f8f.34.1775561252422;
+        Tue, 07 Apr 2026 04:27:32 -0700 (PDT)
+Received: from pathway.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4f1a99sm52293050f8f.32.2026.04.07.04.27.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 04:27:32 -0700 (PDT)
+Date: Tue, 7 Apr 2026 13:27:29 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Tamir Duberstein <tamird@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] printf: mark errptr() noinline
+Message-ID: <adTqIepV2W6M_Q2o@pathway.suse.cz>
+References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
+ <20260406111531.779571d7@gandalf.local.home>
+ <CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
+ <20260406123232.3dacbe94@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260406123232.3dacbe94@gandalf.local.home>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233568-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233569-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C28503AD8C1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:dkim,pathway.suse.cz:mid]
+X-Rspamd-Queue-Id: 327E93ADAD1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Mon 2026-04-06 12:32:32, Steven Rostedt wrote:
+> On Mon, 6 Apr 2026 11:21:39 -0400
+> Tamir Duberstein <tamird@kernel.org> wrote:
+> 
+> > Thanks Steve. IMO that is a very big hammer and not warranted in this
+> > case. There's been talk of encouraging distros to enable CONFIG_KUNIT
+> > by default [0], which would probably interact poorly with the change
+> > you propose.
+> > 
+> 
+> Branch profiling is really just a niche that is enabled specifically for
+> seeing all branches taken in the kernel. It hooks to all "if" statements!
+> As you can imagine, it causes a rather large overhead in performance.
+> 
+> This option is only used by developers doing special analysis of their code
+> (namely me ;-).
+> 
+> The only real concern I would have is if the kunit test developers would
+> want to use the branch profiling on their code, in which case my suggestion
+> would prevent that.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I wonder if it might be possible to disable the branch profiling just
+for the printf_kunit.c as a compromise.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Would "#undef if" in printf_kunit.c help?
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040720-gloss-outwit-968c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+Or I see that DISABLE_BRANCH_PROFILING is an official
+way to disable the feature.
 
-Possible dependencies:
+I wonder if the following change would solve the problem.
+I am sorry, I could not test it easily.
+
+diff --git a/lib/tests/Makefile b/lib/tests/Makefile
+index 05f74edbc62b..45d69769ccdf 100644
+--- a/lib/tests/Makefile
++++ b/lib/tests/Makefile
+@@ -41,6 +41,7 @@ obj-$(CONFIG_MIN_HEAP_KUNIT_TEST) += min_heap_kunit.o
+ CFLAGS_overflow_kunit.o = $(call cc-disable-warning, tautological-constant-out-of-range-compare)
+ obj-$(CONFIG_OVERFLOW_KUNIT_TEST) += overflow_kunit.o
+ obj-$(CONFIG_PRINTF_KUNIT_TEST) += printf_kunit.o
++CFLAGS_printf_kunit.o += -DDISABLE_BRANCH_PROFILING
+ obj-$(CONFIG_RANDSTRUCT_KUNIT_TEST) += randstruct_kunit.o
+ obj-$(CONFIG_SCANF_KUNIT_TEST) += scanf_kunit.o
+ obj-$(CONFIG_SEQ_BUF_KUNIT_TEST) += seq_buf_kunit.o
 
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6 Mon Sep 17 00:00:00 2001
-From: Alexander Popov <alex.popov@linux.com>
-Date: Wed, 25 Mar 2026 01:46:02 +0300
-Subject: [PATCH] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid
- use-after-free
-
-Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
-the virt_wifi net devices. However, unregistering a virt_wifi device in
-netdev_run_todo() can happen together with the device referenced by
-SET_NETDEV_DEV().
-
-It can result in use-after-free during the ethtool operations performed
-on a virt_wifi device that is currently being unregistered. Such a net
-device can have the `dev.parent` field pointing to the freed memory,
-but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
-
-Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
-
- ==================================================================
- BUG: KASAN: slab-use-after-free in __pm_runtime_resume+0xe2/0xf0
- Read of size 2 at addr ffff88810cfc46f8 by task pm/606
-
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4d/0x70
-  print_report+0x170/0x4f3
-  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-  kasan_report+0xda/0x110
-  ? __pm_runtime_resume+0xe2/0xf0
-  ? __pm_runtime_resume+0xe2/0xf0
-  __pm_runtime_resume+0xe2/0xf0
-  ethnl_ops_begin+0x49/0x270
-  ethnl_set_features+0x23c/0xab0
-  ? __pfx_ethnl_set_features+0x10/0x10
-  ? kvm_sched_clock_read+0x11/0x20
-  ? local_clock_noinstr+0xf/0xf0
-  ? local_clock+0x10/0x30
-  ? kasan_save_track+0x25/0x60
-  ? __kasan_kmalloc+0x7f/0x90
-  ? genl_family_rcv_msg_attrs_parse.isra.0+0x150/0x2c0
-  genl_family_rcv_msg_doit+0x1e7/0x2c0
-  ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
-  ? __pfx_cred_has_capability.isra.0+0x10/0x10
-  ? stack_trace_save+0x8e/0xc0
-  genl_rcv_msg+0x411/0x660
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_ethnl_set_features+0x10/0x10
-  netlink_rcv_skb+0x121/0x380
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_netlink_rcv_skb+0x10/0x10
-  ? __pfx_down_read+0x10/0x10
-  genl_rcv+0x23/0x30
-  netlink_unicast+0x60f/0x830
-  ? __pfx_netlink_unicast+0x10/0x10
-  ? __pfx___alloc_skb+0x10/0x10
-  netlink_sendmsg+0x6ea/0xbc0
-  ? __pfx_netlink_sendmsg+0x10/0x10
-  ? __futex_queue+0x10b/0x1f0
-  ____sys_sendmsg+0x7a2/0x950
-  ? copy_msghdr_from_user+0x26b/0x430
-  ? __pfx_____sys_sendmsg+0x10/0x10
-  ? __pfx_copy_msghdr_from_user+0x10/0x10
-  ___sys_sendmsg+0xf8/0x180
-  ? __pfx____sys_sendmsg+0x10/0x10
-  ? __pfx_futex_wait+0x10/0x10
-  ? fdget+0x2e4/0x4a0
-  __sys_sendmsg+0x11f/0x1c0
-  ? __pfx___sys_sendmsg+0x10/0x10
-  do_syscall_64+0xe2/0x570
-  ? exc_page_fault+0x66/0xb0
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  </TASK>
-
-This fix may be combined with another one in the ethtool subsystem:
-https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
-
-Fixes: d43c65b05b848e0b ("ethtool: runtime-resume netdev parent in ethnl_ops_begin")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Popov <alex.popov@linux.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260324224607.374327-1-alex.popov@linux.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-
-diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
-index 885dc7243e8d..97bd39d89e98 100644
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -557,7 +557,6 @@ static int virt_wifi_newlink(struct net_device *dev,
- 	eth_hw_addr_inherit(dev, priv->lowerdev);
- 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
- 
--	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
- 	dev->ieee80211_ptr = kzalloc_obj(*dev->ieee80211_ptr);
- 
- 	if (!dev->ieee80211_ptr) {
-
+Best Regards,
+Petr
 
