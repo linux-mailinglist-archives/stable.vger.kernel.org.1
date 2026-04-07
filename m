@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-233593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMTaG2b91GnOzQcAu9opvQ
-	(envelope-from <stable+bounces-233593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:49:42 +0200
+	id 8CRiM2P91GnOzQcAu9opvQ
+	(envelope-from <stable+bounces-233594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:49:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF993AEA2F
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 432803AEA28
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93D6A30107CE
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EDA4300FC41
 	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 12:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5243B4E80;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1B93B47FE;
 	Tue,  7 Apr 2026 12:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+deckva"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRd7IXJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00CD3B38A0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F004B3B27DB;
 	Tue,  7 Apr 2026 12:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775566133; cv=none; b=WjYL0kiaSjyUZLV2bHdaKlQL4e/zVXMtBlSjBblY2iTAShjWBeC/tcJWDdpX3wWmT3qSn9EWRqRNTyXcQOh3wGl2lNGBMSy5ZaNdaDv/dxym3sCHevx+4jbcTY7PQCrXWRvk5mhNKG6Smyo0nIUC2uH2y7DQQBjbpMIK+oZF3Ew=
+	t=1775566133; cv=none; b=qv1f1sIn0skeulsmSWPjqkQQNd0sdcwWFws0zA2CeXTUswi+uU8/Q3+wJ7Pv/tb+2NjTMn05+PqCupbxq3l/oHxKPbwlZq9rFgOhny3ZXrj47p2z6AJxKcIeWIuO3rnErWV48O+IcqlUiCYPTSWksD/LCCErzQz2rW2nIHOIHzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775566133; c=relaxed/simple;
-	bh=vWCNuhUoewsighVgd5hZe21pawPiAvd2Jv9BdMisxM0=;
+	bh=9gM2k/aOqDg3x+DNA75R0DRTcMQqkKPvr6drbsDSsPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovFeNB52LP1HSfXkRSAesYETg9mcutLEbEch0nx1y7icCedLX/AtSt2lQ7dFnVxFOG0q1CoTTfcpjZl14f6MWNn+CSgztWuOR+ljvat2VTFgY7AqigVK8UKTJmUUBhR5z6193J+rGWlVoAww2V6UuZGhtqcmVMJINzXnPog0NKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+deckva; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D1DC116C6;
+	 MIME-Version; b=GOxQIfiVpibBzmMZKmcexCanpFwafMcVNrLF/Rbd0fdCfpvnZ3TeuDo8ajacGTGF+5x8K7UNWNiOgWr67bWdEj1pCUikVbX9M6545lQTuuadEMvLsEL7XIAylxJWC6vm5fy3NfA7m21fbgAH2OaXQ8pSE0h8v4VqA0C4vnBcuo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRd7IXJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AB2C2BCB0;
 	Tue,  7 Apr 2026 12:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775566132;
-	bh=vWCNuhUoewsighVgd5hZe21pawPiAvd2Jv9BdMisxM0=;
+	bh=9gM2k/aOqDg3x+DNA75R0DRTcMQqkKPvr6drbsDSsPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+deckvaRb6p0GV93gFF1SamlsXNEE4aHkc9T6eRuH95fYuGEJloOEqaWmGDy/VC+
-	 TdeUXlXheeXbNuWfeaeDahoMvG4TzABaSWaHId3zIrmtGXz1Ndl/q1fI+t1M2/U91j
-	 tYJlFePb06Sf0yxYEIPPfyplhh8ruIdz7QnwNtzM8Jo/MU3sWL03dd/I2MfFdDsmrz
-	 2t4JxPShIvxckDT1sJo/mVz/EXrn3qfB+SONsYGqiwx97CkyinSls9gn3Y0gXUK4Tn
-	 nFAMyY7j8sb9LT0DyIzr4sU8Zrm7p8AYIoG5uom5DCRNES2vjmHvybf5KnpgQnc4g7
-	 EZBfe3xRKoH5w==
+	b=TRd7IXJAgQxuuJ6z+aeFojkcIKQJIFuqhklGXiUWe3VmhuPQOg9Nlb6C/tB2HtIYr
+	 sKsna6voOwv+9GFFFQlPX9IuAK/NA3OZNesWI5dssIdX9M65IukfQHaGCzYWrMeeXN
+	 PGKaIGumfr/flgQuzuiiumcJ9ylJjFPPTs4CGoHcr5/cSqOh1UAejdz2xH7Ss+ykhv
+	 Dsfvm1iDR8zNxJkl16sPFNLgZcwg6d/uI1U0T95oP4Id+MaXCLweXOCW29wMvTO53t
+	 cFsN71CxMrGsLwhpiuDo77jW3hvzvhoa4zbOEKyi9C4MLzyuE1cxG49a1bfQAIQC15
+	 2e3zm6qiv3o5g==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wA5rO-0000000BHeR-26CI;
+	id 1wA5rO-0000000BHeT-28Vf;
 	Tue, 07 Apr 2026 14:48:50 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -55,10 +55,10 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Wenyou Yang <wenyou.yang@atmel.com>
-Subject: [PATCH 1/2] regulator: act8945a: fix OF node reference imbalance
-Date: Tue,  7 Apr 2026 14:48:35 +0200
-Message-ID: <20260407124836.2689436-2-johan@kernel.org>
+	Marek Vasut <marek.vasut@gmail.com>
+Subject: [PATCH 2/2] regulator: bd9571mwv: fix OF node reference imbalance
+Date: Tue,  7 Apr 2026 14:48:36 +0200
+Message-ID: <20260407124836.2689436-3-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260407124836.2689436-1-johan@kernel.org>
 References: <20260407124836.2689436-1-johan@kernel.org>
@@ -75,13 +75,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233593-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org,atmel.com];
+	TAGGED_FROM(0.00)[bounces-233594-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -97,7 +97,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DBF993AEA2F
+X-Rspamd-Queue-Id: 432803AEA28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -108,29 +108,29 @@ devices.
 
 Fix this by using the intended helper for reusing OF nodes.
 
-Fixes: 38c09961048b ("regulator: act8945a: add regulator driver for ACT8945A")
-Cc: stable@vger.kernel.org	# 4.6
-Cc: Wenyou Yang <wenyou.yang@atmel.com>
+Fixes: e85c5a153fe2 ("regulator: Add ROHM BD9571MWV-M PMIC regulator driver")
+Cc: stable@vger.kernel.org	# 4.12
+Cc: Marek Vasut <marek.vasut@gmail.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/regulator/act8945a-regulator.c | 3 ++-
+ drivers/regulator/bd9571mwv-regulator.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/act8945a-regulator.c b/drivers/regulator/act8945a-regulator.c
-index 24cbdd833863..5bbe2bce740e 100644
---- a/drivers/regulator/act8945a-regulator.c
-+++ b/drivers/regulator/act8945a-regulator.c
-@@ -302,8 +302,9 @@ static int act8945a_pmic_probe(struct platform_device *pdev)
- 		num_regulators = ARRAY_SIZE(act8945a_regulators);
- 	}
+diff --git a/drivers/regulator/bd9571mwv-regulator.c b/drivers/regulator/bd9571mwv-regulator.c
+index 209beabb5c37..f4de24a281b1 100644
+--- a/drivers/regulator/bd9571mwv-regulator.c
++++ b/drivers/regulator/bd9571mwv-regulator.c
+@@ -287,8 +287,9 @@ static int bd9571mwv_regulator_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, bdreg);
  
 +	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
 +
  	config.dev = &pdev->dev;
 -	config.dev->of_node = pdev->dev.parent->of_node;
- 	config.driver_data = act8945a;
- 	for (i = 0; i < num_regulators; i++) {
- 		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
+ 	config.driver_data = bdreg;
+ 	config.regmap = bdreg->regmap;
+ 
 -- 
 2.52.0
 
