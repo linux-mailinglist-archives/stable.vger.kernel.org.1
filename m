@@ -1,148 +1,161 @@
-Return-Path: <stable+bounces-233479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDbDOvBZ1GlLtQcAu9opvQ
-	(envelope-from <stable+bounces-233479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:12:16 +0200
+	id gJTrDlpa1GlLtQcAu9opvQ
+	(envelope-from <stable+bounces-233480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:14:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773033A899D
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:12:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A49C3A89C4
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E8133016835
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 01:12:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C07973009382
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 01:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435AD1E7C23;
-	Tue,  7 Apr 2026 01:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="L+qU2ktr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F79A1DF736;
+	Tue,  7 Apr 2026 01:13:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD82B1C8603
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 01:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38461A9FBA;
+	Tue,  7 Apr 2026 01:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775524334; cv=none; b=EliOuxH0joM7bOWCi/I+lbRXtPbqLOqxsmyawz+bueU0hXE6VuhX4hQQD28BA2Vk4ZtuhKShS9Nxyv6NMjY4wiX/nN2+MdiqMC/fdXema4hvqpAC1CenMd8R1+U/V9ndiXJwa6FOHYTJyZzB2bDAb69gfyxn9Snd25PoMzkFYo0=
+	t=1775524436; cv=none; b=fjWEjwJiiF5lEZrOo7IfUH/r0DApkXDo7W9Qb0iPdcQVU9DEY5veshZMfGel0oGtvunK2OgwOepn3iJPhG6+mg6OCC+hq9ztyJQzU+Y/5I8VnmzN08oVNb6R7sc8O/Lmt3wfVKRQHQvko/u1ozQrh5HpzKyafxGOulzJEv1iQj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775524334; c=relaxed/simple;
-	bh=T63k1uJxSq+Df7WJDfeXbmrwdzhkKi+FAbSdKxJ5VGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ErOXofUdfj+p3SpBOlKYwV5lEPWX4rgkgr0gLT3G3nwDAt4I4zcyMDUC+pDRFDP+AxklRu1C3K2B893GKXjW6tkKFZLC2juqmph00qWBAvexBPYLgPCPGAb92pHCIvfiLZeqGNdEy3JI7wR1Y9bDH/VYYPH0yplcSfwI2L2qCnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=L+qU2ktr; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8a4b8c3a30bso61446246d6.3
-        for <stable@vger.kernel.org>; Mon, 06 Apr 2026 18:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1775524331; x=1776129131; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xaTS/cjbwD199MSee68/inAfCQq7y2tm4S22SDQ6gKc=;
-        b=L+qU2ktrhBHZSnbRtcg7IO67KjbqSqTFBCxs0yVj0azEMmmCiTlBi2JVsuWIxvNku9
-         Pqz72fFCpBbCHHa6WqqB5PUxBtwezunqd0D0EabEcZv1dTGid6F8ohvJu+CiFaAjqm+3
-         xJ8vRIOFHyeWhmzlG0+dfjIt1U4N189+cBuQaNECSRUYdkeR+bOEyL67iiQEozNilPyY
-         ktLHrzgnEJJT8qM7u+poY7LUPkdIPa7RNR8CPGVuCrOkfHcj6omOkAxpVpoewoe9YN4k
-         DZNKR2q+j0pSpTHHvlFq6U600byFApCJ23OST8WE7QW4q7rVHOFqkSaPGAcVSkcL+f9F
-         j4dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775524331; x=1776129131;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xaTS/cjbwD199MSee68/inAfCQq7y2tm4S22SDQ6gKc=;
-        b=n9coroVmJ968M92GmeBE/cG0bv8XGvC+Z9Lb0y2U6pCNedrZX4B41Z4Sj5mIZwIt/O
-         LozOkHT9eatxVTB0cNoUolXy5kGtNpDxT1mOhqdQuFevYPaJ9+uJuUwA/bek6Cle5AZr
-         kZyeVzVjMJUg4tUGvCxvhrymCt48M0hfM9L7EaWeFLjpptOz2NYOYSqp5dp/Pzlob036
-         XqFCwIAE0ISkvUYI1dvTUYGTJld4bRJnd+x+SUg6+6exO0K1WmwOWD4dE/pv79xS8tXS
-         XmX2vOvvk2zPN+Iz+W+sSqDMMw+1njlQ1zAnzuQqgqxZSdSgu3Yx0+VEdnZ6Ctyn/1MV
-         yC2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVaz40ZG+MQqQUgaGPVpyZqCbO7UtC5kesv0nFjDGVDkuuc/b/zJE8+V1VUQz0DM+kJYH8Cqzw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNb/Dgi2K7ZZEKvdcGjUYgF4xAtGlCoJLWR3g+1ZRG5eKtx0v4
-	xv/rRJkpQ5fvYFffCPbvEvwV9csc4A53jClAvTTj8MEd8tR6adJhucJMLKrZOiO5EnA=
-X-Gm-Gg: AeBDies8uqp3qsmtIRSVeq+ELMInw2zW1c78UvwSRHrZndgXLZWwSn1eni1Uy5kdzKK
-	NDkDMweM825v07aKOE0YspalHZ1U+KsbTY7AF61wFufBfGdObNoQA8XsYEAjuVxSRSn+ZWNxvfC
-	BLsphIbTVIMHl1Dbj4o6d1bV4l8vzXJI8WSHi7kcNrHN6o32RfngGbuvxRaZFp73M5dlyVSTlgN
-	OMPfTeCCscEAM/l3tEKQXVAFHnCXCrJ6YX00H+OcGzPL2XWGOwxql8CFYdLYcM1G2allv1O+7Vo
-	loRuEBIrpSzeTKxBhFFk7c3ulfjL7viDA7UZN6EdfgCcZxorrcfw2USX+/UHuy3V9CmVJ+ooRK3
-	YrVa0Y5Eun6vbziunpaBBW1nLmeg3IbnBSLi8C0ZOg9WHbSBWkTVgbb7+nGm9nRSZotg/SkJA7W
-	oiQbgH43JuhjZSSbRDL3yC2ZQvpet+8oRH3wU9EsB0vZBqSbWqjJW8Tt/WVKJDk73iTZKSoaLvG
-	oIMLFae
-X-Received: by 2002:a05:6214:518e:b0:8aa:6dee:4b93 with SMTP id 6a1803df08f44-8aa6dee68e7mr101997526d6.16.1775524331555;
-        Mon, 06 Apr 2026 18:12:11 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8a593908b47sm160088906d6.11.2026.04.06.18.12.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 18:12:10 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w9uzC-0000000EA12-1dZT;
-	Mon, 06 Apr 2026 22:12:10 -0300
-Date: Mon, 6 Apr 2026 22:12:10 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Sina Hassani <sina@openai.com>
-Cc: kevin.tian@intel.com, joro@8bytes.org, will@kernel.org,
-	robin.murphy@arm.com, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Aaron Wisner <awiz@openai.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] Fixes a race in iopt_unmap_iova_range
-Message-ID: <20260407011210.GM2551565@ziepe.ca>
-References: <CAAJpGJTztK=BTvr6s_e4epJffKchmXmqba82wxE_SOXUN6FWYg@mail.gmail.com>
+	s=arc-20240116; t=1775524436; c=relaxed/simple;
+	bh=vvBe9Muv2c5jeAUg6u5C70ti/Hh5gSJXqOytBfqGUYk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sU5ylXUjrgl7HkNEv1fPmPzbIZaQlDf07Vc5py+5xiy+M3RxiJAX46GMRoh8WWWSuV28X7z1gb97dc8p3EVjvYtUJGEwMdAXIjCrGjdD7ADaBqmKiqxBiyYiupuv1S4DxnOGsMFYebZhHEU+vmPjLhgmhapZSEpEnhga/u0TPRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fqSqK62hNzKHML7;
+	Tue,  7 Apr 2026 09:12:45 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 2E06140575;
+	Tue,  7 Apr 2026 09:13:44 +0800 (CST)
+Received: from [10.174.178.253] (unknown [10.174.178.253])
+	by APP1 (Coremail) with SMTP id cCh0CgCHitpFWtRpbzmeDg--.48272S3;
+	Tue, 07 Apr 2026 09:13:43 +0800 (CST)
+Message-ID: <a8c93ed1-9bbf-43bf-9255-fafb72bddda8@huaweicloud.com>
+Date: Tue, 7 Apr 2026 09:13:41 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAJpGJTztK=BTvr6s_e4epJffKchmXmqba82wxE_SOXUN6FWYg@mail.gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ext4: fix missing brelse() in
+ ext4_xattr_inode_dec_ref_all()
+To: skoyama.kernel@gmail.com, linux-ext4@vger.kernel.org
+Cc: tytso@mit.edu, adilger.kernel@dilger.ca, libaokun@linux.alibaba.com,
+ jack@suse.cz, ojaswin@linux.ibm.com, ritesh.list@gmail.com,
+ bhupesh@igalia.com, Sohei Koyama <skoyama@ddn.com>,
+ Andreas Dilger <adilger@dilger.ca>, stable@vger.kernel.org
+References: <20260406074830.8480-1-skoyama@ddn.com>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <20260406074830.8480-1-skoyama@ddn.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:cCh0CgCHitpFWtRpbzmeDg--.48272S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr4DCr1kCrW7XrW7CFy5CFg_yoW8GF45pw
+	43G3W8Cr48XFyjkayakF1UuanIga47G3yUurW2k34Ykr93X3s3tFy7t3WrCa15ur4kWa12
+	qF9Fk3Wj93ZxAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
+	7KsUUUUUU==
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	TAGGED_FROM(0.00)[bounces-233479-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[ziepe.ca];
+	TAGGED_FROM(0.00)[bounces-233480-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[huaweicloud.com];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[mit.edu,dilger.ca,linux.alibaba.com,suse.cz,linux.ibm.com,gmail.com,igalia.com,ddn.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[yi.zhang@huaweicloud.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.517];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ziepe.ca:dkim,ziepe.ca:mid]
-X-Rspamd-Queue-Id: 773033A899D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,huaweicloud.com:mid,ddn.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0A49C3A89C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 06, 2026 at 04:07:01PM -0700, Sina Hassani wrote:
-
-> io_pagetable *iopt, unsigned long start,
->                 unmapped_bytes += area_last - area_first + 1;
+On 4/6/2026 3:48 PM, skoyama.kernel@gmail.com wrote:
+> From: Sohei Koyama <skoyama@ddn.com>
 > 
->                 down_write(&iopt->iova_rwsem);
+> The commit c8e008b60492 ("ext4: ignore xattrs past end")
+> introduced a refcount leak in when block_csum is false.
+> 
+> ext4_xattr_inode_dec_ref_all() calls ext4_get_inode_loc() to
+> get iloc.bh, but never releases it with brelse().
+> 
+> Fixes: c8e008b60492 ("ext4: ignore xattrs past end")
+> Signed-off-by: Sohei Koyama <skoyama@ddn.com>
+> Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Cc: stable@vger.kernel.org
+
+Looks good to me.
+
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+
+> ---
+>  fs/ext4/xattr.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+> index 7bf9ba19a89d..19c72e38fb82 100644
+> --- a/fs/ext4/xattr.c
+> +++ b/fs/ext4/xattr.c
+> @@ -1165,7 +1165,7 @@ ext4_xattr_inode_dec_ref_all(handle_t *handle, struct inode *parent,
+>  {
+>  	struct inode *ea_inode;
+>  	struct ext4_xattr_entry *entry;
+> -	struct ext4_iloc iloc;
+> +	struct ext4_iloc iloc = { .bh = NULL };
+>  	bool dirty = false;
+>  	unsigned int ea_ino;
+>  	int err;
+> @@ -1260,6 +1260,8 @@ ext4_xattr_inode_dec_ref_all(handle_t *handle, struct inode *parent,
+>  			ext4_warning_inode(parent,
+>  					   "handle dirty metadata err=%d", err);
+>  	}
 > +
-> +               /* Do not reconsider things already unmapped in case of
-> +                * concurrent allocation */
-> +               start = area_last + 1;
+> +	brelse(iloc.bh);
+>  }
+>  
+>  /*
 
-area_last can be ULONG_MAX so this literally overflows to 0. It is why
-I formed the suggestion I gave as I did
-
-Jason
 
