@@ -1,142 +1,170 @@
-Return-Path: <stable+bounces-233667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kE0fOt0l1WnB1gcAu9opvQ
-	(envelope-from <stable+bounces-233667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:42:21 +0200
+	id yPO+FhUo1WnB1gcAu9opvQ
+	(envelope-from <stable+bounces-233674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:51:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C3BE3B1330
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:42:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD6A3B1572
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B081D30602AE
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:27:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9EE2630B3D33
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CF53B635A;
-	Tue,  7 Apr 2026 15:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C4D3C8736;
+	Tue,  7 Apr 2026 15:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSakZNpo"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="OiTByfre"
+X-Original-To: stable@vger.kernel.org
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D11363C5F
-	for <Stable@vger.kernel.org>; Tue,  7 Apr 2026 15:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8353C5522;
+	Tue,  7 Apr 2026 15:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775575614; cv=none; b=TV9z3egIT5vAGhvy4W/oMfBSJbe6ZCtoQvVzMEbyOFGT5CjiWbXzDZiG+E0MrLRAOVJ9/gU0xTgv2bSB91O2VkGWCz9IfMAB8NXF5oVZb4h2T9BKVJAStoSDbFwPOcs/FD/LU750zlqlYz4Ya7pXKD543fJZguVG08Ra352IETw=
+	t=1775576548; cv=none; b=EV7jAIcR4sAWQpnhGgjopDiVkiCRmbMensAcSjv7mmxQuG8CRDzV6zGrr4jPNzo/O292NzaFYavhKW5fINq38Z9KoNhHQzEnAv03mHHRDziZmSyvd12K+J8maVFFdSUJKYD9MjujPA1fIfMZHnaa0VbtUpEkDd/PmKO+RdYwrnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775575614; c=relaxed/simple;
-	bh=FJ1vMZk1sphQYwviPOJZ5Kgr67vRtHDBF1aWJUBTMg0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a8wcgdtaGD2vPNzS5q2m7JIr9Lr+avFUX34lxrgB11UOEvpyD77DGhn6VwhrpkwDWx3OMK0yzzWT2jXHejSWYFQiK0HiTCBXJ/QIDic1uL/wThcV3+7zkibVkRV59HVwb0QFOFYB0MR16Tu0Y0uejZQTS9xXOMymC/OHNAP2qns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSakZNpo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1415DC116C6;
-	Tue,  7 Apr 2026 15:26:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775575613;
-	bh=FJ1vMZk1sphQYwviPOJZ5Kgr67vRtHDBF1aWJUBTMg0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=VSakZNpoMpw05oV7+wDS3B6p38ykKLBj2Hysz9eP34nfFV+KszfCm7W6yAHXXsA2d
-	 0d4n1Hj2hmxjTDq7XIAPIU3G+3VQQQlDO5aM6H2tty/hDhFLqmstXyu+cHTz2hz6W/
-	 tjsEJnYA5qxmLG7hGronVxY3MoxgxsHV0swTu1UU=
-Subject: FAILED: patch "[PATCH] iio: adc: aspeed: clear reference voltage bits before" failed to apply to 6.6-stable tree
-To: billy_tsai@aspeedtech.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 07 Apr 2026 17:23:37 +0200
-Message-ID: <2026040737-clavicle-childhood-d093@gregkh>
+	s=arc-20240116; t=1775576548; c=relaxed/simple;
+	bh=ZdukmGPr32uKMT3hUIvJrsG8XDUJH7rwxzNXZ36hCk8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V73Bn5TUOZW0DhUgXpawiOh8X6Rqpbbt3L3geMepmK6cAOFYcw9RYPZLl48pyuufIq8sswPBTXbSmWGf36W0txP/6s0m7Aca6JaDKoMsukyMp6p3B9qSi0HDAk8Bn2rpnKuAVKz35wr6WmtJf9/Njn8n6pESQ6k2MYMz2TpcAH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=OiTByfre; arc=none smtp.client-ip=148.163.129.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 249582C506C;
+	Tue,  7 Apr 2026 15:25:35 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 76285A80070;
+	Tue,  7 Apr 2026 15:25:25 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.38.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id C900D13C2B0;
+	Tue,  7 Apr 2026 08:25:13 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C900D13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1775575523;
+	bh=ZdukmGPr32uKMT3hUIvJrsG8XDUJH7rwxzNXZ36hCk8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OiTByfreOgsKqwGFK3UvF3ct58qv0l5gS/Bj15Yf6ZU/oOqFEFl2qHDmo4dx089m2
+	 xrQMSd5BZXaAeMV4ivwU32YiXTEAJvC7hwcBQrAdBoL3AmOmhCPc7oBkbwYfLwzrlA
+	 EVQJ0lWz0v9Yiaj02NoO8tWeQsL9bUhhBmAe0b08=
+Message-ID: <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
+Date: Tue, 7 Apr 2026 08:25:10 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
+ sta_poll RSSI extraction
+To: Joshua Klinesmith <joshuaklinesmith@gmail.com>,
+ linux-wireless@vger.kernel.org
+Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
+ <20260406234739.29926-5-joshuaklinesmith@gmail.com>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20260406234739.29926-5-joshuaklinesmith@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1775575526-qrLPDTSfbSZ1
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1775575526;qrLPDTSfbSZ1;<greearb@candelatech.com>;cd1e1c133c9805f1fc8e076cc471adaa
+X-PPE-TRUSTED: V=1;DIR=OUT;
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233667-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-233674-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[candelatech.com:+];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,aspeedtech.com:email]
-X-Rspamd-Queue-Id: 1C3BE3B1330
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,candelatech.com:dkim,candelatech.com:mid,candelatech.com:email,candelatech.com:url]
+X-Rspamd-Queue-Id: ACD6A3B1572
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On 4/6/26 16:47, Joshua Klinesmith wrote:
+> The fourth receive chain RCPI uses GENMASK(31, 14), an 18-bit mask
+> spanning bits 14-31. It should be GENMASK(31, 24), an 8-bit mask
+> for the fourth byte, consistent with the other three chains and
+> with the RCPI3 definitions used elsewhere in the driver
+> (MT_PRXV_RCPI3 and MT_TXS7_F0_RCPI_3 both use GENMASK(31, 24)).
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Hello Joshua,
 
-To reproduce the conflict and resubmit, you may use the following commands:
+How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
+at max.  So while the patch may be correct, it may also not matter in practice
+and at least may not need to be backported into stable.  If it is a minor
+cleanup that doesn't actually matter, that should be described more clearly
+in the commit message?
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7cf2f6ed8e7a3bf481ef70b6b4a2edb8abfa5c57
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040737-clavicle-childhood-d093@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Some of your patches are touching tricky parts of the code and making
+subtle comparisons against how the vendor's driver is written.  How well has
+this been tested and reviewed by a knowledgeable human in general?
 
-Possible dependencies:
+Thanks,
+Ben
 
+> 
+> On devices with fewer than 4 antenna chains, the corrupted value
+> is masked out by antenna_mask in mt76_rx_signal(). On 4-chain
+> devices, this produces incorrect ACK signal strength readings.
+> 
+> Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> index 6334019249..85e91ca84f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> @@ -144,7 +144,7 @@ static void mt7925_mac_sta_poll(struct mt792x_dev *dev)
+>   		rssi[0] = to_rssi(GENMASK(7, 0), val);
+>   		rssi[1] = to_rssi(GENMASK(15, 8), val);
+>   		rssi[2] = to_rssi(GENMASK(23, 16), val);
+> -		rssi[3] = to_rssi(GENMASK(31, 14), val);
+> +		rssi[3] = to_rssi(GENMASK(31, 24), val);
+>   
+>   		mlink->ack_signal =
+>   			mt76_rx_signal(msta->vif->phy->mt76->antenna_mask, rssi);
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7cf2f6ed8e7a3bf481ef70b6b4a2edb8abfa5c57 Mon Sep 17 00:00:00 2001
-From: Billy Tsai <billy_tsai@aspeedtech.com>
-Date: Tue, 3 Mar 2026 10:38:26 +0800
-Subject: [PATCH] iio: adc: aspeed: clear reference voltage bits before
- configuring vref
-
-Ensures the reference voltage bits are cleared in the ADC engine
-control register before configuring the voltage reference. This
-avoids potential misconfigurations caused by residual bits.
-
-Fixes: 1b5ceb55fec2 ("iio: adc: aspeed: Support ast2600 adc.")
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index 4be44c524b4d..83a9885b9ae4 100644
---- a/drivers/iio/adc/aspeed_adc.c
-+++ b/drivers/iio/adc/aspeed_adc.c
-@@ -415,6 +415,7 @@ static int aspeed_adc_vref_config(struct iio_dev *indio_dev)
- 	}
- 	adc_engine_control_reg_val =
- 		readl(data->base + ASPEED_REG_ENGINE_CONTROL);
-+	adc_engine_control_reg_val &= ~ASPEED_ADC_REF_VOLTAGE;
- 
- 	ret = devm_regulator_get_enable_read_voltage(data->dev, "vref");
- 	if (ret < 0 && ret != -ENODEV)
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
 
