@@ -1,163 +1,220 @@
-Return-Path: <stable+bounces-233481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBsMA2Fb1GlhtQcAu9opvQ
-	(envelope-from <stable+bounces-233481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:18:25 +0200
+	id SDSQAlNd1GlrtQcAu9opvQ
+	(envelope-from <stable+bounces-233482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:26:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1003A8A49
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:18:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078ED3A8B14
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59F86304C13E
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 01:17:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 87ABB300B47E
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 01:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860951E5B63;
-	Tue,  7 Apr 2026 01:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D288021018A;
+	Tue,  7 Apr 2026 01:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="FwGj8Nfu"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nJZSA9oC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3AC1D514E
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 01:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775524657; cv=pass; b=VrDxyvucLIKVWx52N+9HQRv/UiJfdxMQnQm/cEaUWFmMgySaLDRiD198HKDsZZDGcatwt8HCYLPcATIjGeAKdJNPfps9LTCvzmCwp8fuir5tlrYsmJ7HsJE39g2QgNbHhxfMAWtrYNbgfyainHMYtalwrVF1DiorX6VO/ArVxSI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775524657; c=relaxed/simple;
-	bh=czqVJ9cz7Ktw9imH5A5AFq07K7or30oW1/Cb5IOvfOQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NSvoHU0mrr6ylbVdSARnbnzQ3QHXTnIgpZ15VlgAitlJqK//fC4Q0Rv9aVxswHU6WT/HAXA6hE70ut0cJbxcttxdzUFE90NnRZCdxafu1TMwoWzQL57LIu1HeJyZK0FxI9HpQ3/lagJzncpYe2owtFH78KSANV9aU20ZZttfxwY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=FwGj8Nfu; arc=pass smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-79d991c7b6aso39526887b3.2
-        for <stable@vger.kernel.org>; Mon, 06 Apr 2026 18:17:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775524655; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cj+csMDzOTl676C7P9R6J/jLTkQJDCC/J8fHPmqjCTxWUdc+klrve9TZRxGPaPjLH4
-         XSfQXCIoWaenykQLbVOeFT6eqHS4JLrkVWsqTKrxUZH2wOqTb+N2mJrS1qjwUMoDn33z
-         LXfYuZ4WBCftO4GHh/G92R6ei+0Yf7h5FdtyTH/5NBuQKtATQ9Y4HY/0ibEG0lLS3EAH
-         3iPB67LC6bx5TJXvCRtrSyMc2qtHSdwZFxVXRAeUoKrHWcTEV/5hwRndP2ILUq+TZHu5
-         Dyspf7hlGZdThxyXNApFy5s5iQ0Y368mLYFIixdVoBTGAdmFeCfMpt3aJw3IY166BYze
-         E1Fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VJT/iwQLEn+40200OWlfNgjmYGPm0JSSw/wJxedFMI0=;
-        fh=sdBxyzPwKnfv110CHDkQuRCxtt2OeTr3uBJt3hqgA8o=;
-        b=BdmkqeLWqN6F6TCSzxzE3rz8j27rgSq69Hd/XdGLL1wVS5FpwJtc2GcoJDYL39yTlx
-         ZrEaf5L+NzDUssG+Xj+HyYjYAe8Z54H821iAAExGenixKCGMXU7RErNhypIubu2bO2lZ
-         Spdj01OzRyGWP9bAx3dxKpxn4zcdxe/I6b9I4jAIiVEfpCbszzc1AIVowIju9AfdY5/o
-         +x2VZFR7BWNW/qgfzoomwQpOQwcLWUP3i1u+va0r+3wXliNzgYD88viDX8SfAYuU+lQK
-         tfkEcLmqFYBayAvUea3haj67jbAf4Mm/S6n/tvGAE5hHRGBhYvgZzQAsrxgTSvbPpBtP
-         BbAw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1775524655; x=1776129455; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VJT/iwQLEn+40200OWlfNgjmYGPm0JSSw/wJxedFMI0=;
-        b=FwGj8NfutOVHwlxjFWqRdjXMfz+Umhc/CB94VsUA+AGR6+pSwe/eu1Uji5Svdy6XkY
-         h7v1+7EGq5omlcxj0B4ZEop5A+tUKTegfKrJrxI3NhgqgUwmZgyLIUJfP13Feo8X7NnV
-         7Czdmoa/MeslMLmx3ulfLQ9dH+NAaIL/fQxXk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775524655; x=1776129455;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VJT/iwQLEn+40200OWlfNgjmYGPm0JSSw/wJxedFMI0=;
-        b=TNW29XZZT99RI1oLwgqI6CxgXqFxrVo8FwDWj87cUACzXNFGGqxWLbs7FlSYKWxfr2
-         xTTzVEGTSXhvalVXu390IajCR/m9uDzuoR3VYxILjG7GLJyE+ejLuIGGZ/bsDwG4r/2a
-         cMlj59AcTjhX/30NOBJhc23DfsWX8buqi77SUaXQC8xroyD3Df/IXGk1Su9fEVfsakl9
-         aGWFoaHV3P2vlE/R95wEst5oaBYstAW1KUdRSicTrwjKQxVm6R9Cbc4IckrQxq2jFHxC
-         fV2SHf2x2XS2X1vLsl1wGVc3X61to5YDXyYNPqqnO7KstqNglDl13/xZC/0ayR1dkLxE
-         t5fA==
-X-Forwarded-Encrypted: i=1; AJvYcCUA0a9FXQpomNzoZzFUc3Y8DnajBzzB1C5CeFliTSBCfi2VB9DuOMqO2Vwk4KfzvaSXiVHrRHU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXngNj0heRZBIlycURH91CylwKSODUgqFprGM/ARQ641bqIvXY
-	AwLwaa32ri7TvAjIxBO8a/R3BKMLrp+KHeQdI+btv68+UWZ3mro3gNKajldn/sWpSe7KPrcY8Wh
-	jmw/12akquZdanIPVohWQVVMA0WNFsheTDm9wiavpWQ==
-X-Gm-Gg: AeBDieu7MQcN1XEqsFjrNGerjwo4K91LmEGq8YdUQe1Qa5MXX5/v8++s1e3sbLGKqai
-	y2vNUHLd+s9I092EqabImUC+P6+sCuSkLy6W1fQ8DcxH6W6Z8KiOAGiVZ5Sx8cdvuTrEIGXMntl
-	+gU6NYGD+5TuRh49ej7FHRQKlOMoiEt1VR9oMSJ/TsePMUE8EJVmPaQj3q37m5YGb8WpB7DAypk
-	kemMVPQt1JQyBKKM67pmpqjsMqWU4wpp/+Wz4yThLZlIBJH6qAVoRAm3h+XvKsakWUaAbZ6Sk+N
-	HnpuAGM9pooMNP5FmEQF36N8IX98jsrg/U0NFCeGHIygaEG1sTuQ4oilidjZjvTF8LuqCaXg7Oh
-	we338kp+sjsxVqvNN8MTJKa5VYffbCVlafxPNzJnmfhGFOnZex/1XoTQWEXIymrI=
-X-Received: by 2002:a05:690c:6d84:b0:7a1:dbab:93e5 with SMTP id
- 00721157ae682-7a4d2ff20eamr147191477b3.2.1775524655240; Mon, 06 Apr 2026
- 18:17:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2279211A09
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 01:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775525191; cv=none; b=Cq5yqkSxlQejQtdWftpyuV8GlLMB1NBi1dmvmePAixkAKKS/zgb9cyREC74aDceeOQ26MdcnGzuswCRATzT7m03nBTf5vObjO2mDjnxm4jtMohzBkN8Ag3HNguZgSTJdXv8z5SE8y+dfXflIb5R3fu/dvgHI9LBxs0hyD5bjK/A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775525191; c=relaxed/simple;
+	bh=dVILt1iLbW9F7TOlyKfK5PT3r7yL8XE5R4xlV05lU2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NFwpahDehp9T/Rp96S+GRveVQRtCT07RYxkic5QIN/iZroDNFH1MmT0eELnOdcCqDb0BtMr8QZgM7QXOT4V+iAYkBfLhbWZHH6bsXJoJxp6lZKs43z0QE6dLZEEe9welxNUo1AxSCiOOfoiOhCDBIEwtcfieX//dIQD+E4zcU50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nJZSA9oC; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Mon, 6 Apr 2026 18:25:52 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775525177;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=euWRknGGJoLsZnDSjgyoR/3x+tUQI1fMgnlSdPtl2Ss=;
+	b=nJZSA9oCoqyBwc4kpihQiPaqanTRL6HaqfMrlXAGWgpkozZ43AB8upcT6Yt0IULldqZlgu
+	zySMdC4zpYVQV4VQuM9AMLIxjLSjUvAiGXSHc0TIjUvZgpqu5HTel2eOzghc7gWgT8AV6N
+	hMl+vQEtwoqSEnRrFslDBwUhQMJTlb8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+To: Werner Kasselman <werner@verivus.ai>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Lawrence Brakmo <brakmo@fb.com>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] bpf: add is_locked_tcp_sock guard for sock_ops rtt_min
+ access
+Message-ID: <2026471147.8A6S.martin.lau@linux.dev>
+References: <20260406224953.2787289-1-werner@verivus.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAAJpGJTztK=BTvr6s_e4epJffKchmXmqba82wxE_SOXUN6FWYg@mail.gmail.com>
- <20260407011210.GM2551565@ziepe.ca>
-In-Reply-To: <20260407011210.GM2551565@ziepe.ca>
-From: Sina Hassani <sina@openai.com>
-Date: Mon, 6 Apr 2026 18:17:24 -0700
-X-Gm-Features: AQROBzA83tto2liL_v4antfrma0fo1MHacGEkseVIBd3rayyTAcOUj5whgCNcpo
-Message-ID: <CAAJpGJQXnMjhC4C7Z6bAQJN5y48fsbiwPd3YF5vft+1MBNFLVQ@mail.gmail.com>
-Subject: Re: [PATCH v2] Fixes a race in iopt_unmap_iova_range
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: kevin.tian@intel.com, joro@8bytes.org, will@kernel.org, 
-	robin.murphy@arm.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Aaron Wisner <awiz@openai.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[openai.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[openai.com:s=google];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260406224953.2787289-1-werner@verivus.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233481-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.dev,kernel.org,iogearbox.net,gmail.com,davemloft.net,google.com,redhat.com,fb.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-233482-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[openai.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sina@openai.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,ziepe.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,openai.com:dkim]
-X-Rspamd-Queue-Id: 6F1003A8A49
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[martin.lau@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid,verivus.com:email]
+X-Rspamd-Queue-Id: 078ED3A8B14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 6, 2026 at 6:12=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrote=
-:
->
-> On Mon, Apr 06, 2026 at 04:07:01PM -0700, Sina Hassani wrote:
->
-> > io_pagetable *iopt, unsigned long start,
-> >                 unmapped_bytes +=3D area_last - area_first + 1;
-> >
-> >                 down_write(&iopt->iova_rwsem);
-> > +
-> > +               /* Do not reconsider things already unmapped in case of
-> > +                * concurrent allocation */
-> > +               start =3D area_last + 1;
->
-> area_last can be ULONG_MAX so this literally overflows to 0. It is why
-> I formed the suggestion I gave as I did
->
-Yes, in which case the  if (start < area_last) that follows will catch
-it. Are you suggesting I compare against ULONG_MAX instead?
-> Jason
+On Mon, Apr 06, 2026 at 10:49:56PM +0000, Werner Kasselman wrote:
+> sock_ops_convert_ctx_access() generates BPF instructions to inline
+> context field accesses for BPF_PROG_TYPE_SOCK_OPS programs. For
+> tcp_sock-specific fields like snd_cwnd, srtt_us, etc., it uses the
+> SOCK_OPS_GET_TCP_SOCK_FIELD() macro which checks is_locked_tcp_sock
+> and returns 0 when the socket is not a locked full TCP socket.
+> 
+> However, the rtt_min field bypasses this guard entirely: it emits a raw
+> two-instruction load sequence (load sk pointer, then load from
+> tcp_sock->rtt_min offset) without checking is_locked_tcp_sock first.
+> 
+> This is a problem because bpf_skops_hdr_opt_len() and
+> bpf_skops_write_hdr_opt() in tcp_output.c set sock_ops.sk to a
+> tcp_request_sock (cast from request_sock) during SYN-ACK processing,
+> with is_fullsock=0 and is_locked_tcp_sock=0. If a SOCK_OPS program
+> with BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG reads ctx->rtt_min in this
+> callback, the generated code treats the tcp_request_sock pointer as a
+> tcp_sock and reads at offsetof(struct tcp_sock, rtt_min) -- which is
+> well past the end of the tcp_request_sock allocation, causing an
+> out-of-bounds slab read.
+
+This is not limited to hdr related CB flags.
+
+It also happens to earlier CB flags that have a request_sock, such as
+BPF_SOCK_OPS_RWND_INIT.
+
+> 
+> The rtt_min field was introduced in the same commit as the other
+> tcp_sock fields but was given hand-rolled access code because it reads
+> a sub-field (rtt_min.s[0].v, a minmax_sample) rather than a direct
+> struct member, making it incompatible with the SOCK_OPS_GET_FIELD()
+> macro. This hand-rolled code omitted the is_fullsock guard that the
+> macro provides. The guard was later renamed to is_locked_tcp_sock in
+> commit fd93eaffb3f9 ("bpf: Prevent unsafe access to the sock fields in the BPF timestamping callback").
+> 
+> Add the is_locked_tcp_sock guard to the rtt_min case, replicating the
+> exact instruction pattern used by SOCK_OPS_GET_FIELD() including
+> proper handling of the dst_reg==src_reg case with temp register
+> save/restore. Use offsetof(struct minmax_sample, v) for the sub-field
+> offset to match the style in bpf_tcp_sock_convert_ctx_access().
+> 
+> Found via AST-based call-graph analysis using sqry.
+> 
+> Fixes: 44f0e43037d3 ("bpf: Add support for reading sk_state and more")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Werner Kasselman <werner@verivus.com>
+> ---
+>  net/core/filter.c | 47 ++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 44 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 78b548158fb0..58f0735b18d9 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -10830,13 +10830,54 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+>  		BUILD_BUG_ON(sizeof(struct minmax) <
+>  			     sizeof(struct minmax_sample));
+>  
+> +		/* Unlike other tcp_sock fields that use
+> +		 * SOCK_OPS_GET_TCP_SOCK_FIELD(), rtt_min requires a
+> +		 * custom access pattern because it reads a sub-field
+> +		 * (rtt_min.s[0].v) rather than a direct struct member.
+> +		 * We must still guard the access with is_locked_tcp_sock
+> +		 * to prevent an OOB read when sk points to a
+> +		 * tcp_request_sock (e.g., during SYN-ACK processing via
+> +		 * bpf_skops_hdr_opt_len/bpf_skops_write_hdr_opt).
+> +		 */
+> +		off = offsetof(struct tcp_sock, rtt_min) +
+> +		      offsetof(struct minmax_sample, v);
+> +	{
+> +		int fullsock_reg = si->dst_reg, reg = BPF_REG_9, jmp = 2;
+> +
+> +		if (si->dst_reg == reg || si->src_reg == reg)
+> +			reg--;
+> +		if (si->dst_reg == reg || si->src_reg == reg)
+> +			reg--;
+> +		if (si->dst_reg == si->src_reg) {
+> +			*insn++ = BPF_STX_MEM(BPF_DW, si->src_reg, reg,
+> +					  offsetof(struct bpf_sock_ops_kern,
+> +					  temp));
+> +			fullsock_reg = reg;
+> +			jmp += 2;
+> +		}
+> +		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(
+> +						struct bpf_sock_ops_kern,
+> +						is_locked_tcp_sock),
+> +				      fullsock_reg, si->src_reg,
+> +				      offsetof(struct bpf_sock_ops_kern,
+> +					       is_locked_tcp_sock));
+> +		*insn++ = BPF_JMP_IMM(BPF_JEQ, fullsock_reg, 0, jmp);
+> +		if (si->dst_reg == si->src_reg)
+> +			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,
+> +				      offsetof(struct bpf_sock_ops_kern,
+> +				      temp));
+>  		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(
+>  						struct bpf_sock_ops_kern, sk),
+>  				      si->dst_reg, si->src_reg,
+>  				      offsetof(struct bpf_sock_ops_kern, sk));
+> -		*insn++ = BPF_LDX_MEM(BPF_W, si->dst_reg, si->dst_reg,
+> -				      offsetof(struct tcp_sock, rtt_min) +
+> -				      sizeof_field(struct minmax_sample, t));
+> +		*insn++ = BPF_LDX_MEM(BPF_W, si->dst_reg, si->dst_reg, off);
+> +		if (si->dst_reg == si->src_reg) {
+> +			*insn++ = BPF_JMP_A(1);
+> +			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,
+> +				      offsetof(struct bpf_sock_ops_kern,
+> +				      temp));
+
+There is an existing bug in this copy-and-paste codes [1] and now is
+repeated here, so please find a way to refactor it to be reusable instead of
+duplicating it.
+
+This also needs a test. It should be a subtest of [1],
+so [1] need to land first.
+
+[1]: https://lore.kernel.org/bpf/20260406031330.187630-1-jiayuan.chen@linux.dev/
 
