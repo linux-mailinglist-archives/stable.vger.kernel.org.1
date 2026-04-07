@@ -1,264 +1,215 @@
-Return-Path: <stable+bounces-233546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2J5JJtbb1GnzyAcAu9opvQ
-	(envelope-from <stable+bounces-233546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:26:30 +0200
+	id YOHqNyPe1GnzyAcAu9opvQ
+	(envelope-from <stable+bounces-233547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:36:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01123ACD08
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:26:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FF63ACF3F
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0A162300B8D7
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:26:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDA1430D6E20
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677303A872C;
-	Tue,  7 Apr 2026 10:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2933856472;
+	Tue,  7 Apr 2026 10:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jyExcLBd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PkHLzMA+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40BC3976B8
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 10:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775557583; cv=pass; b=Kc8VQYlyTHA7u2sorWqat3hZ5sMERPRgvLQOwobtLqUev2LbolCQjU5aM4vpsThg5mMKphIzsCSJ2SiK6TQcxuBtCkJDcGR08GMBi1JRRpdMxjpcbxU49HxI2Noa4hOLVWH6priHAKcZRQLAwsqNLSY3iJlHEEZRxhO2RWhrofE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775557583; c=relaxed/simple;
-	bh=FN1DQCn2XQYPtRQlpk34tuyMeniJyJsR2bcp0raiNjE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fK2wOw6X5hzjJFApKTFsKUykFG4VASM9RKdb0DKj0PWjuH+j1n6yAIOmd/MdTuhld0XmPZvs4YMtVTLjVzdQGLeqkIkoPAJAynHvZepHSoy5jCEfb9j/ebTHZc1/RaXsk6cxE10RnBFbK0+SKrmXqF5Go5KwsxFbmTS5hu1Hbws=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jyExcLBd; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50d8da3e656so22117951cf.1
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 03:26:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775557581; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JXUgIKyq2sqbmmjguphPETB504rgVRxZE91EqlU0XxGTNhRbjumyfQ95GiVxOhUPs1
-         Zqfh4ffrfIaWIaFVy5ahH5rsmPyih7nHB+ojfUyXxt34hmBMEsCxVagqyWL0RQ8Ncvmf
-         YR7TbYvzBVBccAWJkTU7wIw9rRlF6/IET4j2ouZjIzJa1R5rrju48FEtH4MmLU6CpFFQ
-         +xgxhWMS02ShqsigZxTKJaq3qrLZTQVBFjbtBcyLC7Cpf3R2qliQZvQWQltxlq3cN1wR
-         yGXIAawHpiq0ugSv2wXZEjsTwPDC7TlNR1wNi4hEuj7JALtFZyYrgoUKy/0QmrwUkdSS
-         +Ymw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LArOe3ArIGUaW/5j3verGc1ir4Jk+MM5L6djQwE4ySc=;
-        fh=X8uLa/2Yq2EEtUPRjmvOGBl+ek6mFGauP7rCN3AAG0k=;
-        b=eTarZCsib6LPCe2YzOVboacCv1YhOjZAQ8v6el8TwvtNIBs3yZT4pYXE/Mo47CWo9F
-         rlRrkAf4qtsS2ZFEsIimDF6JmCDSc+CMC4T3BgOrQOkIZ12KnwHZhufRiBV1/WZ91YAP
-         +gcs6euJoENrjZRwTDoZoWEqgFvNV1rmp/9Ufg2Lt+pIS5ryZdjoi3l37HgiYS8kOVBq
-         VgREcxkoiB2u3Ij/FTimGXQKDTWoeuubffrNaN11zVeet6cFEub19SgFUIIGVAzef/yr
-         /qrdJSJhZT2AVIwQFH8RjoOE4M1quM3zPC/XuZDskyviCPn8Y1A71v91kjg6tJ70NosQ
-         GfZg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBFB39B979
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 10:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775557883; cv=none; b=rjoQlHpl8Ca1WNcN5wXGO0pwnEgxvrbwiuh0FiaWxTE+liSx594DZoTwwzSh2CPgVFxueKPCSBiZJ5+1F2irukR7QBMk0N6nf7vGdCzcHzd9CS6WO+FURsuHMGv5r5aqSkME0EAyWK3kYHdmOtNe7/BCvwqjAfO0VWBtqAjl/9Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775557883; c=relaxed/simple;
+	bh=Ns5jjjTfJV+i/TeTxOZ94Cylidwstx6f3BYuQbVirBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mk1Mdna/gxu823MKrlGYxR+Qw/+TJ6a6/ispETbZ/+fsRhrT/q1uR3TYattDz8DHXP9UgJ4uxmV+9HLG4SE3sTSageW+TKR2/bTNYH8GyndQDjDLzZUv0814yB2tCGymx4p/1gCBQmxdz12IDXtFRKii2yl7llAqx6kZ14jAkJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PkHLzMA+; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488b0046078so19123525e9.1
+        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 03:31:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775557581; x=1776162381; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775557880; x=1776162680; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LArOe3ArIGUaW/5j3verGc1ir4Jk+MM5L6djQwE4ySc=;
-        b=jyExcLBdpBG/e6CAmMv7GQvigZQQB9A0tnuKmIQD62aVDMdAq+UHgL2HkgqBrRu8D+
-         d6/M5nyAfyymdaDHo2nWC7TOXejqeJr4e2A+VTQA7o7wPm2fm2oSYLzYZfSZ8GXhsa08
-         a4Z7oxSYaWWKC1iSI7EA3pGfBX/n+raAChlPkgXP62cQuPNj4DlJ0Qj1qzX9zprmILrV
-         dTIEEf+fESCU2Xq4DNvYj0HD9x5J5Q3fqEFGtmGJPFsKKpABbgALAfHlarQO5w3tyyQc
-         o1xMrasNU6nSowsHfKewwca1qpjKQ84eYE5gV6DlD3x8eSKerAVSnGoR9GYb4tx9VgKN
-         N/NA==
+        bh=lip3owYNVh4Y6wPGr1TWEoHeQbKxzTWWmz7TOhaw338=;
+        b=PkHLzMA+A40Ne9UPX/TSZqEBXnNK41CSOz4RxOWTWJAFyL4GuxWTAv68E2S2+zBw/l
+         p/ZMlU0+FwliICEB0OKppsgUA7/dFNLDTZPKrzU+o+u7MiW2dSVsY3nXW7TCbTE1DjB9
+         VEem/nVN7YgHiB50Dn0+Y4JdzB78+tTnYgsfT/FTQNri1L2HL6naMWQoChYP4DMhUDm8
+         RxgGYcEtfPwlgk+XIkPETm0a2PraoktNV8V6wIOUnJMvaRdJQNR+rPi/5cQ+JxrUyLOp
+         qnH1Ka2xbJI41Q1qa8EdIxSfpilSuAnuUBlO1vYs0JoVi7uKjSqlHM//TnBmCZoVAJ66
+         Np7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775557581; x=1776162381;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1775557880; x=1776162680;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=LArOe3ArIGUaW/5j3verGc1ir4Jk+MM5L6djQwE4ySc=;
-        b=L2HI9MSeQZ7ANQvcQsGbxnPwpTcExEReTD930crDHMDZUIRk89O5y7SWIuZetrAmvm
-         Kw8/7qpxlI5KSn3PFeypcz7k/LCsezJZuXrKRt7MKa9E2nqW42XWBBEBVY1lxU8Z7dld
-         TpMse8mERtc0H8c1MEQ8veYsPPQgUpOsJyt2ahRsvwCCHVPG5zTq/GWcj3Bif74JN66B
-         W+Ee95cp/XPeqattMIdBpXBAwJOR834zin53hclhDlV7Qb96xgs8XUSsHCnOct3AZmy0
-         AR5G8iVXOmLAGFrqoU8QI6r871bkhLlPL5BWKNT2qN7Qp0leWdSLnINyYRtNi7xrR9L/
-         EK6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUv4+jqz7IxlpwY7bK0I85+nAq/zbzjABRLhB+vwKh8dqfT2Zf4p45X+dUAO9YIhoNg2XY3GPo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6z1Xr/ctsmbm+N28JZk7UvEqPwvENx/zMZnmtt8Vgrh9IJsjn
-	o2pma7mLv9EJgcI98MPGaSJvd7hr1PQWauPCiaBuFlBa6CSO3hSHcyoNcamIAM4Ul7dJjNcO6Qy
-	ypYmG8HEITdVNNSei3uWNAYQHcIz3Get+o7h7YXHV
-X-Gm-Gg: AeBDieuUeaijZbz562vSEzTawmIPiHsIkh3pTRLRVD97ZQd7prJ6z7ECCM7y3qoKqJu
-	oDIZjrWCZ6f6F64gYI0km+oSexJdnHiCVyWd78FzyPvPwfzUIOmItzDYKdDz3eSYDzTnjvnUQo5
-	WRSqF/Qu7evISaEcN+FP64E6pqufBGlcIZqprihNqHfdnWMjY/aKXV9ILET0hJkHrhMoYWTvpo0
-	mJJkInZacKoRczztUt3AThQ0FOyrfEas6CgQrT7tEjicLl9sp/QbT6iUtVpbmLUIWqYwOekNqbx
-	oORn
-X-Received: by 2002:a05:622a:1249:b0:50d:8d63:3899 with SMTP id
- d75a77b69052e-50d8d633997mr136929461cf.14.1775557580205; Tue, 07 Apr 2026
- 03:26:20 -0700 (PDT)
+        bh=lip3owYNVh4Y6wPGr1TWEoHeQbKxzTWWmz7TOhaw338=;
+        b=QHQlUhLMiMk+jEm8Vx2FR9Q8vKwv7JP7WeOOiZaQ6r25GeFWU2pXJbKC6g5sniRXqP
+         PwPsd6EFFPFsX+4CR+nnaSsI6IKUde7pWrzKIuB12cFCDZUUtHpev/vLqEHbtauNoz+P
+         Q+SypUqjuRVCse/DsqHFW1CeGTTP5/E8SzDjrZzs3BqUnfky/nuNqyLwDePwcEpAA+8A
+         igoDSdmoEFz+ab+XlVbykcpPPfRdvtId7aBv4qDckmzXHK573tsamDAfl8I9TNzRgC1B
+         F1aBhbAHIl2hCiHhNr1yw2qSsJozuNyIrephT4GG9LhBdGLnfmWiuZx2rwyko5VRS3an
+         x0Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCU4qWa60ohHmP20lSsIcYS2ucTwH5TdM3XHE8mioeKWubr+Q3p+ikK/GDLTdYyR++cQ1eNUnNQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYifwxV3hV3aFqdc/vO/flaN7NEbC7ARpHCc682MZmFlChJ1qQ
+	AYVc29o81vQFPeKdvz5qP41wJcLypFYHeRzZ2yw4jrfVM75/yXatSYuseEd5lDId
+X-Gm-Gg: AeBDieuRp2k12ymPYUqX1iUU/aNkBAqxsenKwN25IesDjvU8FnEFM5noqM0kaDExlTm
+	c812maaG/Xn968NJXxyE7dpJHYEPEW2pX6h4QbAyoWy+wqYygfOh6n2Y6ei6a8X6RESIPTkNYG1
+	gqJJ9ze2ckYHE+HxM3U7GyqzxVnxmacYgrVy/yzASIaoLgD+bKj1qqpt1XHsZkFo+xF1PuVsnsu
+	JOXm4RoBjktKiQ96l3GudhHIN+BQB0D9X4Bbf8rKyGtF8hUeLPRiRUOjWYBQ0c1rWhS4MqqNLep
+	xNiiRl3zPZpqlTwHCQAc/c40XJAGuacZA0edjbZC8ZtEAqqy0RYNtQStb3GFqnhi/5BJ0FEJO4O
+	fBfTxD3b4FvCb88G48RdSCyANmf30wcuE1DdXU4u1Fq2/v2Xvf1MDx/w2zIG948l5FFanDSjUeU
+	iIOEuQUmDGHxtlGqBAp5oZzhcMT+DKy3sWu9KXoZCGzp1F0WaSBPSPq62EzKZRZMQG
+X-Received: by 2002:a05:600c:1c0f:b0:488:b99b:4177 with SMTP id 5b1f17b1804b1-488b99b7636mr55064655e9.25.1775557879563;
+        Tue, 07 Apr 2026 03:31:19 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488a91686f9sm273581495e9.10.2026.04.07.03.31.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 03:31:19 -0700 (PDT)
+Date: Tue, 7 Apr 2026 11:31:17 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel test robot
+ <lkp@intel.com>
+Subject: Re: [PATCH] printf: mark errptr() noinline
+Message-ID: <20260407113117.79cf04e8@pumpkin>
+In-Reply-To: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
+References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALynFi7k1Z7Vgr4p2=KH2-uWVntBRE5R+8uP=cds9_ihGqzOdQ@mail.gmail.com>
-In-Reply-To: <CALynFi7k1Z7Vgr4p2=KH2-uWVntBRE5R+8uP=cds9_ihGqzOdQ@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 7 Apr 2026 03:26:07 -0700
-X-Gm-Features: AQROBzBvseGXPkhLNOfBdhgZCT4vkc3IixRgnkzZF_KK-emNhgc1oy5s8O1gXuY
-Message-ID: <CANn89iK4qxTrdTi_F9_kHDjxZ4F-7eyRcBTHimaugZOQP8bGeA@mail.gmail.com>
-Subject: Re: [PATCH net] net: rtnetlink: zero ifla_vf_broadcast to avoid stack
- infoleak in rtnl_fill_vfinfo
-To: Kai Zen <kai.aizen.dev@gmail.com>
-Cc: netdev@vger.kernel.org, edwin.peer@broadcom.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org, 
-	security@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233546-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-233547-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E01123ACD08
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 70FF63ACF3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 7, 2026 at 3:22=E2=80=AFAM Kai Zen <kai.aizen.dev@gmail.com> wr=
-ote:
->
-> rtnl_fill_vfinfo() declares struct ifla_vf_broadcast on the stack
-> without initialisation:
->
->     struct ifla_vf_broadcast vf_broadcast;
->
-> The struct contains a single fixed 32-byte field:
->
->     /* include/uapi/linux/if_link.h */
->     struct ifla_vf_broadcast {
->             __u8 broadcast[32];
->     };
->
-> The function then copies dev->broadcast into it using dev->addr_len
-> as the length:
->
->     memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
->
-> On Ethernet devices (the overwhelming majority of SR-IOV NICs)
-> dev->addr_len is 6, so only the first 6 bytes of broadcast[] are
-> written. The remaining 26 bytes retain whatever was previously on
-> the kernel stack. The full struct is then handed to userspace via:
->
->     nla_put(skb, IFLA_VF_BROADCAST,
->             sizeof(vf_broadcast), &vf_broadcast)
->
-> leaking up to 26 bytes of uninitialised kernel stack per VF per
-> RTM_GETLINK request, repeatable.
->
-> The other vf_* structs in the same function are explicitly zeroed
-> for exactly this reason - see the memset() calls for ivi,
-> vf_vlan_info, node_guid and port_guid a few lines above.
-> vf_broadcast was simply missed when it was added.
->
-> The pattern used elsewhere in this file for the regular IFLA_BROADCAST
-> attribute also avoids the issue by sending only dev->addr_len bytes
-> rather than a fixed-size struct, but for IFLA_VF_BROADCAST the wire
-> format is the fixed 32-byte struct, so the right fix is to zero the
-> struct before the partial memcpy.
->
-> Reachability and impact
-> -----------------------
->
-> The leak is reachable by any unprivileged local process. AF_NETLINK
-> with NETLINK_ROUTE requires no capabilities. The only environmental
-> requirement is that the host has at least one SR-IOV-capable
-> interface present (a parent device with VFs), which is the common
-> case for cloud, datacenter and HPC hosts.
->
-> Trigger: send RTM_GETLINK with an IFLA_EXT_MASK attribute whose
-> value has the RTEXT_FILTER_VF bit set. The kernel will then walk
-> each VF and emit IFLA_VFINFO_LIST, including IFLA_VF_BROADCAST,
-> which carries the 26 bytes of uninitialised stack per VF.
->
-> Stack residue at this call site can include return addresses
-> (useful as a KASLR / function-pointer disclosure primitive) and
-> transient sensitive data left over by whatever ran on the same
-> kernel stack just prior. KASAN with stack instrumentation, or
-> KMSAN, will flag the nla_put() when reproduced.
->
-> Reproducer (unprivileged):
->
->     import socket, struct
->     IFLA_EXT_MASK   =3D 29
->     RTEXT_FILTER_VF =3D 1
->     s =3D socket.socket(socket.AF_NETLINK, socket.SOCK_RAW,
->                       socket.NETLINK_ROUTE)
->     s.bind((0, 0))
->     hdr  =3D struct.pack('=3DIHHII', 0, 18, 0x301, 0, 0)
->     ifi  =3D struct.pack('=3DBxHiII', 0, 0, 0, 0, 0)
->     attr =3D (struct.pack('=3DHH', 8, IFLA_EXT_MASK) +
->             struct.pack('=3DI', RTEXT_FILTER_VF))
->     msg  =3D hdr + ifi + attr
->     msg  =3D struct.pack('=3DI', len(msg)) + msg[4:]
->     s.send(msg)
->     data =3D s.recv(65536)
->     # Parse IFLA_VF_BROADCAST from the response. Bytes 7..32 of the
->     # broadcast[] field are uninitialised kernel stack on Ethernet.
->
-> Fix
-> ---
->
-> Zero the on-stack struct before the partial memcpy, matching the
-> existing pattern used for the other vf_* structs in the same
-> function.
->
-> Reported-by: Kai Aizen <kai.aizen.dev@gmail.com>
-> Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
-> ---
->
-> Note for reviewers: this is v1. I have not yet identified the
-> exact introducing commit for the Fixes: tag and would appreciate
-> a pointer, or I will resend as v2 once I have run git blame on a
-> local checkout. The bug is present at least as far back as the
-> introduction of struct ifla_vf_broadcast in net-next.
+On Sun, 05 Apr 2026 13:31:50 -0400
+Tamir Duberstein <tamird@kernel.org> wrote:
 
-Fixes: 75345f888f70 ("ipoib: show VF broadcast address")
->
->  net/core/rtnetlink.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-> --- a/net/core/rtnetlink.c
-> +++ b/net/core/rtnetlink.c
-> @@ -1572,6 +1572,7 @@ static noinline_for_stack int
-> rtnl_fill_vfinfo(struct sk_buff *skb,
->                 port_guid.vf =3D ivi.vf;
->
->         memcpy(vf_mac.mac, ivi.mac, sizeof(ivi.mac));
-> +       memset(&vf_broadcast, 0, sizeof(vf_broadcast));
->         memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
->         vf_vlan.vlan =3D ivi.vlan;
->         vf_vlan.qos =3D ivi.qos;
-> --
-> 2.43.0
+> Old GCC can miscompile printf_kunit's errptr() test when branch
+> profiling is enabled. BUILD_BUG_ON(IS_ERR(PTR)) is a constant false
+> expression, but CONFIG_TRACE_BRANCH_PROFILING and
+> CONFIG_PROFILE_ALL_BRANCHES make the IS_ERR() path side-effectful.
+> GCC's IPA splitter can then outline the cold assert arm into
+> errptr.part.* and leave that clone with an unconditional
+> __compiletime_assert_*() call, causing a false build failure.
+> 
+> This started showing up after test_hashed() became a macro and moved its
+> local buffer into errptr(), which changed GCC's inlining and splitting
+> decisions enough to expose the compiler bug.
+> 
+> Mark errptr() noinline to keep it out of that buggy IPA path while
+> preserving the BUILD_BUG_ON(IS_ERR(PTR)) check and the macro-based
+> printf argument checking.
+
+Why not convert that check to a run-time one?
+It isn't as though IS_ERR() is usually used with constants.
+
+(There are a lot of other tests which would be better as compile-time
+ones; since the run-time code just checks the compiler generated
+the correct constant. So a compile failure saves you having to run
+the tests; but that isn't true here.)
+
+I'd also test -4095 and -4096...
+
+> 
+> Fixes: 9bfa52dac27a ("printf: convert test_hashed into macro")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202604030636.NqjaJvYp-lkp@intel.com/
+> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+> ---
+>  lib/tests/printf_kunit.c | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/tests/printf_kunit.c b/lib/tests/printf_kunit.c
+> index f6f21b445ece..a8087e8ac826 100644
+> --- a/lib/tests/printf_kunit.c
+> +++ b/lib/tests/printf_kunit.c
+> @@ -749,7 +749,23 @@ static void fourcc_pointer(struct kunit *kunittest)
+>  	fourcc_pointer_test(kunittest, try_cb, ARRAY_SIZE(try_cb), "%p4cb");
+>  }
+>  
+> -static void
+> +/*
+> + * GCC < 12.1 can miscompile this test when branch profiling is enabled.
+> + *
+> + * BUILD_BUG_ON(IS_ERR(PTR)) is a constant false expression, but old GCC can
+> + * still trip over it after CONFIG_TRACE_BRANCH_PROFILING and
+> + * CONFIG_PROFILE_ALL_BRANCHES rewrite the IS_ERR() unlikely() path into
+> + * side-effectful branch counter updates. IPA splitting then outlines the cold
+> + * assert arm into errptr.part.* and leaves that clone with an unconditional
+> + * __compiletime_assert_*() call, so the build fails even though PTR is not an
+> + * ERR_PTR.
+> + *
+> + * Keep this test out of that buggy IPA path so the BUILD_BUG_ON() can stay in
+> + * place without open-coding IS_ERR(). This can be removed once the minimum GCC
+> + * includes commit 76fe49423047 ("Fix tree-optimization/101941: IPA splitting
+> + * out function with error attribute"), which first shipped in GCC 12.1.
+> + */
+> +static noinline void
+
+While that might make a difference, I'm not sure that it has to.
+You aren't changing anything directly related to the failing expansion.
+
+	David
+
+>  errptr(struct kunit *kunittest)
+>  {
+>  	test("-1234", "%pe", ERR_PTR(-1234));
+> 
+> ---
+> base-commit: d8a9a4b11a137909e306e50346148fc5c3b63f9d
+> change-id: 20260405-printf-test-old-gcc-f13fecda6524
+> 
+> Best regards,
+> --  
+> Tamir Duberstein <tamird@kernel.org>
+> 
+> 
+
 
