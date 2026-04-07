@@ -1,96 +1,81 @@
-Return-Path: <stable+bounces-233689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIwTEhM11WnY2gcAu9opvQ
-	(envelope-from <stable+bounces-233689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:47:15 +0200
+	id iIQHFGs21WmP2wcAu9opvQ
+	(envelope-from <stable+bounces-233690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:52:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDE83B200C
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:47:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C60EC3B218A
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDE5D3038EF6
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:45:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C6E83025A74
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7477C3CFF6C;
-	Tue,  7 Apr 2026 16:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7039F3D0912;
+	Tue,  7 Apr 2026 16:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HwKpMidJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HH6LlkeR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472623CEB8A
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 16:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD903CFF4F
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 16:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775580332; cv=none; b=YMcWfPrR6JZ9g7pkbBG4YqVyWhO+anHrPovS63KvrEVBDnzhh0ZTQkm5P5AXSIBx3dHz92q030ZwIFhD2Vzxf2UeW7f8gBPWWLu5xDNXberFLJXQ40apyISHOjvK1Gl0UPq7E1pUV/a01E+QEzR7CGDdQoBXlVqQcuUnjUldHYg=
+	t=1775580771; cv=none; b=TzT8zkpY4VywCEmmvh57u6EFkDvjTtwmIfsnyMVzvSf9nma0W5xaGZ0HiJNYoKA/fCQSLezZ9+pHNj+8vw5ynN6OpcnM4CftgZ2RO0quMX6EMZp3eW4bgx0KyhPFQpF1q/VpbC/WGs+oQ/hpAwa4P5ISD4GrMpaj3eoalqhMg4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775580332; c=relaxed/simple;
-	bh=f5xgWFoHlxDGIzM61JqlzIzWWv8eJwK0O4pMM5aCB+o=;
+	s=arc-20240116; t=1775580771; c=relaxed/simple;
+	bh=nFIGkKG8ERZw3LskQwiey0gRWDtyMc5pMYVuMLIpg/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCS867LUgCImRAEmsuIEZ6X6/AowpVj5n89FQffHmS+/FL1nSzsrHt2HiWjvkiba0OGJ/mQnPSay57u6cmnWfY5jgFB5KphY2lJ1Ok/Yse9rEJGUkaQxFLmm5AOGrJIUmWc1JgQBu6+KJ56+uS7uKwBfhWv3Vyfo4awOdIqtSII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HwKpMidJ; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-89cc71f4311so69420596d6.3
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 09:45:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775580329; x=1776185129; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EVD3gsLs5pyKc/GN8/ouN0bgbaQzwLmJCimCeB/EV+Q=;
-        b=HwKpMidJRnNdNtG3qGmAuXrCcZphHzBWIVDcYP4vFE83N9ro/BZ/DfQwDwqOz3lhY9
-         CVv8UIb/LXWWuwCy1ekWx47zzObKPT2gw4CKZXr7RgM0tmbfrHoJDKLzRbCC16mNeeY4
-         jEsHoLVlGZloQDQJUeW/Prrqh9uXdePho59W9V6ykr/E29EixkZ3RJuGkZW56c6obGT3
-         +g9QMphOU2sNN3y8drvf57ctdE4J9SESJKZeAvfKdFa0/iGAsEeRrMZmmxrtoXICGUgG
-         HgqiF9ZhqEDCvf+7tApH5WesmHoITjgIsxyD+Vnra8pYeNNcE08q+5GmDzca+amo2NMl
-         hLEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775580329; x=1776185129;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EVD3gsLs5pyKc/GN8/ouN0bgbaQzwLmJCimCeB/EV+Q=;
-        b=D1syaaVFCpSXzzgy2EmT8iLP3VTBji1Df7O4D6YAx3SxKwtCvDT6kkfR2bkcvmm9E7
-         G/VX+qY38mRfoapWymKOlk/3DDWBUc4GtL6asQ64jI15JoO2bkPHf2xuQP+6r96rqkhN
-         NGQlvUqQ8xild4N4MyBr/TiyzFmJxLscc1sAF+Sa5/bcPBXMdj75hUd9veJ79Z2a4JiO
-         tZeTRiIc6r2mvSX6QxTWXn9E6HBsv9PqKJO1nFOQMPpgRTlhyV8z+UnyBEGcOSukWNFI
-         a+gZTyhxhD39AGyOkUGSjx4u6cDOJGMpz6aC3lwPUJb0LWQOjSbQzaxGsDGDG471/XDq
-         wqnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVtI+YK5Kim6etLs0AgiKFI6Mz+4l3E0I854gXBDfGvMMb/OtQZcJdzKHBrorUyvJ0GSfTSsXE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1RB/bbDveTD3k+PczPlvt0Kf9Nyp02rG98BGqOGdxCyhwPuwl
-	mCwCKHAMsxz2GP9XvmkBYQ+vW5OFygWQ+TVpChN2rbi1q0TyhwsMqukd
-X-Gm-Gg: AeBDieuxrsur7e9AmsHzTJvGpVXoBG6njnj7iGB9kerir0XoKa/n93xZtOnYPR1QTD5
-	WEk0omQddNLX0CqAuMiQw99x0b4W840rIDahOBJmMo1gurMHGkh619N0KQ2R//lpe//1thK5V89
-	ADWI7Ah57uD3wDhtO7CRc5/dsUoSsqpd7kZVMSPb6XjZMJNIucFVvny37dUf+jA89iE33Y7F5qQ
-	XHoaLsE6EUNxC9spWPSROvpjW3nVA4Kiy5F/0H3x7Vcc/Lt60UeIKqQG7nVPds3D9l/HO4UerBz
-	ogpkSIF6QHQK+mKEk/iUZPoZVlTXrK8eXTlV7MYdWNDbBpEp9BrB3BHHZEpcBw46+STff5oR5Tu
-	5aoPrpnpqnHsYqZDngX5TUd0o77pUjYPjQK8FSi6+K3MofGE+Dg9uy8/QqEUH13qpXT8NKjoW77
-	YHNZRzZjuDwCJa0j6lJ7xi+5uaBDZ69quiHpLgXRS25l399wn3XrCz/Tg779FserdqDvTpTYKgk
-	z32Eg761M+Qs0PK0n9SbWW97Y4=
-X-Received: by 2002:a05:6214:258c:b0:89c:d50e:b57 with SMTP id 6a1803df08f44-8a7023c032dmr293344546d6.15.1775580329106;
-        Tue, 07 Apr 2026 09:45:29 -0700 (PDT)
-Received: from workstation1 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8aa70136e87sm62044156d6.22.2026.04.07.09.45.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 09:45:28 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Michael Bommarito <michael.bommarito@gmail.com>,
+	 MIME-Version; b=idGf2upWDldlBGLAN8f/rulBadpsMphw5rDt4TbJq9uPp8c+1PXgesf6iXH94EVH/P8PHNZk89PqYaTPRsHqVV1EHHWkZZwI48OjpMzfpHLu0hG0K+I3e5BgSzFQ8JHqs25J+4uv6MleDuBQb0ehLu/HlWHrZEnIe+cVyzUsZXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HH6LlkeR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775580768;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EKZFBsNheoLVD5sdC0UG4DuUe2CBvyHTNlwHzswNDWM=;
+	b=HH6LlkeRkrk9t8W0pDw8FrUYbgyDQPB/EezCbnr1R/8IdrdqOakCkrbeKVH1qjTWZ+iHH1
+	lEg3iy+SfMoB6xLRjEaVswrLbw1mC9oS5nEGxyqB0NSp0swq8251UVUYk8s2flsMoyuOsE
+	FDE9FpzBFUmlPeAO4uYVOFpSUBkftoI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-PWVNoNMPMwyCIBh0gDqkCw-1; Tue,
+ 07 Apr 2026 12:52:47 -0400
+X-MC-Unique: PWVNoNMPMwyCIBh0gDqkCw-1
+X-Mimecast-MFC-AGG-ID: PWVNoNMPMwyCIBh0gDqkCw_1775580764
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A489B195608C;
+	Tue,  7 Apr 2026 16:52:44 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.48])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1617C300019F;
+	Tue,  7 Apr 2026 16:52:40 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: netdev@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org,
+	jesse.brandeburg@intel.com,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] um: drivers: use libc strrchr() in cow_user.o
-Date: Tue,  7 Apr 2026 12:44:35 -0400
-Message-ID: <20260407164435.726012-2-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260407164435.726012-1-michael.bommarito@gmail.com>
-References: <20260407164435.726012-1-michael.bommarito@gmail.com>
+Subject: [PATCH net v2 3/4] iavf: send MAC change request synchronously
+Date: Tue,  7 Apr 2026 18:52:05 +0200
+Message-ID: <20260407165206.1121317-4-jtornosm@redhat.com>
+In-Reply-To: <20260407165206.1121317-1-jtornosm@redhat.com>
+References: <20260407165206.1121317-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,123 +83,304 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233690-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233689-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.977];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DCDE83B200C
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C60EC3B218A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Building ARCH=um on a host with glibc >= 2.43 fails:
+After commit ad7c7b2172c3 ("net: hold netdev instance lock during sysfs
+operations"), iavf_set_mac() is called with the netdev instance lock
+already held.
 
-  arch/um/drivers/cow_user.c:156:17: error: implicit declaration of
-  function 'strrchr' [-Wimplicit-function-declaration]
+The function queues a MAC address change request via
+iavf_replace_primary_mac() and then waits for completion. However, in
+the current flow, the actual virtchnl message is sent by the watchdog
+task, which also needs to acquire the netdev lock to run. Additionally,
+the adminq_task which processes virtchnl responses also needs the netdev
+lock.
 
-cow_user.o is a host-side helper (compiled with -D__UM_HOST__) that
-calls libc strrchr().  It inherits the global -Dstrrchr=kernel_strrchr
-remap from arch/um/Makefile, which is intentionally kept in USER_CFLAGS
-to prevent linker clashes between libc and kernel symbols.
+This creates a deadlock scenario:
+1. iavf_set_mac() holds netdev lock and waits for MAC change
+2. Watchdog needs netdev lock to send the request -> blocked
+3. Even if request is sent, adminq_task needs netdev lock to process
+   PF response -> blocked
+4. MAC change times out after 2.5 seconds
+5. iavf_set_mac() returns -EAGAIN
 
-This combination was harmless until glibc 2.43, which added (glibc
-commit cd748a63ab1a, "Implement C23 const-preserving standard library
-macros"):
+This particularly affects VFs during bonding setup when multiple VFs are
+enslaved in quick succession.
 
-  #define strrchr(S,C) __glibc_const_generic(S, const char *, strrchr(S, C))
+Fix by implementing a synchronous MAC change operation similar to the
+approach used in commit fdadbf6e84c4 ("iavf: fix incorrect reset handling
+in callbacks").
 
-The glibc function-like macro replaces the -D object-like macro.  The
-inner strrchr token in the expansion is protected from recursive
-expansion, so it refers to the bare symbol strrchr -- but the header
-declaration was already rewritten to kernel_strrchr by the -D.  The
-result is an implicit-declaration error.
+The solution:
+1. Send the virtchnl ADD_ETH_ADDR message directly (not via watchdog)
+2. Poll the admin queue hardware directly for responses
+3. Process all received messages (including non-MAC messages)
+4. Return when MAC change completes or times out
 
-The remap was originally added in commit 2c51a4bc0233 ("um: fix
-strrchr() problems") to resolve a linker clash when both
-CONFIG_STATIC_LINK and CONFIG_UML_NET_VDE are set.  Recently, commit
-a74b6c0e53a6 ("um: Don't rename vmap to kernel_vmap") trimmed
-the now-obsolete vmap remap from arch/um/Makefile and updated the
-comment to explicitly call out -Dstrrchr=kernel_strrchr as one of the
-remaps that still prevents libc symbol clashes.  That framing is kept
-here: the global strrchr remap is still needed for kernel-side
-objects, but cow_user.o is host-side and should use libc strrchr
-directly.
+A new generic function iavf_poll_virtchnl_response() is introduced that
+can be reused for any future synchronous virtchnl operations. It takes a
+callback to check completion, allowing flexible condition checking.
 
-cow_user.o is built whenever CONFIG_BLK_DEV_UBD=y (the standard UML
-block device), so this affects most non-trivial UML configurations.
-cow_user.c is the only file under arch/um/ that calls strrchr().
+This allows the operation to complete synchronously while holding
+netdev_lock, without relying on watchdog or adminq_task. The function
+can sleep for up to 2.5 seconds polling hardware, but this is acceptable
+since netdev_lock is per-device and only serializes operations on the
+same interface.
 
-Fix this by undoing the remap for just this translation unit via
-per-object CFLAGS.  In UML's Makefile.rules, CFLAGS_$(basetarget).o
-is appended after USER_CFLAGS, so -Ustrrchr correctly overrides the
-earlier -Dstrrchr=kernel_strrchr.
+To support this, change iavf_add_ether_addrs() to return an error code
+instead of void, allowing callers to detect failures.
 
-Standalone reproducer (fails on glibc >= 2.43, succeeds on older):
-
-  printf '#include <string.h>\nvoid f(void) { char *p = strrchr("foo", 47); }\n' \
-    | gcc -c -Dstrrchr=kernel_strrchr -x c - -o /dev/null
-
-Tested on:
-  - Host: Ubuntu, glibc 2.43-2ubuntu1, gcc 15.2.0
-  - Kernel: v7.0.0-rc6 (3aae9383f42f)
-  - Build: ARCH=um defconfig + CONFIG_BLK_DEV_UBD=y, clean compile
-  - Boot: UML boots to Debian bookworm multi-user target
-  - COW: UML boots with COW overlay (ubd0=cow,backing), exercising
-    the absolutize() -> strrchr() path in cow_user.c
-
-AI coding tools (Claude Code with Opus 4.6, and Codex with GPT-5.4)
-assisted with debugging, test design, and drafting; the author
-manually reviewed every line and executed every build and boot test
-on the host.  Full disclosure in the cover letter.
-
-Fixes: 2c51a4bc0233 ("um: fix strrchr() problems")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Fixes: ad7c7b2172c3 ("net: hold netdev instance lock during sysfs operations")
+cc: stable@vger.kernel.org
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
- arch/um/drivers/Makefile | 3 +++
- 1 file changed, 3 insertions(+)
+v2: Complete rewrite using synchronous polling approach instead of dropping
+    the netdev lock. New approach:
+    - Polls admin queue hardware directly (similar to iavf_reset_step)
+    - Processes all virtchnl messages inline while holding netdev_lock
+    - Introduced generic iavf_poll_virtchnl_response() for code reuse
+    - No lock dropping, following accepted pattern from ndo_change_mtu fix
+v1: https://lore.kernel.org/netdev/20260406112057.906685-4-jtornosm@redhat.com/
 
-diff --git a/arch/um/drivers/Makefile b/arch/um/drivers/Makefile
-index 36dc57840..e387ae33f 100644
---- a/arch/um/drivers/Makefile
-+++ b/arch/um/drivers/Makefile
-@@ -49,6 +49,9 @@ obj-$(CONFIG_UML_PCI_OVER_VFIO) += vfio_uml.o
- # pcap_user.o must be added explicitly.
- USER_OBJS := fd.o null.o pty.o tty.o xterm.o vector_user.o
- CFLAGS_null.o = -DDEV_NULL=$(DEV_NULL_PATH)
-+# cow_user.o is a host-side helper that uses libc strrchr(); undo the global
-+# UML remap to kernel_strrchr for this translation unit.
-+CFLAGS_cow_user.o += -Ustrrchr
+ drivers/net/ethernet/intel/iavf/iavf.h        |   2 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 118 +++++++++++++++---
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   |  11 +-
+ 3 files changed, 110 insertions(+), 21 deletions(-)
 
- CFLAGS_xterm.o += '-DCONFIG_XTERM_CHAN_DEFAULT_EMULATOR="$(CONFIG_XTERM_CHAN_DEFAULT_EMULATOR)"'
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index e9fb0a0919e3..5bc23519fe9c 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -589,7 +589,7 @@ void iavf_configure_queues(struct iavf_adapter *adapter);
+ void iavf_enable_queues(struct iavf_adapter *adapter);
+ void iavf_disable_queues(struct iavf_adapter *adapter);
+ void iavf_map_queues(struct iavf_adapter *adapter);
+-void iavf_add_ether_addrs(struct iavf_adapter *adapter);
++int iavf_add_ether_addrs(struct iavf_adapter *adapter);
+ void iavf_del_ether_addrs(struct iavf_adapter *adapter);
+ void iavf_add_vlans(struct iavf_adapter *adapter);
+ void iavf_del_vlans(struct iavf_adapter *adapter);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 67aa14350b1b..2ef30b1ef35c 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1047,6 +1047,105 @@ static bool iavf_is_mac_set_handled(struct net_device *netdev,
+ 	return ret;
+ }
+ 
++/**
++ * iavf_poll_virtchnl_response - Poll admin queue for virtchnl response
++ * @adapter: board private structure
++ * @condition: callback to check if desired response received
++ * @cond_data: context data passed to condition callback
++ * @timeout_ms: maximum time to wait in milliseconds
++ *
++ * Polls admin queue and processes all messages until condition returns true
++ * or timeout expires. Caller must hold netdev_lock. This can sleep for up to
++ * timeout_ms while polling hardware.
++ *
++ * Returns 0 on success (condition met), -EAGAIN on timeout or error
++ */
++static int iavf_poll_virtchnl_response(struct iavf_adapter *adapter,
++				       bool (*condition)(struct iavf_adapter *, void *),
++				       void *cond_data,
++				       unsigned int timeout_ms)
++{
++	struct iavf_hw *hw = &adapter->hw;
++	struct iavf_arq_event_info event;
++	enum virtchnl_ops v_op;
++	enum iavf_status v_ret;
++	unsigned long timeout;
++	int ret;
++
++	netdev_assert_locked(adapter->netdev);
++
++	event.buf_len = IAVF_MAX_AQ_BUF_SIZE;
++	event.msg_buf = kzalloc(event.buf_len, GFP_KERNEL);
++	if (!event.msg_buf)
++		return -ENOMEM;
++
++	timeout = jiffies + msecs_to_jiffies(timeout_ms);
++	while (time_before(jiffies, timeout)) {
++		if (condition(adapter, cond_data)) {
++			ret = 0;
++			goto out;
++		}
++
++		ret = iavf_clean_arq_element(hw, &event, NULL);
++		if (!ret) {
++			v_op = (enum virtchnl_ops)le32_to_cpu(event.desc.cookie_high);
++			v_ret = (enum iavf_status)le32_to_cpu(event.desc.cookie_low);
++
++			iavf_virtchnl_completion(adapter, v_op, v_ret,
++						 event.msg_buf, event.msg_len);
++
++			memset(event.msg_buf, 0, IAVF_MAX_AQ_BUF_SIZE);
++		}
++
++		usleep_range(1000, 2000);
++	}
++
++	ret = -EAGAIN;
++out:
++	kfree(event.msg_buf);
++	return ret;
++}
++
++/**
++ * iavf_mac_change_done - Check if MAC change completed
++ * @adapter: board private structure
++ * @data: MAC address being checked (as void *)
++ *
++ * Callback for iavf_poll_virtchnl_response() to check if MAC change completed.
++ *
++ * Returns true if MAC change completed, false otherwise
++ */
++static bool iavf_mac_change_done(struct iavf_adapter *adapter, void *data)
++{
++	const u8 *addr = data;
++
++	return iavf_is_mac_set_handled(adapter->netdev, addr);
++}
++
++/**
++ * iavf_set_mac_sync - Synchronously change MAC address
++ * @adapter: board private structure
++ * @addr: MAC address to set
++ *
++ * Sends MAC change request to PF and polls admin queue for response.
++ * Caller must hold netdev_lock. This can sleep for up to 2.5 seconds.
++ *
++ * Returns 0 on success or error
++ */
++static int iavf_set_mac_sync(struct iavf_adapter *adapter, const u8 *addr)
++{
++	int ret;
++
++	netdev_assert_locked(adapter->netdev);
++
++	ret = iavf_add_ether_addrs(adapter);
++	if (ret)
++		return ret;
++
++	return iavf_poll_virtchnl_response(adapter, iavf_mac_change_done,
++					   (void *)addr, 2500);
++}
++
+ /**
+  * iavf_set_mac - NDO callback to set port MAC address
+  * @netdev: network interface device structure
+@@ -1067,25 +1166,12 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
+ 		return -EADDRNOTAVAIL;
+ 
+ 	ret = iavf_replace_primary_mac(adapter, addr->sa_data);
+-
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = wait_event_interruptible_timeout(adapter->vc_waitqueue,
+-					       iavf_is_mac_set_handled(netdev, addr->sa_data),
+-					       msecs_to_jiffies(2500));
+-
+-	/* If ret < 0 then it means wait was interrupted.
+-	 * If ret == 0 then it means we got a timeout.
+-	 * else it means we got response for set MAC from PF,
+-	 * check if netdev MAC was updated to requested MAC,
+-	 * if yes then set MAC succeeded otherwise it failed return -EACCES
+-	 */
+-	if (ret < 0)
+-		return ret;
+-
+-	if (!ret)
+-		return -EAGAIN;
++	ret = iavf_set_mac_sync(adapter, addr->sa_data);
++	if (ret)
++		return ret;
+ 
+ 	if (!ether_addr_equal(netdev->dev_addr, addr->sa_data))
+ 		return -EACCES;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index a52c100dcbc5..fdddf4b033ca 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -555,8 +555,10 @@ iavf_set_mac_addr_type(struct virtchnl_ether_addr *virtchnl_ether_addr,
+  * @adapter: adapter structure
+  *
+  * Request that the PF add one or more addresses to our filters.
++ *
++ * Returns 0 on success or error
+  **/
+-void iavf_add_ether_addrs(struct iavf_adapter *adapter)
++int iavf_add_ether_addrs(struct iavf_adapter *adapter)
+ {
+ 	struct virtchnl_ether_addr_list *veal;
+ 	struct iavf_mac_filter *f;
+@@ -568,7 +570,7 @@ void iavf_add_ether_addrs(struct iavf_adapter *adapter)
+ 		/* bail because we already have a command pending */
+ 		dev_err(&adapter->pdev->dev, "Cannot add filters, command %d pending\n",
+ 			adapter->current_op);
+-		return;
++		return -EBUSY;
+ 	}
+ 
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+@@ -580,7 +582,7 @@ void iavf_add_ether_addrs(struct iavf_adapter *adapter)
+ 	if (!count) {
+ 		adapter->aq_required &= ~IAVF_FLAG_AQ_ADD_MAC_FILTER;
+ 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
+-		return;
++		return 0;
+ 	}
+ 	adapter->current_op = VIRTCHNL_OP_ADD_ETH_ADDR;
+ 
+@@ -595,7 +597,7 @@ void iavf_add_ether_addrs(struct iavf_adapter *adapter)
+ 	veal = kzalloc(len, GFP_ATOMIC);
+ 	if (!veal) {
+ 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
+-		return;
++		return -ENOMEM;
+ 	}
+ 
+ 	veal->vsi_id = adapter->vsi_res->vsi_id;
+@@ -617,6 +619,7 @@ void iavf_add_ether_addrs(struct iavf_adapter *adapter)
+ 
+ 	iavf_send_pf_msg(adapter, VIRTCHNL_OP_ADD_ETH_ADDR, (u8 *)veal, len);
+ 	kfree(veal);
++	return 0;
+ }
+ 
+ /**
+-- 
+2.53.0
 
---
-2.49.0
 
