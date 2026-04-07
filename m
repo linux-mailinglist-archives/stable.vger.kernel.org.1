@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-233532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233533-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BXrAqDR1GlJxwcAu9opvQ
-	(envelope-from <stable+bounces-233532-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 11:42:56 +0200
+	id 6D3uMaHR1GlJxwcAu9opvQ
+	(envelope-from <stable+bounces-233533-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 11:42:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1C13AC392
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 11:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0B73AC39F
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 11:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A0A1300E245
+	by tor.lore.kernel.org (Postfix) with ESMTP id CC7E9300E612
 	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 09:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945BD3A6B8C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B943A6B95;
 	Tue,  7 Apr 2026 09:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jW3wgnem"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QY6PiRkZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551CF3A5E76;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55152397E9F;
 	Tue,  7 Apr 2026 09:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775554967; cv=none; b=YUD/rkKNNwcwYpKQyC3L2yQOANIkmSaWihKy1ly+NT+d1FtUZ92oAAJ8432CBk8ycCKdG6Cps5FbilwtUWJ0gdpJV/VKml4B8XJEQa2c9Snxuj37ctL2/1iBNE3Gbvm7+Jsh+MXj0NlILT7c1l1JzarOX0E3dORSXboON35zG2g=
+	t=1775554967; cv=none; b=dkYCjLJDaZP3+9wDUxhZqQylf9kxmp/ktT8D6SajVddums4NYpl3TCTvJpbiZYSMfysN4pl8HPPw4MD05Z5i3smlp7y9Wgf2gXhisRUhBvWd5NXfpkaILCv4hbd/YAb4uLZcr0Bwb1WGiO3fTnWP2xBcUF/ztosk2YiK0yHWV1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775554967; c=relaxed/simple;
-	bh=zmNvE6/0KN3rnr8Lx3KqmuGUV0sLuzke8vWNh+k+5yY=;
+	bh=y/MUDuKf1fp3qW2A2KMP8ftGm+5U0I/jI3IAY3322ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phGUIlJSSehogLQ1GS+v9iY8YPmFT2XyvhlSKptr57psGZQxlZfk2+LZS5M2mRQ7gtYV4sP7EMLdiw0+ecjBbSUs/ZMTtRg+2OZHXMDdk+tejKJAFUvpoGgdYv6wDVft1q2A40ZjPNN7vLOJAlEbSetONEI6T28pQ/Tn3Qix/xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jW3wgnem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1288BC2BCB0;
+	 MIME-Version; b=s6jlx/r9TqERQs69N8LQBUJ67WM7XJWAdDa+FjVzypEXAmOFQuF9CgdEwdXwPbl2p31a6f8aBmmYTHGOuDUmOTr1d9agjoIhzKMlTXHhJxZMNjymOfAmftMEwwVTXStbtwvnaSZTyNAymD7Pu0xbdPFXW71lPN78sGnQx7yfcMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QY6PiRkZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E40AC116C6;
 	Tue,  7 Apr 2026 09:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775554967;
-	bh=zmNvE6/0KN3rnr8Lx3KqmuGUV0sLuzke8vWNh+k+5yY=;
+	bh=y/MUDuKf1fp3qW2A2KMP8ftGm+5U0I/jI3IAY3322ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jW3wgnem+R6ZIBuuF7iS9QtfD4woi3kRbG7RGOaTFN/HwaG6vaoi/S4FCIhQ6RKJM
-	 We6y0mIHPaUWUVOiBiM8M73tNZV4QU3zpJ+4S89gcHXVTirriV5e/tsVvEEFvf67ts
-	 1Yo+v9WLrL7GiLLY2oC0PIT91iqVuv4/E44fU2sqaiss6dVoO1B+2DVBOVjisRKLSa
-	 duF+33lwavnV3m/w6Y4AwyU4XYrnikNtx03rl3flAmAd4pIEiDR3nUllUPc+64gfmd
-	 yKD104FA2xCDtx65MzK0uXPIfIKl1tr9LvRYyUjZToDd//L63dzhb1WFKiZZCGuSw7
-	 yDTggDIr3pn1g==
+	b=QY6PiRkZ0Xp+NlWeoSwAZTsy/hLIjity164nLHvTYREiBC34ju2xC3Zt6YeP+6Bxt
+	 0S9h4/b1tkmrq/DrchYW0Fu+XZ7R0niJ/RP0LQMzVbhDEWV8NwqtVHPOmBRYbRzBn0
+	 rHzJdhJWHSpVljqxl//XDvS19Pi68paD+zBLiU7yz1sPgTYSmrTXdl0Q2z8S8TO0Jp
+	 6TmnPDjOuAD4F7D0YK0ZlATv6Sbwm+Od9xmRgS7BtMAJKi+ft9iwT1u4HrJ7Df82rc
+	 457J88B0zJoLg72R+7QKQPWVO6FHu5m0kD6IVCNzp0rxlRtmzYjKkJggSYGzmbCQpH
+	 wp041ba9/Ge9g==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wA2xI-0000000AnNN-3j0U;
+	id 1wA2xI-0000000AnNP-3lQe;
 	Tue, 07 Apr 2026 11:42:44 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -55,10 +55,10 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH 1/2] regulator: bq257xx: fix OF node reference imbalance
-Date: Tue,  7 Apr 2026 11:41:55 +0200
-Message-ID: <20260407094156.2573027-2-johan@kernel.org>
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 2/2] regulator: rk808: fix OF node reference imbalance
+Date: Tue,  7 Apr 2026 11:41:56 +0200
+Message-ID: <20260407094156.2573027-3-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260407094156.2573027-1-johan@kernel.org>
 References: <20260407094156.2573027-1-johan@kernel.org>
@@ -80,8 +80,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233532-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,chromium.org,vger.kernel.org,kernel.org,hotmail.com];
+	TAGGED_FROM(0.00)[bounces-233533-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,chromium.org,vger.kernel.org,kernel.org,collabora.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -97,7 +97,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9C1C13AC392
+X-Rspamd-Queue-Id: 8A0B73AC39F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -108,28 +108,28 @@ devices.
 
 Fix this by using the intended helper for reusing OF nodes.
 
-Fixes: 981dd162b635 ("regulator: bq257xx: Add bq257xx boost regulator driver")
-Cc: stable@vger.kernel.org	# 6.18
-Cc: Chris Morgan <macromorgan@hotmail.com>
+Fixes: 5111c931f36c ("regulator: rk808: cleanup parent device usage")
+Cc: stable@vger.kernel.org	# 6.5
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/regulator/bq257xx-regulator.c | 3 +--
+ drivers/regulator/rk808-regulator.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/bq257xx-regulator.c b/drivers/regulator/bq257xx-regulator.c
-index dab8f1ab4450..711dbe045383 100644
---- a/drivers/regulator/bq257xx-regulator.c
-+++ b/drivers/regulator/bq257xx-regulator.c
-@@ -142,8 +142,7 @@ static int bq257xx_regulator_probe(struct platform_device *pdev)
- 	struct device_node *np = dev->of_node;
- 	struct regulator_config cfg = {};
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index e66408f23bb6..1e956153427e 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -2114,8 +2114,7 @@ static int rk808_regulator_probe(struct platform_device *pdev)
+ 	struct regmap *regmap;
+ 	int ret, i, nregulators;
  
 -	pdev->dev.of_node = pdev->dev.parent->of_node;
 -	pdev->dev.of_node_reused = true;
 +	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
  
- 	pdata = devm_kzalloc(&pdev->dev, sizeof(struct bq257xx_reg_data), GFP_KERNEL);
- 	if (!pdata)
+ 	regmap = dev_get_regmap(pdev->dev.parent, NULL);
+ 	if (!regmap)
 -- 
 2.52.0
 
