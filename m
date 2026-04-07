@@ -1,252 +1,181 @@
-Return-Path: <stable+bounces-233723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QB6FF6x21WlC6gcAu9opvQ
-	(envelope-from <stable+bounces-233723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 23:27:08 +0200
+	id GEReGNV21WlC6gcAu9opvQ
+	(envelope-from <stable+bounces-233724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 23:27:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041B23B506E
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 23:27:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD88B3B509A
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 23:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4761306A92D
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 21:22:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC26E300A609
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 21:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC44F36212F;
-	Tue,  7 Apr 2026 21:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE31370D73;
+	Tue,  7 Apr 2026 21:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="WwTSoHCi"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="X6GAkcee"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427A337C901;
-	Tue,  7 Apr 2026 21:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.143.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775596963; cv=fail; b=GXikYQE7zwRbVHBfAN/pbkex6CnT3m/un3X2LnfNeKpz0Pc40wQeIjuQCASYnYmEM8mTmSnxk9ZbQ0+uc/fRE2hcX6wIXeDRjHabAEvVgQYmWtvtkKGPpGhcBER3ouMuy5f46UJlefWbCtX02gR2aqFC18gfiqUIC9hR0uc+Ssk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775596963; c=relaxed/simple;
-	bh=WV3Lgnv6zp+PNJrVPRJGDRs+6Jn+NaJUuDBte67TxXM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=iZVLrz8aqzTgHWUyYt/xzOmZgFBVDHOqI5NwvPKCgVlGvAew4cqw7/9p7B1MY0rAW1m07L5odONjMZfSGlxkLWsGd8WwAGMiwQgVCSl9ZTKyYWp6TXwqIAwgg/mzPVfyZYsSd2zf7hom8RliFXJ8jMmKlWOBAQSJDhX0pR9fIGg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=WwTSoHCi; arc=fail smtp.client-ip=148.163.143.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0148664.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 637JfWio1671397;
-	Tue, 7 Apr 2026 21:22:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=WV
-	3Lgnv6zp+PNJrVPRJGDRs+6Jn+NaJUuDBte67TxXM=; b=WwTSoHCinKsxKJYCYD
-	/MxEH18+hILy1arj9osHKCLAfNKILGeBiQX7k8eK5T/1YBZpdRS0Qg334iip2VJa
-	OmVuA3t7VTtexU/kpErG3me80oXzysts28xEUj9Nqrv77vpmlDpuYO8gwFm9WDrr
-	0nekTvmphUFm3FL73x2FCbDAdazFxeQl+dMC65iOL3BSObLcwCxsJ9ygSC1hhgAh
-	7Tco8RA4JJODmiB06kFbAhUjgCBJBGC4ng8TGLdnC3XaprlYpq0Yoex8xhCi+YYS
-	7Ki2wbjdVPtaGojpXZDo6G/3XtezAIMF9WXls1tc83hCGzFNon0YKFiikEZ89ZJR
-	1q1w==
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4dcym78ffg-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 21:22:19 +0000 (GMT)
-Received: from p1wg14924.americas.hpqcorp.net (unknown [10.119.18.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id EDA392BADE;
-	Tue,  7 Apr 2026 21:22:17 +0000 (UTC)
-Received: from p1wg14926.americas.hpqcorp.net (10.119.18.115) by
- p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 7 Apr 2026 09:22:17 -1200
-Received: from p1wg14919.americas.hpqcorp.net (16.230.19.122) by
- p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Tue, 7 Apr 2026 09:22:17 -1200
-Received: from BL2PR08CU001.outbound.protection.outlook.com (192.58.206.38) by
- edge.it.hpe.com (16.230.19.122) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 7 Apr
- 2026 09:22:17 -1200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KIm5QiwXuHF/LyVwlMFVxZ0LCUIBuTB+gQb93Vl44nEoZQG4aqY0cwZGRoVc/hFqkZEpYPS4GkdwltTfbamnjGlY4IBNiCmisQK4APvP9oln6nLXNKs6J4jb3X6K0m4HVolRlvf16nDB0N/PHErHZXiuAYbpE1BVWtqD/SGZiTBw0zWAuwI68tKVnSF01Nn53+dlbng5KlIp9InALZDg+I8WA5Jbl6A6l3eWx9eDjhl2XpTXveKu7aiYSfievbHSHb90joxvTeT/QCE9+91wpCsdhxZiCLvo+iJcO4q2nkObtDNhxp2l3xBaBpEtmaYqVMyd/xoCw09aP//VQcBPYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WV3Lgnv6zp+PNJrVPRJGDRs+6Jn+NaJUuDBte67TxXM=;
- b=oB9PMnqK/hyrWwHKpgtrpE9iTdYf7cw7IKFHi1Y7EvEyjHMpDhqxTmhQAqdC/7XMf54RjnbZTNJdJ630iy+ZMWCm+XAaSpsHjRmIXEOmxGb1F3RUyPSbFo1FUrn0OtRyWAqECuqFCjLXiGuKifUr8vPNlExcfcBDSDDeccDI08uJbJhcK0H53QEXy8gEeW/DVi6OQwRbaHM+0f3F0eP6cnodp4cu5gP5vvbj+YWRLwTHPYvFPJaeKguVtEFt88yfpsnVjnlkVasUzWX9mpXqR/87HpQ9wvqItPyEB766D28veL768lJMX4Va9pcL7VMTCKAi7HOw/Sn9QfAHIYfsxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
- header.d=hpe.com; arc=none
-Received: from CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:610:1cc::7)
- by LV8PR84MB3787.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:408:1c4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Tue, 7 Apr
- 2026 21:22:15 +0000
-Received: from CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2c54:3534:122f:e74f]) by CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2c54:3534:122f:e74f%4]) with mapi id 15.20.9769.020; Tue, 7 Apr 2026
- 21:22:15 +0000
-From: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
-To: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
-CC: "linux@roeck-us.net" <linux@roeck-us.net>,
-        "linux@weissschuh.net"
-	<linux@weissschuh.net>,
-        "cosmo.chou@quantatw.com" <cosmo.chou@quantatw.com>,
-        "mail@carsten-spiess.de" <mail@carsten-spiess.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Sanman Pradhan
-	<psanman@juniper.net>
-Subject: Re: [PATCH v2 3/3] hwmon: (powerz) Fix use-after-free and signal
- handling on USB disconnect
-Thread-Topic: [PATCH v2 3/3] hwmon: (powerz) Fix use-after-free and signal
- handling on USB disconnect
-Thread-Index: AQHcxrVWLd/rOXZi8kyE8kQP654q7LXUG8UA
-Date: Tue, 7 Apr 2026 21:22:15 +0000
-Message-ID: <20260407212210.280128-1-sanman.pradhan@hpe.com>
-References: <20260407173624.247803-1-sanman.pradhan@hpe.com>
- <20260407173624.247803-4-sanman.pradhan@hpe.com>
-In-Reply-To: <20260407173624.247803-4-sanman.pradhan@hpe.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR84MB3523:EE_|LV8PR84MB3787:EE_
-x-ms-office365-filtering-correlation-id: ef2b1960-e1ff-49d1-ecdd-08de94ebbdf1
-x-ld-processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700021|56012099003|18002099003|22082099003;
-x-microsoft-antispam-message-info: xmrNcITAjenhynpMo7Tz4MGsBdsJ0aGwd/v4pu0h/iy2Qmx/VoaZT+w3jo4Xse5qtUyqLaGkr8CoePYJ2yfabWUDB1OB6jLXaDclZsxyNtMx0RDiGQUZoti5BiUeKFQSCrF8fjuljhERNtbAKhm49MAGoKYBU5WGYVcT/PDj/N/FRWw4rdN9qKYfiDS3fugY1wtc4qFc1cRVKj01XL3pV4u3EZ7jrDwy6AHTgsCEv96EnmBpxOIGXYm6ouYaQN3rfgq1kDbXaRuvxpHnuT55OjdLnPl7lmOomrIC4NyCPUfNEjGLWQShEfqg0R4bUzFOyvYoowA7hv3xCDDKiV9vFyYjwRlD5dNh431JzJTI2lj/dUkut1SV1HdugicMfPEn2GrdvihZ7iMBp84jfJo4fIDtzACC56FHIsbIBbsJgKSOSuE3vMJzaE7T/mGOZs/6aoGgS33k/AW9UfRt8Tog/kexIx7q0qZBs4/3If+SdcteRAflmU06CmS54Vo0/xI3FaLnXiBRhtLzCt47sObnPgJ89uG3uUU4nDlHqZ3U9aq120ytO/lUm+wMf+P6r8VG3Af/6tpdz3R32oET795sbevQ06DITZbIW9qWIR5897ZbFgycB/lYu14l3WSZaXHIcyK5iBbt9RT07NLseDp+fV7iI0fGQHhM1xc9rgwclBWK1WGBQ1S7G0xq49bpXdiinEx/9O5bk4kc1VlU9ftdtRbgRhPcZHI9yC7YEoW2PtRfDsI9T92/h1YQ9J7OBG1CuaAhgeXe9CWDc3s/A1lGRKMe6Ck0A6polxvwSlcqYfc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?5YZvw0emXdk0pOo5jHGPL8NTCs+cD1KCGpeVwgutaoS1dXg0HedRSRNm8u?=
- =?iso-8859-1?Q?BzZT6m8LX8ZEOOYeWK6+qpYK9EOE4WvpO00s7ihPgBz0o9OBLI1Fgz5aww?=
- =?iso-8859-1?Q?UbWqi7L9I5XSx8CrGNqH7ZHvDDU5+xKP/PYjJGHcTu/Pgel7VOzyoMTHPZ?=
- =?iso-8859-1?Q?HY8Vhuuc81V9EM5FqB8pEGD84yZOaGMbPKvMTS7Wv+XIjWVnuZtorVGtCb?=
- =?iso-8859-1?Q?PNCkFd4/SHSWyMjBO5CzG3LTt9y7IL558rcHGZX7TUdC8FwCuCKJGq+8b5?=
- =?iso-8859-1?Q?Y9Rc52cPJkaUPPFOi0PxpwSLdtZE6YZituRB2h0yECjPLWPMep3celu4Ur?=
- =?iso-8859-1?Q?JgqNKJEzjvNrkUUbJVn18bU0vUufEidYm/cdRvgZ5xSP4EFxA2xX0KEEyg?=
- =?iso-8859-1?Q?wFv34X8xifhoLk0VEHyTHqDwvI74KnzUJRcLRXAKIDXvD+omlHC1Gf3fiV?=
- =?iso-8859-1?Q?poMYqZfkMXBOTxh0nmoNls8WEFIl2YrY1cwp2pnFp/DZ4iTfRhmdhKt53P?=
- =?iso-8859-1?Q?6yWSIft7klPBgpuYJ3tD8dulqyhlQGZWhvs578MxINfqGcK+hwIr05CL3U?=
- =?iso-8859-1?Q?6I0Y62yrJR4L9WA6QSZGT1NVP/0WWke9/AbsWRrRVduaWGBpS1qVxoq8Fd?=
- =?iso-8859-1?Q?c8+aXjBAkk3nDEfGkXUUHCRUCfTL3b0zUOr0NiUnmn77sGBPumehySbZRZ?=
- =?iso-8859-1?Q?UTsvLJHiJUCqFKyTvip8z71hq3tcdaodLiOsMX+hlvEBeW9rKLJnoGurOd?=
- =?iso-8859-1?Q?O5khJB9VP2orfJc7uRhW3bBNEInqXDb9KUuCyzKLvvwQYbajQOW5OBahLt?=
- =?iso-8859-1?Q?yXpZrAGOzKhP7bSrgkYWdHwU04U1zJ9OEgUFQKzXwPK134Lb+nJ+sH26VX?=
- =?iso-8859-1?Q?3y1ZcWVCrwKiyOqULfLhFOHF0KwqBh6HSR/jQCVNFByyw4+ksnDIT+RmKQ?=
- =?iso-8859-1?Q?zBzhbksdr1lh+VmG9qI6uil40HDAqBvJ+4UQp0FGUsvkPGrnzSPLrtz76a?=
- =?iso-8859-1?Q?gVG8TbMGWcpw3rPH91L4y7i8nyxHJI3tP9K3PZ15TLWPGgNCd56u29zWk+?=
- =?iso-8859-1?Q?n1f7MEojHoWcV7x3t73PbSUrTZWV4ZzyJNws6mg+3yf3XrPl6pU1YHz553?=
- =?iso-8859-1?Q?StY1DEM16xNjPHy0PpXPxIgGnPldg2bBplLbIJDsXXe2dF3ABItRhMZwlo?=
- =?iso-8859-1?Q?hik1qhpOlWzIXzR41t2elhavVQdZ2EkO3A1EHSAyspAySpxw+bxuWFa0er?=
- =?iso-8859-1?Q?QlDkcoj08aZOEYEmaRaNEcGOgqkQI1uCoLRiT2hFubuwEWNib5tmNG1Ds7?=
- =?iso-8859-1?Q?xAl9O4e9eRx9kFqPhaixDd4+ogP2Y8xi7Ob5VAiUndoV4C775U6FM2QdvR?=
- =?iso-8859-1?Q?Bw89MB31rUIzTU8gekOg0B7AFWKkABPO2HaLAtCvfxaw7FHFFUDrTWlAjr?=
- =?iso-8859-1?Q?wI5zdkfCAD5/WhSqIwqzSdEA5eUOQ1ygSIG2RoPYLMvJhuq2xyYoYLnoIH?=
- =?iso-8859-1?Q?3WBRkRT2Q8nI7JNR9fnXrEe0NqNRrw/JcSjpL/iugxPtUS4GvYSQkvwCwf?=
- =?iso-8859-1?Q?LuUZgJPvSEfApsaXnusWIlJjLW/8a5e/qlkusn1UWWfbbj3SSxMoNQ1bu7?=
- =?iso-8859-1?Q?ow+LxilLayQm6kJG/mOGIRAiVE0dWyvOjNVR0rF49ld31vW61fVxESvBIM?=
- =?iso-8859-1?Q?kHalSfM1JvrT9ZcJIOb8Egj3f1zrUOCg/Od5Ol+QvUE4ix6iToAlQAMg4j?=
- =?iso-8859-1?Q?A+hFsPvGUBEs5HGTLUCsNzYuuie1UlOBb61dWXWnYEeq+AkNVPgNiGrKgw?=
- =?iso-8859-1?Q?cA80oZLrzA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CEC1A262A;
+	Tue,  7 Apr 2026 21:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775597033; cv=none; b=kwdq/Gm/MFAjZ0tMIIw9uIr863xHuxkftppAQNwtWVI6hu34Yd8yCMKO+hF5KI76afLyvqUTo0M9gBV2ITObmauDyeyh6BIJ56ES9Ey+BnC3sXVP5nO1SPiMHZwscYSreD88aGS5vzjCIugCFySUt9lzncgDrUH2SjkTrghXTqc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775597033; c=relaxed/simple;
+	bh=D2FV4mmR3Mv3FZcepcDCPIBpYElD6Alzkwfl2bNaCOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rb9ap10GDHXMazZ2vrw0Y6kKD3OjPzQU6mqEBBWa0wMaE6GYPyecwDf/E0RGZ1o26nbnP02xZeccOgWjbeJ8XkCI4RbGc8K7bUXZ2D2BctwdSAfN/sDFDirkjPELN6SfoazcWlhAJ6eSRoSkBGFA8hFTrW12nrdHUO0iOgelms4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=X6GAkcee; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF9131133B5;
+	Tue,  7 Apr 2026 23:23:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1775597029; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=5pruJMXvEGtxNqSK13NCzI9Ss3op0hP30Lb+hUiwnMA=;
+	b=X6GAkceeZy+f+dJ3dAEHeeF/JDDZUc5v7UCEl6BLMOCP8qOvrBpZyjsBRLFh7kpeA4EmJz
+	2eponU61Q/nkVDSBQLOPZmQIPRzs+d00x3DDN+J2JN7lTLHcng2JujTVL0xTJa6VAvup6S
+	ltHj4Mi+D9yXnlTLopaPKgceHb80j9JaoxBF6jluD840eUnPEJYHYi2AJIskTdFcqe7/zx
+	IUFc+j40i3l/xmjZn2vrRob95yfE6TOiahpKpHQqg3SYZU03OKKxus6F9mTL+OQrQqxQdt
+	yyfIpkff1ixuqwnqFi0urDSNwwESpA8wuAQOn4cu+lk3+oS4Ap1cD1tWdLhB3g==
+From: Marek Vasut <marex@nabladev.com>
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Yicong Hui <yiconghui@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: [net,PATCH] net: ks8851: Reinstate disabling of BHs around IRQ handler
+Date: Tue,  7 Apr 2026 23:23:33 +0200
+Message-ID: <20260407212344.80265-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: A1M5RDP0sjWKjcr9HeYioElbc+r5rK3hPMcqGgCmUfyLKPT7Wy7a1uHBLafJOlXoOz6MTWNofUBWxBu6jkKsYaPLwybCOmBh868nrostWWDWsl8q52PiOqYTXapSlrxOPBIhxJqlAKsrxX+O5o7HnrwpSrG8zDruPYFkHlmETnQHIfL1F3tzovpyOe7+ZAJdaH6qp4n8o/HhJrhX1wNOzCMB5ya/cPi1pF4J/lcMFP7C/Iq0IDehaSKr3Nxs4R58N49TjXNEgCun1vS3ApCvxa2PoNIWSf2yDCAk+vkKDgAFk28k9OPGfvg/asEsihqJgMxoEBWZ0iMP17jqiiaVcQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef2b1960-e1ff-49d1-ecdd-08de94ebbdf1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2026 21:22:15.7816
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: im35z/rzxsS1tLGA8FEEPTmxPMYvkqb/wVdJ1qf/tUQgUjvQC3JaBd5I77kR+aVI3K0eYRjXREA/E8O8fZfNhA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR84MB3787
-X-OriginatorOrg: hpe.com
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDE5NCBTYWx0ZWRfX1RNf4uZMDnu3
- cx+BjXwxtWbTADJJckSzGaSycoVfN66vVshXCir03C4NSdDiR+m6gFsxx9a+LZ/y4JueN1lsW9t
- af4UWaeckjrxa+1jD2wWGbfzjx/u5Zw5Q24VqFJdd45a0ILgC4XVbaO19yeANKMuN5vYg4FWOO0
- axVR+SW4VNca8mbSw4JKgmvCUvpt2F9JZewY3sH7j1zA6XOYpqwqB0N9DquCykRUQcH6UPhyPsb
- 6h9kjeiapzRLVO8ddCRGYa5ucvpTuZRLovrUSBa0vtST90hfTCMFfV4FE1L1lgMeGp6q1NmQ6s5
- AWZ6+AbBrZmbJMXVgv0zqKQv/tFoE9L/3Lia+pxRCfFRR6R05McNYftG1OIFx9uBuicualeQf0Y
- vNRMBAUaWaH/tGiot0Ew8PntFkWCTFoPcUGWl54ZpJi7e52Jrpk9o86TKmenGXi7Jd++gKJ724N
- 9wMPdrKBeAhIxviwQtw==
-X-Authority-Analysis: v=2.4 cv=BOODalQG c=1 sm=1 tr=0 ts=69d5758b cx=c_pps
- a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=A5OVakUREuEA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22 a=NCWKwCw8Xy9Og0ibBRsL:22
- a=OUXY8nFuAAAA:8 a=BgA_JnIsNrVrcKxUYJUA:9 a=wPNLvfGTeEIA:10
- a=cAcMbU7R10T-QSRYIcO_:22
-X-Proofpoint-GUID: UuUsvnqUIhD26M-2dLQzaUnKNtf-CAC6
-X-Proofpoint-ORIG-GUID: UuUsvnqUIhD26M-2dLQzaUnKNtf-CAC6
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_04,2026-04-07_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 bulkscore=0
- suspectscore=0 priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070194
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[hpe.com,reject];
-	R_DKIM_ALLOW(-0.20)[hpe.com:s=pps0720];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233723-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hpe.com:dkim,hpe.com:mid];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[hpe.com:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[nabladev.com,vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,redhat.com,raritan.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sanman.pradhan@hpe.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233724-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 041B23B506E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[nabladev.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nabladev.com:dkim,nabladev.com:email,nabladev.com:mid,raritan.com:email]
+X-Rspamd-Queue-Id: BD88B3B509A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sanman Pradhan <psanman@juniper.net>=0A=
-=0A=
-Good observation in the AI feedback, this would be a pre-existing issue=0A=
-in the driver, as this patch does not change the struct layout or DMA=0A=
-buffer usage.=0A=
-=0A=
-I would prefer to keep this patch focused on the disconnect lifetime and=0A=
-signal-handling fixes. Addressing potential cacheline sharing for the DMA=
-=0A=
-buffer likely requires a more deliberate change to the struct layout or=0A=
-allocation strategy, so it would be better handled in a separate follow-up.=
-=0A=
-=0A=
-Happy to take a look at that separately if needed.=0A=
-=0A=
-Thank you.=0A=
-=0A=
-Regards,=0A=
-Sanman Pradhan=0A=
+If CONFIG_PREEMPT_RT=y is set AND the driver executes ks8851_irq() AND
+KSZ_ISR register bit IRQ_RXI is set AND ks8851_rx_pkts() detects that
+there are packets in the RX FIFO, then netdev_alloc_skb_ip_align() is
+called to allocate SKBs. If netdev_alloc_skb_ip_align() is called with
+BH enabled, local_bh_enable() at the end of netdev_alloc_skb_ip_align()
+will call __local_bh_enable_ip(), which will call __do_softirq(), which
+may trigger net_tx_action() softirq, which may ultimately call the xmit
+callback ks8851_start_xmit_par(). The ks8851_start_xmit_par() will try
+to lock struct ks8851_net_par .lock spinlock, which is already locked
+by ks8851_irq() from which ks8851_start_xmit_par() was called. This
+leads to a deadlock, which is reported by the kernel, including a trace
+listed below.
+
+Fix the problem by disabling BH around the IRQ handler, thus preventing
+the net_tx_action() softirq from triggering during the IRQ handler. The
+net_tx_action() softirq is now triggered at the end of the IRQ handler,
+once all the other IRQ handler actions have been completed.
+
+  __schedule from schedule_rtlock+0x1c/0x34
+  schedule_rtlock from rtlock_slowlock_locked+0x538/0x894
+  rtlock_slowlock_locked from rt_spin_lock+0x44/0x5c
+  rt_spin_lock from ks8851_start_xmit_par+0x68/0x1a0
+  ks8851_start_xmit_par from netdev_start_xmit+0x1c/0x40
+  netdev_start_xmit from dev_hard_start_xmit+0xec/0x1b0
+  dev_hard_start_xmit from sch_direct_xmit+0xb8/0x25c
+  sch_direct_xmit from __qdisc_run+0x20c/0x4fc
+  __qdisc_run from qdisc_run+0x1c/0x28
+  qdisc_run from net_tx_action+0x1f4/0x244
+  net_tx_action from handle_softirqs+0x1c0/0x29c
+  handle_softirqs from __local_bh_enable_ip+0xdc/0xf4
+  __local_bh_enable_ip from __netdev_alloc_skb+0x140/0x194
+  __netdev_alloc_skb from ks8851_irq+0x348/0x4d8
+  ks8851_irq from irq_thread_fn+0x24/0x64
+  irq_thread_fn from irq_thread+0x110/0x1dc
+  irq_thread from kthread+0x104/0x10c
+  kthread from ret_from_fork+0x14/0x28
+
+Fixes: e0863634bf9f ("net: ks8851: Queue RX packets in IRQ handler instead of disabling BHs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ronald Wahl <ronald.wahl@raritan.com>
+Cc: Yicong Hui <yiconghui@gmail.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+ drivers/net/ethernet/micrel/ks8851_common.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index 8048770958d60..dadedea016fac 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -316,6 +316,7 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 	unsigned int status;
+ 	struct sk_buff *skb;
+ 
++	local_bh_disable();
+ 	ks8851_lock(ks, &flags);
+ 
+ 	status = ks8851_rdreg16(ks, KS_ISR);
+@@ -381,6 +382,7 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 	if (status & IRQ_RXI)
+ 		while ((skb = __skb_dequeue(&rxq)))
+ 			netif_rx(skb);
++	local_bh_enable();
+ 
+ 	return IRQ_HANDLED;
+ }
+-- 
+2.53.0
+
 
