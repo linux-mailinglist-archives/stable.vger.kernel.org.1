@@ -1,199 +1,127 @@
-Return-Path: <stable+bounces-233489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFOcOHB81GniuQcAu9opvQ
-	(envelope-from <stable+bounces-233489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 05:39:28 +0200
+	id ANmKHoeU1GknvgcAu9opvQ
+	(envelope-from <stable+bounces-233490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 07:22:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A3C3A973D
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 05:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CECC63A9E3B
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 07:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CAACC3021E58
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 03:39:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4183303E48C
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 05:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFAD374736;
-	Tue,  7 Apr 2026 03:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2A7271450;
+	Tue,  7 Apr 2026 05:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="M2+nCCPP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SDFHSwlX"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F8337416F
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 03:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D23325701
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 05:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775533144; cv=none; b=RLt2PiSRew8COXtoeRwtNnobUzjO4VqriHOTN34HC6P+pWi75t415dujcIFAFrv82y/RGsuEWYYEC9pD2cdNzc4K1XHVUMhf03PTC1EVMMmJAjwUwWR/JaMNak0WRkRNW8ckEVktowxsFj8YEVdmOZoCQz7iFdUIqUc/3WeDCfc=
+	t=1775539301; cv=none; b=N3Eh+4IROFMtQvmwzIqJ5D4knl6fj8lHxIo8PbXmrdkRIAIdXcMdhwpDGh7/XfYkw09AH7M8beN4M4kGuMYK4Li7oxLgRAEAWhf1DSK08HJz24A8S4G5DeWyi6HnsJutmF2c500PVJnPmO6UHG7lsBKHyqUgUkU83xgH9CVj9aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775533144; c=relaxed/simple;
-	bh=XwUuTbs1hAhlLyoECrrFP0mApSwcp7K4Dx5DRnt0ErE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KlMuEj+7a5gDCiwIeywN5carQo3vT0dfo+8vQCKFGrs82aj/kXVzoCrOe1H2OZnux4ItySy+9q8JefO/PUKSX0MW4EemzhtDpjlipbQNFsP6HrwjFbqd3Hl84ib9oRJbp5J5cAkkR13s0G11lELxHWyV7pcny8O7A/xyWkuPKP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=M2+nCCPP; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from macsyma.thunk.org (pool-173-48-116-90.bstnma.fios.verizon.net [173.48.116.90])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 6373bAHJ000597
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 6 Apr 2026 23:37:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1775533039; bh=Ef29MIXHmCFvXd7qD+8FbEPi4SrYNu9WMXc8RtIZ9HY=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=M2+nCCPPwgabng56tJINbLlAugGW/3OSGVRV32qonNkRy/f491qWZhiSSbYkUVUtB
-	 5FDVVJbHLCtjs3FCt/S6ZYTtZ0Ol4YszrhIu+/27svn+1DEko8eWD5mT8AEIXs1QB3
-	 VYWWy8DnuykScDM84UD3d4xKEeZt2dfJ1Mz5rmxFn01smslA8f4182i2D1VbkSWZs8
-	 H0QHXhI9pXVvm6ruVYawSVd5hmp94o33uIKjxaQS27ak4QgQB6k1nAm4UbdMCagpB8
-	 LZee1GIWyFVpc4obSuMNRGx9pXX9n+NfkCJRvJ5ej53wuI1tUYoev4HuM94EHg/o4i
-	 LvLYa9Mgec3Nw==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id 3A792621DF6A; Mon,  6 Apr 2026 23:37:10 -0400 (EDT)
-Date: Mon, 6 Apr 2026 23:37:10 -0400
-From: "Theodore Tso" <tytso@mit.edu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mark Brown <broonie@kernel.org>, Jan Kara <jack@suse.cz>,
-        Francesco Dolcini <francesco@dolcini.it>,
-        Brian Foster <bfoster@redhat.com>,
-        Yongjian Sun <sunyongjian1@huawei.com>,
-        Matthew Wilcox <willy@infradead.org>, Gou Hao <gouhao@uniontech.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Zhang Yi <yi.zhang@huawei.com>,
-        Baokun Li <libaokun1@huawei.com>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
-        conor@kernel.org, hargar@microsoft.com, achill@achill.org,
-        sr@sladewatkins.com
-Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
-Message-ID: <20260407033710.GA12536@macsyma-wired.lan>
-References: <20260323134525.256603107@linuxfoundation.org>
- <20260324073447.GA5062@francesco-nb>
- <mhqesgj3u7dr33zit6iwjhykw2zpuallru4qvoloyyqzdqgvki@bpwwmihh357r>
- <d8080343-20cd-4a4a-b726-b9e3c6a5c5eb@sirena.org.uk>
- <20260325035931.GC61656@mac.lan>
- <2026032535-casino-cable-e039@gregkh>
- <20260325131110.GC2107@macsyma.local>
- <2026032547-spleen-mortify-1cf9@gregkh>
+	s=arc-20240116; t=1775539301; c=relaxed/simple;
+	bh=J0khTmXx+mH8KMAAu7/0Jhz0WYYqPaYIpbG+MFI9hGs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cX4JRt46nVp4KzXwnc0cfHoycJlOBuGBlZ6euJOrdzOsqIaYz02Itl3dKX383tFW1zWZVM0jzG9i4G3wDqVksXrSVoJMfy7djwJY27EkLedxfaB0UnpVtu1vYMbMnc9OUpeXpUfV7RdKqfV1zbII4Hb7vrGiacrecj9gypGMzMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SDFHSwlX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775539299;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J0khTmXx+mH8KMAAu7/0Jhz0WYYqPaYIpbG+MFI9hGs=;
+	b=SDFHSwlX3aUkVHJ6t2UaeMyvwz9Mfxf4CiMHKELVsBy87vf2Yokgikzai78n5jARF1yBlV
+	4LdKqpuAvIiKBNP4PGNuiNwei+2PXH4nP519X/2e687pvrO/NDDadTiKZ1nNaQ8ZBVFNV8
+	2o2mWlcXGHYjoam0JDwnx3upUNKOSRM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-8nzXMfqUMq6feDKfT0MdUQ-1; Tue,
+ 07 Apr 2026 01:21:36 -0400
+X-MC-Unique: 8nzXMfqUMq6feDKfT0MdUQ-1
+X-Mimecast-MFC-AGG-ID: 8nzXMfqUMq6feDKfT0MdUQ_1775539294
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3729218002CB;
+	Tue,  7 Apr 2026 05:21:34 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.48.48])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E8500300019F;
+	Tue,  7 Apr 2026 05:21:29 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: kohei@enjuk.jp
+Cc: anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	intel-wired-lan@lists.osuosl.org,
+	jesse.brandeburg@intel.com,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 3/3] iavf: drop netdev lock while waiting for MAC change completion
+Date: Tue,  7 Apr 2026 07:21:28 +0200
+Message-ID: <20260407052128.207856-1-jtornosm@redhat.com>
+In-Reply-To: <adOjGCms-5PBuNte@x1>
+References: <adOjGCms-5PBuNte@x1>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026032547-spleen-mortify-1cf9@gregkh>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mit.edu,none];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[mit.edu:s=outgoing];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233489-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,suse.cz,dolcini.it,redhat.com,huawei.com,infradead.org,uniontech.com,huaweicloud.com,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233490-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tytso@mit.edu,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[mit.edu:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,macsyma-wired.lan:mid]
-X-Rspamd-Queue-Id: 74A3C3A973D
+	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CECC63A9E3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 02:31:28PM +0100, Greg Kroah-Hartman wrote:
-> > Thanks!  Just as another heads up, I decided to run a full regression
-> > test suite on 6.1.167-rc1 with those three reverts, and there ar still
-> > some crashes with generic/051 and ext4/039:
-> > 
-> > ext4/4k: 711 tests, 1 errors, 83 skipped, 4645 seconds
-> >   Errors: generic/051
-> > ext4/1k: 636 tests, 7 failures, 1 errors, 78 skipped, 5612 seconds
-> >   Errors: ext4/039
-> > ....
+Hi Kohei,
 
-> > I'll start trying to bisect this as I have time today.  Are you going
-> > to put out another rc and restart the 48 hour testing clock?
-> 
-> No, I've already done a release, I dropped more than just those 3, I
-> dropped all the dependent ext4 patches.
-> 
-> If you could test the last release and if I should do any reverts there,
-> please let me know.
+Thank you for your help and reference.
+I will try to do it synchronously with the netdev lock held as you say.
 
-I finally got around to doing the bisect, and found the guilty commit:
+Best regards
+Jose Ignacio
 
-# first bad commit: [b6a01b66cdaa2da526b512fc0f9938ea5d6c7a1c] ext4: get rid of ppath in ext4_ext_insert_extent()
-
-As it turns out, this is one of (5!) prerequisite commits needed for
-commit 1606176c5c6c ("ext4: subdivide EXT4_EXT_DATA_VALID1").  And
-unfortunately, commit 1606176c5c6c doesn't revert cleanly.
-
-... and with that, I've exhausted my available time to support ext4 on
-an ancient 6.1 LTS kernel.  I will note that I'm no longer regularly
-running ext4 regression tests on 6.1.  (I stopped last year, when 6.18
-got elevanted to be the YE2025 LTS kernel, since I only have bandwidth
-to evaluate the regression test results of 3 LTS kernels.)
-
-So if there's someone who is willing to the ext4 LTS 6.1 stable
-maintainer, I wonder if we should just stop trying to backport ext4
-fixes to 6.1 LTS, lest that attempts to backport patches all the way
-to 6.1 might result in more bug escapes.  If someone is interested in
-applying for the job, and/or working on figuring out how to revert
-these commits, please let me know:
-
-1606176c5c6c - ext4: subdivide EXT4_EXT_DATA_VALID1 (13 days ago)
-  4d03e2046f73 - ext4: get rid of ppath in ext4_split_extent_at() (13 days ago)
-  b6a01b66cdaa - ext4: get rid of ppath in ext4_ext_insert_extent() (13 days ago
-)
-  15908fc35056 - ext4: get rid of ppath in ext4_ext_create_new_leaf() (13 days a
-go)
-  b5a010bc7dba - ext4: get rid of ppath in ext4_find_extent() (13 days ago)
-  bfe24a48c1d5 - ext4: make ext4_es_remove_extent() return void (13 days ago)
-
-       	       	    			    	   - Ted
-							   
-git bisect start
-# status: waiting for both good and bad commits
-# good: [f2ddafa93a259310ca47507153b7811ec54ab7fd] Linux 6.1.166
-git bisect good f2ddafa93a259310ca47507153b7811ec54ab7fd
-# status: waiting for bad commit, 1 good commit known
-# bad: [1989cd3d56e257c783ac75200496a2341b50599c] Linux 6.1.167
-git bisect bad 1989cd3d56e257c783ac75200496a2341b50599c
-# bad: [7507fbaf81dab28d1d27216c533e228894e9d1f6] parisc: Check kernel mapping earlier at bootup
-git bisect bad 7507fbaf81dab28d1d27216c533e228894e9d1f6
-# bad: [30752d8bbd149abce36f37e83b89bd2934bfa33c] bpf: export bpf_link_inc_not_zero.
-git bisect bad 30752d8bbd149abce36f37e83b89bd2934bfa33c
-# bad: [6458b4908489029bc3bb3c0a7c2fc5cb0c2893f3] ALSA: hda/conexant: Fix headphone jack handling on Acer Swift SF314
-git bisect bad 6458b4908489029bc3bb3c0a7c2fc5cb0c2893f3
-# good: [5135f242e01e8fd602211703e94171b85bb87d4f] KVM: x86: Return "unsupported" instead of "invalid" on access to unsupported PV MSR
-git bisect good 5135f242e01e8fd602211703e94171b85bb87d4f
-# bad: [1606176c5c6c323167dcd7d4b4f7212b2c8d3d13] ext4: subdivide EXT4_EXT_DATA_VALID1
-git bisect bad 1606176c5c6c323167dcd7d4b4f7212b2c8d3d13
-# good: [b5452125f9bd60f90f06da080d3eb18445c61d24] drm/tegra: dsi: fix device leak on probe
-git bisect good b5452125f9bd60f90f06da080d3eb18445c61d24
-# good: [b5a010bc7dba7e3d0966c0231335ca76b3f8780e] ext4: get rid of ppath in ext4_find_extent()
-git bisect good b5a010bc7dba7e3d0966c0231335ca76b3f8780e
-# bad: [b6a01b66cdaa2da526b512fc0f9938ea5d6c7a1c] ext4: get rid of ppath in ext4_ext_insert_extent()
-git bisect bad b6a01b66cdaa2da526b512fc0f9938ea5d6c7a1c
-# good: [15908fc35056e9a6fd71552eda884a353496e6c7] ext4: get rid of ppath in ext4_ext_create_new_leaf()
-git bisect good 15908fc35056e9a6fd71552eda884a353496e6c7
-# first bad commit: [b6a01b66cdaa2da526b512fc0f9938ea5d6c7a1c] ext4: get rid of ppath in ext4_ext_insert_extent()
 
