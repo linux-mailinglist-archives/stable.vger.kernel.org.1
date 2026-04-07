@@ -1,200 +1,137 @@
-Return-Path: <stable+bounces-233592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FItNh391GnOzQcAu9opvQ
-	(envelope-from <stable+bounces-233592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:48:29 +0200
+	id kMTaG2b91GnOzQcAu9opvQ
+	(envelope-from <stable+bounces-233593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:49:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB753AEA09
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF993AEA2F
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 14:49:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 428A3300BDA7
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 12:46:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93D6A30107CE
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 12:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A514913AD1C;
-	Tue,  7 Apr 2026 12:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5243B4E80;
+	Tue,  7 Apr 2026 12:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfeF99jU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+deckva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682FE39FCAD
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 12:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00CD3B38A0;
+	Tue,  7 Apr 2026 12:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775565997; cv=none; b=Bn8XQe0gif12aPKY39ZecAVZNq/EGnMJ8tlFRKrwbacWv3FuO166g7/gt/CZOiOagdLF2fZEanyBCnkwAjlfHFJ1oBmETNvOZTd7xfLME51OT6UQPQ2T5VjvUrUtNA3ehkNXmwsnfBkAJAdAkYyXKmWgobhNMFIbgwzTDTUXOnM=
+	t=1775566133; cv=none; b=WjYL0kiaSjyUZLV2bHdaKlQL4e/zVXMtBlSjBblY2iTAShjWBeC/tcJWDdpX3wWmT3qSn9EWRqRNTyXcQOh3wGl2lNGBMSy5ZaNdaDv/dxym3sCHevx+4jbcTY7PQCrXWRvk5mhNKG6Smyo0nIUC2uH2y7DQQBjbpMIK+oZF3Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775565997; c=relaxed/simple;
-	bh=PlWLD5qNONSjz5uDAptenV1FUyAly/9GdpSuevkw+Cc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rRdax+OImGyZnXoXRVbyiOlnyC9pazbI9x7Yx2hE0H20MChOB7zGQ7K6LdVAq/h5JiLHgHifZDPRQXmSphnkvNiKTXP0gm73bk5cqQTMIVCvdLhEubQ2K2BPA1U7GAedWkUWZxyhnXyy4C78GkChlntmSgn9EiPeVcUmSuarvpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfeF99jU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DF2C2BCB1
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 12:46:37 +0000 (UTC)
+	s=arc-20240116; t=1775566133; c=relaxed/simple;
+	bh=vWCNuhUoewsighVgd5hZe21pawPiAvd2Jv9BdMisxM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ovFeNB52LP1HSfXkRSAesYETg9mcutLEbEch0nx1y7icCedLX/AtSt2lQ7dFnVxFOG0q1CoTTfcpjZl14f6MWNn+CSgztWuOR+ljvat2VTFgY7AqigVK8UKTJmUUBhR5z6193J+rGWlVoAww2V6UuZGhtqcmVMJINzXnPog0NKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+deckva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D1DC116C6;
+	Tue,  7 Apr 2026 12:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775565997;
-	bh=PlWLD5qNONSjz5uDAptenV1FUyAly/9GdpSuevkw+Cc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YfeF99jUKM5TBG4FLKjTfH9VO6JWho2Srhg2x0FtLZwn5yIZrZRKZo/3dgJNOBUzA
-	 6xoYJ/00O+uQ3NetjsYFKWiPD2/60O2tjoYBUuxaNakpt1C0XzPjrnbu5p4LqFrECG
-	 HMlW38KEChoQZFjf05DGtSJqkCfQ5JpTh14GjJA5SBa/5abknKxncQox0d5IitvNsi
-	 HggBZN9tIDEAUvRXbCtW0ZoXORsatiSAXXDs5yNHrdZiqmQwXxwcy3kKMR0r33Ugx4
-	 7POsVWb8cnkaLubYn15pBDmqOwem99xpukNFACaPY1eyJveCHO0wRXL9xuzTyFL+/n
-	 uswYjP82Q3vdg==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65c0891f4e9so4441148a12.1
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 05:46:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXpBRRzAqwldsvqfJkAxalTZAE/GIRcyUiXB6CQcMT32ESdSve9m2QqBKBEk38GGS/b75PWVuw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSw/dsWTqyQzpTJULBElsiLRx7jZ5HXppcSyR6vgUex6/1TOnp
-	Gtw+R3qRqpze2wdNKDrT0M+wpv9sNxKBgAE1i2o5m8eZExxYXPgX7kEsneFwRN3af8l9sJSrB/m
-	DZlT510ILdgw2LJjdgFK0WwCrMUbm+Hw=
-X-Received: by 2002:a17:907:c310:b0:b9b:fa57:d5bb with SMTP id
- a640c23a62f3a-b9c67b497demr869862366b.46.1775565995561; Tue, 07 Apr 2026
- 05:46:35 -0700 (PDT)
+	s=k20201202; t=1775566132;
+	bh=vWCNuhUoewsighVgd5hZe21pawPiAvd2Jv9BdMisxM0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D+deckvaRb6p0GV93gFF1SamlsXNEE4aHkc9T6eRuH95fYuGEJloOEqaWmGDy/VC+
+	 TdeUXlXheeXbNuWfeaeDahoMvG4TzABaSWaHId3zIrmtGXz1Ndl/q1fI+t1M2/U91j
+	 tYJlFePb06Sf0yxYEIPPfyplhh8ruIdz7QnwNtzM8Jo/MU3sWL03dd/I2MfFdDsmrz
+	 2t4JxPShIvxckDT1sJo/mVz/EXrn3qfB+SONsYGqiwx97CkyinSls9gn3Y0gXUK4Tn
+	 nFAMyY7j8sb9LT0DyIzr4sU8Zrm7p8AYIoG5uom5DCRNES2vjmHvybf5KnpgQnc4g7
+	 EZBfe3xRKoH5w==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wA5rO-0000000BHeR-26CI;
+	Tue, 07 Apr 2026 14:48:50 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Wenyou Yang <wenyou.yang@atmel.com>
+Subject: [PATCH 1/2] regulator: act8945a: fix OF node reference imbalance
+Date: Tue,  7 Apr 2026 14:48:35 +0200
+Message-ID: <20260407124836.2689436-2-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260407124836.2689436-1-johan@kernel.org>
+References: <20260407124836.2689436-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260312201018.128816016@linuxfoundation.org> <20260312201022.504112831@linuxfoundation.org>
- <28a3e1fc-b6e7-4d92-b949-7218a74b7231@oracle.com>
-In-Reply-To: <28a3e1fc-b6e7-4d92-b949-7218a74b7231@oracle.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 7 Apr 2026 20:46:40 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6Jihemh01mXx1wWU4QBw2-x5XwV=a7rUD5ZoJiQ56FDw@mail.gmail.com>
-X-Gm-Features: AQROBzAP6hJ8KuGViv2hx3W2KUVZdWbArqdBMdfBoMgxA0YiwPyuVoOaYFasGdo
-Message-ID: <CAAhV-H6Jihemh01mXx1wWU4QBw2-x5XwV=a7rUD5ZoJiQ56FDw@mail.gmail.com>
-Subject: Re: [PATCH 6.12 118/265] LoongArch/orc: Use RCU in all users of __module_address().
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, 
-	WANG Xuerui <kernel@xen0n.name>, loongarch@lists.linux.dev, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Vegard Nossum <vegard.nossum@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233592-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233593-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org,atmel.com];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,oracle.com:email,infradead.org:email]
-X-Rspamd-Queue-Id: 2BB753AEA09
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DBF993AEA2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 6, 2026 at 8:28=E2=80=AFPM Harshit Mogalapalli
-<harshit.m.mogalapalli@oracle.com> wrote:
->
-> Hi all,
->
-> On 13/03/26 01:38, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.  If anyone has any objections, please let me =
-know.
-> >
-> > ------------------
-> >
-> > From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> >
-> > [ Upstream commit f99d27d9feb755aee9350fc89f57814d7e1b4880 ]
-> >
-> > __module_address() can be invoked within a RCU section, there is no
-> > requirement to have preemption disabled.
-> >
-> > Replace the preempt_disable() section around __module_address() with
-> > RCU.
-> >
-> > Cc: Huacai Chen <chenhuacai@kernel.org>
-> > Cc: WANG Xuerui <kernel@xen0n.name>
-> > Cc: loongarch@lists.linux.dev
-> > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Link: https://lore.kernel.org/r/20250108090457.512198-19-bigeasy@linutr=
-onix.de
-> > Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-> > Stable-dep-of: 055c7e75190e ("LoongArch: Handle percpu handler address =
-for ORC unwinder")
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >   arch/loongarch/kernel/unwind_orc.c | 4 +---
-> >   1 file changed, 1 insertion(+), 3 deletions(-)
-> >
-> > diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel=
-/unwind_orc.c
-> > index 471652c0c8653..59809c3406c03 100644
-> > --- a/arch/loongarch/kernel/unwind_orc.c
-> > +++ b/arch/loongarch/kernel/unwind_orc.c
-> > @@ -399,7 +399,7 @@ bool unwind_next_frame(struct unwind_state *state)
-> >               return false;
-> >
-> >       /* Don't let modules unload while we're reading their ORC data. *=
-/
-> > -     preempt_disable();
-> > +     guard(rcu)();
-> >
-> >       if (is_entry_func(state->pc))
-> >               goto end;
-> > @@ -514,14 +514,12 @@ bool unwind_next_frame(struct unwind_state *state=
-)
-> >       if (!__kernel_text_address(state->pc))
-> >               goto err;
-> >
-> > -     preempt_enable();
-> >       return true;
-> >
->
->
-> Looks like this is dependent on commit: 7d9dda6f628f ("module: Allow
-> __module_address() to be called from RCU section."), so I feel pulling
-> in this patch without the mentioned missing prerequisite is wrong. Can
-> you please help review this ?
->
-> This is also part of a feature series in
-> https://lore.kernel.org/all/20250108090457.512198-13-bigeasy@linutronix.d=
-e/
-Yes, I have also asked about this:
-https://lore.kernel.org/stable/CAAhV-H7GxtWRZyAT=3DkedLEMu=3DC5wH--NUzRjwi3=
-DKXzUq+QZjA@mail.gmail.com/
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-However, no answer and no action for this. I don't know what happened
-to Greg and Sasha. Recently, similar accidents happen again and again.
+Fix this by using the intended helper for reusing OF nodes.
 
-Huacai
+Fixes: 38c09961048b ("regulator: act8945a: add regulator driver for ACT8945A")
+Cc: stable@vger.kernel.org	# 4.6
+Cc: Wenyou Yang <wenyou.yang@atmel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/regulator/act8945a-regulator.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
->
-> Thanks,
-> Harshit
->
-> >   err:
-> >       state->error =3D true;
-> >
-> >   end:
-> > -     preempt_enable();
-> >       state->stack_info.type =3D STACK_TYPE_UNKNOWN;
-> >       return false;
-> >   }
->
+diff --git a/drivers/regulator/act8945a-regulator.c b/drivers/regulator/act8945a-regulator.c
+index 24cbdd833863..5bbe2bce740e 100644
+--- a/drivers/regulator/act8945a-regulator.c
++++ b/drivers/regulator/act8945a-regulator.c
+@@ -302,8 +302,9 @@ static int act8945a_pmic_probe(struct platform_device *pdev)
+ 		num_regulators = ARRAY_SIZE(act8945a_regulators);
+ 	}
+ 
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.driver_data = act8945a;
+ 	for (i = 0; i < num_regulators; i++) {
+ 		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
+-- 
+2.52.0
+
 
