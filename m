@@ -1,180 +1,183 @@
-Return-Path: <stable+bounces-233569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233570-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOm5Di3q1GkjywcAu9opvQ
-	(envelope-from <stable+bounces-233569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:27:41 +0200
+	id CBALAPbq1GlPywcAu9opvQ
+	(envelope-from <stable+bounces-233570-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:31:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327E93ADAD1
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:27:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5A73ADB8B
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF7FB30091F9
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 11:27:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6837E3034C8B
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 11:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938BB3A3E95;
-	Tue,  7 Apr 2026 11:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050223AE6FC;
+	Tue,  7 Apr 2026 11:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="drHoTJnR"
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="Ox8/IkIN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ahokdZI2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197683947B6
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 11:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0883AE198;
+	Tue,  7 Apr 2026 11:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775561255; cv=none; b=sAk+CTDW/bryjMfxOrcQZpkQrVmbhJpQjui+3Hr4mSPLsyDOIySIV56y1HO4QyPT+onbotsDdyH4HeiO4cOjZjHFm4RjRYN2ikSkQgI68L/zb1pOd58YYn8Br40nF/nZPYmFXn3p0PEclmQNVoKLRJ+rG+ehzWNHS9oPz7mVT90=
+	t=1775561415; cv=none; b=TkbImTulXmPHg2NAylZq7+OLchW4NSDszy4LIyAZndGSUNMdsfJ+Pa17L5lmmbsyXbDZeIBtHKhFeI6gRv/8Bjm7iTjkXBbb4zeHqvcBee1UoksxiatqemOMKak7gxKo202S4gq96rC9micOkVHQ8/eLwy1N19zbO6Y6GLQ+lGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775561255; c=relaxed/simple;
-	bh=m7wojd76kH+JWdkDmFN4R78y4CAglakUEaG5a0Guftc=;
+	s=arc-20240116; t=1775561415; c=relaxed/simple;
+	bh=zmKtGXvPPmowdh2mtbprU/pHgivD6gdZlQXXU41pyVM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uWlnTbAM5ybxm+WlTRQw0LeBnwC69ZdgiRkbGkiVFHC8jiK3y3IGdw6wzBi4Hb+VojRFmOBC35dhlp5vPoxIMlYk1PLThkoAURqvx2E6uTJfL/xI2Gt4P8WQKPJ/NK4Haaf1UPSXuvQt1VrHzGnYy9tD1VHgCn/rTgfR7dI4ccY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=drHoTJnR; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cfd1f9fd1so2668784f8f.3
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 04:27:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1775561252; x=1776166052; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1B8jV9BiU3c4QuVbCZHmuxaJfK0Alye13igtopl4zPg=;
-        b=drHoTJnRCPtQF5E/FbiHizyMyqDsJ46snlBLp2/i+m3TihfXkHhGVwcMPI1+v5GXn1
-         ul540OxXCIoEdZdi0LvuJf7ESMGhj/C7ouXVVw4R58fzkTShtQXuU29im4a9mdyiYj/0
-         1Q8L6PZfQMM8W3/wsKUxViEzdicXxYQz2rTw4SUSO/deDGiPpI9U+B8Cf5l7zxwTSs37
-         GBS2eTrz19lpY5q2JpH+NSg6pIIwPXGD1mN0TSe9KSWA4W5vw9duuOqkSk2MfZtJ7eiC
-         MFh9o7eGLIRBzZ+0N3pgK61FgyRn/wtfG8y9zXYFRHd3v6OEQZvj5/nep/3jpmEmPwRc
-         zsvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775561252; x=1776166052;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1B8jV9BiU3c4QuVbCZHmuxaJfK0Alye13igtopl4zPg=;
-        b=TfqvMTCViohNWjvoxkc7GvIXUmpD58O1fmR0fZNDlwXNf95ynr0WQ7l7FToRHRWgCn
-         CO+9O8I5L33mhqA7QIHRGxwvXd3pq1QYpi5gJTRFOpxHbgRu8aDf0pFYvn9RDGTgYXb/
-         ckydJ4JtF572U1+4Fwcq7TTJEiGQP1sdCwNhwu3c6tPKkIdv2fuCJMVCCTdJxr1n10Y5
-         GUjb9f4AySnJO2L1Xcqjs6iG/OOAV6nMYVUSuQeJH3Bt0swlJVdziKPKAFBXwSXesYhe
-         aKSRCEC/Nv9q0zdoVza2WYEAFPAm7hvhPBjObqGjfCUMe+RVvhZIX9XD4nEMVRp9Ae2c
-         z+SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXF4Q4EZWM29WIvd/PbDc/IVcsz9Qm/lzd1v+KdOif+P501/HLLTQP2n04ZAHJVftY6wLpv4YI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgtQtZ8krK2BJ6iysDvKcVuYCiWeq+ewKs+HxfWI3UCNu0nEgT
-	Bg/SBqIp/sFkWUsMmjy9mR6whAvPiH0Tl0zk7Ddn1u8U/aOGm38zx/F+yKrPuCbUOmM=
-X-Gm-Gg: AeBDietqGJsSFwyFEaMdQiQlqyPxPtsdqp/cjkpPWwsGlbZlfA+yzPvZaFI+ZS6uePw
-	w3jU+tVAH+LYTexa1v9ZQM+HfzAZdulCTh8c80WWXP7EDtMv8u++ClzOS9Mf3ywgRss9XmMfB3x
-	We4IugP4VoSOggoOB/FyppYWRK82rGs9EZe+3s4arPxX5BCZM+blePgHlBxhKFbp8dSk4ZCW0nv
-	yNORgEf+vCsECMkpMfoQFS32S+ouJ/TbspCB0/fluPSupqIBKe/5+FY2orzcRq1Jat9uUpcEiWx
-	+qmfbsh9A3bQ69BPekcHdKQjlN34HBvVsWQVOz1bjPAYHpvQmUfq+C5wGh0TLGU85FkQ/QBtTuK
-	LuXoyDFML4+2abI9z2cSClePzSN1agUhL/Jkc58qsgoKiuvK2+ixLxSwPFFHdyDZo/53PBK5cPl
-	BUv8WDsJHOKTli3DYI0ViJyXSt6j90ob4Ue1n0I7gd
-X-Received: by 2002:a05:6000:4023:b0:439:c661:3245 with SMTP id ffacd0b85a97d-43d292f12a8mr23837109f8f.34.1775561252422;
-        Tue, 07 Apr 2026 04:27:32 -0700 (PDT)
-Received: from pathway.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4f1a99sm52293050f8f.32.2026.04.07.04.27.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 04:27:32 -0700 (PDT)
-Date: Tue, 7 Apr 2026 13:27:29 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Tamir Duberstein <tamird@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] printf: mark errptr() noinline
-Message-ID: <adTqIepV2W6M_Q2o@pathway.suse.cz>
-References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
- <20260406111531.779571d7@gandalf.local.home>
- <CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
- <20260406123232.3dacbe94@gandalf.local.home>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RMQVJ8Z8dEZhnPD1B4sVHTyVDg05dhcpivdTs5/iAfH23w/JZ+9Da80sQRYrVjeX3diuqzlS90YLPaaWc780Rp/ksy3QezzGOApKCvIS5e7WAmcb7QdwfcAH8ePCyl2f9SCclPq9aUZ6o2vWgf0U1C+r1HIjS6/csUvGdm1PocE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=Ox8/IkIN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ahokdZI2; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1DC57EC046B;
+	Tue,  7 Apr 2026 07:30:11 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Tue, 07 Apr 2026 07:30:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1775561411; x=
+	1775647811; bh=gFXawp+CjNeAOKeG8AkV4oa72KSKeiCRRlIhnESJsY0=; b=O
+	x8/IkINDomUK2DdnDZv92Tqe2fyR/rCFVna1Q+pd/gld0p0ocPRPSeTyB7Abtaa+
+	+bZy6aVd14++osb9OYg6DwAJ1BjYXaKfFGmth6oijf6fIe8vgCNGPCW1CcitqPj8
+	xd3WoLtj3unpMEFJ7v7Sb8tKiP+0HUOefr88+6zIPikE8HLGt70bXBIuz+l0jFm7
+	u/re0vUqamR4hN4rHnpMNQ00KRCz5Z5RwXk3f/u+5jHedWzDbYm+RNF2ozHUcKMW
+	7q+as5YP32gniEjkpEeI9GwKVEZQAFntw9bodgApidhT70O44YxNwakDLfoC+Tza
+	v3RK13TkikHj4qmZVidsA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1775561411; x=1775647811; bh=gFXawp+CjNeAOKeG8AkV4oa72KSKeiCRRlI
+	hnESJsY0=; b=ahokdZI2Twg3hSVUcTqIL37CfkP/XEzvyAjSPJEj8u3zr4USwqR
+	enqP94rddA1T/bwy4hAzojq/M+2BJM11tP2Q6MXrRGdEm7VsF0tsRbFrcxKPresd
+	CQvc8W2moY3tmoZxZIg/tbZD/vcwf29QFCc21RP3x482WDD3bUZQXcNZe76EOtD0
+	WHiLpzGXt9XjUyLiyRWhmusTSFAgx9GpaXRmCUW7C6N2/XYALYzA6GW09Wyulcvh
+	8BG/0HT512muWwRxNf+POIsjXasqnRJEMHpMqAD85/13ns8bjNMoVqgmKloztHOO
+	KdfIYZPh9Bz26djbF7UgmdM6DUotFSBgTgQ==
+X-ME-Sender: <xms:wurUaZn7dNQSk1_hbtq-SFY57811q7oeiBa5A4TDnVSgxQnsGXv6Ig>
+    <xme:wurUaZxLczwv7v5tKM_aqYAOU5v9blze_hlMsN6_h4uXOq_4Ln8CMWshn9xBFe5Nj
+    _v_SC1odU6Ghhrlg99JB56Eqc_KNJ7hw6H1FIvKysH2wpXbojZcsvM>
+X-ME-Received: <xmr:wurUaT6JVdBzoDBc1qv8NTwgJsxBOgu4MiZp8LNLZ6w1yWlHwGwMOxGyfzAb>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvtdehvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpefurggsrhhinhgr
+    ucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrg
+    htthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeegteehgeehieffgfeuvdeuffef
+    gfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepledpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtoheprhgrmhguhhgrnhesshhtrghrlhgrsghsrdhsgh
+    dprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvh
+    gvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgt
+    ohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhope
+    hjohhhnhdrfhgrshhtrggsvghnugesghhmrghilhdrtghomhdprhgtphhtthhopehinhhf
+    ohesshhtrghrlhgrsghsrdhsghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:wurUaZXZguiCPhMPyfzR8Msu3om59RqM2TdPzzxbtKJ7aQSHVLG5fQ>
+    <xmx:wurUabJ-lSOPRtSCwcBZ53g5pAYhXFeePv6xtYfQN2duKEFvjESXOQ>
+    <xmx:wurUabvEXhbZftfpE0IRDTsigQK2Jdu6_uKvq8BrBzaQ5aQrgBbiSA>
+    <xmx:wurUaYL-I6VIcBcnmEyd510PcNpLSnty0OQpAmfV83XrRKRj1I0gpA>
+    <xmx:w-rUaXdw7I-wBLgB6prGxjjYuvQ2CyZQ1i07yBpNJ57AL7-4Or-2Mzct>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Apr 2026 07:30:09 -0400 (EDT)
+Date: Tue, 7 Apr 2026 13:30:08 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, john.fastabend@gmail.com,
+	info@starlabs.sg, stable@vger.kernel.org
+Subject: Re: [PATCH] net/tls: fix use-after-free in -EBUSY error path of
+ tls_do_encryption
+Message-ID: <adTqwMD_GBUjZnkw@krikkit>
+References: <20260403013617.2838875-1-ramdhan@starlabs.sg>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260406123232.3dacbe94@gandalf.local.home>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <20260403013617.2838875-1-ramdhan@starlabs.sg>
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[queasysnail.net:s=fm3,messagingengine.com:s=fm2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233570-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233569-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DMARC_NA(0.00)[queasysnail.net];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,davemloft.net,google.com,redhat.com,gmail.com,starlabs.sg];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[queasysnail.net:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sd@queasysnail.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:dkim,pathway.suse.cz:mid]
-X-Rspamd-Queue-Id: 327E93ADAD1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[queasysnail.net:dkim,queasysnail.net:email,messagingengine.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,starlabs.sg:email]
+X-Rspamd-Queue-Id: 6B5A73ADB8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon 2026-04-06 12:32:32, Steven Rostedt wrote:
-> On Mon, 6 Apr 2026 11:21:39 -0400
-> Tamir Duberstein <tamird@kernel.org> wrote:
+2026-04-03, 09:36:17 +0800, Muhammad Alifa Ramdhan wrote:
+> The -EBUSY handling in tls_do_encryption(), introduced by commit
+> 859054147318 ("net: tls: handle backlogging of crypto requests"), has
+> a use-after-free due to double cleanup of encrypt_pending and the
+> scatterlist entry.
 > 
-> > Thanks Steve. IMO that is a very big hammer and not warranted in this
-> > case. There's been talk of encouraging distros to enable CONFIG_KUNIT
-> > by default [0], which would probably interact poorly with the change
-> > you propose.
-> > 
+> When crypto_aead_encrypt() returns -EBUSY, the request is enqueued to
+> the cryptd backlog and the async callback tls_encrypt_done() will be
+> invoked upon completion. That callback unconditionally restores the
+> scatterlist entry (sge->offset, sge->length) and decrements
+> ctx->encrypt_pending. However, if tls_encrypt_async_wait() returns an
+> error, the synchronous error path in tls_do_encryption() performs the
+> same cleanup again, double-decrementing encrypt_pending and
+> double-restoring the scatterlist.
 > 
-> Branch profiling is really just a niche that is enabled specifically for
-> seeing all branches taken in the kernel. It hooks to all "if" statements!
-> As you can imagine, it causes a rather large overhead in performance.
+> The double-decrement corrupts the encrypt_pending sentinel (initialized
+> to 1), making tls_encrypt_async_wait() permanently skip the wait for
+> pending async callbacks. A subsequent sendmsg can then free the
+> tls_rec via bpf_exec_tx_verdict() while a cryptd callback is still
+> pending, resulting in a use-after-free when the callback fires on the
+> freed record.
 > 
-> This option is only used by developers doing special analysis of their code
-> (namely me ;-).
+> Fix this by skipping the synchronous cleanup when the -EBUSY async
+> wait returns an error, since the callback has already handled
+> encrypt_pending and sge restoration.
 > 
-> The only real concern I would have is if the kunit test developers would
-> want to use the branch profiling on their code, in which case my suggestion
-> would prevent that.
+> Fixes: 859054147318 ("net: tls: handle backlogging of crypto requests")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+> ---
+>  net/tls/tls_sw.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 
-I wonder if it might be possible to disable the branch profiling just
-for the printf_kunit.c as a compromise.
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 
-Would "#undef if" in printf_kunit.c help?
-
-Or I see that DISABLE_BRANCH_PROFILING is an official
-way to disable the feature.
-
-I wonder if the following change would solve the problem.
-I am sorry, I could not test it easily.
-
-diff --git a/lib/tests/Makefile b/lib/tests/Makefile
-index 05f74edbc62b..45d69769ccdf 100644
---- a/lib/tests/Makefile
-+++ b/lib/tests/Makefile
-@@ -41,6 +41,7 @@ obj-$(CONFIG_MIN_HEAP_KUNIT_TEST) += min_heap_kunit.o
- CFLAGS_overflow_kunit.o = $(call cc-disable-warning, tautological-constant-out-of-range-compare)
- obj-$(CONFIG_OVERFLOW_KUNIT_TEST) += overflow_kunit.o
- obj-$(CONFIG_PRINTF_KUNIT_TEST) += printf_kunit.o
-+CFLAGS_printf_kunit.o += -DDISABLE_BRANCH_PROFILING
- obj-$(CONFIG_RANDSTRUCT_KUNIT_TEST) += randstruct_kunit.o
- obj-$(CONFIG_SCANF_KUNIT_TEST) += scanf_kunit.o
- obj-$(CONFIG_SEQ_BUF_KUNIT_TEST) += seq_buf_kunit.o
-
-
-Best Regards,
-Petr
+-- 
+Sabrina
 
