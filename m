@@ -1,234 +1,198 @@
-Return-Path: <stable+bounces-233505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDhGODOx1GnvwQcAu9opvQ
-	(envelope-from <stable+bounces-233505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:24:35 +0200
+	id WK6JLiKy1GkkwgcAu9opvQ
+	(envelope-from <stable+bounces-233506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:28:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4D63AABCE
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:24:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B85E3AAC80
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 09:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B4BF300BC8F
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 07:24:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29625303B4D6
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 07:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6BD392C2A;
-	Tue,  7 Apr 2026 07:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499113939C8;
+	Tue,  7 Apr 2026 07:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPmQrMhV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J1q6LP+W";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ca0FfV2y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F60175A83;
-	Tue,  7 Apr 2026 07:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC6B393DF2;
+	Tue,  7 Apr 2026 07:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775546665; cv=none; b=GkOIDEXYH6QklvYPr9bia3lSoRP+QhN4CyqaE2qnbhAGjOge8ajv62yYJB+u6vGZ73hmgPEUVuwDsKa94Y9m126YYCajLc0K8Tnc5gcEfhUrsJ/nMFPhjDpBDwWqzEr0JAzXsJqe5xoBYFYhuwTTDVYjuzbyJLG6OcfqOi2E3Jc=
+	t=1775546893; cv=none; b=VpDW60Z963T2h9A3rnPhP23LpB5LJEt4k4Om8JWHrRzvo49VD+8by6ayizFQmpYZsXNVanVHzcFFg/1v/6fcbgYjfnfTo02No7nLgHgyNzmysomHkXQZ29DVoUFtsIyqSqLzsxk3PSBtqyQF42Zhoi6+D0cdFbNMNCojSLpkX0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775546665; c=relaxed/simple;
-	bh=jEc9B6t8+lXVDt5wKNS6slGegGXQKYnxbzzTO5yXNHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IH4Ooy6j27nk1NN4DuEobdp79fhsCoQ/1tmjWJqWDtamNCL5q63K+47PefTN/TymlwbiPXM7CWulrMV3XqaRSYtHowK7hlRM6CYuuXtm3OjtNS6aKu07W3RSfTyaD1G/VcFcuKpkaELLRPBOC2BhEB4woinl5D0uXY52F18aoOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPmQrMhV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6945C116C6;
-	Tue,  7 Apr 2026 07:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775546665;
-	bh=jEc9B6t8+lXVDt5wKNS6slGegGXQKYnxbzzTO5yXNHs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rPmQrMhVxW1tQdh87LPyX8H6IconvtcEUVKVP+aHk9T7B7lTyXvj9pj5i5oTV7OmZ
-	 Damuf1sgbXHS0uOdxW2AHsOaVlkv4gyp7NXcgtUvyHldfqSC4U6+i0/KmZkW5mQ9Ae
-	 MjG4FJ93sVs3JIApyRkt683Cvq35sw1Cb8kbsLpKIjjnj9oq8llBAlNQPCTs/ndC5b
-	 R3mpnhoVDEVrLmTs0r+m+f5WkAGKz5d1MOTxTAs5vvFl7uAD5cCE5l2D74u+1ngZjj
-	 0BF5S/GyFrHnvRDuIQdKo8ojli0YLHdBLptY236EeP97P5QuZXkFet7IVcYUibvVqd
-	 0D/kWWYt39OtA==
-Date: Tue, 7 Apr 2026 12:54:15 +0530
-From: "mani@kernel.org" <mani@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
- suspend skip
-Message-ID: <ihoprlijtwgihkbmszm53iftvpyg7ljvubs3bv2lt22uma74ul@zqgulwmj4jpb>
-References: <AS8PR04MB8833061F34B9BEFC9D19764A8C4EA@AS8PR04MB8833.eurprd04.prod.outlook.com>
- <20260323220858.GA1084506@bhelgaas>
- <AS8PR04MB8833137860C682F9E1E743E08C48A@AS8PR04MB8833.eurprd04.prod.outlook.com>
- <y76fzvju42srykr3khio2bx5lmzusy6iasodvs45imis7fw3b5@wjv3gsocj534>
- <AS8PR04MB8833C20B6FF92F96EE7641E38C5AA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1775546893; c=relaxed/simple;
+	bh=gtpgsne8Yo/fg6x38+D58h5z9npkwHtGxRXDAuAHi4s=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=m7N6ojKc0zoZkVZGsjTr02p6EsB4qZIPr+WfaSAIVp4zTqRgg/xRPPb2NcP+8zYStnFBL1tJUOjeH60TQsdt8g/JphP8sANeplve926HjjRdXM7oItqi90nuQ3Z8knO5mvXPKZvfE6wE+b+dSwOonk0ZbhG22xnU9Qd23TRumag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J1q6LP+W; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ca0FfV2y; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 07 Apr 2026 07:28:08 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1775546890;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s6McT4XkR9SN6jcbAPDGciPBdzpUTrkn/L7fDkMvCPo=;
+	b=J1q6LP+WWsHe+0Y+0B9fwIfdBU2XSqt2qxs6Y10Ao9iWzFwgTsov1YfHAn+cHmK2hzJBJv
+	HEh0pfAHPQVHnlyKOhf4Zd8I59tOC+iNOJcV/qbuypw3M/ox7wgi+V86AaE9xoLGUl+au4
+	tS+HXSGF/5PTCupRCT0X9H3LOwc5PigMixFXwagOgtSJM++2pmgRiLVqDgc3iaHteUpj+s
+	hfZeaKteRk4Djyhzcb8mDC0+2yY3YUq1YbOesiRK+V72iUL5/pJtMitZe7KOgljiKts8UJ
+	3HWlpd/G2B6kbtwzipzRWZDtjvvdVK7hYEwV2NweM7s4XYUgEsAV8kYRdlbN+A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1775546890;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s6McT4XkR9SN6jcbAPDGciPBdzpUTrkn/L7fDkMvCPo=;
+	b=ca0FfV2yyXHfyt36j0EPJTf+O9QMkJpiYWb4JgY3YU6UMV8SUy2dCYqiIOmoZSIyeWY1r0
+	fDpDCciF88qh4ZDQ==
+From: "tip-bot2 for Joseph Salisbury" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched: Use u64 for bandwidth ratio calculations
+Cc: Joseph Salisbury <joseph.salisbury@oracle.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260403210014.2713404-1-joseph.salisbury@oracle.com>
+References: <20260403210014.2713404-1-joseph.salisbury@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8833C20B6FF92F96EE7641E38C5AA@AS8PR04MB8833.eurprd04.prod.outlook.com>
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	FROM_DN_EQ_ADDR(1.00)[];
+Message-ID: <177554688890.226963.17414444257275011729.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233505-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,nxp.com,gmail.com,pengutronix.de,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233506-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,linutronix.de:dkim,msgid.link:url,vger.kernel.org:replyto];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6F4D63AABCE
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
+X-Rspamd-Queue-Id: 7B85E3AAC80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 07, 2026 at 03:31:57AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: mani@kernel.org <mani@kernel.org>
-> > Sent: 2026年4月4日 1:03
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: Bjorn Helgaas <helgaas@kernel.org>; Frank Li <frank.li@nxp.com>;
-> > jingoohan1@gmail.com; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > kwilczynski@kernel.org; robh@kernel.org; bhelgaas@google.com;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > imx@lists.linux.dev; linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
-> > suspend skip
-> > 
-> > On Tue, Mar 24, 2026 at 02:01:58AM +0000, Hongxing Zhu wrote:
-> > > > -----Original Message-----
-> > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > Sent: 2026年3月24日 6:09
-> > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > > > Cc: Frank Li <frank.li@nxp.com>; jingoohan1@gmail.com;
-> > > > l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > > > kwilczynski@kernel.org; mani@kernel.org; robh@kernel.org;
-> > > > bhelgaas@google.com; s.hauer@pengutronix.de; kernel@pengutronix.de;
-> > > > festevam@gmail.com; linux-pci@vger.kernel.org;
-> > > > linux-arm-kernel@lists.infradead.org;
-> > > > imx@lists.linux.dev; linux-kernel@vger.kernel.org;
-> > > > stable@vger.kernel.org
-> > > > Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to
-> > > > override L1SS suspend skip
-> > > >
-> > > > On Wed, Mar 18, 2026 at 02:55:45AM +0000, Hongxing Zhu wrote:
-> > > > > > -----Original Message-----
-> > > > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > > ... [messed up quoting]
-> > > >
-> > > > > > On Tue, Mar 17, 2026 at 02:12:56PM +0800, Richard Zhu wrote:
-> > > > > > > Add a force_suspend flag to allow platform drivers to force
-> > > > > > > the PCIe link into L2 state during suspend, even when L1SS
-> > > > > > > (ASPM L1
-> > > > > > > Sub-States) is enabled.
-> > > > > > >
-> > > > > > > By default, the DesignWare PCIe host controller skips L2
-> > > > > > > suspend when L1SS is supported to meet low resume latency
-> > > > > > > requirements for devices like NVMe. However, some platforms
-> > > > > > > like i.MX PCIe need to enter L2 state for proper power
-> > > > > > > management regardless of L1SS
-> > > > support.
-> > > > > > >
-> > > > > > > Enable force_suspend for i.MX PCIe to ensure the link enters
-> > > > > > > L2 during system suspend.
-> > > > > >
-> > > > > > I'm a little bit skeptical about this.
-> > > > > >
-> > > > > > What exactly does a "low resume latency requirement" mean?  Is
-> > > > > > this an actual functional requirement that's special to NVMe, or
-> > > > > > is it just the desire for low resume latency that everybody has
-> > > > > > for all devices?
-> > > > >
-> > > > > From my understanding, L1SS mode is characterized by lower latency
-> > > > > when compared to L2 or L3 modes.
-> > > > >
-> > > > > It can be used on all devices, avoiding frequent power on/off cycles.
-> > > > > NVMe can also extend the service life of the equipment.
-> > > >
-> > > > All the above applies to all platforms, so it's not an argument for
-> > > > i.MX-specific code here.
-> > > >
-> > > Hi Bjorn:
-> > > Thanks for your kindly review.
-> > > Yes, it is.
-> > > > > > Is there something special about i.MX here?  Why do we want i.MX
-> > > > > > to be different from other host controllers?
-> > > > >
-> > > > > i.MX PCIe loses power supply during Deep Sleep Mode (DSM),
-> > > > > requiring full reinitialization after system wake-up.
-> > > >
-> > > > I don't know what DSM means in PCIe or how it would help justify
-> > > > this change.
-> > > >
-> > > i.MX PCIe power is gated off during suspend, requiring full
-> > > reinitialization on resume
-> > >
-> > 
-> > Is this an unconditional behavior? What if the PCIe device is configured as a
-> > wakeup source like WOL, WOW? And if you connect NVMe, this behavior will
-> > result in resume failure as NVMe driver expects the power to be retained if
-> > ASPM is supported.
-> 
-> Yes, this is unconditional behavior. The i.MX PCIe controller exclusively
-> supports sideband wakeup mechanisms, which operate independently of the
-> PCIe link state and device power configuration.
-> 
+The following commit has been merged into the sched/core branch of tip:
 
-I believe you are referring to WAKE# as the sideband wakeup mechanism. If so,
-both host and device has to support WAKE#.
+Commit-ID:     c6e80201e057dfb7253385e60bf541121bf5dc33
+Gitweb:        https://git.kernel.org/tip/c6e80201e057dfb7253385e60bf541121bf=
+5dc33
+Author:        Joseph Salisbury <joseph.salisbury@oracle.com>
+AuthorDate:    Fri, 03 Apr 2026 17:00:14 -04:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 07 Apr 2026 09:23:52 +02:00
 
-> For devices configured as wakeup sources (WOL, WOW, etc.): The sideband
-> wakeup path bypasses the standard PCIe power management, so these
-> configurations do not impact the i.MX PCIe RC controller's suspend/resume
-> behavior.
-> 
+sched: Use u64 for bandwidth ratio calculations
 
-Once user enables wakeup for a device, PCI core will configure PME_EN only if
-the device supports toggling WAKE# from D3Cold. So the wakeup functionality
-depends on device too, not just the RC.
+to_ratio() computes BW_SHIFT-scaled bandwidth ratios from u64 period and
+runtime values, but it returns unsigned long.  tg_rt_schedulable() also
+stores the current group limit and the accumulated child sum in unsigned
+long.
 
-> For NVMe devices with ASPM: While NVMe drivers typically expect power
-> retention when ASPM is enabled, the i.MX implementation's sideband wakeup
-> mechanism operates through a separate signaling path. The wakeup functionality
-> does not depend on maintaining PCIe link power, thus avoiding conflicts with
-> NVMe power state expectations.
-> 
+On 32-bit builds, large bandwidth ratios can be truncated and the RT
+group sum can wrap when enough siblings are present.  That can let an
+overcommitted RT hierarchy pass the schedulability check, and it also
+narrows the helper result for other callers.
 
-There is no relation between WAKE# and NVMe. NVMe is a passive device, so it
-doesn't support WAKE#. With this patch alone, the NVMe driver won't resume (is
-ASPM is enabled). You need to tell the NVMe driver to perpare for power loss
-too. Maybe this patch can help you:
-https://lore.kernel.org/all/20251231162126.7728-1-manivannan.sadhasivam@oss.qualcomm.com/
+Return u64 from to_ratio() and use u64 for the RT group totals so
+bandwidth ratios are preserved and compared at full width on both 32-bit
+and 64-bit builds.
 
-But that patch will only help if your platform supports S2RAM through PSCI.
+Fixes: b40b2e8eb521 ("sched: rt: multi level group constraints")
+Assisted-by: Codex:GPT-5
+Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260403210014.2713404-1-joseph.salisbury@orac=
+le.com
+---
+ kernel/sched/core.c  | 2 +-
+ kernel/sched/rt.c    | 2 +-
+ kernel/sched/sched.h | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c15c986..49cd5d2 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4735,7 +4735,7 @@ void sched_post_fork(struct task_struct *p)
+ 	scx_post_fork(p);
+ }
+=20
+-unsigned long to_ratio(u64 period, u64 runtime)
++u64 to_ratio(u64 period, u64 runtime)
+ {
+ 	if (runtime =3D=3D RUNTIME_INF)
+ 		return BW_UNIT;
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 4e5f195..a48e867 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2666,7 +2666,7 @@ static int tg_rt_schedulable(struct task_group *tg, voi=
+d *data)
+ {
+ 	struct rt_schedulable_data *d =3D data;
+ 	struct task_group *child;
+-	unsigned long total, sum =3D 0;
++	u64 total, sum =3D 0;
+ 	u64 period, runtime;
+=20
+ 	period =3D ktime_to_ns(tg->rt_bandwidth.rt_period);
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 9594355..c955841 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2907,7 +2907,7 @@ extern void init_cfs_throttle_work(struct task_struct *=
+p);
+ #define MAX_BW_BITS		(64 - BW_SHIFT)
+ #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
+=20
+-extern unsigned long to_ratio(u64 period, u64 runtime);
++extern u64 to_ratio(u64 period, u64 runtime);
+=20
+ extern void init_entity_runnable_average(struct sched_entity *se);
+ extern void post_init_entity_util_avg(struct task_struct *p);
 
