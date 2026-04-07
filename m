@@ -1,358 +1,231 @@
-Return-Path: <stable+bounces-233677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LIJGRUr1Wli1wcAu9opvQ
-	(envelope-from <stable+bounces-233677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:04:37 +0200
+	id gK2DMH0r1Wli1wcAu9opvQ
+	(envelope-from <stable+bounces-233678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:06:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920DF3B17A5
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:04:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD423B17DD
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:06:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A69CB300BDB5
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:58:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 815F63019921
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9CA3A0B01;
-	Tue,  7 Apr 2026 15:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31523B27E7;
+	Tue,  7 Apr 2026 16:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="twI1mTON"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ah/BAsyD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7F83CF03E;
-	Tue,  7 Apr 2026 15:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775577513; cv=none; b=kNR01rC6g+vuksSypFQY9Ng7n9ux0CG4iwQxNxRrki5paF17g7IFTBIhBL710KJ645asGUR4qzs62ifvvHXLKrLdBrPKbtf6n0a9by4UTOg0rIVjfqaETumFZD5DGdpXcf9gtJbeYMBdN63eZ4nfRwxJIoHI9r/psPSiTB3dWPc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775577513; c=relaxed/simple;
-	bh=uMKW524ItQm2huwJsii0rZz2rhbgsj5zBmrSHlUEbnU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Swd2pgkAmQN17EyoCGXoiWeTMAwv5pNPQqTBoJcufZ8Y7bt3jNxbZ5MOT9IgtfuftotaO/JQVNYqg76v+LpP1bcZoCKgB7oGwH4K6ZMLDdqG9DRDULMViTt8k5G0khmuMgv7hlMMhKpwVSWDDcFJ65v6TEDY3a5gwaaNiMq4UqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=twI1mTON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE723C116C6;
-	Tue,  7 Apr 2026 15:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775577512;
-	bh=uMKW524ItQm2huwJsii0rZz2rhbgsj5zBmrSHlUEbnU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=twI1mTONCtqzHlORVBPVF5XtsvsYU/GRjchbScBwnNWLlrUMP8sK8YIAsmfi91FVV
-	 a/i2ocO/jf0WOB6CWCxFsKmZSfrdcbb1GNLGjCbFHcAIp0pmgWK4A0CTRkENobuRG1
-	 fWNjcMW4VyPFKFcMqjmqqvCX5eZ9G270613UMuUI7Zdlcgsch/LOTifeZHjcuPGQRl
-	 2f0m49U7vLEjaexwkTieYcY2xeftuBh0fp0gkyRFgkfiMwv/xtcJhjOD834P70/wop
-	 PfXKC5OdhkkqlNWzoPLXEUNl0dsdgQ3SidDvBGE/GYT4SMBmRe9132QAITOikkzx1y
-	 pM+CbWVB/PfmA==
-Date: Tue, 7 Apr 2026 16:58:27 +0100
-From: Lee Jones <lee@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>, stable@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	netdev@vger.kernel.org, Igor Ushakov <sysroot314@gmail.com>
-Subject: Re: [PATCH v3 net] af_unix: Give up GC if MSG_PEEK intervened.
-Message-ID: <20260407155827.GA1993342@google.com>
-References: <20260311054043.1231316-1-kuniyu@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896D326CE2C
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 16:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775577639; cv=pass; b=QMMs4Uhgmcdd1201Rf4w8xDu8Ls6rv/vmfAlEwf3WbEfxJ2i1ToSz+GeNZeu40Nm1rgQV0wTAIY9K7R6HstfstmGyntVSF20Ex3zbqShZJfgFF3K27UDcUAgyaHZJePT5YNf48/8m1u5G/xaIF5ykAMSXHlDd8jfDA1KEvEqM3s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775577639; c=relaxed/simple;
+	bh=8RLob4QB28ImVoxRQZX+IBEgAl2HyO/hx5ZoQuzPjGA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ThmOmYY+zcsNjA/Id1xqhGmvjObinqMcdR/JEv0h3/NJTV6URaWj6UZdW4w51Mz+7j+ILehFiNr1gObZs6CYlRlCMrFYugKjCH+vqB86xxg8OByusdtjOoe0khUUbl9PJ8KKqIJ9V+EtGAFc2kNv1C9AJjZHg86rtiYMNRDlwRE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ah/BAsyD; arc=pass smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-953943f7a33so2250659241.0
+        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 09:00:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775577629; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HN7P3rNSLf/HAz4PEUDRBUuwHQel2CQ0hX1YDA8QRUyVLJWKICX5uJawELm/J+xyLI
+         1vqAl3bNQ8VdDVffxL9OD7uYK9gSBHiWLl4sF8CEm2h5nDKILgiFuenIlhKHSmFM8zqc
+         IEcoHXhKaa6Lvd0UXtyBXfbeQ4lQeKUZw5kjc2RXu7EW7iLwASJNiyX2OAJxALaVJ28c
+         5h06LvhiidIqCTmGQyaVEFQy9gNv6pFPnFExggx5MIB6wlHeiOrHrG6M2CHX+ru5NT0l
+         URr5lr1XoICIa4P0NLSMslUqLZKJEoOW1KXxOoHZ7PA+b5rPKVSrQcdCCMW9QwvwSxjZ
+         hLCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7cOfNAa8j+2xclxv3TIo/Dyr9thVkxs9qM2FBEkKirg=;
+        fh=GZuDVdLmhSXe+wBnbqZXaIFl8r47SoKqNXS8+grwyPs=;
+        b=k4UTEV2PCxkxPcGOeVko/0zWCivhraRq1naNvyQjm7/I9WkSKtxJ8KdjKgQErswXNe
+         EtA8cFKMgf46JFhsZ+O2ueAw/kCZ/DwG3sNtopWvUcaWrxx5O4cxK8GvGzcMkUJZLlqu
+         6ezkMqenhcwfe+opSvZNCU3U5pXfh/l+kuQu0rnDCbex6jAO4ftdYSWx05PgmF5GAPs2
+         YOE9j41BzFykQEWUkxg9DxRvvmGkDh3Mkc0057nxkFr5QwAHUtmtffMDsJPNxcsoSy10
+         baoqzSQiMhV+Wi8N8+AWGYSgtfsF5fWzSyscgjETdTVyGaUzTHm3HSThOF4914drDQvC
+         M3vA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775577629; x=1776182429; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7cOfNAa8j+2xclxv3TIo/Dyr9thVkxs9qM2FBEkKirg=;
+        b=Ah/BAsyDBEBwKo3TycGJk9eTlBqh/HcpGSGaZWkQ/pEuwchm9+QWleVPVEMNh4x8i7
+         WhCm/9pCO4yFgZTyNNfYrVe8ja0O+3aAe/G+eEGSn1cbDB5ySPM/wh7TINx+fwNeOdGi
+         oYVDQDRjGqWRWqROuivLSyEnta/Msc7nSUae6uzeu0bl8V5qowLZyFWLPJbCjF0DtLLb
+         QQlAoy9DC+JwND2srujY3iSRgqF8chumIWcSsX2Y7BL7HUgve7mFP1ugG2peNhXcYKX1
+         /36IgrXgmxUdyP1MUS0MDYEFg1CuOlJJlMq6vzgEoXTdEYVcK+6kTR7fVUXSJQdTAEfb
+         Z4pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775577629; x=1776182429;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7cOfNAa8j+2xclxv3TIo/Dyr9thVkxs9qM2FBEkKirg=;
+        b=D+SUc3AgFA+BM7uzkb4978zsGx0doZrcuHr+SvZjT96nrXlCvJRQnY5436fn72ov7e
+         Kq3A9tbcJrDLny1SOPdUEe3brR55roqpES2H4RshM8CJRZqNgUjGKhzY4LQFQusTQdQ0
+         pi5/D8jAgp7T7mw1ssJPOBQNpSFxbFIo7YgOl+qG64p4eOqpGdvqnHRECAo4k9oePrAu
+         rvklzSy8HPflTDVBdKIXUuZbV0doLT1AZSXmu8SvbgaYSO+hwKk4sMFo2EzybEMU3FkD
+         JVzgNG2KIvXMGXd6J7DEGSwwAAOic5LVQWG9mYok9Ug3CSqU8JDwoYPxvpfsCQVvCmKp
+         9Xrg==
+X-Forwarded-Encrypted: i=1; AJvYcCVjHXwI9Y8sgDGDQvkw1fLAlxerCc0Fgkkd72R8i/BnnOwlwtQRobmot7VhLP/6HyF+LraRU78=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwBQ4A8/R30OO6RD7k9zSg+U3Wngwl0m6VOsBfmmvQj4pOVtmm
+	2PpC7rd5vnK0xlCFUP03FWKahTPMzt9Ua0QklmllskCg2GhENb1ce82zRHViqVWGUDUfkyf4R0k
+	q37HuxnYrrMUNAoRedSyrlNOG1cJfAG8=
+X-Gm-Gg: AeBDietWFK4GvUbHSeB1rrf6Oz8Onm1WS/MmStYVReN5Pzl5xE4znsktdrOHSDkYpeU
+	wpr353PZdePZ/aZS5bH2XHKL2VlckbTxMyxzh/kFN60x0A6s0v7UIsjv3hhcrmLCA72ASbDSLJ/
+	brf0P5aAbG9ju73wzC70qZE+3wwKSQ0GDIIaOYnekj0ZSadhz9YQyY0QWv3gqgMDVCWYopymnwc
+	vGMvwVSiuCgFoZ3BZlctUczJa95J2xyxlVdVp0qdr+4/dHV46bfrJOJoRfEU7owrfpCxEhRKaop
+	1CpOj/S7D5EmBd0tY/rQseqQBSp4qooQZV1uRR/u
+X-Received: by 2002:a67:ef52:0:b0:607:4fe2:d3e1 with SMTP id
+ ada2fe7eead31-6074fe32c26mr643493137.13.1775577628763; Tue, 07 Apr 2026
+ 09:00:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260311054043.1231316-1-kuniyu@google.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_MATCH_TO(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+References: <20260406234739.29926-1-joshuaklinesmith@gmail.com>
+ <20260406234739.29926-5-joshuaklinesmith@gmail.com> <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
+In-Reply-To: <d4622e31-4012-4c05-9288-529b0bb0aebd@candelatech.com>
+From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+Date: Tue, 7 Apr 2026 12:00:16 -0400
+X-Gm-Features: AQROBzB8oos5R4wfuV80BDxNB2sW-hRDYLx84rQYT0ZQnA6Gi09V7mSU-s_cnLA
+Message-ID: <CANs=ypgdgB_3stm5bCvO8RTat-sxs0N6SAaeYSQ-dyq43U-ZBg@mail.gmail.com>
+Subject: Re: [PATCH wireless 4/4] wifi: mt76: mt7925: fix RCPI chain 3 mask in
+ sta_poll RSSI extraction
+To: Ben Greear <greearb@candelatech.com>
+Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
+	ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233677-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,gmail.com,linuxfoundation.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-233678-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[joshuaklinesmith@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 920DF3B17A5
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[candelatech.com:email,candelatech.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 2DD423B17DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-INTENTIONAL TOP POST
+On 4/7/26 11:25, Ben Greear wrote:
+> How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
+> at max.  So while the patch may be correct, it may also not matter in pra=
+ctice
+> and at least may not need to be backported into stable.
 
-I note that this was not sent to Stable, but it should be included please.
+Hi Ben,
 
-> Igor Ushakov reported that GC purged the receive queue of
-> an alive socket due to a race with MSG_PEEK with a nice repro.
-> 
-> This is the exact same issue previously fixed by commit
-> cbcf01128d0a ("af_unix: fix garbage collect vs MSG_PEEK").
-> 
-> After GC was replaced with the current algorithm, the cited
-> commit removed the locking dance in unix_peek_fds() and
-> reintroduced the same issue.
-> 
-> The problem is that MSG_PEEK bumps a file refcount without
-> interacting with GC.
-> 
-> Consider an SCC containing sk-A and sk-B, where sk-A is
-> close()d but can be recv()ed via sk-B.
-> 
-> The bad thing happens if sk-A is recv()ed with MSG_PEEK from
-> sk-B and sk-B is close()d while GC is checking unix_vertex_dead()
-> for sk-A and sk-B.
-> 
->   GC thread                    User thread
->   ---------                    -----------
->   unix_vertex_dead(sk-A)
->   -> true   <------.
->                     \
->                      `------   recv(sk-B, MSG_PEEK)
->               invalidate !!    -> sk-A's file refcount : 1 -> 2
-> 
->                                close(sk-B)
->                                -> sk-B's file refcount : 2 -> 1
->   unix_vertex_dead(sk-B)
->   -> true
-> 
-> Initially, sk-A's file refcount is 1 by the inflight fd in sk-B
-> recvq.  GC thinks sk-A is dead because the file refcount is the
-> same as the number of its inflight fds.
-> 
-> However, sk-A's file refcount is bumped silently by MSG_PEEK,
-> which invalidates the previous evaluation.
-> 
-> At this moment, sk-B's file refcount is 2; one by the open fd,
-> and one by the inflight fd in sk-A.  The subsequent close()
-> releases one refcount by the former.
-> 
-> Finally, GC incorrectly concludes that both sk-A and sk-B are dead.
-> 
-> One option is to restore the locking dance in unix_peek_fds(),
-> but we can resolve this more elegantly thanks to the new algorithm.
-> 
-> The point is that the issue does not occur without the subsequent
-> close() and we actually do not need to synchronise MSG_PEEK with
-> the dead SCC detection.
-> 
-> When the issue occurs, close() and GC touch the same file refcount.
-> If GC sees the refcount being decremented by close(), it can just
-> give up garbage-collecting the SCC.
-> 
-> Therefore, we only need to signal the race during MSG_PEEK with
-> a proper memory barrier to make it visible to the GC.
-> 
-> Let's use seqcount_t to notify GC when MSG_PEEK occurs and let
-> it defer the SCC to the next run.
-> 
-> This way no locking is needed on the MSG_PEEK side, and we can
-> avoid imposing a penalty on every MSG_PEEK unnecessarily.
-> 
-> Note that we can retry within unix_scc_dead() if MSG_PEEK is
-> detected, but we do not do so to avoid hung task splat from
-> abusive MSG_PEEK calls.
-> 
-> Fixes: 118f457da9ed ("af_unix: Remove lock dance in unix_peek_fds().")
-> Reported-by: Igor Ushakov <sysroot314@gmail.com>
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
-> v3: Check !fpl and add spinlock in unix_peek_fpl()
-> v2: https://lore.kernel.org/all/20260309185823.3502204-1-kuniyu@google.com/
->   * Use seqcount_t for proper memory barrier
-> v1: https://lore.kernel.org/netdev/20260308030406.1825938-1-kuniyu@google.com/
-> ---
->  net/unix/af_unix.c |  2 ++
->  net/unix/af_unix.h |  1 +
->  net/unix/garbage.c | 79 ++++++++++++++++++++++++++++++----------------
->  3 files changed, 54 insertions(+), 28 deletions(-)
-> 
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index 7eaa5b187fef..b23c33df8b46 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -1958,6 +1958,8 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
->  static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
->  {
->  	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
-> +
-> +	unix_peek_fpl(scm->fp);
->  }
->  
->  static void unix_destruct_scm(struct sk_buff *skb)
-> diff --git a/net/unix/af_unix.h b/net/unix/af_unix.h
-> index c4f1b2da363d..8119dbeef3a3 100644
-> --- a/net/unix/af_unix.h
-> +++ b/net/unix/af_unix.h
-> @@ -29,6 +29,7 @@ void unix_del_edges(struct scm_fp_list *fpl);
->  void unix_update_edges(struct unix_sock *receiver);
->  int unix_prepare_fpl(struct scm_fp_list *fpl);
->  void unix_destroy_fpl(struct scm_fp_list *fpl);
-> +void unix_peek_fpl(struct scm_fp_list *fpl);
->  void unix_schedule_gc(struct user_struct *user);
->  
->  /* SOCK_DIAG */
-> diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-> index 816e8fa2b062..a7967a345827 100644
-> --- a/net/unix/garbage.c
-> +++ b/net/unix/garbage.c
-> @@ -318,6 +318,25 @@ void unix_destroy_fpl(struct scm_fp_list *fpl)
->  	unix_free_vertices(fpl);
->  }
->  
-> +static bool gc_in_progress;
-> +static seqcount_t unix_peek_seq = SEQCNT_ZERO(unix_peek_seq);
-> +
-> +void unix_peek_fpl(struct scm_fp_list *fpl)
-> +{
-> +	static DEFINE_SPINLOCK(unix_peek_lock);
-> +
-> +	if (!fpl || !fpl->count_unix)
-> +		return;
-> +
-> +	if (!READ_ONCE(gc_in_progress))
-> +		return;
-> +
-> +	/* Invalidate the final refcnt check in unix_vertex_dead(). */
-> +	spin_lock(&unix_peek_lock);
-> +	raw_write_seqcount_barrier(&unix_peek_seq);
-> +	spin_unlock(&unix_peek_lock);
-> +}
-> +
->  static bool unix_vertex_dead(struct unix_vertex *vertex)
->  {
->  	struct unix_edge *edge;
-> @@ -351,6 +370,36 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
->  	return true;
->  }
->  
-> +static LIST_HEAD(unix_visited_vertices);
-> +static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
-> +
-> +static bool unix_scc_dead(struct list_head *scc, bool fast)
-> +{
-> +	struct unix_vertex *vertex;
-> +	bool scc_dead = true;
-> +	unsigned int seq;
-> +
-> +	seq = read_seqcount_begin(&unix_peek_seq);
-> +
-> +	list_for_each_entry_reverse(vertex, scc, scc_entry) {
-> +		/* Don't restart DFS from this vertex. */
-> +		list_move_tail(&vertex->entry, &unix_visited_vertices);
-> +
-> +		/* Mark vertex as off-stack for __unix_walk_scc(). */
-> +		if (!fast)
-> +			vertex->index = unix_vertex_grouped_index;
-> +
-> +		if (scc_dead)
-> +			scc_dead = unix_vertex_dead(vertex);
-> +	}
-> +
-> +	/* If MSG_PEEK intervened, defer this SCC to the next round. */
-> +	if (read_seqcount_retry(&unix_peek_seq, seq))
-> +		return false;
-> +
-> +	return scc_dead;
-> +}
-> +
->  static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
->  {
->  	struct unix_vertex *vertex;
-> @@ -404,9 +453,6 @@ static bool unix_scc_cyclic(struct list_head *scc)
->  	return false;
->  }
->  
-> -static LIST_HEAD(unix_visited_vertices);
-> -static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
-> -
->  static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
->  				     unsigned long *last_index,
->  				     struct sk_buff_head *hitlist)
-> @@ -474,9 +520,7 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
->  	}
->  
->  	if (vertex->index == vertex->scc_index) {
-> -		struct unix_vertex *v;
->  		struct list_head scc;
-> -		bool scc_dead = true;
->  
->  		/* SCC finalised.
->  		 *
-> @@ -485,18 +529,7 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
->  		 */
->  		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
->  
-> -		list_for_each_entry_reverse(v, &scc, scc_entry) {
-> -			/* Don't restart DFS from this vertex in unix_walk_scc(). */
-> -			list_move_tail(&v->entry, &unix_visited_vertices);
-> -
-> -			/* Mark vertex as off-stack. */
-> -			v->index = unix_vertex_grouped_index;
-> -
-> -			if (scc_dead)
-> -				scc_dead = unix_vertex_dead(v);
-> -		}
-> -
-> -		if (scc_dead) {
-> +		if (unix_scc_dead(&scc, false)) {
->  			unix_collect_skb(&scc, hitlist);
->  		} else {
->  			if (unix_vertex_max_scc_index < vertex->scc_index)
-> @@ -550,19 +583,11 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
->  	while (!list_empty(&unix_unvisited_vertices)) {
->  		struct unix_vertex *vertex;
->  		struct list_head scc;
-> -		bool scc_dead = true;
->  
->  		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
->  		list_add(&scc, &vertex->scc_entry);
->  
-> -		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
-> -			list_move_tail(&vertex->entry, &unix_visited_vertices);
-> -
-> -			if (scc_dead)
-> -				scc_dead = unix_vertex_dead(vertex);
-> -		}
-> -
-> -		if (scc_dead) {
-> +		if (unix_scc_dead(&scc, true)) {
->  			cyclic_sccs--;
->  			unix_collect_skb(&scc, hitlist);
->  		}
-> @@ -577,8 +602,6 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
->  		   cyclic_sccs ? UNIX_GRAPH_CYCLIC : UNIX_GRAPH_NOT_CYCLIC);
->  }
->  
-> -static bool gc_in_progress;
-> -
->  static void unix_gc(struct work_struct *work)
->  {
->  	struct sk_buff_head hitlist;
-> -- 
-> 2.53.0.473.g4a7958ca14-goog
-> 
+Please accept my apologies. You are correct that the mt7925 is a 2x2
+chipset, so this does not have a practical impact and should not have
+been tagged for stable. I did not read the documentation in its
+entirety before submitting, and that is on me.
 
--- 
-Lee Jones [李琼斯]
+I will be much more careful and diligent with testing and review going forw=
+ard.
+
+Thanks for the feedback.
+
+Joshua
+
+
+On Tue, Apr 7, 2026 at 11:25=E2=80=AFAM Ben Greear <greearb@candelatech.com=
+> wrote:
+>
+> On 4/6/26 16:47, Joshua Klinesmith wrote:
+> > The fourth receive chain RCPI uses GENMASK(31, 14), an 18-bit mask
+> > spanning bits 14-31. It should be GENMASK(31, 24), an 8-bit mask
+> > for the fourth byte, consistent with the other three chains and
+> > with the RCPI3 definitions used elsewhere in the driver
+> > (MT_PRXV_RCPI3 and MT_TXS7_F0_RCPI_3 both use GENMASK(31, 24)).
+>
+> Hello Joshua,
+>
+> How much of this is AI driven?  As far as I know, mt7925 is a 2x2 chipset
+> at max.  So while the patch may be correct, it may also not matter in pra=
+ctice
+> and at least may not need to be backported into stable.  If it is a minor
+> cleanup that doesn't actually matter, that should be described more clear=
+ly
+> in the commit message?
+>
+> Some of your patches are touching tricky parts of the code and making
+> subtle comparisons against how the vendor's driver is written.  How well =
+has
+> this been tested and reviewed by a knowledgeable human in general?
+>
+> Thanks,
+> Ben
+>
+> >
+> > On devices with fewer than 4 antenna chains, the corrupted value
+> > is masked out by antenna_mask in mt76_rx_signal(). On 4-chain
+> > devices, this produces incorrect ACK signal strength readings.
+> >
+> > Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver fo=
+r mt7925 chips")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+> > ---
+> >   drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/=
+net/wireless/mediatek/mt76/mt7925/mac.c
+> > index 6334019249..85e91ca84f 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+> > @@ -144,7 +144,7 @@ static void mt7925_mac_sta_poll(struct mt792x_dev *=
+dev)
+> >               rssi[0] =3D to_rssi(GENMASK(7, 0), val);
+> >               rssi[1] =3D to_rssi(GENMASK(15, 8), val);
+> >               rssi[2] =3D to_rssi(GENMASK(23, 16), val);
+> > -             rssi[3] =3D to_rssi(GENMASK(31, 14), val);
+> > +             rssi[3] =3D to_rssi(GENMASK(31, 24), val);
+> >
+> >               mlink->ack_signal =3D
+> >                       mt76_rx_signal(msta->vif->phy->mt76->antenna_mask=
+, rssi);
+>
+> --
+> Ben Greear <greearb@candelatech.com>
+> Candela Technologies Inc  http://www.candelatech.com
+>
 
