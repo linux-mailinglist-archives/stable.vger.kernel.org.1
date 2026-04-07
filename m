@@ -1,234 +1,253 @@
-Return-Path: <stable+bounces-233544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOR0OenZ1GlxyAcAu9opvQ
-	(envelope-from <stable+bounces-233544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:18:17 +0200
+	id qPL1I+Xa1GlxyAcAu9opvQ
+	(envelope-from <stable+bounces-233545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:22:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244F03ACAC8
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:18:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 230613ACBBB
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A308C3011D42
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:17:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 555023006108
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6AB3A9DAE;
-	Tue,  7 Apr 2026 10:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C7939B971;
+	Tue,  7 Apr 2026 10:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRUZkc47"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CTMU9+da"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0193A9D8F;
-	Tue,  7 Apr 2026 10:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775557067; cv=none; b=HNEJMaoAXuPHkSmDReBImjUnRUOFVgDylVIHR09r+iO56GyYoSkyBHAmK2M1RFDajSAe5GwpwSJLD436UV6hNVjO8drYC06a3+l0Afk6jHOdzk6adw6GD90TZBJNLCTj0EEfkW+wybfRjsakD5zEbMsRmaXwi5KaqFnz29ynE5c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775557067; c=relaxed/simple;
-	bh=Iw/0ZMUWO2zJVSR27I/5GetL9KxeKyvBcMMEYB7HZ5E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=teoDI1DkzznotwyAYd/DoPxYygOt/kuGHNx2zVH2Vus9w7IXSscPT/wDjeSB8naIi3Tpo0WTANw4ovB30SVR7FJAYAGO8MSlgD/6kwp7Ocs5DJRoKiVLfEdT6iILzQbC+522A6SIAG+5iCARVr1R0As7bs5u114zs83zosdXgDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRUZkc47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB3FC19421;
-	Tue,  7 Apr 2026 10:17:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775557066;
-	bh=Iw/0ZMUWO2zJVSR27I/5GetL9KxeKyvBcMMEYB7HZ5E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RRUZkc47egqJFCo1QFaNHI/D5lgf1HPJ/qcccStVUMJyKzXr6xxo65n1fq9qoT9G6
-	 pmeufZaYN/Kw/U42UmgjOT490DYG/nOHqrYP/l12UIJk10FO2WqEammMDRqvROybSj
-	 q2sjHm7FaTdSfXXvEbvj0A7NDEOwrETU1LRvbFRCN+PNPs+phjmkT9J+1PbNX2ULPg
-	 iI3PWv8IZOE90pP2fli7uuoyAWllesJYFCZtt+Jy2EPk4pbYF7337Z0q2eeRucBZ6w
-	 Ai77OzSAXEhfueoF9NslRUlGCU98MVgi3dhAtz67lwLYAuLmHDfznIwJywo+DS9b20
-	 EpaYRvuOSZVTQ==
-From: bod@kernel.org
-Date: Tue, 07 Apr 2026 11:17:25 +0100
-Subject: [PATCH v2 4/5] media: qcom: camss: Fix RDI streaming for CSID GEN3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4393A450C
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 10:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775557347; cv=pass; b=KynNJezA1nGOmE17fmrSEnh3ELsP3xCf/5XhMAIW+hQ1jUaWS3Y8Ab//gqycwOYKAqhHAFPJiM/4pmfPy6YN08tPO1rbINqASl1L8HRgwxDiTAgJI+TvZGk6XybCpQVONU1Pf2mAhLmVy4cFJY1YAo7rreC8YOl4OhvgLy+hR6o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775557347; c=relaxed/simple;
+	bh=Ry+670M4aC9nVopfSukoNqqQRbVow/x6TQpNVc2OjSo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=AxNS0K2vQlc2lRMrKNT26coZxcJGVPE0KmFNbownJGoB+zdykuMUFKpa1spW4UvOonvkxbWkgKUxDXMFPkji8ujG2EqZ3h8mKciriAa3Rr5/LRSdhD2MTv+BlEQgLHbJMj/n+Db7basbcExwIJh12t6zSxJzawoxaPZSjOtHUGo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CTMU9+da; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-66bb66db39dso7408592a12.0
+        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 03:22:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775557344; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ci+81uHUEZ1Pr/CZ1xILBwB5yll7YKCBOIdceAUiSnMywP01EfzuTN2nJOjRNa2YkZ
+         n8t9GF5j/sL4nLk3BJYQc4n8NhsU2+GwGu32r4CwtgZA0jwn6VqiEBFHBAoJpItOUz8C
+         vpcb2O4uhJYcpElhKGflUnVrdyOxHxmmJqKiLPCzs1EvGIh2v097Yns9NuePiI0Oj8OS
+         Yy9qj6afoc83/BfiiGZvjw/Pqs0qx2DPz5DxitUui9DHnh1cxIQrgcY956jVXnLpaXVW
+         T3fZZKr25E3+tVq7zEzXLoiXBjJBi8zoN+2Yyi7It6DRVEbMJbStWs8qBEuQCAvD2/8A
+         HVVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=Nv3TJ4e/E8xFH9xdVdNcrcuU4vA0S/CRqn+ui9vd0c4=;
+        fh=6cFbB9axBA8uP/inBQQW9rfze7zHuFvrNyIrw7M6DNI=;
+        b=I9Ync5gXLsXUsoS7Dd65torRKRAOFNvcoNzm7NfIKO1+wOyFfD6kV9W0viLfhcF8kl
+         ulVQ31BkM62JdPrORpCDD70YKyLiCceTVliWym0Ra/SGbPnqlXNiYKvPOo7MHoXTpxxp
+         0BTngZfH2ibwiwbXvxgPsCra3Zwcwv1alDcC6EiyCxj5e/fgLOcKdaRC9h5ow453IrCV
+         02bQtJK7vuKcMnJyzx3S04BdTdfmOEAcbq9F1aOsf97Xm14DyYNnA5eMcxB+R1jIwMr5
+         21KuzpNs84mgeUhH6Zo+1rRBEaHmJPMt9mdgwnYzXDcQif8zeFMzhRr8Rwt2BYCj1DJt
+         R2Mg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775557344; x=1776162144; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Nv3TJ4e/E8xFH9xdVdNcrcuU4vA0S/CRqn+ui9vd0c4=;
+        b=CTMU9+da8i8P32O6FHj+6t+Blg5ARzfQsbuMeiNmHJ75WKoLHav+cmZRqU3po2ovrt
+         Yw4N9PHoiXNG3qLkfIwfaqjSaCSk19VDJ4LxcwChb5GuF6OSxgBp4Xy565D92q7qeZ01
+         0t9InjLXb8n63awfQEG5b2QuRK0ezGLUYINou8B8A2TtWdrV46dPyKZg0ViciDTnXFsh
+         /hqD2zcNyvfVvRRWECI8Gd8J8pSo4P/ildcORbbQ4FDJJggA0pMUGH7EvpkDdqMvPLou
+         +3iOCSgUo9Ug0yWV6GpQqLqvKrcyDMxF7R3Hu7Bj/dBCfRjhM2VSD8ZTbQP3t4C5tbvG
+         nahg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775557344; x=1776162144;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nv3TJ4e/E8xFH9xdVdNcrcuU4vA0S/CRqn+ui9vd0c4=;
+        b=AMuwFTs8/pW/EyBEJ6Oo2apa3J/MIzZgaz3YQEOLGCOr3FFGCoaPzKXR5lCsGYGi8v
+         WVuJlCQQmP8SKtMhZz+XdurV4qhGid3QeYRRIu3ySUjyNPFefTs54Vz2f6kc5XPnwXFH
+         XHo4zyOXJFEsvfa060jv6d+7IuunJFZ7ok8lhDmyvJajJWtpFY23NaGYlYRF7dQ26XvE
+         uAR80pyIF51dgskeZp354cCd1gn0MQxSGB2tFhD+pAMPizPOXBCpTyY6KNrUxrvoICGH
+         YaFjaStMn6Qe21Y0I0kw9ZWH9o2pW/whStpb+UIdOBMZlRERe4odQ99T2cRrrlihtSc6
+         kF7w==
+X-Forwarded-Encrypted: i=1; AJvYcCW+W8Hl+d2tmMqZGu0YvM83SFlPd24VsF7WMsAWlphNKLxt06w4x1lURdntAkl1+UfsyqfEq8k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNru1QVvmEqE9RarCYs8Zg7otbE5g348qwpHk6PiMoDIplmcId
+	0lOn5vA408EcsvSylGroUyofEApG6yY3YifRMICHGs/v3kkCI5IWRx2BuIIFrnDFqHtjPUMz04d
+	vIANIKittkFQ3OBHJP2O8AC6ukl8XvSCR5x9lJ7g=
+X-Gm-Gg: AeBDieuLu/KLk0eqsdnLuj37XFtgenRIhud4G6iLLqTVYXn8KD8jx1Ql3vINwFmSeW0
+	2OaqcIMQQydgKjIIhYJr71khkdwrIiRn+P/DwhRAi7x8++A/gn/cM7DfPIytemmCdg5vEmNHYYZ
+	+4PH4C1q79qUk5BnJmqNLAzREJpspeQwh5N4uPtiIbmPCFZeSaEMI1cF2bHlDCPbKPxQ3L6ebhy
+	pW4nqMLnSmQjgzLPFFQ6/lu/FpRIxf0Cawlwz0LaKWnJzfRiNYSpE14CxoKASD1cVprRnS1aNrQ
+	mpLZ3K9UXgm/exlzgUwXTdSxTfpsXFS8vwnRdwjtIY6UVrsVQiYCP1iRUkObGUdqyUlIndcT2g=
+	=
+X-Received: by 2002:aa7:df86:0:b0:66e:4372:8ea8 with SMTP id
+ 4fb4d7f45d1cf-66e43728f36mr5162922a12.22.1775557343828; Tue, 07 Apr 2026
+ 03:22:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-camss-rdi-fix-v2-4-66f6c600fcff@kernel.org>
-References: <20260407-camss-rdi-fix-v2-0-66f6c600fcff@kernel.org>
-In-Reply-To: <20260407-camss-rdi-fix-v2-0-66f6c600fcff@kernel.org>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil@kernel.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, 
- Gjorgji Rosikopulos <quic_grosikop@quicinc.com>, 
- Milen Mitkov <quic_mmitkov@quicinc.com>, 
- Depeng Shao <quic_depengs@quicinc.com>, Yongsheng Li <quic_yon@quicinc.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Bryan O'Donoghue <bod@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4312; i=bod@kernel.org;
- h=from:subject:message-id; bh=s60sIJaXGpdYqv090mjDLH9kxg4goK1KRKFRBCPJ730=;
- b=owEBbQKS/ZANAwAKASJxO7Ohjcg6AcsmYgBp1Nm27ukRGAGTENEjVQtuWZ30q1tltYwngdMyX
- 9ngbW8Gq56JAjMEAAEKAB0WIQTmk/sqq6Nt4Rerb7QicTuzoY3IOgUCadTZtgAKCRAicTuzoY3I
- OmV4D/0XwDqRUfVLkYHmr8oWLStUjCAZqdzQAaEeN9o3yFUexUzwZRm7gJwnePJpuZ/ZzJsss2d
- bp2EYfBFgpt/gq/331lV5BsXGm8Wt067IXFPO6SgSaYvoeXCGXfPxclNAvRacUlz9xJGNYrv2fS
- Lig93uQXgkRawZN/Y7nAA9DXJEObCGgVFZ69uVPIOM36cx5VIEIQabo99spPzyp77PSN/EuEOle
- rn6cRy0XvEb3QiNmV7NaMCY/125Bg7pGlCGAf9K4T2T5gbCDYPixlNAc8RGcjdA5Pvi9v3obOyW
- DnNB0TpXmTnPtWXbc0u69aRcsXALjZDp27DYf44Eixt3yjaZv/KLXAw1xW/tWvmk93o09TSXowF
- QHql0df+gHXyebA0OfxmTnwJCgKFcw4WeWOaUzZ4DpD1zT+LW2nms8Ax5Ykacdft1tdRS4EUf4t
- OXaqQNxMYBYamG83Tjr7ZJ/a3pHcmyizsWy5gJp0m252fZAA7LoSspI2nEPtWTVAlC4RIkIUIfC
- Hb6dNqWzYU8WjNFyndh2Wl0zgqdzkwoWu5ANH5XSOmF+uYENLbGV1ZibKDCJcjEKcdbyGsxEr+b
- I0OoYMvYInFVL4+FL7SnHq4OQtSA4vMfdKyeS/VHgikvcimvO+mL9ui5wxvGto+FfnTDQ2U/SRg
- /kJfl7LYuRnsm1g==
-X-Developer-Key: i=bod@kernel.org; a=openpgp;
- fpr=E693FB2AABA36DE117AB6FB422713BB3A18DC83A
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+From: Kai Zen <kai.aizen.dev@gmail.com>
+Date: Tue, 7 Apr 2026 13:21:57 +0300
+X-Gm-Features: AQROBzCQyOFcf3eNz3WbxU392uw8y1QCtuu0B2xqk79tjJ3pTEUcyByx6NAE76I
+Message-ID: <CALynFi7k1Z7Vgr4p2=KH2-uWVntBRE5R+8uP=cds9_ihGqzOdQ@mail.gmail.com>
+Subject: [PATCH net] net: rtnetlink: zero ifla_vf_broadcast to avoid stack
+ infoleak in rtnl_fill_vfinfo
+To: netdev@vger.kernel.org
+Cc: edwin.peer@broadcom.com, Eric Dumazet <edumazet@google.com>, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org, 
+	security@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233545-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233544-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linaro.org,oss.qualcomm.com,quicinc.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[bod@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email]
-X-Rspamd-Queue-Id: 244F03ACAC8
+	FROM_NEQ_ENVFROM(0.00)[kaiaizendev@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 230613ACBBB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+rtnl_fill_vfinfo() declares struct ifla_vf_broadcast on the stack
+without initialisation:
 
-Fix streaming from CSIDn RDI1 and RDI2 to VFEn RDI1 and RDI2. A pattern we
-have replicated throughout CAMSS where we use the VC number to populate
-both the VC fields and port fields of the CSID means that in practice only
-VC = 0 on CSIDn:RDI0 to VFEn:RDI0 works.
+    struct ifla_vf_broadcast vf_broadcast;
 
-Fix that for CSID gen3 by separating VC and port. Fix to VC zero as a
-bugfix we will look to properly populate the VC field with follow on
-patches later.
+The struct contains a single fixed 32-byte field:
 
-Fixes: d96fe1808dcc ("media: qcom: camss: Add CSID 780 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+    /* include/uapi/linux/if_link.h */
+    struct ifla_vf_broadcast {
+            __u8 broadcast[32];
+    };
+
+The function then copies dev->broadcast into it using dev->addr_len
+as the length:
+
+    memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+
+On Ethernet devices (the overwhelming majority of SR-IOV NICs)
+dev->addr_len is 6, so only the first 6 bytes of broadcast[] are
+written. The remaining 26 bytes retain whatever was previously on
+the kernel stack. The full struct is then handed to userspace via:
+
+    nla_put(skb, IFLA_VF_BROADCAST,
+            sizeof(vf_broadcast), &vf_broadcast)
+
+leaking up to 26 bytes of uninitialised kernel stack per VF per
+RTM_GETLINK request, repeatable.
+
+The other vf_* structs in the same function are explicitly zeroed
+for exactly this reason - see the memset() calls for ivi,
+vf_vlan_info, node_guid and port_guid a few lines above.
+vf_broadcast was simply missed when it was added.
+
+The pattern used elsewhere in this file for the regular IFLA_BROADCAST
+attribute also avoids the issue by sending only dev->addr_len bytes
+rather than a fixed-size struct, but for IFLA_VF_BROADCAST the wire
+format is the fixed 32-byte struct, so the right fix is to zero the
+struct before the partial memcpy.
+
+Reachability and impact
+-----------------------
+
+The leak is reachable by any unprivileged local process. AF_NETLINK
+with NETLINK_ROUTE requires no capabilities. The only environmental
+requirement is that the host has at least one SR-IOV-capable
+interface present (a parent device with VFs), which is the common
+case for cloud, datacenter and HPC hosts.
+
+Trigger: send RTM_GETLINK with an IFLA_EXT_MASK attribute whose
+value has the RTEXT_FILTER_VF bit set. The kernel will then walk
+each VF and emit IFLA_VFINFO_LIST, including IFLA_VF_BROADCAST,
+which carries the 26 bytes of uninitialised stack per VF.
+
+Stack residue at this call site can include return addresses
+(useful as a KASLR / function-pointer disclosure primitive) and
+transient sensitive data left over by whatever ran on the same
+kernel stack just prior. KASAN with stack instrumentation, or
+KMSAN, will flag the nla_put() when reproduced.
+
+Reproducer (unprivileged):
+
+    import socket, struct
+    IFLA_EXT_MASK   = 29
+    RTEXT_FILTER_VF = 1
+    s = socket.socket(socket.AF_NETLINK, socket.SOCK_RAW,
+                      socket.NETLINK_ROUTE)
+    s.bind((0, 0))
+    hdr  = struct.pack('=IHHII', 0, 18, 0x301, 0, 0)
+    ifi  = struct.pack('=BxHiII', 0, 0, 0, 0, 0)
+    attr = (struct.pack('=HH', 8, IFLA_EXT_MASK) +
+            struct.pack('=I', RTEXT_FILTER_VF))
+    msg  = hdr + ifi + attr
+    msg  = struct.pack('=I', len(msg)) + msg[4:]
+    s.send(msg)
+    data = s.recv(65536)
+    # Parse IFLA_VF_BROADCAST from the response. Bytes 7..32 of the
+    # broadcast[] field are uninitialised kernel stack on Ethernet.
+
+Fix
 ---
- .../media/platform/qcom/camss/camss-csid-gen3.c    | 28 +++++++++++-----------
- 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen3.c b/drivers/media/platform/qcom/camss/camss-csid-gen3.c
-index bd059243790ed..ed5c5766efd36 100644
---- a/drivers/media/platform/qcom/camss/camss-csid-gen3.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-gen3.c
-@@ -145,12 +145,12 @@ static void __csid_configure_wrapper(struct csid_device *csid)
- 	writel(val, csid->camss->csid_wrapper_base + CSID_IO_PATH_CFG0(csid->id));
- }
- 
--static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8 vc)
-+static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8 port, u8 vc)
- {
- 	u32 val;
- 	u8 lane_cnt = csid->phy.lane_cnt;
- 	/* Source pads matching RDI channels on hardware. Pad 1 -> RDI0, Pad 2 -> RDI1, etc. */
--	struct v4l2_mbus_framefmt *input_format = &csid->fmt[MSM_CSID_PAD_FIRST_SRC + vc];
-+	struct v4l2_mbus_framefmt *input_format = &csid->fmt[MSM_CSID_PAD_FIRST_SRC + port];
- 	const struct csid_format_info *format = csid_get_fmt_entry(csid->res->formats->formats,
- 								   csid->res->formats->nformats,
- 								   input_format->code);
-@@ -163,14 +163,14 @@ static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8
- 	 * the four least significant bits of the five bit VC
- 	 * bitfield to generate an internal CID value.
- 	 *
--	 * CSID_RDI_CFG0(vc)
-+	 * CSID_RDI_CFG0(port)
- 	 * DT_ID : 28:27
- 	 * VC    : 26:22
- 	 * DT    : 21:16
- 	 *
- 	 * CID   : VC 3:0 << 2 | DT_ID 1:0
- 	 */
--	u8 dt_id = vc & 0x03;
-+	u8 dt_id = port & 0x03;
- 
- 	val = RDI_CFG0_TIMESTAMP_EN;
- 	val |= RDI_CFG0_TIMESTAMP_STB_SEL;
-@@ -180,7 +180,7 @@ static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8
- 	val |= format->data_type << RDI_CFG0_DT;
- 	val |= dt_id << RDI_CFG0_DT_ID;
- 
--	writel(val, csid->base + CSID_RDI_CFG0(vc));
-+	writel(val, csid->base + CSID_RDI_CFG0(port));
- 
- 	val = RDI_CFG1_PACKING_FORMAT_MIPI;
- 	val |= RDI_CFG1_PIX_STORE;
-@@ -189,22 +189,22 @@ static void __csid_configure_rdi_stream(struct csid_device *csid, u8 enable, u8
- 	val |= RDI_CFG1_CROP_H_EN;
- 	val |= RDI_CFG1_CROP_V_EN;
- 
--	writel(val, csid->base + CSID_RDI_CFG1(vc));
-+	writel(val, csid->base + CSID_RDI_CFG1(port));
- 
- 	val = 0;
--	writel(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PERIOD(vc));
-+	writel(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PERIOD(port));
- 
- 	val = 1;
--	writel(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PATTERN(vc));
-+	writel(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PATTERN(port));
- 
- 	val = 0;
--	writel(val, csid->base + CSID_RDI_CTRL(vc));
-+	writel(val, csid->base + CSID_RDI_CTRL(port));
- 
--	val = readl(csid->base + CSID_RDI_CFG0(vc));
-+	val = readl(csid->base + CSID_RDI_CFG0(port));
- 
- 	if (enable)
- 		val |= RDI_CFG0_EN;
--	writel(val, csid->base + CSID_RDI_CFG0(vc));
-+	writel(val, csid->base + CSID_RDI_CFG0(port));
- }
- 
- static void csid_configure_stream(struct csid_device *csid, u8 enable)
-@@ -213,11 +213,11 @@ static void csid_configure_stream(struct csid_device *csid, u8 enable)
- 
- 	__csid_configure_wrapper(csid);
- 
--	/* Loop through all enabled VCs and configure stream for each */
-+	/* Loop through all enabled ports and configure a stream for each */
- 	for (i = 0; i < MSM_CSID_MAX_SRC_STREAMS; i++)
- 		if (csid->phy.en_vc & BIT(i)) {
--			__csid_configure_rdi_stream(csid, enable, i);
--			__csid_configure_rx(csid, &csid->phy, i);
-+			__csid_configure_rdi_stream(csid, enable, i, 0);
-+			__csid_configure_rx(csid, &csid->phy, 0);
- 			__csid_ctrl_rdi(csid, enable, i);
- 		}
- }
+Zero the on-stack struct before the partial memcpy, matching the
+existing pattern used for the other vf_* structs in the same
+function.
 
--- 
-2.52.0
+Reported-by: Kai Aizen <kai.aizen.dev@gmail.com>
+Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
+---
 
+Note for reviewers: this is v1. I have not yet identified the
+exact introducing commit for the Fixes: tag and would appreciate
+a pointer, or I will resend as v2 once I have run git blame on a
+local checkout. The bug is present at least as far back as the
+introduction of struct ifla_vf_broadcast in net-next.
+
+ net/core/rtnetlink.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1572,6 +1572,7 @@ static noinline_for_stack int
+rtnl_fill_vfinfo(struct sk_buff *skb,
+                port_guid.vf = ivi.vf;
+
+        memcpy(vf_mac.mac, ivi.mac, sizeof(ivi.mac));
++       memset(&vf_broadcast, 0, sizeof(vf_broadcast));
+        memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+        vf_vlan.vlan = ivi.vlan;
+        vf_vlan.qos = ivi.qos;
+--
+2.43.0
 
