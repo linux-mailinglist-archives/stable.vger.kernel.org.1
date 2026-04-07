@@ -1,225 +1,213 @@
-Return-Path: <stable+bounces-233559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAwsKyfj1Gn0yQcAu9opvQ
-	(envelope-from <stable+bounces-233559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:57:43 +0200
+	id kBmhCvHm1GmeygcAu9opvQ
+	(envelope-from <stable+bounces-233561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:13:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F753AD5EF
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:57:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822283AD869
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBE3430570D8
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:52:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6632300E707
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 11:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8DA38B7CF;
-	Tue,  7 Apr 2026 10:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEC93A5E9B;
+	Tue,  7 Apr 2026 11:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="goTgIKJY"
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="RqFhK0eO"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670EE3932F7;
-	Tue,  7 Apr 2026 10:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775559160; cv=none; b=fiLTuFsLnPZRh4i7iTBmNkT05pd9pTY3ZKk2w0NDCaAKiSMLCuzuUZ2Xo0gdlWIqAIMQAw79SzvEIGGy4s7kjV6Wwj3FiwZ3X47/paYGciIo7L3kq04u43VvZajeUQN30zCmiA2KPxUYusOO71AjIWZ/GBTb2gGXmtzWd3CWJC4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775559160; c=relaxed/simple;
-	bh=1ncnVOsuWYAw3IF70eygWx6t1LxyZ2q+2MYl6USa5l0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lg4D0nxa1QBSPZbdxOYVBkkTUx3Z/3CcoLi2qhxCIV7gqNzWu40lFFX5MWQz0HYZc1hlFjbagcmpRkASZr8JBao64OYwTBAejm8br54/QcxcaYY0mLWucDLhb41wYUXoPSiYMxNWt74mfXI0JrUpz35+/mqIazpr9JxQjcDX3zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=goTgIKJY; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0A0BD175A;
-	Tue,  7 Apr 2026 03:52:32 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 631303F641;
-	Tue,  7 Apr 2026 03:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775559157; bh=1ncnVOsuWYAw3IF70eygWx6t1LxyZ2q+2MYl6USa5l0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=goTgIKJYCyiF0jjX3GevgPVxT47rpBu2snee3BGmA92MrZOu157NaMc9wiRHl+pbD
-	 V1ckcrJt/bqn6L3vwXy5FtANYeLFvbH776nrjcSMNW+xw6C6lnfOktzPfx7lWuXq/q
-	 lloWUp2GS5oXGbVTH2omprFCSbY4afyBtZWPW+Hc=
-Date: Tue, 7 Apr 2026 11:52:33 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Will Deacon <will@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Dev Jain <dev.jain@arm.com>, Yang Shi <yang@os.amperecomputing.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] arm64: mm: Fix rodata=full block mapping support
- for realm guests
-Message-ID: <adTh8d9k3y5ybemL@arm.com>
-References: <20260330161705.3349825-1-ryan.roberts@arm.com>
- <20260330161705.3349825-2-ryan.roberts@arm.com>
- <ac7VD4Z85nS30GCp@arm.com>
- <ac-W9oNM_O5RTtaf@arm.com>
- <beacee23-c177-47a1-b8b5-743844b617a8@arm.com>
- <adTPFrlVCEt-hioX@arm.com>
- <bc4a0246-33bb-443e-a885-a31b24d4a022@arm.com>
+Received: from PNZPR01CU001.outbound.protection.outlook.com (mail-centralindiaazolkn19011039.outbound.protection.outlook.com [52.103.68.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122E225F98A
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 11:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.68.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775560100; cv=fail; b=lcN8XydGOF2XSDZ5VSFxP3e5O6WlfE7IBu1wJym6bajhFL3IK1oFr5HbV/8KhHBph2B8ud3TzDC1sKF3DAhtRdncQV9Dvybs3RL/lah0LzDjdYtqXvqBxhBd2L5/Kz89g1FVVlockM4GuSDcBJhu5ptmedbv/47tGuNdcDuyKaQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775560100; c=relaxed/simple;
+	bh=+2jNHbJgSimPpAvyghrg67kYyICmq1idvgzfBPQJOyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=i6GlmGMDQBB9si2PJAW6dep3CH3qFZjJwTjdYXxV2Y5yPwYmJmYdyaHHLBlH7Ela2C+sZcB5jZEDsHEM6yvSx5ysHXtvUDLsF7mhSZYNLpSBx3/0S522n1lI0kuq4FJhCesX0JNPw/XzjdLNynrKZiWB/Zc2dHk/nlwr7trpTyc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=RqFhK0eO; arc=fail smtp.client-ip=52.103.68.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gV9nrs94D3wZaGWb1IUb/zxD8VBJ75x1KmOMpX3x9KBdkW0/6ECeo2FbLJbDgckNEJKTpl81xCelJaxFGgednVJQVrF3XewdnBd/lZI5O4HlDYifQYUApdhnztnOfKWO2laAuoWLO54SF2AjFVpP1Wnep+pkHOolaSIKuu9HR2GieCuv5cSSPResI9I+kwBXVVKUhlzT8Gh8FXIbxAs/6HO0BzUsKP/gMxJbK5zRETMrJJLF+q8oep83nVA6EDnv/1tsp5H8r+fX+AxGAdzYRQTx5VwFBqq+rWQ4FVXHTw5yxBDeZ7zh+UddypOM0eKB+4ANwjfpmjVGFIei5d0p4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MMVxN10PDuio2Yzh//096J0cWf2nQ6m8DkjI2goJvyU=;
+ b=kO5jKwTZS5woOWj2cGeZ8L5NojDcisRJrlfKPIQI6aa3BGrLa8FkZT0dcWPJpSH88Bfl51pz+kKc7jJLOdBUeuhMu95YG1XsKjIIC4b95tUFY1qhEeCBoi0MDgSiuiTYzTQJZOABRCkqW1JOTPSrp34JfemZ2zHQGjQ5feoNkVSCClwPOslvNho5gfmsXchDeShXgCMKNo0RvVQvFIyYO+naCqTSSMm6EflpmHW3i2tr7gsJ/emHpucflDkMsVtbFtPDXp8mwo5s4DRTHIPZc2mhDzKlDd8rOsdxsiZ8rFUVDjK66Y5iZvoZ5qTYX2QNy+LjIOUc2XSS3rrSvJlnUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MMVxN10PDuio2Yzh//096J0cWf2nQ6m8DkjI2goJvyU=;
+ b=RqFhK0eOnigvQk1+S2Ji/THItrrpIC9FP2xSYIYSjATOuKgZAoDOtcr7VS1J+I0SUq2hf/4F/hTZ8SMiYFIKFmGU4clqraiYNVSG8kf/iScCezcOkm7HeJijYs2jzMyczptUIZK6MIP6aXuBizpy89LIzsTzKrzm0mby1pFVC72BMaYIn1vG/7GfcIyRhrr/BKk8y4k2jyiGxVFSZi7vjVE7KeDY6WDKJbLcCPiIGKBqhxcd71fDDyza/UL1r8yw6nctpjtucxrGzl7pJXJKiYpYOB6/E7wHVsK1lt4aEXQs/D5y4N21SVPRoaOQfBcsY1OV56/FZyawW6PTeJ8OMg==
+Received: from MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:19c::18) by MA0PR01MB5781.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:6e::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Tue, 7 Apr
+ 2026 11:08:15 +0000
+Received: from MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::1fed:9b0b:69b:9295]) by MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::1fed:9b0b:69b:9295%6]) with mapi id 15.20.9769.018; Tue, 7 Apr 2026
+ 11:08:14 +0000
+From: Aditya Garg <gargaditya08@live.com>
+To: stable@vger.kernel.org,
+	Greg KH <gregkh@linuxfoundation.org>
+Cc: Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.18.y] HID: appletb-kbd: add .resume method in PM
+Date: Tue,  7 Apr 2026 16:38:01 +0530
+Message-ID:
+ <MAUPR01MB1154611A3C616EBA4F0595F12B85AA@MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PN2PR01CA0125.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:6::10) To MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:19c::18)
+X-Microsoft-Original-Message-ID: <20260407110801.1239-1-gargaditya08@live.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bc4a0246-33bb-443e-a885-a31b24d4a022@arm.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MAUPR01MB11546:EE_|MA0PR01MB5781:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e7c133a-6a5b-446d-3189-08de9495f6d2
+X-MS-Exchange-SLBlob-MailProps:
+	9qw5+ftluCCm9yoJ9fgtGwzhjjsJDn+qo/nZz477D1xR9kBczXwUfuQUs/8jcy3W4vOit4yKd6ojYAQlrcIS7cRePIXdH7TfKBH2ytBW6I3dbvZWRt4bNkwpKlA9TYTCbYFO/ZhR2Jn1WxOC98m8RdhE8EjojPKqk7TOujLlRGLO8Kik0N0GlxlZhe1TnlS94aEPoWfTN5Emxz7ySHpy2Ib/IdESv7gU8wCYx+80uPlCqKfp2e9fMQ5X6C3dEjAY6EVjQyK7k8ThCzSKo4vzAsyvrznAe0Z/jro1+w2hPqbifCL4sqXP1SOUfyaWrluoRsyhsfa3EbygirxQjpOHW9SehaQU9C2g3DixRBFECkmeIoqaXTabtsFR3Y1+KuI/NtFNUJeu3A9a5Z269wH77oDv8XfvgQvZRw3MswLfu5I0EqtcnWXaqaiOV+h+e+rEHY3fXLla0nhmGlvP+zintiUvsgo0TTqNnvrIWf3D+gmQwSEz/GGk3BBhqZbad/n1Axj/M4bJgtHIGEjUOLG34UIZFLlzqhwHm6LPxmq9ZblTR29IK8BKCn2Rk9F7+TStk5oxz3d6Yad10m7ya9BIiIESEIFceasBokfX8EsfNf4ODXei7VVaBAQCgTMoOgQ68P2bJnhFBAkxd18nhwgN2KGef+OTyv71dlYhwyiqTdDG6T3yFN3Fk6+CMpW4Z+dqCq3VxMUjlCQ=
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|25031999004|19110799012|51005399006|23021999003|15080799012|8060799015|41001999006|5072599009|5062599005|461199028|40105399003|3412199025|440099028|26121999003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?04GpNZ7BSnrZxRo7M0rHjtWN+4+vr89Uz6L8ORg9fGHFiOsjBbwb3CE7cmAp?=
+ =?us-ascii?Q?N7SJffeR0dyRdzqTiEAdVc7dnpiBGeOdPVO42+h7a4OYDkhFCH9rgob8qtVQ?=
+ =?us-ascii?Q?ZwD4LClqUh0ttnRIIityX+mwy5l28oKhuQdlDkTDS2OWhm4H7uZadMYUv9FD?=
+ =?us-ascii?Q?1Vxb8MdYwf/xzeUuDaM1OcwYagLS6oX3vQvZzSHkFD39aZ7Q9WrpIqqsbD5l?=
+ =?us-ascii?Q?hRxKO79f2YAX4Tv7PHTXj7ADQbFDwysXsnWY48ydbXZDUdKABBMrKWR/nvm2?=
+ =?us-ascii?Q?uiHok4hj3scj0kTssSJvmdzGbg8ITilLpvmKvBlqnLeN2x9DX0nnCykLjazg?=
+ =?us-ascii?Q?Z8yfFyp5WqmLeGpfdwcEwMJJ9lQz3+6Bei6LkBwq78I4t3yQKvUGmdm7pRel?=
+ =?us-ascii?Q?H+cFtsGpoAvL0kkJtoSegS3Lh9hEg4+y8i9FVHJMa1nIhswwL+SC8heYIa91?=
+ =?us-ascii?Q?1FZGO7ry+FeStJ3AlEKDY3YX3aI/FbyUZi9fMw+HlW3akMsdm9ZW91qFK2A9?=
+ =?us-ascii?Q?5uGAP5aXDybQfeJEIdhUC3JBFTVAINWj7AHozpp35Et0+zhWtxNoFEPK1/im?=
+ =?us-ascii?Q?I1oZqKdIgDIXUQQXyNVT9+NDgcj7AC5DNuFr/0tDBXrPSFLo+bWyTnGrYFAw?=
+ =?us-ascii?Q?areN7zJHyDbmQWWfKFDawowClV6a3y10bQ5qrrpRHXWWbShPRz1RXJPt7k0F?=
+ =?us-ascii?Q?R5+fyEfVdA/rDc959leC5ukgqUNNLESMRITgCaB+lMsoTgXuvSzAePYIckKB?=
+ =?us-ascii?Q?++tK+7ojxi39KTf5UfA8oyyu4oJTI9blA0dPXCMyW9igLoMXgGVlQsxvZ6Ft?=
+ =?us-ascii?Q?zUTohbIlO5pB3AxXyXGq/d1ToWcutD85TPYaooe2cY8h/Mf+RVg8xGN4Tu7d?=
+ =?us-ascii?Q?HfMPTLExwM7bj4p/F2iBSonGNxi3Q/6uwZ5dDMZs9M7S/J/+zj2gw9hZOsxi?=
+ =?us-ascii?Q?Wb7vEexX9LfBU7Olzl6DlWwN5rDzI0VfeuH4ETrjEcprwXRYNToHgYKVpxGw?=
+ =?us-ascii?Q?ywyQ5k5POwZh2mDfvqrasz6QyWe7oK3irqtuIzsbmmCvo9U=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LM9rt3l0UxsFGMzB4iscfR7VOCeiiEzeQWAy+VpDWxfUKSY6Rq3vYkKlYDNQ?=
+ =?us-ascii?Q?C3OQvvkhjjUVItb5QKmggD2X12c/vHSBxX9sjB3x2nXlH1VgoD4ZTFLO+D9k?=
+ =?us-ascii?Q?z6S6tvqjjCyrpe1untYxyHebeHz0gwQTMFhDHa0tkmFTpmllBI+75+5bjE6v?=
+ =?us-ascii?Q?cTODc2HeGBEAC1u7Qgk3T9WHFxIOtj+LHXkKVmcOR08h7DqhBQt2BGzAeBEM?=
+ =?us-ascii?Q?8Uwgkb7vKI7+T00R2jOntRKxT6Mp55Y2ZNaTOGXBo1SlLCI9xTbXoRhUzBKx?=
+ =?us-ascii?Q?UbS8Nrh7UiB6bi8oEhK17SrL6IEPqKP09XaS0YnV542ELpWOpiWOt4fGI9sL?=
+ =?us-ascii?Q?wP33Ms+kKhtVLsaI+3QTvUL5WKpZixCsBNgwieG5ElDu/TP7ju+mKAIlONR1?=
+ =?us-ascii?Q?oWzwkTzSNt66PdP3TO2XRqZdMq+uM/VkPM2Vh8IdS+Jr1/6OEirJC8qOaT5K?=
+ =?us-ascii?Q?tLKIe/LYh+F5lv1kxVTzwHiDdy0AAOaBHlIHvLbbrPw0p72yV9QnZ28CcyPH?=
+ =?us-ascii?Q?EBqBgTB/E28yiTesVlGh9ym+MXMPbgqCs8OkipWp3yPIjY2+0DVvhQ2LFX6D?=
+ =?us-ascii?Q?0Qh4tJ2xU7ZegoFTQKgWHV0iP5UntQ6039pZ/zJ6GjVc8Jyx4H1SUtF+HkYv?=
+ =?us-ascii?Q?qnYryJ6eI+hkscL75rOVAYhzCp9qdOR82LkEIecMZdcRqygmU285/eykivOQ?=
+ =?us-ascii?Q?/2W/2OnzH7jg7LFX+hUOzpAxbIqNAG9OLkHg85H8SUwcIEhyzjcyRTM2ao8C?=
+ =?us-ascii?Q?evlGz1XugDl+pbsREaSPAMzBgLLVJ2uwM0VidyDf5S+0jMoxJcEO3UmXhBc+?=
+ =?us-ascii?Q?+qC9wPos1iPgFopUoO14zzswukGcMW+EbaDlDIYOtuwq6CtfpKjspF2G0SFg?=
+ =?us-ascii?Q?Js8t0Y7noAEcbf33S8MSw/stQQMD92gBu8e5qvcD0CCoh58e5IY8XDSS+UJs?=
+ =?us-ascii?Q?TWRX3PGeLusJp2FFJ4l1w1oc/4Pwk95Gk5z4jtaKhVz08zJopkecIFBi85vm?=
+ =?us-ascii?Q?vHz5faPNrYlXAErSpa9CTpuEaC0T08fj+vRQGEuxhEsTsxlxrLCksmwFFnN0?=
+ =?us-ascii?Q?PnJOCfM5+DAZiMT0Yn3F290SKdgRSvjvlszAkocCcryWiIosOVgDwUZZd9jR?=
+ =?us-ascii?Q?l3e/xLdDKkgDMt5AsCU/3r7eKcpbZN3reTXx0ACIMHug21wikbft1rutnmF2?=
+ =?us-ascii?Q?osRhHS3Q8SpD5S1EsHvJ5NegAQyLos8zt+c6Rgrf4QknBzBvieUVWfVOKnwj?=
+ =?us-ascii?Q?7616kyi+M1etgl+LX3FJaIowCDRDKU+P8WglQ7YQ56zd9T35E7pPVQpPqK8o?=
+ =?us-ascii?Q?YaWRE6FeLEwunDJiTwBuj+hcRzYWF1Si+hoqCdNjLT/biotV54e7Ia2Yo5hX?=
+ =?us-ascii?Q?6UsY4LrJ/VG13W2BFI8pI8ri6doR7+hG2gTS+mWe8R2ha8NZwjDbPXHnlIoe?=
+ =?us-ascii?Q?7Aur3m/QyWCJYrOWsi5zu6h1dO+YSM3E?=
+X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-63b91.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e7c133a-6a5b-446d-3189-08de9495f6d2
+X-MS-Exchange-CrossTenant-AuthSource: MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 11:08:14.8768
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0PR01MB5781
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[live.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[live.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233559-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-233561-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[live.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gargaditya08@live.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[live.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:dkim,arm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 30F753AD5EF
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,live.com:dkim,live.com:email,MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM:mid]
+X-Rspamd-Queue-Id: 822283AD869
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 07, 2026 at 11:13:07AM +0100, Ryan Roberts wrote:
-> On 07/04/2026 10:32, Catalin Marinas wrote:
-> > On Tue, Apr 07, 2026 at 09:43:42AM +0100, Ryan Roberts wrote:
-> >> On 03/04/2026 11:31, Catalin Marinas wrote:
-> >>> On Thu, Apr 02, 2026 at 09:43:59PM +0100, Catalin Marinas wrote:
-> >>>> Another thing I couldn't get my head around - IIUC is_realm_world()
-> >>>> won't return true for map_mem() yet (if in a realm). Can we have realms
-> >>>> on hardware that does not support BBML2_NOABORT? We may not have
-> >>>> configuration with rodata_full set (it should be complementary to realm
-> >>>> support).
-> >>>
-> >>> With rodata_full==false, can_set_direct_map() returns false initially
-> >>> but after arm64_rsi_init() it starts returning true if is_realm_world().
-> >>> The side-effect is that map_mem() goes for block mappings and
-> >>> linear_map_requires_bbml2 set to false. Later on,
-> >>> linear_map_maybe_split_to_ptes() will skip the splitting.
-> >>>
-> >>> Unless I'm missing something, is_realm_world() calls in
-> >>> force_pte_mapping() and can_set_direct_map() are useless. I'd remove
-> >>> them and either require BBML2_NOABORT with CCA or get the user to force
-> >>> rodata_full when running in realms. Or move arm64_rsi_init() even
-> >>> earlier?
-> >>
-> >> I'd need Suzuki to comment on this. As I said in the other mail, I was treating
-> >> this like a pre-existing bug. But I guess linear_map_requires_bbml2 ending up
-> >> wrong is a problem here. I'm not sure it's quite as simple as requiring
-> >> BBML2_NOABORT with CCA as we still need can_set_direct_map() to return true if
-> >> we are in a realm.
-> > 
-> > can_set_direct_map() == true is not a property of the realm but rather a
-> > requirement. 
-> 
-> Yes indeed. It would be better to call it might_set_direct_map() or something
-> like that...
+commit 1965445e13c09b79932ca8154977b4408cb9610c upstream.
 
-The way it is used means "is allowed to set the direct map". I guess
-"may set..." works as well. My reading of "might" is more like in
-might_sleep(), more of hint than a permission check.
+Upon resuming from suspend, the Touch Bar driver was missing a resume
+method in order to restore the original mode the Touch Bar was on before
+suspending. It is the same as the reset_resume method.
 
-If you only look at the linear_map_requires_bbml2 setting in map_mem(),
-yes, something like might_set_direct_map() makes sense but that's not
-how this function is used in the rest of the kernel (to reject the
-direct map change if not supported).
+Cc: stable@vger.kernel.org
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+---
+ drivers/hid/hid-appletb-kbd.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-> > In the absence of BBML2_NOABORT, I guess the test was added
-> > under the assumption that force_pte_mapping() also returns true if
-> > is_realm_world(). We might as well add a variable or static label to
-> > track whether can_set_direct_map() is possible and avoid tests that
-> > duplicate force_pte_mapping().
-> 
-> I'm not sure I follow. We have linear_map_requires_bbml2 which is inteded to
-> track this shape of thing;
-
-As the name implies, linear_map_requires_bbml2 tracks only this -
-BBML2_NOABORT is required because the linear map uses large blocks.
-Prior to your patches, that's only used as far as
-linear_map_maybe_split_to_ptes() and if splitting took place, this
-variable is no longer relevant (should be turned to false but since it's
-not used, it doesn't matter).
-
-With your patches, its use was extended to runtime and I think it
-remains true even if linear_map_maybe_split_to_ptes() changed the block
-mappings. Do we need this:
-
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index dcee56bb622a..595d35fdd8c3 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -988,6 +988,7 @@ void __init linear_map_maybe_split_to_ptes(void)
- 	if (linear_map_requires_bbml2 && !system_supports_bbml2_noabort()) {
- 		init_idmap_kpti_bbml2_flag();
- 		stop_machine(linear_map_split_to_ptes, NULL, cpu_online_mask);
-+		linear_map_requires_bbml2 = false;
- 	}
+diff --git a/drivers/hid/hid-appletb-kbd.c b/drivers/hid/hid-appletb-kbd.c
+index b00687e67..0b10cff46 100644
+--- a/drivers/hid/hid-appletb-kbd.c
++++ b/drivers/hid/hid-appletb-kbd.c
+@@ -477,7 +477,7 @@ static int appletb_kbd_suspend(struct hid_device *hdev, pm_message_t msg)
+ 	return 0;
  }
  
-
-> if we have forced pte mapping then the value of
-> can_set_direct_map() is irrelevant - we will never need to split because we are
-> already pte-mapped.
-
-can_set_direct_map() is used in other places, so its value is relevant,
-e.g. sys_memfd_secret() is rejected if this function returns false.
-
-> But if can_set_direct_map() initially returns false because
-> is_realm_world() incorrectly returns false in the early boot environment, then
-> linear_map_requires_bbml2 will be set to false, and we will incorrectly
-> short-circuit splitting any block mappings in split_kernel_leaf_mapping().
-> 
-> I think we are agreed on the problem. But I don't understand how tracking
-> can_set_direct_map() in a cached variable helps with that.
-
-It's not about the map_mem() decision and linear_map_requires_bbml2
-setting but rather its other uses like sys_memfd_secret().
-
-> > This won't solve the is_realm_world() changing polarity during boot but
-> > at least we know it won't suddenly make can_set_direct_map() return
-> > true when it shouldn't.
-> 
-> But is_real_world() _should_ make can_set_direct_map() return true, shouldn't
-> it?
-
-Yes but not directly. If is_realm_world() is true, we either have
-(linear_map_requires_bbml2 && system_supports_bbml2_noabort()) or
-linear_map_requires_bbml2 is false and we have pte mappings. Adding
-is_realm_world() to can_set_direct_map() does not imply any of these.
-It's just a hope that something before actually ensured the conditions
-are true.
-
-It might be better if we rename the current function to
-might_set_direct_map() and introduce a new can_set_direct_map() that
-actually tells the truth if all the conditions are met. I suggested a
-variable or static label but checking some conditions related to the
-actual linear map work as well, just not is_realm_world() directly.
-
+-static int appletb_kbd_reset_resume(struct hid_device *hdev)
++static int appletb_kbd_resume(struct hid_device *hdev)
+ {
+ 	struct appletb_kbd *kbd = hid_get_drvdata(hdev);
+ 
+@@ -503,7 +503,8 @@ static struct hid_driver appletb_kbd_hid_driver = {
+ 	.input_configured = appletb_kbd_input_configured,
+ #ifdef CONFIG_PM
+ 	.suspend = appletb_kbd_suspend,
+-	.reset_resume = appletb_kbd_reset_resume,
++	.resume = appletb_kbd_resume,
++	.reset_resume = appletb_kbd_resume,
+ #endif
+ 	.driver.dev_groups = appletb_kbd_groups,
+ };
 -- 
-Catalin
+2.52.0
+
 
