@@ -1,184 +1,174 @@
-Return-Path: <stable+bounces-233556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YICSNy/h1GmZyQcAu9opvQ
-	(envelope-from <stable+bounces-233556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:49:19 +0200
+	id KLIeOQ7l1GluygcAu9opvQ
+	(envelope-from <stable+bounces-233560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:05:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0C93AD33A
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:49:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323693AD785
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 13:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BA6B3035251
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:43:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DCC130234CF
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 11:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2AAD3ACA72;
-	Tue,  7 Apr 2026 10:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92813AC0C2;
+	Tue,  7 Apr 2026 11:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="WNaDDsmG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="btueZz6J"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0013AB27F;
-	Tue,  7 Apr 2026 10:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775558599; cv=pass; b=GKRD+pHa0zUXFjEFK6r8ljyOyfmCzhY3Qci43rLdQJGQDUEfFYnO7s0f+VNvbzAPtJ7CsKjEZLs0GgAo+zCk1s5jup19iIS9sEhtEW1ttryaskEA9xTbMwk63vlVfVnPECZ7qr7LigmlqXB07sOeHghVEzu+hwy+8VuyJCGPEPY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775558599; c=relaxed/simple;
-	bh=jeYLxlBv9LQ/i9NurS9PNbJ2+JYh8uhTISqYpiHQpkk=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649A33932C6;
+	Tue,  7 Apr 2026 11:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775559947; cv=none; b=ROt6dtA7xj1MMcN0cEg/8ZQuzDVBgwW8HVfvsE/uYwI6R8YEZaL4QoM+SnpEdRx7IviMzXhacbu5glpuEfgU3wkyLmNbXBRugrrvGDCgeWbVRqZhvVI7gf4VoHKgWVyVLSyMAKFw3I32AGbkCEuxcqLR3i1HS/jIQicI9kDI1os=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775559947; c=relaxed/simple;
+	bh=MT5b3e1TTdPydwuW3S2ObgjW8crI/laqDyEwE/eGvAw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WYET/zg+YYpydkSLm7tAF1ekdADCOvAQhPN3rhWGpGjA3Tr7/3WfBt53JLccaDwKRSF8eymX41bTDBzxpbqpgjS8EBYdb08qnZDpAi8RZ+pth5Ud1drrzFZ3I1rBjU9TLbAVrzOUMg65w3IvGaWQy36gj/ysil5lK252dGE+CUc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=WNaDDsmG; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1775558593; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=OTU2145YSyM41TZX8a5XCtO8dvHta4mAxn3nxtzIyzkOG+nNyzG6MmQLsTxmZfMJi1pkQOVpF2vl2uHIWfuLamNh1I3DejB27WGW3/f+UUatCOhomldPKKcdnHclslqwNQijM6O6iE1DA+AKC9CGoNEk/9O4ZcvOIdMTcct8Ns0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1775558593; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=JgfOJxIUdmJfcSvNPFEzIP+9h7cDv7X+vLvfF4070T4=; 
-	b=hr+J8Kd647FRXEW+SAnl7+1KRVgtR0PAK0QHky5dKbHviGka0aS9TnUt+JHbD2fw/P3lmx8qfYYOHwErQcy0MWHJcaOrtkehF8e67fUfTKWNUOXtNF9u2SGwP+sCdSeQtCaTJeDlXIzv+cc2BInOfMuBE0a63iG0B6lmqFEgZSA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775558593;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=JgfOJxIUdmJfcSvNPFEzIP+9h7cDv7X+vLvfF4070T4=;
-	b=WNaDDsmGjzlgNgaTX/G4v1JSK57dClbYZOpooPVOFrFilj3H85H9IskWTzJymk8q
-	kJTz75ZdqwzwkMIaMDHENJhRjosvZBuXVxMYs3q/sWCPoRSngsHIegC4Ykg6YT/b5y/
-	4bQ4dUZ6cfy1KDxBrZFgKGPKchtDaMlTZgGjCXKE=
-Received: by mx.zohomail.com with SMTPS id 1775558591568667.3665506010035;
-	Tue, 7 Apr 2026 03:43:11 -0700 (PDT)
-Received: by venus (Postfix, from userid 1000)
-	id F39081824E2; Tue, 07 Apr 2026 12:43:08 +0200 (CEST)
-Date: Tue, 7 Apr 2026 12:43:08 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Johan Hovold <johan@kernel.org>
-Cc: Stephen Boyd <sboyd@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] clk: rk808: fix OF node reference imbalance
-Message-ID: <adTfhqoL1YFA6WMG@venus>
-References: <20260407095027.2625516-1-johan@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=geLc7ooqMiJznGVCxro1yVoSxsSigl/jq6a5zaN7iZyKTSsFmdVwprC9WsLIaJYAvaXY4a6uYw3w4UrWVSI11Jv5f3/kSp1IV/awy2TM8LICZqYWcJt44DPi+GBSNZ2x649iDdKeuCwFcSZMNPdYbHPElBgwPhluQDk26cm4o/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=btueZz6J; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775559947; x=1807095947;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MT5b3e1TTdPydwuW3S2ObgjW8crI/laqDyEwE/eGvAw=;
+  b=btueZz6Jm2HZoQvUTn8boSUe+CQBMOzX7dC64TbTMOPAoU1axVwkGRpW
+   6zNOKvwdbFJVJ7WHJP9iaoXKVb28cP40XCYOZRt5zdZqGFam1JFDU+/6J
+   ZVG2YpM1B09TZobcZdiTMaOu7HxNVd7FJjl6x5mh9K37LNWVcEuFd6SPd
+   9iwjQ7FTFvaRAyjr6IH10cjA9mEidAuWprDYtJ3KBqWWvu1XO+Rrjz8So
+   ZDwjVi0s1vnEUnGYr1qDkBMCTy6z5Q/8RC8kXKHa18MucBWI+TCsq2bkd
+   0IU0L1h1po/YfAITA1njnkU3Mb8eqyv/7X+plOvXKTGNyXJWzQawl+0xM
+   Q==;
+X-CSE-ConnectionGUID: 7ZReo/t7TOqrbmQHyyR+eA==
+X-CSE-MsgGUID: 1TSGt/4bQbSzTT6YOhT+5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76532026"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
+   d="scan'208";a="76532026"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 04:05:46 -0700
+X-CSE-ConnectionGUID: Tv3I9oshSAS0Cgq1VaMUog==
+X-CSE-MsgGUID: CI8jSjOmTkm8r4moA7hNXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
+   d="scan'208";a="251436423"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 07 Apr 2026 04:05:44 -0700
+Date: Tue, 7 Apr 2026 18:44:14 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Cc: linux-fpga@vger.kernel.org, conor.dooley@microchip.com, mdf@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] fpga: microchip-spi: add bounds checks in
+ mpf_ops_parse_header()
+Message-ID: <adTf/leheKK4TV/g@yilunxu-OptiPlex-7050>
+References: <20260402125446.3776153-3-sebasjosue84@gmail.com>
+ <20260402162302.3804617-1-sebasjosue84@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rjl5qil7dont7k7e"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260407095027.2625516-1-johan@kernel.org>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.2.1.5.2/275.535.27
-X-ZohoMailClient: External
-X-Spamd-Result: default: False [-3.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+In-Reply-To: <20260402162302.3804617-1-sebasjosue84@gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233556-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233560-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sebastian.reichel@collabora.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yilun.xu@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:dkim,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3B0C93AD33A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 323693AD785
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+> @@ -139,6 +145,12 @@ static int mpf_ops_parse_header(struct fpga_manager *mgr,
+>  	bitstream_start = 0;
+>  
+>  	while (blocks_num--) {
+> +		if (block_id_offset >= count ||
+> +		    block_start_offset + sizeof(u32) > count) {
+> +			info->header_size = block_start_offset + sizeof(u32);
+> +			return -EAGAIN;
+> +		}
+> +
 
---rjl5qil7dont7k7e
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] clk: rk808: fix OF node reference imbalance
-MIME-Version: 1.0
+The image header has already been extended up to all look-up table for
+blocks, is it?
 
-Hi,
+	header_size += blocks_num * MPF_LOOKUP_TABLE_RECORD_SIZE;
+	if (header_size > count) {
+		info->header_size = header_size;
+		return -EAGAIN;
+	}
 
-On Tue, Apr 07, 2026 at 11:50:27AM +0200, Johan Hovold wrote:
-> The driver reuses the OF node of the parent multi-function device but
-> fails to take another reference to balance the one dropped by the
-> platform bus code when unbinding the MFD and deregistering the child
-> devices.
->=20
-> Fix this by using the intended helper for reusing OF nodes.
->=20
-> Fixes: 2dc51ca822e4 ("clk: RK808: Reduce 'struct rk808' usage")
-> Cc: stable@vger.kernel.org	# 6.5
-> Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
+>  		block_id = *(buf + block_id_offset);
+>  		block_start = get_unaligned_le32(buf + block_start_offset);
+>  
+> @@ -175,6 +187,9 @@ static int mpf_ops_parse_header(struct fpga_manager *mgr,
+>  	 * to each other. Image header should be extended by now up to where
+>  	 * actual bitstream starts, so no need for overflow check anymore.
+>  	 */
+> +	if (MPF_DATA_SIZE_OFFSET + sizeof(u16) > count)
+> +		return -EINVAL;
+> +
 
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Do you notice the comments above? IIUC it says all these header info
+should be before actual bitstream starts, if we could ensure this, we
+don't need to check the addresses inside the header byte by byte.
 
-Greetings,
+I think it is important we understand the structure of the image file
+first then meaningfully check the boundaries chunk by chunk, rather than
+byte by byte, which makes code unreadable.
 
--- Sebastian
+Thanks,
+Yilun
 
->  drivers/clk/clk-rk808.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/clk/clk-rk808.c b/drivers/clk/clk-rk808.c
-> index f7412b137e5e..5a75b5c91555 100644
-> --- a/drivers/clk/clk-rk808.c
-> +++ b/drivers/clk/clk-rk808.c
-> @@ -153,7 +153,7 @@ static int rk808_clkout_probe(struct platform_device =
-*pdev)
->  	struct rk808_clkout *rk808_clkout;
->  	int ret;
-> =20
-> -	dev->of_node =3D pdev->dev.parent->of_node;
-> +	device_set_of_node_from_dev(dev, dev->parent);
-> =20
->  	rk808_clkout =3D devm_kzalloc(dev,
->  				    sizeof(*rk808_clkout), GFP_KERNEL);
-> --=20
-> 2.52.0
->=20
-
---rjl5qil7dont7k7e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmnU37wACgkQ2O7X88g7
-+ppeog/+K5sTPyxHI43qLji+CM+YjUy0KFdAiNT6/sOJ+F+LuovKH4DC+9QgEgJI
-b/8hPaGrDgRA2m3/dcp0xFxl2dpSIJk5rmXIfUGX90Ulh7DNurUzfN38AbiHvlMg
-RotbWGm0bwTgtPHU3pM54O1gdjhau6VcCSfzZQu9Sz7An4WWpif1MiyHF/iUykaz
-sHdLmNUxahxKwWOZ4xHr8pkqKE3awSUBrBaJecEbxcocppHDySz7IAwO+AeLUvab
-d91JHNpr656lBoq8zPnSCKO3xZVCyZ4pk/X1lMfqRasbGyNCZsppXZsb3WMMeBmJ
-KWIonuXaL3FlB/YRXe3RtPSFiI0kKKvDhakHAZsiio+6bXSf4nghmqcXUAbC6kV4
-eVgerUf8hCnaTwnNvKufLzWhlpB6L2S2hKw06FXv0fdYfZQPtXMbqtFae+E0cDDQ
-SW92nMwl5kkyFIl3UypY3qFcg84+l1epob+0xgtc1ksCLZ1zxYDoZ8ufwPdW7I6O
-IpCIJpaW7SVmOxgdswV4AMfxZ4cFZuLNRC434CGEsfjJo6OIALTSXb9lLNlgk0BU
-elNU2h+yEXPB1JyIwyIxGawFahvF2PUhWteos4VhhCdEFJ/vJBGEDn9rXxgUqM0l
-TUEWbvWUyz3DBzsy8sniaqXiRqrHVnFdLIPx8BKW3nbfmK3L5xw=
-=06rL
------END PGP SIGNATURE-----
-
---rjl5qil7dont7k7e--
+>  	components_num = get_unaligned_le16(buf + MPF_DATA_SIZE_OFFSET);
+>  
+>  	for (i = 0; i < components_num; i++) {
+> @@ -183,6 +198,11 @@ static int mpf_ops_parse_header(struct fpga_manager *mgr,
+>  		component_size_byte_off =
+>  			(i * MPF_BITS_PER_COMPONENT_SIZE) % BITS_PER_BYTE;
+>  
+> +		if (components_size_start + component_size_byte_num < components_size_start ||
+> +		    components_size_start + component_size_byte_num +
+> +		    sizeof(u32) > count)
+> +			return -EINVAL;
+> +
+>  		component_size = get_unaligned_le32(buf +
+>  						    components_size_start +
+>  						    component_size_byte_num);
+> -- 
+> 2.43.0
+> 
 
