@@ -1,167 +1,235 @@
-Return-Path: <stable+bounces-233539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIDJAmjZ1GlxyAcAu9opvQ
-	(envelope-from <stable+bounces-233539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:16:08 +0200
+	id iCgzK8HZ1GlxyAcAu9opvQ
+	(envelope-from <stable+bounces-233540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:17:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC843ACA35
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:16:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B193ACA99
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 12:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC56F308001A
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:13:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 68259300C345
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 10:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849483A7F51;
-	Tue,  7 Apr 2026 10:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503B13A7F6E;
+	Tue,  7 Apr 2026 10:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BWNVh6AN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IncdlV2q"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814233A6F0B;
-	Tue,  7 Apr 2026 10:13:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1005C3A7F59;
+	Tue,  7 Apr 2026 10:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775556793; cv=none; b=imHBGgRd5OvJcD7Higb9ZyiFYG88cGIBBUwim0YVlYRZ9QkVO4avyNXyccKAuhJpNSXq58xm3cXB5L2IL6CnaS2lp0fMs+QzLDuldUdICT1HA6Bp3ij6tZjJJVbCqdj8bGiW8TTt8GbOqCyCWGd0KwbtjSnRPibq3+jMfy+ehuE=
+	t=1775557051; cv=none; b=MUchFFkIkZekbjezQl5kXIGUPi0/2Rn610B5mNRgysG7LLCglx4kfSDWpthasXWBTGwcBGU5nelVDD7BpJCQ6y5cNAtMnnMvDW5B62EutmOZdemym0IeJhA0cvEH7SO+laxHH3TRMZCg8n1GgDNa8azluU9zTXfzEVH+twS6Hd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775556793; c=relaxed/simple;
-	bh=u6k7KReiIMT35ffIgZho6g6CodialPIJRfoN0WPK8T8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oRU2Fl+kqHSEPKNICEaplD8HwL2SGR/9LtfrxwTGNvtqW4Se3/C42APaVIpMoBhfsz5QS48qC8CHnWNmfpDUOCvKSR57PDIGG+uTF95xM51n9EgfrwlmeTDYj/I4/qSYTXwkQtEs50Bh5Bu5ubXDHoT7OfqgecUt+rFZEPUoTu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BWNVh6AN; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2D5061BB2;
-	Tue,  7 Apr 2026 03:13:05 -0700 (PDT)
-Received: from [10.57.87.42] (unknown [10.57.87.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B2DD3F641;
-	Tue,  7 Apr 2026 03:13:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775556790; bh=u6k7KReiIMT35ffIgZho6g6CodialPIJRfoN0WPK8T8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BWNVh6ANFtw0ueWu9yyum/s4AQLzADYVEGNe1bxpMRtjve3MThvdmz4uAY0F2iy4R
-	 4PJrXK6QtuNLXqjAhnWeXyLIfgZSsfwLCKBML6k8kvo+BXcXRP0C3FTBqeV+daqvc2
-	 bQkJZMH+IaAC4mVQ55h9T0x8Df47exrCEMB2Hmc4=
-Message-ID: <bc4a0246-33bb-443e-a885-a31b24d4a022@arm.com>
-Date: Tue, 7 Apr 2026 11:13:07 +0100
+	s=arc-20240116; t=1775557051; c=relaxed/simple;
+	bh=obmgK6Kw45HB4rYmBhTX7vt87CPLIBgjEcrdSns1Rdk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=P4CiUccLaTP4BlQtrZsFOrk18ZIbsEitAtTFeg3Jr1MC8At2hUOiDdX78eKcOaXo7m+gn1d1JyXPs94Lue+4nS8HvjEmRl69lxYYulqY++JrNlHF8tq97BJF/ZzFZSNIad2/YfLR+z1jMyutl5Ea4g691Sy0lMcrVsCgVE3UQas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IncdlV2q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45013C116C6;
+	Tue,  7 Apr 2026 10:17:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775557050;
+	bh=obmgK6Kw45HB4rYmBhTX7vt87CPLIBgjEcrdSns1Rdk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=IncdlV2qi+gGeVsGfsnKgCAeFm7Ji4DEG470qOcj75hbSbaVie+aQ11ijuhtFrwAv
+	 AD0MbHrs5AqkyG/Kt2A1T3O6j2nAfR17Vq5JoZI6vokhvXPRWg+McwYjpEMeFks4Jk
+	 7yTuJwC9cBWDczQChJMZS6JKt8tKo6r9xAHBfP2bVJ7DaWKhgZBR+mHqRXPwK7NwDq
+	 icaMHU0NR9wKhzMUHg1BOyD+RDlz5kGWlxQI7CGoUKm8ABkTJHdkFtZdptCkif0btE
+	 1WAnpb0jJTYxc9XXyGngOF4lvybaFZgWh/UvMMNiPucYgUfn6AaKP4vT38+WGHVTQw
+	 e3aqQFSrSirFg==
+From: bod@kernel.org
+Subject: [PATCH v2 0/5] media: qcom: camss: Fix RDI streaming for various
+ CSIDs
+Date: Tue, 07 Apr 2026 11:17:21 +0100
+Message-Id: <20260407-camss-rdi-fix-v2-0-66f6c600fcff@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] arm64: mm: Fix rodata=full block mapping support
- for realm guests
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>, "David Hildenbrand (Arm)"
- <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Yang Shi <yang@os.amperecomputing.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Jinjiang Tu <tujinjiang@huawei.com>, Kevin Brodsky <kevin.brodsky@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260330161705.3349825-1-ryan.roberts@arm.com>
- <20260330161705.3349825-2-ryan.roberts@arm.com> <ac7VD4Z85nS30GCp@arm.com>
- <ac-W9oNM_O5RTtaf@arm.com> <beacee23-c177-47a1-b8b5-743844b617a8@arm.com>
- <adTPFrlVCEt-hioX@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <adTPFrlVCEt-hioX@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-B4-Tracking: v=1; b=H4sIALHZ1GkC/3WNSw6CQBBEr0J6bZthICCuuIdhAdMNtB8wPUg0h
+ Ls74Nrlq1S9WsCzCns4Rwsoz+JlHALYQwSur4eOUSgwWGMzk5oMXf3wHpUEW3kjEeVZkRaGnYW
+ weSqHePddqh/7V3NlN22SrdGLn0b97IdzvPX+uecYDVLSnprYpnlCpryxDnw/jtpBta7rF0pPP
+ ZS9AAAA
+X-Change-ID: 20260406-camss-rdi-fix-ddd769490ec2
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@kernel.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Hans Verkuil <hverkuil+cisco@kernel.org>, 
+ Gjorgji Rosikopulos <quic_grosikop@quicinc.com>, 
+ Milen Mitkov <quic_mmitkov@quicinc.com>, 
+ Depeng Shao <quic_depengs@quicinc.com>, Yongsheng Li <quic_yon@quicinc.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Bryan O'Donoghue <bod@kernel.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4355; i=bod@kernel.org;
+ h=from:subject:message-id; bh=obmgK6Kw45HB4rYmBhTX7vt87CPLIBgjEcrdSns1Rdk=;
+ b=owEBbQKS/ZANAwAKASJxO7Ohjcg6AcsmYgBp1Nm0Lf6R0Khu3+mfuaedB5mHyWi72C4pPhijS
+ OIe4IgvqUKJAjMEAAEKAB0WIQTmk/sqq6Nt4Rerb7QicTuzoY3IOgUCadTZtAAKCRAicTuzoY3I
+ OiXJEACpgRiptKYK6ECYsdLRLekKsEkb0RNVckTKCF95Ztj0vmrXqsMqBSwkEjHMPHwsu0fzbsJ
+ LmHav3tT+NU/tMXPa7YrcZmaHZLWsszJ/zKfaNdYTuEev4xYw+H5dxHfZuGAuLSC8vNGksK+kw5
+ rhpnUBUNjDBS0r/Yrhh/qisCkoP+eg96heTmQESHXdhVfcZAznGB2aXzlMfFCnxwnzxm3wxPnXo
+ EzDaZDfxZbk24LRdNbgbuypD9GF3iV+T8g7//4odJ4jRJ/mJY0OZa5TEDRpTjoylzeaPNW/fScb
+ 74RnO2GC7Lk3Uk4IaSTG2IOKg4pE0o5qKnicHX7sLifFhOIHOMj7DLvruamXvkb+EAyOxUfLOJi
+ 032zrhifb9djAc7xsPCueug4U4eN7LIetqx7MS70F0Q30qrOtrE+X9zIHnFvf3v79mE5J4jmcQ+
+ KUkBY5ACHxMH+VVeEfToyUjC7y5zZz7fY0WC0GR8SpdPnVURu3RlfnI3j0x+f++mIkmmRso7oxW
+ ygaNGuys5GmSUSaEUKq2yKAnVmU+TYsOd3GLDVTR4PJUq6tkQLOZkdgsgorfEoMJo/sMFXXkTx1
+ obJPZYcCbKDddzqLOvTW7dw5Sr+x7IQz7yR/i4jQWj8Locd0Kt2p/1178wJ8PB+Xq1z6duIVIod
+ 9i8ENBbOVwHy3Zg==
+X-Developer-Key: i=bod@kernel.org; a=openpgp;
+ fpr=E693FB2AABA36DE117AB6FB422713BB3A18DC83A
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233540-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233539-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linaro.org,oss.qualcomm.com,quicinc.com];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[bod@kernel.org,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:dkim,arm.com:mid]
-X-Rspamd-Queue-Id: 8BC843ACA35
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: A1B193ACA99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 07/04/2026 10:32, Catalin Marinas wrote:
-> On Tue, Apr 07, 2026 at 09:43:42AM +0100, Ryan Roberts wrote:
->> On 03/04/2026 11:31, Catalin Marinas wrote:
->>> On Thu, Apr 02, 2026 at 09:43:59PM +0100, Catalin Marinas wrote:
->>>> Another thing I couldn't get my head around - IIUC is_realm_world()
->>>> won't return true for map_mem() yet (if in a realm). Can we have realms
->>>> on hardware that does not support BBML2_NOABORT? We may not have
->>>> configuration with rodata_full set (it should be complementary to realm
->>>> support).
->>>
->>> With rodata_full==false, can_set_direct_map() returns false initially
->>> but after arm64_rsi_init() it starts returning true if is_realm_world().
->>> The side-effect is that map_mem() goes for block mappings and
->>> linear_map_requires_bbml2 set to false. Later on,
->>> linear_map_maybe_split_to_ptes() will skip the splitting.
->>>
->>> Unless I'm missing something, is_realm_world() calls in
->>> force_pte_mapping() and can_set_direct_map() are useless. I'd remove
->>> them and either require BBML2_NOABORT with CCA or get the user to force
->>> rodata_full when running in realms. Or move arm64_rsi_init() even
->>> earlier?
->>
->> I'd need Suzuki to comment on this. As I said in the other mail, I was treating
->> this like a pre-existing bug. But I guess linear_map_requires_bbml2 ending up
->> wrong is a problem here. I'm not sure it's quite as simple as requiring
->> BBML2_NOABORT with CCA as we still need can_set_direct_map() to return true if
->> we are in a realm.
-> 
-> can_set_direct_map() == true is not a property of the realm but rather a
-> requirement. 
+V2:
+- Implements Vlad's suggestion to update/include comment in loop
+  for the Fixes:
+- Puts into the first patch Loic's suggesiton on VC+DT 
+- Link to v1: https://lore.kernel.org/r/20260406-camss-rdi-fix-v1-0-d3f8b12473d0@kernel.org
 
-Yes indeed. It would be better to call it might_set_direct_map() or something
-like that...
+V1:
+A serious bug has been copy/pasted from CSID 170 into various different
+implementations of the CSID.
 
-> In the absence of BBML2_NOABORT, I guess the test was added
-> under the assumption that force_pte_mapping() also returns true if
-> is_realm_world(). We might as well add a variable or static label to
-> track whether can_set_direct_map() is possible and avoid tests that
-> duplicate force_pte_mapping().
+In simple terms we have a broken model of enabling virtual channels which
+needs to be rewritten.
 
-I'm not sure I follow. We have linear_map_requires_bbml2 which is inteded to
-track this shape of thing; if we have forced pte mapping then the value of
-can_set_direct_map() is irrelevant - we will never need to split because we are
-already pte-mapped. But if can_set_direct_map() initially returns false because
-is_realm_world() incorrectly returns false in the early boot environment, then
-linear_map_requires_bbml2 will be set to false, and we will incorrectly
-short-circuit splitting any block mappings in split_kernel_leaf_mapping().
+Taking the CSID 680 as an example. The CSID can output ports RDI0, RDI1,
+RDI2 and PIX.
 
-I think we are agreed on the problem. But I don't understand how tracking
-can_set_direct_map() in a cached variable helps with that.
+Each CSIPHY can connect to any of the CSIDs. Each CSID has four output
+ports RDI0, RDI1, RDI2 and PIX. To get Bayer statistics going we need the
+CSID to write on the PIX port.
 
-> 
-> This won't solve the is_realm_world() changing polarity during boot but
-> at least we know it won't suddenly make can_set_direct_map() return
-> true when it shouldn't.
+Each of the RDI/PIX ports can process any valid virtual channel.
 
-But is_real_world() _should_ make can_set_direct_map() return true, shouldn't
-it? If we are in realm-world, we need to be able to flip the NS_SHARED bit on
-parts of the linear map. So if we are in realm-world, we _might_ need to update
-he direct map and that's what can_set_direct_map() is supposed to tell us.
+When adding virtual channels a spurious association was made between
+virtual channel and the above mentioned ports. In simple terms
 
+vfeN_rdi0 will always be fixed to VCO
+vfeN_rdi1 will always be fixed to VC1
+vfeN_rdi2 will always be fixed to VC2
+vfeN_pix will always be fixed to VC3
+
+What this means in practice is that it is impossible to route a sensor
+driving VC:0 to the PIX/Bayer path in upstream.
+
+Given we have now gotten a mutli-stream support in the kernel upstream we
+should move to that API in CAMSS.
+
+First up though is to remove the breakage of invalid VC constrains and make
+those available to stable.
+
+Here's the practical example on CSID680.
+
+This works:
+
+media-ctl --reset
+media-ctl -v -d /dev/media0 -V '"ov08x40 '2-0036'":0[fmt:SGRBG10/3856x2416 field:none]'
+media-ctl -V '"msm_csiphy4":0[fmt:SGRBG10/3856x2416]'
+media-ctl -V '"msm_csid0":0[fmt:SGRBG10/3856x2416]'
+media-ctl -V '"msm_vfe0_rdi0":0[fmt:SGRBG10/3856x2416]'
+media-ctl -l '"msm_csiphy4":1->"msm_csid0":0[1]'
+media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+
+yavta -B capture-mplane -c -I -n 5 -f SGRBG10P -s 3856x2416 -F /dev/video3
+
+This doesn't:
+media-ctl --reset
+media-ctl -v -d /dev/media0 -V '"ov08x40 '2-0036'":0[fmt:SGRBG10/3856x2416 field:none]'
+media-ctl -V '"msm_csiphy4":0[fmt:SGRBG10/3856x2416]'
+media-ctl -V '"msm_csid0":0[fmt:SGRBG10/3856x2416]'
+media-ctl -V '"msm_vfe0_rdi2":0[fmt:SGRBG10/3856x2416]'
+media-ctl -l '"msm_csiphy4":1->"msm_csid0":0[1]'
+media-ctl -l '"msm_csid0":3->"msm_vfe0_rdi2":0[1]'
+
+yavta -B capture-mplane -c -I -n 5 -f SGRBG10P -s 3856x2416 -F /dev/video5
+
+The PIX path - Bayer stats requires more work still but in simple terms it
+needs a pipeline like this:
+
+media-ctl --reset
+media-ctl -v -d /dev/media0 -V '"ov08x40 '2-0036'":0[fmt:SGRBG10/3856x2416 field:none]'
+media-ctl -V '"msm_csiphy4":0[fmt:SGRBG10/3856x2416]'
+media-ctl -V '"msm_csid0":0[fmt:SGRBG10/3856x2416]'
+media-ctl -V '"msm_vfe0_pix":0[fmt:SGRBG10/3856x2416]'
+media-ctl -l '"msm_csiphy4":1->"msm_csid0":0[1]'
+media-ctl -l '"msm_csid0":3->"msm_vfe0_pix":0[1]'
+media-ctl -d /dev/media0 -p
+
+yavta -B capture-mplane -c -I -n 5 -f SGRBG10P -s 3856x2416 -F /dev/video6
+
+But that can't work with the above sensor because that sensor puts out VC0
+not VC3.
+
+Constraining the CSID/VFE ports to individual VCs was never the intention
+and since we have v4l2 subdev streams we should align CAMSS to that which
+will ultimately allow us to map any VC to any port without _requiring_ a VC
+to enable a particular port.
+
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+---
+Bryan O'Donoghue (5):
+      media: qcom: camss: Fix RDI streaming for CSID 680
+      media: qcom: camss: Fix RDI streaming for CSID 340
+      media: qcom: camss: Fix RDI streaming for CSID GEN2
+      media: qcom: camss: Fix RDI streaming for CSID GEN3
+      media: qcom: camss: csid: Rename en_vc to en_port
+
+ drivers/media/platform/qcom/camss/camss-csid-340.c | 18 ++++----
+ drivers/media/platform/qcom/camss/camss-csid-680.c | 30 ++++++-------
+ .../media/platform/qcom/camss/camss-csid-gen2.c    | 51 +++++++++++-----------
+ .../media/platform/qcom/camss/camss-csid-gen3.c    | 34 +++++++--------
+ drivers/media/platform/qcom/camss/camss-csid.c     | 10 ++---
+ drivers/media/platform/qcom/camss/camss-csid.h     |  2 +-
+ 6 files changed, 74 insertions(+), 71 deletions(-)
+---
+base-commit: 2211e826bd69c041534093735241182013dde7bc
+change-id: 20260406-camss-rdi-fix-ddd769490ec2
+
+Best regards,
+-- 
+Bryan O'Donoghue <bod@kernel.org>
 
 
