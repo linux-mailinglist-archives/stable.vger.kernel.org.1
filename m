@@ -1,175 +1,215 @@
-Return-Path: <stable+bounces-233521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2D7iJCjC1GmWwwcAu9opvQ
-	(envelope-from <stable+bounces-233521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 10:36:56 +0200
+	id +KPcE1TD1GmWwwcAu9opvQ
+	(envelope-from <stable+bounces-233522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 10:41:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52ECE3AB6E2
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 10:36:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D193AB778
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 10:41:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 289513014C74
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 08:36:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C1D73005333
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 08:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F4139934C;
-	Tue,  7 Apr 2026 08:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9D4397E76;
+	Tue,  7 Apr 2026 08:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rcrAyvSx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlGkZPT3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598413382E8
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 08:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE2B2E54B6;
+	Tue,  7 Apr 2026 08:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775551010; cv=none; b=l5qVdgJ3T+ZrKwypm2bsC/K/IHwuNo6tvQyhJTyzMZMlWlXVeyQdOXL8NSWajfctaykPjM0bur0xePvk4u+smVkMjDyUO1gL2PLCCs6o/m9CKee2vZ5hKAN33BQi7tBE/gJC/ePe/h2M7rkN6yaC6TzbsxzBCMktxrTXRkAsAbM=
+	t=1775551310; cv=none; b=ee19sgs5+dNkQrFGZK8OjhzEY/Y2QovkyRrEbgIPR06Bd87yI5ReApUqJPTl1l2ShOtt2NIrnAqWbdxNbcDHmVXCLVSYeuLvi58guCdHc5NByjD54UuBJVJ5xwpa2FYw3c56BdnNHSEVd8nmVdEp5VKaXvRLrZjCfposLfE8ME0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775551010; c=relaxed/simple;
-	bh=coAssiB5s3BHcWfufm9xuM2t6aLsl0hqzz+I47rZLP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p9jO1fKntu3XLFxSVYZqZ1y6lYOQFJYH+BNmG3bBeW8pMZv0KeVoJudmbIGHw5r5YtGSgpoSryxKtkaQ1xZDVNSJ/C8xwSY4B7+QgfGeWo8gzBBp7vEIEbBYSS9ua50sPY1OcPITQofnQUMen2jxGoHwRRaaJ9Ytb2cL80W6oMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rcrAyvSx; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-66bd4f7b2d3so5626641a12.3
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 01:36:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775551005; x=1776155805; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MvIQyuVRFxWn/kbN1SCbK2vfu2qTJKpKKyKCht1EX/8=;
-        b=rcrAyvSxW2RhUEG6eAhKqZ+AetYohKd4TcfyjmLsD+RWjFbtBP3tovmpskAOQqYKMX
-         v6kRZTd4aAuQeetOcxD8rQYMiwptbE+z8+64EQIPiV4alf2gS+0Z7lSy01Pem+db9V4h
-         IHU8m+t9OBJlMO9N/41g7mCEg9p7SDJxS18hVElLIHWXiFYF4XkupGrzLheRQaRMVwZ3
-         jLscwxgT0KFbJ2lcrXIp4L3fZjI/Z0HwIt+TTcROsfrSsj0tve+SfQicum6li20uSYb2
-         D2X3b5t6Zpl6s3WCDPFOtez+zTE6M2GEUuqj5GhxBb71fM0KFIxoTWSIZudyQRd0eIlC
-         OLTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775551005; x=1776155805;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MvIQyuVRFxWn/kbN1SCbK2vfu2qTJKpKKyKCht1EX/8=;
-        b=Qc1EMK6AmYdUnvauTfjG8ifO4Gu5HHpEUG/Xw9evdvaF7jvjQHlEMd+KiHQdSZfmD7
-         ou+JlSmNFalttCStxRWnWE+4BX9oXxu/IdPyOPTQvQNj9htcLUN7blYUqygCoYvtuLTI
-         zm2MB/Hz9cOnKHr6Khg3ua54pn+iAdr5omDcj1sB4XLSETgBNoGC+t0OI9qI7rGZhdBJ
-         j6B4caENtu43cnM1+DiCI6GeduUEUdopamqSRjzlnOQ+kio3KQpwwlFT7/UuJLFJHz8L
-         8yoZxtfQQZ5HyyjDmdXsscigsKd7iRnTckMOthOMFxZ3QAgzetavtrevq5roEAIhcTb9
-         lekQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6l4ltykJsLjiTKj6gSsHAVn2LbvWQ0R0HPl586P4JfS4bUVi3Z9id1ZOJ4c5wl10PN/cffX8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yze6siP6CLHaKlRmXW60Dbu7dfxIj+i52lHa5DvqOOAvOZZHuOd
-	N28F7HzDIcUKVe3K40w4dG1KIOyO3eggo6bGRQ+N2n4VH6vltP/68zI/DF/Zs1UDydeYeJrLGjo
-	YVH02NSw=
-X-Gm-Gg: AeBDieu+hPMI3izBH08K+0fIKnDyo5u6DzuvBUOoEQpinfggLvnoedtvQ7nrN/8MbDJ
-	sJ6nkhNwA8z3cAnNPYP9URnZ/hylnZRVeVJuZ+C7DLXkiK4C0cb4RlN4si45du9SA0hDOSLneRO
-	6QGCXv6vwO++FbaJqbzu2A7konU3Zqhq1eZzGpNC2zkJviJIwWo7e3szdoiSTtWu/Q8+kom7fTo
-	kPefOLHqEaI8RPMxSAeZQ+uCfWHhGvBvuWwZTHFOV+HEyGadAKGg71wFHaokXvoR6qANyPTCJAP
-	nOxIzJb2UUtRDW65/ofwem8yA5h7Avdt68u13UWdec4tB54zptYv7amdQ5qBb6R5uX9YKUxTs3z
-	8nyntL8yU5qKHiLvz5CV7eR7T/DRmCFyzNLRt/J4svQWEE3EjcFzCDED3t7AMO3GAM+J/hboaRw
-	W7kt2LV53rqAeFlGEJaRxRMode1196NH9qeal0kGIjKR2aLy4ZIcBjZMhyH8O6vFJggDA4AQAe7
-	x2bfRjO2c1Z6L3zegpeYOA0VF/GxfHCC+la9mRkL2fUhoH/CMhMZ86RqFOjMOPT3iI+6VaVwYHn
-	RUKQfMGHTNceDw==
-X-Received: by 2002:a05:6402:26c8:b0:66e:714a:f6ad with SMTP id 4fb4d7f45d1cf-66e714afb89mr5429021a12.9.1775551004633;
-        Tue, 07 Apr 2026 01:36:44 -0700 (PDT)
-Received: from ?IPV6:2001:1c06:2302:5600:7555:cca3:bbc4:648b? (2001-1c06-2302-5600-7555-cca3-bbc4-648b.cable.dynamic.v6.ziggo.nl. [2001:1c06:2302:5600:7555:cca3:bbc4:648b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66e033a74e8sm4110570a12.16.2026.04.07.01.36.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Apr 2026 01:36:43 -0700 (PDT)
-Message-ID: <5812c794-fd2c-4b49-8146-db6a1c783706@linaro.org>
-Date: Tue, 7 Apr 2026 09:36:42 +0100
+	s=arc-20240116; t=1775551310; c=relaxed/simple;
+	bh=OkmnU4nlM29hsuno8u3eVrPXqnKmdcFgOmY3skpbYp0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RKOGbeDCKVz20ILMYHBjVVTCKFibd+gpSq4D84MbkFJasy51dyAMjGAH0Q++/B14RU2C4/1LxkquleUrLA6TENTq6liU97lwBwsNn/5+kWSDlAu0AikfCD0OGsFnhfSoK6qbkdZsyJ0QuQnYAb+1+f7MOWQ/2I8AaRqHx4yskI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlGkZPT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E883C116C6;
+	Tue,  7 Apr 2026 08:41:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775551310;
+	bh=OkmnU4nlM29hsuno8u3eVrPXqnKmdcFgOmY3skpbYp0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=RlGkZPT3MOvOTwIDArNY9EsdDfm4DUvjh+g3w2k1ABoYFsVrGfq7nVCHps1c427jO
+	 zcvZwstUzO1Xq13CPSG/nqBjhlkDVOcq6mahd3UQXU1ziv+3FbFhZre7mSTi/uj6Bh
+	 FvccoVO1gJf9altTaxrkx6wBuiyK2haLYvCuqUD7dU+D1UX6bBmPHi8W5njQmcpATm
+	 WkAyinWXkF/hwh3+CJqk6kuF0Ux7Oprnt5yNyxfFjchcMf8dVALUW3SYV8TIIrG7H3
+	 s3Yij1JuHKkzSG4S3xJSXHnGhT462CI91wHqi7DhtWMB3VB5qfnVPd/lB4x/rKkDaR
+	 lBU6denhPZmLg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 07 Apr 2026 10:41:41 +0200
+Subject: [PATCH net v2] Revert "mptcp: add needs_id for netlink appending
+ addr"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] media: qcom: camss: Fix RDI streaming for various
- CSIDs
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>, bod@kernel.org
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Hans Verkuil <hverkuil@kernel.org>, Hans Verkuil
- <hverkuil+cisco@kernel.org>, Gjorgji Rosikopulos
- <quic_grosikop@quicinc.com>, Milen Mitkov <quic_mmitkov@quicinc.com>,
- Depeng Shao <quic_depengs@quicinc.com>, Yongsheng Li <quic_yon@quicinc.com>,
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260406-camss-rdi-fix-v1-0-d3f8b12473d0@kernel.org>
- <CAFEp6-2BMaT+u0cAJnZNCaxbiNGCayYs5uMr13AEe2iWWZZxzQ@mail.gmail.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <CAFEp6-2BMaT+u0cAJnZNCaxbiNGCayYs5uMr13AEe2iWWZZxzQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Message-Id: <20260407-net-mptcp-revert-pm-needs-id-v2-1-7a25cbc324f8@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QrCMBAEf6XcswdpkIr+ivhg0o2e0BhyqQil/
+ +7VPs6wOwspqkDp0i1U8RGVdzbwh47i854fYBmNyTs/uKMbOKPxVFosbHPUxmUyh1FtyKmPIZy
+ c79MZZIlSkeT7z1/JnnTbpc7hhdi2MK3rD0DTB7iFAAAA
+X-Change-ID: 20260406-net-mptcp-revert-pm-needs-id-f1cbb7021f9e
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3890; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=OkmnU4nlM29hsuno8u3eVrPXqnKmdcFgOmY3skpbYp0=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKvHPZ2eaH2Z06zMZ/qMRf2BRtYU1n+cD0ISnTTMz+lW
+ cYQXarXUcrCIMbFICumyCLdFpk/83kVb4mXnwXMHFYmkCEMXJwCMBGLMIbfbPHlbkVzPER3MzxZ
+ Lia2PDHy99XlUWoW4l67M1pzrmRWM/xmd76mwfw6d3f3p5XT5Vn4HAKFHrvKOPRtfXJ2ww8D7QW
+ cAA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,linaro.org,quicinc.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233522-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	TAGGED_FROM(0.00)[bounces-233521-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bryan.odonoghue@linaro.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 52ECE3AB6E2
+X-Rspamd-Queue-Id: 57D193AB778
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 07/04/2026 09:16, Loic Poulain wrote:
-> I agree with the observation and conclusion that proper PORT and VC
-> support is needed. However, as things stand today, this mechanism is
-> also a convenient API for leveraging different virtual channels.
-> Concretely, if you want to receive data from both VC0 and VC1, you can
-> simply use RDI0 and RDI1. Changing this behavior would effectively
-> break that usage model, leaving us only able to retrieve VC0 data,
-> which feels like a regression to me. The more compelling use case, in
-> my view, is the ability to stream different VCs in parallel, rather
-> than streaming VC0 multiple times?
-> 
-> This then brings us to the Pix interface, where streaming something
-> like VC3 does not really make sense. In the current csid-340 series
-> [1], I therefore took a simpler approach/workaround of forcing the
-> main channel (VC0) for the Pix interface.
-> 
-> [1]https://lore.kernel.org/linux-media/20260313131750.187518-4- 
-> loic.poulain@oss.qualcomm.com
+This commit was originally adding the ability to add MPTCP endpoints
+with ID 0 by accident. The in-kernel PM, handling MPTCP endpoints at the
+net namespace level, is not supposed to handle endpoints with such ID,
+because this ID 0 is reserved to the initial subflow, as mentioned in
+the MPTCPv1 protocol [1], a per-connection setting.
 
-I thought about that however, there are no upstream sensors driving more 
-than once VC right now.
+Note that 'ip mptcp endpoint add id 0' stops early with an error, but
+other tools might still request the in-kernel PM to create MPTCP
+endpoints with this restricted ID 0.
 
-So this really is a bugfix. You can even see it in the original commit 
-message for this feature, imx412 was used in the example but imx412 
-doesn't support multiple VCs.
+In other words, it was wrong to call the mptcp_pm_has_addr_attr_id
+helper to check whether the address ID attribute is set: if it was set
+to 0, a new MPTCP endpoint would be created with ID 0, which is not
+expected, and might cause various issues later.
 
-This is a pure bugfix and now that you draw my attention to it, I think 
-you should update your series.
+Fixes: 584f38942626 ("mptcp: add needs_id for netlink appending addr")
+Cc: stable@vger.kernel.org
+Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.2-9 [1]
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+v2:
+ - The v1 has been sent to net-next with a different commit message:
+   https://lore.kernel.org/20260403-net-next-mptcp-msg_eor-misc-v1-4-b0b33bea3fed@kernel.org
+---
+ net/mptcp/pm_kernel.c | 24 +++++-------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
-I guess this explains the indexing stuff I was nagging you about.
+diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
+index 82e59f9c6dd9..0ebf43be9939 100644
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -720,7 +720,7 @@ static void __mptcp_pm_release_addr_entry(struct mptcp_pm_addr_entry *entry)
+ 
+ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 					     struct mptcp_pm_addr_entry *entry,
+-					     bool needs_id, bool replace)
++					     bool replace)
+ {
+ 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
+ 	int ret = -EINVAL;
+@@ -779,7 +779,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id && needs_id) {
++	if (!entry->addr.id) {
+ find_next:
+ 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
+ 						    MPTCP_PM_MAX_ADDR_ID + 1,
+@@ -790,7 +790,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id && needs_id)
++	if (!entry->addr.id)
+ 		goto out;
+ 
+ 	__set_bit(entry->addr.id, pernet->id_bitmap);
+@@ -923,7 +923,7 @@ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk,
+ 		return -ENOMEM;
+ 
+ 	entry->addr.port = 0;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true, false);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, false);
+ 	if (ret < 0)
+ 		kfree(entry);
+ 
+@@ -977,18 +977,6 @@ static int mptcp_nl_add_subflow_or_signal_addr(struct net *net,
+ 	return 0;
+ }
+ 
+-static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
+-				      struct genl_info *info)
+-{
+-	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
+-
+-	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
+-					 mptcp_pm_address_nl_policy, info->extack) &&
+-	    tb[MPTCP_PM_ADDR_ATTR_ID])
+-		return true;
+-	return false;
+-}
+-
+ /* Add an MPTCP endpoint */
+ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+@@ -1037,9 +1025,7 @@ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ 			goto out_free;
+ 		}
+ 	}
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
+-						!mptcp_pm_has_addr_attr_id(attr, info),
+-						true);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
+ 	if (ret < 0) {
+ 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
+ 		goto out_free;
 
 ---
-bod
+base-commit: a9d4f4f6e65e0bf9bbddedecc84d67249991979c
+change-id: 20260406-net-mptcp-revert-pm-needs-id-f1cbb7021f9e
+
+Best regards,
+--  
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
