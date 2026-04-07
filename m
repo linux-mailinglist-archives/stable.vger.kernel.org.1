@@ -1,161 +1,163 @@
-Return-Path: <stable+bounces-233480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJTrDlpa1GlLtQcAu9opvQ
-	(envelope-from <stable+bounces-233480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:14:02 +0200
+	id CBsMA2Fb1GlhtQcAu9opvQ
+	(envelope-from <stable+bounces-233481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:18:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A49C3A89C4
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:14:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1003A8A49
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 03:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C07973009382
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 01:13:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59F86304C13E
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 01:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F79A1DF736;
-	Tue,  7 Apr 2026 01:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860951E5B63;
+	Tue,  7 Apr 2026 01:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="FwGj8Nfu"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38461A9FBA;
-	Tue,  7 Apr 2026 01:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775524436; cv=none; b=fjWEjwJiiF5lEZrOo7IfUH/r0DApkXDo7W9Qb0iPdcQVU9DEY5veshZMfGel0oGtvunK2OgwOepn3iJPhG6+mg6OCC+hq9ztyJQzU+Y/5I8VnmzN08oVNb6R7sc8O/Lmt3wfVKRQHQvko/u1ozQrh5HpzKyafxGOulzJEv1iQj0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775524436; c=relaxed/simple;
-	bh=vvBe9Muv2c5jeAUg6u5C70ti/Hh5gSJXqOytBfqGUYk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sU5ylXUjrgl7HkNEv1fPmPzbIZaQlDf07Vc5py+5xiy+M3RxiJAX46GMRoh8WWWSuV28X7z1gb97dc8p3EVjvYtUJGEwMdAXIjCrGjdD7ADaBqmKiqxBiyYiupuv1S4DxnOGsMFYebZhHEU+vmPjLhgmhapZSEpEnhga/u0TPRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fqSqK62hNzKHML7;
-	Tue,  7 Apr 2026 09:12:45 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 2E06140575;
-	Tue,  7 Apr 2026 09:13:44 +0800 (CST)
-Received: from [10.174.178.253] (unknown [10.174.178.253])
-	by APP1 (Coremail) with SMTP id cCh0CgCHitpFWtRpbzmeDg--.48272S3;
-	Tue, 07 Apr 2026 09:13:43 +0800 (CST)
-Message-ID: <a8c93ed1-9bbf-43bf-9255-fafb72bddda8@huaweicloud.com>
-Date: Tue, 7 Apr 2026 09:13:41 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3AC1D514E
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 01:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775524657; cv=pass; b=VrDxyvucLIKVWx52N+9HQRv/UiJfdxMQnQm/cEaUWFmMgySaLDRiD198HKDsZZDGcatwt8HCYLPcATIjGeAKdJNPfps9LTCvzmCwp8fuir5tlrYsmJ7HsJE39g2QgNbHhxfMAWtrYNbgfyainHMYtalwrVF1DiorX6VO/ArVxSI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775524657; c=relaxed/simple;
+	bh=czqVJ9cz7Ktw9imH5A5AFq07K7or30oW1/Cb5IOvfOQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NSvoHU0mrr6ylbVdSARnbnzQ3QHXTnIgpZ15VlgAitlJqK//fC4Q0Rv9aVxswHU6WT/HAXA6hE70ut0cJbxcttxdzUFE90NnRZCdxafu1TMwoWzQL57LIu1HeJyZK0FxI9HpQ3/lagJzncpYe2owtFH78KSANV9aU20ZZttfxwY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=FwGj8Nfu; arc=pass smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-79d991c7b6aso39526887b3.2
+        for <stable@vger.kernel.org>; Mon, 06 Apr 2026 18:17:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775524655; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cj+csMDzOTl676C7P9R6J/jLTkQJDCC/J8fHPmqjCTxWUdc+klrve9TZRxGPaPjLH4
+         XSfQXCIoWaenykQLbVOeFT6eqHS4JLrkVWsqTKrxUZH2wOqTb+N2mJrS1qjwUMoDn33z
+         LXfYuZ4WBCftO4GHh/G92R6ei+0Yf7h5FdtyTH/5NBuQKtATQ9Y4HY/0ibEG0lLS3EAH
+         3iPB67LC6bx5TJXvCRtrSyMc2qtHSdwZFxVXRAeUoKrHWcTEV/5hwRndP2ILUq+TZHu5
+         Dyspf7hlGZdThxyXNApFy5s5iQ0Y368mLYFIixdVoBTGAdmFeCfMpt3aJw3IY166BYze
+         E1Fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VJT/iwQLEn+40200OWlfNgjmYGPm0JSSw/wJxedFMI0=;
+        fh=sdBxyzPwKnfv110CHDkQuRCxtt2OeTr3uBJt3hqgA8o=;
+        b=BdmkqeLWqN6F6TCSzxzE3rz8j27rgSq69Hd/XdGLL1wVS5FpwJtc2GcoJDYL39yTlx
+         ZrEaf5L+NzDUssG+Xj+HyYjYAe8Z54H821iAAExGenixKCGMXU7RErNhypIubu2bO2lZ
+         Spdj01OzRyGWP9bAx3dxKpxn4zcdxe/I6b9I4jAIiVEfpCbszzc1AIVowIju9AfdY5/o
+         +x2VZFR7BWNW/qgfzoomwQpOQwcLWUP3i1u+va0r+3wXliNzgYD88viDX8SfAYuU+lQK
+         tfkEcLmqFYBayAvUea3haj67jbAf4Mm/S6n/tvGAE5hHRGBhYvgZzQAsrxgTSvbPpBtP
+         BbAw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1775524655; x=1776129455; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VJT/iwQLEn+40200OWlfNgjmYGPm0JSSw/wJxedFMI0=;
+        b=FwGj8NfutOVHwlxjFWqRdjXMfz+Umhc/CB94VsUA+AGR6+pSwe/eu1Uji5Svdy6XkY
+         h7v1+7EGq5omlcxj0B4ZEop5A+tUKTegfKrJrxI3NhgqgUwmZgyLIUJfP13Feo8X7NnV
+         7Czdmoa/MeslMLmx3ulfLQ9dH+NAaIL/fQxXk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775524655; x=1776129455;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VJT/iwQLEn+40200OWlfNgjmYGPm0JSSw/wJxedFMI0=;
+        b=TNW29XZZT99RI1oLwgqI6CxgXqFxrVo8FwDWj87cUACzXNFGGqxWLbs7FlSYKWxfr2
+         xTTzVEGTSXhvalVXu390IajCR/m9uDzuoR3VYxILjG7GLJyE+ejLuIGGZ/bsDwG4r/2a
+         cMlj59AcTjhX/30NOBJhc23DfsWX8buqi77SUaXQC8xroyD3Df/IXGk1Su9fEVfsakl9
+         aGWFoaHV3P2vlE/R95wEst5oaBYstAW1KUdRSicTrwjKQxVm6R9Cbc4IckrQxq2jFHxC
+         fV2SHf2x2XS2X1vLsl1wGVc3X61to5YDXyYNPqqnO7KstqNglDl13/xZC/0ayR1dkLxE
+         t5fA==
+X-Forwarded-Encrypted: i=1; AJvYcCUA0a9FXQpomNzoZzFUc3Y8DnajBzzB1C5CeFliTSBCfi2VB9DuOMqO2Vwk4KfzvaSXiVHrRHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXngNj0heRZBIlycURH91CylwKSODUgqFprGM/ARQ641bqIvXY
+	AwLwaa32ri7TvAjIxBO8a/R3BKMLrp+KHeQdI+btv68+UWZ3mro3gNKajldn/sWpSe7KPrcY8Wh
+	jmw/12akquZdanIPVohWQVVMA0WNFsheTDm9wiavpWQ==
+X-Gm-Gg: AeBDieu7MQcN1XEqsFjrNGerjwo4K91LmEGq8YdUQe1Qa5MXX5/v8++s1e3sbLGKqai
+	y2vNUHLd+s9I092EqabImUC+P6+sCuSkLy6W1fQ8DcxH6W6Z8KiOAGiVZ5Sx8cdvuTrEIGXMntl
+	+gU6NYGD+5TuRh49ej7FHRQKlOMoiEt1VR9oMSJ/TsePMUE8EJVmPaQj3q37m5YGb8WpB7DAypk
+	kemMVPQt1JQyBKKM67pmpqjsMqWU4wpp/+Wz4yThLZlIBJH6qAVoRAm3h+XvKsakWUaAbZ6Sk+N
+	HnpuAGM9pooMNP5FmEQF36N8IX98jsrg/U0NFCeGHIygaEG1sTuQ4oilidjZjvTF8LuqCaXg7Oh
+	we338kp+sjsxVqvNN8MTJKa5VYffbCVlafxPNzJnmfhGFOnZex/1XoTQWEXIymrI=
+X-Received: by 2002:a05:690c:6d84:b0:7a1:dbab:93e5 with SMTP id
+ 00721157ae682-7a4d2ff20eamr147191477b3.2.1775524655240; Mon, 06 Apr 2026
+ 18:17:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ext4: fix missing brelse() in
- ext4_xattr_inode_dec_ref_all()
-To: skoyama.kernel@gmail.com, linux-ext4@vger.kernel.org
-Cc: tytso@mit.edu, adilger.kernel@dilger.ca, libaokun@linux.alibaba.com,
- jack@suse.cz, ojaswin@linux.ibm.com, ritesh.list@gmail.com,
- bhupesh@igalia.com, Sohei Koyama <skoyama@ddn.com>,
- Andreas Dilger <adilger@dilger.ca>, stable@vger.kernel.org
-References: <20260406074830.8480-1-skoyama@ddn.com>
-Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <20260406074830.8480-1-skoyama@ddn.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:cCh0CgCHitpFWtRpbzmeDg--.48272S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zr4DCr1kCrW7XrW7CFy5CFg_yoW8GF45pw
-	43G3W8Cr48XFyjkayakF1UuanIga47G3yUurW2k34Ykr93X3s3tFy7t3WrCa15ur4kWa12
-	qF9Fk3Wj93ZxAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
-	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
-	7KsUUUUUU==
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+References: <CAAJpGJTztK=BTvr6s_e4epJffKchmXmqba82wxE_SOXUN6FWYg@mail.gmail.com>
+ <20260407011210.GM2551565@ziepe.ca>
+In-Reply-To: <20260407011210.GM2551565@ziepe.ca>
+From: Sina Hassani <sina@openai.com>
+Date: Mon, 6 Apr 2026 18:17:24 -0700
+X-Gm-Features: AQROBzA83tto2liL_v4antfrma0fo1MHacGEkseVIBd3rayyTAcOUj5whgCNcpo
+Message-ID: <CAAJpGJQXnMjhC4C7Z6bAQJN5y48fsbiwPd3YF5vft+1MBNFLVQ@mail.gmail.com>
+Subject: Re: [PATCH v2] Fixes a race in iopt_unmap_iova_range
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: kevin.tian@intel.com, joro@8bytes.org, will@kernel.org, 
+	robin.murphy@arm.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Aaron Wisner <awiz@openai.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[openai.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[openai.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233480-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[huaweicloud.com];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[mit.edu,dilger.ca,linux.alibaba.com,suse.cz,linux.ibm.com,gmail.com,igalia.com,ddn.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233481-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[openai.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yi.zhang@huaweicloud.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.517];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sina@openai.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,huaweicloud.com:mid,ddn.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0A49C3A89C4
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,ziepe.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,openai.com:dkim]
+X-Rspamd-Queue-Id: 6F1003A8A49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/6/2026 3:48 PM, skoyama.kernel@gmail.com wrote:
-> From: Sohei Koyama <skoyama@ddn.com>
-> 
-> The commit c8e008b60492 ("ext4: ignore xattrs past end")
-> introduced a refcount leak in when block_csum is false.
-> 
-> ext4_xattr_inode_dec_ref_all() calls ext4_get_inode_loc() to
-> get iloc.bh, but never releases it with brelse().
-> 
-> Fixes: c8e008b60492 ("ext4: ignore xattrs past end")
-> Signed-off-by: Sohei Koyama <skoyama@ddn.com>
-> Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Cc: stable@vger.kernel.org
-
-Looks good to me.
-
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-
-> ---
->  fs/ext4/xattr.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-> index 7bf9ba19a89d..19c72e38fb82 100644
-> --- a/fs/ext4/xattr.c
-> +++ b/fs/ext4/xattr.c
-> @@ -1165,7 +1165,7 @@ ext4_xattr_inode_dec_ref_all(handle_t *handle, struct inode *parent,
->  {
->  	struct inode *ea_inode;
->  	struct ext4_xattr_entry *entry;
-> -	struct ext4_iloc iloc;
-> +	struct ext4_iloc iloc = { .bh = NULL };
->  	bool dirty = false;
->  	unsigned int ea_ino;
->  	int err;
-> @@ -1260,6 +1260,8 @@ ext4_xattr_inode_dec_ref_all(handle_t *handle, struct inode *parent,
->  			ext4_warning_inode(parent,
->  					   "handle dirty metadata err=%d", err);
->  	}
-> +
-> +	brelse(iloc.bh);
->  }
->  
->  /*
-
+On Mon, Apr 6, 2026 at 6:12=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrote=
+:
+>
+> On Mon, Apr 06, 2026 at 04:07:01PM -0700, Sina Hassani wrote:
+>
+> > io_pagetable *iopt, unsigned long start,
+> >                 unmapped_bytes +=3D area_last - area_first + 1;
+> >
+> >                 down_write(&iopt->iova_rwsem);
+> > +
+> > +               /* Do not reconsider things already unmapped in case of
+> > +                * concurrent allocation */
+> > +               start =3D area_last + 1;
+>
+> area_last can be ULONG_MAX so this literally overflows to 0. It is why
+> I formed the suggestion I gave as I did
+>
+Yes, in which case the  if (start < area_last) that follows will catch
+it. Are you suggesting I compare against ULONG_MAX instead?
+> Jason
 
