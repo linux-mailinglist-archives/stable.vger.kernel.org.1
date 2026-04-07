@@ -1,156 +1,294 @@
-Return-Path: <stable+bounces-233681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDXgGFgt1Wli1wcAu9opvQ
-	(envelope-from <stable+bounces-233681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:14:16 +0200
+	id EIBAIIss1Wli1wcAu9opvQ
+	(envelope-from <stable+bounces-233680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:10:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 005173B1936
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:14:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442463B188E
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 18:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 11EB4305BDD1
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:07:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 21FB8305D41B
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 16:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C113D6CC8;
-	Tue,  7 Apr 2026 16:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5FF3D88F0;
+	Tue,  7 Apr 2026 16:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jc7LPtC2"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="ezuRjfrE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-42ae.mail.infomaniak.ch (smtp-42ae.mail.infomaniak.ch [84.16.66.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E543D7D6A
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 16:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775577861; cv=pass; b=YTshB9reKzi4fcn8n9vH0fiSh0G6aNiJ5g30D4y4dVzT/hawMpI4N++icFZHJrueNTNHQfE2y/i/iIt/2kyyUz/JMExb7RbvRvFDGPaVD1pq+XCvx3OuLMnp1+dl06n9Bk51uIer1tdtirCPWc3e5KnYA8bSNjxgceD2YSifR4A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775577861; c=relaxed/simple;
-	bh=NSsE1e/PZi1yLaZLU1hnoYz7iY5RSS8H6bXaDmUQzYw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P20tl+6u7CM4vTGfSkSIyIiSqEN1afByjUQ0AD6oG/SuQB7qHY2UHdBRLhrCKEnb9dmokwdfVUNGSCzJ8ATZzJMvlMsrpXJzsN8cIo1v8Yc79IGkym33KllbdkA/XKPMqlFNp8xzYHlINUgqbKpeoTyLuGNjGO5lLv6+DTj9vEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jc7LPtC2; arc=pass smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-66e8cc747d8so4287469a12.1
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 09:04:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775577853; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dMlwcn2Qt1yDrTKI2KVNF75K1x95SKecOgUC8JkTompdcXbIJZmP+avoz4e981WPhB
-         kxkVqxvO1hQ29iFadePU/JnQDG6pCNhaa773NP1N9khcpQCwL1uaoCCVFUsqzsS4IdWP
-         evvbsWAcPBslyrQYdxmdt4zhWxo+zIVza4kMJMXinGeg8NN0DAzpXpe8TexqKHQ4MwwN
-         qWIFSRBLqhp4PIABiBaEdFgoGnF3WePSR7IehX8fyrDhvOulqLjm+kL2lWcGgclvJF4F
-         kX5ekH5HZHIN3b9ZldM09+rb8/fm9Hpr9kST9NKZVbtGfLqE1Z9ezk5dEaZ/0Zh+Q1Al
-         SVDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NSsE1e/PZi1yLaZLU1hnoYz7iY5RSS8H6bXaDmUQzYw=;
-        fh=tvhQ83HC0xeT6Yp+/abX0vWnoweCJpv0hRqovShKIG4=;
-        b=flzF3zBZVLMqWc2RyIDC723IuM7vHX+RW8lWP95drcvqt7S7pL6ZwqKZeEhuneE7Cb
-         7qbb43YpRHElimeD2Pu9K4BEe7LKshmQ6Otqw56Rv+2ZVmz5xliDXOkRuLDmLdA2f4XM
-         Q+VB2ds+/i/gQF8guo7ahFI8vmUndrv4KHs1Hptuc3MyjfsatZdllpfN6v4vAdNCvjgM
-         OKrsYF/g7k4Wz23dz7KESjBp770ZpW91jWdmAem++dYOwCRvipKNZoW2kzA+tI5qMcr1
-         VEs+AvfRog62I1i5aAxM6vv4n5VJ/ktg9vY+gTR3lmJvfcZ14pDBbrkFyXkxTdN1dp+j
-         Z7Tw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775577853; x=1776182653; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NSsE1e/PZi1yLaZLU1hnoYz7iY5RSS8H6bXaDmUQzYw=;
-        b=jc7LPtC24qwdF92hG3E1yoyIbi6ETGZAQoBz9abpWpIG+oBDPZlqk8bKxFi6SQR+RC
-         u+5U5B6rWU+yD24FkZXiFyA+xtGfLSSWlqf1NxQV33C5R6+3u9xjBe4agGpOi6qVLet1
-         WhIKXfH+DdepWUeeVD617fgTFD40kb7XLzm2DdXSHbtdGCteusNFYp5fzyB9DizCLF7J
-         yMB+rCe3+10L/jtFIBTvN1s92TXg0Vc+ydnGq0FhoSWuY+eCQ8YMkTdGBDKvFefY8Zzs
-         fiqkVtmOdf5Dceat2ofz1iS+bNm+Ss+m03QNc1CyemjfUJ1yZ+GM9Z7Aoi1Ejk8k3lWu
-         w4yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775577853; x=1776182653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NSsE1e/PZi1yLaZLU1hnoYz7iY5RSS8H6bXaDmUQzYw=;
-        b=AwBFzdIENMTUU9Nq6dL8BJ22iX4TjTGzYL8u6JtHkfL8ypEOF5QqMJTQt3Zl34qwnZ
-         N2kXjyUbChEejrr7e41Q711Q+/EwJpK6duhFwCchn1yBOuFydQpQ7KivA2X1tP4DcmbE
-         /CaGcJJakUKhhZaUquxV+Vdx71pqXLVSvX/ULVgb6Bi56Y1xJXv5uLkc5oysKEuK+oIa
-         cY9zvaRUkCkfHDsPnuyFMNbmkUQtLrcqPypdYXwxETCkseGi768q7wWFZONLeJDl7W/k
-         GNm2wYcsgDWiksZglRvxqd0gPjL5euvADj7hTpflREfMqTi9Yrc2DKciasAscHhZuxLV
-         dQDw==
-X-Gm-Message-State: AOJu0YzKkzVdFd5xS+pJslAOm7DXLGyupRMT44Nul129N16bbRZgrqAl
-	xmT+JJiOrp76zT7Iesp1WCNeoEUPBHIw2fVExbUXEG+mb7twDKsvW+AeezK2B3/d3TMKls1jYuh
-	JzVidszBXdjRJL4EMqOW2XmsTjDiDTq+NMg6SweYM
-X-Gm-Gg: AeBDietE9G9YkOowJX44wcxYzBWzlUV4WxNr9JFL0G0nXP5TwE68QX5BEjQn2o9VfOf
-	0itorsOztd6uXNSX3l6yIh/96e28JoUc+5vF3cI2d96gOBMZnVaemTQO1rN630Q01VIkxUn6MJm
-	42K05OSpFH7/jjQGr/scFpDLfuh/7UWDrBeeTEbOjx/VCQovf8xNThbLBUa71/K/sgoiCc5GtUb
-	gtjzWNAVWU+oWgRTLydXAUgqLxAVRNrNqe7QwlVwXIwSivRDlmKGJB4BDIHc9DrYXZ2aYdNUlih
-	9+rkbYUkMJJoav8IHtY1ty2+ECjmKrXAzAmTaZc=
-X-Received: by 2002:a17:907:1b0e:b0:b96:f329:e66 with SMTP id
- a640c23a62f3a-b9c67a26fc7mr844404066b.51.1775577852342; Tue, 07 Apr 2026
- 09:04:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401013C8702
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 16:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775577860; cv=none; b=JVd4Q5Oji7Lc0tndUfkF/RMvjIk4c+Fc4lrI1zZFIB4GzGbfu1IRapiEisiGEB2nan9X0/zS8QMDCb6eEve/7/k5IF8NS8YiR1V1K3LMdQ8bqRPXYWIpDL/WsfTwLh5YF/gCesUYzVeEVXehE6Yv/tu918wbCePh3v4PBIcm0xg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775577860; c=relaxed/simple;
+	bh=jWqZByCXlQAQsXKN3c+PlprgxesX3EGGcEbVEukzozE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G61EqPQTaP+aM+HROYeC4FzEVYL0KAQAA4pqPaG7o4+Y/u/BC6hlUvkjeM4LCUOBUN8frBYAMDG8nq3OVKkJfssfEdFn0Qt6h+Xy68fEsicWOOYlRnTSSWWEB7gl/m75JxnxyF44uAep6/lTFy4+fu0HHdjKfIQ0MPea3bBjWC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=ezuRjfrE; arc=none smtp.client-ip=84.16.66.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fqrbl1y8bzXH8;
+	Tue,  7 Apr 2026 18:04:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1775577843;
+	bh=BuJ1b9DLe15rxEHlJRdHRZNAK5vx2fsFxuDBwmg95Co=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ezuRjfrE4QhKci6hwa69kZ6H82WJBNS3Avmb4yswYQ3VL7FJqPrgw9hd9t0xv4Fi5
+	 kIkvIfeyX0vaa/MvTCAbH4t6dqf39Gcdzg1DDOP3lBatc9HHHm+QmrBbsOOFkTFRfc
+	 eWa3+h5pUrEYCrrOfBHvriV67VFAWcmY8MRSkWy0=
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fqrbk5YKGzHGb;
+	Tue,  7 Apr 2026 18:04:02 +0200 (CEST)
+Date: Tue, 7 Apr 2026 18:03:58 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>, 
+	Jann Horn <jannh@google.com>
+Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	linux-security-module@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] landlock: Fix log_subdomains_off inheritance
+ across fork()
+Message-ID: <20260407.wuaqueid3Pai@digikod.net>
+References: <20260404085001.1604405-1-mic@digikod.net>
+ <20260407.844e42deb531@gnoack.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311054043.1231316-1-kuniyu@google.com> <20260407155827.GA1993342@google.com>
-In-Reply-To: <20260407155827.GA1993342@google.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 7 Apr 2026 09:03:51 -0700
-X-Gm-Features: AQROBzA6sVi7ELrBaUXh4gd4681a_tixA6QGGkVr5CTQNSBqTlyyqpNo3H3caw0
-Message-ID: <CAAVpQUBnbRSUq7NDj0iEXsyKKbCUsn830iCNMvTpYTa8kNG1Zg@mail.gmail.com>
-Subject: Re: [PATCH v3 net] af_unix: Give up GC if MSG_PEEK intervened.
-To: Lee Jones <lee@kernel.org>
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, 
-	Linus Torvalds <torvalds@linuxfoundation.org>, netdev@vger.kernel.org, 
-	Igor Ushakov <sysroot314@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260407.844e42deb531@gnoack.org>
+X-Infomaniak-Routing: alpha
+X-Spamd-Result: default: False [-0.95 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MIXED_CHARSET(0.71)[subject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-233681-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233680-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuniyu@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,google.com];
+	DMARC_NA(0.00)[digikod.net];
+	DKIM_TRACE(0.00)[digikod.net:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 005173B1936
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,digikod.net:dkim,digikod.net:email,digikod.net:mid]
+X-Rspamd-Queue-Id: 442463B188E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 7, 2026 at 8:58=E2=80=AFAM Lee Jones <lee@kernel.org> wrote:
->
-> INTENTIONAL TOP POST
->
-> I note that this was not sent to Stable, but it should be included please=
-.
+On Tue, Apr 07, 2026 at 09:30:40AM +0200, Günther Noack wrote:
+> Hello!
+> 
+> On Sat, Apr 04, 2026 at 10:49:57AM +0200, Mickaël Salaün wrote:
+> > hook_cred_transfer() only copies the Landlock security blob when the
+> > source credential has a domain.  This is inconsistent with
+> > landlock_restrict_self() which can set log_subdomains_off on a
+> > credential without creating a domain (via the ruleset_fd=-1 path): the
+> > field is committed but not preserved across fork() because the child's
+> > prepare_creds() calls hook_cred_transfer() which skips the copy when
+> > domain is NULL.
+> > 
+> > This breaks the documented use case where a process mutes subdomain logs
+> > before forking sandboxed children: the children lose the muting and
+> > their domains produce unexpected audit records.
+> > 
+> > Fix this by unconditionally copying the Landlock credential blob.
+> > landlock_get_ruleset(NULL) is already a safe no-op.
+> > 
+> > Cc: Günther Noack <gnoack@google.com>
+> > Cc: stable@vger.kernel.org
+> > Fixes: ead9079f7569 ("landlock: Add LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF")
+> > Signed-off-by: Mickaël Salaün <mic@digikod.net>
+> > ---
+> >  security/landlock/cred.c                      |  6 +-
+> >  tools/testing/selftests/landlock/audit_test.c | 88 +++++++++++++++++++
+> >  2 files changed, 90 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/security/landlock/cred.c b/security/landlock/cred.c
+> > index 0cb3edde4d18..cc419de75cd6 100644
+> > --- a/security/landlock/cred.c
+> > +++ b/security/landlock/cred.c
+> > @@ -22,10 +22,8 @@ static void hook_cred_transfer(struct cred *const new,
+> >  	const struct landlock_cred_security *const old_llcred =
+> >  		landlock_cred(old);
+> >  
+> > -	if (old_llcred->domain) {
+> > -		landlock_get_ruleset(old_llcred->domain);
+> > -		*landlock_cred(new) = *old_llcred;
+> > -	}
+> > +	landlock_get_ruleset(old_llcred->domain);
+> > +	*landlock_cred(new) = *old_llcred;
+> 
+> This fix looks correct for the hook_cred_prepare() case (and of
+> course, hook_cred_prepare() calls hook_cred_transfer() in Landlock).
+> 
+> 
+> But I'm afraid I might have spotted another issue here:
+> 
+> If I look at the code in security/keys/process_keys.c, where
+> security_tranfer_creds() is called, the "old" object is actually
+> already initialized, and if we are not checking for that, I think we
+> are leaking memory.
 
-It's included in 6.19.y, just a matter of time.
-https://lore.kernel.org/stable/20260323134508.596880934@linuxfoundation.org=
-/
+old is only a partially initialized credential, and the Landlock
+part is not set yet, which is the goal of hook_transfer_creds(), so
+there is no leak.
+
+> 
+> I would suggest to use the helper landlock_cred_copy() from cred.h for
+
+This is not required but if we would like to do it anyway, that would
+not be backportable and would introduce a (minimal) performance penalty.
+
+> that.  This one is anyway supposed to be the central place for this
+> copying logic, and it is safe to use with zeroed-out target objects
+> (because the put is safe for the NULL-pointer).
+> 
+> Maybe this is worth updating while we are at it?
+> 
+> 
+> >  }
+> >  
+> >  static int hook_cred_prepare(struct cred *const new,
+> > diff --git a/tools/testing/selftests/landlock/audit_test.c b/tools/testing/selftests/landlock/audit_test.c
+> > index 46d02d49835a..20099b8667e7 100644
+> > --- a/tools/testing/selftests/landlock/audit_test.c
+> > +++ b/tools/testing/selftests/landlock/audit_test.c
+> > @@ -279,6 +279,94 @@ TEST_F(audit, thread)
+> >  				&audit_tv_default, sizeof(audit_tv_default)));
+> >  }
+> >  
+> > +/*
+> > + * Verifies that log_subdomains_off set via the ruleset_fd=-1 path (without
+> > + * creating a domain) is inherited by children across fork().  This exercises
+> > + * the hook_cred_transfer() fix: the Landlock credential blob must be copied
+> > + * even when the source credential has no domain.
+> > + *
+> > + * Phase 1 (baseline): a child without muting creates a domain and triggers a
+> > + * denial that IS logged.
+> > + *
+> > + * Phase 2 (after muting): the parent mutes subdomain logs, forks another child
+> > + * who creates a domain and triggers a denial that is NOT logged.
+> > + */
+> > +TEST_F(audit, log_subdomains_off_fork)
+> > +{
+> > +	const struct landlock_ruleset_attr ruleset_attr = {
+> > +		.scoped = LANDLOCK_SCOPE_SIGNAL,
+> > +	};
+> > +	struct audit_records records;
+> > +	int ruleset_fd, status;
+> > +	pid_t child;
+> > +
+> > +	ruleset_fd =
+> > +		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
+> > +	ASSERT_LE(0, ruleset_fd);
+> > +
+> > +	ASSERT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
+> > +
+> > +	/*
+> > +	 * Phase 1: forks a child that creates a domain and triggers a denial
+> > +	 * before any muting.  This proves the audit path works.
+> > +	 */
+> > +	child = fork();
+> > +	ASSERT_LE(0, child);
+> > +	if (child == 0) {
+> > +		ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
+> > +		ASSERT_EQ(-1, kill(getppid(), 0));
+> > +		ASSERT_EQ(EPERM, errno);
+> > +		_exit(0);
+> > +		return;
+> > +	}
+> > +
+> > +	ASSERT_EQ(child, waitpid(child, &status, 0));
+> > +	ASSERT_EQ(true, WIFEXITED(status));
+> > +	ASSERT_EQ(0, WEXITSTATUS(status));
+> > +
+> > +	/* The denial must be logged (baseline). */
+> > +	EXPECT_EQ(0, matches_log_signal(_metadata, self->audit_fd, getpid(),
+> > +					NULL));
+> > +
+> > +	/* Drains any remaining records (e.g. domain allocation). */
+> > +	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
+> > +
+> > +	/*
+> > +	 * Mutes subdomain logs without creating a domain.  The parent's
+> > +	 * credential has domain=NULL and log_subdomains_off=1.
+> > +	 */
+> > +	ASSERT_EQ(0, landlock_restrict_self(
+> > +			     -1, LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF));
+> > +
+> > +	/*
+> > +	 * Phase 2: forks a child that creates a domain and triggers a denial.
+> > +	 * Because log_subdomains_off was inherited via fork(), the child's
+> > +	 * domain has log_status=LANDLOCK_LOG_DISABLED.
+> > +	 */
+> > +	child = fork();
+> > +	ASSERT_LE(0, child);
+> > +	if (child == 0) {
+> > +		ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
+> > +		ASSERT_EQ(-1, kill(getppid(), 0));
+> > +		ASSERT_EQ(EPERM, errno);
+> > +		_exit(0);
+> > +		return;
+> > +	}
+> > +
+> > +	ASSERT_EQ(child, waitpid(child, &status, 0));
+> > +	ASSERT_EQ(true, WIFEXITED(status));
+> > +	ASSERT_EQ(0, WEXITSTATUS(status));
+> > +
+> > +	/* No denial record should appear. */
+> > +	EXPECT_EQ(-EAGAIN, matches_log_signal(_metadata, self->audit_fd,
+> > +					      getpid(), NULL));
+> > +
+> > +	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
+> > +	EXPECT_EQ(0, records.access);
+> > +
+> > +	EXPECT_EQ(0, close(ruleset_fd));
+> > +}
+> > +
+> >  FIXTURE(audit_flags)
+> >  {
+> >  	struct audit_filter audit_filter;
+> > -- 
+> > 2.53.0
+> > 
+> 
+> Test looks fine.
+> 
+> While I do still think we should investigate the memory leak, this
+> commit is, as it is, already a strict improvement over what we had
+> before, so:
+> 
+> Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+
+I'll keep your tag if this patch is ok with you as-is.
+
+> 
+> –Günther
+> 
 
