@@ -1,184 +1,134 @@
-Return-Path: <stable+bounces-233659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sN41MYog1Wnr0wcAu9opvQ
-	(envelope-from <stable+bounces-233659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:19:38 +0200
+	id GJhiFdwg1Wnr0wcAu9opvQ
+	(envelope-from <stable+bounces-233660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:21:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAF73B0D32
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:19:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC4D3B0DA3
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 965513047416
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:15:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9A72F301552B
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425173624C0;
-	Tue,  7 Apr 2026 15:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582C3364E93;
+	Tue,  7 Apr 2026 15:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfqUJBbr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IiAmks13"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C4D33C1BD
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 15:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1294136495D;
+	Tue,  7 Apr 2026 15:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775574939; cv=none; b=NotffnYEi6uFfO3Nj386hAV1ePIDkUdybXdp9wJH1DZB3lD86jXtozfIIFZEKEFPRpaAWawNnpy2oSYk8aW1ZhED8sZJBYYH7m+jfhRwjeLwrowDV2TtT5Qso/9bPMGBQ/JkvTalJYNsAXcOSl3jbamu8IVUfcJqc7vna4w+XR8=
+	t=1775575227; cv=none; b=WKjOoTfIWz9IUtltAfPJJ7fqSxQ7iilmceaL331+h2FtGWpZACkjd4ER78AvUf8MQLk4jStZho37KL6rNcMKP06bWvb4Bl3nMQgcmQH+wqV/uZlPFKE8ek8Y+cix2gbdgJC6yI3dSja4Wflvc/wvFnsMXnefYnx8NDodx/1njPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775574939; c=relaxed/simple;
-	bh=FiDeTVHYhLcJauIyNZxe7RSbHRoGJ3YdJOvLVpYh6F8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KESLPOmUm4UmVpteoQcR8nmf3T0VyrcEIq7ECtfeVGv6oqxoRtrtqqPO+ufQ5BCJ8ar8kgBKcZUJOxkjrC9CPFpvmFmCf+iMtvpZFME2111VljjTbSMhps6EeXwvsxnDCHXEX/6go6bSac/5Xla9nR7IgX68+1o7SDDh/XXAR4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfqUJBbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B07C116C6;
-	Tue,  7 Apr 2026 15:15:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775574938;
-	bh=FiDeTVHYhLcJauIyNZxe7RSbHRoGJ3YdJOvLVpYh6F8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=QfqUJBbr3YpxgyLl1x1b+ImjpTqxHhJ7koOyCB2vDxSsL5tuLrXOD6h+uos6Q3X9c
-	 bCtnwJkabt/2HwN5etePSp2kmk8vYcrkT0v4uGKtXWCTztxhryG//dQbRKLlcjl9GC
-	 y7FBB++TCUj5AFR12GDP79cIlsB+bxBRTqhPP1H0=
-Subject: FAILED: patch "[PATCH] drm/amdgpu/userq: fix memory leak in MQD creation error paths" failed to apply to 6.18-stable tree
-To: moonafterrain@outlook.com,Prike.Liang@amd.com,alexander.deucher@amd.com,danisjiang@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 07 Apr 2026 17:15:28 +0200
-Message-ID: <2026040728-sadness-repeated-c737@gregkh>
+	s=arc-20240116; t=1775575227; c=relaxed/simple;
+	bh=yC1TqO1IE6Cf2sou7vpezeLWVXSDs9FIvXQhm4VF3B8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=jf3m+MAVJ0lK4w5Z/9WxQ5/7DScm11xL7iHlgOWrt1qtrA5Wq4qI6iBk+9vbwfl6Sl33RJYvbBZxsNJd/wdktPYeZLAZiqR3nDXjEoJK2jMKy44EjblLZCmQ2n6Cvaa/OZb7N/RJjqmkOXtLDv29lwoBrnwqKplSxtGaIDUzWYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IiAmks13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76F3C2BC9E;
+	Tue,  7 Apr 2026 15:20:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775575226;
+	bh=yC1TqO1IE6Cf2sou7vpezeLWVXSDs9FIvXQhm4VF3B8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=IiAmks139gI4xiHXHlM5LmBjzOiooKJpBsw3auRH51WIvq0daA+A/akQ9WzJCwRr2
+	 4Xju8kFyD+VWPFpziayoM8iMWXs+fJJfQrkeQ+nl5qyZoe7en1TQmbCmFeQhbUss+e
+	 UUX4Nbcijl4b2bgnLB9apRR9VkU5q8fiulMKosVoUbt2sEJGz1HoesVd5JHeFJgLId
+	 QmWwHYHqsqwhVnFNJL6+2TAWdZ0ynMzNFpiHgkWrJR1LyILuAwRIqiRIs1HvXXgbQc
+	 ZMQ/FpHJI6lcGZB1aWJmKhDk6fMryjnse6QZghOmWLT2pRZ7rfxFsYYpFVhVtg2rtE
+	 P2kXeqhfpr3RQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E753809A2A;
+	Tue,  7 Apr 2026 15:20:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Subject: Re: [PATCH] net/tls: fix use-after-free in -EBUSY error path of
+ tls_do_encryption
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177557520455.4033778.1596414160190743186.git-patchwork-notify@kernel.org>
+Date: Tue, 07 Apr 2026 15:20:04 +0000
+References: <20260403013617.2838875-1-ramdhan@starlabs.sg>
+In-Reply-To: <20260403013617.2838875-1-ramdhan@starlabs.sg>
+To: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, sd@queasysnail.net,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ john.fastabend@gmail.com, info@starlabs.sg, stable@vger.kernel.org
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233659-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com,amd.com,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233660-lists,stable=lfdr.de,netdevbpf];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,queasysnail.net,davemloft.net,google.com,redhat.com,gmail.com,starlabs.sg];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NO_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,amd.com:email,linuxfoundation.org:dkim,gregkh:email]
-X-Rspamd-Queue-Id: 2BAF73B0D32
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 5BC4D3B0DA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello:
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On Fri,  3 Apr 2026 09:36:17 +0800 you wrote:
+> The -EBUSY handling in tls_do_encryption(), introduced by commit
+> 859054147318 ("net: tls: handle backlogging of crypto requests"), has
+> a use-after-free due to double cleanup of encrypt_pending and the
+> scatterlist entry.
+> 
+> When crypto_aead_encrypt() returns -EBUSY, the request is enqueued to
+> the cryptd backlog and the async callback tls_encrypt_done() will be
+> invoked upon completion. That callback unconditionally restores the
+> scatterlist entry (sge->offset, sge->length) and decrements
+> ctx->encrypt_pending. However, if tls_encrypt_async_wait() returns an
+> error, the synchronous error path in tls_do_encryption() performs the
+> same cleanup again, double-decrementing encrypt_pending and
+> double-restoring the scatterlist.
+> 
+> [...]
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x ced5c30e47d1cd52d6ae40f809223a6286854086
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040728-sadness-repeated-c737@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+Here is the summary with links:
+  - net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption
+    https://git.kernel.org/netdev/net/c/a9b8b18364ff
 
-Possible dependencies:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From ced5c30e47d1cd52d6ae40f809223a6286854086 Mon Sep 17 00:00:00 2001
-From: Junrui Luo <moonafterrain@outlook.com>
-Date: Sat, 14 Mar 2026 23:33:53 +0800
-Subject: [PATCH] drm/amdgpu/userq: fix memory leak in MQD creation error paths
-
-In mes_userq_mqd_create(), the memdup_user() allocations for
-IP-specific MQD structs are not freed when subsequent VA validation
-fails. The goto free_mqd label only cleans up the MQD BO object and
-userq_props.
-
-Fix by adding kfree() before each goto free_mqd on VA validation
-failure in the COMPUTE, GFX, and SDMA branches.
-
-Fixes: 9e46b8bb0539 ("drm/amdgpu: validate userq buffer virtual address and size")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Prike Liang <Prike.Liang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 27f5ff9e4a4150d7cf8b4085aedd3b77ddcc5d08)
-Cc: stable@vger.kernel.org
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-index 8c74894254f7..faac21ee5739 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_userqueue.c
-@@ -324,8 +324,10 @@ static int mes_userq_mqd_create(struct amdgpu_usermode_queue *queue,
- 
- 		r = amdgpu_userq_input_va_validate(adev, queue, compute_mqd->eop_va,
- 						   2048);
--		if (r)
-+		if (r) {
-+			kfree(compute_mqd);
- 			goto free_mqd;
-+		}
- 
- 		userq_props->eop_gpu_addr = compute_mqd->eop_va;
- 		userq_props->hqd_pipe_priority = AMDGPU_GFX_PIPE_PRIO_NORMAL;
-@@ -365,12 +367,16 @@ static int mes_userq_mqd_create(struct amdgpu_usermode_queue *queue,
- 
- 		r = amdgpu_userq_input_va_validate(adev, queue, mqd_gfx_v11->shadow_va,
- 						   shadow_info.shadow_size);
--		if (r)
-+		if (r) {
-+			kfree(mqd_gfx_v11);
- 			goto free_mqd;
-+		}
- 		r = amdgpu_userq_input_va_validate(adev, queue, mqd_gfx_v11->csa_va,
- 						   shadow_info.csa_size);
--		if (r)
-+		if (r) {
-+			kfree(mqd_gfx_v11);
- 			goto free_mqd;
-+		}
- 
- 		kfree(mqd_gfx_v11);
- 	} else if (queue->queue_type == AMDGPU_HW_IP_DMA) {
-@@ -390,8 +396,10 @@ static int mes_userq_mqd_create(struct amdgpu_usermode_queue *queue,
- 		}
- 		r = amdgpu_userq_input_va_validate(adev, queue, mqd_sdma_v11->csa_va,
- 						   32);
--		if (r)
-+		if (r) {
-+			kfree(mqd_sdma_v11);
- 			goto free_mqd;
-+		}
- 
- 		userq_props->csa_addr = mqd_sdma_v11->csa_va;
- 		kfree(mqd_sdma_v11);
 
 
