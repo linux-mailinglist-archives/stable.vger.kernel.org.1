@@ -1,188 +1,162 @@
-Return-Path: <stable+bounces-233650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJM4FFwf1Wl/1AcAu9opvQ
-	(envelope-from <stable+bounces-233650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:14:36 +0200
+	id mOfCCDke1Wnr0wcAu9opvQ
+	(envelope-from <stable+bounces-233651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:09:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED96B3B0C16
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:14:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF6ED3B0AE7
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4ADD1304F2EC
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:08:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CAB63054BAE
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 15:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB21435F60F;
-	Tue,  7 Apr 2026 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A3E361640;
+	Tue,  7 Apr 2026 15:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgTtHaBL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qd6iY4nZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDB335F5FD
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 15:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E163612FB
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 15:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775574482; cv=none; b=LeS4vzQGg+OUWagORgHHXYYZYCMcFy5HohlzwefA7NBR335Tzg2XejSutClRZJm5W9xToqWqCCVwrQiKTcL2oY19CH7poXbEVqwiFcTmila3wKVthofReftcghfhJhnPh/blzK/RqwwaxF0sW5yckLr0Xxm/6oWKwoiD00apNI0=
+	t=1775574494; cv=none; b=LGzi8V8J+vDuml27f/R205Ef9LKv3Te1OP0P6IZj36BNzJftR291/+IJf6gYKJ38OK6LQ+H+faVu60QDqL8s+pcb0QN3MSgNGzHbsoAls8TkdvJB3pcf2/U2+RNCOxs1IZ2vC82aKleaUe1WOqdwnzhfgSLdgBc7k1VEs6os9n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775574482; c=relaxed/simple;
-	bh=4L1vb50exOTZyuv+rKvzOsU41vTrQv1p72EuWd4OBDI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nmiWDCnDmxef/Sga0Z1XD3GI0oJvvqb0VM9eO0c5HlmwLAvXqhPAML99O0EnLft7r2AUFrPdfI6FWTEu5M5RLVfmndwjaQmRgWOarnVU7M/LH7fC1w7L7iK+mtK7gfNsXADIltKxEtRs6Nka8WQ2ATMDW7ZVXaboT4bkR+bYLaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgTtHaBL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5C0C116C6;
-	Tue,  7 Apr 2026 15:08:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775574482;
-	bh=4L1vb50exOTZyuv+rKvzOsU41vTrQv1p72EuWd4OBDI=;
-	h=Subject:To:Cc:From:Date:From;
-	b=bgTtHaBLYVw2ZQWfUNZBOC3EvuJWO0/xYMBKgDq1lAyXdZeQX/FXmehqkwVbdmqqo
-	 7BNC2As0gY6jIaMEsD9BuRHzrjb/0nd2TuGe5KxFWgqaagmo+7qI3KrGqjVH/LTrd/
-	 /i8RVRHt94hH/WLZCZIskGGb77H4HGrte9DAh8GA=
-Subject: FAILED: patch "[PATCH] workqueue: Fix false positive stall reports" failed to apply to 6.12-stable tree
-To: song@kernel.org,tj@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 07 Apr 2026 17:07:47 +0200
-Message-ID: <2026040747-cryptic-emporium-3e7d@gregkh>
+	s=arc-20240116; t=1775574494; c=relaxed/simple;
+	bh=YlGVSvMZLu6bWASSWjVD5z1mrlI3iUsiMFKGMrm4JAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mgyGOeiDkbCmSB2//GwoUwhc1UnZ8dvbRAKzM7abttOjznAdM6LONCnqKXIMJW2LWmKNCsr2l8E95jrsh0hvTHldOzocVEfez4GA0lgl10D09Fe/baCH9YwyZImgQ98HC9SuPDTt+1owbof+PVPQG0p5uZGvPmL/6vMwQtKr5tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qd6iY4nZ; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4888375f735so47428425e9.3
+        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 08:08:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775574492; x=1776179292; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wo4JrQLFyZsuapckvLQUaG6CN51cN4+Sg/wSKHqYt8g=;
+        b=Qd6iY4nZYT5YR4V3MpWXrcSxQHIwRWD9976rN3km81sIg2NPd2lCG6VED9TQkpxPsN
+         H3F2KUKYldvR7+YQGydvWYUYk2xljFG3Pmfcvkf8MqvDf9Bt0fY7NLHVCHJhvjR8D7Sk
+         RAoeQpFLZwldJZaupxZNCywkYlRZIqNKvlR+44Qqu0Ha2SzmOyy/np1f9NMsIAqDOx0f
+         UyqyHWJHuSlHsJ7NEoFB9u0j3JaGLzKnmw6dE7J6jpRRgODM9sFQGWFSqO5NVyyQFX7C
+         wAWn26T9aE/Tkjayk/YTWQDLLm0BcAEVFFXUsyNawOUzYABXDRUtYFQ20WrRd5RelOsQ
+         qWSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775574492; x=1776179292;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Wo4JrQLFyZsuapckvLQUaG6CN51cN4+Sg/wSKHqYt8g=;
+        b=tBxngjxP2FebIArfJqBPzAs0k2DWt0ufwMDwZ3O277MbyBg8p4fsH/sqiSZdK7pbCI
+         wGdO4Uc4evPc6qD1PWkBjfp/mJcG2wWWbdehkyfROTdWFga87lo+vG0MPAFDaugtWb/I
+         Zy2bUnNGcjx1yjpeaGliEIqDUCftF3vO1tUa7V1k3hhPUnOrBHYEj5TwSod1RpEoF/tb
+         yYBNFva2sXO2WCAna8iw7Ywdpp52rBd7ECNXIIOUiTXLp8klxZ1woQhPs6e30sucyueH
+         HsBweIGMoSH1vSEACTJyVNJfIusojFAb8+3j5qdYcepkwGKZK5qeTzcsprxKsHg4XxFX
+         nT8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVJrFlZiMTx0hcIcjGFckN9kDFmn0LfUUTTIkkjXursUytcM2PYajO8N7FUuC5MjT0nYc+Dp/o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9oxpbfD4THW3QvJGibL0J9n/R4q8SNyeGX8NYVznx/OeXVgGo
+	xnTLzqPbGrdV4V/V6ZtjLEkubvICZ37sl7HrYiU3h/e6UDJr1Uc6bDB1
+X-Gm-Gg: AeBDievTPrjHbhaiv2ei0baUvx6UNOPsopghulA4L3WuAO9hQMVJwO+ryWQXL4IxLmV
+	N8zcIWSQVMWMMP3g4IMbb+QW6tRlRUYyASxNK4k0uopT7PuD8lczG94c/TnWeDxsBpxvho8vjM1
+	k1eqy74pAd5pc/xhE1EFGOgvya9Pna1vZsX1oa3GmjCveoW1wd5RJbA/DB8RFLLrXRbim1PRUMc
+	OgqwFW58qSawprrHFFMF5lQTKl5cGEhI4pqxJNcIQoc+39WCqh5Pob960ZOJessYj00QpEJpZAD
+	CX0qYzJU9q0l0unjc0ZvqpmT1f7cOq3jZkCpoFJqOnQNcZZV1/3lz7/thD9Q2x2A0HGk2/MwY+z
+	IexLq+62GoR8FYv6S2Mjqq5UM9P2PJYHHuMb/ZkwfONoDH/+5JOJLOHb63CzrZyySWRo1C/SNtN
+	qP0l1b9vYL0O4x4g9dQ61lZ+mfASx5bErFyetRpk5ngg+g+iSKAZa1ZDp++NZYFi2l
+X-Received: by 2002:a05:600c:3549:b0:486:fbe1:2499 with SMTP id 5b1f17b1804b1-488997d2d7cmr232748915e9.22.1775574491478;
+        Tue, 07 Apr 2026 08:08:11 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e829c43sm541202825e9.5.2026.04.07.08.08.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 08:08:11 -0700 (PDT)
+Date: Tue, 7 Apr 2026 16:08:09 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Tamir Duberstein <tamird@kernel.org>, Petr Mladek <pmladek@suse.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel test robot
+ <lkp@intel.com>
+Subject: Re: [PATCH] printf: mark errptr() noinline
+Message-ID: <20260407160809.48d5fe2a@pumpkin>
+In-Reply-To: <20260406123232.3dacbe94@gandalf.local.home>
+References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
+	<20260406111531.779571d7@gandalf.local.home>
+	<CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
+	<20260406123232.3dacbe94@gandalf.local.home>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233650-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233651-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email]
-X-Rspamd-Queue-Id: ED96B3B0C16
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AF6ED3B0AE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Mon, 6 Apr 2026 12:32:32 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> On Mon, 6 Apr 2026 11:21:39 -0400
+> Tamir Duberstein <tamird@kernel.org> wrote:
+> 
+> > Thanks Steve. IMO that is a very big hammer and not warranted in this
+> > case. There's been talk of encouraging distros to enable CONFIG_KUNIT
+> > by default [0], which would probably interact poorly with the change
+> > you propose.
+> >   
+> 
+> Branch profiling is really just a niche that is enabled specifically for
+> seeing all branches taken in the kernel. It hooks to all "if" statements!
+> As you can imagine, it causes a rather large overhead in performance.
+> 
+> This option is only used by developers doing special analysis of their code
+> (namely me ;-).
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Is there any way to stop randconfig picking up options like these?
+It is rather a waste of brain-cycles trying to fix them.
+If you want the option to test a specific bit of code it is easy to
+hack/disable any problematic parts.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x c7f27a8ab9f2f43570f0725256597a0d7abe2c5b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040747-cryptic-emporium-3e7d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+Even having the KASAN/KMSAN code compiled into allmodconfig is a PITA
+when you are trying to check that code compiles to something sensible.
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c7f27a8ab9f2f43570f0725256597a0d7abe2c5b Mon Sep 17 00:00:00 2001
-From: Song Liu <song@kernel.org>
-Date: Sat, 21 Mar 2026 20:30:45 -0700
-Subject: [PATCH] workqueue: Fix false positive stall reports
-
-On weakly ordered architectures (e.g., arm64), the lockless check in
-wq_watchdog_timer_fn() can observe a reordering between the worklist
-insertion and the last_progress_ts update. Specifically, the watchdog
-can see a non-empty worklist (from a list_add) while reading a stale
-last_progress_ts value, causing a false positive stall report.
-
-This was confirmed by reading pool->last_progress_ts again after holding
-pool->lock in wq_watchdog_timer_fn():
-
-  workqueue watchdog: pool 7 false positive detected!
-    lockless_ts=4784580465 locked_ts=4785033728
-    diff=453263ms worklist_empty=0
-
-To avoid slowing down the hot path (queue_work, etc.), recheck
-last_progress_ts with pool->lock held. This will eliminate the false
-positive with minimal overhead.
-
-Remove two extra empty lines in wq_watchdog_timer_fn() as we are on it.
-
-Fixes: 82607adcf9cd ("workqueue: implement lockup detector")
-Cc: stable@vger.kernel.org # v4.5+
-Assisted-by: claude-code:claude-opus-4-6
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index b77119d71641..ff97b705f25e 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -7699,8 +7699,28 @@ static void wq_watchdog_timer_fn(struct timer_list *unused)
- 		else
- 			ts = touched;
- 
--		/* did we stall? */
-+		/*
-+		 * Did we stall?
-+		 *
-+		 * Do a lockless check first. On weakly ordered
-+		 * architectures, the lockless check can observe a
-+		 * reordering between worklist insert_work() and
-+		 * last_progress_ts update from __queue_work(). Since
-+		 * __queue_work() is a much hotter path than the timer
-+		 * function, we handle false positive here by reading
-+		 * last_progress_ts again with pool->lock held.
-+		 */
- 		if (time_after(now, ts + thresh)) {
-+			scoped_guard(raw_spinlock_irqsave, &pool->lock) {
-+				pool_ts = pool->last_progress_ts;
-+				if (time_after(pool_ts, touched))
-+					ts = pool_ts;
-+				else
-+					ts = touched;
-+			}
-+			if (!time_after(now, ts + thresh))
-+				continue;
-+
- 			lockup_detected = true;
- 			stall_time = jiffies_to_msecs(now - pool_ts) / 1000;
- 			max_stall_time = max(max_stall_time, stall_time);
-@@ -7712,8 +7732,6 @@ static void wq_watchdog_timer_fn(struct timer_list *unused)
- 			pr_cont_pool_info(pool);
- 			pr_cont(" stuck for %us!\n", stall_time);
- 		}
--
--
- 	}
- 
- 	if (lockup_detected)
-
+	David
 
