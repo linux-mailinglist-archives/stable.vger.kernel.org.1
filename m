@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-233630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHdmCPsc1Wnr0wcAu9opvQ
-	(envelope-from <stable+bounces-233630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:04:27 +0200
+	id WKrlAyId1Wnr0wcAu9opvQ
+	(envelope-from <stable+bounces-233632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:05:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7B03B09A7
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5798E3B09E5
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8429D30915CC
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 14:56:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E72F6306495B
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 14:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E881B33BBC5;
-	Tue,  7 Apr 2026 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E3033D4F3;
+	Tue,  7 Apr 2026 14:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RI5YL4E0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IF+sccAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEC029AAEA
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA383DBA0
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 14:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775573797; cv=none; b=C3OE1Qt0dwgzhAuteVBFkv7xuQi0z/0iFfinjiS7ltoiPPL9RSSf/UZLNIzM9hqd0LGILZCdPlgdbw/+P/vm/e/fZqdHqJmqptgaS9o/RFuM9x3V8u7PZ8Oh3uSmalHAFCPXkuzQBM/rPTaYGBZ90pHs6J6YjBkd/w2nHnaT+78=
+	t=1775573853; cv=none; b=aO/J92IiYFRimA/2ScULpbjtQbdM0Gm/FQpNaMVagW6FOJtyVcKbiOorTbcYYElNOBrMy8zP18ZtPjReVZwoKFsel6FQNFlV2kbtIhBQv8M7Hd21+s4WfIrNoIqklur6PEpbOZQ3S3NLeuOw0UUkPQZiR/r93ByGnZI02L0fMKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775573797; c=relaxed/simple;
-	bh=GBhEVRh5rT3PqAtksN4uR7azqx/EwChK+Udyu1JnPlw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rDS89DhfjpceZR2pqnmePlmeYATHw7gEYWJ+4M4moejRNaoHG5VDx3jDBey7UcCpDdvtzSDm8xpv5LOW/kRy27A6bTjCqeOgXRnxNdZKyyQEodUrytUXwx+ZNElvHaHc0ZPM3zIdUU515wrfF9pqY/TUQWxXwBFThsXm9GRJ8sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RI5YL4E0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CBDC116C6;
-	Tue,  7 Apr 2026 14:56:36 +0000 (UTC)
+	s=arc-20240116; t=1775573853; c=relaxed/simple;
+	bh=qPcOLOlKNgT+t4vxgMLiZefTdFexvJX4CvV2ZrQ5gmo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=twJCBI3p1he90ceh4WFuCSjuMrVO4qYV5KVxPRZLRfrzEeK00CYCrzWeP58L1GDXVgXNrRj098ns1mxXDWE0XQcKvctMcgTelxuhEw3wxf9jVbd0/GXB+BF2XVUo4KiZe1M4ZC/rZk1SV49dcAB6TVDuVxdU8TdV6dIjumicol4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IF+sccAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B70DC116C6;
+	Tue,  7 Apr 2026 14:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775573797;
-	bh=GBhEVRh5rT3PqAtksN4uR7azqx/EwChK+Udyu1JnPlw=;
+	s=korg; t=1775573852;
+	bh=qPcOLOlKNgT+t4vxgMLiZefTdFexvJX4CvV2ZrQ5gmo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RI5YL4E01v40TXudf5K7zIql5MBBI5c/3r6tOGLD/gaXGnljoR2WLpguBLa4KzG9e
-	 u8zWeI7MXm96sr9hsjz4QrUBRlr/CWxhTpEIkpCGqueay0zWC9nDApXNzwVTuVQVt4
-	 +P9gD8HfPCroUPALp6aMLzt0fLQF6ZOiF4nlOfhY=
-Subject: FAILED: patch "[PATCH] ksmbd: fix OOB write in QUERY_INFO for compound requests" failed to apply to 5.15-stable tree
-To: manizada@pm.me,linkinjeon@kernel.org,stfrench@microsoft.com
+	b=IF+sccAS+jhXhNMTCX4JuUEdUzBwtbl94FbXOOUsRVH/3msvsN1eRXaEXDcDzFieU
+	 pv3sWatMZrVB7XifOkLeyVgZ2XAXqJ9Knv7cyPeG3r0g+fp8a/RpHF/dz7wAewfR5T
+	 h0v4Z0yeYcdpS1AAHzsTZS3ffaryQrhAk2s/YczM=
+Subject: FAILED: patch "[PATCH] MIPS: mm: Rewrite TLB uniquification for the hidden bit" failed to apply to 6.6-stable tree
+To: macro@orcam.me.uk,tsbogend@alpha.franken.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 07 Apr 2026 16:56:27 +0200
-Message-ID: <2026040727-spindle-thigh-9ebd@gregkh>
+Date: Tue, 07 Apr 2026 16:57:30 +0200
+Message-ID: <2026040730-expend-maimed-dc2a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +64,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233630-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233632-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -76,30 +76,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,pm.me:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7A7B03B09A7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ea.global:url,linuxfoundation.org:dkim,gregkh:email]
+X-Rspamd-Queue-Id: 5798E3B09E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x fda9522ed6afaec45cabc198d8492270c394c7bc
+git cherry-pick -x 540760b77b8fc49d39d1b2b76196e5ec57711a32
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040727-spindle-thigh-9ebd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040730-expend-maimed-dc2a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,329 +111,373 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fda9522ed6afaec45cabc198d8492270c394c7bc Mon Sep 17 00:00:00 2001
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
-Date: Wed, 25 Mar 2026 09:14:22 +0900
-Subject: [PATCH] ksmbd: fix OOB write in QUERY_INFO for compound requests
+From 540760b77b8fc49d39d1b2b76196e5ec57711a32 Mon Sep 17 00:00:00 2001
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Date: Fri, 27 Mar 2026 18:57:30 +0000
+Subject: [PATCH] MIPS: mm: Rewrite TLB uniquification for the hidden bit
+ feature
 
-When a compound request such as READ + QUERY_INFO(Security) is received,
-and the first command (READ) consumes most of the response buffer,
-ksmbd could write beyond the allocated buffer while building a security
-descriptor.
+Before the introduction of the EHINV feature, which lets software mark
+TLB entries invalid, certain older implementations of the MIPS ISA were
+equipped with an analogous bit, as a vendor extension, which however is
+hidden from software and only ever set at reset, and then any software
+write clears it, making the intended TLB entry valid.
 
-The root cause was that smb2_get_info_sec() checked buffer space using
-ppntsd_size from xattr, while build_sec_desc() often synthesized a
-significantly larger descriptor from POSIX ACLs.
+This feature makes it unsafe to read a TLB entry with TLBR, modify the
+page mask, and write the entry back with TLBWI, because this operation
+will implicitly clear the hidden bit and this may create a duplicate
+entry, as with the presence of the hidden bit there is no guarantee all
+the entries across the TLB are unique each.
 
-This patch introduces smb_acl_sec_desc_scratch_len() to accurately
-compute the final descriptor size beforehand, performs proper buffer
-checking with smb2_calc_max_out_buf_len(), and uses exact-sized
-allocation + iov pinning.
+Usually the firmware has already uniquified TLB entries before handing
+control over, in which case we only need to guarantee at bootstrap no
+clash will happen with the VPN2 values chosen in local_flush_tlb_all().
 
-Cc: stable@vger.kernel.org
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+However with systems such as Mikrotik RB532 we get handed the TLB as at
+reset, with the hidden bit set across the entries and possibly duplicate
+entries present.  This then causes a machine check exception when page
+sizes are reset in r4k_tlb_uniquify() and prevents the system from
+booting.
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 6fb7a795ff5d..8e4cfdc0ba02 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3402,20 +3402,24 @@ int smb2_open(struct ksmbd_work *work)
- 							   KSMBD_SHARE_FLAG_ACL_XATTR)) {
- 					struct smb_fattr fattr;
- 					struct smb_ntsd *pntsd;
--					int pntsd_size, ace_num = 0;
-+					int pntsd_size;
-+					size_t scratch_len;
+Rewrite the algorithm used in r4k_tlb_uniquify() then such as to avoid
+the reuse of ASID/VPN values across the TLB.  Get rid of global entries
+first as they may be blocking the entire address space, e.g. 16 256MiB
+pages will exhaust the whole address space of a 32-bit CPU and a single
+big page can exhaust the 32-bit compatibility space on a 64-bit CPU.
+
+Details of the algorithm chosen are given across the code itself.
+
+Fixes: 9f048fa48740 ("MIPS: mm: Prevent a TLB shutdown on initial uniquification")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.18+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 27bb64469604..08c3e65bf0f2 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -13,6 +13,7 @@
+ #include <linux/sched.h>
+ #include <linux/smp.h>
+ #include <linux/memblock.h>
++#include <linux/minmax.h>
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
+@@ -24,6 +25,7 @@
+ #include <asm/hazards.h>
+ #include <asm/mmu_context.h>
+ #include <asm/tlb.h>
++#include <asm/tlbdebug.h>
+ #include <asm/tlbex.h>
+ #include <asm/tlbmisc.h>
+ #include <asm/setup.h>
+@@ -511,12 +513,229 @@ static int __init set_ntlb(char *str)
+ __setup("ntlb=", set_ntlb);
  
- 					ksmbd_acls_fattr(&fattr, idmap, inode);
--					if (fattr.cf_acls)
--						ace_num = fattr.cf_acls->a_count;
--					if (fattr.cf_dacls)
--						ace_num += fattr.cf_dacls->a_count;
-+					scratch_len = smb_acl_sec_desc_scratch_len(&fattr,
-+							NULL, 0,
-+							OWNER_SECINFO | GROUP_SECINFO |
-+							DACL_SECINFO);
-+					if (!scratch_len || scratch_len == SIZE_MAX) {
-+						rc = -EFBIG;
-+						posix_acl_release(fattr.cf_acls);
-+						posix_acl_release(fattr.cf_dacls);
-+						goto err_out;
-+					}
  
--					pntsd = kmalloc(sizeof(struct smb_ntsd) +
--							sizeof(struct smb_sid) * 3 +
--							sizeof(struct smb_acl) +
--							sizeof(struct smb_ace) * ace_num * 2,
--							KSMBD_DEFAULT_GFP);
-+					pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
- 					if (!pntsd) {
-+						rc = -ENOMEM;
- 						posix_acl_release(fattr.cf_acls);
- 						posix_acl_release(fattr.cf_dacls);
- 						goto err_out;
-@@ -3430,7 +3434,7 @@ int smb2_open(struct ksmbd_work *work)
- 					posix_acl_release(fattr.cf_acls);
- 					posix_acl_release(fattr.cf_dacls);
- 					if (rc) {
--						kfree(pntsd);
-+						kvfree(pntsd);
- 						goto err_out;
- 					}
- 
-@@ -3440,7 +3444,7 @@ int smb2_open(struct ksmbd_work *work)
- 								    pntsd,
- 								    pntsd_size,
- 								    false);
--					kfree(pntsd);
-+					kvfree(pntsd);
- 					if (rc)
- 						pr_err("failed to store ntacl in xattr : %d\n",
- 						       rc);
-@@ -5372,8 +5376,9 @@ static int smb2_get_info_file(struct ksmbd_work *work,
- 	if (test_share_config_flag(work->tcon->share_conf,
- 				   KSMBD_SHARE_FLAG_PIPE)) {
- 		/* smb2 info file called for pipe */
--		return smb2_get_info_file_pipe(work->sess, req, rsp,
-+		rc = smb2_get_info_file_pipe(work->sess, req, rsp,
- 					       work->response_buf);
-+		goto iov_pin_out;
- 	}
- 
- 	if (work->next_smb2_rcv_hdr_off) {
-@@ -5473,6 +5478,12 @@ static int smb2_get_info_file(struct ksmbd_work *work,
- 		rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
- 				      rsp, work->response_buf);
- 	ksmbd_fd_put(work, fp);
+-/* Comparison function for EntryHi VPN fields.  */
+-static int r4k_vpn_cmp(const void *a, const void *b)
++/* The start bit position of VPN2 and Mask in EntryHi/PageMask registers.  */
++#define VPN2_SHIFT 13
 +
-+iov_pin_out:
-+	if (!rc)
-+		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
-+				offsetof(struct smb2_query_info_rsp, Buffer) +
-+				le32_to_cpu(rsp->OutputBufferLength));
- 	return rc;
- }
- 
-@@ -5699,6 +5710,11 @@ static int smb2_get_info_filesystem(struct ksmbd_work *work,
- 	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
- 			      rsp, work->response_buf);
- 	path_put(&path);
-+
-+	if (!rc)
-+		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
-+				offsetof(struct smb2_query_info_rsp, Buffer) +
-+				le32_to_cpu(rsp->OutputBufferLength));
- 	return rc;
- }
- 
-@@ -5708,13 +5724,14 @@ static int smb2_get_info_sec(struct ksmbd_work *work,
++/* Read full EntryHi even with CONFIG_32BIT.  */
++static inline unsigned long long read_c0_entryhi_native(void)
  {
- 	struct ksmbd_file *fp;
- 	struct mnt_idmap *idmap;
--	struct smb_ntsd *pntsd = (struct smb_ntsd *)rsp->Buffer, *ppntsd = NULL;
-+	struct smb_ntsd *pntsd = NULL, *ppntsd = NULL;
- 	struct smb_fattr fattr = {{0}};
- 	struct inode *inode;
- 	__u32 secdesclen = 0;
- 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
- 	int addition_info = le32_to_cpu(req->AdditionalInformation);
--	int rc = 0, ppntsd_size = 0;
-+	int rc = 0, ppntsd_size = 0, max_len;
-+	size_t scratch_len = 0;
- 
- 	if (addition_info & ~(OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO |
- 			      PROTECTED_DACL_SECINFO |
-@@ -5722,6 +5739,11 @@ static int smb2_get_info_sec(struct ksmbd_work *work,
- 		ksmbd_debug(SMB, "Unsupported addition info: 0x%x)\n",
- 		       addition_info);
- 
-+		pntsd = kzalloc(ALIGN(sizeof(struct smb_ntsd), 8),
-+				KSMBD_DEFAULT_GFP);
-+		if (!pntsd)
-+			return -ENOMEM;
-+
- 		pntsd->revision = cpu_to_le16(1);
- 		pntsd->type = cpu_to_le16(SELF_RELATIVE | DACL_PROTECTED);
- 		pntsd->osidoffset = 0;
-@@ -5730,9 +5752,7 @@ static int smb2_get_info_sec(struct ksmbd_work *work,
- 		pntsd->dacloffset = 0;
- 
- 		secdesclen = sizeof(struct smb_ntsd);
--		rsp->OutputBufferLength = cpu_to_le32(secdesclen);
--
--		return 0;
-+		goto iov_pin;
- 	}
- 
- 	if (work->next_smb2_rcv_hdr_off) {
-@@ -5764,18 +5784,58 @@ static int smb2_get_info_sec(struct ksmbd_work *work,
- 						     &ppntsd);
- 
- 	/* Check if sd buffer size exceeds response buffer size */
--	if (smb2_resp_buf_len(work, 8) > ppntsd_size)
--		rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
--				    addition_info, &secdesclen, &fattr);
-+	max_len = smb2_calc_max_out_buf_len(work,
-+			offsetof(struct smb2_query_info_rsp, Buffer),
-+			le32_to_cpu(req->OutputBufferLength));
-+	if (max_len < 0) {
-+		rc = -EINVAL;
-+		goto release_acl;
-+	}
-+
-+	scratch_len = smb_acl_sec_desc_scratch_len(&fattr, ppntsd,
-+			ppntsd_size, addition_info);
-+	if (!scratch_len || scratch_len == SIZE_MAX) {
-+		rc = -EFBIG;
-+		goto release_acl;
-+	}
-+
-+	pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
-+	if (!pntsd) {
-+		rc = -ENOMEM;
-+		goto release_acl;
-+	}
-+
-+	rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
-+			addition_info, &secdesclen, &fattr);
-+
-+release_acl:
- 	posix_acl_release(fattr.cf_acls);
- 	posix_acl_release(fattr.cf_dacls);
- 	kfree(ppntsd);
- 	ksmbd_fd_put(work, fp);
--	if (rc)
--		return rc;
- 
-+	if (!rc && ALIGN(secdesclen, 8) > scratch_len)
-+		rc = -EFBIG;
-+	if (rc)
-+		goto err_out;
-+
-+iov_pin:
- 	rsp->OutputBufferLength = cpu_to_le32(secdesclen);
--	return 0;
-+	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
-+			      rsp, work->response_buf);
-+	if (rc)
-+		goto err_out;
-+
-+	rc = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
-+			offsetof(struct smb2_query_info_rsp, Buffer),
-+			pntsd, secdesclen);
-+err_out:
-+	if (rc) {
-+		rsp->OutputBufferLength = 0;
-+		kvfree(pntsd);
-+	}
-+
-+	return rc;
- }
- 
- /**
-@@ -5799,6 +5859,9 @@ int smb2_query_info(struct ksmbd_work *work)
- 		goto err_out;
- 	}
- 
-+	rsp->StructureSize = cpu_to_le16(9);
-+	rsp->OutputBufferOffset = cpu_to_le16(72);
-+
- 	switch (req->InfoType) {
- 	case SMB2_O_INFO_FILE:
- 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
-@@ -5819,14 +5882,6 @@ int smb2_query_info(struct ksmbd_work *work)
- 	}
- 	ksmbd_revert_fsids(work);
- 
--	if (!rc) {
--		rsp->StructureSize = cpu_to_le16(9);
--		rsp->OutputBufferOffset = cpu_to_le16(72);
--		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
--				       offsetof(struct smb2_query_info_rsp, Buffer) +
--					le32_to_cpu(rsp->OutputBufferLength));
--	}
--
- err_out:
- 	if (rc < 0) {
- 		if (rc == -EACCES)
-@@ -5837,6 +5892,8 @@ int smb2_query_info(struct ksmbd_work *work)
- 			rsp->hdr.Status = STATUS_UNEXPECTED_IO_ERROR;
- 		else if (rc == -ENOMEM)
- 			rsp->hdr.Status = STATUS_INSUFFICIENT_RESOURCES;
-+		else if (rc == -EINVAL && rsp->hdr.Status == 0)
-+			rsp->hdr.Status = STATUS_INVALID_PARAMETER;
- 		else if (rc == -EOPNOTSUPP || rsp->hdr.Status == 0)
- 			rsp->hdr.Status = STATUS_INVALID_INFO_CLASS;
- 		smb2_set_err_rsp(work);
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index 49c2abb29bf5..c30d01877c41 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -915,6 +915,49 @@ int parse_sec_desc(struct mnt_idmap *idmap, struct smb_ntsd *pntsd,
- 	return 0;
- }
- 
-+size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
-+		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info)
-+{
-+	size_t len = sizeof(struct smb_ntsd);
-+	size_t tmp;
-+
-+	if (addition_info & OWNER_SECINFO)
-+		len += sizeof(struct smb_sid);
-+	if (addition_info & GROUP_SECINFO)
-+		len += sizeof(struct smb_sid);
-+	if (!(addition_info & DACL_SECINFO))
-+		return len;
-+
-+	len += sizeof(struct smb_acl);
-+	if (ppntsd && ppntsd_size > 0) {
-+		unsigned int dacl_offset = le32_to_cpu(ppntsd->dacloffset);
-+
-+		if (dacl_offset < ppntsd_size &&
-+		    check_add_overflow(len, ppntsd_size - dacl_offset, &len))
-+			return 0;
-+	}
-+
-+	if (fattr->cf_acls) {
-+		if (check_mul_overflow((size_t)fattr->cf_acls->a_count,
-+					2 * sizeof(struct smb_ace), &tmp) ||
-+		    check_add_overflow(len, tmp, &len))
-+			return 0;
-+	} else {
-+		/* default/minimum DACL */
-+		if (check_add_overflow(len, 5 * sizeof(struct smb_ace), &len))
-+			return 0;
-+	}
-+
-+	if (fattr->cf_dacls) {
-+		if (check_mul_overflow((size_t)fattr->cf_dacls->a_count,
-+					sizeof(struct smb_ace), &tmp) ||
-+		    check_add_overflow(len, tmp, &len))
-+			return 0;
-+	}
-+
-+	return len;
+-	long v = *(unsigned long *)a - *(unsigned long *)b;
+-	int s = sizeof(long) > sizeof(int) ? sizeof(long) * 8 - 1: 0;
+-	return s ? (v != 0) | v >> s : v;
++	return cpu_has_64bits ? read_c0_entryhi_64() : read_c0_entryhi();
 +}
 +
- /* Convert permission bits from mode to equivalent CIFS ACL */
- int build_sec_desc(struct mnt_idmap *idmap,
- 		   struct smb_ntsd *pntsd, struct smb_ntsd *ppntsd,
-diff --git a/fs/smb/server/smbacl.h b/fs/smb/server/smbacl.h
-index 355adaee39b8..ab21ba2cd4df 100644
---- a/fs/smb/server/smbacl.h
-+++ b/fs/smb/server/smbacl.h
-@@ -101,6 +101,8 @@ int set_info_sec(struct ksmbd_conn *conn, struct ksmbd_tree_connect *tcon,
- 		 bool type_check, bool get_write);
- void id_to_sid(unsigned int cid, uint sidtype, struct smb_sid *ssid);
- void ksmbd_init_domain(u32 *sub_auth);
-+size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
-+		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info);
++/* Write full EntryHi even with CONFIG_32BIT.  */
++static inline void write_c0_entryhi_native(unsigned long long v)
++{
++	if (cpu_has_64bits)
++		write_c0_entryhi_64(v);
++	else
++		write_c0_entryhi(v);
++}
++
++/* TLB entry state for uniquification.  */
++struct tlbent {
++	unsigned long long wired:1;
++	unsigned long long global:1;
++	unsigned long long asid:10;
++	unsigned long long vpn:51;
++	unsigned long long pagesz:5;
++	unsigned long long index:14;
++};
++
++/*
++ * Comparison function for TLB entry sorting.  Place wired entries first,
++ * then global entries, then order by the increasing VPN/ASID and the
++ * decreasing page size.  This lets us avoid clashes with wired entries
++ * easily and get entries for larger pages out of the way first.
++ *
++ * We could group bits so as to reduce the number of comparisons, but this
++ * is seldom executed and not performance-critical, so prefer legibility.
++ */
++static int r4k_entry_cmp(const void *a, const void *b)
++{
++	struct tlbent ea = *(struct tlbent *)a, eb = *(struct tlbent *)b;
++
++	if (ea.wired > eb.wired)
++		return -1;
++	else if (ea.wired < eb.wired)
++		return 1;
++	else if (ea.global > eb.global)
++		return -1;
++	else if (ea.global < eb.global)
++		return 1;
++	else if (ea.vpn < eb.vpn)
++		return -1;
++	else if (ea.vpn > eb.vpn)
++		return 1;
++	else if (ea.asid < eb.asid)
++		return -1;
++	else if (ea.asid > eb.asid)
++		return 1;
++	else if (ea.pagesz > eb.pagesz)
++		return -1;
++	else if (ea.pagesz < eb.pagesz)
++		return 1;
++	else
++		return 0;
++}
++
++/*
++ * Fetch all the TLB entries.  Mask individual VPN values retrieved with
++ * the corresponding page mask and ignoring any 1KiB extension as we'll
++ * be using 4KiB pages for uniquification.
++ */
++static void __ref r4k_tlb_uniquify_read(struct tlbent *tlb_vpns, int tlbsize)
++{
++	int start = num_wired_entries();
++	unsigned long long vpn_mask;
++	bool global;
++	int i;
++
++	vpn_mask = GENMASK(current_cpu_data.vmbits - 1, VPN2_SHIFT);
++	vpn_mask |= cpu_has_64bits ? 3ULL << 62 : 1 << 31;
++
++	for (i = 0; i < tlbsize; i++) {
++		unsigned long long entryhi, vpn, mask, asid;
++		unsigned int pagesz;
++
++		write_c0_index(i);
++		mtc0_tlbr_hazard();
++		tlb_read();
++		tlb_read_hazard();
++
++		global = !!(read_c0_entrylo0() & ENTRYLO_G);
++		entryhi = read_c0_entryhi_native();
++		mask = read_c0_pagemask();
++
++		asid = entryhi & cpu_asid_mask(&current_cpu_data);
++		vpn = (entryhi & vpn_mask & ~mask) >> VPN2_SHIFT;
++		pagesz = ilog2((mask >> VPN2_SHIFT) + 1);
++
++		tlb_vpns[i].global = global;
++		tlb_vpns[i].asid = global ? 0 : asid;
++		tlb_vpns[i].vpn = vpn;
++		tlb_vpns[i].pagesz = pagesz;
++		tlb_vpns[i].wired = i < start;
++		tlb_vpns[i].index = i;
++	}
++}
++
++/*
++ * Write unique values to all but the wired TLB entries each, using
++ * the 4KiB page size.  This size might not be supported with R6, but
++ * EHINV is mandatory for R6, so we won't ever be called in that case.
++ *
++ * A sorted table is supplied with any wired entries at the beginning,
++ * followed by any global entries, and then finally regular entries.
++ * We start at the VPN and ASID values of zero and only assign user
++ * addresses, therefore guaranteeing no clash with addresses produced
++ * by UNIQUE_ENTRYHI.  We avoid any VPN values used by wired or global
++ * entries, by increasing the VPN value beyond the span of such entry.
++ *
++ * When a VPN/ASID clash is found with a regular entry we increment the
++ * ASID instead until no VPN/ASID clash has been found or the ASID space
++ * has been exhausted, in which case we increase the VPN value beyond
++ * the span of the largest clashing entry.
++ *
++ * We do not need to be concerned about FTLB or MMID configurations as
++ * those are required to implement the EHINV feature.
++ */
++static void __ref r4k_tlb_uniquify_write(struct tlbent *tlb_vpns, int tlbsize)
++{
++	unsigned long long asid, vpn, vpn_size, pagesz;
++	int widx, gidx, idx, sidx, lidx, i;
++
++	vpn_size = 1ULL << (current_cpu_data.vmbits - VPN2_SHIFT);
++	pagesz = ilog2((PM_4K >> VPN2_SHIFT) + 1);
++
++	write_c0_pagemask(PM_4K);
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
++
++	asid = 0;
++	vpn = 0;
++	widx = 0;
++	gidx = 0;
++	for (sidx = 0; sidx < tlbsize && tlb_vpns[sidx].wired; sidx++)
++		;
++	for (lidx = sidx; lidx < tlbsize && tlb_vpns[lidx].global; lidx++)
++		;
++	idx = gidx = sidx + 1;
++	for (i = sidx; i < tlbsize; i++) {
++		unsigned long long entryhi, vpn_pagesz = 0;
++
++		while (1) {
++			if (WARN_ON(vpn >= vpn_size)) {
++				dump_tlb_all();
++				/* Pray local_flush_tlb_all() will cope.  */
++				return;
++			}
++
++			/* VPN must be below the next wired entry.  */
++			if (widx < sidx && vpn >= tlb_vpns[widx].vpn) {
++				vpn = max(vpn,
++					  (tlb_vpns[widx].vpn +
++					   (1ULL << tlb_vpns[widx].pagesz)));
++				asid = 0;
++				widx++;
++				continue;
++			}
++			/* VPN must be below the next global entry.  */
++			if (gidx < lidx && vpn >= tlb_vpns[gidx].vpn) {
++				vpn = max(vpn,
++					  (tlb_vpns[gidx].vpn +
++					   (1ULL << tlb_vpns[gidx].pagesz)));
++				asid = 0;
++				gidx++;
++				continue;
++			}
++			/* Try to find a free ASID so as to conserve VPNs.  */
++			if (idx < tlbsize && vpn == tlb_vpns[idx].vpn &&
++			    asid == tlb_vpns[idx].asid) {
++				unsigned long long idx_pagesz;
++
++				idx_pagesz = tlb_vpns[idx].pagesz;
++				vpn_pagesz = max(vpn_pagesz, idx_pagesz);
++				do
++					idx++;
++				while (idx < tlbsize &&
++				       vpn == tlb_vpns[idx].vpn &&
++				       asid == tlb_vpns[idx].asid);
++				asid++;
++				if (asid > cpu_asid_mask(&current_cpu_data)) {
++					vpn += vpn_pagesz;
++					asid = 0;
++					vpn_pagesz = 0;
++				}
++				continue;
++			}
++			/* VPN mustn't be above the next regular entry.  */
++			if (idx < tlbsize && vpn > tlb_vpns[idx].vpn) {
++				vpn = max(vpn,
++					  (tlb_vpns[idx].vpn +
++					   (1ULL << tlb_vpns[idx].pagesz)));
++				asid = 0;
++				idx++;
++				continue;
++			}
++			break;
++		}
++
++		entryhi = (vpn << VPN2_SHIFT) | asid;
++		write_c0_entryhi_native(entryhi);
++		write_c0_index(tlb_vpns[i].index);
++		mtc0_tlbw_hazard();
++		tlb_write_indexed();
++
++		tlb_vpns[i].asid = asid;
++		tlb_vpns[i].vpn = vpn;
++		tlb_vpns[i].pagesz = pagesz;
++
++		asid++;
++		if (asid > cpu_asid_mask(&current_cpu_data)) {
++			vpn += 1ULL << pagesz;
++			asid = 0;
++		}
++	}
+ }
  
- static inline uid_t posix_acl_uid_translate(struct mnt_idmap *idmap,
- 					    struct posix_acl_entry *pace)
+ /*
+@@ -527,14 +746,8 @@ static void __ref r4k_tlb_uniquify(void)
+ {
+ 	int tlbsize = current_cpu_data.tlbsize;
+ 	bool use_slab = slab_is_available();
+-	int start = num_wired_entries();
+ 	phys_addr_t tlb_vpn_size;
+-	unsigned long *tlb_vpns;
+-	unsigned long vpn_mask;
+-	int cnt, ent, idx, i;
+-
+-	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
+-	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
++	struct tlbent *tlb_vpns;
+ 
+ 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
+ 	tlb_vpns = (use_slab ?
+@@ -545,52 +758,13 @@ static void __ref r4k_tlb_uniquify(void)
+ 
+ 	htw_stop();
+ 
+-	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
+-		unsigned long vpn;
++	r4k_tlb_uniquify_read(tlb_vpns, tlbsize);
+ 
+-		write_c0_index(i);
+-		mtc0_tlbr_hazard();
+-		tlb_read();
+-		tlb_read_hazard();
+-		vpn = read_c0_entryhi();
+-		vpn &= vpn_mask & PAGE_MASK;
+-		tlb_vpns[cnt] = vpn;
++	sort(tlb_vpns, tlbsize, sizeof(*tlb_vpns), r4k_entry_cmp, NULL);
+ 
+-		/* Prevent any large pages from overlapping regular ones.  */
+-		write_c0_pagemask(read_c0_pagemask() & PM_DEFAULT_MASK);
+-		mtc0_tlbw_hazard();
+-		tlb_write_indexed();
+-		tlbw_use_hazard();
+-	}
+-
+-	sort(tlb_vpns, cnt, sizeof(tlb_vpns[0]), r4k_vpn_cmp, NULL);
++	r4k_tlb_uniquify_write(tlb_vpns, tlbsize);
+ 
+ 	write_c0_pagemask(PM_DEFAULT_MASK);
+-	write_c0_entrylo0(0);
+-	write_c0_entrylo1(0);
+-
+-	idx = 0;
+-	ent = tlbsize;
+-	for (i = start; i < tlbsize; i++)
+-		while (1) {
+-			unsigned long entryhi, vpn;
+-
+-			entryhi = UNIQUE_ENTRYHI(ent);
+-			vpn = entryhi & vpn_mask & PAGE_MASK;
+-
+-			if (idx >= cnt || vpn < tlb_vpns[idx]) {
+-				write_c0_entryhi(entryhi);
+-				write_c0_index(i);
+-				mtc0_tlbw_hazard();
+-				tlb_write_indexed();
+-				ent++;
+-				break;
+-			} else if (vpn == tlb_vpns[idx]) {
+-				ent++;
+-			} else {
+-				idx++;
+-			}
+-		}
+ 
+ 	tlbw_use_hazard();
+ 	htw_start();
 
 
