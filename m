@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-233621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJDmEcQb1Wli0wcAu9opvQ
-	(envelope-from <stable+bounces-233621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 16:59:16 +0200
+	id GB6IGSUc1Wli0wcAu9opvQ
+	(envelope-from <stable+bounces-233623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:00:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1F83B081F
-	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 16:59:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2924E3B0888
+	for <lists+stable@lfdr.de>; Tue, 07 Apr 2026 17:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB5B6307C746
-	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 14:55:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 046BF3063A3C
+	for <lists+stable@lfdr.de>; Tue,  7 Apr 2026 14:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5437933BBCC;
-	Tue,  7 Apr 2026 14:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E53133C1BE;
+	Tue,  7 Apr 2026 14:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpU37Voj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndXmDngn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171164AEE2
-	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 14:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E3833BBC5
+	for <stable@vger.kernel.org>; Tue,  7 Apr 2026 14:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775573716; cv=none; b=iMhkKlUFh9q9XWW2tHrK1flhx6GK+4i3j6X+EL6K892HhOiLQBWngvZrjkYqKHoknRgyYb8HHvZqAIoee+6DptGcz0bZ1qAtVAl3x0MXt3UwyVLx5VbUkRcOoTLz1+cmNlxty1VClSgA3TgXBJIRuwLlyMBBWaDuz75SGAOwweY=
+	t=1775573765; cv=none; b=IcE4vPoCxU2cwF1DqCkpSkumfDU9fvtCiq6oGFXH4Yf02iF8vImlHaf3MetAnfFROFDHxe4nTJZeXm1Am14O/b5nF+sxo+DCm/1lYKpEvUocK+De5OZadpEPAQY/vCP/MktCqetoWl/Wz5WK8j0dMjNCH7AKst57AmG/5/HF4g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775573716; c=relaxed/simple;
-	bh=IT+HOLRYxmWLo0lIxO2NQ5UjFYnnivta07hdUNcA+E4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rNJBXtZSr8mY9IHiYF+njn0+yjd45BvpPs5MQC3nHOku4zr0uXW54Dt5tvGeCN+Ee7fofTNIxJLxQg5yT5YYEp3c6Lrt822EqAAjTO5KUP1UV49svkU/SspyFCs/U9+nzr7B10XgFvuWGO8AhTQJUvnpaHb80rLcRKg0lu91zR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpU37Voj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6876BC116C6;
-	Tue,  7 Apr 2026 14:55:15 +0000 (UTC)
+	s=arc-20240116; t=1775573765; c=relaxed/simple;
+	bh=8Gi7SL351CoaTZxhRUmuY9NaGiBqOzY60CA3Ny/vXKk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SIx2xLOK0hN1Yfsr+knCqtDcmQecIQRjnfeeGskfCHsXXl3FqeKa0d1Kp+eu28Y12bUknxg1jhve0J2p3my0uKEk9YD7vYgnELBAQEbC9XIJ9urpYUdFI7zUGJKHy0oWgaiJM/8tSs4e9vO9I9P97dAlwyDFqceNw2sUU/TYSWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndXmDngn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE03C19424;
+	Tue,  7 Apr 2026 14:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775573715;
-	bh=IT+HOLRYxmWLo0lIxO2NQ5UjFYnnivta07hdUNcA+E4=;
+	s=korg; t=1775573765;
+	bh=8Gi7SL351CoaTZxhRUmuY9NaGiBqOzY60CA3Ny/vXKk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=GpU37VojJa9z4y29SErI5VUx2B11Q1upLPVMbXFQO72+u7Olop0LeFO0kmipZlrat
-	 eA5Ewn2cUz3JXBUxBamdMd2DLBLNYYrIlB++j1UrkADfF5bYGEn+S7ekcK6MeeVRX4
-	 4rR8elJTiSttimEBMvyuTr7Q3kiLAf1NtW+OKR9E=
-Subject: FAILED: patch "[PATCH] io_uring: protect remaining lockless ctx->rings accesses with" failed to apply to 6.19-stable tree
-To: axboe@kernel.dk,qjx1298677004@gmail.com
+	b=ndXmDngnfrXHaCJKTcKx4W+esf0OFfr/cus34GhXonxWGyQqh/ulD130gIdUv2gXG
+	 7WkmmilbWYweMVs71nNPXnfh/i0IAz2avsihtCALVwFnQhmChqDeNPlrZngJpiGOs2
+	 dDvwCALsdruwePyeKn1MISVsGjtFAlNlS1oJMaWA=
+Subject: FAILED: patch "[PATCH] Bluetooth: hci_event: move wake reason storage into validated" failed to apply to 6.18-stable tree
+To: security@1seal.org,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 07 Apr 2026 16:55:13 +0200
-Message-ID: <2026040713-patchwork-tucking-e113@gregkh>
+Date: Tue, 07 Apr 2026 16:56:02 +0200
+Message-ID: <2026040702-glory-creamlike-c42f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,50 +57,50 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233621-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233623-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[kernel.dk,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[luiz.von.dentz.intel.com:query timed out,2026040702-glory-creamlike-c42f.gregkh:query timed out];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BC1F83B081F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,1seal.org:email]
+X-Rspamd-Queue-Id: 2924E3B0888
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.19-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 61a11cf4812726aceaee17c96432e1c08f6ed6cb
+git cherry-pick -x 2b2bf47cd75518c36fa2d41380e4a40641cc89cd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040713-patchwork-tucking-e113@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040702-glory-creamlike-c42f@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,264 +112,239 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 61a11cf4812726aceaee17c96432e1c08f6ed6cb Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Tue, 31 Mar 2026 07:07:47 -0600
-Subject: [PATCH] io_uring: protect remaining lockless ctx->rings accesses with
- RCU
+From 2b2bf47cd75518c36fa2d41380e4a40641cc89cd Mon Sep 17 00:00:00 2001
+From: Oleh Konko <security@1seal.org>
+Date: Thu, 26 Mar 2026 17:31:24 +0000
+Subject: [PATCH] Bluetooth: hci_event: move wake reason storage into validated
+ event handlers
 
-Commit 96189080265e addressed one case of ctx->rings being potentially
-accessed while a resize is happening on the ring, but there are still
-a few others that need handling. Add a helper for retrieving the
-rings associated with an io_uring context, and add some sanity checking
-to that to catch bad uses. ->rings_rcu is always valid, as long as it's
-used within RCU read lock. Any use of ->rings_rcu or ->rings inside
-either ->uring_lock or ->completion_lock is sane as well.
+hci_store_wake_reason() is called from hci_event_packet() immediately
+after stripping the HCI event header but before hci_event_func()
+enforces the per-event minimum payload length from hci_ev_table.
+This means a short HCI event frame can reach bacpy() before any bounds
+check runs.
 
-Do the minimum fix for the current kernel, but set it up such that this
-basic infra can be extended for later kernels to make this harder to
-mess up in the future.
+Rather than duplicating skb parsing and per-event length checks inside
+hci_store_wake_reason(), move wake-address storage into the individual
+event handlers after their existing event-length validation has
+succeeded. Convert hci_store_wake_reason() into a small helper that only
+stores an already-validated bdaddr while the caller holds hci_dev_lock().
+Use the same helper after hci_event_func() with a NULL address to
+preserve the existing unexpected-wake fallback semantics when no
+validated event handler records a wake address.
 
-Thanks to Junxi Qian for finding and debugging this issue.
+Annotate the helper with __must_hold(&hdev->lock) and add
+lockdep_assert_held(&hdev->lock) so future call paths keep the lock
+contract explicit.
 
+Call the helper from hci_conn_request_evt(), hci_conn_complete_evt(),
+hci_sync_conn_complete_evt(), le_conn_complete_evt(),
+hci_le_adv_report_evt(), hci_le_ext_adv_report_evt(),
+hci_le_direct_adv_report_evt(), hci_le_pa_sync_established_evt(), and
+hci_le_past_received_evt().
+
+Fixes: 2f20216c1d6f ("Bluetooth: Emit controller suspend and resume events")
 Cc: stable@vger.kernel.org
-Fixes: 79cfe9e59c2a ("io_uring/register: add IORING_REGISTER_RESIZE_RINGS")
-Reviewed-by: Junxi Qian <qjx1298677004@gmail.com>
-Tested-by: Junxi Qian <qjx1298677004@gmail.com>
-Link: https://lore.kernel.org/io-uring/20260330172348.89416-1-qjx1298677004@gmail.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Oleh Konko <security@1seal.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 20ec8fdafcae..48f2f627319d 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2015,7 +2015,7 @@ int io_submit_sqes(struct io_ring_ctx *ctx, unsigned int nr)
- 	if (ctx->flags & IORING_SETUP_SQ_REWIND)
- 		entries = ctx->sq_entries;
- 	else
--		entries = io_sqring_entries(ctx);
-+		entries = __io_sqring_entries(ctx);
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 286529d2e554..81d2f9a3eec9 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -80,6 +80,10 @@ static void *hci_le_ev_skb_pull(struct hci_dev *hdev, struct sk_buff *skb,
+ 	return data;
+ }
  
- 	entries = min(nr, entries);
- 	if (unlikely(!entries))
-@@ -2250,7 +2250,9 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
++static void hci_store_wake_reason(struct hci_dev *hdev,
++				  const bdaddr_t *bdaddr, u8 addr_type)
++	__must_hold(&hdev->lock);
++
+ static u8 hci_cc_inquiry_cancel(struct hci_dev *hdev, void *data,
+ 				struct sk_buff *skb)
+ {
+@@ -3111,6 +3115,7 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", status);
+ 
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, BDADDR_BREDR);
+ 
+ 	/* Check for existing connection:
+ 	 *
+@@ -3274,6 +3279,10 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
+ 
+ 	bt_dev_dbg(hdev, "bdaddr %pMR type 0x%x", &ev->bdaddr, ev->link_type);
+ 
++	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, BDADDR_BREDR);
++	hci_dev_unlock(hdev);
++
+ 	/* Reject incoming connection from device with same BD ADDR against
+ 	 * CVE-2020-26555
  	 */
- 	poll_wait(file, &ctx->poll_wq, wait);
+@@ -5021,6 +5030,7 @@ static void hci_sync_conn_complete_evt(struct hci_dev *hdev, void *data,
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", status);
  
--	if (!io_sqring_full(ctx))
-+	rcu_read_lock();
-+
-+	if (!__io_sqring_full(ctx))
- 		mask |= EPOLLOUT | EPOLLWRNORM;
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, BDADDR_BREDR);
  
- 	/*
-@@ -2270,6 +2272,7 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
- 	if (__io_cqring_events_user(ctx) || io_has_work(ctx))
- 		mask |= EPOLLIN | EPOLLRDNORM;
+ 	conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
+ 	if (!conn) {
+@@ -5713,6 +5723,7 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
+ 	int err;
  
-+	rcu_read_unlock();
- 	return mask;
- }
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, bdaddr, bdaddr_type);
  
-diff --git a/io_uring/io_uring.h b/io_uring/io_uring.h
-index 0fa844faf287..ee24bc5d77b3 100644
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -142,16 +142,28 @@ struct io_wait_queue {
- #endif
- };
+ 	/* All controllers implicitly stop advertising in the event of a
+ 	 * connection, so ensure that the state bit is cleared.
+@@ -6005,6 +6016,7 @@ static void hci_le_past_received_evt(struct hci_dev *hdev, void *data,
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
  
-+static inline struct io_rings *io_get_rings(struct io_ring_ctx *ctx)
-+{
-+	return rcu_dereference_check(ctx->rings_rcu,
-+			lockdep_is_held(&ctx->uring_lock) ||
-+			lockdep_is_held(&ctx->completion_lock));
-+}
-+
- static inline bool io_should_wake(struct io_wait_queue *iowq)
- {
- 	struct io_ring_ctx *ctx = iowq->ctx;
--	int dist = READ_ONCE(ctx->rings->cq.tail) - (int) iowq->cq_tail;
-+	struct io_rings *rings;
-+	int dist;
-+
-+	guard(rcu)();
-+	rings = io_get_rings(ctx);
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, ev->bdaddr_type);
  
- 	/*
- 	 * Wake up if we have enough events, or if a timeout occurred since we
- 	 * started waiting. For timeouts, we always want to return to userspace,
- 	 * regardless of event count.
- 	 */
-+	dist = READ_ONCE(rings->cq.tail) - (int) iowq->cq_tail;
- 	return dist >= 0 || atomic_read(&ctx->cq_timeouts) != iowq->nr_timeouts;
- }
+ 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
  
-@@ -431,9 +443,9 @@ static inline void io_cqring_wake(struct io_ring_ctx *ctx)
- 	__io_wq_wake(&ctx->cq_wait);
- }
- 
--static inline bool io_sqring_full(struct io_ring_ctx *ctx)
-+static inline bool __io_sqring_full(struct io_ring_ctx *ctx)
- {
--	struct io_rings *r = ctx->rings;
-+	struct io_rings *r = io_get_rings(ctx);
- 
- 	/*
- 	 * SQPOLL must use the actual sqring head, as using the cached_sq_head
-@@ -445,9 +457,15 @@ static inline bool io_sqring_full(struct io_ring_ctx *ctx)
- 	return READ_ONCE(r->sq.tail) - READ_ONCE(r->sq.head) == ctx->sq_entries;
- }
- 
--static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
-+static inline bool io_sqring_full(struct io_ring_ctx *ctx)
- {
--	struct io_rings *rings = ctx->rings;
-+	guard(rcu)();
-+	return __io_sqring_full(ctx);
-+}
-+
-+static inline unsigned int __io_sqring_entries(struct io_ring_ctx *ctx)
-+{
-+	struct io_rings *rings = io_get_rings(ctx);
- 	unsigned int entries;
- 
- 	/* make sure SQ entry isn't read before tail */
-@@ -455,6 +473,12 @@ static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
- 	return min(entries, ctx->sq_entries);
- }
- 
-+static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
-+{
-+	guard(rcu)();
-+	return __io_sqring_entries(ctx);
-+}
-+
- /*
-  * Don't complete immediately but use deferred completion infrastructure.
-  * Protected by ->uring_lock and can only be used either with
-diff --git a/io_uring/wait.c b/io_uring/wait.c
-index 0581cadf20ee..91df86ce0d18 100644
---- a/io_uring/wait.c
-+++ b/io_uring/wait.c
-@@ -79,12 +79,15 @@ static enum hrtimer_restart io_cqring_min_timer_wakeup(struct hrtimer *timer)
- 	if (io_has_work(ctx))
- 		goto out_wake;
- 	/* got events since we started waiting, min timeout is done */
--	if (iowq->cq_min_tail != READ_ONCE(ctx->rings->cq.tail))
--		goto out_wake;
--	/* if we have any events and min timeout expired, we're done */
--	if (io_cqring_events(ctx))
--		goto out_wake;
-+	scoped_guard(rcu) {
-+		struct io_rings *rings = io_get_rings(ctx);
- 
-+		if (iowq->cq_min_tail != READ_ONCE(rings->cq.tail))
-+			goto out_wake;
-+		/* if we have any events and min timeout expired, we're done */
-+		if (io_cqring_events(ctx))
-+			goto out_wake;
-+	}
- 	/*
- 	 * If using deferred task_work running and application is waiting on
- 	 * more than one request, ensure we reset it now where we are switching
-@@ -186,9 +189,9 @@ int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 		   struct ext_arg *ext_arg)
- {
- 	struct io_wait_queue iowq;
--	struct io_rings *rings = ctx->rings;
-+	struct io_rings *rings;
- 	ktime_t start_time;
--	int ret;
-+	int ret, nr_wait;
- 
- 	min_events = min_t(int, min_events, ctx->cq_entries);
- 
-@@ -201,15 +204,23 @@ int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 
- 	if (unlikely(test_bit(IO_CHECK_CQ_OVERFLOW_BIT, &ctx->check_cq)))
- 		io_cqring_do_overflow_flush(ctx);
--	if (__io_cqring_events_user(ctx) >= min_events)
-+
-+	rcu_read_lock();
-+	rings = io_get_rings(ctx);
-+	if (__io_cqring_events_user(ctx) >= min_events) {
-+		rcu_read_unlock();
- 		return 0;
-+	}
- 
- 	init_waitqueue_func_entry(&iowq.wq, io_wake_function);
- 	iowq.wq.private = current;
- 	INIT_LIST_HEAD(&iowq.wq.entry);
- 	iowq.ctx = ctx;
--	iowq.cq_tail = READ_ONCE(ctx->rings->cq.head) + min_events;
--	iowq.cq_min_tail = READ_ONCE(ctx->rings->cq.tail);
-+	iowq.cq_tail = READ_ONCE(rings->cq.head) + min_events;
-+	iowq.cq_min_tail = READ_ONCE(rings->cq.tail);
-+	nr_wait = (int) iowq.cq_tail - READ_ONCE(rings->cq.tail);
-+	rcu_read_unlock();
-+	rings = NULL;
- 	iowq.nr_timeouts = atomic_read(&ctx->cq_timeouts);
- 	iowq.hit_timeout = 0;
- 	iowq.min_timeout = ext_arg->min_time;
-@@ -240,14 +251,6 @@ int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 	trace_io_uring_cqring_wait(ctx, min_events);
- 	do {
- 		unsigned long check_cq;
--		int nr_wait;
--
--		/* if min timeout has been hit, don't reset wait count */
--		if (!iowq.hit_timeout)
--			nr_wait = (int) iowq.cq_tail -
--					READ_ONCE(ctx->rings->cq.tail);
--		else
--			nr_wait = 1;
- 
- 		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN) {
- 			atomic_set(&ctx->cq_wait_nr, nr_wait);
-@@ -298,11 +301,20 @@ int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
+@@ -6403,6 +6415,8 @@ static void hci_le_adv_report_evt(struct hci_dev *hdev, void *data,
+ 					info->length + 1))
  			break;
- 		}
- 		cond_resched();
+ 
++		hci_store_wake_reason(hdev, &info->bdaddr, info->bdaddr_type);
 +
-+		/* if min timeout has been hit, don't reset wait count */
-+		if (!iowq.hit_timeout)
-+			scoped_guard(rcu)
-+				nr_wait = (int) iowq.cq_tail -
-+						READ_ONCE(io_get_rings(ctx)->cq.tail);
-+		else
-+			nr_wait = 1;
- 	} while (1);
+ 		if (info->length <= max_adv_len(hdev)) {
+ 			rssi = info->data[info->length];
+ 			process_adv_report(hdev, info->type, &info->bdaddr,
+@@ -6491,6 +6505,8 @@ static void hci_le_ext_adv_report_evt(struct hci_dev *hdev, void *data,
+ 					info->length))
+ 			break;
  
- 	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
- 		finish_wait(&ctx->cq_wait, &iowq.wq);
- 	restore_saved_sigmask_unless(ret == -EINTR);
- 
--	return READ_ONCE(rings->cq.head) == READ_ONCE(rings->cq.tail) ? ret : 0;
-+	guard(rcu)();
-+	return READ_ONCE(io_get_rings(ctx)->cq.head) == READ_ONCE(io_get_rings(ctx)->cq.tail) ? ret : 0;
- }
-diff --git a/io_uring/wait.h b/io_uring/wait.h
-index 5e236f74e1af..3a145fcfd3dd 100644
---- a/io_uring/wait.h
-+++ b/io_uring/wait.h
-@@ -28,12 +28,15 @@ void io_cqring_do_overflow_flush(struct io_ring_ctx *ctx);
- 
- static inline unsigned int __io_cqring_events(struct io_ring_ctx *ctx)
- {
--	return ctx->cached_cq_tail - READ_ONCE(ctx->rings->cq.head);
-+	struct io_rings *rings = io_get_rings(ctx);
-+	return ctx->cached_cq_tail - READ_ONCE(rings->cq.head);
- }
- 
- static inline unsigned int __io_cqring_events_user(struct io_ring_ctx *ctx)
- {
--	return READ_ONCE(ctx->rings->cq.tail) - READ_ONCE(ctx->rings->cq.head);
-+	struct io_rings *rings = io_get_rings(ctx);
++		hci_store_wake_reason(hdev, &info->bdaddr, info->bdaddr_type);
 +
-+	return READ_ONCE(rings->cq.tail) - READ_ONCE(rings->cq.head);
+ 		evt_type = __le16_to_cpu(info->type) & LE_EXT_ADV_EVT_TYPE_MASK;
+ 		legacy_evt_type = ext_evt_type_to_legacy(hdev, evt_type);
+ 
+@@ -6536,6 +6552,7 @@ static void hci_le_pa_sync_established_evt(struct hci_dev *hdev, void *data,
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
+ 
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, ev->bdaddr_type);
+ 
+ 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
+ 
+@@ -6834,6 +6851,8 @@ static void hci_le_direct_adv_report_evt(struct hci_dev *hdev, void *data,
+ 	for (i = 0; i < ev->num; i++) {
+ 		struct hci_ev_le_direct_adv_info *info = &ev->info[i];
+ 
++		hci_store_wake_reason(hdev, &info->bdaddr, info->bdaddr_type);
++
+ 		process_adv_report(hdev, info->type, &info->bdaddr,
+ 				   info->bdaddr_type, &info->direct_addr,
+ 				   info->direct_addr_type, HCI_ADV_PHY_1M, 0,
+@@ -7517,73 +7536,29 @@ static bool hci_get_cmd_complete(struct hci_dev *hdev, u16 opcode,
+ 	return true;
  }
  
- /*
+-static void hci_store_wake_reason(struct hci_dev *hdev, u8 event,
+-				  struct sk_buff *skb)
++static void hci_store_wake_reason(struct hci_dev *hdev,
++				  const bdaddr_t *bdaddr, u8 addr_type)
++	__must_hold(&hdev->lock)
+ {
+-	struct hci_ev_le_advertising_info *adv;
+-	struct hci_ev_le_direct_adv_info *direct_adv;
+-	struct hci_ev_le_ext_adv_info *ext_adv;
+-	const struct hci_ev_conn_complete *conn_complete = (void *)skb->data;
+-	const struct hci_ev_conn_request *conn_request = (void *)skb->data;
+-
+-	hci_dev_lock(hdev);
++	lockdep_assert_held(&hdev->lock);
+ 
+ 	/* If we are currently suspended and this is the first BT event seen,
+ 	 * save the wake reason associated with the event.
+ 	 */
+ 	if (!hdev->suspended || hdev->wake_reason)
+-		goto unlock;
++		return;
++
++	if (!bdaddr) {
++		hdev->wake_reason = MGMT_WAKE_REASON_UNEXPECTED;
++		return;
++	}
+ 
+ 	/* Default to remote wake. Values for wake_reason are documented in the
+ 	 * Bluez mgmt api docs.
+ 	 */
+ 	hdev->wake_reason = MGMT_WAKE_REASON_REMOTE_WAKE;
+-
+-	/* Once configured for remote wakeup, we should only wake up for
+-	 * reconnections. It's useful to see which device is waking us up so
+-	 * keep track of the bdaddr of the connection event that woke us up.
+-	 */
+-	if (event == HCI_EV_CONN_REQUEST) {
+-		bacpy(&hdev->wake_addr, &conn_request->bdaddr);
+-		hdev->wake_addr_type = BDADDR_BREDR;
+-	} else if (event == HCI_EV_CONN_COMPLETE) {
+-		bacpy(&hdev->wake_addr, &conn_complete->bdaddr);
+-		hdev->wake_addr_type = BDADDR_BREDR;
+-	} else if (event == HCI_EV_LE_META) {
+-		struct hci_ev_le_meta *le_ev = (void *)skb->data;
+-		u8 subevent = le_ev->subevent;
+-		u8 *ptr = &skb->data[sizeof(*le_ev)];
+-		u8 num_reports = *ptr;
+-
+-		if ((subevent == HCI_EV_LE_ADVERTISING_REPORT ||
+-		     subevent == HCI_EV_LE_DIRECT_ADV_REPORT ||
+-		     subevent == HCI_EV_LE_EXT_ADV_REPORT) &&
+-		    num_reports) {
+-			adv = (void *)(ptr + 1);
+-			direct_adv = (void *)(ptr + 1);
+-			ext_adv = (void *)(ptr + 1);
+-
+-			switch (subevent) {
+-			case HCI_EV_LE_ADVERTISING_REPORT:
+-				bacpy(&hdev->wake_addr, &adv->bdaddr);
+-				hdev->wake_addr_type = adv->bdaddr_type;
+-				break;
+-			case HCI_EV_LE_DIRECT_ADV_REPORT:
+-				bacpy(&hdev->wake_addr, &direct_adv->bdaddr);
+-				hdev->wake_addr_type = direct_adv->bdaddr_type;
+-				break;
+-			case HCI_EV_LE_EXT_ADV_REPORT:
+-				bacpy(&hdev->wake_addr, &ext_adv->bdaddr);
+-				hdev->wake_addr_type = ext_adv->bdaddr_type;
+-				break;
+-			}
+-		}
+-	} else {
+-		hdev->wake_reason = MGMT_WAKE_REASON_UNEXPECTED;
+-	}
+-
+-unlock:
+-	hci_dev_unlock(hdev);
++	bacpy(&hdev->wake_addr, bdaddr);
++	hdev->wake_addr_type = addr_type;
+ }
+ 
+ #define HCI_EV_VL(_op, _func, _min_len, _max_len) \
+@@ -7830,14 +7805,15 @@ void hci_event_packet(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ 	skb_pull(skb, HCI_EVENT_HDR_SIZE);
+ 
+-	/* Store wake reason if we're suspended */
+-	hci_store_wake_reason(hdev, event, skb);
+-
+ 	bt_dev_dbg(hdev, "event 0x%2.2x", event);
+ 
+ 	hci_event_func(hdev, event, skb, &opcode, &status, &req_complete,
+ 		       &req_complete_skb);
+ 
++	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, NULL, 0);
++	hci_dev_unlock(hdev);
++
+ 	if (req_complete) {
+ 		req_complete(hdev, status, opcode);
+ 	} else if (req_complete_skb) {
 
 
