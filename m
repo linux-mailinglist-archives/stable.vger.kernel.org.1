@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-234866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOabKTKo1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:42 +0200
+	id kGmlFZmd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504A23C2861
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F453C0AB0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E72130AC995
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41ABF305023B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AEB3624B9;
-	Wed,  8 Apr 2026 18:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A553537FC;
+	Wed,  8 Apr 2026 18:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIDH22NC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPJG6FAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB3D2641FC;
-	Wed,  8 Apr 2026 18:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0F37C10F;
+	Wed,  8 Apr 2026 18:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673968; cv=none; b=ouphyAH2quxC5RGKp12l5jwsPkibFycSFN7C4qCzdBovgbTj7+JagvkZI8WDLknZSOQBdJgi2+U4bS6iveEKuq0icSQfqt/eaONiUOtOY/mBHkceIlKXK9fDqVGEAvD+oGtU98h7Wkh8iZbHEXW5YEKtAqxL309hHndfB3mPUX8=
+	t=1775672364; cv=none; b=bTHeSvJFHpfAmj3AgHKDDRqs6uDuyDIuepplQDSai6zsV2+ksaxr9g4Q4Bnt82hqX6ztkbjIeTi8jTZvuSHH9IuJow5tfuYI+w60ew3mEznGTH109VgPqNW4LB743atrQBKCTmUS2ZZkgT9W4ZPbhLoof6oeiMYfifdx1y6QaYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673968; c=relaxed/simple;
-	bh=gxAEjpREyoS+pxZH2xpMBW396G1316QKTm6W1MFnQRQ=;
+	s=arc-20240116; t=1775672364; c=relaxed/simple;
+	bh=UAh5s5+PECeEez7s3ugWePX7yiLCvyAhXLHHhSrasK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A280TwpJPdODA1/Qfpxnr/BHhjkvlcQMIaYqgLNjJxClxMr7gN/ZQ5utAvAzauL4Pai/pipSW+AO5TY595WC6R//16AUft0UhLtM23iyMByTGoAwZv6kExkl6yDgF+hAKd2nxgXZwXoSUXMxLKnQyViUvOVhePSJz2KRwWNNnoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIDH22NC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A65C19421;
-	Wed,  8 Apr 2026 18:46:08 +0000 (UTC)
+	 MIME-Version; b=YqTiTyFMTa90FvsUfcDKFJOC9+WTxlAIYFz13yqPxU6guKF4x9BLq7XD4wwD3+pJaMLJ/qm2/LmnTan1YdXkHQ9RcekgReNlti4Dy39Bl0t4vpNNW2mj9CgbmaVTogWxYJLypO/5PLM/NXTiyzS4jUmvU1nv3sld0F3/G8qKFnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPJG6FAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EB9C19421;
+	Wed,  8 Apr 2026 18:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673968;
-	bh=gxAEjpREyoS+pxZH2xpMBW396G1316QKTm6W1MFnQRQ=;
+	s=korg; t=1775672364;
+	bh=UAh5s5+PECeEez7s3ugWePX7yiLCvyAhXLHHhSrasK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIDH22NCbHGKsbfdzCpUdJftUV/20erWupRJH5lrJMgGLHjzMB90fGz3dDhL3mNfx
-	 mL//8XbQhSFwoknEGtTOCxCGVYFIYwYRu2PsyXo/jSKBg+QnpQSZj6ZXX62xyuSwp1
-	 VmoS+RN51LAoCcgp6JugVp4xdbN1ITQyfPLv/+bc=
+	b=sPJG6FAwXu7oiOhOPbvOwrYjIjSf6yOUDRU4e9cwB5/PQwLxCSk4/FQzoboLj34iW
+	 Ket9ELvwwN9vgObAXrJ4hXMyy0i0Lm1axaSR/8XgSr22bF1+gO7y7lPrZ2/Ux18Gq0
+	 rnZW2+aNQBODOXpBmiaWD/U43+3eK+UMg6AFfSYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wanquan Zhong <wanquan.zhong@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 141/242] USB: serial: option: add support for Rolling Wireless RW135R-GL
+	Casey Chen <cachen@purestorage.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 264/312] nvme: fix admin request_queue lifetime
 Date: Wed,  8 Apr 2026 20:03:01 +0200
-Message-ID: <20260408175932.365019180@linuxfoundation.org>
+Message-ID: <20260408175943.606958905@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,8 +84,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234866-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234247-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -86,62 +93,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fibocom.com:email]
-X-Rspamd-Queue-Id: 504A23C2861
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,suse.de:email,lst.de:email,amazon.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ispras.ru:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A8F453C0AB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wanquan Zhong <wanquan.zhong@fibocom.com>
+From: Keith Busch <kbusch@kernel.org>
 
-commit 01e8d0f742222f1e68f48180d5480097adf7ae9f upstream.
+[ Upstream commit 03b3bcd319b3ab5182bc9aaa0421351572c78ac0]
 
-Add VID/PID 33f8:1003 for the Rolling Wireless RW135R-GL M.2 module,
-which is used in laptop debug cards with MBIM interface for
-Linux/Chrome OS. The device supports mbim, pipe functionalities.
+The namespaces can access the controller's admin request_queue, and
+stale references on the namespaces may exist after tearing down the
+controller. Ensure the admin request_queue is active by moving the
+controller's 'put' to after all controller references have been released
+to ensure no one is can access the request_queue. This fixes a reported
+use-after-free bug:
 
-Here are the outputs of usb-devices:
-T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=1003 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW135R-GL Module
-S:  SerialNumber=12345678
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+  BUG: KASAN: slab-use-after-free in blk_queue_enter+0x41c/0x4a0
+  Read of size 8 at addr ffff88c0a53819f8 by task nvme/3287
+  CPU: 67 UID: 0 PID: 3287 Comm: nvme Tainted: G            E       6.13.2-ga1582f1a031e #15
+  Tainted: [E]=UNSIGNED_MODULE
+  Hardware name: Jabil /EGS 2S MB1, BIOS 1.00 06/18/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4f/0x60
+   print_report+0xc4/0x620
+   ? _raw_spin_lock_irqsave+0x70/0xb0
+   ? _raw_read_unlock_irqrestore+0x30/0x30
+   ? blk_queue_enter+0x41c/0x4a0
+   kasan_report+0xab/0xe0
+   ? blk_queue_enter+0x41c/0x4a0
+   blk_queue_enter+0x41c/0x4a0
+   ? __irq_work_queue_local+0x75/0x1d0
+   ? blk_queue_start_drain+0x70/0x70
+   ? irq_work_queue+0x18/0x20
+   ? vprintk_emit.part.0+0x1cc/0x350
+   ? wake_up_klogd_work_func+0x60/0x60
+   blk_mq_alloc_request+0x2b7/0x6b0
+   ? __blk_mq_alloc_requests+0x1060/0x1060
+   ? __switch_to+0x5b7/0x1060
+   nvme_submit_user_cmd+0xa9/0x330
+   nvme_user_cmd.isra.0+0x240/0x3f0
+   ? force_sigsegv+0xe0/0xe0
+   ? nvme_user_cmd64+0x400/0x400
+   ? vfs_fileattr_set+0x9b0/0x9b0
+   ? cgroup_update_frozen_flag+0x24/0x1c0
+   ? cgroup_leave_frozen+0x204/0x330
+   ? nvme_ioctl+0x7c/0x2c0
+   blkdev_ioctl+0x1a8/0x4d0
+   ? blkdev_common_ioctl+0x1930/0x1930
+   ? fdget+0x54/0x380
+   __x64_sys_ioctl+0x129/0x190
+   do_syscall_64+0x5b/0x160
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f765f703b0b
+  Code: ff ff ff 85 c0 79 9b 49 c7 c4 ff ff ff ff 5b 5d 4c 89 e0 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d dd 52 0f 00 f7 d8 64 89 01 48
+  RSP: 002b:00007ffe2cefe808 EFLAGS: 00000202 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00007ffe2cefe860 RCX: 00007f765f703b0b
+  RDX: 00007ffe2cefe860 RSI: 00000000c0484e41 RDI: 0000000000000003
+  RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
+  R10: 00007f765f611d50 R11: 0000000000000202 R12: 0000000000000003
+  R13: 00000000c0484e41 R14: 0000000000000001 R15: 00007ffe2cefea60
+   </TASK>
 
-Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Because we're missing commit 0da7feaa5913 ("nvme-pci: use the tagset
+  alloc/free helpers") we need to additionally remove the blk_put_queue
+  from nvme_dev_remove_admin in pci.c to properly fix the UAF ]
+
+Reported-by: Casey Chen <cachen@purestorage.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Tested-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/core.c | 3 ++-
+ drivers/nvme/host/pci.c  | 1 -
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2464,6 +2464,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 044e1a9c099b3..f17318f6c82b0 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -5043,7 +5043,6 @@ EXPORT_SYMBOL_GPL(nvme_alloc_admin_tag_set);
+ void nvme_remove_admin_tag_set(struct nvme_ctrl *ctrl)
+ {
+ 	blk_mq_destroy_queue(ctrl->admin_q);
+-	blk_put_queue(ctrl->admin_q);
+ 	if (ctrl->ops->flags & NVME_F_FABRICS) {
+ 		blk_mq_destroy_queue(ctrl->fabrics_q);
+ 		blk_put_queue(ctrl->fabrics_q);
+@@ -5186,6 +5185,8 @@ static void nvme_free_ctrl(struct device *dev)
+ 		container_of(dev, struct nvme_ctrl, ctrl_device);
+ 	struct nvme_subsystem *subsys = ctrl->subsys;
+ 
++	if (ctrl->admin_q)
++		blk_put_queue(ctrl->admin_q);
+ 	if (!subsys || ctrl->instance != subsys->instance)
+ 		ida_free(&nvme_instance_ida, ctrl->instance);
+ 
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 8adce45f666c8..2a74668739919 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1783,7 +1783,6 @@ static void nvme_dev_remove_admin(struct nvme_dev *dev)
+ 		 */
+ 		nvme_start_admin_queue(&dev->ctrl);
+ 		blk_mq_destroy_queue(dev->ctrl.admin_q);
+-		blk_put_queue(dev->ctrl.admin_q);
+ 		blk_mq_free_tag_set(&dev->admin_tagset);
+ 	}
+ }
+-- 
+2.53.0
+
 
 
 
