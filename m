@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGe6BKee1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:59 +0200
+	id uMnUCAaa1mmgGggAu9opvQ
+	(envelope-from <stable+bounces-234033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C093C0D51
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10D03C010E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EEDE83018744
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 15BE9300AB33
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B37D3D4134;
-	Wed,  8 Apr 2026 18:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F783D47A5;
+	Wed,  8 Apr 2026 18:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOFjKIzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sp8xbuGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4A73537EF;
-	Wed,  8 Apr 2026 18:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44A347517;
+	Wed,  8 Apr 2026 18:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672941; cv=none; b=etucqts1744ew2KdZc320OzUE8fxj+VPIc6rCpZVVRgLlr9OCqGCUxxEns92Coa7ombNYYEf4zNinDxEvpGoC8Z1g/eKfW7C3pUPFLuaAwYW7bcbHRulPC0FPTqiKhPeFbSxI3/4Uf52BsWEqUv8z19KHLKWMPkIeam3zvliZyA=
+	t=1775671812; cv=none; b=mqpFOWHlb7TyDhqVx50AVVLHM4283IPrQ8RUf2/qNBxAzLEgEr9Glf3EICKWKY+bbqgH3BbpeGiFg0eMs9Xmw/vJkqgvk/S3Yl4beMpQPUw1093pRvCBxlUGw3pYw7wBlBMdEGyjCm881O/Ag6p0FbIvtpJn3pIxJY+yTgR6j+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672941; c=relaxed/simple;
-	bh=e+xZHHsqGquhm7hvv2x1jc3VnF8qIneK9SerrtNIs0c=;
+	s=arc-20240116; t=1775671812; c=relaxed/simple;
+	bh=xl01r7DZS3v+JaFEaweOQqV+Vb64vvgUIFOnsG99tLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2V3FaUkGS8mvXLgTzmre0SLRJfGMS7FQbZiWzFL0CEdvaOxulXF89AgqzFiKQozeMCziUN2RuGfTc0kwFgUEr/BrhoPjDWJajGrYHtnWUqApIc1z7s3ySD9bR9ygjz8jjHn0KqMzCQBE38wv5dW7TrsdUalqL9lstyV8O6+vQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOFjKIzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9145C19421;
-	Wed,  8 Apr 2026 18:29:00 +0000 (UTC)
+	 MIME-Version; b=AmFuN+axoHQE5td5by8kDw5TFMLm1b8ngSC8kGTYjDzqhTwV2OQppEwB/q8JpRsRx63XpOvBNxN0EA1+6dTAdM4eF3mVrP5qvuOSYWlGpW419LhB1UKuDneOxt8U+v5d/qzl8TsvFsov47L51Z42+eL4s4nOrDlLpn/4G/KG0Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sp8xbuGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8708C19421;
+	Wed,  8 Apr 2026 18:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672941;
-	bh=e+xZHHsqGquhm7hvv2x1jc3VnF8qIneK9SerrtNIs0c=;
+	s=korg; t=1775671812;
+	bh=xl01r7DZS3v+JaFEaweOQqV+Vb64vvgUIFOnsG99tLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOFjKIzTOvkMhsRtGX5v3lslK2eI85qmrwTBXGOaAFK1jVmjfzDNL41blSIm++Eyu
-	 7OS98Q3f4kIE3odGLTb4ECm75/WFzQHAJOea2i9bZBLhLlz0lvWkOwc2wL6zuoF28K
-	 165lYc1plnGQiZQlZWPU9uaCSnPZexKIUNlVjU1Q=
+	b=Sp8xbuGU34pUGCJaZ4IlUp5laezRAMbR1DcXzKWBOo5ftMBl/SbMjk8cDqDQ9j3i6
+	 F16G4ofywkErgEpcnwEdfd6cg0Wmy1a28Uzq9nEGl43+MDitMyJ9xKmKf+OwdE56WJ
+	 0yaJcddz7+RzgWaTaLKBLPOKpUlE0PpZNXbTqlGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 008/277] objtool: Fix Clang jump table detection
-Date: Wed,  8 Apr 2026 19:59:53 +0200
-Message-ID: <20260408175934.155898412@linuxfoundation.org>
+Subject: [PATCH 6.1 077/312] ACPICA: include/acpi/acpixf.h: Fix indentation
+Date: Wed,  8 Apr 2026 19:59:54 +0200
+Message-ID: <20260408175936.619801009@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234469-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234033-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,55 +89,184 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arndb.de:email]
-X-Rspamd-Queue-Id: 74C093C0D51
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B10D03C010E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 4e5019216402ad0b4a84cff457b662d26803f103 ]
+[ Upstream commit 7a9d74e7e403cb2e60d4d00c05f2f3ab2a33d0c3 ]
 
-With Clang, there can be a conditional forward jump between the load of
-the jump table address and the indirect branch.
+A bunch of the functions declared in include/acpi/acpixf.h have their
+name aligned a space after the '(' of e.g. the
+`ACPI_EXTERNAL_RETURN_STATUS(acpi_status` line above rather then being
+directly aligned after the '('.
 
-Fixes the following warning:
+This breaks applying patches generated from the ACPICA upstream git,
+remove the extra space before the function-names and all the arguments
+to fix this.
 
-  vmlinux.o: warning: objtool: ___bpf_prog_run+0x1c5: sibling call from callable instruction with modified stack frame
-
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
-Link: https://patch.msgid.link/7d8600caed08901b6679767488acd639f6df9688.1773071992.git.jpoimboe@kernel.org
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/acpi/acpixf.h | 120 +++++++++++++++++++++---------------------
+ 1 file changed, 60 insertions(+), 60 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index bb34484046060..bbdc4be475b1b 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2118,12 +2118,11 @@ static void mark_func_jump_tables(struct objtool_file *file,
- 			last = insn;
+diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+index 413153f3aa4fc..9be3151e4db59 100644
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -595,82 +595,82 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			    acpi_install_initialization_handler
+ 			    (acpi_init_handler handler, u32 function))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_sci_handler(acpi_sci_handler
+-							  address,
+-							  void *context))
+-ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_remove_sci_handler(acpi_sci_handler
+-							 address))
++				acpi_install_sci_handler(acpi_sci_handler
++							 address,
++							 void *context))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_global_event_handler
+-				 (acpi_gbl_event_handler handler,
+-				  void *context))
++				acpi_remove_sci_handler(acpi_sci_handler
++							address))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_fixed_event_handler(u32
+-								  acpi_event,
+-								  acpi_event_handler
+-								  handler,
+-								  void
+-								  *context))
++				acpi_install_global_event_handler
++				(acpi_gbl_event_handler handler,
++				 void *context))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_remove_fixed_event_handler(u32 acpi_event,
++				acpi_install_fixed_event_handler(u32
++								 acpi_event,
+ 								 acpi_event_handler
+-								 handler))
+-ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_gpe_handler(acpi_handle
+-							  gpe_device,
+-							  u32 gpe_number,
+-							  u32 type,
+-							  acpi_gpe_handler
+-							  address,
+-							  void *context))
++								 handler,
++								 void
++								 *context))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_install_gpe_raw_handler(acpi_handle
+-							      gpe_device,
+-							      u32 gpe_number,
+-							      u32 type,
+-							      acpi_gpe_handler
+-							      address,
+-							      void *context))
++				acpi_remove_fixed_event_handler(u32 acpi_event,
++								acpi_event_handler
++								handler))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
+-				 acpi_remove_gpe_handler(acpi_handle gpe_device,
++				acpi_install_gpe_handler(acpi_handle
++							 gpe_device,
+ 							 u32 gpe_number,
++							 u32 type,
+ 							 acpi_gpe_handler
+-							 address))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_install_notify_handler(acpi_handle device,
+-							 u32 handler_type,
+-							 acpi_notify_handler
+-							 handler,
++							 address,
+ 							 void *context))
++ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
++				acpi_install_gpe_raw_handler(acpi_handle
++							     gpe_device,
++							     u32 gpe_number,
++							     u32 type,
++							     acpi_gpe_handler
++							     address,
++							     void *context))
++ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
++				acpi_remove_gpe_handler(acpi_handle gpe_device,
++							u32 gpe_number,
++							acpi_gpe_handler
++							address))
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_remove_notify_handler(acpi_handle device,
++			    acpi_install_notify_handler(acpi_handle device,
+ 							u32 handler_type,
+ 							acpi_notify_handler
+-							handler))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_install_address_space_handler(acpi_handle
+-								device,
+-								acpi_adr_space_type
+-								space_id,
+-								acpi_adr_space_handler
+-								handler,
+-								acpi_adr_space_setup
+-								setup,
+-								void *context))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_remove_address_space_handler(acpi_handle
++							handler,
++							void *context))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_remove_notify_handler(acpi_handle device,
++						       u32 handler_type,
++						       acpi_notify_handler
++						       handler))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_install_address_space_handler(acpi_handle
+ 							       device,
+ 							       acpi_adr_space_type
+ 							       space_id,
+ 							       acpi_adr_space_handler
+-							       handler))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_install_exception_handler
+-			     (acpi_exception_handler handler))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			     acpi_install_interface_handler
+-			     (acpi_interface_handler handler))
++							       handler,
++							       acpi_adr_space_setup
++							       setup,
++							       void *context))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_remove_address_space_handler(acpi_handle
++							      device,
++							      acpi_adr_space_type
++							      space_id,
++							      acpi_adr_space_handler
++							      handler))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_install_exception_handler
++			    (acpi_exception_handler handler))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_install_interface_handler
++			    (acpi_interface_handler handler))
  
- 		/*
--		 * Store back-pointers for unconditional forward jumps such
-+		 * Store back-pointers for forward jumps such
- 		 * that find_jump_table() can back-track using those and
- 		 * avoid some potentially confusing code.
- 		 */
--		if (insn->type == INSN_JUMP_UNCONDITIONAL && insn->jump_dest &&
--		    insn->offset > last->offset &&
-+		if (insn->jump_dest &&
- 		    insn->jump_dest->offset > insn->offset &&
- 		    !insn->jump_dest->first_jump_src) {
- 
+ /*
+  * Global Lock interfaces
 -- 
 2.53.0
 
