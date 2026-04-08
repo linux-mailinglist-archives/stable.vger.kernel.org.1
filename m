@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qH/KHGue1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:59 +0200
+	id gKStCm2b1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9553C0CF2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFCF3C04E5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0716330EA6F0
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1CD9F300F119
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8833ACF13;
-	Wed,  8 Apr 2026 18:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504D539EF2B;
+	Wed,  8 Apr 2026 18:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymSvoDNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCeZqaWL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBDF2494F0;
-	Wed,  8 Apr 2026 18:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1354637F01B;
+	Wed,  8 Apr 2026 18:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672540; cv=none; b=LBODACjjpQ4ucZsMrB4xAwRZ/SlbCgirHFLYhe7XmZQbNusi42KzHOKr1ROEc6TVzR893FS+TMrYZGGmgq01cIBKyPesUUPGAQCL0oMMN3zdtLX/xtEojV1QVyMO/7wtZ4VHRhwUBxm9HsQdI1D1NHbnwHWKsUYZvnjWTUmbIC8=
+	t=1775672170; cv=none; b=fwG5WkJvlZPIITCPpjv9UJXFf66+a5QYkrDvZLnaJJmzigkErd+KbDg+mXg2D8bh2OTYe57y3sfcgqQiGYbDlEbnUS0cpKbWAwCGT5UMskszi3qOnDQtpxhjg3k2uz/v5BVPuXVqcW274bbkyKn/3RU01HLSqL29C2fMRmDIJ0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672540; c=relaxed/simple;
-	bh=t06QK9n+l/TsuBejMHAvsdxHZp7+4Q5TYNY+W4Cdn1Y=;
+	s=arc-20240116; t=1775672170; c=relaxed/simple;
+	bh=SpgBpASDlp4xK/T1jn6MDwoYkWWRoRHPAXhc0JnIKjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOcGCV4ah5MrJiT+yl4Nffe7uu6M8Dg6vDkyO8kLXyhnFiBjfVTilG41BLC7EQup0t/IAXL3nUjrzuj/k9pTG9lQB7u15J4tdP/OxFqeTsUojofpCKXZcfTTUeSiwhUvCBmCdbEeftGA4+YnymmUUc3jlKyLVJilCkPrqQYHwO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymSvoDNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8389C19421;
-	Wed,  8 Apr 2026 18:22:19 +0000 (UTC)
+	 MIME-Version; b=fDMEsoOx1rM225xKygV7uf8tR+HB8EkumVjXQZfnjH1GwVmuiiJpzMXyUFR2D1sOQepVeZnLgjM9tji1bO3vW1VMODnFlLATbIwhkJQP1GjrHUV4wv1IW2PqUnaPR/3mBoeiOEdcF8bnWyztZIvTcdsl3y/PQAG4W4bCNRbtFZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCeZqaWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0CBC19421;
+	Wed,  8 Apr 2026 18:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672540;
-	bh=t06QK9n+l/TsuBejMHAvsdxHZp7+4Q5TYNY+W4Cdn1Y=;
+	s=korg; t=1775672170;
+	bh=SpgBpASDlp4xK/T1jn6MDwoYkWWRoRHPAXhc0JnIKjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymSvoDNnv/GDDKuVAVtWDMDfGLPQkR2OJg/TYUpEPMYGW8OKAZNqxohjXVH9ihp9b
-	 K46VW5WMkWk4Zq5w2uhrVI/aGmxkiwGXVEfbi9nW8Qj2X1vRziwUWEAb93bscxV1+l
-	 mh1qOpbgF3N6bCNPBvm6Bs6iCGvrvNuepHWvVZuw=
+	b=wCeZqaWLm17o85oPctC8+OPVBXumexkcuS9TghzhAA7ywMFx+v0DPN4ntxniI9Gxl
+	 5v/cxTv/mt/j2NhbHnIjTY3nkUVFJ/O9Ox35WRwTrKPoT7aspsncrMVHGyFRRVXnbc
+	 UGXkU96fKnEgGEVUr8h6csKJ1wlgW9hNfSiz9guA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/160] Bluetooth: hci_sync: call destroy in hci_cmd_sync_run if immediate
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 216/312] Input: i8042 - add TUXEDO InfinityBook Max 16 Gen10 AMD to i8042 quirk table
 Date: Wed,  8 Apr 2026 20:02:13 +0200
-Message-ID: <20260408175914.928778194@linuxfoundation.org>
+Message-ID: <20260408175941.824665896@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234315-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234172-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedo.de,tuxedocomputers.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email]
-X-Rspamd-Queue-Id: CB9553C0CF2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BCFCF3C04E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-[ Upstream commit a834a0b66ec6fb743377201a0f4229bb2503f4ce ]
+commit 5839419cffc7788a356428d321e3ec18055c0286 upstream.
 
-hci_cmd_sync_run() may run the work immediately if called from existing
-sync work (otherwise it queues a new sync work). In this case it fails
-to call the destroy() function.
+The device occasionally wakes up from suspend with missing input on the
+internal keyboard and the following suspend attempt results in an instant
+wake-up. The quirks fix both issues for this device.
 
-On immediate run, make it behave same way as if item was queued
-successfully: call destroy, and return 0.
-
-The only callsite is hci_abort_conn() via hci_cmd_sync_run_once(), and
-this changes its return value. However, its return value is not used
-except as the return value for hci_disconnect(), and nothing uses the
-return value of hci_disconnect(). Hence there should be no behavior
-change anywhere.
-
-Fixes: c898f6d7b093b ("Bluetooth: hci_sync: Introduce hci_cmd_sync_run/hci_cmd_sync_run_once")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260223142054.50310-1-wse@tuxedocomputers.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index c1c9d82faa658..a41cfc76e98bf 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -825,8 +825,15 @@ int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 		return -ENETDOWN;
- 
- 	/* If on cmd_sync_work then run immediately otherwise queue */
--	if (current_work() == &hdev->cmd_sync_work)
--		return func(hdev, data);
-+	if (current_work() == &hdev->cmd_sync_work) {
-+		int err;
-+
-+		err = func(hdev, data);
-+		if (destroy)
-+			destroy(hdev, data, err);
-+
-+		return 0;
-+	}
- 
- 	return hci_cmd_sync_submit(hdev, func, data, destroy);
- }
--- 
-2.53.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1189,6 +1189,13 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "X6KK45xU_X6SP45xU"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
