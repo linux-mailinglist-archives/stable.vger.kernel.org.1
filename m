@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-235181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCLMBJ2l1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:41 +0200
+	id iGJmE5Wk1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D525B3C225D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D25F63C1F40
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 43CE23014FE6
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFC293095CA8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499483537DF;
-	Wed,  8 Apr 2026 18:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0F53D4134;
+	Wed,  8 Apr 2026 18:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpV9gQga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtWHpiVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBA8357A20;
-	Wed,  8 Apr 2026 18:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC75B67E;
+	Wed,  8 Apr 2026 18:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674778; cv=none; b=DgS0Sbx+qpX4CpC6oMz0BvyLiKQrpBZI/9wiXHXLWgXrAilgjFYh6SUKd6R+RJAGWTZCAi2zEnoos5Chj3/y7N4kCTYbmHIReg9DqBBk3A8QrsK2Czl0Sk484cPN1dJqO3cnEwREob74wu/NTS5G8Z5tfe5uWiySBMHFQQ5xOpY=
+	t=1775673472; cv=none; b=UMaXOH/1Dqp9L/DtKzgQVQNpysBpnkjW2pw9OKsd+Rkji9GiPMtEym0d+hw4hO28KOrh9jBDLm72YGMwqVt+d3Fzdtc+FZZq1uv8qyg0xQ6cMxdx68rRX+x36fDewKp19B7YY8Tqpg41GvvquFDvANRk4d27NDX9GtaucGHYlyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674778; c=relaxed/simple;
-	bh=vtGKXDeD5WZmN34FIhDqisAW/VCA6x0MzlbIPT872xE=;
+	s=arc-20240116; t=1775673472; c=relaxed/simple;
+	bh=F6rlD1g8c6SzBS8KVnLXuaUmYzF9MGO7rwZDB5SSi6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVPWP2J7iWATqX6zZG3/SrG0zN4S8jqjytgqFcGW866vUkl/rWruDngaad71TpiP/VO2DSj5SiH5tDuXSiFId6XBxvwkRSEKrFlYqc5zcSTiGbNIdepAu1FogDcBckkKIhFNiEZndt9vPCiShRBl1jzfP+c8bWugzoH0Ru/8/eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpV9gQga; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960C6C19421;
-	Wed,  8 Apr 2026 18:59:37 +0000 (UTC)
+	 MIME-Version; b=YT4sFXjHITvatEAr8FeHUEQ5Fue0cDzIzpg87cM7nJD9dAfnFcJcN+SaNujzo8GbsZoYmCwjBQtp6OYUn94RDqKt1T+AyCT9mfjBRCngOV9ClZ+j6k4qAuo05Qn+PRBW8QafUCCn6hindxBZsLE4q4Udn073VbQsue2fsXxc/1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtWHpiVh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4565AC19421;
+	Wed,  8 Apr 2026 18:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674777;
-	bh=vtGKXDeD5WZmN34FIhDqisAW/VCA6x0MzlbIPT872xE=;
+	s=korg; t=1775673472;
+	bh=F6rlD1g8c6SzBS8KVnLXuaUmYzF9MGO7rwZDB5SSi6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpV9gQgay4zEHAlAlu2M0Cd/6IkAZ66Qss1Bi0zXMaTBWrBvyGH4R+IfeaHG7EOj2
-	 RWivDY/T/vyCqJyyVTZNIx2JTzqT1Rxgxgp8otSaf4z1e5GUOdVftxXxLOZQ6PUDP/
-	 a8DFKv/OGvGM3oMQJ/WN84BmiAU2yG0kkXhZ5dhw=
+	b=rtWHpiVhMGBbX0mmx4rDOXm0/QUPb8RDK/p5f9A1IxVYzyuOGsnQJJo4spcb3KC6Y
+	 89JbWo09YCmtPYhYOnNJUitIM//HBREUMeuX4IgFzA+orXLc/YvE+g9UsGfnCmFJBl
+	 q6X2ILTRR1nwuZ/a6l2CYB8AYlyVr3UkEpiy2JSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 229/311] iio: imu: st_lsm6dsx: Set FIFO ODR for accelerometer and gyroscope only
+	stable <stable@kernel.org>,
+	Madhu M <madhu.m@intel.corp-partner.google.com>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Benson Leung <bleung@chromium.org>
+Subject: [PATCH 6.18 244/277] usb: typec: thunderbolt: Set enter_vdo during initialization
 Date: Wed,  8 Apr 2026 20:03:49 +0200
-Message-ID: <20260408175947.949453487@linuxfoundation.org>
+Message-ID: <20260408175942.970707853@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +70,131 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234675-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235181-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,baylibre.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D525B3C225D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: D25F63C1F40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-commit 630748afa7030b272b7bee5df857e7bcf132ed51 upstream.
+commit 3b8ae9817686efb3ea789ca9d4efdff2ce9c1c04 upstream.
 
-The st_lsm6dsx_set_fifo_odr() function, which is called when enabling and
-disabling the hardware FIFO, checks the contents of the hw->settings->batch
-array at index sensor->id, and then sets the current ODR value in sensor
-registers that depend on whether the register address is set in the above
-array element. This logic is valid for internal sensors only, i.e. the
-accelerometer and gyroscope; however, since commit c91c1c844ebd ("iio: imu:
-st_lsm6dsx: add i2c embedded controller support"), this function is called
-also when configuring the hardware FIFO for external sensors (i.e. sensors
-accessed through the sensor hub functionality), which can result in
-unrelated device registers being written.
+In the current implementation, if a cable's alternate mode enter operation
+is not supported, the tbt->plug[TYPEC_PLUG_SOP_P] pointer is cleared by the
+time tbt_enter_mode() is called. This prevents the driver from identifying
+the cable's VDO.
 
-Add a check to the beginning of st_lsm6dsx_set_fifo_odr() so that it does
-not touch any registers unless it is called for internal sensors.
+As a result, the Thunderbolt connection falls back to the default
+TBT_CABLE_USB3_PASSIVE speed, even if the cable supports higher speeds.
+To ensure the correct VDO value is used during mode entry, calculate and
+store the enter_vdo earlier during the initialization phase in tbt_ready().
 
-Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable <stable@kernel.org>
+Fixes: 100e25738659 ("usb: typec: Add driver for Thunderbolt 3 Alternate Mode")
+Tested-by: Madhu M <madhu.m@intel.corp-partner.google.com>
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Link: https://patch.msgid.link/20260324103012.1417616-1-akuchynski@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/typec/altmodes/thunderbolt.c |   44 +++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -225,6 +225,10 @@ static int st_lsm6dsx_set_fifo_odr(struc
- 	const struct st_lsm6dsx_reg *batch_reg;
- 	u8 data;
+--- a/drivers/usb/typec/altmodes/thunderbolt.c
++++ b/drivers/usb/typec/altmodes/thunderbolt.c
+@@ -39,28 +39,7 @@ static bool tbt_ready(struct typec_altmo
  
-+	/* Only internal sensors have a FIFO ODR configuration register. */
-+	if (sensor->id >= ARRAY_SIZE(hw->settings->batch))
-+		return 0;
+ static int tbt_enter_mode(struct tbt_altmode *tbt)
+ {
+-	struct typec_altmode *plug = tbt->plug[TYPEC_PLUG_SOP_P];
+-	u32 vdo;
+-
+-	vdo = tbt->alt->vdo & (TBT_VENDOR_SPECIFIC_B0 | TBT_VENDOR_SPECIFIC_B1);
+-	vdo |= tbt->alt->vdo & TBT_INTEL_SPECIFIC_B0;
+-	vdo |= TBT_MODE;
+-
+-	if (plug) {
+-		if (typec_cable_is_active(tbt->cable))
+-			vdo |= TBT_ENTER_MODE_ACTIVE_CABLE;
+-
+-		vdo |= TBT_ENTER_MODE_CABLE_SPEED(TBT_CABLE_SPEED(plug->vdo));
+-		vdo |= plug->vdo & TBT_CABLE_ROUNDED;
+-		vdo |= plug->vdo & TBT_CABLE_OPTICAL;
+-		vdo |= plug->vdo & TBT_CABLE_RETIMER;
+-		vdo |= plug->vdo & TBT_CABLE_LINK_TRAINING;
+-	} else {
+-		vdo |= TBT_ENTER_MODE_CABLE_SPEED(TBT_CABLE_USB3_PASSIVE);
+-	}
+-
+-	tbt->enter_vdo = vdo;
+-	return typec_altmode_enter(tbt->alt, &vdo);
++	return typec_altmode_enter(tbt->alt, &tbt->enter_vdo);
+ }
+ 
+ static void tbt_altmode_work(struct work_struct *work)
+@@ -337,6 +316,7 @@ static bool tbt_ready(struct typec_altmo
+ {
+ 	struct tbt_altmode *tbt = typec_altmode_get_drvdata(alt);
+ 	struct typec_altmode *plug;
++	u32 vdo;
+ 
+ 	if (tbt->cable)
+ 		return true;
+@@ -364,6 +344,26 @@ static bool tbt_ready(struct typec_altmo
+ 		tbt->plug[i] = plug;
+ 	}
+ 
++	vdo = tbt->alt->vdo & (TBT_VENDOR_SPECIFIC_B0 | TBT_VENDOR_SPECIFIC_B1);
++	vdo |= tbt->alt->vdo & TBT_INTEL_SPECIFIC_B0;
++	vdo |= TBT_MODE;
++	plug = tbt->plug[TYPEC_PLUG_SOP_P];
 +
- 	batch_reg = &hw->settings->batch[sensor->id];
- 	if (batch_reg->addr) {
- 		int val;
++	if (plug) {
++		if (typec_cable_is_active(tbt->cable))
++			vdo |= TBT_ENTER_MODE_ACTIVE_CABLE;
++
++		vdo |= TBT_ENTER_MODE_CABLE_SPEED(TBT_CABLE_SPEED(plug->vdo));
++		vdo |= plug->vdo & TBT_CABLE_ROUNDED;
++		vdo |= plug->vdo & TBT_CABLE_OPTICAL;
++		vdo |= plug->vdo & TBT_CABLE_RETIMER;
++		vdo |= plug->vdo & TBT_CABLE_LINK_TRAINING;
++	} else {
++		vdo |= TBT_ENTER_MODE_CABLE_SPEED(TBT_CABLE_USB3_PASSIVE);
++	}
++
++	tbt->enter_vdo = vdo;
++
+ 	return true;
+ }
+ 
 
 
 
