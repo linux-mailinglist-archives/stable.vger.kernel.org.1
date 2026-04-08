@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-234239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNJvMRqc1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:06 +0200
+	id eNgSLlOh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6E53C0683
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD2E3C13A5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2AF0030094EE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C14B7300939F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0C737F01B;
-	Wed,  8 Apr 2026 18:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657C33B19A3;
+	Wed,  8 Apr 2026 18:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHTcfPYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAnSDgJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D293E2494F0;
-	Wed,  8 Apr 2026 18:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29035331A44;
+	Wed,  8 Apr 2026 18:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672343; cv=none; b=Y3DOMIFLPlnc55nBa2e8/9iwX7KyJpm/SE3WA7agYqndQZ5dE/OwWof75iwNxcfsV37r8RwzIoZxrwMIcjAK78NniuEhctLndPBHA6eIxxAz4Keje7pZlIWTXlVC6SfwMjrRjw9SpU7uX5wplt0KyLRAVeVpVN3ggJy6yF4lOCI=
+	t=1775673413; cv=none; b=gf3/ko8Rw6nDdS9vqwY/Remd2Utj1DI1jDYN4mpb72gF0koMMky3Hl4iZE7LzECXAe9Vmgw4ckqf3UNb75xZ5A3dPU7H/sPzub88MDx3F8cMDPlmiTRCLs1DrgPRiv3tSIUbzQULgUiYX/r3aKSV3hWp/FQmoQjC8OdIOmWcq/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672343; c=relaxed/simple;
-	bh=DVJP+Duv88kvSV0bNYIirID3TtT/OgN5Qwu1TTwMic0=;
+	s=arc-20240116; t=1775673413; c=relaxed/simple;
+	bh=/sOD1dUkMU+6xAAI58EY1rLM/kjSWG8WB5dC/5R2WfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6PFrDxGNgPI5gZfHe6cbnRUBSUD7GZIZbfIDflSTxfSfPkTiE21u+3tAcEfTagkkg3FHa84D4a9Hlp1ZzAwM6iRi5z26qK3JKTG2Ywxb5NN7B2V7PCztaRebIb2/cke2DY0u+Ry5veUvI/n/0VC3Ouz+c/uE4UxTAgpjPy9xD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHTcfPYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68468C19421;
-	Wed,  8 Apr 2026 18:19:03 +0000 (UTC)
+	 MIME-Version; b=Lu+nFnScbQ2D3W4vUAUz7o5l3N3jonz3Guhi4WKdH64frS7icEYRYa6tBqCyDRS35zouXZjmL8UeS7DTOLYWNtZW/ogbniWhU+RwBm6WmjffwWIHCVryZGd4hitrn9seBd9NtIjxz3VYA5EjpSik8VL+5Rowo0zBwY9E876VJtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAnSDgJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58E4C19421;
+	Wed,  8 Apr 2026 18:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672343;
-	bh=DVJP+Duv88kvSV0bNYIirID3TtT/OgN5Qwu1TTwMic0=;
+	s=korg; t=1775673413;
+	bh=/sOD1dUkMU+6xAAI58EY1rLM/kjSWG8WB5dC/5R2WfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHTcfPYjOwxKdn4l6oKIvv+CH7bENyfzs0S6J+j+zDAiPzxrYRZ4vhY9qdvGgJ9nP
-	 XZsrVUKyqeU8xNYbRv1wh0OW25xzjg47bJhS9wq9/xyRPM5nXbw4a8r6hfXL/acc+1
-	 UepOnUqQRqF1fLTr/ENEIqbY+yQj7UEmjh9cK940=
+	b=zAnSDgJg7xcCtfN0iCusaSr/7T02nEBGwwhtgOFdB5PG17LXN5BP2fJKkF4pFk99t
+	 G4LoksHwIsw2mkJmePKRRonF+eSraTCaN7AsZ+qgG4kKmCGmgLUCINrUK3u//gefHN
+	 6aQUsxK8+mKvuiIx/TZp/GGbHtYQK06zNFLhdXkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mathieu.desnoyers@efficios.com,
-	zhang.run@zte.com.cn,
-	yang.tao172@zte.com.cn,
-	ran.xiaokai@zte.com.cn,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Luo Haiyang <luo.haiyang@zte.com.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 283/312] tracing: Fix potential deadlock in cpu hotplug with osnoise
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.18 215/277] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
 Date: Wed,  8 Apr 2026 20:03:20 +0200
-Message-ID: <20260408175944.325910616@linuxfoundation.org>
+Message-ID: <20260408175941.888274598@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,122 +67,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234239-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234652-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,efficios.com:email]
-X-Rspamd-Queue-Id: 3D6E53C0683
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,mev.co.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DBD2E3C13A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Haiyang <luo.haiyang@zte.com.cn>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 1f9885732248d22f788e4992c739a98c88ab8a55 ]
+commit 101ab946b79ad83b36d5cfd47de587492a80acf0 upstream.
 
-The following sequence may leads deadlock in cpu hotplug:
+If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
+returns an error, the COMEDI core will call the driver's "detach"
+handler function (`atmio16d_detach()`) to clean up.  This calls
+`reset_atmio16d()` unconditionally, but depending on where the error
+occurred in the attach handler, the device may not have been
+sufficiently initialized to call `reset_atmio16d()`.  It uses
+`dev->iobase` as the I/O port base address and `dev->private` as the
+pointer to the COMEDI device's private data structure.  `dev->iobase`
+may still be set to its initial value of 0, which would result in
+undesired writes to low I/O port addresses.  `dev->private` may still be
+`NULL`, which would result in null pointer dereferences.
 
-    task1        task2        task3
-    -----        -----        -----
+Fix `atmio16d_detach()` by checking that `dev->private` is valid
+(non-null) before calling `reset_atmio16d()`.  This implies that
+`dev->iobase` was set correctly since that is set up before
+`dev->private`.
 
- mutex_lock(&interface_lock)
-
-            [CPU GOING OFFLINE]
-
-            cpus_write_lock();
-            osnoise_cpu_die();
-              kthread_stop(task3);
-                wait_for_completion();
-
-                      osnoise_sleep();
-                        mutex_lock(&interface_lock);
-
- cpus_read_lock();
-
- [DEAD LOCK]
-
-Fix by swap the order of cpus_read_lock() and mutex_lock(&interface_lock).
-
-Cc: stable@vger.kernel.org
-Cc: <mathieu.desnoyers@efficios.com>
-Cc: <zhang.run@zte.com.cn>
-Cc: <yang.tao172@zte.com.cn>
-Cc: <ran.xiaokai@zte.com.cn>
-Fixes: bce29ac9ce0bb ("trace: Add osnoise tracer")
-Link: https://patch.msgid.link/20260326141953414bVSj33dAYktqp9Oiyizq8@zte.com.cn
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Luo Haiyang <luo.haiyang@zte.com.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[ adapted guard() macros to lock/unlock calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260128150011.5006-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_osnoise.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/comedi/drivers/ni_atmio16d.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -1809,8 +1809,8 @@ static void osnoise_hotplug_workfn(struc
- 	if (!osnoise_has_registered_instances())
- 		goto out_unlock_trace;
+--- a/drivers/comedi/drivers/ni_atmio16d.c
++++ b/drivers/comedi/drivers/ni_atmio16d.c
+@@ -698,7 +698,8 @@ static int atmio16d_attach(struct comedi
  
--	mutex_lock(&interface_lock);
- 	cpus_read_lock();
-+	mutex_lock(&interface_lock);
- 
- 	if (!cpu_online(cpu))
- 		goto out_unlock;
-@@ -1820,8 +1820,8 @@ static void osnoise_hotplug_workfn(struc
- 	start_kthread(cpu);
- 
- out_unlock:
--	cpus_read_unlock();
- 	mutex_unlock(&interface_lock);
-+	cpus_read_unlock();
- out_unlock_trace:
- 	mutex_unlock(&trace_types_lock);
+ static void atmio16d_detach(struct comedi_device *dev)
+ {
+-	reset_atmio16d(dev);
++	if (dev->private)
++		reset_atmio16d(dev);
+ 	comedi_legacy_detach(dev);
  }
-@@ -1950,16 +1950,16 @@ osnoise_cpus_write(struct file *filp, co
- 	if (running)
- 		stop_per_cpu_kthreads();
  
--	mutex_lock(&interface_lock);
- 	/*
- 	 * osnoise_cpumask is read by CPU hotplug operations.
- 	 */
- 	cpus_read_lock();
-+	mutex_lock(&interface_lock);
- 
- 	cpumask_copy(&osnoise_cpumask, osnoise_cpumask_new);
- 
--	cpus_read_unlock();
- 	mutex_unlock(&interface_lock);
-+	cpus_read_unlock();
- 
- 	if (running)
- 		start_per_cpu_kthreads();
 
 
 
