@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-234605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDG7OI6g1mlDGwgAu9opvQ
-	(envelope-from <stable+bounces-234605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:06 +0200
+	id WLOBCcGc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0043C11FF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BFA3C07EB
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 81ED4302BF65
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C262A303A127
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75C33B19A3;
-	Wed,  8 Apr 2026 18:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDD8B67E;
+	Wed,  8 Apr 2026 18:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxnNbYGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTUa45We"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9644A35C1B2;
-	Wed,  8 Apr 2026 18:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4AF37F01B;
+	Wed,  8 Apr 2026 18:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673292; cv=none; b=aO2fj1GhBJGZcwwwWIYtHgTjFEv8jday2LdCxT9SbiYmNeXsnF7OZHoa+51j6hfxkR2oGWIwR6wAo2wAn93YAHaYsa709qPIlQ88O7qpI7bm813RQu8n/v47sTNNVsTd71x9XPCle892VNR24w9DMKFN8NnP2TfSDs0Newv0o3Q=
+	t=1775672234; cv=none; b=NfdngPZ/OtXx/u9q7d6FfJwHYH3j8B96HafTAaiL5lNQ8S/CwcC9fDCv/pgPTN1hr4NrMHN5TL4AyGfAmxymvjDlPfry1n7v+25tKc23F+KPua3NHN4s3TzKleOp8lVouYj5+hWMTx8o6/jwkFD6SAn6I0f+tXIkGjDpw4d/ELY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673292; c=relaxed/simple;
-	bh=HiCeHIgUG7blIvh43P0irj100OFSBgxSWs+C8RX83EY=;
+	s=arc-20240116; t=1775672234; c=relaxed/simple;
+	bh=Ocij62zqXcDoROmC+cM1N/VR376z5okIUdhk4RYEigU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwdnKWsS5O24fRD2BvqGS2wizLQgoyvq2VBO2q8f/ffUxhVGePJ43Axq3slj5KjS/L/lgp7ykDEqexTe5gZlBWukmi3KIdWEXkKAOWCPI0Tx6fRENO9ymasT9YLAa/F9Rr+ohyU9n+KYJ3N3VS3eBOZVzfalvR8pSTtWUxNAdDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxnNbYGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01735C19421;
-	Wed,  8 Apr 2026 18:34:51 +0000 (UTC)
+	 MIME-Version; b=oTeLU3PmNAjIpUtAygx16Y4GxPXZH9zL55Ir3OvHz2vwq6EXML3hgiINBye55nlbX/PZSThNbdpP/6rwLW5ASmZxywqBXfIKm6rtwNc83OCgH1JwkbB+pBYCe8F662nGJtFxgH/R9jh5yu1VRaRp4Y0sdZenPvaMhIQk5qjHSGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTUa45We; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351C8C19421;
+	Wed,  8 Apr 2026 18:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673292;
-	bh=HiCeHIgUG7blIvh43P0irj100OFSBgxSWs+C8RX83EY=;
+	s=korg; t=1775672234;
+	bh=Ocij62zqXcDoROmC+cM1N/VR376z5okIUdhk4RYEigU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xxnNbYGmo4b9XDYmBVnk4oXn3gw+XneVpBAHD3wYgXEO0uAd3XS5mVDkLGajw5ky/
-	 hbZNZauO8jXJ8oTjix3mQ4QV7lm1+vvX1rhFnc2DwBpCqOOgbdQRrkc8Baw5MbMUpP
-	 lMnNl1Hb4Jx8f+fthkVB6p30ANmdBeCxf5fRsjeQ=
+	b=kTUa45We0kL+Go5wfpW9HOkh9n+xfdS4mLLZU4asnT+mu5/a5Eq07pOcB9vSfIoGc
+	 UA5tDHl9Ol7ocNdZFASRao0+InSM163/F5jSEMllopvjb817EvPzT6GeMrAqcp/y4w
+	 fOr7+26JZTb8eHP4E6HS1t3/oE5p5E9R3UIAnXAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 174/277] Input: xpad - add support for BETOP BTP-KP50B/C controllers wireless mode
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 242/312] Revert "ext4: get rid of ppath in ext4_find_extent()"
 Date: Wed,  8 Apr 2026 20:02:39 +0200
-Message-ID: <20260408175940.363468165@linuxfoundation.org>
+Message-ID: <20260408175942.788821542@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,274 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234605-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234197-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2E0043C11FF
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 88BFA3C07EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengyu Qu <wiagn233@outlook.com>
+This reverts commit b5a010bc7dba7e3d0966c0231335ca76b3f8780e.
 
-commit 0d9363a764d9d601a05591f9695cea8b429e9be3 upstream.
-
-BETOP's BTP-KP50B and BTP-KP50C controller's wireless dongles are both
-working as standard Xbox 360 controllers. Add USB device IDs for them to
-xpad driver.
-
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Link: https://patch.msgid.link/TY4PR01MB14432B4B298EA186E5F86C46B9855A@TY4PR01MB14432.jpnprd01.prod.outlook.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/ext4.h        |  2 +-
+ fs/ext4/extents.c     | 55 ++++++++++++++++++++-----------------------
+ fs/ext4/move_extent.c |  7 +++---
+ 3 files changed, 30 insertions(+), 34 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -360,6 +360,8 @@ static const struct xpad_device {
- 	{ 0x1bad, 0xfd00, "Razer Onza TE", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0xfd01, "Razer Onza", 0, XTYPE_XBOX360 },
- 	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
-+	{ 0x20bc, 0x5134, "BETOP BTP-KP50B Xinput Dongle", 0, XTYPE_XBOX360 },
-+	{ 0x20bc, 0x514a, "BETOP BTP-KP50C Xinput Dongle", 0, XTYPE_XBOX360 },
- 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x2064, "PowerA Wired Controller for Xbox", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
-@@ -562,6 +564,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x1a86),		/* Nanjing Qinheng Microelectronics (WCH) */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
- 	XPAD_XBOX360_VENDOR(0x1ee9),		/* ZOTAC Technology Limited */
-+	XPAD_XBOX360_VENDOR(0x20bc),		/* BETOP wireless dongles */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOX360_VENDOR(0x2345),		/* Machenike Controllers */
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 490496adf17cc..27753291fb7ec 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3723,7 +3723,7 @@ extern int ext4_ext_insert_extent(handle_t *, struct inode *,
+ 				  struct ext4_ext_path **,
+ 				  struct ext4_extent *, int);
+ extern struct ext4_ext_path *ext4_find_extent(struct inode *, ext4_lblk_t,
+-					      struct ext4_ext_path *,
++					      struct ext4_ext_path **,
+ 					      int flags);
+ extern void ext4_free_ext_path(struct ext4_ext_path *);
+ extern int ext4_ext_check_inode(struct inode *inode);
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index a58f415f882b2..af4cae13685d7 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -881,10 +881,11 @@ void ext4_ext_tree_init(handle_t *handle, struct inode *inode)
+ 
+ struct ext4_ext_path *
+ ext4_find_extent(struct inode *inode, ext4_lblk_t block,
+-		 struct ext4_ext_path *path, int flags)
++		 struct ext4_ext_path **orig_path, int flags)
+ {
+ 	struct ext4_extent_header *eh;
+ 	struct buffer_head *bh;
++	struct ext4_ext_path *path = orig_path ? *orig_path : NULL;
+ 	short int depth, i, ppos = 0;
+ 	int ret;
+ 	gfp_t gfp_flags = GFP_NOFS;
+@@ -905,7 +906,7 @@ ext4_find_extent(struct inode *inode, ext4_lblk_t block,
+ 		ext4_ext_drop_refs(path);
+ 		if (depth > path[0].p_maxdepth) {
+ 			kfree(path);
+-			path = NULL;
++			*orig_path = path = NULL;
+ 		}
+ 	}
+ 	if (!path) {
+@@ -956,10 +957,14 @@ ext4_find_extent(struct inode *inode, ext4_lblk_t block,
+ 
+ 	ext4_ext_show_path(inode, path);
+ 
++	if (orig_path)
++		*orig_path = path;
+ 	return path;
+ 
+ err:
+ 	ext4_free_ext_path(path);
++	if (orig_path)
++		*orig_path = NULL;
+ 	return ERR_PTR(ret);
+ }
+ 
+@@ -1424,7 +1429,7 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 		/* refill path */
+ 		path = ext4_find_extent(inode,
+ 				    (ext4_lblk_t)le32_to_cpu(newext->ee_block),
+-				    path, gb_flags);
++				    ppath, gb_flags);
+ 		if (IS_ERR(path))
+ 			err = PTR_ERR(path);
+ 	} else {
+@@ -1436,7 +1441,7 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 		/* refill path */
+ 		path = ext4_find_extent(inode,
+ 				   (ext4_lblk_t)le32_to_cpu(newext->ee_block),
+-				    path, gb_flags);
++				    ppath, gb_flags);
+ 		if (IS_ERR(path)) {
+ 			err = PTR_ERR(path);
+ 			goto out;
+@@ -1452,8 +1457,8 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 			goto repeat;
+ 		}
+ 	}
++
+ out:
+-	*ppath = IS_ERR(path) ? NULL : path;
+ 	return err;
+ }
+ 
+@@ -3243,17 +3248,15 @@ static int ext4_split_extent_at(handle_t *handle,
+ 	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
+ 	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
+ 	 */
+-	path = ext4_find_extent(inode, ee_block, *ppath,
++	path = ext4_find_extent(inode, ee_block, ppath,
+ 				flags | EXT4_EX_NOFAIL);
+ 	if (IS_ERR(path)) {
+ 		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
+ 				 split, PTR_ERR(path));
+-		*ppath = NULL;
+ 		return PTR_ERR(path);
+ 	}
+ 	depth = ext_depth(inode);
+ 	ex = path[depth].p_ext;
+-	*ppath = path;
+ 
+ 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
+ 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
+@@ -3366,12 +3369,9 @@ static int ext4_split_extent(handle_t *handle,
+ 	 * Update path is required because previous ext4_split_extent_at() may
+ 	 * result in split of original leaf or extent zeroout.
+ 	 */
+-	path = ext4_find_extent(inode, map->m_lblk, *ppath, flags);
+-	if (IS_ERR(path)) {
+-		*ppath = NULL;
++	path = ext4_find_extent(inode, map->m_lblk, ppath, flags);
++	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+-	}
+-	*ppath = path;
+ 	depth = ext_depth(inode);
+ 	ex = path[depth].p_ext;
+ 	if (!ex) {
+@@ -3758,12 +3758,9 @@ static int ext4_convert_unwritten_extents_endio(handle_t *handle,
+ 						 EXT4_GET_BLOCKS_CONVERT);
+ 		if (err < 0)
+ 			return err;
+-		path = ext4_find_extent(inode, map->m_lblk, *ppath, 0);
+-		if (IS_ERR(path)) {
+-			*ppath = NULL;
++		path = ext4_find_extent(inode, map->m_lblk, ppath, 0);
++		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+-		}
+-		*ppath = path;
+ 		depth = ext_depth(inode);
+ 		ex = path[depth].p_ext;
+ 	}
+@@ -3819,12 +3816,9 @@ convert_initialized_extent(handle_t *handle, struct inode *inode,
+ 				EXT4_GET_BLOCKS_CONVERT_UNWRITTEN);
+ 		if (err < 0)
+ 			return err;
+-		path = ext4_find_extent(inode, map->m_lblk, *ppath, 0);
+-		if (IS_ERR(path)) {
+-			*ppath = NULL;
++		path = ext4_find_extent(inode, map->m_lblk, ppath, 0);
++		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+-		}
+-		*ppath = path;
+ 		depth = ext_depth(inode);
+ 		ex = path[depth].p_ext;
+ 		if (!ex) {
+@@ -5203,7 +5197,7 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 	* won't be shifted beyond EXT_MAX_BLOCKS.
+ 	*/
+ 	if (SHIFT == SHIFT_LEFT) {
+-		path = ext4_find_extent(inode, start - 1, path,
++		path = ext4_find_extent(inode, start - 1, &path,
+ 					EXT4_EX_NOCACHE);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+@@ -5252,7 +5246,7 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 	 * becomes NULL to indicate the end of the loop.
+ 	 */
+ 	while (iterator && start <= stop) {
+-		path = ext4_find_extent(inode, *iterator, path,
++		path = ext4_find_extent(inode, *iterator, &path,
+ 					EXT4_EX_NOCACHE);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+@@ -5850,8 +5844,11 @@ int ext4_clu_mapped(struct inode *inode, ext4_lblk_t lclu)
+ 
+ 	/* search for the extent closest to the first block in the cluster */
+ 	path = ext4_find_extent(inode, EXT4_C2B(sbi, lclu), NULL, 0);
+-	if (IS_ERR(path))
+-		return PTR_ERR(path);
++	if (IS_ERR(path)) {
++		err = PTR_ERR(path);
++		path = NULL;
++		goto out;
++	}
+ 
+ 	depth = ext_depth(inode);
+ 
+@@ -5935,7 +5932,7 @@ int ext4_ext_replay_update_ex(struct inode *inode, ext4_lblk_t start,
+ 		if (ret)
+ 			goto out;
+ 
+-		path = ext4_find_extent(inode, start, path, 0);
++		path = ext4_find_extent(inode, start, &path, 0);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+ 		ex = path[path->p_depth].p_ext;
+@@ -5949,7 +5946,7 @@ int ext4_ext_replay_update_ex(struct inode *inode, ext4_lblk_t start,
+ 			if (ret)
+ 				goto out;
+ 
+-			path = ext4_find_extent(inode, start, path, 0);
++			path = ext4_find_extent(inode, start, &path, 0);
+ 			if (IS_ERR(path))
+ 				return PTR_ERR(path);
+ 			ex = path[path->p_depth].p_ext;
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index 0aff07c570a46..e01632462db9f 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -26,17 +26,16 @@ static inline int
+ get_ext_path(struct inode *inode, ext4_lblk_t lblock,
+ 		struct ext4_ext_path **ppath)
+ {
+-	struct ext4_ext_path *path = *ppath;
++	struct ext4_ext_path *path;
+ 
+-	*ppath = NULL;
+-	path = ext4_find_extent(inode, lblock, path, EXT4_EX_NOCACHE);
++	path = ext4_find_extent(inode, lblock, ppath, EXT4_EX_NOCACHE);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+ 	if (path[ext_depth(inode)].p_ext == NULL) {
+ 		ext4_free_ext_path(path);
++		*ppath = NULL;
+ 		return -ENODATA;
+ 	}
+-	*ppath = path;
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
