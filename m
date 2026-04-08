@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IL09Es2a1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234084-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:33 +0200
+	id GAFrMAKk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C408B3C035B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7274F3C1D11
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB4CE301829B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CBF9C300AB0B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC533D88E1;
-	Wed,  8 Apr 2026 18:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E4638736D;
+	Wed,  8 Apr 2026 18:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8tHCUBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0OZo3/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39EF347503;
-	Wed,  8 Apr 2026 18:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F002727F3;
+	Wed,  8 Apr 2026 18:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671943; cv=none; b=Ji/r8r9uNAAj0iLhThm6dgumIvBGhyqOVrXlIBD7OypVIfcvYh4uFDLcRfM8Fsv71pOfInb8QzXmd8zOS7TQdSut6TBP1tssKSiMkmy9XZzblGWEQ8iAgW7NsfOKY9tTv2lQIzU0vkbpTWpSVP6//WVMB9XJIWcblm8dVjGRQfY=
+	t=1775674369; cv=none; b=KHopsw9T5LMW05hwZVQwoJXqL/MF5WPAINIeQzwkc655Ic8+OCAAWesjfaQ4fpJlbWc4EJrZlRvNxBh7t6CGp5duW6XLKqRXRfJ8/nZIbaK1IcHBBs2LPaOhu5FSH2PzkJidCa7PKTjOKgxPMHTT8jrl/wZ7G5Uj1cVwaq3c7JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671943; c=relaxed/simple;
-	bh=okhoLLdnlsL7B8GcEu3ImMBk4ButMhx0LFSv2qVM2k0=;
+	s=arc-20240116; t=1775674369; c=relaxed/simple;
+	bh=mUiiZ6xlMGZw+KZ9MKp8CySRkxU7O6CN6o96jvhglX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2rwz/wXn1sx/LF5iQjhQgtXQU+i3wYRyBFp+/Q0SjxwssWGV6xO9jTp8Qosm4pj7lAGnMnuQjr5xIH+Vw0KChRBgZ61DYVKiXkZF59FOnqG4Ea87ebn737G1jHUejk1FXbIugv3AjBFxZPJe7kvfsKKuWUSytRdlQjPbIoFd2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8tHCUBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619FDC19421;
-	Wed,  8 Apr 2026 18:12:23 +0000 (UTC)
+	 MIME-Version; b=ZOJ/Y3i75uThnpXAJ1DtK8oAlowWWeLH5ybYQUgfstSo65p3g4Pt0SKRfJheFjzh+y66dh/jYsuiWje8WxKSTNK3hvfJrVLycvydT0DLU92Fz2foFkfH1Y68lSZ78bLp3n9UC/tBAStz8v0cer+FI/q01UfNHG1WgxEsMA2rMTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0OZo3/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77960C19421;
+	Wed,  8 Apr 2026 18:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671943;
-	bh=okhoLLdnlsL7B8GcEu3ImMBk4ButMhx0LFSv2qVM2k0=;
+	s=korg; t=1775674368;
+	bh=mUiiZ6xlMGZw+KZ9MKp8CySRkxU7O6CN6o96jvhglX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p8tHCUBlMXYCNMfHajJEYmDLoNqYW1TM/Hovq+lLFM6jOKWVKVOF17DTxeIeus0XX
-	 EN2dcC9fpnzeXONeUs8jaiLUynwSpAQj8hVeZIf+C5QfyfQWrg05J6CAB+jsFIqo4F
-	 QhpxkGLe9lQnPgP9+oH6M5K7l9DxQNdkXosGt59U=
+	b=w0OZo3/1qwWwKeJrtXlggzsIGZjAkuED68bdW3WwaqDnwlFoefD4JedmZbAoH75v2
+	 lQgbM+n+rwH22Kl27Dty7QtoBH8XwLCxuLMRdTEsRWb19QDmlPANwI6pTvMX3znNSy
+	 Q+KbYKG9rL0RDkZWPeqRsPQ0/WIzRO/+N9RMhT78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.1 121/312] powerpc64/bpf: do not increment tailcall count when prog is NULL
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 038/311] crypto: deflate - fix spurious -ENOSPC
 Date: Wed,  8 Apr 2026 20:00:38 +0200
-Message-ID: <20260408175938.288123609@linuxfoundation.org>
+Message-ID: <20260408175940.837604208@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234084-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235022-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,81 +89,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C408B3C035B
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7274F3C1D11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 521bd39d9d28ce54cbfec7f9b89c94ad4fdb8350 upstream.
+[ Upstream commit 6d89f743e57cb34e233a8217b394c7ee09abf225 ]
 
-Do not increment tailcall count, if tailcall did not succeed due to
-missing BPF program.
+The code in deflate_decompress_one may erroneously return -ENOSPC even if
+it didn't run out of output space. The error happens under this
+condition:
 
-Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
-Cc: stable@vger.kernel.org
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260303181031.390073-2-hbathini@linux.ibm.com
-[ Conflict due to missing feature commit 2ed2d8f6fb38 ("powerpc64/bpf:
-  Support tailcalls with subprogs") resolved accordingly. ]
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Suppose that there are two input pages, the compressed data fits into
+  the first page and the zlib checksum is placed in the second page.
+
+- The code iterates over the first page, decompresses the data and fully
+  fills the destination buffer, zlib_inflate returns Z_OK becuse zlib
+  hasn't seen the checksum yet.
+
+- The outer do-while loop is iterated again, acomp_walk_next_src sets the
+  input parameters to the second page containing the checksum.
+
+- We go into the inner do-while loop, execute "dcur =
+  acomp_walk_next_dst(&walk);". "dcur" is zero, so we break out of the
+  loop and return -ENOSPC, despite the fact that the decompressed data
+  fit into the destination buffer.
+
+In order to fix this bug, this commit changes the logic when to report
+the -ENOSPC error. We report the error if the destination buffer is empty
+*and* if zlib_inflate didn't make any progress consuming the input
+buffer. If zlib_inflate consumes the trailing checksum, we see that it
+made progress and we will not return -ENOSPC.
+
+Fixes: 08cabc7d3c86 ("crypto: deflate - Convert to acomp")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/net/bpf_jit_comp64.c |   23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ crypto/deflate.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -288,27 +288,32 @@ static int bpf_jit_emit_tail_call(u32 *i
+diff --git a/crypto/deflate.c b/crypto/deflate.c
+index a3e1fff55661b..8df17e7880c9b 100644
+--- a/crypto/deflate.c
++++ b/crypto/deflate.c
+@@ -164,18 +164,21 @@ static int deflate_decompress_one(struct acomp_req *req,
  
- 	/*
- 	 * tail_call_cnt++;
-+	 * Writeback this updated value only if tailcall succeeds.
- 	 */
- 	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), 1));
--	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
+ 		do {
+ 			unsigned int dcur;
++			unsigned long avail_in;
  
- 	/* prog = array->ptrs[index]; */
--	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_1), b2p_index, 8));
--	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), b2p_bpf_array));
--	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_array, ptrs)));
-+	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_2), b2p_index, 8));
-+	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2), b2p_bpf_array));
-+	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			offsetof(struct bpf_array, ptrs)));
+ 			dcur = acomp_walk_next_dst(&walk);
+-			if (!dcur) {
+-				out_of_space = true;
+-				break;
+-			}
  
- 	/*
- 	 * if (prog == NULL)
- 	 *   goto out;
- 	 */
--	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_1), 0));
-+	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_2), 0));
- 	PPC_BCC_SHORT(COND_EQ, out);
+ 			stream->avail_out = dcur;
+ 			stream->next_out = walk.dst.virt.addr;
++			avail_in = stream->avail_in;
  
- 	/* goto *(prog->bpf_func + prologue_size); */
--	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_prog, bpf_func)));
--	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1),
--			FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
--	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_1)));
-+	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			offsetof(struct bpf_prog, bpf_func)));
-+	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			  FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
-+	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_2)));
+ 			ret = zlib_inflate(stream, Z_NO_FLUSH);
+ 
++			if (!dcur && avail_in == stream->avail_in) {
++				out_of_space = true;
++				break;
++			}
 +
-+	/* Writeback updated tailcall count */
-+	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
- 
- 	/* tear down stack, restore NVRs, ... */
- 	bpf_jit_emit_common_epilogue(image, ctx);
+ 			dcur -= stream->avail_out;
+ 			acomp_walk_done_dst(&walk, dcur);
+ 		} while (ret == Z_OK && stream->avail_in);
+-- 
+2.53.0
+
 
 
 
