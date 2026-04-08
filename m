@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-235154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2K/rDpqr1mmmHAgAu9opvQ
-	(envelope-from <stable+bounces-235154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:14 +0200
+	id COZLII+h1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCEA3C2F03
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB7C3C1473
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E15CE305FC1F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E6A3307AE47
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1E63AEF5F;
-	Wed,  8 Apr 2026 18:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC893D902E;
+	Wed,  8 Apr 2026 18:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWGaI1Jl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyYxyYJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F243537DF;
-	Wed,  8 Apr 2026 18:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C103D891A;
+	Wed,  8 Apr 2026 18:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674708; cv=none; b=TvJ54wogrXwdWasPP1PJwQw18rVu8fRJfuUYfchZSBXnjLYaACF5FROyFSCCqZrp6CItggC+B4hjOk2wl3X7IxWIhlD5mXxrXvLn9Kl+t0hxwS5XkzEot9eersV6Zmf9rE97hPctm2L2pwFMKMG4mkWZXweG0UQEgJrgr8yOS34=
+	t=1775673328; cv=none; b=TgvKQi/Do4RhnDFkIp4BFkoW1Q5wkqzIBakR2ge5/xAl5FfrFHk97ERmGdqgOcOIfi4a3CrG2Sr75HMtT+saJBzcxRciip/Cf6n4K/QqNPcVB+v1zcU9eCZ7k2+2PQoIKUu7GgeuGCdfMmpcRMLYdhBDH3DhHVWWe2F5Nb0PgFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674708; c=relaxed/simple;
-	bh=89V3d05Bsqjni3PiwPjbRdBNF2I1tCJZuJOuXy8vREU=;
+	s=arc-20240116; t=1775673328; c=relaxed/simple;
+	bh=oONyx2tUEYnd4qrAi00K5CmBppspR2tmwFfSCPTrxn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZ/XUyeBPVLPXyHPfRf+3P/znfv9hO5EH0Qy+wMdpK5zAbH4qUoJJzcRTdeEY4pNy9xqjImcfHNKAzAKIDRPLEQbyywX7sQxNkb7p04ENZL3XDVACsXi7zdJ6mEFV46gTLNMRsirbXXvqpZoXlnDJRCTWKM5/BUKaM3fzrw5eoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWGaI1Jl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4F5C19421;
-	Wed,  8 Apr 2026 18:58:27 +0000 (UTC)
+	 MIME-Version; b=dlKybE9/ALZW/wI3fT7VI4piULQKJKuBb0EwbsFsaKY0Kb3mQn0vY0hmBtluUQDdG00sdHaSMX97pLrL1faSPXzZOEGbjfKtjEGqnJ7Z5KXOdMXj4x3Xi0p7nw7d4hhJu7eUi31/KO81wacrBL9+ZSB9p60zONIZELs127Ws2AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyYxyYJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3569C19421;
+	Wed,  8 Apr 2026 18:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674708;
-	bh=89V3d05Bsqjni3PiwPjbRdBNF2I1tCJZuJOuXy8vREU=;
+	s=korg; t=1775673328;
+	bh=oONyx2tUEYnd4qrAi00K5CmBppspR2tmwFfSCPTrxn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWGaI1JlHuUJJ0WmzatRspZbQY+Pen1bvUFuQw9kxVf8YAXOjnYApytoEb/skecf3
-	 KfHzP0uFmCH35BT+ArsiiBPBpQs4USk1NMRqz1vD6AAEm+iut6vKPoKZilJyAIvp94
-	 9HEvP018H/oa4gK0sRxLJ2eHNodz5OOmrbOC6nUU=
+	b=YyYxyYJMlUcDdzOvuDUSPOHcQ2MGmHp+lPE2jdfzhgUKpBoZiC07Cq1uav0eYbtV4
+	 1+eJ7CoxuQujs27WxARkUrI7hWM2rnY7ZMOQRqxFSH5OWIwfh2dBrwVH5w/2y6Qtab
+	 V3ZyXao+Vdto83LFSQQ9r1gwxDERMzdkjFMIxUT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 175/311] ALSA: hda/realtek: Add quirk for ASUS ROG Strix SCAR 15
+	Francesco Lavra <flavra@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 190/277] iio: imu: st_lsm6dsx: Set FIFO ODR for accelerometer and gyroscope only
 Date: Wed,  8 Apr 2026 20:02:55 +0200
-Message-ID: <20260408175945.940264805@linuxfoundation.org>
+Message-ID: <20260408175940.959668774@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235154-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234619-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,45 +87,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BBCEA3C2F03
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,baylibre.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EDB7C3C1473
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Francesco Lavra <flavra@baylibre.com>
 
-commit f1af71d568e55536d9297bfa7907ad497108cf30 upstream.
+commit 630748afa7030b272b7bee5df857e7bcf132ed51 upstream.
 
-ASUS ROG Strix SCAR 15, like the Strix G15, requires the
-ALC285_FIXUP_ASUS_G533Z_PINS quirk to work properly.
+The st_lsm6dsx_set_fifo_odr() function, which is called when enabling and
+disabling the hardware FIFO, checks the contents of the hw->settings->batch
+array at index sensor->id, and then sets the current ODR value in sensor
+registers that depend on whether the register address is set in the above
+array element. This logic is valid for internal sensors only, i.e. the
+accelerometer and gyroscope; however, since commit c91c1c844ebd ("iio: imu:
+st_lsm6dsx: add i2c embedded controller support"), this function is called
+also when configuring the hardware FIFO for external sensors (i.e. sensors
+accessed through the sensor hub functionality), which can result in
+unrelated device registers being written.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221247
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260330075334.50962-2-zhangheng@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add a check to the beginning of st_lsm6dsx_set_fifo_odr() so that it does
+not touch any registers unless it is called for internal sensors.
+
+Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7238,6 +7238,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301VV/VQ/VU/VJ/VA/VC/VE/VVC/VQC/VUC/VJC/VEC/VCC", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1584, "ASUS UM3406GA ", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1602, "ASUS ROG Strix SCAR 15", ALC285_FIXUP_ASUS_G533Z_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1652, "ASUS ROG Zephyrus Do 15 SE", ALC289_FIXUP_ASUS_ZEPHYRUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZI/ZJ/ZQ/ZU/ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -224,6 +224,10 @@ static int st_lsm6dsx_set_fifo_odr(struc
+ 	const struct st_lsm6dsx_reg *batch_reg;
+ 	u8 data;
+ 
++	/* Only internal sensors have a FIFO ODR configuration register. */
++	if (sensor->id >= ARRAY_SIZE(hw->settings->batch))
++		return 0;
++
+ 	batch_reg = &hw->settings->batch[sensor->id];
+ 	if (batch_reg->addr) {
+ 		int val;
 
 
 
