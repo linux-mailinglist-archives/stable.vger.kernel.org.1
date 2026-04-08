@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAjUAQmi1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:25 +0200
+	id MKvMG/if1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7144F3C1647
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2D03C106D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C18B302C347
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6EE9C301CC64
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2B43D9043;
-	Wed,  8 Apr 2026 18:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527DE3624B0;
+	Wed,  8 Apr 2026 18:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qkss6/wm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifp1gQvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0C42BEFFF;
-	Wed,  8 Apr 2026 18:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1691C331A44;
+	Wed,  8 Apr 2026 18:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673810; cv=none; b=Q8YwVmcLrD79/DVyiLRuVl4Npf9iqQoFgUERT24u0C38Tomzxi6Y8Zr2+BKb5khpUs6Qm2ySizkn7Dh70ClNr+DCKt7qKIYOC04/W8qwpUv1M7KIOAsU4KQHE4FaLcoinim9Jyzq0UKv2JPjgshu/wYVZhkvEz4m3MDY/mLdcpY=
+	t=1775673318; cv=none; b=l8ibsPmvXtTtguUd6Mt1ZNfgodYPI2RFeESts2k8Dmx2U/zwIDlyfmq301xIeh751RS2QrXpop8+V8nfACxdAZnoBAAihQXn8GwtGSF6hDcq6sI+NYJgSeXrQQPSFB0rRHPigeJ1mzyu1cHPozKBBVJpYCcg8wOlXbengvrz5uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673810; c=relaxed/simple;
-	bh=6OqJVgA0yG/T+CLHN81Uq+bGzQbYI1p9c/Ha5ShHPeQ=;
+	s=arc-20240116; t=1775673318; c=relaxed/simple;
+	bh=sTjnLvwRp+RL8INqBgO9Rp8928g6r66VSFPFhKfK00A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URWkS/Saq582Gr64lBhX7V7VT9cYkq6nZvOCrMGYwxI8SaCCR7daKRL0mEB+MTWBcH7dEJY0/QFtv/cFII1LTP0+yb9NqMdExZWE3BX5gz7FX6ARXTECfVHV7EMp3WH5sY2w+edTxKgvZIgFHo/7c7HXaO3qwYZI3px10mD8R3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qkss6/wm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050DDC4AF09;
-	Wed,  8 Apr 2026 18:43:29 +0000 (UTC)
+	 MIME-Version; b=UZjyUa6plqD/K/1/8bqZ4nGa2FshOzPCONQKaNCrYMHDSE8v1BBEC7x8BbuaQdal/+ZcyHTgmNbS6IUbOek/tP2r3N5cgZ1h9i4pvngJ/PwDFlOboiaoPfNsIPuw1ZummUTnKY1MSyXckzxmdmd64sVk/kbXLtRXBPRgtvYEBCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifp1gQvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9A4C19421;
+	Wed,  8 Apr 2026 18:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673810;
-	bh=6OqJVgA0yG/T+CLHN81Uq+bGzQbYI1p9c/Ha5ShHPeQ=;
+	s=korg; t=1775673318;
+	bh=sTjnLvwRp+RL8INqBgO9Rp8928g6r66VSFPFhKfK00A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qkss6/wmXU/zwEDsEWRZgo/aivSQFJWk1hhtVocncOKa4LxgXoAKkyykm3zHO34mM
-	 8TBz4PPXOo5sitE3AoMru/N27t27fHNnj3I+ff8+RzwN40SS4c9F+nA15pT2vJ4VlI
-	 pspUlkumW9CtGeK+VDsMj+S3gg5QovbCEbg5nCEQ=
+	b=ifp1gQvJM65fmLaBQfZPNsWh6oA5DppbJDtbYW12fWvUs1S18DIzaeqg29RBCaCL/
+	 BOU9E3TvIQLbXseBdDjjK6KHaxkcizTlzlZLFsyD5DwMoy774Og9AgWPfeYM0SQyJC
+	 EEa2uM4/96T4iWHqffmZSzE2Pc1Ue+Fkh+IlcubQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/242] net/sched: cls_flow: fix NULL pointer dereference on shared blocks
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 153/277] iio: add IIO_DECLARE_QUATERNION() macro
 Date: Wed,  8 Apr 2026 20:02:18 +0200
-Message-ID: <20260408175930.752935789@linuxfoundation.org>
+Message-ID: <20260408175939.585329955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,90 +74,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234806-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234615-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: 7144F3C1647
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,baylibre.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DB2D03C106D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 1a280dd4bd1d616a01d6ffe0de284c907b555504 ]
+commit 56bd57e7b161f75535df91b229b0b2c64c6e5581 upstream.
 
-flow_change() calls tcf_block_q() and dereferences q->handle to derive
-a default baseclass.  Shared blocks leave block->q NULL, causing a NULL
-deref when a flow filter without a fully qualified baseclass is created
-on a shared block.
+Add a new IIO_DECLARE_QUATERNION() macro that is used to declare the
+field in an IIO buffer struct that contains a quaternion vector.
 
-Check tcf_block_shared() before accessing block->q and return -EINVAL
-for shared blocks.  This avoids the null-deref shown below:
+Quaternions are currently the only IIO data type that uses the .repeat
+feature of struct iio_scan_type. This has an implicit rule that the
+element in the buffer must be aligned to the entire size of the repeated
+element. This macro will make that requirement explicit. Since this is
+the only user, we just call the macro IIO_DECLARE_QUATERNION() instead
+of something more generic.
 
-=======================================================================
-KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
-RIP: 0010:flow_change (net/sched/cls_flow.c:508)
-Call Trace:
- tc_new_tfilter (net/sched/cls_api.c:2432)
- rtnetlink_rcv_msg (net/core/rtnetlink.c:6980)
- [...]
-=======================================================================
-
-Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260331050217.504278-2-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flow.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/linux/iio/iio.h |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
-index 5c2580a07530e..7eeead60ec23b 100644
---- a/net/sched/cls_flow.c
-+++ b/net/sched/cls_flow.c
-@@ -503,8 +503,16 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
- 		}
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -816,6 +816,18 @@ static inline void *iio_device_get_drvda
+ #define IIO_DECLARE_DMA_BUFFER_WITH_TS(type, name, count) \
+ 	__IIO_DECLARE_BUFFER_WITH_TS(type, name, count) __aligned(IIO_DMA_MINALIGN)
  
- 		if (TC_H_MAJ(baseclass) == 0) {
--			struct Qdisc *q = tcf_block_q(tp->chain->block);
-+			struct tcf_block *block = tp->chain->block;
-+			struct Qdisc *q;
- 
-+			if (tcf_block_shared(block)) {
-+				NL_SET_ERR_MSG(extack,
-+					       "Must specify baseclass when attaching flow filter to block");
-+				goto err2;
-+			}
++/**
++ * IIO_DECLARE_QUATERNION() - Declare a quaternion element
++ * @type: element type of the individual vectors
++ * @name: identifier name
++ *
++ * Quaternions are a vector composed of 4 elements (W, X, Y, Z). Use this macro
++ * to declare a quaternion element in a struct to ensure proper alignment in
++ * an IIO buffer.
++ */
++#define IIO_DECLARE_QUATERNION(type, name) \
++	type name[4] __aligned(sizeof(type) * 4)
 +
-+			q = tcf_block_q(block);
- 			baseclass = TC_H_MAKE(q->handle, baseclass);
- 		}
- 		if (TC_H_MIN(baseclass) == 0)
--- 
-2.53.0
-
+ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv);
+ 
+ /* The information at the returned address is guaranteed to be cacheline aligned */
 
 
 
