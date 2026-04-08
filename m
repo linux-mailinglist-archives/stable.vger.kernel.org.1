@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEiLMxei1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:39 +0200
+	id 6EOgKWCf1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFA43C1685
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C2A3C0F04
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7A8F301D4FE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F88B309A879
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE7E3624B0;
-	Wed,  8 Apr 2026 18:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019BF3ACF11;
+	Wed,  8 Apr 2026 18:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNJBTDMr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2E8aWlnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E3E2BEFFF;
-	Wed,  8 Apr 2026 18:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B802D324B1F;
+	Wed,  8 Apr 2026 18:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673845; cv=none; b=DKvHeRd6XtrolhIPadjnYu8RVWsZPMFhZ+I4E2bPEMZ+M3Zrf5e4bPIyAng6MMMen2dy9JhLzINjF16Jk1jmb3Avh82rwzQTH7kdUAujCGHt9xfQJeMPa+yMeBnuKZUAPKwmlpC9Dyxs9hyVAYyhgWGe3C1hZVu3wCqNn0yKUro=
+	t=1775672478; cv=none; b=iZizT+FqV8yOKAb9xHXE266/CB+FyHF6uYtaxCPFmxiP3JL8QW/uPBJZGgKsX1bO31xF2mNzbOjbbRlX6dbkbRlsZ+8EER7hfh8O3SCE4jJdT73yqDDtmM0YZqgjMNQ6xGd2GJTzf3UarSTT4X4NDYycVqq2DnHcsU5VA9AEO+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673845; c=relaxed/simple;
-	bh=BcW8o95v93zZOIkFUXiQwevzTsfErh8FRIwkgIQOu/g=;
+	s=arc-20240116; t=1775672478; c=relaxed/simple;
+	bh=fdQHc6N+0Lv16xQfcH6I3XSgdjMalr9q6W0xedTrG8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dceq3dr8+rxQnZnIhi0Nd4pdLDQTmuxwAoSmDMIKD5FVidLJcm77+YwNg5OWJY9iUJqFrKHmG8M8bWejKogsbMyrwSIEQ1nQhB2X5TYecp8zjC/yiQeulR1l4lFlk8Cz2RauE4BPIiQuJgoPwyb/eztGZil2A0cb1e8tEnDhscQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNJBTDMr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB524C19421;
-	Wed,  8 Apr 2026 18:44:04 +0000 (UTC)
+	 MIME-Version; b=NmTuRPr6wOHsx4ml271ibVvgNb2HtPLtJ5V5eAzhv+OoTLWrqtJst9cWOYSYwqj+ZqIJ8R7hXuCItUPRmHKzqp5JEl+hwIzAvIGQg3uPamYFIyssm+qUkGg/fUv0u7O3sXildzq7gLv+N5I5wNpCfedope07ltgqRjuhmCEC6ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2E8aWlnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF69C19421;
+	Wed,  8 Apr 2026 18:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673845;
-	bh=BcW8o95v93zZOIkFUXiQwevzTsfErh8FRIwkgIQOu/g=;
+	s=korg; t=1775672478;
+	bh=fdQHc6N+0Lv16xQfcH6I3XSgdjMalr9q6W0xedTrG8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNJBTDMrKJZU5aQXo0Ds8Xit9PUUcflphAaLBg7gbQLPMofRYqJfIu+Vt531xFqGK
-	 8eK2xR8EpVrzeuHW3NMMc6xWlXnRQyEKnxnbr/xp0X1pvh+jH8wL1Uxzt5f3VPhNI4
-	 FT99dLYWhJxIT13HhYzB2jRBUwZwWX67iiY4g2vU=
+	b=2E8aWlnjf0kHiEEHpAMXMuon76PEbH2nRtK9JVQ1wlfOVtraXi+pTDSIrB6MTThHa
+	 pQiKFpP4xLSu0pjVnnkD1UGiyPmuD4qOcUbeDkiQFreR6SU2tVbimIC+FEloSpRQFW
+	 lroBF9bNDAQNjDHe2A8Zw6l2ktywS/Ayj7UkOakw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/242] netfilter: nfnetlink_log: account for netlink header size
+Subject: [PATCH 6.6 022/160] tg3: Fix race for querying speed/duplex
 Date: Wed,  8 Apr 2026 20:01:49 +0200
-Message-ID: <20260408175929.666639350@linuxfoundation.org>
+Message-ID: <20260408175914.029999391@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +69,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234819-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234291-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email]
-X-Rspamd-Queue-Id: 5FFA43C1685
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email,suse.de:email,davemloft.net:email]
+X-Rspamd-Queue-Id: 25C2A3C0F04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-[ Upstream commit 6d52a4a0520a6696bdde51caa11f2d6821cd0c01 ]
+[ Upstream commit bb417456c7814d1493d98b7dd9c040bf3ce3b4ed ]
 
-This is a followup to an old bug fix: NLMSG_DONE needs to account
-for the netlink header size, not just the attribute size.
+When driver signals carrier up via netif_carrier_on() its internal
+link_up state isn't updated immediately. This leads to inconsistent
+speed/duplex in /proc/net/bonding/bondX where the speed and duplex
+is shown as unknown while ethtool shows correct values. Fix this by
+using netif_carrier_ok() for link checking in get_ksettings function.
 
-This can result in a WARN splat + drop of the netlink message,
-but other than this there are no ill effects.
-
-Fixes: 9dfa1dfe4d5e ("netfilter: nf_log: account for size of NLMSG_DONE attribute")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 84421b99cedc ("tg3: Update link_up flag for phylib devices")
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_log.c | 2 +-
+ drivers/net/ethernet/broadcom/tg3.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
-index aa5fc9bffef0c..f96421ad14afb 100644
---- a/net/netfilter/nfnetlink_log.c
-+++ b/net/netfilter/nfnetlink_log.c
-@@ -726,7 +726,7 @@ nfulnl_log_packet(struct net *net,
- 		+ nla_total_size(plen)			/* prefix */
- 		+ nla_total_size(sizeof(struct nfulnl_msg_packet_hw))
- 		+ nla_total_size(sizeof(struct nfulnl_msg_packet_timestamp))
--		+ nla_total_size(sizeof(struct nfgenmsg));	/* NLMSG_DONE */
-+		+ nlmsg_total_size(sizeof(struct nfgenmsg));	/* NLMSG_DONE */
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 840231ebbef71..1ffd98a1c7417 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -12212,7 +12212,7 @@ static int tg3_get_link_ksettings(struct net_device *dev,
+ 	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
+ 						advertising);
  
- 	if (in && skb_mac_header_was_set(skb)) {
- 		size += nla_total_size(skb->dev->hard_header_len)
+-	if (netif_running(dev) && tp->link_up) {
++	if (netif_running(dev) && netif_carrier_ok(dev)) {
+ 		cmd->base.speed = tp->link_config.active_speed;
+ 		cmd->base.duplex = tp->link_config.active_duplex;
+ 		ethtool_convert_legacy_u32_to_link_mode(
 -- 
 2.53.0
 
