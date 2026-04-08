@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AiEF8We1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:30:29 +0200
+	id yKI/I1Sa1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB01A3C0D71
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:30:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 180AC3C01D1
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3A48300B564
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 745E3302F0D5
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3479B3D564E;
-	Wed,  8 Apr 2026 18:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A573D88FE;
+	Wed,  8 Apr 2026 18:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATb1xyEJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNjOz4JO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6003D4134;
-	Wed,  8 Apr 2026 18:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD9F37F8C2;
+	Wed,  8 Apr 2026 18:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672949; cv=none; b=uQ+kwWJoTE2rZ+nMIZe2JVZJZ4YcCk+VPoc2hxLl3QkTRIK+RK62yxfoJL9LEWj0fyk+m3kqXex1X9setnrvz1saBLJ6GEHvKSn2x2wxxqi0xJrZyNcAzExaSBKBoA3WfuQo53aVgrzJ/wLtuNbcW0ODO0gaLBesFtk5TQQ4GM4=
+	t=1775671822; cv=none; b=eqbcel2qsr7NIHgfmRf6YiwXg42x3iWGV9oJdXs6Y56i0v6QyjHdtFJn5kSDDuRYYvBPW/fD7DLWceELhrz3m4qlIzQchoLcORiqBbbh5jf6o2qrzuYBnbV1eeCFPCVf1NcjXlMNjNDJqI6z1QEV8qXFXkw5raTliPWOBJVHjss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672949; c=relaxed/simple;
-	bh=0aVJQdyBYpBR6fkxRA0UtcDd+snSpECtqe0YyzfUUQY=;
+	s=arc-20240116; t=1775671822; c=relaxed/simple;
+	bh=RzmrwcqLgFvXf5NaKJaREoS5SduDlVWT9/gzkwU2E3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YoU+m90HcSkK3oPVlpYzwQkX3xmpXOccxU65tXm3KbI2gPOmqralRDIBEcKU5nam6Z8MKrvGHTTeowF0n7q40/fIyiHQkexT9OVStAQO2qglWSDQFTUg6bjjug4cTY3OJQqKj/GGGyob1nXD02/vUaksMcnijf9OOB7YbfB4MO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATb1xyEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFD6C19421;
-	Wed,  8 Apr 2026 18:29:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rdfuqY3xou+hOi272TU2/emAugToGjyXSk2FQ5iCnydOL3pGId4YteBNFzWWhX3rmehQSg9VMDHnpyVqMgYiGU68fXG0YCwqRvXFofv7inqUsGcAYxyNeCOacLDHZsteGUM0Huyg6FL0PGPETTxE8LdwJ98HbGMo6JUnl3zugik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNjOz4JO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D33C19421;
+	Wed,  8 Apr 2026 18:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672948;
-	bh=0aVJQdyBYpBR6fkxRA0UtcDd+snSpECtqe0YyzfUUQY=;
+	s=korg; t=1775671822;
+	bh=RzmrwcqLgFvXf5NaKJaREoS5SduDlVWT9/gzkwU2E3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATb1xyEJZ75fuYgUBykLi4nsXqxoTSfbCFPH9LjsQysME0UyjfMhoWVKgKX3YBia2
-	 xmWgRZHy/Ow4bWSs4M7CmLnzLkW+pjSbDtI8K9FySltb/F0gbcgfIofNFT8l0R5Slv
-	 LYvF8BRicc1VPWhHE+gFj4RR2RfcOOrCID/W+4d8=
+	b=vNjOz4JOdt90dN6EEVS5SSQA4Of5ylPJ4lkBxIs21uYZmOUZg1lqAKSuZFsjaL0Ok
+	 yecDh/OwBmM/PCJmtd4cJbUoNceqPgPSubCsNox2DtV7t7KIPDQabhWBivF898oOv2
+	 VczWOx6zRONPUy+N6XrPAGOpRXC32a6aSm8fVauY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 011/277] HID: multitouch: Check to ensure report responses match the request
-Date: Wed,  8 Apr 2026 19:59:56 +0200
-Message-ID: <20260408175934.267481795@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	=?UTF-8?q?Johannes=20Pen=C3=9Fel?= <johannespenssel@posteo.net>
+Subject: [PATCH 6.1 080/312] ACPI: EC: Fix ECDT probe ordering issues
+Date: Wed,  8 Apr 2026 19:59:57 +0200
+Message-ID: <20260408175936.731894059@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234037-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234472-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CB01A3C0D71
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 180AC3C01D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e716edafedad4952fe3a4a273d2e039a84e8681a ]
+[ Upstream commit ab4620f58d38206687b9f99d9d2cc1d5a2640985 ]
 
-It is possible for a malicious (or clumsy) device to respond to a
-specific report's feature request using a completely different report
-ID.  This can cause confusion in the HID core resulting in nasty
-side-effects such as OOB writes.
+ACPI-2.0 says that the EC OpRegion handler must be available immediately
+(like the standard default OpRegion handlers):
 
-Add a check to ensure that the report ID in the response, matches the
-one that was requested.  If it doesn't, omit reporting the raw event and
-return early.
+Quoting from the ACPI spec version 6.3: "6.5.4 _REG (Region) ...
+2. OSPM must make Embedded Controller operation regions, accessed via
+the Embedded Controllers described in ECDT, available before executing
+any control method. These operation regions may become inaccessible
+after OSPM runs _REG(EmbeddedControl, 0)."
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+So acpi_bus_init() calls acpi_ec_ecdt_probe(), which calls
+acpi_install_address_space_handler() to install the EC's OpRegion
+handler, early on.
+
+This not only installs the OpRegion handler, but also calls the EC's
+_REG method. The _REG method call is a problem because it may rely on
+initialization done by the _INI methods of one of the PCI / _SB root devs,
+see for example: https://bugzilla.kernel.org/show_bug.cgi?id=214899 .
+
+Generally speaking _REG methods are executed when the ACPI-device they
+are part of has a driver bound to it. Where as _INI methods must be
+executed at table load time (according to the spec). The problem here
+is that the early acpi_install_address_space_handler() call causes
+the _REG handler to run too early.
+
+To allow fixing this the ACPICA code now allows to split the OpRegion
+handler installation and the executing of _REG into 2 separate steps.
+
+This commit uses this ACPICA functionality to fix the EC probe ordering
+by delaying the executing of _REG for ECDT described ECs till the matching
+EC device in the DSDT gets parsed and acpi_ec_add() for it gets called.
+This moves the calling of _REG for the EC on devices with an ECDT to
+the same point in time where it is called on devices without an ECDT table.
+
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214899
+Reported-and-tested-by: Johannes Penßel <johannespenssel@posteo.net>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/acpi/ec.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index af19e089b0122..21bfaf9bbd733 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -524,12 +524,19 @@ static void mt_get_feature(struct hid_device *hdev, struct hid_report *report)
- 		dev_warn(&hdev->dev, "failed to fetch feature %d\n",
- 			 report->id);
- 	} else {
-+		/* The report ID in the request and the response should match */
-+		if (report->id != buf[0]) {
-+			hid_err(hdev, "Returned feature report did not match the request\n");
-+			goto free;
-+		}
-+
- 		ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT, buf,
- 					   size, 0);
- 		if (ret)
- 			dev_warn(&hdev->dev, "failed to report feature\n");
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index cecc521e2d30f..a20b59a554414 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -94,6 +94,7 @@ enum {
+ 	EC_FLAGS_QUERY_ENABLED,		/* Query is enabled */
+ 	EC_FLAGS_EVENT_HANDLER_INSTALLED,	/* Event handler installed */
+ 	EC_FLAGS_EC_HANDLER_INSTALLED,	/* OpReg handler installed */
++	EC_FLAGS_EC_REG_CALLED,		/* OpReg ACPI _REG method called */
+ 	EC_FLAGS_QUERY_METHODS_INSTALLED, /* _Qxx handlers installed */
+ 	EC_FLAGS_STARTED,		/* Driver is started */
+ 	EC_FLAGS_STOPPED,		/* Driver is stopped */
+@@ -1495,6 +1496,7 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
+  * ec_install_handlers - Install service callbacks and register query methods.
+  * @ec: Target EC.
+  * @device: ACPI device object corresponding to @ec.
++ * @call_reg: If _REG should be called to notify OpRegion availability
+  *
+  * Install a handler for the EC address space type unless it has been installed
+  * already.  If @device is not NULL, also look for EC query methods in the
+@@ -1507,7 +1509,8 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
+  * -EPROBE_DEFER if GPIO IRQ acquisition needs to be deferred,
+  * or 0 (success) otherwise.
+  */
+-static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
++static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
++			       bool call_reg)
+ {
+ 	acpi_status status;
+ 
+@@ -1515,10 +1518,10 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
+ 
+ 	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
+ 		acpi_ec_enter_noirq(ec);
+-		status = acpi_install_address_space_handler(ec->handle,
+-							    ACPI_ADR_SPACE_EC,
+-							    &acpi_ec_space_handler,
+-							    NULL, ec);
++		status = acpi_install_address_space_handler_no_reg(ec->handle,
++								   ACPI_ADR_SPACE_EC,
++								   &acpi_ec_space_handler,
++								   NULL, ec);
+ 		if (ACPI_FAILURE(status)) {
+ 			acpi_ec_stop(ec, false);
+ 			return -ENODEV;
+@@ -1527,6 +1530,11 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
+ 		ec->address_space_handler_holder = ec->handle;
  	}
  
-+free:
- 	kfree(buf);
++	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
++		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
++		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
++	}
++
+ 	if (!device)
+ 		return 0;
+ 
+@@ -1613,11 +1621,11 @@ static void ec_remove_handlers(struct acpi_ec *ec)
+ 	}
  }
  
+-static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device)
++static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool call_reg)
+ {
+ 	int ret;
+ 
+-	ret = ec_install_handlers(ec, device);
++	ret = ec_install_handlers(ec, device, call_reg);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1682,7 +1690,7 @@ static int acpi_ec_add(struct acpi_device *device)
+ 		}
+ 	}
+ 
+-	ret = acpi_ec_setup(ec, device);
++	ret = acpi_ec_setup(ec, device, true);
+ 	if (ret)
+ 		goto err;
+ 
+@@ -1802,7 +1810,7 @@ void __init acpi_ec_dsdt_probe(void)
+ 	 * At this point, the GPE is not fully initialized, so do not to
+ 	 * handle the events.
+ 	 */
+-	ret = acpi_ec_setup(ec, NULL);
++	ret = acpi_ec_setup(ec, NULL, true);
+ 	if (ret) {
+ 		acpi_ec_free(ec);
+ 		return;
+@@ -2017,7 +2025,7 @@ void __init acpi_ec_ecdt_probe(void)
+ 	 * At this point, the namespace is not initialized, so do not find
+ 	 * the namespace objects, or handle the events.
+ 	 */
+-	ret = acpi_ec_setup(ec, NULL);
++	ret = acpi_ec_setup(ec, NULL, false);
+ 	if (ret) {
+ 		acpi_ec_free(ec);
+ 		goto out;
 -- 
 2.53.0
 
