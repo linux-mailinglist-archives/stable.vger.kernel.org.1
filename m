@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DVSHQ+p1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-234953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:23 +0200
+	id GBiiALCh1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E173F3C29FF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F210F3C1509
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C008D322B436
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 209603033566
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2DF337B81;
-	Wed,  8 Apr 2026 18:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DD13D522C;
+	Wed,  8 Apr 2026 18:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNw5kJYn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoZNWZcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18B03D9037;
-	Wed,  8 Apr 2026 18:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FA83624B0;
+	Wed,  8 Apr 2026 18:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674191; cv=none; b=YOLat3r7gdr0/uhZOdPW8R4n6X5K0mmXa3QqKyyL9zb69NZFLjTH0tuPY8NkJofFsQqlUugVee9iJhJBzXmZgwUr22EVsxzoer6JnkDJO2EnFMOeSCT2DmvCmweWPV4Mr4RF1Q6rwDGPJMmMeqaZTg1izuWRj7PCaZv2gcivgJc=
+	t=1775673534; cv=none; b=Qw2H+FQ4ixpkETw0d8z/6CJaUGwVqc5kPUnXkCiQqlqDqnSJRR3fYicTf91vz2ByKFdR7J3pLKPSQXMMUIUFHroBeRiVRBCwtjJYVEbqrNgsHEq+iE1O2FK6308wei1EMT/X7+eklCtDQ5GIlP2jSs035Op+q/+ZKUFTN107ELI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674191; c=relaxed/simple;
-	bh=qnJLzJDRqFAXhb4vK+UOWlOYm7Te59HOwIiUnw3q2pc=;
+	s=arc-20240116; t=1775673534; c=relaxed/simple;
+	bh=0m1wuG3+Jpc6RTmEmdDybU/kfTVBkXsnbbVLbdL5xLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aoo42m+/2jjiYB+k2mkq8DW3CrEWujKXfY+qrJp5R7b+T4o/kW2a7lQrQzzXKxBGWblDs+Dsnjx2PsIZx03veDfEn94OxxWGSKXvY39IqBw7zsNec5bYUnh7Dt5YtHk+qWnIrX2S2aXFh+8bleSozfsLCYlGymSI3OXvN8dcjx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNw5kJYn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3980DC2BC87;
-	Wed,  8 Apr 2026 18:49:50 +0000 (UTC)
+	 MIME-Version; b=Iox1VaYS/NR6LszUhRXo9N7aLU67j4yr132IHsmHKsf4fvLdF0o84Are6Os1Emm2eenRPLfwkJDwZ+19G1+cicdrH/zUte+ay/lB6Qcj9miSdGLrKFngB2S8BUlIhUmTM61+EpB8j/QDBImrb9knJUs9TPbWAmNSXedunLHnvI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoZNWZcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5C4C19421;
+	Wed,  8 Apr 2026 18:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674190;
-	bh=qnJLzJDRqFAXhb4vK+UOWlOYm7Te59HOwIiUnw3q2pc=;
+	s=korg; t=1775673534;
+	bh=0m1wuG3+Jpc6RTmEmdDybU/kfTVBkXsnbbVLbdL5xLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNw5kJYn30mqnRULCJ35x8PF5tGZBwwJB9DfmlmprTrEfq86kBR9kzuExi5DeDMik
-	 vJFUrXJfokro4mwDgSWK1W8PkgheW4rj2yLffryu00ZDm/F6w4CqYy9D30b89gXXkb
-	 txxYpRGPSUfFFCfEAEu6uSP0o9mAGYoIsuIUSZLg=
+	b=GoZNWZcTwE1c79I8gQXvWZSWqyt0PN8DH1l4rA59i9wiNYx91NTk5e4iPu8oz1z9H
+	 3n9IExYkiQzph4OUFgDu5guTlyY83fJvLrgs9nxu3dg/LGcFOEoltD2mE/ro8Y0xyV
+	 pY6ljlGeOitMpASPHrtYZboTNiIlgxTJvmLaDVlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 213/242] spi: cadence-qspi: Fix exec_mem_op error handling
-Date: Wed,  8 Apr 2026 20:04:13 +0200
-Message-ID: <20260408175935.052127592@linuxfoundation.org>
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 269/277] drm/amd/display: Fix DCE LVDS handling
+Date: Wed,  8 Apr 2026 20:04:14 +0200
+Message-ID: <20260408175943.908425449@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +69,197 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234699-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234953-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,toradex.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E173F3C29FF
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: F210F3C1509
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 59e1be1278f064d7172b00473b7e0c453cb1ec52 upstream.
+[ Upstream commit 90d239cc53723c1a3f89ce08eac17bf3a9e9f2d4 ]
 
-cqspi_exec_mem_op() increments the runtime PM usage counter before all
-refcount checks are performed. If one of these checks fails, the function
-returns without dropping the PM reference.
+LVDS does not use an HPD pin so it may be invalid.  Handle
+this case correctly in link encoder creation.
 
-Move the pm_runtime_resume_and_get() call after the refcount checks so
-that runtime PM is only acquired when the operation can proceed and
-drop the inflight_ops refcount if the PM resume fails.
-
+Fixes: 7c8fb3b8e9ba ("drm/amd/display: Add hpd_source index check for DCE60/80/100/110/112/120 link encoders")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5012
+Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3b5620f7ee688177fcf65cf61588c5435bce1872)
 Cc: stable@vger.kernel.org
-Fixes: 7446284023e8 ("spi: cadence-quadspi: Implement refcount to handle unbind during busy")
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Link: https://patch.msgid.link/20260313135236.46642-1-ghidoliemanuele@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+[ removed unrelated VGA connector block absent from stable and split combined null/bounds check into separate guard and ternary ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c |    5 ++-
+ drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c |    5 ++-
+ drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c |    5 ++-
+ drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c |    5 ++-
+ drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c   |   13 +++++-----
+ drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c   |    5 ++-
+ 6 files changed, 22 insertions(+), 16 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1461,12 +1461,6 @@ static int cqspi_exec_mem_op(struct spi_
- 	if (refcount_read(&cqspi->inflight_ops) == 0)
- 		return -ENODEV;
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
+@@ -624,7 +624,7 @@ static struct link_encoder *dce100_link_
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
  
--	ret = pm_runtime_resume_and_get(dev);
--	if (ret) {
--		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
--		return ret;
--	}
--
- 	if (!refcount_read(&cqspi->refcount))
- 		return -EBUSY;
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
  
-@@ -1478,6 +1472,12 @@ static int cqspi_exec_mem_op(struct spi_
- 		return -EBUSY;
- 	}
+ 	link_regs_id =
+@@ -635,7 +635,8 @@ static struct link_encoder *dce100_link_
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
  
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret) {
-+		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
-+		goto dec_inflight_refcount;
-+	}
-+
- 	ret = cqspi_mem_process(mem, op);
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
+@@ -668,7 +668,7 @@ static struct link_encoder *dce110_link_
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
  
- 	pm_runtime_mark_last_busy(dev);
-@@ -1486,6 +1486,7 @@ static int cqspi_exec_mem_op(struct spi_
- 	if (ret)
- 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
  
-+dec_inflight_refcount:
- 	if (refcount_read(&cqspi->inflight_ops) > 1)
- 		refcount_dec(&cqspi->inflight_ops);
+ 	link_regs_id =
+@@ -679,7 +679,8 @@ static struct link_encoder *dce110_link_
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
+ 
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
+@@ -629,7 +629,7 @@ static struct link_encoder *dce112_link_
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
+ 
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
+ 
+ 	link_regs_id =
+@@ -640,7 +640,8 @@ static struct link_encoder *dce112_link_
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
+ 
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
+@@ -713,7 +713,7 @@ static struct link_encoder *dce120_link_
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
+ 
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
+ 
+ 	link_regs_id =
+@@ -724,7 +724,8 @@ static struct link_encoder *dce120_link_
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 
+ 	return &enc110->base;
+ }
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+@@ -718,18 +718,19 @@ static struct link_encoder *dce60_link_e
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
+ 
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
+ 
+ 	link_regs_id =
+ 		map_transmitter_id_to_phy_instance(enc_init_data->transmitter);
+ 
+ 	dce60_link_encoder_construct(enc110,
+-				      enc_init_data,
+-				      &link_enc_feature,
+-				      &link_enc_regs[link_regs_id],
+-				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				     enc_init_data,
++				     &link_enc_feature,
++				     &link_enc_regs[link_regs_id],
++				     &link_enc_aux_regs[enc_init_data->channel - 1],
++				     enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				     NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
+ 
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
+@@ -724,7 +724,7 @@ static struct link_encoder *dce80_link_e
+ 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
+ 
+-	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
++	if (!enc110)
+ 		return NULL;
+ 
+ 	link_regs_id =
+@@ -735,7 +735,8 @@ static struct link_encoder *dce80_link_e
+ 				      &link_enc_feature,
+ 				      &link_enc_regs[link_regs_id],
+ 				      &link_enc_aux_regs[enc_init_data->channel - 1],
+-				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
++				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
++				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
+ }
  
 
 
