@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JJvNwKo1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:09:54 +0200
+	id uMOpOQ6d1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617463C2828
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:09:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C9D3C08F7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83E2A3053740
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77B82303FA8F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528153624B9;
-	Wed,  8 Apr 2026 18:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E185385513;
+	Wed,  8 Apr 2026 18:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmq8wAt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d69V4dWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01493355F30;
-	Wed,  8 Apr 2026 18:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3153624B28;
+	Wed,  8 Apr 2026 18:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673922; cv=none; b=jNBGBauG9E5Oq21kV1zUrwQj2dQBouYKwbt4n7NwZXS6HlhL7B6xkeXwyQwXls2QNLS/AQhbqzngfNJyTGUqWsABmj62EfONIgC4MxDXej/uZTJ2WLuRa+5XGLUY4tpHoUhu4oqAGeLPKq9tdOT7EVQThkiIl+jXLn6rm36bUdk=
+	t=1775672294; cv=none; b=DZB6NcisngZOmcyBKjVsYeliakHyzDBG/fr7Um8emkyd0KkQlgBAf3yePModeA+JHpRafc6IfuW9cRKJU6108CPLq71PHvYK+/fOcdQcBhC0uGBLeWfQvjQfzggQy2Biayx7QQGmYp977U0882yZS8P2qu0O9Hp8DFSCY48Nub8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673922; c=relaxed/simple;
-	bh=eaVzQPzmw/j2YmV2b8PLKYjdcroanikTnR2h2/SO5JA=;
+	s=arc-20240116; t=1775672294; c=relaxed/simple;
+	bh=3+i8XTAfpLagAsEBkdV+Bw6Ek7UYN+9NLfCzpxG6aQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4hiUraYC/Pxn3OaMZPBMtQtB5LAYQsMs+IXUBWHp6zVYErSgTF8v1+r2zl+T6/zs+KGacPmL8ybE9OiO/pfb2Nc6lhiLy12rtf436jkpGObwqkzxEO5lVCxQbLklMYw/tZaCnAfztBwuITAhimWCF2BdCLavY7T03GTUd8lq5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmq8wAt0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88202C19421;
-	Wed,  8 Apr 2026 18:45:21 +0000 (UTC)
+	 MIME-Version; b=uWLl7YKtJ1hqbuAYrLdpR4FnE+F6jr6Qu4wYXBQAp6b8iBQlNGX+IipllOo8tnKRwBO48Ssgo+WS0l18XiUK6fecjZa+EgvO36NNZX7FlQVDIZlWtASZa3h8QKc/OqDXPa/mSSOg3gUrWm8wyfZpb9X0SMUrl02z8IZMndyOoOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d69V4dWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1370C19421;
+	Wed,  8 Apr 2026 18:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673921;
-	bh=eaVzQPzmw/j2YmV2b8PLKYjdcroanikTnR2h2/SO5JA=;
+	s=korg; t=1775672294;
+	bh=3+i8XTAfpLagAsEBkdV+Bw6Ek7UYN+9NLfCzpxG6aQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmq8wAt03li4FDOWqwmtldALyPypjdq31yMCugt4+MMEsRDMhgZFwqVQI9/Z0ATfE
-	 Cr+uU1u+j5uqHI0x5a7MUi2hN2qFYuRBTpcKHor9Om9r1BjDt8zjHzbmSpACG4vP1M
-	 JEbxdRXmwzlc9GWPybvQd8SIYqZij0aL5dAcWo6s=
+	b=d69V4dWcvy5QRMF+yBLW6HQZoqIfXGeVVqs2jSlNx498Hk0cvUDr0QiojIAfhe0X8
+	 QT+QcB/j8MeNZkT+VNyyGVusJ2lrCNbdkESX2So+HpjE7pKu9DZqydeQuyun1Pgldc
+	 Q3KoLh1KzAUJDb5Pz6Nn7/hpJ7jrgBDgQRj57i/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/242] hwmon: (tps53679) Fix device ID comparison and printing in tps53676_identify()
+	stable <stable@kernel.org>,
+	Juno Choi <juno.choi@lge.com>
+Subject: [PATCH 6.1 231/312] usb: dwc2: gadget: Fix spin_lock/unlock mismatch in dwc2_hsotg_udc_stop()
 Date: Wed,  8 Apr 2026 20:02:28 +0200
-Message-ID: <20260408175931.127790590@linuxfoundation.org>
+Message-ID: <20260408175942.382075145@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234848-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234220-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,63 +86,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email]
-X-Rspamd-Queue-Id: 617463C2828
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 68C9D3C08F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Juno Choi <juno.choi@lge.com>
 
-[ Upstream commit ca34ee6d0307a0b4e52c870dfc1bb8a3c3eb956e ]
+commit 9bb4b5ed7f8c4f95cc556bdf042b0ba2fa13557a upstream.
 
-tps53676_identify() uses strncmp() to compare the device ID buffer
-against a byte sequence containing embedded non-printable bytes
-(\x53\x67\x60). strncmp() is semantically wrong for binary data
-comparison; use memcmp() instead.
+dwc2_gadget_exit_clock_gating() internally calls call_gadget() macro,
+which expects hsotg->lock to be held since it does spin_unlock/spin_lock
+around the gadget driver callback invocation.
 
-Additionally, the buffer from i2c_smbus_read_block_data() is not
-NUL-terminated, so printing it with "%s" in the error path is
-undefined behavior and may read past the buffer. Use "%*ph" to
-hex-dump the actual bytes returned.
+However, dwc2_hsotg_udc_stop() calls dwc2_gadget_exit_clock_gating()
+without holding the lock. This leads to:
+ - spin_unlock on a lock that is not held (undefined behavior)
+ - The lock remaining held after dwc2_gadget_exit_clock_gating() returns,
+   causing a deadlock when spin_lock_irqsave() is called later in the
+   same function.
 
-Per the datasheet, the expected device ID is the 6-byte sequence
-54 49 53 67 60 00 ("TI\x53\x67\x60\x00"), so compare all 6 bytes
-including the trailing NUL.
+Fix this by acquiring hsotg->lock before calling
+dwc2_gadget_exit_clock_gating() and releasing it afterwards, which
+satisfies the locking requirement of the call_gadget() macro.
 
-Fixes: cb3d37b59012 ("hwmon: (pmbus/tps53679) Add support for TI TPS53676")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260330155618.77403-1-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: af076a41f8a2 ("usb: dwc2: also exit clock_gating when stopping udc while suspended")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Juno Choi <juno.choi@lge.com>
+Link: https://patch.msgid.link/20260324014910.2798425-1-juno.choi@lge.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/tps53679.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc2/gadget.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
-index 5c9466244d70d..ecc1be33b3b1b 100644
---- a/drivers/hwmon/pmbus/tps53679.c
-+++ b/drivers/hwmon/pmbus/tps53679.c
-@@ -156,8 +156,8 @@ static int tps53676_identify(struct i2c_client *client,
- 	ret = i2c_smbus_read_block_data(client, PMBUS_IC_DEVICE_ID, buf);
- 	if (ret < 0)
- 		return ret;
--	if (strncmp("TI\x53\x67\x60", buf, 5)) {
--		dev_err(&client->dev, "Unexpected device ID: %s\n", buf);
-+	if (ret != 6 || memcmp(buf, "TI\x53\x67\x60\x00", 6)) {
-+		dev_err(&client->dev, "Unexpected device ID: %*ph\n", ret, buf);
- 		return -ENODEV;
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -4605,7 +4605,9 @@ static int dwc2_hsotg_udc_stop(struct us
+ 	/* Exit clock gating when driver is stopped. */
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+ 	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
++		spin_lock_irqsave(&hsotg->lock, flags);
+ 		dwc2_gadget_exit_clock_gating(hsotg, 0);
++		spin_unlock_irqrestore(&hsotg->lock, flags);
  	}
  
--- 
-2.53.0
-
+ 	/* all endpoints should be shutdown */
 
 
 
