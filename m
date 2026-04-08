@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YC48F1Cb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:44 +0200
+	id uO6ZN16q1mmKHAgAu9opvQ
+	(envelope-from <stable+bounces-235068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4BB3C0492
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7633C2C95
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 113CE300ADB3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1756130BA4B0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C925A33BBCF;
-	Wed,  8 Apr 2026 18:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1BC3D75C9;
+	Wed,  8 Apr 2026 18:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGlg5JTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkchbDSt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0FC28C87C;
-	Wed,  8 Apr 2026 18:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F80337B81;
+	Wed,  8 Apr 2026 18:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672126; cv=none; b=MXwTXQnfhhdXbWFkPawh8A57itATDj5y6m7xjiV5BB4x7Q0lQ1FxvWg3cNGeMPFcoRRRatCDyTdJkamTya9BTLn8gKFNetope+0z/ufOzAMd/Fs4/tjmEO4kYgSfdndKpR6F7bb65K9T5lqjdvVzoGcvlTm7tOAAn73MLqWvM9s=
+	t=1775674487; cv=none; b=NInPdCZlC6EwJYOKMb1EnUkTAmxilyItK2nBv3OVLG/m0YS0AFwE9ew8+Dh5wdofE/K+NRMJ3u5c0iPDNa2C6tkJTm3eW5+ylnmYVfL/9fmhl3hk2H4U9gq80cjPAp9kWnlD8hGNxacAIsrngiiwqHG0HoTkV/YQ1svvfCrQ4mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672126; c=relaxed/simple;
-	bh=8shrDCqomLkkUv3Dqw3rsP0i6qnOw0tZyXkImH7By1g=;
+	s=arc-20240116; t=1775674487; c=relaxed/simple;
+	bh=Rd73IHcCEawuZlcuAXLqRk+JQHzpL2Hepil0ezqL5tY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfUm4oRmaCVxAbMiJuMeW2mgfFww+v0ylY8gS0S/i//UMWoBHvQnrKb719jumqmyeHt0nLqsyNzf9ePbLsw8HTO0g4h/dQnkp84DTugKD56H720xoZryRQAak4buAYlOo77+9Lwmd0tQKqXIs8F4B0s2R6qznRpqGFXxs6IvDHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGlg5JTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215DEC2BC87;
-	Wed,  8 Apr 2026 18:15:25 +0000 (UTC)
+	 MIME-Version; b=k+dKnwHz86YhCJCnbIeNv0x8gF9JsH+GCuzYJ73cXN4PVdngFuVvul2XwCcmlz9AElEgOR/TwdRgH46rdj2D5Bh6cYiPg1TWjwM+RYrhrY4KxasKZtKz7Ogsp3v8Og0VAedzOdH1HkTZXHN9QW1fRbDTgMmghS/Hh7/JXyWL9hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkchbDSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E19C19421;
+	Wed,  8 Apr 2026 18:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672126;
-	bh=8shrDCqomLkkUv3Dqw3rsP0i6qnOw0tZyXkImH7By1g=;
+	s=korg; t=1775674487;
+	bh=Rd73IHcCEawuZlcuAXLqRk+JQHzpL2Hepil0ezqL5tY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGlg5JTNXKatEypm06LTYLy1sdHSodhk1q7u6lraXRhYslQAZerFSNCWyYByOU+Ur
-	 /wZDtOf3iffqBLOUF1KuQHzdTUE3HqoGeQ86QLLXTsXRq9RcVyhOAa6fesbgZjKxAB
-	 N2CAyqxL306rkB4yvJLZOjfl6i3j2YITo1QncKgM=
+	b=QkchbDStii+sPPisvxpBB4ypiYkB0AFoI81YFkSSfo3xZPVYOQ4TnYyXsj237yTwC
+	 6oK+k3IMw2hQp2JLxDWSNBAxE0cx+7EKVbpq5sGmLUHY4Q0BWoQLf405MU6eMnyLt7
+	 PXplcticf2kVcv6Jkkt5eCWQS11er+Qkgj9U271U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 200/312] wifi: iwlwifi: mvm: fix potential out-of-bounds read in iwl_mvm_nd_match_info_handler()
+	Martin Schiller <ms@dev.tdt.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 117/311] net/x25: Fix potential double free of skb
 Date: Wed,  8 Apr 2026 20:01:57 +0200
-Message-ID: <20260408175941.230448124@linuxfoundation.org>
+Message-ID: <20260408175943.786559112@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234155-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235068-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,50 +87,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ispras.ru:email]
-X-Rspamd-Queue-Id: 3D4BB3C0492
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tdt.de:email]
+X-Rspamd-Queue-Id: 4B7633C2C95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+From: Martin Schiller <ms@dev.tdt.de>
 
-commit 744fabc338e87b95c4d1ff7c95bc8c0f834c6d99 upstream.
+[ Upstream commit d10a26aa4d072320530e6968ef945c8c575edf61 ]
 
-The memcpy function assumes the dynamic array notif->matches is at least
-as large as the number of bytes to copy. Otherwise, results->matches may
-contain unwanted data. To guarantee safety, extend the validation in one
-of the checks to ensure sufficient packet length.
+When alloc_skb fails in x25_queue_rx_frame it calls kfree_skb(skb) at
+line 48 and returns 1 (error).
+This error propagates back through the call chain:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+x25_queue_rx_frame returns 1
+    |
+    v
+x25_state3_machine receives the return value 1 and takes the else
+branch at line 278, setting queued=0 and returning 0
+    |
+    v
+x25_process_rx_frame returns queued=0
+    |
+    v
+x25_backlog_rcv at line 452 sees queued=0 and calls kfree_skb(skb)
+again
 
-Cc: stable@vger.kernel.org
-Fixes: 5ac54afd4d97 ("wifi: iwlwifi: mvm: Add handling for scan offload match info notification")
-Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
-Link: https://patch.msgid.link/20260207150335.1013646-1-a.velichayshiy@ispras.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This would free the same skb twice. Looking at x25_backlog_rcv:
+
+net/x25/x25_in.c:x25_backlog_rcv() {
+    ...
+    queued = x25_process_rx_frame(sk, skb);
+    ...
+    if (!queued)
+        kfree_skb(skb);
+}
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+Link: https://patch.msgid.link/20260331-x25_fraglen-v4-1-3e69f18464b4@dev.tdt.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/x25/x25_in.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2678,7 +2678,7 @@ static void iwl_mvm_nd_match_info_handle
- 	if (IS_ERR_OR_NULL(vif))
- 		return;
+diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
+index b981a4828d08c..0dbc73efab1cb 100644
+--- a/net/x25/x25_in.c
++++ b/net/x25/x25_in.c
+@@ -44,10 +44,9 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
+ 	if (x25->fraglen > 0) {	/* End of fragment */
+ 		int len = x25->fraglen + skb->len;
  
--	if (len < sizeof(struct iwl_scan_offload_match_info)) {
-+	if (len < sizeof(struct iwl_scan_offload_match_info) + matches_len) {
- 		IWL_ERR(mvm, "Invalid scan match info notification\n");
- 		return;
- 	}
+-		if ((skbn = alloc_skb(len, GFP_ATOMIC)) == NULL){
+-			kfree_skb(skb);
++		skbn = alloc_skb(len, GFP_ATOMIC);
++		if (!skbn)
+ 			return 1;
+-		}
+ 
+ 		skb_queue_tail(&x25->fragment_queue, skb);
+ 
+-- 
+2.53.0
+
 
 
 
