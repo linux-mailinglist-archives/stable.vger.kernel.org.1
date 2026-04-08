@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-235161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKGCKvqq1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:34 +0200
+	id 8O3SOlmi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E313C2DB2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43093C1749
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25B6730F154D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 23BDD303022C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0ED3D8139;
-	Wed,  8 Apr 2026 18:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA12D2641FC;
+	Wed,  8 Apr 2026 18:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfVbvJeW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPyDsUhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D34537F01B;
-	Wed,  8 Apr 2026 18:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F0433121F;
+	Wed,  8 Apr 2026 18:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674726; cv=none; b=B/aYP/Vvm5A0tMVbw4Qv6+9Xcj+X3HaI51O9xvBvVYR6ZQtZuY7S6avdGA4xFhvihWS7bt42dbAp3Nz74jwAENU0fp4aDEC3UUjYlFu7QC1TBcft46Cr6x7r+IiHK/SF1ZjIlJUai4Qy3WYwTYOVcTD6s+lyGsxeOsMDwY2/B0Q=
+	t=1775673919; cv=none; b=O3FqMnOzo8wKfyK9+heE9xcaVfelDYCiEAkILW07DpdRw52NsGQerq3/6M5cvmWeNwS8DeKV388RFtiistwQ1+YDDxx2KZMLYcYv89/UOcr1MOcmP0ItjmcIn2tWC2o8v/ls0G67APeodYj91zgjBGN/lZV/6TLgHm39YDsFs9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674726; c=relaxed/simple;
-	bh=qiVhjvyaBQC2mt1uTEJ6cPZ6OE/XqN+9n3Eo1QJEnss=;
+	s=arc-20240116; t=1775673919; c=relaxed/simple;
+	bh=+WyNpBznUguNk7tgs8P68HihyzW2jrJBUUaHB7capR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8k300yu6Xw9G2Ok1vrWmmHDyS5kmzSoWANOAO2plzYpKiGOqUMCk2axPOTy8iVhg9c6jue/6mKXxZBfj5q4lNOxcrvBTvJyZ413WfyF5TJKPYPRvcN1+FZSraJVeonCvQDkTDdbdOWl0K6iEBZ97jKU8ahBSyUHOyXY/DjBJY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfVbvJeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B6BC19421;
-	Wed,  8 Apr 2026 18:58:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nz6isd1Vv9gUk4r8pfjWKXSlET8msAowWkiDpTFZgsjfT0BVouaBgMCp4zsExivYcPYiWLH4viWZtYFFH2YbQTYfSTRP19e8mY/16sS6tg9oaLTfhYX0yCg29JLsFnO0J6l72qKZx1YmP3GfJvdMNl25WDsOSrZ+AOFn4MOOIAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPyDsUhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B85C19421;
+	Wed,  8 Apr 2026 18:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674726;
-	bh=qiVhjvyaBQC2mt1uTEJ6cPZ6OE/XqN+9n3Eo1QJEnss=;
+	s=korg; t=1775673919;
+	bh=+WyNpBznUguNk7tgs8P68HihyzW2jrJBUUaHB7capR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfVbvJeWx8okpTpgt1F3cOGaluzNO8S9JTZq0gUG7Lq+cb7L5W0V0kIJweEEwqhyb
-	 QGWUv4E9mk53wbfITdBhfHq1QgEdwJRMrv4PoiXeDcuejeQITUJb4Zg3CYQ64LOK1C
-	 K2+RDqfJ8TwN1bJOx4IZWn3sELeymZc29Wtp913U=
+	b=pPyDsUhHejkWJdnBBILtDBaJkigldN9CcL2ynQ8SDr4zXXtoTD/cNcTyYaCAqpUAv
+	 hazuxJPBWaM1mhZFI+BxQtne3rAeV1frNjqlAInkomgTEtiwomOUdLVVsR1P9pgyTJ
+	 3oBxQHBFGIon1w8V9AQUJRiwt/Y/qkIvffstgWDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Artem S. Tashkinov" <aros@gmx.com>,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 177/311] ALSA: hda/realtek: change quirk for HP OmniBook 7 Laptop 16-bh0xxx
-Date: Wed,  8 Apr 2026 20:02:57 +0200
-Message-ID: <20260408175946.014740056@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 138/242] drm/amdgpu: Change AMDGPU_VA_RESERVED_TRAP_SIZE to 64KB
+Date: Wed,  8 Apr 2026 20:02:58 +0200
+Message-ID: <20260408175932.254021863@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +64,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235161-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,kylinos.cn,suse.de];
+	TAGGED_FROM(0.00)[bounces-234847-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,gmx.com:email,kylinos.cn:email]
-X-Rspamd-Queue-Id: 07E313C2DB2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A43093C1749
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Donet Tom <donettom@linux.ibm.com>
 
-commit 73ff3916d803f7ca3a4325af649e46ff89d6c3a7 upstream.
+commit 4487571ef17a30d274600b3bd6965f497a881299 upstream.
 
-HP OmniBook 7 Laptop 16-bh0xxx has the same PCI subsystem ID 0x103c8e60,
-and the ALC245 on it needs this quirk to control the mute LED.
+Currently, AMDGPU_VA_RESERVED_TRAP_SIZE is hardcoded to 8KB, while
+KFD_CWSR_TBA_TMA_SIZE is defined as 2 * PAGE_SIZE. On systems with
+4K pages, both values match (8KB), so allocation and reserved space
+are consistent.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221214
-Cc: <stable@vger.kernel.org>
-Tested-by: Artem S. Tashkinov <aros@gmx.com>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260327101215.481108-1-zhangheng@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+However, on 64K page-size systems, KFD_CWSR_TBA_TMA_SIZE becomes 128KB,
+while the reserved trap area remains 8KB. This mismatch causes the
+kernel to crash when running rocminfo or rccl unit tests.
+
+Kernel attempted to read user page (2) - exploit attempt? (uid: 1001)
+BUG: Kernel NULL pointer dereference on read at 0x00000002
+Faulting instruction address: 0xc0000000002c8a64
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+CPU: 34 UID: 1001 PID: 9379 Comm: rocminfo Tainted: G E
+6.19.0-rc4-amdgpu-00320-gf23176405700 #56 VOLUNTARY
+Tainted: [E]=UNSIGNED_MODULE
+Hardware name: IBM,9105-42A POWER10 (architected) 0x800200 0xf000006
+of:IBM,FW1060.30 (ML1060_896) hv:phyp pSeries
+NIP:  c0000000002c8a64 LR: c00000000125dbc8 CTR: c00000000125e730
+REGS: c0000001e0957580 TRAP: 0300 Tainted: G E
+MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE> CR: 24008268
+XER: 00000036
+CFAR: c00000000125dbc4 DAR: 0000000000000002 DSISR: 40000000
+IRQMASK: 1
+GPR00: c00000000125d908 c0000001e0957820 c0000000016e8100
+c00000013d814540
+GPR04: 0000000000000002 c00000013d814550 0000000000000045
+0000000000000000
+GPR08: c00000013444d000 c00000013d814538 c00000013d814538
+0000000084002268
+GPR12: c00000000125e730 c000007e2ffd5f00 ffffffffffffffff
+0000000000020000
+GPR16: 0000000000000000 0000000000000002 c00000015f653000
+0000000000000000
+GPR20: c000000138662400 c00000013d814540 0000000000000000
+c00000013d814500
+GPR24: 0000000000000000 0000000000000002 c0000001e0957888
+c0000001e0957878
+GPR28: c00000013d814548 0000000000000000 c00000013d814540
+c0000001e0957888
+NIP [c0000000002c8a64] __mutex_add_waiter+0x24/0xc0
+LR [c00000000125dbc8] __mutex_lock.constprop.0+0x318/0xd00
+Call Trace:
+0xc0000001e0957890 (unreliable)
+__mutex_lock.constprop.0+0x58/0xd00
+amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x6fc/0xb60 [amdgpu]
+kfd_process_alloc_gpuvm+0x54/0x1f0 [amdgpu]
+kfd_process_device_init_cwsr_dgpu+0xa4/0x1a0 [amdgpu]
+kfd_process_device_init_vm+0xd8/0x2e0 [amdgpu]
+kfd_ioctl_acquire_vm+0xd0/0x130 [amdgpu]
+kfd_ioctl+0x514/0x670 [amdgpu]
+sys_ioctl+0x134/0x180
+system_call_exception+0x114/0x300
+system_call_vectored_common+0x15c/0x2ec
+
+This patch changes AMDGPU_VA_RESERVED_TRAP_SIZE to 64 KB and
+KFD_CWSR_TBA_TMA_SIZE to the AMD GPU page size. This means we reserve
+64 KB for the trap in the address space, but only allocate 8 KB within
+it. With this approach, the allocation size never exceeds the reserved
+area.
+
+Fixes: 34a1de0f7935 ("drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 31b8de5e55666f26ea7ece5f412b83eab3f56dbb)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h |    2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h  |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -4102,6 +4102,7 @@ enum {
- 	ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY,
- 	ALC245_FIXUP_BASS_HP_DAC,
- 	ALC245_FIXUP_ACER_MICMUTE_LED,
-+	ALC245_FIXUP_CS35L41_I2C_2_MUTE_LED,
- };
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
+@@ -172,7 +172,7 @@ struct amdgpu_mem_stats;
+ #define AMDGPU_VA_RESERVED_SEQ64_SIZE		(2ULL << 20)
+ #define AMDGPU_VA_RESERVED_SEQ64_START(adev)	(AMDGPU_VA_RESERVED_CSA_START(adev) \
+ 						 - AMDGPU_VA_RESERVED_SEQ64_SIZE)
+-#define AMDGPU_VA_RESERVED_TRAP_SIZE		(2ULL << 12)
++#define AMDGPU_VA_RESERVED_TRAP_SIZE		(1ULL << 16)
+ #define AMDGPU_VA_RESERVED_TRAP_START(adev)	(AMDGPU_VA_RESERVED_SEQ64_START(adev) \
+ 						 - AMDGPU_VA_RESERVED_TRAP_SIZE)
+ #define AMDGPU_VA_RESERVED_BOTTOM		(1ULL << 16)
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -102,8 +102,8 @@
+  * The first chunk is the TBA used for the CWSR ISA code. The second
+  * chunk is used as TMA for user-mode trap handler setup in daisy-chain mode.
+  */
+-#define KFD_CWSR_TBA_TMA_SIZE (PAGE_SIZE * 2)
+-#define KFD_CWSR_TMA_OFFSET (PAGE_SIZE + 2048)
++#define KFD_CWSR_TBA_TMA_SIZE (AMDGPU_GPU_PAGE_SIZE * 2)
++#define KFD_CWSR_TMA_OFFSET (AMDGPU_GPU_PAGE_SIZE + 2048)
  
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -6631,6 +6632,12 @@ static const struct hda_fixup alc269_fix
- 		.v.func = alc285_fixup_hp_coef_micmute_led,
- 		.chained = true,
- 		.chain_id = ALC2XX_FIXUP_HEADSET_MIC,
-+	},
-+	[ALC245_FIXUP_CS35L41_I2C_2_MUTE_LED] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc245_fixup_hp_mute_led_coefbit,
-+		.chained = true,
-+		.chain_id = ALC287_FIXUP_CS35L41_I2C_2,
- 	}
- };
- 
-@@ -7156,7 +7163,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8e37, "HP 16 Piston OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e3a, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e3b, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
--	SND_PCI_QUIRK(0x103c, 0x8e60, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8e60, "HP OmniBook 7 Laptop 16-bh0xxx", ALC245_FIXUP_CS35L41_I2C_2_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e61, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e62, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e8a, "HP NexusX", ALC245_FIXUP_HP_TAS2781_I2C_MUTE_LED),
+ #define KFD_MAX_NUM_OF_QUEUES_PER_DEVICE		\
+ 	(KFD_MAX_NUM_OF_PROCESSES *			\
 
 
 
