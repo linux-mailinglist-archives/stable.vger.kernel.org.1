@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-234064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANe7CF+a1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:43 +0200
+	id YAKvDKSj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA733C020C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 387EA3C1C30
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C1BE13007A6F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 524B33009F2A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22E33D9022;
-	Wed,  8 Apr 2026 18:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF77038736D;
+	Wed,  8 Apr 2026 18:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu1pdo50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5qy1bM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827563D8917;
-	Wed,  8 Apr 2026 18:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1EE3D9037;
+	Wed,  8 Apr 2026 18:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671892; cv=none; b=aM0Doer3lXnS2aiO7UQclHjmEGjrBBqVGYTm218YyPkJ24fExlM1LDZv+ieONRuRNWt8r4krbUI39K6kWcbFcsm2X0MJtjagqP/qy3MUwAmUMhXfS5Yya9Z4ksfVwOagxTmdgFtQIPKTm53YBXCKEmXLucDPujGjA5u4v3MZgbA=
+	t=1775674252; cv=none; b=XxWb75IMX3NgCYDwhX3orsNzaLJWgK92AkhGNFMm3kVp49qI0F9HslZDgZ+riM5nifrT9igp4EvuYzQlhFH8Msb9BhWjX2yMtK2vVLsObldJT6gcgbMwjkdF1kJsmQI5i+UMh12zsvSWZoKlvKRUVnh2fS0v3T1m9YhZwaiQqsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671892; c=relaxed/simple;
-	bh=v7Bmr2U1h//l8H8XBQNJLGDzG96utygwlOV7WzKBl5Q=;
+	s=arc-20240116; t=1775674252; c=relaxed/simple;
+	bh=swwTAzCqDGHdHSGaDAz7weA9l3Mb3iWNwGEvg7QAZ4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3xaDAegn+cvW9lZJxtInS7q3qpngBuGYzCif0trRSN54hMffcZ+AHbYK28kP+DdM3F83sZYAX+ZNkZKLabvXNxUs2f0aoPQMQ+ofbzEkzBoWCG5zIxLcndAJScWxpEal5RuG+XVIg3V5V0vNe3PAefIpazUT7JR5J99g0rN95c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu1pdo50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF579C19421;
-	Wed,  8 Apr 2026 18:11:31 +0000 (UTC)
+	 MIME-Version; b=rXryzE3oPWgXihoodSEBKMpeUmTcPzoBhlNGna1RnPGYsTmGtW+FbwqHQnfkTvMkTppeN+onH+I/fw28OWuXt59E+zex3DHiSVmcCskZodSKKXv5h7SeVSM0CWwegbcrrvnktGQfvNFf1ku9r3vNzMfZQX3HHaNHXDCM+Nj4cPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5qy1bM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058E5C19425;
+	Wed,  8 Apr 2026 18:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671892;
-	bh=v7Bmr2U1h//l8H8XBQNJLGDzG96utygwlOV7WzKBl5Q=;
+	s=korg; t=1775674252;
+	bh=swwTAzCqDGHdHSGaDAz7weA9l3Mb3iWNwGEvg7QAZ4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fu1pdo508oRVO7gBYOkinPB4M6G4Lded1k7PV1vJg5tir3ycJipj763MstSN6aF5B
-	 uoxzs9QkoBGc1FOLudCPdKZgrQINKlM/hIAzDI/Yslm/M8iEz6dsKW4jEQut80gbKu
-	 YyqHXjy6azTosbVvqGbyawSLFQ9bQjbdUl3wvD5A=
+	b=l5qy1bM82ekKnVTGCFJWW/9giFGiKrKxzCYD5Q1WBWpWZyHSSHbfcy92VuWmWtS/m
+	 p4WDRPUY5DT7Eu78LvtsYBNQIJ+SSxAwlk+vcQacXaTmwePLreXu3lemAwD1StCsL9
+	 xIahSeJvqWuaeyOWjndIZkEAoX/6tHks6d+en2h4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 108/312] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 025/311] smb: client: fix generic/694 due to wrong ->i_blocks
 Date: Wed,  8 Apr 2026 20:00:25 +0200
-Message-ID: <20260408175937.797431193@linuxfoundation.org>
+Message-ID: <20260408175940.352885002@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234064-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234977-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,80 +90,165 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,nxp.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0BA733C020C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,manguebit.org:email]
+X-Rspamd-Queue-Id: 387EA3C1C30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Paulo Alcantara <pc@manguebit.org>
 
-commit 89a8567d84bde88cb7cdbbac2ab2299c4f991490 upstream.
+[ Upstream commit 23b5df09c27aec13962b30d32a4167ebdd043f8e ]
 
-Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
-CHCTRL register. To avoid concurrency issues when configuring
-functionalities exposed by this registers, take the virtual channel lock.
-All other CHCTRL updates were already protected by the same lock.
+When updating ->i_size, make sure to always update ->i_blocks as well
+until we query new allocation size from the server.
 
-Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
-accessing CHCTRL registers but this does not ensure race-free access.
-Remove the local IRQ disable/enable code as well.
+generic/694 was failing because smb3_simple_falloc() was missing the
+update of ->i_blocks after calling cifs_setsize().  So, fix this by
+updating ->i_blocks directly in cifs_setsize(), so all places that
+call it doesn't need to worry about updating ->i_blocks later.
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
-Cc: stable@vger.kernel.org
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Shyam Prasad N <sprasad@microsoft.com>
+Closes: https://lore.kernel.org/r/CANT5p=rqgRwaADB=b_PhJkqXjtfq3SFv41SSTXSVEHnuh871pA@mail.gmail.com
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/sh/rz-dmac.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/smb/client/cifsglob.h |  6 ++++++
+ fs/smb/client/file.c     |  1 -
+ fs/smb/client/inode.c    | 21 ++++++---------------
+ fs/smb/client/smb2ops.c  | 20 ++++----------------
+ 4 files changed, 16 insertions(+), 32 deletions(-)
 
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -286,13 +286,10 @@ static void rz_dmac_disable_hw(struct rz
- {
- 	struct dma_chan *chan = &channel->vc.chan;
- 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
--	unsigned long flags;
- 
- 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
- 
--	local_irq_save(flags);
- 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
--	local_irq_restore(flags);
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 0c3d2bbef938e..474d7b2aa2ef5 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -2324,4 +2324,10 @@ static inline int cifs_open_create_options(unsigned int oflags, int opts)
+ 	return opts;
  }
  
- static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
-@@ -545,8 +542,8 @@ static int rz_dmac_terminate_all(struct
- 	unsigned int i;
- 	LIST_HEAD(head);
- 
--	rz_dmac_disable_hw(channel);
- 	spin_lock_irqsave(&channel->vc.lock, flags);
-+	rz_dmac_disable_hw(channel);
- 	for (i = 0; i < DMAC_NR_LMDESC; i++)
- 		lmdesc[i].header = 0;
- 
-@@ -676,7 +673,9 @@ static void rz_dmac_irq_handle_channel(s
- 	if (chstat & CHSTAT_ER) {
- 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
- 			channel->index, chstat);
--		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
++/*
++ * The number of blocks is not related to (i_size / i_blksize), but instead
++ * 512 byte (2**9) size is required for calculating num blocks.
++ */
++#define CIFS_INO_BLOCKS(size) DIV_ROUND_UP_ULL((u64)(size), 512)
 +
-+		scoped_guard(spinlock_irqsave, &channel->vc.lock)
-+			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
- 		goto done;
+ #endif	/* _CIFS_GLOB_H */
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index c27a38843aa64..9d703a2474509 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -994,7 +994,6 @@ static int cifs_do_truncate(const unsigned int xid, struct dentry *dentry)
+ 		if (!rc) {
+ 			netfs_resize_file(&cinode->netfs, 0, true);
+ 			cifs_setsize(inode, 0);
+-			inode->i_blocks = 0;
+ 		}
+ 	}
+ 	if (cfile)
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index f9ee95953fa4a..c5d89ddc87c00 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -219,13 +219,7 @@ cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
+ 	 */
+ 	if (is_size_safe_to_change(cifs_i, fattr->cf_eof, from_readdir)) {
+ 		i_size_write(inode, fattr->cf_eof);
+-
+-		/*
+-		 * i_blocks is not related to (i_size / i_blksize),
+-		 * but instead 512 byte (2**9) size is required for
+-		 * calculating num blocks.
+-		 */
+-		inode->i_blocks = (512 - 1 + fattr->cf_bytes) >> 9;
++		inode->i_blocks = CIFS_INO_BLOCKS(fattr->cf_bytes);
  	}
  
+ 	if (S_ISLNK(fattr->cf_mode) && fattr->cf_symlink_target) {
+@@ -3009,6 +3003,11 @@ void cifs_setsize(struct inode *inode, loff_t offset)
+ {
+ 	spin_lock(&inode->i_lock);
+ 	i_size_write(inode, offset);
++	/*
++	 * Until we can query the server for actual allocation size,
++	 * this is best estimate we have for blocks allocated for a file.
++	 */
++	inode->i_blocks = CIFS_INO_BLOCKS(offset);
+ 	spin_unlock(&inode->i_lock);
+ 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+ 	truncate_pagecache(inode, offset);
+@@ -3081,14 +3080,6 @@ int cifs_file_set_size(const unsigned int xid, struct dentry *dentry,
+ 	if (rc == 0) {
+ 		netfs_resize_file(&cifsInode->netfs, size, true);
+ 		cifs_setsize(inode, size);
+-		/*
+-		 * i_blocks is not related to (i_size / i_blksize), but instead
+-		 * 512 byte (2**9) size is required for calculating num blocks.
+-		 * Until we can query the server for actual allocation size,
+-		 * this is best estimate we have for blocks allocated for a file
+-		 * Number of blocks must be rounded up so size 1 is not 0 blocks
+-		 */
+-		inode->i_blocks = (512 - 1 + size) >> 9;
+ 	}
+ 
+ 	return rc;
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 9bfd3711030b4..067e313283291 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -1493,6 +1493,7 @@ smb2_close_getattr(const unsigned int xid, struct cifs_tcon *tcon,
+ {
+ 	struct smb2_file_network_open_info file_inf;
+ 	struct inode *inode;
++	u64 asize;
+ 	int rc;
+ 
+ 	rc = __SMB2_close(xid, tcon, cfile->fid.persistent_fid,
+@@ -1516,14 +1517,9 @@ smb2_close_getattr(const unsigned int xid, struct cifs_tcon *tcon,
+ 		inode_set_atime_to_ts(inode,
+ 				      cifs_NTtimeToUnix(file_inf.LastAccessTime));
+ 
+-	/*
+-	 * i_blocks is not related to (i_size / i_blksize),
+-	 * but instead 512 byte (2**9) size is required for
+-	 * calculating num blocks.
+-	 */
+-	if (le64_to_cpu(file_inf.AllocationSize) > 4096)
+-		inode->i_blocks =
+-			(512 - 1 + le64_to_cpu(file_inf.AllocationSize)) >> 9;
++	asize = le64_to_cpu(file_inf.AllocationSize);
++	if (asize > 4096)
++		inode->i_blocks = CIFS_INO_BLOCKS(asize);
+ 
+ 	/* End of file and Attributes should not have to be updated on close */
+ 	spin_unlock(&inode->i_lock);
+@@ -2197,14 +2193,6 @@ smb2_duplicate_extents(const unsigned int xid,
+ 		rc = smb2_set_file_size(xid, tcon, trgtfile, dest_off + len, false);
+ 		if (rc)
+ 			goto duplicate_extents_out;
+-
+-		/*
+-		 * Although also could set plausible allocation size (i_blocks)
+-		 * here in addition to setting the file size, in reflink
+-		 * it is likely that the target file is sparse. Its allocation
+-		 * size will be queried on next revalidate, but it is important
+-		 * to make sure that file's cached size is updated immediately
+-		 */
+ 		netfs_resize_file(netfs_inode(inode), dest_off + len, true);
+ 		cifs_setsize(inode, dest_off + len);
+ 	}
+-- 
+2.53.0
+
 
 
 
