@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-234491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WH/DN8ai1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234491-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:34 +0200
+	id eKlsCCeb1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F15D3C18B0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2A43C0427
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36D6F3103912
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5C6C30078C2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A783D564E;
-	Wed,  8 Apr 2026 18:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF9D3D4134;
+	Wed,  8 Apr 2026 18:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEKei2hg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClxbyJii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E702FF144;
-	Wed,  8 Apr 2026 18:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A4D1E5724;
+	Wed,  8 Apr 2026 18:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672997; cv=none; b=kXbeYpHxJfJAlWixdMR5mvqmSFA9NvYLfZzY+7oJqfCq9nSAHpwwcrFURO023ncu5P9ggqyJ7h/pdYBQt9YyT94Aj8uuM9q0o8/BCk1S7r8ChE99k7l292r+UVFJePrAL9opPt0yeMkd4UOW6wJdRo2R/8CN3HnHqtilG65vvgk=
+	t=1775672028; cv=none; b=QebUq2IjiWb8hlKFaEcrfZPyZA3c1y14+PY7Vt0tiaj/gB7B66gphTlkkR3Tl1+FLMQZkPesrhDlsr98v73FSCvmS7baCVu5qy3gfdkFQr4jVWBjWV3d1RlCOWn0+g0GkGgrcPFSOFZ0w5PEqBZkHVq1gHogK8fvVGYL83qkn60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672997; c=relaxed/simple;
-	bh=/SMjH8ERygbfkJYbW/HwKLci+TSpZIwunHPd4amatiU=;
+	s=arc-20240116; t=1775672028; c=relaxed/simple;
+	bh=37bC/imuJlIe3XfpqUCOWazQklF+pnJk1Dqy+vn0EHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEO7YYEtYmoFzCrCmu80OG4RgrXz8bc+8NUJVoEvX85dif5ZEwTjesMQwuGcyv+dWQypq1nHBGKf1xMtdSLUW3/pK6eDr05+tK+mLNLxoGw0nkXi8pAcdNhJOc4hkd827HuSkI3F2RQsPJEIYKcfl1fUZWZXBZ05XzbviRIrJD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEKei2hg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70116C19421;
-	Wed,  8 Apr 2026 18:29:57 +0000 (UTC)
+	 MIME-Version; b=nQSZktlS9TMIe/iYmCgn9JExKB6X29oeLb0GYhzg2PC56iJw556lzHnsYVII6Js52tDrP0nqVVkGg7xQZ0rWz/rA6izR2C309clHwtN2LbdXRLSKrYRa4aU3ajldXWl9bfvaAvr1MDyzooai3Q5soRQbYNRg7Pay91Cn5hUEW3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClxbyJii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47841C19421;
+	Wed,  8 Apr 2026 18:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672997;
-	bh=/SMjH8ERygbfkJYbW/HwKLci+TSpZIwunHPd4amatiU=;
+	s=korg; t=1775672028;
+	bh=37bC/imuJlIe3XfpqUCOWazQklF+pnJk1Dqy+vn0EHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sEKei2hgYFNg+LnvTzcahTlmbjpqj0+BZKPoC1bAayL3OLKxTJ2R1GAfGDMrLtnL7
-	 RUJGAPqTFg9kxOimhdsIOLw/nk6BOtbEndCwozmwVTVj+ahvkcQYItdKnGfGXTUftf
-	 DSbk0aFze8FALClI6OcIwojrUG5a0WsUsNZ608Uc=
+	b=ClxbyJiixvbmTpsc6KzYfB9zynhM5K5Kok9G0nxKilVT46I0zKYMOD3Mh5aDNtLPI
+	 RCZQTmQ1qGh9Hko9K7LC5AYLOC6mkk8P8ZPDi3N0mIHJ0/dkDTvZAtNQIKZFFSXFeg
+	 cJVahucKxXVXIbc/JukERq8k+KgJwjbMyn/R1q2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 061/277] net: ipv6: flowlabel: defer exclusive option free until RCU teardown
+Subject: [PATCH 6.1 129/312] btrfs: fix leak of kobject name for sub-group space_info
 Date: Wed,  8 Apr 2026 20:00:46 +0200
-Message-ID: <20260408175936.137937216@linuxfoundation.org>
+Message-ID: <20260408175938.590379407@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,95 +67,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234491-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,google.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234117-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 4F15D3C18B0
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wdc.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8D2A43C0427
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 9ca562bb8e66978b53028fa32b1a190708e6a091 ]
+[ Upstream commit a4376d9a5d4c9610e69def3fc0b32c86a7ab7a41 ]
 
-`ip6fl_seq_show()` walks the global flowlabel hash under the seq-file
-RCU read-side lock and prints `fl->opt->opt_nflen` when an option block
-is present.
+When create_space_info_sub_group() allocates elements of
+space_info->sub_group[], kobject_init_and_add() is called for each
+element via btrfs_sysfs_add_space_info_type(). However, when
+check_removing_space_info() frees these elements, it does not call
+btrfs_sysfs_remove_space_info() on them. As a result, kobject_put() is
+not called and the associated kobj->name objects are leaked.
 
-Exclusive flowlabels currently free `fl->opt` as soon as `fl->users`
-drops to zero in `fl_release()`. However, the surrounding
-`struct ip6_flowlabel` remains visible in the global hash table until
-later garbage collection removes it and `fl_free_rcu()` finally tears it
-down.
+This memory leak is reproduced by running the blktests test case
+zbd/009 on kernels built with CONFIG_DEBUG_KMEMLEAK. The kmemleak
+feature reports the following error:
 
-A concurrent `/proc/net/ip6_flowlabel` reader can therefore race that
-early `kfree()` and dereference freed option state, triggering a crash
-in `ip6fl_seq_show()`.
+unreferenced object 0xffff888112877d40 (size 16):
+  comm "mount", pid 1244, jiffies 4294996972
+  hex dump (first 16 bytes):
+    64 61 74 61 2d 72 65 6c 6f 63 00 c4 c6 a7 cb 7f  data-reloc......
+  backtrace (crc 53ffde4d):
+    __kmalloc_node_track_caller_noprof+0x619/0x870
+    kstrdup+0x42/0xc0
+    kobject_set_name_vargs+0x44/0x110
+    kobject_init_and_add+0xcf/0x150
+    btrfs_sysfs_add_space_info_type+0xfc/0x210 [btrfs]
+    create_space_info_sub_group.constprop.0+0xfb/0x1b0 [btrfs]
+    create_space_info+0x211/0x320 [btrfs]
+    btrfs_init_space_info+0x15a/0x1b0 [btrfs]
+    open_ctree+0x33c7/0x4a50 [btrfs]
+    btrfs_get_tree.cold+0x9f/0x1ee [btrfs]
+    vfs_get_tree+0x87/0x2f0
+    vfs_cmd_create+0xbd/0x280
+    __do_sys_fsconfig+0x3df/0x990
+    do_syscall_64+0x136/0x1540
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fix this by keeping `fl->opt` alive until `fl_free_rcu()`. That matches
-the lifetime already required for the enclosing flowlabel while readers
-can still reach it under RCU.
+To avoid the leak, call btrfs_sysfs_remove_space_info() instead of
+kfree() for the elements.
 
-Fixes: d3aedd5ebd4b ("ipv6 flowlabel: Convert hash list to RCU.")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/07351f0ec47bcee289576f39f9354f4a64add6e4.1774855883.git.zcliangcn@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
+Link: https://lore.kernel.org/linux-block/b9488881-f18d-4f47-91a5-3c9bf63955a5@wdc.com/
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_flowlabel.c | 5 -----
- 1 file changed, 5 deletions(-)
+ fs/btrfs/block-group.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabel.c
-index 60d0be47a9f31..8aa29b3d3daca 100644
---- a/net/ipv6/ip6_flowlabel.c
-+++ b/net/ipv6/ip6_flowlabel.c
-@@ -133,11 +133,6 @@ static void fl_release(struct ip6_flowlabel *fl)
- 		if (time_after(ttd, fl->expires))
- 			fl->expires = ttd;
- 		ttd = fl->expires;
--		if (fl->opt && fl->share == IPV6_FL_S_EXCL) {
--			struct ipv6_txoptions *opt = fl->opt;
--			fl->opt = NULL;
--			kfree(opt);
--		}
- 		if (!timer_pending(&ip6_fl_gc_timer) ||
- 		    time_after(ip6_fl_gc_timer.expires, ttd))
- 			mod_timer(&ip6_fl_gc_timer, ttd);
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 880288d7358e6..1f9fbec887c03 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -4154,7 +4154,7 @@ static void check_removing_space_info(struct btrfs_space_info *space_info)
+ 		for (int i = 0; i < BTRFS_SPACE_INFO_SUB_GROUP_MAX; i++) {
+ 			if (space_info->sub_group[i]) {
+ 				check_removing_space_info(space_info->sub_group[i]);
+-				kfree(space_info->sub_group[i]);
++				btrfs_sysfs_remove_space_info(space_info->sub_group[i]);
+ 				space_info->sub_group[i] = NULL;
+ 			}
+ 		}
 -- 
 2.53.0
 
