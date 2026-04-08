@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-234202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG3OFdOc1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234202-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:11 +0200
+	id WDpRA0aq1mmKHAgAu9opvQ
+	(envelope-from <stable+bounces-235115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05AF3C082F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740783C2C54
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3620930ABEDE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CEAF31C5499
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E64386550;
-	Wed,  8 Apr 2026 18:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740EA3AEF5F;
+	Wed,  8 Apr 2026 18:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZC036NhD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3QTkRs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF513B67E;
-	Wed,  8 Apr 2026 18:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306A83D9DB9;
+	Wed,  8 Apr 2026 18:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672247; cv=none; b=QE6xwuGPq0zuJliCPl0AeV3N8mEGnqeJfHw4p3m2Tjp2co+8Y9aTEE8QoDyRSm99QLhK0DJom3Qongo6MFlgI2VUlsTWeW4ivxOsUcH5kbuzEssgz5zdKySj+/aWR+cGvCl+uBTywL84hHjfzZrrCIhkPRS2FnrYObjf/c29eek=
+	t=1775674608; cv=none; b=iy6Gqa7ffOxYjCkg1R+VsfhYMT64VMphbFR+SGcFfuYa8qfbDa7peM4K72kH+xB1ul3Oq5ND1JrbJxmccIG20lHjmfTmZ0iy/xU1PER8C/MQBTZAwR0aNHx7xddfranvOCznh73jpSfJi2IIi3WxKKRlq/bufMVVDreWaa2/Y1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672247; c=relaxed/simple;
-	bh=hGVMhOLOyC3luEmfQkVc6EB+WD8Jh3XlRls3tYTZzJc=;
+	s=arc-20240116; t=1775674608; c=relaxed/simple;
+	bh=aG3SaGh4nSzhRRLKdVmBxsx14HX0YTGSmlC1SUb1ezA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=md0Sv8fZC3tjTae53TUMAHcQ+77BG1tX77AUuocZG/gddNoggXMkZip7CnCyzFU5VoEnxLgJcotTe9DCJQjfKll6RsNlVAti4koNyAuXGW8nJmg3NdFkjuUXCq0ZHZtpV7o6ygBDUnwQlotYtcd/wgeWE7Jnuk4xeL0557YWyeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZC036NhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56096C19421;
-	Wed,  8 Apr 2026 18:17:27 +0000 (UTC)
+	 MIME-Version; b=SqSQq7VkgMIQgiI2wpS/exwLBmQ9u689NE/IGzu9gF7RtPuJXanHVFOK2e8lETMXX8/5Hs57OZXQ3T8qPsqCQa9DS4QlLbbsoltMS7qZP8OW6Qi/AghTfGvbPkyJjKzAuJVApUS7vX7t+zXEZWG0Ec56aET/iufOIgX9vFNCRiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3QTkRs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BAAC2BC87;
+	Wed,  8 Apr 2026 18:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672247;
-	bh=hGVMhOLOyC3luEmfQkVc6EB+WD8Jh3XlRls3tYTZzJc=;
+	s=korg; t=1775674607;
+	bh=aG3SaGh4nSzhRRLKdVmBxsx14HX0YTGSmlC1SUb1ezA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZC036NhDZP0k5xmwQbmzo1YqgncRT5AWsE4GOfPUd0dG84ArtuWg4WZriDTDEsyAe
-	 xp4pzu9k/vVxT5dGPxLlgeNCdMlz4PgQ+7Vn3RCbtCNizzqtnvJWH8+SJz/C9K2rzZ
-	 G2MZaeRyMF2RpIy68H8f/FMkJftFxdD24PrtB7dc=
+	b=t3QTkRs7gN2UMGWNfgz1DDQ8lBbmmsYQy4CQwXFeceKnPICYv6hP1nV35EzezKOU5
+	 A8GMWU8HUdsvlGAlUDNMaBQkZrq71oAz9acTIPkS6tWIGG6UpQgHEk8S/eDuY68wk7
+	 pRFHB3UA4BYe4QUyZBYGJJoqhByAj9WiPEX+Pwq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: [PATCH 6.1 246/312] comedi: dt2815: add hardware detection to prevent crash
+	Yasuaki Torimaru <yasuakitorimaru@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.19 163/311] wifi: wilc1000: fix u8 overflow in SSID scan buffer size calculation
 Date: Wed,  8 Apr 2026 20:02:43 +0200
-Message-ID: <20260408175942.936560212@linuxfoundation.org>
+Message-ID: <20260408175945.489636600@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +63,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235115-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234202-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B05AF3C082F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 740783C2C54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
 
-commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
+commit d049e56b1739101d1c4d81deedb269c52a8dbba0 upstream.
 
-The dt2815 driver crashes when attached to I/O ports without actual
-hardware present. This occurs because syzkaller or users can attach
-the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
+The variable valuesize is declared as u8 but accumulates the total
+length of all SSIDs to scan. Each SSID contributes up to 33 bytes
+(IEEE80211_MAX_SSID_LEN + 1), and with WILC_MAX_NUM_PROBED_SSID (10)
+SSIDs the total can reach 330, which wraps around to 74 when stored
+in a u8.
 
-When no hardware exists at the specified port, inb() operations return
-0xff (floating bus), but outb() operations can trigger page faults due
-to undefined behavior, especially under race conditions:
+This causes kmalloc to allocate only 75 bytes while the subsequent
+memcpy writes up to 331 bytes into the buffer, resulting in a 256-byte
+heap buffer overflow.
 
-  BUG: unable to handle page fault for address: 000000007fffff90
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  RIP: 0010:dt2815_attach+0x6e0/0x1110
+Widen valuesize from u8 to u32 to accommodate the full range.
 
-Add hardware detection by reading the status register before attempting
-any write operations. If the read returns 0xff, assume no hardware is
-present and fail the attach with -ENODEV. This prevents crashes from
-outb() operations on non-existent hardware.
-
-Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
-Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
-Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+Link: https://patch.msgid.link/20260324100624.983458-1-yasuakitorimaru@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/dt2815.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/microchip/wilc1000/hif.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers/dt2815.c
-+++ b/drivers/comedi/drivers/dt2815.c
-@@ -175,6 +175,18 @@ static int dt2815_attach(struct comedi_d
- 		    ? current_range_type : voltage_range_type;
- 	}
- 
-+	/*
-+	 * Check if hardware is present before attempting any I/O operations.
-+	 * Reading 0xff from status register typically indicates no hardware
-+	 * on the bus (floating bus reads as all 1s).
-+	 */
-+	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
-+		dev_err(dev->class_dev,
-+			"No hardware detected at I/O base 0x%lx\n",
-+			dev->iobase);
-+		return -ENODEV;
-+	}
-+
- 	/* Init the 2815 */
- 	outb(0x00, dev->iobase + DT2815_STATUS);
- 	for (i = 0; i < 100; i++) {
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -163,7 +163,7 @@ int wilc_scan(struct wilc_vif *vif, u8 s
+ 	u32 index = 0;
+ 	u32 i, scan_timeout;
+ 	u8 *buffer;
+-	u8 valuesize = 0;
++	u32 valuesize = 0;
+ 	u8 *search_ssid_vals = NULL;
+ 	const u8 ch_list_len = request->n_channels;
+ 	struct host_if_drv *hif_drv = vif->hif_drv;
 
 
 
