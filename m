@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKGbIwuo1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:03 +0200
+	id UIbzMP2f1mkzGwgAu9opvQ
+	(envelope-from <stable+bounces-234360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090D73C2836
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4847D3C1075
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69DB730851CB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6549730414B8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC4138911C;
-	Wed,  8 Apr 2026 18:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A0A3ACF11;
+	Wed,  8 Apr 2026 18:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vf4jk6qH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfAswmJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AD033121F;
-	Wed,  8 Apr 2026 18:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075143A16A0;
+	Wed,  8 Apr 2026 18:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673930; cv=none; b=bPtddJrhs4Pd45XzTabMQXgXqSX/UOI+RoNAfJRbUHsN9t2HgbuCZLoJ0xiMGi++LxxWC2iuMAeaSEhwXzzUzg9hHJGqq/LX0StEdeLOukoIlwP3k7wgpFXhfsd/E5Ux8sttTIknZ8rXZKB0kZztuNNMRVwyybqBuCP992OrA/A=
+	t=1775672657; cv=none; b=ryI0NeCEm8tSS28/4hx1ZlPa/yFn5tKSKHJXEsxn16P51uwLg5JySWg9IsEHXThim083wPPz5PFFI3zqB205IKzrbMpZvluQRx4CEK9Uutyz1dYexeG+FGXgrZB5CqBqjxhHj5mfAhPzJBonQWNtXr9X92385sv+3q9jKFUoEJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673930; c=relaxed/simple;
-	bh=pKgmOuFKGeuCyjwAevWhhPfP+8GN38cFWTMViNjA+zo=;
+	s=arc-20240116; t=1775672657; c=relaxed/simple;
+	bh=33O5G1TH9VUN+zh+aYfz1BYp18HZr2ofxhJ4CtufTtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jr3GEdsxp4/cDcuiMJuiBakYkHHF5+QfK5/NYrM5zqKxuUmmmfrJ+y/jvj/XVKrfrShZY0GnY0sPNMqBjMa+aetw2DZ1YFuKBi9VZ15zducO4uGlhouzyUM70cqp5bu2O12nN/fdoxSoCnMy1HvrNWWT45qZo+whW3b34S3oM2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vf4jk6qH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DCAC19421;
-	Wed,  8 Apr 2026 18:45:29 +0000 (UTC)
+	 MIME-Version; b=fflCz1Dj5p6N+6s+3Et1FzC3YBjuVIDLehhETrc7B26uIjpW+x0hgE4tYKFKd9Tdy1fzVs4BIxa/jetC5ViVjduuyBW163hRJXiuZdgdWA62CezQz0eHhIMs0TCLgAmVlXZeiyF+LieZmlZbLLTxLtwwxdVpGDIgHR+lVZwwgMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfAswmJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A69C19421;
+	Wed,  8 Apr 2026 18:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673929;
-	bh=pKgmOuFKGeuCyjwAevWhhPfP+8GN38cFWTMViNjA+zo=;
+	s=korg; t=1775672656;
+	bh=33O5G1TH9VUN+zh+aYfz1BYp18HZr2ofxhJ4CtufTtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vf4jk6qHHpeDCdEij1KeE/lR8e58RI/RONJU0j9SoRn9EcWgTgbXhIfHCm3Hz6vX6
-	 +CtO/JgBWq8nTgCk8psYC9O4IGRTFH48E/rdYeK3IQWChT27oCiwe0BnlK/VpRvoM4
-	 5mZNyDtlv+INGnmR7fOu0p9JglTojxNBcLBqmlnk=
+	b=pfAswmJ49WIU/mb3o9P6hGSIJ3vpy55RyetjSbVGSRRmDya8nJC0WOtVdSjk4u/ge
+	 rqUKdpDT3P7zOD7ph+Wq3lBx6pDIs+1GZr3sIBVfnE/VOrzURClV+sj6iwua7RJiOx
+	 E49RtW3SiKYmuukRpbZj1SsjwTNv1Lr47aGjZRic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Dhaval Giani (AMD)" <dhaval@gianis.ca>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/242] sched/fair: Use protect_slice() instead of direct comparison
+Subject: [PATCH 6.6 064/160] bpf: reject direct access to nullable PTR_TO_BUF pointers
 Date: Wed,  8 Apr 2026 20:02:31 +0200
-Message-ID: <20260408175931.241700518@linuxfoundation.org>
+Message-ID: <20260408175915.595697236@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,61 +74,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234360-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234851-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 090D73C2836
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4847D3C1075
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Qi Tang <tpluszz77@gmail.com>
 
-[ Upstream commit 9cdb4fe20cd239c848b5c3f5753d83a9443ba329 ]
+[ Upstream commit b0db1accbc7395657c2b79db59fa9fae0d6656f3 ]
 
-Replace the test by the relevant protect_slice() function.
+check_mem_access() matches PTR_TO_BUF via base_type() which strips
+PTR_MAYBE_NULL, allowing direct dereference without a null check.
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dhaval Giani (AMD) <dhaval@gianis.ca>
-Link: https://lkml.kernel.org/r/20250708165630.1948751-2-vincent.guittot@linaro.org
-Stable-dep-of: 1319ea57529e ("sched/fair: Fix zero_vruntime tracking fix")
+Map iterator ctx->key and ctx->value are PTR_TO_BUF | PTR_MAYBE_NULL.
+On stop callbacks these are NULL, causing a kernel NULL dereference.
+
+Add a type_may_be_null() guard to the PTR_TO_BUF branch, matching the
+existing PTR_TO_BTF_ID pattern.
+
+Fixes: 20b2aff4bc15 ("bpf: Introduce MEM_RDONLY flag")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20260402092923.38357-2-tpluszz77@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index efd3cbefb5a22..fff27f3378cbf 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1181,7 +1181,7 @@ static inline bool did_preempt_short(struct cfs_rq *cfs_rq, struct sched_entity
- 	if (!sched_feat(PREEMPT_SHORT))
- 		return false;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index e33cd755d6197..45eb795c8c045 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6912,7 +6912,8 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+ 	} else if (reg->type == CONST_PTR_TO_MAP) {
+ 		err = check_ptr_to_map_access(env, regs, regno, off, size, t,
+ 					      value_regno);
+-	} else if (base_type(reg->type) == PTR_TO_BUF) {
++	} else if (base_type(reg->type) == PTR_TO_BUF &&
++		   !type_may_be_null(reg->type)) {
+ 		bool rdonly_mem = type_is_rdonly_mem(reg->type);
+ 		u32 *max_access;
  
--	if (curr->vlag == curr->deadline)
-+	if (protect_slice(curr))
- 		return false;
- 
- 	return !entity_eligible(cfs_rq, curr);
 -- 
 2.53.0
 
