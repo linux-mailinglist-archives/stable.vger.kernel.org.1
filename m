@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-235056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234516-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMqtOoak1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:02 +0200
+	id sJD1KFqf1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234516-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27713C1F04
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A78083C0EEF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37CD53007AE9
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C9B62302AB65
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0003D9043;
-	Wed,  8 Apr 2026 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D11E26FA5A;
+	Wed,  8 Apr 2026 18:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmnxHXTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6yUWRXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915DE3D8912;
-	Wed,  8 Apr 2026 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE22233F5A4;
+	Wed,  8 Apr 2026 18:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674456; cv=none; b=Bvtytc5wAuhpiJDReSlGV1nPWsUKVJamAl+Ljuj88fJ8uLVnWvgDuv8KpEpWdpQD/o4x4WJPcTltaLdQYptcHFpGIM4UW6vEK+fcZR9LC0wU83iG7dXoy7BkZO9p1HVG5dV6oSFDRTv8QGJ484lRGBucDH5g5tD5zm7YAFwHPCo=
+	t=1775673063; cv=none; b=FXM/cJAns3s3H+WKh7MtQyUa/1Ji6S7mqZqLqeVfPpVbkV+YBadoOr7HvNC0Y67zljuWkJANNM18Rn3I8sfZ8QOQQ0CTKee9r6N9oBmZJpPu7kmpkSjTDor9SIx/QiYXvRIGg0oJbGUk5Qo/a5rW3EUR1KBoICNs0i6thnp1/Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674456; c=relaxed/simple;
-	bh=0aErxOv7tlpc0rpoB0aHAz+LiFHlLwXixx1igcXP/WQ=;
+	s=arc-20240116; t=1775673063; c=relaxed/simple;
+	bh=3Tbi0Fv3W6/x3vA5DiFN0vds7LdlZcQ1Snm9n6A7eqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyWQ/GCkPdtbVmBMvLQGHggGj2Rl7IRUYR1THqOoygfvQ+VXMOPqWNbDqUPIU9aXrdVE26j9eN606SqQM4ku3/isDBolcl+cPKiI3+/iaVEN7HA5+QOPupwZePZxf/E8Xhz9Tn5NuRxUNS0SRnBRMpnpslteik8teuyQW3NPEMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmnxHXTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24899C19421;
-	Wed,  8 Apr 2026 18:54:15 +0000 (UTC)
+	 MIME-Version; b=VhFB19QqJSdC/xBfP+X7lScPOJDmK0eouLSp7n1OIXdZA9IbQg/SIHwSKGJeXX5Le8STVJfgBKjCKVKoHBCWgogLmEZ737ry1vXJ7xKh6dEb2usm/0nEjZ8OCsEDJdDef+0rAgt2n6n/JjrJBBp/5teGN6hSBKG/ntyVtU6pWok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6yUWRXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A34C19421;
+	Wed,  8 Apr 2026 18:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674456;
-	bh=0aErxOv7tlpc0rpoB0aHAz+LiFHlLwXixx1igcXP/WQ=;
+	s=korg; t=1775673062;
+	bh=3Tbi0Fv3W6/x3vA5DiFN0vds7LdlZcQ1Snm9n6A7eqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zmnxHXTQnri+lXTkHSheb4Ol6zt/Yqna91D0arVgmq1FVFHFbTUe+OomJ/N/be+km
-	 DhoaTZACfdulT027vvIgfafB2W8Ayc45AMJQPdro3CKlKwI0TNLk7UrrMBe6wkKJDZ
-	 qLDLFt531r+3OErUkaVkfg3TFQpooiGxSiMc8KHo=
+	b=Z6yUWRXIPg6QNVIjCJN/DKomj5Ii5Y9cPZI5d1xSmu+Gj1FpT3PpcOhtgkQt0+qCC
+	 niGM0yQr/RBq2uFqsWCRGvS91fBZdyrgyuyWKJ0CWl6M6ZsDSCd9NSiNjUBRlwsK4T
+	 tMVB7CTfgdsMYUKyRq9GQXrVkm2neNBP7rp4o0K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Yucheng Lu <kanolyc@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 072/311] NFC: pn533: bound the UART receive buffer
+Subject: [PATCH 6.18 087/277] net/sched: sch_netem: fix out-of-bounds access in packet corruption
 Date: Wed,  8 Apr 2026 20:01:12 +0200
-Message-ID: <20260408175942.103077147@linuxfoundation.org>
+Message-ID: <20260408175937.112956790@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +72,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234516-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,networkplumber.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235056-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: F27713C1F04
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: A78083C0EEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Yucheng Lu <kanolyc@gmail.com>
 
-[ Upstream commit 30fe3f5f6494f827d812ff179f295a8e532709d6 ]
+[ Upstream commit d64cb81dcbd54927515a7f65e5e24affdc73c14b ]
 
-pn532_receive_buf() appends every incoming byte to dev->recv_skb and
-only resets the buffer after pn532_uart_rx_is_frame() recognizes a
-complete frame. A continuous stream of bytes without a valid PN532 frame
-header therefore keeps growing the skb until skb_put_u8() hits the tail
-limit.
+In netem_enqueue(), the packet corruption logic uses
+get_random_u32_below(skb_headlen(skb)) to select an index for
+modifying skb->data. When an AF_PACKET TX_RING sends fully non-linear
+packets over an IPIP tunnel, skb_headlen(skb) evaluates to 0.
 
-Drop the accumulated partial frame once the fixed receive buffer is full
-so malformed UART traffic cannot grow the skb past
-PN532_UART_SKB_BUFF_LEN.
+Passing 0 to get_random_u32_below() takes the variable-ceil slow path
+which returns an unconstrained 32-bit random integer. Using this
+unconstrained value as an offset into skb->data results in an
+out-of-bounds memory access.
 
-Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260326142033.82297-1-pengpeng@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix this by verifying skb_headlen(skb) is non-zero before attempting
+to corrupt the linear data area. Fully non-linear packets will silently
+bypass the corruption logic.
+
+Fixes: c865e5d99e25 ("[PKT_SCHED] netem: packet corruption option")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Link: https://patch.msgid.link/45435c0935df877853a81e6d06205ac738ec65fa.1774941614.git.kanolyc@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/pn533/uart.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_netem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nfc/pn533/uart.c b/drivers/nfc/pn533/uart.c
-index a081bce61c29f..49c399a571750 100644
---- a/drivers/nfc/pn533/uart.c
-+++ b/drivers/nfc/pn533/uart.c
-@@ -211,6 +211,9 @@ static size_t pn532_receive_buf(struct serdev_device *serdev,
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index eafc316ae319e..6f8fcc4b504ce 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -518,8 +518,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			goto finish_segs;
+ 		}
  
- 	timer_delete(&dev->cmd_timeout);
- 	for (i = 0; i < count; i++) {
-+		if (unlikely(!skb_tailroom(dev->recv_skb)))
-+			skb_trim(dev->recv_skb, 0);
-+
- 		skb_put_u8(dev->recv_skb, *data++);
- 		if (!pn532_uart_rx_is_frame(dev->recv_skb))
- 			continue;
+-		skb->data[get_random_u32_below(skb_headlen(skb))] ^=
+-			1<<get_random_u32_below(8);
++		if (skb_headlen(skb))
++			skb->data[get_random_u32_below(skb_headlen(skb))] ^=
++				1 << get_random_u32_below(8);
+ 	}
+ 
+ 	if (unlikely(q->t_len >= sch->limit)) {
 -- 
 2.53.0
 
