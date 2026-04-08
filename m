@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-234178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KG1XJy+c1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:27 +0200
+	id IP22A86f1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA763C06B6
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625E53C100F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23C80307FC6C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79121311D23E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB2FB67E;
-	Wed,  8 Apr 2026 18:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17513ACA41;
+	Wed,  8 Apr 2026 18:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7GKXgwy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAMyUAjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1986386550;
-	Wed,  8 Apr 2026 18:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A87C2494F0;
+	Wed,  8 Apr 2026 18:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672185; cv=none; b=IyEtNVy/OCIOaZt5kaswLLn0uyJ51qo8K80CnHXvI+yykRIga7Nrhz0iYs7d39Jud8etfVTrEK6SXXLtCDvmy78jyfG9Dl9QCZoUGW6DgSF3GUIYbMVObUt90Bvhd41+NBZL3YcsEETBL3zeZW3Hx7jmKUtAjN7t3XSYB6qzpIY=
+	t=1775672553; cv=none; b=n1XPpLkX3P93PYtSOxr65AvjBazO7zi2fg4cFJcPVTUK6gHzoVGbFv6ALjOylMHr3qBzg889+dmv3LRn20XZFkuKzWZM6HZUUozmZag4nJo1xMnjbPMnsgHB94WC2hWJNCnB1kydOXvGkFRj33HCUyxtt+xcmKB+bYnXG5r9Vho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672185; c=relaxed/simple;
-	bh=O809oX1B3we1M9hf/RpWVY570vWlnUQnFxUrkkwvMA8=;
+	s=arc-20240116; t=1775672553; c=relaxed/simple;
+	bh=GWG/G1kI6BozAGZCJT4B3VUTK/4Rrf1psbzGNnXc9nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=itpY1KJ9ilD41gYXJngNWmCVWXo7zVjaKYeJE1yquRYxw3YcndM+nMMije6MGaRXQGNwEn1HeEVaG6n1RsijV34yEneaa7DCanNuMQ57v0d2r42my79Sc0wHWAL9txS8IDoc9ZRLQoC7hWrSZzqB4Iedfx6tGWyTaYKeqH8oh5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7GKXgwy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DFFC19421;
-	Wed,  8 Apr 2026 18:16:24 +0000 (UTC)
+	 MIME-Version; b=mctu7dP4ZmBgVX16paQa2o5+G7NZA6S2LuFbNjPq5JwyHjZvsKNvQDZ2cERumAvwQuxoTtRIfgC2VeuDdp8bk76uVag5EXtf02lVxTyWMmbRI9f7YFSEltYvUwbqaFmDdWLzy/vBxFvP4eQUWUI7L9WFaOeett9QiYiyorOC/kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAMyUAjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DAE3C19421;
+	Wed,  8 Apr 2026 18:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672185;
-	bh=O809oX1B3we1M9hf/RpWVY570vWlnUQnFxUrkkwvMA8=;
+	s=korg; t=1775672553;
+	bh=GWG/G1kI6BozAGZCJT4B3VUTK/4Rrf1psbzGNnXc9nE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7GKXgwyh9ze0HlV4UPenZXp2ZW/r9LQucT0gVx/t9tInl7B9gIpYn6xaxAcSBEmu
-	 wQZZOq7hLeF7WfEOu1Te4KohXsfQZcGGRGHZ2vtHtQdWNwlEsXN3V6JBQhDpU5g45+
-	 54w9R5+E9waMPHXsHgPshf5lluWfbqzhTCu/5+C0=
+	b=cAMyUAjR39RIrHMhaVVKIHX7R4YlAIcpBFU5vx69ajcZVcgumvetiUDNyffKDEtOu
+	 rnkh4oTg8shqkwQW0LG6KPz1VO7m4elYchInk+3M/xIzqHp9o2kU8TT8a9ON0wnpip
+	 2bus89ut70lVeWCQU/wPOgd7fMx0G13iIEgODhoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 221/312] iio: imu: bmi160: Remove potential undefined behavior in bmi160_config_pin()
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 051/160] rds: ib: reject FRMR registration before IB connection is established
 Date: Wed,  8 Apr 2026 20:02:18 +0200
-Message-ID: <20260408175942.011068499@linuxfoundation.org>
+Message-ID: <20260408175915.111407439@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,110 +65,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234178-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234320-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,arndb.de:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0FA763C06B6
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,asu.edu:email]
+X-Rspamd-Queue-Id: 625E53C100F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit c05a87d9ec3bf8727a5d746ce855003c6f2f8bb4 upstream.
+[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
 
-If 'pin' is not one of its expected values, the value of
-'int_out_ctrl_shift' is undefined.  With UBSAN enabled, this causes
-Clang to generate undefined behavior, resulting in the following
-warning:
+rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
+and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
+fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
+i_cm_id = NULL because the connection worker has not yet called
+rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
+RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
+the control message before any connection establishment, allowing
+rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
+kernel.
 
-  drivers/iio/imu/bmi160/bmi160_core.o: warning: objtool: bmi160_setup_irq() falls through to next function __cfi_bmi160_core_runtime_resume()
+The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
+commit 9e630bcb7701), which does not catch this case since ic is allocated
+early and is always non-NULL once the connection object exists.
 
-Prevent the UB and improve error handling by returning an error if 'pin'
-has an unexpected value.
+ KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+ RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
+ Call Trace:
+  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
+  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
+  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
+  rds_ib_get_mr (net/rds/ib_rdma.c:615)
+  __rds_rdma_map (net/rds/rdma.c:295)
+  rds_cmsg_rdma_map (net/rds/rdma.c:860)
+  rds_sendmsg (net/rds/send.c:1363)
+  ____sys_sendmsg
+  do_syscall_64
 
-While at it, simplify the code a bit by moving the 'pin_name' assignment
-to the first switch statement.
+Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
+non-NULL before proceeding with FRMR registration, mirroring the guard
+already present in rds_ib_post_inv(). Return -ENODEV when the connection
+is not ready, which the existing error handling in rds_cmsg_send() converts
+to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
+start the connection worker.
 
-Fixes: 895bf81e6bbf ("iio:bmi160: add drdy interrupt support")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/bmi160/bmi160_core.c |   15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ net/rds/ib_rdma.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/imu/bmi160/bmi160_core.c
-+++ b/drivers/iio/imu/bmi160/bmi160_core.c
-@@ -568,12 +568,16 @@ static int bmi160_config_pin(struct regm
- 		int_out_ctrl_shift = BMI160_INT1_OUT_CTRL_SHIFT;
- 		int_latch_mask = BMI160_INT1_LATCH_MASK;
- 		int_map_mask = BMI160_INT1_MAP_DRDY_EN;
-+		pin_name = "INT1";
- 		break;
- 	case BMI160_PIN_INT2:
- 		int_out_ctrl_shift = BMI160_INT2_OUT_CTRL_SHIFT;
- 		int_latch_mask = BMI160_INT2_LATCH_MASK;
- 		int_map_mask = BMI160_INT2_MAP_DRDY_EN;
-+		pin_name = "INT2";
- 		break;
-+	default:
-+		return -EINVAL;
+diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
+index 8f070ee7e7426..30fca2169aa7a 100644
+--- a/net/rds/ib_rdma.c
++++ b/net/rds/ib_rdma.c
+@@ -608,8 +608,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
+ 		return ibmr;
  	}
- 	int_out_ctrl_mask = BMI160_INT_OUT_CTRL_MASK << int_out_ctrl_shift;
  
-@@ -607,17 +611,8 @@ static int bmi160_config_pin(struct regm
- 	ret = bmi160_write_conf_reg(regmap, BMI160_REG_INT_MAP,
- 				    int_map_mask, int_map_mask,
- 				    write_usleep);
--	if (ret) {
--		switch (pin) {
--		case BMI160_PIN_INT1:
--			pin_name = "INT1";
--			break;
--		case BMI160_PIN_INT2:
--			pin_name = "INT2";
--			break;
--		}
-+	if (ret)
- 		dev_err(dev, "Failed to configure %s IRQ pin", pin_name);
--	}
+-	if (conn)
++	if (conn) {
+ 		ic = conn->c_transport_data;
++		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
++			ret = -ENODEV;
++			goto out;
++		}
++	}
  
- 	return ret;
- }
+ 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
+ 		ret = -ENODEV;
+-- 
+2.53.0
+
 
 
 
