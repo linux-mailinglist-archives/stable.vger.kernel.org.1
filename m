@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKwqNVqf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:58 +0200
+	id KAZ9J7en1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C25A3C0EF0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A90D3C2796
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BEF6730065D4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B05A330DA3DB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31463D669E;
-	Wed,  8 Apr 2026 18:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B892BEFFF;
+	Wed,  8 Apr 2026 18:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzOI/EpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiA768L2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A4D32A3FD;
-	Wed,  8 Apr 2026 18:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672703624B0;
+	Wed,  8 Apr 2026 18:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673176; cv=none; b=a2Xjp3rEdSfrQNmircOVXBp7vyS7KUxRFZMpBnW09hcxPxzFAWusfoD4EvuM0b4t2SrLJycF7iL0Wi5v8yuib7iTye55Q8Ek+0KOOWn/3z55rDG9fWOc6zRbqntLAY6swr33pJIiEbx0dTE0ziiV9O7lIft6qFOYT8lQtZOuLBs=
+	t=1775673837; cv=none; b=CmZbs3Kh+morGrxcl112Gzgc/GIPX9L1tNmNEjGRg5twsWvtg0VLRtbxGgdi+fmnKoYoshbNgkfii0IQ3MbKjf2EhoPdWwHZ9wNRzaNcZH+RRMRGyxdRy0vMBa+w6l7bb9KqwyP2gM5d5OYoYsmP5VwP4o2SWwAt0wMGe0me0S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673176; c=relaxed/simple;
-	bh=ftkzjGc7F7XCF1V/FJyMr9RVSBkl4Q/rXzjhmJw9bIc=;
+	s=arc-20240116; t=1775673837; c=relaxed/simple;
+	bh=sDi0/IQuxyNQ9BS03x//DZlli5XPNh15NcYqqEK4Gds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbWKdl5CsmnIocF4YK+PSTstNc0HGNX6+IzMux7hfzgAP2QFufNgbac+z14CV2cZut/AYajEsQZzZVyDFzNlsSnx0siaYC0NMmhoBCUExqsMwbXTStb5JKeXemMsHBkwbkppX2LazrL6mUl64JkBuI2c7bzDxoNEjsYhGdm8P/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzOI/EpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA57C19421;
-	Wed,  8 Apr 2026 18:32:55 +0000 (UTC)
+	 MIME-Version; b=S/Owk+s15p+U/QvRX+xv9FCYjAnLTqIuaSH7HqdOkCHv+fShzEamiNoKfPW+d9G0O6b1+DhBP2kdNkqSVVG1TDd0kWLtLbzTxmBsDpNGCS3WEnA547lcy3NkYkhUb5C/txxnVkhid4Ts6MtpIBC5uhZS4y+qYbCs0iuopy/I9Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiA768L2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E0EC19425;
+	Wed,  8 Apr 2026 18:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673176;
-	bh=ftkzjGc7F7XCF1V/FJyMr9RVSBkl4Q/rXzjhmJw9bIc=;
+	s=korg; t=1775673837;
+	bh=sDi0/IQuxyNQ9BS03x//DZlli5XPNh15NcYqqEK4Gds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzOI/EpVIbe/ycJH7aV5tdncnWrSf39uXW79MoxpglB2nbQbj8Ukf26RHfOaDcj1B
-	 RDGbL9ljp1G46plgIv4HQAqBB2fYVIovwu/ccea8Q/MgavXmdE76u6OtYmV7P6hiae
-	 3k+pazJfyxnrlUz/th+lPvPXBfBWMy0PZeqKmujw=
+	b=fiA768L2SBS5N2s6tBB31Hspp3Xd7WygDzzSBbzDdZqYfZ8hRzJWe9WnKy0nEVRG9
+	 XCiUQoqKqPAcHdVsIOmIbWLZXWn1P5QqJnVZTyTh+SLQ020yeJ45FJtqIXwSGXpMz6
+	 DRWeFoIXNbpzvu67/y6VBTacYJlZGhrq8uR+p5uM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>
-Subject: [PATCH 6.18 130/277] rust_binder: use AssertSync for BINDER_VM_OPS
-Date: Wed,  8 Apr 2026 20:01:55 +0200
-Message-ID: <20260408175938.729163215@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 076/242] netfilter: nf_conntrack_expect: store netns and zone in expectation
+Date: Wed,  8 Apr 2026 20:01:56 +0200
+Message-ID: <20260408175929.928531147@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,121 +68,190 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234560-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234816-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7C25A3C0EF0
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,netfilter.org:email]
+X-Rspamd-Queue-Id: 3A90D3C2796
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit ec327abae5edd1d5b60ea9f920212970133171d2 upstream.
+[ Upstream commit 02a3231b6d82efe750da6554ebf280e4a6f78756 ]
 
-When declaring an immutable global variable in Rust, the compiler checks
-that it looks thread safe, because it is generally safe to access said
-global variable. When using C bindings types for these globals, we don't
-really want this check, because it is conservative and assumes pointers
-are not thread safe.
+__nf_ct_expect_find() and nf_ct_expect_find_get() are called under
+rcu_read_lock() but they dereference the master conntrack via
+exp->master.
 
-In the case of BINDER_VM_OPS, this is a challenge when combined with the
-patch 'userfaultfd: introduce vm_uffd_ops' [1], which introduces a
-pointer field to vm_operations_struct. It previously only held function
-pointers, which are considered thread safe.
+Since the expectation does not hold a reference on the master conntrack,
+this could be dying conntrack or different recycled conntrack than the
+real master due to SLAB_TYPESAFE_RCU.
 
-Rust Binder should not be assuming that vm_operations_struct contains no
-pointer fields, so to fix this, use AssertSync (which Rust Binder has
-already declared for another similar global of type struct
-file_operations with the same problem). This ensures that even if
-another commit adds a pointer field to vm_operations_struct, this does
-not cause problems.
+Store the netns, the master_tuple and the zone in struct
+nf_conntrack_expect as a safety measure.
 
-Fixes: 8ef2c15aeae0 ("rust_binder: check ownership before using vma")
-Cc: stable <stable@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202603121235.tpnRxFKO-lkp@intel.com/
-Link: https://lore.kernel.org/r/20260306171815.3160826-8-rppt@kernel.org [1]
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260314111951.4139029-1-aliceryhl@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch is required by the follow up fix not to dump expectations
+that do not belong to this netns.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 917b61fa2042 ("netfilter: ctnetlink: ignore explicit helper on new expectations")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder/page_range.rs       |    8 +++++---
- drivers/android/binder/rust_binder_main.rs |    2 +-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ include/net/netfilter/nf_conntrack_expect.h | 18 +++++++++++++++++-
+ net/netfilter/nf_conntrack_broadcast.c      |  6 +++++-
+ net/netfilter/nf_conntrack_expect.c         |  9 +++++++--
+ net/netfilter/nf_conntrack_netlink.c        |  5 +++++
+ 4 files changed, 34 insertions(+), 4 deletions(-)
 
---- a/drivers/android/binder/page_range.rs
-+++ b/drivers/android/binder/page_range.rs
-@@ -13,6 +13,8 @@
- //
- // The shrinker will use trylock methods because it locks them in a different order.
+diff --git a/include/net/netfilter/nf_conntrack_expect.h b/include/net/netfilter/nf_conntrack_expect.h
+index 1b01400b10bdb..e9a8350e7ccfb 100644
+--- a/include/net/netfilter/nf_conntrack_expect.h
++++ b/include/net/netfilter/nf_conntrack_expect.h
+@@ -22,10 +22,16 @@ struct nf_conntrack_expect {
+ 	/* Hash member */
+ 	struct hlist_node hnode;
  
-+use crate::AssertSync;
++	/* Network namespace */
++	possible_net_t net;
 +
- use core::{
-     marker::PhantomPinned,
-     mem::{size_of, size_of_val, MaybeUninit},
-@@ -143,14 +145,14 @@ pub(crate) struct ShrinkablePageRange {
+ 	/* We expect this tuple, with the following mask */
+ 	struct nf_conntrack_tuple tuple;
+ 	struct nf_conntrack_tuple_mask mask;
+ 
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	struct nf_conntrack_zone zone;
++#endif
+ 	/* Usage count. */
+ 	refcount_t use;
+ 
+@@ -62,7 +68,17 @@ struct nf_conntrack_expect {
+ 
+ static inline struct net *nf_ct_exp_net(struct nf_conntrack_expect *exp)
+ {
+-	return nf_ct_net(exp->master);
++	return read_pnet(&exp->net);
++}
++
++static inline bool nf_ct_exp_zone_equal_any(const struct nf_conntrack_expect *a,
++					    const struct nf_conntrack_zone *b)
++{
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	return a->zone.id == b->id;
++#else
++	return true;
++#endif
  }
  
- // We do not define any ops. For now, used only to check identity of vmas.
--static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
-+static BINDER_VM_OPS: AssertSync<bindings::vm_operations_struct> = AssertSync(pin_init::zeroed());
+ #define NF_CT_EXP_POLICY_NAME_LEN	16
+diff --git a/net/netfilter/nf_conntrack_broadcast.c b/net/netfilter/nf_conntrack_broadcast.c
+index 656cb1033e9c3..f9528d4db0a82 100644
+--- a/net/netfilter/nf_conntrack_broadcast.c
++++ b/net/netfilter/nf_conntrack_broadcast.c
+@@ -21,6 +21,7 @@ int nf_conntrack_broadcast_help(struct sk_buff *skb,
+ 				unsigned int timeout)
+ {
+ 	const struct nf_conntrack_helper *helper;
++	struct net *net = read_pnet(&ct->ct_net);
+ 	struct nf_conntrack_expect *exp;
+ 	struct iphdr *iph = ip_hdr(skb);
+ 	struct rtable *rt = skb_rtable(skb);
+@@ -71,7 +72,10 @@ int nf_conntrack_broadcast_help(struct sk_buff *skb,
+ 	exp->flags                = NF_CT_EXPECT_PERMANENT;
+ 	exp->class		  = NF_CT_EXPECT_CLASS_DEFAULT;
+ 	rcu_assign_pointer(exp->helper, helper);
+-
++	write_pnet(&exp->net, net);
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	exp->zone = ct->zone;
++#endif
+ 	nf_ct_expect_related(exp, 0);
+ 	nf_ct_expect_put(exp);
  
- // To ensure that we do not accidentally install pages into or zap pages from the wrong vma, we
- // check its vm_ops and private data before using it.
- fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> Option<&virt::VmaMixedMap> {
-     // SAFETY: Just reading the vm_ops pointer of any active vma is safe.
-     let vm_ops = unsafe { (*vma.as_ptr()).vm_ops };
--    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
-+    if !ptr::eq(vm_ops, &BINDER_VM_OPS.0) {
-         return None;
-     }
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index b85a8d630d819..f5c45989df573 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -112,8 +112,8 @@ nf_ct_exp_equal(const struct nf_conntrack_tuple *tuple,
+ 		const struct net *net)
+ {
+ 	return nf_ct_tuple_mask_cmp(tuple, &i->tuple, &i->mask) &&
+-	       net_eq(net, nf_ct_net(i->master)) &&
+-	       nf_ct_zone_equal_any(i->master, zone);
++	       net_eq(net, read_pnet(&i->net)) &&
++	       nf_ct_exp_zone_equal_any(i, zone);
+ }
  
-@@ -342,7 +344,7 @@ impl ShrinkablePageRange {
+ bool nf_ct_remove_expect(struct nf_conntrack_expect *exp)
+@@ -321,6 +321,7 @@ void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
+ {
+ 	struct nf_conntrack_helper *helper = NULL;
+ 	struct nf_conn *ct = exp->master;
++	struct net *net = read_pnet(&ct->ct_net);
+ 	struct nf_conn_help *help;
+ 	int len;
  
-         // SAFETY: We own the vma, and we don't use any methods on VmaNew that rely on
-         // `vm_ops`.
--        unsafe { (*vma.as_ptr()).vm_ops = &BINDER_VM_OPS };
-+        unsafe { (*vma.as_ptr()).vm_ops = &BINDER_VM_OPS.0 };
+@@ -338,6 +339,10 @@ void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
+ 		helper = rcu_dereference(help->helper);
  
-         Ok(num_pages)
-     }
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -300,7 +300,7 @@ impl kernel::Module for BinderModule {
- /// Makes the inner type Sync.
- #[repr(transparent)]
- pub struct AssertSync<T>(T);
--// SAFETY: Used only to insert `file_operations` into a global, which is safe.
-+// SAFETY: Used only to insert C bindings types into globals, which is safe.
- unsafe impl<T> Sync for AssertSync<T> {}
+ 	rcu_assign_pointer(exp->helper, helper);
++	write_pnet(&exp->net, net);
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	exp->zone = ct->zone;
++#endif
+ 	exp->tuple.src.l3num = family;
+ 	exp->tuple.dst.protonum = proto;
  
- /// File operations that rust_binderfs.c can use.
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 421e96c338bb9..d262e64f1c152 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3516,6 +3516,7 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 		       struct nf_conntrack_tuple *tuple,
+ 		       struct nf_conntrack_tuple *mask)
+ {
++	struct net *net = read_pnet(&ct->ct_net);
+ 	struct nf_conntrack_expect *exp;
+ 	struct nf_conn_help *help;
+ 	u32 class = 0;
+@@ -3555,6 +3556,10 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 
+ 	exp->class = class;
+ 	exp->master = ct;
++	write_pnet(&exp->net, net);
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	exp->zone = ct->zone;
++#endif
+ 	if (!helper)
+ 		helper = rcu_dereference(help->helper);
+ 	rcu_assign_pointer(exp->helper, helper);
+-- 
+2.53.0
+
 
 
 
