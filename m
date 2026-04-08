@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBcYBVWe1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:37 +0200
+	id CIDrHd+h1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6093C0CA3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC103C1568
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25B2D3025F58
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEA1730D5E4B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4595C3D411F;
-	Wed,  8 Apr 2026 18:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FA936166F;
+	Wed,  8 Apr 2026 18:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPXjNOFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egsYmckS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D903ACA41;
-	Wed,  8 Apr 2026 18:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6726B2BD030;
+	Wed,  8 Apr 2026 18:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672755; cv=none; b=vC+0sZ/J8NFw07RO7EkcAoy3YfYd+k98HLRs2G+sN7QCZG7u2oA64+JASMBujBzWGUranf26NDbuxK5DH/Tc5J6lKBT+WpNXx7Bz1jY3tRvqRhMoXdrtI5XCR4DMXBixEeVZ5SzMJmTy+3G9e/c+9N6nH4YogLL8kIxdbZJHNTE=
+	t=1775673431; cv=none; b=fMADuP+ZQetxoMIaN60MAbca7lk3puVoPR7AETD16eGGaoQxURauoiYCeRsykZ7hxWonL9uJi/6xCKGgwQeM/WwqP8N6pN6A4w4SDGXDJn+QgqITy8YPF+/KT9o+Fb+FCwy45wfjn8RFGjs8ZbBNifcuQuZm07hODRwwHbR4K4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672755; c=relaxed/simple;
-	bh=440NII2QoyUDe4LmYD761m//rr9jHIC+2+4mt+VVCRk=;
+	s=arc-20240116; t=1775673431; c=relaxed/simple;
+	bh=67V8HZbsFl0DqS7DMG2SuchqUY9YQnYNdcFcwdEbEGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYAguOg6vfVYZH6dMXvUBX2zJNx3MR86L6d02lekK7p68bQby8xIEzxyWCyKV7eqXBHuwauVCp3Y+eUSNPzt/neOPqzWLmdGFLP158Vmwr7sf+4ATihNpkc3cu3nJ32h7vlGaxz6fEBZSdHieJBSaodo0IjtnHbYlqu+eEREYPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPXjNOFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929C3C19421;
-	Wed,  8 Apr 2026 18:25:54 +0000 (UTC)
+	 MIME-Version; b=YFjBbFuL/YheNs7Nv6eb4n3zYgcr/Ngcbi+KuixhHN+hcvw71Q0mcwF+WryBT+YNWKTnLjW8zfwafP3AsdECo0SxGC4nvm9WOpO/G3zr4ufaAyOfszCJptDalMULNNfDpZXEWd8ZgTeGIsXax7y6Y1k6wXjEpP8H3BDwFewGm7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egsYmckS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9806C19421;
+	Wed,  8 Apr 2026 18:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672754;
-	bh=440NII2QoyUDe4LmYD761m//rr9jHIC+2+4mt+VVCRk=;
+	s=korg; t=1775673431;
+	bh=67V8HZbsFl0DqS7DMG2SuchqUY9YQnYNdcFcwdEbEGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPXjNOFjyTXKpB7QgQ3QXnnPmjUw6dYU9IEinrBGXVRhnl1J7v6zNanTVp02Eopd7
-	 Tg++OpR0YREuOttkeoeY19pIEsPR8SANpu2kU2FGXS1giaBO3BiMHbC3U5MfGVvrhz
-	 8q2cHKlmGl6Rd/ojvniMK8ZkvP9FXU2vDwCdytjU=
+	b=egsYmckSwmDgrMFbkvjG3yrUSYh4Z2EgKfWN1ptZZhjbRe2fxyr3ppAOPj1yb8kca
+	 NPEF8XoM15jrR+wBNQWMqVEZFw872gUUXMqUmFXBkLenWin8TcPxchYOEVfNV5GjeS
+	 Dv39ON3bayUTLQcE7pl5WxrnfTuihFrF3KgejFig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yufan Chen <yufan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 128/160] net: ftgmac100: fix ring allocation unwind on open failure
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.18 230/277] counter: rz-mtu3-cnt: do not use struct rz_mtu3_channels dev member
 Date: Wed,  8 Apr 2026 20:03:35 +0200
-Message-ID: <20260408175917.970052774@linuxfoundation.org>
+Message-ID: <20260408175942.447092947@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234398-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234659-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,94 +88,247 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email]
-X-Rspamd-Queue-Id: 8B6093C0CA3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email]
+X-Rspamd-Queue-Id: DAC103C1568
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yufan Chen <yufan.chen@linux.dev>
+From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 
-commit c0fd0fe745f5e8c568d898cd1513d0083e46204a upstream.
+commit 2932095c114b98cbb40ccf34fc00d613cb17cead upstream.
 
-ftgmac100_alloc_rings() allocates rx_skbs, tx_skbs, rxdes, txdes, and
-rx_scratch in stages. On intermediate failures it returned -ENOMEM
-directly, leaking resources allocated earlier in the function.
+The counter driver can use HW channels 1 and 2, while the PWM driver can
+use HW channels 0, 1, 2, 3, 4, 6, 7.
 
-Rework the failure path to use staged local unwind labels and free
-allocated resources in reverse order before returning -ENOMEM. This
-matches common netdev allocation cleanup style.
+The dev member is assigned both by the counter driver and the PWM driver
+for channels 1 and 2, to their own struct device instance, overwriting
+the previous value.
 
-Fixes: d72e01a0430f ("ftgmac100: Use a scratch buffer for failed RX allocations")
+The sub-drivers race to assign their own struct device pointer to the
+same struct rz_mtu3_channel's dev member.
+
+The dev member of struct rz_mtu3_channel is used by the counter
+sub-driver for runtime PM.
+
+Depending on the probe order of the counter and PWM sub-drivers, the
+dev member may point to the wrong struct device instance, causing the
+counter sub-driver to do runtime PM actions on the wrong device.
+
+To fix this, use the parent pointer of the counter, which is assigned
+during probe to the correct struct device, not the struct device pointer
+inside the shared struct rz_mtu3_channel.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Yufan Chen <yufan.chen@linux.dev>
-Link: https://patch.msgid.link/20260328163257.60836-1-yufan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0be8907359df ("counter: Add Renesas RZ/G2L MTU3a counter driver")
+Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Link: https://lore.kernel.org/r/20260130122353.2263273-6-cosmin-gabriel.tanislav.xa@renesas.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c |   28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/counter/rz-mtu3-cnt.c |   55 ++++++++++++++++++++----------------------
+ 1 file changed, 27 insertions(+), 28 deletions(-)
 
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -934,19 +934,19 @@ static int ftgmac100_alloc_rings(struct
- 	priv->tx_skbs = kcalloc(MAX_TX_QUEUE_ENTRIES, sizeof(void *),
- 				GFP_KERNEL);
- 	if (!priv->tx_skbs)
--		return -ENOMEM;
-+		goto err_free_rx_skbs;
+--- a/drivers/counter/rz-mtu3-cnt.c
++++ b/drivers/counter/rz-mtu3-cnt.c
+@@ -107,9 +107,9 @@ static bool rz_mtu3_is_counter_invalid(s
+ 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
+ 	unsigned long tmdr;
  
- 	/* Allocate descriptors */
- 	priv->rxdes = dma_alloc_coherent(priv->dev,
- 					 MAX_RX_QUEUE_ENTRIES * sizeof(struct ftgmac100_rxdes),
- 					 &priv->rxdes_dma, GFP_KERNEL);
- 	if (!priv->rxdes)
--		return -ENOMEM;
-+		goto err_free_tx_skbs;
- 	priv->txdes = dma_alloc_coherent(priv->dev,
- 					 MAX_TX_QUEUE_ENTRIES * sizeof(struct ftgmac100_txdes),
- 					 &priv->txdes_dma, GFP_KERNEL);
- 	if (!priv->txdes)
--		return -ENOMEM;
-+		goto err_free_rxdes;
+-	pm_runtime_get_sync(priv->ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
+-	pm_runtime_put(priv->ch->dev);
++	pm_runtime_put(counter->parent);
  
- 	/* Allocate scratch packet buffer */
- 	priv->rx_scratch = dma_alloc_coherent(priv->dev,
-@@ -954,9 +954,29 @@ static int ftgmac100_alloc_rings(struct
- 					      &priv->rx_scratch_dma,
- 					      GFP_KERNEL);
- 	if (!priv->rx_scratch)
--		return -ENOMEM;
-+		goto err_free_txdes;
+ 	if (id == RZ_MTU3_32_BIT_CH && test_bit(RZ_MTU3_TMDR3_LWA, &tmdr))
+ 		return false;
+@@ -165,12 +165,12 @@ static int rz_mtu3_count_read(struct cou
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_get_sync(ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	if (count->id == RZ_MTU3_32_BIT_CH)
+ 		*val = rz_mtu3_32bit_ch_read(ch, RZ_MTU3_TCNTLW);
+ 	else
+ 		*val = rz_mtu3_16bit_ch_read(ch, RZ_MTU3_TCNT);
+-	pm_runtime_put(ch->dev);
++	pm_runtime_put(counter->parent);
+ 	mutex_unlock(&priv->lock);
  
  	return 0;
-+
-+err_free_txdes:
-+	dma_free_coherent(priv->dev,
-+			  MAX_TX_QUEUE_ENTRIES *
-+			  sizeof(struct ftgmac100_txdes),
-+			  priv->txdes, priv->txdes_dma);
-+	priv->txdes = NULL;
-+err_free_rxdes:
-+	dma_free_coherent(priv->dev,
-+			  MAX_RX_QUEUE_ENTRIES *
-+			  sizeof(struct ftgmac100_rxdes),
-+			  priv->rxdes, priv->rxdes_dma);
-+	priv->rxdes = NULL;
-+err_free_tx_skbs:
-+	kfree(priv->tx_skbs);
-+	priv->tx_skbs = NULL;
-+err_free_rx_skbs:
-+	kfree(priv->rx_skbs);
-+	priv->rx_skbs = NULL;
-+	return -ENOMEM;
+@@ -187,26 +187,26 @@ static int rz_mtu3_count_write(struct co
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_get_sync(ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	if (count->id == RZ_MTU3_32_BIT_CH)
+ 		rz_mtu3_32bit_ch_write(ch, RZ_MTU3_TCNTLW, val);
+ 	else
+ 		rz_mtu3_16bit_ch_write(ch, RZ_MTU3_TCNT, val);
+-	pm_runtime_put(ch->dev);
++	pm_runtime_put(counter->parent);
+ 	mutex_unlock(&priv->lock);
+ 
+ 	return 0;
  }
  
- static void ftgmac100_init_rings(struct ftgmac100 *priv)
+ static int rz_mtu3_count_function_read_helper(struct rz_mtu3_channel *const ch,
+-					      struct rz_mtu3_cnt *const priv,
++					      struct counter_device *const counter,
+ 					      enum counter_function *function)
+ {
+ 	u8 timer_mode;
+ 
+-	pm_runtime_get_sync(ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	timer_mode = rz_mtu3_8bit_ch_read(ch, RZ_MTU3_TMDR1);
+-	pm_runtime_put(ch->dev);
++	pm_runtime_put(counter->parent);
+ 
+ 	switch (timer_mode & RZ_MTU3_TMDR1_PH_CNT_MODE_MASK) {
+ 	case RZ_MTU3_TMDR1_PH_CNT_MODE_1:
+@@ -240,7 +240,7 @@ static int rz_mtu3_count_function_read(s
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = rz_mtu3_count_function_read_helper(ch, priv, function);
++	ret = rz_mtu3_count_function_read_helper(ch, counter, function);
+ 	mutex_unlock(&priv->lock);
+ 
+ 	return ret;
+@@ -279,9 +279,9 @@ static int rz_mtu3_count_function_write(
+ 		return -EINVAL;
+ 	}
+ 
+-	pm_runtime_get_sync(ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TMDR1, timer_mode);
+-	pm_runtime_put(ch->dev);
++	pm_runtime_put(counter->parent);
+ 	mutex_unlock(&priv->lock);
+ 
+ 	return 0;
+@@ -300,9 +300,9 @@ static int rz_mtu3_count_direction_read(
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_get_sync(ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	tsr = rz_mtu3_8bit_ch_read(ch, RZ_MTU3_TSR);
+-	pm_runtime_put(ch->dev);
++	pm_runtime_put(counter->parent);
+ 
+ 	*direction = (tsr & RZ_MTU3_TSR_TCFD) ?
+ 		COUNTER_COUNT_DIRECTION_FORWARD : COUNTER_COUNT_DIRECTION_BACKWARD;
+@@ -377,14 +377,14 @@ static int rz_mtu3_count_ceiling_write(s
+ 		return -EINVAL;
+ 	}
+ 
+-	pm_runtime_get_sync(ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	if (count->id == RZ_MTU3_32_BIT_CH)
+ 		rz_mtu3_32bit_ch_write(ch, RZ_MTU3_TGRALW, ceiling);
+ 	else
+ 		rz_mtu3_16bit_ch_write(ch, RZ_MTU3_TGRA, ceiling);
+ 
+ 	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TCR, RZ_MTU3_TCR_CCLR_TGRA);
+-	pm_runtime_put(ch->dev);
++	pm_runtime_put(counter->parent);
+ 	mutex_unlock(&priv->lock);
+ 
+ 	return 0;
+@@ -495,7 +495,6 @@ static int rz_mtu3_count_enable_read(str
+ static int rz_mtu3_count_enable_write(struct counter_device *counter,
+ 				      struct counter_count *count, u8 enable)
+ {
+-	struct rz_mtu3_channel *const ch = rz_mtu3_get_ch(counter, count->id);
+ 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
+ 	int ret = 0;
+ 
+@@ -505,14 +504,14 @@ static int rz_mtu3_count_enable_write(st
+ 		goto exit;
+ 
+ 	if (enable) {
+-		pm_runtime_get_sync(ch->dev);
++		pm_runtime_get_sync(counter->parent);
+ 		ret = rz_mtu3_initialize_counter(counter, count->id);
+ 		if (ret == 0)
+ 			priv->count_is_enabled[count->id] = true;
+ 	} else {
+ 		rz_mtu3_terminate_counter(counter, count->id);
+ 		priv->count_is_enabled[count->id] = false;
+-		pm_runtime_put(ch->dev);
++		pm_runtime_put(counter->parent);
+ 	}
+ 
+ exit:
+@@ -544,9 +543,9 @@ static int rz_mtu3_cascade_counts_enable
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_get_sync(priv->ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
+-	pm_runtime_put(priv->ch->dev);
++	pm_runtime_put(counter->parent);
+ 	*cascade_enable = test_bit(RZ_MTU3_TMDR3_LWA, &tmdr);
+ 	mutex_unlock(&priv->lock);
+ 
+@@ -563,10 +562,10 @@ static int rz_mtu3_cascade_counts_enable
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_get_sync(priv->ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	rz_mtu3_shared_reg_update_bit(priv->ch, RZ_MTU3_TMDR3,
+ 				      RZ_MTU3_TMDR3_LWA, cascade_enable);
+-	pm_runtime_put(priv->ch->dev);
++	pm_runtime_put(counter->parent);
+ 	mutex_unlock(&priv->lock);
+ 
+ 	return 0;
+@@ -583,9 +582,9 @@ static int rz_mtu3_ext_input_phase_clock
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_get_sync(priv->ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
+-	pm_runtime_put(priv->ch->dev);
++	pm_runtime_put(counter->parent);
+ 	*ext_input_phase_clock_select = test_bit(RZ_MTU3_TMDR3_PHCKSEL, &tmdr);
+ 	mutex_unlock(&priv->lock);
+ 
+@@ -602,11 +601,11 @@ static int rz_mtu3_ext_input_phase_clock
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_get_sync(priv->ch->dev);
++	pm_runtime_get_sync(counter->parent);
+ 	rz_mtu3_shared_reg_update_bit(priv->ch, RZ_MTU3_TMDR3,
+ 				      RZ_MTU3_TMDR3_PHCKSEL,
+ 				      ext_input_phase_clock_select);
+-	pm_runtime_put(priv->ch->dev);
++	pm_runtime_put(counter->parent);
+ 	mutex_unlock(&priv->lock);
+ 
+ 	return 0;
+@@ -644,7 +643,7 @@ static int rz_mtu3_action_read(struct co
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = rz_mtu3_count_function_read_helper(ch, priv, &function);
++	ret = rz_mtu3_count_function_read_helper(ch, counter, &function);
+ 	if (ret) {
+ 		mutex_unlock(&priv->lock);
+ 		return ret;
 
 
 
