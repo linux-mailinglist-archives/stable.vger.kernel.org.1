@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-235018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJUuKtCp1mlmHAgAu9opvQ
-	(envelope-from <stable+bounces-235018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:36 +0200
+	id AGSDGNum1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0FB3C2B3C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08F53C259F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC078311BB1D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4D14302769C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFAD3D75C9;
-	Wed,  8 Apr 2026 18:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9C43D522C;
+	Wed,  8 Apr 2026 18:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNgYkbeU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7IsIVBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6082F337B81;
-	Wed,  8 Apr 2026 18:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04823B0AFC;
+	Wed,  8 Apr 2026 18:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674358; cv=none; b=p39u0ncdiIMaZJuye+Pv/b6PNBtMPq/o6Fe3v/XW4NxPCeFLE5h2+M1UWebtrHbSdUM47k+b2h0KlEm/KWta/jHjZ2ZK7Q+BKkXn/RtNmf1bCEI5Xh70w1K9/rset50lQTYi7HqkAWHuHHn36tSsGzO3JVO+TySIUr0QVe+Vnnc=
+	t=1775673621; cv=none; b=TWJdv5bf9uICOkuwPOvz0WmMqDypYiup7cfeJ8HXwrFt3CIHBD055cZSgJkUokXMcQybsHn3vv7NF2WeaBEXqGzBzsVZ8quKO8IS31WN5NtJRb4BR5wTgGlexNdrE7AiHTlY/hPLXZxjW/dAvdrCoCSslE/SGWMDGvvde74GlmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674358; c=relaxed/simple;
-	bh=4e6bAS4iCPq1TpaRFTh25HePxJWGG+fyIMYkJAN+52k=;
+	s=arc-20240116; t=1775673621; c=relaxed/simple;
+	bh=1V7o8+brqvdz5BtC88dJnkyh8tahEEWjvtglEnVYCZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eilGY03nUQhREWra+rFcS2pcHVo76wkkZk1TW42yDH9MOCP8z0eT+O6WcxfN/MXSPupLEHaH3SIGzJAKvDilG8LVE9XBw1+dqVz3Zxk07y9d78zsETFWcsrp+SsrZEYNqaw3t9eOTVQtoFicYunTyUoqq2jgdOttWNn7/pKFMpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNgYkbeU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD32C19421;
-	Wed,  8 Apr 2026 18:52:37 +0000 (UTC)
+	 MIME-Version; b=gTrNOPCJJ4F8iJ+LDKoC77svyIfPXoSuvVJp7V2WWLxMzT4qGXhd38mP4V0tHj77Dxb2yjOSFa8GcsBg0GfSmGIbQuf/K1GhjvgPNWkDnZn2KyDbjL2R/sqiOsr6aEReW0JNp8wobqQoob/oM02yH5MwXzkBOXktstkQchOjKXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7IsIVBY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378BCC19421;
+	Wed,  8 Apr 2026 18:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674358;
-	bh=4e6bAS4iCPq1TpaRFTh25HePxJWGG+fyIMYkJAN+52k=;
+	s=korg; t=1775673621;
+	bh=1V7o8+brqvdz5BtC88dJnkyh8tahEEWjvtglEnVYCZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNgYkbeUPAVMvue7HPkRtYUFrrORZGU8HoA/0rutw2/H0uwa8d6HLGVdxvBbmRoa1
-	 FTKP95t2Eu1rkjGk05tdKi2U9WFsAi6RLHRb06RfHGkmPovEPoCgyniX2+l6qohXU2
-	 ZBxnHLpzkphYJcSmlzqybDPDS1Ag6ZCGPVvxuBRM=
+	b=t7IsIVBY76zjAeI4cBFzk47eSLbPaGf1Cfd+bYnCKJ3prKKleBFfzdvUqCOQoCxnd
+	 ipQZlxmSz6G+XUFjDNUpThoOZJw2oQ9oFsJyS4R/d1KXvYe6MlGVTjKTvydNFYa6vm
+	 OXYJXMpWQY0SywzFTr++aEaNjXLaKNZ+LpVj9uek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 065/311] net: introduce mangleid_features
+	Martin Michaelis <code@mgjm.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 025/242] io_uring/kbuf: propagate BUF_MORE through early buffer commit path
 Date: Wed,  8 Apr 2026 20:01:05 +0200
-Message-ID: <20260408175941.843956623@linuxfoundation.org>
+Message-ID: <20260408175928.012466638@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +67,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235018-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234733-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1D0FB3C2B3C
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,mgjm.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C08F53C259F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 31c5a71d982b57df75858974634c2f0a338f2fc6 ]
+Commit 418eab7a6f3c002d8e64d6e95ec27118017019af upstream.
 
-Some/most devices implementing gso_partial need to disable the GSO partial
-features when the IP ID can't be mangled; to that extend each of them
-implements something alike the following[1]:
+When io_should_commit() returns true (eg for non-pollable files), buffer
+commit happens at buffer selection time and sel->buf_list is set to
+NULL. When __io_put_kbufs() generates CQE flags at completion time, it
+calls __io_put_kbuf_ring() which finds a NULL buffer_list and hence
+cannot determine whether the buffer was consumed or not. This means that
+IORING_CQE_F_BUF_MORE is never set for non-pollable input with
+incrementally consumed buffers.
 
-	if (skb->encapsulation && !(features & NETIF_F_TSO_MANGLEID))
-		features &= ~NETIF_F_TSO;
+Likewise for io_buffers_select(), which always commits upfront and
+discards the return value of io_kbuf_commit().
 
-in the ndo_features_check() op, which leads to a bit of duplicate code.
+Add REQ_F_BUF_MORE to store the result of io_kbuf_commit() during early
+commit. Then __io_put_kbuf_ring() can check this flag and set
+IORING_F_BUF_MORE accordingy.
 
-Later patch in the series will implement GSO partial support for virtual
-devices, and the current status quo will require more duplicate code and
-a new indirect call in the TX path for them.
-
-Introduce the mangleid_features mask, allowing the core to disable NIC
-features based on/requiring MANGLEID, without any further intervention
-from the driver.
-
-The same functionality could be alternatively implemented adding a single
-boolean flag to the struct net_device, but would require an additional
-checks in ndo_features_check().
-
-Also note that [1] is incorrect if the NIC additionally implements
-NETIF_F_GSO_UDP_L4, mangleid_features transparently handle even such a
-case.
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/5a7cdaeea40b0a29b88e525b6c942d73ed3b8ce7.1769011015.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ddc748a391dd ("net: use skb_header_pointer() for TCPv4 GSO frag_off check")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Martin Michaelis <code@mgjm.de>
+Cc: stable@vger.kernel.org
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Link: https://github.com/axboe/liburing/issues/1553
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netdevice.h | 3 +++
- net/core/dev.c            | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ io_uring/kbuf.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 1216f050f0699..846afec74703b 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1833,6 +1833,8 @@ enum netdev_reg_state {
-  *
-  *	@mpls_features:	Mask of features inheritable by MPLS
-  *	@gso_partial_features: value(s) from NETIF_F_GSO\*
-+ *	@mangleid_features:	Mask of features requiring MANGLEID, will be
-+ *				disabled together with the latter.
-  *
-  *	@ifindex:	interface index
-  *	@group:		The group the device belongs to
-@@ -2222,6 +2224,7 @@ struct net_device {
- 	netdev_features_t	vlan_features;
- 	netdev_features_t	hw_enc_features;
- 	netdev_features_t	mpls_features;
-+	netdev_features_t	mangleid_features;
- 
- 	unsigned int		min_mtu;
- 	unsigned int		max_mtu;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index b5f0d5c4d5412..8439bac371b7d 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3819,7 +3819,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 				    inner_ip_hdr(skb) : ip_hdr(skb);
- 
- 		if (!(iph->frag_off & htons(IP_DF)))
--			features &= ~NETIF_F_TSO_MANGLEID;
-+			features &= ~dev->mangleid_features;
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -387,7 +387,10 @@ static inline bool __io_put_kbuf_ring(st
+ 		ret = io_kbuf_commit(req, bl, len, nr);
+ 		req->buf_index = bl->bgid;
  	}
- 
- 	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
-@@ -11411,6 +11411,9 @@ int register_netdevice(struct net_device *dev)
- 	if (dev->hw_enc_features & NETIF_F_TSO)
- 		dev->hw_enc_features |= NETIF_F_TSO_MANGLEID;
- 
-+	/* TSO_MANGLEID belongs in mangleid_features by definition */
-+	dev->mangleid_features |= NETIF_F_TSO_MANGLEID;
+-	req->flags &= ~REQ_F_BUFFER_RING;
++	if (ret && (req->flags & REQ_F_BUF_MORE))
++		ret = false;
 +
- 	/* Make NETIF_F_HIGHDMA inheritable to VLAN devices.
- 	 */
- 	dev->vlan_features |= NETIF_F_HIGHDMA;
--- 
-2.53.0
-
++	req->flags &= ~(REQ_F_BUFFER_RING | REQ_F_BUF_MORE);
+ 	return ret;
+ }
+ 
 
 
 
