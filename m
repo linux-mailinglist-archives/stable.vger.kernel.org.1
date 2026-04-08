@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-234905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGT1F+Sj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:20 +0200
+	id +ABANYKm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDCAF3C1CE0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7A43C2494
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BCF930CCECF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97D8B314B197
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E6E3624B9;
-	Wed,  8 Apr 2026 18:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB263ACF16;
+	Wed,  8 Apr 2026 18:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XflAaftn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVu98iL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D96D2BD030;
-	Wed,  8 Apr 2026 18:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F9C27979A;
+	Wed,  8 Apr 2026 18:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674066; cv=none; b=qE4qe10n9utTW3n5ROyh3NzsXFzbqXNLKvoy25WiSSkTNOZktJuygG0HUOlw7ffo3y1+0M8gh0TeiD+fHRRmRMN7vOgE8gdKWSJiIU4ywIaTnVxHMq9GAPXUGT+DLlFw+QXRFwBLZ/8I1slpq97DnOVzi5povnvk0B+Kr6aZ9c0=
+	t=1775673532; cv=none; b=KKTA8MPKXxRt+M6UnVWxs5spOEreA/CE772Ky2nFP5fhF1OYXTJHEgsRQHgGc6GYpGadc5i799ALlgIf+2nC5IM3S5VTpC44prVVJsxvTYcvns4QOmbsroZr93WOqJcRopUQ3LjzZFk7WzPpuZdtFZr2C8SsBSMnHP9gFiljyhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674066; c=relaxed/simple;
-	bh=oT2lfgBoE/2Sm8iJZkNx/VDPIviN2sLhlE6qWeVx6Sk=;
+	s=arc-20240116; t=1775673532; c=relaxed/simple;
+	bh=Q0frkMts0GPn0bEMfDieg+kxiUFw2BDfhRPhqBq1MLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRObNsLBCDOLxRy0tMGYTtj1FE52F8/DvxgJjI3ZtvCWHlRFFFJOveMHMDVDAmcvo+7WXJ8AfAq6CNp0CCzCsatfd5+eB2hc8kBzyQwYm7uA2EtHyaDBWrHelWFdAqJWqfaLsfnGqBWofsh6RTISJJrP0ELj+gDbvmSyFjo7vQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XflAaftn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23596C19421;
-	Wed,  8 Apr 2026 18:47:45 +0000 (UTC)
+	 MIME-Version; b=oy/1Ze0eQoBWr3TLQF8EqeD1zGmlde6C4mXR6SpqRAbUiP5/e59yb4FoDQqNeduY3glbIcYv0k6smGULEePQOK89h2s97jQFUnWaHX6u86cz8Xq00qmisP+gvBs0+VF8FKlrNTz9cVn5WN0TfMcaDhfBWBzwgBDjGLK3wDAltiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVu98iL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDF8C19421;
+	Wed,  8 Apr 2026 18:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674066;
-	bh=oT2lfgBoE/2Sm8iJZkNx/VDPIviN2sLhlE6qWeVx6Sk=;
+	s=korg; t=1775673531;
+	bh=Q0frkMts0GPn0bEMfDieg+kxiUFw2BDfhRPhqBq1MLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XflAaftnop3bbACymX/d/k7VW/Z2JwZyU0K+ylTDXDkjXbRooy61REC8JeswlVe4M
-	 ExPoe67sS6xWsOTNt0bHQdZ6lNU2hr8fywGnrnMeP6+BBeflOW5YcRiyFDDxEy6985
-	 9Uz0+tHohdhl3l4rn4nBiH22udCDEMqKfxaseShE=
+	b=yVu98iL2SsMy2L1JxHwGPeR8OAdZb//16sJGKpzcoQ2Str1QxjGMmgbhRS8J/v15Y
+	 l/C0MnVqFBMnZTiNv6kJDecByxhYdqDVQ4cuNOk5ipWU22x8qoUWZooTm5TVizjkoB
+	 c66wvjuctQlg4UHkHD4vkiAORtKDDFrjkckqLCwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Urban <surban@surban.net>,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.12 196/242] usb: gadget: dummy_hcd: fix premature URB completion when ZLP follows partial transfer
+	Zilin Guan <zilin@seu.edu.cn>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 251/277] ice: Fix memory leak in ice_set_ringparam()
 Date: Wed,  8 Apr 2026 20:03:56 +0200
-Message-ID: <20260408175934.419624467@linuxfoundation.org>
+Message-ID: <20260408175943.230698912@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,102 +71,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234698-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234905-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,harvard.edu:email,msgid.link:url]
-X-Rspamd-Queue-Id: EDCAF3C1CE0
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mpg.de:email,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 3C7A43C2494
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Urban <surban@surban.net>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit f50200dd44125e445a6164e88c217472fa79cdbc upstream.
+[ Upstream commit fe868b499d16f55bbeea89992edb98043c9de416 ]
 
-When a gadget request is only partially transferred in transfer()
-because the per-frame bandwidth budget is exhausted, the loop advances
-to the next queued request. If that next request is a zero-length
-packet (ZLP), len evaluates to zero and the code takes the
-unlikely(len == 0) path, which sets is_short = 1. This bypasses the
-bandwidth guard ("limit < ep->ep.maxpacket && limit < len") that
-lives in the else branch and would otherwise break out of the loop for
-non-zero requests. The is_short path then completes the URB before all
-data from the first request has been transferred.
+In ice_set_ringparam, tx_rings and xdp_rings are allocated before
+rx_rings. If the allocation of rx_rings fails, the code jumps to
+the done label leaking both tx_rings and xdp_rings. Furthermore, if
+the setup of an individual Rx ring fails during the loop, the code jumps
+to the free_tx label which releases tx_rings but leaks xdp_rings.
 
-Reproducer (bulk IN, high speed):
+Fix this by introducing a free_xdp label and updating the error paths to
+ensure both xdp_rings and tx_rings are properly freed if rx_rings
+allocation or setup fails.
 
-  Device side (FunctionFS with Linux AIO):
-    1. Queue a 65024-byte write via io_submit (127 * 512, i.e. a
-       multiple of the HS bulk max packet size).
-    2. Immediately queue a zero-length write (ZLP) via io_submit.
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
 
-  Host side:
-    3. Submit a 65536-byte bulk IN URB.
-
-  Expected: URB completes with actual_length = 65024.
-  Actual:   URB completes with actual_length = 53248, losing 11776
-            bytes that leak into subsequent URBs.
-
-At high speed the per-frame budget is 53248 bytes (512 * 13 * 8).
-The 65024-byte request exhausts this budget after 53248 bytes, leaving
-the request incomplete (req->req.actual < req->req.length). Neither
-the request nor the URB is finished, and rescan is 0, so the loop
-advances to the ZLP. For the ZLP, dev_len = 0, so len = min(12288, 0)
-= 0, taking the unlikely(len == 0) path and setting is_short = 1.
-The is_short handler then sets *status = 0, completing the URB with
-only 53248 of the expected 65024 bytes.
-
-Fix this by breaking out of the loop when the current request has
-remaining data (req->req.actual < req->req.length). The request
-resumes on the next timer tick, preserving correct data ordering.
-
-Signed-off-by: Sebastian Urban <surban@surban.net>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20260315151045.1155850-1-surban@surban.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -1537,6 +1537,12 @@ top:
- 		/* rescan to continue with any other queued i/o */
- 		if (rescan)
- 			goto top;
-+
-+		/* request not fully transferred; stop iterating to
-+		 * preserve data ordering across queued requests.
-+		 */
-+		if (req->req.actual < req->req.length)
-+			break;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index b52fcf7b899f7..912bcf9fce52d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3320,7 +3320,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	rx_rings = kcalloc(vsi->num_rxq, sizeof(*rx_rings), GFP_KERNEL);
+ 	if (!rx_rings) {
+ 		err = -ENOMEM;
+-		goto done;
++		goto free_xdp;
  	}
- 	return sent;
- }
+ 
+ 	ice_for_each_rxq(vsi, i) {
+@@ -3350,7 +3350,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 			}
+ 			kfree(rx_rings);
+ 			err = -ENOMEM;
+-			goto free_tx;
++			goto free_xdp;
+ 		}
+ 	}
+ 
+@@ -3401,6 +3401,13 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	}
+ 	goto done;
+ 
++free_xdp:
++	if (xdp_rings) {
++		ice_for_each_xdp_txq(vsi, i)
++			ice_free_tx_ring(&xdp_rings[i]);
++		kfree(xdp_rings);
++	}
++
+ free_tx:
+ 	/* error cleanup if the Rx allocations failed after getting Tx */
+ 	if (tx_rings) {
+-- 
+2.53.0
+
 
 
 
