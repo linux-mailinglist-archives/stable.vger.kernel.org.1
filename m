@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-235037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0C1oOt+k1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:31 +0200
+	id MHXtFxyl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E773C2027
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52BE3C20FF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5CB93071DA8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7971330A9511
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E163A3D6CAE;
-	Wed,  8 Apr 2026 18:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131A43D9045;
+	Wed,  8 Apr 2026 18:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mt7Fg01j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CebY6FUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EF53D9041;
-	Wed,  8 Apr 2026 18:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FE13D9031;
+	Wed,  8 Apr 2026 18:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674407; cv=none; b=p+ReksMb46smfVhBUkUcdhCbQxQc2lzPTkJHYKUVRbwi2zzMdGytCCzTC6W0Ihar7wAV1ypN4mcV+xi+ITaSthPAsvPsGO+NP71TbKjcJ/pe7PNP8oAawmwBrpIu5ALMs4ZjgVKGONlP3Mh0WVgQVGQJe7fKWRCL5gUOA8eK4fo=
+	t=1775674435; cv=none; b=LsTaYAYwLI0CUppOpx66E+f+ikCaNhrKAx6IVwia9ezo8xAj+0cIoCG6pp4vl4/HecjXsQmbkhAxEIMjfnp5h1d/JPjYsSZRMRNl4r78W5m1lrrmh3JCNFl20kkOnsflt/3y88yxfMEyBsCojHRthR6O1kTvEEce0xdUb2AK1bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674407; c=relaxed/simple;
-	bh=Pcc5OVXKMdhBk5SXAgVE7lebM/k3CGYio3+ECa7zDkA=;
+	s=arc-20240116; t=1775674435; c=relaxed/simple;
+	bh=kDqv8FsPSOgQFroLNlj70InufVvGf+hyxXugoofihFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIWUo5K9/TIJeBUe9kW1+Jna54o6BQ9Y6DnrxMub6UHypPcS5IGq4q9XIY+/dzJdFrwDE9bqTGfDMoqclzYg6HHuImMremJFaVUhuP05/x2GfUj3gnVHjUBcWsGZ8Nq7SObsm7UWlnUcK+9kzMr7VeEGNKCbscPxU4CvKgT+2G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mt7Fg01j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A58EC19421;
-	Wed,  8 Apr 2026 18:53:27 +0000 (UTC)
+	 MIME-Version; b=lLR7Dh5Tzr8fw5Ks9QXyeXnIml6UrvEylXoNxwidA0UTT9OuCtW/Fi7G9WK7Vn5fMgdim35xoWmYPXmJgirZFtEyXASkZwQ/ufdbsezttM17V9A7Q8z2DQopJtHOBJOuAB1m7VS74lK+0o180D+65zgKxAe94fZLgEYC1hhLjJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CebY6FUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60726C19425;
+	Wed,  8 Apr 2026 18:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674407;
-	bh=Pcc5OVXKMdhBk5SXAgVE7lebM/k3CGYio3+ECa7zDkA=;
+	s=korg; t=1775674435;
+	bh=kDqv8FsPSOgQFroLNlj70InufVvGf+hyxXugoofihFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mt7Fg01jTHYhBrFi9rIXsA4yzxzCxvwT8Tmv/zNJqyZfBz/wAWtP3dk3/rQgMal4+
-	 pf+GaS2YEsIh8jGCnX0P8+WzDApSC9etAdf8Y0njZ19U7PVJh4YtfZqlIz8hfM3J77
-	 1XLuzlbDyKsVl53OEfQPmb2tEFXLSCaWOccqSJP4=
+	b=CebY6FUr/aLoRkl1H06xjuClZS1lGyuloTvuJGBROJz4WcGi8SeAkHT6j6iFnnBqc
+	 GirSKqRvdApczvypjmfo+2ofZ3wfo6pRB6/C4wVamH7f8GReIUCXmkK2/+BKWC+fPk
+	 ymiB0kwRzHM6PT/GzFj3MqAAmjjFOvYuTUIhndCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Taeyang Lee <0wn@theori.io>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 068/311] bnxt_en: set backing store type from query type
-Date: Wed,  8 Apr 2026 20:01:08 +0200
-Message-ID: <20260408175941.955606536@linuxfoundation.org>
+Subject: [PATCH 6.19 069/311] crypto: algif_aead - Revert to operating out-of-place
+Date: Wed,  8 Apr 2026 20:01:09 +0200
+Message-ID: <20260408175941.992035791@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
 References: <20260408175939.393281918@linuxfoundation.org>
@@ -69,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235037-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235048-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 66E773C2027
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,theori.io:email,apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D52BE3C20FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,74 +99,321 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 4ee937107d52f9e5c350e4b5e629760e328b3d9f ]
+[ Upstream commit a664bf3d603dc3bdcf9ae47cc21e0daec706d7a5 ]
 
-bnxt_hwrm_func_backing_store_qcaps_v2() stores resp->type from the
-firmware response in ctxm->type and later uses that value to index
-fixed backing-store metadata arrays such as ctx_arr[] and
-bnxt_bstore_to_trace[].
+This mostly reverts commit 72548b093ee3 except for the copying of
+the associated data.
 
-ctxm->type is fixed by the current backing-store query type and matches
-the array index of ctx->ctx_arr. Set ctxm->type from the current loop
-variable instead of depending on resp->type.
+There is no benefit in operating in-place in algif_aead since the
+source and destination come from different mappings.  Get rid of
+all the complexity added for in-place operation and just copy the
+AD directly.
 
-Also update the loop to advance type from next_valid_type in the for
-statement, which keeps the control flow simpler for non-valid and
-unchanged entries.
-
-Fixes: 6a4d0774f02d ("bnxt_en: Add support for new backing store query firmware API")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Tested-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20260328234357.43669-1-pengpeng@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 72548b093ee3 ("crypto: algif_aead - copy AAD from src to dst")
+Reported-by: Taeyang Lee <0wn@theori.io>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ crypto/af_alg.c         |  49 ++++----------------
+ crypto/algif_aead.c     | 100 ++++++++--------------------------------
+ crypto/algif_skcipher.c |   6 +--
+ include/crypto/if_alg.h |   5 +-
+ 4 files changed, 34 insertions(+), 126 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 2dadc7c668587..300324ea1e8aa 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -8623,7 +8623,7 @@ static int bnxt_hwrm_func_backing_store_qcaps_v2(struct bnxt *bp)
- 	struct hwrm_func_backing_store_qcaps_v2_output *resp;
- 	struct hwrm_func_backing_store_qcaps_v2_input *req;
- 	struct bnxt_ctx_mem_info *ctx = bp->ctx;
--	u16 type;
-+	u16 type, next_type = 0;
- 	int rc;
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index ace8a4dc8e976..bc78c915eabc4 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -637,15 +637,13 @@ static int af_alg_alloc_tsgl(struct sock *sk)
+ /**
+  * af_alg_count_tsgl - Count number of TX SG entries
+  *
+- * The counting starts from the beginning of the SGL to @bytes. If
+- * an @offset is provided, the counting of the SG entries starts at the @offset.
++ * The counting starts from the beginning of the SGL to @bytes.
+  *
+  * @sk: socket of connection to user space
+  * @bytes: Count the number of SG entries holding given number of bytes.
+- * @offset: Start the counting of SG entries from the given offset.
+  * Return: Number of TX SG entries found given the constraints
+  */
+-unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes, size_t offset)
++unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes)
+ {
+ 	const struct alg_sock *ask = alg_sk(sk);
+ 	const struct af_alg_ctx *ctx = ask->private;
+@@ -660,25 +658,11 @@ unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes, size_t offset)
+ 		const struct scatterlist *sg = sgl->sg;
  
- 	rc = hwrm_req_init(bp, req, HWRM_FUNC_BACKING_STORE_QCAPS_V2);
-@@ -8639,7 +8639,7 @@ static int bnxt_hwrm_func_backing_store_qcaps_v2(struct bnxt *bp)
+ 		for (i = 0; i < sgl->cur; i++) {
+-			size_t bytes_count;
+-
+-			/* Skip offset */
+-			if (offset >= sg[i].length) {
+-				offset -= sg[i].length;
+-				bytes -= sg[i].length;
+-				continue;
+-			}
+-
+-			bytes_count = sg[i].length - offset;
+-
+-			offset = 0;
+ 			sgl_count++;
+-
+-			/* If we have seen requested number of bytes, stop */
+-			if (bytes_count >= bytes)
++			if (sg[i].length >= bytes)
+ 				return sgl_count;
  
- 	resp = hwrm_req_hold(bp, req);
- 
--	for (type = 0; type < BNXT_CTX_V2_MAX; ) {
-+	for (type = 0; type < BNXT_CTX_V2_MAX; type = next_type) {
- 		struct bnxt_ctx_mem_type *ctxm = &ctx->ctx_arr[type];
- 		u8 init_val, init_off, i;
- 		u32 max_entries;
-@@ -8652,7 +8652,7 @@ static int bnxt_hwrm_func_backing_store_qcaps_v2(struct bnxt *bp)
- 		if (rc)
- 			goto ctx_done;
- 		flags = le32_to_cpu(resp->flags);
--		type = le16_to_cpu(resp->next_valid_type);
-+		next_type = le16_to_cpu(resp->next_valid_type);
- 		if (!(flags & BNXT_CTX_MEM_TYPE_VALID)) {
- 			bnxt_free_one_ctx_mem(bp, ctxm, true);
- 			continue;
-@@ -8667,7 +8667,7 @@ static int bnxt_hwrm_func_backing_store_qcaps_v2(struct bnxt *bp)
- 			else
- 				continue;
+-			bytes -= bytes_count;
++			bytes -= sg[i].length;
  		}
--		ctxm->type = le16_to_cpu(resp->type);
-+		ctxm->type = type;
- 		ctxm->entry_size = entry_size;
- 		ctxm->flags = flags;
- 		ctxm->instance_bmap = le32_to_cpu(resp->instance_bit_map);
+ 	}
+ 
+@@ -690,19 +674,14 @@ EXPORT_SYMBOL_GPL(af_alg_count_tsgl);
+  * af_alg_pull_tsgl - Release the specified buffers from TX SGL
+  *
+  * If @dst is non-null, reassign the pages to @dst. The caller must release
+- * the pages. If @dst_offset is given only reassign the pages to @dst starting
+- * at the @dst_offset (byte). The caller must ensure that @dst is large
+- * enough (e.g. by using af_alg_count_tsgl with the same offset).
++ * the pages.
+  *
+  * @sk: socket of connection to user space
+  * @used: Number of bytes to pull from TX SGL
+  * @dst: If non-NULL, buffer is reassigned to dst SGL instead of releasing. The
+  *	 caller must release the buffers in dst.
+- * @dst_offset: Reassign the TX SGL from given offset. All buffers before
+- *	        reaching the offset is released.
+  */
+-void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
+-		      size_t dst_offset)
++void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst)
+ {
+ 	struct alg_sock *ask = alg_sk(sk);
+ 	struct af_alg_ctx *ctx = ask->private;
+@@ -727,18 +706,10 @@ void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
+ 			 * SG entries in dst.
+ 			 */
+ 			if (dst) {
+-				if (dst_offset >= plen) {
+-					/* discard page before offset */
+-					dst_offset -= plen;
+-				} else {
+-					/* reassign page to dst after offset */
+-					get_page(page);
+-					sg_set_page(dst + j, page,
+-						    plen - dst_offset,
+-						    sg[i].offset + dst_offset);
+-					dst_offset = 0;
+-					j++;
+-				}
++				/* reassign page to dst after offset */
++				get_page(page);
++				sg_set_page(dst + j, page, plen, sg[i].offset);
++				j++;
+ 			}
+ 
+ 			sg[i].length -= plen;
+diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
+index 79b016a899a1e..dda15bb05e892 100644
+--- a/crypto/algif_aead.c
++++ b/crypto/algif_aead.c
+@@ -26,7 +26,6 @@
+ #include <crypto/internal/aead.h>
+ #include <crypto/scatterwalk.h>
+ #include <crypto/if_alg.h>
+-#include <crypto/skcipher.h>
+ #include <linux/init.h>
+ #include <linux/list.h>
+ #include <linux/kernel.h>
+@@ -72,9 +71,8 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	struct alg_sock *pask = alg_sk(psk);
+ 	struct af_alg_ctx *ctx = ask->private;
+ 	struct crypto_aead *tfm = pask->private;
+-	unsigned int i, as = crypto_aead_authsize(tfm);
++	unsigned int as = crypto_aead_authsize(tfm);
+ 	struct af_alg_async_req *areq;
+-	struct af_alg_tsgl *tsgl, *tmp;
+ 	struct scatterlist *rsgl_src, *tsgl_src = NULL;
+ 	int err = 0;
+ 	size_t used = 0;		/* [in]  TX bufs to be en/decrypted */
+@@ -154,23 +152,24 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
+ 		outlen -= less;
+ 	}
+ 
++	/*
++	 * Create a per request TX SGL for this request which tracks the
++	 * SG entries from the global TX SGL.
++	 */
+ 	processed = used + ctx->aead_assoclen;
+-	list_for_each_entry_safe(tsgl, tmp, &ctx->tsgl_list, list) {
+-		for (i = 0; i < tsgl->cur; i++) {
+-			struct scatterlist *process_sg = tsgl->sg + i;
+-
+-			if (!(process_sg->length) || !sg_page(process_sg))
+-				continue;
+-			tsgl_src = process_sg;
+-			break;
+-		}
+-		if (tsgl_src)
+-			break;
+-	}
+-	if (processed && !tsgl_src) {
+-		err = -EFAULT;
++	areq->tsgl_entries = af_alg_count_tsgl(sk, processed);
++	if (!areq->tsgl_entries)
++		areq->tsgl_entries = 1;
++	areq->tsgl = sock_kmalloc(sk, array_size(sizeof(*areq->tsgl),
++					         areq->tsgl_entries),
++				  GFP_KERNEL);
++	if (!areq->tsgl) {
++		err = -ENOMEM;
+ 		goto free;
+ 	}
++	sg_init_table(areq->tsgl, areq->tsgl_entries);
++	af_alg_pull_tsgl(sk, processed, areq->tsgl);
++	tsgl_src = areq->tsgl;
+ 
+ 	/*
+ 	 * Copy of AAD from source to destination
+@@ -179,76 +178,15 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	 * when user space uses an in-place cipher operation, the kernel
+ 	 * will copy the data as it does not see whether such in-place operation
+ 	 * is initiated.
+-	 *
+-	 * To ensure efficiency, the following implementation ensure that the
+-	 * ciphers are invoked to perform a crypto operation in-place. This
+-	 * is achieved by memory management specified as follows.
+ 	 */
+ 
+ 	/* Use the RX SGL as source (and destination) for crypto op. */
+ 	rsgl_src = areq->first_rsgl.sgl.sgt.sgl;
+ 
+-	if (ctx->enc) {
+-		/*
+-		 * Encryption operation - The in-place cipher operation is
+-		 * achieved by the following operation:
+-		 *
+-		 * TX SGL: AAD || PT
+-		 *	    |	   |
+-		 *	    | copy |
+-		 *	    v	   v
+-		 * RX SGL: AAD || PT || Tag
+-		 */
+-		memcpy_sglist(areq->first_rsgl.sgl.sgt.sgl, tsgl_src,
+-			      processed);
+-		af_alg_pull_tsgl(sk, processed, NULL, 0);
+-	} else {
+-		/*
+-		 * Decryption operation - To achieve an in-place cipher
+-		 * operation, the following  SGL structure is used:
+-		 *
+-		 * TX SGL: AAD || CT || Tag
+-		 *	    |	   |	 ^
+-		 *	    | copy |	 | Create SGL link.
+-		 *	    v	   v	 |
+-		 * RX SGL: AAD || CT ----+
+-		 */
+-
+-		/* Copy AAD || CT to RX SGL buffer for in-place operation. */
+-		memcpy_sglist(areq->first_rsgl.sgl.sgt.sgl, tsgl_src, outlen);
+-
+-		/* Create TX SGL for tag and chain it to RX SGL. */
+-		areq->tsgl_entries = af_alg_count_tsgl(sk, processed,
+-						       processed - as);
+-		if (!areq->tsgl_entries)
+-			areq->tsgl_entries = 1;
+-		areq->tsgl = sock_kmalloc(sk, array_size(sizeof(*areq->tsgl),
+-							 areq->tsgl_entries),
+-					  GFP_KERNEL);
+-		if (!areq->tsgl) {
+-			err = -ENOMEM;
+-			goto free;
+-		}
+-		sg_init_table(areq->tsgl, areq->tsgl_entries);
+-
+-		/* Release TX SGL, except for tag data and reassign tag data. */
+-		af_alg_pull_tsgl(sk, processed, areq->tsgl, processed - as);
+-
+-		/* chain the areq TX SGL holding the tag with RX SGL */
+-		if (usedpages) {
+-			/* RX SGL present */
+-			struct af_alg_sgl *sgl_prev = &areq->last_rsgl->sgl;
+-			struct scatterlist *sg = sgl_prev->sgt.sgl;
+-
+-			sg_unmark_end(sg + sgl_prev->sgt.nents - 1);
+-			sg_chain(sg, sgl_prev->sgt.nents + 1, areq->tsgl);
+-		} else
+-			/* no RX SGL present (e.g. authentication only) */
+-			rsgl_src = areq->tsgl;
+-	}
++	memcpy_sglist(rsgl_src, tsgl_src, ctx->aead_assoclen);
+ 
+ 	/* Initialize the crypto operation */
+-	aead_request_set_crypt(&areq->cra_u.aead_req, rsgl_src,
++	aead_request_set_crypt(&areq->cra_u.aead_req, tsgl_src,
+ 			       areq->first_rsgl.sgl.sgt.sgl, used, ctx->iv);
+ 	aead_request_set_ad(&areq->cra_u.aead_req, ctx->aead_assoclen);
+ 	aead_request_set_tfm(&areq->cra_u.aead_req, tfm);
+@@ -450,7 +388,7 @@ static void aead_sock_destruct(struct sock *sk)
+ 	struct crypto_aead *tfm = pask->private;
+ 	unsigned int ivlen = crypto_aead_ivsize(tfm);
+ 
+-	af_alg_pull_tsgl(sk, ctx->used, NULL, 0);
++	af_alg_pull_tsgl(sk, ctx->used, NULL);
+ 	sock_kzfree_s(sk, ctx->iv, ivlen);
+ 	sock_kfree_s(sk, ctx, ctx->len);
+ 	af_alg_release_parent(sk);
+diff --git a/crypto/algif_skcipher.c b/crypto/algif_skcipher.c
+index 125d395c5e009..82735e51be108 100644
+--- a/crypto/algif_skcipher.c
++++ b/crypto/algif_skcipher.c
+@@ -138,7 +138,7 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	 * Create a per request TX SGL for this request which tracks the
+ 	 * SG entries from the global TX SGL.
+ 	 */
+-	areq->tsgl_entries = af_alg_count_tsgl(sk, len, 0);
++	areq->tsgl_entries = af_alg_count_tsgl(sk, len);
+ 	if (!areq->tsgl_entries)
+ 		areq->tsgl_entries = 1;
+ 	areq->tsgl = sock_kmalloc(sk, array_size(sizeof(*areq->tsgl),
+@@ -149,7 +149,7 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
+ 		goto free;
+ 	}
+ 	sg_init_table(areq->tsgl, areq->tsgl_entries);
+-	af_alg_pull_tsgl(sk, len, areq->tsgl, 0);
++	af_alg_pull_tsgl(sk, len, areq->tsgl);
+ 
+ 	/* Initialize the crypto operation */
+ 	skcipher_request_set_tfm(&areq->cra_u.skcipher_req, tfm);
+@@ -363,7 +363,7 @@ static void skcipher_sock_destruct(struct sock *sk)
+ 	struct alg_sock *pask = alg_sk(psk);
+ 	struct crypto_skcipher *tfm = pask->private;
+ 
+-	af_alg_pull_tsgl(sk, ctx->used, NULL, 0);
++	af_alg_pull_tsgl(sk, ctx->used, NULL);
+ 	sock_kzfree_s(sk, ctx->iv, crypto_skcipher_ivsize(tfm));
+ 	if (ctx->state)
+ 		sock_kzfree_s(sk, ctx->state, crypto_skcipher_statesize(tfm));
+diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
+index 107b797c33ecf..0cc8fa749f68d 100644
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -230,9 +230,8 @@ static inline bool af_alg_readable(struct sock *sk)
+ 	return PAGE_SIZE <= af_alg_rcvbuf(sk);
+ }
+ 
+-unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes, size_t offset);
+-void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
+-		      size_t dst_offset);
++unsigned int af_alg_count_tsgl(struct sock *sk, size_t bytes);
++void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst);
+ void af_alg_wmem_wakeup(struct sock *sk);
+ int af_alg_wait_for_data(struct sock *sk, unsigned flags, unsigned min);
+ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
 -- 
 2.53.0
 
