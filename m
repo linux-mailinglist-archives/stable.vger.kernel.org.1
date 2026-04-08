@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-234777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Dk8Drmh1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:05 +0200
+	id cNRyBx2q1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9A53C1528
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D17E3C2BE7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5ADD7302D5A0
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E19531B2B3B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDC23D669E;
-	Wed,  8 Apr 2026 18:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4621A3A16A0;
+	Wed,  8 Apr 2026 18:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9Xk519K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVIoh7r4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7256432A3FD;
-	Wed,  8 Apr 2026 18:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF7D28980F;
+	Wed,  8 Apr 2026 18:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673735; cv=none; b=X5beo7ggWRUPHoHn16NlSslCjHgpaei/0PLekIYvWQS1fEeJ6ZjybLbSvGWli3yl6omuy4Zdi802DRWpO/xLVNKPaahCT5Xhhpb5YPNSrqCb3JKIqBAp9+OzHLwVpF3oxhUOP1EgW433cUJXOjUS1m5FU4qHH0cQE/TGmWlyIV0=
+	t=1775674549; cv=none; b=NBm+fDLfH7HosTWbDz04+hIj91h/jB4560b2ykcWhFPWl9DsXaXd/rcUNWXX8T0tyk7Yz3f49UkA0nkGCY9ARedq2nVnjZGdZA0jf9T7h/GxgEvI9ceuYOd9t8+lq7YMCkfvp9uNdzwF/Ro+TKOHTu/L/hP5OdCCAuCQ+UBMHxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673735; c=relaxed/simple;
-	bh=l3URORevZOpxqrvrKhG4yLHDgitJ+73xeBYTa0QZawM=;
+	s=arc-20240116; t=1775674549; c=relaxed/simple;
+	bh=BJr7aUt3K60T7viFyr0qOGQtn2ilmnpfAmu2kSBRe8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POVgfugMQdy1rRyCnAz8zjNrNRj3hMfVMp10s4ROmR1heaamvxXkir1mY/iYvHg/1qDnLADPzKbzm4Tai9Mbb3Vwp9kl8QyaFSTPnjGEMgx1vJFoxUbLDel3ErHRR1ctNndmr70c1jNmM3ZlUIUGHtj9wp3jpiTvEpvek8mvBlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9Xk519K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C3DC19421;
-	Wed,  8 Apr 2026 18:42:14 +0000 (UTC)
+	 MIME-Version; b=uldZ9qbFDq5jZUzmmH6NwYE/Upp/rxx+lAVM1uYi4/DeyuM2OPh632dmr2L5QYl0xLymDlad9wiKs5ZEKYnex2a0P78OxCag48rMHucQ7j9BHvseT+tADlRfopnmRK6gpZChhRGMmo198MD4rFFelUwk4HoX5XFjeV98OkxxhLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVIoh7r4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96186C19421;
+	Wed,  8 Apr 2026 18:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673735;
-	bh=l3URORevZOpxqrvrKhG4yLHDgitJ+73xeBYTa0QZawM=;
+	s=korg; t=1775674548;
+	bh=BJr7aUt3K60T7viFyr0qOGQtn2ilmnpfAmu2kSBRe8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9Xk519KYku5DjXDzYhFV8WOUTfWWmSkKltKryccJvX5W9qYobDuh9K5ejt8naYzY
-	 QpNvaX2GB+fsyPN6hYqwgAUw4sM2hw05WX3HJy2WiwH5BnqN9KV+lsee0UgDf+zb5J
-	 R/aJRwEQM4Q5Fv83TDd6uStMFHg1EmA9jrKsePQw=
+	b=fVIoh7r4jWpMjScFZHXNZKtMKbs+ayV6z6WvKjVzoe4vSShQLZRQZ7W2I1dLEybyw
+	 8n0n5O3PFSIac5mMx/z3PNqxeHIeP+zsSBfnNUnGDhj+xptbnGcHhSNboETztHiM0M
+	 GoHdpRmGQjqUEj8VP+iAk5wglOl1tPsDQm7ABwxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Yucheng Lu <kanolyc@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/242] netfilter: flowtable: strictly check for maximum number of actions
+Subject: [PATCH 6.19 108/311] net/sched: sch_netem: fix out-of-bounds access in packet corruption
 Date: Wed,  8 Apr 2026 20:01:48 +0200
-Message-ID: <20260408175929.629680758@linuxfoundation.org>
+Message-ID: <20260408175943.446266667@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,20 +75,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234777-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-235092-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,networkplumber.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,511 +97,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BF9A53C1528
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 9D17E3C2BE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Yucheng Lu <kanolyc@gmail.com>
 
-[ Upstream commit 76522fcdbc3a02b568f5d957f7e66fc194abb893 ]
+[ Upstream commit d64cb81dcbd54927515a7f65e5e24affdc73c14b ]
 
-The maximum number of flowtable hardware offload actions in IPv6 is:
+In netem_enqueue(), the packet corruption logic uses
+get_random_u32_below(skb_headlen(skb)) to select an index for
+modifying skb->data. When an AF_PACKET TX_RING sends fully non-linear
+packets over an IPIP tunnel, skb_headlen(skb) evaluates to 0.
 
-* ethernet mangling (4 payload actions, 2 for each ethernet address)
-* SNAT (4 payload actions)
-* DNAT (4 payload actions)
-* Double VLAN (4 vlan actions, 2 for popping vlan, and 2 for pushing)
-  for QinQ.
-* Redirect (1 action)
+Passing 0 to get_random_u32_below() takes the variable-ceil slow path
+which returns an unconstrained 32-bit random integer. Using this
+unconstrained value as an offset into skb->data results in an
+out-of-bounds memory access.
 
-Which makes 17, while the maximum is 16. But act_ct supports for tunnels
-actions too. Note that payload action operates at 32-bit word level, so
-mangling an IPv6 address takes 4 payload actions.
+Fix this by verifying skb_headlen(skb) is non-zero before attempting
+to corrupt the linear data area. Fully non-linear packets will silently
+bypass the corruption logic.
 
-Update flow_action_entry_next() calls to check for the maximum number of
-supported actions.
-
-While at it, rise the maximum number of actions per flow from 16 to 24
-so this works fine with IPv6 setups.
-
-Fixes: c29f74e0df7a ("netfilter: nf_flow_table: hardware offload support")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: c865e5d99e25 ("[PKT_SCHED] netem: packet corruption option")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Link: https://patch.msgid.link/45435c0935df877853a81e6d06205ac738ec65fa.1774941614.git.kanolyc@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_flow_table_offload.c | 196 +++++++++++++++++---------
- 1 file changed, 130 insertions(+), 66 deletions(-)
+ net/sched/sch_netem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
-index e06bc36f49fe7..4f346f51d7d74 100644
---- a/net/netfilter/nf_flow_table_offload.c
-+++ b/net/netfilter/nf_flow_table_offload.c
-@@ -13,6 +13,8 @@
- #include <net/netfilter/nf_conntrack_core.h>
- #include <net/netfilter/nf_conntrack_tuple.h>
- 
-+#define NF_FLOW_RULE_ACTION_MAX	24
-+
- static struct workqueue_struct *nf_flow_offload_add_wq;
- static struct workqueue_struct *nf_flow_offload_del_wq;
- static struct workqueue_struct *nf_flow_offload_stats_wq;
-@@ -215,7 +217,12 @@ static void flow_offload_mangle(struct flow_action_entry *entry,
- static inline struct flow_action_entry *
- flow_action_entry_next(struct nf_flow_rule *flow_rule)
- {
--	int i = flow_rule->rule->action.num_entries++;
-+	int i;
-+
-+	if (unlikely(flow_rule->rule->action.num_entries >= NF_FLOW_RULE_ACTION_MAX))
-+		return NULL;
-+
-+	i = flow_rule->rule->action.num_entries++;
- 
- 	return &flow_rule->rule->action.entries[i];
- }
-@@ -233,6 +240,9 @@ static int flow_offload_eth_src(struct net *net,
- 	u32 mask, val;
- 	u16 val16;
- 
-+	if (!entry0 || !entry1)
-+		return -E2BIG;
-+
- 	this_tuple = &flow->tuplehash[dir].tuple;
- 
- 	switch (this_tuple->xmit_type) {
-@@ -283,6 +293,9 @@ static int flow_offload_eth_dst(struct net *net,
- 	u8 nud_state;
- 	u16 val16;
- 
-+	if (!entry0 || !entry1)
-+		return -E2BIG;
-+
- 	this_tuple = &flow->tuplehash[dir].tuple;
- 
- 	switch (this_tuple->xmit_type) {
-@@ -324,16 +337,19 @@ static int flow_offload_eth_dst(struct net *net,
- 	return 0;
- }
- 
--static void flow_offload_ipv4_snat(struct net *net,
--				   const struct flow_offload *flow,
--				   enum flow_offload_tuple_dir dir,
--				   struct nf_flow_rule *flow_rule)
-+static int flow_offload_ipv4_snat(struct net *net,
-+				  const struct flow_offload *flow,
-+				  enum flow_offload_tuple_dir dir,
-+				  struct nf_flow_rule *flow_rule)
- {
- 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
- 	u32 mask = ~htonl(0xffffffff);
- 	__be32 addr;
- 	u32 offset;
- 
-+	if (!entry)
-+		return -E2BIG;
-+
- 	switch (dir) {
- 	case FLOW_OFFLOAD_DIR_ORIGINAL:
- 		addr = flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple.dst_v4.s_addr;
-@@ -344,23 +360,27 @@ static void flow_offload_ipv4_snat(struct net *net,
- 		offset = offsetof(struct iphdr, daddr);
- 		break;
- 	default:
--		return;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	flow_offload_mangle(entry, FLOW_ACT_MANGLE_HDR_TYPE_IP4, offset,
- 			    &addr, &mask);
-+	return 0;
- }
- 
--static void flow_offload_ipv4_dnat(struct net *net,
--				   const struct flow_offload *flow,
--				   enum flow_offload_tuple_dir dir,
--				   struct nf_flow_rule *flow_rule)
-+static int flow_offload_ipv4_dnat(struct net *net,
-+				  const struct flow_offload *flow,
-+				  enum flow_offload_tuple_dir dir,
-+				  struct nf_flow_rule *flow_rule)
- {
- 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
- 	u32 mask = ~htonl(0xffffffff);
- 	__be32 addr;
- 	u32 offset;
- 
-+	if (!entry)
-+		return -E2BIG;
-+
- 	switch (dir) {
- 	case FLOW_OFFLOAD_DIR_ORIGINAL:
- 		addr = flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple.src_v4.s_addr;
-@@ -371,14 +391,15 @@ static void flow_offload_ipv4_dnat(struct net *net,
- 		offset = offsetof(struct iphdr, saddr);
- 		break;
- 	default:
--		return;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	flow_offload_mangle(entry, FLOW_ACT_MANGLE_HDR_TYPE_IP4, offset,
- 			    &addr, &mask);
-+	return 0;
- }
- 
--static void flow_offload_ipv6_mangle(struct nf_flow_rule *flow_rule,
-+static int flow_offload_ipv6_mangle(struct nf_flow_rule *flow_rule,
- 				     unsigned int offset,
- 				     const __be32 *addr, const __be32 *mask)
- {
-@@ -387,15 +408,20 @@ static void flow_offload_ipv6_mangle(struct nf_flow_rule *flow_rule,
- 
- 	for (i = 0; i < sizeof(struct in6_addr) / sizeof(u32); i++) {
- 		entry = flow_action_entry_next(flow_rule);
-+		if (!entry)
-+			return -E2BIG;
-+
- 		flow_offload_mangle(entry, FLOW_ACT_MANGLE_HDR_TYPE_IP6,
- 				    offset + i * sizeof(u32), &addr[i], mask);
- 	}
-+
-+	return 0;
- }
- 
--static void flow_offload_ipv6_snat(struct net *net,
--				   const struct flow_offload *flow,
--				   enum flow_offload_tuple_dir dir,
--				   struct nf_flow_rule *flow_rule)
-+static int flow_offload_ipv6_snat(struct net *net,
-+				  const struct flow_offload *flow,
-+				  enum flow_offload_tuple_dir dir,
-+				  struct nf_flow_rule *flow_rule)
- {
- 	u32 mask = ~htonl(0xffffffff);
- 	const __be32 *addr;
-@@ -411,16 +437,16 @@ static void flow_offload_ipv6_snat(struct net *net,
- 		offset = offsetof(struct ipv6hdr, daddr);
- 		break;
- 	default:
--		return;
-+		return -EOPNOTSUPP;
- 	}
- 
--	flow_offload_ipv6_mangle(flow_rule, offset, addr, &mask);
-+	return flow_offload_ipv6_mangle(flow_rule, offset, addr, &mask);
- }
- 
--static void flow_offload_ipv6_dnat(struct net *net,
--				   const struct flow_offload *flow,
--				   enum flow_offload_tuple_dir dir,
--				   struct nf_flow_rule *flow_rule)
-+static int flow_offload_ipv6_dnat(struct net *net,
-+				  const struct flow_offload *flow,
-+				  enum flow_offload_tuple_dir dir,
-+				  struct nf_flow_rule *flow_rule)
- {
- 	u32 mask = ~htonl(0xffffffff);
- 	const __be32 *addr;
-@@ -436,10 +462,10 @@ static void flow_offload_ipv6_dnat(struct net *net,
- 		offset = offsetof(struct ipv6hdr, saddr);
- 		break;
- 	default:
--		return;
-+		return -EOPNOTSUPP;
- 	}
- 
--	flow_offload_ipv6_mangle(flow_rule, offset, addr, &mask);
-+	return flow_offload_ipv6_mangle(flow_rule, offset, addr, &mask);
- }
- 
- static int flow_offload_l4proto(const struct flow_offload *flow)
-@@ -461,15 +487,18 @@ static int flow_offload_l4proto(const struct flow_offload *flow)
- 	return type;
- }
- 
--static void flow_offload_port_snat(struct net *net,
--				   const struct flow_offload *flow,
--				   enum flow_offload_tuple_dir dir,
--				   struct nf_flow_rule *flow_rule)
-+static int flow_offload_port_snat(struct net *net,
-+				  const struct flow_offload *flow,
-+				  enum flow_offload_tuple_dir dir,
-+				  struct nf_flow_rule *flow_rule)
- {
- 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
- 	u32 mask, port;
- 	u32 offset;
- 
-+	if (!entry)
-+		return -E2BIG;
-+
- 	switch (dir) {
- 	case FLOW_OFFLOAD_DIR_ORIGINAL:
- 		port = ntohs(flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple.dst_port);
-@@ -484,22 +513,26 @@ static void flow_offload_port_snat(struct net *net,
- 		mask = ~htonl(0xffff);
- 		break;
- 	default:
--		return;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	flow_offload_mangle(entry, flow_offload_l4proto(flow), offset,
- 			    &port, &mask);
-+	return 0;
- }
- 
--static void flow_offload_port_dnat(struct net *net,
--				   const struct flow_offload *flow,
--				   enum flow_offload_tuple_dir dir,
--				   struct nf_flow_rule *flow_rule)
-+static int flow_offload_port_dnat(struct net *net,
-+				  const struct flow_offload *flow,
-+				  enum flow_offload_tuple_dir dir,
-+				  struct nf_flow_rule *flow_rule)
- {
- 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
- 	u32 mask, port;
- 	u32 offset;
- 
-+	if (!entry)
-+		return -E2BIG;
-+
- 	switch (dir) {
- 	case FLOW_OFFLOAD_DIR_ORIGINAL:
- 		port = ntohs(flow->tuplehash[FLOW_OFFLOAD_DIR_REPLY].tuple.src_port);
-@@ -514,20 +547,24 @@ static void flow_offload_port_dnat(struct net *net,
- 		mask = ~htonl(0xffff0000);
- 		break;
- 	default:
--		return;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	flow_offload_mangle(entry, flow_offload_l4proto(flow), offset,
- 			    &port, &mask);
-+	return 0;
- }
- 
--static void flow_offload_ipv4_checksum(struct net *net,
--				       const struct flow_offload *flow,
--				       struct nf_flow_rule *flow_rule)
-+static int flow_offload_ipv4_checksum(struct net *net,
-+				      const struct flow_offload *flow,
-+				      struct nf_flow_rule *flow_rule)
- {
- 	u8 protonum = flow->tuplehash[FLOW_OFFLOAD_DIR_ORIGINAL].tuple.l4proto;
- 	struct flow_action_entry *entry = flow_action_entry_next(flow_rule);
- 
-+	if (!entry)
-+		return -E2BIG;
-+
- 	entry->id = FLOW_ACTION_CSUM;
- 	entry->csum_flags = TCA_CSUM_UPDATE_FLAG_IPV4HDR;
- 
-@@ -539,12 +576,14 @@ static void flow_offload_ipv4_checksum(struct net *net,
- 		entry->csum_flags |= TCA_CSUM_UPDATE_FLAG_UDP;
- 		break;
- 	}
-+
-+	return 0;
- }
- 
--static void flow_offload_redirect(struct net *net,
--				  const struct flow_offload *flow,
--				  enum flow_offload_tuple_dir dir,
--				  struct nf_flow_rule *flow_rule)
-+static int flow_offload_redirect(struct net *net,
-+				 const struct flow_offload *flow,
-+				 enum flow_offload_tuple_dir dir,
-+				 struct nf_flow_rule *flow_rule)
- {
- 	const struct flow_offload_tuple *this_tuple, *other_tuple;
- 	struct flow_action_entry *entry;
-@@ -562,21 +601,28 @@ static void flow_offload_redirect(struct net *net,
- 		ifindex = other_tuple->iifidx;
- 		break;
- 	default:
--		return;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	dev = dev_get_by_index(net, ifindex);
- 	if (!dev)
--		return;
-+		return -ENODEV;
- 
- 	entry = flow_action_entry_next(flow_rule);
-+	if (!entry) {
-+		dev_put(dev);
-+		return -E2BIG;
-+	}
-+
- 	entry->id = FLOW_ACTION_REDIRECT;
- 	entry->dev = dev;
-+
-+	return 0;
- }
- 
--static void flow_offload_encap_tunnel(const struct flow_offload *flow,
--				      enum flow_offload_tuple_dir dir,
--				      struct nf_flow_rule *flow_rule)
-+static int flow_offload_encap_tunnel(const struct flow_offload *flow,
-+				     enum flow_offload_tuple_dir dir,
-+				     struct nf_flow_rule *flow_rule)
- {
- 	const struct flow_offload_tuple *this_tuple;
- 	struct flow_action_entry *entry;
-@@ -584,7 +630,7 @@ static void flow_offload_encap_tunnel(const struct flow_offload *flow,
- 
- 	this_tuple = &flow->tuplehash[dir].tuple;
- 	if (this_tuple->xmit_type == FLOW_OFFLOAD_XMIT_DIRECT)
--		return;
-+		return 0;
- 
- 	dst = this_tuple->dst_cache;
- 	if (dst && dst->lwtstate) {
-@@ -593,15 +639,19 @@ static void flow_offload_encap_tunnel(const struct flow_offload *flow,
- 		tun_info = lwt_tun_info(dst->lwtstate);
- 		if (tun_info && (tun_info->mode & IP_TUNNEL_INFO_TX)) {
- 			entry = flow_action_entry_next(flow_rule);
-+			if (!entry)
-+				return -E2BIG;
- 			entry->id = FLOW_ACTION_TUNNEL_ENCAP;
- 			entry->tunnel = tun_info;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 32a5f33040461..3356d62ad0548 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -519,8 +519,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			goto finish_segs;
  		}
- 	}
-+
-+	return 0;
- }
  
--static void flow_offload_decap_tunnel(const struct flow_offload *flow,
--				      enum flow_offload_tuple_dir dir,
--				      struct nf_flow_rule *flow_rule)
-+static int flow_offload_decap_tunnel(const struct flow_offload *flow,
-+				     enum flow_offload_tuple_dir dir,
-+				     struct nf_flow_rule *flow_rule)
- {
- 	const struct flow_offload_tuple *other_tuple;
- 	struct flow_action_entry *entry;
-@@ -609,7 +659,7 @@ static void flow_offload_decap_tunnel(const struct flow_offload *flow,
- 
- 	other_tuple = &flow->tuplehash[!dir].tuple;
- 	if (other_tuple->xmit_type == FLOW_OFFLOAD_XMIT_DIRECT)
--		return;
-+		return 0;
- 
- 	dst = other_tuple->dst_cache;
- 	if (dst && dst->lwtstate) {
-@@ -618,9 +668,13 @@ static void flow_offload_decap_tunnel(const struct flow_offload *flow,
- 		tun_info = lwt_tun_info(dst->lwtstate);
- 		if (tun_info && (tun_info->mode & IP_TUNNEL_INFO_TX)) {
- 			entry = flow_action_entry_next(flow_rule);
-+			if (!entry)
-+				return -E2BIG;
- 			entry->id = FLOW_ACTION_TUNNEL_DECAP;
- 		}
- 	}
-+
-+	return 0;
- }
- 
- static int
-@@ -632,8 +686,9 @@ nf_flow_rule_route_common(struct net *net, const struct flow_offload *flow,
- 	const struct flow_offload_tuple *tuple;
- 	int i;
- 
--	flow_offload_decap_tunnel(flow, dir, flow_rule);
--	flow_offload_encap_tunnel(flow, dir, flow_rule);
-+	if (flow_offload_decap_tunnel(flow, dir, flow_rule) < 0 ||
-+	    flow_offload_encap_tunnel(flow, dir, flow_rule) < 0)
-+		return -1;
- 
- 	if (flow_offload_eth_src(net, flow, dir, flow_rule) < 0 ||
- 	    flow_offload_eth_dst(net, flow, dir, flow_rule) < 0)
-@@ -649,6 +704,8 @@ nf_flow_rule_route_common(struct net *net, const struct flow_offload *flow,
- 
- 		if (tuple->encap[i].proto == htons(ETH_P_8021Q)) {
- 			entry = flow_action_entry_next(flow_rule);
-+			if (!entry)
-+				return -1;
- 			entry->id = FLOW_ACTION_VLAN_POP;
- 		}
- 	}
-@@ -662,6 +719,8 @@ nf_flow_rule_route_common(struct net *net, const struct flow_offload *flow,
- 			continue;
- 
- 		entry = flow_action_entry_next(flow_rule);
-+		if (!entry)
-+			return -1;
- 
- 		switch (other_tuple->encap[i].proto) {
- 		case htons(ETH_P_PPP_SES):
-@@ -687,18 +746,22 @@ int nf_flow_rule_route_ipv4(struct net *net, struct flow_offload *flow,
- 		return -1;
- 
- 	if (test_bit(NF_FLOW_SNAT, &flow->flags)) {
--		flow_offload_ipv4_snat(net, flow, dir, flow_rule);
--		flow_offload_port_snat(net, flow, dir, flow_rule);
-+		if (flow_offload_ipv4_snat(net, flow, dir, flow_rule) < 0 ||
-+		    flow_offload_port_snat(net, flow, dir, flow_rule) < 0)
-+			return -1;
- 	}
- 	if (test_bit(NF_FLOW_DNAT, &flow->flags)) {
--		flow_offload_ipv4_dnat(net, flow, dir, flow_rule);
--		flow_offload_port_dnat(net, flow, dir, flow_rule);
-+		if (flow_offload_ipv4_dnat(net, flow, dir, flow_rule) < 0 ||
-+		    flow_offload_port_dnat(net, flow, dir, flow_rule) < 0)
-+			return -1;
- 	}
- 	if (test_bit(NF_FLOW_SNAT, &flow->flags) ||
- 	    test_bit(NF_FLOW_DNAT, &flow->flags))
--		flow_offload_ipv4_checksum(net, flow, flow_rule);
-+		if (flow_offload_ipv4_checksum(net, flow, flow_rule) < 0)
-+			return -1;
- 
--	flow_offload_redirect(net, flow, dir, flow_rule);
-+	if (flow_offload_redirect(net, flow, dir, flow_rule) < 0)
-+		return -1;
- 
- 	return 0;
- }
-@@ -712,22 +775,23 @@ int nf_flow_rule_route_ipv6(struct net *net, struct flow_offload *flow,
- 		return -1;
- 
- 	if (test_bit(NF_FLOW_SNAT, &flow->flags)) {
--		flow_offload_ipv6_snat(net, flow, dir, flow_rule);
--		flow_offload_port_snat(net, flow, dir, flow_rule);
-+		if (flow_offload_ipv6_snat(net, flow, dir, flow_rule) < 0 ||
-+		    flow_offload_port_snat(net, flow, dir, flow_rule) < 0)
-+			return -1;
- 	}
- 	if (test_bit(NF_FLOW_DNAT, &flow->flags)) {
--		flow_offload_ipv6_dnat(net, flow, dir, flow_rule);
--		flow_offload_port_dnat(net, flow, dir, flow_rule);
-+		if (flow_offload_ipv6_dnat(net, flow, dir, flow_rule) < 0 ||
-+		    flow_offload_port_dnat(net, flow, dir, flow_rule) < 0)
-+			return -1;
+-		skb->data[get_random_u32_below(skb_headlen(skb))] ^=
+-			1<<get_random_u32_below(8);
++		if (skb_headlen(skb))
++			skb->data[get_random_u32_below(skb_headlen(skb))] ^=
++				1 << get_random_u32_below(8);
  	}
  
--	flow_offload_redirect(net, flow, dir, flow_rule);
-+	if (flow_offload_redirect(net, flow, dir, flow_rule) < 0)
-+		return -1;
- 
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(nf_flow_rule_route_ipv6);
- 
--#define NF_FLOW_RULE_ACTION_MAX	16
--
- static struct nf_flow_rule *
- nf_flow_offload_rule_alloc(struct net *net,
- 			   const struct flow_offload_work *offload,
+ 	if (unlikely(q->t_len >= sch->limit)) {
 -- 
 2.53.0
 
