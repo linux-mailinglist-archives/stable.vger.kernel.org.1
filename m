@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHlaESGc1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234173-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:13 +0200
+	id mNHiJpWn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A190C3C0691
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E47D93C275A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9481B302A53F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80EA731BB435
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD9C385513;
-	Wed,  8 Apr 2026 18:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054843D4134;
+	Wed,  8 Apr 2026 18:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpcUBS54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrWPRPng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFB236D50D;
-	Wed,  8 Apr 2026 18:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD120346FB0;
+	Wed,  8 Apr 2026 18:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672172; cv=none; b=sIsyE0WKGSLKCS3GYBc+k7q6faNQdho9X5td+fEhUgc0zKUFIdvOlRwrDYOYrhPHm7GdRjRX/eQyd6xw8bFzjjaUDprdv6gD+9NcPhvSeJLsS70BSmf9NnjsKc8C/mvufxbB+FEJ+OVAz6YjY9JWexnFTu5z9L2wj7gwTNHbOx0=
+	t=1775673802; cv=none; b=IVPDnDMbFQWipMyFDzB9kgNgWa9HlyAkIKpbN6QdqfAaqPtc1HE3CI959JRKeZC1H0sKQCsIBfmVAkuqG/tCGvRX1yWZcgn6zg2tJ1j2Ei28kK76ewk/5RS2CJQNN0wWcOIKC0sAc16JtOdTLivWnfiFtuMWtSqBLOf4y0obSbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672172; c=relaxed/simple;
-	bh=T44GsQ0bO/KbOCwbGDFGFRdstqRprLai1uuh3Lxlb2E=;
+	s=arc-20240116; t=1775673802; c=relaxed/simple;
+	bh=SWx/qjd0v/XEDTojjEibeEbRK2VAISZz+fQtd33WQnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ce+ScZBluJmbONH8exp5Sp5PED2UHKIUzR3fO8CkeJDVUQiTUVRKmsNndXblC8D3vMGZi1Tex61mjmLpw+9vuWyvKkbmmxszsRY01SbwJhiILNlBDyvt8oRdLe2ZzJHCQwMtbCEtvuX6bE9/y9X7g9OtxDRh7RpA7R7mtd/5AMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpcUBS54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375C1C19421;
-	Wed,  8 Apr 2026 18:16:12 +0000 (UTC)
+	 MIME-Version; b=Ju1FfMEIgSyabUZDm7fDoyMw4oorrmLuwJHCiGh79hytL+fyhMqaNJ7LK7Qb8fY+oRl6iQ9YgbpTNu/mkgsS5thJqMl4ZdssWW5VFbD/noaLXPrNsPeU7lpJxZudFiXDStG0yFEIh7lvZunQqDnlrI40cCBl1kYYhj2/oBhqrrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrWPRPng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E24C19421;
+	Wed,  8 Apr 2026 18:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672172;
-	bh=T44GsQ0bO/KbOCwbGDFGFRdstqRprLai1uuh3Lxlb2E=;
+	s=korg; t=1775673802;
+	bh=SWx/qjd0v/XEDTojjEibeEbRK2VAISZz+fQtd33WQnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpcUBS54UDbXHyxn3ckJvSEhQNp8fRtffwhtZpmJIfqDQ1ODNt+ib7sRWbqKex2yI
-	 DKoytPNhbb1rsT/kAapjX3dXBDBCgsR617vYuGWQuHjUNyNgiao1Qplmp+mlqQDpsz
-	 TEFPzpnAMV+dGDi0i//8Ug95+5rjBuzGQOFyb1g0=
+	b=xrWPRPngGSrf69K1O+EyVHYXNfJLbIk3Fgu5jjBCxcz+O4f2Y0bbyYJLPCfpZKpfO
+	 YE6xAuRW6I+KBm5jW16o4rM1lmCeWd1g0dVLIjUzXXwWS2EjoOvH3JS2JewX5K/7S6
+	 AbfQsZGx3KrlNcEnHc9MbV1bmGYxythtVzIjDZGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoltan Illes <zoliviragh@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 217/312] Input: xpad - add support for Razer Wolverine V3 Pro
-Date: Wed,  8 Apr 2026 20:02:14 +0200
-Message-ID: <20260408175941.861524350@linuxfoundation.org>
+	Martin Schiller <ms@dev.tdt.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 095/242] net/x25: Fix potential double free of skb
+Date: Wed,  8 Apr 2026 20:02:15 +0200
+Message-ID: <20260408175930.639332669@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234173-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234803-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A190C3C0691
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,tdt.de:email]
+X-Rspamd-Queue-Id: E47D93C275A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zoltan Illes <zoliviragh@gmail.com>
+From: Martin Schiller <ms@dev.tdt.de>
 
-commit e2b0ae529db4766584e77647cefe3ec15c3d842e upstream.
+[ Upstream commit d10a26aa4d072320530e6968ef945c8c575edf61 ]
 
-Add device IDs for the Razer Wolverine V3 Pro controller in both
-wired (0x0a57) and wireless 2.4 GHz dongle (0x0a59) modes.
+When alloc_skb fails in x25_queue_rx_frame it calls kfree_skb(skb) at
+line 48 and returns 1 (error).
+This error propagates back through the call chain:
 
-The controller uses the Xbox 360 protocol (vendor-specific class,
-subclass 93, protocol 1) on interface 0 with an identical 20-byte
-input report layout, so no additional processing is needed.
+x25_queue_rx_frame returns 1
+    |
+    v
+x25_state3_machine receives the return value 1 and takes the else
+branch at line 278, setting queued=0 and returning 0
+    |
+    v
+x25_process_rx_frame returns queued=0
+    |
+    v
+x25_backlog_rcv at line 452 sees queued=0 and calls kfree_skb(skb)
+again
 
-Signed-off-by: Zoltan Illes <zoliviragh@gmail.com>
-Link: https://patch.msgid.link/20260329220031.1325509-1-137647604+ZlordHUN@users.noreply.github.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This would free the same skb twice. Looking at x25_backlog_rcv:
+
+net/x25/x25_in.c:x25_backlog_rcv() {
+    ...
+    queued = x25_process_rx_frame(sk, skb);
+    ...
+    if (!queued)
+        kfree_skb(skb);
+}
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+Link: https://patch.msgid.link/20260331-x25_fraglen-v4-1-3e69f18464b4@dev.tdt.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/x25/x25_in.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -289,6 +289,8 @@ static const struct xpad_device {
- 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a29, "Razer Wolverine V2", 0, XTYPE_XBOXONE },
-+	{ 0x1532, 0x0a57, "Razer Wolverine V3 Pro (Wired)", 0, XTYPE_XBOX360 },
-+	{ 0x1532, 0x0a59, "Razer Wolverine V3 Pro (2.4 GHz Dongle)", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f10, "Batarang Xbox 360 controller", 0, XTYPE_XBOX360 },
+diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
+index b981a4828d08c..0dbc73efab1cb 100644
+--- a/net/x25/x25_in.c
++++ b/net/x25/x25_in.c
+@@ -44,10 +44,9 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
+ 	if (x25->fraglen > 0) {	/* End of fragment */
+ 		int len = x25->fraglen + skb->len;
+ 
+-		if ((skbn = alloc_skb(len, GFP_ATOMIC)) == NULL){
+-			kfree_skb(skb);
++		skbn = alloc_skb(len, GFP_ATOMIC);
++		if (!skbn)
+ 			return 1;
+-		}
+ 
+ 		skb_queue_tail(&x25->fragment_queue, skb);
+ 
+-- 
+2.53.0
+
 
 
 
