@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOeAIcSa1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:24 +0200
+	id qLt+J1me1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D673C0336
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2FD3C0CB2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A0393018426
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6637F302579B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB973D8919;
-	Wed,  8 Apr 2026 18:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C603D8912;
+	Wed,  8 Apr 2026 18:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWIAsDNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWz3K1+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E22A37F8C2;
-	Wed,  8 Apr 2026 18:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92FE3D88F7;
+	Wed,  8 Apr 2026 18:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671936; cv=none; b=YtE3yuNYl4rtCQNMmIMUUJzN2ROLuKhTlWYIo/iM3EO5PSO/CHNw7IGPo/Y9Df5ZmiaXgVGIgAh5jqJAW5cf+AmevL7tVRdyaPKFcPLn6n+3O8qV6ameL4XNFxKrKcb71n2B3w82Pani8BlQN9h7f3ypD5szSCDNRVlSCQIQOG4=
+	t=1775672904; cv=none; b=edOZ9XqXowtAYNAbpaY/TrTXEJMtbUtvJvvzudpTlf8bgngspNkobBdoDqUTJSV1iep4v3V25/Ox+iHXS7kn/PrqaGSw54FYQyFHBBfMQh4L41QEpFrYgrUiC4Usy7yUiSQVlrvK/ruEK0zcIRKFDytvobhQhEGTvruOzbLeeqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671936; c=relaxed/simple;
-	bh=w1H0WVOJhUGZTwkhCeHNe0/dDAQcLm1rfOpGyTNatJc=;
+	s=arc-20240116; t=1775672904; c=relaxed/simple;
+	bh=c2SbTEal2NHC+Pb6sqqI2EXqkNswO+wa1vMr2mCftwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3yTfJq6SVhbZ6g4QwVPuSj3U5sNHlqkB5NAqkcIeUs9NXmVzxJrE3a5X/u5Jd2/tPUDC4M9vWyHoOWsWjQ3jsTLejai3NykwTfhxBpzm2Yau1k4ISiWZah9MY5mSGdYJqb+CbJllTqmBdBrVcHra54M6PQsTjnPFPOaB8yTtKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWIAsDNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85E8C19421;
-	Wed,  8 Apr 2026 18:12:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KstfEOwWM5Rqu00uYavkbgRxwMQRfG7DW4l3tkk3fer/AAgYaumPh1IX2qnVgqSH+kFZXgsUsKWnxybQPA6YhW3KiBuTBvQ/uTZzy8y3Kth5RDZ5rBM/QDFagZL+tmBZ+k9n01dhvFhjl2zI3i8fPvYwLK8dUEbqRr1rvOPXdkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWz3K1+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2605EC2BC87;
+	Wed,  8 Apr 2026 18:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671936;
-	bh=w1H0WVOJhUGZTwkhCeHNe0/dDAQcLm1rfOpGyTNatJc=;
+	s=korg; t=1775672904;
+	bh=c2SbTEal2NHC+Pb6sqqI2EXqkNswO+wa1vMr2mCftwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWIAsDNT18YQXInZuznb7LJbWmTOa3r7q/rixjnzvHqb8p71ionnjJzBBo7n5nF6D
-	 yzmofQBY3lmpyWbzn15qQHFdV3fr22woNmRSaY6z6K5ninlvTOfMj5wBxkq3jtikIP
-	 RPPvKTVk2mBdos9CMoUShgfmBSdyo04md+PZNHA0=
+	b=UWz3K1+uZRx9M9WlYBcGU9D78BEEyV+QQStPOkN3CjsmjQHbbPe+jsYugAV9DngMN
+	 ocufp/DWOVeDpj21lYdjdYAAVPOvWMjc1N9UUTShrDwA3SlHRie9FI182Yhgt7XOdt
+	 KMIGvT8XhfsEF/hmRxexR5eIf3i3ergB/0B64rQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Norouzi <ali.norouzi@keysight.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 093/312] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
+	Paul Bunyan <pbunyan@redhat.com>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 025/277] crypto: caam - fix DMA corruption on long hmac keys
 Date: Wed,  8 Apr 2026 20:00:10 +0200
-Message-ID: <20260408175937.235845430@linuxfoundation.org>
+Message-ID: <20260408175934.791928564@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234455-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234081-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email,msgid.link:url,hartkopp.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 19D673C0336
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,apana.org.au:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3E2FD3C0CB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ali Norouzi <ali.norouzi@keysight.com>
+From: Horia Geantă <horia.geanta@nxp.com>
 
-commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
+[ Upstream commit 5ddfdcbe10dc5f97afc4e46ca22be2be717e8caf ]
 
-cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
+When a key longer than block size is supplied, it is copied and then
+hashed into the real key.  The memory allocated for the copy needs to
+be rounded to DMA cache alignment, as otherwise the hashed key may
+corrupt neighbouring memory.
 
-    int from = calc_idx(crc8->from_idx, cf->len);
-    int to   = calc_idx(crc8->to_idx,   cf->len);
-    int res  = calc_idx(crc8->result_idx, cf->len);
+The rounding was performed, but never actually used for the allocation.
+Fix this by replacing kmemdup with kmalloc for a larger buffer,
+followed by memcpy.
 
-    if (from < 0 || to < 0 || res < 0)
-        return;
-
-However, the loop and the result write then use the raw s8 fields directly
-instead of the computed variables:
-
-    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
-    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
-
-With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
-calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
-i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
-This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
-start of the canfd_frame on the heap.
-
-The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
-correctly throughout; fix cgw_csum_crc8_rel() to match.
-
-Confirmed with KASAN on linux-7.0-rc2:
-  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
-  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
-
-To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
-
-Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
-Cc: stable@vger.kernel.org
-Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 199354d7fb6e ("crypto: caam - Remove GFP_DMA and add DMA alignment padding")
+Reported-by: Paul Bunyan <pbunyan@redhat.com>
+Signed-off-by: Horia Geantă <horia.geanta@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/gw.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/crypto/caam/caamhash.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/can/gw.c
-+++ b/net/can/gw.c
-@@ -374,10 +374,10 @@ static void cgw_csum_crc8_rel(struct can
- 		return;
+diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
+index 25c02e2672585..053af748be86d 100644
+--- a/drivers/crypto/caam/caamhash.c
++++ b/drivers/crypto/caam/caamhash.c
+@@ -441,9 +441,10 @@ static int ahash_setkey(struct crypto_ahash *ahash,
+ 		if (aligned_len < keylen)
+ 			return -EOVERFLOW;
  
- 	if (from <= to) {
--		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
-+		for (i = from; i <= to; i++)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
- 	} else {
--		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
-+		for (i = from; i >= to; i--)
- 			crc = crc8->crctab[crc ^ cf->data[i]];
- 	}
- 
-@@ -396,7 +396,7 @@ static void cgw_csum_crc8_rel(struct can
- 		break;
- 	}
- 
--	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
-+	cf->data[res] = crc ^ crc8->final_xor_val;
- }
- 
- static void cgw_csum_crc8_pos(struct canfd_frame *cf,
+-		hashed_key = kmemdup(key, keylen, GFP_KERNEL);
++		hashed_key = kmalloc(aligned_len, GFP_KERNEL);
+ 		if (!hashed_key)
+ 			return -ENOMEM;
++		memcpy(hashed_key, key, keylen);
+ 		ret = hash_digest_key(ctx, &keylen, hashed_key, digestsize);
+ 		if (ret)
+ 			goto bad_free_key;
+-- 
+2.53.0
+
 
 
 
