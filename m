@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2ElzEHuc1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:43 +0200
+	id mGSYJGWr1mmmHAgAu9opvQ
+	(envelope-from <stable+bounces-235134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8E23C074D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6183C2E6F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3C8C830341E0
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D84E31A63A3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152342494F0;
-	Wed,  8 Apr 2026 18:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF31348453;
+	Wed,  8 Apr 2026 18:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dtyxHDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfVKAIS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5143D6694;
-	Wed,  8 Apr 2026 18:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CF83176E4;
+	Wed,  8 Apr 2026 18:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672382; cv=none; b=YPKMLEGA3oiTHlELuB2bkA+rjJ07O4ZVIWScUOjIOMqMq+cfVVmEXzfwSP45NFk6hdjiPOR874YcLntNxwbc8ASMFjVIVtGDWyFlB1LDMHGPdE3Xl4BlmKsAn77eLIWrnB690Vjhutkuu60KusDkjEYLhscXi8ue7gQWBEUdTTk=
+	t=1775674657; cv=none; b=MOWTy/1zMC6l/OZhCl1DPivvpctRgfzu9bmCPl7N9A95/FVV2vkcTa2I1yT0yyHUDolmMiQoZQNtFhgzABQrgaDRn6tvJImYzv+sZvOXjjHXpJquAcfjrlrU81f9fW4N7hlHnm1ZNqJ5gpAeWIf/Pt3owxAXeigec/K61L5Tatg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672382; c=relaxed/simple;
-	bh=FbfvpjzXhpKY2H5Ad2udY4sItoiRgKjoo4yU5Rea2HM=;
+	s=arc-20240116; t=1775674657; c=relaxed/simple;
+	bh=oGMVO+sO7z9aaZlkEOm1Zx/nliuXJ+37S9zEc8RDl24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hE/bxoLZwyS+iI6PDMDOADN4hT/S5HzU6VolL/zAoc+kq+ObdF9j5uYZD0PQLVioFEbdipdes5GXPkcIu5trnCQ9ogE94z4vAcx9qgCKh9m563lECw1+lGw9zKkcfXx3YDxkGG37hUK3WNCFGucSThfyUJ5iJ7rK7rRJMmDcxBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dtyxHDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60954C19421;
-	Wed,  8 Apr 2026 18:19:42 +0000 (UTC)
+	 MIME-Version; b=BmCYt9UK3T42YzeC/uT7uO/8buLnQ8Ksiu/HF9DAK8/Q22iEz+tNJSkarSNUGl/J4Ja+84IiBgV2JDFRjR0RL5Vrir+wRCMCpiYqE65PCRvJoPIaKySn0qaA4TA+mOJmnSGeNGozrrrMjjXGDQnDuXqC8uj+sGbWWl5LGFS8UfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfVKAIS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF44C19421;
+	Wed,  8 Apr 2026 18:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672382;
-	bh=FbfvpjzXhpKY2H5Ad2udY4sItoiRgKjoo4yU5Rea2HM=;
+	s=korg; t=1775674657;
+	bh=oGMVO+sO7z9aaZlkEOm1Zx/nliuXJ+37S9zEc8RDl24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0dtyxHDJx19rJJSiAHTPhMbgHM6vhm2ysawuoafTq7op8mo46y0kcOPtvgEQylJuM
-	 nZjcJzqhNOZVukfGCWKEm4Sn+2dXnjKCYC98emv89sIxBW2lVXY3yNKCBAuUxyafcU
-	 rznN3Hn9MftywXyEdgzqxNk19jT/JhXlPLHsuEA0=
+	b=BfVKAIS2RNOPhpLM7mn13Tk4/NW98k2pIqem0K78b1lT7beg24jY6m1kyXVw6T3G7
+	 N2T3R7maLJ2Eg1+DbzuCP91MgvHUnvrP2cTIh6H/bFWSe9axuCW0LyoC6SVJPoV4L9
+	 E4bca4ePQp+TpUoWCZngTwL/TFQI2NEerQSvnRqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 266/312] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.19 183/311] ksmbd: fix OOB write in QUERY_INFO for compound requests
 Date: Wed,  8 Apr 2026 20:03:03 +0200
-Message-ID: <20260408175943.681918013@linuxfoundation.org>
+Message-ID: <20260408175946.244862707@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +68,360 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234254-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235134-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0F8E23C074D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CA6183C2E6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Asim Viladi Oglu Manizada <manizada@pm.me>
 
-Multiple sysfs command paths dereference contexts_arr[0] without first
-verifying that kdamond->contexts->nr == 1.  A user can set nr_contexts to
-0 via sysfs while DAMON is running, causing NULL pointer dereferences.
+commit fda9522ed6afaec45cabc198d8492270c394c7bc upstream.
 
-In more detail, the issue can be triggered by privileged users like
-below.
+When a compound request such as READ + QUERY_INFO(Security) is received,
+and the first command (READ) consumes most of the response buffer,
+ksmbd could write beyond the allocated buffer while building a security
+descriptor.
 
-First, start DAMON and make contexts directory empty
-(kdamond->contexts->nr == 0).
+The root cause was that smb2_get_info_sec() checked buffer space using
+ppntsd_size from xattr, while build_sec_desc() often synthesized a
+significantly larger descriptor from POSIX ACLs.
 
-    # damo start
-    # cd /sys/kernel/mm/damon/admin/kdamonds/0
-    # echo 0 > contexts/nr_contexts
+This patch introduces smb_acl_sec_desc_scratch_len() to accurately
+compute the final descriptor size beforehand, performs proper buffer
+checking with smb2_calc_max_out_buf_len(), and uses exact-sized
+allocation + iov pinning.
 
-Then, each of below commands will cause the NULL pointer dereference.
-
-    # echo update_schemes_stats > state
-    # echo update_schemes_tried_regions > state
-    # echo update_schemes_tried_bytes > state
-    # echo update_schemes_effective_quotas > state
-    # echo update_tuned_intervals > state
-
-Guard all commands (except OFF) at the entry point of
-damon_sysfs_handle_cmd().
-
-(cherry picked from commit 1bfe9fb5ed2667fb075682408b776b5273162615)
-
-Link: https://lkml.kernel.org/r/20260321175427.86000-3-sj@kernel.org
-Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
-Signed-off-by: Josh Law <objecting@objecting.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.18+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/smb2pdu.c |  121 +++++++++++++++++++++++++++++++++++-------------
+ fs/smb/server/smbacl.c  |   43 +++++++++++++++++
+ fs/smb/server/smbacl.h  |    2 
+ 3 files changed, 134 insertions(+), 32 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index a5a1e90e53e74..bdcf895a29a78 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2576,6 +2576,9 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
- {
- 	bool need_wait = true;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3401,20 +3401,24 @@ int smb2_open(struct ksmbd_work *work)
+ 							   KSMBD_SHARE_FLAG_ACL_XATTR)) {
+ 					struct smb_fattr fattr;
+ 					struct smb_ntsd *pntsd;
+-					int pntsd_size, ace_num = 0;
++					int pntsd_size;
++					size_t scratch_len;
  
-+	if (cmd != DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr != 1)
-+		return -EINVAL;
+ 					ksmbd_acls_fattr(&fattr, idmap, inode);
+-					if (fattr.cf_acls)
+-						ace_num = fattr.cf_acls->a_count;
+-					if (fattr.cf_dacls)
+-						ace_num += fattr.cf_dacls->a_count;
+-
+-					pntsd = kmalloc(sizeof(struct smb_ntsd) +
+-							sizeof(struct smb_sid) * 3 +
+-							sizeof(struct smb_acl) +
+-							sizeof(struct smb_ace) * ace_num * 2,
+-							KSMBD_DEFAULT_GFP);
++					scratch_len = smb_acl_sec_desc_scratch_len(&fattr,
++							NULL, 0,
++							OWNER_SECINFO | GROUP_SECINFO |
++							DACL_SECINFO);
++					if (!scratch_len || scratch_len == SIZE_MAX) {
++						rc = -EFBIG;
++						posix_acl_release(fattr.cf_acls);
++						posix_acl_release(fattr.cf_dacls);
++						goto err_out;
++					}
 +
- 	/* Handle commands that doesn't access DAMON context-internal data */
- 	switch (cmd) {
- 	case DAMON_SYSFS_CMD_ON:
--- 
-2.53.0
-
++					pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
+ 					if (!pntsd) {
++						rc = -ENOMEM;
+ 						posix_acl_release(fattr.cf_acls);
+ 						posix_acl_release(fattr.cf_dacls);
+ 						goto err_out;
+@@ -3429,7 +3433,7 @@ int smb2_open(struct ksmbd_work *work)
+ 					posix_acl_release(fattr.cf_acls);
+ 					posix_acl_release(fattr.cf_dacls);
+ 					if (rc) {
+-						kfree(pntsd);
++						kvfree(pntsd);
+ 						goto err_out;
+ 					}
+ 
+@@ -3439,7 +3443,7 @@ int smb2_open(struct ksmbd_work *work)
+ 								    pntsd,
+ 								    pntsd_size,
+ 								    false);
+-					kfree(pntsd);
++					kvfree(pntsd);
+ 					if (rc)
+ 						pr_err("failed to store ntacl in xattr : %d\n",
+ 						       rc);
+@@ -5371,8 +5375,9 @@ static int smb2_get_info_file(struct ksm
+ 	if (test_share_config_flag(work->tcon->share_conf,
+ 				   KSMBD_SHARE_FLAG_PIPE)) {
+ 		/* smb2 info file called for pipe */
+-		return smb2_get_info_file_pipe(work->sess, req, rsp,
++		rc = smb2_get_info_file_pipe(work->sess, req, rsp,
+ 					       work->response_buf);
++		goto iov_pin_out;
+ 	}
+ 
+ 	if (work->next_smb2_rcv_hdr_off) {
+@@ -5472,6 +5477,12 @@ static int smb2_get_info_file(struct ksm
+ 		rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
+ 				      rsp, work->response_buf);
+ 	ksmbd_fd_put(work, fp);
++
++iov_pin_out:
++	if (!rc)
++		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
++				offsetof(struct smb2_query_info_rsp, Buffer) +
++				le32_to_cpu(rsp->OutputBufferLength));
+ 	return rc;
+ }
+ 
+@@ -5698,6 +5709,11 @@ static int smb2_get_info_filesystem(stru
+ 	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
+ 			      rsp, work->response_buf);
+ 	path_put(&path);
++
++	if (!rc)
++		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
++				offsetof(struct smb2_query_info_rsp, Buffer) +
++				le32_to_cpu(rsp->OutputBufferLength));
+ 	return rc;
+ }
+ 
+@@ -5707,13 +5723,14 @@ static int smb2_get_info_sec(struct ksmb
+ {
+ 	struct ksmbd_file *fp;
+ 	struct mnt_idmap *idmap;
+-	struct smb_ntsd *pntsd = (struct smb_ntsd *)rsp->Buffer, *ppntsd = NULL;
++	struct smb_ntsd *pntsd = NULL, *ppntsd = NULL;
+ 	struct smb_fattr fattr = {{0}};
+ 	struct inode *inode;
+ 	__u32 secdesclen = 0;
+ 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
+ 	int addition_info = le32_to_cpu(req->AdditionalInformation);
+-	int rc = 0, ppntsd_size = 0;
++	int rc = 0, ppntsd_size = 0, max_len;
++	size_t scratch_len = 0;
+ 
+ 	if (addition_info & ~(OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO |
+ 			      PROTECTED_DACL_SECINFO |
+@@ -5721,6 +5738,11 @@ static int smb2_get_info_sec(struct ksmb
+ 		ksmbd_debug(SMB, "Unsupported addition info: 0x%x)\n",
+ 		       addition_info);
+ 
++		pntsd = kzalloc(ALIGN(sizeof(struct smb_ntsd), 8),
++				KSMBD_DEFAULT_GFP);
++		if (!pntsd)
++			return -ENOMEM;
++
+ 		pntsd->revision = cpu_to_le16(1);
+ 		pntsd->type = cpu_to_le16(SELF_RELATIVE | DACL_PROTECTED);
+ 		pntsd->osidoffset = 0;
+@@ -5729,9 +5751,7 @@ static int smb2_get_info_sec(struct ksmb
+ 		pntsd->dacloffset = 0;
+ 
+ 		secdesclen = sizeof(struct smb_ntsd);
+-		rsp->OutputBufferLength = cpu_to_le32(secdesclen);
+-
+-		return 0;
++		goto iov_pin;
+ 	}
+ 
+ 	if (work->next_smb2_rcv_hdr_off) {
+@@ -5763,18 +5783,58 @@ static int smb2_get_info_sec(struct ksmb
+ 						     &ppntsd);
+ 
+ 	/* Check if sd buffer size exceeds response buffer size */
+-	if (smb2_resp_buf_len(work, 8) > ppntsd_size)
+-		rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
+-				    addition_info, &secdesclen, &fattr);
++	max_len = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_query_info_rsp, Buffer),
++			le32_to_cpu(req->OutputBufferLength));
++	if (max_len < 0) {
++		rc = -EINVAL;
++		goto release_acl;
++	}
++
++	scratch_len = smb_acl_sec_desc_scratch_len(&fattr, ppntsd,
++			ppntsd_size, addition_info);
++	if (!scratch_len || scratch_len == SIZE_MAX) {
++		rc = -EFBIG;
++		goto release_acl;
++	}
++
++	pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
++	if (!pntsd) {
++		rc = -ENOMEM;
++		goto release_acl;
++	}
++
++	rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
++			addition_info, &secdesclen, &fattr);
++
++release_acl:
+ 	posix_acl_release(fattr.cf_acls);
+ 	posix_acl_release(fattr.cf_dacls);
+ 	kfree(ppntsd);
+ 	ksmbd_fd_put(work, fp);
++
++	if (!rc && ALIGN(secdesclen, 8) > scratch_len)
++		rc = -EFBIG;
+ 	if (rc)
+-		return rc;
++		goto err_out;
+ 
++iov_pin:
+ 	rsp->OutputBufferLength = cpu_to_le32(secdesclen);
+-	return 0;
++	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
++			      rsp, work->response_buf);
++	if (rc)
++		goto err_out;
++
++	rc = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
++			offsetof(struct smb2_query_info_rsp, Buffer),
++			pntsd, secdesclen);
++err_out:
++	if (rc) {
++		rsp->OutputBufferLength = 0;
++		kvfree(pntsd);
++	}
++
++	return rc;
+ }
+ 
+ /**
+@@ -5798,6 +5858,9 @@ int smb2_query_info(struct ksmbd_work *w
+ 		goto err_out;
+ 	}
+ 
++	rsp->StructureSize = cpu_to_le16(9);
++	rsp->OutputBufferOffset = cpu_to_le16(72);
++
+ 	switch (req->InfoType) {
+ 	case SMB2_O_INFO_FILE:
+ 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
+@@ -5818,14 +5881,6 @@ int smb2_query_info(struct ksmbd_work *w
+ 	}
+ 	ksmbd_revert_fsids(work);
+ 
+-	if (!rc) {
+-		rsp->StructureSize = cpu_to_le16(9);
+-		rsp->OutputBufferOffset = cpu_to_le16(72);
+-		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
+-				       offsetof(struct smb2_query_info_rsp, Buffer) +
+-					le32_to_cpu(rsp->OutputBufferLength));
+-	}
+-
+ err_out:
+ 	if (rc < 0) {
+ 		if (rc == -EACCES)
+@@ -5836,6 +5891,8 @@ err_out:
+ 			rsp->hdr.Status = STATUS_UNEXPECTED_IO_ERROR;
+ 		else if (rc == -ENOMEM)
+ 			rsp->hdr.Status = STATUS_INSUFFICIENT_RESOURCES;
++		else if (rc == -EINVAL && rsp->hdr.Status == 0)
++			rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		else if (rc == -EOPNOTSUPP || rsp->hdr.Status == 0)
+ 			rsp->hdr.Status = STATUS_INVALID_INFO_CLASS;
+ 		smb2_set_err_rsp(work);
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -915,6 +915,49 @@ int parse_sec_desc(struct mnt_idmap *idm
+ 	return 0;
+ }
+ 
++size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
++		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info)
++{
++	size_t len = sizeof(struct smb_ntsd);
++	size_t tmp;
++
++	if (addition_info & OWNER_SECINFO)
++		len += sizeof(struct smb_sid);
++	if (addition_info & GROUP_SECINFO)
++		len += sizeof(struct smb_sid);
++	if (!(addition_info & DACL_SECINFO))
++		return len;
++
++	len += sizeof(struct smb_acl);
++	if (ppntsd && ppntsd_size > 0) {
++		unsigned int dacl_offset = le32_to_cpu(ppntsd->dacloffset);
++
++		if (dacl_offset < ppntsd_size &&
++		    check_add_overflow(len, ppntsd_size - dacl_offset, &len))
++			return 0;
++	}
++
++	if (fattr->cf_acls) {
++		if (check_mul_overflow((size_t)fattr->cf_acls->a_count,
++					2 * sizeof(struct smb_ace), &tmp) ||
++		    check_add_overflow(len, tmp, &len))
++			return 0;
++	} else {
++		/* default/minimum DACL */
++		if (check_add_overflow(len, 5 * sizeof(struct smb_ace), &len))
++			return 0;
++	}
++
++	if (fattr->cf_dacls) {
++		if (check_mul_overflow((size_t)fattr->cf_dacls->a_count,
++					sizeof(struct smb_ace), &tmp) ||
++		    check_add_overflow(len, tmp, &len))
++			return 0;
++	}
++
++	return len;
++}
++
+ /* Convert permission bits from mode to equivalent CIFS ACL */
+ int build_sec_desc(struct mnt_idmap *idmap,
+ 		   struct smb_ntsd *pntsd, struct smb_ntsd *ppntsd,
+--- a/fs/smb/server/smbacl.h
++++ b/fs/smb/server/smbacl.h
+@@ -101,6 +101,8 @@ int set_info_sec(struct ksmbd_conn *conn
+ 		 bool type_check, bool get_write);
+ void id_to_sid(unsigned int cid, uint sidtype, struct smb_sid *ssid);
+ void ksmbd_init_domain(u32 *sub_auth);
++size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
++		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info);
+ 
+ static inline uid_t posix_acl_uid_translate(struct mnt_idmap *idmap,
+ 					    struct posix_acl_entry *pace)
 
 
 
