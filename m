@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-235087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GE3zM6mk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:37 +0200
+	id cHlaESGc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F863C1F96
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A190C3C0691
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A52A630157B3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9481B302A53F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383D83D9044;
-	Wed,  8 Apr 2026 18:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD9C385513;
+	Wed,  8 Apr 2026 18:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiQH5JmD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpcUBS54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF65C3D903F;
-	Wed,  8 Apr 2026 18:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFB236D50D;
+	Wed,  8 Apr 2026 18:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674536; cv=none; b=X4YqgBCY5HKREEaaY90uJ3CxkUkmkVcjfwRUg+78ns+WLmg197Y3HpO2xN4LcBcjfTTpSfJ1S8Q89P+U7HhVUmE0dyLona60EwAgUlviB1l81JRnHQDUVDdDmE2mSwA8+2QV4SWlz+l83LlPAdlZmeB6lmvdtwBcqptOnzg0XtA=
+	t=1775672172; cv=none; b=sIsyE0WKGSLKCS3GYBc+k7q6faNQdho9X5td+fEhUgc0zKUFIdvOlRwrDYOYrhPHm7GdRjRX/eQyd6xw8bFzjjaUDprdv6gD+9NcPhvSeJLsS70BSmf9NnjsKc8C/mvufxbB+FEJ+OVAz6YjY9JWexnFTu5z9L2wj7gwTNHbOx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674536; c=relaxed/simple;
-	bh=2ai167v6h4M3yl7d8vxSKyfNrtaDd/mHe34hyeaFyVg=;
+	s=arc-20240116; t=1775672172; c=relaxed/simple;
+	bh=T44GsQ0bO/KbOCwbGDFGFRdstqRprLai1uuh3Lxlb2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2vAh8uXZad5clltZxNDj4JyQwJWqaKfP56gIXNWqt3PxG+TQCH6gxim5vd1o1W7SjhWVftQcvbM4lPkHcgfjxWmEWAQ3kZs02geX9gRD7lbVe+hQL+LL9vqR9UGa103SeBtB1Dhy6GQXJolUyok+vOd7KKlm0uQ23KvlxXewbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiQH5JmD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862A1C19421;
-	Wed,  8 Apr 2026 18:55:35 +0000 (UTC)
+	 MIME-Version; b=ce+ScZBluJmbONH8exp5Sp5PED2UHKIUzR3fO8CkeJDVUQiTUVRKmsNndXblC8D3vMGZi1Tex61mjmLpw+9vuWyvKkbmmxszsRY01SbwJhiILNlBDyvt8oRdLe2ZzJHCQwMtbCEtvuX6bE9/y9X7g9OtxDRh7RpA7R7mtd/5AMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpcUBS54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375C1C19421;
+	Wed,  8 Apr 2026 18:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674535;
-	bh=2ai167v6h4M3yl7d8vxSKyfNrtaDd/mHe34hyeaFyVg=;
+	s=korg; t=1775672172;
+	bh=T44GsQ0bO/KbOCwbGDFGFRdstqRprLai1uuh3Lxlb2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hiQH5JmDQDGWmGBmDFSjF+dDDGL6DXAuWtsQd9KdRE6ezDwDiTJM06Aqk3pODrGvP
-	 2eeNUFV/VzZ+3V9B66fqmNZM1VaRT5NowabFXc+7YEKEpEeGECSsSyJxp2O/KmmfnH
-	 1k7ftrk2Cg1154ybS/cT/d/F/ZwKT7xnNQzGJ7aE=
+	b=kpcUBS54UDbXHyxn3ckJvSEhQNp8fRtffwhtZpmJIfqDQ1ODNt+ib7sRWbqKex2yI
+	 DKoytPNhbb1rsT/kAapjX3dXBDBCgsR617vYuGWQuHjUNyNgiao1Qplmp+mlqQDpsz
+	 TEFPzpnAMV+dGDi0i//8Ug95+5rjBuzGQOFyb1g0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Ying <victor.liu@nxp.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 134/311] drm/bridge: Fix refcount shown via debugfs for encoder_bridges_show()
+	Zoltan Illes <zoliviragh@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 217/312] Input: xpad - add support for Razer Wolverine V3 Pro
 Date: Wed,  8 Apr 2026 20:02:14 +0200
-Message-ID: <20260408175944.420164801@linuxfoundation.org>
+Message-ID: <20260408175941.861524350@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +63,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235087-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234173-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
-X-Rspamd-Queue-Id: 77F863C1F96
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A190C3C0691
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Ying <victor.liu@nxp.com>
+From: Zoltan Illes <zoliviragh@gmail.com>
 
-[ Upstream commit f078634c184a9b5ccaa056e8b8d6cd32f7bff1b6 ]
+commit e2b0ae529db4766584e77647cefe3ec15c3d842e upstream.
 
-A typical bridge refcount value is 3 after a bridge chain is formed:
-- devm_drm_bridge_alloc() initializes the refcount value to be 1.
-- drm_bridge_add() gets an additional reference hence 2.
-- drm_bridge_attach() gets the third reference hence 3.
+Add device IDs for the Razer Wolverine V3 Pro controller in both
+wired (0x0a57) and wireless 2.4 GHz dongle (0x0a59) modes.
 
-This typical refcount value aligns with allbridges_show()'s behaviour.
-However, since encoder_bridges_show() uses
-drm_for_each_bridge_in_chain_scoped() to automatically get/put the
-bridge reference while iterating, a bogus reference is accidentally
-got when showing the wrong typical refcount value as 4 to users via
-debugfs.  Fix this by caching the refcount value returned from
-kref_read() while iterating and explicitly decreasing the cached
-refcount value by 1 before showing it to users.
+The controller uses the Xbox 360 protocol (vendor-specific class,
+subclass 93, protocol 1) on interface 0 with an identical 20-byte
+input report layout, so no additional processing is needed.
 
-Fixes: bd57048e4576 ("drm/bridge: use drm_for_each_bridge_in_chain_scoped()")
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20260318-drm-misc-next-2026-03-05-fix-encoder-bridges-refcount-v3-1-147fea581279@nxp.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zoltan Illes <zoliviragh@gmail.com>
+Link: https://patch.msgid.link/20260329220031.1325509-1-137647604+ZlordHUN@users.noreply.github.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_bridge.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-index 8f355df883d8a..250bf8fa51677 100644
---- a/drivers/gpu/drm/drm_bridge.c
-+++ b/drivers/gpu/drm/drm_bridge.c
-@@ -1465,11 +1465,17 @@ EXPORT_SYMBOL(devm_drm_put_bridge);
- static void drm_bridge_debugfs_show_bridge(struct drm_printer *p,
- 					   struct drm_bridge *bridge,
- 					   unsigned int idx,
--					   bool lingering)
-+					   bool lingering,
-+					   bool scoped)
- {
-+	unsigned int refcount = kref_read(&bridge->refcount);
-+
-+	if (scoped)
-+		refcount--;
-+
- 	drm_printf(p, "bridge[%u]: %ps\n", idx, bridge->funcs);
- 
--	drm_printf(p, "\trefcount: %u%s\n", kref_read(&bridge->refcount),
-+	drm_printf(p, "\trefcount: %u%s\n", refcount,
- 		   lingering ? " [lingering]" : "");
- 
- 	drm_printf(p, "\ttype: [%d] %s\n",
-@@ -1503,10 +1509,10 @@ static int allbridges_show(struct seq_file *m, void *data)
- 	mutex_lock(&bridge_lock);
- 
- 	list_for_each_entry(bridge, &bridge_list, list)
--		drm_bridge_debugfs_show_bridge(&p, bridge, idx++, false);
-+		drm_bridge_debugfs_show_bridge(&p, bridge, idx++, false, false);
- 
- 	list_for_each_entry(bridge, &bridge_lingering_list, list)
--		drm_bridge_debugfs_show_bridge(&p, bridge, idx++, true);
-+		drm_bridge_debugfs_show_bridge(&p, bridge, idx++, true, false);
- 
- 	mutex_unlock(&bridge_lock);
- 
-@@ -1521,7 +1527,7 @@ static int encoder_bridges_show(struct seq_file *m, void *data)
- 	unsigned int idx = 0;
- 
- 	drm_for_each_bridge_in_chain_scoped(encoder, bridge)
--		drm_bridge_debugfs_show_bridge(&p, bridge, idx++, false);
-+		drm_bridge_debugfs_show_bridge(&p, bridge, idx++, false, true);
- 
- 	return 0;
- }
--- 
-2.53.0
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -289,6 +289,8 @@ static const struct xpad_device {
+ 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
+ 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
+ 	{ 0x1532, 0x0a29, "Razer Wolverine V2", 0, XTYPE_XBOXONE },
++	{ 0x1532, 0x0a57, "Razer Wolverine V3 Pro (Wired)", 0, XTYPE_XBOX360 },
++	{ 0x1532, 0x0a59, "Razer Wolverine V3 Pro (2.4 GHz Dongle)", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f10, "Batarang Xbox 360 controller", 0, XTYPE_XBOX360 },
 
 
 
