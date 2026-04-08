@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-235233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234944-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNu3JEmm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:33 +0200
+	id oO4lBVyk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234944-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B233C23A4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5743C1E32
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5BE89301CAAA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D71F3085521
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C360364924;
-	Wed,  8 Apr 2026 19:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90753D8905;
+	Wed,  8 Apr 2026 18:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Biz/lJW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmQD47+A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080BD3D7D74;
-	Wed,  8 Apr 2026 19:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4AE337B81;
+	Wed,  8 Apr 2026 18:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674913; cv=none; b=QjTK2c8N0fxnbG814Edzx2XxJijkPpFFNX07YoaFBHlkIJnmlx/nwlAuWCTqRF97XWCXkuYCvC44XkES3Fo/1oRmeJekyMGJL7TmdsQUbuykgL35vfkM8qbMYxHZ2mlas7+GTL6BKcgYWGcd0bXE/D0d8xwXlF7VDDWRIojRwHE=
+	t=1775674167; cv=none; b=Of6mm4nYTM1XCVlZc/mf4St572k2+SGpkX4bqBdvKCphvRwv+C9Fbk7rqgQ0INLq9S8GcedmozsP0MWwRr/8ucTLaGciJmaW57oYWNo8A/th10pKsfKx3f92MTBNBrUx9LD5zbe69efNO5iYFAbea8IZbxxzcA7rd6MO4H7T+Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674913; c=relaxed/simple;
-	bh=0B2Cz++dkKXUAdHOqovDjE7EOoUDVz/gqntlD3E/464=;
+	s=arc-20240116; t=1775674167; c=relaxed/simple;
+	bh=QXK2YycZ9kaMrt9tRjtVdlVcGZUzo4oluyexFfIijGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkbhymWTABgx69pcb35WCh7k2P1uH9DxL92RzDvzPBC8Djvl02xsYm9m+zGKQtwuZ/76i0cM7gCfpuzIa+glyOc5FK1uS49GrPBEUgBRVyvaFBz0zPGAYZDZL/v1ExFVwaRQbFcF0e7uB+rIAvZtkPNz9/8m/5W2Q3ZAZySQ0OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Biz/lJW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A81C19421;
-	Wed,  8 Apr 2026 19:01:52 +0000 (UTC)
+	 MIME-Version; b=oye70rC7lQMHfe1v4qJGhjJTvD7qUhVIMojl0C3G0Gg7MkbLqEqnMq8z88kn5trA9lIpdS9rITfhILVY1qHJMq13inHg+Tj5auYQN7Wxk+c5wG6N1Vpat+ZQK3qP5f9P6xa0a5zbYuIouOIG6vRPtJ44hpxZIm/8n3CTroriV30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmQD47+A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226CEC2BC9E;
+	Wed,  8 Apr 2026 18:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674912;
-	bh=0B2Cz++dkKXUAdHOqovDjE7EOoUDVz/gqntlD3E/464=;
+	s=korg; t=1775674167;
+	bh=QXK2YycZ9kaMrt9tRjtVdlVcGZUzo4oluyexFfIijGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Biz/lJW/fQ3mJCcFBTSdPgKHvdEO8i5frh0Hr0CnGFkhbioazQVygGVbZjFqk/umk
-	 EV/FqWkJJZOmMKhl4CCMo8Zogss8AXeKAmU6y8ldXOpXMclSLNbg5BqXCEthS1U9HN
-	 VXCictaaBfwnUol4ee30+hLf1L+XZGnpi28YGJXs=
+	b=SmQD47+AesQiiYswKStCqz9J/hEVS8YsxExqAeAwUlDsuGKrcbq/kSuvMajFVrSmX
+	 nxYM6MRRAQ4/xNR34+YezztwBO1pJwtPpgUULg8W6u/nTHXViTNNZbnM4BvYLWT+oY
+	 WEXlCKYU8+fmPDJFVrnth8x34hE204ioFYZ2pRrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.19 248/311] x86/platform/geode: Fix on-stack property data use-after-return bug
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.12 208/242] usb: gadget: f_subset: Fix net_device lifecycle with device_move
 Date: Wed,  8 Apr 2026 20:04:08 +0200
-Message-ID: <20260408175948.651696885@linuxfoundation.org>
+Message-ID: <20260408175934.866190697@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,142 +62,229 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-235233-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux.intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234944-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: D0B233C23A4
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 7E5743C1E32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit b981e9e94c687b7b19ae8820963f005b842cb2f2 upstream.
+commit 06524cd1c9011bee141a87e43ab878641ed3652b upstream.
 
-The PROPERTY_ENTRY_GPIO macro (and by extension PROPERTY_ENTRY_REF)
-creates a temporary software_node_ref_args structure on the stack
-when used in a runtime assignment. This results in the property
-pointing to data that is invalid once the function returns.
+The net_device is allocated during function instance creation and
+registered during the bind phase with the gadget device as its sysfs
+parent. When the function unbinds, the parent device is destroyed, but
+the net_device survives, resulting in dangling sysfs symlinks:
 
-Fix this by ensuring the GPIO reference data is not stored on stack and
-using PROPERTY_ENTRY_REF_ARRAY_LEN() to point directly to the persistent
-reference data.
+  console:/ # ls -l /sys/class/net/usb0
+  lrwxrwxrwx ... /sys/class/net/usb0 ->
+  /sys/devices/platform/.../gadget.0/net/usb0
+  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
+  ls: .../gadget.0/net/usb0: No such file or directory
 
-Fixes: 298c9babadb8 ("x86/platform/geode: switch GPIO buttons and LEDs to software properties")
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Daniel Scally <djrscally@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+Use device_move() to reparent the net_device between the gadget device
+tree and /sys/devices/virtual across bind and unbind cycles. During the
+final unbind, calling device_move(NULL) moves the net_device to the
+virtual device tree before the gadget device is destroyed. On rebinding,
+device_move() reparents the device back under the new gadget, ensuring
+proper sysfs topology and power management ordering.
+
+To maintain compatibility with legacy composite drivers (e.g., multi.c),
+the bound flag is used to indicate whether the network device is shared
+and pre-registered during the legacy driver's bind phase.
+
+Fixes: 8cedba7c73af ("usb: gadget: f_subset: convert to new function interface with backward compatibility")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260329-property-gpio-fix-v2-1-3cca5ba136d8@gmail.com
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-6-4886b578161b@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/platform/geode/geode-common.c |   24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/function/f_subset.c |   57 ++++++++++++++++-----------------
+ drivers/usb/gadget/function/u_gether.h |   22 ++++++++----
+ 2 files changed, 44 insertions(+), 35 deletions(-)
 
---- a/arch/x86/platform/geode/geode-common.c
-+++ b/arch/x86/platform/geode/geode-common.c
-@@ -28,8 +28,10 @@ static const struct software_node geode_
- 	.properties = geode_gpio_keys_props,
+--- a/drivers/usb/gadget/function/f_subset.c
++++ b/drivers/usb/gadget/function/f_subset.c
+@@ -299,25 +299,22 @@ geth_bind(struct usb_configuration *c, s
+ 	struct usb_ep		*ep;
+ 
+ 	struct f_gether_opts	*gether_opts;
++	struct net_device	*net __free(detach_gadget) = NULL;
+ 
+ 	gether_opts = container_of(f->fi, struct f_gether_opts, func_inst);
+ 
+-	/*
+-	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
+-	 * configurations are bound in sequence with list_for_each_entry,
+-	 * in each configuration its functions are bound in sequence
+-	 * with list_for_each_entry, so we assume no race condition
+-	 * with regard to gether_opts->bound access
+-	 */
+-	if (!gether_opts->bound) {
+-		mutex_lock(&gether_opts->lock);
+-		gether_set_gadget(gether_opts->net, cdev->gadget);
+-		status = gether_register_netdev(gether_opts->net);
+-		mutex_unlock(&gether_opts->lock);
+-		if (status)
+-			return status;
+-		gether_opts->bound = true;
+-	}
++	scoped_guard(mutex, &gether_opts->lock)
++		if (gether_opts->bind_count == 0 && !gether_opts->bound) {
++			if (!device_is_registered(&gether_opts->net->dev)) {
++				gether_set_gadget(gether_opts->net, cdev->gadget);
++				status = gether_register_netdev(gether_opts->net);
++			} else
++				status = gether_attach_gadget(gether_opts->net, cdev->gadget);
++
++			if (status)
++				return status;
++			net = gether_opts->net;
++		}
+ 
+ 	us = usb_gstrings_attach(cdev, geth_strings,
+ 				 ARRAY_SIZE(geth_string_defs));
+@@ -330,20 +327,18 @@ geth_bind(struct usb_configuration *c, s
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	subset_data_intf.bInterfaceNumber = status;
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	geth->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	geth->port.out_ep = ep;
+ 
+ 	/* support all relevant hardware speeds... we expect that when
+@@ -361,21 +356,19 @@ geth_bind(struct usb_configuration *c, s
+ 	status = usb_assign_descriptors(f, fs_eth_function, hs_eth_function,
+ 			ss_eth_function, ss_eth_function);
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+ 	 * until we're activated via set_alt().
+ 	 */
+ 
++	gether_opts->bind_count++;
++	retain_and_null_ptr(net);
++
+ 	DBG(cdev, "CDC Subset: IN/%s OUT/%s\n",
+ 			geth->port.in_ep->name, geth->port.out_ep->name);
+ 	return 0;
+-
+-fail:
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
+ }
+ 
+ static inline struct f_gether_opts *to_f_gether_opts(struct config_item *item)
+@@ -418,7 +411,7 @@ static void geth_free_inst(struct usb_fu
+ 	struct f_gether_opts *opts;
+ 
+ 	opts = container_of(f, struct f_gether_opts, func_inst);
+-	if (opts->bound)
++	if (device_is_registered(&opts->net->dev))
+ 		gether_cleanup(netdev_priv(opts->net));
+ 	else
+ 		free_netdev(opts->net);
+@@ -462,8 +455,16 @@ static void geth_free(struct usb_functio
+ 
+ static void geth_unbind(struct usb_configuration *c, struct usb_function *f)
+ {
++	struct f_gether_opts *opts;
++
++	opts = container_of(f->fi, struct f_gether_opts, func_inst);
++
+ 	geth_string_defs[0].id = 0;
+ 	usb_free_all_descriptors(f);
++
++	opts->bind_count--;
++	if (opts->bind_count == 0 && !opts->bound)
++		gether_detach_gadget(opts->net);
+ }
+ 
+ static struct usb_function *geth_alloc(struct usb_function_instance *fi)
+--- a/drivers/usb/gadget/function/u_gether.h
++++ b/drivers/usb/gadget/function/u_gether.h
+@@ -15,17 +15,25 @@
+ 
+ #include <linux/usb/composite.h>
+ 
++/**
++ * struct f_gether_opts - subset function options
++ * @func_inst: USB function instance.
++ * @net: The net_device associated with the subset function.
++ * @bound: True if the net_device is shared and pre-registered during the
++ *         legacy composite driver's bind phase (e.g., multi.c). If false,
++ *         the subset function will register the net_device during its own
++ *         bind phase.
++ * @bind_count: Tracks the number of configurations the subset function is
++ *              bound to, preventing double-registration of the @net device.
++ * @lock: Protects the data from concurrent access by configfs read/write
++ *        and create symlink/remove symlink operations.
++ * @refcnt: Reference counter for the function instance.
++ */
+ struct f_gether_opts {
+ 	struct usb_function_instance	func_inst;
+ 	struct net_device		*net;
+ 	bool				bound;
+-
+-	/*
+-	 * Read/write access to configfs attributes is handled by configfs.
+-	 *
+-	 * This is to protect the data from concurrent access by read/write
+-	 * and create symlink/remove symlink.
+-	 */
++	int				bind_count;
+ 	struct mutex			lock;
+ 	int				refcnt;
  };
- 
--static struct property_entry geode_restart_key_props[] = {
--	{ /* Placeholder for GPIO property */ },
-+static struct software_node_ref_args geode_restart_gpio_ref;
-+
-+static const struct property_entry geode_restart_key_props[] = {
-+	PROPERTY_ENTRY_REF_ARRAY_LEN("gpios", &geode_restart_gpio_ref, 1),
- 	PROPERTY_ENTRY_U32("linux,code", KEY_RESTART),
- 	PROPERTY_ENTRY_STRING("label", "Reset button"),
- 	PROPERTY_ENTRY_U32("debounce-interval", 100),
-@@ -64,8 +66,7 @@ int __init geode_create_restart_key(unsi
- 	struct platform_device *pd;
- 	int err;
- 
--	geode_restart_key_props[0] = PROPERTY_ENTRY_GPIO("gpios",
--							 &geode_gpiochip_node,
-+	geode_restart_gpio_ref = SOFTWARE_NODE_REFERENCE(&geode_gpiochip_node,
- 							 pin, GPIO_ACTIVE_LOW);
- 
- 	err = software_node_register_node_group(geode_gpio_keys_swnodes);
-@@ -99,6 +100,7 @@ int __init geode_create_leds(const char
- 	const struct software_node *group[MAX_LEDS + 2] = { 0 };
- 	struct software_node *swnodes;
- 	struct property_entry *props;
-+	struct software_node_ref_args *gpio_refs;
- 	struct platform_device_info led_info = {
- 		.name	= "leds-gpio",
- 		.id	= PLATFORM_DEVID_NONE,
-@@ -127,6 +129,12 @@ int __init geode_create_leds(const char
- 		goto err_free_swnodes;
- 	}
- 
-+	gpio_refs = kzalloc_objs(*gpio_refs, n_leds);
-+	if (!gpio_refs) {
-+		err = -ENOMEM;
-+		goto err_free_props;
-+	}
-+
- 	group[0] = &geode_gpio_leds_node;
- 	for (i = 0; i < n_leds; i++) {
- 		node_name = kasprintf(GFP_KERNEL, "%s:%d", label, i);
-@@ -135,9 +143,11 @@ int __init geode_create_leds(const char
- 			goto err_free_names;
- 		}
- 
-+		gpio_refs[i] = SOFTWARE_NODE_REFERENCE(&geode_gpiochip_node,
-+						       leds[i].pin,
-+						       GPIO_ACTIVE_LOW);
- 		props[i * 3 + 0] =
--			PROPERTY_ENTRY_GPIO("gpios", &geode_gpiochip_node,
--					    leds[i].pin, GPIO_ACTIVE_LOW);
-+			PROPERTY_ENTRY_REF_ARRAY_LEN("gpios", &gpio_refs[i], 1);
- 		props[i * 3 + 1] =
- 			PROPERTY_ENTRY_STRING("linux,default-trigger",
- 					      leds[i].default_on ?
-@@ -171,6 +181,8 @@ err_unregister_group:
- err_free_names:
- 	while (--i >= 0)
- 		kfree(swnodes[i].name);
-+	kfree(gpio_refs);
-+err_free_props:
- 	kfree(props);
- err_free_swnodes:
- 	kfree(swnodes);
 
 
 
