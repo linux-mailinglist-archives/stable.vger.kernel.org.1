@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qG8nB4en1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:51 +0200
+	id qH/KHGue1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394053C273E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9553C0CF2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8769031BB43D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0716330EA6F0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2211F3D669E;
-	Wed,  8 Apr 2026 18:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8833ACF13;
+	Wed,  8 Apr 2026 18:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTW7dar0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymSvoDNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A6C3D75C9;
-	Wed,  8 Apr 2026 18:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBDF2494F0;
+	Wed,  8 Apr 2026 18:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673797; cv=none; b=sljoH9Zzc8d8HEAtOM3oZXy0l7E3Aq3BQckuNPnATrECVKaHxdXIX0EIsCrhi83WMs8mBBQUCcSsozVq4rroceyU6TemnbgyeJ6w63kay27akbwknTCiFjA8+kj58qWsDxP1+VgE6YjgWT0PASNNBbS3G6EPSFeSkCuAyGlgcTk=
+	t=1775672540; cv=none; b=LBODACjjpQ4ucZsMrB4xAwRZ/SlbCgirHFLYhe7XmZQbNusi42KzHOKr1ROEc6TVzR893FS+TMrYZGGmgq01cIBKyPesUUPGAQCL0oMMN3zdtLX/xtEojV1QVyMO/7wtZ4VHRhwUBxm9HsQdI1D1NHbnwHWKsUYZvnjWTUmbIC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673797; c=relaxed/simple;
-	bh=S3ja70l0t1majRR2sU3Iiq2d7w9rxYhymWntKI8GRsg=;
+	s=arc-20240116; t=1775672540; c=relaxed/simple;
+	bh=t06QK9n+l/TsuBejMHAvsdxHZp7+4Q5TYNY+W4Cdn1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rw4zPP2WgAt0QyvdczhLuqn38nubp7uyq403mSWlAUo+khxLwd0wUr494WMtbIOFJENmb7toIK4HF4mvX7qm7gI/GBTZpn0IFIvFeeWFmgmiifIvWa7sjnSMNJFizZvVbTUEdSFq6/s60q94dTRr/heMUm4PNx4QOkzRbx6Z/Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTW7dar0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426FBC19421;
-	Wed,  8 Apr 2026 18:43:17 +0000 (UTC)
+	 MIME-Version; b=rOcGCV4ah5MrJiT+yl4Nffe7uu6M8Dg6vDkyO8kLXyhnFiBjfVTilG41BLC7EQup0t/IAXL3nUjrzuj/k9pTG9lQB7u15J4tdP/OxFqeTsUojofpCKXZcfTTUeSiwhUvCBmCdbEeftGA4+YnymmUUc3jlKyLVJilCkPrqQYHwO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymSvoDNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8389C19421;
+	Wed,  8 Apr 2026 18:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673797;
-	bh=S3ja70l0t1majRR2sU3Iiq2d7w9rxYhymWntKI8GRsg=;
+	s=korg; t=1775672540;
+	bh=t06QK9n+l/TsuBejMHAvsdxHZp7+4Q5TYNY+W4Cdn1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTW7dar0nw7C0ujtmAqESTfiNj2vEVFzE+j04/XNijkEX6Zss4Mnlou34mzqxfZk9
-	 LVHuQX1Fq51ioWo6nlfv9LSv+zTOzUpIVQ2pf71cAav9250xuleXHbaC3oLIYZDV/4
-	 b4dCPj1ZnJK921b3J6eMnV//JF6TV6XIIlb9J2Yo=
+	b=ymSvoDNnv/GDDKuVAVtWDMDfGLPQkR2OJg/TYUpEPMYGW8OKAZNqxohjXVH9ihp9b
+	 K46VW5WMkWk4Zq5w2uhrVI/aGmxkiwGXVEfbi9nW8Qj2X1vRziwUWEAb93bscxV1+l
+	 mh1qOpbgF3N6bCNPBvm6Bs6iCGvrvNuepHWvVZuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/242] net/mlx5: Fix switchdev mode rollback in case of failure
+Subject: [PATCH 6.6 046/160] Bluetooth: hci_sync: call destroy in hci_cmd_sync_run if immediate
 Date: Wed,  8 Apr 2026 20:02:13 +0200
-Message-ID: <20260408175930.565407084@linuxfoundation.org>
+Message-ID: <20260408175914.928778194@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,110 +73,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234801-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234315-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 394053C273E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email]
+X-Rspamd-Queue-Id: CB9553C0CF2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 403186400a1a6166efe7031edc549c15fee4723f ]
+[ Upstream commit a834a0b66ec6fb743377201a0f4229bb2503f4ce ]
 
-If for some internal reason switchdev mode fails, we rollback to legacy
-mode, before this patch, rollback will unregister the uplink netdev and
-leave it unregistered causing the below kernel bug.
+hci_cmd_sync_run() may run the work immediately if called from existing
+sync work (otherwise it queues a new sync work). In this case it fails
+to call the destroy() function.
 
-To fix this, we need to avoid netdev unregister by setting the proper
-rollback flag 'MLX5_PRIV_FLAGS_SWITCH_LEGACY' to indicate legacy mode.
+On immediate run, make it behave same way as if item was queued
+successfully: call destroy, and return 0.
 
-devlink (431) used greatest stack depth: 11048 bytes left
-mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), \
-	necvfs(0), active vports(0)
-mlx5_core 0000:00:03.0: E-Switch: Supported tc chains and prios offload
-mlx5_core 0000:00:03.0: Loading uplink representor for vport 65535
-mlx5_core 0000:00:03.0: mlx5_cmd_out_err:816:(pid 456): \
-	QUERY_HCA_CAP(0x100) op_mod(0x0) failed, \
-	status bad parameter(0x3), syndrome (0x3a3846), err(-22)
-mlx5_core 0000:00:03.0 enp0s3np0 (unregistered): Unloading uplink \
-	representor for vport 65535
- ------------[ cut here ]------------
-kernel BUG at net/core/dev.c:12070!
-Oops: invalid opcode: 0000 [#1] SMP NOPTI
-CPU: 2 UID: 0 PID: 456 Comm: devlink Not tainted 6.16.0-rc3+ \
-	#9 PREEMPT(voluntary)
-RIP: 0010:unregister_netdevice_many_notify+0x123/0xae0
-...
-Call Trace:
-[   90.923094]  unregister_netdevice_queue+0xad/0xf0
-[   90.923323]  unregister_netdev+0x1c/0x40
-[   90.923522]  mlx5e_vport_rep_unload+0x61/0xc6
-[   90.923736]  esw_offloads_enable+0x8e6/0x920
-[   90.923947]  mlx5_eswitch_enable_locked+0x349/0x430
-[   90.924182]  ? is_mp_supported+0x57/0xb0
-[   90.924376]  mlx5_devlink_eswitch_mode_set+0x167/0x350
-[   90.924628]  devlink_nl_eswitch_set_doit+0x6f/0xf0
-[   90.924862]  genl_family_rcv_msg_doit+0xe8/0x140
-[   90.925088]  genl_rcv_msg+0x18b/0x290
-[   90.925269]  ? __pfx_devlink_nl_pre_doit+0x10/0x10
-[   90.925506]  ? __pfx_devlink_nl_eswitch_set_doit+0x10/0x10
-[   90.925766]  ? __pfx_devlink_nl_post_doit+0x10/0x10
-[   90.926001]  ? __pfx_genl_rcv_msg+0x10/0x10
-[   90.926206]  netlink_rcv_skb+0x52/0x100
-[   90.926393]  genl_rcv+0x28/0x40
-[   90.926557]  netlink_unicast+0x27d/0x3d0
-[   90.926749]  netlink_sendmsg+0x1f7/0x430
-[   90.926942]  __sys_sendto+0x213/0x220
-[   90.927127]  ? __sys_recvmsg+0x6a/0xd0
-[   90.927312]  __x64_sys_sendto+0x24/0x30
-[   90.927504]  do_syscall_64+0x50/0x1c0
-[   90.927687]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   90.927929] RIP: 0033:0x7f7d0363e047
+The only callsite is hci_abort_conn() via hci_cmd_sync_run_once(), and
+this changes its return value. However, its return value is not used
+except as the return value for hci_disconnect(), and nothing uses the
+return value of hci_disconnect(). Hence there should be no behavior
+change anywhere.
 
-Fixes: 2a4f56fbcc47 ("net/mlx5e: Keep netdev when leave switchdev for devlink set legacy only")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260330194015.53585-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c898f6d7b093b ("Bluetooth: hci_sync: Introduce hci_cmd_sync_run/hci_cmd_sync_run_once")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_sync.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index b122003d8bcde..39b8b272f4b1c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3575,6 +3575,8 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
- 	return 0;
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index c1c9d82faa658..a41cfc76e98bf 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -825,8 +825,15 @@ int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ 		return -ENETDOWN;
  
- err_vports:
-+	/* rollback to legacy, indicates don't unregister the uplink netdev */
-+	esw->dev->priv.flags |= MLX5_PRIV_FLAGS_SWITCH_LEGACY;
- 	mlx5_esw_offloads_rep_unload(esw, MLX5_VPORT_UPLINK);
- err_uplink:
- 	esw_offloads_steering_cleanup(esw);
+ 	/* If on cmd_sync_work then run immediately otherwise queue */
+-	if (current_work() == &hdev->cmd_sync_work)
+-		return func(hdev, data);
++	if (current_work() == &hdev->cmd_sync_work) {
++		int err;
++
++		err = func(hdev, data);
++		if (destroy)
++			destroy(hdev, data, err);
++
++		return 0;
++	}
+ 
+ 	return hci_cmd_sync_submit(hdev, func, data, destroy);
+ }
 -- 
 2.53.0
 
