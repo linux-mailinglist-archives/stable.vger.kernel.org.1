@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDaLDD6f1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:30 +0200
+	id AOueL/aq1mmOHAgAu9opvQ
+	(envelope-from <stable+bounces-235157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9573C3C0E97
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21AA43C2DAB
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D871D30C1038
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3DC5318DE17
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872763ACF11;
-	Wed,  8 Apr 2026 18:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1DA37F8AC;
+	Wed,  8 Apr 2026 18:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyIJ6ZjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEKvohMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1EC324B1F;
-	Wed,  8 Apr 2026 18:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1413176E4;
+	Wed,  8 Apr 2026 18:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672724; cv=none; b=bTjHe24OrDfq4y1/+F/BI2SMSxnsfn1+uGmnMLF9J6cay6Mu1B/kZvJMyP7jwlcOxAhv6/GoxktynPurlHk/8lZjZChbGWWoROI2Dbi8qlbinJzmiQaIGSjLbrK/8I84IuJ1i+pbbZ8zCqut7csDttBZJYr1bWEOPBU6bi17Z1Y=
+	t=1775674716; cv=none; b=Wq9kdvYBKTfGhgKdOcSYZivIlVcj/Q7P+6Dqrd0/g3uSnoGcm9r06HcinZT1RFACZlgcc6/JgxYga+7oMuwA4FugjFZo1CFpBi2gyXLgivyIN1a+Hli/1/AYY6NJvusO0TjTuGRd52L9L3Tyf2WW/tIMjtLjvdJq3zcMy/1p8Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672724; c=relaxed/simple;
-	bh=9wOXWwg09q4kFVSkJCS1wlxAk69q3LudumK2QW97doU=;
+	s=arc-20240116; t=1775674716; c=relaxed/simple;
+	bh=yo1PGd2l8RYgzPxKBKvn1aCl8ln5wqD884yBMYr5XU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqoj8caIjEQAmcOkTaP66YqxLILdenO6ztiaoV1CxtUOVCtmMW07jp+z4Zm9pxTMWgd6UabNozIWX1vwsFr54wA4wjewSgCMGoJrMScQs3EuItJuplRjeURVjej114WtTFyUTXOi+01UZcgswxWwZSPu7qqB9vust/3rUmtUyF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyIJ6ZjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D437DC19425;
-	Wed,  8 Apr 2026 18:25:23 +0000 (UTC)
+	 MIME-Version; b=a2CdklmPK+tH6KzXe11E2KMfMFj6WCaVm/UHRJNbN9GSq8thNypEXYj72kTQ4Bie3bsWDIc3S5TVWXRM2OHZnSB/HZELqzaGc5bd7nHIyRh1NzexjbxEVPoPRzvPh5v58D2G7qAi8IlJpe2EvS7w7XS34hkwv1+vw2+yfPyX8xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEKvohMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6185C19421;
+	Wed,  8 Apr 2026 18:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672724;
-	bh=9wOXWwg09q4kFVSkJCS1wlxAk69q3LudumK2QW97doU=;
+	s=korg; t=1775674716;
+	bh=yo1PGd2l8RYgzPxKBKvn1aCl8ln5wqD884yBMYr5XU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyIJ6ZjHSLIpjbIAsM5/kHe9Ecl6t6fYwuC0Gns8XC5oUrfRdXdl6HiT+FfEGFkd3
-	 AuIve/CZvwM4t3LLgOFKFRfKtcJv09tgZmIx0p4ws88uOlpxgE0H8F2Ic1OYahiZLQ
-	 GUGAvd2fGz4U6nlObJE0SgTrqJ/cBmtL4amySok8=
+	b=aEKvohMiX/RzdA7Kn3PnrkGm/9yuGXGL/cwNdAT8+7mNlADAG5f1YO2f2/gdyxcp5
+	 DSehrEOr0wN6FWhixczC2RxhVSkCYR8RabkVCZdwhv+jRI5gOhVA6LO0/Qzf0e5sYB
+	 /JOsImFKrPYrS9o6S9vDynmqnme0mJwrYTG6+S5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: [PATCH 6.6 117/160] comedi: dt2815: add hardware detection to prevent crash
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.19 204/311] drm/amdgpu: validate doorbell_offset in user queue creation
 Date: Wed,  8 Apr 2026 20:03:24 +0200
-Message-ID: <20260408175917.561392060@linuxfoundation.org>
+Message-ID: <20260408175947.026372427@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +64,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235157-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,amd.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234386-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mev.co.uk:email,appspotmail.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 9573C3C0E97
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 21AA43C2DAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
+commit a018d1819f158991b7308e4f74609c6c029b670c upstream.
 
-The dt2815 driver crashes when attached to I/O ports without actual
-hardware present. This occurs because syzkaller or users can attach
-the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
+amdgpu_userq_get_doorbell_index() passes the user-provided
+doorbell_offset to amdgpu_doorbell_index_on_bar() without bounds
+checking. An arbitrarily large doorbell_offset can cause the
+calculated doorbell index to fall outside the allocated doorbell BO,
+potentially corrupting kernel doorbell space.
 
-When no hardware exists at the specified port, inb() operations return
-0xff (floating bus), but outb() operations can trigger page faults due
-to undefined behavior, especially under race conditions:
+Validate that doorbell_offset falls within the doorbell BO before
+computing the BAR index, using u64 arithmetic to prevent overflow.
 
-  BUG: unable to handle page fault for address: 000000007fffff90
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  RIP: 0010:dt2815_attach+0x6e0/0x1110
-
-Add hardware detection by reading the status register before attempting
-any write operations. If the read returns 0xff, assume no hardware is
-present and fail the attach with -ENODEV. This prevents crashes from
-outb() operations on non-existent hardware.
-
-Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
-Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
-Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f09c1e6077ab ("drm/amdgpu: generate doorbell index for userqueue")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit de1ef4ffd70e1d15f0bf584fd22b1f28cbd5e2ec)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/dt2815.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/comedi/drivers/dt2815.c
-+++ b/drivers/comedi/drivers/dt2815.c
-@@ -175,6 +175,18 @@ static int dt2815_attach(struct comedi_d
- 		    ? current_range_type : voltage_range_type;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
+@@ -550,6 +550,13 @@ amdgpu_userq_get_doorbell_index(struct a
+ 		goto unpin_bo;
  	}
  
-+	/*
-+	 * Check if hardware is present before attempting any I/O operations.
-+	 * Reading 0xff from status register typically indicates no hardware
-+	 * on the bus (floating bus reads as all 1s).
-+	 */
-+	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
-+		dev_err(dev->class_dev,
-+			"No hardware detected at I/O base 0x%lx\n",
-+			dev->iobase);
-+		return -ENODEV;
++	/* Validate doorbell_offset is within the doorbell BO */
++	if ((u64)db_info->doorbell_offset * db_size + db_size >
++	    amdgpu_bo_size(db_obj->obj)) {
++		r = -EINVAL;
++		goto unpin_bo;
 +	}
 +
- 	/* Init the 2815 */
- 	outb(0x00, dev->iobase + DT2815_STATUS);
- 	for (i = 0; i < 100; i++) {
+ 	index = amdgpu_doorbell_index_on_bar(uq_mgr->adev, db_obj->obj,
+ 					     db_info->doorbell_offset, db_size);
+ 	drm_dbg_driver(adev_to_drm(uq_mgr->adev),
 
 
 
