@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-235101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AInsAriq1mmOHAgAu9opvQ
-	(envelope-from <stable+bounces-235101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:28 +0200
+	id oFidCmqg1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E30D3C2D05
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B9F3C117B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D92EC3117800
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DEBC4300D554
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A713AEF5F;
-	Wed,  8 Apr 2026 18:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F047332A3FD;
+	Wed,  8 Apr 2026 18:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gtyc5OHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8m5QZ2r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C4C2F39C2;
-	Wed,  8 Apr 2026 18:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B173D3D9041;
+	Wed,  8 Apr 2026 18:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674572; cv=none; b=Hfl2qlmYQgGy5+YgUrahsUZBIc7SHDW5XUx1rFJKoqQiymPAHwZazYoVp73U2kRvS/ywjgsxyKgYVlNMNCrXjvYIZYL8JG0l4Z8Ue7qfxvESk9c6m8nBYkc9WiYl0P1g+NEjeoZ9MTX5gwxbHV2/pi0uiYO+IOneMcolUoOW4g4=
+	t=1775673266; cv=none; b=nIOhezYMgGtjN3UTLnLj4/46+E2i8KYA7CdlrRymXMI+oB8VQ3EPU/NoM24pV9isRu7Sl/LZo8z1BY6iRAPSsEF0LR4GW7t1CgIC54/IirXICVqpD5HG5NMIMoyxDqp50MdiOqDe+TCjOaeaHnXxOX5clJCifpz1FarhtE8RQf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674572; c=relaxed/simple;
-	bh=nrgz6QTlb8DyX6F3DAhNIXOkSVATFKvtIAKwoWV48vE=;
+	s=arc-20240116; t=1775673266; c=relaxed/simple;
+	bh=IfpuPuiiQuOKFbpx+F2sPahwY8rb7CyRGhrDNCHrEsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSdIlyDSbSe0gWodDB5usCgsQggUpUkYUBmUjMODxzr7Q8tzzAcSGq/lmztbz6gRH3Hxc8wYSlMV78hsuunqaSgPK+iYVVbDuAxuwJ0cHQk90qfiJ3Hfp3ANchF8VhxtTnQn+0Isn48hy1hf1Sej0DbWo4nxsU+m8s4pmfQtCA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gtyc5OHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9890FC19421;
-	Wed,  8 Apr 2026 18:56:11 +0000 (UTC)
+	 MIME-Version; b=sX48RhyO4wTjg/PhvM8OXlGa7K2FLr8s6Q5pDmzgfcgY1sqe2UNm4jU2upX+F4tYsfhmb49iWybSak5qlI+WLIE5auFmnGUj6d0b7mfTihB3idCVP+6zYlTkQa0wZP+9Cn9ziqoheU/af7tBIDkV8u6Tx36dVuissiIDpk6/iVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8m5QZ2r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A576C2BC87;
+	Wed,  8 Apr 2026 18:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674571;
-	bh=nrgz6QTlb8DyX6F3DAhNIXOkSVATFKvtIAKwoWV48vE=;
+	s=korg; t=1775673266;
+	bh=IfpuPuiiQuOKFbpx+F2sPahwY8rb7CyRGhrDNCHrEsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gtyc5OHtSKTuijGmObYXB+yF6DuA9DJvPQvKIEXlVrys2xo2wJFBYLdebnGEBA0CQ
-	 IVcokbzaLeoWRrLMJPwCc7LTlfeilfu7J3wWZGUBkeaodKL1HukENbI1bxX9QEzMg7
-	 Ppd9OGk0md1uzDld+z0j+38gcwFKS/3YYxlVvXVI=
+	b=t8m5QZ2r8SyY3ZM1ayZP1NAY5HUhrcE0KI1+GwE/rqecBYs4cUB58Ih2e8kxRykgp
+	 CWBjIxpViNQvknN4x3NFhaXpUBTEdWiW7e62qjPB8nlAmTpkEqJ+b7fV8TMEGJXYQo
+	 Y+/wCQlFt87kFuhcP/wAuQgjig3lqfByFV/aUA4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 150/311] hwmon: (occ) Fix missing newline in occ_show_extended()
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 165/277] drm/amdgpu: validate doorbell_offset in user queue creation
 Date: Wed,  8 Apr 2026 20:02:30 +0200
-Message-ID: <20260408175945.009973562@linuxfoundation.org>
+Message-ID: <20260408175940.030903201@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +66,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234595-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,amd.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235101-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8E30D3C2D05
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 30B9F3C117B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 09773978879ecf71a7990fe9a28ce4eb92bce645 ]
+commit a018d1819f158991b7308e4f74609c6c029b670c upstream.
 
-In occ_show_extended() case 0, when the EXTN_FLAG_SENSOR_ID flag
-is set, the sysfs_emit format string "%u" is missing the trailing
-newline that the sysfs ABI expects. The else branch correctly uses
-"%4phN\n", and all other show functions in this file include the
-trailing newline.
+amdgpu_userq_get_doorbell_index() passes the user-provided
+doorbell_offset to amdgpu_doorbell_index_on_bar() without bounds
+checking. An arbitrarily large doorbell_offset can cause the
+calculated doorbell index to fall outside the allocated doorbell BO,
+potentially corrupting kernel doorbell space.
 
-Add the missing "\n" for consistency and correct sysfs output.
+Validate that doorbell_offset falls within the doorbell BO before
+computing the BAR index, using u64 arithmetic to prevent overflow.
 
-Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260326224510.294619-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f09c1e6077ab ("drm/amdgpu: generate doorbell index for userqueue")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit de1ef4ffd70e1d15f0bf584fd22b1f28cbd5e2ec)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/occ/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
-index 89928d38831b6..86c79156a46b9 100644
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -725,7 +725,7 @@ static ssize_t occ_show_extended(struct device *dev,
- 	switch (sattr->nr) {
- 	case 0:
- 		if (extn->flags & EXTN_FLAG_SENSOR_ID) {
--			rc = sysfs_emit(buf, "%u",
-+			rc = sysfs_emit(buf, "%u\n",
- 					get_unaligned_be32(&extn->sensor_id));
- 		} else {
- 			rc = sysfs_emit(buf, "%4phN\n", extn->name);
--- 
-2.53.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
+@@ -358,6 +358,13 @@ amdgpu_userq_get_doorbell_index(struct a
+ 		goto unpin_bo;
+ 	}
+ 
++	/* Validate doorbell_offset is within the doorbell BO */
++	if ((u64)db_info->doorbell_offset * db_size + db_size >
++	    amdgpu_bo_size(db_obj->obj)) {
++		r = -EINVAL;
++		goto unpin_bo;
++	}
++
+ 	index = amdgpu_doorbell_index_on_bar(uq_mgr->adev, db_obj->obj,
+ 					     db_info->doorbell_offset, db_size);
+ 	drm_dbg_driver(adev_to_drm(uq_mgr->adev),
 
 
 
