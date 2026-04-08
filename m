@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-235151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPK+KvCq1mmOHAgAu9opvQ
-	(envelope-from <stable+bounces-235151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:24 +0200
+	id YBiAL12m1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF063C2DA4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2A13C2409
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F70B308EB92
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92F2F30F88A3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B8B3176E4;
-	Wed,  8 Apr 2026 18:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D5536166F;
+	Wed,  8 Apr 2026 18:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQVi+Bfg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D27+tVTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895B52F39C2;
-	Wed,  8 Apr 2026 18:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2DBB67E;
+	Wed,  8 Apr 2026 18:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674700; cv=none; b=umkTdcc2zhJoxjrq3jElHpvGh2pPgK6soHHtW0zN5oochyTFXgjI7NAXogLmknu0eRRFpbXgYBqOqh+NjWYqvRRWgXtOpSwFhu7Jys4ad7Kj1L+ITfylniXfRCdpAEVZwwTNLED3xbQmlMX4KeBJ8urVYYjViwJNnYuiwRDE61Q=
+	t=1775673501; cv=none; b=Ql4NA4ePG41iw+tQBb1po5vfPfbP5qrNd+35ivuJcjbVxBxpJAZacYLoVYXPYWrl4BRwHD1ziMEUlvSp8VNpWN7wqWoEDEhT/110h2BN7hYoofxANmReeQZ1pliEkJThfyyDD9TAnHhqTwmlkqfIiBAxY4e6w86DU1UAQqWczFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674700; c=relaxed/simple;
-	bh=NbKe9qMxcDLqWnsg97Aa0OkjRit3g/AcVgBNWn12pI8=;
+	s=arc-20240116; t=1775673501; c=relaxed/simple;
+	bh=DKqiNRwFZA9QKxJDpe9m/UqPhAT3f82JZvsZCpPIZz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p74SuO7HezL67CaplIQZBSDM4zK2Ljf5DjifXaGB2GBuBcbA0rGE2fIIq616G3EI1+/GFHkDu1Fd15cnJR5SvC2nTmlvR1h7hkVUyhyWAXGBPLXBBSx6ZM7wT7cwTM5sMTvfEgZgCWJCFHq8Pe2wdd1IHQ0FrZr8M2xAU2cp6Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQVi+Bfg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F338C19421;
-	Wed,  8 Apr 2026 18:58:19 +0000 (UTC)
+	 MIME-Version; b=p7GwOYl9Wl9zVdYmEy9OlEL+vlnsGmROXi95/FsEB9kXIhzg3IiQlYds+pT8tHKgtKrOFU+tZfJcfb3ijGtejqMWmzCU9QfCZm3KqQm78Tivmh0Ssbf4WmomD0oQ1YJLLmzifX3Vo18eGWws/E+uQYuXmSdSK1xCt8qJzLkmSsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D27+tVTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816A7C19421;
+	Wed,  8 Apr 2026 18:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674700;
-	bh=NbKe9qMxcDLqWnsg97Aa0OkjRit3g/AcVgBNWn12pI8=;
+	s=korg; t=1775673500;
+	bh=DKqiNRwFZA9QKxJDpe9m/UqPhAT3f82JZvsZCpPIZz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQVi+BfgcgjWkKCMpyiGxnLytdPorVREeu431jGORhNnZFLGKcieOtXcaZXdUXm40
-	 6KmkWF6ygwpWGmnUMsPBa9JmnAabRMzFMVGP8h0a82p1SO/qfc6RNGEG30PDE7qZWR
-	 9T96C3zkwq1XLOQDIklgAMCxzBrZBjymPVDvUU8A=
+	b=D27+tVTJ5h/pVuM54/qBWvMFY0FC/IFSdBWL+Lfj/+8sfVG3fGHCfxwbtMxO1x0u2
+	 5TuYY+KAIBrbS6Xm7/Y2pYeAwr8VFsOg7x2pPX34dNvCJb7W3V0Y4lxCB9ILYQ+tO2
+	 bI0aEEnYRA6a7zSHDpyObmifqUXA+rF36yM6ba1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.19 199/311] drm/ast: dp501: Fix initialization of SCU2C
+	syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.18 214/277] comedi: Reinit dev->spinlock between attachments to low-level drivers
 Date: Wed,  8 Apr 2026 20:03:19 +0200
-Message-ID: <20260408175946.841873252@linuxfoundation.org>
+Message-ID: <20260408175941.852374818@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234686-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235151-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,cc9f7f4a7df09f53c4a4];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lists.freedesktop.org:email,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: EAF063C2DA4
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,mev.co.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 1F2A13C2409
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 2f42c1a6161646cbd29b443459fd635d29eda634 upstream.
+commit 4b9a9a6d71e3e252032f959fb3895a33acb5865c upstream.
 
-Ast's DP501 initialization reads the register SCU2C at offset 0x1202c
-and tries to set it to source data from VGA. But writes the update to
-offset 0x0, with unknown results. Write the result to SCU instead.
+`struct comedi_device` is the main controlling structure for a COMEDI
+device created by the COMEDI subsystem.  It contains a member `spinlock`
+containing a spin-lock that is initialized by the COMEDI subsystem, but
+is reserved for use by a low-level driver attached to the COMEDI device
+(at least since commit 25436dc9d84f ("Staging: comedi: remove RT
+code")).
 
-The bug only happens in ast_init_analog(). There's similar code in
-ast_init_dvo(), which works correctly.
+Some COMEDI devices (those created on initialization of the COMEDI
+subsystem when the "comedi.comedi_num_legacy_minors" parameter is
+non-zero) can be attached to different low-level drivers over their
+lifetime using the `COMEDI_DEVCONFIG` ioctl command.  This can result in
+inconsistent lock states being reported when there is a mismatch in the
+spin-lock locking levels used by each low-level driver to which the
+COMEDI device has been attached.  Fix it by reinitializing
+`dev->spinlock` before calling the low-level driver's `attach` function
+pointer if `CONFIG_LOCKDEP` is enabled.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 83c6620bae3f ("drm/ast: initial DP501 support (v0.2)")
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.16+
-Link: https://patch.msgid.link/20260327133532.79696-2-tzimmermann@suse.de
+Reported-by: syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cc9f7f4a7df09f53c4a4
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260225132427.86578-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_dp501.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/comedi/drivers.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/ast/ast_dp501.c
-+++ b/drivers/gpu/drm/ast/ast_dp501.c
-@@ -436,7 +436,7 @@ static void ast_init_analog(struct ast_d
- 	/* Finally, clear bits [17:16] of SCU2c */
- 	data = ast_read32(ast, 0x1202c);
- 	data &= 0xfffcffff;
--	ast_write32(ast, 0, data);
-+	ast_write32(ast, 0x1202c, data);
- 
- 	/* Disable DVO */
- 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xa3, 0xcf, 0x00);
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -1001,6 +1001,14 @@ int comedi_device_attach(struct comedi_d
+ 		ret = -EIO;
+ 		goto out;
+ 	}
++	if (IS_ENABLED(CONFIG_LOCKDEP)) {
++		/*
++		 * dev->spinlock is for private use by the attached low-level
++		 * driver.  Reinitialize it to stop lock-dependency tracking
++		 * between attachments to different low-level drivers.
++		 */
++		spin_lock_init(&dev->spinlock);
++	}
+ 	dev->driver = driv;
+ 	dev->board_name = dev->board_ptr ? *(const char **)dev->board_ptr
+ 					 : dev->driver->driver_name;
 
 
 
