@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234276-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PUBFTmj1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:29 +0200
+	id kK7wEfOd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234276-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024E13C1AA7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7433C0BC6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD748302C495
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68E753092E4C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0803AEF5F;
-	Wed,  8 Apr 2026 18:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AEF3ACF11;
+	Wed,  8 Apr 2026 18:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPtUTTxT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CV6QG8Nm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39BB361DB5;
-	Wed,  8 Apr 2026 18:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74BC37F01B;
+	Wed,  8 Apr 2026 18:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674076; cv=none; b=fHsTHW/X6jAetwtz9+uPoH8Tipxei0Sx7eDOAQ3aKikXrCSR+TJn052xyxAiO/YRYKAK1FrKCvX9cJMzXzcyWzuWdOC4VKdqS3dF27xluN0uv3jbxKk0bcHHQzD+f5HYZ5jl/GXMgxn0PMjvJLcYVPasGIv+FigUclJyH0W6CGU=
+	t=1775672439; cv=none; b=XxyUDze7xjsHbBxFkAeDUZCkIPrt4sGJ1MtKkenQwBptlV4XBBDUh78Q/J/HqyD5Ht9m3q1hnaqzJ4X0D6Kz9yPBBYFTvlzyx7hAlKX6nAH5zYktyFtyXv1ps1vIUL0Wul3I5s+Kfrlny7ggqfCL+WPVt4nbMoJgbuV7GjmO8N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674076; c=relaxed/simple;
-	bh=8+J7sDCVNAJSWAHhv8VM7Oe3lQD9fgZLapOjpRJtvJM=;
+	s=arc-20240116; t=1775672439; c=relaxed/simple;
+	bh=v0fxr9OK2qVunBcI8BJilk3bFuyQJ0+59FXYkTgrfC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ft/mLY2h3jUx6EJt+y9fGe9a2YdEBEtal1xmb0H40Pcu28IVptRLUTrAJvsBdc+mNNBkfbeAHNJoCjXI2olT/ZdThm8ixUQshIVzWUcecHSARNRwuV2xq/hd5K3DV7RWiks8KlruG6L/Xhr4fcnogEscawWk1uVEaDuYAnkdyk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPtUTTxT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F008C19421;
-	Wed,  8 Apr 2026 18:47:56 +0000 (UTC)
+	 MIME-Version; b=e+fVhDsARh200IcMP2oLx1gsW1K4U38e2xoUDgeFhYs7Lb41o20t7Go48WYFoWW+MY9OJM6+p2FQ8GpQMO4dfnyy575p43LfRf4E59MNM40mnqubfReVm9hNhAWdaM6h7g3eyIhQ3qijv3XpAy7akRGwtfYrgWtWPLkTIrTfPkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CV6QG8Nm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1ACC19421;
+	Wed,  8 Apr 2026 18:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674076;
-	bh=8+J7sDCVNAJSWAHhv8VM7Oe3lQD9fgZLapOjpRJtvJM=;
+	s=korg; t=1775672439;
+	bh=v0fxr9OK2qVunBcI8BJilk3bFuyQJ0+59FXYkTgrfC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPtUTTxTYA0a0HxVsNjJpTwgouoYu1P9Yj9YRToSKDNzbEnZP+zpUfU5K0COstofP
-	 oC6H+Qrv5P8uoDRKYdA1ZQPDzNsWeQbmX3rkc8JEKxBNjmAg7fIGV+7OCY6lD2ZFr8
-	 sZwPU2VTMNW7b2/hTaPfPP4boDR1o9E8amIanB2A=
+	b=CV6QG8Nm4TZaeSVpd+LxhHHRhjgosnj9s9NQEgFoUWKvT8M5C/c0CMKjgjG/qjmVA
+	 VeOWnluUsP01fhmZRxaCDYAsXZXHDmGHIvdb08h35UyatXSoB5cWfXMSt2y+4NUs+F
+	 3QoAtwv0YcTb/mjNdKBU1z5gouAvPWPh1V9Xz4Xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: [PATCH 6.12 173/242] comedi: dt2815: add hardware detection to prevent crash
+	Pratyush Yadav <p.yadav@ti.com>,
+	Michael Walle <michael@walle.cc>,
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Liyin Zhang <liyin.zhang.cn@windriver.com>
+Subject: [PATCH 6.1 296/312] mtd: spi-nor: core: avoid odd length/address writes in 8D-8D-8D mode
 Date: Wed,  8 Apr 2026 20:03:33 +0200
-Message-ID: <20260408175933.563204280@linuxfoundation.org>
+Message-ID: <20260408175944.822170418@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +66,152 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234909-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234276-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,mev.co.uk:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 024E13C1AA7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,walle.cc:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9A7433C0BC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Pratyush Yadav <p.yadav@ti.com>
 
-commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
+[ Upstream commit 17926cd770ec837ed27d9856cf07f2da8dda4131 ]
 
-The dt2815 driver crashes when attached to I/O ports without actual
-hardware present. This occurs because syzkaller or users can attach
-the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
+On Octal DTR capable flashes like Micron Xcella the writes cannot start
+or end at an odd address in Octal DTR mode. Extra 0xff bytes need to be
+appended or prepended to make sure the start address and end address are
+even. 0xff is used because on NOR flashes a program operation can only
+flip bits from 1 to 0, not the other way round. 0 to 1 flip needs to
+happen via erases.
 
-When no hardware exists at the specified port, inb() operations return
-0xff (floating bus), but outb() operations can trigger page faults due
-to undefined behavior, especially under race conditions:
-
-  BUG: unable to handle page fault for address: 000000007fffff90
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  RIP: 0010:dt2815_attach+0x6e0/0x1110
-
-Add hardware detection by reading the status register before attempting
-any write operations. If the read returns 0xff, assume no hardware is
-present and fail the attach with -ENODEV. This prevents crashes from
-outb() operations on non-existent hardware.
-
-Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
-Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
-Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Reviewed-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20250708091646.292-2-ziniu.wang_1@nxp.com
+[ Resolve conflict in drivers/mtd/spi-nor/core.c.
+  In spi_nor_write(), the spi_nor_lock_device() and
+  spi_nor_unlock_device() mechanism was not yet introduced in 6.1.y.
+  Drop the spi_nor_unlock_device() call from the patch. ]
+Signed-off-by: Liyin Zhang <liyin.zhang.cn@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/dt2815.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/mtd/spi-nor/core.c |   69 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 68 insertions(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers/dt2815.c
-+++ b/drivers/comedi/drivers/dt2815.c
-@@ -175,6 +175,18 @@ static int dt2815_attach(struct comedi_d
- 		    ? current_range_type : voltage_range_type;
- 	}
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -1791,6 +1791,68 @@ read_err:
+ }
  
-+	/*
-+	 * Check if hardware is present before attempting any I/O operations.
-+	 * Reading 0xff from status register typically indicates no hardware
-+	 * on the bus (floating bus reads as all 1s).
-+	 */
-+	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
-+		dev_err(dev->class_dev,
-+			"No hardware detected at I/O base 0x%lx\n",
-+			dev->iobase);
-+		return -ENODEV;
-+	}
+ /*
++ * On Octal DTR capable flashes, writes cannot start or end at an odd address
++ * in Octal DTR mode. Extra 0xff bytes need to be appended or prepended to
++ * make sure the start address and end address are even. 0xff is used because
++ * on NOR flashes a program operation can only flip bits from 1 to 0, not the
++ * other way round. 0 to 1 flip needs to happen via erases.
++ */
++static int spi_nor_octal_dtr_write(struct spi_nor *nor, loff_t to, size_t len,
++				   const u8 *buf)
++{
++	u8 *tmp_buf;
++	size_t bytes_written;
++	loff_t start, end;
++	int ret;
 +
- 	/* Init the 2815 */
- 	outb(0x00, dev->iobase + DT2815_STATUS);
- 	for (i = 0; i < 100; i++) {
++	if (IS_ALIGNED(to, 2) && IS_ALIGNED(len, 2))
++		return spi_nor_write_data(nor, to, len, buf);
++
++	tmp_buf = kmalloc(nor->params->page_size, GFP_KERNEL);
++	if (!tmp_buf)
++		return -ENOMEM;
++
++	memset(tmp_buf, 0xff, nor->params->page_size);
++
++	start = round_down(to, 2);
++	end = round_up(to + len, 2);
++
++	memcpy(tmp_buf + (to - start), buf, len);
++
++	ret = spi_nor_write_data(nor, start, end - start, tmp_buf);
++	if (ret == 0) {
++		ret = -EIO;
++		goto out;
++	}
++	if (ret < 0)
++		goto out;
++
++	/*
++	 * More bytes are written than actually requested, but that number can't
++	 * be reported to the calling function or it will confuse its
++	 * calculations. Calculate how many of the _requested_ bytes were
++	 * written.
++	 */
++	bytes_written = ret;
++
++	if (to != start)
++		ret -= to - start;
++
++	/*
++	 * Only account for extra bytes at the end if they were actually
++	 * written. For example, if for some reason the controller could only
++	 * complete a partial write then the adjustment for the extra bytes at
++	 * the end is not needed.
++	 */
++	if (start + bytes_written == end)
++		ret -= end - (to + len);
++
++out:
++	kfree(tmp_buf);
++	return ret;
++}
++
++/*
+  * Write an address range to the nor chip.  Data must be written in
+  * FLASH_PAGESIZE chunks.  The address range may be any size provided
+  * it is within the physical boundaries.
+@@ -1834,7 +1896,12 @@ static int spi_nor_write(struct mtd_info
+ 		if (ret)
+ 			goto write_err;
+ 
+-		ret = spi_nor_write_data(nor, addr, page_remain, buf + i);
++		if (nor->write_proto == SNOR_PROTO_8_8_8_DTR)
++			ret = spi_nor_octal_dtr_write(nor, addr, page_remain,
++						      buf + i);
++		else
++			ret = spi_nor_write_data(nor, addr, page_remain,
++						 buf + i);
+ 		if (ret < 0)
+ 			goto write_err;
+ 		written = ret;
 
 
 
