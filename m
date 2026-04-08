@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-234977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YAKvDKSj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:16 +0200
+	id ONXCAtmi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387EA3C1C30
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4493C18FD
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 524B33009F2A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CCBD310B9C8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF77038736D;
-	Wed,  8 Apr 2026 18:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E1A3AF643;
+	Wed,  8 Apr 2026 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5qy1bM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTCabw1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1EE3D9037;
-	Wed,  8 Apr 2026 18:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E09A3ACF13;
+	Wed,  8 Apr 2026 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674252; cv=none; b=XxWb75IMX3NgCYDwhX3orsNzaLJWgK92AkhGNFMm3kVp49qI0F9HslZDgZ+riM5nifrT9igp4EvuYzQlhFH8Msb9BhWjX2yMtK2vVLsObldJT6gcgbMwjkdF1kJsmQI5i+UMh12zsvSWZoKlvKRUVnh2fS0v3T1m9YhZwaiQqsY=
+	t=1775673016; cv=none; b=CIboKTgdqfGMyK0+JHHDpfO5laC8sArj2SnF9cQPozVUMt+bY0xvv0pbHdNwrnkc/ZK5Uw5hgdM1+rClzBSEIqQoxBcWlb+KywNV9yuZgCX3PCjNUwKHHEech25LLjhLZS1u+ENvopL/p/fb1DBJx11LQ9pwdC1JU+gFknfNQLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674252; c=relaxed/simple;
-	bh=swwTAzCqDGHdHSGaDAz7weA9l3Mb3iWNwGEvg7QAZ4k=;
+	s=arc-20240116; t=1775673016; c=relaxed/simple;
+	bh=I19K1NpD8olVz963NK7uRpxlNWnBcpbRaGeVgmmCvHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXryzE3oPWgXihoodSEBKMpeUmTcPzoBhlNGna1RnPGYsTmGtW+FbwqHQnfkTvMkTppeN+onH+I/fw28OWuXt59E+zex3DHiSVmcCskZodSKKXv5h7SeVSM0CWwegbcrrvnktGQfvNFf1ku9r3vNzMfZQX3HHaNHXDCM+Nj4cPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5qy1bM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058E5C19425;
-	Wed,  8 Apr 2026 18:50:51 +0000 (UTC)
+	 MIME-Version; b=GMm+pQLP0WIXeRJHmvN79Lc7fmzPPhpQFRgJ/cDrLwPgd6LoALJmyomDSDMKXPG8ucfv/a9LwjhEMy0gQgeVDvEs2kZeze1PDZ4IE31zzU2/NlK+jny06kz2scqBTkODXr+kg+RqRl8pKyGUKBwghx8S12q2wl4md/ioKSlqM0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTCabw1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E762BC19425;
+	Wed,  8 Apr 2026 18:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674252;
-	bh=swwTAzCqDGHdHSGaDAz7weA9l3Mb3iWNwGEvg7QAZ4k=;
+	s=korg; t=1775673016;
+	bh=I19K1NpD8olVz963NK7uRpxlNWnBcpbRaGeVgmmCvHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5qy1bM82ekKnVTGCFJWW/9giFGiKrKxzCYD5Q1WBWpWZyHSSHbfcy92VuWmWtS/m
-	 p4WDRPUY5DT7Eu78LvtsYBNQIJ+SSxAwlk+vcQacXaTmwePLreXu3lemAwD1StCsL9
-	 xIahSeJvqWuaeyOWjndIZkEAoX/6tHks6d+en2h4=
+	b=UTCabw1g82u8cPghejmvjYPHxd8KSwCqAVsZk4Eq+ri50Pfl25hMDPD/IzdPOaqpG
+	 cS1wLy2YwoDKFm5e7v0NUn0RiWRbQq2xSYptDA+ooMt+V1vPJIEXycPffXzNaUEbnl
+	 3t9AWlu/nOqIsrprhYhiBQdktMmxHwsXANUSGYtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 025/311] smb: client: fix generic/694 due to wrong ->i_blocks
-Date: Wed,  8 Apr 2026 20:00:25 +0200
-Message-ID: <20260408175940.352885002@linuxfoundation.org>
+Subject: [PATCH 6.18 041/277] net/sched: sch_hfsc: fix divide-by-zero in rtsc_min()
+Date: Wed,  8 Apr 2026 20:00:26 +0200
+Message-ID: <20260408175935.390448038@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,181 +70,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234498-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234977-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,manguebit.org:email]
-X-Rspamd-Queue-Id: 387EA3C1C30
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5D4493C18FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 23b5df09c27aec13962b30d32a4167ebdd043f8e ]
+[ Upstream commit 4576100b8cd03118267513cafacde164b498b322 ]
 
-When updating ->i_size, make sure to always update ->i_blocks as well
-until we query new allocation size from the server.
+m2sm() converts a u32 slope to a u64 scaled value.  For large inputs
+(e.g. m1=4000000000), the result can reach 2^32.  rtsc_min() stores
+the difference of two such u64 values in a u32 variable `dsm` and
+uses it as a divisor.  When the difference is exactly 2^32 the
+truncation yields zero, causing a divide-by-zero oops in the
+concave-curve intersection path:
 
-generic/694 was failing because smb3_simple_falloc() was missing the
-update of ->i_blocks after calling cifs_setsize().  So, fix this by
-updating ->i_blocks directly in cifs_setsize(), so all places that
-call it doesn't need to worry about updating ->i_blocks later.
+  Oops: divide error: 0000
+  RIP: 0010:rtsc_min (net/sched/sch_hfsc.c:601)
+  Call Trace:
+   init_ed (net/sched/sch_hfsc.c:629)
+   hfsc_enqueue (net/sched/sch_hfsc.c:1569)
+   [...]
 
-Reported-by: Shyam Prasad N <sprasad@microsoft.com>
-Closes: https://lore.kernel.org/r/CANT5p=rqgRwaADB=b_PhJkqXjtfq3SFv41SSTXSVEHnuh871pA@mail.gmail.com
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: linux-cifs@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Widen `dsm` to u64 and replace do_div() with div64_u64() so the full
+difference is preserved.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260326204310.1549327-1-xmei5@asu.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h |  6 ++++++
- fs/smb/client/file.c     |  1 -
- fs/smb/client/inode.c    | 21 ++++++---------------
- fs/smb/client/smb2ops.c  | 20 ++++----------------
- 4 files changed, 16 insertions(+), 32 deletions(-)
+ net/sched/sch_hfsc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 0c3d2bbef938e..474d7b2aa2ef5 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -2324,4 +2324,10 @@ static inline int cifs_open_create_options(unsigned int oflags, int opts)
- 	return opts;
- }
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index d8fd35da32a7c..57221522fe56d 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -555,7 +555,7 @@ static void
+ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
+ {
+ 	u64 y1, y2, dx, dy;
+-	u32 dsm;
++	u64 dsm;
  
-+/*
-+ * The number of blocks is not related to (i_size / i_blksize), but instead
-+ * 512 byte (2**9) size is required for calculating num blocks.
-+ */
-+#define CIFS_INO_BLOCKS(size) DIV_ROUND_UP_ULL((u64)(size), 512)
-+
- #endif	/* _CIFS_GLOB_H */
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index c27a38843aa64..9d703a2474509 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -994,7 +994,6 @@ static int cifs_do_truncate(const unsigned int xid, struct dentry *dentry)
- 		if (!rc) {
- 			netfs_resize_file(&cinode->netfs, 0, true);
- 			cifs_setsize(inode, 0);
--			inode->i_blocks = 0;
- 		}
- 	}
- 	if (cfile)
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index f9ee95953fa4a..c5d89ddc87c00 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -219,13 +219,7 @@ cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
+ 	if (isc->sm1 <= isc->sm2) {
+ 		/* service curve is convex */
+@@ -598,7 +598,7 @@ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
  	 */
- 	if (is_size_safe_to_change(cifs_i, fattr->cf_eof, from_readdir)) {
- 		i_size_write(inode, fattr->cf_eof);
--
--		/*
--		 * i_blocks is not related to (i_size / i_blksize),
--		 * but instead 512 byte (2**9) size is required for
--		 * calculating num blocks.
--		 */
--		inode->i_blocks = (512 - 1 + fattr->cf_bytes) >> 9;
-+		inode->i_blocks = CIFS_INO_BLOCKS(fattr->cf_bytes);
- 	}
- 
- 	if (S_ISLNK(fattr->cf_mode) && fattr->cf_symlink_target) {
-@@ -3009,6 +3003,11 @@ void cifs_setsize(struct inode *inode, loff_t offset)
- {
- 	spin_lock(&inode->i_lock);
- 	i_size_write(inode, offset);
-+	/*
-+	 * Until we can query the server for actual allocation size,
-+	 * this is best estimate we have for blocks allocated for a file.
-+	 */
-+	inode->i_blocks = CIFS_INO_BLOCKS(offset);
- 	spin_unlock(&inode->i_lock);
- 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
- 	truncate_pagecache(inode, offset);
-@@ -3081,14 +3080,6 @@ int cifs_file_set_size(const unsigned int xid, struct dentry *dentry,
- 	if (rc == 0) {
- 		netfs_resize_file(&cifsInode->netfs, size, true);
- 		cifs_setsize(inode, size);
--		/*
--		 * i_blocks is not related to (i_size / i_blksize), but instead
--		 * 512 byte (2**9) size is required for calculating num blocks.
--		 * Until we can query the server for actual allocation size,
--		 * this is best estimate we have for blocks allocated for a file
--		 * Number of blocks must be rounded up so size 1 is not 0 blocks
--		 */
--		inode->i_blocks = (512 - 1 + size) >> 9;
- 	}
- 
- 	return rc;
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 9bfd3711030b4..067e313283291 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -1493,6 +1493,7 @@ smb2_close_getattr(const unsigned int xid, struct cifs_tcon *tcon,
- {
- 	struct smb2_file_network_open_info file_inf;
- 	struct inode *inode;
-+	u64 asize;
- 	int rc;
- 
- 	rc = __SMB2_close(xid, tcon, cfile->fid.persistent_fid,
-@@ -1516,14 +1517,9 @@ smb2_close_getattr(const unsigned int xid, struct cifs_tcon *tcon,
- 		inode_set_atime_to_ts(inode,
- 				      cifs_NTtimeToUnix(file_inf.LastAccessTime));
- 
--	/*
--	 * i_blocks is not related to (i_size / i_blksize),
--	 * but instead 512 byte (2**9) size is required for
--	 * calculating num blocks.
--	 */
--	if (le64_to_cpu(file_inf.AllocationSize) > 4096)
--		inode->i_blocks =
--			(512 - 1 + le64_to_cpu(file_inf.AllocationSize)) >> 9;
-+	asize = le64_to_cpu(file_inf.AllocationSize);
-+	if (asize > 4096)
-+		inode->i_blocks = CIFS_INO_BLOCKS(asize);
- 
- 	/* End of file and Attributes should not have to be updated on close */
- 	spin_unlock(&inode->i_lock);
-@@ -2197,14 +2193,6 @@ smb2_duplicate_extents(const unsigned int xid,
- 		rc = smb2_set_file_size(xid, tcon, trgtfile, dest_off + len, false);
- 		if (rc)
- 			goto duplicate_extents_out;
--
--		/*
--		 * Although also could set plausible allocation size (i_blocks)
--		 * here in addition to setting the file size, in reflink
--		 * it is likely that the target file is sparse. Its allocation
--		 * size will be queried on next revalidate, but it is important
--		 * to make sure that file's cached size is updated immediately
--		 */
- 		netfs_resize_file(netfs_inode(inode), dest_off + len, true);
- 		cifs_setsize(inode, dest_off + len);
- 	}
+ 	dx = (y1 - y) << SM_SHIFT;
+ 	dsm = isc->sm1 - isc->sm2;
+-	do_div(dx, dsm);
++	dx = div64_u64(dx, dsm);
+ 	/*
+ 	 * check if (x, y1) belongs to the 1st segment of rtsc.
+ 	 * if so, add the offset.
 -- 
 2.53.0
 
