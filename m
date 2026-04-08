@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-235114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yE65ETOl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235114-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:55 +0200
+	id cMwxGVCl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D483C211C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D904D3C216A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 58640302CFAE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB8B530C61AC
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959453D9DC4;
-	Wed,  8 Apr 2026 18:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7571A285;
+	Wed,  8 Apr 2026 18:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7fL+lyq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcwMgpJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15879337B81;
-	Wed,  8 Apr 2026 18:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53046331A44;
+	Wed,  8 Apr 2026 18:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674606; cv=none; b=XwFr+6JZ/ugKwKKt6dA3+DEIZt92wMmQYo3JzhWPV/Cp8nsGZ8Y6+MsZ4ZxxsqMotxQxFndH9KEjHkBkOwEir4jV7UxHHFQcKOAtQ6AtWUlkntP19gmBcuF4dZ1kOHrD6KmX8XKgeK4+TFXw89srvUrpzcTag+zc9B2BVqSrFl4=
+	t=1775673873; cv=none; b=ejPRnN/GQz288nU472bG6piePiM/s2uFJPhrujkMGD+2VQIWxO3JaMhYy1hx0qL0p42PGaQW4s8atZng/5x3HtBQ3BK8I5uKhAw5bY1+U74B0nPY612Z+z68esS19Hq/JMzjk2r0duuw2yZPAKxPhJdXV9e6iuhoLac6RJJm2Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674606; c=relaxed/simple;
-	bh=p4f0whCxeGdRWVJChINmIOUFMbJRzIdgyTuyZbXH9Qw=;
+	s=arc-20240116; t=1775673873; c=relaxed/simple;
+	bh=WEDPvb8aBYb3QMDObvz8KKUsqJC2KRj8nN+KSLCqPVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBwhrkNZ01/oATyS1bwTpeMtX9QcIQ+kwP9UEg+ddv5D+HdTx6ESXdlUZPLwtVR92Z6b8PlTK+uZFoSK+4ttp9gUesl1ANTBLUoi6Pj5XyIaRHMY9RvVm/+AurGLFggE3BdOkIZ+bv3Bzq+3sf9vMklg0tLx8SVbUWmP7SMuglU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7fL+lyq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0522CC19421;
-	Wed,  8 Apr 2026 18:56:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NivLzx4rPBzuS8AhN8bzHJduVFcqY/e9qS0fI/fYLs6pl4my93ebOb8IjXIwB4j6Tmn0NC7WmMO54ZDr4M3Qa0gMIrZDh+yvHexxFpsyei/7nUKoQfL1cdBRCeTCnCyyuIRrhn/Ui6TlhVS+uUpwHQKWFsHsuvEpxCycLpr3Yn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcwMgpJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEEFC19421;
+	Wed,  8 Apr 2026 18:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674605;
-	bh=p4f0whCxeGdRWVJChINmIOUFMbJRzIdgyTuyZbXH9Qw=;
+	s=korg; t=1775673873;
+	bh=WEDPvb8aBYb3QMDObvz8KKUsqJC2KRj8nN+KSLCqPVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7fL+lyqaaVicH48MgXzDkWdXJDg63sme9FcU06lZb/mQTi1RZvhI5old4olZ32t1
-	 xKOID1GJLSF4kRVubsx/DBSua4aKVSIJCpkICOSm41i7NI6Gk3OsGvSa184XXPv3m9
-	 i/YpyRUmvp1eMvg7MJy1k8A7MlSJqqbPonL4Wgh4=
+	b=UcwMgpJ4eBLBHAG43FvhaiBD22SkG2zsW+jVqCrUT9YllcaIqSM/P+xDGpaggMKIm
+	 gA2/UPew+S6Mmryr3mO/Cj+42V8KUgVzBZfLEtG7jBZNPapNhz2r2xZ3R2MfVrmt3+
+	 pM+jGFfedKWJh9V1VKX8KPUAsm+0jnC1wOLn5jIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>
-Subject: [PATCH 6.19 162/311] rust_binder: use AssertSync for BINDER_VM_OPS
-Date: Wed,  8 Apr 2026 20:02:42 +0200
-Message-ID: <20260408175945.452868275@linuxfoundation.org>
+	hkbinbin <hkbinbinbin@gmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 123/242] Bluetooth: hci_sync: fix stack buffer overflow in hci_le_big_create_sync
+Date: Wed,  8 Apr 2026 20:02:43 +0200
+Message-ID: <20260408175931.691661448@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235114-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234830-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,molgen.mpg.de,intel.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 70D483C211C
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: D904D3C216A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: hkbinbin <hkbinbinbin@gmail.com>
 
-commit ec327abae5edd1d5b60ea9f920212970133171d2 upstream.
+commit bc39a094730ce062fa034a529c93147c096cb488 upstream.
 
-When declaring an immutable global variable in Rust, the compiler checks
-that it looks thread safe, because it is generally safe to access said
-global variable. When using C bindings types for these globals, we don't
-really want this check, because it is conservative and assumes pointers
-are not thread safe.
+hci_le_big_create_sync() uses DEFINE_FLEX to allocate a
+struct hci_cp_le_big_create_sync on the stack with room for 0x11 (17)
+BIS entries.  However, conn->num_bis can hold up to HCI_MAX_ISO_BIS (31)
+entries — validated against ISO_MAX_NUM_BIS (0x1f) in the caller
+hci_conn_big_create_sync().  When conn->num_bis is between 18 and 31,
+the memcpy that copies conn->bis into cp->bis writes up to 14 bytes
+past the stack buffer, corrupting adjacent stack memory.
 
-In the case of BINDER_VM_OPS, this is a challenge when combined with the
-patch 'userfaultfd: introduce vm_uffd_ops' [1], which introduces a
-pointer field to vm_operations_struct. It previously only held function
-pointers, which are considered thread safe.
+This is trivially reproducible: binding an ISO socket with
+bc_num_bis = ISO_MAX_NUM_BIS (31) and calling listen() will
+eventually trigger hci_le_big_create_sync() from the HCI command
+sync worker, causing a KASAN-detectable stack-out-of-bounds write:
 
-Rust Binder should not be assuming that vm_operations_struct contains no
-pointer fields, so to fix this, use AssertSync (which Rust Binder has
-already declared for another similar global of type struct
-file_operations with the same problem). This ensures that even if
-another commit adds a pointer field to vm_operations_struct, this does
-not cause problems.
+  BUG: KASAN: stack-out-of-bounds in hci_le_big_create_sync+0x256/0x3b0
+  Write of size 31 at addr ffffc90000487b48 by task kworker/u9:0/71
 
-Fixes: 8ef2c15aeae0 ("rust_binder: check ownership before using vma")
-Cc: stable <stable@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202603121235.tpnRxFKO-lkp@intel.com/
-Link: https://lore.kernel.org/r/20260306171815.3160826-8-rppt@kernel.org [1]
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260314111951.4139029-1-aliceryhl@google.com
+Fix this by changing the DEFINE_FLEX count from the incorrect 0x11 to
+HCI_MAX_ISO_BIS, which matches the maximum number of BIS entries that
+conn->bis can actually carry.
+
+Fixes: 42ecf1947135 ("Bluetooth: ISO: Do not emit LE BIG Create Sync if previous is pending")
+Cc: stable@vger.kernel.org
+Signed-off-by: hkbinbin <hkbinbinbin@gmail.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder/page_range.rs       |    8 +++++---
- drivers/android/binder/rust_binder_main.rs |    2 +-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ net/bluetooth/hci_sync.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder/page_range.rs
-+++ b/drivers/android/binder/page_range.rs
-@@ -13,6 +13,8 @@
- //
- // The shrinker will use trylock methods because it locks them in a different order.
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -7105,7 +7105,8 @@ static void create_big_complete(struct h
  
-+use crate::AssertSync;
-+
- use core::{
-     marker::PhantomPinned,
-     mem::{size_of, size_of_val, MaybeUninit},
-@@ -143,14 +145,14 @@ pub(crate) struct ShrinkablePageRange {
- }
- 
- // We do not define any ops. For now, used only to check identity of vmas.
--static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
-+static BINDER_VM_OPS: AssertSync<bindings::vm_operations_struct> = AssertSync(pin_init::zeroed());
- 
- // To ensure that we do not accidentally install pages into or zap pages from the wrong vma, we
- // check its vm_ops and private data before using it.
- fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> Option<&virt::VmaMixedMap> {
-     // SAFETY: Just reading the vm_ops pointer of any active vma is safe.
-     let vm_ops = unsafe { (*vma.as_ptr()).vm_ops };
--    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
-+    if !ptr::eq(vm_ops, &BINDER_VM_OPS.0) {
-         return None;
-     }
- 
-@@ -342,7 +344,7 @@ impl ShrinkablePageRange {
- 
-         // SAFETY: We own the vma, and we don't use any methods on VmaNew that rely on
-         // `vm_ops`.
--        unsafe { (*vma.as_ptr()).vm_ops = &BINDER_VM_OPS };
-+        unsafe { (*vma.as_ptr()).vm_ops = &BINDER_VM_OPS.0 };
- 
-         Ok(num_pages)
-     }
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -300,7 +300,7 @@ impl kernel::Module for BinderModule {
- /// Makes the inner type Sync.
- #[repr(transparent)]
- pub struct AssertSync<T>(T);
--// SAFETY: Used only to insert `file_operations` into a global, which is safe.
-+// SAFETY: Used only to insert C bindings types into globals, which is safe.
- unsafe impl<T> Sync for AssertSync<T> {}
- 
- /// File operations that rust_binderfs.c can use.
+ static int hci_le_big_create_sync(struct hci_dev *hdev, void *data)
+ {
+-	DEFINE_FLEX(struct hci_cp_le_big_create_sync, cp, bis, num_bis, 0x11);
++	DEFINE_FLEX(struct hci_cp_le_big_create_sync, cp, bis, num_bis,
++		    HCI_MAX_ISO_BIS);
+ 	struct hci_conn *conn = data;
+ 	struct bt_iso_qos *qos = &conn->iso_qos;
+ 	int err;
 
 
 
