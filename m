@@ -1,167 +1,175 @@
-Return-Path: <stable+bounces-233825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKPvF6gh1mklBQgAu9opvQ
-	(envelope-from <stable+bounces-233825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 11:36:40 +0200
+	id +EfwLvYr1mkUBggAu9opvQ
+	(envelope-from <stable+bounces-233826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 12:20:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D8C3B9EFC
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 11:36:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 692593BA712
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 12:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99DE9300DDDA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 09:34:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DBFC13026CD0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 10:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB018364E93;
-	Wed,  8 Apr 2026 09:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E913B636C;
+	Wed,  8 Apr 2026 10:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCfmrL2j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8up+Rj+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0E7224B04;
-	Wed,  8 Apr 2026 09:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429963B52F4
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 10:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775640885; cv=none; b=IO7OVEhzgn70//73/EpERJz+S+QslJcC236ZCCL17XJDNVKa9RRS/tKcCS1usjbNOv2AUNCxGzan/HpdlTn2e2mEb2iYPN5dx99pjs3ROuiWsrv2T4dPUO1d/f8UpOoR2Ad8w2zaQH6pVV6tBfvYVmzot3QGsDIMtm8wp7k6jFg=
+	t=1775643566; cv=none; b=VjqkEHmcl0sEmq3OAq9+DIw9mClcFnKgnFtCY7MKvCi06GtxeZLWYr3DD0ii0VatCoYvgwcT3vzdyAJd2snhXv25RpBL71CsX6DJ1IpNF3t0uWGuFWppy7O+zwDYQIN0pf5iSfQW9WrPgw5LjVvKEbfyKin9GrurCjN7/C2YNTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775640885; c=relaxed/simple;
-	bh=xB2G7g50HPojzs91gVhYtm9ibj6OxWB3a3yj4DtnA9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S2IBMspRnHCmD/6eu7EYk9nA7A93PqWCloPIvE2/Z08YkSKeJqiZqxB52s73Gc+ijPK5N+TNEiamLJGJjb2FvLK2EYT+l4XHT7wqrc/K8oSc6cUM8Vt1lzpXLbyTVZldS6CscRADY/OWzf8d4bkfYAsTVBPV6NYs9AEKuBCvLg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCfmrL2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99ADC19421;
-	Wed,  8 Apr 2026 09:34:44 +0000 (UTC)
+	s=arc-20240116; t=1775643566; c=relaxed/simple;
+	bh=Yf3zc3v1e4y/GH6eAmt1wi2qeH0aR4z9qqbrXRsv4js=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qn/AtQhW5b9qTyFf42eRMydoZJd8Q0j0uLbAl+y1rkvHKlbp9TFoH7ycppS2BUmIomLHSwSUaMzm1WbQv3uknCYC89Vgq3GVHng8Ex4e7Q31/G7ZWso/On3odXDQqYwWwShQ43hE8zVz7rGX1I5EHpPI6BfDrNpM9K2qY6ld/7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8up+Rj+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D9FC4AF09
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 10:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775640885;
-	bh=xB2G7g50HPojzs91gVhYtm9ibj6OxWB3a3yj4DtnA9c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SCfmrL2jaBS2Zir8M+930wpHrwSiWb69VCPUF2OaZOMPzdm7HQyBDiWU3WZrLKPEJ
-	 8K1yB42YQjodE3UsdJeA+PvQI5EuaQcKHp8n9ptkJlp0KAYEqTP0meK39CFNWnZnR5
-	 QhepcmDlPZxOmYgPD24obbjbip6ihfpIe+HAhYP4SCm0FAX3ppt0y1Mg6KCePy4SWI
-	 25VtanpprO9taPO1sVdnhpRQiE3QdeHgkoNT9OoX8D/sg19ksbA15A7vp9RjeRxIgM
-	 +DW9hRZZbhVPRAbQQWhcuuy+mBCQ/CP4wdY370sxnrdlQuSyGfSLczZXA5u5HXn8C/
-	 jtzWF4gtNoyAg==
-Date: Wed, 8 Apr 2026 11:34:42 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Zenm Chen <zenmchen@gmail.com>
-Cc: nbd@nbd.name, ryder.lee@mediatek.com, shayne.chen@mediatek.com,
-	sean.wang@mediatek.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH mt76] wifi: mt76: mt76x2u: Add support for ELECOM
- WDC-867SU3S
-Message-ID: <adYhMgllS55Chvpb@lore-desk>
-References: <20260407154430.9184-1-zenmchen@gmail.com>
+	s=k20201202; t=1775643565;
+	bh=Yf3zc3v1e4y/GH6eAmt1wi2qeH0aR4z9qqbrXRsv4js=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=d8up+Rj+//U82WLElSWULoJphjfrKPM/5B9I4/T+lZfcha4Tgdf91penMzLNkJ2Rq
+	 yxnWQWM9tXZc6UU980CzlBt0dQnBjW3/pyA8bdeJYM5Y1XY6t4jagpWd7vH3oxM/Pp
+	 t6JRDpdg9DuliYFZorKiA4E/Szj5Fk81tP1VB6m2wtdCd3cWzr0XtUPJrVxf+k2erw
+	 UVkZbckAtO8omBOn785tCMJqhd4vHDVVN5uCkrsXTrUxtpQMtmHGqaIt7QDlL6VpUu
+	 WBXsKFIJmHzr68KjxgJ+LiygBz9+qETSiY1EyyDmMsUIBi6p8hBaMheJsdF8WmiSda
+	 Fa2Gg7L2GRoAQ==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-38dd9c6840aso38174351fa.0
+        for <stable@vger.kernel.org>; Wed, 08 Apr 2026 03:19:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXPRoaKU77RId4ICiJfIlOyD8juek6clhYF5BFbsg3r/t1m4Iyf+Fyt0jz3Rt8L18s6aH42TGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyja88yc4+nqv8H9XjsPfbYg7x5yLRxtHflsJGnVxcWeqU621LQ
+	uAXpaD5zwd6cSKUABbc7kdj/f9UIpwJ2RQDca4qt/8GPese7V+pPcVdqgzcII4Sgm11wKpBrB1o
+	O/qGEXATRyv617mX2+EdK74KuogDAgXU=
+X-Received: by 2002:a05:651c:23c3:10b0:387:799:17f8 with SMTP id
+ 38308e7fff4ca-38d91bef49bmr44696691fa.16.1775643564298; Wed, 08 Apr 2026
+ 03:19:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ECjadagwUqD3QKe7"
-Content-Disposition: inline
-In-Reply-To: <20260407154430.9184-1-zenmchen@gmail.com>
-X-Spamd-Result: default: False [-2.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
+ <20260406111531.779571d7@gandalf.local.home> <CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
+ <20260406123232.3dacbe94@gandalf.local.home> <adTqIepV2W6M_Q2o@pathway.suse.cz>
+ <CAJ-ks9nPvGaYPKj5Py0OPrU1E8JgDrLNM29d+iwc3c2U6KZ0kg@mail.gmail.com> <adYAsnyZMykg3y9f@pathway.suse.cz>
+In-Reply-To: <adYAsnyZMykg3y9f@pathway.suse.cz>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Wed, 8 Apr 2026 06:18:47 -0400
+X-Gmail-Original-Message-ID: <CAJ-ks9ni9bth243ciTynDXGWG20sSbz52jSYHPsiVdxixkncPQ@mail.gmail.com>
+X-Gm-Features: AQROBzCOryPxyn0QH4broMgYgPInfrSwibuvKoeAY_wT-FaIyygJgoCooJ5Cny4
+Message-ID: <CAJ-ks9ni9bth243ciTynDXGWG20sSbz52jSYHPsiVdxixkncPQ@mail.gmail.com>
+Subject: Re: [PATCH] printf: mark errptr() noinline
+To: Petr Mladek <pmladek@suse.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233825-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233826-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-hardware.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B9D8C3B9EFC
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 692593BA712
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed, Apr 8, 2026 at 3:16=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
+:
+>
+> On Tue 2026-04-07 09:34:57, Tamir Duberstein wrote:
+> > On Tue, Apr 7, 2026 at 7:27=E2=80=AFAM Petr Mladek <pmladek@suse.com> w=
+rote:
+> > >
+> > > On Mon 2026-04-06 12:32:32, Steven Rostedt wrote:
+> > > > On Mon, 6 Apr 2026 11:21:39 -0400
+> > > > Tamir Duberstein <tamird@kernel.org> wrote:
+> > > >
+> > > > > Thanks Steve. IMO that is a very big hammer and not warranted in =
+this
+> > > > > case. There's been talk of encouraging distros to enable CONFIG_K=
+UNIT
+> > > > > by default [0], which would probably interact poorly with the cha=
+nge
+> > > > > you propose.
+> > > > >
+> > > >
+> > > > Branch profiling is really just a niche that is enabled specificall=
+y for
+> > > > seeing all branches taken in the kernel. It hooks to all "if" state=
+ments!
+> > > > As you can imagine, it causes a rather large overhead in performanc=
+e.
+> > > >
+> > > > This option is only used by developers doing special analysis of th=
+eir code
+> > > > (namely me ;-).
+> > > >
+> > > > The only real concern I would have is if the kunit test developers =
+would
+> > > > want to use the branch profiling on their code, in which case my su=
+ggestion
+> > > > would prevent that.
+> > >
+> > > I wonder if it might be possible to disable the branch profiling just
+> > > for the printf_kunit.c as a compromise.
+> > >
+> > > Would "#undef if" in printf_kunit.c help?
+> > >
+> > > Or I see that DISABLE_BRANCH_PROFILING is an official
+> > > way to disable the feature.
+> > >
+> > > I wonder if the following change would solve the problem.
+> > > I am sorry, I could not test it easily.
+> >
+> > Yes, we can disable it for the whole file. I decided against that
+> > because narrow workarounds are better than broad ones IMO, but it is
+> > ultimately up to your preference.
+>
+> I might be wrong but I think that nobody would want to
+> profile/optimize this kunit test. So, this looks like the best
+> solution because it is straightforward. The variant adding
+> "noinline" looks too hacky to me.
+>
+> > FWIW I did test that this patch fixes the problem in GCC 8.5.0.
+>
+> Thanks for testing.
+>
+> Would you like to prepare a proper patch or should I do so?
 
---ECjadagwUqD3QKe7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Apr 07, Zenm Chen wrote:
-> Add the ID 056e:400a to the table to support an additional MT7612U
-> adapter: ELECOM WDC-867SU3S.
->=20
-> Compile tested only.
->=20
-> Cc: stable@vger.kernel.org # 5.10.x
-
-I do not think this material for stable. Anyway:
-
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
-> Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-> ---
-> This ID was found from [1] and adding it to the device table should be=20
-> enough to make it work. Hardware probes at [2] can prove its existence.
->=20
-> [1] https://bushowhige.blogspot.com/2019/08/ubuntu-1804-mediatek-usb-wi-f=
-i.html
-> [2] https://linux-hardware.org/?id=3Dusb:056e-400a
-> ---
->  drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt76x2/usb.c
-> index 01cb3b283..459c4044f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-> @@ -16,6 +16,7 @@ static const struct usb_device_id mt76x2u_device_table[=
-] =3D {
->  	{ USB_DEVICE(0x0e8d, 0x7612) },	/* Aukey USBAC1200 - Alfa AWUS036ACM */
->  	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
->  	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
-> +	{ USB_DEVICE(0x056e, 0x400a) },	/* ELECOM WDC-867SU3S */
->  	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
->  	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard U=
-SB connector */
->  	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard U=
-SB connector */
-> --=20
-> 2.53.0
->=20
-
---ECjadagwUqD3QKe7
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCadYhMgAKCRA6cBh0uS2t
-rH4BAQDadaOqA+izjfKsqTGZE4t7netvYf9LX/dwKhfjXP+BpwEAmT0UWS1fM3wY
-y/Xgc7k8ncdplQixrzhIVJD56iveDAM=
-=Vfip
------END PGP SIGNATURE-----
-
---ECjadagwUqD3QKe7--
+Please go ahead with your preferred approach.
 
