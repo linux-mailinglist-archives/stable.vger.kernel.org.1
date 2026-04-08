@@ -1,211 +1,190 @@
-Return-Path: <stable+bounces-233772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKDQFSX51Wn4/gcAu9opvQ
-	(envelope-from <stable+bounces-233772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:43:49 +0200
+	id mL70J7n51Wn4/gcAu9opvQ
+	(envelope-from <stable+bounces-233773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:46:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E125C3B7ADC
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:43:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0160D3B7B23
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 877393011047
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:43:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A989C3010D8F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1C0364EB6;
-	Wed,  8 Apr 2026 06:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED9528A3FA;
+	Wed,  8 Apr 2026 06:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QML+uYz5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E98364E88
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 06:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C69223504B;
+	Wed,  8 Apr 2026 06:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775630620; cv=none; b=Bv+w9T3CS95R8xMl5/n4Vuv/2ZmVXCWCD7a/EZ1hUOWK9ZKlFaLYJHiywIJDfBB9gBkuVoMi2ckf1Rj18b8zFoSQunM09NWLCk8OYAU0Yu57DgjheWsT6N/83Pns66FVZ0q5VmnDzl+WoWeMeeOq3vFDhsEYtgrUzfs04trk5dk=
+	t=1775630773; cv=none; b=QZpsGZcUuK9jqQxFPkoV2qYZgaC3HkvS9EnFWU+yBiwtznIHwoBb5aAh1081LZimaPtQTxb8iFsNO4fOwPDujlYlZRI6Km//97KW8PDTVGz9WyimoLjmjvvNElln7zO7qX0t1XmTaX2vd5zRdDJG+ntfmdHBN/3uLDoUunXwu8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775630620; c=relaxed/simple;
-	bh=G+q281chvuvhqbXJ+38p5NFB+rljrSWTNPeTdojNm9U=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8ggMlYXob7OFTXDbA7YfD4AMfovG+VHw+dzxIWRxX2VR3VDwfCi7ByKB8LzmMXWbZb/8hTIs6IMJJU0Dhl01jjLtByv6RzbHiy/Kq/YVKmPUArDi5ALUhgCVBYdtx/W3vIUquTW1fP+Sk0MlDFL1e4OjbzU9bE1JncWbcC4UwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a0fc5e2c59so5883454e87.1
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 23:43:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775630617; x=1776235417;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=JZhpOO1/NQ390zCAVE3GeLvUQ1e64LFEhYwAmdVz/Mw=;
-        b=kFcdykCxv3FSkyn6dEsOLdLGddZa1/o79NId4/t8cjs0/gkF0FH+YXwKFb131+hzx0
-         wk5lf/cMO+k/YmuI/gxrLMWwR9pdkITZ99+NZPDLdXthDoPhNfwgHNvQTJu53SiE92zl
-         VcZnLhoSdNkpF83QNrKXbudGDPByR50N+GxSaPARGUhEHxVh8iPId/jqkHAoH4o+hb5Z
-         TkNdOx/R+U7VMGtewp26GNs34Ua5t63osYwtD7fGpg2u9teQBy44UaTltbekIZmOeWYo
-         8LXI5Tr/RFS9pO2GR264hskEsKT+eFHs4QNWutCd6/s2aEv0+6JMcMN6RQLduK6Lm53K
-         fRhQ==
-X-Gm-Message-State: AOJu0YzU1Gw7ETn5BJcOe2avNJb+VAugGQOlsya69bgHG7ANmLCDZZIx
-	yt844oH5DLG0IkdlwlfKJtjjb+WIRm5h2NBe64Eu2s8Sic2kcuEqkRUJcjj+reouhkw=
-X-Gm-Gg: AeBDieusUjmYU1JkKCVjvKv7hGCk2UF0qYjHPfTSTSuj5xer0mZn+KX9lQt1pDkGImU
-	X2kbAF5gFogn553jIKNi01TSJUhppIOraxDgcf9uxIN5OM0PTGNmlzDnAosWtGcQsD/kfRAspc0
-	h2Gnccu2O1JpIFTTncWPLPeIS4r/XF8tt8EwYkqHKVMo/QAOzyNZ7skZxo9rS5214Z08F2IyL6r
-	MpcHLrx4T0zgkPXsl0aywjMl1qGbUMElcPVBZzUEDnSwfrjUyY0to4EDy21J3F80jk3JLyvRjgv
-	jBmM9aFLvFxQMYWkCrQHl1rACdNG6SX221mZis0uTwnOLE+HaPH+392p5+bg7MQRRkZ6laNvfvk
-	bOlBiuoKw9opPcQC3j4BpbsIDwXkqVkC2y03fvjmsEl9nNJGr063bB+PLxNidf2vSQLMuIIJWtg
-	JPgPeNSiQlcLtsI4i/xkr16Z4OAjdRjAOGxZ/YNYr5lNQQblg0nMdt9yX+HPpK4sBP
-X-Received: by 2002:a05:6512:224f:b0:5a3:cd17:8d71 with SMTP id 2adb3069b0e04-5a3cd178dd9mr7363775e87.21.1775630616547;
-        Tue, 07 Apr 2026 23:43:36 -0700 (PDT)
-Received: from hackbase (95-24-76-124.broadband.corbina.ru. [95.24.76.124])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c6ccca2dsm4528889e87.60.2026.04.07.23.43.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 23:43:35 -0700 (PDT)
-From: Alexander Popov <alex.popov@linux.com>
-To: stable@vger.kernel.org,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Alexander Popov <alex.popov@linux.com>
-Subject: [PATCH 6.1.y] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
-Date: Wed,  8 Apr 2026 09:43:14 +0300
-Message-ID: <20260408064323.32628-1-alex.popov@linux.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026040719-cofounder-unworldly-b566@gregkh>
-References: <2026040719-cofounder-unworldly-b566@gregkh>
+	s=arc-20240116; t=1775630773; c=relaxed/simple;
+	bh=WV1htalpC97uteDfgKBsPHFKXo52MLYjoKpeO8pF5vE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RnW/ABYUBVSa+jbcvxPLmlHuiBNv5NZkKFet6+UF/kdteFiqvwBla9tNx3efmL24megIt5q7mCk64tZMjlb2SbdNi3alB25BU35mrnTNSepZFA3jO4u1kZuoZZqO0Gw1JOUKyBmRvLs95AJSi9KF9JjwO8e4zHt/0T8juJfhZOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QML+uYz5; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=tW4C7DNp4jf59b9gY7OTd32/8qvxX8VgEA1if3v+Irc=;
+	t=1775630772; x=1776840372; b=QML+uYz5SlTNBpTn++OUVGk08jSScXt5bBFDdHjBdHxeksD
+	WraMvhEQmZvGe1SBlJvFLQzC6EtT+lw9nnXIOm1DY41rvi2Q+K3V+l0aJVOe8ueoWtA4rwOaOp4/B
+	GblBxVsTyRdio4gLSpuSkKbAQSt4Srk/OLk9e5QjCMfLd21JcQXBRXiqKNUBc7LuI8En462Ogx+ie
+	UOGc8V/Cr7SDIMWsmO9BU2FJZRkRfC8VvVhvSzt8CzLa5UCrFcNKa38AKyK1jjISapfkfjWgG4C7j
+	ZcTOa8nSs0UakoQlKXWiOcz79wN9WErSdXjgkbA1oX2ILq7u+kq0BlTzKG24vcjQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wAMfu-0000000E2kS-1G7r;
+	Wed, 08 Apr 2026 08:46:06 +0200
+Message-ID: <a2efd8145cfbc207fef5884e93d09f787811becb.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] um: drivers: call kernel_strrchr() explicitly in
+ cow_user.c
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Michael Bommarito <michael.bommarito@gmail.com>, Richard Weinberger
+	 <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Wed, 08 Apr 2026 08:46:04 +0200
+In-Reply-To: <20260407181528.879358-1-michael.bommarito@gmail.com> (sfid-20260407_201538_551551_67B5DCE6)
+References: <20260407164435.726012-1-michael.bommarito@gmail.com>
+	 <20260407181528.879358-1-michael.bommarito@gmail.com>
+	 (sfid-20260407_201538_551551_67B5DCE6)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-malware-bazaar: not-scanned
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[linux.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233772-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-233773-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,nod.at,cambridgegreys.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[alex.popov@linux.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.942];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.com:email,linux.com:mid]
-X-Rspamd-Queue-Id: E125C3B7ADC
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
+X-Rspamd-Queue-Id: 0160D3B7B23
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
-the virt_wifi net devices. However, unregistering a virt_wifi device in
-netdev_run_todo() can happen together with the device referenced by
-SET_NETDEV_DEV().
+On Tue, 2026-04-07 at 14:15 -0400, Michael Bommarito wrote:
+> Building ARCH=3Dum on a host with glibc >=3D 2.43 fails:
+>=20
+>   arch/um/drivers/cow_user.c:156:17: error: implicit declaration of
+>   function 'strrchr' [-Wimplicit-function-declaration]
+>=20
+> cow_user.o is a host-side helper (compiled with -D__UM_HOST__) that
+> calls strrchr().  It inherits the global -Dstrrchr=3Dkernel_strrchr
+> remap from arch/um/Makefile, which is intentionally kept in
+> USER_CFLAGS to prevent libc/kernel symbol clashes.
+>=20
+> This combination was harmless until glibc 2.43, which added (glibc
+> commit cd748a63ab1a, "Implement C23 const-preserving standard library
+> macros"):
+>=20
+>   #define strrchr(S,C) __glibc_const_generic(S, const char *, strrchr(S, =
+C))
+>=20
+> The glibc function-like macro replaces the -D object-like macro.  The
+> inner strrchr token in the expansion is protected from recursive
+> expansion, so it refers to the bare symbol strrchr -- but the header
+> declaration was already rewritten to kernel_strrchr by the -D.  The
+> result is an implicit-declaration error.
+>=20
+> The global -Dstrrchr=3Dkernel_strrchr remap was originally added in
+> commit 2c51a4bc0233 ("um: fix strrchr() problems") to resolve a
+> linker clash when both CONFIG_STATIC_LINK and CONFIG_UML_NET_VDE are
+> set.  Recently, commit a74b6c0e53a6 ("um: Don't rename vmap to
+> kernel_vmap") trimmed the now-obsolete vmap remap and updated the
+> comment in arch/um/Makefile to explicitly call out
+> -Dstrrchr=3Dkernel_strrchr as one of the remaps that still prevents
+> libc symbol clashes.  That global remap stays in place.
+>=20
+> Rather than exempting cow_user.o from the remap at build time, call
+> kernel_strrchr() explicitly in the source.  This is slightly more
+> honest about which strrchr the code wants (the kernel's, as it has
+> been since 2011), sidesteps the interaction with glibc's C23 macro
+> entirely, avoids adding a new libc strrchr dependency to the UML
+> binary, and is robust to future C23 const-preserving macros for
+> strchr, memchr, strstr, etc.
+>=20
+> cow_user.o is built whenever CONFIG_BLK_DEV_UBD=3Dy (the standard UML
+> block device), so this affects most non-trivial UML configurations.
+> cow_user.c is the only file under arch/um/ that calls strrchr(), so
+> no other translation units need changes.
+>=20
+> Standalone reproducer (fails on glibc >=3D 2.43, succeeds on older):
+>=20
+>   printf '#include <string.h>\nvoid f(void) { char *p =3D strrchr("foo", =
+47); }\n' \
+>     | gcc -c -Dstrrchr=3Dkernel_strrchr -x c - -o /dev/null
+>=20
+> Tested on:
+>   - Host:   Ubuntu, glibc 2.43-2ubuntu1, gcc 15.2.0
+>   - Kernel: v7.0-rc6 (3aae9383f42f); verified that neither
+>             arch/um/drivers/Makefile nor arch/um/drivers/cow_user.c
+>             changed between rc6 and rc7, so the fix applies and
+>             behaves identically on both
+>   - Build:  ARCH=3Dum defconfig + CONFIG_BLK_DEV_UBD=3Dy, clean compile
+>             with no warnings
+>   - nm:     cow_user.o references 'U kernel_strrchr' (not libc
+>             strrchr), and the final linux binary has no
+>             strrchr@GLIBC_2.2.5 symbol anywhere; kernel_strrchr is
+>             defined exactly once by lib/string.o and
+>             EXPORT_SYMBOL'd
+>   - Boot:   UML boots to Debian bookworm multi-user and graphical
+>             targets with a COW overlay (ubd0=3Dcow,backing), which
+>             exercises the patched absolutize() -> kernel_strrchr()
+>             code path in cow_user.c
+>=20
+> AI coding tools (Claude Code with Opus 4.6, and Codex with GPT-5.4)
+> assisted with debugging, test design, and drafting; the author
+> manually reviewed every line and executed every build and boot test
+> on the host.  Full disclosure was posted with v1; a shorter summary
+> is in the Assisted-by: trailers below.
 
-It can result in use-after-free during the ethtool operations performed
-on a virt_wifi device that is currently being unregistered. Such a net
-device can have the `dev.parent` field pointing to the freed memory,
-but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
+I think you should remove about 75% of that commit message, much of it
+is noise, and some of it is simply wrong (in particular, "exempting
+cow_user.o" really ever only existed in your earlier patch.)
 
-Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
+Try without an LLM perhaps.
 
- ==================================================================
- BUG: KASAN: slab-use-after-free in __pm_runtime_resume+0xe2/0xf0
- Read of size 2 at addr ffff88810cfc46f8 by task pm/606
-
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4d/0x70
-  print_report+0x170/0x4f3
-  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-  kasan_report+0xda/0x110
-  ? __pm_runtime_resume+0xe2/0xf0
-  ? __pm_runtime_resume+0xe2/0xf0
-  __pm_runtime_resume+0xe2/0xf0
-  ethnl_ops_begin+0x49/0x270
-  ethnl_set_features+0x23c/0xab0
-  ? __pfx_ethnl_set_features+0x10/0x10
-  ? kvm_sched_clock_read+0x11/0x20
-  ? local_clock_noinstr+0xf/0xf0
-  ? local_clock+0x10/0x30
-  ? kasan_save_track+0x25/0x60
-  ? __kasan_kmalloc+0x7f/0x90
-  ? genl_family_rcv_msg_attrs_parse.isra.0+0x150/0x2c0
-  genl_family_rcv_msg_doit+0x1e7/0x2c0
-  ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
-  ? __pfx_cred_has_capability.isra.0+0x10/0x10
-  ? stack_trace_save+0x8e/0xc0
-  genl_rcv_msg+0x411/0x660
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_ethnl_set_features+0x10/0x10
-  netlink_rcv_skb+0x121/0x380
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_netlink_rcv_skb+0x10/0x10
-  ? __pfx_down_read+0x10/0x10
-  genl_rcv+0x23/0x30
-  netlink_unicast+0x60f/0x830
-  ? __pfx_netlink_unicast+0x10/0x10
-  ? __pfx___alloc_skb+0x10/0x10
-  netlink_sendmsg+0x6ea/0xbc0
-  ? __pfx_netlink_sendmsg+0x10/0x10
-  ? __futex_queue+0x10b/0x1f0
-  ____sys_sendmsg+0x7a2/0x950
-  ? copy_msghdr_from_user+0x26b/0x430
-  ? __pfx_____sys_sendmsg+0x10/0x10
-  ? __pfx_copy_msghdr_from_user+0x10/0x10
-  ___sys_sendmsg+0xf8/0x180
-  ? __pfx____sys_sendmsg+0x10/0x10
-  ? __pfx_futex_wait+0x10/0x10
-  ? fdget+0x2e4/0x4a0
-  __sys_sendmsg+0x11f/0x1c0
-  ? __pfx___sys_sendmsg+0x10/0x10
-  do_syscall_64+0xe2/0x570
-  ? exc_page_fault+0x66/0xb0
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  </TASK>
-
-This fix may be combined with another one in the ethtool subsystem:
-https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
-
-Fixes: d43c65b05b848e0b ("ethtool: runtime-resume netdev parent in ethnl_ops_begin")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Popov <alex.popov@linux.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260324224607.374327-1-alex.popov@linux.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-(cherry picked from commit 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6)
----
- drivers/net/wireless/virt_wifi.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
-index fb4d95a027fe..eac4838807c7 100644
---- a/drivers/net/wireless/virt_wifi.c
-+++ b/drivers/net/wireless/virt_wifi.c
-@@ -553,7 +553,6 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
- 	eth_hw_addr_inherit(dev, priv->lowerdev);
- 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
- 
--	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
- 	dev->ieee80211_ptr = kzalloc(sizeof(*dev->ieee80211_ptr), GFP_KERNEL);
- 
- 	if (!dev->ieee80211_ptr) {
--- 
-2.53.0
-
+johannes
 
