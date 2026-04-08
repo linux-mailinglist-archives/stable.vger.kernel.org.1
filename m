@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4F2xOISj1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:44 +0200
+	id 8AVOEX2i1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214373C1BC5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A49E3C17A0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3E1513006923
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4228930E7716
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2223434AB06;
-	Wed,  8 Apr 2026 18:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B153D4134;
+	Wed,  8 Apr 2026 18:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDNJUIce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKjYIiT1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DB32727F3;
-	Wed,  8 Apr 2026 18:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D53A3B0ADA;
+	Wed,  8 Apr 2026 18:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674239; cv=none; b=Eoxl0VJEYzEe1CZlHqHbbfjwqjJDvK7JcBQ/Imr+ZKH3AwLGZLUe5hZl0s/lgA/ciR2LnzMn8eqRjWa8gJabY5zKg+OMbddVIyREFEPQ5/sK7nFHj6mMLTc2HvFZwIUMvUJlpixL2iSOrbzC7XZF+r1TWv5SX3sGvKpBeEHMJxM=
+	t=1775672933; cv=none; b=ihye5kSeVwR5mRMGZvshwslPSj5fcUvv+kK6BADKPBNXc0dEpOuv3QMmbun7ACozalQtvb7+73tvbRNpvk1cdan6NJ3KC8vS4W2amO+roHPBdvskdzHkMzPnWASmbOq9runugJ4BEBzZ6WqFGXxt8PRGzKw+jU30n/DNNeYwrHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674239; c=relaxed/simple;
-	bh=/jgtYzdH71Ex1+O9SBRDBfk/n5lsiUHYxtCRyYCJ1T8=;
+	s=arc-20240116; t=1775672933; c=relaxed/simple;
+	bh=a2qWKsT4iBq8ZofHpRPZmw+LmUzrHfDQeYVBtyr2QMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZebgOUYBKeLWupOlmUUK6zGO8Mz3ugzT2y5tN28Cg44CHFvc52s4O+UITnUvxrde/MQzFAOyAuTRP0uOsbPYHv6vjYrQ4uWcVz2Etx6heNMlG2dbc21ZaumDk8bNVfNpldWc8NSWYUDyLa5taYR4pV4bHoTC+zRjCNJOKxA9fTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDNJUIce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34202C19421;
-	Wed,  8 Apr 2026 18:50:39 +0000 (UTC)
+	 MIME-Version; b=pITncexwUsk9QccdYnSZtU+/ioa1v8CRhh3Z1M9SByUXNNvcYfYL0o46OzCgh1w6urHmRDJ4BX70iWZlXyks1RaT8L8t3rU0Ty3gcFAmr8cdK8qGrQ+9z6I7VEQJwLc0759ko4ArUUt3SbTgwNXVnNVbtSUZEuKK8uhD/SdpWFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKjYIiT1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC514C19421;
+	Wed,  8 Apr 2026 18:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674239;
-	bh=/jgtYzdH71Ex1+O9SBRDBfk/n5lsiUHYxtCRyYCJ1T8=;
+	s=korg; t=1775672933;
+	bh=a2qWKsT4iBq8ZofHpRPZmw+LmUzrHfDQeYVBtyr2QMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDNJUIce7m1cdQRyHEKxpjyZ6JI3jNxWGRGlOe3z9Sfn92vlQ1TxEGh4z0YHNk0Fq
-	 Um9hKWJEpQO8wlxesIUZtNKrPBXR811cmcsooBGfR+Al2ln/bKp4vvS8f8PLH1maHI
-	 sYTtSTVT/S0rEaoiadrjNGNCCd7XhnVc6NEDBMaw=
+	b=KKjYIiT13Ri0xmwk2ONIi22lJY6gI08i4JklB2Bwwm3UeSPrXRupKAtPR1PW67STj
+	 +dRB4ewEbhv7KcBubYmmX102S630BknpcwrUzNP+BqFIdYzvGEeirN5tzIe3c3tqfV
+	 b7R3GyOR4oXfkbCvgnxVb2wVCUpBR3wM/vncy8gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 020/311] HID: multitouch: Check to ensure report responses match the request
+Subject: [PATCH 6.18 035/277] net/ipv6: ioam6: prevent schema length wraparound in trace fill
 Date: Wed,  8 Apr 2026 20:00:20 +0200
-Message-ID: <20260408175940.168322288@linuxfoundation.org>
+Message-ID: <20260408175935.164956468@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +65,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234972-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234466-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,gmail.com,davemloft.net,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 214373C1BC5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,davemloft.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5A49E3C17A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit e716edafedad4952fe3a4a273d2e039a84e8681a ]
+[ Upstream commit 5e67ba9bb531e1ec6599a82a065dea9040b9ce50 ]
 
-It is possible for a malicious (or clumsy) device to respond to a
-specific report's feature request using a completely different report
-ID.  This can cause confusion in the HID core resulting in nasty
-side-effects such as OOB writes.
+ioam6_fill_trace_data() stores the schema contribution to the trace
+length in a u8. With bit 22 enabled and the largest schema payload,
+sclen becomes 1 + 1020 / 4, wraps from 256 to 0, and bypasses the
+remaining-space check. __ioam6_fill_trace_data() then positions the
+write cursor without reserving the schema area but still copies the
+4-byte schema header and the full schema payload, overrunning the trace
+buffer.
 
-Add a check to ensure that the report ID in the response, matches the
-one that was requested.  If it doesn't, omit reporting the raw event and
-return early.
+Keep sclen in an unsigned int so the remaining-space check and the write
+cursor calculation both see the full schema length.
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 8c6f6fa67726 ("ipv6: ioam: IOAM Generic Netlink API")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/ipv6/ioam6.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index b8a748bbf0fd8..e82a3c4e5b44e 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -526,12 +526,19 @@ static void mt_get_feature(struct hid_device *hdev, struct hid_report *report)
- 		dev_warn(&hdev->dev, "failed to fetch feature %d\n",
- 			 report->id);
- 	} else {
-+		/* The report ID in the request and the response should match */
-+		if (report->id != buf[0]) {
-+			hid_err(hdev, "Returned feature report did not match the request\n");
-+			goto free;
-+		}
-+
- 		ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT, buf,
- 					   size, 0);
- 		if (ret)
- 			dev_warn(&hdev->dev, "failed to report feature\n");
- 	}
+diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
+index 08b7ac8c99b7e..8db7f965696aa 100644
+--- a/net/ipv6/ioam6.c
++++ b/net/ipv6/ioam6.c
+@@ -708,7 +708,7 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 				    struct ioam6_namespace *ns,
+ 				    struct ioam6_trace_hdr *trace,
+ 				    struct ioam6_schema *sc,
+-				    u8 sclen, bool is_input)
++				    unsigned int sclen, bool is_input)
+ {
+ 	struct net_device *dev = skb_dst_dev(skb);
+ 	struct timespec64 ts;
+@@ -939,7 +939,7 @@ void ioam6_fill_trace_data(struct sk_buff *skb,
+ 			   bool is_input)
+ {
+ 	struct ioam6_schema *sc;
+-	u8 sclen = 0;
++	unsigned int sclen = 0;
  
-+free:
- 	kfree(buf);
- }
- 
+ 	/* Skip if Overflow flag is set
+ 	 */
 -- 
 2.53.0
 
