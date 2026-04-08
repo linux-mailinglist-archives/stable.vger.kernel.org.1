@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-235172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAaIEM2r1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:05 +0200
+	id eBdrKCWd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857D93C2F76
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06903C091A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CECAB30FBB7C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4C0DE304A145
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6F537F01B;
-	Wed,  8 Apr 2026 18:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE443D8115;
+	Wed,  8 Apr 2026 18:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TabUKy95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnyOLi+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A443537DF;
-	Wed,  8 Apr 2026 18:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0393D3D06;
+	Wed,  8 Apr 2026 18:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674754; cv=none; b=p/t+6tOOoiez1iEoeVgjjGAs5GavqOj/ADS5di7y00SRcrqUwZRl1tK9qcUKL6yi0E4x9s/POsF+zkVcxh2SvTYRdjjB1lsuaONBzY00V/6JZ0uJ6dRuLZ+Nl/Xh+B29eeRKq4akay134PwB0ZmU2pHxgOqKJmhAZE8Lwl39dVw=
+	t=1775672434; cv=none; b=tBuTQTQ2hB9qV3yowgkDoEDvoCMvlZNAf7LI7XXuIKNklxmUxR0N3f/tke+WF7WsWGeWqv8dWo7K1t6tmlH3MXSSZo6cYB9eBtxu8D4gWKMQUhNR0sCNhgPJBx037ay4ZkpSZj0oq6GsftY5FjLcBfU1xez7PYXXPUrYEzMiyJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674754; c=relaxed/simple;
-	bh=HQ9lDhIPD7Qx9daQ3/fBAnOSIDv1rALpcNQ8r+aVUk0=;
+	s=arc-20240116; t=1775672434; c=relaxed/simple;
+	bh=vP4tSGiM7SusYeCawu572V1IPd5BkIfF+9xHuWNl+eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCRwdNij1dZQVhuK1DVGfR88+6UK2CQrhl3uW9TqEPv+mP01GeopT7E/VCwP+bqP3k+x7v7M2d3c2N/2gItRSj/U6q5j7eeUDmYQ9tDcddSTqKbihBcflfH6a2SPeYizZv5CxdYBHaEj3Jd2doLga5SsK+xn3i8byUxBxCKXheE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TabUKy95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67235C19421;
-	Wed,  8 Apr 2026 18:59:14 +0000 (UTC)
+	 MIME-Version; b=bo8PzThaL/6QRNJDxf1MhjVh5FVGUWPhqG0+OPxUTFrbfGQEEOyqo3cdmWGab09HfG62RqYlDPzONgmVsjZ4ukz+4IOf1+ae+F2R/d1Mbvj1yzkNFHVynvzZtIJGHxLRRDX9ZvGtE/nDXNzyGoNGRveO+bytjR3F9RxwdR77VF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnyOLi+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F3DC19421;
+	Wed,  8 Apr 2026 18:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674754;
-	bh=HQ9lDhIPD7Qx9daQ3/fBAnOSIDv1rALpcNQ8r+aVUk0=;
+	s=korg; t=1775672434;
+	bh=vP4tSGiM7SusYeCawu572V1IPd5BkIfF+9xHuWNl+eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TabUKy95bhqR+rWsAaRTM/ora00NFKo/CmCpkVr+lKJVY/dhIEx2BMREvfga0nWoo
-	 kOsBE5TF1PYNPVa1+llvC0f+Rd1c7as8DQdPdxDOZtLpVjAB3PbZtlEAf2iV8qTeTS
-	 yVc/CTFDzK8hrVs8kVCOk8+smV8Cdng0Tcm9BQpE=
+	b=BnyOLi+PVT3axfEICm/Zt5m6I2815AhHlVEHePNd/HbY8JpoWaHo2vva80LJWI6MF
+	 P63QILUmZ9Ypdysp+xExaYkAz2a0w6C3a7EHfq+0LS+vAKpKiNphe0hwLpmUUkmPdn
+	 s2AL7vKQRh1j7wkwp4vOkpGiwhUAuwRVznro3vgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valek Andrej <andrej.v@skyrain.eu>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 221/311] iio: accel: fix ADXL355 temperature signature value
+	Xu Yang <xu.yang_2@nxp.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.1 304/312] net: phy: fix phy_uses_state_machine()
 Date: Wed,  8 Apr 2026 20:03:41 +0200
-Message-ID: <20260408175947.654370683@linuxfoundation.org>
+Message-ID: <20260408175945.128007403@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +66,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235172-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234274-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,armlinux.org.uk,kernel.org,139.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 857D93C2F76
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,armlinux.org.uk:email,139.com:email,nxp.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A06903C091A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valek Andrej <andrej.v@skyrain.eu>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 
-commit 4f51e6c0baae80e52bd013092e82a55678be31fc upstream.
+[ Upstream commit e0d1c55501d377163eb57feed863777ed1c973ad ]
 
-Temperature was wrongly represented as 12-bit signed, confirmed by checking
-the datasheet. Even if the temperature is negative, the value in the
-register stays unsigned.
+The blamed commit changed the conditions which phylib uses to stop
+and start the state machine in the suspend and resume paths, and
+while improving it, has caused two issues.
 
-Fixes: 12ed27863ea3 iio: accel: Add driver support for ADXL355
-Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The original code used this test:
+
+	phydev->attached_dev && phydev->adjust_link
+
+and if true, the paths would handle the PHY state machine. This test
+evaluates true for normal drivers that are using phylib directly
+while the PHY is attached to the network device, but false in all
+other cases, which include the following cases:
+
+- when the PHY has never been attached to a network device.
+- when the PHY has been detached from a network device (as phy_detach()
+   sets phydev->attached_dev to NULL, phy_disconnect() calls
+   phy_detach() and additionally sets phydev->adjust_link NULL.)
+- when phylink is using the driver (as phydev->adjust_link is NULL.)
+
+Only the third case was incorrect, and the blamed commit attempted to
+fix this by changing this test to (simplified for brevity, see
+phy_uses_state_machine()):
+
+	phydev->phy_link_change == phy_link_change ?
+		phydev->attached_dev && phydev->adjust_link : true
+
+However, this also incorrectly evaluates true in the first two cases.
+
+Fix the first case by ensuring that phy_uses_state_machine() returns
+false when phydev->phy_link_change is NULL.
+
+Fix the second case by ensuring that phydev->phy_link_change is set to
+NULL when phy_detach() is called.
+
+Reported-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20250806082931.3289134-1-xu.yang_2@nxp.com
+Fixes: fc75ea20ffb4 ("net: phy: allow MDIO bus PM ops to start/stop state machine for phylink-controlled PHY")
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/E1uvMEz-00000003Aoe-3qWe@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/adxl355_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy_device.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -745,7 +745,7 @@ static const struct iio_chan_spec adxl35
- 				      BIT(IIO_CHAN_INFO_OFFSET),
- 		.scan_index = 3,
- 		.scan_type = {
--			.sign = 's',
-+			.sign = 'u',
- 			.realbits = 12,
- 			.storagebits = 16,
- 			.endianness = IIO_BE,
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -270,8 +270,7 @@ static bool phy_uses_state_machine(struc
+ 	if (phydev->phy_link_change == phy_link_change)
+ 		return phydev->attached_dev && phydev->adjust_link;
+ 
+-	/* phydev->phy_link_change is implicitly phylink_phy_change() */
+-	return true;
++	return !!phydev->phy_link_change;
+ }
+ 
+ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+@@ -1791,6 +1790,8 @@ void phy_detach(struct phy_device *phyde
+ 		phydev->attached_dev->phydev = NULL;
+ 		phydev->attached_dev = NULL;
+ 	}
++
++	phydev->phy_link_change = NULL;
+ 	phydev->phylink = NULL;
+ 
+ 	if (phydev->mdio.dev.driver)
 
 
 
