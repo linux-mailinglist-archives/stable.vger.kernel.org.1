@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-234085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGYNBM+a1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:35 +0200
+	id EMnTAn6h1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A702E3C036B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEC13C142C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67BF1303389A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 450E4303432A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1FE37F8C2;
-	Wed,  8 Apr 2026 18:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9263D522C;
+	Wed,  8 Apr 2026 18:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDqu0aHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+qklmPx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63132347503;
-	Wed,  8 Apr 2026 18:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CC93D669E;
+	Wed,  8 Apr 2026 18:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671946; cv=none; b=OPXMW1ADK12Z3YeXrCEWsLDgP0g/8NyxG5ftnbWChREmL067zoWqWU52cs+IE2jA1+L442VQvo81ggXnaX+OvZ8bLeOJimjtUZho7k9MLulFBOfFUUYTnWKbowv2XsTVlbss6syBEDwzrFOu5ZX++KGLwCL95rAAFAvN2hvR8hw=
+	t=1775673658; cv=none; b=b73bxwEbPbt+lHvgFTnRFXORs2ntvfST4ei8xKepAJvaeq2bX9kScch0ZX0jInUlSGV0OPC7qCA2rkcoFpLAVUnwV5gpZfvKNIwKxBe/cSHjdjiWkMwpSAEhJY/EOLc2DFHA6CYn1WXDoWvpNGwvc8JEcYmc7N4jTvL8li9vn/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671946; c=relaxed/simple;
-	bh=79lFCDsLAwfIoZOyFaBmXIizf+4lnaD6bBlEcMq7Ivo=;
+	s=arc-20240116; t=1775673658; c=relaxed/simple;
+	bh=q5ctTHQJGfVGzyes7uINrPp7JAB0td4UfeV3iwnwzEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcpGTN7vUlyC4GJQ+OvNlcy9wRCSlDrVLPAoP+pRedZRfOH8Sl5qQ7FeZbURO8kSpJvZ1z2h75kLqOX2pez9jKZO4aSwlgDvb+H9YwmOdhtUyCaV7/0m/X9RUT88zF55SyxDTFtFcY/ovKVOc1v+/Z/Wcbo1kShN9tH/8B59JK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDqu0aHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFA2C19421;
-	Wed,  8 Apr 2026 18:12:25 +0000 (UTC)
+	 MIME-Version; b=etZk3oEjYgBrQ0F9/8srbdqA2NYYKY4vkR8BeTIjCBs2LMVsVu+7zXJNVWsILaWu/obcYWnZ+CfPS5CpV87qngRnxJEIT0C0B5eVah/byAqRKq72HPujq2ZDlEpJiesLSIG/aLFlXk+pbn+/5j6u5nj2houAlXMquYLoE6GnbAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+qklmPx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79195C19421;
+	Wed,  8 Apr 2026 18:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671946;
-	bh=79lFCDsLAwfIoZOyFaBmXIizf+4lnaD6bBlEcMq7Ivo=;
+	s=korg; t=1775673657;
+	bh=q5ctTHQJGfVGzyes7uINrPp7JAB0td4UfeV3iwnwzEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDqu0aHRzqtH+OqjGQZtHPjTqULWYVh4xxLrWs9ARZ8dS9Sn7GWI5XabGehjrOujj
-	 YVsnTaYe80/j7vuxxnn+d92uvtNvbra73yYLv5uAsc8sRQ8oYXOAyJWaQ1bbxSyJZn
-	 hyS4aTsUCG+jbEPOQb1Rd/l1OQhWYtiSfyoIzwqE=
+	b=A+qklmPxJ0du0JjZaAU2nzjAgYMjqpkSiOy7Cg3rs6zETyqBAMx5pax1+Y4DUE/kD
+	 Fjq6tyFdA4wmv+qaG+p8Ij92NkvkOlp3xTNh5nQSggCOm8SWypUgn59ymlpLiLHzeG
+	 CrtYyutXe4HyiEgTuOVh17GRmBmZX52xunNonGZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/312] btrfs: fix lost error when running device stats on multiple devices fs
-Date: Wed,  8 Apr 2026 20:00:47 +0200
-Message-ID: <20260408175938.627540699@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 008/242] io_uring/kbuf: drop issue_flags from io_put_kbuf(s)() arguments
+Date: Wed,  8 Apr 2026 20:00:48 +0200
+Message-ID: <20260408175927.384707134@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +66,188 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234747-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234085-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A702E3C036B
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BEEC13C142C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 1c37d896b12dfd0d4c96e310b0033c6676933917 ]
+Commit 5e73b402cbbea51bcab90fc5ee6c6d06af76ae1b upstream.
 
-Whenever we get an error updating the device stats item for a device in
-btrfs_run_dev_stats() we allow the loop to go to the next device, and if
-updating the stats item for the next device succeeds, we end up losing
-the error we had from the previous device.
+Picking multiple buffers always requires the ring lock to be held across
+the operation, so there's no need to pass in the issue_flags to
+io_put_kbufs(). On the single buffer side, if the initial picking of a
+ring buffer was unlocked, then it will have been committed already. For
+legacy buffers, no locking is required, as they will simply be freed.
 
-Fix this by breaking out of the loop once we get an error and make sure
-it's returned to the caller. Since we are in the transaction commit path
-(and in the critical section actually), returning the error will result
-in a transaction abort.
-
-Fixes: 733f4fbbc108 ("Btrfs: read device stats on mount, write modified ones during commit")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |    2 +-
+ io_uring/kbuf.h     |    5 ++---
+ io_uring/net.c      |   14 ++++++--------
+ io_uring/rw.c       |   10 +++++-----
+ 4 files changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index d06709ced0f36..9f5d5f5c53131 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -8089,8 +8089,9 @@ int btrfs_run_dev_stats(struct btrfs_trans_handle *trans)
- 		smp_rmb();
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -921,7 +921,7 @@ void io_req_defer_failed(struct io_kiocb
+ 	lockdep_assert_held(&req->ctx->uring_lock);
  
- 		ret = update_dev_stat_item(trans, device);
--		if (!ret)
--			atomic_sub(stats_cnt, &device->dev_stats_ccnt);
-+		if (ret)
-+			break;
-+		atomic_sub(stats_cnt, &device->dev_stats_ccnt);
+ 	req_set_fail(req);
+-	io_req_set_res(req, res, io_put_kbuf(req, res, IO_URING_F_UNLOCKED));
++	io_req_set_res(req, res, io_put_kbuf(req, res));
+ 	if (def->fail)
+ 		def->fail(req);
+ 	io_req_complete_defer(req);
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -131,8 +131,7 @@ static inline bool io_kbuf_recycle(struc
+ /* Mapped buffer ring, return io_uring_buf from head */
+ #define io_ring_head_to_buf(br, head, mask)	&(br)->bufs[(head) & (mask)]
+ 
+-static inline unsigned int io_put_kbuf(struct io_kiocb *req, int len,
+-				       unsigned issue_flags)
++static inline unsigned int io_put_kbuf(struct io_kiocb *req, int len)
+ {
+ 	if (!(req->flags & (REQ_F_BUFFER_RING | REQ_F_BUFFER_SELECTED)))
+ 		return 0;
+@@ -140,7 +139,7 @@ static inline unsigned int io_put_kbuf(s
+ }
+ 
+ static inline unsigned int io_put_kbufs(struct io_kiocb *req, int len,
+-					int nbufs, unsigned issue_flags)
++					int nbufs)
+ {
+ 	if (!(req->flags & (REQ_F_BUFFER_RING | REQ_F_BUFFER_SELECTED)))
+ 		return 0;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -508,19 +508,18 @@ static int io_net_kbuf_recyle(struct io_
+ }
+ 
+ static inline bool io_send_finish(struct io_kiocb *req, int *ret,
+-				  struct io_async_msghdr *kmsg,
+-				  unsigned issue_flags)
++				  struct io_async_msghdr *kmsg)
+ {
+ 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+ 	bool bundle_finished = *ret <= 0;
+ 	unsigned int cflags;
+ 
+ 	if (!(sr->flags & IORING_RECVSEND_BUNDLE)) {
+-		cflags = io_put_kbuf(req, *ret, issue_flags);
++		cflags = io_put_kbuf(req, *ret);
+ 		goto finish;
  	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
  
--- 
-2.53.0
-
+-	cflags = io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, *ret), issue_flags);
++	cflags = io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, *ret));
+ 
+ 	/*
+ 	 * Don't start new bundles if the buffer list is empty, or if the
+@@ -687,7 +686,7 @@ retry_bundle:
+ 	else if (sr->done_io)
+ 		ret = sr->done_io;
+ 
+-	if (!io_send_finish(req, &ret, kmsg, issue_flags))
++	if (!io_send_finish(req, &ret, kmsg))
+ 		goto retry_bundle;
+ 
+ 	io_req_msg_cleanup(req, issue_flags);
+@@ -870,8 +869,7 @@ static inline bool io_recv_finish(struct
+ 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
+ 		size_t this_ret = *ret - sr->done_io;
+ 
+-		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret),
+-				      issue_flags);
++		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret));
+ 		if (sr->retry_flags & IO_SR_MSG_RETRY)
+ 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
+ 		/* bundle with no more immediate buffers, we're done */
+@@ -890,7 +888,7 @@ static inline bool io_recv_finish(struct
+ 			return false;
+ 		}
+ 	} else {
+-		cflags |= io_put_kbuf(req, *ret, issue_flags);
++		cflags |= io_put_kbuf(req, *ret);
+ 	}
+ 
+ 	/*
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -520,7 +520,7 @@ void io_req_rw_complete(struct io_kiocb
+ 	io_req_io_end(req);
+ 
+ 	if (req->flags & (REQ_F_BUFFER_SELECTED|REQ_F_BUFFER_RING))
+-		req->cqe.flags |= io_put_kbuf(req, req->cqe.res, 0);
++		req->cqe.flags |= io_put_kbuf(req, req->cqe.res);
+ 
+ 	io_req_rw_cleanup(req, 0);
+ 	io_req_task_complete(req, ts);
+@@ -602,7 +602,7 @@ static int kiocb_done(struct io_kiocb *r
+ 			 */
+ 			io_req_io_end(req);
+ 			io_req_set_res(req, final_ret,
+-				       io_put_kbuf(req, ret, issue_flags));
++				       io_put_kbuf(req, ret));
+ 			io_req_rw_cleanup(req, issue_flags);
+ 			return IOU_OK;
+ 		}
+@@ -991,7 +991,7 @@ int io_read_mshot(struct io_kiocb *req,
+ 		if (ret < 0)
+ 			req_set_fail(req);
+ 	} else if (!(req->flags & REQ_F_APOLL_MULTISHOT)) {
+-		cflags = io_put_kbuf(req, ret, issue_flags);
++		cflags = io_put_kbuf(req, ret);
+ 	} else {
+ 		/*
+ 		 * Any successful return value will keep the multishot read
+@@ -999,7 +999,7 @@ int io_read_mshot(struct io_kiocb *req,
+ 		 * we fail to post a CQE, or multishot is no longer set, then
+ 		 * jump to the termination path. This request is then done.
+ 		 */
+-		cflags = io_put_kbuf(req, ret, issue_flags);
++		cflags = io_put_kbuf(req, ret);
+ 		rw->len = 0; /* similarly to above, reset len to 0 */
+ 
+ 		if (io_req_post_cqe(req, ret, cflags | IORING_CQE_F_MORE)) {
+@@ -1210,7 +1210,7 @@ int io_do_iopoll(struct io_ring_ctx *ctx
+ 		if (!smp_load_acquire(&req->iopoll_completed))
+ 			break;
+ 		nr_events++;
+-		req->cqe.flags = io_put_kbuf(req, req->cqe.res, 0);
++		req->cqe.flags = io_put_kbuf(req, req->cqe.res);
+ 		if (req->opcode != IORING_OP_URING_CMD)
+ 			io_req_rw_cleanup(req, 0);
+ 	}
 
 
 
