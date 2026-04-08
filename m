@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKlsCCeb1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:03 +0200
+	id AB+0McKj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2A43C0427
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2623C1C6C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5C6C30078C2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3AF08300B5A1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF9D3D4134;
-	Wed,  8 Apr 2026 18:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21BB34B19F;
+	Wed,  8 Apr 2026 18:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClxbyJii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzUumMBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A4D1E5724;
-	Wed,  8 Apr 2026 18:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756032727F3;
+	Wed,  8 Apr 2026 18:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672028; cv=none; b=QebUq2IjiWb8hlKFaEcrfZPyZA3c1y14+PY7Vt0tiaj/gB7B66gphTlkkR3Tl1+FLMQZkPesrhDlsr98v73FSCvmS7baCVu5qy3gfdkFQr4jVWBjWV3d1RlCOWn0+g0GkGgrcPFSOFZ0w5PEqBZkHVq1gHogK8fvVGYL83qkn60=
+	t=1775674304; cv=none; b=vBRXa3rwh9T/oIMVAgC+w4buY+Mn3tPDtS57WJIKjZLmvsxh7H/+sMfeY3vxjY2CWZ3UeYX3NTWEisZdZmMESI1+TSewfG92h2ncM63M0ZCB+K78oGPaJfJDwjLE2aWc+HGVz+Y552AkJ/7rgTVJRihchCiwjCGZO6wsX2nB4u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672028; c=relaxed/simple;
-	bh=37bC/imuJlIe3XfpqUCOWazQklF+pnJk1Dqy+vn0EHI=;
+	s=arc-20240116; t=1775674304; c=relaxed/simple;
+	bh=ad4RPspniCC01YUVNoJs++PV8Ct7Dui19yd4lUir8ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQSZktlS9TMIe/iYmCgn9JExKB6X29oeLb0GYhzg2PC56iJw556lzHnsYVII6Js52tDrP0nqVVkGg7xQZ0rWz/rA6izR2C309clHwtN2LbdXRLSKrYRa4aU3ajldXWl9bfvaAvr1MDyzooai3Q5soRQbYNRg7Pay91Cn5hUEW3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClxbyJii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47841C19421;
-	Wed,  8 Apr 2026 18:13:48 +0000 (UTC)
+	 MIME-Version; b=OXJyrh+P5EhlpwiFv8klK99r+UmDxS82s9xQrd7jyqUKQXdPtL5aErlm8rDLiUcYB7/DibqxIQb0eMyol6pVWeiFqBp8yMNK9vEecHLwxeklECUPI/P0NF4IX1LomGamtHV6X51EZwj/Kupg+sa+8m2TuzVmRoN3aM874jV78B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzUumMBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD553C19421;
+	Wed,  8 Apr 2026 18:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672028;
-	bh=37bC/imuJlIe3XfpqUCOWazQklF+pnJk1Dqy+vn0EHI=;
+	s=korg; t=1775674304;
+	bh=ad4RPspniCC01YUVNoJs++PV8Ct7Dui19yd4lUir8ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClxbyJiixvbmTpsc6KzYfB9zynhM5K5Kok9G0nxKilVT46I0zKYMOD3Mh5aDNtLPI
-	 RCZQTmQ1qGh9Hko9K7LC5AYLOC6mkk8P8ZPDi3N0mIHJ0/dkDTvZAtNQIKZFFSXFeg
-	 cJVahucKxXVXIbc/JukERq8k+KgJwjbMyn/R1q2E=
+	b=PzUumMBDLXU3NJE/389i25E25CplyiKEvTYbHZD79O6Dz/BAqItHZmKlfMfgrA5Fg
+	 PBARa/XT1LF1exu4PwCPUulP2Ww4MWm/W9nVCB9KRCNhFxzuCpThKl+xucPV+6ST5v
+	 SkG1eqhFiUYGCf3PA71X9c3+yFOv+nFQYxD3ctuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/312] btrfs: fix leak of kobject name for sub-group space_info
+Subject: [PATCH 6.19 046/311] net: enetc: do not access non-existent registers on pseudo MAC
 Date: Wed,  8 Apr 2026 20:00:46 +0200
-Message-ID: <20260408175938.590379407@linuxfoundation.org>
+Message-ID: <20260408175941.135431885@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234117-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234997-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,82 +87,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wdc.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8D2A43C0427
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email]
+X-Rspamd-Queue-Id: 6F2623C1C6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit a4376d9a5d4c9610e69def3fc0b32c86a7ab7a41 ]
+[ Upstream commit f2df9567b123145a07ee4ea7440e233f5d0232cc ]
 
-When create_space_info_sub_group() allocates elements of
-space_info->sub_group[], kobject_init_and_add() is called for each
-element via btrfs_sysfs_add_space_info_type(). However, when
-check_removing_space_info() frees these elements, it does not call
-btrfs_sysfs_remove_space_info() on them. As a result, kobject_put() is
-not called and the associated kobj->name objects are leaked.
+The ENETC4_PM_IEVENT and ENETC4_PM_CMD_CFG registers do not exist on the
+ENETC pseudo MAC, so the driver should prevent from accessing them.
 
-This memory leak is reproduced by running the blktests test case
-zbd/009 on kernels built with CONFIG_DEBUG_KMEMLEAK. The kmemleak
-feature reports the following error:
-
-unreferenced object 0xffff888112877d40 (size 16):
-  comm "mount", pid 1244, jiffies 4294996972
-  hex dump (first 16 bytes):
-    64 61 74 61 2d 72 65 6c 6f 63 00 c4 c6 a7 cb 7f  data-reloc......
-  backtrace (crc 53ffde4d):
-    __kmalloc_node_track_caller_noprof+0x619/0x870
-    kstrdup+0x42/0xc0
-    kobject_set_name_vargs+0x44/0x110
-    kobject_init_and_add+0xcf/0x150
-    btrfs_sysfs_add_space_info_type+0xfc/0x210 [btrfs]
-    create_space_info_sub_group.constprop.0+0xfb/0x1b0 [btrfs]
-    create_space_info+0x211/0x320 [btrfs]
-    btrfs_init_space_info+0x15a/0x1b0 [btrfs]
-    open_ctree+0x33c7/0x4a50 [btrfs]
-    btrfs_get_tree.cold+0x9f/0x1ee [btrfs]
-    vfs_get_tree+0x87/0x2f0
-    vfs_cmd_create+0xbd/0x280
-    __do_sys_fsconfig+0x3df/0x990
-    do_syscall_64+0x136/0x1540
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-To avoid the leak, call btrfs_sysfs_remove_space_info() instead of
-kfree() for the elements.
-
-Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
-Link: https://lore.kernel.org/linux-block/b9488881-f18d-4f47-91a5-3c9bf63955a5@wdc.com/
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 5175c1e4adca ("net: enetc: add basic support for the ENETC with pseudo MAC for i.MX94")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Tested-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324062121.2745033-4-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 880288d7358e6..1f9fbec887c03 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -4154,7 +4154,7 @@ static void check_removing_space_info(struct btrfs_space_info *space_info)
- 		for (int i = 0; i < BTRFS_SPACE_INFO_SUB_GROUP_MAX; i++) {
- 			if (space_info->sub_group[i]) {
- 				check_removing_space_info(space_info->sub_group[i]);
--				kfree(space_info->sub_group[i]);
-+				btrfs_sysfs_remove_space_info(space_info->sub_group[i]);
- 				space_info->sub_group[i] = NULL;
- 			}
- 		}
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+index 6a334f2848448..993c27e342266 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -814,6 +814,9 @@ static void enetc4_mac_tx_graceful_stop(struct enetc_pf *pf)
+ 	val |= POR_TXDIS;
+ 	enetc_port_wr(hw, ENETC4_POR, val);
+ 
++	if (enetc_is_pseudo_mac(si))
++		return;
++
+ 	enetc4_mac_wait_tx_empty(si, 0);
+ 	if (si->hw_features & ENETC_SI_F_QBU)
+ 		enetc4_mac_wait_tx_empty(si, 1);
+@@ -856,6 +859,9 @@ static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
+ 	struct enetc_si *si = pf->si;
+ 	u32 val;
+ 
++	if (enetc_is_pseudo_mac(si))
++		goto check_rx_busy;
++
+ 	if (si->hw_features & ENETC_SI_F_QBU) {
+ 		val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(1));
+ 		val &= ~PM_CMD_CFG_RX_EN;
+@@ -868,6 +874,7 @@ static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
+ 	enetc_port_wr(hw, ENETC4_PM_CMD_CFG(0), val);
+ 	enetc4_mac_wait_rx_empty(si, 0);
+ 
++check_rx_busy:
+ 	if (read_poll_timeout(enetc_port_rd, val,
+ 			      !(val & PSR_RX_BUSY),
+ 			      100, 10000, false, hw,
 -- 
 2.53.0
 
