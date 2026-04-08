@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-235214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OorDT6s1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:58 +0200
+	id mDXeKyCk1mmUGwgAu9opvQ
+	(envelope-from <stable+bounces-234930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17F03C307E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3964A3C1D9C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66AE4320C9F0
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF21D307C229
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046873D9DDE;
-	Wed,  8 Apr 2026 19:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4832A3D8912;
+	Wed,  8 Apr 2026 18:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9HpuxyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqM+6wM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6323D9DD6;
-	Wed,  8 Apr 2026 19:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096AD2727F3;
+	Wed,  8 Apr 2026 18:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674863; cv=none; b=OKZejmVsWn4KIhrmnS/DT2bOJHh8IpARly3oF3cSsUphWJ0SxEv3uQUhaqk8An2bk7C2wcRI9jDJsEsjr9EoI+LEdMRMCwkmLaZSFIGNyzrwaejOms5Q5svFa5SOBn4BymkpQa9t2D+gVt+Ec749CnBZNeszX9k8SJUQuNsOjoU=
+	t=1775674131; cv=none; b=JCiLRn1PcFLrQHZcdLvCnP2qXCwJRIdO7Qx4+oCl1Emx2Kgg1+uIMqPELdbpfT05IWs9pZ1a6u3wJGdSlEZNHlOornYHL5+VXsVKoUQjaf/zSjshwRKVQPR3GAWTtdRG6mVM65v0Gy8pbNXbCZdGM+TVFV7bQeSi+CUBkEyd2u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674863; c=relaxed/simple;
-	bh=Pc64yaId9e8ftOLjVLmMp7Aic8OT3OzW10ORTSqQvyE=;
+	s=arc-20240116; t=1775674131; c=relaxed/simple;
+	bh=5LH7mfYucXc9LZ7x/iA6ok8u9gLs4FPVrxOSIkCf1FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sL/9NgAKttGGzElMCMyLJkV2fDlA3FMM13D6kfH16a6VeqXdyaYlsY+he4RT7x7PY7o16WCcN5b8uyAkGh0MweSNPfbYVUSDOw+XrI3MR1v5APvL9gC1KGdSuPgLkvJfDD8sYnCxB73I6OFoHjLn7x3cwpsxxQHFsKMXO9Kij4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9HpuxyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436B2C19421;
-	Wed,  8 Apr 2026 19:01:03 +0000 (UTC)
+	 MIME-Version; b=U7mi7ZTt444GQ3v8ISFxxrBEBhoGA4CWRUcvRqLlrrtUsTvMxeZ6eKwCeccmq5QExq0B4HY8WWw1HTKD1QtJWSo9M5JeAKHlo9PI6tLmd6HVnTbslxgZwwZZjrZkiCdWrOypQlAxN6/SY+t3qQ6i7HdZCm3MiOhqg6X2msLYpzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqM+6wM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B60DC19421;
+	Wed,  8 Apr 2026 18:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674863;
-	bh=Pc64yaId9e8ftOLjVLmMp7Aic8OT3OzW10ORTSqQvyE=;
+	s=korg; t=1775674130;
+	bh=5LH7mfYucXc9LZ7x/iA6ok8u9gLs4FPVrxOSIkCf1FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9HpuxyYHYD9HjlB+nVcL2wVqqYkaqs4rJyF89KrGOv1utpR9WJYhfTkUKubQ/E3j
-	 ymNHxe2HCkSZAXyq9/Gix5Kockj71uWe06iwTdY+QlnBSm9S3flbHUDRTZeRqFPlwB
-	 DX0T2NpssXiOn6X1/nOE1GFKU0Cgao6Ik04Pk2Bk=
+	b=RqM+6wM5RLKDAkY+1IjY1PGNIMaijenoE8hWITYzo9x8BjUhjTGMvODDDgZMHEZL9
+	 HqbwW4QCbhoEBsAEG5brN0RARkHbhuoTWWZFOZqctZ14EEab8ltD42379yda2ajEUn
+	 AFRCk28NgbnqGlMskNtJzHRMXjJumNQS2Vm9dkZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Nadja Hariz <Nadia.Hariz@ibm.com>,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.19 262/311] s390/zcrypt: Fix memory leak with CCA cards used as accelerator
+	Li Chen <me@linux.beauty>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 222/242] ext4: publish jinode after initialization
 Date: Wed,  8 Apr 2026 20:04:22 +0200
-Message-ID: <20260408175949.166837126@linuxfoundation.org>
+Message-ID: <20260408175935.398238039@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235214-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234930-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,139 +87,164 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A17F03C307E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,suse.cz:email,linux.beauty:email]
+X-Rspamd-Queue-Id: 3964A3C1D9C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Li Chen <me@linux.beauty>
 
-commit c8d46f17c2fc7d25c18e60c008928aecab26184d upstream.
+[ Upstream commit 1aec30021edd410b986c156f195f3d23959a9d11 ]
 
-Tests showed that there is a memory leak if CCA cards are used as
-accelerator for clear key RSA requests (ME and CRT). With the last
-rework for the memory allocation the AP messages are allocated by
-ap_init_apmsg() but for some reason on two places (ME and CRT) the
-older allocation was still in place. So the first allocation simple
-was never freed.
+ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
+It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
+allowing a reader to observe a non-NULL jinode with i_vfs_inode
+still unset.
 
-Fixes: 57db62a130ce ("s390/ap/zcrypt: Rework AP message buffer allocation")
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/linux-s390/CAHj4cs9H67Uz0iVaRQv447p7JFPRPy3TKAT4=Y6_e=wSHCZM5w@mail.gmail.com/
-Reported-by: Nadja Hariz <Nadia.Hariz@ibm.com>
+The fast commit flush path can then pass this jinode to
+jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
+may crash.
+
+Below is the crash I observe:
+```
+BUG: unable to handle page fault for address: 000000010beb47f4
+PGD 110e51067 P4D 110e51067 PUD 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+RIP: 0010:xas_find_marked+0x3d/0x2e0
+Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
+RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
+RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
+RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
+RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
+R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
+R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
+FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+<TASK>
+filemap_get_folios_tag+0x87/0x2a0
+__filemap_fdatawait_range+0x5f/0xd0
+? srso_alias_return_thunk+0x5/0xfbef5
+? __schedule+0x3e7/0x10c0
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? cap_safe_nice+0x37/0x70
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+filemap_fdatawait_range_keep_errors+0x12/0x40
+ext4_fc_commit+0x697/0x8b0
+? ext4_file_write_iter+0x64b/0x950
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? vfs_write+0x356/0x480
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+ext4_sync_file+0xf7/0x370
+do_fsync+0x3b/0x80
+? syscall_trace_enter+0x108/0x1d0
+__x64_sys_fdatasync+0x16/0x20
+do_syscall_64+0x62/0x2c0
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+...
+```
+
+Fix this by initializing the jbd2_inode first.
+Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
+initialization. Readers use READ_ONCE() to fetch the pointer.
+
+Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
 Cc: stable@vger.kernel.org
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Li Chen <me@linux.beauty>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ adapted READ_ONCE(ei->jinode) to use pos->jinode ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/zcrypt_msgtype6.c |   32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ fs/ext4/fast_commit.c |    4 ++--
+ fs/ext4/inode.c       |   15 +++++++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/s390/crypto/zcrypt_msgtype6.c
-+++ b/drivers/s390/crypto/zcrypt_msgtype6.c
-@@ -953,6 +953,10 @@ static atomic_t zcrypt_step = ATOMIC_INI
- /*
-  * The request distributor calls this function if it picked the CEXxC
-  * device to handle a modexpo request.
-+ * This function assumes that ap_msg has been initialized with
-+ * ap_init_apmsg() and thus a valid buffer with the size of
-+ * ap_msg->bufsize is available within ap_msg. Also the caller has
-+ * to make sure ap_release_apmsg() is always called even on failure.
-  * @zq: pointer to zcrypt_queue structure that identifies the
-  *	CEXxC device to the request distributor
-  * @mex: pointer to the modexpo request buffer
-@@ -964,21 +968,17 @@ static long zcrypt_msgtype6_modexpo(stru
- 	struct ap_response_type *resp_type = &ap_msg->response;
- 	int rc;
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -997,7 +997,7 @@ static int ext4_fc_submit_inode_data_all
+ 			finish_wait(&ei->i_fc_wait, &wait);
+ 		}
+ 		spin_unlock(&sbi->s_fc_lock);
+-		ret = jbd2_submit_inode_data(journal, ei->jinode);
++		ret = jbd2_submit_inode_data(journal, READ_ONCE(ei->jinode));
+ 		if (ret)
+ 			return ret;
+ 		spin_lock(&sbi->s_fc_lock);
+@@ -1022,7 +1022,7 @@ static int ext4_fc_wait_inode_data_all(j
+ 			continue;
+ 		spin_unlock(&sbi->s_fc_lock);
  
--	ap_msg->msg = (void *)get_zeroed_page(GFP_KERNEL);
--	if (!ap_msg->msg)
--		return -ENOMEM;
--	ap_msg->bufsize = PAGE_SIZE;
- 	ap_msg->receive = zcrypt_msgtype6_receive;
- 	ap_msg->psmid = (((unsigned long)current->pid) << 32) +
- 		atomic_inc_return(&zcrypt_step);
- 	rc = icamex_msg_to_type6mex_msgx(zq, ap_msg, mex);
- 	if (rc)
--		goto out_free;
-+		goto out;
- 	resp_type->type = CEXXC_RESPONSE_TYPE_ICA;
- 	init_completion(&resp_type->work);
- 	rc = ap_queue_message(zq->queue, ap_msg);
- 	if (rc)
--		goto out_free;
-+		goto out;
- 	rc = wait_for_completion_interruptible(&resp_type->work);
- 	if (rc == 0) {
- 		rc = ap_msg->rc;
-@@ -991,15 +991,17 @@ static long zcrypt_msgtype6_modexpo(stru
- 		ap_cancel_message(zq->queue, ap_msg);
- 	}
- 
--out_free:
--	free_page((unsigned long)ap_msg->msg);
--	ap_msg->msg = NULL;
-+out:
- 	return rc;
+-		ret = jbd2_wait_inode_data(journal, pos->jinode);
++		ret = jbd2_wait_inode_data(journal, READ_ONCE(pos->jinode));
+ 		if (ret)
+ 			return ret;
+ 		spin_lock(&sbi->s_fc_lock);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -128,6 +128,8 @@ void ext4_inode_csum_set(struct inode *i
+ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 					      loff_t new_size)
+ {
++	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
++
+ 	trace_ext4_begin_ordered_truncate(inode, new_size);
+ 	/*
+ 	 * If jinode is zero, then we never opened the file for
+@@ -135,10 +137,10 @@ static inline int ext4_begin_ordered_tru
+ 	 * jbd2_journal_begin_ordered_truncate() since there's no
+ 	 * outstanding writes we need to flush.
+ 	 */
+-	if (!EXT4_I(inode)->jinode)
++	if (!jinode)
+ 		return 0;
+ 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
+-						   EXT4_I(inode)->jinode,
++						   jinode,
+ 						   new_size);
  }
  
- /*
-  * The request distributor calls this function if it picked the CEXxC
-  * device to handle a modexpo_crt request.
-+ * This function assumes that ap_msg has been initialized with
-+ * ap_init_apmsg() and thus a valid buffer with the size of
-+ * ap_msg->bufsize is available within ap_msg. Also the caller has
-+ * to make sure ap_release_apmsg() is always called even on failure.
-  * @zq: pointer to zcrypt_queue structure that identifies the
-  *	CEXxC device to the request distributor
-  * @crt: pointer to the modexpoc_crt request buffer
-@@ -1011,21 +1013,17 @@ static long zcrypt_msgtype6_modexpo_crt(
- 	struct ap_response_type *resp_type = &ap_msg->response;
- 	int rc;
- 
--	ap_msg->msg = (void *)get_zeroed_page(GFP_KERNEL);
--	if (!ap_msg->msg)
--		return -ENOMEM;
--	ap_msg->bufsize = PAGE_SIZE;
- 	ap_msg->receive = zcrypt_msgtype6_receive;
- 	ap_msg->psmid = (((unsigned long)current->pid) << 32) +
- 		atomic_inc_return(&zcrypt_step);
- 	rc = icacrt_msg_to_type6crt_msgx(zq, ap_msg, crt);
- 	if (rc)
--		goto out_free;
-+		goto out;
- 	resp_type->type = CEXXC_RESPONSE_TYPE_ICA;
- 	init_completion(&resp_type->work);
- 	rc = ap_queue_message(zq->queue, ap_msg);
- 	if (rc)
--		goto out_free;
-+		goto out;
- 	rc = wait_for_completion_interruptible(&resp_type->work);
- 	if (rc == 0) {
- 		rc = ap_msg->rc;
-@@ -1038,9 +1036,7 @@ static long zcrypt_msgtype6_modexpo_crt(
- 		ap_cancel_message(zq->queue, ap_msg);
+@@ -4120,8 +4122,13 @@ int ext4_inode_attach_jinode(struct inod
+ 			spin_unlock(&inode->i_lock);
+ 			return -ENOMEM;
+ 		}
+-		ei->jinode = jinode;
+-		jbd2_journal_init_jbd_inode(ei->jinode, inode);
++		jbd2_journal_init_jbd_inode(jinode, inode);
++		/*
++		 * Publish ->jinode only after it is fully initialized so that
++		 * readers never observe a partially initialized jbd2_inode.
++		 */
++		smp_wmb();
++		WRITE_ONCE(ei->jinode, jinode);
+ 		jinode = NULL;
  	}
- 
--out_free:
--	free_page((unsigned long)ap_msg->msg);
--	ap_msg->msg = NULL;
-+out:
- 	return rc;
- }
- 
+ 	spin_unlock(&inode->i_lock);
 
 
 
