@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGHCBaKg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234616-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:26 +0200
+	id iMpzBxCc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2F53C122B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889563C0664
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B61613031F0B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3AC443026324
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD8D35C1B2;
-	Wed,  8 Apr 2026 18:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED2F3A6B6B;
+	Wed,  8 Apr 2026 18:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="io0dJ/TE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cViw0FnP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E568928C87C;
-	Wed,  8 Apr 2026 18:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C590235CB6F;
+	Wed,  8 Apr 2026 18:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673321; cv=none; b=Q8nRBXq+XCAISALdwI/IXaAFyaYiPbCCzXSVCeff2X7q6kYi2cIHsFh1ALoFQp/UpQRRBu6xvF52u29Tpv2xuyMgGKKzpYu0KDuDmyGK7h4Q0YaWTbOp6DRJwPk2I+w/7uCiYEoQ300Y8zChu4hPzheSNNX7TK/fake/MGh1igA=
+	t=1775672159; cv=none; b=AY8/1hsBNhUHD92MAFJi9WYpxDTmHa7CaXxOU71vdiYGdGlWYk3OD/PvRrY9sHrDj9vsQyvf2FEGXK6JcO6tHdGhzMO2Vai+4hy4rHZUkqP3Zbjg2Z7nBAJONVl8d4X0iTwtOvuqBRC6mJd8OcaUTVYUU1Pa+EhLr76Dg2uFyX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673321; c=relaxed/simple;
-	bh=rQtpjtTJjGsJd29kjcByeePU5a7xaE5QCNznk0rrf+o=;
+	s=arc-20240116; t=1775672159; c=relaxed/simple;
+	bh=LqJQSRl6yKT5fVqBjSiV+CLKgXQii9KFATEMNTXYy7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UvbPCX9Wyf57LSc5JTv9v4W6AM7dxkKptTrpWP0Wn05NVkkCpqoCl7eSxF04kiSNGhpdekRhSGv3WsEMXJGUX8j2Ox8deIUARW1SLqIiNoVFbhzyHfDUDqwk7xE+nabFYAbTmhSRMlIbjQJgVHuJ9XMrlJBoIrUfwgT+az9IwbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=io0dJ/TE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F30C19421;
-	Wed,  8 Apr 2026 18:35:20 +0000 (UTC)
+	 MIME-Version; b=k925WkPX2Lo+7r7f5DzCMXyMPKLQA6DSmoeHl/DFYRmrUfy8/3ZUnq2x1jAYx99zUUkmky3YIhtGiZOTtuGjzBD9iW02GEX4Ygfz9q+51fVPLyfOuThkQEInqLLnhhM2X4ACEwciXsgK9mc/bZg3D86wzSxVXNeAdisAd8Hcu3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cViw0FnP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5266DC2BC87;
+	Wed,  8 Apr 2026 18:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673320;
-	bh=rQtpjtTJjGsJd29kjcByeePU5a7xaE5QCNznk0rrf+o=;
+	s=korg; t=1775672159;
+	bh=LqJQSRl6yKT5fVqBjSiV+CLKgXQii9KFATEMNTXYy7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=io0dJ/TExfw0IpvmLy6GQfRj9bbSbcqNPMVC1Uy5xRnkFZPieCoB71gpvi69FgxRy
-	 LVFXidMWvJ5If7nZ20NvPuMfBs/cjG+mI31dSY5rmyeMfWgjbTsVnLAhAi35K8sYeD
-	 WTLFUFYA7fbrSTvDnCnBiqSYYfL/x2Q3BLZfYx1g=
+	b=cViw0FnPO2J5W0YGd8msXIhWjzg2lIUucGwnyccVsl6/EZtss1BBtFvw/b4OUGVnF
+	 o+atfKVqwtKKD1QvQ/QyR8o/21V0uI8yU1tKV68M3Ew2jW786ZjfKRBILe+1Qw7/qG
+	 Gox3edBQKq4SFtZ3EfwMpdvJNlEUwbeMoCXu7gKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hkbinbin <hkbinbinbin@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.18 144/277] Bluetooth: hci_sync: fix stack buffer overflow in hci_le_big_create_sync
+	Wanquan Zhong <wanquan.zhong@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 212/312] USB: serial: option: add support for Rolling Wireless RW135R-GL
 Date: Wed,  8 Apr 2026 20:02:09 +0200
-Message-ID: <20260408175939.250261107@linuxfoundation.org>
+Message-ID: <20260408175941.677862679@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234616-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,molgen.mpg.de,intel.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234168-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,mpg.de:email]
-X-Rspamd-Queue-Id: 2D2F53C122B
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 889563C0664
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hkbinbin <hkbinbinbin@gmail.com>
+From: Wanquan Zhong <wanquan.zhong@fibocom.com>
 
-commit bc39a094730ce062fa034a529c93147c096cb488 upstream.
+commit 01e8d0f742222f1e68f48180d5480097adf7ae9f upstream.
 
-hci_le_big_create_sync() uses DEFINE_FLEX to allocate a
-struct hci_cp_le_big_create_sync on the stack with room for 0x11 (17)
-BIS entries.  However, conn->num_bis can hold up to HCI_MAX_ISO_BIS (31)
-entries — validated against ISO_MAX_NUM_BIS (0x1f) in the caller
-hci_conn_big_create_sync().  When conn->num_bis is between 18 and 31,
-the memcpy that copies conn->bis into cp->bis writes up to 14 bytes
-past the stack buffer, corrupting adjacent stack memory.
+Add VID/PID 33f8:1003 for the Rolling Wireless RW135R-GL M.2 module,
+which is used in laptop debug cards with MBIM interface for
+Linux/Chrome OS. The device supports mbim, pipe functionalities.
 
-This is trivially reproducible: binding an ISO socket with
-bc_num_bis = ISO_MAX_NUM_BIS (31) and calling listen() will
-eventually trigger hci_le_big_create_sync() from the HCI command
-sync worker, causing a KASAN-detectable stack-out-of-bounds write:
+Here are the outputs of usb-devices:
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-  BUG: KASAN: stack-out-of-bounds in hci_le_big_create_sync+0x256/0x3b0
-  Write of size 31 at addr ffffc90000487b48 by task kworker/u9:0/71
-
-Fix this by changing the DEFINE_FLEX count from the incorrect 0x11 to
-HCI_MAX_ISO_BIS, which matches the maximum number of BIS entries that
-conn->bis can actually carry.
-
-Fixes: 42ecf1947135 ("Bluetooth: ISO: Do not emit LE BIG Create Sync if previous is pending")
+Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: hkbinbin <hkbinbinbin@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -7131,7 +7131,8 @@ static void create_big_complete(struct h
- 
- static int hci_le_big_create_sync(struct hci_dev *hdev, void *data)
- {
--	DEFINE_FLEX(struct hci_cp_le_big_create_sync, cp, bis, num_bis, 0x11);
-+	DEFINE_FLEX(struct hci_cp_le_big_create_sync, cp, bis, num_bis,
-+		    HCI_MAX_ISO_BIS);
- 	struct hci_conn *conn = data;
- 	struct bt_iso_qos *qos = &conn->iso_qos;
- 	int err;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2464,6 +2464,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
