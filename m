@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-233742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id bqyAEn+21WmU9AcAu9opvQ
-	(envelope-from <stable+bounces-233742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 03:59:27 +0200
+	id 6MCCLoO21WmU9AcAu9opvQ
+	(envelope-from <stable+bounces-233743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 03:59:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A593B6264
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 03:59:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D553B626B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 03:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 38779301FAA7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 01:59:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6196A30215A2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 01:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6507A35B632;
-	Wed,  8 Apr 2026 01:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB1335B632;
+	Wed,  8 Apr 2026 01:59:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B400341AB1
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 01:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C495341AB1
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 01:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775613564; cv=none; b=EGzeScLjI+CX/QVYgQCaQi/qvFd8/mcFva2I/k1D9UvzpTXC9c0QMlJJNVCL86ZNji4DFz9R9AGkYXTS3EJA7lIcAr4RN2+dmEYIPUOaQl6DR5OjRqTbZZjacSPy2rJNKNXsNtlldabMBaKaziEPxTE/l0KQsYr21ZglzzLFIIc=
+	t=1775613568; cv=none; b=GzeUGLxZeD0RX1LAW+xPG4hGnSGgpIYqtXqKH4fBidVOqmZgOcMFkgEidV9uxK/T/LIhukRJ687xoFa4MYmaI4309/cWQdAmdaYvUS400Y6x7dreOAx3u+9A4hxFzmqS5JU93JYVDBPCRoeLCVyAHVKw45ysUHvQK5gacCglVmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775613564; c=relaxed/simple;
-	bh=RGg3R69Lpun/9v7d0yNJJGyE3d/fUtiYplH8K+bLnJo=;
+	s=arc-20240116; t=1775613568; c=relaxed/simple;
+	bh=PMGQMuc1d9s7tdvKaRBWNE1MMpBRhOvAiv2+OT4z+k8=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=QVGyGpnblF4SW7F8lmqcG+9nri2U7doKKcuia7V05bIhLxZqdbLmSlXehWvGzSAHWzgvg4d/vHwj/wl1GGGjaKxtE/0+XUMoRwqJkubZPmdpI4ryGyzCMbAdG5LbfPNnDel6CBQTejJJPq2fZ2l9PSKY4ASTxXcrD7CEdbDiSCc=
+	 MIME-Version:Content-Type; b=P/YuFVhIYM/rQWCdOREqmYWu6KGAIHZqg5Guj1sLRkLcU+swXdcXkK5QXeCTZZBLWHZ6rvWkVow6YDSQWKgbZZnJYOOIRMOj62DgI3zRPRzGXAxTMSH9zs54e4rluKl6lTXfqYkwWdgE3T1OXJmSeero/UF5ObnInsYQpbgtYBc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
 Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id ADCA392009C; Wed,  8 Apr 2026 03:59:21 +0200 (CEST)
+	id 43BF692009C; Wed,  8 Apr 2026 03:59:26 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id A773892009B;
-	Wed,  8 Apr 2026 02:59:21 +0100 (BST)
-Date: Wed, 8 Apr 2026 02:59:21 +0100 (BST)
+	by angie.orcam.me.uk (Postfix) with ESMTP id 3E0CD92009B;
+	Wed,  8 Apr 2026 02:59:26 +0100 (BST)
+Date: Wed, 8 Apr 2026 02:59:26 +0100 (BST)
 From: "Maciej W. Rozycki" <macro@orcam.me.uk>
 To: stable@vger.kernel.org
 cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6.y] MIPS: mm: Rewrite TLB uniquification for the hidden
+Subject: [PATCH 6.1.y] MIPS: mm: Rewrite TLB uniquification for the hidden
  bit feature
-In-Reply-To: <2026040730-expend-maimed-dc2a@gregkh>
-Message-ID: <alpine.DEB.2.21.2604080206130.29980@angie.orcam.me.uk>
-References: <2026040730-expend-maimed-dc2a@gregkh>
+In-Reply-To: <2026040731-snowbound-selected-e9db@gregkh>
+Message-ID: <alpine.DEB.2.21.2604080133190.29980@angie.orcam.me.uk>
+References: <2026040731-snowbound-selected-e9db@gregkh>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -54,13 +54,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[bounces-233742-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233743-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DMARC_NA(0.00)[orcam.me.uk];
@@ -76,8 +76,8 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.925];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,eb.global:url,angie.orcam.me.uk:mid,orcam.me.uk:email]
-X-Rspamd-Queue-Id: A4A593B6264
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,eb.global:url,angie.orcam.me.uk:mid]
+X-Rspamd-Queue-Id: 74D553B626B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -116,18 +116,18 @@ Details of the algorithm chosen are given across the code itself.
 Fixes: 9f048fa48740 ("MIPS: mm: Prevent a TLB shutdown on initial uniquification")
 Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: stable@vger.kernel.org # 6.6.x: 8374c2cb83b9: MIPS: Always record SEGBITS in cpu_data.vmbits
-Cc: stable@vger.kernel.org # 6.6.x: 74283cfe2163: MIPS: mm: Suppress TLB uniquification on EHINV hardware
-Cc: stable@vger.kernel.org # 6.6.x
+Cc: stable@vger.kernel.org # 6.1.x: 8374c2cb83b9: MIPS: Always record SEGBITS in cpu_data.vmbits
+Cc: stable@vger.kernel.org # 6.1.x: 74283cfe2163: MIPS: mm: Suppress TLB uniquification on EHINV hardware
+Cc: stable@vger.kernel.org # 6.1.x
 ---
-Fixed a conflict in headers due to a later addition of <asm/tlbex.h>.
+Fixed a conflict in headers due to a later addition of <asm/tlbex.h>.  
 Verified with a Broadcom BCM91250A SWARM configuration (build + boot).
 ---
  arch/mips/mm/tlb-r4k.c | 282 +++++++++++++++++++++++++++++++++--------
  1 file changed, 228 insertions(+), 54 deletions(-)
 
 diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index c36bd4d6275e..7db3928e0d3f 100644
+index c88cd41360df..22112cce23ae 100644
 --- a/arch/mips/mm/tlb-r4k.c
 +++ b/arch/mips/mm/tlb-r4k.c
 @@ -13,6 +13,7 @@
@@ -146,7 +146,7 @@ index c36bd4d6275e..7db3928e0d3f 100644
  #include <asm/tlbmisc.h>
  
  extern void build_tlb_refill_handler(void);
-@@ -509,87 +511,259 @@ static int __init set_ntlb(char *str)
+@@ -501,87 +503,259 @@ static int __init set_ntlb(char *str)
  __setup("ntlb=", set_ntlb);
  
  
