@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-234893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDwwJKKj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:14 +0200
+	id nZmsIOid1mkEGwgAu9opvQ
+	(envelope-from <stable+bounces-234263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094843C1C29
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A548E3C0B9D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D74D3064E97
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72A45308DF4E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BBD38911C;
-	Wed,  8 Apr 2026 18:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10963ACA41;
+	Wed,  8 Apr 2026 18:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N08OKsdB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTULp3qQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2BA33121F;
-	Wed,  8 Apr 2026 18:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A363D4129;
+	Wed,  8 Apr 2026 18:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674035; cv=none; b=ggsFZCtyGOg9zgxYboCeKSxJM+NGPQc6mv9yIzI3QHVuJIzwrm1hiQhmO6nccL9NxAY5p2zGv6ZP463NzYO0oUJXO8BzNuTFO5dhQDUQ6WtHKXWLMh5B3tLlyfWTcjGjgbdoCxJR56fIAoKXZdpcckrXKG1OUDe/T2J0mbonCrU=
+	t=1775672406; cv=none; b=piWoFUB3nXaD1VP/Jbj3PljVz85g/FIQtoKl/MIpOiDDBBF54mKkWXpqeRvga4folmT+6vu0v1aIUM0gCZhopSK4H7XtxGnPmPGNzmKNZgN0Ao4WVsZIrkrUgi2RnqGzlpiU4uE42kEU4t2C4KZIsdRGI+OkAJfc5YmhmlClZQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674035; c=relaxed/simple;
-	bh=n1KblLIjyxqJwZ8h+zBQcCZmA9unnHmie6wlfyQATrE=;
+	s=arc-20240116; t=1775672406; c=relaxed/simple;
+	bh=4Bw99cI7wEvXEaUoi4HWlQcw8eKulXrWXlJL2cvuDd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+zzypWU4O+sP/Zl/3uWEjgh8/mqhVzvKPomBcFUIYSnEon1mcbYow9TpJrnH3mUR49ZjfiojyvxOiGY2rtja2B1rObRMS9ZGutG9kDOjaA10M6lsSnMkcPF4PWbSV0qwbmE7PxfT95Z5lA/OG2fRTJkkIun/06kImmsRMf1rWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N08OKsdB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35857C19421;
-	Wed,  8 Apr 2026 18:47:15 +0000 (UTC)
+	 MIME-Version; b=N39g1hhNqgXVVwE5Bljkci08p9ByHTGHArOyzm1L1kAJPn1oHkjIEwIBUsscqBffKpkHykEzvQm6Rz5DQ7CYSNcndeorBF/2m1GVLISNAtwWtlibF7BoiyauirZCEL9E+ONovzrQ/VjM11ertsqlQiXS0GC7PDl/34ICKK81SGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTULp3qQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E94C19421;
+	Wed,  8 Apr 2026 18:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674035;
-	bh=n1KblLIjyxqJwZ8h+zBQcCZmA9unnHmie6wlfyQATrE=;
+	s=korg; t=1775672406;
+	bh=4Bw99cI7wEvXEaUoi4HWlQcw8eKulXrWXlJL2cvuDd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N08OKsdBFsgcb8KeeaYarcOseqkmudqjCYHnnfumIbW7NrL2HmGe2BcA7Ing1vPzz
-	 ivGaQJqNV0ZoEGEFs29px1FnmTmGdU4WpsiMdmvgWhtOetao//z5pmLbzJEyBF9vsA
-	 ZNsMUiRKnqkd288hOSaE2GKsdIxcb8U24G6oyiws=
+	b=tTULp3qQOW6a20Inw1P4hzwd9P6iTsZuDYQq6qSWrIr7BdlknliaIZk7XdIn3zsVt
+	 YAm2S+d3/WquZMfYeKcOCF+pSY25WOWOOm9rt8YUMODvsrHk/AZv498qCbRpK3ZWQH
+	 9iR0A/HF/7iIOY7s37ewFLbdyarKHqm6amu26p/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Luiz Augusto von Dentz" <luiz.von.dentz@intel.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zorro Lang <zlang@redhat.com>,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 185/242] crypto: tegra - Add missing CRYPTO_ALG_ASYNC
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 6.1 308/312] Bluetooth: eir: Fix possible crashes on eir_create_adv_data
 Date: Wed,  8 Apr 2026 20:03:45 +0200
-Message-ID: <20260408175934.007785073@linuxfoundation.org>
+Message-ID: <20260408175945.279025812@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,248 +65,122 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234263-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234893-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 094843C1C29
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,cp.data:url]
+X-Rspamd-Queue-Id: A548E3C0B9D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 4b56770d345524fc2acc143a2b85539cf7d74bc1 upstream.
+[ Upstream commit 47c03902269aff377f959dc3fd94a9733aa31d6e ]
 
-The tegra crypto driver failed to set the CRYPTO_ALG_ASYNC on its
-asynchronous algorithms, causing the crypto API to select them for users
-that request only synchronous algorithms.  This causes crashes (at
-least).  Fix this by adding the flag like what the other drivers do.
-Also remove the unnecessary CRYPTO_ALG_TYPE_* flags, since those just
-get ignored and overridden by the registration function anyway.
+eir_create_adv_data may attempt to add EIR_FLAGS and EIR_TX_POWER
+without checking if that would fit.
 
-Reported-by: Zorro Lang <zlang@redhat.com>
-Closes: https://lore.kernel.org/r/20260314080937.pghb4aa7d4je3mhh@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com
-Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
-Cc: stable@vger.kernel.org
-Cc: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://github.com/bluez/bluez/issues/1117#issuecomment-2958244066
+Fixes: 01ce70b0a274 ("Bluetooth: eir: Move EIR/Adv Data functions to its own file")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Use pdu.data instead of pdu->data in hci_set_ext_adv_data_sync()
+ to keep context consistency. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/tegra/tegra-se-aes.c  |   11 +++++++----
- drivers/crypto/tegra/tegra-se-hash.c |   30 +++++++++++++++++-------------
- 2 files changed, 24 insertions(+), 17 deletions(-)
+ net/bluetooth/eir.c      |    7 ++++---
+ net/bluetooth/eir.h      |    2 +-
+ net/bluetooth/hci_sync.c |    5 +++--
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/crypto/tegra/tegra-se-aes.c
-+++ b/drivers/crypto/tegra/tegra-se-aes.c
-@@ -480,7 +480,7 @@ static struct tegra_se_alg tegra_aes_alg
- 				.cra_name = "cbc(aes)",
- 				.cra_driver_name = "cbc-aes-tegra",
- 				.cra_priority = 500,
--				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = AES_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
- 				.cra_alignmask = 0xf,
-@@ -501,7 +501,7 @@ static struct tegra_se_alg tegra_aes_alg
- 				.cra_name = "ecb(aes)",
- 				.cra_driver_name = "ecb-aes-tegra",
- 				.cra_priority = 500,
--				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = AES_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
- 				.cra_alignmask = 0xf,
-@@ -523,7 +523,7 @@ static struct tegra_se_alg tegra_aes_alg
- 				.cra_name = "ctr(aes)",
- 				.cra_driver_name = "ctr-aes-tegra",
- 				.cra_priority = 500,
--				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = 1,
- 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
- 				.cra_alignmask = 0xf,
-@@ -545,6 +545,7 @@ static struct tegra_se_alg tegra_aes_alg
- 				.cra_name = "xts(aes)",
- 				.cra_driver_name = "xts-aes-tegra",
- 				.cra_priority = 500,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = AES_BLOCK_SIZE,
- 				.cra_ctxsize	   = sizeof(struct tegra_aes_ctx),
- 				.cra_alignmask	   = (__alignof__(u64) - 1),
-@@ -1804,6 +1805,7 @@ static struct tegra_se_alg tegra_aead_al
- 				.cra_name = "gcm(aes)",
- 				.cra_driver_name = "gcm-aes-tegra",
- 				.cra_priority = 500,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = 1,
- 				.cra_ctxsize = sizeof(struct tegra_aead_ctx),
- 				.cra_alignmask = 0xf,
-@@ -1826,6 +1828,7 @@ static struct tegra_se_alg tegra_aead_al
- 				.cra_name = "ccm(aes)",
- 				.cra_driver_name = "ccm-aes-tegra",
- 				.cra_priority = 500,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = 1,
- 				.cra_ctxsize = sizeof(struct tegra_aead_ctx),
- 				.cra_alignmask = 0xf,
-@@ -1853,7 +1856,7 @@ static struct tegra_se_alg tegra_cmac_al
- 				.cra_name = "cmac(aes)",
- 				.cra_driver_name = "tegra-se-cmac",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = AES_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_cmac_ctx),
- 				.cra_alignmask = 0,
---- a/drivers/crypto/tegra/tegra-se-hash.c
-+++ b/drivers/crypto/tegra/tegra-se-hash.c
-@@ -698,7 +698,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha1",
- 				.cra_driver_name = "tegra-se-sha1",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA1_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -723,7 +723,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha224",
- 				.cra_driver_name = "tegra-se-sha224",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA224_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -748,7 +748,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha256",
- 				.cra_driver_name = "tegra-se-sha256",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA256_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -773,7 +773,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha384",
- 				.cra_driver_name = "tegra-se-sha384",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA384_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -798,7 +798,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha512",
- 				.cra_driver_name = "tegra-se-sha512",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA512_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -823,7 +823,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha3-224",
- 				.cra_driver_name = "tegra-se-sha3-224",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA3_224_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -848,7 +848,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha3-256",
- 				.cra_driver_name = "tegra-se-sha3-256",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA3_256_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -873,7 +873,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha3-384",
- 				.cra_driver_name = "tegra-se-sha3-384",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA3_384_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -898,7 +898,7 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "sha3-512",
- 				.cra_driver_name = "tegra-se-sha3-512",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = SHA3_512_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -925,7 +925,8 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "hmac(sha224)",
- 				.cra_driver_name = "tegra-se-hmac-sha224",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
-+				.cra_flags = CRYPTO_ALG_ASYNC |
-+					     CRYPTO_ALG_NEED_FALLBACK,
- 				.cra_blocksize = SHA224_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -952,7 +953,8 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "hmac(sha256)",
- 				.cra_driver_name = "tegra-se-hmac-sha256",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
-+				.cra_flags = CRYPTO_ALG_ASYNC |
-+					     CRYPTO_ALG_NEED_FALLBACK,
- 				.cra_blocksize = SHA256_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -979,7 +981,8 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "hmac(sha384)",
- 				.cra_driver_name = "tegra-se-hmac-sha384",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
-+				.cra_flags = CRYPTO_ALG_ASYNC |
-+					     CRYPTO_ALG_NEED_FALLBACK,
- 				.cra_blocksize = SHA384_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
-@@ -1006,7 +1009,8 @@ static struct tegra_se_alg tegra_hash_al
- 				.cra_name = "hmac(sha512)",
- 				.cra_driver_name = "tegra-se-hmac-sha512",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
-+				.cra_flags = CRYPTO_ALG_ASYNC |
-+					     CRYPTO_ALG_NEED_FALLBACK,
- 				.cra_blocksize = SHA512_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
- 				.cra_alignmask = 0,
+--- a/net/bluetooth/eir.c
++++ b/net/bluetooth/eir.c
+@@ -242,7 +242,7 @@ u8 eir_create_per_adv_data(struct hci_de
+ 	return ad_len;
+ }
+ 
+-u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
++u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr, u8 size)
+ {
+ 	struct adv_info *adv = NULL;
+ 	u8 ad_len = 0, flags = 0;
+@@ -286,7 +286,7 @@ u8 eir_create_adv_data(struct hci_dev *h
+ 		/* If flags would still be empty, then there is no need to
+ 		 * include the "Flags" AD field".
+ 		 */
+-		if (flags) {
++		if (flags && (ad_len + eir_precalc_len(1) <= size)) {
+ 			ptr[0] = 0x02;
+ 			ptr[1] = EIR_FLAGS;
+ 			ptr[2] = flags;
+@@ -316,7 +316,8 @@ skip_flags:
+ 		}
+ 
+ 		/* Provide Tx Power only if we can provide a valid value for it */
+-		if (adv_tx_power != HCI_TX_POWER_INVALID) {
++		if (adv_tx_power != HCI_TX_POWER_INVALID &&
++		    (ad_len + eir_precalc_len(1) <= size)) {
+ 			ptr[0] = 0x02;
+ 			ptr[1] = EIR_TX_POWER;
+ 			ptr[2] = (u8)adv_tx_power;
+--- a/net/bluetooth/eir.h
++++ b/net/bluetooth/eir.h
+@@ -9,7 +9,7 @@
+ 
+ void eir_create(struct hci_dev *hdev, u8 *data);
+ 
+-u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr);
++u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr, u8 size);
+ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr);
+ u8 eir_create_per_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr);
+ 
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1248,7 +1248,8 @@ static int hci_set_ext_adv_data_sync(str
+ 			return 0;
+ 	}
+ 
+-	len = eir_create_adv_data(hdev, instance, pdu.data);
++	len = eir_create_adv_data(hdev, instance, pdu.data,
++				  HCI_MAX_EXT_AD_LENGTH);
+ 
+ 	pdu.cp.length = len;
+ 	pdu.cp.handle = instance;
+@@ -1279,7 +1280,7 @@ static int hci_set_adv_data_sync(struct
+ 
+ 	memset(&cp, 0, sizeof(cp));
+ 
+-	len = eir_create_adv_data(hdev, instance, cp.data);
++	len = eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.data));
+ 
+ 	/* There's nothing to do if the data hasn't changed */
+ 	if (hdev->adv_data_len == len &&
 
 
 
