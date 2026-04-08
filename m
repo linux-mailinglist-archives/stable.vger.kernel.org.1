@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCONFD2j1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:33 +0200
+	id 2ElzEHuc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E673C1ABF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8E23C074D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D46A308DFAD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C8C830341E0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8493D9054;
-	Wed,  8 Apr 2026 18:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152342494F0;
+	Wed,  8 Apr 2026 18:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZ6Whvvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dtyxHDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B80F3AEF5F;
-	Wed,  8 Apr 2026 18:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5143D6694;
+	Wed,  8 Apr 2026 18:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674002; cv=none; b=cUNwy8cszaJGgfj3N5ZOHpDH/DxcZp9IesgaKCGG7pzhHwzowEgpjmMUxnIlfmnOsOfrAigUyL2Qqd+mt0NVwCxNKds8Bww66hfTgj/qRyuVbCyW2bhjBMxYq14RyrzqvOK7BBOuzBXZqLBTP1sDn27JiyHn3gE5CJE64MxlqLA=
+	t=1775672382; cv=none; b=YPKMLEGA3oiTHlELuB2bkA+rjJ07O4ZVIWScUOjIOMqMq+cfVVmEXzfwSP45NFk6hdjiPOR874YcLntNxwbc8ASMFjVIVtGDWyFlB1LDMHGPdE3Xl4BlmKsAn77eLIWrnB690Vjhutkuu60KusDkjEYLhscXi8ue7gQWBEUdTTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674002; c=relaxed/simple;
-	bh=d4ADG6De6N+GkwmWBx8LuquzwXa6JN9s5v4ONPACE3M=;
+	s=arc-20240116; t=1775672382; c=relaxed/simple;
+	bh=FbfvpjzXhpKY2H5Ad2udY4sItoiRgKjoo4yU5Rea2HM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEo52CZ8UkkFPA/hA8Wpjp/Imkh0crfR+u9xkNy2jrosWOoIIvbcFWXisDZvWFPGm3LsK11F0GYBGANQcIRIj7L86ZRc2j1YbE4L2bzDU60sv3bWcCubhHvu77SGcgG6D9CxTesv78/H1i6Mlw5FVMbqa4Uv3A9AFmUByEcR8YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZ6Whvvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A636CC2BCB0;
-	Wed,  8 Apr 2026 18:46:41 +0000 (UTC)
+	 MIME-Version; b=hE/bxoLZwyS+iI6PDMDOADN4hT/S5HzU6VolL/zAoc+kq+ObdF9j5uYZD0PQLVioFEbdipdes5GXPkcIu5trnCQ9ogE94z4vAcx9qgCKh9m563lECw1+lGw9zKkcfXx3YDxkGG37hUK3WNCFGucSThfyUJ5iJ7rK7rRJMmDcxBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dtyxHDJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60954C19421;
+	Wed,  8 Apr 2026 18:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674002;
-	bh=d4ADG6De6N+GkwmWBx8LuquzwXa6JN9s5v4ONPACE3M=;
+	s=korg; t=1775672382;
+	bh=FbfvpjzXhpKY2H5Ad2udY4sItoiRgKjoo4yU5Rea2HM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZ6WhvvhWKETncNuyxCcAVg3WnLtnU9M5tvlVjeHbg81uAMY+6iuGuLDBp4frLd6V
-	 l6FGQCBBdTK4cHRjCOMLcKlBE55h5UYuGuPnU9GU4AMsNwCbAM1hgRiaynF76/3jqh
-	 H6Fvmne1Q81J53QlP5knZjzDF3l5HdT9rFwiGCaY=
+	b=0dtyxHDJx19rJJSiAHTPhMbgHM6vhm2ysawuoafTq7op8mo46y0kcOPtvgEQylJuM
+	 nZjcJzqhNOZVukfGCWKEm4Sn+2dXnjKCYC98emv89sIxBW2lVXY3yNKCBAuUxyafcU
+	 rznN3Hn9MftywXyEdgzqxNk19jT/JhXlPLHsuEA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 143/242] Input: synaptics-rmi4 - fix a locking bug in an error path
+	Josh Law <objecting@objecting.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 266/312] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
 Date: Wed,  8 Apr 2026 20:03:03 +0200
-Message-ID: <20260408175932.440353166@linuxfoundation.org>
+Message-ID: <20260408175943.681918013@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +65,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234880-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,acm.org,gmail.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234254-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,acm.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C4E673C1ABF
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0F8E23C074D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Josh Law <objecting@objecting.org>
 
-commit 7adaaee5edd35a423ae199c41b86bd1ed60ed483 upstream.
+Multiple sysfs command paths dereference contexts_arr[0] without first
+verifying that kdamond->contexts->nr == 1.  A user can set nr_contexts to
+0 via sysfs while DAMON is running, causing NULL pointer dereferences.
 
-Lock f54->data_mutex when entering the function statement since jumping
-to the 'error' label when checking report_size fails causes that mutex
-to be unlocked.
+In more detail, the issue can be triggered by privileged users like
+below.
 
-This bug has been detected by the Clang thread-safety checker.
+First, start DAMON and make contexts directory empty
+(kdamond->contexts->nr == 0).
 
-Fixes: 3a762dbd5347 ("[media] Input: synaptics-rmi4 - add support for F54 diagnostics")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260223215118.2154194-16-bvanassche@acm.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    # damo start
+    # cd /sys/kernel/mm/damon/admin/kdamonds/0
+    # echo 0 > contexts/nr_contexts
+
+Then, each of below commands will cause the NULL pointer dereference.
+
+    # echo update_schemes_stats > state
+    # echo update_schemes_tried_regions > state
+    # echo update_schemes_tried_bytes > state
+    # echo update_schemes_effective_quotas > state
+    # echo update_tuned_intervals > state
+
+Guard all commands (except OFF) at the entry point of
+damon_sysfs_handle_cmd().
+
+(cherry picked from commit 1bfe9fb5ed2667fb075682408b776b5273162615)
+
+Link: https://lkml.kernel.org/r/20260321175427.86000-3-sj@kernel.org
+Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.18+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/rmi4/rmi_f54.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/damon/sysfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/input/rmi4/rmi_f54.c
-+++ b/drivers/input/rmi4/rmi_f54.c
-@@ -540,6 +540,8 @@ static void rmi_f54_work(struct work_str
- 	int error;
- 	int i;
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index a5a1e90e53e74..bdcf895a29a78 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -2576,6 +2576,9 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
+ {
+ 	bool need_wait = true;
  
-+	mutex_lock(&f54->data_mutex);
++	if (cmd != DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr != 1)
++		return -EINVAL;
 +
- 	report_size = rmi_f54_get_report_size(f54);
- 	if (report_size == 0) {
- 		dev_err(&fn->dev, "Bad report size, report type=%d\n",
-@@ -548,8 +550,6 @@ static void rmi_f54_work(struct work_str
- 		goto error;     /* retry won't help */
- 	}
- 
--	mutex_lock(&f54->data_mutex);
--
- 	/*
- 	 * Need to check if command has completed.
- 	 * If not try again later.
+ 	/* Handle commands that doesn't access DAMON context-internal data */
+ 	switch (cmd) {
+ 	case DAMON_SYSFS_CMD_ON:
+-- 
+2.53.0
+
 
 
 
