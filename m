@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMnUCAaa1mmgGggAu9opvQ
-	(envelope-from <stable+bounces-234033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:14 +0200
+	id IJ5jEMCg1mlDGwgAu9opvQ
+	(envelope-from <stable+bounces-234470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10D03C010E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13E23C126A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 15BE9300AB33
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F89930EC803
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F783D47A5;
-	Wed,  8 Apr 2026 18:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E070F3D564E;
+	Wed,  8 Apr 2026 18:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sp8xbuGU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCUah9v2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44A347517;
-	Wed,  8 Apr 2026 18:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A264D3D5647;
+	Wed,  8 Apr 2026 18:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671812; cv=none; b=mqpFOWHlb7TyDhqVx50AVVLHM4283IPrQ8RUf2/qNBxAzLEgEr9Glf3EICKWKY+bbqgH3BbpeGiFg0eMs9Xmw/vJkqgvk/S3Yl4beMpQPUw1093pRvCBxlUGw3pYw7wBlBMdEGyjCm881O/Ag6p0FbIvtpJn3pIxJY+yTgR6j+k=
+	t=1775672943; cv=none; b=t4TEjQb55foSWBB6Wj48YshPAIV8gJLi7fqCqIkiN4G+hKeMxOPvQSqeDAjnMvPo6ja4PyCEdKXKw2QnJjNkLm+/ZM+TdDnjIdGfbhqB8LRYSJLHOR94dbgIKCqgjGwvF4iuQjhHmgeEnuBREY3kVVOrLbGtRINeQGptUYnYMko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671812; c=relaxed/simple;
-	bh=xl01r7DZS3v+JaFEaweOQqV+Vb64vvgUIFOnsG99tLo=;
+	s=arc-20240116; t=1775672943; c=relaxed/simple;
+	bh=0grrv2a3/7tZocbFsxvOGkin7LUtFYcC66c+TSsFqgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmFuN+axoHQE5td5by8kDw5TFMLm1b8ngSC8kGTYjDzqhTwV2OQppEwB/q8JpRsRx63XpOvBNxN0EA1+6dTAdM4eF3mVrP5qvuOSYWlGpW419LhB1UKuDneOxt8U+v5d/qzl8TsvFsov47L51Z42+eL4s4nOrDlLpn/4G/KG0Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sp8xbuGU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8708C19421;
-	Wed,  8 Apr 2026 18:10:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TKV6UlaqsFwh3lDSiAy22zGTIH1uB34AvUxpUd2DicQlyeXduwOtwIVvVmR6meYRu4wzIcMH19ls2OnjqfCLEsr7WZYqKtpZkAb6Svg5qvRwaP/Xzk64zWNL/D9wjhhgnPfO9aAdHPpNS/BwnGiimhlf9Cu4e5GrjWsl2ztDHPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCUah9v2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3851CC19421;
+	Wed,  8 Apr 2026 18:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671812;
-	bh=xl01r7DZS3v+JaFEaweOQqV+Vb64vvgUIFOnsG99tLo=;
+	s=korg; t=1775672943;
+	bh=0grrv2a3/7tZocbFsxvOGkin7LUtFYcC66c+TSsFqgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sp8xbuGU34pUGCJaZ4IlUp5laezRAMbR1DcXzKWBOo5ftMBl/SbMjk8cDqDQ9j3i6
-	 F16G4ofywkErgEpcnwEdfd6cg0Wmy1a28Uzq9nEGl43+MDitMyJ9xKmKf+OwdE56WJ
-	 0yaJcddz7+RzgWaTaLKBLPOKpUlE0PpZNXbTqlGE=
+	b=YCUah9v2qOtTYFXH2R1OouDuBQXCQ2DoeC680nov86QNmPHfeNPuC5quMmQ+hQu/W
+	 R5L1AiyMBU/lUTwFUXd9OzRzAz7BKtwYo1zCQdUIKzH5TnJ8BxtgGqQQYK+VQVapAB
+	 s8OVf0BTNTuGfQ6XOKjfac55zB7Av8MEl2GoCG8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lee Jones <lee@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/312] ACPICA: include/acpi/acpixf.h: Fix indentation
+Subject: [PATCH 6.18 009/277] HID: logitech-hidpp: Prevent use-after-free on force feedback initialisation failure
 Date: Wed,  8 Apr 2026 19:59:54 +0200
-Message-ID: <20260408175936.619801009@linuxfoundation.org>
+Message-ID: <20260408175934.193642479@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,210 +64,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234470-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234033-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B10D03C010E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C13E23C126A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 7a9d74e7e403cb2e60d4d00c05f2f3ab2a33d0c3 ]
+[ Upstream commit f7a4c78bfeb320299c1b641500fe7761eadbd101 ]
 
-A bunch of the functions declared in include/acpi/acpixf.h have their
-name aligned a space after the '(' of e.g. the
-`ACPI_EXTERNAL_RETURN_STATUS(acpi_status` line above rather then being
-directly aligned after the '('.
+Presently, if the force feedback initialisation fails when probing the
+Logitech G920 Driving Force Racing Wheel for Xbox One, an error number
+will be returned and propagated before the userspace infrastructure
+(sysfs and /dev/input) has been torn down.  If userspace ignores the
+errors and continues to use its references to these dangling entities, a
+UAF will promptly follow.
 
-This breaks applying patches generated from the ACPICA upstream git,
-remove the extra space before the function-names and all the arguments
-to fix this.
+We have 2 options; continue to return the error, but ensure that all of
+the infrastructure is torn down accordingly or continue to treat this
+condition as a warning by emitting the message but returning success.
+It is thought that the original author's intention was to emit the
+warning but keep the device functional, less the force feedback feature,
+so let's go with that.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
+Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/acpi/acpixf.h | 120 +++++++++++++++++++++---------------------
- 1 file changed, 60 insertions(+), 60 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-index 413153f3aa4fc..9be3151e4db59 100644
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -595,82 +595,82 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_install_initialization_handler
- 			    (acpi_init_handler handler, u32 function))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_sci_handler(acpi_sci_handler
--							  address,
--							  void *context))
--ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_remove_sci_handler(acpi_sci_handler
--							 address))
-+				acpi_install_sci_handler(acpi_sci_handler
-+							 address,
-+							 void *context))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_global_event_handler
--				 (acpi_gbl_event_handler handler,
--				  void *context))
-+				acpi_remove_sci_handler(acpi_sci_handler
-+							address))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_fixed_event_handler(u32
--								  acpi_event,
--								  acpi_event_handler
--								  handler,
--								  void
--								  *context))
-+				acpi_install_global_event_handler
-+				(acpi_gbl_event_handler handler,
-+				 void *context))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_remove_fixed_event_handler(u32 acpi_event,
-+				acpi_install_fixed_event_handler(u32
-+								 acpi_event,
- 								 acpi_event_handler
--								 handler))
--ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_gpe_handler(acpi_handle
--							  gpe_device,
--							  u32 gpe_number,
--							  u32 type,
--							  acpi_gpe_handler
--							  address,
--							  void *context))
-+								 handler,
-+								 void
-+								 *context))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_install_gpe_raw_handler(acpi_handle
--							      gpe_device,
--							      u32 gpe_number,
--							      u32 type,
--							      acpi_gpe_handler
--							      address,
--							      void *context))
-+				acpi_remove_fixed_event_handler(u32 acpi_event,
-+								acpi_event_handler
-+								handler))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				 acpi_remove_gpe_handler(acpi_handle gpe_device,
-+				acpi_install_gpe_handler(acpi_handle
-+							 gpe_device,
- 							 u32 gpe_number,
-+							 u32 type,
- 							 acpi_gpe_handler
--							 address))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_install_notify_handler(acpi_handle device,
--							 u32 handler_type,
--							 acpi_notify_handler
--							 handler,
-+							 address,
- 							 void *context))
-+ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
-+				acpi_install_gpe_raw_handler(acpi_handle
-+							     gpe_device,
-+							     u32 gpe_number,
-+							     u32 type,
-+							     acpi_gpe_handler
-+							     address,
-+							     void *context))
-+ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
-+				acpi_remove_gpe_handler(acpi_handle gpe_device,
-+							u32 gpe_number,
-+							acpi_gpe_handler
-+							address))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_remove_notify_handler(acpi_handle device,
-+			    acpi_install_notify_handler(acpi_handle device,
- 							u32 handler_type,
- 							acpi_notify_handler
--							handler))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_install_address_space_handler(acpi_handle
--								device,
--								acpi_adr_space_type
--								space_id,
--								acpi_adr_space_handler
--								handler,
--								acpi_adr_space_setup
--								setup,
--								void *context))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_remove_address_space_handler(acpi_handle
-+							handler,
-+							void *context))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_remove_notify_handler(acpi_handle device,
-+						       u32 handler_type,
-+						       acpi_notify_handler
-+						       handler))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_install_address_space_handler(acpi_handle
- 							       device,
- 							       acpi_adr_space_type
- 							       space_id,
- 							       acpi_adr_space_handler
--							       handler))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_install_exception_handler
--			     (acpi_exception_handler handler))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			     acpi_install_interface_handler
--			     (acpi_interface_handler handler))
-+							       handler,
-+							       acpi_adr_space_setup
-+							       setup,
-+							       void *context))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_remove_address_space_handler(acpi_handle
-+							      device,
-+							      acpi_adr_space_type
-+							      space_id,
-+							      acpi_adr_space_handler
-+							      handler))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_install_exception_handler
-+			    (acpi_exception_handler handler))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_install_interface_handler
-+			    (acpi_interface_handler handler))
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index 3522e69da78d7..faef80cb2adbd 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4486,10 +4486,12 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		if (!ret)
+ 			ret = hidpp_ff_init(hidpp, &data);
  
- /*
-  * Global Lock interfaces
+-		if (ret)
++		if (ret) {
+ 			hid_warn(hidpp->hid_dev,
+ 		     "Unable to initialize force feedback support, errno %d\n",
+ 				 ret);
++			ret = 0;
++		}
+ 	}
+ 
+ 	/*
 -- 
 2.53.0
 
