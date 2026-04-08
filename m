@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-234236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EG7BC1Wd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:21 +0200
+	id MBLpEGui1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B803C09F9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A2F3C176D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 782393049701
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1E9973033474
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B2337C10F;
-	Wed,  8 Apr 2026 18:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E423D8912;
+	Wed,  8 Apr 2026 18:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHBuDOwT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nye2jNlo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263CCB67E;
-	Wed,  8 Apr 2026 18:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3013D75C9;
+	Wed,  8 Apr 2026 18:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672336; cv=none; b=LYXZMCgv0MunrinV5k6bbOLyOIUsJ3FoJt8sE9JkCbn435udjeHU+xB1zqu/BqMKTFXlE1FgpSarWl7BS3cd8lWRPWp2I/nSnTzDVjEx68nFjFk0pRzn2q3IGzD2BCZKaIJTyMemH8NG3sNU56KQN4oXnXmnB3ex76MAFK6FPsE=
+	t=1775673940; cv=none; b=IN8bHVjyA7AC6JmiGogQQAd7IsyL5jf6Dt/17tCnz/dXNh0cCCmHNrs/JjfQN3bQgoKP7S8ZXeGtfsiRQbX4ox/XDwO4lLL/MOeqxzDk11b+2EEMmTiWGyS6BDgnEK+YUig8X3ME7PYBBPuUoMzmLbkdGC25w0rlCXKr6iDoMH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672336; c=relaxed/simple;
-	bh=aYaYOiEK7G9TAs9ZYhC09EWK+PvZH6ES+2uI2o/jHXw=;
+	s=arc-20240116; t=1775673940; c=relaxed/simple;
+	bh=wazmvySSb9QS8q0hDoKB30/SlXo3yoSZOWuddTqt16E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUzN6aICtqnDSdCmP2q6t/8oIrUkn8TnzUXKl+LaeI7dU2Cow/JH1QPxIW7Poy38aEws9MXswpPkA+RWc0ev4Ef7Cthp4SIcWarh6wemXukia3Bbcz8p6V+++HJsuEAPN4kH7qaCEK0X4kfDPpf3C4/WyBTebyX81HxRjzmxsQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHBuDOwT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E63C19421;
-	Wed,  8 Apr 2026 18:18:55 +0000 (UTC)
+	 MIME-Version; b=JiPT0wVYgw+oA1mm9rItVmn7LU56Btb4ggP2N70tQseTb8U+QWHfPwbqWdb72wtjvvpRVcfoTPmmjZw4npQJrOhnTivJjMH2hZpqB92puienJMnLLFXAcitC2HgKetBkiR9sR9YbN+J62CefwBJQeTWALby0x/NpZDOkEQyHO0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nye2jNlo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54A7C19421;
+	Wed,  8 Apr 2026 18:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672336;
-	bh=aYaYOiEK7G9TAs9ZYhC09EWK+PvZH6ES+2uI2o/jHXw=;
+	s=korg; t=1775673940;
+	bh=wazmvySSb9QS8q0hDoKB30/SlXo3yoSZOWuddTqt16E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHBuDOwT2oKYTQ7TdknWzaEHMt3aBtHx4bZubjw2VZSiGhGR4l6Ns8T/Zv/DyrR0O
-	 kFQYvKI53j2M8Icx6SHI7UcxVeJROHAf1Hifn0yjuO1K2SZPc7kp/HRYfU9lae+kVs
-	 7yoLOesVPnmy5UKYxaFmj6bJ+nq8p1BXdcDof/sA=
+	b=Nye2jNlov794Nj5TsITR9VVkSL/VC7P+oPYiCyMeOLeyD55EB2EXJuYlj+h1cn0ms
+	 /VwOHtwzvS71Zjc7vWYC6fgys7Mam3/UDr90u15O0gAkdEjP0YW4AzrREuUyt7BOHS
+	 EROqKkhOs6WKnKHZYZ7JWstYp7PQlyFbu+b1sXdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 263/312] nvme-pci: put the admin queue in nvme_dev_remove_admin
+	Frej Drejhammar <frej@stacken.kth.se>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 140/242] USB: serial: io_edgeport: add support for Blackbox IC135A
 Date: Wed,  8 Apr 2026 20:03:00 +0200
-Message-ID: <20260408175943.569306466@linuxfoundation.org>
+Message-ID: <20260408175932.328116457@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,85 +67,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234236-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234855-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ispras.ru:email,lst.de:email,grimberg.me:email,amazon.de:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 93B803C09F9
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kth.se:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 22A2F3C176D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Frej Drejhammar <frej@stacken.kth.se>
 
-[ Upstream commit 96ef1be53663a9343dffcf106e2f1b59da4b8799 ]
+commit 0e01c3416eb863ee7f156a9d7e7421ec0a9f68a0 upstream.
 
-Once the controller is shutdown no one can access the admin queue.  Tear
-it down in nvme_dev_remove_admin, which matches the flow in the other
-drivers.
+The Blackbox 724-746-5500 USB Director USB-RS-232 HUB, part number
+IC135A, is a rebadged Edgeport/4 with its own USB device id.
 
-Tested-by Gerd Bayer <gbayer@linxu.ibm.com>
-[ Context change due to missing commit 94cc781f69f4 ("nvme: move OPAL
-  setup from PCIe to core")]
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Stable-dep-of: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime")
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-Tested-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Frej Drejhammar <frej@stacken.kth.se>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/serial/io_edgeport.c |    3 +++
+ drivers/usb/serial/io_usbvend.h  |    1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 04f7db2ff9cc2..8adce45f666c8 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1783,6 +1783,7 @@ static void nvme_dev_remove_admin(struct nvme_dev *dev)
- 		 */
- 		nvme_start_admin_queue(&dev->ctrl);
- 		blk_mq_destroy_queue(dev->ctrl.admin_q);
-+		blk_put_queue(dev->ctrl.admin_q);
- 		blk_mq_free_tag_set(&dev->admin_tagset);
- 	}
- }
-@@ -2838,8 +2839,6 @@ static void nvme_pci_free_ctrl(struct nvme_ctrl *ctrl)
+--- a/drivers/usb/serial/io_edgeport.c
++++ b/drivers/usb/serial/io_edgeport.c
+@@ -73,6 +73,7 @@ static const struct usb_device_id edgepo
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_22I) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_412_4) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_COMPATIBLE) },
++	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_BLACKBOX_IC135A) },
+ 	{ }
+ };
  
- 	nvme_dbbuf_dma_free(dev);
- 	nvme_free_tagset(dev);
--	if (dev->ctrl.admin_q)
--		blk_put_queue(dev->ctrl.admin_q);
- 	free_opal_dev(dev->ctrl.opal_dev);
- 	mempool_destroy(dev->iod_mempool);
- 	put_device(dev->dev);
--- 
-2.53.0
-
+@@ -121,6 +122,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_8R) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_8RR) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_412_8) },
++	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_BLACKBOX_IC135A) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0202) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0203) },
+ 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0310) },
+@@ -470,6 +472,7 @@ static void get_product_info(struct edge
+ 	case ION_DEVICE_ID_EDGEPORT_2_DIN:
+ 	case ION_DEVICE_ID_EDGEPORT_4_DIN:
+ 	case ION_DEVICE_ID_EDGEPORT_16_DUAL_CPU:
++	case ION_DEVICE_ID_BLACKBOX_IC135A:
+ 		product_info->IsRS232 = 1;
+ 		break;
+ 
+--- a/drivers/usb/serial/io_usbvend.h
++++ b/drivers/usb/serial/io_usbvend.h
+@@ -211,6 +211,7 @@
+ 
+ //
+ // Definitions for other product IDs
++#define ION_DEVICE_ID_BLACKBOX_IC135A		0x0801	// OEM device (rebranded Edgeport/4)
+ #define ION_DEVICE_ID_MT4X56USB			0x1403	// OEM device
+ #define ION_DEVICE_ID_E5805A			0x1A01  // OEM device (rebranded Edgeport/4)
+ 
 
 
 
