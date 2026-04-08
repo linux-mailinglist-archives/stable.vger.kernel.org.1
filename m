@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-235096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMQ7OBCl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:20 +0200
+	id YIoCLPOh1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0C93C20D5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 484403C15E6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DD59E3002924
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D22930309A8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806AA348453;
-	Wed,  8 Apr 2026 18:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A2E3D9022;
+	Wed,  8 Apr 2026 18:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEAcDFjn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oFbEQtG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4413D25A321;
-	Wed,  8 Apr 2026 18:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86C23D4134;
+	Wed,  8 Apr 2026 18:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674559; cv=none; b=pc/1hXSqR9EUKFilfylGtNL/9iZwir/LNUYzcWyugN4AXRxbxjZ01SO8b0/K13MzLJGACY9c/P9jbMc9SqgBXackDJbWnsabGoaDJs1oc95Pbgxi5KF5OSA/LAVp9RPfa36lz3DB5kE3wVd28ccuMLp0LStgnA0sjJ0JG78AfAY=
+	t=1775673807; cv=none; b=BI6Fe65DhtMKs3zPwUavBAu8MbY07FK2itye78DjlGsh7RE7xldW/8jhqOuX44WQRupatK61/yRie2D6Zn/bGVagROSFP3cfxZeinASjis9R4frt11ca/vz9lPtZ0AteOBFhTxsyEfoTCTg+aEc1ePNJj1g4fyseATrFAQu6RJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674559; c=relaxed/simple;
-	bh=LUqhajeCNxMlisMAChXRBSVixPR0mmKAc6S0oDUD//c=;
+	s=arc-20240116; t=1775673807; c=relaxed/simple;
+	bh=t6vXksiTZTNZwNauPlDjgfaBJqw5tEaMfNtrlX0tUl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nV4pSrv9M3hq3XQuS8PSh6kGJ7l8hnHN9ukzAJThugNVuUzRObw2G2bt/l6G8vQ8K+8CxqeGVxir1cdpVBcmxhQ7yd2YwlpM3LGN9AH5EqibAq+unB/51RzC+VTFdVFup01fBp2qYNloxwExU+arhRhlrw06FopLEdc/ZCMssbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEAcDFjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE70FC19421;
-	Wed,  8 Apr 2026 18:55:58 +0000 (UTC)
+	 MIME-Version; b=j3g3iNg5h9TJkRcbSDpR2LuLLG8TpSNN91+R83B/4sYTpBnVSDtLwJD9gPjPbGvcxHsVATdMtYzobGzVTvqfPLJuOQKKWVzyoWp6EkQ0rqYs4SVHeO6i+daI4nmam/UP9busSG9+Vw6z0Dueq3gB88p87xnD3faT1KY2G40rfoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oFbEQtG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F51BC19421;
+	Wed,  8 Apr 2026 18:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674559;
-	bh=LUqhajeCNxMlisMAChXRBSVixPR0mmKAc6S0oDUD//c=;
+	s=korg; t=1775673807;
+	bh=t6vXksiTZTNZwNauPlDjgfaBJqw5tEaMfNtrlX0tUl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEAcDFjnoaAv0HSsjfUaGeqKej/NzSx77aS2WTJ8RuPaTgXSO0kOfblOWNNE3mdqA
-	 jk4uZLOhCQCr1pk93y+D/QcH5phf52ngV/OnBH2vQW/T1UZxasVFD7io/02S4msfrw
-	 vIZ4vaVkaSvvlPefX6TXWAoBzL0NShFbG/uNeAX8=
+	b=1oFbEQtGpCUHCJ4iR/Wd30JiNGydUKAzkqu1cgTLnHNBUF3QVR5G2mIo77mc5ksOT
+	 k87Eu9IA9f/v2LkUinxndDc8THjfEMjFYpYnDTDGFrARzO+5yUplX44qmDuhfwI4Mg
+	 44E1OguI5Ji5FAQlRH2mIIpTvJDlJ+XrFODE/ycU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 137/311] hwmon: (tps53679) Fix array access with zero-length block read
+Subject: [PATCH 6.12 097/242] net/sched: cls_fw: fix NULL pointer dereference on shared blocks
 Date: Wed,  8 Apr 2026 20:02:17 +0200
-Message-ID: <20260408175944.529613368@linuxfoundation.org>
+Message-ID: <20260408175930.715319841@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +70,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234805-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235096-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,juniper.net:email]
-X-Rspamd-Queue-Id: 2F0C93C20D5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,msgid.link:url,asu.edu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 484403C15E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 0e211f6aaa6a00fd0ee0c1eea5498f168c6725e6 ]
+[ Upstream commit faeea8bbf6e958bf3c00cb08263109661975987c ]
 
-i2c_smbus_read_block_data() can return 0, indicating a zero-length
-read. When this happens, tps53679_identify_chip() accesses buf[ret - 1]
-which is buf[-1], reading one byte before the buffer on the stack.
+The old-method path in fw_classify() calls tcf_block_q() and
+dereferences q->handle.  Shared blocks leave block->q NULL, causing a
+NULL deref when an empty cls_fw filter is attached to a shared block
+and a packet with a nonzero major skb mark is classified.
 
-Fix by changing the check from "ret < 0" to "ret <= 0", treating a
-zero-length read as an error (-EIO), which prevents the out-of-bounds
-array access.
+Reject the configuration in fw_change() when the old method (no
+TCA_OPTIONS) is used on a shared block, since fw_classify()'s
+old-method path needs block->q which is NULL for shared blocks.
 
-Also fix a typo in the adjacent comment: "if present" instead of
-duplicate "if".
+The fixed null-ptr-deref calling stack:
+ KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+ RIP: 0010:fw_classify (net/sched/cls_fw.c:81)
+ Call Trace:
+  tcf_classify (./include/net/tc_wrapper.h:197 net/sched/cls_api.c:1764 net/sched/cls_api.c:1860)
+  tc_run (net/core/dev.c:4401)
+  __dev_queue_xmit (net/core/dev.c:4535 net/core/dev.c:4790)
 
-Fixes: 75ca1e5875fe ("hwmon: (pmbus/tps53679) Add support for TPS53685")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260329170925.34581-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260331050217.504278-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/tps53679.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/cls_fw.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
-index ca2bfa25eb04c..3bca543817a60 100644
---- a/drivers/hwmon/pmbus/tps53679.c
-+++ b/drivers/hwmon/pmbus/tps53679.c
-@@ -103,10 +103,10 @@ static int tps53679_identify_chip(struct i2c_client *client,
- 	}
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index cdddc86952284..83a7372ea15c2 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -247,8 +247,18 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 	struct nlattr *tb[TCA_FW_MAX + 1];
+ 	int err;
  
- 	ret = i2c_smbus_read_block_data(client, PMBUS_IC_DEVICE_ID, buf);
--	if (ret < 0)
--		return ret;
-+	if (ret <= 0)
-+		return ret < 0 ? ret : -EIO;
+-	if (!opt)
+-		return handle ? -EINVAL : 0; /* Succeed if it is old method. */
++	if (!opt) {
++		if (handle)
++			return -EINVAL;
++
++		if (tcf_block_shared(tp->chain->block)) {
++			NL_SET_ERR_MSG(extack,
++				       "Must specify mark when attaching fw filter to block");
++			return -EINVAL;
++		}
++
++		return 0; /* Succeed if it is old method. */
++	}
  
--	/* Adjust length if null terminator if present */
-+	/* Adjust length if null terminator is present */
- 	buf_len = (buf[ret - 1] != '\x00' ? ret : ret - 1);
- 
- 	id_len = strlen(id);
+ 	err = nla_parse_nested_deprecated(tb, TCA_FW_MAX, opt, fw_policy,
+ 					  NULL);
 -- 
 2.53.0
 
