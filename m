@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-235169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCJXB/+q1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:39 +0200
+	id KJU0CSCe1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCAE3C2DB9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 405AE3C0C29
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D97993203155
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9354B30200DD
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD1B3D522C;
-	Wed,  8 Apr 2026 18:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE6B3D34AB;
+	Wed,  8 Apr 2026 18:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqFdxnrY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGVeJ1vw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC603537DF;
-	Wed,  8 Apr 2026 18:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24202494F0;
+	Wed,  8 Apr 2026 18:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674747; cv=none; b=vBI8D8+JWZUge6pSxShONyQ0qtu5NkVh5yZsP4RcciXdETFBdhiLf2Ws9ttSLXGVb0rd07BLlOS3LMEsXyYOy1V5ZKg6YQVcGFQL+46BQlhPfJrCARziViKjM4UmGcFKPdyfkp+1oWOY9BI79se7qoRw/oj3jjpR90YMMD3rSwg=
+	t=1775672763; cv=none; b=nJhgKZyArQrqK+fBRhqQDQHEvZ0M4DuI8WIhxTBz4EWI6HjY9K1PwPe7qmKBxDjqEuwmLXhcb1kxwYGVJmWB+g6T7GPs1Ls6DXzkjb1DetG2pEGKvLxLXUfd4bZcjXpHqEnPk/KrI4qgkbc7r1fkBQhWztc1lfDdM7WX1HwmviU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674747; c=relaxed/simple;
-	bh=syY8TBSTTkjjl1nel26r9jPQU4C+bi8RsnnQEXKeCMc=;
+	s=arc-20240116; t=1775672763; c=relaxed/simple;
+	bh=xuG3v1WRRXYTG9+AvG+Ty+xcFRxtk/PdlqmydxflXL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rp7I3CX1NYa3B1XpCboDrlzDNmhC/wQGtT7KlchiejQDrFx5LGIg1gmYe2yO4VUuVYlMCiuL8GNk8UGJ6zEnube3xq81gkjUn3GwGp6JpUp3bkp5TqixJlUZXTZQibPnf79BqP3GmBHbJyu3unX5O1fzfNgaTAm5iwqIKKoPwCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqFdxnrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEC4C19421;
-	Wed,  8 Apr 2026 18:59:06 +0000 (UTC)
+	 MIME-Version; b=gLOBRiEQ5p4F5QLDb+40XBWbbn2Xgrcx9PMqewTfDSxNxiM8RQqW2N8BVINspLrodyWSCBPXkQin1qOqxtSkMO51UQ2gM7KLU/8BC8dBSD5jzGrkyDAxH/5v3kiGzSotwoTg25KMLhMwurgUhcnWu9pHVF0AdxE8WtJ8zuWN0rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGVeJ1vw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F13C19421;
+	Wed,  8 Apr 2026 18:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674746;
-	bh=syY8TBSTTkjjl1nel26r9jPQU4C+bi8RsnnQEXKeCMc=;
+	s=korg; t=1775672762;
+	bh=xuG3v1WRRXYTG9+AvG+Ty+xcFRxtk/PdlqmydxflXL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqFdxnrYM0XmjcMa+ZxeJ8p/8hczk54gvQVYuCTQilNffJA7qEGmloy4bnahmgQrR
-	 clFAPqRH8MK7Ek5BOsVGf1DLPodF58swGOsfaHWZnY62l/JSgR1R07+1qgYeUuTm6h
-	 +5TK9g42OBQHfRkTS6kNQXuzvM6TUUbB42CbbX9Y=
+	b=BGVeJ1vwliq1LAFenWKJuZsau1vfycirn9PA4RHA8O4THabci1SV1Vx4OOaAKEY/A
+	 mP82tPwyP/UP+ZSuYFOen8GM1JrnNsjT0MRm/Ym3NA3ehBaRzNnjm+01nZiHMJJGg9
+	 DGDi7jLIChphtzBqqZ5QVRS5kHtRR/vBIAAL+SbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 218/311] iio: adc: ade9000: fix wrong register in CALIBBIAS case for active power
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>
+Subject: [PATCH 6.6 131/160] thermal: core: Fix thermal zone device registration error path
 Date: Wed,  8 Apr 2026 20:03:38 +0200
-Message-ID: <20260408175947.544036241@linuxfoundation.org>
+Message-ID: <20260408175918.082908459@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +67,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-235169-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234401-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: 8CCAE3C2DB9
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,arm.com:email]
+X-Rspamd-Queue-Id: 405AE3C0C29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 86133fb1ec36b2f5cec29d71fbae84877c3a1358 upstream.
+commit 9e07e3b81807edd356e1f794cffa00a428eff443 upstream.
 
-The switch statement in ade9000_write_raw() attempts to match
-chan->address against ADE9000_REG_AWATTOS (0x00F) to dispatch
-the calibration offset write for active power channels. However,
-chan->address is set via ADE9000_ADDR_ADJUST(ADE9000_REG_AWATT,
-num), so after masking the phase bits, tmp holds
-ADE9000_REG_AWATT (0x210), which never matches 0x00F.
+If thermal_zone_device_register_with_trips() fails after registering
+a thermal zone device, it needs to wait for the tz->removal completion
+like thermal_zone_device_unregister(), in case user space has managed
+to take a reference to the thermal zone device's kobject, in which case
+thermal_release() may not be called by the error path itself and tz may
+be freed prematurely.
 
-As a result, writing IIO_CHAN_INFO_CALIBBIAS for IIO_POWER always
-falls through to the default case and returns -EINVAL, making
-active power offset calibration silently broken.
+Add the missing wait_for_completion() call to the thermal zone device
+registration error path.
 
-Fix this by matching against ADE9000_REG_AWATT instead, which is
-the actual base address stored in chan->address for watt channels.
-
-Reference:ADE9000 datasheet (Rev. B), AWATTOS is the offset correction
-register at 0x00F (p. 44), while AWATT is the total active power
-register at 0x210 (p. 48).
-
-Fixes: 81de7b4619fc ("iio: adc: add ade9000 support")
-Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-Reviewed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 04e6ccfc93c5 ("thermal: core: Fix NULL pointer dereference in zone registration error path")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: All applicable <stable@vger.kernel.org>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/2849815.mvXUDI8C0e@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ade9000.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/thermal_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/adc/ade9000.c
-+++ b/drivers/iio/adc/ade9000.c
-@@ -1123,7 +1123,7 @@ static int ade9000_write_raw(struct iio_
- 			tmp &= ~ADE9000_PHASE_C_POS_BIT;
- 
- 			switch (tmp) {
--			case ADE9000_REG_AWATTOS:
-+			case ADE9000_REG_AWATT:
- 				return regmap_write(st->regmap,
- 						    ADE9000_ADDR_ADJUST(ADE9000_REG_AWATTOS,
- 									chan->channel), val);
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -1394,6 +1394,7 @@ unregister:
+ 	device_del(&tz->device);
+ release_device:
+ 	put_device(&tz->device);
++	wait_for_completion(&tz->removal);
+ remove_id:
+ 	ida_free(&thermal_tz_ida, id);
+ free_tzp:
 
 
 
