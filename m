@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-234231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNoGKQac1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:46 +0200
+	id gDmAEdSi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2113C064F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944DB3C18EE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0AD1C30062F3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1FA42306CA31
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81D037C10F;
-	Wed,  8 Apr 2026 18:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C7B3D9034;
+	Wed,  8 Apr 2026 18:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgKL8Lbr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUrxMSM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF9FB67E;
-	Wed,  8 Apr 2026 18:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175B13D75C9;
+	Wed,  8 Apr 2026 18:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672322; cv=none; b=rhads8pbovr2UXnhW25cPPWoBnNRiTxnuN7h3f1GRAcAOtXeRndVEe6DZATzgaMUBvcd2SWuYkv4G6md22sKbTVW1wKi7/Kmc727bspwgwIxI5ccWPMd3q3/wnefvQxzu5aLoKVjJBHBdT+ycMLpIbZYkBvlmlifg89jeQdyQTM=
+	t=1775673953; cv=none; b=Q28QNDupSN6tHccBPVKREBHRCTBI5IcLq3QJohOntPqz+OnwkL00xPOZEV36/oUfLU507fQk7fKIMq3mtNzV7Nlzwwl4ncXBsQckkL3rNpV/wfk+KDS/TlHP91n5zn9xERzF/AT7CmSFZSxYSQkI77vkKOFa6iR4aHB/KxQwn9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672322; c=relaxed/simple;
-	bh=mkcWLAhWRxj7kGaTlbk0ATtPz4LJpPLIzudRnHO+19A=;
+	s=arc-20240116; t=1775673953; c=relaxed/simple;
+	bh=oR2inzQHTcbJ6s46dqaY4MxXVlp16nnjwXYdcJan9E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSm0rdaHjwFTH4lcSR4ppZPvjvi/f1Wr09oE6lAUvKLMSC3sEDjFaNuTWsm/FoxJP5JoHeC0zuYOsg428mkgMvL9K0cn1WwEgaySXHKdpPpc4M41/SXwK7iW98oWO3N8g41zRSywVY5EOKYeL5X3P41nN+8fnBtUg6HFbKOHaUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgKL8Lbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B10BC19421;
-	Wed,  8 Apr 2026 18:18:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lOQJ8sV8cBKe8XhrCgAk0qO/SIsETpCt1XXVbIaZ/5lGWiu2IbNkZdkOtKFSKYNImuCVxjtIOHYHXN6dGjtzOv8LlRA+S/jR442h7E22c2AZg0nTgFWF92weoB5D6QqX7HQFhvZ88AFeh8Li4mSZkZwO+A1L+IgwWxldFyakwU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUrxMSM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F5FC19425;
+	Wed,  8 Apr 2026 18:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672322;
-	bh=mkcWLAhWRxj7kGaTlbk0ATtPz4LJpPLIzudRnHO+19A=;
+	s=korg; t=1775673953;
+	bh=oR2inzQHTcbJ6s46dqaY4MxXVlp16nnjwXYdcJan9E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgKL8LbrLCd+Vem8Yd5TYsADQwYsgVpU350OnNQn6uz6upH4Wj3ihKlmhyw55oE/x
-	 hvBrrwp8KQlDgRlCwbHkUs6jp83rEIYffzaE6woZ44x6o/8p9CVrb++y0EfB18/JKn
-	 uMmyuhiMiqKku6rVbFRztOJrNTv+xcFzMRH7IvdU=
+	b=AUrxMSM8uM/ugXUEvWz/3DO/TenkDEIGc+D91+bQuwK5Zl252hwvHWl9AS5116hSL
+	 kFR5T8/8LOqVVsBhoj9st2Zgl26hPcCVHet1MxOX4Oa0bB+olPbaRaoUzVAgZv823h
+	 xkRU8Kxi7psIRtJJsgZjBroyh42MWe2lScJZpviQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tangxin Xie <xietangxin@yeah.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 276/312] net: correctly handle tunneled traffic on IPV6_CSUM GSO fallback
+	Arnd Bergmann <arnd@arndb.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 153/242] iio: imu: bmi160: Remove potential undefined behavior in bmi160_config_pin()
 Date: Wed,  8 Apr 2026 20:03:13 +0200
-Message-ID: <20260408175944.056687386@linuxfoundation.org>
+Message-ID: <20260408175932.817197424@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +66,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234860-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,redhat.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234231-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,yeah.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1B2113C064F
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,intel.com:email]
+X-Rspamd-Queue-Id: 944DB3C18EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit c4336a07eb6b2526dc2b62928b5104b41a7f81f5 ]
+commit c05a87d9ec3bf8727a5d746ce855003c6f2f8bb4 upstream.
 
-NETIF_F_IPV6_CSUM only advertises support for checksum offload of
-packets without IPv6 extension headers. Packets with extension
-headers must fall back onto software checksumming. Since TSO
-depends on checksum offload, those must revert to GSO.
+If 'pin' is not one of its expected values, the value of
+'int_out_ctrl_shift' is undefined.  With UBSAN enabled, this causes
+Clang to generate undefined behavior, resulting in the following
+warning:
 
-The below commit introduces that fallback. It always checks
-network header length. For tunneled packets, the inner header length
-must be checked instead. Extend the check accordingly.
+  drivers/iio/imu/bmi160/bmi160_core.o: warning: objtool: bmi160_setup_irq() falls through to next function __cfi_bmi160_core_runtime_resume()
 
-A special case is tunneled packets without inner IP protocol. Such as
-RFC 6951 SCTP in UDP. Those are not standard IPv6 followed by
-transport header either, so also must revert to the software GSO path.
+Prevent the UB and improve error handling by returning an error if 'pin'
+has an unexpected value.
 
-Cc: stable@vger.kernel.org
-Fixes: 864e3396976e ("net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM")
-Reported-by: Tangxin Xie <xietangxin@yeah.net>
-Closes: https://lore.kernel.org/netdev/0414e7e2-9a1c-4d7c-a99d-b9039cf68f40@yeah.net/
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260320190148.2409107-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While at it, simplify the code a bit by moving the 'pin_name' assignment
+to the first switch statement.
+
+Fixes: 895bf81e6bbf ("iio:bmi160: add drdy interrupt support")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |   22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/iio/imu/bmi160/bmi160_core.c |   15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3586,6 +3586,22 @@ static netdev_features_t dflt_features_c
- 	return vlan_features_check(skb, features);
+--- a/drivers/iio/imu/bmi160/bmi160_core.c
++++ b/drivers/iio/imu/bmi160/bmi160_core.c
+@@ -573,12 +573,16 @@ static int bmi160_config_pin(struct regm
+ 		int_out_ctrl_shift = BMI160_INT1_OUT_CTRL_SHIFT;
+ 		int_latch_mask = BMI160_INT1_LATCH_MASK;
+ 		int_map_mask = BMI160_INT1_MAP_DRDY_EN;
++		pin_name = "INT1";
+ 		break;
+ 	case BMI160_PIN_INT2:
+ 		int_out_ctrl_shift = BMI160_INT2_OUT_CTRL_SHIFT;
+ 		int_latch_mask = BMI160_INT2_LATCH_MASK;
+ 		int_map_mask = BMI160_INT2_MAP_DRDY_EN;
++		pin_name = "INT2";
+ 		break;
++	default:
++		return -EINVAL;
+ 	}
+ 	int_out_ctrl_mask = BMI160_INT_OUT_CTRL_MASK << int_out_ctrl_shift;
+ 
+@@ -612,17 +616,8 @@ static int bmi160_config_pin(struct regm
+ 	ret = bmi160_write_conf_reg(regmap, BMI160_REG_INT_MAP,
+ 				    int_map_mask, int_map_mask,
+ 				    write_usleep);
+-	if (ret) {
+-		switch (pin) {
+-		case BMI160_PIN_INT1:
+-			pin_name = "INT1";
+-			break;
+-		case BMI160_PIN_INT2:
+-			pin_name = "INT2";
+-			break;
+-		}
++	if (ret)
+ 		dev_err(dev, "Failed to configure %s IRQ pin", pin_name);
+-	}
+ 
+ 	return ret;
  }
- 
-+static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
-+{
-+	if (!skb->encapsulation)
-+		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			  vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
-+			skb_transport_header_was_set(skb) &&
-+			skb_network_header_len(skb) != sizeof(struct ipv6hdr));
-+	else
-+		return (!skb_inner_network_header_was_set(skb) ||
-+			((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			   inner_ip_hdr(skb)->version == 6)) &&
-+			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
-+}
-+
- static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 					    struct net_device *dev,
- 					    netdev_features_t features)
-@@ -3627,11 +3643,7 @@ static netdev_features_t gso_features_ch
- 	 * so neither does TSO that depends on it.
- 	 */
- 	if (features & NETIF_F_IPV6_CSUM &&
--	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
--	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
--	    skb_transport_header_was_set(skb) &&
--	    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
-+	    skb_gso_has_extension_hdr(skb) &&
- 	    !ipv6_has_hopopt_jumbo(skb))
- 		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
- 
 
 
 
