@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234513-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HkvDOWm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:09 +0200
+	id GEJrCBaf1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234513-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D483C25BD
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1BE33C0E03
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9DD630FA6FC
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A08FF301C90D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A02A3D6694;
-	Wed,  8 Apr 2026 18:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EA63D75C3;
+	Wed,  8 Apr 2026 18:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/Osmdp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1vJp7kA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EB73B19A3;
-	Wed,  8 Apr 2026 18:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A6826FA5A;
+	Wed,  8 Apr 2026 18:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673632; cv=none; b=hnmhnY3osjWahSXFm3M4/duCW9wBM1Y4eMQIhEg9oPguUCFDWoc1CL2aIs4mH5U6T9kagBAGSOE2WUsHVxgeIBtyKS2jDM6cdMBtYARQBTYUpSToZeoSTKb8FYgP2k3TF7SCut0sBuxqEFq9s6fSoevE2ewzWBoTPBKhqG9z6oY=
+	t=1775673055; cv=none; b=YOKHFghTMC7OGz+yMWnMYNgMwzBCiApOtONGnFkgEuVJ76zQX3/zppag2pzquRxFtfcALYOldiH0v2hThAbgOBRGyCzw6Qwvvp12fZguC/XezT1LLhoIM3/mGdyDBAcPe9vsNkRh1NQqllxnINDxjKXgXpjP5L1+21AVn6nFu0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673632; c=relaxed/simple;
-	bh=3c5S3/D78ynAvKJtq+Q+gjaJCRgu8j65BIqVDVYwrJc=;
+	s=arc-20240116; t=1775673055; c=relaxed/simple;
+	bh=IcDF6XzaFfZYE8B0Hd7cmtQJP1w00kCAZXgeSZG/v8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kTgB+KCEzsySbsPq1uIMbSKqUir1vhNIAUKb7BQknabDjq7w6QvLTvRP5nLHPL3V2/LV4YGIORPGqmtsoPvewa9ejJljP8HI6esJkuWP+fioYcIvOSMjJ98dtxaBwGll+/PKR0eMvq62FOl7vJhrCZN/O+JccrlAojnLqrZiiHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/Osmdp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8835CC19421;
-	Wed,  8 Apr 2026 18:40:31 +0000 (UTC)
+	 MIME-Version; b=rgwC2+WWB1on8FOgXSJBSRrUrxEpi/9Wx68kojA1HnnXZdKaAfnK9vIuoRWN4w7QSaA5i8CGSMWFun50KhLy/d+tmUEeTwfNEOHJ43/kfIs2tLLdPT6g1Pu3N2z64ZN1Xb5b/Tqg4/KHDNwQO2pROhpiUdmXIJvOIQeEqBzFIPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1vJp7kA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D66C19421;
+	Wed,  8 Apr 2026 18:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673631;
-	bh=3c5S3/D78ynAvKJtq+Q+gjaJCRgu8j65BIqVDVYwrJc=;
+	s=korg; t=1775673054;
+	bh=IcDF6XzaFfZYE8B0Hd7cmtQJP1w00kCAZXgeSZG/v8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/Osmdp5oXlboknWJ4jACm3gtg44/gZ31s+YbvD90aop654rG7876fJnSrYu3208P
-	 yUNM5pO54xr9CehrT+eFVhNk4Ods0LyHTnJUJ5zupPsGmQmIDF55Cr/MqFJnmire7D
-	 6YCrqIAhB3S68169F8xhZ2ifpcOmM27wiTV/srVI=
+	b=a1vJp7kAsUy/hhtr6Iqq4KNXkCheLQR0iZ69Fm6dFVnI3CcwIeB0mJ46l/SrQNqNZ
+	 t6AFADqJ3GsS0lWPM/nbpxOEJb/O1bUcJfOetkslCDGAOlwiRJ/YVnu3BO9LElao2K
+	 5vWGL0M1zYvBhf+2124/B5gjBgsLf+gnFXACDqXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Keenan Dong <keenanat2000@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/242] HID: wacom: fix out-of-bounds read in wacom_intuos_bt_irq
+Subject: [PATCH 6.18 084/277] Bluetooth: MGMT: validate mesh send advertising payload length
 Date: Wed,  8 Apr 2026 20:01:09 +0200
-Message-ID: <20260408175928.161590961@linuxfoundation.org>
+Message-ID: <20260408175937.000279604@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234737-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234513-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,wacom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A0D483C25BD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: D1BE33C0E03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Sevens <bsevens@google.com>
+From: Keenan Dong <keenanat2000@gmail.com>
 
-[ Upstream commit 2f1763f62909ccb6386ac50350fa0abbf5bb16a9 ]
+[ Upstream commit bda93eec78cdbfe5cda00785cefebd443e56b88b ]
 
-The wacom_intuos_bt_irq() function processes Bluetooth HID reports
-without sufficient bounds checking. A maliciously crafted short report
-can trigger an out-of-bounds read when copying data into the wacom
-structure.
+mesh_send() currently bounds MGMT_OP_MESH_SEND by total command
+length, but it never verifies that the bytes supplied for the
+flexible adv_data[] array actually match the embedded adv_data_len
+field. MGMT_MESH_SEND_SIZE only covers the fixed header, so a
+truncated command can still pass the existing 20..50 byte range
+check and later drive the async mesh send path past the end of the
+queued command buffer.
 
-Specifically, report 0x03 requires at least 22 bytes to safely read
-the processed data and battery status, while report 0x04 (which
-falls through to 0x03) requires 32 bytes.
+Keep rejecting zero-length and oversized advertising payloads, but
+validate adv_data_len explicitly and require the command length to
+exactly match the flexible array size before queueing the request.
 
-Add explicit length checks for these report IDs and log a warning if
-a short report is received.
-
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Reviewed-by: Jason Gerecke <jason.gerecke@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/bluetooth/mgmt.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index a076dc0b60ee2..5b97df856d3ea 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1210,10 +1210,20 @@ static int wacom_intuos_bt_irq(struct wacom_wac *wacom, size_t len)
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index d3df358cbe139..9065a864bc65d 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2466,6 +2466,7 @@ static int mesh_send(struct sock *sk, struct hci_dev *hdev, void *data, u16 len)
+ 	struct mgmt_mesh_tx *mesh_tx;
+ 	struct mgmt_cp_mesh_send *send = data;
+ 	struct mgmt_rp_mesh_read_features rp;
++	u16 expected_len;
+ 	bool sending;
+ 	int err = 0;
  
- 	switch (data[0]) {
- 	case 0x04:
-+		if (len < 32) {
-+			dev_warn(wacom->pen_input->dev.parent,
-+				 "Report 0x04 too short: %zu bytes\n", len);
-+			break;
-+		}
- 		wacom_intuos_bt_process_data(wacom, data + i);
- 		i += 10;
- 		fallthrough;
- 	case 0x03:
-+		if (i == 1 && len < 22) {
-+			dev_warn(wacom->pen_input->dev.parent,
-+				 "Report 0x03 too short: %zu bytes\n", len);
-+			break;
-+		}
- 		wacom_intuos_bt_process_data(wacom, data + i);
- 		i += 10;
- 		wacom_intuos_bt_process_data(wacom, data + i);
+@@ -2473,12 +2474,19 @@ static int mesh_send(struct sock *sk, struct hci_dev *hdev, void *data, u16 len)
+ 	    !hci_dev_test_flag(hdev, HCI_MESH_EXPERIMENTAL))
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
+ 				       MGMT_STATUS_NOT_SUPPORTED);
+-	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED) ||
+-	    len <= MGMT_MESH_SEND_SIZE ||
+-	    len > (MGMT_MESH_SEND_SIZE + 31))
++	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
++				       MGMT_STATUS_REJECTED);
++
++	if (!send->adv_data_len || send->adv_data_len > 31)
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
+ 				       MGMT_STATUS_REJECTED);
+ 
++	expected_len = struct_size(send, adv_data, send->adv_data_len);
++	if (expected_len != len)
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
++				       MGMT_STATUS_INVALID_PARAMS);
++
+ 	hci_dev_lock(hdev);
+ 
+ 	memset(&rp, 0, sizeof(rp));
 -- 
 2.53.0
 
