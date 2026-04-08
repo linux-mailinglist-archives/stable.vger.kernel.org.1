@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAS1Evqd1mkEGwgAu9opvQ
-	(envelope-from <stable+bounces-234277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:06 +0200
+	id YIVBM1Ch1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2D63C0BDA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 681AB3C1397
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72C543092E7E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A559D3027CC1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5EF386550;
-	Wed,  8 Apr 2026 18:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064BE3D6694;
+	Wed,  8 Apr 2026 18:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eV+WwhE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Afa1620c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820FA2DAFAA;
-	Wed,  8 Apr 2026 18:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7523624B0;
+	Wed,  8 Apr 2026 18:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672442; cv=none; b=nRSXLYNDUCBOAzSZc3rD+WUUX1You4GjQTa4mGDkceQyjRTAA69zU7ffA9+Hgs8iW6hJgKlxibi/1x49sDvw3l8XvrSgSIXBGVSn809WPuYUpVr03idxUB+HSeph7L7bUw2IxVXevrQdbC/sS18rmQSuTEd/rN7NNZTxsLF/jIk=
+	t=1775673678; cv=none; b=PGAl6X24jodsvTyAPNin9/i3CCvoduvqCItOp9/2zZiVHKGqGlYFaBtY2sTL4GXqUC+A/lPKTEhIHe7dfatYt2TAJcoCcQopmlo1C6ObL51/oCD2Wuvu7J6f1bnXq1NMSuiQIYOE2KrRbX7oJoVb4Vudq+rCSTXFsasT12TmAVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672442; c=relaxed/simple;
-	bh=fgRVhHe2L2x1XLjX+f9wZj4yMKtN5OxCEBNStb/YEj0=;
+	s=arc-20240116; t=1775673678; c=relaxed/simple;
+	bh=bDAZWNXD40VU5JBzeUITB98NAoVvRM/s6sj9wG94ttY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqCPdOBPcxswU8HaeaoxEmzey2wLWASdSgx37kIYblxHXEDrdnjKusOdZMMSDNhfXUMm42p19EIbSWT442fKvcUli5pLK7moxhFU6b7OIXEP2vroUOXtwx1I2bLcUbDluNW71nPPBZ7uqFjH9kx0UdfhiuSgxfB8cnEKKD3XxJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eV+WwhE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3099C19421;
-	Wed,  8 Apr 2026 18:20:41 +0000 (UTC)
+	 MIME-Version; b=Mn64uAW5swBDXE3APm5/dkONmk+kvUK1OkzN5qVpuSf+VcpeadexjKfrdVZqwGaVx5W39cgc06pQc/+Zrm0i5c/hxZ+WuR+dXLeHZJ8PEyxmej+g2Z/ZrFG5POBmUn9SmBvfKVeoAmUyHnfIr4Tbss6liUoE50sBqGj3Oynjui0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Afa1620c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7C8C19421;
+	Wed,  8 Apr 2026 18:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672442;
-	bh=fgRVhHe2L2x1XLjX+f9wZj4yMKtN5OxCEBNStb/YEj0=;
+	s=korg; t=1775673678;
+	bh=bDAZWNXD40VU5JBzeUITB98NAoVvRM/s6sj9wG94ttY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eV+WwhE6MDK8jh4UYKraCQUXH/2cKVMuNVLW7E34RVxn7/IPE+VM3SVu7HXOtg41j
-	 Bs76qaPyL4R4gZbbkOrNxLs4p8opfGMJNcI8Z4wgSHI+pe8qYnvUNSiWZPS5GzAmMy
-	 IO7g58jAi4E1NaJCJPsVRZJN+6W0toQI/VLAjoSE=
+	b=Afa1620c5wNf6FyXwTLiKZEwNS20gyeOllKJPxos8ClNzCid5PIX69VcqDeT8XYvd
+	 glGsGcanqEuU+ddTt6ADxT5KNN8j4cygRVpEoGdDAHK2KP/rgA5qICWfvKNqzlPKZe
+	 j3ttqePKvjtJzt+XFRN7+Ymm0b7XZU5eWT1T6pfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pepper Gray <hello@peppergray.xyz>,
-	Will Deacon <will@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/160] arm64/scs: Fix handling of advance_loc4
+Subject: [PATCH 6.12 048/242] net/ipv6: ioam6: prevent schema length wraparound in trace fill
 Date: Wed,  8 Apr 2026 20:01:28 +0200
-Message-ID: <20260408175913.237623915@linuxfoundation.org>
+Message-ID: <20260408175928.869770551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +65,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234277-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234755-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,gmail.com,davemloft.net,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	SEM_URIBL_UNKNOWN_FAIL(0.00)[peppergray.xyz:query timed out];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,peppergray.xyz:email]
-X-Rspamd-Queue-Id: DE2D63C0BDA
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,davemloft.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 681AB3C1397
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pepper Gray <hello@peppergray.xyz>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit d499e9627d70b1269020d59b95ed3e18bee6b8cd ]
+[ Upstream commit 5e67ba9bb531e1ec6599a82a065dea9040b9ce50 ]
 
-DW_CFA_advance_loc4 is defined but no handler is implemented. Its
-CFA opcode defaults to EDYNSCS_INVALID_CFA_OPCODE triggering an
-error which wrongfully prevents modules from loading.
+ioam6_fill_trace_data() stores the schema contribution to the trace
+length in a u8. With bit 22 enabled and the largest schema payload,
+sclen becomes 1 + 1020 / 4, wraps from 256 to 0, and bypasses the
+remaining-space check. __ioam6_fill_trace_data() then positions the
+write cursor without reserving the schema area but still copies the
+4-byte schema header and the full schema payload, overrunning the trace
+buffer.
 
-Link: https://bugs.gentoo.org/971060
-Signed-off-by: Pepper Gray <hello@peppergray.xyz>
-Signed-off-by: Will Deacon <will@kernel.org>
+Keep sclen in an unsigned int so the remaining-space check and the write
+cursor calculation both see the full schema length.
+
+Fixes: 8c6f6fa67726 ("ipv6: ioam: IOAM Generic Netlink API")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/patch-scs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/ipv6/ioam6.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/patch-scs.c b/arch/arm64/kernel/patch-scs.c
-index a1fe4b4ff5917..6d656179ea03b 100644
---- a/arch/arm64/kernel/patch-scs.c
-+++ b/arch/arm64/kernel/patch-scs.c
-@@ -171,6 +171,14 @@ static int noinstr scs_handle_fde_frame(const struct eh_frame *frame,
- 			size -= 2;
- 			break;
+diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
+index b6ed67d7027c1..868a25c57b924 100644
+--- a/net/ipv6/ioam6.c
++++ b/net/ipv6/ioam6.c
+@@ -712,7 +712,7 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 				    struct ioam6_namespace *ns,
+ 				    struct ioam6_trace_hdr *trace,
+ 				    struct ioam6_schema *sc,
+-				    u8 sclen, bool is_input)
++				    unsigned int sclen, bool is_input)
+ {
+ 	struct timespec64 ts;
+ 	ktime_t tstamp;
+@@ -942,7 +942,7 @@ void ioam6_fill_trace_data(struct sk_buff *skb,
+ 			   bool is_input)
+ {
+ 	struct ioam6_schema *sc;
+-	u8 sclen = 0;
++	unsigned int sclen = 0;
  
-+		case DW_CFA_advance_loc4:
-+			loc += *opcode++ * code_alignment_factor;
-+			loc += (*opcode++ << 8) * code_alignment_factor;
-+			loc += (*opcode++ << 16) * code_alignment_factor;
-+			loc += (*opcode++ << 24) * code_alignment_factor;
-+			size -= 4;
-+		break;
-+
- 		case DW_CFA_def_cfa:
- 		case DW_CFA_offset_extended:
- 			size = skip_xleb128(&opcode, size);
+ 	/* Skip if Overflow flag is set
+ 	 */
 -- 
 2.53.0
 
