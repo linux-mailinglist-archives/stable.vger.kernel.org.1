@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHJmHNqd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:34 +0200
+	id +I/THHan1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D594F3C0B7A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AF33C2718
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8CEAA30890E2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35DA431A2DC6
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997523D9DB2;
-	Wed,  8 Apr 2026 18:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EFF3D9022;
+	Wed,  8 Apr 2026 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKcPUe+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDeeaaDo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6923D9DB1;
-	Wed,  8 Apr 2026 18:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719193D522C;
+	Wed,  8 Apr 2026 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672595; cv=none; b=OsCm1CkBQJt+TTZOP3Su2WuYJmTekDACIODejJixqsWR1TFRRy+JNz5ZVz3ZnGRX4rVWOAq7KbKVJKLgrz5NuirVDHr4plNHTwOLSKoqAybT6rjOsCRzcx77xUWX5udzIkeKXdKtypFMR0awGvfW/AMnLBkGC4kAY8TjgN01N9o=
+	t=1775673769; cv=none; b=PRgJJmd4S4vvurJdgdOx78s8MLfkTVTCeX3Ef4Ntkg1FJi9hbNxnA36q6cPxg2zhjm+/BZgT2G28dYIDNIg+nx8/ZOkD7+1CnwmzCbi6d0FMKKJal1Fee474vz8VXPYsl001nZ1R8LLp+Oq2joqT1cBpj9mosSoJPrhv9EhuEvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672595; c=relaxed/simple;
-	bh=Sz8NP7jGYCX90GUdQJPnXHu7iTWMiUreEZhOD9q8BOM=;
+	s=arc-20240116; t=1775673769; c=relaxed/simple;
+	bh=N84Fbfag15lHq+i7gvU1St6sf9fWsvU5bunUeEuW1CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbFAeJORXwaIEo31AG5FgKH7D9+BuHUFYPpJqZ1ibC2U4S139EPINh2QIdmuXw7fqLYOSvSexiJ7vgQIN+lPZu2JukuuvaVZWiUCpgxWcLfj158fKY+ZUz4G5Fh2Vo1fhusuS1BzMXqAO7mLYI52SmtgROIG31yW6awIyT/ZzRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKcPUe+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7623C19421;
-	Wed,  8 Apr 2026 18:23:14 +0000 (UTC)
+	 MIME-Version; b=cEuD3AzeJ6Z54ehvr1fBTiudN0sqgyCVui4bkULABLCzKwtsoDUqLkYsV1ofRY33AE9VS8Q2LCWwAvLwkzvxSeEf2WPdqCyhS/mDEN3MvNKXviCkHYdSgJS1toFIr06PUY5E3wMBCHdvkKROj6o6NztElwB3h0/JYobl7h62cfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDeeaaDo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FBDC19421;
+	Wed,  8 Apr 2026 18:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672595;
-	bh=Sz8NP7jGYCX90GUdQJPnXHu7iTWMiUreEZhOD9q8BOM=;
+	s=korg; t=1775673769;
+	bh=N84Fbfag15lHq+i7gvU1St6sf9fWsvU5bunUeEuW1CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKcPUe+GhDyzv3zN9i5cu5qimMBrD6l7VMRaK+uYqmAjY1dSSDH/rb/zMP+dl2ocK
-	 NslOKmJgzWaPyHkQ78Ih+CG9vYmm3ibgLYt/aRXSIRCmcbMzCJn7OstAo8DUPm5NfR
-	 MNwWmeCgOyrs7BWMLEyEyKtNDQB6Z8qUweDe68Kw=
+	b=zDeeaaDoCkVSPA3QhZjfYaS59+5YbdIC4OtYJUTNMhyPJAaMv2ignKXWhtRohY+5Y
+	 3IXm2v8bPt7pAxjCfAYTVSYSKYpDd8SREFDWVHAD+u9WtPdaCxsAcjFMZZTyV3jz88
+	 1MOrhBrOuDyXtqStZ2V30m5t/JKQ+mTpUCLOzakk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/160] netfilter: nfnetlink_log: account for netlink header size
-Date: Wed,  8 Apr 2026 20:02:02 +0200
-Message-ID: <20260408175914.521061474@linuxfoundation.org>
+Subject: [PATCH 6.12 083/242] Bluetooth: hci_conn: fix potential UAF in set_cig_params_sync
+Date: Wed,  8 Apr 2026 20:02:03 +0200
+Message-ID: <20260408175930.189040913@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +68,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234336-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-234790-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,strlen.de:email,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D594F3C0B7A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E3AF33C2718
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 6d52a4a0520a6696bdde51caa11f2d6821cd0c01 ]
+[ Upstream commit a2639a7f0f5bf7d73f337f8f077c19415c62ed2c ]
 
-This is a followup to an old bug fix: NLMSG_DONE needs to account
-for the netlink header size, not just the attribute size.
+hci_conn lookup and field access must be covered by hdev lock in
+set_cig_params_sync, otherwise it's possible it is freed concurrently.
 
-This can result in a WARN splat + drop of the netlink message,
-but other than this there are no ill effects.
+Take hdev lock to prevent hci_conn from being deleted or modified
+concurrently.  Just RCU lock is not suitable here, as we also want to
+avoid "tearing" in the configuration.
 
-Fixes: 9dfa1dfe4d5e ("netfilter: nf_log: account for size of NLMSG_DONE attribute")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: a091289218202 ("Bluetooth: hci_conn: Fix hci_le_set_cig_params")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_log.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
-index aa5fc9bffef0c..f96421ad14afb 100644
---- a/net/netfilter/nfnetlink_log.c
-+++ b/net/netfilter/nfnetlink_log.c
-@@ -726,7 +726,7 @@ nfulnl_log_packet(struct net *net,
- 		+ nla_total_size(plen)			/* prefix */
- 		+ nla_total_size(sizeof(struct nfulnl_msg_packet_hw))
- 		+ nla_total_size(sizeof(struct nfulnl_msg_packet_timestamp))
--		+ nla_total_size(sizeof(struct nfgenmsg));	/* NLMSG_DONE */
-+		+ nlmsg_total_size(sizeof(struct nfgenmsg));	/* NLMSG_DONE */
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 447d29c67e7c1..b36fa056e8796 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1767,9 +1767,13 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
+ 	u8 aux_num_cis = 0;
+ 	u8 cis_id;
  
- 	if (in && skb_mac_header_was_set(skb)) {
- 		size += nla_total_size(skb->dev->hard_header_len)
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_cig(hdev, cig_id);
+-	if (!conn)
++	if (!conn) {
++		hci_dev_unlock(hdev);
+ 		return 0;
++	}
+ 
+ 	qos = &conn->iso_qos;
+ 	pdu->cig_id = cig_id;
+@@ -1808,6 +1812,8 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
+ 	}
+ 	pdu->num_cis = aux_num_cis;
+ 
++	hci_dev_unlock(hdev);
++
+ 	if (!pdu->num_cis)
+ 		return 0;
+ 
 -- 
 2.53.0
 
