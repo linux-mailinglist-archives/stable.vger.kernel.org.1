@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WK2aBQ2g1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:57 +0200
+	id mEAPJ2Wr1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D2F3C109B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C783C2E70
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4854F30B2AAF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67C9F31D6094
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02813AA4E4;
-	Wed,  8 Apr 2026 18:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F263C5552;
+	Wed,  8 Apr 2026 18:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQsBYhZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3E6zo4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743D12494F0;
-	Wed,  8 Apr 2026 18:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B4637F01B;
+	Wed,  8 Apr 2026 18:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672672; cv=none; b=afYLIZ7nHoVe7GcJzQN4r+o8PoOmSDZmLoS6cIjcM4izHdhJqi/woYicHjMvsfJK46b7hjNXIdqEHusHQkoVETAdY9Jj6/EHEnxnWYjkm8T5FZnIGui/qaECqQUXtKw8Sd1c1L+lfzmJ4yEm5pBP9HEs/N+buF5appdlOPUY+DM=
+	t=1775674659; cv=none; b=uo6fKtiTqlsxBD4SbQ/pCKlSVJNpmSCDaoW0Nhtq9tjGlW3iz92vflVl6g1IopWWLCOBO9+R41QdnEZ8Ony5SKhanq60Vj5+SnlFDTzOYQHtE6apNE0HT8ivdIRZthfrVC/QuyuISFdhjTrsltjisPZe2cBoME6GM5URrrKVOLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672672; c=relaxed/simple;
-	bh=JwfdKG4odwZmyayD1hRQnzMzxeQHe+l+ijpBM3Ucuho=;
+	s=arc-20240116; t=1775674659; c=relaxed/simple;
+	bh=XnZGJPoPuesh6prm8Va91VrHW05AoAP4YLqmqqQm22M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYLkTJgyVATYzrH/lAmavvvbSHNE8+z9IMumE4Iln5T23sGcPhCqp/w2cU1w8k01dG0kQmfEqD3A0Gs4vhs2Ybqx/gltkfYYnQWlq/Et80vVi2GqpHccXIMrELFkh4K010MtPVGRBbbeiKA5pKgD3Zx0edss2zohPjmoOnflD6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQsBYhZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB24C19421;
-	Wed,  8 Apr 2026 18:24:31 +0000 (UTC)
+	 MIME-Version; b=c817642vgBIRl84G676UBRv2c9JqEm78397YFd6yPyb/GfrD7J7tKBH3OhynO/YXZ8hgCT8H4uD1ZQVooaLqsfC9zwe/CXYljkwZbXKGkCPTJQO4A2auDPkhi9w1g4hzmEiHL/8OW9F11y5yboFwV03roYCv4maIb77dxlVG9Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3E6zo4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3880FC19421;
+	Wed,  8 Apr 2026 18:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672672;
-	bh=JwfdKG4odwZmyayD1hRQnzMzxeQHe+l+ijpBM3Ucuho=;
+	s=korg; t=1775674659;
+	bh=XnZGJPoPuesh6prm8Va91VrHW05AoAP4YLqmqqQm22M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQsBYhZRbeyaH3s2IZC+cI2nUAFkiFM0EfVAXKZ3EbcnnawlK/9svh6j1S2BUWxcd
-	 bgyw8cVvsB1sKQK04XB/QL6Xm9f+vs70oFdUT2QEF+VwMifb2k3qEd/wIdGbKCIDFE
-	 TzqA+uY7ZaIvfO9BCFTNleHuNtY5S8FdJCocwB94=
+	b=V3E6zo4E3fHhU2R0GJSZ4g7vSMs19Y00yPKCz6sSU1Mq3gYfcdRlruPkgN7T7UIM1
+	 WHtQx6Tov2hihs4g/Ns1g3XVyl+OSUhhbgecyXzR3H8RKGAbJDcJZ+qNKLf5xIaHkq
+	 2P7WFU1i7NG7g853orscbr6P7+sJpgvShmm49q7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 096/160] iio: dac: ad5770r: fix error return in ad5770r_read_raw()
-Date: Wed,  8 Apr 2026 20:03:03 +0200
-Message-ID: <20260408175916.773600415@linuxfoundation.org>
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.19 184/311] MIPS: SiByte: Bring back cache initialisation
+Date: Wed,  8 Apr 2026 20:03:04 +0200
+Message-ID: <20260408175946.281528662@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234366-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235135-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,42 +89,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 81D2F3C109B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E4C783C2E70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit c354521708175d776d896f8bdae44b18711eccb6 upstream.
+commit d62cf1511743526f530a4c169424e50c757f5a5e upstream.
 
-Return the error code from regmap_bulk_read() instead of 0 so
-that I/O failures are properly propagated.
+Bring back cache initialisation for Broadcom SiByte SB1 cores, which has
+been removed causing the kernel to hang at bootstrap right after:
 
-Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Dentry cache hash table entries: 524288 (order: 8, 4194304 bytes, linear)
+Inode-cache hash table entries: 262144 (order: 7, 2097152 bytes, linear)
+
+The cause of the problem is R4k cache handlers are also used by Broadcom
+SiByte SB1 cores, however with a different cache error exception handler
+and therefore not using CPU_R4K_CACHE_TLB:
+
+obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
+obj-$(CONFIG_CPU_SB1)           += c-r4k.o cerr-sb1.o cex-sb1.o tlb-r4k.o
+
+(from arch/mips/mm/Makefile).
+
+Fixes: bbe4f634f48c ("mips: fix r3k_cache_init build regression")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.8+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5770r.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/mm/cache.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/dac/ad5770r.c
-+++ b/drivers/iio/dac/ad5770r.c
-@@ -323,7 +323,7 @@ static int ad5770r_read_raw(struct iio_d
- 				       chan->address,
- 				       st->transf_buf, 2);
- 		if (ret)
--			return 0;
-+			return ret;
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -207,7 +207,8 @@ void cpu_cache_init(void)
+ {
+ 	if (IS_ENABLED(CONFIG_CPU_R3000) && cpu_has_3k_cache)
+ 		r3k_cache_init();
+-	if (IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) && cpu_has_4k_cache)
++	if ((IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) ||
++	     IS_ENABLED(CONFIG_CPU_SB1)) && cpu_has_4k_cache)
+ 		r4k_cache_init();
  
- 		buf16 = st->transf_buf[0] + (st->transf_buf[1] << 8);
- 		*val = buf16 >> 2;
+ 	if (IS_ENABLED(CONFIG_CPU_CAVIUM_OCTEON) && cpu_has_octeon_cache)
 
 
 
