@@ -1,246 +1,212 @@
-Return-Path: <stable+bounces-233905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAeoHJpZ1mnLEQgAu9opvQ
-	(envelope-from <stable+bounces-233905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 15:35:22 +0200
+	id uESNG3lb1mk1EggAu9opvQ
+	(envelope-from <stable+bounces-233906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 15:43:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346323BD00C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 15:35:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5763BD159
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 15:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C248E3015D17
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 13:35:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 694B33088B8E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 13:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BC23CE4AD;
-	Wed,  8 Apr 2026 13:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E631D3CF665;
+	Wed,  8 Apr 2026 13:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JhRMrSjb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ky4bW9K9"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011042.outbound.protection.outlook.com [40.93.194.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE183C9EE8;
-	Wed,  8 Apr 2026 13:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775655317; cv=fail; b=PXQNY8W6trQMc6Je6xXUSfvjO93rB/ZauiE5y6VOtdFp4mmGrneAZ7qF7nSMLkFyiWPRvJrPubeHZZRdX81QJaXsJisEMiMuJUXapwK9LPQgfaakw+AJS1ilDkj8xIcXI8FODb/YR7bB5lGRIKir+7aQMKPGWIClQxd7D+4HL5I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775655317; c=relaxed/simple;
-	bh=ZdL6zC5U+KwV0WvsjYnbuA55N4AEd1314qKQ9stdRvA=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jXUSGkfJjdVUEUjByLeiLA8kuqUJsTVsW5Q95H21+2a6HW31J0gidVXWFT730F/+Z48lT3Ks+XgeV2o3bUODrliUfHJnbfZcDrrs/Wbjpme6KrUztUmIbmll0gWBYLHhEoietQUBhpUOQmhH9PgoQhXi3OcabwUy6/IsLDLDgbk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JhRMrSjb; arc=fail smtp.client-ip=40.93.194.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=quJgtmrjcBeWP1QQsEygpk8GTy3xVRajeTDh/YJMG78JGnSdutB23CLAPO/M4qIxvY0hIiVCawzM6Ae1/nxljyh2uMTnXCIxFPRYBKku9Y60yD/a/QKqhY7bnIMOaw8vuahdIbSQCtGgus6v2l5z0tQYjITvvLFZVUU0kjyaSBJcRXRpm3YxnNqoZZJYaDgnrzlhplcg5ZNNUvNicybz0yE7PJ5GJcXqbBBipTU2gHWFmj4bCtYmbQb+jLYnOrRgE5J4y7FSGc8XG8hXAjiKsolom51KRBemODwbbRObupFkrmN5U+pCIjqdbTdbuREStcT/NGPioXejX1aL8wuSBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cRf8y/Xbm93UF9VirZ7Uem2Y/sAkeJtabHXYdoa+wis=;
- b=QRnA1YvfY15LmzZNvI3N0KZ6SM2olBz9YoOx9NwmNDbuItQuApD/iuIYrEYLnfFV7IedRZr6nkGxGRN+1zabLJ5/kU9RP6HZYmtbCvugOGF7K5HbyzUkK0vtwpFEnXw6cZC8i+8hgehbSmPUgpAEpgZNI73hZ7HZhYvlyDH0J1YmgKsk1nwFhD/Msd77sf33u+7bU9T6iXftEjevqqam8Id6J/qSGIM/+OPwwCu60O5PtQVMOcEaeP11T2GUU3+N4kcXlMxtKYf381yNphJw5ZD5P22A+U5spUylatD20Qqe/QBn3PMG8FzJWjoTQdEa8/B5THd0HfK9nVkoRKgbpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cRf8y/Xbm93UF9VirZ7Uem2Y/sAkeJtabHXYdoa+wis=;
- b=JhRMrSjbashxHJZS2P96XecdZlyzQZVbi3uER+E5tWHeYkPNkBrrSNiOzxY0qBY2GBq+06tsDszAvYKQYWla8UHFVaTtmDqVXpOsT+YVoX1UahZdGSh8bvRYk00qfaSRMSecwHYMqtVVujrtCyz1UoPHrM732pgaiwNLYTtNfFjq7Xkuc3x5Rtepha3907irTX4N6gSe9/X41qnth5tdod/1tGCTwJQOlNwavVaxL2acO0cTQ6lDd/htIff+IslS/j65xxB2OddcwLPQuIhR39ppPvWv/n01y8vV3gpEFvhgDsvoQkEIF4BVb9oZBgeEcL5RGy3toTdGEUwTSpJL5w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS2PR12MB9750.namprd12.prod.outlook.com (2603:10b6:8:2b0::12)
- by MW4PR12MB7167.namprd12.prod.outlook.com (2603:10b6:303:225::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 8 Apr
- 2026 13:35:09 +0000
-Received: from DS2PR12MB9750.namprd12.prod.outlook.com
- ([fe80::56a8:d6bf:e24c:b391]) by DS2PR12MB9750.namprd12.prod.outlook.com
- ([fe80::56a8:d6bf:e24c:b391%6]) with mapi id 15.20.9769.016; Wed, 8 Apr 2026
- 13:35:09 +0000
-Message-ID: <56559431-b73b-4e3b-8554-7a72d78e2b67@nvidia.com>
-Date: Wed, 8 Apr 2026 14:34:59 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iommu: Always fill in gather when unmapping
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, Robin Murphy <robin.murphy@arm.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
- Baolin Wang <baolin.wang@linux.alibaba.com>, iommu@lists.linux.dev,
- Janne Grunau <j@jannau.net>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Joerg Roedel <joro@8bytes.org>, Jean-Philippe Brucker <jpb@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-sunxi@lists.linux.dev,
- Matthias Brugger <matthias.bgg@gmail.com>, Neal Gompa <neal@gompa.dev>,
- Orson Zhai <orsonzhai@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel@sholland.org>,
- Sven Peter <sven@kernel.org>, virtualization@lists.linux.dev,
- Chen-Yu Tsai <wens@kernel.org>, Will Deacon <will@kernel.org>,
- Yong Wu <yong.wu@mediatek.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Lu Baolu <baolu.lu@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Joerg Roedel <joerg.roedel@amd.com>, patches@lists.linux.dev,
- Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org,
- Vasant Hegde <vasant.hegde@amd.com>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-References: <0-v1-664d3acaabb9+78b-iommu_gather_always_jgg@nvidia.com>
- <ee2c2044-e329-4cdd-ac35-9365824d3677@arm.com>
- <20260401173650.GD310919@nvidia.com>
- <ec51ef14-e360-43a6-ae62-44a939ec8027@arm.com>
- <20260402225121.GI310919@nvidia.com>
- <94576121-d4ff-47fd-9ff8-2a00ff4c5c2a@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <94576121-d4ff-47fd-9ff8-2a00ff4c5c2a@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PR1P264CA0171.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:347::17) To DS2PR12MB9750.namprd12.prod.outlook.com
- (2603:10b6:8:2b0::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62313CF042
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 13:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775655447; cv=none; b=CIUKtN3kYbSWxvFOIwVPbNtc4MVqUClHlJLx1HDBB3RTqfVO502QNhzdtAO+QemV2JUG8JNYwgCiOodCOHoq/2JaVr+ig19mVCzUhMNhLDEFx9RnR0+jFUpNWrln+5f6mZ657ozIyGk5qMcyThnQYwW4Bzh3gwfgzJe931l95/4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775655447; c=relaxed/simple;
+	bh=5nKJVaP9yOao5Rmc2Mv1zPZPIxHX5uZQLZpmV53Ig7E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=trgdcu90tR+HBq0m/1izLgSBycXE07v3iWJ5YXRW1YSvRa89g46BPpRT1VESPsiKCM1XVWWYU+RCfUOVlzfxmpgrqv8Z6OpqKDNCwTQXT/hAXkcuNSXtCsK11Nk6WDPfqB9CV5G+hhMDIhlOS1D6c6K0MDkOdgTlNPz4pC8YfAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ky4bW9K9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9F4C19421;
+	Wed,  8 Apr 2026 13:37:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775655447;
+	bh=5nKJVaP9yOao5Rmc2Mv1zPZPIxHX5uZQLZpmV53Ig7E=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ky4bW9K9zwGSDMlH/j54Vcwnh4HPKqIrpFloHk5gmrwYxkCASeBvAalFm6lxY6RDP
+	 7HXwqSUcgzH3D7C1BVz/nPMl7dbrDFlNIbsfz8p1eYVeXmC1l/+F4AbKViD9hIjCAd
+	 hlsX+yps+C++qFlOL6jPCFW8FAc+nIUjow5KwrVI=
+Subject: FAILED: patch "[PATCH] RISC-V: KVM: Remove automatic I/O mapping for VM_PFNMAP" failed to apply to 6.6-stable tree
+To: fangyu.yu@linux.alibaba.com,anup@brainfault.org,dbarboza@ventanamicro.com,guoren@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 08 Apr 2026 15:37:25 +0200
+Message-ID: <2026040824-chess-override-1b55@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PR12MB9750:EE_|MW4PR12MB7167:EE_
-X-MS-Office365-Filtering-Correlation-Id: c543b95d-558b-42da-372f-08de9573a709
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|7416014|366016|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Tm7EMfjbnelwIwQTP7uon7RLSSgXMZFyNxaAeMsjfJhrxdlTSRAEaeNNN7LNCNpHAoQT5YqWft8wUnflYuXdfDvQ3vGt+UlvtHN6EFJCngRQbvV5QprHGwCEp6ay4vW43bvO//jzqdjzEOR9+nQIXaCouTQiVMR36UerTIgf516caLOrKrqeNCJ3l3V+vDJXvM/8J8FHzatx8fLRgY1ZlI/0Z9OgcJCo7hgPjYlZ3CjdsZmR0Boq3ZQLinIPLE6qpyxPkgSCo8dk9OZFhCP3Q12gi3lWR83aIKlPY2L6YLcZJjrGtt2RbJDZDfCYgkGbnsHZRaRwpcGqfsdTACRHGivRYHKhstyRgdP8s6VSqvDM76MyMwyeOJBZaWwTwANOEUw3NRc/vB+awR1+ojP2osH3jVRAkRfpG6L0cLyfLodOjR7s/jM9RY0FS7rLwhW0cnrSdRy4q3JxxRNHXPZJFX0TsHzuRpwRfzOho9rmrDVPq5a5sA+l9MD6IECUXHyYG63U1WGzuqmfeHdgWUS4332dlCXCv5k1K0wVZyCnbHhcFOuZs99tGwlHPz7iv8rx9gkpLTN0eYPMhPJIdDz3Ovyh1Cu32fNiPZCoBxU2aHhRxKaZd2pszdumCBzUzlmro7L7bonS7UUeT5BdTFASiaOYom3xMLyS0q2krinNDNjb+uVAgPp3AoO3UbizIR9tEF59XIBO4h/EWQGSN66sht9yngCj1vtDPM3wxEvJ5pc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS2PR12MB9750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(366016)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZXZHcHRDeWUrcXdrK1kzRlpYNENPNUR3bzlFSlRZZk1uZE9MMWFxcjJleDRQ?=
- =?utf-8?B?UXR2NGxDRDBZdFJLNWY0YktraFNKR0QzR0lZM04zdkFGY1U1V1QyU2NBOVVJ?=
- =?utf-8?B?Q3dTRXh4NWlod1EvL045ZjJiVENxRWxzRjdaQVUzTzlGMUtDZU00L3dvOFk5?=
- =?utf-8?B?WmpxQ1hYak85ZzczMy95enRNSHIyUUxiZmZJUUU1cWlrZ0tMR282aUFWTXBR?=
- =?utf-8?B?eDJJejNYb04vNUpVVUptVjRjbE5SUHVTbGRPRCtNRHF4dmoyczJCNDI1WDdU?=
- =?utf-8?B?b0ttM21Db0E1Z3VEYXNKV3dWbHIrQ1hpNUtvaW5PMk1OMzIzZ2IxMU9NZWFs?=
- =?utf-8?B?YTFYZFZLcUJEaWQzbVhzUmlaOVFrdmRJeXZFUzZYMFZLQ0xicnpvaFJZeXRI?=
- =?utf-8?B?OVZndzBTeWJUODk4cjBjMWMyVXQrb3dJT0tkK1FkWlhrTFFSVHZndk40WFp0?=
- =?utf-8?B?dFgrd3JvS2hoemZsL2o5TlBXeTJiWnAxV3JYa2xZM0ZxVHBkbGFsa2VZK0R2?=
- =?utf-8?B?OGlLSFg3cFZKZnlMMzJZNlJ2eUVFRVVtUVVSRnBsVVg3b1NRRGMwMDgxS3Y0?=
- =?utf-8?B?UGh5K0pENFp2N1MyMlNWWDFoMXhvUjhXQS9PM1hhbitNd1BWVXVHUERpcUJp?=
- =?utf-8?B?Um9CNXFlR2ticTJFNXc5MjJ1R2oxSjdGSDhBVTFkQjJwV0thTmpoR2ZzdnM1?=
- =?utf-8?B?VmFDaTlsY2QvWUhnV3BsSHJJRDRPS2dZOTJCeUJEd2RsaS9TQTArbFBUdkg1?=
- =?utf-8?B?VDQwN1FheDhrZ3lYbEVQU29JQ3VudjlxSC9rK0N0YXYxSXZhWFEwUi9KUEFK?=
- =?utf-8?B?RGNwV1huSmFTQTNtQlJEZU9BWFlvajFTYVJmaVA0dDdONXk3L0ZzU0txcmR1?=
- =?utf-8?B?WjluWXZ0UHJmZURVR0pNcUVibkhzcGc1ZEpucGtzbUJMeDlYZUQ5K1kzRG0z?=
- =?utf-8?B?VmtaNGt1cFBFYWR4SEM1a3ZBdmQ2aHVPUy9Da3dZZE1PWkx5TmcxbUZwZ0NU?=
- =?utf-8?B?NmZxUHZ5L3FrZUVCNEFPeFYwR2lHRnlUcFpudWhrUkNNeXRmUW5leHhKNEJO?=
- =?utf-8?B?SWJaOEdOZUg0Z3RvYjRjVmtUdnYwaiswNkwvVFM3eHJBbnIrbk5DSkhtcFZX?=
- =?utf-8?B?YVNEM0l3eGYwSmlwQ1ViVFFqcWdTNGIzdUkvVlRKd1V5elM5eHlyZ0sxNXFJ?=
- =?utf-8?B?dGJyaHhrYVZ3RWhSSUQ0UUFrVGdvTHZKTnhOWVF0Nk1zenYwYkZvSHdoZGlG?=
- =?utf-8?B?NThMdFdjZFBGcnR2R3Fzdk5za2ZkemJzWXQ0eVRjamJ2SHVVNFZPVXhjWTVG?=
- =?utf-8?B?U3NrcGYyY2NRMEJzcDNSQVVDRkdkVmpwZnBKZktnM2EzVDc5dHFBcmJ0QVF5?=
- =?utf-8?B?SzJTRlZ6QnBmbEx1YWxBOUhBdjJhSHExK0dLVzVLblAxRE9KcE1Bb0VPdEQr?=
- =?utf-8?B?VEVjOUxtczNxN0xNU0hsTEhSYk5seEIxZzhFMGhWdTlweUdNdmRJQVJ2THAw?=
- =?utf-8?B?K2dkVkYwdzYxaSt5a1BXS3FwbUJGSjVaeXl0US94SGFDZDVOaXVZdVN6K3d4?=
- =?utf-8?B?VDNNc3ExSmh0TFdrRXRyeThPK0dNUDRDUzUvUWtXMVFFQ0NHNVhmQXhDdkVj?=
- =?utf-8?B?SkxkMVBiSGhmZElLbDFiY2ZnVUpCcXEzaHhvSDIxR0hpWjRsL211bDFCZE1O?=
- =?utf-8?B?bXlOZjQxTkJuVWw3Und2QlA4RVRWVmhVUzJNbXVjb3lDbUJVMjU5UzVmMWxY?=
- =?utf-8?B?SDNaMEt5emMxVzgyTHRNM05KNXZHRytNOEgzNFZ3VGZiQ09VMEk4cmlhcnkx?=
- =?utf-8?B?Vm9paWlIZDZPOWxVeFNqS284K2d3ZlZOUVJZK2tmRUFXWVZIYXBGTzA1RVVL?=
- =?utf-8?B?WnRJYlVwTGJ3b0xBUWRjbWRhYzloTkhHM0VMVUc4UmdzaWRWV2hmSk9OelYv?=
- =?utf-8?B?U1Bzd000QUJBa0pzZ0w2VzVhR3dxZjZLRHZ2T0ttSTQvZTlsODVOMFI2cmJL?=
- =?utf-8?B?dkZiOWk1UXpka2NEenZoZ0VUOEJ4dUNiSFk0TU9aZXE2czlhZWhvemZsTCt5?=
- =?utf-8?B?aHlMM1Rhb2V3aXRuK25qNnlETUIzMUYvVGNQUldqRXZFdGdDcUlYUGJDQlRO?=
- =?utf-8?B?bWQyV01DTnVIemN6VFRXUUhrZjM2L29zZE1zMzBETkFuV0IvWmsrSUZDN2Rr?=
- =?utf-8?B?SEZVVVNqdStya1RtSjRrWCtNSWUzZkNOampSRC9OMnhGNmxQRkN6aWtaMG5T?=
- =?utf-8?B?VTBPMVloVzhQcmhQMzZ3ZWY5UFZVQVFPTkxLaHpmQ3h5NDJBVWxWVnZ3NFhH?=
- =?utf-8?B?VG9FOHloUktIN3VvaHYrMjVDNkJER2N6VEthcG1KTUgvNmtDQVg0eXBRVHdk?=
- =?utf-8?Q?iV3QGXTYjM05+xpap8g3ywG5ALzpriTRMu+hjWiH6wArC?=
-X-MS-Exchange-AntiSpam-MessageData-1: o/lzCtSQbflfQQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c543b95d-558b-42da-372f-08de9573a709
-X-MS-Exchange-CrossTenant-AuthSource: DS2PR12MB9750.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 13:35:09.0642
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9b47sY4jdmCqlJU4n7Y9abunpuQpWxLeCyU8+5R2q+Uxe0G40ZjegUeezD2iUQQYjVIV8lBd6jBpXNEGxJolvA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7167
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[36];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233905-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[ghiti.fr,collabora.com,eecs.berkeley.edu,lists.linux.dev,linux.alibaba.com,jannau.net,gmail.com,8bytes.org,kernel.org,lists.infradead.org,gompa.dev,dabbelt.com,sholland.org,mediatek.com,linux.intel.com,amd.com,google.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-233906-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,Nvidia.com:dkim]
-X-Rspamd-Queue-Id: 346323BD00C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,ventanamicro.com:email,brainfault.org:email]
+X-Rspamd-Queue-Id: BF5763BD159
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-On 08/04/2026 09:42, Jon Hunter wrote:
-> Hi Robin, Jason,
-> 
-> On 02/04/2026 23:51, Jason Gunthorpe wrote:
->> On Thu, Apr 02, 2026 at 07:11:13PM +0100, Robin Murphy wrote:
->>>>> @@ -2714,6 +2714,10 @@ static size_t __iommu_unmap(struct 
->>>>> iommu_domain *domain,
->>>>>            pr_debug("unmapped: iova 0x%lx size 0x%zx\n",
->>>>>                 iova, unmapped_page);
->>>>> +        /* If the driver itself isn't using the gather, mark it 
->>>>> used */
->>>>> +        if (iotlb_gather->end <= iotlb_gather->start)
->>>>> +            iommu_iotlb_gather_add_range(&iotlb_gather, iova, 
->>>>> unmapped_page);
->>>>
->>>> The gathers can be joined across unmaps and now we are inviting subtly
->>>> ill-formed gathers as only the first unmap will get included.
->>
->>>> We do have error cases where the gather is legitimately empty, and
->>>> this would squash that, it probably needs to check unmapped_page for 0
->>>> too, at least.
->>>
->>> Maybe try looking at the rest of the code around these lines...
->>
->> Okay, well lets do this one, do you want to send it since it is your
->> idea?
-> 
-> 
-> Any update on this? Boot is still broken on a couple of our boards.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8c5fa3764facaad6d38336e90f406c2c11d69733
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040824-chess-override-1b55@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
 
 
-I just noticed that this is now broken on mainline as well as -next. Can 
-we get a fix in place before v7.0 is released?
 
-Thanks
-Jon
+thanks,
 
--- 
-nvpublic
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8c5fa3764facaad6d38336e90f406c2c11d69733 Mon Sep 17 00:00:00 2001
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Date: Tue, 21 Oct 2025 22:21:31 +0800
+Subject: [PATCH] RISC-V: KVM: Remove automatic I/O mapping for VM_PFNMAP
+
+As of commit aac6db75a9fc ("vfio/pci: Use unmap_mapping_range()"),
+vm_pgoff may no longer guaranteed to hold the PFN for VM_PFNMAP
+regions. Using vma->vm_pgoff to derive the HPA here may therefore
+produce incorrect mappings.
+
+Instead, I/O mappings for such regions can be established on-demand
+during g-stage page faults, making the upfront ioremap in this path
+is unnecessary.
+
+Fixes: aac6db75a9fc ("vfio/pci: Use unmap_mapping_range()")
+Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Tested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20251021142131.78796-1-fangyu.yu@linux.alibaba.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
+
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 525fb5a330c0..58f5f3536ffd 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -171,7 +171,6 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+ 				enum kvm_mr_change change)
+ {
+ 	hva_t hva, reg_end, size;
+-	gpa_t base_gpa;
+ 	bool writable;
+ 	int ret = 0;
+ 
+@@ -190,15 +189,13 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+ 	hva = new->userspace_addr;
+ 	size = new->npages << PAGE_SHIFT;
+ 	reg_end = hva + size;
+-	base_gpa = new->base_gfn << PAGE_SHIFT;
+ 	writable = !(new->flags & KVM_MEM_READONLY);
+ 
+ 	mmap_read_lock(current->mm);
+ 
+ 	/*
+ 	 * A memory region could potentially cover multiple VMAs, and
+-	 * any holes between them, so iterate over all of them to find
+-	 * out if we can map any of them right now.
++	 * any holes between them, so iterate over all of them.
+ 	 *
+ 	 *     +--------------------------------------------+
+ 	 * +---------------+----------------+   +----------------+
+@@ -209,7 +206,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+ 	 */
+ 	do {
+ 		struct vm_area_struct *vma;
+-		hva_t vm_start, vm_end;
++		hva_t vm_end;
+ 
+ 		vma = find_vma_intersection(current->mm, hva, reg_end);
+ 		if (!vma)
+@@ -225,36 +222,18 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+ 		}
+ 
+ 		/* Take the intersection of this VMA with the memory region */
+-		vm_start = max(hva, vma->vm_start);
+ 		vm_end = min(reg_end, vma->vm_end);
+ 
+ 		if (vma->vm_flags & VM_PFNMAP) {
+-			gpa_t gpa = base_gpa + (vm_start - hva);
+-			phys_addr_t pa;
+-
+-			pa = (phys_addr_t)vma->vm_pgoff << PAGE_SHIFT;
+-			pa += vm_start - vma->vm_start;
+-
+ 			/* IO region dirty page logging not allowed */
+ 			if (new->flags & KVM_MEM_LOG_DIRTY_PAGES) {
+ 				ret = -EINVAL;
+ 				goto out;
+ 			}
+-
+-			ret = kvm_riscv_mmu_ioremap(kvm, gpa, pa, vm_end - vm_start,
+-						    writable, false);
+-			if (ret)
+-				break;
+ 		}
+ 		hva = vm_end;
+ 	} while (hva < reg_end);
+ 
+-	if (change == KVM_MR_FLAGS_ONLY)
+-		goto out;
+-
+-	if (ret)
+-		kvm_riscv_mmu_iounmap(kvm, base_gpa, size);
+-
+ out:
+ 	mmap_read_unlock(current->mm);
+ 	return ret;
 
 
