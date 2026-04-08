@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-235222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NWqE0em1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:31 +0200
+	id eKzkKEKk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E838D3C2396
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3DF3C1E05
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7EA523004C26
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EF0D6300F787
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7460D3D8139;
-	Wed,  8 Apr 2026 19:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE5133121F;
+	Wed,  8 Apr 2026 18:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvfFkNAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbg+ZgTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F333D648A;
-	Wed,  8 Apr 2026 19:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01C934AB06;
+	Wed,  8 Apr 2026 18:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674885; cv=none; b=QLV3ZpBANGg+QHXHAfiE5uN/qwJDBLgPhsCkEqC6cvKDLaU2ZpZpH/TIHQnn2GoRV6/aOfFFCfpxQVdWqEBGDLOC45FvSGMmMd0JyTzR+xSu4OsKk7ePW15uSDegQ1oO0YisWkzY8mtjyqgrlrGrYllBLsMb8XyzjrQ3XCDqKcQ=
+	t=1775674154; cv=none; b=FGOFSrPAG/RtwEZGt5qNBOdAuCxDECOq+LfHUQZEXtiJ6Mfretmo+jGrnA82DVYgm3kI0ChZMCSyq7+rgltt3ovOQ7Xy6W4uic4Knv1Jx31qoZlB+tnHVQdFmD1kNqff2WL5F30TupZnWjJJK7/H0Gv9XN84mo+QLe2p6KmmqR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674885; c=relaxed/simple;
-	bh=hA1V/klznBu6TVT6VowyTXL+7C40ckjqtpoIih94qtM=;
+	s=arc-20240116; t=1775674154; c=relaxed/simple;
+	bh=pbInNVc860F8T0IgnyV10GTWG5sAiuo/DwEgyYj3b4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eG2SMI0R9KE5Tzo0Hbi/02LxBQJB/C0QyWQUAR/XT4RHDLjwZ2UTF3pIl4C69mw6uPU5U/ZfHlt8eRsa2dFm6CzRKSTrx880ungs2Q/X0M50/Z5388p7ya0pNDclhJFWRc1NaNB6iWvY4SBI+dBBMz8K5GeCH8esCeUAmXp0Axo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvfFkNAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A32C19421;
-	Wed,  8 Apr 2026 19:01:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nw5KjvZo+8TqOuaDcs3ydEvpbVCGqfzfT2rVnQFF1ccLUM4ZDDNlhRpB49ZcQBG+G4Zxqenh+gEbMApXI4QDvHgQyx9G3ehSNJn2d/LeMN+TZuorexXozTrcYTVo3gvMxNhsueQfxgn64RM2gtOUvCp392Fgbu8FKP4+8T64wnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbg+ZgTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A6DC19421;
+	Wed,  8 Apr 2026 18:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674884;
-	bh=hA1V/klznBu6TVT6VowyTXL+7C40ckjqtpoIih94qtM=;
+	s=korg; t=1775674154;
+	bh=pbInNVc860F8T0IgnyV10GTWG5sAiuo/DwEgyYj3b4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvfFkNAJOa8I06EVng+SyO9VJx7PxA5DlRDcbMQrSCfRITtq4ljOJmohXUfpe6G8v
-	 22NJxEihWZDxShZ6L6u5XUBgg6HHSIcburnd4w/VVeR8fKT+ie3RSf1+bSeHdm/SWD
-	 lOcXHBhE03RmUus2hmCSp7tOrOI+8GAV3bjxkJFE=
+	b=vbg+ZgTWM4cfA4l+vtGgfwPMgf4w8oXmrMQws/YbeFi0IBMGgnxdKtS7d8ST+liru
+	 X514iPvfGmsSldCvIcw1mTQlaPJXXrx/d/EZwBr/RMyDilYISH93f1aQ/c9QKDC8Xg
+	 y6CedpmQvBsXCL/wXaQau2Od4FPFkNBoAudobWEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Liav Mordouch <liavmordouch@gmail.com>,
-	Nicolas Pitre <nico@fluxnic.net>
-Subject: [PATCH 6.19 270/311] vt: discard stale unicode buffer on alt screen exit after resize
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Rosen Penev <rosenp@gmail.com>
+Subject: [PATCH 6.12 230/242] drm/amd/display: Reject modes with too high pixel clock on DCE6-10
 Date: Wed,  8 Apr 2026 20:04:30 +0200
-Message-ID: <20260408175949.463910947@linuxfoundation.org>
+Message-ID: <20260408175935.705507105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +64,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235222-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,fluxnic.net];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-234939-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,fluxnic.net:email]
-X-Rspamd-Queue-Id: E838D3C2396
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 1E3DF3C1E05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liav Mordouch <liavmordouch@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 40014493cece72a0be5672cd86763e53fb3ec613 upstream.
+[ Upstream commit 118800b0797a046adaa2a8e9dee9b971b78802a7 ]
 
-When enter_alt_screen() saves vc_uni_lines into vc_saved_uni_lines and
-sets vc_uni_lines to NULL, a subsequent console resize via vc_do_resize()
-skips reallocating the unicode buffer because vc_uni_lines is NULL.
-However, vc_saved_uni_lines still points to the old buffer allocated for
-the original dimensions.
+Reject modes with a pixel clock higher than the maximum display
+clock. Use 400 MHz as a fallback value when the maximum display
+clock is not known. Pixel clocks that are higher than the display
+clock just won't work and are not supported.
 
-When leave_alt_screen() later restores vc_saved_uni_lines, the buffer
-dimensions no longer match vc_rows/vc_cols. Any operation that iterates
-over the unicode buffer using the current dimensions (e.g. csi_J clearing
-the screen) will access memory out of bounds, causing a kernel oops:
+With the addition of the YUV422	fallback, DC can now accidentally
+select a mode requiring higher pixel clock than actually supported
+when the DP version supports the required bandwidth but the clock
+is otherwise too high for the display engine. DCE 6-10 don't
+support these modes but they don't have a bandwidth calculation
+to reject them properly.
 
-  BUG: unable to handle page fault for address: 0x0000002000000020
-  RIP: 0010:csi_J+0x133/0x2d0
-
-The faulting address 0x0000002000000020 is two adjacent u32 space
-characters (0x20) interpreted as a pointer, read from the row data area
-past the end of the 25-entry pointer array in a buffer allocated for
-80x25 but accessed with 240x67 dimensions.
-
-Fix this by checking whether the console dimensions changed while in the
-alternate screen. If they did, free the stale saved buffer instead of
-restoring it. The unicode screen will be lazily rebuilt via
-vc_uniscr_check() when next needed.
-
-Fixes: 5eb608319bb5 ("vt: save/restore unicode screen buffer for alternate screen")
-Cc: stable <stable@kernel.org>
-Tested-by: Liav Mordouch <liavmordouch@gmail.com>
-Signed-off-by: Liav Mordouch <liavmordouch@gmail.com>
-Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
-Link: https://patch.msgid.link/20260327170204.29706-1-liavmordouch@gmail.com
+Fixes: db291ed1732e ("drm/amd/display: Add fallback path for YCBCR422")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vt.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c      |    3 +++
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c     |    5 +++++
+ drivers/gpu/drm/amd/display/dc/dce60/dce60_resource.c            |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c   |   10 +++++++++-
+ 5 files changed, 35 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1907,6 +1907,7 @@ static void leave_alt_screen(struct vc_d
- 	unsigned int rows = min(vc->vc_saved_rows, vc->vc_rows);
- 	unsigned int cols = min(vc->vc_saved_cols, vc->vc_cols);
- 	u16 *src, *dest;
-+	bool uni_lines_stale;
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
+@@ -460,6 +460,9 @@ void dce_clk_mgr_construct(
+ 		clk_mgr->max_clks_state = DM_PP_CLOCKS_STATE_NOMINAL;
+ 	clk_mgr->cur_min_clks_state = DM_PP_CLOCKS_STATE_INVALID;
  
- 	if (vc->vc_saved_screen == NULL)
- 		return; /* Not inside an alt-screen */
-@@ -1915,7 +1916,18 @@ static void leave_alt_screen(struct vc_d
- 		dest = ((u16 *)vc->vc_origin) + r * vc->vc_cols;
- 		memcpy(dest, src, 2 * cols);
++	base->clks.max_supported_dispclk_khz =
++		clk_mgr->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++
+ 	dce_clock_read_integrated_info(clk_mgr);
+ 	dce_clock_read_ss_info(clk_mgr);
+ }
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -147,6 +147,8 @@ void dce60_clk_mgr_construct(
+ 		struct dc_context *ctx,
+ 		struct clk_mgr_internal *clk_mgr)
+ {
++	struct clk_mgr *base = &clk_mgr->base;
++
+ 	dce_clk_mgr_construct(ctx, clk_mgr);
+ 
+ 	memcpy(clk_mgr->max_clks_by_state,
+@@ -157,5 +159,8 @@ void dce60_clk_mgr_construct(
+ 	clk_mgr->clk_mgr_shift = &disp_clk_shift;
+ 	clk_mgr->clk_mgr_mask = &disp_clk_mask;
+ 	clk_mgr->base.funcs = &dce60_funcs;
++
++	base->clks.max_supported_dispclk_khz =
++		clk_mgr->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
+ }
+ 
+--- a/drivers/gpu/drm/amd/display/dc/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dce60/dce60_resource.c
+@@ -34,6 +34,7 @@
+ #include "stream_encoder.h"
+ 
+ #include "resource.h"
++#include "clk_mgr.h"
+ #include "include/irq_service_interface.h"
+ #include "irq/dce60/irq_service_dce60.h"
+ #include "dce110/dce110_timing_generator.h"
+@@ -870,10 +871,17 @@ static bool dce60_validate_bandwidth(
+ {
+ 	int i;
+ 	bool at_least_one_pipe = false;
++	struct dc_stream_state *stream = NULL;
++	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (context->res_ctx.pipe_ctx[i].stream)
++		stream = context->res_ctx.pipe_ctx[i].stream;
++		if (stream) {
+ 			at_least_one_pipe = true;
++
++			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
++				return DC_FAIL_BANDWIDTH_VALIDATE;
++		}
  	}
--	vc_uniscr_set(vc, vc->vc_saved_uni_lines);
-+	/*
-+	 * If the console was resized while in the alternate screen,
-+	 * vc_saved_uni_lines was allocated for the old dimensions.
-+	 * Restoring it would cause out-of-bounds accesses. Discard it
-+	 * and let the unicode screen be lazily rebuilt.
-+	 */
-+	uni_lines_stale = vc->vc_saved_rows != vc->vc_rows ||
-+			  vc->vc_saved_cols != vc->vc_cols;
-+	if (uni_lines_stale)
-+		vc_uniscr_free(vc->vc_saved_uni_lines);
-+	else
-+		vc_uniscr_set(vc, vc->vc_saved_uni_lines);
- 	vc->vc_saved_uni_lines = NULL;
- 	restore_cur(vc);
- 	/* Update the entire screen */
+ 
+ 	if (at_least_one_pipe) {
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
+@@ -29,6 +29,7 @@
+ #include "stream_encoder.h"
+ 
+ #include "resource.h"
++#include "clk_mgr.h"
+ #include "include/irq_service_interface.h"
+ #include "virtual/virtual_stream_encoder.h"
+ #include "dce110/dce110_resource.h"
+@@ -843,10 +844,17 @@ static bool dce100_validate_bandwidth(
+ {
+ 	int i;
+ 	bool at_least_one_pipe = false;
++	struct dc_stream_state *stream = NULL;
++	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (context->res_ctx.pipe_ctx[i].stream)
++		stream = context->res_ctx.pipe_ctx[i].stream;
++		if (stream) {
+ 			at_least_one_pipe = true;
++
++			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
++				return DC_FAIL_BANDWIDTH_VALIDATE;
++		}
+ 	}
+ 
+ 	if (at_least_one_pipe) {
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
+@@ -32,6 +32,7 @@
+ #include "stream_encoder.h"
+ 
+ #include "resource.h"
++#include "clk_mgr.h"
+ #include "include/irq_service_interface.h"
+ #include "irq/dce80/irq_service_dce80.h"
+ #include "dce110/dce110_timing_generator.h"
+@@ -876,10 +877,17 @@ static bool dce80_validate_bandwidth(
+ {
+ 	int i;
+ 	bool at_least_one_pipe = false;
++	struct dc_stream_state *stream = NULL;
++	const uint32_t max_pix_clk_khz = max(dc->clk_mgr->clks.max_supported_dispclk_khz, 400000);
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (context->res_ctx.pipe_ctx[i].stream)
++		stream = context->res_ctx.pipe_ctx[i].stream;
++		if (stream) {
+ 			at_least_one_pipe = true;
++
++			if (stream->timing.pix_clk_100hz >= max_pix_clk_khz * 10)
++				return DC_FAIL_BANDWIDTH_VALIDATE;
++		}
+ 	}
+ 
+ 	if (at_least_one_pipe) {
 
 
 
