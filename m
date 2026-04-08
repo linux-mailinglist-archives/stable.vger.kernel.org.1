@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BKWFimg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:25 +0200
+	id uGjaIjOd1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717C43C10DB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F543C0949
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 17F4130074DE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8AB1C3028899
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836B43D4134;
-	Wed,  8 Apr 2026 18:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA3D3AA4E4;
+	Wed,  8 Apr 2026 18:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEJNvW6T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nzlswp2w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4177A3D9033;
-	Wed,  8 Apr 2026 18:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66462494F0;
+	Wed,  8 Apr 2026 18:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673220; cv=none; b=K+dEC8fVZYsWN0AdD/1WGxWfO+E5G/A8fRHXp+UMECZex3vQEboQEPtnb0dLhapJQT6UGoTDXhM31h6eK7hCHcH2xyihFcDODV5xVCrS77Icf4m1KXPY/+poyJW3AU4SKleK0vwnRm+u2XuGSyF9vHRxcJR2fJdY9oIWpEOvTUg=
+	t=1775672450; cv=none; b=K8NvcKa5Rhjf9jehz2bxGqa4ZjtGfHCGISMhSf+H+4a5+3ZP9H7F3XlMeBboVqgCepy75sTobaMimigsRKgrfgNuCOmq1lNqdFlCkbdGwezEPZBEcNqujX0lcTEQK9fwETq0ntV9/xLeBkLqkAg27+DAfySshESco3UmliOuW5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673220; c=relaxed/simple;
-	bh=HCEEVUakN7ZdLeasFpItXzq0AOgngBCkPPKqDQxLx00=;
+	s=arc-20240116; t=1775672450; c=relaxed/simple;
+	bh=YgjV0SYYhWe8ijF/DNn77QGcD0sqfIZvW/8ZgZwYOY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QRJeIgcA8CHwU/VVUulUJbfZSl1rRZeUfkztbEsQBYvm/Fs9m+MARHm02IpQsvHhc8YHeu/6E8wW6cH+TD4uvrEiBdwMcTK2KSFiRxMITwB6UUfRkj/yd+cXF2gzfb+dDrEKOWOR/kEZ1nq1tIrN5jCC1Q9pBqIlerDeoRhAIKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEJNvW6T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD5EC19421;
-	Wed,  8 Apr 2026 18:33:39 +0000 (UTC)
+	 MIME-Version; b=WJE6JRhR8Su/kPQW2Jmo/U0M4KU318g8h9ZMvLm/cFbKVTqssV93XM0rKxIDCQRe8cRn9MP1NCqNiFOrp0PT8pQjryFBhp0nX1Y+uIodFu7WJZSAYntdnqP1VHFmh2/36URzN0LoO0m2a7DWGfgLg7jbeRElgIXES2V9CZi4C+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nzlswp2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C521C19421;
+	Wed,  8 Apr 2026 18:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673220;
-	bh=HCEEVUakN7ZdLeasFpItXzq0AOgngBCkPPKqDQxLx00=;
+	s=korg; t=1775672449;
+	bh=YgjV0SYYhWe8ijF/DNn77QGcD0sqfIZvW/8ZgZwYOY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEJNvW6TBIX76Wn2Yjo1S6GcuAYt5mJmrG+Ha9HyuQKYNA8lVjR3za7AQFXrrzmb3
-	 D+UKkkpZ09V6jBewtH9CEglpXxM1EiNxZDLpfO3BapRl2Y6B8hf9kaufhs/YqCpOtk
-	 VFiz1Zp2+Tq+/5/fnNTTCW5U+8kmkpZFQwLSWYtQ=
+	b=Nzlswp2wMKpOU4ODeQwgZip8jK7M4YB69ic49+6jpRVxhHUDEftnjWNa76+kB2d6a
+	 MzzVomffDbo1+K82FT5PXiC7UdDqLQ4H3gmJXCe8eGERIUNx2LExIbOI2NR1uixJIr
+	 Wgtr3q9ukwXvqBX3wc74U/lpwUVcO0LiNn77s3uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
+	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 114/277] spi: stm32-ospi: Fix reset control leak on probe error
+Subject: [PATCH 6.6 012/160] wifi: ath11k: skip status ring entry processing
 Date: Wed,  8 Apr 2026 20:01:39 +0200
-Message-ID: <20260408175938.129833636@linuxfoundation.org>
+Message-ID: <20260408175913.654571214@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +65,242 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234577-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foss.st.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234280-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 717C43C10DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B8F543C0949
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
 
-[ Upstream commit 5a570c8d6e55689253f6fcc4a198c56cca7e39d6 ]
+[ Upstream commit 4c2b796be3a12a11ab611917fafdabc9d3862a1d ]
 
-When spi_register_controller() fails after reset_control_acquire()
-succeeds, the reset control is never released. This causes a resource
-leak in the error path.
+If STATUS_BUFFER_DONE is not set for a monitor status ring entry,
+we don't process the status ring until STATUS_BUFFER_DONE set
+for that status ring entry.
 
-Add the missing reset_control_release() call in the error path.
+During LMAC reset it may happen that hardware will not write
+STATUS_BUFFER_DONE tlv in status buffer, in that case we end up
+waiting for STATUS_BUFFER_DONE leading to backpressure on monitor
+status ring.
 
-Fixes: cf2c3eceb757 ("spi: stm32-ospi: Make usage of reset_control_acquire/release() API")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Link: https://patch.msgid.link/20260329-stm32-ospi-v1-1-142122466412@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To fix the issue, when HP (Head Pointer) + 1 entry is peeked and if DMA is not
+done and if HP + 2 entry's DMA done is set, replenish HP + 1 entry and start
+processing in next interrupt. If HP + 2 entry's DMA done is not set, poll onto
+HP + 1 entry DMA done to be set.
+
+Also, during monitor attach HP points to the end of the ring and TP (Tail
+Pointer) points to the start of the ring.  Using ath11k_hal_srng_src_peek() may
+result in processing invalid buffer for the very first interrupt. Since, HW
+starts writing buffer from TP.
+
+To avoid this issue call ath11k_hal_srng_src_next_peek() instead of
+calling ath11k_hal_srng_src_peek().
+
+Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+Co-developed-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240429073624.736147-1-quic_tamizhr@quicinc.com
+Stable-dep-of: e225b36f83d7 ("wifi: ath11k: Pass the correct value of each TID during a stop AMPDU session")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32-ospi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 82 ++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/hal.c   | 16 ++++-
+ drivers/net/wireless/ath/ath11k/hal.h   |  2 +
+ 3 files changed, 90 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
-index 5fa27de89210a..2988ff288ff02 100644
---- a/drivers/spi/spi-stm32-ospi.c
-+++ b/drivers/spi/spi-stm32-ospi.c
-@@ -939,13 +939,15 @@ static int stm32_ospi_probe(struct platform_device *pdev)
- 	if (ret) {
- 		/* Disable ospi */
- 		writel_relaxed(0, ospi->regs_base + OSPI_CR);
--		goto err_pm_resume;
-+		goto err_reset_control;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index ed1ea61c81420..c37722a727309 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/ieee80211.h>
+@@ -2996,11 +2996,52 @@ ath11k_dp_rx_mon_update_status_buf_state(struct ath11k_mon_data *pmon,
  	}
+ }
  
- 	pm_runtime_put_autosuspend(ospi->dev);
++static enum dp_mon_status_buf_state
++ath11k_dp_rx_mon_buf_done(struct ath11k_base *ab, struct hal_srng *srng,
++			  struct dp_rxdma_ring *rx_ring)
++{
++	struct ath11k_skb_rxcb *rxcb;
++	struct hal_tlv_hdr *tlv;
++	struct sk_buff *skb;
++	void *status_desc;
++	dma_addr_t paddr;
++	u32 cookie;
++	int buf_id;
++	u8 rbm;
++
++	status_desc = ath11k_hal_srng_src_next_peek(ab, srng);
++	if (!status_desc)
++		return DP_MON_STATUS_NO_DMA;
++
++	ath11k_hal_rx_buf_addr_info_get(status_desc, &paddr, &cookie, &rbm);
++
++	buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID, cookie);
++
++	spin_lock_bh(&rx_ring->idr_lock);
++	skb = idr_find(&rx_ring->bufs_idr, buf_id);
++	spin_unlock_bh(&rx_ring->idr_lock);
++
++	if (!skb)
++		return DP_MON_STATUS_NO_DMA;
++
++	rxcb = ATH11K_SKB_RXCB(skb);
++	dma_sync_single_for_cpu(ab->dev, rxcb->paddr,
++				skb->len + skb_tailroom(skb),
++				DMA_FROM_DEVICE);
++
++	tlv = (struct hal_tlv_hdr *)skb->data;
++	if (FIELD_GET(HAL_TLV_HDR_TAG, tlv->tl) != HAL_RX_STATUS_BUFFER_DONE)
++		return DP_MON_STATUS_NO_DMA;
++
++	return DP_MON_STATUS_REPLINISH;
++}
++
+ static int ath11k_dp_rx_reap_mon_status_ring(struct ath11k_base *ab, int mac_id,
+ 					     int *budget, struct sk_buff_head *skb_list)
+ {
+ 	struct ath11k *ar;
+ 	const struct ath11k_hw_hal_params *hal_params;
++	enum dp_mon_status_buf_state reap_status;
+ 	struct ath11k_pdev_dp *dp;
+ 	struct dp_rxdma_ring *rx_ring;
+ 	struct ath11k_mon_data *pmon;
+@@ -3063,15 +3104,38 @@ static int ath11k_dp_rx_reap_mon_status_ring(struct ath11k_base *ab, int mac_id,
+ 				ath11k_warn(ab, "mon status DONE not set %lx, buf_id %d\n",
+ 					    FIELD_GET(HAL_TLV_HDR_TAG,
+ 						      tlv->tl), buf_id);
+-				/* If done status is missing, hold onto status
+-				 * ring until status is done for this status
+-				 * ring buffer.
+-				 * Keep HP in mon_status_ring unchanged,
+-				 * and break from here.
+-				 * Check status for same buffer for next time
++				/* RxDMA status done bit might not be set even
++				 * though tp is moved by HW.
+ 				 */
+-				pmon->buf_state = DP_MON_STATUS_NO_DMA;
+-				break;
++
++				/* If done status is missing:
++				 * 1. As per MAC team's suggestion,
++				 *    when HP + 1 entry is peeked and if DMA
++				 *    is not done and if HP + 2 entry's DMA done
++				 *    is set. skip HP + 1 entry and
++				 *    start processing in next interrupt.
++				 * 2. If HP + 2 entry's DMA done is not set,
++				 *    poll onto HP + 1 entry DMA done to be set.
++				 *    Check status for same buffer for next time
++				 *    dp_rx_mon_status_srng_process
++				 */
++
++				reap_status = ath11k_dp_rx_mon_buf_done(ab, srng,
++									rx_ring);
++				if (reap_status == DP_MON_STATUS_NO_DMA)
++					continue;
++
++				spin_lock_bh(&rx_ring->idr_lock);
++				idr_remove(&rx_ring->bufs_idr, buf_id);
++				spin_unlock_bh(&rx_ring->idr_lock);
++
++				dma_unmap_single(ab->dev, rxcb->paddr,
++						 skb->len + skb_tailroom(skb),
++						 DMA_FROM_DEVICE);
++
++				dev_kfree_skb_any(skb);
++				pmon->buf_state = DP_MON_STATUS_REPLINISH;
++				goto move_next;
+ 			}
  
- 	return 0;
+ 			spin_lock_bh(&rx_ring->idr_lock);
+diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+index 79cf65bc2e172..b42925f84200c 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ #include <linux/dma-mapping.h>
+ #include "hal_tx.h"
+@@ -783,6 +783,20 @@ u32 *ath11k_hal_srng_src_get_next_reaped(struct ath11k_base *ab,
+ 	return desc;
+ }
  
-+err_reset_control:
-+	reset_control_release(ospi->rstc);
- err_pm_resume:
- 	pm_runtime_put_sync_suspend(ospi->dev);
- 
++u32 *ath11k_hal_srng_src_next_peek(struct ath11k_base *ab, struct hal_srng *srng)
++{
++	u32 next_hp;
++
++	lockdep_assert_held(&srng->lock);
++
++	next_hp = (srng->u.src_ring.hp + srng->entry_size) % srng->ring_size;
++
++	if (next_hp != srng->u.src_ring.cached_tp)
++		return srng->ring_base_vaddr + next_hp;
++
++	return NULL;
++}
++
+ u32 *ath11k_hal_srng_src_peek(struct ath11k_base *ab, struct hal_srng *srng)
+ {
+ 	lockdep_assert_held(&srng->lock);
+diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
+index aa21eb1fdce15..494c2b8a12816 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.h
++++ b/drivers/net/wireless/ath/ath11k/hal.h
+@@ -946,6 +946,8 @@ u32 *ath11k_hal_srng_dst_peek(struct ath11k_base *ab, struct hal_srng *srng);
+ int ath11k_hal_srng_dst_num_free(struct ath11k_base *ab, struct hal_srng *srng,
+ 				 bool sync_hw_ptr);
+ u32 *ath11k_hal_srng_src_peek(struct ath11k_base *ab, struct hal_srng *srng);
++u32 *ath11k_hal_srng_src_next_peek(struct ath11k_base *ab,
++				   struct hal_srng *srng);
+ u32 *ath11k_hal_srng_src_get_next_reaped(struct ath11k_base *ab,
+ 					 struct hal_srng *srng);
+ u32 *ath11k_hal_srng_src_reap_next(struct ath11k_base *ab,
 -- 
 2.53.0
 
