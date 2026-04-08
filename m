@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GJwEYek1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:03 +0200
+	id ID4lHSqi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85BD3C1F05
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F9C3C16B7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1C0E30315DE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8E6730CE168
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B5D36166F;
-	Wed,  8 Apr 2026 18:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2173ACF13;
+	Wed,  8 Apr 2026 18:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nO94OMoB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAFlr2tx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C0827979A;
-	Wed,  8 Apr 2026 18:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFC6324B1F;
+	Wed,  8 Apr 2026 18:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673452; cv=none; b=pB6MdmxaRHXKUX7h9q+1ekMEJkDHeyQPVIKMMEhDrGhEY54VYfFcY6ppShhCOXXzeqcGorV0s+THkYbXIOvE/SolXDiCy0NA4dlp7SER53mVwtrAJMnacNalO9WVy/Al6yUJt/NT4fohHrtgdGeAJYCzdoGfdD+O+U2N++Usolk=
+	t=1775672837; cv=none; b=mB7ijUY6roKWWeLjV/YJ5kehhQTZkxNGsv3N6g7SZxb2J5iN730Kbj6kd29ppekFvhGUSH1utqEsDqXvpjxi2GZUlcNWFMzIAd7q6UDxG3TtPxWhXyFWHAzHejpVz0ZjGzRekcCRy+pKwl1OJHhYZv9Wdh+aFnSHnj/huNVO0Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673452; c=relaxed/simple;
-	bh=ujUtUitJ9prwfI+J/Ad8lYPLG4JoXqujVXoArB8DEho=;
+	s=arc-20240116; t=1775672837; c=relaxed/simple;
+	bh=B4RAyDHgAXpsbiCDdR45GrmT2Sj1RS+vflb+VrmI+44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfhixkfzFut98mC45cOMZSldUUNYpw5yVXueaHkQFS7rINRWNGx26Rc5PDfGDEVCc6jIHAYFKfc2mem61xfwrt3AFMj/nOPOX9nM6f0uGXD/uebLcSUxNu8/eDFYmyfKjaJNHfAOEjvQwo5jNU4HdK+3qSaS9Df0YkYtTfsh0Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nO94OMoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B55FC2BC87;
-	Wed,  8 Apr 2026 18:37:31 +0000 (UTC)
+	 MIME-Version; b=Z2cpTRPNHI8cJJ6UMI9V0Jhx2Ir3HvLrV6nH+xqep9lmaHcMzL14rH/pn2NHkrvP7fkpzfwT6vYJr1wU3TNnnGYLs8mK4yAy8O7+OJzNYDfAqkBVYOqXgn8AekvfhfUH7QO5cf/rDWRW0Ep2ZF5zogM5aYQiAPWrz7U58ebPUr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAFlr2tx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CBDC19421;
+	Wed,  8 Apr 2026 18:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673451;
-	bh=ujUtUitJ9prwfI+J/Ad8lYPLG4JoXqujVXoArB8DEho=;
+	s=korg; t=1775672837;
+	bh=B4RAyDHgAXpsbiCDdR45GrmT2Sj1RS+vflb+VrmI+44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nO94OMoBwfLAdeHvvnyjkoCZToNOsmO0TZDyJMwu36BsPIlwWSfRZZFFbdS+jyyqe
-	 hR5xgtZTJJTd/fXqnnkUfifpabFpGN1nEO+hAjKHxuYp4WWUo44Midk7D2+KrP9eDg
-	 8+dYPYHL5beouFcoWhmTobqHvUIYO8QPpI7ZA0HQ=
+	b=aAFlr2txU2c0FQFbvgnB12o1S6L3gtrt+hLdQNZo8JTBAuJZZnjD1DL0mGG7CgrPf
+	 PEHOzJOvLsmhPCmh7DaHW7GlQMohC8bqrce61H8r48F61XrXaV9sQY2bKRxXiRG/yf
+	 VLs4gjh77ioYPS3JeAJ0DSQVSFOrrykfb8c90Xjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Changwoo Min <changwoo@igalia.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.18 237/277] sched_ext: Fix is_bpf_migration_disabled() false negative on non-PREEMPT_RCU
+	Alan Stern <stern@rowland.harvard.edu>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 135/160] USB: dummy-hcd: Fix interrupt synchronization error
 Date: Wed,  8 Apr 2026 20:03:42 +0200
-Message-ID: <20260408175942.707235386@linuxfoundation.org>
+Message-ID: <20260408175918.231282345@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234667-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234430-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,94 +86,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,igalia.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: B85BD3C1F05
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,harvard.edu:email]
+X-Rspamd-Queue-Id: E3F9C3C16B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Changwoo Min <changwoo@igalia.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 0c4a59df370bea245695c00aaae6ae75747139bd upstream.
+commit 2ca9e46f8f1f5a297eb0ac83f79d35d5b3a02541 upstream.
 
-Since commit 8e4f0b1ebcf2 ("bpf: use rcu_read_lock_dont_migrate() for
-trampoline.c"), the BPF prolog (__bpf_prog_enter) calls migrate_disable()
-only when CONFIG_PREEMPT_RCU is enabled, via rcu_read_lock_dont_migrate().
-Without CONFIG_PREEMPT_RCU, the prolog never touches migration_disabled,
-so migration_disabled == 1 always means the task is truly
-migration-disabled regardless of whether it is the current task.
+This fixes an error in synchronization in the dummy-hcd driver.  The
+error has a somewhat involved history.  The synchronization mechanism
+was introduced by commit 7dbd8f4cabd9 ("USB: dummy-hcd: Fix erroneous
+synchronization change"), which added an emulated "interrupts enabled"
+flag together with code emulating synchronize_irq() (it waits until
+all current handler callbacks have returned).
 
-The old unconditional p == current check was a false negative in this
-case, potentially allowing a migration-disabled task to be dispatched to
-a remote CPU and triggering scx_error in task_can_run_on_remote_rq().
+But the emulated interrupt-disable occurred too late, after the driver
+containing the handler callback routines had been told that it was
+unbound and no more callbacks would occur.  Commit 4a5d797a9f9c ("usb:
+gadget: dummy_hcd: fix gpf in gadget_setup") tried to fix this by
+moving the synchronize_irq() emulation code from dummy_stop() to
+dummy_pullup(), which runs before the unbind callback.
 
-Only apply the p == current disambiguation when CONFIG_PREEMPT_RCU is
-enabled, where the ambiguity with the BPF prolog still exists.
+There still were races, though, because the emulated interrupt-disable
+still occurred too late.  It couldn't be moved to dummy_pullup(),
+because that routine can be called for reasons other than an impending
+unbind.  Therefore commits 7dc0c55e9f30 ("USB: UDC core: Add
+udc_async_callbacks gadget op") and 04145a03db9d ("USB: UDC: Implement
+udc_async_callbacks in dummy-hcd") added an API allowing the UDC core
+to tell dummy-hcd exactly when emulated interrupts and their callbacks
+should be disabled.
 
-Fixes: 8e4f0b1ebcf2 ("bpf: use rcu_read_lock_dont_migrate() for trampoline.c")
-Cc: stable@vger.kernel.org # v6.18+
-Link: https://lore.kernel.org/lkml/20250821090609.42508-8-dongml2@chinatelecom.cn/
-Signed-off-by: Changwoo Min <changwoo@igalia.com>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+That brings us to the current state of things, which is still wrong
+because the emulated synchronize_irq() occurs before the emulated
+interrupt-disable!  That's no good, beause it means that more emulated
+interrupts can occur after the synchronize_irq() emulation has run,
+leading to the possibility that a callback handler may be running when
+the gadget driver is unbound.
+
+To fix this, we have to move the synchronize_irq() emulation code yet
+again, to the dummy_udc_async_callbacks() routine, which takes care of
+enabling and disabling emulated interrupt requests.  The
+synchronization will now run immediately after emulated interrupts are
+disabled, which is where it belongs.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 04145a03db9d ("USB: UDC: Implement udc_async_callbacks in dummy-hcd")
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/c7bc93fe-4241-4d04-bd56-27c12ba35c97@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext_idle.c |   31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ drivers/usb/gadget/udc/dummy_hcd.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/kernel/sched/ext_idle.c
-+++ b/kernel/sched/ext_idle.c
-@@ -861,25 +861,32 @@ static bool check_builtin_idle_enabled(s
-  * code.
-  *
-  * We can't simply check whether @p->migration_disabled is set in a
-- * sched_ext callback, because migration is always disabled for the current
-- * task while running BPF code.
-+ * sched_ext callback, because the BPF prolog (__bpf_prog_enter) may disable
-+ * migration for the current task while running BPF code.
-  *
-- * The prolog (__bpf_prog_enter) and epilog (__bpf_prog_exit) respectively
-- * disable and re-enable migration. For this reason, the current task
-- * inside a sched_ext callback is always a migration-disabled task.
-+ * Since the BPF prolog calls migrate_disable() only when CONFIG_PREEMPT_RCU
-+ * is enabled (via rcu_read_lock_dont_migrate()), migration_disabled == 1 for
-+ * the current task is ambiguous only in that case: it could be from the BPF
-+ * prolog rather than a real migrate_disable() call.
-  *
-- * Therefore, when @p->migration_disabled == 1, check whether @p is the
-- * current task or not: if it is, then migration was not disabled before
-- * entering the callback, otherwise migration was disabled.
-+ * Without CONFIG_PREEMPT_RCU, the BPF prolog never calls migrate_disable(),
-+ * so migration_disabled == 1 always means the task is truly
-+ * migration-disabled.
-+ *
-+ * Therefore, when migration_disabled == 1 and CONFIG_PREEMPT_RCU is enabled,
-+ * check whether @p is the current task or not: if it is, then migration was
-+ * not disabled before entering the callback, otherwise migration was disabled.
-  *
-  * Returns true if @p is migration-disabled, false otherwise.
-  */
- static bool is_bpf_migration_disabled(const struct task_struct *p)
- {
--	if (p->migration_disabled == 1)
--		return p != current;
--	else
--		return p->migration_disabled;
-+	if (p->migration_disabled == 1) {
-+		if (IS_ENABLED(CONFIG_PREEMPT_RCU))
-+			return p != current;
-+		return true;
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -912,21 +912,6 @@ static int dummy_pullup(struct usb_gadge
+ 	spin_lock_irqsave(&dum->lock, flags);
+ 	dum->pullup = (value != 0);
+ 	set_link_state(dum_hcd);
+-	if (value == 0) {
+-		/*
+-		 * Emulate synchronize_irq(): wait for callbacks to finish.
+-		 * This seems to be the best place to emulate the call to
+-		 * synchronize_irq() that's in usb_gadget_remove_driver().
+-		 * Doing it in dummy_udc_stop() would be too late since it
+-		 * is called after the unbind callback and unbind shouldn't
+-		 * be invoked until all the other callbacks are finished.
+-		 */
+-		while (dum->callback_usage > 0) {
+-			spin_unlock_irqrestore(&dum->lock, flags);
+-			usleep_range(1000, 2000);
+-			spin_lock_irqsave(&dum->lock, flags);
+-		}
+-	}
+ 	spin_unlock_irqrestore(&dum->lock, flags);
+ 
+ 	usb_hcd_poll_rh_status(dummy_hcd_to_hcd(dum_hcd));
+@@ -949,6 +934,20 @@ static void dummy_udc_async_callbacks(st
+ 
+ 	spin_lock_irq(&dum->lock);
+ 	dum->ints_enabled = enable;
++	if (!enable) {
++		/*
++		 * Emulate synchronize_irq(): wait for callbacks to finish.
++		 * This has to happen after emulated interrupts are disabled
++		 * (dum->ints_enabled is clear) and before the unbind callback,
++		 * just like the call to synchronize_irq() in
++		 * gadget/udc/core:gadget_unbind_driver().
++		 */
++		while (dum->callback_usage > 0) {
++			spin_unlock_irq(&dum->lock);
++			usleep_range(1000, 2000);
++			spin_lock_irq(&dum->lock);
++		}
 +	}
-+	return p->migration_disabled;
+ 	spin_unlock_irq(&dum->lock);
  }
  
- static s32 select_cpu_from_kfunc(struct scx_sched *sch, struct task_struct *p,
 
 
 
