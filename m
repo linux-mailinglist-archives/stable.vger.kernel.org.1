@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-235262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJxzOa+m1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:15 +0200
+	id KKFoAGOn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38283C251A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7E93C26DA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 89BDB30164D1
+	by tor.lore.kernel.org (Postfix) with ESMTP id EFF9830D1A8F
 	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC933D525E;
-	Wed,  8 Apr 2026 19:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AA73BB4A;
+	Wed,  8 Apr 2026 19:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fg5UcpzJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcflYcJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C37A3C5552;
-	Wed,  8 Apr 2026 19:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFF8282F1E;
+	Wed,  8 Apr 2026 19:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674987; cv=none; b=hvCBIUEaGV4Bh5JKsCAXenCjIo2EJaq044iKuOkz/hFGIimRc7quaoxge/UUXV2ao9Xnv9dYawIc4BExJGifp1fI0M3f1Zk5Kd4AWTh280AGbEMZ0rTAQ6FTlPjGcBU9K7BxkzYQ8gv5BwAWoOsNL/4qi5QN19rvyVtPinkmgDA=
+	t=1775674989; cv=none; b=r8dLPOLu/DczLOZ1jnOcGvieqQpKlXq3fbJwdv/ZsosPK4cF5f6aVeSEZNfCvBQi4mLtFUaBEsMzJUlOx6QTIJ0XtVbqQku/NM88bjDoyDvMpKcY5+TV83V3tHWo9OKIG3GHeWd4RMOdy8VWyFaBKbkd43efCA3p62ch9jaTpZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674987; c=relaxed/simple;
-	bh=H3ZrEKAWtoNnHOna/J53ONl35XiDmGdcF52XRBiWuRg=;
+	s=arc-20240116; t=1775674989; c=relaxed/simple;
+	bh=NwFoP+NbDNebgb++oJ8CuHIU+2IIIAXEicoiaoELccw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gDrmldJ3vWKdyJhGWE1u252+9FSA/yXxF881y9UhiXqm/NDgVySoGy8HGM0A/5Vtr1L4vlbpK8SZnP8MKS+8ucJ1xIyyUPvKefdtXQASTLOriqzMUpVksDMTiAtpqnhzEd4m/8m5yVmQ7kTambA/kgh/+3pp90/NBG9hnAP7oec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fg5UcpzJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE597C19421;
-	Wed,  8 Apr 2026 19:03:06 +0000 (UTC)
+	 MIME-Version; b=E3/tnh0K0L8gZ+GH6LA6iyTddwc6n4N3xZoob7os1XTg3HGPUs6YcLJulnPhUqx8hfeQSoLVBakspNgn8FHvIOPplihQeD0V6mW6kTlyYxSnXvdSWYPI2mCdRFBZ57GQ+iBoZ70epKA3xTGZDjsWVHD7D/PxfgpEZqZ9rcV+9EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcflYcJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1B9C19421;
+	Wed,  8 Apr 2026 19:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674987;
-	bh=H3ZrEKAWtoNnHOna/J53ONl35XiDmGdcF52XRBiWuRg=;
+	s=korg; t=1775674989;
+	bh=NwFoP+NbDNebgb++oJ8CuHIU+2IIIAXEicoiaoELccw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fg5UcpzJTCC84eD2LUE6SdVM/fhk2cWqNsJ/z3dvGyv65nxEVNjsbmFL5a+KIfXFp
-	 5TpOtfqw/7niz/EaZqjAyXc1OTN9Ox8/WwpgC/OstvJOmkIRyOF3tawpFbQMZmXcF4
-	 qjRN04tUxqFKgmrQpMhH0+Am7xcoQxSvBc7s9rUw=
+	b=rcflYcJxkUmPf7PsKovOPEcHrxloskxiWJUGFdXemI6gKr4vfmWYseJXQWLN+85Rz
+	 ocJB2kOL8GQ829PrAW+2AooSwOFCg6hpm/1/Us74wtvUlC3U+FuF0aSukoBPr/OhAP
+	 MfAZ6pdy/A3BvzlbS1YdgRG0S3l9bKhgauI/2ODk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -59,9 +59,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sami Tolvanen <samitolvanen@google.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 309/311] kallsyms: cleanup code for appending the module buildid
-Date: Wed,  8 Apr 2026 20:05:09 +0200
-Message-ID: <20260408175950.903571979@linuxfoundation.org>
+Subject: [PATCH 6.19 310/311] kallsyms: prevent module removal when printing module name and buildid
+Date: Wed,  8 Apr 2026 20:05:10 +0200
+Message-ID: <20260408175950.940999538@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
 References: <20260408175939.393281918@linuxfoundation.org>
@@ -80,31 +80,31 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-235262-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235263-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,atomlin.com,kernel.org,iogearbox.net,samsung.com,gmail.com,arm.com,google.com,goodmis.org,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D38283C251A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8C7E93C26DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -114,22 +114,19 @@ X-Rspamd-Server: lfdr
 
 From: Petr Mladek <pmladek@suse.com>
 
-commit 8e81dac4cd5477731169b92cff7c24f8f6635950 upstream.
+commit 3b07086444f80c844351255fd94c2cb0a7224df2 upstream.
 
-Put the code for appending the optional "buildid" into a helper function,
-It makes __sprint_symbol() better readable.
+kallsyms_lookup_buildid() copies the symbol name into the given buffer so
+that it can be safely read anytime later.  But it just copies pointers to
+mod->name and mod->build_id which might get reused after the related
+struct module gets removed.
 
-Also print a warning when the "modname" is set and the "buildid" isn't.
-It might catch a situation when some lookup function in
-kallsyms_lookup_buildid() does not handle the "buildid".
+The lifetime of struct module is synchronized using RCU.  Take the rcu
+read lock for the entire __sprint_symbol().
 
-Use pr_*_once() to avoid an infinite recursion when the function is called
-from printk().  The recursion is rather theoretical but better be on the
-safe side.
-
-Link: https://lkml.kernel.org/r/20251128135920.217303-5-pmladek@suse.com
+Link: https://lkml.kernel.org/r/20251128135920.217303-8-pmladek@suse.com
 Signed-off-by: Petr Mladek <pmladek@suse.com>
-Cc: Aaron Tomlin <atomlin@atomlin.com>
+Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
 Cc: Alexei Starovoitov <ast@kernel.org>
 Cc: Daniel Borkman <daniel@iogearbox.net>
 Cc: Daniel Gomez <da.gomez@samsung.com>
@@ -144,67 +141,21 @@ Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kallsyms.c |   42 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 33 insertions(+), 9 deletions(-)
+ kernel/kallsyms.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
 --- a/kernel/kallsyms.c
 +++ b/kernel/kallsyms.c
-@@ -434,6 +434,37 @@ int lookup_symbol_name(unsigned long add
- 	return lookup_module_symbol_name(addr, symname);
- }
+@@ -474,6 +474,9 @@ static int __sprint_symbol(char *buffer,
+ 	unsigned long offset, size;
+ 	int len;
  
-+#ifdef CONFIG_STACKTRACE_BUILD_ID
++	/* Prevent module removal until modname and modbuildid are printed */
++	guard(rcu)();
 +
-+static int append_buildid(char *buffer,  const char *modname,
-+			  const unsigned char *buildid)
-+{
-+	if (!modname)
-+		return 0;
-+
-+	if (!buildid) {
-+		pr_warn_once("Undefined buildid for the module %s\n", modname);
-+		return 0;
-+	}
-+
-+	/* build ID should match length of sprintf */
-+#ifdef CONFIG_MODULES
-+	static_assert(sizeof(typeof_member(struct module, build_id)) == 20);
-+#endif
-+
-+	return sprintf(buffer, " %20phN", buildid);
-+}
-+
-+#else /* CONFIG_STACKTRACE_BUILD_ID */
-+
-+static int append_buildid(char *buffer,   const char *modname,
-+			  const unsigned char *buildid)
-+{
-+	return 0;
-+}
-+
-+#endif /* CONFIG_STACKTRACE_BUILD_ID */
-+
- /* Look up a kernel symbol and return it in a text buffer. */
- static int __sprint_symbol(char *buffer, unsigned long address,
- 			   int symbol_offset, int add_offset, int add_buildid)
-@@ -456,15 +487,8 @@ static int __sprint_symbol(char *buffer,
- 
- 	if (modname) {
- 		len += sprintf(buffer + len, " [%s", modname);
--#if IS_ENABLED(CONFIG_STACKTRACE_BUILD_ID)
--		if (add_buildid && buildid) {
--			/* build ID should match length of sprintf */
--#if IS_ENABLED(CONFIG_MODULES)
--			static_assert(sizeof(typeof_member(struct module, build_id)) == 20);
--#endif
--			len += sprintf(buffer + len, " %20phN", buildid);
--		}
--#endif
-+		if (add_buildid)
-+			len += append_buildid(buffer + len, modname, buildid);
- 		len += sprintf(buffer + len, "]");
- 	}
- 
+ 	address += symbol_offset;
+ 	len = kallsyms_lookup_buildid(address, &size, &offset, &modname, &buildid,
+ 				       buffer);
 
 
 
