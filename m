@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-234876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBG8CEio1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:11:04 +0200
+	id KBezIaGk1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677ED3C2895
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:11:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071CD3C1F78
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EE493191CAB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C8BC3190643
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FB53D890F;
-	Wed,  8 Apr 2026 18:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF833B19A3;
+	Wed,  8 Apr 2026 18:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZRZr7g4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTpnjEKH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB40D2641FC;
-	Wed,  8 Apr 2026 18:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A50331A44;
+	Wed,  8 Apr 2026 18:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673991; cv=none; b=or6VTwY/ort7Mm4M8YdrlUj5W95NRxaZlkOC0mqhAph3BzWk09kPd7VaabfzSCeePqPZeFRSGJTuy7Zh/302h77xbYxafl0YOQc0bZRLYVccuVVR8r+5ItqBaXKFeHmCXVSViCWby4ihTDCYv+aGaPPetflgl/cOwJO6VR6bQeg=
+	t=1775673495; cv=none; b=tigNt51ukHWc3+gzC9r0PRrB8cfdbnmecniULeduvtnO70pEkOigWhNbaxv0Xrqy4RTmEGZ/Y2qX1tp5T7yncKeDIr4J78hBUnhMvQL6tah1P7q0w7qxHisNcBW34OCJ59ugv2vQNijFOsdKm63WH7gkRGrdWiQDfWRxWcp/oi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673991; c=relaxed/simple;
-	bh=u9GbXZDBRgNyUfcSI7c72cWfl89qFCdF0F9IUvsTEuo=;
+	s=arc-20240116; t=1775673495; c=relaxed/simple;
+	bh=P+/mMy44R6r9kKZBwA0E3zSkuLt4z/TrEOfGaTUqa2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KRwT0YJlN+2BdBGWBTh38zrg0E/gHES6JDK5YieaFVu236we4Gm6qbzBneK75Zff7R9l+L+11eQDUkbifoGy7LU9zQ6UJG3TTqkXXsx3yiikzf/BQXq8UA/Jf2K3ZY/7TETyl3vK904rg+MMty0W7Rft5f7w6hFFDPNPYK2rFns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZRZr7g4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFAEC2BC87;
-	Wed,  8 Apr 2026 18:46:31 +0000 (UTC)
+	 MIME-Version; b=RevjCnzJE43gIKKb4keD6UWyUFNY/qvmoP/9tEmRCNqm+Ol58kv9Z4LpjJp2FrDMELM/2z5dPKgXQX2Y6af4m/6n/WIt3LzaQH4MdpHP8XQWSvSwcEYeUFAJWgLei4unnGRZl9bjgq1+jTjNw2cFRBNqtYH5Vy4a+cp2sR2FRvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTpnjEKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA81C19421;
+	Wed,  8 Apr 2026 18:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673991;
-	bh=u9GbXZDBRgNyUfcSI7c72cWfl89qFCdF0F9IUvsTEuo=;
+	s=korg; t=1775673495;
+	bh=P+/mMy44R6r9kKZBwA0E3zSkuLt4z/TrEOfGaTUqa2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZRZr7g4Wf+FSqtgv44YX6kSkvsqdKQp2+DIGZCFCIz9tO6nn3BFsrXVAi5CSl+hu
-	 3q7h/eC8hbpO4dlYCIMDTdTzJkwtkevcBxUfJ0RB0jCQ3/P7P4ysS8YHtxU5ShPiRW
-	 AqY2q3jGAva1rKwF0duKeZa+ILaMBP2V8mVtMRRI=
+	b=pTpnjEKH19tyO1oBnroN4wTShx9n6jcrqa+HHJo6Cq06ynr9AbpZF9NPd2Inoc6lm
+	 8hfSFmThh1ET6/+jrQvo9CJBe2Md9YNCgUnFZ5oahzjqEeTJiQ258CzyhjBnQ45+6m
+	 8rnQpzGtD8Nv/IN6mI9HMl4DuwMbBAh0MQcp8pOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.12 167/242] x86/platform/geode: Fix on-stack property data use-after-return bug
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.18 222/277] s390/cpum_sf: Cap sampling rate to prevent lsctl exception
 Date: Wed,  8 Apr 2026 20:03:27 +0200
-Message-ID: <20260408175933.340033175@linuxfoundation.org>
+Message-ID: <20260408175942.146069581@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,142 +65,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-234876-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux.intel.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234684-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 677ED3C2895
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 071CD3C1F78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit b981e9e94c687b7b19ae8820963f005b842cb2f2 upstream.
+commit 57ad0d4a00f5d3e80f33ba2da8d560c73d83dc22 upstream.
 
-The PROPERTY_ENTRY_GPIO macro (and by extension PROPERTY_ENTRY_REF)
-creates a temporary software_node_ref_args structure on the stack
-when used in a runtime assignment. This results in the property
-pointing to data that is invalid once the function returns.
+commit fcc43a7e294f ("s390/configs: Set HZ=1000") changed the interrupt
+frequency of the system. On machines with heavy load and many perf event
+overflows, this might lead to an exception. Dmesg displays these entries:
+  [112.242542] cpum_sf: Loading sampling controls failed: op 1 err -22
+One line per CPU online.
 
-Fix this by ensuring the GPIO reference data is not stored on stack and
-using PROPERTY_ENTRY_REF_ARRAY_LEN() to point directly to the persistent
-reference data.
+The root cause is the CPU Measurement sampling facility overflow
+adjustment. Whenever an overflow (too much samples per tick) occurs, the
+sampling rate is adjusted and increased. This was done without observing
+the maximum sampling rate limit. When the current sampling interval is
+higher than the maximum sampling rate limit, the lsctl instruction raises
+an exception. The error messages is the result of such an exception.
+Observe the upper limit when the new sampling rate is recalculated.
 
-Fixes: 298c9babadb8 ("x86/platform/geode: switch GPIO buttons and LEDs to software properties")
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Daniel Scally <djrscally@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260329-property-gpio-fix-v2-1-3cca5ba136d8@gmail.com
+Fixes: 39d4a501a9ef ("s390/cpum_sf: Adjust sampling interval to avoid hitting sample limits")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Reviewed-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/platform/geode/geode-common.c |   24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ arch/s390/kernel/perf_cpum_sf.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/x86/platform/geode/geode-common.c
-+++ b/arch/x86/platform/geode/geode-common.c
-@@ -28,8 +28,10 @@ static const struct software_node geode_
- 	.properties = geode_gpio_keys_props,
- };
- 
--static struct property_entry geode_restart_key_props[] = {
--	{ /* Placeholder for GPIO property */ },
-+static struct software_node_ref_args geode_restart_gpio_ref;
-+
-+static const struct property_entry geode_restart_key_props[] = {
-+	PROPERTY_ENTRY_REF_ARRAY_LEN("gpios", &geode_restart_gpio_ref, 1),
- 	PROPERTY_ENTRY_U32("linux,code", KEY_RESTART),
- 	PROPERTY_ENTRY_STRING("label", "Reset button"),
- 	PROPERTY_ENTRY_U32("debounce-interval", 100),
-@@ -64,8 +66,7 @@ int __init geode_create_restart_key(unsi
- 	struct platform_device *pd;
- 	int err;
- 
--	geode_restart_key_props[0] = PROPERTY_ENTRY_GPIO("gpios",
--							 &geode_gpiochip_node,
-+	geode_restart_gpio_ref = SOFTWARE_NODE_REFERENCE(&geode_gpiochip_node,
- 							 pin, GPIO_ACTIVE_LOW);
- 
- 	err = software_node_register_node_group(geode_gpio_keys_swnodes);
-@@ -99,6 +100,7 @@ int __init geode_create_leds(const char
- 	const struct software_node *group[MAX_LEDS + 2] = { 0 };
- 	struct software_node *swnodes;
- 	struct property_entry *props;
-+	struct software_node_ref_args *gpio_refs;
- 	struct platform_device_info led_info = {
- 		.name	= "leds-gpio",
- 		.id	= PLATFORM_DEVID_NONE,
-@@ -127,6 +129,12 @@ int __init geode_create_leds(const char
- 		goto err_free_swnodes;
- 	}
- 
-+	gpio_refs = kzalloc_objs(*gpio_refs, n_leds);
-+	if (!gpio_refs) {
-+		err = -ENOMEM;
-+		goto err_free_props;
+--- a/arch/s390/kernel/perf_cpum_sf.c
++++ b/arch/s390/kernel/perf_cpum_sf.c
+@@ -1169,6 +1169,7 @@ static void hw_collect_samples(struct pe
+ static void hw_perf_event_update(struct perf_event *event, int flush_all)
+ {
+ 	unsigned long long event_overflow, sampl_overflow, num_sdb;
++	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	union hws_trailer_header prev, new;
+ 	struct hws_trailer_entry *te;
+@@ -1248,8 +1249,11 @@ static void hw_perf_event_update(struct
+ 	 * are dropped.
+ 	 * Slightly increase the interval to avoid hitting this limit.
+ 	 */
+-	if (event_overflow)
++	if (event_overflow) {
+ 		SAMPL_RATE(hwc) += DIV_ROUND_UP(SAMPL_RATE(hwc), 10);
++		if (SAMPL_RATE(hwc) > cpuhw->qsi.max_sampl_rate)
++			SAMPL_RATE(hwc) = cpuhw->qsi.max_sampl_rate;
 +	}
-+
- 	group[0] = &geode_gpio_leds_node;
- 	for (i = 0; i < n_leds; i++) {
- 		node_name = kasprintf(GFP_KERNEL, "%s:%d", label, i);
-@@ -135,9 +143,11 @@ int __init geode_create_leds(const char
- 			goto err_free_names;
- 		}
+ }
  
-+		gpio_refs[i] = SOFTWARE_NODE_REFERENCE(&geode_gpiochip_node,
-+						       leds[i].pin,
-+						       GPIO_ACTIVE_LOW);
- 		props[i * 3 + 0] =
--			PROPERTY_ENTRY_GPIO("gpios", &geode_gpiochip_node,
--					    leds[i].pin, GPIO_ACTIVE_LOW);
-+			PROPERTY_ENTRY_REF_ARRAY_LEN("gpios", &gpio_refs[i], 1);
- 		props[i * 3 + 1] =
- 			PROPERTY_ENTRY_STRING("linux,default-trigger",
- 					      leds[i].default_on ?
-@@ -171,6 +181,8 @@ err_unregister_group:
- err_free_names:
- 	while (--i >= 0)
- 		kfree(swnodes[i].name);
-+	kfree(gpio_refs);
-+err_free_props:
- 	kfree(props);
- err_free_swnodes:
- 	kfree(swnodes);
+ static inline unsigned long aux_sdb_index(struct aux_buffer *aux,
 
 
 
