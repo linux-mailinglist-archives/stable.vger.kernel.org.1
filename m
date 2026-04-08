@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-234468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6K4OLYOi1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:27 +0200
+	id KDG6LYOa1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1903F3C17B0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 399943C02C2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8F6231482D7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C28B130300FF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3A73D6689;
-	Wed,  8 Apr 2026 18:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2C33D8919;
+	Wed,  8 Apr 2026 18:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXHi+0ut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFjCdMDQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726863D47AC;
-	Wed,  8 Apr 2026 18:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7883D890E;
+	Wed,  8 Apr 2026 18:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672938; cv=none; b=UzKg4WAb8iAVFoWSWbTDPBgwK/jI+JKWY5c0LW2ZqzkPXpIfUbXpaqOTng0q2mcEH7tR7b5eX4+SOX63JwYWWg3HvzpBmPc0b2bFSkYZFwe0ER39WeBqZTh4fMBb84KnIMFb1iJW6XlKCL8AxXcb2P+kjNmD9B65nrtW9iVrrSY=
+	t=1775671884; cv=none; b=lvGdenUIU6SFybmZJ5z9kQhh+0uN5bw0eGYVofD36p+PoCsFxXAAZFmyqE79SqfqUjMPi7Y69BOySmSGa8tBEznmn3YUwibRYxneFQM+Nn4V/oVpRcDmXb5BQtD0YXbc2upcvexEGqiYdCm4N5w82Udt7tl42ND7rpInYctzvbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672938; c=relaxed/simple;
-	bh=8Xc1mJTZ5Dx1GYvf78nRoE22J/GIyKwjLRu59uURHvA=;
+	s=arc-20240116; t=1775671884; c=relaxed/simple;
+	bh=ajnOFxDt6Rmk6FiCqW6X7wSfy3bPpA4AH/LOCnDjQXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ng7oQOGh7iWC2brnmNWizrEOhYJDEOWWWedbKDdCP71rWha0qhxr27LCa9JkYB3Uz5SaApxbVgCOzRSemloLIH1M5f00PhRW1JtozDGCNgyzHLdE5Pk9YyW2wgku5TcvWzNg3vIYPMXh7qgF9RITlAXWCjoEp7cHFYQKbrTuowg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXHi+0ut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C60C2BC87;
-	Wed,  8 Apr 2026 18:28:57 +0000 (UTC)
+	 MIME-Version; b=nnWW7e645+tOFb06csPBQIllv4x4VmyTaMfUssgbcy2cJ2dDba/FpqZhiPloHQ2Tk8rBf8redmSs0BNEvmxsYxE8n7jwzAbJKDAf3kvqyv/x6CB6iI8bLxeS+nu+f/OklSm4L/E1Cf3Cl4Yy9R+Nwgn4NGo4tSasYv6eJh43aSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFjCdMDQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FE1C19425;
+	Wed,  8 Apr 2026 18:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672938;
-	bh=8Xc1mJTZ5Dx1GYvf78nRoE22J/GIyKwjLRu59uURHvA=;
+	s=korg; t=1775671884;
+	bh=ajnOFxDt6Rmk6FiCqW6X7wSfy3bPpA4AH/LOCnDjQXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXHi+0utWfCmkY3gjXYtzu0xxKze9Ec3+cfX/ESTYH/PAK5gx6usT6+qH65XTUOHn
-	 a9uACfAiaWFuJegTrn4NiYQxF69xEDN00kWyWDQi/KkZ6RGGM1M0Urjn79X0ehdK3Z
-	 yB/qZODZobVUfkurAM/tI71vwHYp+iBMHbk6RE4A=
+	b=nFjCdMDQw6/SbU/WadDLNkBZqQ6zoe2ywtjWCdaUxPeMFhww5quPnQ99/YtwNOSqB
+	 +duZANPmcim8WCdN4Et6nJ6D5UusNr/2xj5fi/91kTbo2ucus9+g4Okcd0jdRZmyiN
+	 x0jNbfe5TiK0hEKlnmJG1h2+kgbAl0mcizPq6jdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 037/277] ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach()
+	Milos Nikic <nikic.milos@gmail.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.1 105/312] jbd2: gracefully abort on checkpointing state corruptions
 Date: Wed,  8 Apr 2026 20:00:22 +0200
-Message-ID: <20260408175935.239369689@linuxfoundation.org>
+Message-ID: <20260408175937.685075824@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +68,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,google.com,hotmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234468-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234061-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dilger.ca,huawei.com,linux.alibaba.com,suse.cz,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 1903F3C17B0
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 399943C02C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Milos Nikic <nikic.milos@gmail.com>
 
-[ Upstream commit 86ab3e55673a7a49a841838776f1ab18d23a67b5 ]
+commit bac3190a8e79beff6ed221975e0c9b1b5f2a21da upstream.
 
-Sashiko AI-review observed:
+This patch targets two internal state machine invariants in checkpoint.c
+residing inside functions that natively return integer error codes.
 
-  In ip6_err_gen_icmpv6_unreach(), the skb is an outer IPv4 ICMP error packet
-  where its cb contains an IPv4 inet_skb_parm. When skb is cloned into skb2
-  and passed to icmp6_send(), it uses IP6CB(skb2).
+- In jbd2_cleanup_journal_tail(): A blocknr of 0 indicates a severely
+corrupted journal superblock. Replaced the J_ASSERT with a WARN_ON_ONCE
+and a graceful journal abort, returning -EFSCORRUPTED.
 
-  IP6CB interprets the IPv4 inet_skb_parm as an inet6_skb_parm. The cipso
-  offset in inet_skb_parm.opt directly overlaps with dsthao in inet6_skb_parm
-  at offset 18.
+- In jbd2_log_do_checkpoint(): Replaced the J_ASSERT_BH checking for
+an unexpected buffer_jwrite state. If the warning triggers, we
+explicitly drop the just-taken get_bh() reference and call __flush_batch()
+to safely clean up any previously queued buffers in the j_chkpt_bhs array,
+preventing a memory leak before returning -EFSCORRUPTED.
 
-  If an attacker sends a forged ICMPv4 error with a CIPSO IP option, dsthao
-  would be a non-zero offset. Inside icmp6_send(), mip6_addr_swap() is called
-  and uses ipv6_find_tlv(skb, opt->dsthao, IPV6_TLV_HAO).
-
-  This would scan the inner, attacker-controlled IPv6 packet starting at that
-  offset, potentially returning a fake TLV without checking if the remaining
-  packet length can hold the full 18-byte struct ipv6_destopt_hao.
-
-  Could mip6_addr_swap() then perform a 16-byte swap that extends past the end
-  of the packet data into skb_shared_info?
-
-  Should the cb array also be cleared in ip6_err_gen_icmpv6_unreach() and
-  ip6ip6_err() to prevent this?
-
-This patch implements the first suggestion.
-
-I am not sure if ip6ip6_err() needs to be changed.
-A separate patch would be better anyway.
-
-Fixes: ca15a078bd90 ("sit: generate icmpv6 error when receiving icmpv4 error")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Closes: https://sashiko.dev/#/patchset/20260326155138.2429480-1-edumazet%40google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Oskar Kjos <oskar.kjos@hotmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326202608.2976021-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Milos Nikic <nikic.milos@gmail.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260311041548.159424-1-nikic.milos@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/icmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/jbd2/checkpoint.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 54ad4c7578679..aa39aabe4417e 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -675,6 +675,9 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
- 	if (!skb2)
- 		return 1;
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -279,7 +279,15 @@ restart:
+ 			 */
+ 			BUFFER_TRACE(bh, "queue");
+ 			get_bh(bh);
+-			J_ASSERT_BH(bh, !buffer_jwrite(bh));
++			if (WARN_ON_ONCE(buffer_jwrite(bh))) {
++				put_bh(bh); /* drop the ref we just took */
++				spin_unlock(&journal->j_list_lock);
++				/* Clean up any previously batched buffers */
++				if (batch_count)
++					__flush_batch(journal, &batch_count);
++				jbd2_journal_abort(journal, -EFSCORRUPTED);
++				return -EFSCORRUPTED;
++			}
+ 			journal->j_chkpt_bhs[batch_count++] = bh;
+ 			transaction->t_chp_stats.cs_written++;
+ 			transaction->t_checkpoint_list = jh->b_cpnext;
+@@ -337,7 +345,10 @@ int jbd2_cleanup_journal_tail(journal_t
  
-+	/* Remove debris left by IPv4 stack. */
-+	memset(IP6CB(skb2), 0, sizeof(*IP6CB(skb2)));
-+
- 	skb_dst_drop(skb2);
- 	skb_pull(skb2, nhs);
- 	skb_reset_network_header(skb2);
--- 
-2.53.0
-
+ 	if (!jbd2_journal_get_log_tail(journal, &first_tid, &blocknr))
+ 		return 1;
+-	J_ASSERT(blocknr != 0);
++	if (WARN_ON_ONCE(blocknr == 0)) {
++		jbd2_journal_abort(journal, -EFSCORRUPTED);
++		return -EFSCORRUPTED;
++	}
+ 
+ 	/*
+ 	 * We need to make sure that any blocks that were recently written out
 
 
 
