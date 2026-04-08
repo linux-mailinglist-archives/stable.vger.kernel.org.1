@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCoKMu2k1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:45 +0200
+	id 0DX9Grua1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C993C2044
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F403C031E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0507B315F51C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9987230095F9
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBC63D4134;
-	Wed,  8 Apr 2026 18:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A513D88E1;
+	Wed,  8 Apr 2026 18:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2VL77Nn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtNITgVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D27B67E;
-	Wed,  8 Apr 2026 18:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CD21E5724;
+	Wed,  8 Apr 2026 18:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673614; cv=none; b=Ie1mEBadwfjXD5lMUEK4Wd++KWfZHtNeI9Ow85EucRyVoKz8oAZalIkHFU56uz9ddbFJsUno26dS72WaoA0rJGGRWz0ibmKz41LeuqmHBLVx8gRnQmu5f+BDngFiAxvgwP6H0nuoFoALGUWsCBkXftvci8W/SjUhgZEb1dwph78=
+	t=1775671987; cv=none; b=eri91ZuwAdmihNvSOZrJfmsOBfPXpn/dSHdopxSsdSdTo8tGfDza2ti0lY1C5dk+NMae1/6bke+hrWYPjCl3d4ut33iHuCc7aOZ7wQnDPcYhWv0OofPuaLe9dLuzwyTUSqU88ectwLMjJ7SOT5USzlnY4LmIgNVT4yhbY251K/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673614; c=relaxed/simple;
-	bh=kgPXMPsX2sWukcZ82JUDJHcjRktSM5S3TeW9rICTlAE=;
+	s=arc-20240116; t=1775671987; c=relaxed/simple;
+	bh=hRS2EN3O2fkj6o1eds54mNq+wEQOHp7nXjgnNCH0vjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XpjRKst2w0YLimwDUxdblcasg369FB9Geuz6CfWzSgUjhli5VfFznlxFo4A0O4D61hHbadn1jD748uQHYwehqjckzNgHAGIWgOkev9se5ov9w9TX+cMcGEy300DDWtBgV+cPx4r1moa1up58xoOaMnS4IVMwcGI2ahTFh7SFvOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2VL77Nn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C14AC19421;
-	Wed,  8 Apr 2026 18:40:13 +0000 (UTC)
+	 MIME-Version; b=Zt7fbtqSBjWt5w72LEtobm3b90RepSWfSLbn4Acjeyllaa3PmMQPM2l+wj6vrsNtbz7Cu+JXs0ajv0+2ufCr+vfLueIVbbmhnc6sHQ3FAkecnojRk6e+SDroCer1mZq4x180TdWkNqJuXe6YVLV5g45a7DXbAhhB+kAHPfOzVms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtNITgVh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E233C19421;
+	Wed,  8 Apr 2026 18:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673613;
-	bh=kgPXMPsX2sWukcZ82JUDJHcjRktSM5S3TeW9rICTlAE=;
+	s=korg; t=1775671987;
+	bh=hRS2EN3O2fkj6o1eds54mNq+wEQOHp7nXjgnNCH0vjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2VL77Nn8Z1akLWkg1oyPAVG6rzuVkFleo+cN++Y5dBX/xPxuel336av7zZHw4tVY
-	 4VkXI+qHBMSWmdb7k94DzoEY4qwZgbq8FYKZNsWLTRLm6qkbWDGxulOebIa/h3Oedd
-	 kymo3hyukOyCC3CZsY7FTnvXhkrDBZsRv2/ecujQ=
+	b=RtNITgVhs1c8+SHzIoc9eKZL1rWK3ISMXKF1XCZ2S5xFjpPIT3RN25CYO0LKAQuVX
+	 GPuwCC3W2rPXNZjseGsfmGT9wec8BDNyC+/EDzu7HrP8BnMoVSyhKdmPGOfINig2KF
+	 kpcuZlNAL06MFfWTsCdJxUdjr2vfGIg4hwLS6IOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 022/242] io_uring/kbuf: use READ_ONCE() for userspace-mapped memory
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 145/312] dt-bindings: auxdisplay: ht16k33: Use unevaluatedProperties to fix common property warning
 Date: Wed,  8 Apr 2026 20:01:02 +0200
-Message-ID: <20260408175927.902568786@linuxfoundation.org>
+Message-ID: <20260408175939.186136200@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,99 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234730-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,purestorage.com,gmail.com,kernel.dk];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-234101-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_PROHIBIT(0.00)[0.0.0.70:email];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,purestorage.com:email]
-X-Rspamd-Queue-Id: 41C993C2044
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 67F403C031E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-Commit 78385c7299f7514697d196b3233a91bd5e485591 upstream.
+[ Upstream commit 398c0c8bbc8f5a9d2f43863275a427a9d3720b6f ]
 
-The struct io_uring_buf elements in a buffer ring are in a memory region
-accessible from userspace. A malicious/buggy userspace program could
-therefore write to them at any time, so they should be accessed with
-READ_ONCE() in the kernel. Commit 98b6fa62c84f ("io_uring/kbuf: always
-use READ_ONCE() to read ring provided buffer lengths") already switched
-the reads of the len field to READ_ONCE(). Do the same for bid and addr.
+Change additionalProperties to unevaluatedProperties because it refs to
+/schemas/input/matrix-keymap.yaml.
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Fixes: c7fb19428d67 ("io_uring: add support for ring mapped supplied buffers")
-Cc: Joanne Koong <joannelkoong@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix below CHECK_DTBS warnings:
+arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dtb: keypad@70 (holtek,ht16k33): 'keypad,num-columns', 'keypad,num-rows' do not match any of the regexes: '^pinctrl-[0-9]+$'
+        from schema $id: http://devicetree.org/schemas/auxdisplay/holtek,ht16k33.yaml#
+
+Fixes: f12b457c6b25c ("dt-bindings: auxdisplay: ht16k33: Convert to json-schema")
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/auxdisplay/holtek,ht16k33.yaml          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -44,7 +44,7 @@ static bool io_kbuf_inc_commit(struct io
- 		buf_len -= this_len;
- 		/* Stop looping for invalid buffer length of 0 */
- 		if (buf_len || !this_len) {
--			buf->addr += this_len;
-+			buf->addr = READ_ONCE(buf->addr) + this_len;
- 			buf->len = buf_len;
- 			return false;
- 		}
-@@ -185,9 +185,9 @@ static struct io_br_sel io_ring_buffer_s
- 	if (*len == 0 || *len > buf_len)
- 		*len = buf_len;
- 	req->flags |= REQ_F_BUFFER_RING | REQ_F_BUFFERS_COMMIT;
--	req->buf_index = buf->bid;
-+	req->buf_index = READ_ONCE(buf->bid);
- 	sel.buf_list = bl;
--	sel.addr = u64_to_user_ptr(buf->addr);
-+	sel.addr = u64_to_user_ptr(READ_ONCE(buf->addr));
+diff --git a/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml b/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
+index fc4873deb76f3..8f4759030a8ca 100644
+--- a/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
++++ b/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
+@@ -65,7 +65,7 @@ then:
+   required:
+     - refresh-rate-hz
  
- 	if (issue_flags & IO_URING_F_UNLOCKED || !io_file_can_poll(req)) {
- 		/*
-@@ -278,7 +278,7 @@ static int io_ring_buffers_peek(struct i
- 	if (!arg->max_len)
- 		arg->max_len = INT_MAX;
+-additionalProperties: false
++unevaluatedProperties: false
  
--	req->buf_index = buf->bid;
-+	req->buf_index = READ_ONCE(buf->bid);
- 	do {
- 		u32 len = READ_ONCE(buf->len);
- 
-@@ -293,7 +293,7 @@ static int io_ring_buffers_peek(struct i
- 			}
- 		}
- 
--		iov->iov_base = u64_to_user_ptr(buf->addr);
-+		iov->iov_base = u64_to_user_ptr(READ_ONCE(buf->addr));
- 		iov->iov_len = len;
- 		iov++;
- 
+ examples:
+   - |
+-- 
+2.53.0
+
 
 
 
