@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEb0K0ie1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:24 +0200
+	id CCXfJQ6s1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5851D3C0C87
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE543C2FFA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D0C83018294
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0832E3116536
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0166B3D34AB;
-	Wed,  8 Apr 2026 18:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1D735C1B4;
+	Wed,  8 Apr 2026 19:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCSkSQPz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pu8UKGV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90F4B67E;
-	Wed,  8 Apr 2026 18:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1C635BDDB;
+	Wed,  8 Apr 2026 19:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672744; cv=none; b=lpbmgvG4zN9LCwoePHRJOWIe2xapFASTZXOG+NSnyMNpgUp1gHKge9dDOty9G4ZnzuhWoRbf93AFF0U7V6Q6Hja0no3bc60LARZIxX7fPcAYdaK/QxQHsbH6xPhnARzUegc9uM8qpKY3uxcX2PjXul5kU5Est2q+uhz9HOln0/0=
+	t=1775674817; cv=none; b=YEL817ARMeJkST5pnesIEcTORt8yx9tgP2k3WSGzbkvgmOrpppDgef2XxPOOtaoyqZ2hccIXb6xHEQbTJIkpPUOb4s6LiIVdzeuljFCfrI7a3H36RtMH9z48sFCsOTngCA/uIrMn5avYV6Ei8oyvErvnvKaN5rDBc+oSHAUKa6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672744; c=relaxed/simple;
-	bh=FBjDF6DZnREQIIjLUUDQ6JsFrgOuyu1ZU3517QmsVvA=;
+	s=arc-20240116; t=1775674817; c=relaxed/simple;
+	bh=QmTIiQJTpuYCcXTkdfL3kVLgBdCypttUP0QSbo3ZfbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxRSZtNrbUYN8v98Hv9H2ggTVFdfCYoEcqs4VQvsrDSDsXlwl9BCaOVgz6/Lulfu3RDnF4J/h3ZQzNeE88GZuqrc1wux7KmlxcFaM1qQBgoNYjQuzYzIp3K3gP6EGZ/OZKEDBgm1pIloFyem8PlfUwgLrH5yr4A9xdzHDAYqwKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCSkSQPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4B0C19421;
-	Wed,  8 Apr 2026 18:25:44 +0000 (UTC)
+	 MIME-Version; b=EBrauNz8Uu+llV/0m0oNv2TaXY/cP/WJ9tUaiWUiUhnipfAjq5HZCyEGllJt7GGnws3wG7I90HVr8LRZjEXVc3kvy6wOlg59g4hQLosfP/oOhQWC0lKBNcPO9IG8UhEjOsgIfflKjSG/dMbc5ZDRvp1Z0iKHmCIKtd0ncZnawLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pu8UKGV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B7BC19425;
+	Wed,  8 Apr 2026 19:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672744;
-	bh=FBjDF6DZnREQIIjLUUDQ6JsFrgOuyu1ZU3517QmsVvA=;
+	s=korg; t=1775674817;
+	bh=QmTIiQJTpuYCcXTkdfL3kVLgBdCypttUP0QSbo3ZfbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCSkSQPzxyUHcug1MXs+AUDFxWXzl9CRqodlVLx5+7L7CFo5Aw+ZUfd+3A0LH9V47
-	 rjRx2S7RxNZ3JH3dh+qfQ6/meiO0Q0a8u/qSf4zQ2WckJ+1rptsr6wtMzjK5FWDPwF
-	 fRz8VOv5Y2HO7u72B9vbxAiD1F0kAftOXd2nbSMo=
+	b=Pu8UKGV+pPRaYMNhW3wi7XGrEBc37CXeLs5QNuMfSm9zNPqblVqzrZW4OY/TxI44b
+	 f0FqZUsFhS4l28eHnWMJmpSfpIWsqYp4ewFStPytuzgF8IyTEDcMb0bbL0k5ELgju1
+	 SIzqW6yQseAau5+wEdVHsp3pTA2WHFkFJQxWSJvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.6 125/160] counter: rz-mtu3-cnt: prevent counter from being toggled multiple times
+	Liam Mitchell <mitchell.liam@gmail.com>,
+	Henrik Rydberg <rydberg@bitmath.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.19 212/311] Input: bcm5974 - recover from failed mode switch
 Date: Wed,  8 Apr 2026 20:03:32 +0200
-Message-ID: <20260408175917.858033663@linuxfoundation.org>
+Message-ID: <20260408175947.319473593@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +64,148 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234394-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235196-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bitmath.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,renesas.com:email]
-X-Rspamd-Queue-Id: 5851D3C0C87
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bitmath.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 0CE543C2FFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: Liam Mitchell <mitchell.liam@gmail.com>
 
-commit 67c3f99bed6f422ba343d2b70a2eeeccdfd91bef upstream.
+commit fc1e8a6f129d87c64ac8e58b50d9dfa66217cfda upstream.
 
-Runtime PM counter is incremented / decremented each time the sysfs
-enable file is written to.
+Mode switches sent before control response are ignored. This results in
+an unresponsive trackpad and "bcm5974: bad trackpad package, length: 8"
+repeated in logs.
 
-If user writes 0 to the sysfs enable file multiple times, runtime PM
-usage count underflows, generating the following message.
+On receiving unknown 8-byte packets, assume that mode switch was ignored
+and schedule an asynchronous mode reset. The reset will switch the
+device to normal mode, wait, then switch back to wellspring mode.
 
-rz-mtu3-counter rz-mtu3-counter.0: Runtime PM usage count underflow!
-
-At the same time, hardware registers end up being accessed with clocks
-off in rz_mtu3_terminate_counter() to disable an already disabled
-channel.
-
-If user writes 1 to the sysfs enable file multiple times, runtime PM
-usage count will be incremented each time, requiring the same number of
-0 writes to get it back to 0.
-
-If user writes 0 to the sysfs enable file while PWM is in progress, PWM
-is stopped without counter being the owner of the underlying MTU3
-channel.
-
-Check against the cached count_is_enabled value and exit if the user
-is trying to set the same enable value.
-
+Signed-off-by: Liam Mitchell <mitchell.liam@gmail.com>
+Link: https://lore.kernel.org/linux-input/CAOQ1CL4+DP1TuLAGNsz5GdFBTHvnTg=5q=Dr2Z1OQc6RXydSYA@mail.gmail.com/
+Acked-by: Henrik Rydberg <rydberg@bitmath.org>
+Link: https://patch.msgid.link/20260213-bcm5974-reset-v2-1-1837851336b0@gmail.com
 Cc: stable@vger.kernel.org
-Fixes: 0be8907359df ("counter: Add Renesas RZ/G2L MTU3a counter driver")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Link: https://lore.kernel.org/r/20260130122353.2263273-5-cosmin-gabriel.tanislav.xa@renesas.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/rz-mtu3-cnt.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/input/mouse/bcm5974.c |   42 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
---- a/drivers/counter/rz-mtu3-cnt.c
-+++ b/drivers/counter/rz-mtu3-cnt.c
-@@ -499,21 +499,25 @@ static int rz_mtu3_count_enable_write(st
- 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
- 	int ret = 0;
+--- a/drivers/input/mouse/bcm5974.c
++++ b/drivers/input/mouse/bcm5974.c
+@@ -286,6 +286,8 @@ struct bcm5974 {
+ 	const struct tp_finger *index[MAX_FINGERS];	/* finger index data */
+ 	struct input_mt_pos pos[MAX_FINGERS];		/* position array */
+ 	int slots[MAX_FINGERS];				/* slot assignments */
++	struct work_struct mode_reset_work;
++	unsigned long last_mode_reset;
+ };
  
-+	mutex_lock(&priv->lock);
-+
-+	if (priv->count_is_enabled[count->id] == enable)
-+		goto exit;
-+
- 	if (enable) {
--		mutex_lock(&priv->lock);
- 		pm_runtime_get_sync(ch->dev);
- 		ret = rz_mtu3_initialize_counter(counter, count->id);
- 		if (ret == 0)
- 			priv->count_is_enabled[count->id] = true;
--		mutex_unlock(&priv->lock);
- 	} else {
--		mutex_lock(&priv->lock);
- 		rz_mtu3_terminate_counter(counter, count->id);
- 		priv->count_is_enabled[count->id] = false;
- 		pm_runtime_put(ch->dev);
--		mutex_unlock(&priv->lock);
- 	}
- 
-+exit:
-+	mutex_unlock(&priv->lock);
-+
- 	return ret;
+ /* trackpad finger block data, le16-aligned */
+@@ -696,6 +698,32 @@ static int bcm5974_wellspring_mode(struc
+ 	return retval;
  }
  
++/*
++ * Mode switches sent before the control response are ignored.
++ * Fixing this state requires switching to normal mode and waiting
++ * about 1ms before switching back to wellspring mode.
++ */
++static void bcm5974_mode_reset_work(struct work_struct *work)
++{
++	struct bcm5974 *dev = container_of(work, struct bcm5974, mode_reset_work);
++	int error;
++
++	guard(mutex)(&dev->pm_mutex);
++	dev->last_mode_reset = jiffies;
++
++	error = bcm5974_wellspring_mode(dev, false);
++	if (error) {
++		dev_err(&dev->intf->dev, "reset to normal mode failed\n");
++		return;
++	}
++
++	fsleep(1000);
++
++	error = bcm5974_wellspring_mode(dev, true);
++	if (error)
++		dev_err(&dev->intf->dev, "mode switch after reset failed\n");
++}
++
+ static void bcm5974_irq_button(struct urb *urb)
+ {
+ 	struct bcm5974 *dev = urb->context;
+@@ -752,10 +780,20 @@ static void bcm5974_irq_trackpad(struct
+ 	if (dev->tp_urb->actual_length == 2)
+ 		goto exit;
+ 
+-	if (report_tp_state(dev, dev->tp_urb->actual_length))
++	if (report_tp_state(dev, dev->tp_urb->actual_length)) {
+ 		dprintk(1, "bcm5974: bad trackpad package, length: %d\n",
+ 			dev->tp_urb->actual_length);
+ 
++		/*
++		 * Receiving a HID packet means we aren't in wellspring mode.
++		 * If we haven't tried a reset in the last second, try now.
++		 */
++		if (dev->tp_urb->actual_length == 8 &&
++		    time_after(jiffies, dev->last_mode_reset + msecs_to_jiffies(1000))) {
++			schedule_work(&dev->mode_reset_work);
++		}
++	}
++
+ exit:
+ 	error = usb_submit_urb(dev->tp_urb, GFP_ATOMIC);
+ 	if (error)
+@@ -906,6 +944,7 @@ static int bcm5974_probe(struct usb_inte
+ 	dev->intf = iface;
+ 	dev->input = input_dev;
+ 	dev->cfg = *cfg;
++	INIT_WORK(&dev->mode_reset_work, bcm5974_mode_reset_work);
+ 	mutex_init(&dev->pm_mutex);
+ 
+ 	/* setup urbs */
+@@ -998,6 +1037,7 @@ static void bcm5974_disconnect(struct us
+ {
+ 	struct bcm5974 *dev = usb_get_intfdata(iface);
+ 
++	disable_work_sync(&dev->mode_reset_work);
+ 	usb_set_intfdata(iface, NULL);
+ 
+ 	input_unregister_device(dev->input);
 
 
 
