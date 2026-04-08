@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-234094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIzRAOea1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:59 +0200
+	id aB/vKcKm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E3D3C03A4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E7F3C2544
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E5263022540
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18D8D31D88F4
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5563D47A5;
-	Wed,  8 Apr 2026 18:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5828F3D4134;
+	Wed,  8 Apr 2026 18:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVg0yMqR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmuadTzj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CFC347517;
-	Wed,  8 Apr 2026 18:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DC73624B0;
+	Wed,  8 Apr 2026 18:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671969; cv=none; b=puLqEqC8AqzUU6Jsr8fbF7lmYxtVyl/oXCaIJJ0qcunezq6QK0vC7WwDmiDinkCpPx7PpaeIMRGm2bam5jMzCywtqHvNPHYDwc+X3oq3ucDQyHjiO1YO//PnGr+F0bKnlfyRXd5ckvNvHDw0IvzsSpfzoxPPmpLNd+W4oBeL6OU=
+	t=1775673596; cv=none; b=foicfO+8eXwfCPIESLqG0V3tSwcazyQpP3s68gedqHhLLoQ6RQaXPtVzyraRnB7OMJu1iPK+du38GfvNQKkToZGq+62JYTfJKjKBHiBDhFwX4X00zeQpvCQYvYNvwD5UiQ+VEUrDrkE67ajGG2v4LRiEzA1VwZ3qm2Jvx6sr1Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671969; c=relaxed/simple;
-	bh=NaEd1LFpvXv67SuTGLaMZwMfzun3hTdjQ9hmVE6dE3A=;
+	s=arc-20240116; t=1775673596; c=relaxed/simple;
+	bh=w3JTZ8gbP8kdZtx2nkZL7TazWv03pcxoogyYPYD29xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oen9vd2VUQaqblL09e1/xGA4G3151sV71kqER//ckpvr9nmGcG4p3fg3U04773TaOuI5VahsbcY7PN79MSh5sE8oTkbjcW6rSI2JWjFBKza5PrAkh4/pZeqmSpIwFsPTMef93xHm2+ukIaDyv273jBiS8IeNenc6pem1taoADsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVg0yMqR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE07C19421;
-	Wed,  8 Apr 2026 18:12:48 +0000 (UTC)
+	 MIME-Version; b=AZnq+S/irimtHugxfW1IddcGQ212MJQQqDVh+GWHGLjT1ks/tfH+UOvvSkt3AxWdx5NV0rnD4w6VTo4SX1ApSfJI6l7vxFeiVk7jjSNybPjC11tYIdHVkazRb+BlGwLS4mDXvIKCHhh048QDA9tJCpr1K8VPXHDxT5ZkwJMuI5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmuadTzj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FC9C19421;
+	Wed,  8 Apr 2026 18:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671969;
-	bh=NaEd1LFpvXv67SuTGLaMZwMfzun3hTdjQ9hmVE6dE3A=;
+	s=korg; t=1775673596;
+	bh=w3JTZ8gbP8kdZtx2nkZL7TazWv03pcxoogyYPYD29xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVg0yMqRxz4KAjhpKP39vALIhdtcDdUasRIN/2vJrYdnhojMLxUfUgM9cMO/epmg9
-	 m1vlVTM3MDX9xlV9v0ErtLsNVMhx6imeQHeB6GxVxX4QHCQPb9VneV/qs4/cGf6WYr
-	 2lZR54pkY9DorlajvBGUuCkRlHmMnH3Ll8nsak/I=
+	b=wmuadTzjh3/8Pb0Go8hKge8cX5Id0yZp1dPfzi4bssAzQKxRzYw7kkBwiNucILSkX
+	 NGNQKxO+8P6fuUyadeNva5jnekEI2H44fIlAt5lvbRLBvsDVwP03YybMpqtFCQJCBb
+	 /O0x9RFVDwBVZbeMtGVyU3CI3W7ii7q1811iLhys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/312] btrfs: dont take device_list_mutex when querying zone info
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 016/242] io_uring/kbuf: switch to storing struct io_buffer_list locally
 Date: Wed,  8 Apr 2026 20:00:56 +0200
-Message-ID: <20260408175938.962377107@linuxfoundation.org>
+Message-ID: <20260408175927.678720264@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,228 +66,530 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234094-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234723-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,wdc.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 96E3D3C03A4
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 05E7F3C2544
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 77603ab10429fe713a03345553ca8dbbfb1d91c6 ]
+Commit 5fda51255439addd1c9059098e30847a375a1008 upstream.
 
-Shin'ichiro reported sporadic hangs when running generic/013 in our CI
-system. When enabling lockdep, there is a lockdep splat when calling
-btrfs_get_dev_zone_info_all_devices() in the mount path that can be
-triggered by i.e. generic/013:
+Currently the buffer list is stored in struct io_kiocb. The buffer list
+can be of two types:
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  7.0.0-rc1+ #355 Not tainted
-  ------------------------------------------------------
-  mount/1043 is trying to acquire lock:
-  ffff8881020b5470 (&vblk->vdev_mutex){+.+.}-{4:4}, at: virtblk_report_zones+0xda/0x430
+1) Classic/legacy buffer list. These don't need to get referenced after
+   a buffer pick, and hence storing them in struct io_kiocb is perfectly
+   fine.
 
-  but task is already holding lock:
-  ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
+2) Ring provided buffer lists. These DO need to be referenced after the
+   initial buffer pick, as they need to get consumed later on. This can
+   be either just incrementing the head of the ring, or it can be
+   consuming parts of a buffer if incremental buffer consumptions has
+   been configured.
 
-  which lock already depends on the new lock.
+For case 2, io_uring needs to be careful not to access the buffer list
+after the initial pick-and-execute context. The core does recycling of
+these, but it's easy to make a mistake, because it's stored in the
+io_kiocb which does persist across multiple execution contexts. Either
+because it's a multishot request, or simply because it needed some kind
+of async trigger (eg poll) for retry purposes.
 
-  the existing dependency chain (in reverse order) is:
+Add a struct io_buffer_list to struct io_br_sel, which is always on
+stack for the various users of it. This prevents the buffer list from
+leaking outside of that execution context, and additionally it enables
+kbuf to not even pass back the struct io_buffer_list if the given
+context isn't appropriately locked already.
 
-  -> #4 (&fs_devs->device_list_mutex){+.+.}-{4:4}:
-	 __mutex_lock+0xa3/0x1360
-	 btrfs_create_pending_block_groups+0x1f4/0x9d0
-	 __btrfs_end_transaction+0x3e/0x2e0
-	 btrfs_zoned_reserve_data_reloc_bg+0x2f8/0x390
-	 open_ctree+0x1934/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This doesn't fix any bugs, it's simply a defensive measure to prevent
+any issues with reuse of a buffer list.
 
-  -> #3 (btrfs_trans_num_extwriters){++++}-{0:0}:
-	 join_transaction+0xc2/0x5c0
-	 start_transaction+0x17c/0xbc0
-	 btrfs_zoned_reserve_data_reloc_bg+0x2b4/0x390
-	 open_ctree+0x1934/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #2 (btrfs_trans_num_writers){++++}-{0:0}:
-	 lock_release+0x163/0x4b0
-	 __btrfs_end_transaction+0x1c7/0x2e0
-	 btrfs_dirty_inode+0x6f/0xd0
-	 touch_atime+0xe5/0x2c0
-	 btrfs_file_mmap_prepare+0x65/0x90
-	 __mmap_region+0x4b9/0xf00
-	 mmap_region+0xf7/0x120
-	 do_mmap+0x43d/0x610
-	 vm_mmap_pgoff+0xd6/0x190
-	 ksys_mmap_pgoff+0x7e/0xc0
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #1 (&mm->mmap_lock){++++}-{4:4}:
-	 __might_fault+0x68/0xa0
-	 _copy_to_user+0x22/0x70
-	 blkdev_copy_zone_to_user+0x22/0x40
-	 virtblk_report_zones+0x282/0x430
-	 blkdev_report_zones_ioctl+0xfd/0x130
-	 blkdev_ioctl+0x20f/0x2c0
-	 __x64_sys_ioctl+0x86/0xd0
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #0 (&vblk->vdev_mutex){+.+.}-{4:4}:
-	 __lock_acquire+0x1522/0x2680
-	 lock_acquire+0xd5/0x2f0
-	 __mutex_lock+0xa3/0x1360
-	 virtblk_report_zones+0xda/0x430
-	 blkdev_report_zones_cached+0x162/0x190
-	 btrfs_get_dev_zones+0xdc/0x2e0
-	 btrfs_get_dev_zone_info+0x219/0xe80
-	 btrfs_get_dev_zone_info_all_devices+0x62/0x90
-	 open_ctree+0x1200/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  other info that might help us debug this:
-
-  Chain exists of:
-    &vblk->vdev_mutex --> btrfs_trans_num_extwriters --> &fs_devs->device_list_mutex
-
-   Possible unsafe locking scenario:
-
-	 CPU0                    CPU1
-	 ----                    ----
-    lock(&fs_devs->device_list_mutex);
-				 lock(btrfs_trans_num_extwriters);
-				 lock(&fs_devs->device_list_mutex);
-    lock(&vblk->vdev_mutex);
-
-   *** DEADLOCK ***
-
-  3 locks held by mount/1043:
-   #0: ffff88811063e878 (&fc->uapi_mutex){+.+.}-{4:4}, at: __do_sys_fsconfig+0x2ae/0x680
-   #1: ffff88810cb9f0e8 (&type->s_umount_key#31/1){+.+.}-{4:4}, at: alloc_super+0xc0/0x3e0
-   #2: ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
-
-  stack backtrace:
-  CPU: 2 UID: 0 PID: 1043 Comm: mount Not tainted 7.0.0-rc1+ #355 PREEMPT(full)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/10/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5b/0x80
-   print_circular_bug.cold+0x18d/0x1d8
-   check_noncircular+0x10d/0x130
-   __lock_acquire+0x1522/0x2680
-   ? vmap_small_pages_range_noflush+0x3ef/0x820
-   lock_acquire+0xd5/0x2f0
-   ? virtblk_report_zones+0xda/0x430
-   ? lock_is_held_type+0xcd/0x130
-   __mutex_lock+0xa3/0x1360
-   ? virtblk_report_zones+0xda/0x430
-   ? virtblk_report_zones+0xda/0x430
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   ? virtblk_report_zones+0xda/0x430
-   virtblk_report_zones+0xda/0x430
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   blkdev_report_zones_cached+0x162/0x190
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   btrfs_get_dev_zones+0xdc/0x2e0
-   btrfs_get_dev_zone_info+0x219/0xe80
-   btrfs_get_dev_zone_info_all_devices+0x62/0x90
-   open_ctree+0x1200/0x23db
-   btrfs_get_tree.cold+0x105/0x26c
-   ? rcu_is_watching+0x18/0x50
-   vfs_get_tree+0x28/0xb0
-   __do_sys_fsconfig+0x324/0x680
-   do_syscall_64+0x92/0x4f0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f615e27a40e
-  RSP: 002b:00007fff11b18fb8 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
-  RAX: ffffffffffffffda RBX: 000055572e92ab10 RCX: 00007f615e27a40e
-  RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
-  RBP: 00007fff11b19100 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 000055572e92bc40 R14: 00007f615e3faa60 R15: 000055572e92bd08
-   </TASK>
-
-Don't hold the device_list_mutex while calling into
-btrfs_get_dev_zone_info() in btrfs_get_dev_zone_info_all_devices() to
-mitigate the issue. This is safe, as no other thread can touch the device
-list at the moment of execution.
-
-Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20250821020750.598432-12-axboe@kernel.dk
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/io_uring_types.h |    6 ----
+ io_uring/io_uring.c            |    6 ++--
+ io_uring/kbuf.c                |   27 ++++++++++++---------
+ io_uring/kbuf.h                |   16 ++++--------
+ io_uring/net.c                 |   51 +++++++++++++++++------------------------
+ io_uring/poll.c                |    6 ++--
+ io_uring/rw.c                  |   22 ++++++++---------
+ 7 files changed, 60 insertions(+), 74 deletions(-)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index ba03ea17a10f7..4e2ed51297ea1 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -332,7 +332,10 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
- 	if (!btrfs_fs_incompat(fs_info, ZONED))
- 		return 0;
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -624,12 +624,6 @@ struct io_kiocb {
  
--	mutex_lock(&fs_devices->device_list_mutex);
-+	/*
-+	 * No need to take the device_list mutex here, we're still in the mount
-+	 * path and devices cannot be added to or removed from the list yet.
-+	 */
- 	list_for_each_entry(device, &fs_devices->devices, dev_list) {
- 		/* We can skip reading of zone info for missing devices */
- 		if (!device->bdev)
-@@ -342,7 +345,6 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
- 		if (ret)
- 			break;
+ 		/* stores selected buf, valid IFF REQ_F_BUFFER_SELECTED is set */
+ 		struct io_buffer	*kbuf;
+-
+-		/*
+-		 * stores buffer ID for ring provided buffers, valid IFF
+-		 * REQ_F_BUFFER_RING is set.
+-		 */
+-		struct io_buffer_list	*buf_list;
+ 	};
+ 
+ 	union {
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -921,7 +921,7 @@ void io_req_defer_failed(struct io_kiocb
+ 	lockdep_assert_held(&req->ctx->uring_lock);
+ 
+ 	req_set_fail(req);
+-	io_req_set_res(req, res, io_put_kbuf(req, res, req->buf_list));
++	io_req_set_res(req, res, io_put_kbuf(req, res, NULL));
+ 	if (def->fail)
+ 		def->fail(req);
+ 	io_req_complete_defer(req);
+@@ -1921,11 +1921,11 @@ static void io_queue_async(struct io_kio
+ 
+ 	switch (io_arm_poll_handler(req, 0)) {
+ 	case IO_APOLL_READY:
+-		io_kbuf_recycle(req, req->buf_list, 0);
++		io_kbuf_recycle(req, NULL, 0);
+ 		io_req_task_queue(req);
+ 		break;
+ 	case IO_APOLL_ABORTED:
+-		io_kbuf_recycle(req, req->buf_list, 0);
++		io_kbuf_recycle(req, NULL, 0);
+ 		io_queue_iowq(req);
+ 		break;
+ 	case IO_APOLL_OK:
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -172,8 +172,8 @@ static struct io_br_sel io_ring_buffer_s
+ 	if (*len == 0 || *len > buf->len)
+ 		*len = buf->len;
+ 	req->flags |= REQ_F_BUFFER_RING | REQ_F_BUFFERS_COMMIT;
+-	req->buf_list = bl;
+ 	req->buf_index = buf->bid;
++	sel.buf_list = bl;
+ 	sel.addr = u64_to_user_ptr(buf->addr);
+ 
+ 	if (issue_flags & IO_URING_F_UNLOCKED || !io_file_can_poll(req)) {
+@@ -187,9 +187,9 @@ static struct io_br_sel io_ring_buffer_s
+ 		 * the transfer completes (or if we get -EAGAIN and must poll of
+ 		 * retry).
+ 		 */
+-		if (!io_kbuf_commit(req, bl, *len, 1))
++		if (!io_kbuf_commit(req, sel.buf_list, *len, 1))
+ 			req->flags |= REQ_F_BUF_MORE;
+-		req->buf_list = NULL;
++		sel.buf_list = NULL;
  	}
--	mutex_unlock(&fs_devices->device_list_mutex);
+ 	return sel;
+ }
+@@ -307,7 +307,6 @@ static int io_ring_buffers_peek(struct i
+ 		req->flags |= REQ_F_BL_EMPTY;
  
+ 	req->flags |= REQ_F_BUFFER_RING;
+-	req->buf_list = bl;
+ 	return iov - arg->iovs;
+ }
+ 
+@@ -315,16 +314,15 @@ int io_buffers_select(struct io_kiocb *r
+ 		      struct io_br_sel *sel, unsigned int issue_flags)
+ {
+ 	struct io_ring_ctx *ctx = req->ctx;
+-	struct io_buffer_list *bl;
+ 	int ret = -ENOENT;
+ 
+ 	io_ring_submit_lock(ctx, issue_flags);
+-	bl = io_buffer_get_list(ctx, req->buf_index);
+-	if (unlikely(!bl))
++	sel->buf_list = io_buffer_get_list(ctx, req->buf_index);
++	if (unlikely(!sel->buf_list))
+ 		goto out_unlock;
+ 
+-	if (bl->flags & IOBL_BUF_RING) {
+-		ret = io_ring_buffers_peek(req, arg, bl);
++	if (sel->buf_list->flags & IOBL_BUF_RING) {
++		ret = io_ring_buffers_peek(req, arg, sel->buf_list);
+ 		/*
+ 		 * Don't recycle these buffers if we need to go through poll.
+ 		 * Nobody else can use them anyway, and holding on to provided
+@@ -334,14 +332,17 @@ int io_buffers_select(struct io_kiocb *r
+ 		 */
+ 		if (ret > 0) {
+ 			req->flags |= REQ_F_BUFFERS_COMMIT | REQ_F_BL_NO_RECYCLE;
+-			if (!io_kbuf_commit(req, bl, arg->out_len, ret))
++			if (!io_kbuf_commit(req, sel->buf_list, arg->out_len, ret))
+ 				req->flags |= REQ_F_BUF_MORE;
+ 		}
+ 	} else {
+-		ret = io_provided_buffers_select(req, &arg->out_len, bl, arg->iovs);
++		ret = io_provided_buffers_select(req, &arg->out_len, sel->buf_list, arg->iovs);
+ 	}
+ out_unlock:
+-	io_ring_submit_unlock(ctx, issue_flags);
++	if (issue_flags & IO_URING_F_UNLOCKED) {
++		sel->buf_list = NULL;
++		mutex_unlock(&ctx->uring_lock);
++	}
  	return ret;
  }
--- 
-2.53.0
-
+ 
+@@ -362,10 +363,12 @@ int io_buffers_peek(struct io_kiocb *req
+ 		ret = io_ring_buffers_peek(req, arg, bl);
+ 		if (ret > 0)
+ 			req->flags |= REQ_F_BUFFERS_COMMIT;
++		sel->buf_list = bl;
+ 		return ret;
+ 	}
+ 
+ 	/* don't support multiple buffer selections for legacy */
++	sel->buf_list = NULL;
+ 	return io_provided_buffers_select(req, &arg->max_len, bl, arg->iovs);
+ }
+ 
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -65,11 +65,14 @@ struct buf_sel_arg {
+ };
+ 
+ /*
+- * Return value from io_buffer_list selection. Just returns the error or
+- * user address for now, will be extended to return the buffer list in the
+- * future.
++ * Return value from io_buffer_list selection, to avoid stashing it in
++ * struct io_kiocb. For legacy/classic provided buffers, keeping a reference
++ * across execution contexts are fine. But for ring provided buffers, the
++ * list may go away as soon as ->uring_lock is dropped. As the io_kiocb
++ * persists, it's better to just keep the buffer local for those cases.
+  */
+ struct io_br_sel {
++	struct io_buffer_list *buf_list;
+ 	/*
+ 	 * Some selection parts return the user address, others return an error.
+ 	 */
+@@ -113,13 +116,6 @@ int io_pbuf_mmap(struct file *file, stru
+ static inline bool io_kbuf_recycle_ring(struct io_kiocb *req,
+ 					struct io_buffer_list *bl)
+ {
+-	/*
+-	 * We don't need to recycle for REQ_F_BUFFER_RING, we can just clear
+-	 * the flag and hence ensure that bl->head doesn't get incremented.
+-	 * If the tail has already been incremented, hang on to it.
+-	 * The exception is partial io, that case we should increment bl->head
+-	 * to monopolize the buffer.
+-	 */
+ 	if (bl) {
+ 		req->buf_index = bl->bgid;
+ 		req->flags &= ~(REQ_F_BUFFER_RING|REQ_F_BUFFERS_COMMIT);
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -442,7 +442,6 @@ int io_sendmsg_prep(struct io_kiocb *req
+ 			return -EINVAL;
+ 		sr->msg_flags |= MSG_WAITALL;
+ 		sr->buf_group = req->buf_index;
+-		req->buf_list = NULL;
+ 		req->flags |= REQ_F_MULTISHOT;
+ 	}
+ 
+@@ -516,11 +515,11 @@ static inline bool io_send_finish(struct
+ 	unsigned int cflags;
+ 
+ 	if (!(sr->flags & IORING_RECVSEND_BUNDLE)) {
+-		cflags = io_put_kbuf(req, sel->val, req->buf_list);
++		cflags = io_put_kbuf(req, sel->val, sel->buf_list);
+ 		goto finish;
+ 	}
+ 
+-	cflags = io_put_kbufs(req, sel->val, req->buf_list, io_bundle_nbufs(kmsg, sel->val));
++	cflags = io_put_kbufs(req, sel->val, sel->buf_list, io_bundle_nbufs(kmsg, sel->val));
+ 
+ 	/*
+ 	 * Don't start new bundles if the buffer list is empty, or if the
+@@ -617,6 +616,7 @@ int io_send(struct io_kiocb *req, unsign
+ 		flags |= MSG_DONTWAIT;
+ 
+ retry_bundle:
++	sel.buf_list = NULL;
+ 	if (io_do_buffer_select(req)) {
+ 		struct buf_sel_arg arg = {
+ 			.iovs = &kmsg->fast_iov,
+@@ -677,7 +677,7 @@ retry_bundle:
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			return io_net_kbuf_recyle(req, req->buf_list, kmsg, ret);
++			return io_net_kbuf_recyle(req, sel.buf_list, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -816,18 +816,8 @@ int io_recvmsg_prep(struct io_kiocb *req
+ 		req->flags |= REQ_F_NOWAIT;
+ 	if (sr->msg_flags & MSG_ERRQUEUE)
+ 		req->flags |= REQ_F_CLEAR_POLLIN;
+-	if (req->flags & REQ_F_BUFFER_SELECT) {
+-		/*
+-		 * Store the buffer group for this multishot receive separately,
+-		 * as if we end up doing an io-wq based issue that selects a
+-		 * buffer, it has to be committed immediately and that will
+-		 * clear ->buf_list. This means we lose the link to the buffer
+-		 * list, and the eventual buffer put on completion then cannot
+-		 * restore it.
+-		 */
++	if (req->flags & REQ_F_BUFFER_SELECT)
+ 		sr->buf_group = req->buf_index;
+-		req->buf_list = NULL;
+-	}
+ 	if (sr->flags & IORING_RECV_MULTISHOT) {
+ 		if (!(req->flags & REQ_F_BUFFER_SELECT))
+ 			return -EINVAL;
+@@ -873,7 +863,7 @@ static inline bool io_recv_finish(struct
+ 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
+ 		size_t this_ret = sel->val - sr->done_io;
+ 
+-		cflags |= io_put_kbufs(req, this_ret, req->buf_list, io_bundle_nbufs(kmsg, this_ret));
++		cflags |= io_put_kbufs(req, this_ret, sel->buf_list, io_bundle_nbufs(kmsg, this_ret));
+ 		if (sr->retry_flags & IO_SR_MSG_RETRY)
+ 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
+ 		/* bundle with no more immediate buffers, we're done */
+@@ -892,7 +882,7 @@ static inline bool io_recv_finish(struct
+ 			return false;
+ 		}
+ 	} else {
+-		cflags |= io_put_kbuf(req, sel->val, req->buf_list);
++		cflags |= io_put_kbuf(req, sel->val, sel->buf_list);
+ 	}
+ 
+ 	/*
+@@ -1039,6 +1029,7 @@ int io_recvmsg(struct io_kiocb *req, uns
+ 		flags |= MSG_DONTWAIT;
+ 
+ retry_multishot:
++	sel.buf_list = NULL;
+ 	if (io_do_buffer_select(req)) {
+ 		size_t len = sr->len;
+ 
+@@ -1049,7 +1040,7 @@ retry_multishot:
+ 		if (req->flags & REQ_F_APOLL_MULTISHOT) {
+ 			ret = io_recvmsg_prep_multishot(kmsg, sr, &sel.addr, &len);
+ 			if (ret) {
+-				io_kbuf_recycle(req, req->buf_list, issue_flags);
++				io_kbuf_recycle(req, sel.buf_list, issue_flags);
+ 				return ret;
+ 			}
+ 		}
+@@ -1073,12 +1064,15 @@ retry_multishot:
+ 
+ 	if (ret < min_ret) {
+ 		if (ret == -EAGAIN && force_nonblock) {
+-			if (issue_flags & IO_URING_F_MULTISHOT) {
+-				io_kbuf_recycle(req, req->buf_list, issue_flags);
++			io_kbuf_recycle(req, sel.buf_list, issue_flags);
++			if (issue_flags & IO_URING_F_MULTISHOT)
+ 				return IOU_ISSUE_SKIP_COMPLETE;
+-			}
+ 			return -EAGAIN;
+ 		}
++		if (ret > 0 && io_net_retry(sock, flags)) {
++			sr->done_io += ret;
++			return io_net_kbuf_recyle(req, sel.buf_list, kmsg, ret);
++		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+ 		req_set_fail(req);
+@@ -1091,7 +1085,7 @@ retry_multishot:
+ 	else if (sr->done_io)
+ 		ret = sr->done_io;
+ 	else
+-		io_kbuf_recycle(req, req->buf_list, issue_flags);
++		io_kbuf_recycle(req, sel.buf_list, issue_flags);
+ 
+ 	sel.val = ret;
+ 	if (!io_recv_finish(req, kmsg, &sel, mshot_finished, issue_flags))
+@@ -1172,7 +1166,7 @@ int io_recv(struct io_kiocb *req, unsign
+ {
+ 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
+ 	struct io_async_msghdr *kmsg = req->async_data;
+-	struct io_br_sel sel = { };
++	struct io_br_sel sel;
+ 	struct socket *sock;
+ 	unsigned flags;
+ 	int ret, min_ret = 0;
+@@ -1192,6 +1186,7 @@ int io_recv(struct io_kiocb *req, unsign
+ 		flags |= MSG_DONTWAIT;
+ 
+ retry_multishot:
++	sel.buf_list = NULL;
+ 	if (io_do_buffer_select(req)) {
+ 		sel.val = sr->len;
+ 		ret = io_recv_buf_select(req, kmsg, &sel, issue_flags);
+@@ -1211,18 +1206,16 @@ retry_multishot:
+ 	ret = sock_recvmsg(sock, &kmsg->msg, flags);
+ 	if (ret < min_ret) {
+ 		if (ret == -EAGAIN && force_nonblock) {
+-			if (issue_flags & IO_URING_F_MULTISHOT) {
+-				io_kbuf_recycle(req, req->buf_list, issue_flags);
++			io_kbuf_recycle(req, sel.buf_list, issue_flags);
++			if (issue_flags & IO_URING_F_MULTISHOT)
+ 				return IOU_ISSUE_SKIP_COMPLETE;
+-			}
+-
+ 			return -EAGAIN;
+ 		}
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			return io_net_kbuf_recyle(req, req->buf_list, kmsg, ret);
++			return io_net_kbuf_recyle(req, sel.buf_list, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1238,7 +1231,7 @@ out_free:
+ 	else if (sr->done_io)
+ 		ret = sr->done_io;
+ 	else
+-		io_kbuf_recycle(req, req->buf_list, issue_flags);
++		io_kbuf_recycle(req, sel.buf_list, issue_flags);
+ 
+ 	sel.val = ret;
+ 	if (!io_recv_finish(req, kmsg, &sel, mshot_finished, issue_flags))
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -356,10 +356,10 @@ void io_poll_task_func(struct io_kiocb *
+ 
+ 	ret = io_poll_check_events(req, ts);
+ 	if (ret == IOU_POLL_NO_ACTION) {
+-		io_kbuf_recycle(req, req->buf_list, 0);
++		io_kbuf_recycle(req, NULL, 0);
+ 		return;
+ 	} else if (ret == IOU_POLL_REQUEUE) {
+-		io_kbuf_recycle(req, req->buf_list, 0);
++		io_kbuf_recycle(req, NULL, 0);
+ 		__io_poll_execute(req, 0);
+ 		return;
+ 	}
+@@ -753,7 +753,7 @@ int io_arm_poll_handler(struct io_kiocb
+ 	req->flags |= REQ_F_POLLED;
+ 	ipt.pt._qproc = io_async_queue_proc;
+ 
+-	io_kbuf_recycle(req, req->buf_list, issue_flags);
++	io_kbuf_recycle(req, NULL, issue_flags);
+ 
+ 	ret = __io_arm_poll_handler(req, &apoll->poll, &ipt, mask, issue_flags);
+ 	if (ret)
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -522,7 +522,7 @@ void io_req_rw_complete(struct io_kiocb
+ 	io_req_io_end(req);
+ 
+ 	if (req->flags & (REQ_F_BUFFER_SELECTED|REQ_F_BUFFER_RING))
+-		req->cqe.flags |= io_put_kbuf(req, req->cqe.res, req->buf_list);
++		req->cqe.flags |= io_put_kbuf(req, req->cqe.res, NULL);
+ 
+ 	io_req_rw_cleanup(req, 0);
+ 	io_req_task_complete(req, ts);
+@@ -589,7 +589,7 @@ static inline void io_rw_done(struct kio
+ }
+ 
+ static int kiocb_done(struct io_kiocb *req, ssize_t ret,
+-		       unsigned int issue_flags)
++		      struct io_br_sel *sel, unsigned int issue_flags)
+ {
+ 	struct io_rw *rw = io_kiocb_to_cmd(req, struct io_rw);
+ 	unsigned final_ret = io_fixup_rw_res(req, ret);
+@@ -604,7 +604,7 @@ static int kiocb_done(struct io_kiocb *r
+ 			 */
+ 			io_req_io_end(req);
+ 			io_req_set_res(req, final_ret,
+-				       io_put_kbuf(req, ret, req->buf_list));
++				       io_put_kbuf(req, ret, sel->buf_list));
+ 			io_req_rw_cleanup(req, issue_flags);
+ 			return IOU_OK;
+ 		}
+@@ -955,10 +955,10 @@ int io_read(struct io_kiocb *req, unsign
+ 
+ 	ret = __io_read(req, &sel, issue_flags);
+ 	if (ret >= 0)
+-		return kiocb_done(req, ret, issue_flags);
++		return kiocb_done(req, ret, &sel, issue_flags);
+ 
+ 	if (req->flags & REQ_F_BUFFERS_COMMIT)
+-		io_kbuf_recycle(req, req->buf_list, issue_flags);
++		io_kbuf_recycle(req, sel.buf_list, issue_flags);
+ 	return ret;
+ }
+ 
+@@ -986,17 +986,17 @@ int io_read_mshot(struct io_kiocb *req,
+ 		 * Reset rw->len to 0 again to avoid clamping future mshot
+ 		 * reads, in case the buffer size varies.
+ 		 */
+-		if (io_kbuf_recycle(req, req->buf_list, issue_flags))
++		if (io_kbuf_recycle(req, sel.buf_list, issue_flags))
+ 			rw->len = 0;
+ 		if (issue_flags & IO_URING_F_MULTISHOT)
+ 			return IOU_ISSUE_SKIP_COMPLETE;
+ 		return -EAGAIN;
+ 	} else if (ret <= 0) {
+-		io_kbuf_recycle(req, req->buf_list, issue_flags);
++		io_kbuf_recycle(req, sel.buf_list, issue_flags);
+ 		if (ret < 0)
+ 			req_set_fail(req);
+ 	} else if (!(req->flags & REQ_F_APOLL_MULTISHOT)) {
+-		cflags = io_put_kbuf(req, ret, req->buf_list);
++		cflags = io_put_kbuf(req, ret, sel.buf_list);
+ 	} else {
+ 		/*
+ 		 * Any successful return value will keep the multishot read
+@@ -1004,7 +1004,7 @@ int io_read_mshot(struct io_kiocb *req,
+ 		 * we fail to post a CQE, or multishot is no longer set, then
+ 		 * jump to the termination path. This request is then done.
+ 		 */
+-		cflags = io_put_kbuf(req, ret, req->buf_list);
++		cflags = io_put_kbuf(req, ret, sel.buf_list);
+ 		rw->len = 0; /* similarly to above, reset len to 0 */
+ 
+ 		if (io_req_post_cqe(req, ret, cflags | IORING_CQE_F_MORE)) {
+@@ -1135,7 +1135,7 @@ int io_write(struct io_kiocb *req, unsig
+ 			return -EAGAIN;
+ 		}
+ done:
+-		return kiocb_done(req, ret2, issue_flags);
++		return kiocb_done(req, ret2, NULL, issue_flags);
+ 	} else {
+ ret_eagain:
+ 		iov_iter_restore(&io->iter, &io->iter_state);
+@@ -1215,7 +1215,7 @@ int io_do_iopoll(struct io_ring_ctx *ctx
+ 		if (!smp_load_acquire(&req->iopoll_completed))
+ 			break;
+ 		nr_events++;
+-		req->cqe.flags = io_put_kbuf(req, req->cqe.res, req->buf_list);
++		req->cqe.flags = io_put_kbuf(req, req->cqe.res, NULL);
+ 		if (req->opcode != IORING_OP_URING_CMD)
+ 			io_req_rw_cleanup(req, 0);
+ 	}
 
 
 
