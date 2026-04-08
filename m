@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPsfF2ua1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:55 +0200
+	id +LQYDbCg1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15C93C0251
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6FC3C1254
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4311630233D2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 571A331428DF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849D23D891A;
-	Wed,  8 Apr 2026 18:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6228F3ACA41;
+	Wed,  8 Apr 2026 18:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrtzS/A5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wETJypIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4850B3D4134;
-	Wed,  8 Apr 2026 18:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E373D522C;
+	Wed,  8 Apr 2026 18:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671869; cv=none; b=Nsmajkb5AcbKX5DApkJdAez8cRoMCFxJ/wUvjh5pRMDO6qB9ZsW02qWaLeBntjTSfHM/2huaQSQKGzcKtMUWylhE6p/KIA6IFlqvxeKFMCmGSxYhh77wu3Agc/u1ZxVEWlqNBF7sP3eKKiiguWuG6gK0HXsoZjCvhuTanL1Wzgg=
+	t=1775672923; cv=none; b=SoXaVneHacYMPJl4BptWkKh+X9TbzkEZn3fqEr+P6MsIy97Hbi1lcOW5q2AlFF19dMD6z39PsrmP9DtyT7P11yIVc+XDb98vATUDw2gsN5jrPf+be10Eai0Whn+5tAUcCl38UqIIQ9FODdulLFVTtZwQmgjaY96nTPdFD+Io5Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671869; c=relaxed/simple;
-	bh=5GUarcnRb6NntIH3rcVHMoARE1x+pG/BzFUXYnbG9i0=;
+	s=arc-20240116; t=1775672923; c=relaxed/simple;
+	bh=fOmAZbX93pI4eQIQmyLJT7nyxAtvco4CWMSGELFz/wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uL0+/xRFSSYkuzgXUqQuCfH/3ln9WyujNp7AsF7hRbu7mCtZpuPRmzunGVAKfHrwlXUjs86OT387tqAU7otbyZfevM3ZDMiJhEFkBmQXbNjgN+V8gSYIH7gQUWMtjYF0b/ynrRF6fjXY/R0Jvwx7snvp09kYc+A1EI1ohzBjgQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrtzS/A5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA1EC19425;
-	Wed,  8 Apr 2026 18:11:08 +0000 (UTC)
+	 MIME-Version; b=NbpKL14mtoawkcgbl5PnCUIWksw3M4gMi/noOUkdSgiN9jgECu7IZYOLM7qysbK87XdueHhdBM4jpJ+rUCczuLtucmxuwszYC2h5TNlYJXazw2/XPr0vdWNSk+gi9FlPxwim+kDO7PIOdP60ag07f+k8OK7iAReYjuhvCBd6T3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wETJypIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7016AC19421;
+	Wed,  8 Apr 2026 18:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671869;
-	bh=5GUarcnRb6NntIH3rcVHMoARE1x+pG/BzFUXYnbG9i0=;
+	s=korg; t=1775672922;
+	bh=fOmAZbX93pI4eQIQmyLJT7nyxAtvco4CWMSGELFz/wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrtzS/A5xbUq+3Vbzj1YGFK/SaSvodzKiVRTEdnPkPiWS5bdChH7PDLUhk1e8MfHZ
-	 LTaGaKuOMIh06/jETTRkwznG85Nn8WCQ/xGhtMpLE++XSRJgysD/polVb0OFQm5sPa
-	 IcVqRZOhDB7nkdseFOu9HXIGjG6lQhjqOCKJtPTo=
+	b=wETJypInoMrIMDkPE02reoXoE6OwZEA5kDY84YbqJV/edrseNcGCFjtEYlZRK1fVQ
+	 wQuc4KjK6dM9o2kz1tMXEAwMC9xzdhyYd8atMx+tK+ouOVGlkFtLmDgMl8cA6vpugY
+	 lkyJrVXkq84G8kuybWEcXQZRVGX5Z43O6Kb6zCqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jiucheng Xu <jiucheng.xu@amlogic.com>,
-	Chao Yu <chao@kernel.org>
-Subject: [PATCH 6.1 100/312] erofs: add GFP_NOIO in the bio completion if needed
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 032/277] net: enetc: reset PIR and CIR if they are not equal when initializing TX ring
 Date: Wed,  8 Apr 2026 20:00:17 +0200
-Message-ID: <20260408175937.500591859@linuxfoundation.org>
+Message-ID: <20260408175935.052657439@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,94 +70,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234462-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234055-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amlogic.com:email]
-X-Rspamd-Queue-Id: E15C93C0251
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AA6FC3C1254
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiucheng Xu <jiucheng.xu@amlogic.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit c23df30915f83e7257c8625b690a1cece94142a0 upstream.
+[ Upstream commit 0239fd701d33475a39428daa3dc627407cd417a6 ]
 
-The bio completion path in the process context (e.g. dm-verity)
-will directly call into decompression rather than trigger another
-workqueue context for minimal scheduling latencies, which can
-then call vm_map_ram() with GFP_KERNEL.
+Currently the driver does not reset the producer index register (PIR) and
+consumer index register (CIR) when initializing a TX BD ring. The driver
+only reads the PIR and CIR and initializes the software indexes. If the
+TX BD ring is reinitialized when it still contains unsent frames, its PIR
+and CIR will not be equal after the reinitialization. However, the BDs
+between CIR and PIR have been freed and become invalid and this can lead
+to a hardware malfunction, causing the TX BD ring will not work properly.
 
-Due to insufficient memory, vm_map_ram() may generate memory
-swapping I/O, which can cause submit_bio_wait to deadlock
-in some scenarios.
+For ENETC v4, it supports software to set the PIR and CIR, so the driver
+can reset these two registers if they are not equal when reinitializing
+the TX BD ring. Therefore, add this solution for ENETC v4. Note that this
+patch does not work for ENETC v1 because it does not support software to
+set the PIR and CIR.
 
-Trimmed down the call stack, as follows:
-
-f2fs_submit_read_io
-  submit_bio                      //bio_list is initialized.
-    mmc_blk_mq_recovery
-      z_erofs_endio
-        vm_map_ram
-          __pte_alloc_kernel
-            __alloc_pages_direct_reclaim
-              shrink_folio_list
-                __swap_writepage
-                  submit_bio_wait  //bio_list is non-NULL, hang!!!
-
-Use memalloc_noio_{save,restore}() to wrap up this path.
-
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324062121.2745033-2-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1259,6 +1259,7 @@ static void z_erofs_decompress_kickoff(s
- 				       int bios)
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index d97a76718dd89..b5dd49337513d 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -2570,6 +2570,7 @@ EXPORT_SYMBOL_GPL(enetc_free_si_resources);
+ 
+ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
  {
- 	struct erofs_sb_info *const sbi = EROFS_SB(io->sb);
-+	int gfp_flag;
++	struct enetc_si *si = container_of(hw, struct enetc_si, hw);
+ 	int idx = tx_ring->index;
+ 	u32 tbmr;
  
- 	/* wake up the caller thread for sync decompression */
- 	if (io->sync) {
-@@ -1277,7 +1278,9 @@ static void z_erofs_decompress_kickoff(s
- 			sbi->opt.sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
- 		return;
- 	}
-+	gfp_flag = memalloc_noio_save();
- 	z_erofs_decompressqueue_work(&io->u.work);
-+	memalloc_noio_restore(gfp_flag);
- }
+@@ -2583,10 +2584,20 @@ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
+ 	enetc_txbdr_wr(hw, idx, ENETC_TBLENR,
+ 		       ENETC_RTBLENR_LEN(tx_ring->bd_count));
  
- static struct page *pickup_page_for_submission(struct z_erofs_pcluster *pcl,
+-	/* clearing PI/CI registers for Tx not supported, adjust sw indexes */
++	/* For ENETC v1, clearing PI/CI registers for Tx not supported,
++	 * adjust sw indexes
++	 */
+ 	tx_ring->next_to_use = enetc_txbdr_rd(hw, idx, ENETC_TBPIR);
+ 	tx_ring->next_to_clean = enetc_txbdr_rd(hw, idx, ENETC_TBCIR);
+ 
++	if (tx_ring->next_to_use != tx_ring->next_to_clean &&
++	    !is_enetc_rev1(si)) {
++		tx_ring->next_to_use = 0;
++		tx_ring->next_to_clean = 0;
++		enetc_txbdr_wr(hw, idx, ENETC_TBPIR, 0);
++		enetc_txbdr_wr(hw, idx, ENETC_TBCIR, 0);
++	}
++
+ 	/* enable Tx ints by setting pkt thr to 1 */
+ 	enetc_txbdr_wr(hw, idx, ENETC_TBICR0, ENETC_TBICR0_ICEN | 0x1);
+ 
+-- 
+2.53.0
+
 
 
 
