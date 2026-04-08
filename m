@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKbaA6ih1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:48 +0200
+	id YEbSJ2ab1mnDGggAu9opvQ
+	(envelope-from <stable+bounces-234129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B656A3C14F5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F148E3C04D6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2593430021DE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC1E1304B2A8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF0E3D75AF;
-	Wed,  8 Apr 2026 18:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4493D75AF;
+	Wed,  8 Apr 2026 18:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tltyl/x1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHvNq2QL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE303D6694;
-	Wed,  8 Apr 2026 18:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C3C3D3D06;
+	Wed,  8 Apr 2026 18:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673686; cv=none; b=gffGQDf+gL4skMMcre+10BQ8edRv8JrDcTDVkBme0/PC1q8EvOCM+dc6pfrLNAYwvx4TP93oRjGGHhq02gLj/IFVa6eu4VxnNljZ7xylBPneaUflRoZmTiChlgNWg6V+H2VzOA+Oty3A/RTo1JXEDsoGqyCLhPiH/tQUD7VZMMo=
+	t=1775672059; cv=none; b=D2viwuaV9/9ELwieJMEZLVFPrNtbDaVFC/UWfzF+mc/ElLIkwtRdzQgGDNp03irw3koPkXrOMqzgmYf6Pcqcxuu4qqj4e6KY5X8rVkstNxwUs0sBdjK8uVl9TyGnN/p9u37m/wImGbXCoDY7YXnKd+o1gvpcyN/dwV292CpCdn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673686; c=relaxed/simple;
-	bh=9zE1/NJSZVZOkLvD79sGvG/WOpF3ClnsffASSz8Yv1A=;
+	s=arc-20240116; t=1775672059; c=relaxed/simple;
+	bh=MJRZZyHoT8CsCoZEpzlnP3diI3Ko/Uf8ey9HW+v9TMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9vuaNbizokXSIiosdq/b24kgpxAKtzC3yvEkqHXJtUU5LopBj5Ru1EW4oBcwoSXNAIBQLn3QjChQHsiaDFDjCJION3phxJpMN2v9L26HwLY/OzmbtkhC51pEtHbh3DbaZ6sku3AJVt7XnpbffnO4eQDkXJoY2N9BBuT6YQgqNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tltyl/x1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D733CC19421;
-	Wed,  8 Apr 2026 18:41:25 +0000 (UTC)
+	 MIME-Version; b=Z93XMcs9nym3NH+wy92FsOYtiLBsem813SpOAGSd0z5wRM5R/Z/n5eRIxP+5hGdIm3EdwFG5Y5X/SvSqrPyp75dABz7WTBT6eFrGXT1CglnD2F5JEIpBkUNB1ib0mzqQ2uKiS4EextYm+8xyqwlGeQjAqa+yQulvgcbThyd3B3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHvNq2QL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0772DC19421;
+	Wed,  8 Apr 2026 18:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673686;
-	bh=9zE1/NJSZVZOkLvD79sGvG/WOpF3ClnsffASSz8Yv1A=;
+	s=korg; t=1775672059;
+	bh=MJRZZyHoT8CsCoZEpzlnP3diI3Ko/Uf8ey9HW+v9TMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tltyl/x1gHkGHrzg2JNTxZcJi78ulAdX6/BJkjLBSvzA9C9NGilsPHcsGg4MFjf8s
-	 8qHzcLb8ZkY5hyCYQTaoq+TP7QvzJ3idxHsHVKq3j+fL0asfEtZs8zQU8QdrApDuPg
-	 FmhWSjeZs2x0CnJoT2IXVWhAupb2RZN5ReuyBYUg=
+	b=NHvNq2QLTiyYkXSJbwAFfQGdI5Ds8yTGEYrl2cu6rUoSfF31SydVWydPkzhpFQDhd
+	 ACbz7fLaUkJVXAb+k+n3GkvNPfUBmuknrXmX6JJfvZ2scENM0Z1XnmplJpXu5LH/ds
+	 zfF2b4uxxVGdxRCjOEdMTKIWa/Wy145Hs8MlCYAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/242] ip6_tunnel: clear skb2->cb[] in ip4ip6_err()
+Subject: [PATCH 6.1 174/312] netfilter: x_tables: restrict xt_check_match/xt_check_target extensions for NFPROTO_ARP
 Date: Wed,  8 Apr 2026 20:01:31 +0200
-Message-ID: <20260408175928.981896461@linuxfoundation.org>
+Message-ID: <20260408175940.263415448@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,89 +69,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,google.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234758-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234129-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B656A3C14F5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
+X-Rspamd-Queue-Id: F148E3C04D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 2edfa31769a4add828a7e604b21cb82aaaa05925 ]
+[ Upstream commit 3d5d488f11776738deab9da336038add95d342d1 ]
 
-Oskar Kjos reported the following problem.
+Weiming Shi says:
 
-ip4ip6_err() calls icmp_send() on a cloned skb whose cb[] was written
-by the IPv6 receive path as struct inet6_skb_parm. icmp_send() passes
-IPCB(skb2) to __ip_options_echo(), which interprets that cb[] region
-as struct inet_skb_parm (IPv4). The layouts differ: inet6_skb_parm.nhoff
-at offset 14 overlaps inet_skb_parm.opt.rr, producing a non-zero rr
-value. __ip_options_echo() then reads optlen from attacker-controlled
-packet data at sptr[rr+1] and copies that many bytes into dopt->__data,
-a fixed 40-byte stack buffer (IP_OPTIONS_DATA_FIXED_SIZE).
+xt_match and xt_target structs registered with NFPROTO_UNSPEC can be
+loaded by any protocol family through nft_compat. When such a
+match/target sets .hooks to restrict which hooks it may run on, the
+bitmask uses NF_INET_* constants. This is only correct for families
+whose hook layout matches NF_INET_*: IPv4, IPv6, INET, and bridge
+all share the same five hooks (PRE_ROUTING ... POST_ROUTING).
 
-To fix this we clear skb2->cb[], as suggested by Oskar Kjos.
+ARP only has three hooks (IN=0, OUT=1, FORWARD=2) with different
+semantics. Because NF_ARP_OUT == 1 == NF_INET_LOCAL_IN, the .hooks
+validation silently passes for the wrong reasons, allowing matches to
+run on ARP chains where the hook assumptions (e.g. state->in being
+set on input hooks) do not hold. This leads to NULL pointer
+dereferences; xt_devgroup is one concrete example:
 
-Also add minimal IPv4 header validation (version == 4, ihl >= 5).
+ Oops: general protection fault, probably for non-canonical address 0xdffffc0000000044: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000220-0x0000000000000227]
+ RIP: 0010:devgroup_mt+0xff/0x350
+ Call Trace:
+  <TASK>
+  nft_match_eval (net/netfilter/nft_compat.c:407)
+  nft_do_chain (net/netfilter/nf_tables_core.c:285)
+  nft_do_chain_arp (net/netfilter/nft_chain_filter.c:61)
+  nf_hook_slow (net/netfilter/core.c:623)
+  arp_xmit (net/ipv4/arp.c:666)
+  </TASK>
+ Kernel panic - not syncing: Fatal exception in interrupt
 
-Fixes: c4d3efafcc93 ("[IPV6] IP6TUNNEL: Add support to IPv4 over IPv6 tunnel.")
-Reported-by: Oskar Kjos <oskar.kjos@hotmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326155138.2429480-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix it by restricting arptables to NFPROTO_ARP extensions only.
+Note that arptables-legacy only supports:
+
+- arpt_CLASSIFY
+- arpt_mangle
+- arpt_MARK
+
+that provide explicit NFPROTO_ARP match/target declarations.
+
+Fixes: 9291747f118d ("netfilter: xtables: add device group match")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/x_tables.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 9f1b66bb513c7..f0a8350eb52eb 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -601,11 +601,16 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	if (!skb2)
- 		return 0;
- 
-+	/* Remove debris left by IPv6 stack. */
-+	memset(IPCB(skb2), 0, sizeof(*IPCB(skb2)));
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index c842ec693dad4..650cb725ba271 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -501,6 +501,17 @@ int xt_check_match(struct xt_mtchk_param *par,
+ 				    par->match->table, par->table);
+ 		return -EINVAL;
+ 	}
 +
- 	skb_dst_drop(skb2);
++	/* NFPROTO_UNSPEC implies NF_INET_* hooks which do not overlap with
++	 * NF_ARP_IN,OUT,FORWARD, allow explicit extensions with NFPROTO_ARP
++	 * support.
++	 */
++	if (par->family == NFPROTO_ARP &&
++	    par->match->family != NFPROTO_ARP) {
++		pr_info_ratelimited("%s_tables: %s match: not valid for this family\n",
++				    xt_prefix[par->family], par->match->name);
++		return -EINVAL;
++	}
+ 	if (par->match->hooks && (par->hook_mask & ~par->match->hooks) != 0) {
+ 		char used[64], allow[64];
  
- 	skb_pull(skb2, offset);
- 	skb_reset_network_header(skb2);
- 	eiph = ip_hdr(skb2);
-+	if (eiph->version != 4 || eiph->ihl < 5)
-+		goto out;
+@@ -1016,6 +1027,18 @@ int xt_check_target(struct xt_tgchk_param *par,
+ 				    par->target->table, par->table);
+ 		return -EINVAL;
+ 	}
++
++	/* NFPROTO_UNSPEC implies NF_INET_* hooks which do not overlap with
++	 * NF_ARP_IN,OUT,FORWARD, allow explicit extensions with NFPROTO_ARP
++	 * support.
++	 */
++	if (par->family == NFPROTO_ARP &&
++	    par->target->family != NFPROTO_ARP) {
++		pr_info_ratelimited("%s_tables: %s target: not valid for this family\n",
++				    xt_prefix[par->family], par->target->name);
++		return -EINVAL;
++	}
++
+ 	if (par->target->hooks && (par->hook_mask & ~par->target->hooks) != 0) {
+ 		char used[64], allow[64];
  
- 	/* Try to guess incoming interface */
- 	rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL, eiph->saddr,
 -- 
 2.53.0
 
