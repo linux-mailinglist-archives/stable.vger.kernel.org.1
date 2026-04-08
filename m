@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNCjNE2a1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:25 +0200
+	id OGZYNsmg1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755B83C01B2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2213C1280
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCBF63012CB3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86A9C30EEC57
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF6C37F8C2;
-	Wed,  8 Apr 2026 18:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D23C3D8904;
+	Wed,  8 Apr 2026 18:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3/sNM+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W68u96/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E173D4134;
-	Wed,  8 Apr 2026 18:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601813D411F;
+	Wed,  8 Apr 2026 18:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671814; cv=none; b=DcHTOvj7LQykr1Eg/D7+pWIqXvc7F5kqAaQdU8TZxKVEX61zEjj7QJxRf2jeayeppK6czFoeeZ/3Sd5nG7uB+4/DWu9aCOyy0x8Nm/oJrXDQvtJJJRJVE3a++HCrt0I4L2uOroU3XdeJB8srXPubs3spdqXwwz+gxkswccDV0lU=
+	t=1775672946; cv=none; b=lGIEEG8jZDeDq+hShhhA+Pq+Axsn8RcIe5imfxm3i7FmfAHyCffp5B/oPzJiMMkTBXmEgf2DWwo1wO73mzgPahFrl05WesD9qk+AFWxHyOmfvI4z/zP2U6LooIekGRbPcDAX3neU9j2Rj/T0KhgF7nk578e49zJ8DJoddmxq7Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671814; c=relaxed/simple;
-	bh=/twHNk9DDf7gfADDZX3qI9G+E58JfYzLnec0sAct664=;
+	s=arc-20240116; t=1775672946; c=relaxed/simple;
+	bh=8enPmp2WT4ugWxww+xcvMZ9HRbxpvnuDI3thK1cle+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uGOdkKip+e97S7R8SP3UxzOepoBjzsdGmi9jWjP0iFKKRAJZpgohRGAyXeMCzT7x+wwUMkYE70TBXZTsTYtvWGcb27qgCqa+N2Yw8avbOD02r6NSR4CTvC3LvrWWKSCNhS3bc97b1KhbXGN/TTvzrjHDjEsKuoG0sJNkYZiibkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3/sNM+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA6FC19421;
-	Wed,  8 Apr 2026 18:10:14 +0000 (UTC)
+	 MIME-Version; b=RcW5zx3A/RlxKZNPu4CDI/oon8vIr1jPDQc79/3Mja/Yycq1/9qB3fBSYuMJzAvyR0kDAD51PwiYUEgBWGzVr/QmRsoKYOGTsYDF7axX5uSwKy55DQfeLBlC8Mu0tS6R25jdL2R9P5hlPHAufhD4XH5u1fViMskvffc31kdQh90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W68u96/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27D2C19425;
+	Wed,  8 Apr 2026 18:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671814;
-	bh=/twHNk9DDf7gfADDZX3qI9G+E58JfYzLnec0sAct664=;
+	s=korg; t=1775672946;
+	bh=8enPmp2WT4ugWxww+xcvMZ9HRbxpvnuDI3thK1cle+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3/sNM+WoYZXusCJK7WnRgC7If6iAjG0KR4I1pi7tMf0eNaJbVUFgSHkjuRdDCy31
-	 r1do1WAwKSRaEVcSsC8YR21qIs/JdQ4Yk9HgdGfWpQvgp++qKgSzpO+ecCPysAkAhn
-	 KnAts0S1Smdzo3VAFZT2dP1ZGYEKe0ZkPQZAR0CU=
+	b=W68u96/XdRAoFseIKBUfQrCpXw0fjgmYyYgMIvw5eAPb2WmE2m/c9oi+OpQATQUn1
+	 cmzvTMBeBGACIgGdFkySWuEc9paHZgujN2GvmXhxVZ5q13EJ2i72v35Mqp36q2S+RM
+	 NUcStbxiZVO7l5t1o6uR4FjXxBRC51Ui/JJ628wE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	=?UTF-8?q?Johannes=20Pen=C3=9Fel?= <johannespenssel@posteo.net>
-Subject: [PATCH 6.1 078/312] ACPICA: Allow address_space_handler Install and _REG execution as 2 separate steps
+	Lee Jones <lee@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 010/277] HID: core: Mitigate potential OOB by removing bogus memset()
 Date: Wed,  8 Apr 2026 19:59:55 +0200
-Message-ID: <20260408175936.657909985@linuxfoundation.org>
+Message-ID: <20260408175934.230129845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,247 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234034-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234471-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 755B83C01B2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7D2213C1280
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 54c516aeb8b39eeae6450b7d8076d381568dca46 ]
+[ Upstream commit 0a3fe972a7cb1404f693d6f1711f32bc1d244b1c ]
 
-ACPI-2.0 says that the EC op_region handler must be available immediately
-(like the standard default op_region handlers):
+The memset() in hid_report_raw_event() has the good intention of
+clearing out bogus data by zeroing the area from the end of the incoming
+data string to the assumed end of the buffer.  However, as we have
+previously seen, doing so can easily result in OOB reads and writes in
+the subsequent thread of execution.
 
-Quoting from the ACPI spec version 6.3: "6.5.4 _REG (Region) ...
-2. OSPM must make Embedded Controller operation regions, accessed via
-the Embedded Controllers described in ECDT, available before executing
-any control method. These operation regions may become inaccessible
-after OSPM runs _REG(EmbeddedControl, 0)."
+The current suggestion from one of the HID maintainers is to remove the
+memset() and simply return if the incoming event buffer size is not
+large enough to fill the associated report.
 
-So the OS must probe the ECDT described EC and install the OpRegion handler
-before calling acpi_enable_subsystem() and acpi_initialize_objects().
+Suggested-by Benjamin Tissoires <bentiss@kernel.org>
 
-This is a problem because calling acpi_install_address_space_handler()
-does not just install the op_region handler, it also runs the EC's _REG
-method. This _REG method may rely on initialization done by the _INI
-methods of one of the PCI / _SB root devices.
-
-For the other early/default op_region handlers the op_region handler
-install and the _REG execution is split into 2 separate steps:
-1. acpi_ev_install_region_handlers(), called early from acpi_load_tables()
-2. acpi_ev_initialize_op_regions(), called from acpi_initialize_objects()
-
-To fix the EC op_region issue, add 2 bew functions:
-1. acpi_install_address_space_handler_no_reg()
-2. acpi_execute_reg_methods()
-to allow doing things in 2 steps for other op_region handlers,
-like the EC handler, too.
-
-Note that the comment describing acpi_ev_install_region_handlers() even has
-an alinea describing this problem. Using the new methods allows users
-to avoid this problem.
-
-Link: https://github.com/acpica/acpica/pull/786
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=214899
-Reported-and-tested-by: Johannes Penßel <johannespenssel@posteo.net>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
+Signed-off-by: Lee Jones <lee@kernel.org>
+[bentiss: changed the return value]
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/evxfregn.c | 92 +++++++++++++++++++++++++++++++---
- include/acpi/acpixf.h          | 10 ++++
- 2 files changed, 95 insertions(+), 7 deletions(-)
+ drivers/hid/hid-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
-index 6fa6b485e30d5..e94e6631502c1 100644
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -20,13 +20,14 @@ ACPI_MODULE_NAME("evxfregn")
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index a5b3a8ca2fcbc..f5587b786f875 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -2057,9 +2057,10 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
+ 		rsize = max_buffer_size;
  
- /*******************************************************************************
-  *
-- * FUNCTION:    acpi_install_address_space_handler
-+ * FUNCTION:    acpi_install_address_space_handler_internal
-  *
-  * PARAMETERS:  device          - Handle for the device
-  *              space_id        - The address space ID
-  *              handler         - Address of the handler
-  *              setup           - Address of the setup function
-  *              context         - Value passed to the handler on each access
-+ *              Run_reg         - Run _REG methods for this address space?
-  *
-  * RETURN:      Status
-  *
-@@ -37,13 +38,16 @@ ACPI_MODULE_NAME("evxfregn")
-  * are executed here, and these methods can only be safely executed after
-  * the default handlers have been installed and the hardware has been
-  * initialized (via acpi_enable_subsystem.)
-+ * To avoid this problem pass FALSE for Run_Reg and later on call
-+ * acpi_execute_reg_methods() to execute _REG.
-  *
-  ******************************************************************************/
--acpi_status
--acpi_install_address_space_handler(acpi_handle device,
--				   acpi_adr_space_type space_id,
--				   acpi_adr_space_handler handler,
--				   acpi_adr_space_setup setup, void *context)
-+static acpi_status
-+acpi_install_address_space_handler_internal(acpi_handle device,
-+					    acpi_adr_space_type space_id,
-+					    acpi_adr_space_handler handler,
-+					    acpi_adr_space_setup setup,
-+					    void *context, u8 run_reg)
- {
- 	struct acpi_namespace_node *node;
- 	acpi_status status;
-@@ -80,14 +84,40 @@ acpi_install_address_space_handler(acpi_handle device,
+ 	if (csize < rsize) {
+-		dbg_hid("report %d is too short, (%d < %d)\n", report->id,
+-				csize, rsize);
+-		memset(cdata + csize, 0, rsize - csize);
++		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %d)\n",
++				     report->id, rsize, csize);
++		ret = -EINVAL;
++		goto out;
+ 	}
  
- 	/* Run all _REG methods for this address space */
- 
--	acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
-+	if (run_reg) {
-+		acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
-+	}
- 
- unlock_and_exit:
- 	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
- 	return_ACPI_STATUS(status);
- }
- 
-+acpi_status
-+acpi_install_address_space_handler(acpi_handle device,
-+				   acpi_adr_space_type space_id,
-+				   acpi_adr_space_handler handler,
-+				   acpi_adr_space_setup setup, void *context)
-+{
-+	return acpi_install_address_space_handler_internal(device, space_id,
-+							   handler, setup,
-+							   context, TRUE);
-+}
-+
- ACPI_EXPORT_SYMBOL(acpi_install_address_space_handler)
-+acpi_status
-+acpi_install_address_space_handler_no_reg(acpi_handle device,
-+					  acpi_adr_space_type space_id,
-+					  acpi_adr_space_handler handler,
-+					  acpi_adr_space_setup setup,
-+					  void *context)
-+{
-+	return acpi_install_address_space_handler_internal(device, space_id,
-+							   handler, setup,
-+							   context, FALSE);
-+}
-+
-+ACPI_EXPORT_SYMBOL(acpi_install_address_space_handler_no_reg)
- 
- /*******************************************************************************
-  *
-@@ -226,3 +256,51 @@ acpi_remove_address_space_handler(acpi_handle device,
- }
- 
- ACPI_EXPORT_SYMBOL(acpi_remove_address_space_handler)
-+/*******************************************************************************
-+ *
-+ * FUNCTION:    acpi_execute_reg_methods
-+ *
-+ * PARAMETERS:  device          - Handle for the device
-+ *              space_id        - The address space ID
-+ *
-+ * RETURN:      Status
-+ *
-+ * DESCRIPTION: Execute _REG for all op_regions of a given space_id.
-+ *
-+ ******************************************************************************/
-+acpi_status
-+acpi_execute_reg_methods(acpi_handle device, acpi_adr_space_type space_id)
-+{
-+	struct acpi_namespace_node *node;
-+	acpi_status status;
-+
-+	ACPI_FUNCTION_TRACE(acpi_execute_reg_methods);
-+
-+	/* Parameter validation */
-+
-+	if (!device) {
-+		return_ACPI_STATUS(AE_BAD_PARAMETER);
-+	}
-+
-+	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
-+	if (ACPI_FAILURE(status)) {
-+		return_ACPI_STATUS(status);
-+	}
-+
-+	/* Convert and validate the device handle */
-+
-+	node = acpi_ns_validate_handle(device);
-+	if (node) {
-+
-+		/* Run all _REG methods for this address space */
-+
-+		acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
-+	} else {
-+		status = AE_BAD_PARAMETER;
-+	}
-+
-+	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
-+	return_ACPI_STATUS(status);
-+}
-+
-+ACPI_EXPORT_SYMBOL(acpi_execute_reg_methods)
-diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-index 9be3151e4db59..754efb4e63307 100644
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -658,6 +658,16 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 							       acpi_adr_space_setup
- 							       setup,
- 							       void *context))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_install_address_space_handler_no_reg
-+			    (acpi_handle device, acpi_adr_space_type space_id,
-+			     acpi_adr_space_handler handler,
-+			     acpi_adr_space_setup setup,
-+			     void *context))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_execute_reg_methods(acpi_handle device,
-+						     acpi_adr_space_type
-+						     space_id))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_remove_address_space_handler(acpi_handle
- 							      device,
+ 	if ((hid->claimed & HID_CLAIMED_HIDDEV) && hid->hiddev_report_event)
 -- 
 2.53.0
 
