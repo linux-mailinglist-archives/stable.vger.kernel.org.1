@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-234165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HglD2Gb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:01 +0200
+	id 2Od8GHqb1mnDGggAu9opvQ
+	(envelope-from <stable+bounces-234176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8863C04C5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712F53C0510
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E18D3300D74D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7B1563007A7E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869D33A16A0;
-	Wed,  8 Apr 2026 18:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C876D39EF2B;
+	Wed,  8 Apr 2026 18:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsLHQIQG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9Np6e8n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA7537C10F;
-	Wed,  8 Apr 2026 18:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B55737C10F;
+	Wed,  8 Apr 2026 18:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672152; cv=none; b=NvUD+Wmt5+Az1Y9yiO31U9nL8HTNeSP7AS4+Vbh1sbhavdgpKB3hI5cZb6L1QPQngDGEwOCpNZ4RltXlDE/05VJtPCAhzSm8z+SLhg7dCibfNBmXCK8fSHPDuwUmphh9PK7j4amic07E7BC7x8yy26FfHRzlJxszRNkhA2+UmPk=
+	t=1775672180; cv=none; b=ihrN6WWySoF0Ur1tgAlUX5vCwiPWPvtWxjR1lhhwLTLvSwtaeCHicJy6F9Ri4VW+OLnWSdDda7MMYNW5qYlz1rzFlLOfIBhH0Bs8UOtL29FC6Bw367GhnSz0U5OPKbpphFkuPinT+0RFlcHtzKSYkl1yhNPr65lWzhkpOvx7HjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672152; c=relaxed/simple;
-	bh=769dEdSdeUAf9bic1/HaKQBzDu4tcfsTK8I2xp/t67o=;
+	s=arc-20240116; t=1775672180; c=relaxed/simple;
+	bh=x5YwPnSfVOoitFMS5ysrgLI6/3H0f4C1maan9adVUws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9dLJwzxhWhk69cy3663717ICudCKDkIWWjYLVHJsTghZ1OFatTI7RTsRRmqKYn0Y+HHuCDGc4YtzHti5UeLzXKJp4YDNzvb+S71eqsaBspAoRVxImaGbitqN4J7LXj4op+rjwSWjgexr3gxoDPVx/scR7VmsvDWzEAbk7kIL7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsLHQIQG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C125C19421;
-	Wed,  8 Apr 2026 18:15:51 +0000 (UTC)
+	 MIME-Version; b=lUzkx+cZHcIsRXcB2i/i1DioR8oeOGuLY4yQT+f4lhcH+K3qUIPxraE2d4v/I5sUH2HhgjbtRViqlcKQ3JoUmLCPRihmir48cozletKzQxmfUBXZp2HFZba+AR6gyv+Si8qOEcvIcsZNoVNmpVmjdR6ofzk6Hx00d8donNGQfWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9Np6e8n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D01C19421;
+	Wed,  8 Apr 2026 18:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672152;
-	bh=769dEdSdeUAf9bic1/HaKQBzDu4tcfsTK8I2xp/t67o=;
+	s=korg; t=1775672180;
+	bh=x5YwPnSfVOoitFMS5ysrgLI6/3H0f4C1maan9adVUws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hsLHQIQG9KdvLQqYEXjR/YX7CJXYlucD8oJJnRCGaMwt0nfS29oQu5MVzK47X5dGS
-	 vZE3lpQjtQCpgEkr+JyvaBq0f4Fmg92b60NhwKT+alH8o3vz01QPkDnK/q4UCJPnHV
-	 9BAP1F5ulFDGjMpM0djZe7F7bqMzlTrIYDnyRgfA=
+	b=R9Np6e8nfQu0HTuGFz2J7eT1WvrpzlYH/oMUVQqLUDyIzLCy1eFzApPalf7hNgq8U
+	 crqLspOG6MaYCcvquOG+GpLPjT9+8LtSai29OLilx7Kj8fPg60e2dgi+NfmIo2nHtG
+	 l4K8VYXkS84xFyz3wt7GhJlrOKTU+YQWMb56d+h8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 192/312] iio: imu: bno055: fix BNO055_SCAN_CH_COUNT off by one
-Date: Wed,  8 Apr 2026 20:01:49 +0200
-Message-ID: <20260408175940.930205563@linuxfoundation.org>
+Subject: [PATCH 6.1 193/312] hwmon: (pxe1610) Check return value of page-select write in probe
+Date: Wed,  8 Apr 2026 20:01:50 +0200
+Message-ID: <20260408175940.966693859@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234165-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234176-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6B8863C04C5
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email]
+X-Rspamd-Queue-Id: 712F53C0510
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,41 +99,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit 773ef9f95385bae52dcb7fd129fefba3a71a04db ]
+[ Upstream commit ccf70c41e562b29d1c05d1bbf53391785e09c6fb ]
 
-Fix an off-by-one error in the BNO055_SCAN_CH_COUNT macro. The count
-is derived by taking the difference of the last and first register
-addresses, dividing by the size of each channel (2 bytes). It needs to
-also add 1 to account for the fact that the count is inclusive of both
-the first and last channels.
+pxe1610_probe() writes PMBUS_PAGE to select page 0 but does not check
+the return value. If the write fails, subsequent register reads operate
+on an indeterminate page, leading to silent misconfiguration.
 
-Thanks to the aligned_s64 timestamp field, there was already extra
-padding in the buffer, so there were no runtime issues caused by this
-bug.
+Check the return value and propagate the error using dev_err_probe(),
+which also handles -EPROBE_DEFER correctly without log spam.
 
-Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 344757bac526 ("hwmon: (pmbus) Add Infineon PXE1610 VR driver")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260329170925.34581-4-sanman.pradhan@hpe.com
+[groeck: Fix "Fixes" SHA]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/bno055/bno055.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/pxe1610.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
-index 98f17c29da69b..7b58b418b8a8b 100644
---- a/drivers/iio/imu/bno055/bno055.c
-+++ b/drivers/iio/imu/bno055/bno055.c
-@@ -64,7 +64,7 @@
- #define BNO055_GRAVITY_DATA_X_LSB_REG	0x2E
- #define BNO055_GRAVITY_DATA_Y_LSB_REG	0x30
- #define BNO055_GRAVITY_DATA_Z_LSB_REG	0x32
--#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2)
-+#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2 + 1)
- #define BNO055_TEMP_REG			0x34
- #define BNO055_CALIB_STAT_REG		0x35
- #define BNO055_CALIB_STAT_MAGN_SHIFT 0
+diff --git a/drivers/hwmon/pmbus/pxe1610.c b/drivers/hwmon/pmbus/pxe1610.c
+index 52bee5de29883..12d5d7297b5c9 100644
+--- a/drivers/hwmon/pmbus/pxe1610.c
++++ b/drivers/hwmon/pmbus/pxe1610.c
+@@ -104,7 +104,10 @@ static int pxe1610_probe(struct i2c_client *client)
+ 	 * By default this device doesn't boot to page 0, so set page 0
+ 	 * to access all pmbus registers.
+ 	 */
+-	i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
++	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
++	if (ret < 0)
++		return dev_err_probe(&client->dev, ret,
++				     "Failed to set page 0\n");
+ 
+ 	/* Read Manufacturer id */
+ 	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, buf);
 -- 
 2.53.0
 
