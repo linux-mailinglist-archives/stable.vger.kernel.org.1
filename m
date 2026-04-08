@@ -1,70 +1,58 @@
-Return-Path: <stable+bounces-234694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPLDC3qm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:22 +0200
+	id sFodD/6l1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B3A3C2477
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6093C22F5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 326F0305F7E4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDEDC31597F5
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D6C3B19A3;
-	Wed,  8 Apr 2026 18:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23F0347BA9;
+	Wed,  8 Apr 2026 18:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJmrLyjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOsFCx32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A7927979A;
-	Wed,  8 Apr 2026 18:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858C63D8912;
+	Wed,  8 Apr 2026 18:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673521; cv=none; b=EVRgNu84udx3SK3Xulphag936zlGPZ1csESMbgj8ks3NnBj/vNeboxXLKgRunq+GqCIMAetZ3oSGy/oZZ1LFjF25WIOBPqs8zxixD/+iJbS7enB+0yY/R/CiLBPsI+G91+7Ca9kUTkqMmBpDF+f+dLMdrYEVK/NGKDvAlCuZrO4=
+	t=1775674185; cv=none; b=PAEkJSodo0fWofdC++KYb1NCaiRNJ8D7Zw1OkDlXvbIFkhKZYGfJinis0ULLyC4mO00ef/K4MWEDsa7G63n2t+DSusv6XlOZLyQSJsy8m+J2t7oZd66FrtgnmHxM+tKXCHS62/JQkJyG2TiZZkhyJOF9lWTi8JWlAJ2ipDjU10E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673521; c=relaxed/simple;
-	bh=NpdFBDcWyt068K1Srk6u/6qFgBpB1cSIuvvesyF/ptY=;
+	s=arc-20240116; t=1775674185; c=relaxed/simple;
+	bh=dW2z+4PlDKT2qPhznmgMZB+MUFlbWOzWe1JILRSxiPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MA+I+/Xg9kqc5D74cqdo4RoS3lcVDA064qNcbLnpvfha1s5OqN9ZbU5OD4lU7WTzQExCzRgn8+8+mhVBihPQ1z97ybU6PSOGIBwnBau911Bqc7MFSiICgMk3auZUwSi7DqwvK2UztW7JdxG7FRsQZPAR7wM6TslBrue5lfXNI3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJmrLyjU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0E3C19421;
-	Wed,  8 Apr 2026 18:38:40 +0000 (UTC)
+	 MIME-Version; b=DFESwdLhhfU387m1mmabgawOIzUxMfjhRifsz86GEEZo4uRr4sAG6rAGcs7ca2j80UfZrrk0KZr4RhRDXAD2Xb2+Fk6/177EGzLft/Xkc7qqoLKSUjH1zSVMREUaQ39YMlzCJ0/l6lbjU71m8uLjJon2dceOSnQ20LFpb5PIC7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOsFCx32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAA0C19421;
+	Wed,  8 Apr 2026 18:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673521;
-	bh=NpdFBDcWyt068K1Srk6u/6qFgBpB1cSIuvvesyF/ptY=;
+	s=korg; t=1775674185;
+	bh=dW2z+4PlDKT2qPhznmgMZB+MUFlbWOzWe1JILRSxiPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJmrLyjUbYL/rnVqXOFJi5VOLXQEwuAylPrNNE8x5cwCttzykTzsodttLSGofUdil
-	 /Hjk+7vXA0VOkYo45cUsMmowSGEZKNtBAbgyOSYZ5cYIqJtN7dze5Qab/Jegc4d+0F
-	 iRwyE9Dpuo4wdL3dcikhWlNbsmpvdKeZkXG55HIg=
+	b=KOsFCx32ZiVaJrDhrhOCXDd2JlSdL/QwEHNRuoBCs0pMNwp8DbUCcPpvq04TdGKHP
+	 YBWa7l3NGNdVBCts7CVda8M/YvBocFrfVwB/8G3JrShWLzD4rjNG+p6RPzhr4TXjjO
+	 GI4FXeWegFUrLEO4QYVhsAuoI83Ek0HSSM26+Y1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Mladek <pmladek@suse.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkman <daniel@iogearbox.net>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Luis Chamberalin <mcgrof@kernel.org>,
-	Marc Rutland <mark.rutland@arm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 265/277] kallsyms: cleanup code for appending the module buildid
-Date: Wed,  8 Apr 2026 20:04:10 +0200
-Message-ID: <20260408175943.753478414@linuxfoundation.org>
+	Taegu Ha <hataegu0826@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 211/242] usb: gadget: f_uac1_legacy: validate control request size
+Date: Wed,  8 Apr 2026 20:04:11 +0200
+Message-ID: <20260408175934.978649245@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,136 +63,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-234694-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,atomlin.com,kernel.org,iogearbox.net,samsung.com,gmail.com,arm.com,google.com,goodmis.org,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234951-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 87B3A3C2477
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BE6093C22F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Mladek <pmladek@suse.com>
+From: Taegu Ha <hataegu0826@gmail.com>
 
-commit 8e81dac4cd5477731169b92cff7c24f8f6635950 upstream.
+commit 6e0e34d85cd46ceb37d16054e97a373a32770f6c upstream.
 
-Put the code for appending the optional "buildid" into a helper function,
-It makes __sprint_symbol() better readable.
+f_audio_complete() copies req->length bytes into a 4-byte stack
+variable:
 
-Also print a warning when the "modname" is set and the "buildid" isn't.
-It might catch a situation when some lookup function in
-kallsyms_lookup_buildid() does not handle the "buildid".
+  u32 data = 0;
+  memcpy(&data, req->buf, req->length);
 
-Use pr_*_once() to avoid an infinite recursion when the function is called
-from printk().  The recursion is rather theoretical but better be on the
-safe side.
+req->length is derived from the host-controlled USB request path,
+which can lead to a stack out-of-bounds write.
 
-Link: https://lkml.kernel.org/r/20251128135920.217303-5-pmladek@suse.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Cc: Aaron Tomlin <atomlin@atomlin.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkman <daniel@iogearbox.net>
-Cc: Daniel Gomez <da.gomez@samsung.com>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberalin <mcgrof@kernel.org>
-Cc: Marc Rutland <mark.rutland@arm.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Validate req->actual against the expected payload size for the
+supported control selectors and decode only the expected amount
+of data.
+
+This avoids copying a host-influenced length into a fixed-size
+stack object.
+
+Signed-off-by: Taegu Ha <hataegu0826@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260401191311.3604898-1-hataegu0826@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kallsyms.c |   42 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 33 insertions(+), 9 deletions(-)
+ drivers/usb/gadget/function/f_uac1_legacy.c |   47 ++++++++++++++++++++++------
+ 1 file changed, 37 insertions(+), 10 deletions(-)
 
---- a/kernel/kallsyms.c
-+++ b/kernel/kallsyms.c
-@@ -434,6 +434,37 @@ int lookup_symbol_name(unsigned long add
- 	return lookup_module_symbol_name(addr, symname);
- }
+--- a/drivers/usb/gadget/function/f_uac1_legacy.c
++++ b/drivers/usb/gadget/function/f_uac1_legacy.c
+@@ -360,19 +360,46 @@ static int f_audio_out_ep_complete(struc
+ static void f_audio_complete(struct usb_ep *ep, struct usb_request *req)
+ {
+ 	struct f_audio *audio = req->context;
+-	int status = req->status;
+-	u32 data = 0;
+ 	struct usb_ep *out_ep = audio->out_ep;
  
-+#ifdef CONFIG_STACKTRACE_BUILD_ID
+-	switch (status) {
+-
+-	case 0:				/* normal completion? */
+-		if (ep == out_ep)
++	switch (req->status) {
++	case 0:
++		if (ep == out_ep) {
+ 			f_audio_out_ep_complete(ep, req);
+-		else if (audio->set_con) {
+-			memcpy(&data, req->buf, req->length);
+-			audio->set_con->set(audio->set_con, audio->set_cmd,
+-					le16_to_cpu(data));
++		} else if (audio->set_con) {
++			struct usb_audio_control *con = audio->set_con;
++			u8 type = con->type;
++			u32 data;
++			bool valid_request = false;
 +
-+static int append_buildid(char *buffer,  const char *modname,
-+			  const unsigned char *buildid)
-+{
-+	if (!modname)
-+		return 0;
++			switch (type) {
++			case UAC_FU_MUTE: {
++				u8 value;
 +
-+	if (!buildid) {
-+		pr_warn_once("Undefined buildid for the module %s\n", modname);
-+		return 0;
-+	}
++				if (req->actual == sizeof(value)) {
++					memcpy(&value, req->buf, sizeof(value));
++					data = value;
++					valid_request = true;
++				}
++				break;
++			}
++			case UAC_FU_VOLUME: {
++				__le16 value;
 +
-+	/* build ID should match length of sprintf */
-+#ifdef CONFIG_MODULES
-+	static_assert(sizeof(typeof_member(struct module, build_id)) == 20);
-+#endif
++				if (req->actual == sizeof(value)) {
++					memcpy(&value, req->buf, sizeof(value));
++					data = le16_to_cpu(value);
++					valid_request = true;
++				}
++				break;
++			}
++			}
 +
-+	return sprintf(buffer, " %20phN", buildid);
-+}
++			if (valid_request)
++				con->set(con, audio->set_cmd, data);
++			else
++				usb_ep_set_halt(ep);
 +
-+#else /* CONFIG_STACKTRACE_BUILD_ID */
-+
-+static int append_buildid(char *buffer,   const char *modname,
-+			  const unsigned char *buildid)
-+{
-+	return 0;
-+}
-+
-+#endif /* CONFIG_STACKTRACE_BUILD_ID */
-+
- /* Look up a kernel symbol and return it in a text buffer. */
- static int __sprint_symbol(char *buffer, unsigned long address,
- 			   int symbol_offset, int add_offset, int add_buildid)
-@@ -456,15 +487,8 @@ static int __sprint_symbol(char *buffer,
- 
- 	if (modname) {
- 		len += sprintf(buffer + len, " [%s", modname);
--#if IS_ENABLED(CONFIG_STACKTRACE_BUILD_ID)
--		if (add_buildid && buildid) {
--			/* build ID should match length of sprintf */
--#if IS_ENABLED(CONFIG_MODULES)
--			static_assert(sizeof(typeof_member(struct module, build_id)) == 20);
--#endif
--			len += sprintf(buffer + len, " %20phN", buildid);
--		}
--#endif
-+		if (add_buildid)
-+			len += append_buildid(buffer + len, modname, buildid);
- 		len += sprintf(buffer + len, "]");
- 	}
- 
+ 			audio->set_con = NULL;
+ 		}
+ 		break;
 
 
 
