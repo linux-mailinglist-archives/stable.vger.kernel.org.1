@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-235226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJj3B0+m1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:39 +0200
+	id 6ElLN1yk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6CE33C23C1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3713C1E3A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B48C300B560
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D343930844C8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5663D9041;
-	Wed,  8 Apr 2026 19:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E0733121F;
+	Wed,  8 Apr 2026 18:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfyywprQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FV9O2+jK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3E33D9DA9;
-	Wed,  8 Apr 2026 19:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ABB3D9DA1;
+	Wed,  8 Apr 2026 18:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674895; cv=none; b=pUNHxkpbtNe7TEBHHZMEsj1yPKyoL/ltmp1Tl1OTHG0WjNMvR0J4sUnERQDSXbUG0ibdj1/Udz2/SV1cwG5cCBuaZHjxOfqRLWcoipSUisZowj52e+xAiv4ykFMkztxpYS5xfpkRD0q1Mvk+16J3f0b22Q1ztvAim7OT+cMpbiE=
+	t=1775674162; cv=none; b=TXIWsSk0KJc+/LFezuXuydzkFzftsEJaRWk+bYNNUAM3sV7ONraPVz3EyKfgvav4RGj7jGmdY1N29+JmkOzni5nnbbyQ7spjLhAOrtt8EAbtERXWL1mNQXaHNHsS6WoBbUVkHVLkwdtbuhjvUrzkLR7crX0kW6r5HtDb5m06wJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674895; c=relaxed/simple;
-	bh=zoZIaICfBIUbxYIbDDTS7nhHZdNIygGqluZ+x/a8nOg=;
+	s=arc-20240116; t=1775674162; c=relaxed/simple;
+	bh=R374sLllMByFOVfVy5vH5Yyk7njLtDzzbxK67/mwWH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QW0UnWBHwr41DTTcVP5AhYCH+dbI28CpKbE1dP5B/+QO8cCVncurwyuNNH89a3dm+hJzusxqrvbu9elB2grH1JmnZXy7r+MhRPmYlpi2dzuKt/6Q/A7Diql1xNRMoqq/rPSKRLIKDvB7WVKYqC7R1Gdvi+7Ovrf0AFbvA5cINwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfyywprQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C55C19421;
-	Wed,  8 Apr 2026 19:01:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GgI5vGgLy5MHd5htaG0Y+jGOBjf0EgBpk3ApHymmm7WIkt8PDrnYADI9mC15+ldhOAMgVFt9rOHeAFvX49NVFoB4hyxMuN7XhOA/OwFvduVWB+JrWzI5Mb+IlvvUXush4bNG45o/423j8xua0g5WycAj5/vGJscWfUCz4JmjIG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FV9O2+jK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06F3C19421;
+	Wed,  8 Apr 2026 18:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674894;
-	bh=zoZIaICfBIUbxYIbDDTS7nhHZdNIygGqluZ+x/a8nOg=;
+	s=korg; t=1775674162;
+	bh=R374sLllMByFOVfVy5vH5Yyk7njLtDzzbxK67/mwWH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfyywprQj/DF5XDae1R9yFSJms6YMhqPz36/P15dNfc2GJQ4a3R0FkQ6kC7G9ddhe
-	 q7EWUGP9I7wga36XfH2Egmx4uWwMB9V31z0v0TkhcMnkeb0M+RERblJMN1F6iz+8or
-	 n4kLNgw3uFX7DO3q2/vH76dNYogd1AEDdViAXhrQ=
+	b=FV9O2+jKiwQY4kE9Aap4mCdjR8eYC19ifK1Ihh7Y/HZleW59hd/EH73u/ENfSp+YR
+	 +uu1SR1CmlMLjO22UuZrPi/G5BqRXt1lmQRQtvXgp46MJXE5kLCrKLiIAEBA5Pz6Jc
+	 jx2EDRLJSfzpplUkbjF95ql4PlPGiBC/JZ6QTT9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.19 273/311] counter: rz-mtu3-cnt: do not use struct rz_mtu3_channels dev member
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Rosen Penev <rosenp@gmail.com>
+Subject: [PATCH 6.12 233/242] drm/amd/display: Adjust DCE 8-10 clock, dont overclock by 15%
 Date: Wed,  8 Apr 2026 20:04:33 +0200
-Message-ID: <20260408175949.575197763@linuxfoundation.org>
+Message-ID: <20260408175935.820632924@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,273 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,igalia.com];
+	TAGGED_FROM(0.00)[bounces-234942-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235226-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,renesas.com:email]
-X-Rspamd-Queue-Id: C6CE33C23C1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,igalia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7B3713C1E3A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 2932095c114b98cbb40ccf34fc00d613cb17cead upstream.
+[ Upstream commit 1ae45b5d4f371af8ae51a3827d0ec9fe27eeb867 ]
 
-The counter driver can use HW channels 1 and 2, while the PWM driver can
-use HW channels 0, 1, 2, 3, 4, 6, 7.
+Adjust the nominal (and performance) clocks for DCE 8-10,
+and set them to 625 MHz, which is the value used by the legacy
+display code in amdgpu_atombios_get_clock_info.
 
-The dev member is assigned both by the counter driver and the PWM driver
-for channels 1 and 2, to their own struct device instance, overwriting
-the previous value.
+This was tested with Hawaii, Tonga and Fiji.
+These GPUs can output 4K 60Hz (10-bit depth) at 625 MHz.
 
-The sub-drivers race to assign their own struct device pointer to the
-same struct rz_mtu3_channel's dev member.
+The extra 15% clock was added as a workaround for a Polaris issue
+which uses DCE 11, and should not have been used on DCE 8-10 which
+are already hardcoded to the highest possible display clock.
+Unfortunately, the extra 15% was mistakenly copied and kept
+even on code paths which don't affect Polaris.
 
-The dev member of struct rz_mtu3_channel is used by the counter
-sub-driver for runtime PM.
+This commit fixes that and also	adds a check to	make sure
+not to exceed the maximum DCE 8-10 display clock.
 
-Depending on the probe order of the counter and PWM sub-drivers, the
-dev member may point to the wrong struct device instance, causing the
-counter sub-driver to do runtime PM actions on the wrong device.
-
-To fix this, use the parent pointer of the counter, which is assigned
-during probe to the correct struct device, not the struct device pointer
-inside the shared struct rz_mtu3_channel.
-
-Cc: stable@vger.kernel.org
-Fixes: 0be8907359df ("counter: Add Renesas RZ/G2L MTU3a counter driver")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Link: https://lore.kernel.org/r/20260130122353.2263273-6-cosmin-gabriel.tanislav.xa@renesas.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
+Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/rz-mtu3-cnt.c |   55 ++++++++++++++++++++----------------------
- 1 file changed, 27 insertions(+), 28 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/counter/rz-mtu3-cnt.c
-+++ b/drivers/counter/rz-mtu3-cnt.c
-@@ -107,9 +107,9 @@ static bool rz_mtu3_is_counter_invalid(s
- 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
- 	unsigned long tmdr;
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
+@@ -72,9 +72,9 @@ static const struct state_dependent_cloc
+ /* ClocksStateLow */
+ { .display_clk_khz = 352000, .pixel_clk_khz = 330000},
+ /* ClocksStateNominal */
+-{ .display_clk_khz = 600000, .pixel_clk_khz = 400000 },
++{ .display_clk_khz = 625000, .pixel_clk_khz = 400000 },
+ /* ClocksStatePerformance */
+-{ .display_clk_khz = 600000, .pixel_clk_khz = 400000 } };
++{ .display_clk_khz = 625000, .pixel_clk_khz = 400000 } };
  
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	if (id == RZ_MTU3_32_BIT_CH && test_bit(RZ_MTU3_TMDR3_LWA, &tmdr))
- 		return false;
-@@ -165,12 +165,12 @@ static int rz_mtu3_count_read(struct cou
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		*val = rz_mtu3_32bit_ch_read(ch, RZ_MTU3_TCNTLW);
- 	else
- 		*val = rz_mtu3_16bit_ch_read(ch, RZ_MTU3_TCNT);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -187,26 +187,26 @@ static int rz_mtu3_count_write(struct co
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		rz_mtu3_32bit_ch_write(ch, RZ_MTU3_TCNTLW, val);
- 	else
- 		rz_mtu3_16bit_ch_write(ch, RZ_MTU3_TCNT, val);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
- }
- 
- static int rz_mtu3_count_function_read_helper(struct rz_mtu3_channel *const ch,
--					      struct rz_mtu3_cnt *const priv,
-+					      struct counter_device *const counter,
- 					      enum counter_function *function)
+ int dentist_get_divider_from_did(int did)
  {
- 	u8 timer_mode;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	timer_mode = rz_mtu3_8bit_ch_read(ch, RZ_MTU3_TMDR1);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	switch (timer_mode & RZ_MTU3_TMDR1_PH_CNT_MODE_MASK) {
- 	case RZ_MTU3_TMDR1_PH_CNT_MODE_1:
-@@ -240,7 +240,7 @@ static int rz_mtu3_count_function_read(s
- 	if (ret)
- 		return ret;
- 
--	ret = rz_mtu3_count_function_read_helper(ch, priv, function);
-+	ret = rz_mtu3_count_function_read_helper(ch, counter, function);
- 	mutex_unlock(&priv->lock);
- 
- 	return ret;
-@@ -279,9 +279,9 @@ static int rz_mtu3_count_function_write(
- 		return -EINVAL;
- 	}
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TMDR1, timer_mode);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -300,9 +300,9 @@ static int rz_mtu3_count_direction_read(
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tsr = rz_mtu3_8bit_ch_read(ch, RZ_MTU3_TSR);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	*direction = (tsr & RZ_MTU3_TSR_TCFD) ?
- 		COUNTER_COUNT_DIRECTION_FORWARD : COUNTER_COUNT_DIRECTION_BACKWARD;
-@@ -377,14 +377,14 @@ static int rz_mtu3_count_ceiling_write(s
- 		return -EINVAL;
- 	}
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		rz_mtu3_32bit_ch_write(ch, RZ_MTU3_TGRALW, ceiling);
- 	else
- 		rz_mtu3_16bit_ch_write(ch, RZ_MTU3_TGRA, ceiling);
- 
- 	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TCR, RZ_MTU3_TCR_CCLR_TGRA);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -495,7 +495,6 @@ static int rz_mtu3_count_enable_read(str
- static int rz_mtu3_count_enable_write(struct counter_device *counter,
- 				      struct counter_count *count, u8 enable)
+@@ -403,11 +403,9 @@ static void dce_update_clocks(struct clk
  {
--	struct rz_mtu3_channel *const ch = rz_mtu3_get_ch(counter, count->id);
- 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
- 	int ret = 0;
+ 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	struct dm_pp_power_level_change_request level_change_req;
+-	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
+-
+-	/*TODO: W/A for dal3 linux, investigate why this works */
+-	if (!clk_mgr_dce->dfs_bypass_active)
+-		patched_disp_clk = patched_disp_clk * 115 / 100;
++	const int max_disp_clk =
++		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++	int patched_disp_clk = MIN(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
  
-@@ -505,14 +504,14 @@ static int rz_mtu3_count_enable_write(st
- 		goto exit;
- 
- 	if (enable) {
--		pm_runtime_get_sync(ch->dev);
-+		pm_runtime_get_sync(counter->parent);
- 		ret = rz_mtu3_initialize_counter(counter, count->id);
- 		if (ret == 0)
- 			priv->count_is_enabled[count->id] = true;
- 	} else {
- 		rz_mtu3_terminate_counter(counter, count->id);
- 		priv->count_is_enabled[count->id] = false;
--		pm_runtime_put(ch->dev);
-+		pm_runtime_put(counter->parent);
- 	}
- 
- exit:
-@@ -544,9 +543,9 @@ static int rz_mtu3_cascade_counts_enable
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	*cascade_enable = test_bit(RZ_MTU3_TMDR3_LWA, &tmdr);
- 	mutex_unlock(&priv->lock);
- 
-@@ -563,10 +562,10 @@ static int rz_mtu3_cascade_counts_enable
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_shared_reg_update_bit(priv->ch, RZ_MTU3_TMDR3,
- 				      RZ_MTU3_TMDR3_LWA, cascade_enable);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -583,9 +582,9 @@ static int rz_mtu3_ext_input_phase_clock
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	*ext_input_phase_clock_select = test_bit(RZ_MTU3_TMDR3_PHCKSEL, &tmdr);
- 	mutex_unlock(&priv->lock);
- 
-@@ -602,11 +601,11 @@ static int rz_mtu3_ext_input_phase_clock
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_shared_reg_update_bit(priv->ch, RZ_MTU3_TMDR3,
- 				      RZ_MTU3_TMDR3_PHCKSEL,
- 				      ext_input_phase_clock_select);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -644,7 +643,7 @@ static int rz_mtu3_action_read(struct co
- 	if (ret)
- 		return ret;
- 
--	ret = rz_mtu3_count_function_read_helper(ch, priv, &function);
-+	ret = rz_mtu3_count_function_read_helper(ch, counter, &function);
- 	if (ret) {
- 		mutex_unlock(&priv->lock);
- 		return ret;
+ 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
+ 	/* get max clock state from PPLIB */
 
 
 
