@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-234380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCk7LTSf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:20 +0200
+	id iPK+KvCq1mmOHAgAu9opvQ
+	(envelope-from <stable+bounces-235151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA733C0E6C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF063C2DA4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DA9E3165C59
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F70B308EB92
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2625D3D6689;
-	Wed,  8 Apr 2026 18:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B8B3176E4;
+	Wed,  8 Apr 2026 18:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1B2xYjjG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQVi+Bfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8683A16A0;
-	Wed,  8 Apr 2026 18:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895B52F39C2;
+	Wed,  8 Apr 2026 18:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672708; cv=none; b=BocL72GHZvHm1ZLH3Q1J8hvkTg/+Nv9Dg2xdLV0DKYQYd/oOShOqlwGHnkckiFMnSx0ZXHQzwOuMcNSAv8fJQBaHgFniV6Y0y/syMIxbxh/0Vev3QrU9fT/bDauoYV8rjwHECIPh511+hWPk01HwYX1RohJ55CcgifddqvNg1BY=
+	t=1775674700; cv=none; b=umkTdcc2zhJoxjrq3jElHpvGh2pPgK6soHHtW0zN5oochyTFXgjI7NAXogLmknu0eRRFpbXgYBqOqh+NjWYqvRRWgXtOpSwFhu7Jys4ad7Kj1L+ITfylniXfRCdpAEVZwwTNLED3xbQmlMX4KeBJ8urVYYjViwJNnYuiwRDE61Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672708; c=relaxed/simple;
-	bh=zbhYQv/ZCZJejdxI3mM5es0ivJz6YqFdlocUEQsrUT4=;
+	s=arc-20240116; t=1775674700; c=relaxed/simple;
+	bh=NbKe9qMxcDLqWnsg97Aa0OkjRit3g/AcVgBNWn12pI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unMPEjFtflqXoFH9863g3mXUev+SM4sZl7qIal+Wj6EsmUrtxbXleDnb5cpZjflhxGzPu4uqb+f8IxCwIB9AFpH2pcP/DtggypqWGoCHTsGqeJOIrH5n7ea+cZE7sC2meTAm8In9xVcA05YnqtCOjnoELDAmlHDqfamTizDA9GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1B2xYjjG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743F1C19421;
-	Wed,  8 Apr 2026 18:25:08 +0000 (UTC)
+	 MIME-Version; b=p74SuO7HezL67CaplIQZBSDM4zK2Ljf5DjifXaGB2GBuBcbA0rGE2fIIq616G3EI1+/GFHkDu1Fd15cnJR5SvC2nTmlvR1h7hkVUyhyWAXGBPLXBBSx6ZM7wT7cwTM5sMTvfEgZgCWJCFHq8Pe2wdd1IHQ0FrZr8M2xAU2cp6Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQVi+Bfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F338C19421;
+	Wed,  8 Apr 2026 18:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672708;
-	bh=zbhYQv/ZCZJejdxI3mM5es0ivJz6YqFdlocUEQsrUT4=;
+	s=korg; t=1775674700;
+	bh=NbKe9qMxcDLqWnsg97Aa0OkjRit3g/AcVgBNWn12pI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1B2xYjjG/m2CnI7wY/Q+fWE3G3GSGzMaNuOplFcDeZp+Ghesb7qz9yYq+JeAVcxYe
-	 7klHPRAD36gm2ghORciehVfqHelXuuIKELju4WjMA7jyoCn9UQxWBg8ib4dFggoKU7
-	 HBnaEzpLUKnw8LWGuzM1aSegar3Egd1MFIFwcyiI=
+	b=XQVi+BfgcgjWkKCMpyiGxnLytdPorVREeu431jGORhNnZFLGKcieOtXcaZXdUXm40
+	 6KmkWF6ygwpWGmnUMsPBa9JmnAabRMzFMVGP8h0a82p1SO/qfc6RNGEG30PDE7qZWR
+	 9T96C3zkwq1XLOQDIklgAMCxzBrZBjymPVDvUU8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Tugrul Kukul <tugrul.kukul@est.tech>,
-	Alex Williamson <alex@shazbot.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/160] vfio/pci: Use unmap_mapping_range()
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.19 199/311] drm/ast: dp501: Fix initialization of SCU2C
 Date: Wed,  8 Apr 2026 20:03:19 +0200
-Message-ID: <20260408175917.364304808@linuxfoundation.org>
+Message-ID: <20260408175946.841873252@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234380-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235151-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,464 +86,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,nvidia.com:email,shazbot.org:email,est.tech:email]
-X-Rspamd-Queue-Id: 1FA733C0E6C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lists.freedesktop.org:email,suse.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: EAF063C2DA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit aac6db75a9fc2c7a6f73e152df8f15101dda38e6 upstream.
+commit 2f42c1a6161646cbd29b443459fd635d29eda634 upstream.
 
-With the vfio device fd tied to the address space of the pseudo fs
-inode, we can use the mm to track all vmas that might be mmap'ing
-device BARs, which removes our vma_list and all the complicated lock
-ordering necessary to manually zap each related vma.
+Ast's DP501 initialization reads the register SCU2C at offset 0x1202c
+and tries to set it to source data from VGA. But writes the update to
+offset 0x0, with unknown results. Write the result to SCU instead.
 
-Note that we can no longer store the pfn in vm_pgoff if we want to use
-unmap_mapping_range() to zap a selective portion of the device fd
-corresponding to BAR mappings.
+The bug only happens in ast_init_analog(). There's similar code in
+ast_init_dvo(), which works correctly.
 
-This also converts our mmap fault handler to use vmf_insert_pfn()
-because we no longer have a vma_list to avoid the concurrency problem
-with io_remap_pfn_range().  The goal is to eventually use the vm_ops
-huge_fault handler to avoid the additional faulting overhead, but
-vmf_insert_pfn_{pmd,pud}() need to learn about pfnmaps first.
-
-Also, Jason notes that a race exists between unmap_mapping_range() and
-the fops mmap callback if we were to call io_remap_pfn_range() to
-populate the vma on mmap.  Specifically, mmap_region() does call_mmap()
-before it does vma_link_file() which gives a window where the vma is
-populated but invisible to unmap_mapping_range().
-
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240530045236.1005864-3-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
-Signed-off-by: Tugrul Kukul <tugrul.kukul@est.tech>
-Acked-by: Alex Williamson <alex@shazbot.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 83c6620bae3f ("drm/ast: initial DP501 support (v0.2)")
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.16+
+Link: https://patch.msgid.link/20260327133532.79696-2-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 264 +++++++------------------------
- include/linux/vfio_pci_core.h    |   2 -
- 2 files changed, 55 insertions(+), 211 deletions(-)
+ drivers/gpu/drm/ast/ast_dp501.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 3f139360752e2..e05d6ee9d4cab 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1599,100 +1599,20 @@ ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *bu
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_write);
+--- a/drivers/gpu/drm/ast/ast_dp501.c
++++ b/drivers/gpu/drm/ast/ast_dp501.c
+@@ -436,7 +436,7 @@ static void ast_init_analog(struct ast_d
+ 	/* Finally, clear bits [17:16] of SCU2c */
+ 	data = ast_read32(ast, 0x1202c);
+ 	data &= 0xfffcffff;
+-	ast_write32(ast, 0, data);
++	ast_write32(ast, 0x1202c, data);
  
--/* Return 1 on zap and vma_lock acquired, 0 on contention (only with @try) */
--static int vfio_pci_zap_and_vma_lock(struct vfio_pci_core_device *vdev, bool try)
-+static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
- {
--	struct vfio_pci_mmap_vma *mmap_vma, *tmp;
-+	struct vfio_device *core_vdev = &vdev->vdev;
-+	loff_t start = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_BAR0_REGION_INDEX);
-+	loff_t end = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_ROM_REGION_INDEX);
-+	loff_t len = end - start;
- 
--	/*
--	 * Lock ordering:
--	 * vma_lock is nested under mmap_lock for vm_ops callback paths.
--	 * The memory_lock semaphore is used by both code paths calling
--	 * into this function to zap vmas and the vm_ops.fault callback
--	 * to protect the memory enable state of the device.
--	 *
--	 * When zapping vmas we need to maintain the mmap_lock => vma_lock
--	 * ordering, which requires using vma_lock to walk vma_list to
--	 * acquire an mm, then dropping vma_lock to get the mmap_lock and
--	 * reacquiring vma_lock.  This logic is derived from similar
--	 * requirements in uverbs_user_mmap_disassociate().
--	 *
--	 * mmap_lock must always be the top-level lock when it is taken.
--	 * Therefore we can only hold the memory_lock write lock when
--	 * vma_list is empty, as we'd need to take mmap_lock to clear
--	 * entries.  vma_list can only be guaranteed empty when holding
--	 * vma_lock, thus memory_lock is nested under vma_lock.
--	 *
--	 * This enables the vm_ops.fault callback to acquire vma_lock,
--	 * followed by memory_lock read lock, while already holding
--	 * mmap_lock without risk of deadlock.
--	 */
--	while (1) {
--		struct mm_struct *mm = NULL;
--
--		if (try) {
--			if (!mutex_trylock(&vdev->vma_lock))
--				return 0;
--		} else {
--			mutex_lock(&vdev->vma_lock);
--		}
--		while (!list_empty(&vdev->vma_list)) {
--			mmap_vma = list_first_entry(&vdev->vma_list,
--						    struct vfio_pci_mmap_vma,
--						    vma_next);
--			mm = mmap_vma->vma->vm_mm;
--			if (mmget_not_zero(mm))
--				break;
--
--			list_del(&mmap_vma->vma_next);
--			kfree(mmap_vma);
--			mm = NULL;
--		}
--		if (!mm)
--			return 1;
--		mutex_unlock(&vdev->vma_lock);
--
--		if (try) {
--			if (!mmap_read_trylock(mm)) {
--				mmput(mm);
--				return 0;
--			}
--		} else {
--			mmap_read_lock(mm);
--		}
--		if (try) {
--			if (!mutex_trylock(&vdev->vma_lock)) {
--				mmap_read_unlock(mm);
--				mmput(mm);
--				return 0;
--			}
--		} else {
--			mutex_lock(&vdev->vma_lock);
--		}
--		list_for_each_entry_safe(mmap_vma, tmp,
--					 &vdev->vma_list, vma_next) {
--			struct vm_area_struct *vma = mmap_vma->vma;
--
--			if (vma->vm_mm != mm)
--				continue;
--
--			list_del(&mmap_vma->vma_next);
--			kfree(mmap_vma);
--
--			zap_vma_ptes(vma, vma->vm_start,
--				     vma->vm_end - vma->vm_start);
--		}
--		mutex_unlock(&vdev->vma_lock);
--		mmap_read_unlock(mm);
--		mmput(mm);
--	}
-+	unmap_mapping_range(core_vdev->inode->i_mapping, start, len, true);
- }
- 
- void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev)
- {
--	vfio_pci_zap_and_vma_lock(vdev, false);
- 	down_write(&vdev->memory_lock);
--	mutex_unlock(&vdev->vma_lock);
-+	vfio_pci_zap_bars(vdev);
- }
- 
- u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev)
-@@ -1714,99 +1634,41 @@ void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev, u16 c
- 	up_write(&vdev->memory_lock);
- }
- 
--/* Caller holds vma_lock */
--static int __vfio_pci_add_vma(struct vfio_pci_core_device *vdev,
--			      struct vm_area_struct *vma)
--{
--	struct vfio_pci_mmap_vma *mmap_vma;
--
--	mmap_vma = kmalloc(sizeof(*mmap_vma), GFP_KERNEL_ACCOUNT);
--	if (!mmap_vma)
--		return -ENOMEM;
--
--	mmap_vma->vma = vma;
--	list_add(&mmap_vma->vma_next, &vdev->vma_list);
--
--	return 0;
--}
--
--/*
-- * Zap mmaps on open so that we can fault them in on access and therefore
-- * our vma_list only tracks mappings accessed since last zap.
-- */
--static void vfio_pci_mmap_open(struct vm_area_struct *vma)
--{
--	zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
--}
--
--static void vfio_pci_mmap_close(struct vm_area_struct *vma)
-+static unsigned long vma_to_pfn(struct vm_area_struct *vma)
- {
- 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
--	struct vfio_pci_mmap_vma *mmap_vma;
-+	int index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-+	u64 pgoff;
- 
--	mutex_lock(&vdev->vma_lock);
--	list_for_each_entry(mmap_vma, &vdev->vma_list, vma_next) {
--		if (mmap_vma->vma == vma) {
--			list_del(&mmap_vma->vma_next);
--			kfree(mmap_vma);
--			break;
--		}
--	}
--	mutex_unlock(&vdev->vma_lock);
-+	pgoff = vma->vm_pgoff &
-+		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
-+
-+	return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
- }
- 
- static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
--	struct vfio_pci_mmap_vma *mmap_vma;
--	vm_fault_t ret = VM_FAULT_NOPAGE;
-+	unsigned long pfn, pgoff = vmf->pgoff - vma->vm_pgoff;
-+	vm_fault_t ret = VM_FAULT_SIGBUS;
- 
--	mutex_lock(&vdev->vma_lock);
--	down_read(&vdev->memory_lock);
-+	pfn = vma_to_pfn(vma);
- 
--	/*
--	 * Memory region cannot be accessed if the low power feature is engaged
--	 * or memory access is disabled.
--	 */
--	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev)) {
--		ret = VM_FAULT_SIGBUS;
--		goto up_out;
--	}
-+	down_read(&vdev->memory_lock);
- 
--	/*
--	 * We populate the whole vma on fault, so we need to test whether
--	 * the vma has already been mapped, such as for concurrent faults
--	 * to the same vma.  io_remap_pfn_range() will trigger a BUG_ON if
--	 * we ask it to fill the same range again.
--	 */
--	list_for_each_entry(mmap_vma, &vdev->vma_list, vma_next) {
--		if (mmap_vma->vma == vma)
--			goto up_out;
--	}
-+	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
-+		goto out_disabled;
- 
--	if (io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
--			       vma->vm_end - vma->vm_start,
--			       vma->vm_page_prot)) {
--		ret = VM_FAULT_SIGBUS;
--		zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
--		goto up_out;
--	}
-+	ret = vmf_insert_pfn(vma, vmf->address, pfn + pgoff);
- 
--	if (__vfio_pci_add_vma(vdev, vma)) {
--		ret = VM_FAULT_OOM;
--		zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
--	}
--
--up_out:
-+out_disabled:
- 	up_read(&vdev->memory_lock);
--	mutex_unlock(&vdev->vma_lock);
-+
- 	return ret;
- }
- 
- static const struct vm_operations_struct vfio_pci_mmap_ops = {
--	.open = vfio_pci_mmap_open,
--	.close = vfio_pci_mmap_close,
- 	.fault = vfio_pci_mmap_fault,
- };
- 
-@@ -1869,11 +1731,12 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
- 
- 	vma->vm_private_data = vdev;
- 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
--	vma->vm_pgoff = (pci_resource_start(pdev, index) >> PAGE_SHIFT) + pgoff;
-+	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
- 
- 	/*
--	 * See remap_pfn_range(), called from vfio_pci_fault() but we can't
--	 * change vm_flags within the fault handler.  Set them now.
-+	 * Set vm_flags now, they should not be changed in the fault handler.
-+	 * We want the same flags and page protection (decrypted above) as
-+	 * io_remap_pfn_range() would set.
- 	 */
- 	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
- 	vma->vm_ops = &vfio_pci_mmap_ops;
-@@ -2173,8 +2036,6 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- 	mutex_init(&vdev->ioeventfds_lock);
- 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
- 	INIT_LIST_HEAD(&vdev->ioeventfds_list);
--	mutex_init(&vdev->vma_lock);
--	INIT_LIST_HEAD(&vdev->vma_list);
- 	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
- 	init_rwsem(&vdev->memory_lock);
- 	xa_init(&vdev->ctx);
-@@ -2190,7 +2051,6 @@ void vfio_pci_core_release_dev(struct vfio_device *core_vdev)
- 
- 	mutex_destroy(&vdev->igate);
- 	mutex_destroy(&vdev->ioeventfds_lock);
--	mutex_destroy(&vdev->vma_lock);
- 	kfree(vdev->region);
- 	kfree(vdev->pm_save);
- }
-@@ -2468,26 +2328,15 @@ static int vfio_pci_dev_set_pm_runtime_get(struct vfio_device_set *dev_set)
- 	return ret;
- }
- 
--/*
-- * We need to get memory_lock for each device, but devices can share mmap_lock,
-- * therefore we need to zap and hold the vma_lock for each device, and only then
-- * get each memory_lock.
-- */
- static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
- 				      struct vfio_pci_group_info *groups,
- 				      struct iommufd_ctx *iommufd_ctx)
- {
--	struct vfio_pci_core_device *cur_mem;
--	struct vfio_pci_core_device *cur_vma;
--	struct vfio_pci_core_device *cur;
-+	struct vfio_pci_core_device *vdev;
- 	struct pci_dev *pdev;
--	bool is_mem = true;
- 	int ret;
- 
- 	mutex_lock(&dev_set->lock);
--	cur_mem = list_first_entry(&dev_set->device_list,
--				   struct vfio_pci_core_device,
--				   vdev.dev_set_list);
- 
- 	pdev = vfio_pci_dev_set_resettable(dev_set);
- 	if (!pdev) {
-@@ -2504,7 +2353,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
- 	if (ret)
- 		goto err_unlock;
- 
--	list_for_each_entry(cur_vma, &dev_set->device_list, vdev.dev_set_list) {
-+	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list) {
- 		bool owned;
- 
- 		/*
-@@ -2528,38 +2377,38 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
- 		 * Otherwise, reset is not allowed.
- 		 */
- 		if (iommufd_ctx) {
--			int devid = vfio_iommufd_get_dev_id(&cur_vma->vdev,
-+			int devid = vfio_iommufd_get_dev_id(&vdev->vdev,
- 							    iommufd_ctx);
- 
- 			owned = (devid > 0 || devid == -ENOENT);
- 		} else {
--			owned = vfio_dev_in_groups(&cur_vma->vdev, groups);
-+			owned = vfio_dev_in_groups(&vdev->vdev, groups);
- 		}
- 
- 		if (!owned) {
- 			ret = -EINVAL;
--			goto err_undo;
-+			break;
- 		}
- 
- 		/*
--		 * Locking multiple devices is prone to deadlock, runaway and
--		 * unwind if we hit contention.
-+		 * Take the memory write lock for each device and zap BAR
-+		 * mappings to prevent the user accessing the device while in
-+		 * reset.  Locking multiple devices is prone to deadlock,
-+		 * runaway and unwind if we hit contention.
- 		 */
--		if (!vfio_pci_zap_and_vma_lock(cur_vma, true)) {
-+		if (!down_write_trylock(&vdev->memory_lock)) {
- 			ret = -EBUSY;
--			goto err_undo;
-+			break;
- 		}
-+
-+		vfio_pci_zap_bars(vdev);
- 	}
--	cur_vma = NULL;
- 
--	list_for_each_entry(cur_mem, &dev_set->device_list, vdev.dev_set_list) {
--		if (!down_write_trylock(&cur_mem->memory_lock)) {
--			ret = -EBUSY;
--			goto err_undo;
--		}
--		mutex_unlock(&cur_mem->vma_lock);
-+	if (!list_entry_is_head(vdev,
-+				&dev_set->device_list, vdev.dev_set_list)) {
-+		vdev = list_prev_entry(vdev, vdev.dev_set_list);
-+		goto err_undo;
- 	}
--	cur_mem = NULL;
- 
- 	/*
- 	 * The pci_reset_bus() will reset all the devices in the bus.
-@@ -2570,25 +2419,22 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
- 	 * cause the PCI config space reset without restoring the original
- 	 * state (saved locally in 'vdev->pm_save').
- 	 */
--	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list)
--		vfio_pci_set_power_state(cur, PCI_D0);
-+	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
-+		vfio_pci_set_power_state(vdev, PCI_D0);
- 
- 	ret = pci_reset_bus(pdev);
- 
-+	vdev = list_last_entry(&dev_set->device_list,
-+			       struct vfio_pci_core_device, vdev.dev_set_list);
-+
- err_undo:
--	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list) {
--		if (cur == cur_mem)
--			is_mem = false;
--		if (cur == cur_vma)
--			break;
--		if (is_mem)
--			up_write(&cur->memory_lock);
--		else
--			mutex_unlock(&cur->vma_lock);
--	}
-+	list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
-+					 vdev.dev_set_list)
-+		up_write(&vdev->memory_lock);
-+
-+	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
-+		pm_runtime_put(&vdev->pdev->dev);
- 
--	list_for_each_entry(cur, &dev_set->device_list, vdev.dev_set_list)
--		pm_runtime_put(&cur->pdev->dev);
- err_unlock:
- 	mutex_unlock(&dev_set->lock);
- 	return ret;
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 562e8754869da..4f283514a1ed6 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -93,8 +93,6 @@ struct vfio_pci_core_device {
- 	struct list_head		sriov_pfs_item;
- 	struct vfio_pci_core_device	*sriov_pf_core_dev;
- 	struct notifier_block	nb;
--	struct mutex		vma_lock;
--	struct list_head	vma_list;
- 	struct rw_semaphore	memory_lock;
- };
- 
--- 
-2.53.0
-
+ 	/* Disable DVO */
+ 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xa3, 0xcf, 0x00);
 
 
 
