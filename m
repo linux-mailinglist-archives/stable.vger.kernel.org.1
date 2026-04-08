@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBFDI9qc1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:18 +0200
+	id EIWPK42g1mlDGwgAu9opvQ
+	(envelope-from <stable+bounces-234604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6713C084D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBF73C11EA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB50E300A53A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AA075304D98A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF603A16A0;
-	Wed,  8 Apr 2026 18:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FE4351C2E;
+	Wed,  8 Apr 2026 18:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILs4tRVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjMaagkM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE61B67E;
-	Wed,  8 Apr 2026 18:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDEB3D9034;
+	Wed,  8 Apr 2026 18:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672535; cv=none; b=gEoiHyBbRaPujUXAmv+6DYjafavvF5nMlss0TxwWcLqV1eZBU0EaiXQMzMBC5/8Gxx6spUGOt9gM0pthdhjdmDiQyTpiHD7CCdQFFsjZz8gNXZE4Oh/mV7E/qhCG8O6MSy70HEH1KtkLd/H0uEoO9M8H4hk7vevxr0IXTZbgmjw=
+	t=1775673289; cv=none; b=fyVhE/2c/JOUt/fpQ7Xqxsi4YetwwinyC4hEqFg21QsKp7EmRVkXIzJo4YFhvN0myIvPgXayc6KvGPVUmxIRzBmC/u1hZRZ2qSckbaNgfH8Fc0znyqjoSyTnf2NhKFKZcB+PkLGpqxnm0aGoOpOD6AvyAtB7LIyAic/qQ8upeBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672535; c=relaxed/simple;
-	bh=As49cmFz0yrrPged38OdTsC/1Tq2ewIAJUPfr6zWN28=;
+	s=arc-20240116; t=1775673289; c=relaxed/simple;
+	bh=MFsMX39/LKKuT2n2GanEus/cfBs1WaHfAVsjsIkxVFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxdx/EGbn6Zt3+687YsqJXQv+5jWzBj/EgAk6MraEYmq08njZMVY6a/6kn2z6apKzETdJ9S+MHRVZ+HLadXKU2SpibpZRQ4yuDMRCgJ6WZyy2TR4ZxsKHsCAXd6hof5qaKBpLwtlez+VPO60un4BwaPDXE1wn8gtjTBCXy0vq9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILs4tRVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA124C19421;
-	Wed,  8 Apr 2026 18:22:14 +0000 (UTC)
+	 MIME-Version; b=GPAEnhO255ZrQSVEpg7CKrMPWo0jIE/XGOTPi9O7Mr8smKPpWukeJV57XjDkYau9a6dYWKGMnrj0i3HswNLDzwOaGCiHhUFKpJ7VpANU/G5sgfmrbXeSydghQ6lyykTg10cM2TQpmBnZ1A4dQ3VSze6lUBnCiDhTP1cR+EtECOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjMaagkM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF66C19421;
+	Wed,  8 Apr 2026 18:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672535;
-	bh=As49cmFz0yrrPged38OdTsC/1Tq2ewIAJUPfr6zWN28=;
+	s=korg; t=1775673289;
+	bh=MFsMX39/LKKuT2n2GanEus/cfBs1WaHfAVsjsIkxVFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILs4tRVI+hchpSytfn1hTK0zrLbcDS9h1QYfwQd2bj50246A1iWZXikCDOnBrxhem
-	 MLB1vpGiz03PKWVoY6TeDtcsXXKilhWAkrl81N9WiwAi6g2ok+znJzRCXuLMnyYtyV
-	 TwqTAWg9KS5KnUBmmRqH2Z0Q6fiArCrPI1TEGPG8=
+	b=BjMaagkMBQSGx7v+j01VJgt8+7ZFjWRcbOgiZGIjChD4+ux+P9EWXULr59eDv86+8
+	 Myz6132WItoLtnz7s80SX8hwPFNdooRXZUswR+NqvhOW60qQ6uX4SVe/zgQ5NulVzR
+	 N4qZrkXVK0w+Wxty3oGP8I7w7CgXnLCDBlp8i8zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/160] netfilter: nf_tables: reject immediate NF_QUEUE verdict
+	kernel test robot <lkp@intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.18 147/277] MIPS: Fix the GCC version check for `__multi3 workaround
 Date: Wed,  8 Apr 2026 20:02:12 +0200
-Message-ID: <20260408175914.892451307@linuxfoundation.org>
+Message-ID: <20260408175939.362430756@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234313-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234604-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,65 +87,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: EF6713C084D
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,gnu.org:url,orcam.me.uk:email,franken.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EFBF73C11EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit da107398cbd4bbdb6bffecb2ce86d5c9384f4cec ]
+commit ec8bf18814915460d9c617b556bf024efef26613 upstream.
 
-nft_queue is always used from userspace nftables to deliver the NF_QUEUE
-verdict. Immediately emitting an NF_QUEUE verdict is never used by the
-userspace nft tools, so reject immediate NF_QUEUE verdicts.
+It was only GCC 10 that fixed a MIPS64r6 code generation issue with a
+`__multi3' libcall inefficiently produced to perform 64-bit widening
+multiplication while suitable machine instructions exist to do such a
+calculation.  The fix went in with GCC commit 48b2123f6336 ("re PR
+target/82981 (unnecessary __multi3 call for mips64r6 linux kernel)").
 
-The arp family does not provide queue support, but such an immediate
-verdict is still reachable. Globally reject NF_QUEUE immediate verdicts
-to address this issue.
+Adjust our code accordingly, removing build failures such as:
 
-Fixes: f342de4e2f33 ("netfilter: nf_tables: reject QUEUE/DROP verdict parameters")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
+div64.c:(.text+0x84): undefined reference to `__multi3'
+
+with the GCC versions affected.
+
+Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v4.15+
+Reviewed-by: David Laight <david.laight.linux@gmail.com.
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/lib/multi3.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index b411abe9743b7..0aaddc1131c65 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -11105,8 +11105,6 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
- 	switch (data->verdict.code) {
- 	case NF_ACCEPT:
- 	case NF_DROP:
--	case NF_QUEUE:
--		break;
- 	case NFT_CONTINUE:
- 	case NFT_BREAK:
- 	case NFT_RETURN:
-@@ -11141,6 +11139,11 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+--- a/arch/mips/lib/multi3.c
++++ b/arch/mips/lib/multi3.c
+@@ -4,12 +4,12 @@
+ #include "libgcc.h"
  
- 		data->verdict.chain = chain;
- 		break;
-+	case NF_QUEUE:
-+		/* The nft_queue expression is used for this purpose, an
-+		 * immediate NF_QUEUE verdict should not ever be seen here.
-+		 */
-+		fallthrough;
- 	default:
- 		return -EINVAL;
- 	}
--- 
-2.53.0
-
+ /*
+- * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
++ * GCC 9 & older can suboptimally generate __multi3 calls for mips64r6, so for
+  * that specific case only we implement that intrinsic here.
+  *
+  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
+  */
+-#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
++#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 10)
+ 
+ /* multiply 64-bit values, low 64-bits returned */
+ static inline long long notrace dmulu(long long a, long long b)
+@@ -51,4 +51,4 @@ ti_type notrace __multi3(ti_type a, ti_t
+ }
+ EXPORT_SYMBOL(__multi3);
+ 
+-#endif /* 64BIT && CPU_MIPSR6 && GCC7 */
++#endif /* 64BIT && CPU_MIPSR6 && GCC9 */
 
 
 
