@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IzdEMqd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:18 +0200
+	id mCJXB/+q1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28743C0B5E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCAE3C2DB9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 587AB301DA73
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D97993203155
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CABDB67E;
-	Wed,  8 Apr 2026 18:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD1B3D522C;
+	Wed,  8 Apr 2026 18:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/DkVBJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqFdxnrY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F432324B1F;
-	Wed,  8 Apr 2026 18:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC603537DF;
+	Wed,  8 Apr 2026 18:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672760; cv=none; b=jEFhc4WNKHVV9GJ7EW34agEdEldVdcw43ggZcvvx1JzUMUTZetSI+MvjzVqUV2G8YQkqJZ6MD9JLAK6pfUML6dBM0CCLT1JQJXlJsb6oFZSOpLsbwy71nK+x7EUIlJjgR2rM9WYo9MeveidWpVrLArZBsEEtTcfJ0tA9V6Hc/Ng=
+	t=1775674747; cv=none; b=vBI8D8+JWZUge6pSxShONyQ0qtu5NkVh5yZsP4RcciXdETFBdhiLf2Ws9ttSLXGVb0rd07BLlOS3LMEsXyYOy1V5ZKg6YQVcGFQL+46BQlhPfJrCARziViKjM4UmGcFKPdyfkp+1oWOY9BI79se7qoRw/oj3jjpR90YMMD3rSwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672760; c=relaxed/simple;
-	bh=QUidgcDW21PccUI7dp1IZ0JPtxA2btAo1pepttSOXdM=;
+	s=arc-20240116; t=1775674747; c=relaxed/simple;
+	bh=syY8TBSTTkjjl1nel26r9jPQU4C+bi8RsnnQEXKeCMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3a2uYmAgsBb1dA2yu8AiGvGPnsUHPU4KYn1LznheVhWA5Gp5C3zre4MHa+OUso1K1ODR4h16xbhoAZyu4sZouxcDAlhQszisC7DP71LhEmbSKvuqO7WfuJckuia7hGgSAFH0UCm0Y3HeUHkGYfZcf+a3xoETrsEeg9ZCgknxjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/DkVBJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE38CC19421;
-	Wed,  8 Apr 2026 18:25:59 +0000 (UTC)
+	 MIME-Version; b=Rp7I3CX1NYa3B1XpCboDrlzDNmhC/wQGtT7KlchiejQDrFx5LGIg1gmYe2yO4VUuVYlMCiuL8GNk8UGJ6zEnube3xq81gkjUn3GwGp6JpUp3bkp5TqixJlUZXTZQibPnf79BqP3GmBHbJyu3unX5O1fzfNgaTAm5iwqIKKoPwCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqFdxnrY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEC4C19421;
+	Wed,  8 Apr 2026 18:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672760;
-	bh=QUidgcDW21PccUI7dp1IZ0JPtxA2btAo1pepttSOXdM=;
+	s=korg; t=1775674746;
+	bh=syY8TBSTTkjjl1nel26r9jPQU4C+bi8RsnnQEXKeCMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/DkVBJ7ZRYPC2V0jk3KKKlMVul/GGqugBdQrTdSZAbzWfr5B5xJAXMFSffwgivDj
-	 KCHbumLJSJGpVoXC1KbNtrvGs8Gy8yzIIhfq4bDEy0RAWpabfsIDOp22rCEz+k3VsH
-	 mTqsk8nCu6dhYRu/KC1mjjdWS0k5nUpkQYyyw00E=
+	b=pqFdxnrYM0XmjcMa+ZxeJ8p/8hczk54gvQVYuCTQilNffJA7qEGmloy4bnahmgQrR
+	 clFAPqRH8MK7Ek5BOsVGf1DLPodF58swGOsfaHWZnY62l/JSgR1R07+1qgYeUuTm6h
+	 +5TK9g42OBQHfRkTS6kNQXuzvM6TUUbB42CbbX9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.6 130/160] gpio: mxc: map Both Edge pad wakeup to Rising Edge
-Date: Wed,  8 Apr 2026 20:03:37 +0200
-Message-ID: <20260408175918.045289830@linuxfoundation.org>
+	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 218/311] iio: adc: ade9000: fix wrong register in CALIBBIAS case for active power
+Date: Wed,  8 Apr 2026 20:03:38 +0200
+Message-ID: <20260408175947.544036241@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,90 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,vger.kernel.org,huawei.com];
+	TAGGED_FROM(0.00)[bounces-235169-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234400-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email]
-X-Rspamd-Queue-Id: E28743C0B5E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: 8CCAE3C2DB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
 
-commit c720fb57d56274213d027b3c5ab99080cf62a306 upstream.
+commit 86133fb1ec36b2f5cec29d71fbae84877c3a1358 upstream.
 
-Suspend may fail on i.MX8QM when Falling Edge is used as a pad wakeup
-trigger due to a hardware bug in the detection logic. Since the hardware
-does not support Both Edge wakeup, remap requests for Both Edge to Rising
-Edge by default to avoid hitting this issue.
+The switch statement in ade9000_write_raw() attempts to match
+chan->address against ADE9000_REG_AWATTOS (0x00F) to dispatch
+the calibration offset write for active power channels. However,
+chan->address is set via ADE9000_ADDR_ADJUST(ADE9000_REG_AWATT,
+num), so after masking the phase bits, tmp holds
+ADE9000_REG_AWATT (0x210), which never matches 0x00F.
 
-A warning is emitted when Falling Edge is selected on i.MX8QM.
+As a result, writing IIO_CHAN_INFO_CALIBBIAS for IIO_POWER always
+falls through to the default case and returns -EINVAL, making
+active power offset calibration silently broken.
 
-Fixes: f60c9eac54af ("gpio: mxc: enable pad wakeup on i.MX8x platforms")
-cc: stable@vger.kernel.org
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://patch.msgid.link/20260324192129.2797237-1-shenwei.wang@nxp.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Fix this by matching against ADE9000_REG_AWATT instead, which is
+the actual base address stored in chan->address for watt channels.
+
+Reference:ADE9000 datasheet (Rev. B), AWATTOS is the offset correction
+register at 0x00F (p. 44), while AWATT is the total active power
+register at 0x210 (p. 48).
+
+Fixes: 81de7b4619fc ("iio: adc: add ade9000 support")
+Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Reviewed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mxc.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ade9000.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-mxc.c
-+++ b/drivers/gpio/gpio-mxc.c
-@@ -576,12 +576,13 @@ static bool mxc_gpio_set_pad_wakeup(stru
- 	unsigned long config;
- 	bool ret = false;
- 	int i, type;
-+	bool is_imx8qm = of_device_is_compatible(port->dev->of_node, "fsl,imx8qm-gpio");
+--- a/drivers/iio/adc/ade9000.c
++++ b/drivers/iio/adc/ade9000.c
+@@ -1123,7 +1123,7 @@ static int ade9000_write_raw(struct iio_
+ 			tmp &= ~ADE9000_PHASE_C_POS_BIT;
  
- 	static const u32 pad_type_map[] = {
- 		IMX_SCU_WAKEUP_OFF,		/* 0 */
- 		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_RISING */
- 		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_FALLING */
--		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
-+		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
- 		IMX_SCU_WAKEUP_HIGH_LVL,	/* IRQ_TYPE_LEVEL_HIGH */
- 		IMX_SCU_WAKEUP_OFF,		/* 5 */
- 		IMX_SCU_WAKEUP_OFF,		/* 6 */
-@@ -596,6 +597,13 @@ static bool mxc_gpio_set_pad_wakeup(stru
- 				config = pad_type_map[type];
- 			else
- 				config = IMX_SCU_WAKEUP_OFF;
-+
-+			if (is_imx8qm && config == IMX_SCU_WAKEUP_FALL_EDGE) {
-+				dev_warn_once(port->dev,
-+					      "No falling-edge support for wakeup on i.MX8QM\n");
-+				config = IMX_SCU_WAKEUP_OFF;
-+			}
-+
- 			ret |= mxc_gpio_generic_config(port, i, config);
- 		}
- 	}
+ 			switch (tmp) {
+-			case ADE9000_REG_AWATTOS:
++			case ADE9000_REG_AWATT:
+ 				return regmap_write(st->regmap,
+ 						    ADE9000_ADDR_ADJUST(ADE9000_REG_AWATTOS,
+ 									chan->channel), val);
 
 
 
