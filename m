@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-233790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMSlGO791Wn4/gcAu9opvQ
-	(envelope-from <stable+bounces-233790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:04:14 +0200
+	id GErDBzb91Wn4/gcAu9opvQ
+	(envelope-from <stable+bounces-233791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:01:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0FE63B7DA1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:04:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091973B7D12
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0DABD3035D5F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 07:00:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 077943012B7A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 07:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB194351C0D;
-	Wed,  8 Apr 2026 07:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F8D364E88;
+	Wed,  8 Apr 2026 07:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDAjnqv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFUUWhhN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691F72367D9
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 07:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A80C356A37
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 07:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775631651; cv=none; b=Lmyj+foTFZVlxIxWx78eS6fRAdlgA8An3rb+CTE5uUJOR2Rqo7uaTRoPdxLxHnyOUGveruqaDa6w9tOjAWe9dn6O9z+VQWXY7qFkpGmEKJETvU8/PJZbqhxaglDdTcsPkH+RN7wYwqDZTb3c71YxJzcECJq+XkEiDnyyu2V33nc=
+	t=1775631662; cv=none; b=iTBgD/AkwiN3fbELkxIyizu+n4AGulS+iJP5gCmX3GNKbzxaxHUEACMXPYQFmpBhA+N2ckNUy4/3SQOOL9yZwHSXfkWYhu+FYlAXff2O8gUAJUWA0tbiwxAgOU3IkfcGhAbjuQLG7kKEQqkasA6wlRh+xYSSY+JWbdQ6UrsI2ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775631651; c=relaxed/simple;
-	bh=vnJ2tS7dMzPvFmb6y+QMfDKx+KZJcONhQYufHgRnxU8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j40hzE3JgSfHNW35X0xyD9hT11yzlA6axDiM4g6+NCk50/6GK8LxjfgQVAM1gBBLiWOKtVMABHELYeyeI5SQwoJZgy82QaoXDv62XmcKi0edAeOj/vb2c01hbLotSA4IHeZQKKsxr88a835I4D0KH9yi/hT4qnL+35z4mnBFTiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDAjnqv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5C0C19425;
-	Wed,  8 Apr 2026 07:00:50 +0000 (UTC)
+	s=arc-20240116; t=1775631662; c=relaxed/simple;
+	bh=cp67SuxS0XeFTHrilh8PDwm3PY2IazfFtSXDL9qM+KA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=adA5inUpM30tHo7CpNgS3BfSFlJ/PGdE5/OO/HPe+MCfHXwR/2BTh4TTHgHgfbcTaik7etRAach8omEDjhq4mG2/FCErNRUCQf7YLwyWg8mIBeDzFR1gHRyM2ogChZzjRXGokrt6IsmH0WpyDpuvFGE6hgL2DvHlo2xeGvoezog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFUUWhhN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AD2C19424;
+	Wed,  8 Apr 2026 07:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775631651;
-	bh=vnJ2tS7dMzPvFmb6y+QMfDKx+KZJcONhQYufHgRnxU8=;
+	s=korg; t=1775631662;
+	bh=cp67SuxS0XeFTHrilh8PDwm3PY2IazfFtSXDL9qM+KA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SDAjnqv2Eo2fx4uigPwoVtVIiWk2SsaHzuI5oQyhM3KLrgI8R3liJ2OoEuS5vNXdc
-	 mCYhkfDOOlZGr1TMeBAEgjQxcSghNPljHNBdKJfbkmoYOQxxd9QukWdJXyJ7mpZjeB
-	 wEdPxfIaFFY7OkpAHJ1X5cCUIrw12adT1ILxVEjU=
-Subject: FAILED: patch "[PATCH] sched_ext: Fix stale direct dispatch state in ddsp_dsq_id" failed to apply to 6.12-stable tree
-To: arighi@nvidia.com,hodgesd@meta.com,patsomaru@meta.com,tj@kernel.org
+	b=iFUUWhhNLuvJt6bm5xf3ozfZ32jmDawyqAd/1ah6Iisl4ZPgiQedaavHaO5dvrwuX
+	 wVqyggxMtU6Xg/Y/4KPSEMmg9FWcCsap7ZZH4cEjjAPS3sswZg7jo76aXa95BBrbAg
+	 jPq4ZMkw5eZ0T+QmWiCmNXrmP3l2mRQ57sVTH41Q=
+Subject: FAILED: patch "[PATCH] gpio: Fix resource leaks on errors in" failed to apply to 6.12-stable tree
+To: tzungbi@kernel.org,bartosz.golaszewski@oss.qualcomm.com,linusw@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 08 Apr 2026 09:00:40 +0200
-Message-ID: <2026040840-slightly-linked-0149@gregkh>
+Date: Wed, 08 Apr 2026 09:00:59 +0200
+Message-ID: <2026040859-tattling-impaired-7c8d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,32 +57,33 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233790-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233791-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[tzungbi.kernel.org:query timed out,linusw.kernel.org:query timed out,2026040859-tattling-impaired-7c8d.gregkh:query timed out,bartosz.golaszewski.oss.qualcomm.com:query timed out];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,meta.com:email,linuxfoundation.org:dkim,gregkh:email,nvidia.com:email]
-X-Rspamd-Queue-Id: D0FE63B7DA1
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:email,msgid.link:url,qualcomm.com:email]
+X-Rspamd-Queue-Id: 091973B7D12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -96,10 +97,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7e0ffb72de8aa3b25989c2d980e81b829c577010
+git cherry-pick -x 16fdabe143fce2cbf89139677728e17e21b46c28
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040840-slightly-linked-0149@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040859-tattling-impaired-7c8d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,169 +112,249 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e0ffb72de8aa3b25989c2d980e81b829c577010 Mon Sep 17 00:00:00 2001
-From: Andrea Righi <arighi@nvidia.com>
-Date: Fri, 3 Apr 2026 08:57:20 +0200
-Subject: [PATCH] sched_ext: Fix stale direct dispatch state in ddsp_dsq_id
+From 16fdabe143fce2cbf89139677728e17e21b46c28 Mon Sep 17 00:00:00 2001
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+Date: Thu, 5 Feb 2026 09:28:40 +0000
+Subject: [PATCH] gpio: Fix resource leaks on errors in
+ gpiochip_add_data_with_key()
 
-@p->scx.ddsp_dsq_id can be left set (non-SCX_DSQ_INVALID) triggering a
-spurious warning in mark_direct_dispatch() when the next wakeup's
-ops.select_cpu() calls scx_bpf_dsq_insert(), such as:
+Since commit aab5c6f20023 ("gpio: set device type for GPIO chips"),
+`gdev->dev.release` is unset.  As a result, the reference count to
+`gdev->dev` isn't dropped on the error handling paths.
 
- WARNING: kernel/sched/ext.c:1273 at scx_dsq_insert_commit+0xcd/0x140
+Drop the reference on errors.
 
-The root cause is that ddsp_dsq_id was only cleared in dispatch_enqueue(),
-which is not reached in all paths that consume or cancel a direct dispatch
-verdict.
+Also reorder the instructions to make the error handling simpler.
+Now gpiochip_add_data_with_key() roughly looks like:
 
-Fix it by clearing it at the right places:
+   >>> Some memory allocation.  Go to ERR ZONE 1 on errors.
+   >>> device_initialize().
 
- - direct_dispatch(): cache the direct dispatch state in local variables
-   and clear it before dispatch_enqueue() on the synchronous path. For
-   the deferred path, the direct dispatch state must remain set until
-   process_ddsp_deferred_locals() consumes them.
+   gpiodev_release() takes over the responsibility for freeing the
+   resources of `gdev->dev`.  The subsequent error handling paths
+   shouldn't go through ERR ZONE 1 again which leads to double free.
 
- - process_ddsp_deferred_locals(): cache the dispatch state in local
-   variables and clear it before calling dispatch_to_local_dsq(), which
-   may migrate the task to another rq.
+   >>> Some initialization mainly on `gdev`.
+   >>> The rest of initialization.  Go to ERR ZONE 2 on errors.
+   >>> Chip registration success and exit.
 
- - do_enqueue_task(): clear the dispatch state on the enqueue path
-   (local/global/bypass fallbacks), where the direct dispatch verdict is
-   ignored.
+   >>> ERR ZONE 2.  gpio_device_put() and exit.
+   >>> ERR ZONE 1.
 
- - dequeue_task_scx(): clear the dispatch state after dispatch_dequeue()
-   to handle both the deferred dispatch cancellation and the holding_cpu
-   race, covering all cases where a pending direct dispatch is
-   cancelled.
+Cc: stable@vger.kernel.org
+Fixes: aab5c6f20023 ("gpio: set device type for GPIO chips")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://patch.msgid.link/20260205092840.2574840-1-tzungbi@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
- - scx_disable_task(): clear the direct dispatch state when
-   transitioning a task out of the current scheduler. Waking tasks may
-   have had the direct dispatch state set by the outgoing scheduler's
-   ops.select_cpu() and then been queued on a wake_list via
-   ttwu_queue_wakelist(), when SCX_OPS_ALLOW_QUEUED_WAKEUP is set. Such
-   tasks are not on the runqueue and are not iterated by scx_bypass(),
-   so their direct dispatch state won't be cleared. Without this clear,
-   any subsequent SCX scheduler that tries to direct dispatch the task
-   will trigger the WARN_ON_ONCE() in mark_direct_dispatch().
-
-Fixes: 5b26f7b920f7 ("sched_ext: Allow SCX_DSQ_LOCAL_ON for direct dispatches")
-Cc: stable@vger.kernel.org # v6.12+
-Cc: Daniel Hodges <hodgesd@meta.com>
-Cc: Patrick Somaru <patsomaru@meta.com>
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index d5bdcdb3f700..064eaa76be4b 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -1109,15 +1109,6 @@ static void dispatch_enqueue(struct scx_sched *sch, struct scx_dispatch_q *dsq,
- 	dsq_mod_nr(dsq, 1);
- 	p->scx.dsq = dsq;
- 
--	/*
--	 * scx.ddsp_dsq_id and scx.ddsp_enq_flags are only relevant on the
--	 * direct dispatch path, but we clear them here because the direct
--	 * dispatch verdict may be overridden on the enqueue path during e.g.
--	 * bypass.
--	 */
--	p->scx.ddsp_dsq_id = SCX_DSQ_INVALID;
--	p->scx.ddsp_enq_flags = 0;
--
- 	/*
- 	 * We're transitioning out of QUEUEING or DISPATCHING. store_release to
- 	 * match waiters' load_acquire.
-@@ -1283,12 +1274,34 @@ static void mark_direct_dispatch(struct scx_sched *sch,
- 	p->scx.ddsp_enq_flags = enq_flags;
- }
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 86a171e96b0e..f77d5121a8a8 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -892,13 +892,15 @@ static const struct device_type gpio_dev_type = {
+ #define gcdev_unregister(gdev)		device_del(&(gdev)->dev)
+ #endif
  
 +/*
-+ * Clear @p direct dispatch state when leaving the scheduler.
-+ *
-+ * Direct dispatch state must be cleared in the following cases:
-+ *  - direct_dispatch(): cleared on the synchronous enqueue path, deferred
-+ *    dispatch keeps the state until consumed
-+ *  - process_ddsp_deferred_locals(): cleared after consuming deferred state,
-+ *  - do_enqueue_task(): cleared on enqueue fallbacks where the dispatch
-+ *    verdict is ignored (local/global/bypass)
-+ *  - dequeue_task_scx(): cleared after dispatch_dequeue(), covering deferred
-+ *    cancellation and holding_cpu races
-+ *  - scx_disable_task(): cleared for queued wakeup tasks, which are excluded by
-+ *    the scx_bypass() loop, so that stale state is not reused by a subsequent
-+ *    scheduler instance
++ * An initial reference count has been held in gpiochip_add_data_with_key().
++ * The caller should drop the reference via gpio_device_put() on errors.
 + */
-+static inline void clear_direct_dispatch(struct task_struct *p)
-+{
-+	p->scx.ddsp_dsq_id = SCX_DSQ_INVALID;
-+	p->scx.ddsp_enq_flags = 0;
-+}
-+
- static void direct_dispatch(struct scx_sched *sch, struct task_struct *p,
- 			    u64 enq_flags)
+ static int gpiochip_setup_dev(struct gpio_device *gdev)
  {
- 	struct rq *rq = task_rq(p);
- 	struct scx_dispatch_q *dsq =
- 		find_dsq_for_dispatch(sch, rq, p->scx.ddsp_dsq_id, p);
-+	u64 ddsp_enq_flags;
+ 	struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
+ 	int ret;
  
- 	touch_core_sched_dispatch(rq, p);
- 
-@@ -1329,8 +1342,10 @@ static void direct_dispatch(struct scx_sched *sch, struct task_struct *p,
- 		return;
- 	}
- 
--	dispatch_enqueue(sch, dsq, p,
--			 p->scx.ddsp_enq_flags | SCX_ENQ_CLEAR_OPSS);
-+	ddsp_enq_flags = p->scx.ddsp_enq_flags;
-+	clear_direct_dispatch(p);
-+
-+	dispatch_enqueue(sch, dsq, p, ddsp_enq_flags | SCX_ENQ_CLEAR_OPSS);
- }
- 
- static bool scx_rq_online(struct rq *rq)
-@@ -1439,6 +1454,7 @@ static void do_enqueue_task(struct rq *rq, struct task_struct *p, u64 enq_flags,
- 	 */
- 	touch_core_sched(rq, p);
- 	refill_task_slice_dfl(sch, p);
-+	clear_direct_dispatch(p);
- 	dispatch_enqueue(sch, dsq, p, enq_flags);
- }
- 
-@@ -1610,6 +1626,7 @@ static bool dequeue_task_scx(struct rq *rq, struct task_struct *p, int deq_flags
- 	sub_nr_running(rq, 1);
- 
- 	dispatch_dequeue(rq, p);
-+	clear_direct_dispatch(p);
- 	return true;
- }
- 
-@@ -2293,13 +2310,15 @@ static void process_ddsp_deferred_locals(struct rq *rq)
- 				struct task_struct, scx.dsq_list.node))) {
- 		struct scx_sched *sch = scx_root;
- 		struct scx_dispatch_q *dsq;
-+		u64 dsq_id = p->scx.ddsp_dsq_id;
-+		u64 enq_flags = p->scx.ddsp_enq_flags;
- 
- 		list_del_init(&p->scx.dsq_list.node);
-+		clear_direct_dispatch(p);
- 
--		dsq = find_dsq_for_dispatch(sch, rq, p->scx.ddsp_dsq_id, p);
-+		dsq = find_dsq_for_dispatch(sch, rq, dsq_id, p);
- 		if (!WARN_ON_ONCE(dsq->id != SCX_DSQ_LOCAL))
--			dispatch_to_local_dsq(sch, rq, dsq, p,
--					      p->scx.ddsp_enq_flags);
-+			dispatch_to_local_dsq(sch, rq, dsq, p, enq_flags);
+-	device_initialize(&gdev->dev);
+-
+ 	/*
+ 	 * If fwnode doesn't belong to another device, it's safe to clear its
+ 	 * initialized flag.
+@@ -964,9 +966,11 @@ static void gpiochip_setup_devs(void)
+ 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
+ 				 srcu_read_lock_held(&gpio_devices_srcu)) {
+ 		ret = gpiochip_setup_dev(gdev);
+-		if (ret)
++		if (ret) {
++			gpio_device_put(gdev);
+ 			dev_err(&gdev->dev,
+ 				"Failed to initialize gpio device (%d)\n", ret);
++		}
  	}
  }
  
-@@ -3015,6 +3034,8 @@ static void scx_disable_task(struct task_struct *p)
- 	lockdep_assert_rq_held(rq);
- 	WARN_ON_ONCE(scx_get_task_state(p) != SCX_TASK_ENABLED);
+@@ -1047,33 +1051,65 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	int base = 0;
+ 	int ret;
  
-+	clear_direct_dispatch(p);
+-	/*
+-	 * First: allocate and populate the internal stat container, and
+-	 * set up the struct device.
+-	 */
+ 	gdev = kzalloc(sizeof(*gdev), GFP_KERNEL);
+ 	if (!gdev)
+ 		return -ENOMEM;
+-
+-	gdev->dev.type = &gpio_dev_type;
+-	gdev->dev.bus = &gpio_bus_type;
+-	gdev->dev.parent = gc->parent;
+-	rcu_assign_pointer(gdev->chip, gc);
+-
+ 	gc->gpiodev = gdev;
+ 	gpiochip_set_data(gc, data);
+ 
+-	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
+-
+ 	ret = ida_alloc(&gpio_ida, GFP_KERNEL);
+ 	if (ret < 0)
+ 		goto err_free_gdev;
+ 	gdev->id = ret;
+ 
+-	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
++	ret = init_srcu_struct(&gdev->srcu);
+ 	if (ret)
+ 		goto err_free_ida;
++	rcu_assign_pointer(gdev->chip, gc);
+ 
++	ret = init_srcu_struct(&gdev->desc_srcu);
++	if (ret)
++		goto err_cleanup_gdev_srcu;
 +
- 	if (SCX_HAS_OP(sch, disable))
- 		SCX_CALL_OP_TASK(sch, SCX_KF_REST, disable, rq, p);
- 	scx_set_task_state(p, SCX_TASK_READY);
++	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
++	if (ret)
++		goto err_cleanup_desc_srcu;
++
++	device_initialize(&gdev->dev);
++	/*
++	 * After this point any allocated resources to `gdev` will be
++	 * free():ed by gpiodev_release().  If you add new resources
++	 * then make sure they get free():ed there.
++	 */
++	gdev->dev.type = &gpio_dev_type;
++	gdev->dev.bus = &gpio_bus_type;
++	gdev->dev.parent = gc->parent;
++	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
++
++	ret = gpiochip_get_ngpios(gc, &gdev->dev);
++	if (ret)
++		goto err_put_device;
++	gdev->ngpio = gc->ngpio;
++
++	gdev->descs = kcalloc(gc->ngpio, sizeof(*gdev->descs), GFP_KERNEL);
++	if (!gdev->descs) {
++		ret = -ENOMEM;
++		goto err_put_device;
++	}
++
++	gdev->label = kstrdup_const(gc->label ?: "unknown", GFP_KERNEL);
++	if (!gdev->label) {
++		ret = -ENOMEM;
++		goto err_put_device;
++	}
++
++	gdev->can_sleep = gc->can_sleep;
++	rwlock_init(&gdev->line_state_lock);
++	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
++	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
++#ifdef CONFIG_PINCTRL
++	INIT_LIST_HEAD(&gdev->pin_ranges);
++#endif
+ 	if (gc->parent && gc->parent->driver)
+ 		gdev->owner = gc->parent->driver->owner;
+ 	else if (gc->owner)
+@@ -1082,37 +1118,6 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	else
+ 		gdev->owner = THIS_MODULE;
+ 
+-	ret = gpiochip_get_ngpios(gc, &gdev->dev);
+-	if (ret)
+-		goto err_free_dev_name;
+-
+-	gdev->descs = kcalloc(gc->ngpio, sizeof(*gdev->descs), GFP_KERNEL);
+-	if (!gdev->descs) {
+-		ret = -ENOMEM;
+-		goto err_free_dev_name;
+-	}
+-
+-	gdev->label = kstrdup_const(gc->label ?: "unknown", GFP_KERNEL);
+-	if (!gdev->label) {
+-		ret = -ENOMEM;
+-		goto err_free_descs;
+-	}
+-
+-	gdev->ngpio = gc->ngpio;
+-	gdev->can_sleep = gc->can_sleep;
+-
+-	rwlock_init(&gdev->line_state_lock);
+-	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
+-	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
+-
+-	ret = init_srcu_struct(&gdev->srcu);
+-	if (ret)
+-		goto err_free_label;
+-
+-	ret = init_srcu_struct(&gdev->desc_srcu);
+-	if (ret)
+-		goto err_cleanup_gdev_srcu;
+-
+ 	scoped_guard(mutex, &gpio_devices_lock) {
+ 		/*
+ 		 * TODO: this allocates a Linux GPIO number base in the global
+@@ -1127,7 +1132,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 			if (base < 0) {
+ 				ret = base;
+ 				base = 0;
+-				goto err_cleanup_desc_srcu;
++				goto err_put_device;
+ 			}
+ 
+ 			/*
+@@ -1147,14 +1152,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 		ret = gpiodev_add_to_list_unlocked(gdev);
+ 		if (ret) {
+ 			gpiochip_err(gc, "GPIO integer space overlap, cannot add chip\n");
+-			goto err_cleanup_desc_srcu;
++			goto err_put_device;
+ 		}
+ 	}
+ 
+-#ifdef CONFIG_PINCTRL
+-	INIT_LIST_HEAD(&gdev->pin_ranges);
+-#endif
+-
+ 	if (gc->names)
+ 		gpiochip_set_desc_names(gc);
+ 
+@@ -1248,25 +1249,19 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	scoped_guard(mutex, &gpio_devices_lock)
+ 		list_del_rcu(&gdev->list);
+ 	synchronize_srcu(&gpio_devices_srcu);
+-	if (gdev->dev.release) {
+-		/* release() has been registered by gpiochip_setup_dev() */
+-		gpio_device_put(gdev);
+-		goto err_print_message;
+-	}
++err_put_device:
++	gpio_device_put(gdev);
++	goto err_print_message;
++
+ err_cleanup_desc_srcu:
+ 	cleanup_srcu_struct(&gdev->desc_srcu);
+ err_cleanup_gdev_srcu:
+ 	cleanup_srcu_struct(&gdev->srcu);
+-err_free_label:
+-	kfree_const(gdev->label);
+-err_free_descs:
+-	kfree(gdev->descs);
+-err_free_dev_name:
+-	kfree(dev_name(&gdev->dev));
+ err_free_ida:
+ 	ida_free(&gpio_ida, gdev->id);
+ err_free_gdev:
+ 	kfree(gdev);
++
+ err_print_message:
+ 	/* failures here can mean systems won't boot... */
+ 	if (ret != -EPROBE_DEFER) {
 
 
