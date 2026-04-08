@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LQYDbCg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:40 +0200
+	id UEpQOHGk1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6FC3C1254
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DDA3C1EC2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 571A331428DF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:28:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CA2B3024A14
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6228F3ACA41;
-	Wed,  8 Apr 2026 18:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD00325A321;
+	Wed,  8 Apr 2026 18:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wETJypIn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAvzJcwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E373D522C;
-	Wed,  8 Apr 2026 18:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9001F3176E4;
+	Wed,  8 Apr 2026 18:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672923; cv=none; b=SoXaVneHacYMPJl4BptWkKh+X9TbzkEZn3fqEr+P6MsIy97Hbi1lcOW5q2AlFF19dMD6z39PsrmP9DtyT7P11yIVc+XDb98vATUDw2gsN5jrPf+be10Eai0Whn+5tAUcCl38UqIIQ9FODdulLFVTtZwQmgjaY96nTPdFD+Io5Vw=
+	t=1775674229; cv=none; b=XmsymOJP+RKflQuTu94fldtuCrFpdIZZTMXb0S8cCtPSRnj0PF1cK1iNg7VzdjXvn3Ao6aOQQUwn+250zyjE7rbnJJlYdMlvEaYjQIR3rZmISWTD1Nweilzx7CXWmU5EnJX5YZm5z7765vPWEzGc6pafcu3iih30CA1Hu4xJ8XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672923; c=relaxed/simple;
-	bh=fOmAZbX93pI4eQIQmyLJT7nyxAtvco4CWMSGELFz/wc=;
+	s=arc-20240116; t=1775674229; c=relaxed/simple;
+	bh=icRDIPltj4zGc6ZG4wHJwCdlvTOm+z6B7Uk+d1rZw0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NbpKL14mtoawkcgbl5PnCUIWksw3M4gMi/noOUkdSgiN9jgECu7IZYOLM7qysbK87XdueHhdBM4jpJ+rUCczuLtucmxuwszYC2h5TNlYJXazw2/XPr0vdWNSk+gi9FlPxwim+kDO7PIOdP60ag07f+k8OK7iAReYjuhvCBd6T3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wETJypIn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7016AC19421;
-	Wed,  8 Apr 2026 18:28:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n21mszTGrK1uFYgaga3T8VijVTPUhjILwoM7RfyYDHxcqMIpaYyJdalfhYMElvWnhu+wu62H19Rc31Hml3dn2K7wbpYuTrbG6PJGOWt9vj0el2e/YjYXghkAUy2L94bxTP0e2Zm1SdFt16BJQTk1kU5+UArsXxFmxcx7wRxNkQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAvzJcwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9C3C19421;
+	Wed,  8 Apr 2026 18:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672922;
-	bh=fOmAZbX93pI4eQIQmyLJT7nyxAtvco4CWMSGELFz/wc=;
+	s=korg; t=1775674229;
+	bh=icRDIPltj4zGc6ZG4wHJwCdlvTOm+z6B7Uk+d1rZw0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wETJypInoMrIMDkPE02reoXoE6OwZEA5kDY84YbqJV/edrseNcGCFjtEYlZRK1fVQ
-	 wQuc4KjK6dM9o2kz1tMXEAwMC9xzdhyYd8atMx+tK+ouOVGlkFtLmDgMl8cA6vpugY
-	 lkyJrVXkq84G8kuybWEcXQZRVGX5Z43O6Kb6zCqI=
+	b=JAvzJcwbwdvOHzD2dnOi5W5JlfrGtKLf5a+LXHM1L8ROm7cCaFL4PZjn1ip8LPI1X
+	 jSdBO+5qbRVI30zl9RhcDsgxxLlVBmk+79hnh66lH0K0IzKCrG0dhwI/unGDNxXjId
+	 3V6UCl/x1Wi+KrisSQ9VyYctBUknumGufDyggnSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 032/277] net: enetc: reset PIR and CIR if they are not equal when initializing TX ring
+Subject: [PATCH 6.19 017/311] HID: logitech-hidpp: Prevent use-after-free on force feedback initialisation failure
 Date: Wed,  8 Apr 2026 20:00:17 +0200
-Message-ID: <20260408175935.052657439@linuxfoundation.org>
+Message-ID: <20260408175940.055733291@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +64,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234462-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234968-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AA6FC3C1254
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 89DDA3C1EC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 0239fd701d33475a39428daa3dc627407cd417a6 ]
+[ Upstream commit f7a4c78bfeb320299c1b641500fe7761eadbd101 ]
 
-Currently the driver does not reset the producer index register (PIR) and
-consumer index register (CIR) when initializing a TX BD ring. The driver
-only reads the PIR and CIR and initializes the software indexes. If the
-TX BD ring is reinitialized when it still contains unsent frames, its PIR
-and CIR will not be equal after the reinitialization. However, the BDs
-between CIR and PIR have been freed and become invalid and this can lead
-to a hardware malfunction, causing the TX BD ring will not work properly.
+Presently, if the force feedback initialisation fails when probing the
+Logitech G920 Driving Force Racing Wheel for Xbox One, an error number
+will be returned and propagated before the userspace infrastructure
+(sysfs and /dev/input) has been torn down.  If userspace ignores the
+errors and continues to use its references to these dangling entities, a
+UAF will promptly follow.
 
-For ENETC v4, it supports software to set the PIR and CIR, so the driver
-can reset these two registers if they are not equal when reinitializing
-the TX BD ring. Therefore, add this solution for ENETC v4. Note that this
-patch does not work for ENETC v1 because it does not support software to
-set the PIR and CIR.
+We have 2 options; continue to return the error, but ensure that all of
+the infrastructure is torn down accordingly or continue to treat this
+condition as a warning by emitting the message but returning success.
+It is thought that the original author's intention was to emit the
+warning but keep the device functional, less the force feedback feature,
+so let's go with that.
 
-Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260324062121.2745033-2-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Günther Noack <gnoack@google.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/hid/hid-logitech-hidpp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index d97a76718dd89..b5dd49337513d 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -2570,6 +2570,7 @@ EXPORT_SYMBOL_GPL(enetc_free_si_resources);
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index c3d53250a7604..65bfad405ac5b 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4487,10 +4487,12 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		if (!ret)
+ 			ret = hidpp_ff_init(hidpp, &data);
  
- static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
- {
-+	struct enetc_si *si = container_of(hw, struct enetc_si, hw);
- 	int idx = tx_ring->index;
- 	u32 tbmr;
+-		if (ret)
++		if (ret) {
+ 			hid_warn(hidpp->hid_dev,
+ 		     "Unable to initialize force feedback support, errno %d\n",
+ 				 ret);
++			ret = 0;
++		}
+ 	}
  
-@@ -2583,10 +2584,20 @@ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
- 	enetc_txbdr_wr(hw, idx, ENETC_TBLENR,
- 		       ENETC_RTBLENR_LEN(tx_ring->bd_count));
- 
--	/* clearing PI/CI registers for Tx not supported, adjust sw indexes */
-+	/* For ENETC v1, clearing PI/CI registers for Tx not supported,
-+	 * adjust sw indexes
-+	 */
- 	tx_ring->next_to_use = enetc_txbdr_rd(hw, idx, ENETC_TBPIR);
- 	tx_ring->next_to_clean = enetc_txbdr_rd(hw, idx, ENETC_TBCIR);
- 
-+	if (tx_ring->next_to_use != tx_ring->next_to_clean &&
-+	    !is_enetc_rev1(si)) {
-+		tx_ring->next_to_use = 0;
-+		tx_ring->next_to_clean = 0;
-+		enetc_txbdr_wr(hw, idx, ENETC_TBPIR, 0);
-+		enetc_txbdr_wr(hw, idx, ENETC_TBCIR, 0);
-+	}
-+
- 	/* enable Tx ints by setting pkt thr to 1 */
- 	enetc_txbdr_wr(hw, idx, ENETC_TBICR0, ENETC_TBICR0_ICEN | 0x1);
- 
+ 	/*
 -- 
 2.53.0
 
