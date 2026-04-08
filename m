@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-234606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHKfOt2f1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:09 +0200
+	id iLxnOsKc1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F67F3C1043
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BC43C07F2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 08EB5302C481
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95AC6305DBB0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507CB3D522C;
-	Wed,  8 Apr 2026 18:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654573AA4E4;
+	Wed,  8 Apr 2026 18:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olh6FWGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlzFu66K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1170E3D4134;
-	Wed,  8 Apr 2026 18:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288343ACA41;
+	Wed,  8 Apr 2026 18:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673295; cv=none; b=SAIz6MsBL+vmRQrzpk1lnj4eAD3srByYtIThHwx9b2Oh56J80LdMLyCodpgxe/gOD8qR2KtvMge7Z3Q+ZKKOboRl76qVHyMxLkaRcYvsdHFYpv+goyutxZYbXnwr/SmwE7Gv8GUHyP2wWLABJbBynZAgm6uJZ8pVZFOwYFERRPM=
+	t=1775672237; cv=none; b=Fi6WPVXvIfbixN56Iv9/ZFtkHmJU1FRjPjFhcDOt5k1D1fWB54xI0Eqn7DziDp/Xd4i5eo2PZJBZAgvrfpDNJPz/y0IurmZctLz+V6Fz+mpRqBmV4pGGQLqcmrpf8iKt+pwy6qu3EYTOxuLPsoGhEndgBX+tdAiQWJSHvW7Wv+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673295; c=relaxed/simple;
-	bh=VDMEODNKjDIJP1lTBbwl8Cid0CheowTzP9vGBvIY3ok=;
+	s=arc-20240116; t=1775672237; c=relaxed/simple;
+	bh=sBQtVjr/Zc3NFJzw44J7Q9b92yqCgMwJNxErx6CBaME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6qsRcKqVhxAUcyp1Ws016cFByCATN7phnrVyi05cYwKtR/EBstVj96rDrCywcNt6N7+r72Kt299BMsgoa7RKMGzoJBJo9MJQfuhqgkNDsESAJv/YQED8GPFsdWnsY9FyZIdGFvxD4kfsdlSn/RJWedGzQ6TZ1hr3IpyCt05OeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olh6FWGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E5AC19421;
-	Wed,  8 Apr 2026 18:34:54 +0000 (UTC)
+	 MIME-Version; b=PPDUmbpANHFM0a6iEvUJnlFudg8WCjHxZPi/ns4JtacbdxOtSahcOJG3P4ricQdAnJnYsa/mI5qrZUgpfzKwbH9FZ5aC9jXipsnu5MTFf/HXVjxoAKCnrrs4O0HoF/H/yrco6zuh+fxxIX2sCauDgdVFLbxqlGXd0oawDfGfcGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlzFu66K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D87C19421;
+	Wed,  8 Apr 2026 18:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673294;
-	bh=VDMEODNKjDIJP1lTBbwl8Cid0CheowTzP9vGBvIY3ok=;
+	s=korg; t=1775672237;
+	bh=sBQtVjr/Zc3NFJzw44J7Q9b92yqCgMwJNxErx6CBaME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olh6FWGspTUrTI9ec3mnFuFpOdetbRo6JWQ0Q6CKOz6A8nBa0UlyimUahI6LMd8ex
-	 oCVKRvx696tFod/64k+G8FTTpw+3j9gNtXp1ZSmbpuwYdlt+NSmKS/qnF1QM+cqq8U
-	 aiAXETA/xf2+HD2WilVMsJm9efI4zjhejAa5GgKI=
+	b=xlzFu66KoA0Refmur79nt5/c6nGB+3B0gAgw+rO4sUPeKsK5dtLKekeFp9aQU9BxE
+	 Hp+Ggox/VlJR5dDCNFyI4Q8WxkBNwrRGI0ffvU7YAeZjn70nHLYtzmOVsbojYs/6rh
+	 UQD2EOQWqMzA2TVgGzjhtCNeckJ+cMKeE8lV5O2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoltan Illes <zoliviragh@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 175/277] Input: xpad - add support for Razer Wolverine V3 Pro
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 243/312] Revert "ext4: make ext4_es_remove_extent() return void"
 Date: Wed,  8 Apr 2026 20:02:40 +0200
-Message-ID: <20260408175940.400438367@linuxfoundation.org>
+Message-ID: <20260408175942.825223567@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,222 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234606-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234198-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8F67F3C1043
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 95BC43C07F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zoltan Illes <zoliviragh@gmail.com>
+This reverts commit bfe24a48c1d56b046052014534bde1680fadb9dc.
 
-commit e2b0ae529db4766584e77647cefe3ec15c3d842e upstream.
-
-Add device IDs for the Razer Wolverine V3 Pro controller in both
-wired (0x0a57) and wireless 2.4 GHz dongle (0x0a59) modes.
-
-The controller uses the Xbox 360 protocol (vendor-specific class,
-subclass 93, protocol 1) on interface 0 with an identical 20-byte
-input report layout, so no additional processing is needed.
-
-Signed-off-by: Zoltan Illes <zoliviragh@gmail.com>
-Link: https://patch.msgid.link/20260329220031.1325509-1-137647604+ZlordHUN@users.noreply.github.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/extents.c        | 34 ++++++++++++++++++++++++++++------
+ fs/ext4/extents_status.c | 12 ++++++------
+ fs/ext4/extents_status.h |  4 ++--
+ fs/ext4/inline.c         | 12 ++++++++++--
+ fs/ext4/inode.c          |  8 ++++++--
+ 5 files changed, 52 insertions(+), 18 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -313,6 +313,8 @@ static const struct xpad_device {
- 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a29, "Razer Wolverine V2", 0, XTYPE_XBOXONE },
-+	{ 0x1532, 0x0a57, "Razer Wolverine V3 Pro (Wired)", 0, XTYPE_XBOX360 },
-+	{ 0x1532, 0x0a59, "Razer Wolverine V3 Pro (2.4 GHz Dongle)", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f10, "Batarang Xbox 360 controller", 0, XTYPE_XBOX360 },
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index af4cae13685d7..1df7174774694 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4463,8 +4463,15 @@ int ext4_ext_truncate(handle_t *handle, struct inode *inode)
+ 
+ 	last_block = (inode->i_size + sb->s_blocksize - 1)
+ 			>> EXT4_BLOCK_SIZE_BITS(sb);
+-	ext4_es_remove_extent(inode, last_block, EXT_MAX_BLOCKS - last_block);
+-
++retry:
++	err = ext4_es_remove_extent(inode, last_block,
++				    EXT_MAX_BLOCKS - last_block);
++	if (err == -ENOMEM) {
++		memalloc_retry_wait(GFP_ATOMIC);
++		goto retry;
++	}
++	if (err)
++		return err;
+ retry_remove_space:
+ 	err = ext4_ext_remove_space(inode, last_block, EXT_MAX_BLOCKS - 1);
+ 	if (err == -ENOMEM) {
+@@ -5412,7 +5419,13 @@ static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len)
+ 
+ 	down_write(&EXT4_I(inode)->i_data_sem);
+ 	ext4_discard_preallocations(inode, 0);
+-	ext4_es_remove_extent(inode, punch_start, EXT_MAX_BLOCKS - punch_start);
++
++	ret = ext4_es_remove_extent(inode, punch_start,
++				    EXT_MAX_BLOCKS - punch_start);
++	if (ret) {
++		up_write(&EXT4_I(inode)->i_data_sem);
++		goto out_stop;
++	}
+ 
+ 	ret = ext4_ext_remove_space(inode, punch_start, punch_stop - 1);
+ 	if (ret) {
+@@ -5598,7 +5611,12 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
+ 		ext4_free_ext_path(path);
+ 	}
+ 
+-	ext4_es_remove_extent(inode, offset_lblk, EXT_MAX_BLOCKS - offset_lblk);
++	ret = ext4_es_remove_extent(inode, offset_lblk,
++			EXT_MAX_BLOCKS - offset_lblk);
++	if (ret) {
++		up_write(&EXT4_I(inode)->i_data_sem);
++		goto out_stop;
++	}
+ 
+ 	/*
+ 	 * if offset_lblk lies in a hole which is at start of file, use
+@@ -5657,8 +5675,12 @@ ext4_swap_extents(handle_t *handle, struct inode *inode1,
+ 	BUG_ON(!inode_is_locked(inode1));
+ 	BUG_ON(!inode_is_locked(inode2));
+ 
+-	ext4_es_remove_extent(inode1, lblk1, count);
+-	ext4_es_remove_extent(inode2, lblk2, count);
++	*erp = ext4_es_remove_extent(inode1, lblk1, count);
++	if (unlikely(*erp))
++		return 0;
++	*erp = ext4_es_remove_extent(inode2, lblk2, count);
++	if (unlikely(*erp))
++		return 0;
+ 
+ 	while (count) {
+ 		struct ext4_extent *ex1, *ex2, tmp_ex;
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 862a8308cd9b0..592229027af72 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -1494,10 +1494,10 @@ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+  * @len - number of blocks to remove
+  *
+  * Reduces block/cluster reservation count and for bigalloc cancels pending
+- * reservations as needed.
++ * reservations as needed. Returns 0 on success, error code on failure.
+  */
+-void ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+-			   ext4_lblk_t len)
++int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
++			  ext4_lblk_t len)
+ {
+ 	ext4_lblk_t end;
+ 	int err = 0;
+@@ -1505,14 +1505,14 @@ void ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	struct extent_status *es = NULL;
+ 
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+-		return;
++		return 0;
+ 
+ 	trace_ext4_es_remove_extent(inode, lblk, len);
+ 	es_debug("remove [%u/%u) from extent status tree of inode %lu\n",
+ 		 lblk, len, inode->i_ino);
+ 
+ 	if (!len)
+-		return;
++		return err;
+ 
+ 	end = lblk + len - 1;
+ 	BUG_ON(end < lblk);
+@@ -1539,7 +1539,7 @@ void ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 
+ 	ext4_es_print_tree(inode);
+ 	ext4_da_release_space(inode, reserved);
+-	return;
++	return 0;
+ }
+ 
+ static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
+diff --git a/fs/ext4/extents_status.h b/fs/ext4/extents_status.h
+index 1d1247bbfd477..481ec4381bee6 100644
+--- a/fs/ext4/extents_status.h
++++ b/fs/ext4/extents_status.h
+@@ -133,8 +133,8 @@ extern void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ extern void ext4_es_cache_extent(struct inode *inode, ext4_lblk_t lblk,
+ 				 ext4_lblk_t len, ext4_fsblk_t pblk,
+ 				 unsigned int status);
+-extern void ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+-				  ext4_lblk_t len);
++extern int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
++				 ext4_lblk_t len);
+ extern void ext4_es_find_extent_range(struct inode *inode,
+ 				      int (*match_fn)(struct extent_status *es),
+ 				      ext4_lblk_t lblk, ext4_lblk_t end,
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index c15ea7589945f..a1fb99d2b472b 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -2004,8 +2004,16 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
+ 		 * the extent status cache must be cleared to avoid leaving
+ 		 * behind stale delayed allocated extent entries
+ 		 */
+-		if (!ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA))
+-			ext4_es_remove_extent(inode, 0, EXT_MAX_BLOCKS);
++		if (!ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA)) {
++retry:
++			err = ext4_es_remove_extent(inode, 0, EXT_MAX_BLOCKS);
++			if (err == -ENOMEM) {
++				memalloc_retry_wait(GFP_ATOMIC);
++				goto retry;
++			}
++			if (err)
++				goto out_error;
++		}
+ 
+ 		/* Clear the content in the xattr space. */
+ 		if (inline_size > EXT4_MIN_INLINE_DATA_SIZE) {
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index bd66dec36da7b..3dd867b6ad657 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4134,8 +4134,12 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+ 		down_write(&EXT4_I(inode)->i_data_sem);
+ 		ext4_discard_preallocations(inode, 0);
+ 
+-		ext4_es_remove_extent(inode, first_block,
+-				      stop_block - first_block);
++		ret = ext4_es_remove_extent(inode, first_block,
++					    stop_block - first_block);
++		if (ret) {
++			up_write(&EXT4_I(inode)->i_data_sem);
++			goto out_stop;
++		}
+ 
+ 		if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+ 			ret = ext4_ext_remove_space(inode, first_block,
+-- 
+2.53.0
+
 
 
 
