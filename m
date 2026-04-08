@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HhjJd+b1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:07 +0200
+	id sOWKNFei1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F683C05DD
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98ED33C1742
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 191823005172
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7D514302D774
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1018C3A6B6B;
-	Wed,  8 Apr 2026 18:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F853D9025;
+	Wed,  8 Apr 2026 18:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoNC6UgP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbN62kjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68D73537FC;
-	Wed,  8 Apr 2026 18:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76EB361DB5;
+	Wed,  8 Apr 2026 18:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672283; cv=none; b=rbc+xXSnkKcdL9DNAHIrzyVVR51JVlocTNVI08MQUsDvkQd1H4qBk8JkiwTy1ndyxUdhBU453Z3Dm9D5jJLgyc+xLnKumuRJR84u0R0AjcG1kGizBYjgxVSJthTprjgL+GhiJlePeZdh0Aa0J1eYaCUSyXlhPaVBGepKtTRqRZg=
+	t=1775673916; cv=none; b=kVb4KDYl5VR9qlTI0zuBULutGXfHKbb3NztxmzYvOpQsdnDdqDHwGwp2UzA6GptdHKf7FmolesFvs2rOO9Fha4vz/az/7gBlDbwpAuXNaIVGSVOHmLGio5Cl8aD0e2LASj7pHsTkS6q7/FHxDd6u5y2cACOJ9FyyTsEYOOc31hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672283; c=relaxed/simple;
-	bh=g/fYJ874jE8WN5FlP/LM1Jd58NDleBtCr1rbzLzoeQ0=;
+	s=arc-20240116; t=1775673916; c=relaxed/simple;
+	bh=MtlpGGwKwboCGr+f491B43fbiBGxwKd+2GQi4EEjXd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/skT+a0ac52IfNAwxKX4aCNuMKkrgIIVB5cK/hR15Vlv920j7mUhuqNNbmXg+fBQxNQjMJZsDFiE4WlUQzqSQ1Sz7ECv+QTCnrOGGG5DswDUTaTDeyTSjnBajD0di3Y4kNLKqrJrYdywYDoCgPyEyMUuor7p4BgJWqc2pwdgq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoNC6UgP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3C6C19421;
-	Wed,  8 Apr 2026 18:18:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GHyQRp5nwfYPyUWGgc90bH7XOVbJlaVGJ8itC7h8m0sSAhAkyfLqYAXzEYDBdaLGQmvs9TAPVqoG8Dv56mvCONIn9gi4VKYu+SbZcnXvenxNVKnNlUQMYDu3b0rjrK6DpAzd72ay5bXDyRVKmG7u92YcF8O5uwjtupOytGWpo7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbN62kjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDCFC19421;
+	Wed,  8 Apr 2026 18:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672283;
-	bh=g/fYJ874jE8WN5FlP/LM1Jd58NDleBtCr1rbzLzoeQ0=;
+	s=korg; t=1775673916;
+	bh=MtlpGGwKwboCGr+f491B43fbiBGxwKd+2GQi4EEjXd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IoNC6UgPQ5k9CPNUf6rpOUBTMnPBu0unV3nD3wOXsvnA1piRX3MPG1Ls+NOh9W6HN
-	 7orNPNgW59o1bXqz//tUrRctCN+X47UR8hxIWpQ4V/Cua2CuS9ChogoojLfGvVyh79
-	 FWpQkDI74sMaIUkeK20zAZ6/HmW4QF1FS6EmEiZM=
+	b=rbN62kjWKWGmLCbVWZjxQYIHEtjmZRFY3pSuql9VPRMzZFvLkoyTxNEWSi9o24tpT
+	 Eh9YnBlW9a6bp7FNVTKVnjSqwpHC8JVWkdEFrRHKRRxsJ5HOeKqvG83XQm3uagAC2+
+	 L5XRbsrEPptm9GdHRjCx3WVS+GzS30bbyGgMOPII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 259/312] btrfs: do not free data reservation in fallback from inline due to -ENOSPC
-Date: Wed,  8 Apr 2026 20:02:56 +0200
-Message-ID: <20260408175943.418543145@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.12 137/242] drm/i915/dp: Use crtc_state->enhanced_framing properly on ivb/hsw CPU eDP
+Date: Wed,  8 Apr 2026 20:02:57 +0200
+Message-ID: <20260408175932.216501174@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234216-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234846-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 29F683C05DD
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 98ED33C1742
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit f8da41de0bff9eb1d774a7253da0c9f637c4470a ]
+commit 9c9a57e4e337f94e23ddf69263fd0685c91155fb upstream.
 
-If we fail to create an inline extent due to -ENOSPC, we will attempt to
-go through the normal COW path, reserve an extent, create an ordered
-extent, etc. However we were always freeing the reserved qgroup data,
-which is wrong since we will use data. Fix this by freeing the reserved
-qgroup data in __cow_file_range_inline() only if we are not doing the
-fallback (ret is <= 0).
+Looks like I missed the drm_dp_enhanced_frame_cap() in the ivb/hsw CPU
+eDP code when I introduced crtc_state->enhanced_framing. Fix it up so
+that the state we program to the hardware is guaranteed to match what
+we computed earlier.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3072a24c778a ("drm/i915: Introduce crtc_state->enhanced_framing")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260325135849.12603-3-ville.syrjala@linux.intel.com
+Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
+(cherry picked from commit 799fe8dc2af52f35c78c4ac97f8e34994dfd8760)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/g4x_dp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 45c6cbbd686fd..6a5364b466be1 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -468,8 +468,12 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode, u64 size,
- 	 * it won't count as data extent, free them directly here.
- 	 * And at reserve time, it's always aligned to page size, so
- 	 * just free one page here.
-+	 *
-+	 * If we fallback to non-inline (ret == 1) due to -ENOSPC, then we need
-+	 * to keep the data reservation.
- 	 */
--	btrfs_qgroup_free_data(inode, NULL, 0, fs_info->sectorsize, NULL);
-+	if (ret <= 0)
-+		btrfs_qgroup_free_data(inode, NULL, 0, fs_info->sectorsize, NULL);
- 	btrfs_free_path(path);
- 	if (trans)
- 		btrfs_end_transaction(trans);
--- 
-2.53.0
-
+--- a/drivers/gpu/drm/i915/display/g4x_dp.c
++++ b/drivers/gpu/drm/i915/display/g4x_dp.c
+@@ -134,7 +134,7 @@ static void intel_dp_prepare(struct inte
+ 			intel_dp->DP |= DP_SYNC_VS_HIGH;
+ 		intel_dp->DP |= DP_LINK_TRAIN_OFF_CPT;
+ 
+-		if (drm_dp_enhanced_frame_cap(intel_dp->dpcd))
++		if (pipe_config->enhanced_framing)
+ 			intel_dp->DP |= DP_ENHANCED_FRAMING;
+ 
+ 		intel_dp->DP |= DP_PIPE_SEL_IVB(crtc->pipe);
 
 
 
