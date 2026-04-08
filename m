@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOXaAh+j1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:03 +0200
+	id oINREgyl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E4E3C1A21
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E248E3C20BE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FBAB316724A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2ECD319A518
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E5B3B19A3;
-	Wed,  8 Apr 2026 18:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2CA3D6694;
+	Wed,  8 Apr 2026 18:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNpaq4KH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zB61pQMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F0928980F;
-	Wed,  8 Apr 2026 18:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F03B32A3FD;
+	Wed,  8 Apr 2026 18:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673080; cv=none; b=ePVaDyCgfWUOXj2Tq3TzfVDU8LeafsSanUjjQ0k7QgzTiDQBgUt7iWRZ14+YqKvVuAkR8HV/H9d0S7/oq/moFEz3dhhBIhrk7lA1WMaid3uhl2rzhL6W6mhLAs2now2Gd6+1nrHZjFkY9Eyg+pkYmm21IJVczUZwN2QmPPuf4S4=
+	t=1775673738; cv=none; b=K8ggOf6Vf8Ga5CUgHsdtgz17JZauEqYOS/TTXP+TU9LNuN3JXiNdoON6XOXY8QW9zP5O+KlDTgVqIh0qW3Fil0divP8ebN4R1uTVGdprcpIDbElI3gUlU4hUT3BRY4AeJnV1yXY08SGOFDKwzQpy2m0+P/fNepCqdUL6y9KvyxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673080; c=relaxed/simple;
-	bh=dPu0peIh/KM63CeAD6gs27Ep9hrtIXM3dCqr9NP03Co=;
+	s=arc-20240116; t=1775673738; c=relaxed/simple;
+	bh=sdEp236AGpt/XpkOna407EEtuV39ILivodWY86nmY8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StyHSNOGsB3i2lj6xS8Cgw59RQ259LXq8lORsHoOQD4X1cBErlRD+s2w3Zfio6BCsO4ILChelK6NC2TT15+KIq6IGnvZOFODYoid/EUY659kxgzJVU9KTeJA1alVoOE0Lum2isU5vHpJRNxhCuce5O3mOoFC7WtP1SPdu5r2cjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNpaq4KH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50933C19421;
-	Wed,  8 Apr 2026 18:31:20 +0000 (UTC)
+	 MIME-Version; b=kz/X6SdVbaYi+CQBep6jHQQJPeLAq82lCgMelJI+w79kyWM6ywRF5KO6OiZilYHcIyfmN3jt2EM2Gd/dFpd/4i7uuWcsOSUU7wMbB1k+puXqh1glIchPpNrS/2JdKc0cZzrhFweAbxzrdQ58uX8TOYFQHi7RaMmAP7wYAfVMWHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zB61pQMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D97C19421;
+	Wed,  8 Apr 2026 18:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673080;
-	bh=dPu0peIh/KM63CeAD6gs27Ep9hrtIXM3dCqr9NP03Co=;
+	s=korg; t=1775673737;
+	bh=sdEp236AGpt/XpkOna407EEtuV39ILivodWY86nmY8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sNpaq4KHPSVhDp7VprWTQ1JU8FNLWBTuJOtmRtwR/uJSi6TxfaBHldJ3ZP/6LTHh+
-	 qCls2O17j1HIVD48FMBOswchBypWYtP67ucShQDY4rP7EM6kyIVPOo4SMYYbpMFX5f
-	 Z4JDbIQBgnbyav3PBuCj8Y+604thSE2UG3lcIhL0=
+	b=zB61pQMJla8WaOSQUJ/jcopMDgaHjHejnEfn91aVImlYtjyFagWnNdrMDSWD2eD2G
+	 pga5UrnFnraCxiL+Ly8RIkSRkNku5O1Hsl8vQUrdH3juqNhGW+8eNWfkO3WZkvL+8x
+	 oOM1rb5kT7eDlxrMufcwd5toA5X7bplcCpD80cDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 093/277] bnxt_en: Restore default stat ctxs for ULP when resource is available
+Subject: [PATCH 6.12 038/242] btrfs: reject root items with drop_progress and zero drop_level
 Date: Wed,  8 Apr 2026 20:01:18 +0200
-Message-ID: <20260408175937.346389960@linuxfoundation.org>
+Message-ID: <20260408175928.497692751@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,72 +74,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234778-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234523-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 75E4E3C1A21
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E248E3C20BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit 071dbfa304e85a6b04a593e950d18fa170997288 ]
+[ Upstream commit b17b79ff896305fd74980a5f72afec370ee88ca4 ]
 
-During resource reservation, if the L2 driver does not have enough
-MSIX vectors to provide to the RoCE driver, it sets the stat ctxs for
-ULP also to 0 so that we don't have to reserve it unnecessarily.
+[BUG]
+When recovering relocation at mount time, merge_reloc_root() and
+btrfs_drop_snapshot() both use BUG_ON(level == 0) to guard against
+an impossible state: a non-zero drop_progress combined with a zero
+drop_level in a root_item, which can be triggered:
 
-However, subsequently the user may reduce L2 rings thereby freeing up
-some resources that the L2 driver can now earmark for RoCE. In this
-case, the driver should restore the default ULP stat ctxs to make
-sure that all RoCE resources are ready for use.
+------------[ cut here ]------------
+kernel BUG at fs/btrfs/relocation.c:1545!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 1 UID: 0 PID: 283 ... Tainted: 6.18.0+ #16 PREEMPT(voluntary)
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Ubuntu 24.04 PC v2, BIOS 1.16.3-debian-1.16.3-2
+RIP: 0010:merge_reloc_root+0x1266/0x1650 fs/btrfs/relocation.c:1545
+Code: ffff0000 00004589 d7e9acfa ffffe8a1 79bafebe 02000000
+Call Trace:
+ merge_reloc_roots+0x295/0x890 fs/btrfs/relocation.c:1861
+ btrfs_recover_relocation+0xd6e/0x11d0 fs/btrfs/relocation.c:4195
+ btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
+ open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
+ btrfs_fill_super fs/btrfs/super.c:987 [inline]
+ btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
+ btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
+ btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
+ vfs_get_tree+0x9a/0x370 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount fs/namespace.c:3718 [inline]
+ path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
+ do_mount fs/namespace.c:4041 [inline]
+ __do_sys_mount fs/namespace.c:4229 [inline]
+ __se_sys_mount fs/namespace.c:4206 [inline]
+ __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
+ ...
+RIP: 0033:0x7f969c9a8fde
+Code: 0f1f4000 48c7c2b0 fffffff7 d8648902 b8ffffff ffc3660f
+---[ end trace 0000000000000000 ]---
 
-The RoCE driver may fail to initialize in this scenario without this
-fix.
+The bug is reproducible on 7.0.0-rc2-next-20260310 with our dynamic
+metadata fuzzing tool that corrupts btrfs metadata at runtime.
 
-Fixes: d630624ebd70 ("bnxt_en: Utilize ulp client resources if RoCE is not registered")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20260331065138.948205-4-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[CAUSE]
+A non-zero drop_progress.objectid means an interrupted
+btrfs_drop_snapshot() left a resume point on disk, and in that case
+drop_level must be greater than 0 because the checkpoint is only
+saved at internal node levels.
+
+Although this invariant is enforced when the kernel writes the root
+item, it is not validated when the root item is read back from disk.
+That allows on-disk corruption to provide an invalid state with
+drop_progress.objectid != 0 and drop_level == 0.
+
+When relocation recovery later processes such a root item,
+merge_reloc_root() reads drop_level and hits BUG_ON(level == 0). The
+same invalid metadata can also trigger the corresponding BUG_ON() in
+btrfs_drop_snapshot().
+
+[FIX]
+Fix this by validating the root_item invariant in tree-checker when
+reading root items from disk: if drop_progress.objectid is non-zero,
+drop_level must also be non-zero. Reject such malformed metadata with
+-EUCLEAN before it reaches merge_reloc_root() or btrfs_drop_snapshot()
+and triggers the BUG_ON.
+
+After the fix, the same corruption is correctly rejected by tree-checker
+and the BUG_ON is no longer triggered.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/tree-checker.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 04aa5d9eb8513..d02ccf79e3b6f 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -7991,6 +7991,8 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
- 		ulp_msix = bnxt_get_avail_msix(bp, bp->ulp_num_msix_want);
- 		if (!ulp_msix)
- 			bnxt_set_ulp_stat_ctxs(bp, 0);
-+		else
-+			bnxt_set_dflt_ulp_stat_ctxs(bp);
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index 7e9475e2a047b..7376ce6049a92 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1248,6 +1248,23 @@ static int check_root_item(struct extent_buffer *leaf, struct btrfs_key *key,
+ 			    btrfs_root_drop_level(&ri), BTRFS_MAX_LEVEL - 1);
+ 		return -EUCLEAN;
+ 	}
++	/*
++	 * If drop_progress.objectid is non-zero, a btrfs_drop_snapshot() was
++	 * interrupted and the resume point was recorded in drop_progress and
++	 * drop_level.  In that case drop_level must be >= 1: level 0 is the
++	 * leaf level and drop_snapshot never saves a checkpoint there (it
++	 * only records checkpoints at internal node levels in DROP_REFERENCE
++	 * stage).  A zero drop_level combined with a non-zero drop_progress
++	 * objectid indicates on-disk corruption and would cause a BUG_ON in
++	 * merge_reloc_root() and btrfs_drop_snapshot() at mount time.
++	 */
++	if (unlikely(btrfs_disk_key_objectid(&ri.drop_progress) != 0 &&
++		     btrfs_root_drop_level(&ri) == 0)) {
++		generic_err(leaf, slot,
++			    "invalid root drop_level 0 with non-zero drop_progress objectid %llu",
++			    btrfs_disk_key_objectid(&ri.drop_progress));
++		return -EUCLEAN;
++	}
  
- 		if (ulp_msix > bp->ulp_num_msix_want)
- 			ulp_msix = bp->ulp_num_msix_want;
+ 	/* Flags check */
+ 	if (unlikely(btrfs_root_flags(&ri) & ~valid_root_flags)) {
 -- 
 2.53.0
 
