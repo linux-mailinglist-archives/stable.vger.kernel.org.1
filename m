@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gO5HEn6a1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:14 +0200
+	id oIahD0Wp1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-234973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:15:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79E23C02AA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8D43C2A52
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89689303792D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEF8E309C64A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED6A3D890E;
-	Wed,  8 Apr 2026 18:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DB03D75C3;
+	Wed,  8 Apr 2026 18:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJQilRY5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgAxqPXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EE73D8917;
-	Wed,  8 Apr 2026 18:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55ED134AB06;
+	Wed,  8 Apr 2026 18:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671879; cv=none; b=M2Of9cjBfYYAXzuSsL5FBpUi66e87QNtvO36kdkkxJwBgpJ0F/7YlDsuv/X9O2x6PQ9G+e3nJx71Fh00DvqdBkkNHPsmynY2ZTQxs4p9JQu4wotLUit2zA34RdiFNjxLEsNCl3k9gnGvIbOYv9Zm/TG7FslEl4dHuTAY1v5FB30=
+	t=1775674242; cv=none; b=oQaaG0/m5Vnn4+jsvIfJ93yZ6irrjKxQb8VavDYTIL7Lb7/rVNfF7NxUJwiuXzQMjhUewMP1k0ygKc7Yhr8mamdbtaAxs8ZoUGIPHN0yQo6u2NgWWKUgyuPJTdr7MPlEIAs8aWxlNJavVemdixTwtDKjv6Dd0EYfAr92Eq3w5aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671879; c=relaxed/simple;
-	bh=DHfrR5mTozJuL8dFwEKhcDYn1BgH+wV1ybuAJXXqMfI=;
+	s=arc-20240116; t=1775674242; c=relaxed/simple;
+	bh=/etAI/McEyrKAhhRKd/hId5GV0PaLCSpKuz8DXvJ6Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llOu9jFi+ys8YraCMi5c+ebOqRbnkPS7y4OrTJfC4+AsmGXABUXTKiTkx4GFEGDG/0h3ru0s57mUsQc3wsXVNiqv9YaSn72ynSRC0XYg3lgQOJtynkg34G/8mICnFw//24E+CiLzCtn2r0Ljt9SBYQDzUCyzZ860aOZjzfRU1so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJQilRY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9D8C19421;
-	Wed,  8 Apr 2026 18:11:18 +0000 (UTC)
+	 MIME-Version; b=OSyhCFOGwTb6oC79AxnLupnH7ailP81T5j16nFfZW+GwHFSph+CHS+/r5iqp0pXtf9i6Ilt/yMwq8L9jR9fEe8QnUuALz9sZaTPL8AIBBuK0w4seCSpomWrnRirol7kROPUDoDi+GvyTzF4urmoFkK3gIXES8ax5OEdjlXQ3S64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgAxqPXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9821C19421;
+	Wed,  8 Apr 2026 18:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671879;
-	bh=DHfrR5mTozJuL8dFwEKhcDYn1BgH+wV1ybuAJXXqMfI=;
+	s=korg; t=1775674242;
+	bh=/etAI/McEyrKAhhRKd/hId5GV0PaLCSpKuz8DXvJ6Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJQilRY5vxqxq+oQaJgX1xTxMyVU6l0xgVqjCX1VUR4HXWLCPMb1mIkYxc8FAJrWQ
-	 NQxkPTRX3B/saufvMdPRfHbuk9E0wKYNAsa98s+FdXwn0FQriHaeKkUANyI6uzHYTB
-	 LzRQHE3vCYyR3QnMARrkrKQY2UY0WhgSriNF8rms=
+	b=qgAxqPXCyGq4nxfojpadFkwV7BOpLQecyGk1VZLkggI7BkGy98FeM0zXy5mZ2EN1r
+	 lvILzo4Ac+zs+h0UE+IRgWsHVV8roCfRC4B94UK6wafyK+E2iOVcxjXzeu0nlKMmrR
+	 kEVux6YXXsQlbkpdGDNyNKprBKdUJUfMi9qtL7Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 104/312] net: macb: Use dev_consume_skb_any() to free TX SKBs
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 021/311] btrfs: reserve enough transaction items for qgroup ioctls
 Date: Wed,  8 Apr 2026 20:00:21 +0200
-Message-ID: <20260408175937.648011282@linuxfoundation.org>
+Message-ID: <20260408175940.205143442@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,108 +68,181 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234059-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,redhat.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234973-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D79E23C02AA
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,test.sh:url,suse.com:email,qemu.org:url]
+X-Rspamd-Queue-Id: 8E8D43C2A52
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 647b8a2fe474474704110db6bd07f7a139e621eb upstream.
+[ Upstream commit f9a4e3015db1aeafbef407650eb8555445ca943e ]
 
-The napi_consume_skb() function is not intended to be called in an IRQ
-disabled context. However, after commit 6bc8a5098bf4 ("net: macb: Fix
-tx_ptr_lock locking"), the freeing of TX SKBs is performed with IRQs
-disabled. To resolve the following call trace, use dev_consume_skb_any()
-for freeing TX SKBs:
-   WARNING: kernel/softirq.c:430 at __local_bh_enable_ip+0x174/0x188, CPU#0: ksoftirqd/0/15
-   Modules linked in:
-   CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted 7.0.0-rc4-next-20260319-yocto-standard-dirty #37 PREEMPT
-   Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
-   pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-   pc : __local_bh_enable_ip+0x174/0x188
-   lr : local_bh_enable+0x24/0x38
-   sp : ffff800082b3bb10
-   x29: ffff800082b3bb10 x28: ffff0008031f3c00 x27: 000000000011ede0
-   x26: ffff000800a7ff00 x25: ffff800083937ce8 x24: 0000000000017a80
-   x23: ffff000803243a78 x22: 0000000000000040 x21: 0000000000000000
-   x20: ffff000800394c80 x19: 0000000000000200 x18: 0000000000000001
-   x17: 0000000000000001 x16: ffff000803240000 x15: 0000000000000000
-   x14: ffffffffffffffff x13: 0000000000000028 x12: ffff000800395650
-   x11: ffff8000821d1528 x10: ffff800081c2bc08 x9 : ffff800081c1e258
-   x8 : 0000000100000301 x7 : ffff8000810426ec x6 : 0000000000000000
-   x5 : 0000000000000001 x4 : 0000000000000001 x3 : 0000000000000000
-   x2 : 0000000000000008 x1 : 0000000000000200 x0 : ffff8000810428dc
-   Call trace:
-    __local_bh_enable_ip+0x174/0x188 (P)
-    local_bh_enable+0x24/0x38
-    skb_attempt_defer_free+0x190/0x1d8
-    napi_consume_skb+0x58/0x108
-    macb_tx_poll+0x1a4/0x558
-    __napi_poll+0x50/0x198
-    net_rx_action+0x1f4/0x3d8
-    handle_softirqs+0x16c/0x560
-    run_ksoftirqd+0x44/0x80
-    smpboot_thread_fn+0x1d8/0x338
-    kthread+0x120/0x150
-    ret_from_fork+0x10/0x20
-   irq event stamp: 29751
-   hardirqs last  enabled at (29750): [<ffff8000813be184>] _raw_spin_unlock_irqrestore+0x44/0x88
-   hardirqs last disabled at (29751): [<ffff8000813bdf60>] _raw_spin_lock_irqsave+0x38/0x98
-   softirqs last  enabled at (29150): [<ffff8000800f1aec>] handle_softirqs+0x504/0x560
-   softirqs last disabled at (29153): [<ffff8000800f2fec>] run_ksoftirqd+0x44/0x80
+Currently our qgroup ioctls don't reserve any space, they just do a
+transaction join, which does not reserve any space, neither for the quota
+tree updates nor for the delayed refs generated when updating the quota
+tree. The quota root uses the global block reserve, which is fine most of
+the time since we don't expect a lot of updates to the quota root, or to
+be too close to -ENOSPC such that other critical metadata updates need to
+resort to the global reserve.
 
-Fixes: 6bc8a5098bf4 ("net: macb: Fix tx_ptr_lock locking")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260321-macb-tx-v1-1-b383a58dd4e6@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However this is not optimal, as not reserving proper space may result in a
+transaction abort due to not reserving space for delayed refs and then
+abusing the use of the global block reserve.
+
+For example, the following reproducer (which is unlikely to model any
+real world use case, but just to illustrate the problem), triggers such a
+transaction abort due to -ENOSPC when running delayed refs:
+
+  $ cat test.sh
+  #!/bin/bash
+
+  DEV=/dev/nullb0
+  MNT=/mnt/nullb0
+
+  umount $DEV &> /dev/null
+  # Limit device to 1G so that it's much faster to reproduce the issue.
+  mkfs.btrfs -f -b 1G $DEV
+  mount -o commit=600 $DEV $MNT
+
+  fallocate -l 800M $MNT/filler
+  btrfs quota enable $MNT
+
+  for ((i = 1; i <= 400000; i++)); do
+      btrfs qgroup create 1/$i $MNT
+  done
+
+  umount $MNT
+
+When running this, we can see in dmesg/syslog that a transaction abort
+happened:
+
+  [436.490] BTRFS error (device nullb0): failed to run delayed ref for logical 30408704 num_bytes 16384 type 176 action 1 ref_mod 1: -28
+  [436.493] ------------[ cut here ]------------
+  [436.494] BTRFS: Transaction aborted (error -28)
+  [436.495] WARNING: fs/btrfs/extent-tree.c:2247 at btrfs_run_delayed_refs+0xd9/0x110 [btrfs], CPU#4: umount/2495372
+  [436.497] Modules linked in: btrfs loop (...)
+  [436.508] CPU: 4 UID: 0 PID: 2495372 Comm: umount Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
+  [436.510] Tainted: [W]=WARN
+  [436.511] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [436.513] RIP: 0010:btrfs_run_delayed_refs+0xdf/0x110 [btrfs]
+  [436.514] Code: 0f 82 ea (...)
+  [436.518] RSP: 0018:ffffd511850b7d78 EFLAGS: 00010292
+  [436.519] RAX: 00000000ffffffe4 RBX: ffff8f120dad37e0 RCX: 0000000002040001
+  [436.520] RDX: 0000000000000002 RSI: 00000000ffffffe4 RDI: ffffffffc090fd80
+  [436.522] RBP: 0000000000000000 R08: 0000000000000001 R09: ffffffffc04d1867
+  [436.523] R10: ffff8f18dc1fffa8 R11: 0000000000000003 R12: ffff8f173aa89400
+  [436.524] R13: 0000000000000000 R14: ffff8f173aa89400 R15: 0000000000000000
+  [436.526] FS:  00007fe59045d840(0000) GS:ffff8f192e22e000(0000) knlGS:0000000000000000
+  [436.527] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [436.528] CR2: 00007fe5905ff2b0 CR3: 000000060710a002 CR4: 0000000000370ef0
+  [436.530] Call Trace:
+  [436.530]  <TASK>
+  [436.530]  btrfs_commit_transaction+0x73/0xc00 [btrfs]
+  [436.531]  ? btrfs_attach_transaction_barrier+0x1e/0x70 [btrfs]
+  [436.532]  sync_filesystem+0x7a/0x90
+  [436.533]  generic_shutdown_super+0x28/0x180
+  [436.533]  kill_anon_super+0x12/0x40
+  [436.534]  btrfs_kill_super+0x12/0x20 [btrfs]
+  [436.534]  deactivate_locked_super+0x2f/0xb0
+  [436.534]  cleanup_mnt+0xea/0x180
+  [436.535]  task_work_run+0x58/0xa0
+  [436.535]  exit_to_user_mode_loop+0xed/0x480
+  [436.536]  ? __x64_sys_umount+0x68/0x80
+  [436.536]  do_syscall_64+0x2a5/0xf20
+  [436.537]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [436.537] RIP: 0033:0x7fe5906b6217
+  [436.538] Code: 0d 00 f7 (...)
+  [436.540] RSP: 002b:00007ffcd87a61f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+  [436.541] RAX: 0000000000000000 RBX: 00005618b9ecadc8 RCX: 00007fe5906b6217
+  [436.541] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00005618b9ecb100
+  [436.542] RBP: 0000000000000000 R08: 00007ffcd87a4fe0 R09: 00000000ffffffff
+  [436.544] R10: 0000000000000103 R11: 0000000000000246 R12: 00007fe59081626c
+  [436.544] R13: 00005618b9ecb100 R14: 0000000000000000 R15: 00005618b9ecacc0
+  [436.545]  </TASK>
+  [436.545] ---[ end trace 0000000000000000 ]---
+
+Fix this by changing the qgroup ioctls to use start transaction instead of
+joining so that proper space is reserved for the delayed refs generated
+for the updates to the quota root. This way we don't get any transaction
+abort.
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/ioctl.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1075,7 +1075,7 @@ static void macb_tx_unmap(struct macb *b
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index b78998815ce72..16c9b242e917f 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3697,7 +3697,8 @@ static long btrfs_ioctl_qgroup_assign(struct file *file, void __user *arg)
+ 		}
  	}
  
- 	if (tx_skb->skb) {
--		napi_consume_skb(tx_skb->skb, budget);
-+		dev_consume_skb_any(tx_skb->skb);
- 		tx_skb->skb = NULL;
+-	trans = btrfs_join_transaction(root);
++	/* 2 BTRFS_QGROUP_RELATION_KEY items. */
++	trans = btrfs_start_transaction(root, 2);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
+ 		goto out;
+@@ -3769,7 +3770,11 @@ static long btrfs_ioctl_qgroup_create(struct file *file, void __user *arg)
+ 		goto out;
  	}
- }
+ 
+-	trans = btrfs_join_transaction(root);
++	/*
++	 * 1 BTRFS_QGROUP_INFO_KEY item.
++	 * 1 BTRFS_QGROUP_LIMIT_KEY item.
++	 */
++	trans = btrfs_start_transaction(root, 2);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
+ 		goto out;
+@@ -3818,7 +3823,8 @@ static long btrfs_ioctl_qgroup_limit(struct file *file, void __user *arg)
+ 		goto drop_write;
+ 	}
+ 
+-	trans = btrfs_join_transaction(root);
++	/* 1 BTRFS_QGROUP_LIMIT_KEY item. */
++	trans = btrfs_start_transaction(root, 1);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
+ 		goto out;
+-- 
+2.53.0
+
 
 
 
