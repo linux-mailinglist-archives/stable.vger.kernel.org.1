@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIWxDqmb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:13 +0200
+	id CN0bCX+h1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986BE3C0569
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D92CB3C1434
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8401F3036EC8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 495CF3029D46
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420553D3D06;
-	Wed,  8 Apr 2026 18:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8613D522C;
+	Wed,  8 Apr 2026 18:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEvNzvEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMVRTap5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0633D347503;
-	Wed,  8 Apr 2026 18:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF693D9025;
+	Wed,  8 Apr 2026 18:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672098; cv=none; b=SeUToxilRCNMLd5iulERQdWM7+2NDJxwEFNFpJQD9ulx9fE6YWErCToum4eyorSC/a+UXFQbVhQl5zVShbxWW1ZPD26bDqq7XOKnTunxFQYwsUfaVbRivdYWpUgN6Fq5dAtcIBge8S4v4yvGnkosU7fS3iQBQHALUVckzdiCoXw=
+	t=1775673725; cv=none; b=ETlWtdysAu0F1svC77c5+JV0dKw4aiRLFUtLYpOHutzFm6LHAxJIziKnoqeqr4cVm1RHWSzpCCZpT+hC/4E4Q3TYNdN2z6WKL6OsasSR9M/yBaQjfwhPCUDTj3Nw4k1lEhtYoeH41KK7ViMb2u61bQ1p1iLy4b4BOq2Ax2t5/i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672098; c=relaxed/simple;
-	bh=maAm/lsly3Rk1xmvhk//M5FLiXfKIKKE6tyy7TY9rCg=;
+	s=arc-20240116; t=1775673725; c=relaxed/simple;
+	bh=ZDRQlG8FvU+U/l/MSbQVold6YziuSPJoDbD0hMwFeWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrY+BeQFdgF1LvupZD0nCQqVAxCCpK7E85mKPI1E77nMKCEBH+4RisDD923SS7U7LlhcSQnhqSVQemn0Y6Qq5JQFaaMfvcZ7Zi3XzJGGlNPvRmNQa7UMPJ3zFln2z1GXxq0O0SyKnnYLdLGpUD2yF+FU9Oi9U/PmfFipytCpv08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEvNzvEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89173C19425;
-	Wed,  8 Apr 2026 18:14:57 +0000 (UTC)
+	 MIME-Version; b=skw0BLoep6msW2dmCjAsHNw3NTJSgiSuvBBF2bgZa1EfzMUazkzR6j6Nb/a3Fg7s5M0rGUijxSOB0nUbsMBlteqC+QgI41zsD6v29AuD3RPC4N0tsRA9doAF0BACroy8kP6HtxjY6SFOlDyiV0XGVmS4V/sNid9WWvqN4H1Wyco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMVRTap5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D06C19421;
+	Wed,  8 Apr 2026 18:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672097;
-	bh=maAm/lsly3Rk1xmvhk//M5FLiXfKIKKE6tyy7TY9rCg=;
+	s=korg; t=1775673724;
+	bh=ZDRQlG8FvU+U/l/MSbQVold6YziuSPJoDbD0hMwFeWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEvNzvEBUds5FTOz/V2PObFC5jf1tTaiewxxFJRs0Z77hHLqKcYDhLwHyyllj8JgD
-	 584wdu1PaQT/irYqJCwKXbpDu9paoHSzCcJ7I2hNh+XHSOG7raoNJe6yEGbxVQba5L
-	 84FmwKGn3XC2Vr/k9NIi5rJuV80lVAeh5ddTKErw=
+	b=kMVRTap5kNqlA78517pAid9YlBp4W/qPesymPplZ/tGfrI7+asmDYXYw3kajGB777
+	 ndOEdZ9brWn5W9S6nz6aAcl9mqasYAsDXrA8ZpwKse2r/4q3fRbNE2zPLogvZ1C0ts
+	 8L9IWVnp07c2fZiGPRtA4jLlf0upxgGkDVkZ8lrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Suraj Gupta <suraj.gupta2@amd.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/312] net/sched: cls_fw: fix NULL pointer dereference on shared blocks
+Subject: [PATCH 6.12 064/242] net: xilinx: axienet: Correct BD length masks to match AXIDMA IP spec
 Date: Wed,  8 Apr 2026 20:01:44 +0200
-Message-ID: <20260408175940.745136683@linuxfoundation.org>
+Message-ID: <20260408175929.477079729@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,95 +69,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234144-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234773-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 986BE3C0569
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D92CB3C1434
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Suraj Gupta <suraj.gupta2@amd.com>
 
-[ Upstream commit faeea8bbf6e958bf3c00cb08263109661975987c ]
+[ Upstream commit 393e0b4f178ec7fce1141dacc3304e3607a92ee9 ]
 
-The old-method path in fw_classify() calls tcf_block_q() and
-dereferences q->handle.  Shared blocks leave block->q NULL, causing a
-NULL deref when an empty cls_fw filter is attached to a shared block
-and a packet with a nonzero major skb mark is classified.
+The XAXIDMA_BD_CTRL_LENGTH_MASK and XAXIDMA_BD_STS_ACTUAL_LEN_MASK
+macros were defined as 0x007FFFFF (23 bits), but the AXI DMA IP
+product guide (PG021) specifies the buffer length field as bits 25:0
+(26 bits). Update both masks to match the IP documentation.
 
-Reject the configuration in fw_change() when the old method (no
-TCA_OPTIONS) is used on a shared block, since fw_classify()'s
-old-method path needs block->q which is NULL for shared blocks.
+In practice this had no functional impact, since Ethernet frames are
+far smaller than 2^23 bytes and the extra bits were always zero, but
+the masks should still reflect the hardware specification.
 
-The fixed null-ptr-deref calling stack:
- KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
- RIP: 0010:fw_classify (net/sched/cls_fw.c:81)
- Call Trace:
-  tcf_classify (./include/net/tc_wrapper.h:197 net/sched/cls_api.c:1764 net/sched/cls_api.c:1860)
-  tc_run (net/core/dev.c:4401)
-  __dev_queue_xmit (net/core/dev.c:4535 net/core/dev.c:4790)
-
-Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260331050217.504278-1-xmei5@asu.edu
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20260327073238.134948-2-suraj.gupta2@amd.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_fw.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index 6160ef7d646ac..366bcc960e43e 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -245,8 +245,18 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
- 	struct nlattr *tb[TCA_FW_MAX + 1];
- 	int err;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+index d64b8abcf0186..cbdca0fb89454 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -104,7 +104,7 @@
+ #define XAXIDMA_BD_HAS_DRE_MASK		0xF00 /* Whether has DRE mask */
+ #define XAXIDMA_BD_WORDLEN_MASK		0xFF /* Whether has DRE mask */
  
--	if (!opt)
--		return handle ? -EINVAL : 0; /* Succeed if it is old method. */
-+	if (!opt) {
-+		if (handle)
-+			return -EINVAL;
-+
-+		if (tcf_block_shared(tp->chain->block)) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Must specify mark when attaching fw filter to block");
-+			return -EINVAL;
-+		}
-+
-+		return 0; /* Succeed if it is old method. */
-+	}
+-#define XAXIDMA_BD_CTRL_LENGTH_MASK	0x007FFFFF /* Requested len */
++#define XAXIDMA_BD_CTRL_LENGTH_MASK	GENMASK(25, 0) /* Requested len */
+ #define XAXIDMA_BD_CTRL_TXSOF_MASK	0x08000000 /* First tx packet */
+ #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
+ #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
+@@ -130,7 +130,7 @@
+ #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
+ #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
  
- 	err = nla_parse_nested_deprecated(tb, TCA_FW_MAX, opt, fw_policy,
- 					  NULL);
+-#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	0x007FFFFF /* Actual len */
++#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	GENMASK(25, 0) /* Actual len */
+ #define XAXIDMA_BD_STS_COMPLETE_MASK	0x80000000 /* Completed */
+ #define XAXIDMA_BD_STS_DEC_ERR_MASK	0x40000000 /* Decode error */
+ #define XAXIDMA_BD_STS_SLV_ERR_MASK	0x20000000 /* Slave error */
 -- 
 2.53.0
 
