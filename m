@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAxRHpSf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:56 +0200
+	id UNCOI3Kb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB853C0F9F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084AD3C04FA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C3EBE3008630
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C32AD304E0D1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84DC328B75;
-	Wed,  8 Apr 2026 18:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6338A3D8918;
+	Wed,  8 Apr 2026 18:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Brqlzbq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luVrg6Wx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B41926FA5A;
-	Wed,  8 Apr 2026 18:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E721A683C;
+	Wed,  8 Apr 2026 18:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673119; cv=none; b=nlvTsFO126ns+r1071wf9/LCv6nsACeIV+tLcRcLQ1fKb2pLxyKPOaSS1yiIyCJquhyqEEiIZQaIbLDn8+vsi6G983uU2vqH79cMrmwOCP1AbZNWkz5lL9/0tWstk823DxltybkVnUpDUFxoeGDdHjr5ATSt9GqY/NQZXvAGKSM=
+	t=1775672067; cv=none; b=I0wYOOXzAwmp8n0WncQt1NXsNwKDozC4qyiVdRZOY1J+lomD3cwI1LrE6uXfSg0sqitowiMr4187U20+mCiA/RFG8rUxo/OHe9ZdZXk7CSvftHtpvaLkwwaXsmznsaEm0jlnGsYh7PnstcACiY+QMoj2zHZr3K8QC6SXOQ5UEmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673119; c=relaxed/simple;
-	bh=0eepubmkqMavAlXQxmY3HezRqNyPKP4mASR2zrBWwL0=;
+	s=arc-20240116; t=1775672067; c=relaxed/simple;
+	bh=SIRl8GaxL8scGXN9riiRK3xT9inGIICNIsj3oI6Jlvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paycvzPAzYRGmEnWQiS+W8qAFuAEdfhJQVnIFw9WxxNubp9IhJ418Fd9gfntrdEgaLdpB6LEPVF+sOsN+t2LUh9R20YYcoAr4f9b2j2PfbEZT23XcPO33YGC7mlMjlUXgGL6ZhUx0xf3/oYh0QqyLn1eYeYo3171Htm/329b5ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Brqlzbq9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA821C19425;
-	Wed,  8 Apr 2026 18:31:58 +0000 (UTC)
+	 MIME-Version; b=GF8nZ2HY15ZjrYooXLH30kqrRv/PkM1VC0uynLmsSVmQRD411pJLuc6ODdWRC87sLX94t4s+iPw1UsrD/zG14Wm9eEhbGigMZltpWyLPhkKWVf2KB/ZjA3XtARqBqO3HryVRLbnYvf9iCz+IJ/H9R3IqmVjNMKM/oAtT5DLJUKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luVrg6Wx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0320C19421;
+	Wed,  8 Apr 2026 18:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673119;
-	bh=0eepubmkqMavAlXQxmY3HezRqNyPKP4mASR2zrBWwL0=;
+	s=korg; t=1775672067;
+	bh=SIRl8GaxL8scGXN9riiRK3xT9inGIICNIsj3oI6Jlvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Brqlzbq9QZnB6HuhuWZWo/n/J6OjZB8nFT693anPmG0pc7m+Bs1sDcmPXOh42334L
-	 IF0MfnW2T9f0qpMX80EWTGrWCBC/fpmqWWDWyZ1R8mlWa36N/NHtoaWvA6amVlHGJ5
-	 8X3g7n91XyRLyJB1PyJvzm7KG3qiukxxbhey6MdQ=
+	b=luVrg6WxId6e/PCglujTyuPxDAC3+z6FbdR1dvrVOjM1LyTKANV8iPSVAhG/xRuIc
+	 3Lcm1ZN6RODI3VWErdR9774lE0YCqSKDSo/KpKyVrZEZjZ9mlY33xkWqF4TXmpkCmd
+	 xcH2Ns4BDgRSIZD/HIbxWCN3AWygw6HTMDBAIXCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Cen Zhang <zzzccc427@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 107/277] accel/qaic: Handle DBC deactivation if the owner went away
-Date: Wed,  8 Apr 2026 20:01:32 +0200
-Message-ID: <20260408175937.868538615@linuxfoundation.org>
+Subject: [PATCH 6.1 176/312] Bluetooth: SCO: fix race conditions in sco_sock_connect()
+Date: Wed,  8 Apr 2026 20:01:33 +0200
+Message-ID: <20260408175940.337444922@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,142 +66,176 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234132-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234538-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,amd.com:email]
-X-Rspamd-Queue-Id: 9BB853C0F9F
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 084AD3C04FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
+From: Cen Zhang <zzzccc427@gmail.com>
 
-[ Upstream commit 2feec5ae5df785658924ab6bd91280dc3926507c ]
+[ Upstream commit 8a5b0135d4a5d9683203a3d9a12a711ccec5936b ]
 
-When a DBC is released, the device sends a QAIC_TRANS_DEACTIVATE_FROM_DEV
-transaction to the host over the QAIC_CONTROL MHI channel. QAIC handles
-this by calling decode_deactivate() to release the resources allocated for
-that DBC. Since that handling is done in the qaic_manage_ioctl() context,
-if the user goes away before receiving and handling the deactivation, the
-host will be out-of-sync with the DBCs available for use, and the DBC
-resources will not be freed unless the device is removed. If another user
-loads and requests to activate a network, then the device assigns the same
-DBC to that network, QAIC will "indefinitely" wait for dbc->in_use = false,
-leading the user process to hang.
+sco_sock_connect() checks sk_state and sk_type without holding
+the socket lock. Two concurrent connect() syscalls on the same
+socket can both pass the check and enter sco_connect(), leading
+to use-after-free.
 
-As a solution to this, handle QAIC_TRANS_DEACTIVATE_FROM_DEV transactions
-that are received after the user has gone away.
+The buggy scenario involves three participants and was confirmed
+with additional logging instrumentation:
 
-Fixes: 129776ac2e38 ("accel/qaic: Add control path")
-Signed-off-by: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260205123415.3870898-1-youssef.abdulrahman@oss.qualcomm.com
+  Thread A (connect):    HCI disconnect:      Thread B (connect):
+
+  sco_sock_connect(sk)                        sco_sock_connect(sk)
+  sk_state==BT_OPEN                           sk_state==BT_OPEN
+  (pass, no lock)                             (pass, no lock)
+  sco_connect(sk):                            sco_connect(sk):
+    hci_dev_lock                                hci_dev_lock
+    hci_connect_sco                               <- blocked
+      -> hcon1
+    sco_conn_add->conn1
+    lock_sock(sk)
+    sco_chan_add:
+      conn1->sk = sk
+      sk->conn = conn1
+    sk_state=BT_CONNECT
+    release_sock
+    hci_dev_unlock
+                           hci_dev_lock
+                           sco_conn_del:
+                             lock_sock(sk)
+                             sco_chan_del:
+                               sk->conn=NULL
+                               conn1->sk=NULL
+                               sk_state=
+                                 BT_CLOSED
+                               SOCK_ZAPPED
+                             release_sock
+                           hci_dev_unlock
+                                                  (unblocked)
+                                                  hci_connect_sco
+                                                    -> hcon2
+                                                  sco_conn_add
+                                                    -> conn2
+                                                  lock_sock(sk)
+                                                  sco_chan_add:
+                                                    sk->conn=conn2
+                                                  sk_state=
+                                                    BT_CONNECT
+                                                  // zombie sk!
+                                                  release_sock
+                                                  hci_dev_unlock
+
+Thread B revives a BT_CLOSED + SOCK_ZAPPED socket back to
+BT_CONNECT. Subsequent cleanup triggers double sock_put() and
+use-after-free. Meanwhile conn1 is leaked as it was orphaned
+when sco_conn_del() cleared the association.
+
+Fix this by:
+- Moving lock_sock() before the sk_state/sk_type checks in
+  sco_sock_connect() to serialize concurrent connect attempts
+- Fixing the sk_type != SOCK_SEQPACKET check to actually
+  return the error instead of just assigning it
+- Adding a state re-check in sco_connect() after lock_sock()
+  to catch state changes during the window between the locks
+- Adding sco_pi(sk)->conn check in sco_chan_add() to prevent
+  double-attach of a socket to multiple connections
+- Adding hci_conn_drop() on sco_chan_add failure to prevent
+  HCI connection leaks
+
+Fixes: 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm")
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_control.c | 47 +++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 2 deletions(-)
+ net/bluetooth/sco.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/accel/qaic/qaic_control.c b/drivers/accel/qaic/qaic_control.c
-index b86a8e48e731b..8eae30fe14f98 100644
---- a/drivers/accel/qaic/qaic_control.c
-+++ b/drivers/accel/qaic/qaic_control.c
-@@ -910,7 +910,7 @@ static int decode_deactivate(struct qaic_device *qdev, void *trans, u32 *msg_len
- 		 */
- 		return -ENODEV;
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index 94c90d472f317..eebbbe6deacdd 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -239,7 +239,7 @@ static int sco_chan_add(struct sco_conn *conn, struct sock *sk,
+ 	int err = 0;
  
--	if (status) {
-+	if (usr && status) {
- 		/*
- 		 * Releasing resources failed on the device side, which puts
- 		 * us in a bind since they may still be in use, so enable the
-@@ -1105,6 +1105,9 @@ static void *msg_xfer(struct qaic_device *qdev, struct wrapper_list *wrappers, u
- 	mutex_lock(&qdev->cntl_mutex);
- 	if (!list_empty(&elem.list))
- 		list_del(&elem.list);
-+	/* resp_worker() processed the response but the wait was interrupted */
-+	else if (ret == -ERESTARTSYS)
-+		ret = 0;
- 	if (!ret && !elem.buf)
- 		ret = -ETIMEDOUT;
- 	else if (ret > 0 && !elem.buf)
-@@ -1415,9 +1418,49 @@ static void resp_worker(struct work_struct *work)
+ 	sco_conn_lock(conn);
+-	if (conn->sk)
++	if (conn->sk || sco_pi(sk)->conn)
+ 		err = -EBUSY;
+ 	else
+ 		__sco_chan_add(conn, sk, parent);
+@@ -293,9 +293,20 @@ static int sco_connect(struct sock *sk)
+ 
+ 	lock_sock(sk);
+ 
++	/* Recheck state after reacquiring the socket lock, as another
++	 * thread may have changed it (e.g., closed the socket).
++	 */
++	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
++		release_sock(sk);
++		hci_conn_drop(hcon);
++		err = -EBADFD;
++		goto unlock;
++	}
++
+ 	err = sco_chan_add(conn, sk, NULL);
+ 	if (err) {
+ 		release_sock(sk);
++		hci_conn_drop(hcon);
+ 		goto unlock;
  	}
- 	mutex_unlock(&qdev->cntl_mutex);
  
--	if (!found)
-+	if (!found) {
-+		/*
-+		 * The user might have gone away at this point without waiting
-+		 * for QAIC_TRANS_DEACTIVATE_FROM_DEV transaction coming from
-+		 * the device. If this is not handled correctly, the host will
-+		 * not know that the DBC[n] has been freed on the device.
-+		 * Due to this failure in synchronization between the device and
-+		 * the host, if another user requests to activate a network, and
-+		 * the device assigns DBC[n] again, save_dbc_buf() will hang,
-+		 * waiting for dbc[n]->in_use to be set to false, which will not
-+		 * happen unless the qaic_dev_reset_clean_local_state() gets
-+		 * called by resetting the device (or re-inserting the module).
-+		 *
-+		 * As a solution, we look for QAIC_TRANS_DEACTIVATE_FROM_DEV
-+		 * transactions in the message before disposing of it, then
-+		 * handle releasing the DBC resources.
-+		 *
-+		 * Since the user has gone away, if the device could not
-+		 * deactivate the network (status != 0), there is no way to
-+		 * enable and reassign the DBC to the user. We can put trust in
-+		 * the device that it will release all the active DBCs in
-+		 * response to the QAIC_TRANS_TERMINATE_TO_DEV transaction,
-+		 * otherwise, the user can issue an soc_reset to the device.
-+		 */
-+		u32 msg_count = le32_to_cpu(msg->hdr.count);
-+		u32 msg_len = le32_to_cpu(msg->hdr.len);
-+		u32 len = 0;
-+		int j;
+@@ -613,13 +624,18 @@ static int sco_sock_connect(struct socket *sock, struct sockaddr *addr, int alen
+ 	    addr->sa_family != AF_BLUETOOTH)
+ 		return -EINVAL;
+ 
+-	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND)
++	lock_sock(sk);
 +
-+		for (j = 0; j < msg_count && len < msg_len; ++j) {
-+			struct wire_trans_hdr *trans_hdr;
-+
-+			trans_hdr = (struct wire_trans_hdr *)(msg->data + len);
-+			if (le32_to_cpu(trans_hdr->type) == QAIC_TRANS_DEACTIVATE_FROM_DEV) {
-+				if (decode_deactivate(qdev, trans_hdr, &len, NULL))
-+					len += le32_to_cpu(trans_hdr->len);
-+			} else {
-+				len += le32_to_cpu(trans_hdr->len);
-+			}
-+		}
- 		/* request must have timed out, drop packet */
- 		kfree(msg);
++	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
++		release_sock(sk);
+ 		return -EBADFD;
 +	}
  
- 	kfree(resp);
- }
+-	if (sk->sk_type != SOCK_SEQPACKET)
+-		err = -EINVAL;
++	if (sk->sk_type != SOCK_SEQPACKET) {
++		release_sock(sk);
++		return -EINVAL;
++	}
+ 
+-	lock_sock(sk);
+ 	/* Set destination address and psm */
+ 	bacpy(&sco_pi(sk)->dst, &sa->sco_bdaddr);
+ 	release_sock(sk);
 -- 
 2.53.0
 
