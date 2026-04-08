@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-234250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPKwFW+c1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:31 +0200
+	id gNHFJGOk1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BCC3C0746
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F5AC3C1E58
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D570830206D2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3D8531BC432
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F283D9035;
-	Wed,  8 Apr 2026 18:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8386E3D6CA2;
+	Wed,  8 Apr 2026 18:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbazVDIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5ugzoVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6668B3A6B6B;
-	Wed,  8 Apr 2026 18:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469392DCF41;
+	Wed,  8 Apr 2026 18:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672372; cv=none; b=pqurtJegEtCDOWIGq9bzlofUgAGgiKRkVZQpsw0WVF8nHt4wzVz8OZn9DTvl472JMvREJcGxrUbvgohm+lqDYzR4vH3Bx9XUACidQWGVpwInXGpJeNdu7pF7cbnEaEluLi0cLoxTsLAI3f938VsJQW3EGb4XcifN2U1j5pIAFuU=
+	t=1775673418; cv=none; b=u5B+coGY4e2w/v05g3Z4ne/51U2EF8rn/w7RpQfeOADMhskP9t0IIEOQvrPpf9rh8LL9zEEv8GiuIcEbV7heINWNxUBtpfSU8r6la/twJiMAPgh1ZZyVPe7COYJWlP3l24+Qz5vx/g36ojSVHqhOLqRnLVtrNKbZxwWYz9J6I60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672372; c=relaxed/simple;
-	bh=a7pgviiFu1u9oNlE4dpYotKLbChCYSUjS/DGc5+Ftk8=;
+	s=arc-20240116; t=1775673418; c=relaxed/simple;
+	bh=2dPisTgI3CZzyg4v4j6FsJ44MKDQUFeM6kedc+zaGHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEBHlCVnw7xCl8sPgqoZE2gfnUS4gAacYiB8pf1iM6i4zdLCOlJDJEUyC39xsSAycDRkviKecVD16bKM1ECiEFEe/wdsD+LO1Xima2BvvE0yKN08Lz551oAil3BLObquaAaT0Z2bLrE2JdkrSQ+709GJBMSFJjCjqmH2Rm7wrqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbazVDIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B6CC2BC87;
-	Wed,  8 Apr 2026 18:19:31 +0000 (UTC)
+	 MIME-Version; b=mxNOI9e0kpYEuY7niM6cE4AeAdqm3/k9EovcMR6Knszog0uBOroDwSh+obK44brrQMZ4lmNnxXbNAKAHdAIWh8Hi/VUvW1qrseUAcR0n6NMLInlddYcoTcHa2nZV4t+k0xZviF4y9qm7uBxHgw4C9gr7n3Mxzn+ukx4ntinZaEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5ugzoVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D013DC19425;
+	Wed,  8 Apr 2026 18:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672372;
-	bh=a7pgviiFu1u9oNlE4dpYotKLbChCYSUjS/DGc5+Ftk8=;
+	s=korg; t=1775673418;
+	bh=2dPisTgI3CZzyg4v4j6FsJ44MKDQUFeM6kedc+zaGHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbazVDIaEILEi/4kw6xFrRg8U6sB6ik98AIruyassofMW46jmFgg5mIt4M5vvmcU0
-	 hMNhxBp3GZDbYF/FdT4LaZLDmSL1Xl9tW8Bxe0+yrf4jfkOYzdJ1zBTW65Do9zrQz2
-	 AKBPDr55zF10IQ7WntVPtkHxnPu4fWdKbgoPNTto=
+	b=k5ugzoVdEKl067VoZloZuzaZf7iNNIp16EbUW+93PulxlnlTX+I8jq7HjcRtLWdmI
+	 5vfWf9q8wa/B6gBuRkCHRPk5qGSfAoDVCPifnNxrHxFKPvY2MmC7PG4paFjk1PLlMK
+	 06w7s7f4XfgupoZaHalBxq73G6ysg3KEVz4mcQUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chang <liaochang1@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 293/312] cpufreq: governor: Free dbs_data directly when gov->init() fails
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <dstsmallbird@foxmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.18 225/277] netfilter: ipset: drop logically empty buckets in mtype_del
 Date: Wed,  8 Apr 2026 20:03:30 +0200
-Message-ID: <20260408175944.709973859@linuxfoundation.org>
+Message-ID: <20260408175942.257859303@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +71,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foxmail.com,nwl.cc,netfilter.org];
+	TAGGED_FROM(0.00)[bounces-234654-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234250-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email,intel.com:email,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 45BCC3C0746
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,netfilter.org:email,nwl.cc:email,foxmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1F5AC3C1E58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Yifan Wu <yifanwucs@gmail.com>
 
-[ Upstream commit 916f13884042f615cfbfc0b42cc68dadee826f2a ]
+commit 9862ef9ab0a116c6dca98842aab7de13a252ae02 upstream.
 
-Due to the kobject embedded in the dbs_data doest not has a release()
-method yet, it needs to use kfree() to free dbs_data directly when
-governor fails to allocate the tunner field of dbs_data.
+mtype_del() counts empty slots below n->pos in k, but it only drops the
+bucket when both n->pos and k are zero. This misses buckets whose live
+entries have all been removed while n->pos still points past deleted slots.
 
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 6dcf9d0064ce ("cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Treat a bucket as empty when all positions below n->pos are unused and
+release it directly instead of shrinking it further.
+
+Fixes: 8af1c6fbd923 ("netfilter: ipset: Fix forceadd evaluation path")
+Cc: stable@vger.kernel.org
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <dstsmallbird@foxmail.com>
+Signed-off-by: Yifan Wu <yifanwucs@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq_governor.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_hash_gen.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -440,7 +440,7 @@ int cpufreq_dbs_governor_init(struct cpu
- 
- 	ret = gov->init(dbs_data);
- 	if (ret)
--		goto free_policy_dbs_info;
-+		goto free_dbs_data;
- 
- 	/*
- 	 * The sampling interval should not be less than the transition latency
-@@ -475,6 +475,8 @@ int cpufreq_dbs_governor_init(struct cpu
- 	if (!have_governor_per_policy())
- 		gov->gdbs_data = NULL;
- 	gov->exit(dbs_data);
-+
-+free_dbs_data:
- 	kfree(dbs_data);
- 
- free_policy_dbs_info:
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -1099,7 +1099,7 @@ mtype_del(struct ip_set *set, void *valu
+ 			if (!test_bit(i, n->used))
+ 				k++;
+ 		}
+-		if (n->pos == 0 && k == 0) {
++		if (k == n->pos) {
+ 			t->hregion[r].ext_size -= ext_size(n->size, dsize);
+ 			rcu_assign_pointer(hbucket(t, key), NULL);
+ 			kfree_rcu(n, rcu);
 
 
 
