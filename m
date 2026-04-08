@@ -1,299 +1,211 @@
-Return-Path: <stable+bounces-233771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNYXO3/41Wn4/gcAu9opvQ
-	(envelope-from <stable+bounces-233771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:41:03 +0200
+	id EKDQFSX51Wn4/gcAu9opvQ
+	(envelope-from <stable+bounces-233772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:43:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974B33B7AAB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E125C3B7ADC
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 30661302FE8B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:39:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 877393011047
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FF9366062;
-	Wed,  8 Apr 2026 06:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nr9hTbzi"
-X-Original-To: Stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1C0364EB6;
+	Wed,  8 Apr 2026 06:43:40 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B5E3644DC;
-	Wed,  8 Apr 2026 06:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775630389; cv=fail; b=PlMF3ywYxb1m+vLV91FPcF3e5jRr4k2GXQt+jWPfDaFuHrvaFq18FFOjuEbURfB0pA/ZtouB0XmfmRNcMvZlGSeplWOJfZScOb6wIFlEl8rHB0tkDtbMcFFHKUJwaEuOg7U3HHW2hiYkGtnitzVsQ0hvgIp9wNDGj5ZbCVZxhTE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775630389; c=relaxed/simple;
-	bh=jKbi+8W6hC/9uR5poAqXQTZbrog+HCrkPT70FyuqNAk=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=faWdNsbfXDWZnY3o1sKPCwGCw2bElJKCKhE0j61oA4AMNIt4A5Z8ZD+FDt2SjQ9jDnVXAtT8HE7/1tbFMRz9tRce0pW4HbMCMYFHQLdroBLKXZAImUDL0J0fX88AUmVohRja0j6vpkcJ0WvbJmtyehF2Ot99rVutO3F87yflHFM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nr9hTbzi; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775630389; x=1807166389;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=jKbi+8W6hC/9uR5poAqXQTZbrog+HCrkPT70FyuqNAk=;
-  b=Nr9hTbziqVWJQFxODxXd0RYk3staNP1vEaKJOkZVTxtWLB2AqIhdqLL9
-   sg0kQZXa9zROfrUquWafEM8H79BqhZjWcMAQE2tBR2GeTj31CAndrD6cW
-   Ijx7H4KuzXZwz0MfNt79XXUvNr5lgy6VToOINyTqpkD2ixDpOSNu8eB4X
-   +kQIRsiM3P4wGmGfwrkzoRYvO95AoxmHgkl6mBT8KAQNYAdOBaTQVMeVE
-   Law/zdgAZSrtVU6ZaNS3pASEwgOY9fFT2JgfZv+WWFhApMBxcw3BxJP20
-   FQqFBJ/pz2h7z8Du278dSVy2BYdaWIN8w6ubg4Ywa4ydcuguU+iWaOBLH
-   Q==;
-X-CSE-ConnectionGUID: LAC9z2IuTgyaUUh82cpgSA==
-X-CSE-MsgGUID: PT1lOlzWRsCoKX++KAnt6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="87989015"
-X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="87989015"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 23:39:48 -0700
-X-CSE-ConnectionGUID: RnjWLKZKQNGEKzI/F/LJ+A==
-X-CSE-MsgGUID: q1K8nY8bTw+/Lf4puHbhYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,167,1770624000"; 
-   d="scan'208";a="258815516"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 23:39:47 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 7 Apr 2026 23:39:46 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 7 Apr 2026 23:39:46 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.12) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 7 Apr 2026 23:39:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DMOVqvRPSNcTum0TH0tGHnYfRoCeqLjQH60Da/oAmlvZeGeQyYSG2YDbTXsozpmGM84AB/pm5xuDtu/N7PtxX0Lq4JzNxU5PdKHwQFExu8MGxyhqSv0+jK1vQrZ0c9Cd0WwDvUJWJfayW8p1xVDqvzlWtyxonI4rQ+w4MXFBVwXosi/LkS6iqJyD4cDQDdWRSsEODszn98EMezC1Ox0xkx/RbGois7kV5vnWWb4ndrYH0fAJB5MjMfmhh44dqnxthe4fyguxFeZx/jZ0D396RVCpJ18147NE6/zmmllGe+b8nSYHz0Lahl1MrDKtt6qlUpWTvVFAE8avJEkZJcDb9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3k7Aq6xuXdHMy2cZpQbznLYMNdDgVxvrwfZNKqBptR4=;
- b=AXNMTEVH4uXSdRdEf0QBcKBW06b7JUYNRFWWzwQ1eJjKUMXJvWljAjyeV5wv80mRK31ejv9FIZX+xR0CGQqct/oO6vtnB3hqzVdV7MGrulGEz4mhpMU/WzbpJ4Dq/8eBtwC16pZ+BhMN9MMjrqKcArxGu/YHqg617goaTboOBmlCL7/iGUEPEbczlI9d97AHVDjA1pIfxbYqtA00zcjZZEvHJpIUCp96x79mVeeDn9xE/w73938EPPWr5ZxMFft99/mFhQQeTZg45IXkYtyLLhuT/aI6WRdGjjv4wBoGPDMjbgiEbDKbOLtdgkVv4W0QyLW7NSJ115VJpKN90sFL6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
- by IA1PR11MB7918.namprd11.prod.outlook.com (2603:10b6:208:3ff::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Wed, 8 Apr
- 2026 06:39:37 +0000
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::2c4e:e92a:4fa:a456]) by IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::2c4e:e92a:4fa:a456%6]) with mapi id 15.20.9769.015; Wed, 8 Apr 2026
- 06:39:37 +0000
-Message-ID: <696a1d25-bb79-4ddc-942e-196ff2e5a93c@intel.com>
-Date: Wed, 8 Apr 2026 09:39:33 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mmc: sdhci-of-dwcmshc: Disable clock before DLL
- configuration
-To: Shawn Lin <shawn.lin@rock-chips.com>, Ulf Hansson <ulf.hansson@linaro.org>
-CC: <linux-mmc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>,
-	<Stable@vger.kernel.org>
-References: <1775629564-11267-1-git-send-email-shawn.lin@rock-chips.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
- 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
- 4, Domiciled in Helsinki
-In-Reply-To: <1775629564-11267-1-git-send-email-shawn.lin@rock-chips.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0056.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:469::7) To IA1PR11MB7198.namprd11.prod.outlook.com
- (2603:10b6:208:419::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E98364E88
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 06:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775630620; cv=none; b=Bv+w9T3CS95R8xMl5/n4Vuv/2ZmVXCWCD7a/EZ1hUOWK9ZKlFaLYJHiywIJDfBB9gBkuVoMi2ckf1Rj18b8zFoSQunM09NWLCk8OYAU0Yu57DgjheWsT6N/83Pns66FVZ0q5VmnDzl+WoWeMeeOq3vFDhsEYtgrUzfs04trk5dk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775630620; c=relaxed/simple;
+	bh=G+q281chvuvhqbXJ+38p5NFB+rljrSWTNPeTdojNm9U=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d8ggMlYXob7OFTXDbA7YfD4AMfovG+VHw+dzxIWRxX2VR3VDwfCi7ByKB8LzmMXWbZb/8hTIs6IMJJU0Dhl01jjLtByv6RzbHiy/Kq/YVKmPUArDi5ALUhgCVBYdtx/W3vIUquTW1fP+Sk0MlDFL1e4OjbzU9bE1JncWbcC4UwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a0fc5e2c59so5883454e87.1
+        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 23:43:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775630617; x=1776235417;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JZhpOO1/NQ390zCAVE3GeLvUQ1e64LFEhYwAmdVz/Mw=;
+        b=kFcdykCxv3FSkyn6dEsOLdLGddZa1/o79NId4/t8cjs0/gkF0FH+YXwKFb131+hzx0
+         wk5lf/cMO+k/YmuI/gxrLMWwR9pdkITZ99+NZPDLdXthDoPhNfwgHNvQTJu53SiE92zl
+         VcZnLhoSdNkpF83QNrKXbudGDPByR50N+GxSaPARGUhEHxVh8iPId/jqkHAoH4o+hb5Z
+         TkNdOx/R+U7VMGtewp26GNs34Ua5t63osYwtD7fGpg2u9teQBy44UaTltbekIZmOeWYo
+         8LXI5Tr/RFS9pO2GR264hskEsKT+eFHs4QNWutCd6/s2aEv0+6JMcMN6RQLduK6Lm53K
+         fRhQ==
+X-Gm-Message-State: AOJu0YzU1Gw7ETn5BJcOe2avNJb+VAugGQOlsya69bgHG7ANmLCDZZIx
+	yt844oH5DLG0IkdlwlfKJtjjb+WIRm5h2NBe64Eu2s8Sic2kcuEqkRUJcjj+reouhkw=
+X-Gm-Gg: AeBDieusUjmYU1JkKCVjvKv7hGCk2UF0qYjHPfTSTSuj5xer0mZn+KX9lQt1pDkGImU
+	X2kbAF5gFogn553jIKNi01TSJUhppIOraxDgcf9uxIN5OM0PTGNmlzDnAosWtGcQsD/kfRAspc0
+	h2Gnccu2O1JpIFTTncWPLPeIS4r/XF8tt8EwYkqHKVMo/QAOzyNZ7skZxo9rS5214Z08F2IyL6r
+	MpcHLrx4T0zgkPXsl0aywjMl1qGbUMElcPVBZzUEDnSwfrjUyY0to4EDy21J3F80jk3JLyvRjgv
+	jBmM9aFLvFxQMYWkCrQHl1rACdNG6SX221mZis0uTwnOLE+HaPH+392p5+bg7MQRRkZ6laNvfvk
+	bOlBiuoKw9opPcQC3j4BpbsIDwXkqVkC2y03fvjmsEl9nNJGr063bB+PLxNidf2vSQLMuIIJWtg
+	JPgPeNSiQlcLtsI4i/xkr16Z4OAjdRjAOGxZ/YNYr5lNQQblg0nMdt9yX+HPpK4sBP
+X-Received: by 2002:a05:6512:224f:b0:5a3:cd17:8d71 with SMTP id 2adb3069b0e04-5a3cd178dd9mr7363775e87.21.1775630616547;
+        Tue, 07 Apr 2026 23:43:36 -0700 (PDT)
+Received: from hackbase (95-24-76-124.broadband.corbina.ru. [95.24.76.124])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c6ccca2dsm4528889e87.60.2026.04.07.23.43.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 23:43:35 -0700 (PDT)
+From: Alexander Popov <alex.popov@linux.com>
+To: stable@vger.kernel.org,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Alexander Popov <alex.popov@linux.com>
+Subject: [PATCH 6.1.y] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
+Date: Wed,  8 Apr 2026 09:43:14 +0300
+Message-ID: <20260408064323.32628-1-alex.popov@linux.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026040719-cofounder-unworldly-b566@gregkh>
+References: <2026040719-cofounder-unworldly-b566@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|IA1PR11MB7918:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0c1b403-516b-40de-486f-08de95399a82
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info: k5RRH1Rb2/AkSrEtHbCUxR61oYWQP9YjywaO1HNJLADI3npeYsco/RKeHCOgPD+SjFLg81MD9E4D5r5/P2tW9uVoQXNvpnn0TqBu8FXF9K9SzhQiUCsMym89RCd3P8aFNQdHg98qLMBtvqFd1wKTNTyrsp55n3QuFQNw18DYkxuC6uoINlnvYEFiMQzhuVZ3Vf8C3CnrbkuLXxn/st+PpCNGnAowFU3bu0hS6B7+GBs0rCIAueXzP5NlUXMnNiegoCIolAlkGyvnuELKZ5hMX1O5AC/8Mbf31HI60xF4hMd7AxNjvEufe2B6EfNy3+gsfXTF6/4eHT1T1Z51vVtMeEl/A/Co8J98T5gwd+O3ab+En9SEpSX4bOow2qaF4QBIbzMxoQT4iQ5T5llhUEuYxrRSY7//TNdHy0DTGwJ/gsJDe6vWb+K0J6nh4XBT5LQvwEMDDdwhO2gZyGPQR2ZSxrDTLc4ToWcxECclZYU/TET09FLQYaODCHQzlA9y0grk9y1OdKKgk+KTZnNbeKMWEOVy8zegic3HzsK6sMs04dbFPKShPrkDM4UjUvGTpgmR5pIYkQeWSOF+x12A9kCihdpD6posCHil754fJr53fop7zLTjvNGF9d4shY0BoSukxK0p4sgHONtrw7t1EHFZyEk4Vt07Ur8NQ84GgoABphb6nrRxxxgLdvcIiXbcgRhblGFZ4tnLjkjOA8/M2yqZt4cYS110Gm/mfiMa7jWbcm4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UWRrWHlpRytKWmNmbVNtc1ZUMUl4Zkg2cEYvVWJMZC9pYzh1TUJyRVc0bGlR?=
- =?utf-8?B?aVpxclBpZ0hpR0s0Z3M2bU9nclNUemhkbWs0N1NwT2tNNDJCL0UvNVNveUs1?=
- =?utf-8?B?QmIrV0c3elhxWi9vZmJPYWR4dlBsdW5JKzhCYlFmZmpWQXlSVTQ5c0o2Ym9T?=
- =?utf-8?B?QU9xV2JleTBscHRvRVpJUmt0SUpVSnhTbzBlTzRMZkRDd0VkZGk3NzN4Z1VC?=
- =?utf-8?B?MHBTVzRkZm5BTG1ZQm9OOVZUTUhuc0YxaHg1ckxRSXcwM0NldjNKWkNHSFVN?=
- =?utf-8?B?RnBIVlFTNEdrU0o4cGx0cEtXWUVwTHhCb1RvTVRMME8zeVY5L0xEUmV3eDIz?=
- =?utf-8?B?bDVjU212blk4VEdZaElnWmJnWkNaM0NUY3JmQWNGWW90Znpiam1aZ0lxT2x2?=
- =?utf-8?B?aEEzVTBiZTY3cDVJR3prSmRmSDF2ajJVNVEreG41cTZaUFBMSExacEhOQ081?=
- =?utf-8?B?NTFjZ2xEdU5uUFpDSnNTYlNlY1o0bDQzUXA4UXYzOXRMbWJmcGd6c3RzRjI1?=
- =?utf-8?B?WTZiRDlyRlNpZ0JDOXlmaGl6TkNmQXV6aUxYY3AzVHo0WVVYOXRkUW5TLzNr?=
- =?utf-8?B?cFFvK25abWN5dDJoZ2RibnAyNXR0ZWZYT2tGaGZ0UzBBbmdCbzU0QzZsVDBy?=
- =?utf-8?B?b3BSVmlMZ05XTTlhUENwL3JNelljelZOQldLZmJPLy9iemtyd0pFTTNEZWV0?=
- =?utf-8?B?WFpwaktyWnVVTVRKZCtnSlpRTUY1VHR3M3lxeVpWakRxaEl0WFlBT0pVS1R6?=
- =?utf-8?B?SHAyVzJLRkV6aS9yeXhBSFVOVHlwaXhCbmFLWmQzNTcrd1BxZ3VNdStGaUZM?=
- =?utf-8?B?OE9Ra3A2bWtENGNGNU9MSEE0bkp2akRhc2dRRTRteWI1QnNTbUlpSTFDNlND?=
- =?utf-8?B?c25yb0F1bE52clNWcU11MkF6UGhxdjdGdmtJU0FYS0dmbVpldkZjSGZoSEds?=
- =?utf-8?B?RWtwOUlQTE5IOVVGengwQWJjbTR4b2lLb0NjdzU0ZFRQbzJpczBwZE8yRVBh?=
- =?utf-8?B?TnNaczR6UXdRYnY4U1ZEdVM2OHoybjdlby82MGFoVGJXZjZBb040RzZQaWlY?=
- =?utf-8?B?Tkp0dGFjVFdDazY0cEFtUlZoWis1VmZqblJkVmhka0FBRngxTktOZ01hUkVo?=
- =?utf-8?B?UDdBVHJGaUMxQ1daeGNUNkk1eityTG16QTBmZFJSK0dlWVlYMTJxemdDZjhh?=
- =?utf-8?B?YnJPUEZkWXlSNDlKODZ5VG9FN1A0YTU5d0tidlBKbG5IWVVNQ01xTU14a0RN?=
- =?utf-8?B?WGFpT1BsWHFZaERuWVIyOWZITC84YmpQdHpSMmJkK2gwWWkwR3Vkb0dCSFh5?=
- =?utf-8?B?cjUyaWtKQ1BLQ25KOGZhOWRjM1NNazZ1MUFxZzh0b0lkTHM1N0pUQ3NIRGNZ?=
- =?utf-8?B?TTdMSWxEbmtqQ1I0VU5Bb2prWUVBQmpqUzBZN29LQ0psOGxTS0Z3ZG8zWkpG?=
- =?utf-8?B?N0t0ZUhVdUIrWEJZN3YzZUlvWGxjZ2lPRlU5Tnd2cGdCSS9CeTI0MityVVlZ?=
- =?utf-8?B?RUFvZFRjQUlpL3R4dlRUUzZubmRYdjhBOXZISWRTMXJhaE9aakxjanlsSXdH?=
- =?utf-8?B?eGtvK3kvaGhXVXRPdStLL0ViNTcxZlNZS3NqckNhY3d1ZW5WU0dRaHYrMkxi?=
- =?utf-8?B?WTNGdlpUS1N1cXFlMXY0Rldmd2FLejFXT1hLQVhyM3lsbDBBb1FIRDF3bGxv?=
- =?utf-8?B?QTlmbnRqeWJMaVFtRXh3MU53Q01kMENGMlJweDdRdzZ4eGJCTzFJV2VGU3VM?=
- =?utf-8?B?dGxYTGYydzVnM2lUbUY0QVplQ1ovb3Z1Y1dPZE9tSTREcHphWGlWRi82NC84?=
- =?utf-8?B?RlRrN2hURHM1RmUvNk9BQmczNy9ibjRhcER2b1hhbkVkT2tmV0hLTE1KOUNY?=
- =?utf-8?B?QzVNMFB4MmpCUWQ3RXQxNDlMcmJPYllxb0N3R01HR2cyY3hZbk8zanZ6Smpy?=
- =?utf-8?B?bXBnZTZVLzUzbFlGcURZa3BKT0VJS2w0cjBNM3RIbHFZNzdSTWdzcHJ2emVM?=
- =?utf-8?B?VElYSHQ4STNDV0NaWHpyd2NLRW1vNjBtc3QzNkdLTUZ3VFQxK0tOaTJOcDgz?=
- =?utf-8?B?K1h4Y3BlcFMvZ1NsVVl4U0Rqakpzejh5SE1MbktCTmhWZGFSamswT1JaNVBJ?=
- =?utf-8?B?YWgzRis5Mmk3Vy9zNTNTaEpvWkNoM3Q1MmFtbVQ1eXZzVU9UZTVoSFYwR3h1?=
- =?utf-8?B?QjB0eTZmQkxIVFora2xQYlBYaGJva1JySU5UdzJGV1ZQbW1nN25XS0s4NzJy?=
- =?utf-8?B?eWxyMTNCN2x4QW8xQWxEMVQxbWUzbXlGLzkrQUswN0hmcWlPSEdKdDdJK1lK?=
- =?utf-8?B?R1M3Zi9TQ01kaEpaZlhwTjdxbjBQT2hWblE4amtRUXp1T1pTZjhISU1UOVRY?=
- =?utf-8?Q?QWNydU8tln1bRRFM=3D?=
-X-Exchange-RoutingPolicyChecked: O9Rm/fs55AZN4fWtkv20T7LdHMCjTPP6Q9oYhif3zGL2cSR5gSI9zBTMHCjVbgnI/WL1360jie5SE7FBg3X7F2Pf+yzmaCTM/VK02jayW2ePe5qH36S87sviwOqw4XiMLx+Mz1Hpa6sDvD2lcR7vsOsOYcGIfbMRePWaqWKh1wwsQF84jKYdo9SkFMtiS3j2cxIbcgnH+OQZbunvLoa65/QXch2tk4SFXsOtGoqpMUeOVicG268MejRFMNx1BAt/0oODbdLCNKQESRIKDP3+Hmj18mfq/pxDgnQfh7EWIQ1rhdepQBnOcAmxV/Ac72khR8rZ4lWcyWGcM5qa7MQhTQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0c1b403-516b-40de-486f-08de95399a82
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 06:39:37.2977
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JFrx8BeejmsDKJwyy+hYSV5odwPK4Mymh6xiKsFDvxIvpDg0C078FFFP77CEXzXjt/uiZ5I2cLmYduuqarUKfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7918
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.14 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[linux.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233771-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adrian.hunter@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233772-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 974B33B7AAB
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[alex.popov@linux.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.942];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.com:email,linux.com:mid]
+X-Rspamd-Queue-Id: E125C3B7ADC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 08/04/2026 09:26, Shawn Lin wrote:
-> According to the ASIC design recommendations, the clock must be
-> disabled before operating the DLL to prevent glitches that could
-> affect the internal digital logic. In extreme cases, failing to
-> do so may cause the controller to malfunction completely.
-> 
-> Adds a step to disable the clock before DLL configuration and
-> re-enables it at the end.
-> 
-> Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
-> Cc: <Stable@vger.kernel.org>
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
+the virt_wifi net devices. However, unregistering a virt_wifi device in
+netdev_run_todo() can happen together with the device referenced by
+SET_NETDEV_DEV().
 
-Missing colon below, otherwise:
+It can result in use-after-free during the ethtool operations performed
+on a virt_wifi device that is currently being unregistered. Such a net
+device can have the `dev.parent` field pointing to the freed memory,
+but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
 
-> ---
-> 
-> Changes in v2:
-> - Add a comment about why passing zero to sdhci_enable_clk()
-> 
->  drivers/mmc/host/sdhci-of-dwcmshc.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> index 6139516..5af35c9 100644
-> --- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-> +++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-> @@ -783,12 +783,15 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
->  	extra |= BIT(4);
->  	sdhci_writel(host, extra, reg);
->  
-> +	/* Disable clock while config DLL */
-> +	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-> +
->  	if (clock <= 52000000) {
->  		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
->  		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
->  			dev_err(mmc_dev(host->mmc),
->  				"Can't reduce the clock below 52MHz in HS200/HS400 mode");
-> -			return;
-> +			goto enable_clk;
->  		}
->  
->  		/*
-> @@ -808,7 +811,7 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
->  			DLL_STRBIN_DELAY_NUM_SEL |
->  			DLL_STRBIN_DELAY_NUM_DEFAULT << DLL_STRBIN_DELAY_NUM_OFFSET;
->  		sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
-> -		return;
-> +		goto enable_clk;
->  	}
->  
->  	/* Reset DLL */
-> @@ -835,7 +838,7 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
->  				 500 * USEC_PER_MSEC);
->  	if (err) {
->  		dev_err(mmc_dev(host->mmc), "DLL lock timeout!\n");
-> -		return;
-> +		goto enable_clk;
->  	}
->  
->  	extra = 0x1 << 16 | /* tune clock stop en */
-> @@ -868,6 +871,16 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
->  		DLL_STRBIN_TAPNUM_DEFAULT |
->  		DLL_STRBIN_TAPNUM_FROM_SW;
->  	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
-> +
-> +enable_clk
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in __pm_runtime_resume+0xe2/0xf0
+ Read of size 2 at addr ffff88810cfc46f8 by task pm/606
 
-Missing colon
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4d/0x70
+  print_report+0x170/0x4f3
+  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+  kasan_report+0xda/0x110
+  ? __pm_runtime_resume+0xe2/0xf0
+  ? __pm_runtime_resume+0xe2/0xf0
+  __pm_runtime_resume+0xe2/0xf0
+  ethnl_ops_begin+0x49/0x270
+  ethnl_set_features+0x23c/0xab0
+  ? __pfx_ethnl_set_features+0x10/0x10
+  ? kvm_sched_clock_read+0x11/0x20
+  ? local_clock_noinstr+0xf/0xf0
+  ? local_clock+0x10/0x30
+  ? kasan_save_track+0x25/0x60
+  ? __kasan_kmalloc+0x7f/0x90
+  ? genl_family_rcv_msg_attrs_parse.isra.0+0x150/0x2c0
+  genl_family_rcv_msg_doit+0x1e7/0x2c0
+  ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
+  ? __pfx_cred_has_capability.isra.0+0x10/0x10
+  ? stack_trace_save+0x8e/0xc0
+  genl_rcv_msg+0x411/0x660
+  ? __pfx_genl_rcv_msg+0x10/0x10
+  ? __pfx_ethnl_set_features+0x10/0x10
+  netlink_rcv_skb+0x121/0x380
+  ? __pfx_genl_rcv_msg+0x10/0x10
+  ? __pfx_netlink_rcv_skb+0x10/0x10
+  ? __pfx_down_read+0x10/0x10
+  genl_rcv+0x23/0x30
+  netlink_unicast+0x60f/0x830
+  ? __pfx_netlink_unicast+0x10/0x10
+  ? __pfx___alloc_skb+0x10/0x10
+  netlink_sendmsg+0x6ea/0xbc0
+  ? __pfx_netlink_sendmsg+0x10/0x10
+  ? __futex_queue+0x10b/0x1f0
+  ____sys_sendmsg+0x7a2/0x950
+  ? copy_msghdr_from_user+0x26b/0x430
+  ? __pfx_____sys_sendmsg+0x10/0x10
+  ? __pfx_copy_msghdr_from_user+0x10/0x10
+  ___sys_sendmsg+0xf8/0x180
+  ? __pfx____sys_sendmsg+0x10/0x10
+  ? __pfx_futex_wait+0x10/0x10
+  ? fdget+0x2e4/0x4a0
+  __sys_sendmsg+0x11f/0x1c0
+  ? __pfx___sys_sendmsg+0x10/0x10
+  do_syscall_64+0xe2/0x570
+  ? exc_page_fault+0x66/0xb0
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  </TASK>
 
-> +	/*
-> +	 * The sdclk frequency select bits in SDHCI_CLOCK_CONTROL are not functional
-> +	 * on Rockchip's SDHCI implementation. Instead, the clock frequency is fully
-> +	 * controlled via external clk provider by calling clk_set_rate(). Consequently,
-> +	 * passing 0 to sdhci_enable_clk() only re-enables the already-configured clock,
-> +	 * which matches the hardware's actual behavior.
-> +	 */
-> +	sdhci_enable_clk(host, 0);
->  }
->  
->  static void rk35xx_sdhci_reset(struct sdhci_host *host, u8 mask)
+This fix may be combined with another one in the ethtool subsystem:
+https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
+
+Fixes: d43c65b05b848e0b ("ethtool: runtime-resume netdev parent in ethnl_ops_begin")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260324224607.374327-1-alex.popov@linux.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+(cherry picked from commit 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6)
+---
+ drivers/net/wireless/virt_wifi.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
+index fb4d95a027fe..eac4838807c7 100644
+--- a/drivers/net/wireless/virt_wifi.c
++++ b/drivers/net/wireless/virt_wifi.c
+@@ -553,7 +553,6 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
+ 	eth_hw_addr_inherit(dev, priv->lowerdev);
+ 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
+ 
+-	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
+ 	dev->ieee80211_ptr = kzalloc(sizeof(*dev->ieee80211_ptr), GFP_KERNEL);
+ 
+ 	if (!dev->ieee80211_ptr) {
+-- 
+2.53.0
 
 
