@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-234519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEkOMhSj1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234519-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:52 +0200
+	id 6KKbATam1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412DC3C1A01
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67BA93C236B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8D4D312331F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E21A3135D3F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42F837F01B;
-	Wed,  8 Apr 2026 18:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1003D890F;
+	Wed,  8 Apr 2026 18:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efF6LwIw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INjdNoYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8822626FA5A;
-	Wed,  8 Apr 2026 18:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D406F34AB06;
+	Wed,  8 Apr 2026 18:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673070; cv=none; b=dRicL1xaCOaVo28iDugtQpxquSBJtXY9unmhCTvFS1GsSWXnhPZCMFX+3ca3bCI8VDS9yU94oGQdvbP9lpZNtXJer6rrS6BaMzGBf0UwTvkDnDrniymo7z58ABgQx+Mn0wtYCJBgXdXLMKRAmMSLQTnteY5mZWCmdtsNAAlIdvE=
+	t=1775674381; cv=none; b=plZCBA25zg+t8FZK2+yhVe85i6MXG3tNYiMQxkBI532+pO0Jny+XGITsAJUPmO7P5LFacrjwVD5VByd4QmIdFhoYO0Dp8N6jqvAhYKuRZn3EtOhhml1mFrMS/nSJzgU0hSTxF+XrDtiOaMpT/p6i+1OIWhhSJCk7vlKz7c0bbfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673070; c=relaxed/simple;
-	bh=rt/pYLBNJigFbQ0cPdeEp+KKg/f0N2ghn6uRtmuwRnA=;
+	s=arc-20240116; t=1775674381; c=relaxed/simple;
+	bh=DOoyPukuqzThOBva00ciyCNAgWIfy+aQ85MyN3twMT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWtpt65oHo6lh5h8FEUunBvDm53sNtS6NT9fAdChFUzjHHG4nbdZsWCe6IxY68h+M331Gz3dn9af2qvw2SDgbippGrg3Xh71wo6eNiC1F+5vHMRYjHPWnXL3EdHnCWitriasfbbsdseJbh5jyWo67rWFWiDdlmgJmuRq4GiIqdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efF6LwIw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C086C19421;
-	Wed,  8 Apr 2026 18:31:09 +0000 (UTC)
+	 MIME-Version; b=iIEZTP4aBczAxAHnj5MkZzQFYdnSLJFvZCyIPqB8GyL2EL5LTx2NRRMXXvWC9yuke7hfC9eU4Dbnu5G861RkdKNJbsRb8o7wDMk6UAIdJBOSfRX7wjnxpR+TCH9ZTR0QPRX/hkQ6a9mVFTsQ84O//VfTtqdIZnKqCSz4OgbDzMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INjdNoYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693BBC19421;
+	Wed,  8 Apr 2026 18:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673070;
-	bh=rt/pYLBNJigFbQ0cPdeEp+KKg/f0N2ghn6uRtmuwRnA=;
+	s=korg; t=1775674381;
+	bh=DOoyPukuqzThOBva00ciyCNAgWIfy+aQ85MyN3twMT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efF6LwIwQaaZ3JmdrvIGBSD4ii2NHB1sJhjNQDaIP41RdFB7bbJrxCwYoV6JadfcQ
-	 qxxerh/HNTHwgC4WXzR9oIb6/plo0PvGdTeH0SVjfhDXPmmsM8RL6u4oO+r+LtBgZy
-	 fuWhe8zkAheg1HT7hkj2bouGMWGL6CYpg5WC5AwM=
+	b=INjdNoYuJZv8pDg4EytXLmfo0hy/A8w7JDMpyVUtTRyMoiK5uiZgoMrSaQ6bwBpyh
+	 mmKW1X4OXTmWj/SjatM/5UtrBGAhbgBMVlVE1buO7Ebj6QvXR7w0eprNec9sIluVDI
+	 E6KaT36gR88SMXqvsSCtrwW7f0NNWCoU5fzwOl6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 090/277] net/mlx5: lag: Check for LAG device before creating debugfs
-Date: Wed,  8 Apr 2026 20:01:15 +0200
-Message-ID: <20260408175937.235367723@linuxfoundation.org>
+Subject: [PATCH 6.19 076/311] bridge: mrp: reject zero test interval to avoid OOM panic
+Date: Wed,  8 Apr 2026 20:01:16 +0200
+Message-ID: <20260408175942.254145796@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,81 +71,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,blackwall.org,nvidia.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-235027-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234519-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 412DC3C1A01
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,blackwall.org:email]
+X-Rspamd-Queue-Id: 67BA93C236B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit bf16bca6653679d8a514d6c1c5a2c67065033f14 ]
+[ Upstream commit fa6e24963342de4370e3a3c9af41e38277b74cf3 ]
 
-__mlx5_lag_dev_add_mdev() may return 0 (success) even when an error
-occurs that is handled gracefully. Consequently, the initialization
-flow proceeds to call mlx5_ldev_add_debugfs() even when there is no
-valid LAG context.
+br_mrp_start_test() and br_mrp_start_in_test() accept the user-supplied
+interval value from netlink without validation. When interval is 0,
+usecs_to_jiffies(0) yields 0, causing the delayed work
+(br_mrp_test_work_expired / br_mrp_in_test_work_expired) to reschedule
+itself with zero delay. This creates a tight loop on system_percpu_wq
+that allocates and transmits MRP test frames at maximum rate, exhausting
+all system memory and causing a kernel panic via OOM deadlock.
 
-mlx5_ldev_add_debugfs() blindly created the debugfs directory and
-attributes. This exposed interfaces (like the members file) that rely on
-a valid ldev pointer, leading to potential NULL pointer dereferences if
-accessed when ldev is NULL.
+The same zero-interval issue applies to br_mrp_start_in_test_parse()
+for interconnect test frames.
 
-Add a check to verify that mlx5_lag_dev(dev) returns a valid pointer
-before attempting to create the debugfs entries.
+Use NLA_POLICY_MIN(NLA_U32, 1) in the nla_policy tables for both
+IFLA_BRIDGE_MRP_START_TEST_INTERVAL and
+IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL, so zero is rejected at the
+netlink attribute parsing layer before the value ever reaches the
+workqueue scheduling code. This is consistent with how other bridge
+subsystems (br_fdb, br_mst) enforce range constraints on netlink
+attributes.
 
-Fixes: 7f46a0b7327a ("net/mlx5: Lag, add debugfs to query hardware lag state")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260330194015.53585-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 20f6a05ef635 ("bridge: mrp: Rework the MRP netlink interface")
+Fixes: 7ab1748e4ce6 ("bridge: mrp: Extend MRP netlink interface for configuring MRP interconnect")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260328063000.1845376-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/bridge/br_mrp_netlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
-index 62b6faa4276aa..b8d5f6a44d26a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
-@@ -160,8 +160,11 @@ DEFINE_SHOW_ATTRIBUTE(members);
- 
- void mlx5_ldev_add_debugfs(struct mlx5_core_dev *dev)
- {
-+	struct mlx5_lag *ldev = mlx5_lag_dev(dev);
- 	struct dentry *dbg;
- 
-+	if (!ldev)
-+		return;
- 	dbg = debugfs_create_dir("lag", mlx5_debugfs_get_dev_root(dev));
- 	dev->priv.dbg.lag_debugfs = dbg;
- 
+diff --git a/net/bridge/br_mrp_netlink.c b/net/bridge/br_mrp_netlink.c
+index ce6f63c77cc0a..86f0e75d6e345 100644
+--- a/net/bridge/br_mrp_netlink.c
++++ b/net/bridge/br_mrp_netlink.c
+@@ -196,7 +196,7 @@ static const struct nla_policy
+ br_mrp_start_test_policy[IFLA_BRIDGE_MRP_START_TEST_MAX + 1] = {
+ 	[IFLA_BRIDGE_MRP_START_TEST_UNSPEC]	= { .type = NLA_REJECT },
+ 	[IFLA_BRIDGE_MRP_START_TEST_RING_ID]	= { .type = NLA_U32 },
+-	[IFLA_BRIDGE_MRP_START_TEST_INTERVAL]	= { .type = NLA_U32 },
++	[IFLA_BRIDGE_MRP_START_TEST_INTERVAL]	= NLA_POLICY_MIN(NLA_U32, 1),
+ 	[IFLA_BRIDGE_MRP_START_TEST_MAX_MISS]	= { .type = NLA_U32 },
+ 	[IFLA_BRIDGE_MRP_START_TEST_PERIOD]	= { .type = NLA_U32 },
+ 	[IFLA_BRIDGE_MRP_START_TEST_MONITOR]	= { .type = NLA_U32 },
+@@ -316,7 +316,7 @@ static const struct nla_policy
+ br_mrp_start_in_test_policy[IFLA_BRIDGE_MRP_START_IN_TEST_MAX + 1] = {
+ 	[IFLA_BRIDGE_MRP_START_IN_TEST_UNSPEC]	= { .type = NLA_REJECT },
+ 	[IFLA_BRIDGE_MRP_START_IN_TEST_IN_ID]	= { .type = NLA_U32 },
+-	[IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL]	= { .type = NLA_U32 },
++	[IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL]	= NLA_POLICY_MIN(NLA_U32, 1),
+ 	[IFLA_BRIDGE_MRP_START_IN_TEST_MAX_MISS]	= { .type = NLA_U32 },
+ 	[IFLA_BRIDGE_MRP_START_IN_TEST_PERIOD]	= { .type = NLA_U32 },
+ };
 -- 
 2.53.0
 
