@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-234479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SN1XLe2e1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:09 +0200
+	id SPKIBXqa1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2843C0DAE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F623C028D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2513300F7A4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B58B33020745
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F653D522C;
-	Wed,  8 Apr 2026 18:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E533D47A5;
+	Wed,  8 Apr 2026 18:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tW7270B+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWDALDUl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E093F37F01B;
-	Wed,  8 Apr 2026 18:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFC1347503;
+	Wed,  8 Apr 2026 18:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672967; cv=none; b=Z9wYIfot1l8uwqw/TMkEhAO9+quqQ2xxx02C5CqxVy5NiTIgkPcICP1o/58E+LFg1FdLyYvEddkHGpZ01yzUOec7t7L8qnZmiXRfHOoNXJOG/cTnskpDjAQ76ypvoMaYevPf2UFWXPfRx1POUIKe1b0RVCqdGQGo4d53ZKXb7b0=
+	t=1775671923; cv=none; b=d7gftm1rzBKO9kJ1hNBwwIlH7rOPoBa25DwpxEWSw9XQQo7R1KZ/9Z46fsJtOVe3KHoXwkAMpoYNPA1sCxModDlkrwIF4CaDhjYjT8TML5xxVFNA9d+jP/3XDpFXjPrXcFTDoPmvBf8g+FgZ5YYnDhXE0qeX513y16kjts9OaHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672967; c=relaxed/simple;
-	bh=7D8zjF+dZyTUp6fXwCgRcLOfb/Lf//W0wBT4yznu5NU=;
+	s=arc-20240116; t=1775671923; c=relaxed/simple;
+	bh=oVAjcOHEHrYfCjz1m3+NLxn688oXI0cXYko3sMMzqAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8fHR20VYe67BP7xX69GRXTNuBzALes6o0jLeJCylWG0584AIq7ronjyzUtJDcrg2T9vAH2xWdDFKmaxrroFlNPL7jgyEiH2Rqn+Xiys7g2zBcyuie1+IIWdtmyCnTgMLOZwAAgmaYrk3KlDuEezIS9oUIuLoqu0U4GvM8Se3NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tW7270B+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785BBC19421;
-	Wed,  8 Apr 2026 18:29:26 +0000 (UTC)
+	 MIME-Version; b=QFfKHYanDNkzgo0wwHMKjg1KESRDTT5rCboG8qf0FANKOfKVO6DfPOhHBR88jEC/5D2Guc51CBP5LxBkFEf6epRSIq7YnZyWp/kPlUQizaWTNC2Q83dj/3bK1J78Y94ezYQAomGsnay03SeFaOYTU6nEGviNk+9jq+afaG7fbeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWDALDUl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BC1C19421;
+	Wed,  8 Apr 2026 18:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672966;
-	bh=7D8zjF+dZyTUp6fXwCgRcLOfb/Lf//W0wBT4yznu5NU=;
+	s=korg; t=1775671923;
+	bh=oVAjcOHEHrYfCjz1m3+NLxn688oXI0cXYko3sMMzqAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tW7270B+2qHS0vs9EalK5VebgSvm6GLa0yrX8YdkMi0or4xXCs+E80g1MRlqgvLlR
-	 mn3u/RUg+xUEiBbuiqHkPSzodqOArmro2QmkODd+JIFeRgkslJQy3z0JTfS+CJkYhP
-	 CpX/gLcH3gDh3aPk/wkMOkd3umb1npHx3E5LO7k8=
+	b=uWDALDUlPUeO7HbxfIGUrt85zx4zI39HYvvqAYRL9IAiq2YUOriApKFtnm30SzGSo
+	 /zF+6o8kCIEOu7K3ucnHa4jEm+HbU2nnX6x514I2DEm39qb15jNTKkIDgbXDOJlyhU
+	 ibtBzXZ4xzVfCy7HpQmdlhTj5HdGIHxrPj6rQbsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com,
-	Guoyu Su <yss2813483011xxl@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 050/277] net: use skb_header_pointer() for TCPv4 GSO frag_off check
-Date: Wed,  8 Apr 2026 20:00:35 +0200
-Message-ID: <20260408175935.725003568@linuxfoundation.org>
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.1 119/312] ext4: always drain queued discard work in ext4_mb_release()
+Date: Wed,  8 Apr 2026 20:00:36 +0200
+Message-ID: <20260408175938.213306110@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +63,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234479-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,google.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,1543a7d954d9c6d00407];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234076-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 2A2843C0DAE
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sashiko.dev:url]
+X-Rspamd-Queue-Id: A0F623C028D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoyu Su <yss2813483011xxl@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit ddc748a391dd8642ba6b2e4fe22e7f2ddf84b7f0 ]
+commit 9ee29d20aab228adfb02ca93f87fb53c56c2f3af upstream.
 
-Syzbot reported a KMSAN uninit-value warning in gso_features_check()
-called from netif_skb_features() [1].
+While reviewing recent ext4 patch[1], Sashiko raised the following
+concern[2]:
 
-gso_features_check() reads iph->frag_off to decide whether to clear
-mangleid_features. Accessing the IPv4 header via ip_hdr()/inner_ip_hdr()
-can rely on skb header offsets that are not always safe for direct
-dereference on packets injected from PF_PACKET paths.
+> If the filesystem is initially mounted with the discard option,
+> deleting files will populate sbi->s_discard_list and queue
+> s_discard_work. If it is then remounted with nodiscard, the
+> EXT4_MOUNT_DISCARD flag is cleared, but the pending s_discard_work is
+> neither cancelled nor flushed.
 
-Use skb_header_pointer() for the TCPv4 frag_off check so the header read
-is robust whether data is already linear or needs copying.
+[1] https://lore.kernel.org/r/20260319094545.19291-1-qiang.zhang@linux.dev/
+[2] https://sashiko.dev/#/patchset/20260319094545.19291-1-qiang.zhang%40linux.dev
 
-[1] https://syzkaller.appspot.com/bug?extid=1543a7d954d9c6d00407
+The concern was valid, but it had nothing to do with the patch[1].
+One of the problems with Sashiko in its current (early) form is that
+it will detect pre-existing issues and report it as a problem with the
+patch that it is reviewing.
 
-Link: https://lore.kernel.org/netdev/willemdebruijn.kernel.1a9f35039caab@gmail.com/
-Fixes: cbc53e08a793 ("GSO: Add GSO type for fixed IPv4 ID")
-Reported-by: syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1543a7d954d9c6d00407
-Tested-by: syzbot+1543a7d954d9c6d00407@syzkaller.appspotmail.com
-Signed-off-by: Guoyu Su <yss2813483011xxl@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260327153507.39742-1-yss2813483011xxl@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In practice, it would be hard to hit deliberately (unless you are a
+malicious syzkaller fuzzer), since it would involve mounting the file
+system with -o discard, and then deleting a large number of files,
+remounting the file system with -o nodiscard, and then immediately
+unmounting the file system before the queued discard work has a change
+to drain on its own.
+
+Fix it because it's a real bug, and to avoid Sashiko from raising this
+concern when analyzing future patches to mballoc.c.
+
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 55cdd0af2bc5 ("ext4: get discard out of jbd2 commit kthread contex")
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/ext4/mballoc.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 90b029c311a14..1ef939d935cf6 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3791,10 +3791,15 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	 * segmentation-offloads.rst).
- 	 */
- 	if (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV4) {
--		struct iphdr *iph = skb->encapsulation ?
--				    inner_ip_hdr(skb) : ip_hdr(skb);
-+		const struct iphdr *iph;
-+		struct iphdr _iph;
-+		int nhoff = skb->encapsulation ?
-+			    skb_inner_network_offset(skb) :
-+			    skb_network_offset(skb);
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3591,13 +3591,11 @@ int ext4_mb_release(struct super_block *
+ 	struct kmem_cache *cachep = get_groupinfo_cache(sb->s_blocksize_bits);
+ 	int count;
  
--		if (!(iph->frag_off & htons(IP_DF)))
-+		iph = skb_header_pointer(skb, nhoff, sizeof(_iph), &_iph);
-+
-+		if (!iph || !(iph->frag_off & htons(IP_DF)))
- 			features &= ~dev->mangleid_features;
- 	}
+-	if (test_opt(sb, DISCARD)) {
+-		/*
+-		 * wait the discard work to drain all of ext4_free_data
+-		 */
+-		flush_work(&sbi->s_discard_work);
+-		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
+-	}
++	/*
++	 * wait the discard work to drain all of ext4_free_data
++	 */
++	flush_work(&sbi->s_discard_work);
++	WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
  
--- 
-2.53.0
-
+ 	if (sbi->s_group_info) {
+ 		for (i = 0; i < ngroups; i++) {
 
 
 
