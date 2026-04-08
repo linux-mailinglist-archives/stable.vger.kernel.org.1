@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-234688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHtiLmim1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:04 +0200
+	id 8LD+I0Cm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48ED03C243D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A23523C2381
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B69503119B6D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 65E093013FD5
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A8B36166F;
-	Wed,  8 Apr 2026 18:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F653D9DA3;
+	Wed,  8 Apr 2026 19:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLJdlFxh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMNeIkRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D11B67E;
-	Wed,  8 Apr 2026 18:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952E235C1B4;
+	Wed,  8 Apr 2026 19:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673506; cv=none; b=rDTlzfSqZ/kH5JdXLPUbzQQgan1OlwVDfJ5E49jkFzYf9UC0RXlUi96VBIkY/klozmEnSoUedlzEgWAJUJaH+drOLfujWYJH20PMHmSpZeEdYJZeKmner4dEjXO6BHwb9fh/W/CuW8fYutvOMAKM8PZ9IZNKMyUKd1+ChhKHGUo=
+	t=1775674890; cv=none; b=pPcFQonzq56RhBk6weeKB/6QwwDyYLM8en7ChhXY8cXEKIXoSKnHM8gBrlm3gRmVynHaUiJLBXtoX+wXqLj4F+dD02oTnOHUbmvQbYJHN8xhOvjA5FLzg7zZP3WMpQW0o/k2uC9ZNehUnHIXdergp7tynF4A/9dGL9/fgOZIbpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673506; c=relaxed/simple;
-	bh=chxcFuUYQEwELD3AoZJ88LEqYF4BUg9YHozU5frpayA=;
+	s=arc-20240116; t=1775674890; c=relaxed/simple;
+	bh=Z1aCAHQgnEaM1oxOyrFKyzrYGf7trL/J/TYeJ1OU4x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRGxgBUPuD06NorcFPxFuVl6SweKZ3LNcR7E2KMlMLyy5gA5ycx8tMe9HWRngfvO8z8bKi+pijxwlPxLxAyBFrD4t7fBHxZjl0qe252LaWWqNFX2YXpkdxz7EoKOrCdsiMAm959UrRWjoEf8lbsT4+6d15d9VAl8pZT1e5Sb7wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLJdlFxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17BDC19421;
-	Wed,  8 Apr 2026 18:38:25 +0000 (UTC)
+	 MIME-Version; b=JaBadUPtn8Z30SwtKd/b9f7U7x3T1UbVdE74kQ5qm7JZ0MURU0a8uSJTfjpjmdzUgteSySNGbUASCr5FQsuGKXaM8dFJGmk7Me9qKoCuovGbdFmTRv8ZHAixdsUedSHhweF4h3DiwoWmtcWBXWutgNo9ukDhbu3M0OHpHT6EOr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMNeIkRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C61C4AF09;
+	Wed,  8 Apr 2026 19:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673506;
-	bh=chxcFuUYQEwELD3AoZJ88LEqYF4BUg9YHozU5frpayA=;
+	s=korg; t=1775674889;
+	bh=Z1aCAHQgnEaM1oxOyrFKyzrYGf7trL/J/TYeJ1OU4x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLJdlFxhwTxd0KcYTylPj/auGp9Wnv8RcQZGjQlR/T+16JEhtgaEc2Y/9h3UWCz+7
-	 3NHtiHXmyjwwrPBKQLaFkgUji3wDajFT54iufrhG9NB1uZaokrTQtDnb59HcM1VOPQ
-	 sAFN3d8VDh8f2yJylekmGUo8N3mCOaNU3YUDb4BA=
+	b=gMNeIkRu+yH4DI19GT1myg51ufrOPI0ZSu30gI++iv3Ke4bgpR5gFKRIDG5erfcqj
+	 o0hsXVv/+iaGU6zVY6rk8m9l/JlSD3skZ8NmqFye7PTL4vbHMBclZI7FZu0C+GUj1a
+	 BELsGqMAluUFOIXUmhAoaDq0Ta4RRjdKUd/rZOU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.18 259/277] usb: gadget: f_subset: Fix net_device lifecycle with device_move
-Date: Wed,  8 Apr 2026 20:04:04 +0200
-Message-ID: <20260408175943.525905186@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Yongchao Wu <yongchao.wu@autochips.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.19 245/311] usb: cdns3: gadget: fix NULL pointer dereference in ep_queue
+Date: Wed,  8 Apr 2026 20:04:05 +0200
+Message-ID: <20260408175948.540077122@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,225 +68,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234688-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235224-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 48ED03C243D
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,autochips.com:email]
+X-Rspamd-Queue-Id: A23523C2381
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Yongchao Wu <yongchao.wu@autochips.com>
 
-commit 06524cd1c9011bee141a87e43ab878641ed3652b upstream.
+commit 7f6f127b9bc34bed35f56faf7ecb1561d6b39000 upstream.
 
-The net_device is allocated during function instance creation and
-registered during the bind phase with the gadget device as its sysfs
-parent. When the function unbinds, the parent device is destroyed, but
-the net_device survives, resulting in dangling sysfs symlinks:
+When the gadget endpoint is disabled or not yet configured, the ep->desc
+pointer can be NULL. This leads to a NULL pointer dereference when
+__cdns3_gadget_ep_queue() is called, causing a kernel crash.
 
-  console:/ # ls -l /sys/class/net/usb0
-  lrwxrwxrwx ... /sys/class/net/usb0 ->
-  /sys/devices/platform/.../gadget.0/net/usb0
-  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
-  ls: .../gadget.0/net/usb0: No such file or directory
+Add a check to return -ESHUTDOWN if ep->desc is NULL, which is the
+standard return code for unconfigured endpoints.
 
-Use device_move() to reparent the net_device between the gadget device
-tree and /sys/devices/virtual across bind and unbind cycles. During the
-final unbind, calling device_move(NULL) moves the net_device to the
-virtual device tree before the gadget device is destroyed. On rebinding,
-device_move() reparents the device back under the new gadget, ensuring
-proper sysfs topology and power management ordering.
+This prevents potential crashes when ep_queue is called on endpoints
+that are not ready.
 
-To maintain compatibility with legacy composite drivers (e.g., multi.c),
-the bound flag is used to indicate whether the network device is shared
-and pre-registered during the legacy driver's bind phase.
-
-Fixes: 8cedba7c73af ("usb: gadget: f_subset: convert to new function interface with backward compatibility")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-6-4886b578161b@google.com
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20260331000407.613298-1-yongchao.wu@autochips.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_subset.c |   57 ++++++++++++++++-----------------
- drivers/usb/gadget/function/u_gether.h |   22 ++++++++----
- 2 files changed, 44 insertions(+), 35 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/gadget/function/f_subset.c
-+++ b/drivers/usb/gadget/function/f_subset.c
-@@ -299,25 +299,22 @@ geth_bind(struct usb_configuration *c, s
- 	struct usb_ep		*ep;
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2589,6 +2589,9 @@ static int __cdns3_gadget_ep_queue(struc
+ 	struct cdns3_request *priv_req;
+ 	int ret = 0;
  
- 	struct f_gether_opts	*gether_opts;
-+	struct net_device	*net __free(detach_gadget) = NULL;
- 
- 	gether_opts = container_of(f->fi, struct f_gether_opts, func_inst);
- 
--	/*
--	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
--	 * configurations are bound in sequence with list_for_each_entry,
--	 * in each configuration its functions are bound in sequence
--	 * with list_for_each_entry, so we assume no race condition
--	 * with regard to gether_opts->bound access
--	 */
--	if (!gether_opts->bound) {
--		mutex_lock(&gether_opts->lock);
--		gether_set_gadget(gether_opts->net, cdev->gadget);
--		status = gether_register_netdev(gether_opts->net);
--		mutex_unlock(&gether_opts->lock);
--		if (status)
--			return status;
--		gether_opts->bound = true;
--	}
-+	scoped_guard(mutex, &gether_opts->lock)
-+		if (gether_opts->bind_count == 0 && !gether_opts->bound) {
-+			if (!device_is_registered(&gether_opts->net->dev)) {
-+				gether_set_gadget(gether_opts->net, cdev->gadget);
-+				status = gether_register_netdev(gether_opts->net);
-+			} else
-+				status = gether_attach_gadget(gether_opts->net, cdev->gadget);
++	if (!ep->desc)
++		return -ESHUTDOWN;
 +
-+			if (status)
-+				return status;
-+			net = gether_opts->net;
-+		}
- 
- 	us = usb_gstrings_attach(cdev, geth_strings,
- 				 ARRAY_SIZE(geth_string_defs));
-@@ -330,20 +327,18 @@ geth_bind(struct usb_configuration *c, s
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	subset_data_intf.bInterfaceNumber = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	geth->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	geth->port.out_ep = ep;
- 
- 	/* support all relevant hardware speeds... we expect that when
-@@ -361,21 +356,19 @@ geth_bind(struct usb_configuration *c, s
- 	status = usb_assign_descriptors(f, fs_eth_function, hs_eth_function,
- 			ss_eth_function, ss_eth_function);
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
- 	 * until we're activated via set_alt().
- 	 */
- 
-+	gether_opts->bind_count++;
-+	retain_and_null_ptr(net);
-+
- 	DBG(cdev, "CDC Subset: IN/%s OUT/%s\n",
- 			geth->port.in_ep->name, geth->port.out_ep->name);
- 	return 0;
--
--fail:
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- static inline struct f_gether_opts *to_f_gether_opts(struct config_item *item)
-@@ -418,7 +411,7 @@ static void geth_free_inst(struct usb_fu
- 	struct f_gether_opts *opts;
- 
- 	opts = container_of(f, struct f_gether_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -462,8 +455,16 @@ static void geth_free(struct usb_functio
- 
- static void geth_unbind(struct usb_configuration *c, struct usb_function *f)
- {
-+	struct f_gether_opts *opts;
-+
-+	opts = container_of(f->fi, struct f_gether_opts, func_inst);
-+
- 	geth_string_defs[0].id = 0;
- 	usb_free_all_descriptors(f);
-+
-+	opts->bind_count--;
-+	if (opts->bind_count == 0 && !opts->bound)
-+		gether_detach_gadget(opts->net);
- }
- 
- static struct usb_function *geth_alloc(struct usb_function_instance *fi)
---- a/drivers/usb/gadget/function/u_gether.h
-+++ b/drivers/usb/gadget/function/u_gether.h
-@@ -15,17 +15,25 @@
- 
- #include <linux/usb/composite.h>
- 
-+/**
-+ * struct f_gether_opts - subset function options
-+ * @func_inst: USB function instance.
-+ * @net: The net_device associated with the subset function.
-+ * @bound: True if the net_device is shared and pre-registered during the
-+ *         legacy composite driver's bind phase (e.g., multi.c). If false,
-+ *         the subset function will register the net_device during its own
-+ *         bind phase.
-+ * @bind_count: Tracks the number of configurations the subset function is
-+ *              bound to, preventing double-registration of the @net device.
-+ * @lock: Protects the data from concurrent access by configfs read/write
-+ *        and create symlink/remove symlink operations.
-+ * @refcnt: Reference counter for the function instance.
-+ */
- struct f_gether_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
- 	bool				bound;
--
--	/*
--	 * Read/write access to configfs attributes is handled by configfs.
--	 *
--	 * This is to protect the data from concurrent access by read/write
--	 * and create symlink/remove symlink.
--	 */
-+	int				bind_count;
- 	struct mutex			lock;
- 	int				refcnt;
- };
+ 	request->actual = 0;
+ 	request->status = -EINPROGRESS;
+ 	priv_req = to_cdns3_request(request);
 
 
 
