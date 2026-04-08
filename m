@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-235124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234210-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLn5E2Sl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:44 +0200
+	id yOhGEu2c1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234210-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C533C2181
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B054C3C0886
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 11C19302231B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C7563065885
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A34F348453;
-	Wed,  8 Apr 2026 18:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828ED385513;
+	Wed,  8 Apr 2026 18:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohGeNSOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+J6x09J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2EF2F39C2;
-	Wed,  8 Apr 2026 18:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465DE324B1F;
+	Wed,  8 Apr 2026 18:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674631; cv=none; b=eChWZHGCFST0ACen+WjS+lrRUxNFQTvIEpcGy/sDlgFxlRmdN9Bph8Ze+Ey6fIxFSMPWegNyQcR0+3B6ntSH81JNdSo+muzlbEJXCuVBMMLcdFxc/zBb1agct3xC/06BJdLjIu6TeHqIP6Q8ihCN7YSE1ERvJSTu9nmmh6ML2Hs=
+	t=1775672268; cv=none; b=nU7JCAAzZI7Kq/B8EJjxG+AflPjabwm3k1YcUereeJRspT5iiBSf/mFKByDdvv3lvtFy0p15UiBQoFfaQd09o+xY99imcM42aPDCn3ubPZqslJlVygcZYox+kPiMAzpFz8r3Fn4SW01zRFGLBgSfdDsE1d+fK5lbXnjJ2eyFUQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674631; c=relaxed/simple;
-	bh=b7ocjX8ingyJSsaJJGIqqKhyONNRNQt54EjIDrLuvMI=;
+	s=arc-20240116; t=1775672268; c=relaxed/simple;
+	bh=f+yJ/eoio4jCfh6Tcr+6PnZ7LsRbf4eksKFRbO+bVfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mft4i93W0cv/8iz83hayyUtZvXu1X+zSk5DICdRQ9AbDa3krl3Bz6k6PVpzMN1OharRJo9d7pU8Rsw0tWvVQhNX+a3faTutv6vXKjRGrQUH7hLMEXULF0JFiB5RXPMBXvHe+FXDnvpzOqh8yfB/APDUiY0AS4oVNP+i4gU4e1AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohGeNSOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D7CC19421;
-	Wed,  8 Apr 2026 18:57:10 +0000 (UTC)
+	 MIME-Version; b=Z9mdnzq01CFIdtWkJRr9WAjp0PBfJou3OkdhgOlU4VXjgOF1XeSb/N2ThDqQR6uCqlmiowu29GtJB1kfRhUwiyxkFSXzFNnoOnKozciEsUg5DX5vUlRQxqF3H6NtBzw4/DHr1NCSQWiM3/Mh5GWsQywqSM0titvqENs7kXDwiQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+J6x09J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32AEC19421;
+	Wed,  8 Apr 2026 18:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674631;
-	bh=b7ocjX8ingyJSsaJJGIqqKhyONNRNQt54EjIDrLuvMI=;
+	s=korg; t=1775672268;
+	bh=f+yJ/eoio4jCfh6Tcr+6PnZ7LsRbf4eksKFRbO+bVfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohGeNSOfTF8frU4TZpOris23pQc60kTmsw9L1TXfKJUjAAKwrGyateJ7Bp340f88U
-	 83GQY57Z5V3KfVQ835ZGrfUp+QFmtZE9Gmodl3il4wpLn6Hdenfaf52yvOdpo3tRiF
-	 aHzaqNHzvg1Jgjc0DTy7kN9qLRG8VL24InsZohpM=
+	b=f+J6x09JdoirxCJvQ16uJxPrqlkD/iBKwKFhuwOUlfk8u4SgkVaytZM1qZCiCOUUk
+	 iVqpbzhlKTTEfIaw5xSYz3yEBsBvEbdehg2k5O9iyNiCytXCAOdlArt+ZahzxfDpnV
+	 SswCKPB3mI1UkXOZ2S9bLh24SfyOzmL1hnHihJXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 171/311] ALSA: ctxfi: Check the error for index mapping
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.1 254/312] thunderbolt: Fix property read in nhi_wake_supported()
 Date: Wed,  8 Apr 2026 20:02:51 +0200
-Message-ID: <20260408175945.789300635@linuxfoundation.org>
+Message-ID: <20260408175943.234484228@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,227 +67,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235124-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234210-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 63C533C2181
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B054C3C0886
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-commit 277c6960d4ddb94d16198afd70c92c3d4593d131 upstream.
+commit 73a505dc48144ec72e25874e2b2a72487b02d3bc upstream.
 
-The ctxfi driver blindly assumed a proper value returned from
-daio_device_index(), but it's not always true.  Add a proper error
-check to deal with the error from the function.
+device_property_read_foo() returns 0 on success and only then modifies
+'val'. Currently, val is left uninitialized if the aforementioned
+function returns non-zero, making nhi_wake_supported() return true
+almost always (random != 0) if the property is not present in device
+firmware.
 
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/87cy149n6k.wl-tiwai@suse.de
-Link: https://patch.msgid.link/20260329091240.420194-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Invert the check to make it make sense.
+
+Fixes: 3cdb9446a117 ("thunderbolt: Add support for Intel Ice Lake")
+Cc: stable@vger.kernel.org
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/ctxfi/ctdaio.c |   81 +++++++++++++++++++++++++++++------------------
- 1 file changed, 50 insertions(+), 31 deletions(-)
+ drivers/thunderbolt/nhi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/ctxfi/ctdaio.c
-+++ b/sound/pci/ctxfi/ctdaio.c
-@@ -99,7 +99,7 @@ static const struct rsc_ops daio_in_rsc_
- 	.output_slot	= daio_index,
- };
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1005,7 +1005,7 @@ static bool nhi_wake_supported(struct pc
+ 	 * If power rails are sustainable for wakeup from S4 this
+ 	 * property is set by the BIOS.
+ 	 */
+-	if (device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
++	if (!device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
+ 		return !!val;
  
--static unsigned int daio_device_index(enum DAIOTYP type, struct hw *hw)
-+static int daio_device_index(enum DAIOTYP type, struct hw *hw)
- {
- 	switch (hw->chip_type) {
- 	case ATC20K1:
-@@ -112,7 +112,9 @@ static unsigned int daio_device_index(en
- 		case LINEO3:	return 5;
- 		case LINEO4:	return 6;
- 		case LINEIM:	return 7;
--		default:	return -EINVAL;
-+		default:
-+			pr_err("ctxfi: Invalid type %d for hw20k1\n", type);
-+			return -EINVAL;
- 		}
- 	case ATC20K2:
- 		switch (type) {
-@@ -125,9 +127,12 @@ static unsigned int daio_device_index(en
- 		case LINEIM:	return 4;
- 		case MIC:	return 5;
- 		case RCA:	return 3;
--		default:	return -EINVAL;
-+		default:
-+			pr_err("ctxfi: Invalid type %d for hw20k2\n", type);
-+			return -EINVAL;
- 		}
- 	default:
-+		pr_err("ctxfi: Invalid chip type %d\n", hw->chip_type);
- 		return -EINVAL;
- 	}
- }
-@@ -148,8 +153,11 @@ static int dao_spdif_set_spos(struct dao
- 
- static int dao_commit_write(struct dao *dao)
- {
--	dao->hw->dao_commit_write(dao->hw,
--		daio_device_index(dao->daio.type, dao->hw), dao->ctrl_blk);
-+	int idx = daio_device_index(dao->daio.type, dao->hw);
-+
-+	if (idx < 0)
-+		return idx;
-+	dao->hw->dao_commit_write(dao->hw, idx, dao->ctrl_blk);
- 	return 0;
- }
- 
-@@ -287,8 +295,11 @@ static int dai_set_enb_srt(struct dai *d
- 
- static int dai_commit_write(struct dai *dai)
- {
--	dai->hw->dai_commit_write(dai->hw,
--		daio_device_index(dai->daio.type, dai->hw), dai->ctrl_blk);
-+	int idx = daio_device_index(dai->daio.type, dai->hw);
-+
-+	if (idx < 0)
-+		return idx;
-+	dai->hw->dai_commit_write(dai->hw, idx, dai->ctrl_blk);
- 	return 0;
- }
- 
-@@ -367,7 +378,7 @@ static int dao_rsc_init(struct dao *dao,
- {
- 	struct hw *hw = mgr->mgr.hw;
- 	unsigned int conf;
--	int err;
-+	int idx, err;
- 
- 	err = daio_rsc_init(&dao->daio, desc, mgr->mgr.hw);
- 	if (err)
-@@ -386,15 +397,18 @@ static int dao_rsc_init(struct dao *dao,
- 	if (err)
- 		goto error2;
- 
--	hw->daio_mgr_dsb_dao(mgr->mgr.ctrl_blk,
--			daio_device_index(dao->daio.type, hw));
-+	idx = daio_device_index(dao->daio.type, hw);
-+	if (idx < 0) {
-+		err = idx;
-+		goto error2;
-+	}
-+
-+	hw->daio_mgr_dsb_dao(mgr->mgr.ctrl_blk, idx);
- 	hw->daio_mgr_commit_write(hw, mgr->mgr.ctrl_blk);
- 
- 	conf = (desc->msr & 0x7) | (desc->passthru << 3);
--	hw->daio_mgr_dao_init(hw, mgr->mgr.ctrl_blk,
--			daio_device_index(dao->daio.type, hw), conf);
--	hw->daio_mgr_enb_dao(mgr->mgr.ctrl_blk,
--			daio_device_index(dao->daio.type, hw));
-+	hw->daio_mgr_dao_init(hw, mgr->mgr.ctrl_blk, idx, conf);
-+	hw->daio_mgr_enb_dao(mgr->mgr.ctrl_blk, idx);
- 	hw->daio_mgr_commit_write(hw, mgr->mgr.ctrl_blk);
- 
- 	return 0;
-@@ -443,7 +457,7 @@ static int dai_rsc_init(struct dai *dai,
- 			const struct daio_desc *desc,
- 			struct daio_mgr *mgr)
- {
--	int err;
-+	int idx, err;
- 	struct hw *hw = mgr->mgr.hw;
- 	unsigned int rsr, msr;
- 
-@@ -457,6 +471,12 @@ static int dai_rsc_init(struct dai *dai,
- 	if (err)
- 		goto error1;
- 
-+	idx = daio_device_index(dai->daio.type, dai->hw);
-+	if (idx < 0) {
-+		err = idx;
-+		goto error1;
-+	}
-+
- 	for (rsr = 0, msr = desc->msr; msr > 1; msr >>= 1)
- 		rsr++;
- 
-@@ -465,8 +485,7 @@ static int dai_rsc_init(struct dai *dai,
- 	/* default to disabling control of a SRC */
- 	hw->dai_srt_set_ec(dai->ctrl_blk, 0);
- 	hw->dai_srt_set_et(dai->ctrl_blk, 0); /* default to disabling SRT */
--	hw->dai_commit_write(hw,
--		daio_device_index(dai->daio.type, dai->hw), dai->ctrl_blk);
-+	hw->dai_commit_write(hw, idx, dai->ctrl_blk);
- 
- 	return 0;
- 
-@@ -581,28 +600,28 @@ static int put_daio_rsc(struct daio_mgr
- static int daio_mgr_enb_daio(struct daio_mgr *mgr, struct daio *daio)
- {
- 	struct hw *hw = mgr->mgr.hw;
-+	int idx = daio_device_index(daio->type, hw);
- 
--	if (daio->output) {
--		hw->daio_mgr_enb_dao(mgr->mgr.ctrl_blk,
--				daio_device_index(daio->type, hw));
--	} else {
--		hw->daio_mgr_enb_dai(mgr->mgr.ctrl_blk,
--				daio_device_index(daio->type, hw));
--	}
-+	if (idx < 0)
-+		return idx;
-+	if (daio->output)
-+		hw->daio_mgr_enb_dao(mgr->mgr.ctrl_blk, idx);
-+	else
-+		hw->daio_mgr_enb_dai(mgr->mgr.ctrl_blk, idx);
- 	return 0;
- }
- 
- static int daio_mgr_dsb_daio(struct daio_mgr *mgr, struct daio *daio)
- {
- 	struct hw *hw = mgr->mgr.hw;
-+	int idx = daio_device_index(daio->type, hw);
- 
--	if (daio->output) {
--		hw->daio_mgr_dsb_dao(mgr->mgr.ctrl_blk,
--				daio_device_index(daio->type, hw));
--	} else {
--		hw->daio_mgr_dsb_dai(mgr->mgr.ctrl_blk,
--				daio_device_index(daio->type, hw));
--	}
-+	if (idx < 0)
-+		return idx;
-+	if (daio->output)
-+		hw->daio_mgr_dsb_dao(mgr->mgr.ctrl_blk, idx);
-+	else
-+		hw->daio_mgr_dsb_dai(mgr->mgr.ctrl_blk, idx);
- 	return 0;
- }
- 
+ 	return true;
 
 
 
