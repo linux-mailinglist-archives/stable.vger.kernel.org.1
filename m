@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JQfK8mn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:57 +0200
+	id yI2AOByg1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D003C27B3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A87A3C10B8
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFE7C3080189
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A3D830B56A0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC4A346FB0;
-	Wed,  8 Apr 2026 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD633AA4E4;
+	Wed,  8 Apr 2026 18:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7K97q2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MI0j5wca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620A22BEFFF;
-	Wed,  8 Apr 2026 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DDD3A16A0;
+	Wed,  8 Apr 2026 18:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673855; cv=none; b=oLv5KQEvxqghr6Cw9I6SMJoUkAw0e4dybm8HcMLWPt2cSmdFPA/S5r2dUfsyNYOaMpYsCaOpvm/I4mrfeIfwSOeBH5UuGaY5WpA6eKr3Uo6lhdC0Cp+bXn0Ae1h8kiRTxXBF6HlWe0PpcCIhHJtRGIrKCmgAxHPk+pOsWeERvms=
+	t=1775672687; cv=none; b=f2sAoyubzFhEskhe4yfE8Pyy0LafBey+vT9YMoKhZvgOAbdCtv85EYkkqBDa6Qfwva0ML4QLodQ6f1+WXu7m81rj0e5FJUYauY8rgpz4gwRA+Ya8rC5802Eu5yv+QkyJnuvKzMB2zAzqqoWR9AHEPQcNxeXuCoEfI7EXoKoZkPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673855; c=relaxed/simple;
-	bh=SNplQiqoSOcfYwe1S2YMv3WpOwJ5yiwgkGpvGDoXRHw=;
+	s=arc-20240116; t=1775672687; c=relaxed/simple;
+	bh=A9W2d3Mz9VpnM9Bn+wlPNyuMA3apDelPyHKnSS3zpN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omYbmt2KsSdMK4nMPO7owyisg3fBQPMICMY5uBMsRJI3CXWPuVYzZZK3S0optMyz83ZGRQqHNHoYHWJoJQIIWmswJ7AasFIGCH0XFlvdH2X0ppPA13jhVsV7b10/RHN2m0tdrFZyBjxjcYGJcS2DhlH0EOx/L9f2EXaDcGcYxac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7K97q2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC98DC2BC87;
-	Wed,  8 Apr 2026 18:44:14 +0000 (UTC)
+	 MIME-Version; b=JvGQZaOWz79V6SUMnfA0KpoCqDKCrWV+qQcV+q106XDSUY7iwK/SwKAu8uxYE+l6uGqQsTpKHfLpNN+4unA6mgqr/z3vH5ATEPh3Wa2raDAWfP3XdDY5n4G42c6KUfUlEyg8BuUMOYYavoRaD8MNWJvSmzGBKM2+i0rR3R5Jvyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MI0j5wca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F20C19421;
+	Wed,  8 Apr 2026 18:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673855;
-	bh=SNplQiqoSOcfYwe1S2YMv3WpOwJ5yiwgkGpvGDoXRHw=;
+	s=korg; t=1775672687;
+	bh=A9W2d3Mz9VpnM9Bn+wlPNyuMA3apDelPyHKnSS3zpN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7K97q2crkI+gKjUNGORvGWgzqcRBd1e0r3nhWsijZ6XBCP/oADFG50u46M6EfRk2
-	 72u5yWQq8cQdR6FYBTb9QONoqRkJS9j47M75n39ZG7xEUE4U1qvtVDi8B3Z9l6fa+9
-	 n7tpIwzx0VYIxkdhyrp+s7lTyjKw6yU/iJw28MX8=
+	b=MI0j5wcaj9hGUU+/6QoJF6+QWRNpu5L7mviFYTM4Vm2gQniNXoEFQnTtGJ/Wbk7A5
+	 6omxLyl8ajDn6XY+DnfvnO7tDa//8nYD1ksFIvp2FkYclu7syBbNemgM6oBsu6+6Hf
+	 ADXOggqTovFl8Kb21llUvM3jNClUM9u+vEFATI1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 116/242] wifi: iwlwifi: mvm: fix potential out-of-bounds read in iwl_mvm_nd_match_info_handler()
-Date: Wed,  8 Apr 2026 20:02:36 +0200
-Message-ID: <20260408175931.429955769@linuxfoundation.org>
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 070/160] hwmon: (occ) Fix missing newline in occ_show_extended()
+Date: Wed,  8 Apr 2026 20:02:37 +0200
+Message-ID: <20260408175915.816944884@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234823-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234372-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,50 +87,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ispras.ru:email,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxtesting.org:url]
-X-Rspamd-Queue-Id: 24D003C27B3
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8A87A3C10B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 744fabc338e87b95c4d1ff7c95bc8c0f834c6d99 upstream.
+[ Upstream commit 09773978879ecf71a7990fe9a28ce4eb92bce645 ]
 
-The memcpy function assumes the dynamic array notif->matches is at least
-as large as the number of bytes to copy. Otherwise, results->matches may
-contain unwanted data. To guarantee safety, extend the validation in one
-of the checks to ensure sufficient packet length.
+In occ_show_extended() case 0, when the EXTN_FLAG_SENSOR_ID flag
+is set, the sysfs_emit format string "%u" is missing the trailing
+newline that the sysfs ABI expects. The else branch correctly uses
+"%4phN\n", and all other show functions in this file include the
+trailing newline.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Add the missing "\n" for consistency and correct sysfs output.
 
-Cc: stable@vger.kernel.org
-Fixes: 5ac54afd4d97 ("wifi: iwlwifi: mvm: Add handling for scan offload match info notification")
-Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
-Link: https://patch.msgid.link/20260207150335.1013646-1-a.velichayshiy@ispras.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260326224510.294619-3-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c |    2 +-
+ drivers/hwmon/occ/common.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -3195,7 +3195,7 @@ static void iwl_mvm_nd_match_info_handle
- 	if (IS_ERR_OR_NULL(vif))
- 		return;
- 
--	if (len < sizeof(struct iwl_scan_offload_match_info)) {
-+	if (len < sizeof(struct iwl_scan_offload_match_info) + matches_len) {
- 		IWL_ERR(mvm, "Invalid scan match info notification\n");
- 		return;
- 	}
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 755926fa0bf7d..c6a78436e9bba 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -725,7 +725,7 @@ static ssize_t occ_show_extended(struct device *dev,
+ 	switch (sattr->nr) {
+ 	case 0:
+ 		if (extn->flags & EXTN_FLAG_SENSOR_ID) {
+-			rc = sysfs_emit(buf, "%u",
++			rc = sysfs_emit(buf, "%u\n",
+ 					get_unaligned_be32(&extn->sensor_id));
+ 		} else {
+ 			rc = sysfs_emit(buf, "%4phN\n", extn->name);
+-- 
+2.53.0
+
 
 
 
