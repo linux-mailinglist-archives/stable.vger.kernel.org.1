@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-234821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHFBOMSn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234821-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:52 +0200
+	id uAPcIbGc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC733C27A5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0878C3C07A5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D51843057616
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE012305C606
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5863D669E;
-	Wed,  8 Apr 2026 18:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9AF3AA4E4;
+	Wed,  8 Apr 2026 18:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2WydzMu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXskGmBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A902BEFFF;
-	Wed,  8 Apr 2026 18:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DF43A16A0;
+	Wed,  8 Apr 2026 18:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673850; cv=none; b=liBOimordhh7eIWI1Z9PZI4zEi25cT/TcDyyIAk46Y/lGLFAplt1Tpx03jYuoXF4TNeSmPudJbk6daM9pKwM6i2p8r88OWZNb979952ZvFcXwaS4KdVBAXLhZOY55wTAvvZHPziWt2TbBEXBrkAnkb10TZL2CF7Iz/+ZvpcZ8II=
+	t=1775672224; cv=none; b=KHAAwqncZ63X9dAtw9NJrU+F+977EJ7u4bBCPu4Xv5Do7hTv+1mnbpwXHzSxJtJCh951iMM+/0lX3VxpLwqDh7oWimTRMZO4qG8BHrGHq5QKwzaUNB4jD6GagY6YRNYdxIITaOXT/sp/NOE6+x+BlkdhdAKiztZpJ/KUDSHtF1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673850; c=relaxed/simple;
-	bh=TJSqlayMEaRF+lcWdn22uxEN/NwfGleHItmaEGfDYys=;
+	s=arc-20240116; t=1775672224; c=relaxed/simple;
+	bh=+6S05uKbP0AhoRr8Lh2rgSlRgFopB9KpDIYvPPaX1zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKPMLByDOqCSe1bTp/QWdbcQ72vJqteMh3ZpVt8DFWnhOu0re1QDqwav7a2G2G77Qgpl1T8Dp4CVCWEW8iEKBheMQLRVBa3SQB2c2Sp2pXUxG46rbLt6TMBqBktjy22dSAgq6WrfET6fd/3Fk0sSRq7N4KQww98bMRMkxx3oAfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2WydzMu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1BEC19425;
-	Wed,  8 Apr 2026 18:44:09 +0000 (UTC)
+	 MIME-Version; b=DcgtW+0LQgz4Kz6F5aTQ4TlmvORYBRSE5+KksoT6Y2pWg5hi+/CJru7bF8vfxVDTcwoDMVrb7WSVNg0CE6czKEN7XCPPtnFEsN86IVbO9IGqn1xSGNaY0wp71oCGUz0vQOK38J2eLSVezPJLnv5ulEpZKS9Rvfeg3uxVoqiyx9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXskGmBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9380C19421;
+	Wed,  8 Apr 2026 18:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673850;
-	bh=TJSqlayMEaRF+lcWdn22uxEN/NwfGleHItmaEGfDYys=;
+	s=korg; t=1775672224;
+	bh=+6S05uKbP0AhoRr8Lh2rgSlRgFopB9KpDIYvPPaX1zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2WydzMuACMW0z/HIiTU3cRSwKxXAnc3d8su2dFHy5qA/p4XDZ5sCSOL7DvmQ7TAV
-	 n9wGhMtICk23ZEeWINcz8fV/vLZ+AIorNKcEYKpvMzPqVFUOjKnzKl3vPCg34j5MDt
-	 cZjkASe5ODP+8eH0h/IsoKytg0Z7c7eGq5kYeLZc=
+	b=mXskGmBQo8mT2IFBZmE3NZiyoedFFFRlqDTesAJjcBYbWIt8QqSixhXUTLY/BP/3c
+	 w37sF2WbERt3SlaJ1kME3XYtWuQ2x8nhqQDFBP8sv1bsglC60CJ2e22AonJr/ufAXF
+	 eZ/m0OI1+7LBS49HUJjwQZlmOynMedQGDdkvl/ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 114/242] drm/ioc32: stop speculation on the drm_compat_ioctl path
-Date: Wed,  8 Apr 2026 20:02:34 +0200
-Message-ID: <20260408175931.353495031@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 238/312] Revert "ext4: subdivide EXT4_EXT_DATA_VALID1"
+Date: Wed,  8 Apr 2026 20:02:35 +0200
+Message-ID: <20260408175942.640485694@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,78 +72,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	TAGGED_FROM(0.00)[bounces-234821-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234193-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,ffwll.ch:email]
-X-Rspamd-Queue-Id: 2DC733C27A5
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0878C3C07A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This reverts commit 1606176c5c6c323167dcd7d4b4f7212b2c8d3d13.
 
-commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
-
-The drm compat ioctl path takes a user controlled pointer, and then
-dereferences it into a table of function pointers, the signature method
-of spectre problems.  Fix this up by calling array_index_nospec() on the
-index to the function pointer list.
-
-Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Simona Vetter <simona@ffwll.ch>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_ioc32.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/extents.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/drm_ioc32.c
-+++ b/drivers/gpu/drm/drm_ioc32.c
-@@ -28,6 +28,7 @@
-  * IN THE SOFTWARE.
-  */
- #include <linux/compat.h>
-+#include <linux/nospec.h>
- #include <linux/ratelimit.h>
- #include <linux/export.h>
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index e2f9c27c7e161..6da0bf3cf406d 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -43,13 +43,8 @@
+ #define EXT4_EXT_MARK_UNWRIT1	0x2  /* mark first half unwritten */
+ #define EXT4_EXT_MARK_UNWRIT2	0x4  /* mark second half unwritten */
  
-@@ -374,6 +375,7 @@ long drm_compat_ioctl(struct file *filp,
- 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
- 		return drm_ioctl(filp, cmd, arg);
+-/* first half contains valid data */
+-#define EXT4_EXT_DATA_ENTIRE_VALID1	0x8   /* has entirely valid data */
+-#define EXT4_EXT_DATA_PARTIAL_VALID1	0x10  /* has partially valid data */
+-#define EXT4_EXT_DATA_VALID1		(EXT4_EXT_DATA_ENTIRE_VALID1 | \
+-					 EXT4_EXT_DATA_PARTIAL_VALID1)
+-
+-#define EXT4_EXT_DATA_VALID2	0x20 /* second half contains valid data */
++#define EXT4_EXT_DATA_VALID1	0x8  /* first half contains valid data */
++#define EXT4_EXT_DATA_VALID2	0x10 /* second half contains valid data */
  
-+	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
- 	fn = drm_compat_ioctls[nr].fn;
- 	if (!fn)
- 		return drm_ioctl(filp, cmd, arg);
+ static __le32 ext4_extent_block_csum(struct inode *inode,
+ 				     struct ext4_extent_header *eh)
+@@ -3180,9 +3175,8 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
+ 	unsigned int ee_len, depth;
+ 	int err = 0;
+ 
+-	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) == EXT4_EXT_DATA_VALID1);
+-	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) &&
+-	       (split_flag & EXT4_EXT_DATA_VALID2));
++	BUG_ON((split_flag & (EXT4_EXT_DATA_VALID1 | EXT4_EXT_DATA_VALID2)) ==
++	       (EXT4_EXT_DATA_VALID1 | EXT4_EXT_DATA_VALID2));
+ 
+ 	/* Do not cache extents that are in the process of being modified. */
+ 	flags |= EXT4_EX_NOCACHE;
+@@ -3373,7 +3367,7 @@ static int ext4_split_extent(handle_t *handle,
+ 			split_flag1 |= EXT4_EXT_MARK_UNWRIT1 |
+ 				       EXT4_EXT_MARK_UNWRIT2;
+ 		if (split_flag & EXT4_EXT_DATA_VALID2)
+-			split_flag1 |= EXT4_EXT_DATA_ENTIRE_VALID1;
++			split_flag1 |= EXT4_EXT_DATA_VALID1;
+ 		path = ext4_split_extent_at(handle, inode, path,
+ 				map->m_lblk + map->m_len, split_flag1, flags1);
+ 		if (IS_ERR(path)) {
+@@ -3737,7 +3731,7 @@ static int ext4_split_convert_extents(handle_t *handle,
+ 
+ 	/* Convert to unwritten */
+ 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
+-		split_flag |= EXT4_EXT_DATA_ENTIRE_VALID1;
++		split_flag |= EXT4_EXT_DATA_VALID1;
+ 	/* Convert to initialized */
+ 	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
+ 		split_flag |= ee_block + ee_len <= eof_block ?
+-- 
+2.53.0
+
 
 
 
