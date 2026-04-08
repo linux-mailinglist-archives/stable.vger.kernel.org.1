@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 3g1uGzab1mnDGggAu9opvQ
-	(envelope-from <stable+bounces-234115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:18 +0200
+	id SLACMrWk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F083C046F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EBBE3C1FB9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC29F300CFDA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B49DD3099562
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2943D8917;
-	Wed,  8 Apr 2026 18:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1A22727F3;
+	Wed,  8 Apr 2026 18:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1s5Dh4ov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uB41zSVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923E43AEF45;
-	Wed,  8 Apr 2026 18:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFCD34AB06;
+	Wed,  8 Apr 2026 18:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672023; cv=none; b=AFV7vVLIjP1b8OnRNVIHUOTdBMjM6pMWhzn4W+8o01ESoobTXKvNVDCDciMC14uzPZtTPfux1d3IHh5T9jJsN1aQ8HddXG/i+UcxmqES9hDBxxxU3cMxqxb8FyeMeQED4zgZRZ4Lz2FLu7xS8GsH6qm9ZqC1SkF6LJ9/Pm2qm5E=
+	t=1775674299; cv=none; b=oulIuiyE0BpNIpIFwTWUPbcGdUAdibc9tcbzsLQaEmc8LBex0Kmzma+n1ClbGhUDjydHI11qLgRjUs6o5gSDZ4egUJd5ct8Pq4r7Wot71GT5f/INpmwVuh/Ty4+64qqr6QI+VOoebqw+6/g/5Id+ZqvZUW+PYR55rBuxvkaY7lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672023; c=relaxed/simple;
-	bh=nC0CERooFW4/PlSwD3BbsbjPTGulq3dwlOxlcrEMurY=;
+	s=arc-20240116; t=1775674299; c=relaxed/simple;
+	bh=fkxg01jIPQ/zArKolKKgTROpnbvKaKP3kunt8EQY3cA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+63I6TYeuvcgk1iz2ClpQfim5YLuGgjHNqJfA1jWfLHwGV4qTif22EIkGZ7JzfU/e6KEA2s4lfjGcEqVcPKGE0tyjjerO67ajBaO9nlhRNW0A8q1+IwKLYHvq46+uv+0uuYCSa/LT4aeGqdmLKWmas1JOXT80MnsPTaAmruOYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1s5Dh4ov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E95C19421;
-	Wed,  8 Apr 2026 18:13:43 +0000 (UTC)
+	 MIME-Version; b=h2FQwxH5o5PMBbdUWUeRa1l0L08E6HwnDc9+spm+A7oS+kCrertWI0IO2kcog7tG+DUeXy6M2C1LG4mVLyc5BeYyQWDAM0vVAg9+EvZ8gK/4HX1A95cMSMRbVxBqFYrWX4LMwJXD2X+sEEuVoI91ApMUqc+kEMs3CaKkWxqO62s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uB41zSVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B81C19421;
+	Wed,  8 Apr 2026 18:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672023;
-	bh=nC0CERooFW4/PlSwD3BbsbjPTGulq3dwlOxlcrEMurY=;
+	s=korg; t=1775674299;
+	bh=fkxg01jIPQ/zArKolKKgTROpnbvKaKP3kunt8EQY3cA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1s5Dh4ovp9ELXpMeMD3PVG/0z70NO9JpJI5oCtn8zTBPrAsVUrRpGuStwCFewxrvx
-	 laabX+YnfMqKuEmzb5Wc/HBS6wZtAvujiGQckCWGBPK03myFAdeUKNAdXKfA+iGEGx
-	 cn/d3y1uhCn8FB7mfLCxW1PxML77fIGW6NVyGkVM=
+	b=uB41zSVekKuiulF4vJ+eataWGJr0Mo7TCRhDGxjbWbNwRgqhGptT/qeAKzo4yy7WL
+	 T7xNOd/vFr+0Ovh2rNes4+KOJ1qQJbsyTOeLKRI74/2dnPbT63fd6WEy0uuw4IhUNi
+	 vnmabGAt1j166hpL6FFTn9mMs1lNdl725MRFEW3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/312] dmaengine: xilinx: xilinx_dma: Fix unmasked residue subtraction
+Subject: [PATCH 6.19 044/311] net: enetc: reset PIR and CIR if they are not equal when initializing TX ring
 Date: Wed,  8 Apr 2026 20:00:44 +0200
-Message-ID: <20260408175938.515810646@linuxfoundation.org>
+Message-ID: <20260408175941.060900904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,85 +75,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234995-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234115-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 12F083C046F
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email]
+X-Rspamd-Queue-Id: 6EBBE3C1FB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
+[ Upstream commit 0239fd701d33475a39428daa3dc627407cd417a6 ]
 
-The segment .control and .status fields both contain top bits which are
-not part of the buffer size, the buffer size is located only in the bottom
-max_buffer_len bits. To avoid interference from those top bits, mask out
-the size using max_buffer_len first, and only then subtract the values.
+Currently the driver does not reset the producer index register (PIR) and
+consumer index register (CIR) when initializing a TX BD ring. The driver
+only reads the PIR and CIR and initializes the software indexes. If the
+TX BD ring is reinitialized when it still contains unsent frames, its PIR
+and CIR will not be equal after the reinitialization. However, the BDs
+between CIR and PIR have been freed and become invalid and this can lead
+to a hardware malfunction, causing the TX BD ring will not work properly.
 
-Fixes: a575d0b4e663 ("dmaengine: xilinx_dma: Introduce xilinx_dma_get_residue")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260316222530.163815-1-marex@nabladev.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+For ENETC v4, it supports software to set the PIR and CIR, so the driver
+can reset these two registers if they are not equal when reinitializing
+the TX BD ring. Therefore, add this solution for ENETC v4. Note that this
+patch does not work for ENETC v1 because it does not support software to
+set the PIR and CIR.
+
+Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324062121.2745033-2-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 2d734fea053d9..405638f5fc62c 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -964,16 +964,16 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
- 					      struct xilinx_cdma_tx_segment,
- 					      node);
- 			cdma_hw = &cdma_seg->hw;
--			residue += (cdma_hw->control - cdma_hw->status) &
--				   chan->xdev->max_buffer_len;
-+			residue += (cdma_hw->control & chan->xdev->max_buffer_len) -
-+			           (cdma_hw->status & chan->xdev->max_buffer_len);
- 		} else if (chan->xdev->dma_config->dmatype ==
- 			   XDMA_TYPE_AXIDMA) {
- 			axidma_seg = list_entry(entry,
- 						struct xilinx_axidma_tx_segment,
- 						node);
- 			axidma_hw = &axidma_seg->hw;
--			residue += (axidma_hw->control - axidma_hw->status) &
--				   chan->xdev->max_buffer_len;
-+			residue += (axidma_hw->control & chan->xdev->max_buffer_len) -
-+			           (axidma_hw->status & chan->xdev->max_buffer_len);
- 		} else {
- 			aximcdma_seg =
- 				list_entry(entry,
-@@ -981,8 +981,8 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
- 					   node);
- 			aximcdma_hw = &aximcdma_seg->hw;
- 			residue +=
--				(aximcdma_hw->control - aximcdma_hw->status) &
--				chan->xdev->max_buffer_len;
-+				(aximcdma_hw->control & chan->xdev->max_buffer_len) -
-+				(aximcdma_hw->status & chan->xdev->max_buffer_len);
- 		}
- 	}
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 9fdd448e602f1..8ec96f39e1263 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -2579,6 +2579,7 @@ EXPORT_SYMBOL_GPL(enetc_free_si_resources);
+ 
+ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
+ {
++	struct enetc_si *si = container_of(hw, struct enetc_si, hw);
+ 	int idx = tx_ring->index;
+ 	u32 tbmr;
+ 
+@@ -2592,10 +2593,20 @@ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
+ 	enetc_txbdr_wr(hw, idx, ENETC_TBLENR,
+ 		       ENETC_RTBLENR_LEN(tx_ring->bd_count));
+ 
+-	/* clearing PI/CI registers for Tx not supported, adjust sw indexes */
++	/* For ENETC v1, clearing PI/CI registers for Tx not supported,
++	 * adjust sw indexes
++	 */
+ 	tx_ring->next_to_use = enetc_txbdr_rd(hw, idx, ENETC_TBPIR);
+ 	tx_ring->next_to_clean = enetc_txbdr_rd(hw, idx, ENETC_TBCIR);
+ 
++	if (tx_ring->next_to_use != tx_ring->next_to_clean &&
++	    !is_enetc_rev1(si)) {
++		tx_ring->next_to_use = 0;
++		tx_ring->next_to_clean = 0;
++		enetc_txbdr_wr(hw, idx, ENETC_TBPIR, 0);
++		enetc_txbdr_wr(hw, idx, ENETC_TBCIR, 0);
++	}
++
+ 	/* enable Tx ints by setting pkt thr to 1 */
+ 	enetc_txbdr_wr(hw, idx, ENETC_TBICR0, ENETC_TBICR0_ICEN | 0x1);
  
 -- 
 2.53.0
