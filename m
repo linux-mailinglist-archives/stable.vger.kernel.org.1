@@ -1,69 +1,68 @@
-Return-Path: <stable+bounces-233843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHB5MNY31mlZBwgAu9opvQ
-	(envelope-from <stable+bounces-233843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 13:11:18 +0200
+	id OO49FPs11mlZBwgAu9opvQ
+	(envelope-from <stable+bounces-233840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 13:03:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BA23BB1D3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 13:11:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96463BB0F8
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 13:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C56B2300CE4A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 11:10:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ACE823015D26
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 11:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A6F3815F7;
-	Wed,  8 Apr 2026 11:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6296937B3F9;
+	Wed,  8 Apr 2026 11:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="JR79XSfT"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Dyy+MT5O"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3B82E8B8A;
-	Wed,  8 Apr 2026 11:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50ED2E8B8A;
+	Wed,  8 Apr 2026 11:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775646631; cv=none; b=m12zmOdxwzUtuN1z6rKDR3/HOM86dqF964RzlF/Me/EEnchf0x0l4ctA60VK5srWaMr2tn2j2u6qnYrzp6ZAyp1hDP9UNbH041f3Re/oVDrtAHq8fj55gw4TekFvtgAEDuzsh+gziubBaNvG8eWkx5Xn2Q4pcFPkTyLkNXVIj/0=
+	t=1775646200; cv=none; b=ge1OKy/mVSw+gl9gP2iPY6c4Pe8nU8/6dW2j+v6yj9sT6gNsRz9PpGVKaX7FGAwlMnZvSWNCK7W9mXVKX6F7RlZ+oi+5GbZZ2wZg4QeRMD+Fcimvtx2/Rd+pGBXspTduD8aaF2gM/oLlZv2vyz89Ff75QKOffbbdV3iA0/krJEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775646631; c=relaxed/simple;
-	bh=ewebgP88rabZ5q6Rb9BHsBLPczflW31S+pvdmrvosKg=;
+	s=arc-20240116; t=1775646200; c=relaxed/simple;
+	bh=08Q1dMV/7+KzD4lHA2fx/meL9kTyGNMncxHMHrZ4U7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmWdZgUxQFIO3fE0wwvgwVarC3/JKpCjJS4W5+MFFCDj7lAPbjLtYI0DSAy5GJ9WDFnXX3JhzPkxsPKBzBzmQmHBZ4ebMvObwikeSVJ3QRUNo2MAK79N3zw+NR94Hzbv41HZPHZuCBfF2xu3H47QrmMGzJv2S4IIoYXcLRbgdHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=JR79XSfT; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=bdylxe6UWxhG5XJw0z9JhLGsI7klwIycHdJYo9ccFx6numWLzXVP8i/MG5ul5LpQan91EbiWKb4hs0jH23JPV6FZ6gTUUnLiT1YJoE/QVB7BhJgDMd2cJ61zQTlYBHdvwL/fs7kGYE1cSKR0leBfhr6fu4qdKPUiX/UZ/9/bqoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Dyy+MT5O; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1775646188;
+	s=09092022; t=1775646195;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EiD/I9JLAgaiEHPTSYMk70AntE8XVl+GewE0tXnVpDI=;
-	b=JR79XSfTzK7KzWTU4trA4DXkN5Ci8Mx4PicNz6Vdj2uuQHPsfZ9OQGqCzQJ3BlICvg7GJh
-	LcQFG9TtZGjyJJzwmMTC4YkggyDjeyaaNoED9venR9bswImr4akeRqiQrDnvQscLRVAQl2
-	B1RhM7T5SKEuiBrKUrfIGceojCW3adcZLANakiwyiESdWpBjeuGMgJ6wwrtvYqMKRH/BYG
-	PVrIrF2aSKxywJYEqfVNiQRvSvWJYaLrqJmhSenvRh5d8RQqx2yNwsKn6fswWSnSoA9DuP
-	BXr0aMB9XO87jM+qbrgVNCAA/fnFrrJCDfZXQo2ItL7TlqouWvhW/5QZ2/vRkg==
+	bh=yp6I7b0bf/KYoASlU+siFF3CuLzV71ZDF6eOe3F2lZ0=;
+	b=Dyy+MT5O8I06JJDfM9g8RSY3afbY86g6g1TSm9gQMXsApj5EdkcpxRFpUSqXKclZDKJeU1
+	AK7O1Lx2BdJx3AntN2RMFtWCply21IeRCH4mQySBn5ouTtrt0VFK8IyeQNygnnujH5IejI
+	jAfpqsNB3GfcW9GVXn2B3/16OVi6W6PKF3pR8Jz6v3w89zJlNZYSXOyLW/u7ptmjAafqJp
+	PLCFjs6KOiH9zidQ/wcXxkiuSEjiWoMeK8fke4Ube2y24RrTVazmvAsZ9mq7KfLXrXr19f
+	G34Epqe/2UMDzd9T/x8I/S+H46k6eByth7sIVj4b3vV1UbeVJaV8cDBvRAyegA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: davem@davemloft.net,
 	kuba@kernel.org
 Cc: netdev@vger.kernel.org,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Ruide Cao <caoruide123@gmail.com>,
+	Haoze Xie <royenheart@gmail.com>,
 	stable@vger.kernel.org,
 	Yifan Wu <yifanwucs@gmail.com>,
 	Juefei Pu <tomapufckgml@gmail.com>,
 	Yuan Tan <yuantan098@gmail.com>,
 	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 1/2] batman-adv: reject oversized global TT response buffers
-Date: Wed,  8 Apr 2026 13:02:54 +0200
-Message-ID: <20260408110255.976389-2-sw@simonwunderlich.de>
+Subject: [PATCH net 2/2] batman-adv: hold claim backbone gateways by reference
+Date: Wed,  8 Apr 2026 13:02:55 +0200
+Message-ID: <20260408110255.976389-3-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260408110255.976389-1-sw@simonwunderlich.de>
 References: <20260408110255.976389-1-sw@simonwunderlich.de>
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[simonwunderlich.de,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[simonwunderlich.de:s=09092022];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -87,8 +86,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.open-mesh.org,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233843-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-233840-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -99,69 +98,121 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,lzu.edu.cn:email,simonwunderlich.de:dkim,simonwunderlich.de:email,simonwunderlich.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 30BA23BB1D3
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email]
+X-Rspamd-Queue-Id: A96463BB0F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Haoze Xie <royenheart@gmail.com>
 
-batadv_tt_prepare_tvlv_global_data() builds the allocation length for a
-global TT response in 16-bit temporaries. When a remote originator
-advertises a large enough global TT, the TT payload length plus the VLAN
-header offset can exceed 65535 and wrap before kmalloc().
+batadv_bla_add_claim() can replace claim->backbone_gw and drop the old
+gateway's last reference while readers still follow the pointer.
 
-The full-table response path still uses the original TT payload length when
-it fills tt_change, so the wrapped allocation is too small and
-batadv_tt_prepare_tvlv_global_data() writes past the end of the heap object
-before the later packet-size check runs.
+The netlink claim dump path dereferences claim->backbone_gw->orig and
+takes claim->backbone_gw->crc_lock without pinning the underlying
+backbone gateway. batadv_bla_check_claim() still has the same naked
+pointer access pattern.
 
-Fix this by rejecting TT responses whose TVLV value length cannot fit in
-the 16-bit TVLV payload length field.
+Reuse batadv_bla_claim_get_backbone_gw() in both readers so they operate
+on a stable gateway reference until the read-side work is complete.
+This keeps the dump and claim-check paths aligned with the lifetime
+rules introduced for the other BLA claim readers.
 
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Fixes: 04f3f5bf1883 ("batman-adv: add B.A.T.M.A.N. Dump BLA claims via netlink")
 Cc: stable@vger.kernel.org
 Reported-by: Yifan Wu <yifanwucs@gmail.com>
 Reported-by: Juefei Pu <tomapufckgml@gmail.com>
 Co-developed-by: Yuan Tan <yuantan098@gmail.com>
 Signed-off-by: Yuan Tan <yuantan098@gmail.com>
 Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/translation-table.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c | 27 +++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 6e95e883c2bf0..05cddcf994f65 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -798,8 +798,8 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index 3dc791c15bf72..648fa97ea913f 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -2130,6 +2130,7 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
+ 			    struct batadv_bla_claim *claim)
  {
- 	u16 num_vlan = 0;
- 	u16 num_entries = 0;
--	u16 change_offset;
--	u16 tvlv_len;
-+	u16 tvlv_len = 0;
-+	unsigned int change_offset;
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_orig_node_vlan *vlan;
- 	u8 *tt_change_ptr;
-@@ -816,6 +816,11 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 	if (*tt_len < 0)
- 		*tt_len = batadv_tt_len(num_entries);
+ 	const u8 *primary_addr = primary_if->net_dev->dev_addr;
++	struct batadv_bla_backbone_gw *backbone_gw;
+ 	u16 backbone_crc;
+ 	bool is_own;
+ 	void *hdr;
+@@ -2145,32 +2146,35 @@ batadv_bla_claim_dump_entry(struct sk_buff *msg, u32 portid,
  
-+	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
-+		*tt_len = 0;
-+		goto out;
-+	}
+ 	genl_dump_check_consistent(cb, hdr);
+ 
+-	is_own = batadv_compare_eth(claim->backbone_gw->orig,
+-				    primary_addr);
++	backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
 +
- 	tvlv_len = *tt_len;
- 	tvlv_len += change_offset;
++	is_own = batadv_compare_eth(backbone_gw->orig, primary_addr);
+ 
+-	spin_lock_bh(&claim->backbone_gw->crc_lock);
+-	backbone_crc = claim->backbone_gw->crc;
+-	spin_unlock_bh(&claim->backbone_gw->crc_lock);
++	spin_lock_bh(&backbone_gw->crc_lock);
++	backbone_crc = backbone_gw->crc;
++	spin_unlock_bh(&backbone_gw->crc_lock);
+ 
+ 	if (is_own)
+ 		if (nla_put_flag(msg, BATADV_ATTR_BLA_OWN)) {
+ 			genlmsg_cancel(msg, hdr);
+-			goto out;
++			goto put_backbone_gw;
+ 		}
+ 
+ 	if (nla_put(msg, BATADV_ATTR_BLA_ADDRESS, ETH_ALEN, claim->addr) ||
+ 	    nla_put_u16(msg, BATADV_ATTR_BLA_VID, claim->vid) ||
+ 	    nla_put(msg, BATADV_ATTR_BLA_BACKBONE, ETH_ALEN,
+-		    claim->backbone_gw->orig) ||
++		    backbone_gw->orig) ||
+ 	    nla_put_u16(msg, BATADV_ATTR_BLA_CRC,
+ 			backbone_crc)) {
+ 		genlmsg_cancel(msg, hdr);
+-		goto out;
++		goto put_backbone_gw;
+ 	}
+ 
+ 	genlmsg_end(msg, hdr);
+ 	ret = 0;
+ 
++put_backbone_gw:
++	batadv_backbone_gw_put(backbone_gw);
+ out:
+ 	return ret;
+ }
+@@ -2448,6 +2452,7 @@ int batadv_bla_backbone_dump(struct sk_buff *msg, struct netlink_callback *cb)
+ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
+ 			    u8 *addr, unsigned short vid)
+ {
++	struct batadv_bla_backbone_gw *backbone_gw;
+ 	struct batadv_bla_claim search_claim;
+ 	struct batadv_bla_claim *claim = NULL;
+ 	struct batadv_hard_iface *primary_if = NULL;
+@@ -2470,9 +2475,13 @@ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
+ 	 * return false.
+ 	 */
+ 	if (claim) {
+-		if (!batadv_compare_eth(claim->backbone_gw->orig,
++		backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
++
++		if (!batadv_compare_eth(backbone_gw->orig,
+ 					primary_if->net_dev->dev_addr))
+ 			ret = false;
++
++		batadv_backbone_gw_put(backbone_gw);
+ 		batadv_claim_put(claim);
+ 	}
  
 -- 
 2.47.3
