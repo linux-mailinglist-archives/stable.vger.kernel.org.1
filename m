@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-234013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGfBIRqa1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:34 +0200
+	id GN4nDzua1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090CD3C0124
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD0C3C0172
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A6DC1304BCA7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 46FFE302C764
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108E23D8917;
-	Wed,  8 Apr 2026 18:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0C23D8918;
+	Wed,  8 Apr 2026 18:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxjJPtwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rydPE0yK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75473D8912;
-	Wed,  8 Apr 2026 18:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BB13D890E;
+	Wed,  8 Apr 2026 18:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671760; cv=none; b=mnwoyctqzaHsAMtOWJeR1OXVsEVfvL+uwNTUe8fkDbFtnYMW56OWmbRaNwiyyFj5LEHyY9orLlTbnxQYtF41BqodNRdhcwcxnwMyytTGOTdV6kH+FHzg9tYSA/UXBy686F91k0hJ5ZCscOLVaXMsO1oZIrLcn6U0mQ7KuiBz1UA=
+	t=1775671789; cv=none; b=Bd2o9uiVjigcv/qrPKso0xZD2JKiYVyXmxb9TDT2Tnal8GKJE2vsXFmTgwIcVVjvXjS6gsCBq4wLyj5pI+wnpzzORQe79n61IyH0TbDOlkZ/Gubv67SQGW6DouUSRJhXuD3BKcHtlp1W4ig1dx0tLiG6bZ66z5AhMJSRdFr9EDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671760; c=relaxed/simple;
-	bh=EGKkOfjQZGWrif4fg5+m9TBR3qIbjbzeU2kI6A6Bv2c=;
+	s=arc-20240116; t=1775671789; c=relaxed/simple;
+	bh=vIaeKSV+0GHZNxl1aCMA2q52JSq/9Fxu8IX5ZfhChPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1rNOg6/wYl5aNsB1SHULmZqfiWClhjdkKgx7IKU9gY9PEjzd2ydd6TQsrxBFkWw3UNldn7A01mbV+6VgXqPcc2ySOxDujn9v9AmOAsnPA9yPSowm6hIyEnFsmvP5MLObSunmbA2kd8K2lXb+VNSJr8giDBiwoGELFP5WuXA4IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxjJPtwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDB6C19421;
-	Wed,  8 Apr 2026 18:09:20 +0000 (UTC)
+	 MIME-Version; b=mXWtm75EExoS/1YFjW+MMWVnI80AUxT2ZrM8PMi1XN6bOsNw3lrswUHdrzdycfIo+fQZpc8oCTBNt4PUNyHmNawcDbw8xzNxPRnMVD5XAnk1Iv4cFX8DmDCBTdtxJquGmkEbJRFb+2LcIh5F0UP8xGVFb6l1fChVa5R2OosXtf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rydPE0yK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12F1C19421;
+	Wed,  8 Apr 2026 18:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671760;
-	bh=EGKkOfjQZGWrif4fg5+m9TBR3qIbjbzeU2kI6A6Bv2c=;
+	s=korg; t=1775671789;
+	bh=vIaeKSV+0GHZNxl1aCMA2q52JSq/9Fxu8IX5ZfhChPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxjJPtwCeyJOulRZYvkGQAUxOFUr/u6sA1ZvvOB9XfSwQ15gBTAB2EyLurNpAoDZn
-	 izUA5YjRLKK2KRCo+Wkmq2VWnRtdQqzsYbKUoJmbn0aaEiiMvMDR1DjF5Du6GYt4Ee
-	 G3l/pHOBXJBJCGVXbZm6djSVIQsVL5OMaSvlLjnM=
+	b=rydPE0yK2niZn7V1e/k++uYXYATsLG2y5+HGaVfmMJfhzzdgIDCe76gy6MgaZODxM
+	 FRTITp09ZlvJT0PbTDeOeomtCesKph7Q1HwMQEYo7V9MQY5ttylCkVlwLSxLZrNg/S
+	 TihcPsBAnLgthkmevNbQS32ZrfKg/gYhb4M+7grc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Onyshchuk <oandrew@meta.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	Wei Fang <wei.fang@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/312] udp: Fix wildcard bind conflict check when using hash2
-Date: Wed,  8 Apr 2026 19:59:27 +0200
-Message-ID: <20260408175935.605418017@linuxfoundation.org>
+Subject: [PATCH 6.1 051/312] net: enetc: fix the output issue of ethtool --show-ring
+Date: Wed,  8 Apr 2026 19:59:28 +0200
+Message-ID: <20260408175935.642396090@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -75,25 +73,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234013-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234024-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,meta.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 090CD3C0124
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email]
+X-Rspamd-Queue-Id: BCD0C3C0172
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,157 +99,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit e537dd15d0d4ad989d56a1021290f0c674dd8b28 ]
+[ Upstream commit 70b439bf06f6a12e491f827fa81a9887a11501f9 ]
 
-When binding a udp_sock to a local address and port, UDP uses
-two hashes (udptable->hash and udptable->hash2) for collision
-detection. The current code switches to "hash2" when
-hslot->count > 10.
+Currently, enetc_get_ringparam() only provides rx_pending and tx_pending,
+but 'ethtool --show-ring' no longer displays these fields. Because the
+ringparam retrieval path has moved to the new netlink interface, where
+rings_fill_reply() emits the *x_pending only if the *x_max_pending values
+are non-zero. So rx_max_pending and tx_max_pending to are added to
+enetc_get_ringparam() to fix the issue.
 
-"hash2" is keyed by local address and local port.
-"hash" is keyed by local port only.
+Note that the maximum tx/rx ring size of hardware is 64K, but we haven't
+added set_ringparam() to make the ring size configurable. To avoid users
+mistakenly believing that the ring size can be increased, so set
+the *x_max_pending to priv->*x_bd_count.
 
-The issue can be shown in the following bind sequence (pseudo code):
-
-bind(fd1,  "[fd00::1]:8888")
-bind(fd2,  "[fd00::2]:8888")
-bind(fd3,  "[fd00::3]:8888")
-bind(fd4,  "[fd00::4]:8888")
-bind(fd5,  "[fd00::5]:8888")
-bind(fd6,  "[fd00::6]:8888")
-bind(fd7,  "[fd00::7]:8888")
-bind(fd8,  "[fd00::8]:8888")
-bind(fd9,  "[fd00::9]:8888")
-bind(fd10, "[fd00::10]:8888")
-
-/* Correctly return -EADDRINUSE because "hash" is used
- * instead of "hash2". udp_lib_lport_inuse() detects the
- * conflict.
- */
-bind(fail_fd, "[::]:8888")
-
-/* After one more socket is bound to "[fd00::11]:8888",
- * hslot->count exceeds 10 and "hash2" is used instead.
- */
-bind(fd11, "[fd00::11]:8888")
-bind(fail_fd, "[::]:8888")      /* succeeds unexpectedly */
-
-The same issue applies to the IPv4 wildcard address "0.0.0.0"
-and the IPv4-mapped wildcard address "::ffff:0.0.0.0". For
-example, if there are existing sockets bound to
-"192.168.1.[1-11]:8888", then binding "0.0.0.0:8888" or
-"[::ffff:0.0.0.0]:8888" can also miss the conflict when
-hslot->count > 10.
-
-TCP inet_csk_get_port() already has the correct check in
-inet_use_bhash2_on_bind(). Rename it to
-inet_use_hash2_on_bind() and move it to inet_hashtables.h
-so udp.c can reuse it in this fix.
-
-Fixes: 30fff9231fad ("udp: bind() optimisation")
-Reported-by: Andrew Onyshchuk <oandrew@meta.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260319181817.1901357-1-martin.lau@linux.dev
+Fixes: e4a1717b677c ("ethtool: provide ring sizes with RINGS_GET request")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20260320094222.706339-1-wei.fang@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_hashtables.h   | 14 ++++++++++++++
- net/ipv4/inet_connection_sock.c | 20 +++-----------------
- net/ipv4/udp.c                  |  2 +-
- 3 files changed, 18 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index ddfa2e67fdb51..ce58cf10ecb43 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -278,6 +278,20 @@ inet_bhashfn_portaddr(const struct inet_hashinfo *hinfo, const struct sock *sk,
- 	return &hinfo->bhash2[hash & (hinfo->bhash_size - 1)];
- }
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+index c8369e3752b0e..d4623a41f0137 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+@@ -677,6 +677,8 @@ static void enetc_get_ringparam(struct net_device *ndev,
+ {
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
  
-+static inline bool inet_use_hash2_on_bind(const struct sock *sk)
-+{
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (sk->sk_family == AF_INET6) {
-+		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
-+			return false;
-+
-+		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
-+			return true;
-+	}
-+#endif
-+	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
-+}
-+
- struct inet_bind_hashbucket *
- inet_bhash2_addr_any_hashbucket(const struct sock *sk, const struct net *net, int port);
- 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index fd3bbcffce5e6..dfa27273fa755 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -151,20 +151,6 @@ void inet_sk_get_local_port_range(const struct sock *sk, int *low, int *high)
- }
- EXPORT_SYMBOL(inet_sk_get_local_port_range);
- 
--static bool inet_use_bhash2_on_bind(const struct sock *sk)
--{
--#if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family == AF_INET6) {
--		if (ipv6_addr_any(&sk->sk_v6_rcv_saddr))
--			return false;
--
--		if (!ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
--			return true;
--	}
--#endif
--	return sk->sk_rcv_saddr != htonl(INADDR_ANY);
--}
--
- static bool inet_bind_conflict(const struct sock *sk, struct sock *sk2,
- 			       kuid_t sk_uid, bool relax,
- 			       bool reuseport_cb_ok, bool reuseport_ok)
-@@ -254,7 +240,7 @@ static int inet_csk_bind_conflict(const struct sock *sk,
- 	 * checks separately because their spinlocks have to be acquired/released
- 	 * independently of each other, to prevent possible deadlocks
- 	 */
--	if (inet_use_bhash2_on_bind(sk))
-+	if (inet_use_hash2_on_bind(sk))
- 		return tb2 && inet_bhash2_conflict(sk, tb2, uid, relax,
- 						   reuseport_cb_ok, reuseport_ok);
- 
-@@ -371,7 +357,7 @@ inet_csk_find_open_port(const struct sock *sk, struct inet_bind_bucket **tb_ret,
- 		head = &hinfo->bhash[inet_bhashfn(net, port,
- 						  hinfo->bhash_size)];
- 		spin_lock_bh(&head->lock);
--		if (inet_use_bhash2_on_bind(sk)) {
-+		if (inet_use_hash2_on_bind(sk)) {
- 			if (inet_bhash2_addr_any_conflict(sk, port, l3mdev, relax, false))
- 				goto next_port;
- 		}
-@@ -556,7 +542,7 @@ int inet_csk_get_port(struct sock *sk, unsigned short snum)
- 				check_bind_conflict = false;
- 		}
- 
--		if (check_bind_conflict && inet_use_bhash2_on_bind(sk)) {
-+		if (check_bind_conflict && inet_use_hash2_on_bind(sk)) {
- 			if (inet_bhash2_addr_any_conflict(sk, port, l3mdev, true, true))
- 				goto fail_unlock;
- 		}
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index da96252dd8a16..d50c2b67c08d7 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -280,7 +280,7 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
- 	} else {
- 		hslot = udp_hashslot(udptable, net, snum);
- 		spin_lock_bh(&hslot->lock);
--		if (hslot->count > 10) {
-+		if (inet_use_hash2_on_bind(sk) && hslot->count > 10) {
- 			int exist;
- 			unsigned int slot2 = udp_sk(sk)->udp_portaddr_hash ^ snum;
++	ring->rx_max_pending = priv->rx_bd_count;
++	ring->tx_max_pending = priv->tx_bd_count;
+ 	ring->rx_pending = priv->rx_bd_count;
+ 	ring->tx_pending = priv->tx_bd_count;
  
 -- 
 2.51.0
