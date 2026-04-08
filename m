@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKYHA1ek1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:15 +0200
+	id SLt6Nnql1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BA23C1E2B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3863C21D2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25A1C30BB7C2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B6F203014297
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37CD3D9022;
-	Wed,  8 Apr 2026 18:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872783AEF5F;
+	Wed,  8 Apr 2026 18:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJBrZb/7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvfZ4d33"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F76331A44;
-	Wed,  8 Apr 2026 18:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B13232A3FD;
+	Wed,  8 Apr 2026 18:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673384; cv=none; b=UpRxPbKQQvCbFREhxR3Oe1kHiKn6IkACTvNlK+93mU3PhWsYDikGcT1jsJVJNJHXmEO47oOLD7jjgHorQqb4OzgYwhXa5OslGzQmirPufj9mLJJOfxKGOdUfjzfbQopvWCsWkXeqbHNYoUvrovOGxqX55BT+9ahKReYY0x5EqJk=
+	t=1775674690; cv=none; b=Shz1VIpfzqRqVjRL7O8hHXgaZC5zY/Jxt2pPGHj/kVJ0EjwrUbw8WknOx+mZ8cyyg0KPZNh9/HxsuYf7HeYl2SY67kubsn6dnEhYADJP+WMqpQm+sj2bUEMdTnKouY6Ak7TJLOxf7UDzbYDa/MuqcQjqftaVXjVGC1a56nprwyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673384; c=relaxed/simple;
-	bh=Spw4T/w+tPZSMEIF0WiaWkxAjYPx7uqs41eJGloytcQ=;
+	s=arc-20240116; t=1775674690; c=relaxed/simple;
+	bh=thJ7Ba84pqwhLoB1iZAmp1aEFT5Nsz7j6zS9Z1Z3Y1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKaUG/tIsMJ+GIl314U2TCjWDk2iZw7GWoH9KHQnTAJzOyuk8/wOscx3AdpxJY7Ykv0Wdy8WateBGikJxNi9WXufQ8VBXmwXzKaWZjwAVj5CF72Ng1TxbCIISI2ifEfN7LH5RJw4wDiuc6UXdQYHc7cpWwlkmzp82X1j8z1eaK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJBrZb/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC04C19421;
-	Wed,  8 Apr 2026 18:36:24 +0000 (UTC)
+	 MIME-Version; b=OXUQO3kKYueWC4pm0qsXsVlInnAYTyM1XMlbBmoU661slw/inEilY+QVvR3EgMQe68f6wHr0TtRjd3mk33n01JHWA18r9CWJp6FulYGrSfcx7/JciBepO4n+zDoq3v2hzZ1dOmC8SSRgS+8FJmyV/NElUYNK2GhQRUOOxj/Qn+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvfZ4d33; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D2EC19421;
+	Wed,  8 Apr 2026 18:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673384;
-	bh=Spw4T/w+tPZSMEIF0WiaWkxAjYPx7uqs41eJGloytcQ=;
+	s=korg; t=1775674690;
+	bh=thJ7Ba84pqwhLoB1iZAmp1aEFT5Nsz7j6zS9Z1Z3Y1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qJBrZb/7i9vTS9svMHH97Noh3O+CRRRePfx3sOT/NBuQynd+RPuKDLzqr3jzqLLYe
-	 iWolU0rfbf/pyNveJvAmQZN2kj1rY5ChEChLzQwOSNAdZB1eHEFOhX4ZZfkW8myf5Q
-	 /yGu2HGId6u5fOGujjIioPH3UnIjRmr8TVn9wdjI=
+	b=EvfZ4d33WtOF7/4cXfEE6JVfvbTzQ+cmcr86omdFtmsEl8hOgR2dUjvUM6NW2DYSF
+	 TtZEdlH6NmOejebIQFdd7xt5KAtd73/m7hvjm+9ETK+98LsgeHgEj1wxe0Atv3X1m1
+	 2svqePR1U1RA2yNg5c8QEZjLLRM3cOM5w88/k3hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Xilin Wu <sophon@radxa.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Steev Klimaszewski <threeway@gmail.com>
-Subject: [PATCH 6.18 210/277] ASoC: qcom: sc7280: make use of common helpers
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 195/311] iio: adc: ti-adc161s626: use DMA-safe memory for spi_read()
 Date: Wed,  8 Apr 2026 20:03:15 +0200
-Message-ID: <20260408175941.703845163@linuxfoundation.org>
+Message-ID: <20260408175946.695032125@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,96 +69,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oss.qualcomm.com,kernel.org,radxa.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-234641-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235147-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 84BA23C1E2B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,baylibre.com:email]
+X-Rspamd-Queue-Id: 0D3863C21D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 8fdb030fe283c84fd8d378c97ad0f32d6cdec6ce upstream.
+commit 768461517a28d80fe81ea4d5d03a90cd184ea6ad upstream.
 
-sc7280 machine driver can make use of common sdw functions to do most of
-the soundwire related operations. Remove such redundant code from sc7280
-driver.
+Add a DMA-safe buffer and use it for spi_read() instead of a stack
+memory. All SPI buffers must be DMA-safe.
 
-[This is a partial backport containing only the sound/soc/qcom/sdw.c
-changes which add LPASS CDC DMA DAI IDs to qcom_snd_is_sdw_dai().
-The sc7280.c refactoring changes are omitted as they depend on
-intermediate patches not present in 6.18.y. The sdw.c change fixes a
-NULL pointer dereference for lpass-cpu based SoundWire links.]
+Since we only need up to 3 bytes, we just use a u8[] instead of __be16
+and __be32 and change the conversion functions appropriately.
 
-Fixes: bcba17279327 ("ASoC: qcom: sdw: fix memory leak for sdw_stream_runtime")
-Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Steev Klimaszewski <threeway@gmail.com> # Thinkpad X13s
-Link: https://patch.msgid.link/20251022143349.1081513-5-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Xilin Wu <sophon@radxa.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4d671b71beef ("iio: adc: ti-adc161s626: add support for TI 1-channel differential ADCs")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/sdw.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/iio/adc/ti-adc161s626.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/qcom/sdw.c b/sound/soc/qcom/sdw.c
-index 7b2cae92c8129..5f880c74c8dc2 100644
---- a/sound/soc/qcom/sdw.c
-+++ b/sound/soc/qcom/sdw.c
-@@ -2,6 +2,7 @@
- // Copyright (c) 2018-2023, Linaro Limited.
- // Copyright (c) 2018, The Linux Foundation. All rights reserved.
+--- a/drivers/iio/adc/ti-adc161s626.c
++++ b/drivers/iio/adc/ti-adc161s626.c
+@@ -15,6 +15,7 @@
+ #include <linux/init.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
++#include <linux/unaligned.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/trigger.h>
+ #include <linux/iio/buffer.h>
+@@ -70,6 +71,7 @@ struct ti_adc_data {
  
-+#include <dt-bindings/sound/qcom,lpass.h>
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <linux/module.h>
- #include <sound/soc.h>
-@@ -35,6 +36,16 @@ static bool qcom_snd_is_sdw_dai(int id)
+ 	u8 read_size;
+ 	u8 shift;
++	u8 buf[3] __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+ static int ti_adc_read_measurement(struct ti_adc_data *data,
+@@ -78,26 +80,20 @@ static int ti_adc_read_measurement(struc
+ 	int ret;
+ 
+ 	switch (data->read_size) {
+-	case 2: {
+-		__be16 buf;
+-
+-		ret = spi_read(data->spi, (void *) &buf, 2);
++	case 2:
++		ret = spi_read(data->spi, data->buf, 2);
+ 		if (ret)
+ 			return ret;
+ 
+-		*val = be16_to_cpu(buf);
++		*val = get_unaligned_be16(data->buf);
  		break;
+-	}
+-	case 3: {
+-		__be32 buf;
+-
+-		ret = spi_read(data->spi, (void *) &buf, 3);
++	case 3:
++		ret = spi_read(data->spi, data->buf, 3);
+ 		if (ret)
+ 			return ret;
+ 
+-		*val = be32_to_cpu(buf) >> 8;
++		*val = get_unaligned_be24(data->buf);
+ 		break;
+-	}
+ 	default:
+ 		return -EINVAL;
  	}
- 
-+	/* DSP Bypass usecase, cpu dai index overlaps with DSP dai ids,
-+	 * DO NOT MERGE into top switch case */
-+	switch (id) {
-+	case LPASS_CDC_DMA_TX3:
-+	case LPASS_CDC_DMA_RX0:
-+		return true;
-+	default:
-+		break;
-+	}
-+
- 	return false;
- }
- 
--- 
-2.53.0
-
 
 
 
