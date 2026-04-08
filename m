@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-233988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233990-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNyjD66Z1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-233988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:46 +0200
+	id UHmVBbKZ1mmgGggAu9opvQ
+	(envelope-from <stable+bounces-233990-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BB23C0007
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B7D3C001F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A41223012D63
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:08:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C0FB30185BC
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913F33D890E;
-	Wed,  8 Apr 2026 18:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5A73D88E1;
+	Wed,  8 Apr 2026 18:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RckBaNPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMQxC+hq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529733446CA;
-	Wed,  8 Apr 2026 18:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD9F3D88FE;
+	Wed,  8 Apr 2026 18:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671696; cv=none; b=SrfWt6HY97/u2sYNAWEfto/i+xD3E5CIwG4wx3V//os40Z+4xv7cSY4pc5FLD+epjrNUOy9Z5Th2zC1oO5T7xnEcDar8oZA14V0YPcVnM+B0GG6nsyZ1EIdOMX9UKz4a/HIUUXU3Ac2D3XZRtES+FJ+rGoX1e4jFjP0wHToI5kk=
+	t=1775671701; cv=none; b=iDKa2Fhrw0Qa2B7Z2OnXbG/fd1qn3BwjrPe7gc40sxC450IDxoNL1GgcPhGxCFQf8aFbPXgNATna51I1Sl6Y9AaHo3dRAWjD/gIYynVOhjk/ljagUEqJkaO9oa3Hw0a9f48nYpoNGTU0ICNrv7RksftHQbcjY7yhAt0Wrrdtw04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671696; c=relaxed/simple;
-	bh=umjxvQZ2QvgGBgZ3SBYae+j64kbfrelxro4EviO3RII=;
+	s=arc-20240116; t=1775671701; c=relaxed/simple;
+	bh=sOhlq6p2vM3XBPaFtn4kcPNCe4Ze7/Znj1MyCqSwssE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKc5ha9HRY+Fhg2H5XfOZqotar5XM60uaRt31unFPQlQB35PO0FVDqPYst0eE11alnCT19gj1HkjxNRGiDqfd5dlp6WO96TbE4Px8wG5yPwnYsC/+goNTEPQGtvjeuByPt7zTQYA+3JJhMdtFsK3Pq1dfNWm9w6G3NzHSKkT1y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RckBaNPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8AEC19421;
-	Wed,  8 Apr 2026 18:08:15 +0000 (UTC)
+	 MIME-Version; b=mJJi6pR9g0Ub0l4/wUyB0ewSz6EZ8aPrMVYPu3dgzeD7mvhj+i7MkPZHu2jZWZH24bBtRkjtu5+lJelDutAiwhfHVrs/Mp1Io6wokM4g15awFvnMWGyZ3Qy/Pc5hnBrMs36+m5G0gss0H3oLRuGFFbo1Qtn7/xWu6w2SsPGwBB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMQxC+hq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EC3C19421;
+	Wed,  8 Apr 2026 18:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671696;
-	bh=umjxvQZ2QvgGBgZ3SBYae+j64kbfrelxro4EviO3RII=;
+	s=korg; t=1775671701;
+	bh=sOhlq6p2vM3XBPaFtn4kcPNCe4Ze7/Znj1MyCqSwssE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RckBaNPCRkN0saja06WOSQgBwlBe0dTgwOU2qK87qRrzS+wXNy7MJQeIZndf5wSiV
-	 RUef9kSi3KV7dKASbF4ODW+z9s22ZmHBO6DMYbeSpIGvs8p3re3ciDOKxueHQAN2A3
-	 EvHLIcd66fvZeMa3u2i5oRXWnPkTyDkWBANZFrMQ=
+	b=WMQxC+hqqGDn/J2o5ppCO8Y/EmAcDkiohU0e48hBK2lKTRxBGsKOOc0QyD6jdw9ze
+	 V36nZcMMQiOe+WThJkrW+cNJGa99mVp2JzmMJG1Ch5OxsgjcUt7Pf8ah+J/3Hm1Jz+
+	 8nCUALb+6gKxjff4BJTw1h0jtSJcTdWA3jQ0En+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Leonardo Scorcia <l.scorcia@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Mohammad Heib <mheib@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/312] pinctrl: mediatek: common: Fix probe failure for devices without EINT
-Date: Wed,  8 Apr 2026 19:59:10 +0200
-Message-ID: <20260408175934.965480729@linuxfoundation.org>
+Subject: [PATCH 6.1 034/312] ionic: fix persistent MAC address override on PF
+Date: Wed,  8 Apr 2026 19:59:11 +0200
+Message-ID: <20260408175935.002299293@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -65,36 +66,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-233988-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233990-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email]
-X-Rspamd-Queue-Id: 79BB23C0007
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A1B7D3C001F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,47 +101,66 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Luca Leonardo Scorcia <l.scorcia@gmail.com>
+From: Mohammad Heib <mheib@redhat.com>
 
-[ Upstream commit 8f9f64c8f90dca07d3b9f1d7ce5d34ccd246c9dd ]
+[ Upstream commit cbcb3cfcdc436d6f91a3d95ecfa9c831abe14aed ]
 
-Some pinctrl devices like mt6397 or mt6392 don't support EINT at all, but
-the mtk_eint_init function is always called and returns -ENODEV, which
-then bubbles up and causes probe failure.
+The use of IONIC_CMD_LIF_SETATTR in the MAC address update path causes
+the ionic firmware to update the LIF's identity in its persistent state.
+Since the firmware state is maintained across host warm boots and driver
+reloads, any MAC change on the Physical Function (PF) becomes "sticky.
 
-To address this only call mtk_eint_init if EINT pins are present.
+This is problematic because it causes ethtool -P to report the
+user-configured MAC as the permanent factory address, which breaks
+system management tools that rely on a stable hardware identity.
 
-Tested on Xiaomi Mi Smart Clock x04g (mt6392).
+While Virtual Functions (VFs) need this hardware-level programming to
+properly handle MAC assignments in guest environments, the PF should
+maintain standard transient behavior. This patch gates the
+ionic_program_mac call using is_virtfn so that PF MAC changes remain
+local to the netdev filters and do not overwrite the firmware's
+permanent identity block.
 
-Fixes: e46df235b4e6 ("pinctrl: mediatek: refactor EINT related code for all MediaTek pinctrl can fit")
-Signed-off-by: Luca Leonardo Scorcia <l.scorcia@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Fixes: 19058be7c48c ("ionic: VF initial random MAC address if no assigned mac")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20260317170806.35390-1-mheib@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-mtk-common.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-index f25b3e09386bc..096213d618839 100644
---- a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
-@@ -1127,9 +1127,12 @@ int mtk_pctrl_init(struct platform_device *pdev,
- 		goto chip_error;
- 	}
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 7ed77a8304e68..c15d7dfce21e5 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -1665,13 +1665,18 @@ static int ionic_set_mac_address(struct net_device *netdev, void *sa)
+ 	if (ether_addr_equal(netdev->dev_addr, mac))
+ 		return 0;
  
--	ret = mtk_eint_init(pctl, pdev);
--	if (ret)
--		goto chip_error;
-+	/* Only initialize EINT if we have EINT pins */
-+	if (data->eint_hw.ap_num > 0) {
-+		ret = mtk_eint_init(pctl, pdev);
-+		if (ret)
-+			goto chip_error;
+-	err = ionic_program_mac(lif, mac);
+-	if (err < 0)
+-		return err;
++	/* Only program macs for virtual functions to avoid losing the permanent
++	 * Mac across warm reset/reboot.
++	 */
++	if (lif->ionic->pdev->is_virtfn) {
++		err = ionic_program_mac(lif, mac);
++		if (err < 0)
++			return err;
+ 
+-	if (err > 0)
+-		netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
+-			   __func__);
++		if (err > 0)
++			netdev_dbg(netdev, "%s: SET and GET ATTR Mac are not equal-due to old FW running\n",
++				   __func__);
 +	}
  
- 	return 0;
- 
+ 	err = eth_prepare_mac_addr_change(netdev, addr);
+ 	if (err)
 -- 
 2.51.0
 
