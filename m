@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOdHJCah1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:38 +0200
+	id ePScMkSd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE4B3C1321
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E323C0985
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 97FB5305AE1D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4838307AA5B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EDA3D9045;
-	Wed,  8 Apr 2026 18:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A627A386550;
+	Wed,  8 Apr 2026 18:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBaLkuGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMyRcWP4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759E83D890F;
-	Wed,  8 Apr 2026 18:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B3CB67E;
+	Wed,  8 Apr 2026 18:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673382; cv=none; b=MZhhhmkc/NUOcl1q1AQrM90GrYwenZbVOQK9GhvtACE8dKTrZnSY4d+y3m5UQWfc6L29voqAfwU20/NNpQGObgbic2QolL+sHLDzJQufehoM1zUUgaxV03d4bYfsKwGsE9LFnu3AeQ1ax6u/KglRO32m1jgLRPkMbmGKoe06ahA=
+	t=1775672325; cv=none; b=Yej5GB2cEX4G74Jxq0gFZPBMsk2Sq0O7fm/AAIUPIPO9/3xEdeT3cmpgH6DkJsvRh05aoTtruBXy/AVE1wzTtIfejHgvFFLYEN8T3VWjlkr2Vy2HLhpcJodkbqOO7WJ3nqRZexmndTfDB3y+8eJtlBxxEhanUo6I87xycZMirNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673382; c=relaxed/simple;
-	bh=3dDsT7C370d6LLDpCsvHRTKAhWVv7wBiZZI1cEm92EQ=;
+	s=arc-20240116; t=1775672325; c=relaxed/simple;
+	bh=jlfyjf4EgWV3R7I5VPHYbcTXupunx5ekfSX1X4zEBUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlqfaEZgSNvXF0Wz5N3AqLIs7f5KTumzbaj9wePogWgwvLJUcFZ1cI7QeHOAcAmjb4H8fIeYeP23TiucfdfsEHAfhjpi8KgQqL3aUAte2+cGBMzBqUesN8RkiL9ubi9Sbw1T80qr5U5jRj3XmcxvjZH6fHmLz/yc49kHFP2jnO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBaLkuGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92D8C2BC9E;
-	Wed,  8 Apr 2026 18:36:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UfFuH8pjeraXjR2hnj/jbjRG/mT/1I+NkFO9VRt4xZgGSMgsIFWWMBzpHb3nknEaie1j+QssYTgJ9RNmFN1/zMq0onpztj4sOdNhXlIx/fHZO+VGF+HyqYLfSK/U1VqxaLCVLDaSeQYJhQ362TI84SdgC0T49vUciFiN+Bi1DmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMyRcWP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB82FC19421;
+	Wed,  8 Apr 2026 18:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673382;
-	bh=3dDsT7C370d6LLDpCsvHRTKAhWVv7wBiZZI1cEm92EQ=;
+	s=korg; t=1775672325;
+	bh=jlfyjf4EgWV3R7I5VPHYbcTXupunx5ekfSX1X4zEBUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bBaLkuGxwC95uxhR2xt7aixQ7hgI/1Dh8j2z1W35C0uEcy0lIpbGYjC6vljUixGi8
-	 eWT4i0utNtjWa0Lu+/PIAyjJz6JLjfYK1GGL/PoyI+KG5Atii9sDHTb/3x3wu37d7+
-	 7qqHACFmHQQgP40klN6TFVwKIJoA5yoB3WcZI+T8=
+	b=uMyRcWP4pvT3UQ57B+eIqkA07A/0zmJKXxegZAnzi1cdRlqm96QvMBJL6MlqgMY+s
+	 tigLIwM8yiyRQ9gPakkUe3lccNxIWru3b3t57yeP0/CY3rDJVuxUss3pvGnj+/jyzi
+	 LfyM+2dYdNsOoZr3s2gyhOUruE6QQsTypTthUCHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 209/277] io_uring: protect remaining lockless ctx->rings accesses with RCU
+Subject: [PATCH 6.1 277/312] net: macb: Move devm_{free,request}_irq() out of spin lock area
 Date: Wed,  8 Apr 2026 20:03:14 +0200
-Message-ID: <20260408175941.667045979@linuxfoundation.org>
+Message-ID: <20260408175944.095746485@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,293 +64,182 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234640-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234232-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8DE4B3C1321
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 43E323C0985
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Kevin Hao <haokexin@gmail.com>
 
-Commit 61a11cf4812726aceaee17c96432e1c08f6ed6cb upstream.
+[ Upstream commit 317e49358ebbf6390fa439ef3c142f9239dd25fb ]
 
-Commit 96189080265e addressed one case of ctx->rings being potentially
-accessed while a resize is happening on the ring, but there are still
-a few others that need handling. Add a helper for retrieving the
-rings associated with an io_uring context, and add some sanity checking
-to that to catch bad uses. ->rings_rcu is always valid, as long as it's
-used within RCU read lock. Any use of ->rings_rcu or ->rings inside
-either ->uring_lock or ->completion_lock is sane as well.
+The devm_free_irq() and devm_request_irq() functions should not be
+executed in an atomic context.
 
-Do the minimum fix for the current kernel, but set it up such that this
-basic infra can be extended for later kernels to make this harder to
-mess up in the future.
+During device suspend, all userspace processes and most kernel threads
+are frozen. Additionally, we flush all tx/rx status, disable all macb
+interrupts, and halt rx operations. Therefore, it is safe to split the
+region protected by bp->lock into two independent sections, allowing
+devm_free_irq() and devm_request_irq() to run in a non-atomic context.
+This modification resolves the following lockdep warning:
+  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 501, name: rtcwake
+  preempt_count: 1, expected: 0
+  RCU nest depth: 1, expected: 0
+  7 locks held by rtcwake/501:
+   #0: ffff0008038c3408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
+   #1: ffff0008049a5e88 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
+   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
+   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
+   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
+   #5: ffff800081d00458 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48
+   #6: ffff0008031fb9e0 (&bp->lock){-.-.}-{3:3}, at: macb_suspend+0x144/0x558
+  irq event stamp: 8682
+  hardirqs last  enabled at (8681): [<ffff8000813c7d7c>] _raw_spin_unlock_irqrestore+0x44/0x88
+  hardirqs last disabled at (8682): [<ffff8000813c7b58>] _raw_spin_lock_irqsave+0x38/0x98
+  softirqs last  enabled at (7322): [<ffff8000800f1b4c>] handle_softirqs+0x52c/0x588
+  softirqs last disabled at (7317): [<ffff800080010310>] __do_softirq+0x20/0x2c
+  CPU: 1 UID: 0 PID: 501 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #125 PREEMPT
+  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
+  Call trace:
+   show_stack+0x24/0x38 (C)
+   __dump_stack+0x28/0x38
+   dump_stack_lvl+0x64/0x88
+   dump_stack+0x18/0x24
+   __might_resched+0x200/0x218
+   __might_sleep+0x38/0x98
+   __mutex_lock_common+0x7c/0x1378
+   mutex_lock_nested+0x38/0x50
+   free_irq+0x68/0x2b0
+   devm_irq_release+0x24/0x38
+   devres_release+0x40/0x80
+   devm_free_irq+0x48/0x88
+   macb_suspend+0x298/0x558
+   device_suspend+0x218/0x4f0
+   dpm_suspend+0x244/0x3a0
+   dpm_suspend_start+0x50/0x78
+   suspend_devices_and_enter+0xec/0x560
+   pm_suspend+0x194/0x290
+   state_store+0x110/0x158
+   kobj_attr_store+0x1c/0x30
+   sysfs_kf_write+0xa8/0xd0
+   kernfs_fop_write_iter+0x11c/0x1c8
+   vfs_write+0x248/0x368
+   ksys_write+0x7c/0xf8
+   __arm64_sys_write+0x28/0x40
+   invoke_syscall+0x4c/0xe8
+   el0_svc_common+0x98/0xf0
+   do_el0_svc+0x28/0x40
+   el0_svc+0x54/0x1e0
+   el0t_64_sync_handler+0x84/0x130
+   el0t_64_sync+0x198/0x1a0
 
-Thanks to Junxi Qian for finding and debugging this issue.
-
+Fixes: 558e35ccfe95 ("net: macb: WoL support for GEM type of Ethernet controller")
 Cc: stable@vger.kernel.org
-Fixes: 79cfe9e59c2a ("io_uring/register: add IORING_REGISTER_RESIZE_RINGS")
-Reviewed-by: Junxi Qian <qjx1298677004@gmail.com>
-Tested-by: Junxi Qian <qjx1298677004@gmail.com>
-Link: https://lore.kernel.org/io-uring/20260330172348.89416-1-qjx1298677004@gmail.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Link: https://patch.msgid.link/20260318-macb-irq-v2-1-f1179768ab24@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced `tmp` variable with direct `MACB_BIT(MAG)` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c | 62 +++++++++++++++++++++++++++++----------------
- io_uring/io_uring.h | 34 +++++++++++++++++++++----
- 2 files changed, 69 insertions(+), 27 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index d10a38c9dbfb3..99cd5bcac201d 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -199,12 +199,15 @@ static void io_poison_req(struct io_kiocb *req)
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5270,6 +5270,8 @@ static int __maybe_unused macb_suspend(s
+ 		macb_writel(bp, TSR, -1);
+ 		macb_writel(bp, RSR, -1);
  
- static inline unsigned int __io_cqring_events(struct io_ring_ctx *ctx)
- {
--	return ctx->cached_cq_tail - READ_ONCE(ctx->rings->cq.head);
-+	struct io_rings *rings = io_get_rings(ctx);
-+	return ctx->cached_cq_tail - READ_ONCE(rings->cq.head);
- }
- 
- static inline unsigned int __io_cqring_events_user(struct io_ring_ctx *ctx)
- {
--	return READ_ONCE(ctx->rings->cq.tail) - READ_ONCE(ctx->rings->cq.head);
-+	struct io_rings *rings = io_get_rings(ctx);
++		spin_unlock_irqrestore(&bp->lock, flags);
 +
-+	return READ_ONCE(rings->cq.tail) - READ_ONCE(rings->cq.head);
- }
- 
- static bool io_match_linked(struct io_kiocb *head)
-@@ -2550,12 +2553,15 @@ static enum hrtimer_restart io_cqring_min_timer_wakeup(struct hrtimer *timer)
- 	if (io_has_work(ctx))
- 		goto out_wake;
- 	/* got events since we started waiting, min timeout is done */
--	if (iowq->cq_min_tail != READ_ONCE(ctx->rings->cq.tail))
--		goto out_wake;
--	/* if we have any events and min timeout expired, we're done */
--	if (io_cqring_events(ctx))
--		goto out_wake;
-+	scoped_guard(rcu) {
-+		struct io_rings *rings = io_get_rings(ctx);
- 
-+		if (iowq->cq_min_tail != READ_ONCE(rings->cq.tail))
-+			goto out_wake;
-+		/* if we have any events and min timeout expired, we're done */
-+		if (io_cqring_events(ctx))
-+			goto out_wake;
-+	}
- 	/*
- 	 * If using deferred task_work running and application is waiting on
- 	 * more than one request, ensure we reset it now where we are switching
-@@ -2666,9 +2672,9 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 			  struct ext_arg *ext_arg)
- {
- 	struct io_wait_queue iowq;
--	struct io_rings *rings = ctx->rings;
-+	struct io_rings *rings;
- 	ktime_t start_time;
--	int ret;
-+	int ret, nr_wait;
- 
- 	min_events = min_t(int, min_events, ctx->cq_entries);
- 
-@@ -2681,15 +2687,23 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 
- 	if (unlikely(test_bit(IO_CHECK_CQ_OVERFLOW_BIT, &ctx->check_cq)))
- 		io_cqring_do_overflow_flush(ctx);
--	if (__io_cqring_events_user(ctx) >= min_events)
-+
-+	rcu_read_lock();
-+	rings = io_get_rings(ctx);
-+	if (__io_cqring_events_user(ctx) >= min_events) {
-+		rcu_read_unlock();
- 		return 0;
-+	}
- 
- 	init_waitqueue_func_entry(&iowq.wq, io_wake_function);
- 	iowq.wq.private = current;
- 	INIT_LIST_HEAD(&iowq.wq.entry);
- 	iowq.ctx = ctx;
--	iowq.cq_tail = READ_ONCE(ctx->rings->cq.head) + min_events;
--	iowq.cq_min_tail = READ_ONCE(ctx->rings->cq.tail);
-+	iowq.cq_tail = READ_ONCE(rings->cq.head) + min_events;
-+	iowq.cq_min_tail = READ_ONCE(rings->cq.tail);
-+	nr_wait = (int) iowq.cq_tail - READ_ONCE(rings->cq.tail);
-+	rcu_read_unlock();
-+	rings = NULL;
- 	iowq.nr_timeouts = atomic_read(&ctx->cq_timeouts);
- 	iowq.hit_timeout = 0;
- 	iowq.min_timeout = ext_arg->min_time;
-@@ -2720,14 +2734,6 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 	trace_io_uring_cqring_wait(ctx, min_events);
- 	do {
- 		unsigned long check_cq;
--		int nr_wait;
--
--		/* if min timeout has been hit, don't reset wait count */
--		if (!iowq.hit_timeout)
--			nr_wait = (int) iowq.cq_tail -
--					READ_ONCE(ctx->rings->cq.tail);
--		else
--			nr_wait = 1;
- 
- 		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN) {
- 			atomic_set(&ctx->cq_wait_nr, nr_wait);
-@@ -2778,13 +2784,22 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 			break;
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+ 		 */
+@@ -5281,11 +5283,12 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, GEM_BIT(WOL));
+ 			gem_writel(bp, WOL, MACB_BIT(MAG));
++			spin_unlock_irqrestore(&bp->lock, flags);
+ 		} else {
+ 			err = devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrupt,
+ 					       IRQF_SHARED, netdev->name, bp->queues);
+@@ -5293,13 +5296,13 @@ static int __maybe_unused macb_suspend(s
+ 				dev_err(dev,
+ 					"Unable to request IRQ %d (error %d)\n",
+ 					bp->queues[0].irq, err);
+-				spin_unlock_irqrestore(&bp->lock, flags);
+ 				return err;
+ 			}
++			spin_lock_irqsave(&bp->lock, flags);
+ 			queue_writel(bp->queues, IER, MACB_BIT(WOL));
+ 			macb_writel(bp, WOL, MACB_BIT(MAG));
++			spin_unlock_irqrestore(&bp->lock, flags);
  		}
- 		cond_resched();
+-		spin_unlock_irqrestore(&bp->lock, flags);
+ 
+ 		enable_irq_wake(bp->queues[0].irq);
+ 	}
+@@ -5366,6 +5369,8 @@ static int __maybe_unused macb_resume(st
+ 		queue_readl(bp->queues, ISR);
+ 		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 			queue_writel(bp->queues, ISR, -1);
++		spin_unlock_irqrestore(&bp->lock, flags);
 +
-+		/* if min timeout has been hit, don't reset wait count */
-+		if (!iowq.hit_timeout)
-+			scoped_guard(rcu)
-+				nr_wait = (int) iowq.cq_tail -
-+						READ_ONCE(io_get_rings(ctx)->cq.tail);
-+		else
-+			nr_wait = 1;
- 	} while (1);
+ 		/* Replace interrupt handler on queue 0 */
+ 		devm_free_irq(dev, bp->queues[0].irq, bp->queues);
+ 		err = devm_request_irq(dev, bp->queues[0].irq, macb_interrupt,
+@@ -5374,10 +5379,8 @@ static int __maybe_unused macb_resume(st
+ 			dev_err(dev,
+ 				"Unable to request IRQ %d (error %d)\n",
+ 				bp->queues[0].irq, err);
+-			spin_unlock_irqrestore(&bp->lock, flags);
+ 			return err;
+ 		}
+-		spin_unlock_irqrestore(&bp->lock, flags);
  
- 	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
- 		finish_wait(&ctx->cq_wait, &iowq.wq);
- 	restore_saved_sigmask_unless(ret == -EINTR);
+ 		disable_irq_wake(bp->queues[0].irq);
  
--	return READ_ONCE(rings->cq.head) == READ_ONCE(rings->cq.tail) ? ret : 0;
-+	guard(rcu)();
-+	return READ_ONCE(io_get_rings(ctx)->cq.head) == READ_ONCE(io_get_rings(ctx)->cq.tail) ? ret : 0;
- }
- 
- static void io_rings_free(struct io_ring_ctx *ctx)
-@@ -2956,7 +2971,9 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
- 	 */
- 	poll_wait(file, &ctx->poll_wq, wait);
- 
--	if (!io_sqring_full(ctx))
-+	rcu_read_lock();
-+
-+	if (!__io_sqring_full(ctx))
- 		mask |= EPOLLOUT | EPOLLWRNORM;
- 
- 	/*
-@@ -2976,6 +2993,7 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
- 	if (__io_cqring_events_user(ctx) || io_has_work(ctx))
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
-+	rcu_read_unlock();
- 	return mask;
- }
- 
-diff --git a/io_uring/io_uring.h b/io_uring/io_uring.h
-index 46d9141d772a7..05702288465b7 100644
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -112,16 +112,28 @@ struct io_wait_queue {
- #endif
- };
- 
-+static inline struct io_rings *io_get_rings(struct io_ring_ctx *ctx)
-+{
-+	return rcu_dereference_check(ctx->rings_rcu,
-+			lockdep_is_held(&ctx->uring_lock) ||
-+			lockdep_is_held(&ctx->completion_lock));
-+}
-+
- static inline bool io_should_wake(struct io_wait_queue *iowq)
- {
- 	struct io_ring_ctx *ctx = iowq->ctx;
--	int dist = READ_ONCE(ctx->rings->cq.tail) - (int) iowq->cq_tail;
-+	struct io_rings *rings;
-+	int dist;
-+
-+	guard(rcu)();
-+	rings = io_get_rings(ctx);
- 
- 	/*
- 	 * Wake up if we have enough events, or if a timeout occurred since we
- 	 * started waiting. For timeouts, we always want to return to userspace,
- 	 * regardless of event count.
- 	 */
-+	dist = READ_ONCE(rings->cq.tail) - (int) iowq->cq_tail;
- 	return dist >= 0 || atomic_read(&ctx->cq_timeouts) != iowq->nr_timeouts;
- }
- 
-@@ -413,9 +425,9 @@ static inline void io_cqring_wake(struct io_ring_ctx *ctx)
- 	__io_wq_wake(&ctx->cq_wait);
- }
- 
--static inline bool io_sqring_full(struct io_ring_ctx *ctx)
-+static inline bool __io_sqring_full(struct io_ring_ctx *ctx)
- {
--	struct io_rings *r = ctx->rings;
-+	struct io_rings *r = io_get_rings(ctx);
- 
- 	/*
- 	 * SQPOLL must use the actual sqring head, as using the cached_sq_head
-@@ -427,9 +439,15 @@ static inline bool io_sqring_full(struct io_ring_ctx *ctx)
- 	return READ_ONCE(r->sq.tail) - READ_ONCE(r->sq.head) == ctx->sq_entries;
- }
- 
--static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
-+static inline bool io_sqring_full(struct io_ring_ctx *ctx)
- {
--	struct io_rings *rings = ctx->rings;
-+	guard(rcu)();
-+	return __io_sqring_full(ctx);
-+}
-+
-+static inline unsigned int __io_sqring_entries(struct io_ring_ctx *ctx)
-+{
-+	struct io_rings *rings = io_get_rings(ctx);
- 	unsigned int entries;
- 
- 	/* make sure SQ entry isn't read before tail */
-@@ -490,6 +508,12 @@ static inline void io_tw_lock(struct io_ring_ctx *ctx, io_tw_token_t tw)
- 	lockdep_assert_held(&ctx->uring_lock);
- }
- 
-+static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
-+{
-+	guard(rcu)();
-+	return __io_sqring_entries(ctx);
-+}
-+
- /*
-  * Don't complete immediately but use deferred completion infrastructure.
-  * Protected by ->uring_lock and can only be used either with
--- 
-2.53.0
-
 
 
 
