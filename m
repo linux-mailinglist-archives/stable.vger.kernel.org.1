@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-234073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNjhOHKa1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:02 +0200
+	id sM0eHdee1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:30:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0731A3C0274
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 979C73C0D78
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E06A03008C8C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1B3EE3018B57
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFA53D8917;
-	Wed,  8 Apr 2026 18:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917E33D564E;
+	Wed,  8 Apr 2026 18:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orZ3OH6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAJUBlTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725B4347503;
-	Wed,  8 Apr 2026 18:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531D43D411F;
+	Wed,  8 Apr 2026 18:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671915; cv=none; b=JI0LmoXqyyISY+eIxf5yZqaytvv/AmvWeCBpwlO0A3qKJYGxtVmBkuWVMC5ahFvLSqppnRM5qb0RAwEihguBAeRv9TBmhcFrn0mEAhKRw6lteulTmuWIZDvjKU0vwdzSLWnOnSGrRwqz/3WcK57k/PIDUrOI5zZVuEhChhJpNFU=
+	t=1775672964; cv=none; b=X0mbGiJZ7Vd7dL+magNU8jcaZOyIQYTcVPUs3hanNimp22MRduz+qExjBg5YSyR2HzwdGcPMli7qOp+EnjDsc9Xr6unGL59UFB4MaMc1mDxMfFkqMx36X3pIj/j9ntIFMNaPq8l96KuC0dTbGgtoKVzawiS7EVsTGPacbfnwKnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671915; c=relaxed/simple;
-	bh=rTlk4Oj33RB2uv6AsBBpoyBKIvWVUTmVUs/sNdlUpdY=;
+	s=arc-20240116; t=1775672964; c=relaxed/simple;
+	bh=o1gKXhjIb9Za+mAT5Cxe75/VLcPbzJEpXt3nOxxZjc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIiBXQx29k8cpYx/ew773f+FN+xdtN3uCT4By4O9vVunEK5AU2Bh8KoV+7EZmnupfuinR5hjShVnSBs7NmJ9XfsNzi0O52QFucqutlMUG2qJTq7k4i6OMopKca3b0w6SkG+b+cqbSJCESrsT6ttSrLQZwpTEgFYwUfY8LtFDxF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orZ3OH6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08586C19421;
-	Wed,  8 Apr 2026 18:11:54 +0000 (UTC)
+	 MIME-Version; b=JrG8TinawDQ6KT8+7UGWIuuRO7KTAWAXy7l0CdvzqYQ7nAhP+0mcug0AAT/qya1oTc5JeK9UdnMZfVlMsYAIWWh4jqSfEJ4c7vu1BI7WxEGjyZIGAfEQHTAI2i3kgyitR54eJCtWpP20gZ3+Pd/qCIJo1GowxnqtZceFEhNIkO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAJUBlTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7AAC19421;
+	Wed,  8 Apr 2026 18:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671915;
-	bh=rTlk4Oj33RB2uv6AsBBpoyBKIvWVUTmVUs/sNdlUpdY=;
+	s=korg; t=1775672964;
+	bh=o1gKXhjIb9Za+mAT5Cxe75/VLcPbzJEpXt3nOxxZjc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orZ3OH6s00il03XxaugRZP+To26wHazc3qYUkUvL+vCAOpw9VsrsFnkxBD5DaLn58
-	 a+5EkDCQVtQF7Tbr3YA1GTBq0B/QzLLOgdHZIdXaRnUrst4kH853t+mDWlkKysTTWT
-	 lb+pS6Z3ws0hj0uzSV5+LPpLMlld2e/UwTQn896c=
+	b=wAJUBlTASULjBW/D1DM97LkLRn2nIpDJSaNS0ucOViyzoLi/Ez2xyfpk4di7AF9hi
+	 5vnJBcli3I//6H5UvK3uhy+3B9OyjGQkjtPWlgKVWGSZeicAipMdSThnNmkxG9k3Rm
+	 3WvHZVI218hlr5TiYEjZD/jWYF24tWtGp2kSr7pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 116/312] ext4: avoid allocate block from corrupted group in ext4_mb_find_by_goal()
-Date: Wed,  8 Apr 2026 20:00:33 +0200
-Message-ID: <20260408175938.102419593@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 049/277] net: introduce mangleid_features
+Date: Wed,  8 Apr 2026 20:00:34 +0200
+Message-ID: <20260408175935.688667703@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,130 +65,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234073-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,dilger.ca,suse.cz,mit.edu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234478-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.cz:email,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0731A3C0274
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 979C73C0D78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 46066e3a06647c5b186cc6334409722622d05c44 upstream.
+[ Upstream commit 31c5a71d982b57df75858974634c2f0a338f2fc6 ]
 
-There's issue as follows:
-...
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Some/most devices implementing gso_partial need to disable the GSO partial
+features when the IP ID can't be mangled; to that extend each of them
+implements something alike the following[1]:
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+	if (skb->encapsulation && !(features & NETIF_F_TSO_MANGLEID))
+		features &= ~NETIF_F_TSO;
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+in the ndo_features_check() op, which leads to a bit of duplicate code.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 206 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Later patch in the series will implement GSO partial support for virtual
+devices, and the current status quo will require more duplicate code and
+a new indirect call in the TX path for them.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2243 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+Introduce the mangleid_features mask, allowing the core to disable NIC
+features based on/requiring MANGLEID, without any further intervention
+from the driver.
 
-EXT4-fs (mmcblk0p1): Delayed block allocation failed for inode 2239 at logical offset 0 with max blocks 1 with error 117
-EXT4-fs (mmcblk0p1): This should not happen!! Data will be lost
+The same functionality could be alternatively implemented adding a single
+boolean flag to the struct net_device, but would require an additional
+checks in ndo_features_check().
 
-EXT4-fs (mmcblk0p1): error count since last fsck: 1
-EXT4-fs (mmcblk0p1): initial error at time 1765597433: ext4_mb_generate_buddy:760
-EXT4-fs (mmcblk0p1): last error at time 1765597433: ext4_mb_generate_buddy:760
-...
+Also note that [1] is incorrect if the NIC additionally implements
+NETIF_F_GSO_UDP_L4, mangleid_features transparently handle even such a
+case.
 
-According to the log analysis, blocks are always requested from the
-corrupted block group. This may happen as follows:
-ext4_mb_find_by_goal
-  ext4_mb_load_buddy
-   ext4_mb_load_buddy_gfp
-     ext4_mb_init_cache
-      ext4_read_block_bitmap_nowait
-      ext4_wait_block_bitmap
-       ext4_validate_block_bitmap
-        if (!grp || EXT4_MB_GRP_BBITMAP_CORRUPT(grp))
-         return -EFSCORRUPTED; // There's no logs.
- if (err)
-  return err;  // Will return error
-ext4_lock_group(ac->ac_sb, group);
-  if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) // Unreachable
-   goto out;
-
-After commit 9008a58e5dce ("ext4: make the bitmap read routines return
-real error codes") merged, Commit 163a203ddb36 ("ext4: mark block group
-as corrupt on block bitmap error") is no real solution for allocating
-blocks from corrupted block groups. This is because if
-'EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)' is true, then
-'ext4_mb_load_buddy()' may return an error. This means that the block
-allocation will fail.
-Therefore, check block group if corrupted when ext4_mb_load_buddy()
-returns error.
-
-Fixes: 163a203ddb36 ("ext4: mark block group as corrupt on block bitmap error")
-Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260302134619.3145520-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/5a7cdaeea40b0a29b88e525b6c942d73ed3b8ce7.1769011015.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ddc748a391dd ("net: use skb_header_pointer() for TCPv4 GSO frag_off check")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/linux/netdevice.h | 3 +++
+ net/core/dev.c            | 5 ++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2236,8 +2236,12 @@ int ext4_mb_find_by_goal(struct ext4_all
- 		return 0;
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 20bd42fa160c9..fc55157a44860 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -1817,6 +1817,8 @@ enum netdev_reg_state {
+  *
+  *	@mpls_features:	Mask of features inheritable by MPLS
+  *	@gso_partial_features: value(s) from NETIF_F_GSO\*
++ *	@mangleid_features:	Mask of features requiring MANGLEID, will be
++ *				disabled together with the latter.
+  *
+  *	@ifindex:	interface index
+  *	@group:		The group the device belongs to
+@@ -2205,6 +2207,7 @@ struct net_device {
+ 	netdev_features_t	vlan_features;
+ 	netdev_features_t	hw_enc_features;
+ 	netdev_features_t	mpls_features;
++	netdev_features_t	mangleid_features;
  
- 	err = ext4_mb_load_buddy(ac->ac_sb, group, e4b);
--	if (err)
-+	if (err) {
-+		if (EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info) &&
-+		    !(ac->ac_flags & EXT4_MB_HINT_GOAL_ONLY))
-+			return 0;
- 		return err;
-+	}
+ 	unsigned int		min_mtu;
+ 	unsigned int		max_mtu;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index c8e49eef45198..90b029c311a14 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3795,7 +3795,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 				    inner_ip_hdr(skb) : ip_hdr(skb);
  
- 	ext4_lock_group(ac->ac_sb, group);
- 	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
+ 		if (!(iph->frag_off & htons(IP_DF)))
+-			features &= ~NETIF_F_TSO_MANGLEID;
++			features &= ~dev->mangleid_features;
+ 	}
+ 
+ 	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
+@@ -11295,6 +11295,9 @@ int register_netdevice(struct net_device *dev)
+ 	if (dev->hw_enc_features & NETIF_F_TSO)
+ 		dev->hw_enc_features |= NETIF_F_TSO_MANGLEID;
+ 
++	/* TSO_MANGLEID belongs in mangleid_features by definition */
++	dev->mangleid_features |= NETIF_F_TSO_MANGLEID;
++
+ 	/* Make NETIF_F_HIGHDMA inheritable to VLAN devices.
+ 	 */
+ 	dev->vlan_features |= NETIF_F_HIGHDMA;
+-- 
+2.53.0
+
 
 
 
