@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJZjJx2d1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:25 +0200
+	id OPFpF3yk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44373C0905
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09A13C1EE7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C15853048F9A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 228FF30A746A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDC53D4134;
-	Wed,  8 Apr 2026 18:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776CD2DCF41;
+	Wed,  8 Apr 2026 18:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGUBsXHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2mDLYn0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DC4324B1F;
-	Wed,  8 Apr 2026 18:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C102F39C2;
+	Wed,  8 Apr 2026 18:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672426; cv=none; b=GuNBN/g27Nrl16HibIYbh7iRw3KktdIxIucjAb5OdlGhRkGHXEA9rVml3GTmD5jKnszqYsqZcfmlQ/z5aen68SHER7Pzia+3ES066iAXqxg3ZkCGRy3k2e12/+UlGXAM2PPVi0zqkHQwBiXorpCsZdklzeUWkMm/fI2G/keKS1w=
+	t=1775673444; cv=none; b=QGNny6xycA1WE455euPu01hp6mfWiTGyjeD4sm0HO4ncVdQvszUBvCXgxBiRFnBBbPC2W/8eRw0pJP/MHK/FoWdpjqD2AYCU3QxLXMylVN/ESraW//OyTOWHc9dDsBYlewknxIVYaAYSYuhA166D12iiOVg3dbKZ9TnHukPszYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672426; c=relaxed/simple;
-	bh=rX7a8A1ovxw1/xUZPQidseIKRVxffrSNWH7dFeV2sJk=;
+	s=arc-20240116; t=1775673444; c=relaxed/simple;
+	bh=FoWHVLifwhPWRMCDgYFQH/Yz7AwjL9Vh6cAMEBY04yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fuu1so31vxMI9afetvDyVDd5q/tlma8JBcRDLx9LiWSBVvQ/x5/kCcZrY5nxFuxt2/1PmVXn6KAi2JudFIyg1CriyEngnDEyEtsDr8xhOIRsf85DBktbmZnv1mnpqEg95klOo5SYunPPhMnDzrgUe6PQNwIk+fk0uJJiRhLfRBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGUBsXHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A086C19421;
-	Wed,  8 Apr 2026 18:20:26 +0000 (UTC)
+	 MIME-Version; b=IeR7Te/zpeo99ZXCoW4x3G7t4bRqHvTAP72fZQCIyzxaJjK+qB8bM4N4xQ7pB5dp9EeL+j2mu6Fedoyq5W5OsokyG+4q3hYWGelqlIg/qvcmMbmLLGYH51wQmBrU+Lfq91rw94VAEcyORKc1/ZpXnH4v/EdFlTvN6I3KsoM/wrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2mDLYn0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FA7C2BC87;
+	Wed,  8 Apr 2026 18:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672426;
-	bh=rX7a8A1ovxw1/xUZPQidseIKRVxffrSNWH7dFeV2sJk=;
+	s=korg; t=1775673444;
+	bh=FoWHVLifwhPWRMCDgYFQH/Yz7AwjL9Vh6cAMEBY04yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGUBsXHC1Fg7yC7LDwqNsSB7UxEs8MEIZg4rsQZjgvwK/3MTB09E8GomypBRgzbnM
-	 xGy+5SvPX+6UP64Z5m5jYlO54YW2K28C4Laog/W8yzy3Uj7yrnMBJKVj6EGw7XbwyA
-	 J1PxAnnIcHFe0E08fggaMYzHKRLuP694ai0U3CGY=
+	b=b2mDLYn0tdEhwGUM1bt9vouJ/05wqB0kTcDWk/tsi87+Ry6XThei8XGmQMMUz+A4z
+	 xx64V08aHwjtd69n4NmBiwSQq+efL2KdEIiv7uzwLWmYwWQDQpxR/X463XukAGIBNb
+	 tNDgPl3Pkp1tOrF3Q6LOGcJaDRcFa++IkfKx79xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Yuto Ohnuki <ytohnuki@amazon.com>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.1 301/312] xfs: save ailp before dropping the AIL lock in push callbacks
-Date: Wed,  8 Apr 2026 20:03:38 +0200
-Message-ID: <20260408175945.013606438@linuxfoundation.org>
+	"Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 234/277] net: ethernet: mtk_ppe: avoid NULL deref when gmac0 is disabled
+Date: Wed,  8 Apr 2026 20:03:39 +0200
+Message-ID: <20260408175942.596244999@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,133 +64,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234271-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234664-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email]
-X-Rspamd-Queue-Id: B44373C0905
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,simonwunderlich.de:email]
+X-Rspamd-Queue-Id: E09A13C1EE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuto Ohnuki <ytohnuki@amazon.com>
+From: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
 
-commit 394d70b86fae9fe865e7e6d9540b7696f73aa9b6 upstream.
+commit 976ff48c2ac6e6b25b01428c9d7997bcd0fb2949 upstream.
 
-In xfs_inode_item_push() and xfs_qm_dquot_logitem_push(), the AIL lock
-is dropped to perform buffer IO. Once the cluster buffer no longer
-protects the log item from reclaim, the log item may be freed by
-background reclaim or the dquot shrinker. The subsequent spin_lock()
-call dereferences lip->li_ailp, which is a use-after-free.
+If the gmac0 is disabled, the precheck for a valid ingress device will
+cause a NULL pointer deref and crash the system. This happens because
+eth->netdev[0] will be NULL but the code will directly try to access
+netdev_ops.
 
-Fix this by saving the ailp pointer in a local variable while the AIL
-lock is held and the log item is guaranteed to be valid.
+Instead of just checking for the first net_device, it must be checked if
+any of the mtk_eth net_devices is matching the netdev_ops of the ingress
+device.
 
-Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-Cc: stable@vger.kernel.org # v5.9
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 73cfd947dbdb ("net: ethernet: mtk_eth_soc: ppe: prevent ppe update for non-mtk devices")
+Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324-wed-crash-gmac0-disabled-v1-1-3bc388aee565@simonwunderlich.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_dquot_item.c |    9 +++++++--
- fs/xfs/xfs_inode_item.c |    9 +++++++--
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_ppe_offload.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_dquot_item.c
-+++ b/fs/xfs/xfs_dquot_item.c
-@@ -125,6 +125,7 @@ xfs_qm_dquot_logitem_push(
- {
- 	struct xfs_dquot	*dqp = DQUOT_ITEM(lip)->qli_dquot;
- 	struct xfs_buf		*bp = lip->li_buf;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -153,7 +154,7 @@ xfs_qm_dquot_logitem_push(
- 		goto out_unlock;
- 	}
- 
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	error = xfs_qm_dqflush(dqp, &bp);
- 	if (!error) {
-@@ -163,7 +164,11 @@ xfs_qm_dquot_logitem_push(
- 	} else if (error == -EAGAIN)
- 		rval = XFS_ITEM_LOCKED;
- 
--	spin_lock(&lip->li_ailp->ail_lock);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
-+	spin_lock(&ailp->ail_lock);
- out_unlock:
- 	xfs_dqunlock(dqp);
- 	return rval;
---- a/fs/xfs/xfs_inode_item.c
-+++ b/fs/xfs/xfs_inode_item.c
-@@ -727,6 +727,7 @@ xfs_inode_item_push(
- 	struct xfs_inode_log_item *iip = INODE_ITEM(lip);
- 	struct xfs_inode	*ip = iip->ili_inode;
- 	struct xfs_buf		*bp = lip->li_buf;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -749,7 +750,7 @@ xfs_inode_item_push(
- 	if (!xfs_buf_trylock(bp))
- 		return XFS_ITEM_LOCKED;
- 
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	/*
- 	 * We need to hold a reference for flushing the cluster buffer as it may
-@@ -773,7 +774,11 @@ xfs_inode_item_push(
- 		rval = XFS_ITEM_LOCKED;
- 	}
- 
--	spin_lock(&lip->li_ailp->ail_lock);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
-+	spin_lock(&ailp->ail_lock);
- 	return rval;
+--- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -244,6 +244,25 @@ out:
+ 	return 0;
  }
  
++static bool
++mtk_flow_is_valid_idev(const struct mtk_eth *eth, const struct net_device *idev)
++{
++	size_t i;
++
++	if (!idev)
++		return false;
++
++	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++) {
++		if (!eth->netdev[i])
++			continue;
++
++		if (idev->netdev_ops == eth->netdev[i]->netdev_ops)
++			return true;
++	}
++
++	return false;
++}
++
+ static int
+ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+ 			 int ppe_index)
+@@ -270,7 +289,7 @@ mtk_flow_offload_replace(struct mtk_eth
+ 		flow_rule_match_meta(rule, &match);
+ 		if (mtk_is_netsys_v2_or_greater(eth)) {
+ 			idev = __dev_get_by_index(&init_net, match.key->ingress_ifindex);
+-			if (idev && idev->netdev_ops == eth->netdev[0]->netdev_ops) {
++			if (mtk_flow_is_valid_idev(eth, idev)) {
+ 				struct mtk_mac *mac = netdev_priv(idev);
+ 
+ 				if (WARN_ON(mac->ppe_idx >= eth->soc->ppe_num))
 
 
 
