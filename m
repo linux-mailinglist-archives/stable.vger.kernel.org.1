@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IM5ZOh6h1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:30 +0200
+	id 0HglD2Gb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7903C1304
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8863C04C5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A844F30A5DCF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E18D3300D74D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348EA3D4134;
-	Wed,  8 Apr 2026 18:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869D33A16A0;
+	Wed,  8 Apr 2026 18:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWNs60e1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsLHQIQG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97C936166F;
-	Wed,  8 Apr 2026 18:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA7537C10F;
+	Wed,  8 Apr 2026 18:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673158; cv=none; b=qJIhsQ0vBVubIZSzUT6lisZqmmgq6eFdn2+mzGHMa9op95vszs68tQSAc8ASgolxUgjKF7tvH/d5os/DZKeV88TS7L8S4OXTbvgwJxt2AtomYpAkYoBOCoL/HIXM3BwM8oYwRcujG95Zlsg0lG04oJaZY7/NV/t9qEKBa54/teI=
+	t=1775672152; cv=none; b=NvUD+Wmt5+Az1Y9yiO31U9nL8HTNeSP7AS4+Vbh1sbhavdgpKB3hI5cZb6L1QPQngDGEwOCpNZ4RltXlDE/05VJtPCAhzSm8z+SLhg7dCibfNBmXCK8fSHPDuwUmphh9PK7j4amic07E7BC7x8yy26FfHRzlJxszRNkhA2+UmPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673158; c=relaxed/simple;
-	bh=PXrrihrx3OBhFD0iCF7cU1k6qCuzf8psvfgyiZblD9o=;
+	s=arc-20240116; t=1775672152; c=relaxed/simple;
+	bh=769dEdSdeUAf9bic1/HaKQBzDu4tcfsTK8I2xp/t67o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTOcdwNC9VGwtMDRv4Es6J0WM6VHnE24x1OTiTQWx39z0jjKk3XivY+uz8rr68nEBFyv79PBGruKZQrLP6NjBBQ0pswoU4PMi4uJXMXh3Z50lYNAps7E5ETxIY3a1DuF37tyTVj49kmKVn/3PjiGqqO0LZboyqVNcpi88XpM6Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWNs60e1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8D5C19421;
-	Wed,  8 Apr 2026 18:32:37 +0000 (UTC)
+	 MIME-Version; b=t9dLJwzxhWhk69cy3663717ICudCKDkIWWjYLVHJsTghZ1OFatTI7RTsRRmqKYn0Y+HHuCDGc4YtzHti5UeLzXKJp4YDNzvb+S71eqsaBspAoRVxImaGbitqN4J7LXj4op+rjwSWjgexr3gxoDPVx/scR7VmsvDWzEAbk7kIL7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsLHQIQG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C125C19421;
+	Wed,  8 Apr 2026 18:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673157;
-	bh=PXrrihrx3OBhFD0iCF7cU1k6qCuzf8psvfgyiZblD9o=;
+	s=korg; t=1775672152;
+	bh=769dEdSdeUAf9bic1/HaKQBzDu4tcfsTK8I2xp/t67o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWNs60e1jsyOLatE9pYzqB9aykoIjoTFjYudSoq6AYsKK10EcpJbXShR8sHR7D0Xo
-	 JNo7v0wd46zi4tGlLL8weP2yj5V8HwhxHaexm6GKmUIq7gIX+FO+DwMIHMYXfxxSLL
-	 AL9PUDpqhz3Kx67I2iZJJjetlt+wAJKPSUZ/5ABc=
+	b=hsLHQIQG9KdvLQqYEXjR/YX7CJXYlucD8oJJnRCGaMwt0nfS29oQu5MVzK47X5dGS
+	 vZE3lpQjtQCpgEkr+JyvaBq0f4Fmg92b60NhwKT+alH8o3vz01QPkDnK/q4UCJPnHV
+	 9BAP1F5ulFDGjMpM0djZe7F7bqMzlTrIYDnyRgfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Stultz <jstultz@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 124/277] sched/fair: Fix zero_vruntime tracking fix
+Subject: [PATCH 6.1 192/312] iio: imu: bno055: fix BNO055_SCAN_CH_COUNT off by one
 Date: Wed,  8 Apr 2026 20:01:49 +0200
-Message-ID: <20260408175938.504453749@linuxfoundation.org>
+Message-ID: <20260408175940.930205563@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,132 +68,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234553-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234165-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email]
-X-Rspamd-Queue-Id: 5A7903C1304
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6B8863C04C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 1319ea57529e131822bab56bf417c8edc2db9ae8 ]
+[ Upstream commit 773ef9f95385bae52dcb7fd129fefba3a71a04db ]
 
-John reported that stress-ng-yield could make his machine unhappy and
-managed to bisect it to commit b3d99f43c72b ("sched/fair: Fix
-zero_vruntime tracking").
+Fix an off-by-one error in the BNO055_SCAN_CH_COUNT macro. The count
+is derived by taking the difference of the last and first register
+addresses, dividing by the size of each channel (2 bytes). It needs to
+also add 1 to account for the fact that the count is inclusive of both
+the first and last channels.
 
-The combination of yield and that commit was specific enough to
-hypothesize the following scenario:
+Thanks to the aligned_s64 timestamp field, there was already extra
+padding in the buffer, so there were no runtime issues caused by this
+bug.
 
-Suppose we have 2 runnable tasks, both doing yield. Then one will be
-eligible and one will not be, because the average position must be in
-between these two entities.
-
-Therefore, the runnable task will be eligible, and be promoted a full
-slice (all the tasks do is yield after all). This causes it to jump over
-the other task and now the other task is eligible and current is no
-longer. So we schedule.
-
-Since we are runnable, there is no {de,en}queue. All we have is the
-__{en,de}queue_entity() from {put_prev,set_next}_task(). But per the
-fingered commit, those two no longer move zero_vruntime.
-
-All that moves zero_vruntime are tick and full {de,en}queue.
-
-This means, that if the two tasks playing leapfrog can reach the
-critical speed to reach the overflow point inside one tick's worth of
-time, we're up a creek.
-
-Additionally, when multiple cgroups are involved, there is no guarantee
-the tick will in fact hit every cgroup in a timely manner. Statistically
-speaking it will, but that same statistics does not rule out the
-possibility of one cgroup not getting a tick for a significant amount of
-time -- however unlikely.
-
-Therefore, just like with the yield() case, force an update at the end
-of every slice. This ensures the update is never more than a single
-slice behind and the whole thing is within 2 lag bounds as per the
-comment on entity_key().
-
-Fixes: b3d99f43c72b ("sched/fair: Fix zero_vruntime tracking")
-Reported-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: John Stultz <jstultz@google.com>
-Link: https://patch.msgid.link/20260401132355.081530332@infradead.org
+Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/iio/imu/bno055/bno055.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 292141f4aaa54..d9777c81db0da 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -707,7 +707,7 @@ void update_zero_vruntime(struct cfs_rq *cfs_rq, s64 delta)
-  * Called in:
-  *  - place_entity()      -- before enqueue
-  *  - update_entity_lag() -- before dequeue
-- *  - entity_tick()
-+ *  - update_deadline()   -- slice expiration
-  *
-  * This means it is one entry 'behind' but that puts it close enough to where
-  * the bound on entity_key() is at most two lag bounds.
-@@ -1121,6 +1121,7 @@ static bool update_deadline(struct cfs_rq *cfs_rq, struct sched_entity *se)
- 	 * EEVDF: vd_i = ve_i + r_i / w_i
- 	 */
- 	se->deadline = se->vruntime + calc_delta_fair(se->slice, se);
-+	avg_vruntime(cfs_rq);
- 
- 	/*
- 	 * The task has consumed its request, reschedule.
-@@ -5635,11 +5636,6 @@ entity_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr, int queued)
- 	update_load_avg(cfs_rq, curr, UPDATE_TG);
- 	update_cfs_group(curr);
- 
--	/*
--	 * Pulls along cfs_rq::zero_vruntime.
--	 */
--	avg_vruntime(cfs_rq);
--
- #ifdef CONFIG_SCHED_HRTICK
- 	/*
- 	 * queued ticks are scheduled to match the slice, so don't bother
-@@ -9086,7 +9082,7 @@ static void yield_task_fair(struct rq *rq)
- 	 */
- 	if (entity_eligible(cfs_rq, se)) {
- 		se->vruntime = se->deadline;
--		se->deadline += calc_delta_fair(se->slice, se);
-+		update_deadline(cfs_rq, se);
- 	}
- }
- 
+diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
+index 98f17c29da69b..7b58b418b8a8b 100644
+--- a/drivers/iio/imu/bno055/bno055.c
++++ b/drivers/iio/imu/bno055/bno055.c
+@@ -64,7 +64,7 @@
+ #define BNO055_GRAVITY_DATA_X_LSB_REG	0x2E
+ #define BNO055_GRAVITY_DATA_Y_LSB_REG	0x30
+ #define BNO055_GRAVITY_DATA_Z_LSB_REG	0x32
+-#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2)
++#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2 + 1)
+ #define BNO055_TEMP_REG			0x34
+ #define BNO055_CALIB_STAT_REG		0x35
+ #define BNO055_CALIB_STAT_MAGN_SHIFT 0
 -- 
 2.53.0
 
