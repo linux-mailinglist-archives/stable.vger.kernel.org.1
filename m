@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-234327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wD4NF8Cd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:08 +0200
+	id oEjPEMyc1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34693C0B32
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62C93C0810
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 58D28308399E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB989303AB7C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E4C3D9053;
-	Wed,  8 Apr 2026 18:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E173A16A0;
+	Wed,  8 Apr 2026 18:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnZ95ztC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXaBzRWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA46C3D6694;
-	Wed,  8 Apr 2026 18:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A30B37F01B;
+	Wed,  8 Apr 2026 18:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672571; cv=none; b=Qb+z6eL41qWEL7+htW5rPaWiZKD0qOpygKu0t6uXFG8WkBEZefuEQ2pthoDMofvQ+5QC6a122Q3FqlvqLyi999x7WCB9p0A14kCfyhDIMnThnB3np0rW6jZa4/x32a6EAdoHGQmoz1TQFwNSEZJ+ltLKvpvrbKg18SeXiYaG+EQ=
+	t=1775672242; cv=none; b=YJdpg27ftGQc0YfGYH9TRpoh5e9ZIucZ7sE3RXxDdjaT7y1enr5UrCKGpg9bTxhsr5/N3PsybgxdghIFHm1GsYOu1uVomYSQX8TKGRr+zpeK+d65pQF6JGhoG7/cyaoP3rc8aH2n+kTkqV1RKhqqUuIPcWTyTJH+VoHFqZ9HWJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672571; c=relaxed/simple;
-	bh=+qZ5wA9mke68yWrbZYn/SEcy2jPzeiTjtPNEIvG7XDQ=;
+	s=arc-20240116; t=1775672242; c=relaxed/simple;
+	bh=BIr27KDaWQZYNgSfk5pxzo5sGYVvJzWYUWftVij5X8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vx+oRwDO4paI7ePdZc/jpPw755wcbTc5Zt9wZ48lkyIyTgv2C46vmpjUdM4CALCu+QbDL6QRvD/FMPzWuSwnCSz+HFe49e/epTRURJp9GCeNX5VFkgg/VbyLQ9q81nRv9bRl/t1tQyE5pErd50sz04xUWLc+AySYqmGzAqhMOJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnZ95ztC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4011AC19421;
-	Wed,  8 Apr 2026 18:22:51 +0000 (UTC)
+	 MIME-Version; b=IyJg3RQdgiKraZRFB5xpWkyL1m7L7vcpPlIHi2zp+RKh8J3I/elEhc2njxQhPGGvOA01rEpuXrMrSwu/Oq3Vy0tWusUHOqVCrsN+ICpS+Z2JBuWphWZm3NwT9PpAl2G5sc9fJSV6Kyrtew8ljMy8CPNrm1WFQTdR7zleb5vF2mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXaBzRWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD77C19421;
+	Wed,  8 Apr 2026 18:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672571;
-	bh=+qZ5wA9mke68yWrbZYn/SEcy2jPzeiTjtPNEIvG7XDQ=;
+	s=korg; t=1775672242;
+	bh=BIr27KDaWQZYNgSfk5pxzo5sGYVvJzWYUWftVij5X8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GnZ95ztCBfR7L1ldit9hTOZX9YNN2tMI92J9qW+x1yajfpwtvDTl/ByMKngfklStm
-	 4wS21EedAhYfHKrWS6oBfTd8awM0D9Wf7J9VithdDHxX5aA5d9j6F31YGot+MSXsMn
-	 0wbbwO4xq3PqkCAkJ4f6+SHaxVQdxQvLGub/z/UM=
+	b=OXaBzRWODxBPRUKcmfDoQRyGCtstLYFrxsjFS+dBXKmRHAs7rQkV/h+eDFt0OUgIb
+	 PwFE86xztLI2Nkdjk2Kmx/Uc/tqVQyjKvj3jCM5iXXPRoZd/q7cddatdqiFsO/GKgO
+	 f5Zu27G2yNMUtSLvwJpgUS2p8rPAupb8W8kU3CuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/160] net/mlx5: Avoid "No data available" when FW version queries fail
+	Miao Li <limiao@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 227/312] usb: quirks: add DELAY_INIT quirk for another Silicon Motion flash drive
 Date: Wed,  8 Apr 2026 20:02:24 +0200
-Message-ID: <20260408175915.334823844@linuxfoundation.org>
+Message-ID: <20260408175942.234243574@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,207 +67,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234327-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234200-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: F34693C0B32
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B62C93C0810
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Miao Li <limiao@kylinos.cn>
 
-[ Upstream commit 10dc35f6a443d488f219d1a1e3fb8f8dac422070 ]
+commit dd36014ec6042f424ef51b923e607772f7502ee7 upstream.
 
-Avoid printing the misleading "kernel answers: No data available" devlink
-output when querying firmware or pending firmware version fails
-(e.g. MLX5 fw state errors / flash failures).
+Another Silicon Motion flash drive also randomly work incorrectly
+(lsusb does not list the device) on Huawei hisi platforms during
+500 reboot cycles, and the DELAY_INIT quirk fixes this issue.
 
-FW can fail on loading the pending flash image and get its version due
-to various reasons, examples:
-
-mlxfw: Firmware flash failed: key not applicable, err (7)
-mlx5_fw_image_pending: can't read pending fw version while fw state is 1
-
-and the resulting:
-$ devlink dev info
-kernel answers: No data available
-
-Instead, just report 0 or 0xfff.. versions in case of failure to indicate
-a problem, and let other information be shown.
-
-after the fix:
-$ devlink dev info
-pci/0000:00:06.0:
-  driver mlx5_core
-  serial_number xxx...
-  board.serial_number MT2225300179
-  versions:
-      fixed:
-        fw.psid MT_0000000436
-      running:
-        fw.version 22.41.0188
-        fw 22.41.0188
-      stored:
-        fw.version 255.255.65535
-        fw 255.255.65535
-
-Fixes: 9c86b07e3069 ("net/mlx5: Added fw version query command")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260330194015.53585-3-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260319053927.264840-1-limiao870622@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/devlink.c |  4 +-
- drivers/net/ethernet/mellanox/mlx5/core/fw.c  | 53 ++++++++++++-------
- .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  4 +-
- 3 files changed, 37 insertions(+), 24 deletions(-)
+ drivers/usb/core/quirks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-index b2532b1c9565a..8e8c15d825325 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-@@ -53,9 +53,7 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
- 	if (err)
- 		return err;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -402,6 +402,7 @@ static const struct usb_device_id usb_qu
  
--	err = mlx5_fw_version_query(dev, &running_fw, &stored_fw);
--	if (err)
--		return err;
-+	mlx5_fw_version_query(dev, &running_fw, &stored_fw);
+ 	/* Silicon Motion Flash Drive */
+ 	{ USB_DEVICE(0x090c, 0x1000), .driver_info = USB_QUIRK_DELAY_INIT },
++	{ USB_DEVICE(0x090c, 0x2000), .driver_info = USB_QUIRK_DELAY_INIT },
  
- 	snprintf(version_str, sizeof(version_str), "%d.%d.%04d",
- 		 mlx5_fw_ver_major(running_fw), mlx5_fw_ver_minor(running_fw),
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw.c b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-index 70898f0a9866c..d5de2df111ab4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-@@ -802,48 +802,63 @@ mlx5_fw_image_pending(struct mlx5_core_dev *dev,
- 	return 0;
- }
- 
--int mlx5_fw_version_query(struct mlx5_core_dev *dev,
--			  u32 *running_ver, u32 *pending_ver)
-+void mlx5_fw_version_query(struct mlx5_core_dev *dev,
-+			   u32 *running_ver, u32 *pending_ver)
- {
- 	u32 reg_mcqi_version[MLX5_ST_SZ_DW(mcqi_version)] = {};
- 	bool pending_version_exists;
- 	int component_index;
- 	int err;
- 
-+	*running_ver = 0;
-+	*pending_ver = 0;
-+
- 	if (!MLX5_CAP_GEN(dev, mcam_reg) || !MLX5_CAP_MCAM_REG(dev, mcqi) ||
- 	    !MLX5_CAP_MCAM_REG(dev, mcqs)) {
- 		mlx5_core_warn(dev, "fw query isn't supported by the FW\n");
--		return -EOPNOTSUPP;
-+		return;
- 	}
- 
- 	component_index = mlx5_get_boot_img_component_index(dev);
--	if (component_index < 0)
--		return component_index;
-+	if (component_index < 0) {
-+		mlx5_core_warn(dev, "fw query failed to find boot img component index, err %d\n",
-+			       component_index);
-+		return;
-+	}
- 
-+	*running_ver = U32_MAX; /* indicate failure */
- 	err = mlx5_reg_mcqi_version_query(dev, component_index,
- 					  MCQI_FW_RUNNING_VERSION,
- 					  reg_mcqi_version);
--	if (err)
--		return err;
--
--	*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
--
-+	if (!err)
-+		*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
-+					version);
-+	else
-+		mlx5_core_warn(dev, "failed to query running version, err %d\n",
-+			       err);
-+
-+	*pending_ver = U32_MAX; /* indicate failure */
- 	err = mlx5_fw_image_pending(dev, component_index, &pending_version_exists);
--	if (err)
--		return err;
-+	if (err) {
-+		mlx5_core_warn(dev, "failed to query pending image, err %d\n",
-+			       err);
-+		return;
-+	}
- 
- 	if (!pending_version_exists) {
- 		*pending_ver = 0;
--		return 0;
-+		return;
- 	}
- 
- 	err = mlx5_reg_mcqi_version_query(dev, component_index,
- 					  MCQI_FW_STORED_VERSION,
- 					  reg_mcqi_version);
--	if (err)
--		return err;
--
--	*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
--
--	return 0;
-+	if (!err)
-+		*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
-+					version);
-+	else
-+		mlx5_core_warn(dev, "failed to query pending version, err %d\n",
-+			       err);
-+
-+	return;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index 124352459c23d..562729cd95a87 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -269,8 +269,8 @@ void mlx5_dm_cleanup(struct mlx5_core_dev *dev);
- 
- int mlx5_firmware_flash(struct mlx5_core_dev *dev, const struct firmware *fw,
- 			struct netlink_ext_ack *extack);
--int mlx5_fw_version_query(struct mlx5_core_dev *dev,
--			  u32 *running_ver, u32 *stored_ver);
-+void mlx5_fw_version_query(struct mlx5_core_dev *dev, u32 *running_ver,
-+			   u32 *stored_ver);
- 
- #ifdef CONFIG_MLX5_CORE_EN
- int mlx5e_init(void);
--- 
-2.53.0
-
+ 	/* Sound Devices USBPre2 */
+ 	{ USB_DEVICE(0x0926, 0x0202), .driver_info =
 
 
 
