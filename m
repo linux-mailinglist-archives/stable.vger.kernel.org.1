@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBiiALCh1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:56 +0200
+	id UBjzOiOs1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F210F3C1509
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735B43C3044
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 209603033566
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 20F70320886A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DD13D522C;
-	Wed,  8 Apr 2026 18:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9F137DE90;
+	Wed,  8 Apr 2026 19:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoZNWZcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCPO4RdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FA83624B0;
-	Wed,  8 Apr 2026 18:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902743AD52A;
+	Wed,  8 Apr 2026 19:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673534; cv=none; b=Qw2H+FQ4ixpkETw0d8z/6CJaUGwVqc5kPUnXkCiQqlqDqnSJRR3fYicTf91vz2ByKFdR7J3pLKPSQXMMUIUFHroBeRiVRBCwtjJYVEbqrNgsHEq+iE1O2FK6308wei1EMT/X7+eklCtDQ5GIlP2jSs035Op+q/+ZKUFTN107ELI=
+	t=1775674840; cv=none; b=iOFc6IJ149gSGNiHemt2w3XBiIfuDb/epyoQY25gR7BgDVdl2Joq6wrEl3q6/sgQI/tZA86GrffHQbfvWYrY2gCg/JD2kqnu6UuEDB3mxm33jZFd+wNZeC8F7ytH4of9RhESoFRq86jr9oYDn5au9xL7ncDeavsdJ//kNnaewac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673534; c=relaxed/simple;
-	bh=0m1wuG3+Jpc6RTmEmdDybU/kfTVBkXsnbbVLbdL5xLw=;
+	s=arc-20240116; t=1775674840; c=relaxed/simple;
+	bh=UVbfGFqAdlC9EhrEgYhgd7yzbKHR57L5SXd1p7wb9Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iox1VaYS/NR6LszUhRXo9N7aLU67j4yr132IHsmHKsf4fvLdF0o84Are6Os1Emm2eenRPLfwkJDwZ+19G1+cicdrH/zUte+ay/lB6Qcj9miSdGLrKFngB2S8BUlIhUmTM61+EpB8j/QDBImrb9knJUs9TPbWAmNSXedunLHnvI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoZNWZcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5C4C19421;
-	Wed,  8 Apr 2026 18:38:53 +0000 (UTC)
+	 MIME-Version; b=VwOPhIbGqBHWrMfKJISnN2mvwjBtFqfz93yWCDhhgEiFVwuNzISpsTdnYTfVvmblICPRSbBWuxmb2+yzq76DyoRlzbxjMS0jC3+5A/ecuDipkXGYbdveIcUsLvODyA/xeTV9o6Y5/+h4b5zcpQo3fa/O4cBCuWM6SrsGc8wldTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCPO4RdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24675C19421;
+	Wed,  8 Apr 2026 19:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673534;
-	bh=0m1wuG3+Jpc6RTmEmdDybU/kfTVBkXsnbbVLbdL5xLw=;
+	s=korg; t=1775674840;
+	bh=UVbfGFqAdlC9EhrEgYhgd7yzbKHR57L5SXd1p7wb9Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GoZNWZcTwE1c79I8gQXvWZSWqyt0PN8DH1l4rA59i9wiNYx91NTk5e4iPu8oz1z9H
-	 3n9IExYkiQzph4OUFgDu5guTlyY83fJvLrgs9nxu3dg/LGcFOEoltD2mE/ro8Y0xyV
-	 pY6ljlGeOitMpASPHrtYZboTNiIlgxTJvmLaDVlE=
+	b=NCPO4RdXQVJSx0Ne1TuNycouw2ZTlMUh5fEFdrPGMhMTMos5GwqEObDJVfYT2uIDE
+	 HQeC9ft5+71CcN4gI6DSa+U/Iohg/DKKEj5pYbUY3Zmw1avXDo/VdlA6V6e9b4O3aj
+	 2EDwh4/P6kA7o3ZyfEo8syL1YADggSjs88W4ucy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 269/277] drm/amd/display: Fix DCE LVDS handling
+	syzbot+f238baf6ded841b5a82e@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.19 254/311] comedi: runflags cannot determine whether to reclaim chanlist
 Date: Wed,  8 Apr 2026 20:04:14 +0200
-Message-ID: <20260408175943.908425449@linuxfoundation.org>
+Message-ID: <20260408175948.872427477@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,202 +65,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234699-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-235205-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,mev.co.uk,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: F210F3C1509
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,f238baf6ded841b5a82e];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,qq.com:email,mev.co.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 735B43C3044
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 90d239cc53723c1a3f89ce08eac17bf3a9e9f2d4 ]
+commit 29f644f14b89e6c4965e3c89251929e451190a66 upstream.
 
-LVDS does not use an HPD pin so it may be invalid.  Handle
-this case correctly in link encoder creation.
+syzbot reported a memory leak [1], because commit 4e1da516debb ("comedi:
+Add reference counting for Comedi command handling") did not consider
+the exceptional exit case in do_cmd_ioctl() where runflags is not set.
+This caused chanlist not to be properly freed by do_become_nonbusy(),
+as it only frees chanlist when runflags is correctly set.
 
-Fixes: 7c8fb3b8e9ba ("drm/amd/display: Add hpd_source index check for DCE60/80/100/110/112/120 link encoders")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5012
-Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3b5620f7ee688177fcf65cf61588c5435bce1872)
-Cc: stable@vger.kernel.org
-[ removed unrelated VGA connector block absent from stable and split combined null/bounds check into separate guard and ternary ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Added a check in do_become_nonbusy() for the case where runflags is not
+set, to properly free the chanlist memory.
+
+[1]
+BUG: memory leak
+  backtrace (crc 844a0efa):
+    __comedi_get_user_chanlist drivers/comedi/comedi_fops.c:1815 [inline]
+    do_cmd_ioctl.part.0+0x112/0x350 drivers/comedi/comedi_fops.c:1890
+    do_cmd_ioctl drivers/comedi/comedi_fops.c:1858 [inline]
+
+Fixes: 4e1da516debb ("comedi: Add reference counting for Comedi command handling")
+Reported-by: syzbot+f238baf6ded841b5a82e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f238baf6ded841b5a82e
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Cc: stable <stable@kernel.org> # 6.19
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260310111104.70959-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c |    5 ++-
- drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c |    5 ++-
- drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c |    5 ++-
- drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c |    5 ++-
- drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c   |   13 +++++-----
- drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c   |    5 ++-
- 6 files changed, 22 insertions(+), 16 deletions(-)
+ drivers/comedi/comedi_fops.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
-@@ -624,7 +624,7 @@ static struct link_encoder *dce100_link_
- 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
- 	int link_regs_id;
- 
--	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
-+	if (!enc110)
- 		return NULL;
- 
- 	link_regs_id =
-@@ -635,7 +635,8 @@ static struct link_encoder *dce100_link_
- 				      &link_enc_feature,
- 				      &link_enc_regs[link_regs_id],
- 				      &link_enc_aux_regs[enc_init_data->channel - 1],
--				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
-+				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
-+				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 	return &enc110->base;
- }
- 
---- a/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce110/dce110_resource.c
-@@ -668,7 +668,7 @@ static struct link_encoder *dce110_link_
- 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
- 	int link_regs_id;
- 
--	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
-+	if (!enc110)
- 		return NULL;
- 
- 	link_regs_id =
-@@ -679,7 +679,8 @@ static struct link_encoder *dce110_link_
- 				      &link_enc_feature,
- 				      &link_enc_regs[link_regs_id],
- 				      &link_enc_aux_regs[enc_init_data->channel - 1],
--				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
-+				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
-+				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 	return &enc110->base;
- }
- 
---- a/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
-@@ -629,7 +629,7 @@ static struct link_encoder *dce112_link_
- 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
- 	int link_regs_id;
- 
--	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
-+	if (!enc110)
- 		return NULL;
- 
- 	link_regs_id =
-@@ -640,7 +640,8 @@ static struct link_encoder *dce112_link_
- 				      &link_enc_feature,
- 				      &link_enc_regs[link_regs_id],
- 				      &link_enc_aux_regs[enc_init_data->channel - 1],
--				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
-+				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
-+				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 	return &enc110->base;
- }
- 
---- a/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
-@@ -713,7 +713,7 @@ static struct link_encoder *dce120_link_
- 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
- 	int link_regs_id;
- 
--	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
-+	if (!enc110)
- 		return NULL;
- 
- 	link_regs_id =
-@@ -724,7 +724,8 @@ static struct link_encoder *dce120_link_
- 				      &link_enc_feature,
- 				      &link_enc_regs[link_regs_id],
- 				      &link_enc_aux_regs[enc_init_data->channel - 1],
--				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
-+				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
-+				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 
- 	return &enc110->base;
- }
---- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-@@ -718,18 +718,19 @@ static struct link_encoder *dce60_link_e
- 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
- 	int link_regs_id;
- 
--	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
-+	if (!enc110)
- 		return NULL;
- 
- 	link_regs_id =
- 		map_transmitter_id_to_phy_instance(enc_init_data->transmitter);
- 
- 	dce60_link_encoder_construct(enc110,
--				      enc_init_data,
--				      &link_enc_feature,
--				      &link_enc_regs[link_regs_id],
--				      &link_enc_aux_regs[enc_init_data->channel - 1],
--				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
-+				     enc_init_data,
-+				     &link_enc_feature,
-+				     &link_enc_regs[link_regs_id],
-+				     &link_enc_aux_regs[enc_init_data->channel - 1],
-+				     enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
-+				     NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 	return &enc110->base;
- }
- 
---- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-@@ -724,7 +724,7 @@ static struct link_encoder *dce80_link_e
- 		kzalloc(sizeof(struct dce110_link_encoder), GFP_KERNEL);
- 	int link_regs_id;
- 
--	if (!enc110 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
-+	if (!enc110)
- 		return NULL;
- 
- 	link_regs_id =
-@@ -735,7 +735,8 @@ static struct link_encoder *dce80_link_e
- 				      &link_enc_feature,
- 				      &link_enc_regs[link_regs_id],
- 				      &link_enc_aux_regs[enc_init_data->channel - 1],
--				      &link_enc_hpd_regs[enc_init_data->hpd_source]);
-+				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
-+				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 	return &enc110->base;
- }
- 
+diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
+index 48a8a607a84c..0df9f4636fb6 100644
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -793,13 +793,15 @@ static void do_become_nonbusy(struct comedi_device *dev,
+ 	__comedi_clear_subdevice_runflags(s, COMEDI_SRF_RUNNING |
+ 					     COMEDI_SRF_BUSY);
+ 	spin_unlock_irqrestore(&s->spin_lock, flags);
+-	if (comedi_is_runflags_busy(runflags)) {
++	if (async) {
+ 		/*
+ 		 * "Run active" counter was set to 1 when setting up the
+ 		 * command.  Decrement it and wait for it to become 0.
+ 		 */
+-		comedi_put_is_subdevice_running(s);
+-		wait_for_completion(&async->run_complete);
++		if (comedi_is_runflags_busy(runflags)) {
++			comedi_put_is_subdevice_running(s);
++			wait_for_completion(&async->run_complete);
++		}
+ 		comedi_buf_reset(s);
+ 		async->inttrig = NULL;
+ 		kfree(async->cmd.chanlist);
+-- 
+2.53.0
+
 
 
 
