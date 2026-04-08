@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-234333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGRVFkyd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:12 +0200
+	id sEGDF3Cb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF153C09C9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E603E3C04F3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A3D30302B420
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C4404301584C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7A93D88F7;
-	Wed,  8 Apr 2026 18:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708BB386550;
+	Wed,  8 Apr 2026 18:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeqooH2S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVsFBFig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4941E5724;
-	Wed,  8 Apr 2026 18:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33172385513;
+	Wed,  8 Apr 2026 18:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672587; cv=none; b=KRvaHZjCpyVojtbiYiwjn7N+gqMckttWoLqgFYGGlUbW0NnWRD/Gx8EtjBAJX4Pe0fIaeRN2W64n5xVt+nM9kEahK+IFPKjUE3BWERXjZLKNyMkbYneCVzhZtHH0A7Rjr0jR0OMj4AqhCwX3hLgbRkh+IgqbLVsBWJ7jUMHaDHE=
+	t=1775672134; cv=none; b=j+P19t/rg0wr1NCxMYXp/Ql5RsCo1/tMwCvnL/YMXDwbQAzxwwdRiZHPnBTczCjvVZbtdT8UCVhovw7bmMLV6iFGkMd/1tzu1RGljJIkkc6AzzwxBddeSlTzqRJ3NFX4Kv4LmpDbNWA1UWJEKWOpCGmtKf/m/bhykaSsiI5OjCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672587; c=relaxed/simple;
-	bh=A5aAgwvV9GK7htLqRK3z2MPiVdqexu9mvxsacPHgJ4U=;
+	s=arc-20240116; t=1775672134; c=relaxed/simple;
+	bh=HqQUYJYVFxIs8MdAWpCkj+nvK7t2ITfqL1wDpbiWHIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4hii8BrpktoV+3BZD/dG2Z5/UNwZlANvF8pvuzhN8tnLZ3m8rX9CxoyqHJaq0RESFFoyELhusjDPTNsF1hfvF7ZhCncVKoIeVQTkPwM5skdWNz8spGYC5PVHSXZ9/oz6UL5kGT5KgswAftiwcUMTw3yMXkCDq6etDBEzR4YnW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeqooH2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FCEC19421;
-	Wed,  8 Apr 2026 18:23:06 +0000 (UTC)
+	 MIME-Version; b=ZO1k0eOItqZ5gpEacoBzVcjCaZcnprC8Meuntm4mqWjYI+T7rFJD1N8dgqJKn9odl1pfzuTQAXxonEwsnQSmTjJl7M3YhNURLDlVJgYzHy4eUsJDeEUJIE6YAER1J7T/haVDzn/PbohT+hB0c/wUxWHsY2K/xA83lRP9Mr83ihc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVsFBFig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA1EC19421;
+	Wed,  8 Apr 2026 18:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672587;
-	bh=A5aAgwvV9GK7htLqRK3z2MPiVdqexu9mvxsacPHgJ4U=;
+	s=korg; t=1775672134;
+	bh=HqQUYJYVFxIs8MdAWpCkj+nvK7t2ITfqL1wDpbiWHIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BeqooH2SFPqfsyfJnOXasPY7EsYCihkCjNKABxnDVXoWXVi/6KQRq9HF3D4u+y4WR
-	 MOPtIqxXxZzhkeN0+T535Plpxn3gATmFRrF/bFyhSuADosx/jyhfssMaua19XUln6X
-	 2yiPqJFIF+I//UABgxFoICmGElAdZeUQgR1P8fY0=
+	b=QVsFBFigLZP98w6SzCv5qT95iKxeCEqZvRtiSAKCdsW2qTUJKrdvZvZo5yS1FGeA6
+	 AdrAfFQb/4TKOsemoC4+wfM5qmz2dZWIfL4fhWsGMKhZbsTTOfR0pSBCyrHRflZG8c
+	 iak1m8dJGGAhCC6ENYrphnuye8+jZxiowaZrlrj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Amery Hung <ameryhung@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/160] bpf: Fix regsafe() for pointers to packet
-Date: Wed,  8 Apr 2026 20:01:59 +0200
-Message-ID: <20260408175914.409039564@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Karsten Hohmeier <linux@hohmatik.de>
+Subject: [PATCH 6.1 203/312] ALSA: ctxfi: Fix missing SPDIFI1 index handling
+Date: Wed,  8 Apr 2026 20:02:00 +0200
+Message-ID: <20260408175941.342344705@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,80 +67,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,iogearbox.net,gmail.com];
-	TAGGED_FROM(0.00)[bounces-234333-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234158-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iogearbox.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0BF153C09C9
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E603E3C04F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit a8502a79e832b861e99218cbd2d8f4312d62e225 ]
+commit b045ab3dff97edae6d538eeff900a34c098761f8 upstream.
 
-In case rold->reg->range == BEYOND_PKT_END && rcur->reg->range == N
-regsafe() may return true which may lead to current state with
-valid packet range not being explored. Fix the bug.
+SPDIF1 DAIO type isn't properly handled in daio_device_index() for
+hw20k2, and it returned -EINVAL, which ended up with the out-of-bounds
+array access.  Follow the hw20k1 pattern and return the proper index
+for this type, too.
 
-Fixes: 6d94e741a8ff ("bpf: Support for pointers beyond pkt_end.")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Amery Hung <ameryhung@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20260331204228.26726-1-alexei.starovoitov@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Karsten Hohmeier <linux@hohmatik.de>
+Closes: https://lore.kernel.org/20260315155004.15633-1-linux@hohmatik.de
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260329091240.420194-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/pci/ctxfi/ctdaio.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 226f2cd338d67..e33cd755d6197 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -16148,8 +16148,13 @@ static bool regsafe(struct bpf_verifier_env *env, struct bpf_reg_state *rold,
- 		 * since someone could have accessed through (ptr - k), or
- 		 * even done ptr -= k in a register, to get a safe access.
- 		 */
--		if (rold->range > rcur->range)
-+		if (rold->range < 0 || rcur->range < 0) {
-+			/* special case for [BEYOND|AT]_PKT_END */
-+			if (rold->range != rcur->range)
-+				return false;
-+		} else if (rold->range > rcur->range) {
- 			return false;
-+		}
- 		/* If the offsets don't match, we can't trust our alignment;
- 		 * nor can we be sure that we won't fall out of range.
- 		 */
--- 
-2.53.0
-
+--- a/sound/pci/ctxfi/ctdaio.c
++++ b/sound/pci/ctxfi/ctdaio.c
+@@ -119,6 +119,7 @@ static unsigned int daio_device_index(en
+ 		switch (type) {
+ 		case SPDIFOO:	return 0;
+ 		case SPDIFIO:	return 0;
++		case SPDIFI1:	return 1;
+ 		case LINEO1:	return 4;
+ 		case LINEO2:	return 7;
+ 		case LINEO3:	return 5;
 
 
 
