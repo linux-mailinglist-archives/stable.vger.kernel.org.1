@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-235195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJTkLe+r1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:39 +0200
+	id 0P9wHmyh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437EB3C2FBA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868EE3C1400
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF8FB3217872
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 262203063E6C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288813AD52A;
-	Wed,  8 Apr 2026 19:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D26D2BD030;
+	Wed,  8 Apr 2026 18:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mObdDmET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mG3ZqZOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB7835C1B4;
-	Wed,  8 Apr 2026 19:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202383D891A;
+	Wed,  8 Apr 2026 18:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674814; cv=none; b=hkRbIr5aegXynFBAUOcLoCWb1Eg1ztvm57CZ80CXGtiKZzSeoe1RbAazBrXLeeqJAgVEE3zFV1BNsrwfktk0JfKL87hJU9zfcliwc5Spt6DiaYa7MWkzWjekL9/Pv0JgSYvqbG6WiZoRnHj9a10pg4aRL2VDzW96gpLcuT4Epgw=
+	t=1775673421; cv=none; b=d66oG6vPpPZwVkRjOH1zddRmOIIi3hrCuG5c/zRPnK+g++n7K4Yghdft8vYnBlkmFMH6vsZVQSMlhuxZZxPPLNPruVxRUpeu5VvTaS1kmAp2DkwNFFXc29X/irwKEXC/FWpUcSJCWfBqtV6qwKv/wJwtmaj+zIL6i7RIhlW2sJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674814; c=relaxed/simple;
-	bh=vpBxsaKq2j4fPGiyD7rePcSWM4LNPUY3NyYtLWOJ4NQ=;
+	s=arc-20240116; t=1775673421; c=relaxed/simple;
+	bh=iydF4n1OftLYpxjD7OuB9LfeTITkcoXfFU/wVFS+F5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQRP0cuHYG5J8w4DsD6V96eFL52AkQIboX7Ck6ZBxP5u+LFAq7cE98tobuBTZdbvT4igFTyjdt573JK5U1rdoDWSISZ0lWND5XLTX6iJBque8R8MR3OR5iGdkBXDube2UcmAN5HnR9I2xaZTz74diqOVDsUs/OoFhd2lX8l/95E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mObdDmET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742A5C19421;
-	Wed,  8 Apr 2026 19:00:14 +0000 (UTC)
+	 MIME-Version; b=nZ6KNGx4WdmZV8dtC5jyIgzA+VARs5RmIu7rxJ+GC/6N7YeLrFIsHnKiTboU0ZMiyW9HgktQNBNq9TTVnGZ92LbbJrG7Pb0UiqbvD6RICxkqnUcNrGIsrkun/fI6BV9FnxTIYJuV0NskeMFqd+uERTCwumpqXcGRpwF67XWkvIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mG3ZqZOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5E6C19421;
+	Wed,  8 Apr 2026 18:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674814;
-	bh=vpBxsaKq2j4fPGiyD7rePcSWM4LNPUY3NyYtLWOJ4NQ=;
+	s=korg; t=1775673421;
+	bh=iydF4n1OftLYpxjD7OuB9LfeTITkcoXfFU/wVFS+F5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mObdDmETRzLUb476t1+F35giOQywUlUiiZxV96jsGt8q9oLX/jDT0TRU3k3ndVQYe
-	 cXeca3A8sLQv+gJUBjjNZLEcxVBgqSzHr3N+wstLkZFdP7/1OcfyqcZGfWgMygYJ8O
-	 WwwLJl57nUBoG6DeniyV6BE1DG0pF2A1gdxlq28k=
+	b=mG3ZqZOYDLi3jXHDCA9gdE4TT6MXgWHnQFF6we234IefOXBdpqWZSBMJlCfD/wPch
+	 7JvYAAg1Izk722IJAy7k2qV085ClTJqs5o4b7ExSKwD9PpD16+1CYh2ADio+ibMcVj
+	 bN/EgHpANqnK2uImrgmAF97jAXbsDw1otBDQab3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.19 211/311] Input: i8042 - add TUXEDO InfinityBook Max 16 Gen10 AMD to i8042 quirk table
+	Arnd Bergmann <arnd@arndb.de>,
+	kernel test robot <lkp@intel.com>,
+	stable <stable@kernel.org>,
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 6.18 226/277] gpib: Fix fluke driver s390 compile issue
 Date: Wed,  8 Apr 2026 20:03:31 +0200
-Message-ID: <20260408175947.281975415@linuxfoundation.org>
+Message-ID: <20260408175942.295372343@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +65,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235195-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedo.de,tuxedocomputers.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arndb.de,intel.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-234655-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tuxedocomputers.com:email,tuxedo.de:email]
-X-Rspamd-Queue-Id: 437EB3C2FBA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arndb.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 868EE3C1400
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Dave Penkler <dpenkler@gmail.com>
 
-commit 5839419cffc7788a356428d321e3ec18055c0286 upstream.
+commit 579af7204d762587f9cce0d6236a710a771f1f6f upstream.
 
-The device occasionally wakes up from suspend with missing input on the
-internal keyboard and the following suspend attempt results in an instant
-wake-up. The quirks fix both issues for this device.
+The following errors were reported for a s390 randconfig build
+of the fluke gpib driver:
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260223142054.50310-1-wse@tuxedocomputers.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+>> drivers/gpib/eastwood/fluke_gpib.c:1002:23: error: call to undeclared function 'ioremap'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1002 |         nec_priv->mmiobase = ioremap(e_priv->gpib_iomem_res->start,
+         |                              ^
+>> drivers/gpib/eastwood/fluke_gpib.c:1002:21: error: incompatible integer to pointer conversion assigning to 'void *' from 'int' [-Wint-conversion]
+    1002 |         nec_priv->mmiobase = ioremap(e_priv->gpib_iomem_res->start,
+         |                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1003 |                                      resource_size(e_priv->gpib_iomem_res));
+         |                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/gpib/eastwood/fluke_gpib.c:1036:33: error: incompatible integer to pointer conversion assigning to 'void *' from 'int' [-Wint-conversion]
+    1036 |         e_priv->write_transfer_counter = ioremap(e_priv->write_transfer_counter_res->start,
+         |                                        ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1037 |                                                  resource_size(e_priv->write_transfer_counter_res));
+         |                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add HAS_IOMEM dependency to Kconfig for fluke driver option
+
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601221748.AFAqHieJ-lkp@intel.com/
+Fixes: baf8855c9160 ("staging: gpib: fix address space mixup")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://patch.msgid.link/20260202094755.4259-1-dpenkler@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/staging/gpib/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1189,6 +1189,13 @@ static const struct dmi_system_id i8042_
- 	},
- 	{
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "X6KK45xU_X6SP45xU"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
-+	{
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+--- a/drivers/staging/gpib/Kconfig
++++ b/drivers/staging/gpib/Kconfig
+@@ -122,6 +122,7 @@ config GPIB_FLUKE
+ 	depends on OF
+        select GPIB_COMMON
+        select GPIB_NEC7210
++       depends on HAS_IOMEM
+        help
+          GPIB driver for Fluke based cda devices.
+ 
 
 
 
