@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-235213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234914-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FFBJjqs1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:54 +0200
+	id iA7NGdCl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234914-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D623C306F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A473C22A0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00A4A304B2AE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36954321C78D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9A23D9DD3;
-	Wed,  8 Apr 2026 19:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC19B3624B9;
+	Wed,  8 Apr 2026 18:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="linwkzBY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHNNAOeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A6E3D9DCA;
-	Wed,  8 Apr 2026 19:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB5F33121F;
+	Wed,  8 Apr 2026 18:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674861; cv=none; b=fs4fsTfTZBWKB6IePzhoE1vhejmAVv5TLzeEo6DoX+KS2Mdkop3XQ/lL5HdlKw4BQwrlomgz9V3aRJkDMFaMB8K+R6x9/VHIdVlYKuaDcUhjwVOzhyAix7gZj43p8qWezFEVn+4bpsTbRLgXYX12hgT/43nS8E6KSLN7e8swuaU=
+	t=1775674089; cv=none; b=Nd7NAT9rHJ09uJr6rKRXNa9JWLcaRqOdEQ6O9++zKSjKIEN0m6Ovwb/swLyzlAaETfwxAqP4+Op/Fwkd60auA2rwBieFAAURa5FP+WNjOdl4HMFngrbeqo6CayZMeWQmpRMWdVqoKgNJRf2LHHeTaH2+HcFY4gUlZ7RubqyILEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674861; c=relaxed/simple;
-	bh=EoWOo3o3IoZ3MG7xPQDktdJEJfpjga2fqPtj+G24f0g=;
+	s=arc-20240116; t=1775674089; c=relaxed/simple;
+	bh=2/PAeZcKwFK9flos6bwIBLnfHzwJrv4krFJ77gtJt60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fb7vYRjBS4cr/fFLROgYGKOa5jYx1Mr+Ym/2vVy83Ukd1JftJXWqht2vwmnUNztHOKAaULen/clQW/pbl+z5vU8pcicKppU9WUvnz7xtVQCq3zZCItV22zehXR983V3RCQ0BofjqJzyFBmlQek4dJ4R8ihYm27oQMY4tkAkTz8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=linwkzBY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76A9C19421;
-	Wed,  8 Apr 2026 19:01:00 +0000 (UTC)
+	 MIME-Version; b=a0837GhCbv6qesU/Db1kN9yl33IzAAqnQQ+ZjVpg6pft182Rxy2RmKmEhe2Bnr8pKdCd8u2g+PjkcBIjbKtlQ50AeSbhvNj/sMuYrKgEH0MattxAaoyEa8BGlnUb9H5hIZYnWJTtPrUn8b7Eu1x0uYQT4ncrvCI3PK7gOMLX+Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHNNAOeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A6AC19421;
+	Wed,  8 Apr 2026 18:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674861;
-	bh=EoWOo3o3IoZ3MG7xPQDktdJEJfpjga2fqPtj+G24f0g=;
+	s=korg; t=1775674089;
+	bh=2/PAeZcKwFK9flos6bwIBLnfHzwJrv4krFJ77gtJt60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=linwkzBYAAn8pr91cGAwOgWh4tXU2YwT9+dtprxmgrG4sGOK9vMn5B23kgRWweq6U
-	 Ak548W/cdRWdCZjgl/Zq6XWw/abFu7BipGmNDnZX+8goWlmhA6nYq+xlwUf8mRXfr+
-	 4cvCryRh0IYNCF6NBU2ggGNLjyWaeg2XSa6SRsZY=
+	b=WHNNAOeKg6/ZeY27OmL12TcYFbnvFTDr9AxD/TN5ynpVK/oLZxhuayH8+yEciKavz
+	 ifKwm9KIPgCbYp30xyi5FW1wkQwO/Ws5e1IYTjGeJhuuEDFt9n0Zbq1iWiwGGnsuhJ
+	 /wpg1JIXzfqOfwiIDNih65Vfog4i2e5QvsawgS/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Gabor Juhos <j4g8y7@gmail.com>
-Subject: [PATCH 6.19 244/311] usb: core: phy: avoid double use of usb3-phy
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.12 204/242] usb: gadget: f_subset: Fix unbalanced refcnt in geth_free
 Date: Wed,  8 Apr 2026 20:04:04 +0200
-Message-ID: <20260408175948.503169349@linuxfoundation.org>
+Message-ID: <20260408175934.716862967@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +64,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235213-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234914-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 33D623C306F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D9A473C22A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 0179c6da0793ae03607002c284b53b6d584172d0 upstream.
+commit caa27923aacd8a5869207842f2ab1657c6c0c7bc upstream.
 
-Commit 53a2d95df836 ("usb: core: add phy notify connect and disconnect")
-causes double use of the 'usb3-phy' in certain cases.
+geth_alloc() increments the reference count, but geth_free() fails to
+decrement it. This prevents the configuration of attributes via configfs
+after unlinking the function.
 
-Since that commit, if a generic PHY named 'usb3-phy' is specified in
-the device tree, that is getting added to the 'phy_roothub' list of the
-secondary HCD by the usb_phy_roothub_alloc_usb3_phy() function. However,
-that PHY is getting added also to the primary HCD's 'phy_roothub' list
-by usb_phy_roothub_alloc() if there is no generic PHY specified with
-'usb2-phy' name.
+Decrement the reference count in geth_free() to ensure proper cleanup.
 
-This causes that the usb_add_hcd() function executes each phy operations
-twice on the 'usb3-phy'. Once when the primary HCD is added, then once
-again when the secondary HCD is added.
-
-The issue affects the Marvell Armada 3700 platform at least, where a
-custom name is used for the USB2 PHY:
-
-  $ git grep 'phy-names.*usb3' arch/arm64/boot/dts/marvell/armada-37xx.dtsi | tr '\t' ' '
-  arch/arm64/boot/dts/marvell/armada-37xx.dtsi:    phy-names = "usb3-phy", "usb2-utmi-otg-phy";
-
-Extend the usb_phy_roothub_alloc_usb3_phy() function to skip adding the
-'usb3-phy' to the 'phy_roothub' list of the secondary HCD when 'usb2-phy'
-is not specified in the device tree to avoid the double use.
-
-Fixes: 53a2d95df836 ("usb: core: add phy notify connect and disconnect")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://patch.msgid.link/20260330-usb-avoid-usb3-phy-double-use-v1-1-d2113aecb535@gmail.com
+Fixes: 02832e56f88a ("usb: gadget: f_subset: add configfs support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-1-4886b578161b@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/phy.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_subset.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/core/phy.c
-+++ b/drivers/usb/core/phy.c
-@@ -114,7 +114,7 @@ EXPORT_SYMBOL_GPL(usb_phy_roothub_alloc)
- struct usb_phy_roothub *usb_phy_roothub_alloc_usb3_phy(struct device *dev)
+--- a/drivers/usb/gadget/function/f_subset.c
++++ b/drivers/usb/gadget/function/f_subset.c
+@@ -6,6 +6,7 @@
+  * Copyright (C) 2008 Nokia Corporation
+  */
+ 
++#include <linux/cleanup.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -449,8 +450,13 @@ static struct usb_function_instance *get
+ static void geth_free(struct usb_function *f)
  {
- 	struct usb_phy_roothub *phy_roothub;
--	int num_phys;
-+	int num_phys, usb2_phy_index;
- 
- 	if (!IS_ENABLED(CONFIG_GENERIC_PHY))
- 		return NULL;
-@@ -124,6 +124,16 @@ struct usb_phy_roothub *usb_phy_roothub_
- 	if (num_phys <= 0)
- 		return NULL;
- 
-+	/*
-+	 * If 'usb2-phy' is not present, usb_phy_roothub_alloc() added
-+	 * all PHYs to the primary HCD's phy_roothub already, so skip
-+	 * adding 'usb3-phy' here to avoid double use of that.
-+	 */
-+	usb2_phy_index = of_property_match_string(dev->of_node, "phy-names",
-+						  "usb2-phy");
-+	if (usb2_phy_index < 0)
-+		return NULL;
+ 	struct f_gether *eth;
++	struct f_gether_opts *opts;
 +
- 	phy_roothub = devm_kzalloc(dev, sizeof(*phy_roothub), GFP_KERNEL);
- 	if (!phy_roothub)
- 		return ERR_PTR(-ENOMEM);
++	opts = container_of(f->fi, struct f_gether_opts, func_inst);
+ 
+ 	eth = func_to_geth(f);
++	scoped_guard(mutex, &opts->lock)
++		opts->refcnt--;
+ 	kfree(eth);
+ }
+ 
 
 
 
