@@ -1,131 +1,192 @@
-Return-Path: <stable+bounces-233811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233812-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJ3IOvQF1mnbAQgAu9opvQ
-	(envelope-from <stable+bounces-233811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:38:28 +0200
+	id wAAeCKAJ1mlnAwgAu9opvQ
+	(envelope-from <stable+bounces-233812-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:54:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2C63B8695
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:38:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4633B89A6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:54:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5CD673038782
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 07:34:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63F7A3051A96
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 07:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270DA382375;
-	Wed,  8 Apr 2026 07:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DB5397E61;
+	Wed,  8 Apr 2026 07:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4bPo0lw"
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="SELL1tTO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE22938236A;
-	Wed,  8 Apr 2026 07:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FE3396B91;
+	Wed,  8 Apr 2026 07:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775633642; cv=none; b=tA0xDuKew+Cki2i9lA493Hqa8wnAdSZVBCjdQhGemmAJ07nQQochjliQP6fDf6qMR9/ArrkRxlwFaYk1i5478trcWDekehubAfY4H4Zn93F8+KRaOaDiivkeSdBxKeb3Wv5VrmflPWRIivWB0e3p8zcuG6tKMYa9T5RRJqdb2u8=
+	t=1775634668; cv=none; b=oW8ANZ9/bzHHkSbw5LVBbmSd4BZfYHKw/6uPT/uaK1sBZfX9g7LVYa1dVnw6He9Yzzgap4aS/S4GM35wpdfabTmqam2rRjVQUJb/jOScXRgM1aY3z5wxM0LB5xhAsNwwECz48pq6SktQHHBUFQRoc1Ub0tbOp452CkM2yEi7q6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775633642; c=relaxed/simple;
-	bh=Shv2ZRsbtiCbvwYvbjPxGTs2BTFskGyrLs7Tu0GzFl8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sqYsoOOJAJrfdodq9a4dXKh2GJ4FRypDGrdZ6+vhf5y1SlRBrQI3EWgULibhtL3L/XPhiWAbAv0/tcKzCdV07sXpto/ql2s0GjHvgZCWlzPrYYEhTds/4IVyHXHfG30QfEM53o1LW9hCMtFRlDLvxCgE5ixjZTEYjPJpUIgL9vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4bPo0lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA1CC2BCB0;
-	Wed,  8 Apr 2026 07:34:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775633642;
-	bh=Shv2ZRsbtiCbvwYvbjPxGTs2BTFskGyrLs7Tu0GzFl8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W4bPo0lwtp7qZ05/+tHhrfjLwUf4Zh8RtDKl1XHJgv/55tNdxoxRIt+3azELtbKV4
-	 /ztUcPtI/BbhF2FjjmtyHV2VR9sEnaiIT8jH7qZUxuo93Z9lk7RiTdBxtjH+jnVr5W
-	 Pb4GZCvvu7ao20Yhts8ZK1wgmbRcT2wf2Pazp+x5YlnxdUxLXy33dt1/nPUr2RR1Ry
-	 Rv5neZeiAPoeQsxSRFOQiC+kwVjIXUpFYw5Lgs/cSjrKMzbrF0KzTkjk6jViJX/dzW
-	 3xP3pxD0qFW4KySMbK0YoGUc0q4GsVNTm9+KVizVxTCccNxhkfiDQQspQf+PPXaqbM
-	 GOKkIUllbqYZQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wANQG-000000001Ol-1FIu;
-	Wed, 08 Apr 2026 09:34:00 +0200
-Date: Wed, 8 Apr 2026 09:34:00 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH 2/2] regulator: rk808: fix OF node reference imbalance
-Message-ID: <adYE6DsX1xQWmlvd@hovoldconsulting.com>
-References: <20260407094156.2573027-1-johan@kernel.org>
- <20260407094156.2573027-3-johan@kernel.org>
- <CAD=FV=WevFKZs5fgvs-ESNaXsZgGnnREuSQv3eDx+SCz_FibXw@mail.gmail.com>
+	s=arc-20240116; t=1775634668; c=relaxed/simple;
+	bh=uMX7cTSquH9bxls2joBp2SY4uUxTFOoB48ikknbF4GM=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=qFdqqqYApRcVRI51I/m7muUAuXWAkf6zBe9+p7alqD9Rd9M7swhOMBD8rzShIMXSdBTLy2Y/hLRgVEXW+XVVCv3KGFuBuSstBhbNiyP8oVxCeG3eLigzLH/xuUvOR4iuvMrayCuzvHTC9DCm4+KQKcoxA6tlx5yUAonAyKZE4OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=SELL1tTO; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D4ABA5884;
+	Wed,  8 Apr 2026 09:51:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1775634664; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XKxP0eM+E8RMBq0MUnzOFAZbFCvAKCeCZ8ebWegyIKQ=;
+	b=SELL1tTO+klnMV/NGb0DQf4TI/mSjTSWVqdCeOKyxcoQrTN/Im72miPrvn/sABkS2jHivo
+	j1o6oAkGEQV4FpnH1UFlIEVV7XnZZQ3xODDf4H5//Vzs+wSFXCFMZn4cnbcjXnGrujtBx0
+	LARHwcS4zw0ELYRH/Upz5Jh+Td0soFwgqcGuqVEj+J3jud6tVL0sQzZEREdr4Cjx0K77FD
+	SGj2z6rdDrNhEsPf6wHSxfzkC43CFS/o0cUjQFNtUCJpDbaj8hrlyLDZt39ieTEvgkLmcy
+	1DAtWecUSgw4SdcdnDNGWi8W0lz/MUbS1hddUIcrBlU/VRx82wVJiRUmM7xp2Q==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=WevFKZs5fgvs-ESNaXsZgGnnREuSQv3eDx+SCz_FibXw@mail.gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Date: Wed, 08 Apr 2026 09:51:02 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Marek Vasut <marex@nabladev.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, "David S. Miller"
+ <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui
+ <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [net,PATCH] net: ks8851: Reinstate disabling of BHs around IRQ
+ handler
+In-Reply-To: <20260407212344.80265-1-marex@nabladev.com>
+References: <20260407212344.80265-1-marex@nabladev.com>
+Message-ID: <fec257469a693e5df7f5739740c1764c@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[tipi-net.de:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233811-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,collabora.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233812-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,redhat.com,raritan.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[tipi-net.de];
+	DKIM_TRACE(0.00)[tipi-net.de:+];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,hovoldconsulting.com:mid]
-X-Rspamd-Queue-Id: 6C2C63B8695
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,nabladev.com:email,raritan.com:email,davemloft.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tipi-net.de:dkim,tipi-net.de:mid]
+X-Rspamd-Queue-Id: 8A4633B89A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 07, 2026 at 05:57:06PM -0700, Doug Anderson wrote:
-
-> On Tue, Apr 7, 2026 at 2:42 AM Johan Hovold <johan@kernel.org> wrote:
-> >
-> > The driver reuses the OF node of the parent multi-function device but
-> > fails to take another reference to balance the one dropped by the
-> > platform bus code when unbinding the MFD and deregistering the child
-> > devices.
-> >
-> > Fix this by using the intended helper for reusing OF nodes.
-> >
-> > Fixes: 5111c931f36c ("regulator: rk808: cleanup parent device usage")
+On 7.4.2026 23:23, Marek Vasut wrote:
+> If CONFIG_PREEMPT_RT=y is set AND the driver executes ks8851_irq() AND
+> KSZ_ISR register bit IRQ_RXI is set AND ks8851_rx_pkts() detects that
+> there are packets in the RX FIFO, then netdev_alloc_skb_ip_align() is
+> called to allocate SKBs. If netdev_alloc_skb_ip_align() is called with
+> BH enabled, local_bh_enable() at the end of netdev_alloc_skb_ip_align()
+> will call __local_bh_enable_ip(), which will call __do_softirq(), which
+> may trigger net_tx_action() softirq, which may ultimately call the xmit
+> callback ks8851_start_xmit_par(). The ks8851_start_xmit_par() will try
+> to lock struct ks8851_net_par .lock spinlock, which is already locked
+> by ks8851_irq() from which ks8851_start_xmit_par() was called. This
+> leads to a deadlock, which is reported by the kernel, including a trace
+> listed below.
 > 
-> I don't think this is quite the right "Fixes". Even before that
-> commit, the driver copied the parent's "of_node" and still set
-> "of_node_reused".
+> Fix the problem by disabling BH around the IRQ handler, thus preventing
+> the net_tx_action() softirq from triggering during the IRQ handler. The
+> net_tx_action() softirq is now triggered at the end of the IRQ handler,
+> once all the other IRQ handler actions have been completed.
 > 
-> The first place I see the parent's "of_node" being copied is actually
-> commit 647e57351f8e ("regulator: rk808: reduce 'struct rk808' usage").
-> "of_node_reused" is first set in commit 1b9e86d445a0 ("regulator:
-> rk808: fix asynchronous probing"), but really that should have been
-> set in the beginning anyway...
+>   __schedule from schedule_rtlock+0x1c/0x34
+>   schedule_rtlock from rtlock_slowlock_locked+0x538/0x894
+>   rtlock_slowlock_locked from rt_spin_lock+0x44/0x5c
+>   rt_spin_lock from ks8851_start_xmit_par+0x68/0x1a0
+>   ks8851_start_xmit_par from netdev_start_xmit+0x1c/0x40
+>   netdev_start_xmit from dev_hard_start_xmit+0xec/0x1b0
+>   dev_hard_start_xmit from sch_direct_xmit+0xb8/0x25c
+>   sch_direct_xmit from __qdisc_run+0x20c/0x4fc
+>   __qdisc_run from qdisc_run+0x1c/0x28
+>   qdisc_run from net_tx_action+0x1f4/0x244
+>   net_tx_action from handle_softirqs+0x1c0/0x29c
+>   handle_softirqs from __local_bh_enable_ip+0xdc/0xf4
+>   __local_bh_enable_ip from __netdev_alloc_skb+0x140/0x194
+>   __netdev_alloc_skb from ks8851_irq+0x348/0x4d8
+>   ks8851_irq from irq_thread_fn+0x24/0x64
+>   irq_thread_fn from irq_thread+0x110/0x1dc
+>   irq_thread from kthread+0x104/0x10c
+>   kthread from ret_from_fork+0x14/0x28
+> 
+> Fixes: e0863634bf9f ("net: ks8851: Queue RX packets in IRQ handler 
+> instead of disabling BHs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marek Vasut <marex@nabladev.com>
+> ---
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Ronald Wahl <ronald.wahl@raritan.com>
+> Cc: Yicong Hui <yiconghui@gmail.com>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> ---
+>  drivers/net/ethernet/micrel/ks8851_common.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/micrel/ks8851_common.c 
+> b/drivers/net/ethernet/micrel/ks8851_common.c
+> index 8048770958d60..dadedea016fac 100644
+> --- a/drivers/net/ethernet/micrel/ks8851_common.c
+> +++ b/drivers/net/ethernet/micrel/ks8851_common.c
+> @@ -316,6 +316,7 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+>  	unsigned int status;
+>  	struct sk_buff *skb;
+> 
+> +	local_bh_disable();
+>  	ks8851_lock(ks, &flags);
 
-Indeed, thanks for catching that. I've just sent a v2 of the series with
-the correct tag and that includes all of the regulator fixes that
-unfortunately ended up being being spread over three series.
+I suspect this breaks the SPI variant on non-RT since
+ks8851_lock_spi() uses mutex_lock() which can't sleep with
+BH disabled. I have KS8851 SPI hardware and will test, will
+get back to you.
 
-Johan
+> 
+>  	status = ks8851_rdreg16(ks, KS_ISR);
+> @@ -381,6 +382,7 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+>  	if (status & IRQ_RXI)
+>  		while ((skb = __skb_dequeue(&rxq)))
+>  			netif_rx(skb);
+> +	local_bh_enable();
+> 
+>  	return IRQ_HANDLED;
+>  }
+
+Thanks
+Nicolai
 
