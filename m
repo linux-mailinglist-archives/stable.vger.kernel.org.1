@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-235191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wExFMDGm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:09 +0200
+	id CG0cBQ2i1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7373C235D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DF13C1662
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F1AA3029783
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C660830C369D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB19B26C39E;
-	Wed,  8 Apr 2026 19:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A47D3ACF11;
+	Wed,  8 Apr 2026 18:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf3EA7NR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+wZ8bIB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECC1357A20;
-	Wed,  8 Apr 2026 19:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D41A3ACEFB;
+	Wed,  8 Apr 2026 18:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674804; cv=none; b=BLZKP6DcnUdC6YvBXRTQs0qyn7Iy/tasq1IOYDh8Vfh/NvZqZhsjSYT1ehTzb2iDxe6X16oYZ5EQLiv65HQaVaOyYhzxftXjYQ4+tHyHAFsnG/CyIQtoiVFwluxxH0ePY3la+IoMoGXsMIVzPH5+IXqTfkIks5oI7mFuvcgkEaE=
+	t=1775672809; cv=none; b=lZ3T9hn7wcfgU3is7Wa07WTEYzKE7O4SzZCQUsGz56xjzu9/NcAcqPtZ/Vacf9q2vn9SAxw/7nTfh2Bt4uZgbv/cRS+VKHMvisxOuzBmUAMT451AvuQAByZi1XmPRDDdhCLOFUafCipeo9EvpNoxIFWyXEwV02KNROoSUSDu8qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674804; c=relaxed/simple;
-	bh=w/8Gju/kx++FVF9//fTjsMUdjwoCQxwIFux5HIt844A=;
+	s=arc-20240116; t=1775672809; c=relaxed/simple;
+	bh=XYhH5Vq9aMY9YxO3Z9DIdDjLfNWDb0qemjIpz1rdcyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKp8cUVN4+ie4JpnjUS6Bo1mFGhPAloZuc8zeQsKJFpSwzJKurXzFiven9K8wYrNxbAVrZn9twX0Oajc/SuuWA7Y+ZYHMGaygbqtYiB++xY6Rk+1L/eMQLMJbBNZe0Gn4EnnPHr+7zyZPZhFGZIFLtviAW9F2IWrMIMJY9IsIMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf3EA7NR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5F1C19425;
-	Wed,  8 Apr 2026 19:00:03 +0000 (UTC)
+	 MIME-Version; b=kbJetYu+3NecKEZsaYH8z9hnUv8n94kKuhRhDoMVbgvfatnXrxeJrH+9VPCUG8ACbYyoHJ28qVC/LCewpIfiTYFhNNI1iJv35+GM8YWpI20UXAsYOcJUgKmFEWKE0mPCgOgdzVJntnMiMiouYakU+e9OxjMIh4GeuXpzfW6M6Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+wZ8bIB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6571C19421;
+	Wed,  8 Apr 2026 18:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674804;
-	bh=w/8Gju/kx++FVF9//fTjsMUdjwoCQxwIFux5HIt844A=;
+	s=korg; t=1775672809;
+	bh=XYhH5Vq9aMY9YxO3Z9DIdDjLfNWDb0qemjIpz1rdcyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qf3EA7NRCPdm1s9PgaOBXJDAySWtsGvYqp8oQ1HfXlMryHaai/tSDi2NTrB3/exmB
-	 HhG9ddXsdCwMYON6iEqe49ojoHLWnnoiSi/JLk58pf9EpZfYKJK508UiMO4zOfA7Cf
-	 bsrGjDm6HaJUaG9sTJIiGKF9nP0CnbgXWdV+tl+E=
+	b=O+wZ8bIBoaiiuTRnQzqiue+R6lqRQIekQHZdwzsqfB4Jg285xsQUz+9FTV5xRnQUp
+	 +chLGatTIdhXplLX+sYq4oEpLJhzAnX55u/jrB/s6BC3VgJ4FCE16ngB2tpKbkM5T9
+	 vzck1Ep6kSjfIpT88UvNoQ2IBi2ugx7UWf0qZHLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
+	Long Li <longli@microsoft.com>,
 	Guangshuo Li <lgs201920130244@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.19 238/311] usb: ulpi: fix double free in ulpi_register_interface() error path
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 151/160] net: mana: fix use-after-free in add_adev() error path
 Date: Wed,  8 Apr 2026 20:03:58 +0200
-Message-ID: <20260408175948.281900721@linuxfoundation.org>
+Message-ID: <20260408175918.834646757@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +67,97 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235191-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.intel.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234419-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 6E7373C235D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 84DF13C1662
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 01af542392b5d41fd659d487015a71f627accce3 upstream.
+[ Upstream commit c4ea7d8907cf72b259bf70bd8c2e791e1c4ff70f ]
 
-When device_register() fails, ulpi_register() calls put_device() on
-ulpi->dev.
+If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
+auxiliary_device_uninit(adev).
 
-The device release callback ulpi_dev_release() drops the OF node
-reference and frees ulpi, but the current error path in
-ulpi_register_interface() then calls kfree(ulpi) again, causing a
-double free.
+The auxiliary device has its release callback set to adev_release(),
+which frees the containing struct mana_adev. Since adev is embedded in
+struct mana_adev, the subsequent fall-through to init_fail and access
+to adev->id may result in a use-after-free.
 
-Let put_device() handle the cleanup through ulpi_dev_release() and
-avoid freeing ulpi again in ulpi_register_interface().
+Fix this by saving the allocated auxiliary device id in a local
+variable before calling auxiliary_device_add(), and use that saved id
+in the cleanup path after auxiliary_device_uninit().
 
-Fixes: 289fcff4bcdb1 ("usb: add bus type for USB ULPI")
-Cc: stable <stable@kernel.org>
+Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
+Cc: stable@vger.kernel.org
+Reviewed-by: Long Li <longli@microsoft.com>
 Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260401025142.1398996-1-lgs201920130244@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260323165730.945365-1-lgs201920130244@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/common/ulpi.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/common/ulpi.c
-+++ b/drivers/usb/common/ulpi.c
-@@ -331,10 +331,9 @@ struct ulpi *ulpi_register_interface(str
- 	ulpi->ops = ops;
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2759,6 +2759,7 @@ static int add_adev(struct gdma_dev *gd)
+ 	struct auxiliary_device *adev;
+ 	struct mana_adev *madev;
+ 	int ret;
++	int id;
  
- 	ret = ulpi_register(dev, ulpi);
--	if (ret) {
--		kfree(ulpi);
-+	if (ret)
- 		return ERR_PTR(ret);
--	}
-+
+ 	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
+ 	if (!madev)
+@@ -2768,7 +2769,8 @@ static int add_adev(struct gdma_dev *gd)
+ 	ret = mana_adev_idx_alloc();
+ 	if (ret < 0)
+ 		goto idx_fail;
+-	adev->id = ret;
++	id = ret;
++	adev->id = id;
  
- 	return ulpi;
- }
+ 	adev->name = "rdma";
+ 	adev->dev.parent = gd->gdma_context->dev;
+@@ -2792,7 +2794,7 @@ add_fail:
+ 	auxiliary_device_uninit(adev);
+ 
+ init_fail:
+-	mana_adev_idx_free(adev->id);
++	mana_adev_idx_free(id);
+ 
+ idx_fail:
+ 	kfree(madev);
 
 
 
