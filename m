@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPKIBXqa1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:10 +0200
+	id gDeNAaKi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F623C028D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8A03C1818
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B58B33020745
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 182C8306777B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E533D47A5;
-	Wed,  8 Apr 2026 18:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22383D522C;
+	Wed,  8 Apr 2026 18:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWDALDUl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmT5I7p4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFC1347503;
-	Wed,  8 Apr 2026 18:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B3C37F01B;
+	Wed,  8 Apr 2026 18:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671923; cv=none; b=d7gftm1rzBKO9kJ1hNBwwIlH7rOPoBa25DwpxEWSw9XQQo7R1KZ/9Z46fsJtOVe3KHoXwkAMpoYNPA1sCxModDlkrwIF4CaDhjYjT8TML5xxVFNA9d+jP/3XDpFXjPrXcFTDoPmvBf8g+FgZ5YYnDhXE0qeX513y16kjts9OaHY=
+	t=1775672969; cv=none; b=Wno/C2rxIyQ53IPO8Vh2GHyvGkvY7VpVDU+5+C5ZNbv7DrpxQH2+vyj/0cTm7k8TSkr/F4zMIn+dw/B2XyXUiciQOjD8nSPbET3zqrbYx1AFg341FzJFqR+MbhsdgR9ay9GqEPG1r8P/R04mxm50bH3ocfmVDKQ3VxjvfGoJzTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671923; c=relaxed/simple;
-	bh=oVAjcOHEHrYfCjz1m3+NLxn688oXI0cXYko3sMMzqAA=;
+	s=arc-20240116; t=1775672969; c=relaxed/simple;
+	bh=mBAo5M/4+N2Xs+tPWrIuyMVk5AYD1gLdPTsK4d0pCWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFfKHYanDNkzgo0wwHMKjg1KESRDTT5rCboG8qf0FANKOfKVO6DfPOhHBR88jEC/5D2Guc51CBP5LxBkFEf6epRSIq7YnZyWp/kPlUQizaWTNC2Q83dj/3bK1J78Y94ezYQAomGsnay03SeFaOYTU6nEGviNk+9jq+afaG7fbeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWDALDUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BC1C19421;
-	Wed,  8 Apr 2026 18:12:02 +0000 (UTC)
+	 MIME-Version; b=FwnpOeqpUTy9BxagXd6Sqbd4W40JOWlDfp0POj3AW8vJFFe4b0eWlyfsDq2v+96ptHIwG/QfTEasmaPgIPvFaMgQPNGWVinmOAr3/ptOdH7lIh3vuOwlXx/yf+9j3zqPamSvP1dc+CuEs0dGx1VchNBu7pI/N0rxowhz59U2LDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmT5I7p4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11018C19421;
+	Wed,  8 Apr 2026 18:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671923;
-	bh=oVAjcOHEHrYfCjz1m3+NLxn688oXI0cXYko3sMMzqAA=;
+	s=korg; t=1775672969;
+	bh=mBAo5M/4+N2Xs+tPWrIuyMVk5AYD1gLdPTsK4d0pCWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWDALDUlPUeO7HbxfIGUrt85zx4zI39HYvvqAYRL9IAiq2YUOriApKFtnm30SzGSo
-	 /zF+6o8kCIEOu7K3ucnHa4jEm+HbU2nnX6x514I2DEm39qb15jNTKkIDgbXDOJlyhU
-	 ibtBzXZ4xzVfCy7HpQmdlhTj5HdGIHxrPj6rQbsg=
+	b=wmT5I7p4pL7RXGUul4u1yQ9my3rsLP7gg0mqoBPwNdnRUm9uU2aixjx550RkT6aob
+	 G4dJLTBUOfhL/j3JpnsHYyBro2ubMOXggN79AfPPGOWzbXK5+HQXP7BqvOoCOIrqd3
+	 3Vg6c4gV7ymCNWUn2PHwJAwVIVb1BcC0mNGrmjwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 119/312] ext4: always drain queued discard work in ext4_mb_release()
+	Yochai Eisenrich <echelonh@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 051/277] net: sched: cls_api: fix tc_chain_fill_node to initialize tcm_info to zero to prevent an info-leak
 Date: Wed,  8 Apr 2026 20:00:36 +0200
-Message-ID: <20260408175938.213306110@linuxfoundation.org>
+Message-ID: <20260408175935.763835439@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,97 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234480-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234076-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sashiko.dev:url]
-X-Rspamd-Queue-Id: A0F623C028D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,mojatatu.com:email]
+X-Rspamd-Queue-Id: 5F8A03C1818
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Yochai Eisenrich <echelonh@gmail.com>
 
-commit 9ee29d20aab228adfb02ca93f87fb53c56c2f3af upstream.
+[ Upstream commit e6e3eb5ee89ac4c163d46429391c889a1bb5e404 ]
 
-While reviewing recent ext4 patch[1], Sashiko raised the following
-concern[2]:
+When building netlink messages, tc_chain_fill_node() never initializes
+the tcm_info field of struct tcmsg. Since the allocation is not zeroed,
+kernel heap memory is leaked to userspace through this 4-byte field.
 
-> If the filesystem is initially mounted with the discard option,
-> deleting files will populate sbi->s_discard_list and queue
-> s_discard_work. If it is then remounted with nodiscard, the
-> EXT4_MOUNT_DISCARD flag is cleared, but the pending s_discard_work is
-> neither cancelled nor flushed.
+The fix simply zeroes tcm_info alongside the other fields that are
+already initialized.
 
-[1] https://lore.kernel.org/r/20260319094545.19291-1-qiang.zhang@linux.dev/
-[2] https://sashiko.dev/#/patchset/20260319094545.19291-1-qiang.zhang%40linux.dev
-
-The concern was valid, but it had nothing to do with the patch[1].
-One of the problems with Sashiko in its current (early) form is that
-it will detect pre-existing issues and report it as a problem with the
-patch that it is reviewing.
-
-In practice, it would be hard to hit deliberately (unless you are a
-malicious syzkaller fuzzer), since it would involve mounting the file
-system with -o discard, and then deleting a large number of files,
-remounting the file system with -o nodiscard, and then immediately
-unmounting the file system before the queued discard work has a change
-to drain on its own.
-
-Fix it because it's a real bug, and to avoid Sashiko from raising this
-concern when analyzing future patches to mballoc.c.
-
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Fixes: 55cdd0af2bc5 ("ext4: get discard out of jbd2 commit kthread contex")
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32a4f5ecd738 ("net: sched: introduce chain object to uapi")
+Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260328211436.1010152-1-echelonh@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/sched/cls_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3591,13 +3591,11 @@ int ext4_mb_release(struct super_block *
- 	struct kmem_cache *cachep = get_groupinfo_cache(sb->s_blocksize_bits);
- 	int count;
- 
--	if (test_opt(sb, DISCARD)) {
--		/*
--		 * wait the discard work to drain all of ext4_free_data
--		 */
--		flush_work(&sbi->s_discard_work);
--		WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
--	}
-+	/*
-+	 * wait the discard work to drain all of ext4_free_data
-+	 */
-+	flush_work(&sbi->s_discard_work);
-+	WARN_ON_ONCE(!list_empty(&sbi->s_discard_list));
- 
- 	if (sbi->s_group_info) {
- 		for (i = 0; i < ngroups; i++) {
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index bac9cd71ff8e9..b03dc4fe20e52 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -2969,6 +2969,7 @@ static int tc_chain_fill_node(const struct tcf_proto_ops *tmplt_ops,
+ 	tcm->tcm__pad1 = 0;
+ 	tcm->tcm__pad2 = 0;
+ 	tcm->tcm_handle = 0;
++	tcm->tcm_info = 0;
+ 	if (block->q) {
+ 		tcm->tcm_ifindex = qdisc_dev(block->q)->ifindex;
+ 		tcm->tcm_parent = block->q->handle;
+-- 
+2.53.0
+
 
 
 
