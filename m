@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-235205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBjzOiOs1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:31 +0200
+	id YCzuKgKm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735B43C3044
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCBD3C22FC
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20F70320886A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6D7D30BDF9F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9F137DE90;
-	Wed,  8 Apr 2026 19:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB6B347BA9;
+	Wed,  8 Apr 2026 18:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCPO4RdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5sBRzRw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902743AD52A;
-	Wed,  8 Apr 2026 19:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E92E2727F3;
+	Wed,  8 Apr 2026 18:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674840; cv=none; b=iOFc6IJ149gSGNiHemt2w3XBiIfuDb/epyoQY25gR7BgDVdl2Joq6wrEl3q6/sgQI/tZA86GrffHQbfvWYrY2gCg/JD2kqnu6UuEDB3mxm33jZFd+wNZeC8F7ytH4of9RhESoFRq86jr9oYDn5au9xL7ncDeavsdJ//kNnaewac=
+	t=1775674193; cv=none; b=P24pHLJW29Hv/DbbGw3zfqHMS1rly7dUjyRFKalOG/BIa3bOgjy9Ay/8Ve+nATVYNaloHgYQkzeLBoFf3wnWXU+2wLS7RD7Rc+VBQR56Pv3sO5SOAepl3+Lp6GAA/105zpvt99H6/4BJDcCDDbPrt2kES9tzcUJYdkShJbMpSPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674840; c=relaxed/simple;
-	bh=UVbfGFqAdlC9EhrEgYhgd7yzbKHR57L5SXd1p7wb9Kc=;
+	s=arc-20240116; t=1775674193; c=relaxed/simple;
+	bh=gQirPgQOJVknIH1VkDPw5u2WNtSCzRUytGW/OTPcKnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwOPhIbGqBHWrMfKJISnN2mvwjBtFqfz93yWCDhhgEiFVwuNzISpsTdnYTfVvmblICPRSbBWuxmb2+yzq76DyoRlzbxjMS0jC3+5A/ecuDipkXGYbdveIcUsLvODyA/xeTV9o6Y5/+h4b5zcpQo3fa/O4cBCuWM6SrsGc8wldTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCPO4RdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24675C19421;
-	Wed,  8 Apr 2026 19:00:39 +0000 (UTC)
+	 MIME-Version; b=m1yss9YxGkl19D/iEF3sIStKMO67n27nFppw4JLT3DUbgonun9slQJSEUa4bGH5ZrOhbYBMo9shVnW9MBEXsI8uv7xcU05IvupIH4EFfCWivP/z3owssWfINnpmF0Fvsd7XwDA+8X3gs4JcDASWEj2dpXVTBXCpj7qweD7RnotI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5sBRzRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8200C2BCB0;
+	Wed,  8 Apr 2026 18:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674840;
-	bh=UVbfGFqAdlC9EhrEgYhgd7yzbKHR57L5SXd1p7wb9Kc=;
+	s=korg; t=1775674193;
+	bh=gQirPgQOJVknIH1VkDPw5u2WNtSCzRUytGW/OTPcKnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCPO4RdXQVJSx0Ne1TuNycouw2ZTlMUh5fEFdrPGMhMTMos5GwqEObDJVfYT2uIDE
-	 HQeC9ft5+71CcN4gI6DSa+U/Iohg/DKKEj5pYbUY3Zmw1avXDo/VdlA6V6e9b4O3aj
-	 2EDwh4/P6kA7o3ZyfEo8syL1YADggSjs88W4ucy8=
+	b=Y5sBRzRwaDe9JXqeBYLBAJZtPIZAj3yvAjx/+leL3rb3ZV/E9Dt6KZ5F1+duHzRBO
+	 Hjt03/YeT3bkRVpZG0buXOxP0vx7yiw7LvL+twVWDJaeHdYEzPHd+K59WaNBOhGBCy
+	 QEL3qjjzI8NZhUFBgN+VDFrNGXN9Y2pksul/MbJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f238baf6ded841b5a82e@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 254/311] comedi: runflags cannot determine whether to reclaim chanlist
+	Tangxin Xie <xietangxin@yeah.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 214/242] net: correctly handle tunneled traffic on IPV6_CSUM GSO fallback
 Date: Wed,  8 Apr 2026 20:04:14 +0200
-Message-ID: <20260408175948.872427477@linuxfoundation.org>
+Message-ID: <20260408175935.088830927@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +65,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-235205-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,mev.co.uk,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,redhat.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234954-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,f238baf6ded841b5a82e];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,qq.com:email,mev.co.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 735B43C3044
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yeah.net:email]
+X-Rspamd-Queue-Id: 0FCBD3C22FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 29f644f14b89e6c4965e3c89251929e451190a66 upstream.
+[ Upstream commit c4336a07eb6b2526dc2b62928b5104b41a7f81f5 ]
 
-syzbot reported a memory leak [1], because commit 4e1da516debb ("comedi:
-Add reference counting for Comedi command handling") did not consider
-the exceptional exit case in do_cmd_ioctl() where runflags is not set.
-This caused chanlist not to be properly freed by do_become_nonbusy(),
-as it only frees chanlist when runflags is correctly set.
+NETIF_F_IPV6_CSUM only advertises support for checksum offload of
+packets without IPv6 extension headers. Packets with extension
+headers must fall back onto software checksumming. Since TSO
+depends on checksum offload, those must revert to GSO.
 
-Added a check in do_become_nonbusy() for the case where runflags is not
-set, to properly free the chanlist memory.
+The below commit introduces that fallback. It always checks
+network header length. For tunneled packets, the inner header length
+must be checked instead. Extend the check accordingly.
 
-[1]
-BUG: memory leak
-  backtrace (crc 844a0efa):
-    __comedi_get_user_chanlist drivers/comedi/comedi_fops.c:1815 [inline]
-    do_cmd_ioctl.part.0+0x112/0x350 drivers/comedi/comedi_fops.c:1890
-    do_cmd_ioctl drivers/comedi/comedi_fops.c:1858 [inline]
+A special case is tunneled packets without inner IP protocol. Such as
+RFC 6951 SCTP in UDP. Those are not standard IPv6 followed by
+transport header either, so also must revert to the software GSO path.
 
-Fixes: 4e1da516debb ("comedi: Add reference counting for Comedi command handling")
-Reported-by: syzbot+f238baf6ded841b5a82e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f238baf6ded841b5a82e
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Cc: stable <stable@kernel.org> # 6.19
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260310111104.70959-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 864e3396976e ("net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM")
+Reported-by: Tangxin Xie <xietangxin@yeah.net>
+Closes: https://lore.kernel.org/netdev/0414e7e2-9a1c-4d7c-a99d-b9039cf68f40@yeah.net/
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260320190148.2409107-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi_fops.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/core/dev.c |   22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
-index 48a8a607a84c..0df9f4636fb6 100644
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -793,13 +793,15 @@ static void do_become_nonbusy(struct comedi_device *dev,
- 	__comedi_clear_subdevice_runflags(s, COMEDI_SRF_RUNNING |
- 					     COMEDI_SRF_BUSY);
- 	spin_unlock_irqrestore(&s->spin_lock, flags);
--	if (comedi_is_runflags_busy(runflags)) {
-+	if (async) {
- 		/*
- 		 * "Run active" counter was set to 1 when setting up the
- 		 * command.  Decrement it and wait for it to become 0.
- 		 */
--		comedi_put_is_subdevice_running(s);
--		wait_for_completion(&async->run_complete);
-+		if (comedi_is_runflags_busy(runflags)) {
-+			comedi_put_is_subdevice_running(s);
-+			wait_for_completion(&async->run_complete);
-+		}
- 		comedi_buf_reset(s);
- 		async->inttrig = NULL;
- 		kfree(async->cmd.chanlist);
--- 
-2.53.0
-
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3579,6 +3579,22 @@ static netdev_features_t dflt_features_c
+ 	return vlan_features_check(skb, features);
+ }
+ 
++static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
++{
++	if (!skb->encapsulation)
++		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
++			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
++			  vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
++			skb_transport_header_was_set(skb) &&
++			skb_network_header_len(skb) != sizeof(struct ipv6hdr));
++	else
++		return (!skb_inner_network_header_was_set(skb) ||
++			((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
++			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
++			   inner_ip_hdr(skb)->version == 6)) &&
++			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
++}
++
+ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 					    struct net_device *dev,
+ 					    netdev_features_t features)
+@@ -3625,11 +3641,7 @@ static netdev_features_t gso_features_ch
+ 	 * so neither does TSO that depends on it.
+ 	 */
+ 	if (features & NETIF_F_IPV6_CSUM &&
+-	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
+-	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
+-	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
+-	    skb_transport_header_was_set(skb) &&
+-	    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
++	    skb_gso_has_extension_hdr(skb) &&
+ 	    !ipv6_has_hopopt_jumbo(skb))
+ 		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
+ 
 
 
 
