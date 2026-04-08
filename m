@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIaVO0Ci1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:21 +0200
+	id ODftG0Ca1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD5D3C1717
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F27B63C0181
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC53430875F9
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 253F1302E3F7
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674513D411F;
-	Wed,  8 Apr 2026 18:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB71D3D8917;
+	Wed,  8 Apr 2026 18:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4+f1Iwp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqAJor0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0E93B0ADA;
-	Wed,  8 Apr 2026 18:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB4D3D47A5;
+	Wed,  8 Apr 2026 18:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672860; cv=none; b=oQGNHJa4vvV1wkNnLnRrsXX045bClSnmIvtdTiK8PaGAB88HawbvZu4dc/BviM2ZMjUcw2znjUDuf0NePK7pm/49r1AGmjJVt+l2/qCyKfc7mgD91tHzs2QKJGdyU16VBYqhxzREczExHCt026vNUXzFv3oPFodJwBUznro8ORU=
+	t=1775671791; cv=none; b=LBNt+4B1Nu679LETWEZnTHWVo3tKRpTmYK2MstlEkyloLfoRDIy1YNoVZOoV04mO7pHvqMWjdN5HfYHSrKLNjipewRiAnECHUtBdpwW2FKlXM7P4ouR0txfpjdqe1hG+CKr2gB61JXh07O4FCnYR9Y4CQZlcW2M0Rg4fHrBb3iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672860; c=relaxed/simple;
-	bh=PDhdkuTah6hMwDvo9wkBvsSfOHvMi74/z6fJXhvcu28=;
+	s=arc-20240116; t=1775671791; c=relaxed/simple;
+	bh=qHt+/D2VW5aZ5b1iUx7TcyCXpZbTYurkCnQv/n3B8Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1RdiyAaUbLaYVS20C+ltDvT00NF3Iq6n8PdPWbVx9a13EJh3lZ1H63fdkbz5nyGG6RuOrYlzr5dtWw13qi+xXE/X5ZJqL3+d1TD2SaRuaB6Y47pj77ZedVbEyPG47hipRTU2lMuonREVGTVFokbvIzalNs4CSnNWzRTt9Ij+1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4+f1Iwp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A74C19421;
-	Wed,  8 Apr 2026 18:27:39 +0000 (UTC)
+	 MIME-Version; b=WsGSiGRyMUM9lpaMXVKXN38VLZivdKD0eDlcAcrhSzwChL+Um2ivtVdnOpDFT7tMnsc4mUO3WGG9oEGoQjeOlCpIoShhbEyLhP8e6VUB6LtWDFw6+VL/1dGVsJ/UMmlqT4FE0GlN+aLsvXOLATegwUXTT0wNLGRx8t6Va8cGJ98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqAJor0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D56C19421;
+	Wed,  8 Apr 2026 18:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672860;
-	bh=PDhdkuTah6hMwDvo9wkBvsSfOHvMi74/z6fJXhvcu28=;
+	s=korg; t=1775671791;
+	bh=qHt+/D2VW5aZ5b1iUx7TcyCXpZbTYurkCnQv/n3B8Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4+f1IwpxOlPs0Hv7c4jVkKJG4cyVDf25m/6z+xdvFaJ5g4/wMSAYoOdH8ccy8ps2
-	 /ovCEMwSJKT2SmvKuR37zr+a5fsjxOp/ppfXXMOkJkpOB8fr0Pg6RNjnsN1YwC8Ux1
-	 8ayCoRgTcdVcskA+emvyQrQsq1bxO0KINynhGufc=
+	b=wqAJor0AUv6RaoeXUD7/j4wwGZ0KeA/SRP4z47cJ99du7DV6WRXA3phKEHp7WAKoI
+	 pXhmby2xkx7E1O16VKEVg/sIPkA6yMhcnSOajZ3rOCd7B8pcVWsqJ9RRA/dC1EszOi
+	 XFWZ6kbaEvXFJ0otyY5Vd3ECZ5B/osdVrxT9zcUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pepper Gray <hello@peppergray.xyz>,
-	Will Deacon <will@kernel.org>,
+	Ivan Barrera <ivan.d.barrera@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 001/277] arm64/scs: Fix handling of advance_loc4
+Subject: [PATCH 6.1 069/312] RDMA/irdma: Clean up unnecessary dereference of event->cm_node
 Date: Wed,  8 Apr 2026 19:59:46 +0200
-Message-ID: <20260408175933.895784114@linuxfoundation.org>
+Message-ID: <20260408175936.317272503@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,72 +69,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234025-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234438-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,peppergray.xyz:email]
-X-Rspamd-Queue-Id: 5FD5D3C1717
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: F27B63C0181
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pepper Gray <hello@peppergray.xyz>
+From: Ivan Barrera <ivan.d.barrera@intel.com>
 
-[ Upstream commit d499e9627d70b1269020d59b95ed3e18bee6b8cd ]
+[ Upstream commit b415399c9a024d574b65479636f0d4eb625b9abd ]
 
-DW_CFA_advance_loc4 is defined but no handler is implemented. Its
-CFA opcode defaults to EDYNSCS_INVALID_CFA_OPCODE triggering an
-error which wrongfully prevents modules from loading.
+The cm_node is available and the usage of cm_node and event->cm_node
+seems arbitrary. Clean up unnecessary dereference of event->cm_node.
 
-Link: https://bugs.gentoo.org/971060
-Signed-off-by: Pepper Gray <hello@peppergray.xyz>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
+Signed-off-by: Ivan Barrera <ivan.d.barrera@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/pi/patch-scs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/infiniband/hw/irdma/cm.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/kernel/pi/patch-scs.c b/arch/arm64/kernel/pi/patch-scs.c
-index bbe7d30ed12b3..dac568e4a54f2 100644
---- a/arch/arm64/kernel/pi/patch-scs.c
-+++ b/arch/arm64/kernel/pi/patch-scs.c
-@@ -192,6 +192,14 @@ static int scs_handle_fde_frame(const struct eh_frame *frame,
- 			size -= 2;
+diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
+index 691b9ed7f759d..b8f945576eb53 100644
+--- a/drivers/infiniband/hw/irdma/cm.c
++++ b/drivers/infiniband/hw/irdma/cm.c
+@@ -4181,21 +4181,21 @@ static void irdma_cm_event_handler(struct work_struct *work)
+ 		irdma_cm_event_reset(event);
+ 		break;
+ 	case IRDMA_CM_EVENT_CONNECTED:
+-		if (!event->cm_node->cm_id ||
+-		    event->cm_node->state != IRDMA_CM_STATE_OFFLOADED)
++		if (!cm_node->cm_id ||
++		    cm_node->state != IRDMA_CM_STATE_OFFLOADED)
  			break;
+ 		irdma_cm_event_connected(event);
+ 		break;
+ 	case IRDMA_CM_EVENT_MPA_REJECT:
+-		if (!event->cm_node->cm_id ||
++		if (!cm_node->cm_id ||
+ 		    cm_node->state == IRDMA_CM_STATE_OFFLOADED)
+ 			break;
+ 		irdma_send_cm_event(cm_node, cm_node->cm_id,
+ 				    IW_CM_EVENT_CONNECT_REPLY, -ECONNREFUSED);
+ 		break;
+ 	case IRDMA_CM_EVENT_ABORTED:
+-		if (!event->cm_node->cm_id ||
+-		    event->cm_node->state == IRDMA_CM_STATE_OFFLOADED)
++		if (!cm_node->cm_id ||
++		    cm_node->state == IRDMA_CM_STATE_OFFLOADED)
+ 			break;
+ 		irdma_event_connect_error(event);
+ 		break;
+@@ -4205,7 +4205,7 @@ static void irdma_cm_event_handler(struct work_struct *work)
+ 		break;
+ 	}
  
-+		case DW_CFA_advance_loc4:
-+			loc += *opcode++ * code_alignment_factor;
-+			loc += (*opcode++ << 8) * code_alignment_factor;
-+			loc += (*opcode++ << 16) * code_alignment_factor;
-+			loc += (*opcode++ << 24) * code_alignment_factor;
-+			size -= 4;
-+		break;
-+
- 		case DW_CFA_def_cfa:
- 		case DW_CFA_offset_extended:
- 			size = skip_xleb128(&opcode, size);
+-	irdma_rem_ref_cm_node(event->cm_node);
++	irdma_rem_ref_cm_node(cm_node);
+ 	kfree(event);
+ }
+ 
 -- 
 2.53.0
 
