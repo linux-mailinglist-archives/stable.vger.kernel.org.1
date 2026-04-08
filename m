@@ -1,211 +1,176 @@
-Return-Path: <stable+bounces-233774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJ77Mz361Wn4/gcAu9opvQ
-	(envelope-from <stable+bounces-233774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:48:29 +0200
+	id 0AZ/GDn61Wn4/gcAu9opvQ
+	(envelope-from <stable+bounces-233775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:48:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B7C3B7B48
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0EDE3B7B47
 	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A91BC301B865
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:48:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3E52B3010607
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52C726B756;
-	Wed,  8 Apr 2026 06:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6854330FC0F;
+	Wed,  8 Apr 2026 06:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtBjdpNH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13EB366063
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 06:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0FB2D0614
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 06:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775630884; cv=none; b=d422K1s5iBp3FIHOIQKUTboOzk8VfF19NAn8qMb/0+iDrt0pVN6tNGhvmKvx4AWkXWns4sFzWQlqjltsTkQ+9BPjMFEx/W8BamoOSpUNxpuo3JHFMlBdJ8xlKEE9bcbG7INtnpClsIWeEu/JCDIWdi73Xe7RFmJgBQAJOp0pr4I=
+	t=1775630901; cv=none; b=aPRCFgjbiCtxf+BNGUikIP44A3E11KsLO4QfVfxXXK82gRu3P4cvTlGrqI9v/CpbnFGdv1P7nsBvDjTnAkQMMCCz02GVy13gW4M9SfVbzb2tDeWJxaiEUZ9JZ/iDXgQdS4gC7Xh+stY3PTCvuMHJgpAS5xEHE9yS3Z+U1yHQfDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775630884; c=relaxed/simple;
-	bh=qmtmc7Tp867dlyp86AwzLepvVDbeeKthqK9biJO1W0I=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5xh28zhqDXYniU7ob8r4eF2KpEOX/C6jrNCBvp/4tBf7UkA4/cGKpq6YUsfqkWQ9NsaQqIScS7A8UT/EG7F2fVHDNoiLBHUQx3JdlGypNWvIfxrxpqiQ11k/Whl+w/dZFAIyTNP437ayIyiYo96VtF1ZPqd2Tfo1fo9Ak3WvW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43ccda008cdso291945f8f.0
-        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 23:48:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775630881; x=1776235681;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=rkQxvU8d98B7kS0I1V9FO6w4ZFrdFN25ghkBcit1lHM=;
-        b=MerWLOTkUCXdlpz6ZGTh8MSISVPIZ+5bSS5kb9YeWBqTWIGVHsHSyN29THcihoHzQQ
-         UCDO4MCeVMLRavS1b/UnGo9egagjb7qIpK3vtqfsqcLI9LuEHN5n+jbhwyZIlw3O9/rk
-         GChqka7EWA1N7CFbEPWssge6koFgAsXt6v8kr+FjDD+ySnKUmtEkxC8KXNmOnfZhxgVm
-         l9AqZ0rK0YkB3/qA+C/QllgTuIS1zZh0WMrmSCeTTyQupHsqUimZYMkYJKY17qvGd95X
-         VW+H/deYG1LjK+9MkNxVCpjZGkGP/KMCsfzoqePbYudGQJ65F2IRlt4cUB1OavdXQzkH
-         9Rxw==
-X-Gm-Message-State: AOJu0YwRvWRoUPH3iaZWeAefC7DgvAZB15qspK/YZqjT5EOK+zxjqWw0
-	afdLC7sP293FLVhy1sdiq4KzcXNDi6KzbnAnt7sZ/Rb89JkdDX1201Gk36gYdSA29HE=
-X-Gm-Gg: AeBDietL3LCvPhKT9JfaiKphsmYcMaYY6sFV8krBfSL7SpLdfKyvC8GqDXAMOaU0+e8
-	G8JyLxyRUAC8xVZ0+73FkQA0YT8XZZKvIXYI0W5cZ+6INdBLDW6tqYcNs1u7c6e813nT/MOW2d6
-	6yORxR81c9WSMI2VM9zNLeFfrh3PhRicUvtAVZVkopFIJnIet8QYh+cmC8Jy4asPl49ZesP1cax
-	q+M/Wv1NN6bqoPPHQ1JQUUUUEL6u/YTTGA6jWT94CxjwNS1kcCWCMeemMS37HeL/UbDQDvJ0Axu
-	7X/fpeQK8dmChLMMYzRHVL2vPOwu2om3Gj45oP9kYRjsEan1TpMfn/CUiv3VB6OnBOLqbu1hfbf
-	a5c1CnyRg9hKsB6hwtfqI/uXGKXcvkNr9CRyeu0G9mN5ISfpr4K3w/NQz9tFngol4u0JQjDIrY0
-	nB6l7b9vZ9nZ0vZhWMbO5P2UNSB5p0N8ldYgldn7eyybNaZzj6uqGjxg==
-X-Received: by 2002:a05:6000:24c5:b0:43d:33a0:f5b6 with SMTP id ffacd0b85a97d-43d33a0f5d0mr23415397f8f.2.1775630881143;
-        Tue, 07 Apr 2026 23:48:01 -0700 (PDT)
-Received: from hackbase (95-24-76-124.broadband.corbina.ru. [95.24.76.124])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4f7d4esm48976238f8f.34.2026.04.07.23.48.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 23:48:00 -0700 (PDT)
-From: Alexander Popov <alex.popov@linux.com>
-To: stable@vger.kernel.org,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Alexander Popov <alex.popov@linux.com>
-Subject: [PATCH 5.15.y] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
-Date: Wed,  8 Apr 2026 09:47:34 +0300
-Message-ID: <20260408064746.32988-1-alex.popov@linux.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026040720-gloss-outwit-968c@gregkh>
-References: <2026040720-gloss-outwit-968c@gregkh>
+	s=arc-20240116; t=1775630901; c=relaxed/simple;
+	bh=vW4CC3rULAnbue1712oS2yGPZwRN0qzA4wxt/keKsTI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R3WZ728ma7Gm2VNyNG/apKLa3tgUYAwvphUCQ8PkEL3eAANjIrOhn5LqRXYCePXyFW1P8NljxYIj1IZzFtCd9DBRZtYANcdopmXGTC8VR+CB9a5RlKhNSp3QwSLhbvgmOs0lh7tal/395w0CrYEP3yDg3yRMt7WpL3UMjh7Jb7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtBjdpNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB872C19424;
+	Wed,  8 Apr 2026 06:48:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775630901;
+	bh=vW4CC3rULAnbue1712oS2yGPZwRN0qzA4wxt/keKsTI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=WtBjdpNHX2Zt5EbwHHN8ctHhnX/2GM9rYbIl2RpV1oe9lXjMBg39ZdrxUGda3qgCm
+	 /8dzohOdZ0O/4nSk2Snj8AuwliJnLZIuBAEV8CT+beitMSgTnzV4dja/9GhIiFNw28
+	 SEFyXvYj1Xm9mU6rQ0i5Bbu1eCALiWhb9Ctzo/ps=
+Subject: FAILED: patch "[PATCH] spi: cadence-qspi: Fix exec_mem_op error handling" failed to apply to 6.12-stable tree
+To: emanuele.ghidoli@toradex.com,broonie@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 08 Apr 2026 08:48:18 +0200
+Message-ID: <2026040818-grandpa-wheat-d0cc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[linux.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233775-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233774-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[alex.popov@linux.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.942];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,linux.com:email,linux.com:mid,msgid.link:url]
-X-Rspamd-Queue-Id: F1B7C3B7B48
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,msgid.link:url,toradex.com:email,gregkh:email]
+X-Rspamd-Queue-Id: F0EDE3B7B47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
-the virt_wifi net devices. However, unregistering a virt_wifi device in
-netdev_run_todo() can happen together with the device referenced by
-SET_NETDEV_DEV().
 
-It can result in use-after-free during the ethtool operations performed
-on a virt_wifi device that is currently being unregistered. Such a net
-device can have the `dev.parent` field pointing to the freed memory,
-but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
+To reproduce the conflict and resubmit, you may use the following commands:
 
- ==================================================================
- BUG: KASAN: slab-use-after-free in __pm_runtime_resume+0xe2/0xf0
- Read of size 2 at addr ffff88810cfc46f8 by task pm/606
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 59e1be1278f064d7172b00473b7e0c453cb1ec52
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040818-grandpa-wheat-d0cc@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4d/0x70
-  print_report+0x170/0x4f3
-  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-  kasan_report+0xda/0x110
-  ? __pm_runtime_resume+0xe2/0xf0
-  ? __pm_runtime_resume+0xe2/0xf0
-  __pm_runtime_resume+0xe2/0xf0
-  ethnl_ops_begin+0x49/0x270
-  ethnl_set_features+0x23c/0xab0
-  ? __pfx_ethnl_set_features+0x10/0x10
-  ? kvm_sched_clock_read+0x11/0x20
-  ? local_clock_noinstr+0xf/0xf0
-  ? local_clock+0x10/0x30
-  ? kasan_save_track+0x25/0x60
-  ? __kasan_kmalloc+0x7f/0x90
-  ? genl_family_rcv_msg_attrs_parse.isra.0+0x150/0x2c0
-  genl_family_rcv_msg_doit+0x1e7/0x2c0
-  ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
-  ? __pfx_cred_has_capability.isra.0+0x10/0x10
-  ? stack_trace_save+0x8e/0xc0
-  genl_rcv_msg+0x411/0x660
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_ethnl_set_features+0x10/0x10
-  netlink_rcv_skb+0x121/0x380
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_netlink_rcv_skb+0x10/0x10
-  ? __pfx_down_read+0x10/0x10
-  genl_rcv+0x23/0x30
-  netlink_unicast+0x60f/0x830
-  ? __pfx_netlink_unicast+0x10/0x10
-  ? __pfx___alloc_skb+0x10/0x10
-  netlink_sendmsg+0x6ea/0xbc0
-  ? __pfx_netlink_sendmsg+0x10/0x10
-  ? __futex_queue+0x10b/0x1f0
-  ____sys_sendmsg+0x7a2/0x950
-  ? copy_msghdr_from_user+0x26b/0x430
-  ? __pfx_____sys_sendmsg+0x10/0x10
-  ? __pfx_copy_msghdr_from_user+0x10/0x10
-  ___sys_sendmsg+0xf8/0x180
-  ? __pfx____sys_sendmsg+0x10/0x10
-  ? __pfx_futex_wait+0x10/0x10
-  ? fdget+0x2e4/0x4a0
-  __sys_sendmsg+0x11f/0x1c0
-  ? __pfx___sys_sendmsg+0x10/0x10
-  do_syscall_64+0xe2/0x570
-  ? exc_page_fault+0x66/0xb0
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  </TASK>
+Possible dependencies:
 
-This fix may be combined with another one in the ethtool subsystem:
-https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
 
-Fixes: d43c65b05b848e0b ("ethtool: runtime-resume netdev parent in ethnl_ops_begin")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 59e1be1278f064d7172b00473b7e0c453cb1ec52 Mon Sep 17 00:00:00 2001
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Date: Fri, 13 Mar 2026 14:52:31 +0100
+Subject: [PATCH] spi: cadence-qspi: Fix exec_mem_op error handling
+
+cqspi_exec_mem_op() increments the runtime PM usage counter before all
+refcount checks are performed. If one of these checks fails, the function
+returns without dropping the PM reference.
+
+Move the pm_runtime_resume_and_get() call after the refcount checks so
+that runtime PM is only acquired when the operation can proceed and
+drop the inflight_ops refcount if the PM resume fails.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Popov <alex.popov@linux.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260324224607.374327-1-alex.popov@linux.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-(cherry picked from commit 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6)
----
- drivers/net/wireless/virt_wifi.c | 1 -
- 1 file changed, 1 deletion(-)
+Fixes: 7446284023e8 ("spi: cadence-quadspi: Implement refcount to handle unbind during busy")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Link: https://patch.msgid.link/20260313135236.46642-1-ghidoliemanuele@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
-index dd6675436bda..4dca9827a420 100644
---- a/drivers/net/wireless/virt_wifi.c
-+++ b/drivers/net/wireless/virt_wifi.c
-@@ -553,7 +553,6 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
- 	eth_hw_addr_inherit(dev, priv->lowerdev);
- 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 5fb0cb07c110..2ead419e896e 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1483,14 +1483,6 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (refcount_read(&cqspi->inflight_ops) == 0)
+ 		return -ENODEV;
  
--	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
- 	dev->ieee80211_ptr = kzalloc(sizeof(*dev->ieee80211_ptr), GFP_KERNEL);
+-	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+-		ret = pm_runtime_resume_and_get(dev);
+-		if (ret) {
+-			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
+-			return ret;
+-		}
+-	}
+-
+ 	if (!refcount_read(&cqspi->refcount))
+ 		return -EBUSY;
  
- 	if (!dev->ieee80211_ptr) {
--- 
-2.53.0
+@@ -1502,6 +1494,14 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		return -EBUSY;
+ 	}
+ 
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		ret = pm_runtime_resume_and_get(dev);
++		if (ret) {
++			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
++			goto dec_inflight_refcount;
++		}
++	}
++
+ 	ret = cqspi_mem_process(mem, op);
+ 
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
+@@ -1510,6 +1510,7 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (ret)
+ 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
+ 
++dec_inflight_refcount:
+ 	if (refcount_read(&cqspi->inflight_ops) > 1)
+ 		refcount_dec(&cqspi->inflight_ops);
+ 
 
 
