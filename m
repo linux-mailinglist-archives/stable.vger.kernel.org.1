@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNMuK1ee1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:39 +0200
+	id uJXXAric1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30ED23C0CAB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF913C07D0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F7653028665
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28A67303A64A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A042494F0;
-	Wed,  8 Apr 2026 18:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77D43D6694;
+	Wed,  8 Apr 2026 18:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfUAjOGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Op2I5oy2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B267324B1F;
-	Wed,  8 Apr 2026 18:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA312DAFAA;
+	Wed,  8 Apr 2026 18:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672757; cv=none; b=EIlAOfAMettnc34kgo0gte8IqzMevYw9KpLF2bTXIe/p33tvXqrS2x+ESDEQxN5owv2gS5UF7IT6sCdv6OARrxvJKxxqaPpIDq3k1TsUkSf/Q7xi0v5cTjwkz51W6YNiNaX+5xNQQpt1M7MJLQYasDZzrSaen5f6ejdQJWrJBtc=
+	t=1775672421; cv=none; b=UGEl0WrYVJqMGCJeUrBnDFRLBOc4lhpp1BYtn4qICceBWDvaz30ozMTq67LOltdv+bd0lA5b+NQETBt/3hSNwtr0fGUBN6o3b9qDIHaGeayUgep9WcYDnfISVnYdrjQ4up/cF2VnXKNQVXotpcc56IXpSv4/Qb9ZghH5UHx1i68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672757; c=relaxed/simple;
-	bh=lFci4sUtxS2yJCwmgP+zYjrxxFmb2vnC0jg7I8nMUNU=;
+	s=arc-20240116; t=1775672421; c=relaxed/simple;
+	bh=pP1axe5F+JQfEb/FFWu4Qczr7FjZbOdkMVS3EeWkugs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lu9kFUd0XQSlekRuRaGsY++r4U5brNlQNtmaIZnANOnHZMffbv7xw37eptH7kN4l8niDFpHhSTyU9rc8RWi03rIKb++MkuXh+qjl2z/Ul2VgybhBcgXxKtvb6ClChiH951Ut+TZ/yDgLKh1wwFxUNni38Jzpl5ItuHpjurX+p4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfUAjOGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285F9C19421;
-	Wed,  8 Apr 2026 18:25:57 +0000 (UTC)
+	 MIME-Version; b=DpCrmCx0vl4F87my/UtfpmaBmKXWrN24ZxYVABav2D9uZKakwUpyOv+FHeIEZwY0AMThg+0rZTQ31fUMgn7aifxB8YY2TvKG9BrdgY+jQAvR1yqj8bM/32dCOhck17coGKY9mOmRhGdRL76tnrmFKDPDp8a0ohyRiw0UYXOB+go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Op2I5oy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4173EC19421;
+	Wed,  8 Apr 2026 18:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672757;
-	bh=lFci4sUtxS2yJCwmgP+zYjrxxFmb2vnC0jg7I8nMUNU=;
+	s=korg; t=1775672421;
+	bh=pP1axe5F+JQfEb/FFWu4Qczr7FjZbOdkMVS3EeWkugs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfUAjOGxLkehv0beGzl81k6BZ49yHqs06m18q/wJb+7E8IiBNKx84heZ0onbIZK5l
-	 gyQO9Tn2E+6enianw2BHwk9wovhgplbs5nB8zE/Q3ky4PLr6rinSgrb+n1jIpdArdb
-	 05wc7vSu18YJMwkV+k9X8GCjTvbzT1+sU3RUqaAw=
+	b=Op2I5oy2JjfPAYAYZ+1b9FH3LkZfqaYoLtIvWzJWPhDvDGkeq1rvl7Ih/FBc2NADD
+	 BdVV39juSZFJjmuBs4oJ154qlW1d2RCSU6OGz+kZz9tMj7IrV6VuWyfo4AfhnAMY2j
+	 UK4veU4SZIjnIoH97zYTyWZhATXoAEEVAvj9BabY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 129/160] cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path
+	syzbot+5b886a2e03529dbcef81@syzkaller.appspotmail.com,
+	Denis Arefev <arefev@swemel.ru>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1 299/312] erofs: Fix the slab-out-of-bounds in drop_buffers()
 Date: Wed,  8 Apr 2026 20:03:36 +0200
-Message-ID: <20260408175918.008068980@linuxfoundation.org>
+Message-ID: <20260408175944.936467763@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +64,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,linaro.org,intel.com];
-	TAGGED_FROM(0.00)[bounces-234399-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234269-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,5b886a2e03529dbcef81];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,qualcomm.com:email,linaro.org:email]
-X-Rspamd-Queue-Id: 30ED23C0CAB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,alibaba.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BDF913C07D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 6dcf9d0064ce2f3e3dfe5755f98b93abe6a98e1e upstream.
+commit ce529cc25b184e93397b94a8a322128fc0095cbb upstream.
 
-When kobject_init_and_add() fails, cpufreq_dbs_governor_init() calls
-kobject_put(&dbs_data->attr_set.kobj).
+This was accidentally fixed in commit ce529cc25b18, but it's not possible
+to accept all the changes, due to the lack of large folios support for 
+Linux 6.1 kernels, so this is only the actual bug fix that's needed.
 
-The kobject release callback cpufreq_dbs_data_release() calls
-gov->exit(dbs_data) and kfree(dbs_data), but the current error path
-then calls gov->exit(dbs_data) and kfree(dbs_data) again, causing a
-double free.
+[Background]
 
-Keep the direct kfree(dbs_data) for the gov->init() failure path, but
-after kobject_init_and_add() has been called, let kobject_put() handle
-the cleanup through cpufreq_dbs_data_release().
+Syzbot reported that a KASAN slab-out-of-bounds bug was discovered in
+the drop_buffers() function [1].
 
-Fixes: 4ebe36c94aed ("cpufreq: Fix kobject memleak")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260401024535.1395801-1-lgs201920130244@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The root cause is that erofs_raw_access_aops does not define .release_folio
+and .invalidate_folio. When using iomap-based operations, folio->private
+may contain iomap-specific data rather than buffer_heads. Without special
+handlers, the kernel may fall back to generic functions (such as 
+drop_buffers), which incorrectly treat folio->private as a list of
+buffer_head structures, leading to incorrect memory interpretation and
+out-of-bounds access.
+
+Fix this by explicitly setting .release_folio and .invalidate_folio to the
+values of iomap_release_folio and iomap_invalidate_folio, respectively.
+
+[1] https://syzkaller.appspot.com/x/report.txt?x=12e5a142580000 
+
+Fixes: 7479c505b4ab ("fs: Convert iomap_readpage to iomap_read_folio")
+Reported-by: syzbot+5b886a2e03529dbcef81@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=c6aeabd0c4ad2466f63a274faf2a123103f8fbf7
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq_governor.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/erofs/data.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -468,13 +468,13 @@ int cpufreq_dbs_governor_init(struct cpu
- 	/* Failure, so roll back. */
- 	pr_err("initialization failed (dbs_data kobject init error %d)\n", ret);
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -406,6 +406,8 @@ const struct address_space_operations er
+ 	.readahead = erofs_readahead,
+ 	.bmap = erofs_bmap,
+ 	.direct_IO = noop_direct_IO,
++	.release_folio = iomap_release_folio,
++	.invalidate_folio = iomap_invalidate_folio,
+ };
  
--	kobject_put(&dbs_data->attr_set.kobj);
--
- 	policy->governor_data = NULL;
- 
- 	if (!have_governor_per_policy())
- 		gov->gdbs_data = NULL;
--	gov->exit(dbs_data);
-+
-+	kobject_put(&dbs_data->attr_set.kobj);
-+	goto free_policy_dbs_info;
- 
- free_dbs_data:
- 	kfree(dbs_data);
+ #ifdef CONFIG_FS_DAX
 
 
 
