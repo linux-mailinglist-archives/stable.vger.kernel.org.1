@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-234601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBZxGtaf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:02 +0200
+	id SCGmLCSr1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373B63C103A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A56B3C2DFB
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D9D9330285FE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE2C931D33A6
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBC43D9037;
-	Wed,  8 Apr 2026 18:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6980232A3FD;
+	Wed,  8 Apr 2026 18:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vf0Ba3dZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIDYQlhL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3DE3D8115;
-	Wed,  8 Apr 2026 18:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA4B3176E4;
+	Wed,  8 Apr 2026 18:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673282; cv=none; b=cUsV0FjptPOGq0MasXOkWupB90qVZMGOAR8BgMyOz0vDAndFNZLnhpJj/Wir7ux7H4FRU6fqHPyLhAJ1hFV2sj8Hl9jglGrKaLckXSlyLcU1qWFauNVNJ5tUhynRiOQwnuPqr1zGohiLPE0QhgkNSOUq+d3d8e4ouz/GOWoAfPg=
+	t=1775674590; cv=none; b=tdeoe7YvycNupG/hRyaSFIc+w4k9kmIf36iK/1C4nydmbynadE7d4VK7hF1F6a3t+SYAfZbN4Do4AgaXRcG0anU4jFOIhZhJzcEnLHwtfJRmpHHW8ox58cFJmZHYLWkOpmCimeWWcGg/+l3A51mufT1fpBHjVghEgkcTphSIBAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673282; c=relaxed/simple;
-	bh=68QOWlmxzP5T95q6eB1szwykBl3lBa0rTTq1tD+diy0=;
+	s=arc-20240116; t=1775674590; c=relaxed/simple;
+	bh=hSvLg6pm9MbsoMqL/vTRxpAemWso7iewI89VsCFlFDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sf92FEkHkrYSERNwpoVrRcslvYT8D5g52KjXr3dwClNnn0gJfwRWBEp7GRiNJ9Rtz6aiSXTKUJY096FmHhjdaeZG/ZCulfoDxc5h9100ZddjlLBwS1gILEPeJYtuI1Ytw/iexb9mZqKASK98ii845i8C6ZvdRUJ8z7XJxpiP7pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vf0Ba3dZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA3BC19421;
-	Wed,  8 Apr 2026 18:34:41 +0000 (UTC)
+	 MIME-Version; b=ozL7m+91p2ZX39NPVNewES3oU0pONKhmEL6ryoQe1gGD+BZ1czwu30LX4DMyD85s7t469G7bAIrCgo8Yhx60e6LKVDU8uM8nbMXFFistAmWiKB8/Voo7n/4POdhBzJ1xBLT3dCknpiDOXaBfz3ZplDT/N9eRtxAqwiITR+9oDhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIDYQlhL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD5FC19421;
+	Wed,  8 Apr 2026 18:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673282;
-	bh=68QOWlmxzP5T95q6eB1szwykBl3lBa0rTTq1tD+diy0=;
+	s=korg; t=1775674589;
+	bh=hSvLg6pm9MbsoMqL/vTRxpAemWso7iewI89VsCFlFDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vf0Ba3dZ2/lFntk6oMxlWefRpzNHbt5+m8ps0LWH9nM7YItW1eJGdnROoPup/wYwM
-	 4ksLQ8zMWVY6gWu7W6LSe2NLGizO/QN+FDcBY37+4rYk8nUThniwwR9nW4WUPFdGR3
-	 pwErHpoM11I/fgzBBt2mO5lme0jxUlhEEEahoiVc=
+	b=bIDYQlhLtwGAD/+RPDqcyRIiuh2EXqYJp65wd+V5MUNqFK22yP4MiyY26JHaR0dpx
+	 xkrWPztHfJLGVReXj8mpwkq6knv1vKoky1Ed4MTp5oNT+Tnh0AQSa7MHcKhua45TtV
+	 SuTxRpN1/nrubOnt8JX1h36r6ixpqvg9gZtrSgQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 171/277] Input: synaptics-rmi4 - fix a locking bug in an error path
+	John Stultz <jstultz@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 156/311] sched/debug: Fix avg_vruntime() usage
 Date: Wed,  8 Apr 2026 20:02:36 +0200
-Message-ID: <20260408175940.252084361@linuxfoundation.org>
+Message-ID: <20260408175945.231659867@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +66,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234601-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,acm.org,gmail.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235108-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,acm.org:email]
-X-Rspamd-Queue-Id: 373B63C103A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 2A56B3C2DFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 7adaaee5edd35a423ae199c41b86bd1ed60ed483 upstream.
+[ Upstream commit e08d007f9d813616ce7093600bc4fdb9c9d81d89 ]
 
-Lock f54->data_mutex when entering the function statement since jumping
-to the 'error' label when checking report_size fails causes that mutex
-to be unlocked.
+John reported that stress-ng-yield could make his machine unhappy and
+managed to bisect it to commit b3d99f43c72b ("sched/fair: Fix
+zero_vruntime tracking").
 
-This bug has been detected by the Clang thread-safety checker.
+The commit in question changes avg_vruntime() from a function that is
+a pure reader, to a function that updates variables. This turns an
+unlocked sched/debug usage of this function from a minor mistake into
+a data corruptor.
 
-Fixes: 3a762dbd5347 ("[media] Input: synaptics-rmi4 - add support for F54 diagnostics")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260223215118.2154194-16-bvanassche@acm.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: af4cf40470c2 ("sched/fair: Add cfs_rq::avg_vruntime")
+Fixes: b3d99f43c72b ("sched/fair: Fix zero_vruntime tracking")
+Reported-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: John Stultz <jstultz@google.com>
+Link: https://patch.msgid.link/20260401132355.196370805@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/rmi4/rmi_f54.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/debug.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/input/rmi4/rmi_f54.c
-+++ b/drivers/input/rmi4/rmi_f54.c
-@@ -538,6 +538,8 @@ static void rmi_f54_work(struct work_str
- 	int error;
- 	int i;
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 93f009e1076d8..3504ec9bd7307 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -798,6 +798,7 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
+ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+ {
+ 	s64 left_vruntime = -1, zero_vruntime, right_vruntime = -1, left_deadline = -1, spread;
++	u64 avruntime;
+ 	struct sched_entity *last, *first, *root;
+ 	struct rq *rq = cpu_rq(cpu);
+ 	unsigned long flags;
+@@ -821,6 +822,7 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+ 	if (last)
+ 		right_vruntime = last->vruntime;
+ 	zero_vruntime = cfs_rq->zero_vruntime;
++	avruntime = avg_vruntime(cfs_rq);
+ 	raw_spin_rq_unlock_irqrestore(rq, flags);
  
-+	mutex_lock(&f54->data_mutex);
-+
- 	report_size = rmi_f54_get_report_size(f54);
- 	if (report_size == 0) {
- 		dev_err(&fn->dev, "Bad report size, report type=%d\n",
-@@ -546,8 +548,6 @@ static void rmi_f54_work(struct work_str
- 		goto error;     /* retry won't help */
- 	}
- 
--	mutex_lock(&f54->data_mutex);
--
- 	/*
- 	 * Need to check if command has completed.
- 	 * If not try again later.
+ 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "left_deadline",
+@@ -830,7 +832,7 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+ 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "zero_vruntime",
+ 			SPLIT_NS(zero_vruntime));
+ 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "avg_vruntime",
+-			SPLIT_NS(avg_vruntime(cfs_rq)));
++			SPLIT_NS(avruntime));
+ 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "right_vruntime",
+ 			SPLIT_NS(right_vruntime));
+ 	spread = right_vruntime - left_vruntime;
+-- 
+2.53.0
+
 
 
 
