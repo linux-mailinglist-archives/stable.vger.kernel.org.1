@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNHiJpWn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:05 +0200
+	id gOn9Ggqk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47D93C275A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB78C3C1D3B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80EA731BB435
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C4E1313287E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054843D4134;
-	Wed,  8 Apr 2026 18:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA8E28C87C;
+	Wed,  8 Apr 2026 18:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrWPRPng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oejguH4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD120346FB0;
-	Wed,  8 Apr 2026 18:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC07351C2E;
+	Wed,  8 Apr 2026 18:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673802; cv=none; b=IVPDnDMbFQWipMyFDzB9kgNgWa9HlyAkIKpbN6QdqfAaqPtc1HE3CI959JRKeZC1H0sKQCsIBfmVAkuqG/tCGvRX1yWZcgn6zg2tJ1j2Ei28kK76ewk/5RS2CJQNN0wWcOIKC0sAc16JtOdTLivWnfiFtuMWtSqBLOf4y0obSbc=
+	t=1775673310; cv=none; b=Limtcn7iqHUeC4aYgPEtBlUxWTitfdIYlpJhFMt0ouvAuGynuh6sUyaajJjYs8jFSBnEjSDhDeb20Qz6Zj9BBGwqIWy1mhuMvR0l6dsMXHpJkn3pWo4klGg3n2N2R2zJ678jBWdGDYaSxnM/jQCnAoJk3chNERmuJxA9vLCcjXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673802; c=relaxed/simple;
-	bh=SWx/qjd0v/XEDTojjEibeEbRK2VAISZz+fQtd33WQnA=;
+	s=arc-20240116; t=1775673310; c=relaxed/simple;
+	bh=kaKQenjDFiu1wrYJIJAeG2w2Gzz/+yrkxCNkkO428w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ju1FfMEIgSyabUZDm7fDoyMw4oorrmLuwJHCiGh79hytL+fyhMqaNJ7LK7Qb8fY+oRl6iQ9YgbpTNu/mkgsS5thJqMl4ZdssWW5VFbD/noaLXPrNsPeU7lpJxZudFiXDStG0yFEIh7lvZunQqDnlrI40cCBl1kYYhj2/oBhqrrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrWPRPng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E24C19421;
-	Wed,  8 Apr 2026 18:43:22 +0000 (UTC)
+	 MIME-Version; b=WNGhmAiGpjCEZm1sX43ge8v3MYy8ynAJldWz51pQ3kMZAn9Mj3g/ltGMpOr47joxjZtnsZ4usWH5ZJPTu6ApD9ZoSk9AKwsPAExBZMk5sMUWIO+h3+AhuB/k/IYhujjk8K7laWIlvAzcpM9Mbx9KaNMMpxZ0lsoyY7H6ItRI5DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oejguH4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04166C19421;
+	Wed,  8 Apr 2026 18:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673802;
-	bh=SWx/qjd0v/XEDTojjEibeEbRK2VAISZz+fQtd33WQnA=;
+	s=korg; t=1775673310;
+	bh=kaKQenjDFiu1wrYJIJAeG2w2Gzz/+yrkxCNkkO428w0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrWPRPngGSrf69K1O+EyVHYXNfJLbIk3Fgu5jjBCxcz+O4f2Y0bbyYJLPCfpZKpfO
-	 YE6xAuRW6I+KBm5jW16o4rM1lmCeWd1g0dVLIjUzXXwWS2EjoOvH3JS2JewX5K/7S6
-	 AbfQsZGx3KrlNcEnHc9MbV1bmGYxythtVzIjDZGY=
+	b=oejguH4OSQ6UGxknSgvunSQRoD3WMCaKbiRLVJjKivM2rEAYt1FEEldF4JAQYkfmq
+	 Qt58Px4KCYO64IU4dralxgSpR+4C8rOCW6SDD/X0/S8+zxCLeTYMvX/2WX75ZY9u3C
+	 SIJ0Q/ZR/DxqhJunw9vKwN3jvdfUd3TuyTEcWcjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Schiller <ms@dev.tdt.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/242] net/x25: Fix potential double free of skb
+	Aleksandr Nogikh <nogikh@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dmitry Vyukov <dvyukov@google.com>
+Subject: [PATCH 6.18 150/277] x86/kexec: Disable KCOV instrumentation after load_segments()
 Date: Wed,  8 Apr 2026 20:02:15 +0200
-Message-ID: <20260408175930.639332669@linuxfoundation.org>
+Message-ID: <20260408175939.474457087@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234803-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234612-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,76 +89,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,tdt.de:email]
-X-Rspamd-Queue-Id: E47D93C275A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: EB78C3C1D3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: Aleksandr Nogikh <nogikh@google.com>
 
-[ Upstream commit d10a26aa4d072320530e6968ef945c8c575edf61 ]
+commit 917e3ad3321e75ca0223d5ccf26ceda116aa51e1 upstream.
 
-When alloc_skb fails in x25_queue_rx_frame it calls kfree_skb(skb) at
-line 48 and returns 1 (error).
-This error propagates back through the call chain:
+The load_segments() function changes segment registers, invalidating GS base
+(which KCOV relies on for per-cpu data). When CONFIG_KCOV is enabled, any
+subsequent instrumented C code call (e.g. native_gdt_invalidate()) begins
+crashing the kernel in an endless loop.
 
-x25_queue_rx_frame returns 1
-    |
-    v
-x25_state3_machine receives the return value 1 and takes the else
-branch at line 278, setting queued=0 and returning 0
-    |
-    v
-x25_process_rx_frame returns queued=0
-    |
-    v
-x25_backlog_rcv at line 452 sees queued=0 and calls kfree_skb(skb)
-again
+To reproduce the problem, it's sufficient to do kexec on a KCOV-instrumented
+kernel:
 
-This would free the same skb twice. Looking at x25_backlog_rcv:
+  $ kexec -l /boot/otherKernel
+  $ kexec -e
 
-net/x25/x25_in.c:x25_backlog_rcv() {
-    ...
-    queued = x25_process_rx_frame(sk, skb);
-    ...
-    if (!queued)
-        kfree_skb(skb);
-}
+The real-world context for this problem is enabling crash dump collection in
+syzkaller. For this, the tool loads a panic kernel before fuzzing and then
+calls makedumpfile after the panic. This workflow requires both CONFIG_KEXEC
+and CONFIG_KCOV to be enabled simultaneously.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Link: https://patch.msgid.link/20260331-x25_fraglen-v4-1-3e69f18464b4@dev.tdt.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adding safeguards directly to the KCOV fast-path (__sanitizer_cov_trace_pc())
+is also undesirable as it would introduce an extra performance overhead.
+
+Disabling instrumentation for the individual functions would be too fragile,
+so disable KCOV instrumentation for the entire machine_kexec_64.c and
+physaddr.c. If coverage-guided fuzzing ever needs these components in the
+future, other approaches should be considered.
+
+The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not supported
+there.
+
+  [ bp: Space out comment for better readability. ]
+
+Fixes: 0d345996e4cb ("x86/kernel: increase kcov coverage under arch/x86/kernel folder")
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260325154825.551191-1-nogikh@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/x25/x25_in.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kernel/Makefile |   14 ++++++++++++++
+ arch/x86/mm/Makefile     |    2 ++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
-index b981a4828d08c..0dbc73efab1cb 100644
---- a/net/x25/x25_in.c
-+++ b/net/x25/x25_in.c
-@@ -44,10 +44,9 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
- 	if (x25->fraglen > 0) {	/* End of fragment */
- 		int len = x25->fraglen + skb->len;
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -44,6 +44,20 @@ KCOV_INSTRUMENT_unwind_orc.o				:= n
+ KCOV_INSTRUMENT_unwind_frame.o				:= n
+ KCOV_INSTRUMENT_unwind_guess.o				:= n
  
--		if ((skbn = alloc_skb(len, GFP_ATOMIC)) == NULL){
--			kfree_skb(skb);
-+		skbn = alloc_skb(len, GFP_ATOMIC);
-+		if (!skbn)
- 			return 1;
--		}
++# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
++# the GS base, which KCOV relies on for per-CPU data.
++#
++# As KCOV and KEXEC compatibility should be preserved (e.g. syzkaller is
++# using it to collect crash dumps during kernel fuzzing), disabling
++# KCOV for KEXEC kernels is not an option. Selectively disabling KCOV
++# instrumentation for individual affected functions can be fragile, while
++# adding more checks to KCOV would slow it down.
++#
++# As a compromise solution, disable KCOV instrumentation for the whole
++# source code file. If its coverage is ever needed, other approaches
++# should be considered.
++KCOV_INSTRUMENT_machine_kexec_64.o			:= n
++
+ CFLAGS_head32.o := -fno-stack-protector
+ CFLAGS_head64.o := -fno-stack-protector
+ CFLAGS_irq.o := -I $(src)/../include/asm/trace
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -4,6 +4,8 @@ KCOV_INSTRUMENT_tlb.o			:= n
+ KCOV_INSTRUMENT_mem_encrypt.o		:= n
+ KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
+ KCOV_INSTRUMENT_pgprot.o		:= n
++# See the "Disable KCOV" comment in arch/x86/kernel/Makefile.
++KCOV_INSTRUMENT_physaddr.o		:= n
  
- 		skb_queue_tail(&x25->fragment_queue, skb);
- 
--- 
-2.53.0
-
+ KASAN_SANITIZE_mem_encrypt.o		:= n
+ KASAN_SANITIZE_mem_encrypt_amd.o	:= n
 
 
 
