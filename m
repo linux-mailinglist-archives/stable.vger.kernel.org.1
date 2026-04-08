@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-235180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CgLA+Wr1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:29 +0200
+	id WCbdCAaj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149AE3C2F9E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02EA3C19CB
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFEE23102A1B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6C32B3032297
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56963C5552;
-	Wed,  8 Apr 2026 18:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88EC3822A3;
+	Wed,  8 Apr 2026 18:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EzHfzNq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynuzkPTx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788AA3537DF;
-	Wed,  8 Apr 2026 18:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B15D33121F;
+	Wed,  8 Apr 2026 18:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674775; cv=none; b=B88EfSDOmKWFBZ++pi3MahcaPB3xYVNGJT6cPvNqopU+3BOmaYfct/Dv46qq4CSGDggNU9gPVVBTzVHO1ae0abneUEBE7Ic1CCJPZfuFUUDBtq9Ekp1DyQ7vNmfKQ3QINNIVylltHjfmFEBnBTEdmMNU4fc+0WP2651gTIeacJQ=
+	t=1775674043; cv=none; b=GoRhSIkUuaVeA7NeT8mJZFe59btFdb8CoI5iTFhFKoQg4nHhbIsBGBytgylDLR1BPOLYbgzJj6D26H+gd30UM6P/4huA6SF2nkAyJe7okCzx+JTeV8L8Fokc3CbMjXWMPBu+ORx4DpiReK4zMn5theKf/yzqtd0hv1Yw86vvzUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674775; c=relaxed/simple;
-	bh=ihQos/s65DraWQLITqQfAjjnPAeMzXS+f1qlCUhLrc8=;
+	s=arc-20240116; t=1775674043; c=relaxed/simple;
+	bh=aEeDHQ+csSsrtIo/Uiild1BgL/ehQQWhHBe4iCxi7Aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=usw6eyDjYqa22dzH3Xj4ygAmUbvm21CXVks4MSIpJtuzSrIy4ajpbcY9epoHDJquuCZWC3IvuN+R8EgmjymJXOcaBwj6dqBFuq0ZMiOSmmq0leBw5PIHdT0IcpWMNfy5GWcQdH/kXr71Xpj7+YIgL/rG0T7KWMDX3AGhHbgO0Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EzHfzNq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D28C19421;
-	Wed,  8 Apr 2026 18:59:34 +0000 (UTC)
+	 MIME-Version; b=i4vWywPPmRvD41AbsyhAuh7yXXeWWobBRQd3kd+T6PN2KlNNUbV8D/tVZL82PJq4Xqm2SAkdt2GgQSn3Hu3pavdLudwL/r54gQuTxmCb0ROw3tNebSSCEDWJFOQp7xmZ4VPXUdpLUcUSemeMd0D2FN1r1Q0AFoK19xioj+PT9uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynuzkPTx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCADDC19421;
+	Wed,  8 Apr 2026 18:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674775;
-	bh=ihQos/s65DraWQLITqQfAjjnPAeMzXS+f1qlCUhLrc8=;
+	s=korg; t=1775674043;
+	bh=aEeDHQ+csSsrtIo/Uiild1BgL/ehQQWhHBe4iCxi7Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EzHfzNqUqUQZumrfjaH873VRZE8PO96vOzaKCS4GNoxBTbKWRmOTlTPrTmeWAjO5
-	 r2cbo2pCMqi/osMxB6wAjT5BRY5+5/J0y+LupYuCzQ/Xneov061WgiXOdYLsnc6Tjd
-	 s46i/pNcPOuBjW8zimHefUBPsH9KlndReJ+XqkbE=
+	b=ynuzkPTxXXiIM6Lyv+/6eEZDQ9zBwMd4q5r6kzkJMRIJSl5qHBx+w5AUAh3I1AAi6
+	 L3deBRxKQVdgGjt8FB1p5cJgq4oliQhb2XvLKGR9OaLk/5HVKLlMI9BgLQlg3cGf8D
+	 moTieSiChFrw5uZAldkIUbreSy2yvtqwfo3z9sR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 228/311] iio: imu: bmi160: Remove potential undefined behavior in bmi160_config_pin()
+	"Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 188/242] net: ethernet: mtk_ppe: avoid NULL deref when gmac0 is disabled
 Date: Wed,  8 Apr 2026 20:03:48 +0200
-Message-ID: <20260408175947.913212669@linuxfoundation.org>
+Message-ID: <20260408175934.119818643@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,110 +63,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235180-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234896-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,intel.com:email,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,arndb.de:email]
-X-Rspamd-Queue-Id: 149AE3C2F9E
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,simonwunderlich.de:email]
+X-Rspamd-Queue-Id: E02EA3C19CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
 
-commit c05a87d9ec3bf8727a5d746ce855003c6f2f8bb4 upstream.
+commit 976ff48c2ac6e6b25b01428c9d7997bcd0fb2949 upstream.
 
-If 'pin' is not one of its expected values, the value of
-'int_out_ctrl_shift' is undefined.  With UBSAN enabled, this causes
-Clang to generate undefined behavior, resulting in the following
-warning:
+If the gmac0 is disabled, the precheck for a valid ingress device will
+cause a NULL pointer deref and crash the system. This happens because
+eth->netdev[0] will be NULL but the code will directly try to access
+netdev_ops.
 
-  drivers/iio/imu/bmi160/bmi160_core.o: warning: objtool: bmi160_setup_irq() falls through to next function __cfi_bmi160_core_runtime_resume()
+Instead of just checking for the first net_device, it must be checked if
+any of the mtk_eth net_devices is matching the netdev_ops of the ingress
+device.
 
-Prevent the UB and improve error handling by returning an error if 'pin'
-has an unexpected value.
-
-While at it, simplify the code a bit by moving the 'pin_name' assignment
-to the first switch statement.
-
-Fixes: 895bf81e6bbf ("iio:bmi160: add drdy interrupt support")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 73cfd947dbdb ("net: ethernet: mtk_eth_soc: ppe: prevent ppe update for non-mtk devices")
+Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324-wed-crash-gmac0-disabled-v1-1-3bc388aee565@simonwunderlich.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/bmi160/bmi160_core.c |   15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_ppe_offload.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/imu/bmi160/bmi160_core.c
-+++ b/drivers/iio/imu/bmi160/bmi160_core.c
-@@ -573,12 +573,16 @@ static int bmi160_config_pin(struct regm
- 		int_out_ctrl_shift = BMI160_INT1_OUT_CTRL_SHIFT;
- 		int_latch_mask = BMI160_INT1_LATCH_MASK;
- 		int_map_mask = BMI160_INT1_MAP_DRDY_EN;
-+		pin_name = "INT1";
- 		break;
- 	case BMI160_PIN_INT2:
- 		int_out_ctrl_shift = BMI160_INT2_OUT_CTRL_SHIFT;
- 		int_latch_mask = BMI160_INT2_LATCH_MASK;
- 		int_map_mask = BMI160_INT2_MAP_DRDY_EN;
-+		pin_name = "INT2";
- 		break;
-+	default:
-+		return -EINVAL;
- 	}
- 	int_out_ctrl_mask = BMI160_INT_OUT_CTRL_MASK << int_out_ctrl_shift;
- 
-@@ -612,17 +616,8 @@ static int bmi160_config_pin(struct regm
- 	ret = bmi160_write_conf_reg(regmap, BMI160_REG_INT_MAP,
- 				    int_map_mask, int_map_mask,
- 				    write_usleep);
--	if (ret) {
--		switch (pin) {
--		case BMI160_PIN_INT1:
--			pin_name = "INT1";
--			break;
--		case BMI160_PIN_INT2:
--			pin_name = "INT2";
--			break;
--		}
-+	if (ret)
- 		dev_err(dev, "Failed to configure %s IRQ pin", pin_name);
--	}
- 
- 	return ret;
+--- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -244,6 +244,25 @@ out:
+ 	return 0;
  }
+ 
++static bool
++mtk_flow_is_valid_idev(const struct mtk_eth *eth, const struct net_device *idev)
++{
++	size_t i;
++
++	if (!idev)
++		return false;
++
++	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++) {
++		if (!eth->netdev[i])
++			continue;
++
++		if (idev->netdev_ops == eth->netdev[i]->netdev_ops)
++			return true;
++	}
++
++	return false;
++}
++
+ static int
+ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+ 			 int ppe_index)
+@@ -270,7 +289,7 @@ mtk_flow_offload_replace(struct mtk_eth
+ 		flow_rule_match_meta(rule, &match);
+ 		if (mtk_is_netsys_v2_or_greater(eth)) {
+ 			idev = __dev_get_by_index(&init_net, match.key->ingress_ifindex);
+-			if (idev && idev->netdev_ops == eth->netdev[0]->netdev_ops) {
++			if (mtk_flow_is_valid_idev(eth, idev)) {
+ 				struct mtk_mac *mac = netdev_priv(idev);
+ 
+ 				if (WARN_ON(mac->ppe_idx >= eth->soc->ppe_num))
 
 
 
