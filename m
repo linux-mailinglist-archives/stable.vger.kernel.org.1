@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-234139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEkfNpeb1mnDGggAu9opvQ
-	(envelope-from <stable+bounces-234139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:55 +0200
+	id GDq0A66j1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A683C0544
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F8B3C1C3E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF2873031AC6
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D28F43030B22
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641F83D75AF;
-	Wed,  8 Apr 2026 18:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3143D6CB9;
+	Wed,  8 Apr 2026 18:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dkegdr5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXtsUHOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B303AEF45;
-	Wed,  8 Apr 2026 18:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24773D75AF;
+	Wed,  8 Apr 2026 18:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672085; cv=none; b=rh/4ILrk9X4TBoabAcP4M3YZGFZg80+rCrt+IlAojh6TkewZ8ItD0IPfaia+rqM30XhQTugtYxDpGkPQ2V74fh8XQGsDl/bPkaY8fPBDOlU4zy8uXe64Dy0Kcdv4+8kiCACWFNYqYU7QnQKrHY0cn9KPLmI+NpztwhOs/kJpspk=
+	t=1775673222; cv=none; b=TRs+g02pXNd0MxXesVnhAyDfw4j+0AdDw21W6L5jLdtZ8UX1kwtISmq9gtyAdWBl5HfVUHLjm2AXmJYMLfLtholLLNGRmTlQZJk+DFbhuMa3S01tsc3OaTX3+p8P/93h+0PQYPRtpU4HEC0XOu2iuDCjhS/RaiFiSfjOXZOCP8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672085; c=relaxed/simple;
-	bh=1BrArdDNwDbMhoR/IHM/A/VZIPVO2TWJpjrmb3JRey0=;
+	s=arc-20240116; t=1775673222; c=relaxed/simple;
+	bh=MAbBNjQdhgSb1BqBHCxsdtT8vpGQ5UW2ItH+MPOLH7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOnBuv3Qkzn1ZMfayZiB5v+99GaGYYpnomahR3KCUzIXO25uzULQ8f7arcRBGo/geDMdItWIbVzSDq/LCH69UGPfL+/oeazhVzc0BBemeBy4a4OEvV52eUYHTsf5g1WUobVpWCqL3pQEuJcP3j65/2DZlgGH4JnjMMnG6yEWWyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dkegdr5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1048C19421;
-	Wed,  8 Apr 2026 18:14:44 +0000 (UTC)
+	 MIME-Version; b=dYC7LKjuh/sRSzD9Ri3+so/HRpjmLbZiVoGtrN2xDWeWOHXovyCIQt0zKpS6/7/Gx5O4OoIVFM7gZi4se3MuxJyT0SC5PCzd8tx22KbNztbsD6EqSmMsHvc6vPBQNPpuabq1ZToGDDBgxnOUrIKv5eLANZMnlvS2vc8onLcwKIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXtsUHOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B57BC19421;
+	Wed,  8 Apr 2026 18:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672085;
-	bh=1BrArdDNwDbMhoR/IHM/A/VZIPVO2TWJpjrmb3JRey0=;
+	s=korg; t=1775673222;
+	bh=MAbBNjQdhgSb1BqBHCxsdtT8vpGQ5UW2ItH+MPOLH7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dkegdr5dpdoT63FOa02+mY3jJeMeCiASp8+AKFmmZPRCtpzvAWEIsZVX3dflIB0Qj
-	 6PxhjjQr6AMbBa/4f+F4xlZiM8QYvX7C5yyFXnHgLrWRR6LxsxAFQOAG4Buvam6uoq
-	 CdpUneFfYhaC036haZT32r/vHpnlZ4PuSKsOBb1s=
+	b=VXtsUHOBBWPX43+nAby7LOLJoALRBkd6wW9TYYn6y4Vk+ckCXvQj3ek73f09GSeHt
+	 rHy/9OD0sFmrbiX6o2bmWCIC3YgirS0kXq7Fx/i6rv31hEKZjmC52+kaIOmOIecVc3
+	 D1XC3w1QQ+g4k8YJhTZVOxlLKiOoaGS407A+rIDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Alan Previn Teres Alexis <alan.previn.teres.alexis@intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/312] net/mlx5: lag: Check for LAG device before creating debugfs
+Subject: [PATCH 6.18 115/277] drm/xe/pxp: Clean up termination status on failure
 Date: Wed,  8 Apr 2026 20:01:40 +0200
-Message-ID: <20260408175940.598456234@linuxfoundation.org>
+Message-ID: <20260408175938.167160897@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234139-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234578-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,64 +87,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 68A683C0544
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 72F8B3C1C3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-[ Upstream commit bf16bca6653679d8a514d6c1c5a2c67065033f14 ]
+[ Upstream commit e2628e670bb0923fcdc00828bfcd67b26a7df020 ]
 
-__mlx5_lag_dev_add_mdev() may return 0 (success) even when an error
-occurs that is handled gracefully. Consequently, the initialization
-flow proceeds to call mlx5_ldev_add_debugfs() even when there is no
-valid LAG context.
+If the PXP HW termination fails during PXP start, the normal completion
+code won't be called, so the termination will remain uncomplete. To avoid
+unnecessary waits, mark the termination as completed from the error path.
+Note that we already do this if the termination fails when handling a
+termination irq from the HW.
 
-mlx5_ldev_add_debugfs() blindly created the debugfs directory and
-attributes. This exposed interfaces (like the members file) that rely on
-a valid ldev pointer, leading to potential NULL pointer dereferences if
-accessed when ldev is NULL.
-
-Add a check to verify that mlx5_lag_dev(dev) returns a valid pointer
-before attempting to create the debugfs entries.
-
-Fixes: 7f46a0b7327a ("net/mlx5: Lag, add debugfs to query hardware lag state")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260330194015.53585-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f8caa80154c4 ("drm/xe/pxp: Add PXP queue tracking and session start")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn Teres Alexis <alan.previn.teres.alexis@intel.com>
+Cc: Julia Filipchuk <julia.filipchuk@intel.com>
+Reviewed-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Link: https://patch.msgid.link/20260324153718.3155504-7-daniele.ceraolospurio@intel.com
+(cherry picked from commit 5d9e708d2a69ab1f64a17aec810cd7c70c5b9fab)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/xe/xe_pxp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
-index b8feaf0f5c4c8..a372cb13aa08b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
-@@ -163,8 +163,11 @@ DEFINE_SHOW_ATTRIBUTE(members);
+diff --git a/drivers/gpu/drm/xe/xe_pxp.c b/drivers/gpu/drm/xe/xe_pxp.c
+index bdbdbbf6a6781..ba4d52001b853 100644
+--- a/drivers/gpu/drm/xe/xe_pxp.c
++++ b/drivers/gpu/drm/xe/xe_pxp.c
+@@ -603,6 +603,7 @@ static int pxp_start(struct xe_pxp *pxp, u8 type)
+ 			drm_err(&pxp->xe->drm, "PXP termination failed before start\n");
+ 			mutex_lock(&pxp->mutex);
+ 			pxp->status = XE_PXP_ERROR;
++			complete_all(&pxp->termination);
  
- void mlx5_ldev_add_debugfs(struct mlx5_core_dev *dev)
- {
-+	struct mlx5_lag *ldev = mlx5_lag_dev(dev);
- 	struct dentry *dbg;
- 
-+	if (!ldev)
-+		return;
- 	dbg = debugfs_create_dir("lag", mlx5_debugfs_get_dev_root(dev));
- 	dev->priv.dbg.lag_debugfs = dbg;
- 
+ 			goto out_unlock;
+ 		}
 -- 
 2.53.0
 
