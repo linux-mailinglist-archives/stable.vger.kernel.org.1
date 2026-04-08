@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIhiMUqf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:42 +0200
+	id MMccACyl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458E03C0ED8
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899833C210D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A14430A8DCB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 431B930B00F1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99E43B960C;
-	Wed,  8 Apr 2026 18:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF8E3D9DA9;
+	Wed,  8 Apr 2026 18:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vm7TQCbX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXN2xLfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A34C324B1F;
-	Wed,  8 Apr 2026 18:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600773D9056;
+	Wed,  8 Apr 2026 18:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672501; cv=none; b=PIhHl7L7YCFNVMGJHmx6Sk66lv3S0FmHeW8Mm9gN7XSqeyOeNmvUyrl8xoovJ9JC6JRwWmrlPJ23zsjVYvq9K4IQ4136fdRTauvTMitJzasMH0WKHMBncQudYHl8N8XFRnh4M7fQl0e1DmAs6m0JVJ91XE2m/mdlGLRi73RLUws=
+	t=1775674438; cv=none; b=F3w6nHF2c5lGKohux0V6bXkE7DafqA2Xrh0SJlAWLKpbQyZF87fswVCw34JjYhNGGvQmrhrleK7XyM6iqBG+KaLIiDu5NPxhMUt2Kj+KoYkDlhedW89XkOqooLNM9gOgHs9aH3bxd8elipXXP45jTV06d/2upWOZCATR7O71CLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672501; c=relaxed/simple;
-	bh=923NnilWvOK9vPTgriWgAp6f21SNseWFL3zTHrpPgzE=;
+	s=arc-20240116; t=1775674438; c=relaxed/simple;
+	bh=6pNviJzoNI5J8A/17vy0x5TTcrUHU3/j1Zelo2bKa/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRxOHCQQn7dwHi7xWarh1OOAjYjkDNJfIUBAHB2LFI0e2sVhcIbhMCv9wzbO6Fwj1tMYKdacrgzF+HPFxW7cfx4WLGXyRfH0wiXWRS8kzjDXDwJwJg7UVE6L4Gid2mh9C1c+eIfjVIeYLNnBDC3/B/c1fx4QxVLAmwQQqtM8lUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vm7TQCbX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22524C19421;
-	Wed,  8 Apr 2026 18:21:40 +0000 (UTC)
+	 MIME-Version; b=DP/5kN08w+K1+wyv7apY8kLRJMVQ4/COWH6ixoovz+Pr98nvqbPQIbT/Ue3aFxFxGJVIghPTuXuJfaMWH0R3iEV7rS5oir5j8kd6NzNbxXRD0Ey2S/W3hxgO78khf7R2Ne5vKBM5ZjEaBroGFPZRcLRuIAaHTb67zGBufqSNh9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXN2xLfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B03C19421;
+	Wed,  8 Apr 2026 18:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672501;
-	bh=923NnilWvOK9vPTgriWgAp6f21SNseWFL3zTHrpPgzE=;
+	s=korg; t=1775674438;
+	bh=6pNviJzoNI5J8A/17vy0x5TTcrUHU3/j1Zelo2bKa/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vm7TQCbXifR2/xShPBUbViEbYA/icaIm3DhLCAha09jWWtODadKsWsS3VTQELcB+f
-	 WP1Sgg4FQ2ozpuXoYc5cdv4Wwe2gkfl1RBvPW/dkbWoY6bmCp6bYUlk6selgGqEwxV
-	 X1QUEhDhDa2Nn99gYd6Rq1LBsqUdR6OHgEYRhmGE=
+	b=fXN2xLfL0sVCq2Hdv/V7jE6NT0F9lE4lLvwbZxxM50YwPt3WCa9QoR9F9+IuScNeh
+	 fkoVv0aQtP7F3gkYLonDXPOrrHoWnpasLJyQnOQ7XTBrpSKCu93BKGX6bVDueCXGsT
+	 XU68hUIyyEtiUMzSxD1n7jOFO5ln9iZahSKwjxAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Cen Zhang <zzzccc427@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/160] i2c: tegra: Dont mark devices with pins as IRQ safe
-Date: Wed,  8 Apr 2026 20:01:35 +0200
-Message-ID: <20260408175913.497200105@linuxfoundation.org>
+Subject: [PATCH 6.19 096/311] Bluetooth: SCO: fix race conditions in sco_sock_connect()
+Date: Wed,  8 Apr 2026 20:01:36 +0200
+Message-ID: <20260408175942.999022721@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +64,178 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235049-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234300-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,armlinux.org.uk:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 458E03C0ED8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 899833C210D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Cen Zhang <zzzccc427@gmail.com>
 
-[ Upstream commit ec69c9e88315c4be70c283f18c2ff130da6320b5 ]
+[ Upstream commit 8a5b0135d4a5d9683203a3d9a12a711ccec5936b ]
 
-I2C devices with associated pinctrl states (DPAUX I2C controllers)
-will change pinctrl state during runtime PM. This requires taking
-a mutex, so these devices cannot be marked as IRQ safe.
+sco_sock_connect() checks sk_state and sk_type without holding
+the socket lock. Two concurrent connect() syscalls on the same
+socket can both pass the check and enter sco_connect(), leading
+to use-after-free.
 
-Add PINCTRL as dependency to avoid build errors.
+The buggy scenario involves three participants and was confirmed
+with additional logging instrumentation:
 
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Reported-by: Russell King <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/all/E1vsNBv-00000009nfA-27ZK@rmk-PC.armlinux.org.uk/
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+  Thread A (connect):    HCI disconnect:      Thread B (connect):
+
+  sco_sock_connect(sk)                        sco_sock_connect(sk)
+  sk_state==BT_OPEN                           sk_state==BT_OPEN
+  (pass, no lock)                             (pass, no lock)
+  sco_connect(sk):                            sco_connect(sk):
+    hci_dev_lock                                hci_dev_lock
+    hci_connect_sco                               <- blocked
+      -> hcon1
+    sco_conn_add->conn1
+    lock_sock(sk)
+    sco_chan_add:
+      conn1->sk = sk
+      sk->conn = conn1
+    sk_state=BT_CONNECT
+    release_sock
+    hci_dev_unlock
+                           hci_dev_lock
+                           sco_conn_del:
+                             lock_sock(sk)
+                             sco_chan_del:
+                               sk->conn=NULL
+                               conn1->sk=NULL
+                               sk_state=
+                                 BT_CLOSED
+                               SOCK_ZAPPED
+                             release_sock
+                           hci_dev_unlock
+                                                  (unblocked)
+                                                  hci_connect_sco
+                                                    -> hcon2
+                                                  sco_conn_add
+                                                    -> conn2
+                                                  lock_sock(sk)
+                                                  sco_chan_add:
+                                                    sk->conn=conn2
+                                                  sk_state=
+                                                    BT_CONNECT
+                                                  // zombie sk!
+                                                  release_sock
+                                                  hci_dev_unlock
+
+Thread B revives a BT_CLOSED + SOCK_ZAPPED socket back to
+BT_CONNECT. Subsequent cleanup triggers double sock_put() and
+use-after-free. Meanwhile conn1 is leaked as it was orphaned
+when sco_conn_del() cleared the association.
+
+Fix this by:
+- Moving lock_sock() before the sk_state/sk_type checks in
+  sco_sock_connect() to serialize concurrent connect attempts
+- Fixing the sk_type != SOCK_SEQPACKET check to actually
+  return the error instead of just assigning it
+- Adding a state re-check in sco_connect() after lock_sock()
+  to catch state changes during the window between the locks
+- Adding sco_pi(sk)->conn check in sco_chan_add() to prevent
+  double-attach of a socket to multiple connections
+- Adding hci_conn_drop() on sco_chan_add failure to prevent
+  HCI connection leaks
+
+Fixes: 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm")
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/Kconfig     | 2 ++
- drivers/i2c/busses/i2c-tegra.c | 5 ++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/sco.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 8d4270664ebd1..79ab924a4b2b9 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -1139,6 +1139,8 @@ config I2C_TEGRA
- 	tristate "NVIDIA Tegra internal I2C controller"
- 	depends on ARCH_TEGRA || (COMPILE_TEST && (ARC || ARM || ARM64 || M68K || RISCV || SUPERH || SPARC))
- 	# COMPILE_TEST needs architectures with readsX()/writesX() primitives
-+	depends on PINCTRL
-+	# ARCH_TEGRA implies PINCTRL, but the COMPILE_TEST side doesn't.
- 	help
- 	  If you say yes to this option, support will be included for the
- 	  I2C controller embedded in NVIDIA Tegra SOCs
-diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
-index 5766231b13cd1..a882f0f65d82a 100644
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -1788,8 +1788,11 @@ static int tegra_i2c_probe(struct platform_device *pdev)
- 	 *
- 	 * VI I2C device shouldn't be marked as IRQ-safe because VI I2C won't
- 	 * be used for atomic transfers. ACPI device is not IRQ safe also.
-+	 *
-+	 * Devices with pinctrl states cannot be marked IRQ-safe as the pinctrl
-+	 * state transitions during runtime PM require mutexes.
- 	 */
--	if (!IS_VI(i2c_dev) && !has_acpi_companion(i2c_dev->dev))
-+	if (!IS_VI(i2c_dev) && !has_acpi_companion(i2c_dev->dev) && !i2c_dev->dev->pins)
- 		pm_runtime_irq_safe(i2c_dev->dev);
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index 6741b067d28b5..a446844354a18 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -298,7 +298,7 @@ static int sco_chan_add(struct sco_conn *conn, struct sock *sk,
+ 	int err = 0;
  
- 	pm_runtime_enable(i2c_dev->dev);
+ 	sco_conn_lock(conn);
+-	if (conn->sk)
++	if (conn->sk || sco_pi(sk)->conn)
+ 		err = -EBUSY;
+ 	else
+ 		__sco_chan_add(conn, sk, parent);
+@@ -353,9 +353,20 @@ static int sco_connect(struct sock *sk)
+ 
+ 	lock_sock(sk);
+ 
++	/* Recheck state after reacquiring the socket lock, as another
++	 * thread may have changed it (e.g., closed the socket).
++	 */
++	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
++		release_sock(sk);
++		hci_conn_drop(hcon);
++		err = -EBADFD;
++		goto unlock;
++	}
++
+ 	err = sco_chan_add(conn, sk, NULL);
+ 	if (err) {
+ 		release_sock(sk);
++		hci_conn_drop(hcon);
+ 		goto unlock;
+ 	}
+ 
+@@ -656,13 +667,18 @@ static int sco_sock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+ 	    addr->sa_family != AF_BLUETOOTH)
+ 		return -EINVAL;
+ 
+-	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND)
++	lock_sock(sk);
++
++	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
++		release_sock(sk);
+ 		return -EBADFD;
++	}
+ 
+-	if (sk->sk_type != SOCK_SEQPACKET)
+-		err = -EINVAL;
++	if (sk->sk_type != SOCK_SEQPACKET) {
++		release_sock(sk);
++		return -EINVAL;
++	}
+ 
+-	lock_sock(sk);
+ 	/* Set destination address and psm */
+ 	bacpy(&sco_pi(sk)->dst, &sa->sco_bdaddr);
+ 	release_sock(sk);
 -- 
 2.53.0
 
