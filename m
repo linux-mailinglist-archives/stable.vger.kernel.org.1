@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235078-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJvDKP6b1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:38 +0200
+	id eMCyFPWk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235078-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E8E3C0648
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9B73C2069
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 906123045A94
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 830823031923
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34614385513;
-	Wed,  8 Apr 2026 18:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491213D9054;
+	Wed,  8 Apr 2026 18:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQwGpRgr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwVuYK0m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5B62727F3;
-	Wed,  8 Apr 2026 18:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE453D9048;
+	Wed,  8 Apr 2026 18:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672147; cv=none; b=DR5XKlmLwfK30FNVOr2o5isv4EnvYhhv/Zz4Hog1A8P3AQq7XKO7hu0elCup00sBJEKRvOtX/BIWuV6rWs/6m/+M7i9bBXxAqpFl34cjxoxjmC+yqfK5JYoHsLw3BdX3D0a2iqmy47NSUOaSvrNdk5EPQczJbJxDwlWzFMJoSd4=
+	t=1775674513; cv=none; b=G6NBy/9cHX2h82qYkktAAUfN7dUbZP89njZMhqFYtRS9esHJkTKmw24Ma5RQDQndhZzrU7E/LGYuP+unG6xdPe1gDe/FsWsXcn3UWw28kLB8ILwTYRLUWmUywCFbA5eNR/76uBg0dB4PB+hZ8hZKyxpiLMJZegzh8RRUFQd7rg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672147; c=relaxed/simple;
-	bh=BCqdpbugfM1pub95pA/cjWDf4PurV30tgWkPGQrZKW8=;
+	s=arc-20240116; t=1775674513; c=relaxed/simple;
+	bh=uwWea+/Ve7+Jowm5eI4IKfUr0AXioNP2pROrDhBwibQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9NiAnOglthKInS5HzG9Bj8c45rg40eZC64OVcu/scJN5Qoe8S4gfwlgFgcrV65aXn+tf/qHXW02r9gzwHZSsdB5bgeKjcM5Em4xJlCdmKECKAWaq5UQWT/lrwS0sZwVPMJaIXDcfTp2WVcoiFhMtN2iOMAMzJwqeliM3u1f/xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQwGpRgr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8286BC19421;
-	Wed,  8 Apr 2026 18:15:46 +0000 (UTC)
+	 MIME-Version; b=MzkmpIuphTGm/3UHS+du//z/BM9kclYG42ILAiQ5FAKARUmqXk/jE/2PKyjlPiKpyva+Fq7/8vGysitgCUW1nucPZ6h9nJPzZLjKsO707u0H3JNdOFXIIVaJ8dw/SxvpsDSSoKSI4wuzoZxOLiVqbFoF4aMYKWHKbkRJSy+wOfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwVuYK0m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64789C19425;
+	Wed,  8 Apr 2026 18:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672146;
-	bh=BCqdpbugfM1pub95pA/cjWDf4PurV30tgWkPGQrZKW8=;
+	s=korg; t=1775674512;
+	bh=uwWea+/Ve7+Jowm5eI4IKfUr0AXioNP2pROrDhBwibQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQwGpRgr0sOKOxFn7mTyTt4gW4CPyKFcclnIQn6Sz0U5D3k+bBG04sYzIjOlTGvwc
-	 G/u2UI+Qffil3Oy1wTSAxwbkcOXpicyV3JWta+PaUZDLcNP+/CvMyKR2g+6cQ5PH1N
-	 UewJqIBnyIWx55ysXUe8eFGhShEJxB9hacI4Fagk=
+	b=pwVuYK0mjnUHS9snVXI4uNz3pbxULQQ/RzV/JMP2y63zJBp5M575Vfaq7V95ecC1E
+	 +QRBBcoxBDvT3UxV7CIfsZN0yZS3mVoJ4reZ0wuQsGnjBi7BWmWai94NlTrj1lbL7+
+	 Xf7riAa2UMgNzZWGh/GutpxzBC5Zwny7Wvj92Rkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 208/312] mips: mm: Allocate tlb_vpn array atomically
-Date: Wed,  8 Apr 2026 20:02:05 +0200
-Message-ID: <20260408175941.528870207@linuxfoundation.org>
+	STAR Labs SG <info@starlabs.sg>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 126/311] bpf: Fix incorrect pruning due to atomic fetch precision tracking
+Date: Wed,  8 Apr 2026 20:02:06 +0200
+Message-ID: <20260408175944.121274031@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +69,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235078-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234163-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nokia.com:email]
-X-Rspamd-Queue-Id: 01E8E3C0648
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iogearbox.net:email,starlabs.sg:email]
+X-Rspamd-Queue-Id: 5F9B73C2069
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 01cc50ea5167bb14117257ec084637abe9e5f691 upstream.
+[ Upstream commit 179ee84a89114b854ac2dd1d293633a7f6c8dac1 ]
 
-Found by DEBUG_ATOMIC_SLEEP:
+When backtrack_insn encounters a BPF_STX instruction with BPF_ATOMIC
+and BPF_FETCH, the src register (or r0 for BPF_CMPXCHG) also acts as
+a destination, thus receiving the old value from the memory location.
 
-  BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-  preempt_count: 1, expected: 0
-  RCU nest depth: 0, expected: 0
-  no locks held by swapper/1/0.
-  irq event stamp: 0
-  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-  hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
-  softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
-  Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
-          800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
-          ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
-          784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
-          0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
-          ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
-          ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
-          fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
-          ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
-          0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
-          ...
-  Call Trace:
-  [<ffffffff80129fd0>] show_stack+0x60/0x158
-  [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
-  [<ffffffff8018d3c8>] __might_resched+0x268/0x288
-  [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
-  [<ffffffff80302788>] __kmalloc+0x58/0xd0
-  [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
-  [<ffffffff80143e8c>] tlb_init+0x7c/0x110
-  [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
-  [<ffffffff80133258>] start_secondary+0x28/0x128
+The current backtracking logic does not account for this. It treats
+atomic fetch operations the same as regular stores where the src
+register is only an input. This leads the backtrack_insn to fail to
+propagate precision to the stack location, which is then not marked
+as precise!
 
-Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Later, the verifier's path pruning can incorrectly consider two states
+equivalent when they differ in terms of stack state. Meaning, two
+branches can be treated as equivalent and thus get pruned when they
+should not be seen as such.
+
+Fix it as follows: Extend the BPF_LDX handling in backtrack_insn to
+also cover atomic fetch operations via is_atomic_fetch_insn() helper.
+When the fetch dst register is being tracked for precision, clear it,
+and propagate precision over to the stack slot. For non-stack memory,
+the precision walk stops at the atomic instruction, same as regular
+BPF_LDX. This covers all fetch variants.
+
+Before:
+
+  0: (b7) r1 = 8                        ; R1=8
+  1: (7b) *(u64 *)(r10 -8) = r1         ; R1=8 R10=fp0 fp-8=8
+  2: (b7) r2 = 0                        ; R2=0
+  3: (db) r2 = atomic64_fetch_add((u64 *)(r10 -8), r2)          ; R2=8 R10=fp0 fp-8=mmmmmmmm
+  4: (bf) r3 = r10                      ; R3=fp0 R10=fp0
+  5: (0f) r3 += r2
+  mark_precise: frame0: last_idx 5 first_idx 0 subseq_idx -1
+  mark_precise: frame0: regs=r2 stack= before 4: (bf) r3 = r10
+  mark_precise: frame0: regs=r2 stack= before 3: (db) r2 = atomic64_fetch_add((u64 *)(r10 -8), r2)
+  mark_precise: frame0: regs=r2 stack= before 2: (b7) r2 = 0
+  6: R2=8 R3=fp8
+  6: (b7) r0 = 0                        ; R0=0
+  7: (95) exit
+
+After:
+
+  0: (b7) r1 = 8                        ; R1=8
+  1: (7b) *(u64 *)(r10 -8) = r1         ; R1=8 R10=fp0 fp-8=8
+  2: (b7) r2 = 0                        ; R2=0
+  3: (db) r2 = atomic64_fetch_add((u64 *)(r10 -8), r2)          ; R2=8 R10=fp0 fp-8=mmmmmmmm
+  4: (bf) r3 = r10                      ; R3=fp0 R10=fp0
+  5: (0f) r3 += r2
+  mark_precise: frame0: last_idx 5 first_idx 0 subseq_idx -1
+  mark_precise: frame0: regs=r2 stack= before 4: (bf) r3 = r10
+  mark_precise: frame0: regs=r2 stack= before 3: (db) r2 = atomic64_fetch_add((u64 *)(r10 -8), r2)
+  mark_precise: frame0: regs= stack=-8 before 2: (b7) r2 = 0
+  mark_precise: frame0: regs= stack=-8 before 1: (7b) *(u64 *)(r10 -8) = r1
+  mark_precise: frame0: regs=r1 stack= before 0: (b7) r1 = 8
+  6: R2=8 R3=fp8
+  6: (b7) r0 = 0                        ; R0=0
+  7: (95) exit
+
+Fixes: 5ffa25502b5a ("bpf: Add instructions for atomic_[cmp]xchg")
+Fixes: 5ca419f2864a ("bpf: Add BPF_FETCH field / create atomic_fetch_add instruction")
+Reported-by: STAR Labs SG <info@starlabs.sg>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20260331222020.401848-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlb-r4k.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -528,7 +528,7 @@ static void __ref r4k_tlb_uniquify(void)
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 0aea870b87a6c..d1394e16d108c 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -608,6 +608,13 @@ static bool is_atomic_load_insn(const struct bpf_insn *insn)
+ 	       insn->imm == BPF_LOAD_ACQ;
+ }
  
- 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
- 	tlb_vpns = (use_slab ?
--		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
- 		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
- 	if (WARN_ON(!tlb_vpns))
- 		return; /* Pray local_flush_tlb_all() is good enough. */
++static bool is_atomic_fetch_insn(const struct bpf_insn *insn)
++{
++	return BPF_CLASS(insn->code) == BPF_STX &&
++	       BPF_MODE(insn->code) == BPF_ATOMIC &&
++	       (insn->imm & BPF_FETCH);
++}
++
+ static int __get_spi(s32 off)
+ {
+ 	return (-off - 1) / BPF_REG_SIZE;
+@@ -4356,10 +4363,24 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
+ 			   * dreg still needs precision before this insn
+ 			   */
+ 		}
+-	} else if (class == BPF_LDX || is_atomic_load_insn(insn)) {
+-		if (!bt_is_reg_set(bt, dreg))
++	} else if (class == BPF_LDX ||
++		   is_atomic_load_insn(insn) ||
++		   is_atomic_fetch_insn(insn)) {
++		u32 load_reg = dreg;
++
++		/*
++		 * Atomic fetch operation writes the old value into
++		 * a register (sreg or r0) and if it was tracked for
++		 * precision, propagate to the stack slot like we do
++		 * in regular ldx.
++		 */
++		if (is_atomic_fetch_insn(insn))
++			load_reg = insn->imm == BPF_CMPXCHG ?
++				   BPF_REG_0 : sreg;
++
++		if (!bt_is_reg_set(bt, load_reg))
+ 			return 0;
+-		bt_clear_reg(bt, dreg);
++		bt_clear_reg(bt, load_reg);
+ 
+ 		/* scalars can only be spilled into stack w/o losing precision.
+ 		 * Load from any other memory can be zero extended.
+-- 
+2.53.0
+
 
 
 
