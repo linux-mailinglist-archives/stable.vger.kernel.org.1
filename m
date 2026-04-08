@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOe/EJOj1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:59 +0200
+	id 8AKZD/ab1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CDD3C1C0B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4483C0625
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C3F0305C970
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69298307AAC4
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0454236166F;
-	Wed,  8 Apr 2026 18:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3311F3ACA41;
+	Wed,  8 Apr 2026 18:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KG7KRJnu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqD1a8CW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF35328B75;
-	Wed,  8 Apr 2026 18:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79791A683C;
+	Wed,  8 Apr 2026 18:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673199; cv=none; b=IIY+nxWMC+wh0BQTRA096OxrHVs9f+S6hni+a3fqpDYiOa1B3QcIgxuTDWKTqmYY3LPZEGc5NVz6QcWbNY4l+T+FilntSgvOUKIZdHClHvBdb+GEWqMXm4f27BQ70eW+V4yucUOjJkIFhpzFU+p1rW7UDpEa7S60RpOeeOSw/aY=
+	t=1775672141; cv=none; b=ub3XUB6pWnSqcbsvd9q9OAWquxZkM+ubVEfD9dB1O/nMybpIwklzRZcS6yygqUw+AE01alt2Lyj8lIUxTxkC9muUR52cEaYpHywAOzUdE0SJ8MSFovAn6m9rvROxCRqhDj0L2xdYWcwfiE0ioA9sagyIubRALKVuia1tYwNfnQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673199; c=relaxed/simple;
-	bh=3hH7qNUyWXDMBE9WX/U4g8cI4J1tiz/N93ojkrIhxj4=;
+	s=arc-20240116; t=1775672141; c=relaxed/simple;
+	bh=I8r4XUnjGFgLNuTVLLZlB3VAYa53sE3ttTIFXAJQppQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PjxOzuqhWv2QeGcISz7zeUqwmbsgcsE3ZgiSZVUzO9H2PlnW0ggcYVIoc+9PehNfR4X2mS4uBl4IvJXw2Uua43g0/Po0sJgvEejWy/A/TnbCTjpz6NBx2567iIfKaY8FpUTG00W84xmzRrg7QiZtEYmpA1pjIH3+DCeEScCwtng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KG7KRJnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A6EC19421;
-	Wed,  8 Apr 2026 18:33:19 +0000 (UTC)
+	 MIME-Version; b=FKXy1GUPnpa6BeKhfHB22FdocRgY9xGZwrksKJnltXvHwxIh1msY30GIbhB/63ojzmE1Fq1fVupOJR3+3mHcekj149EwzoOUT48Z83eS3Y7na9BIB0zT2m7lYitq1nUFvwhrIYzktKIco6WJYatDKWu+MILkzSm42x2U47FjWq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqD1a8CW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657A6C19421;
+	Wed,  8 Apr 2026 18:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673199;
-	bh=3hH7qNUyWXDMBE9WX/U4g8cI4J1tiz/N93ojkrIhxj4=;
+	s=korg; t=1775672141;
+	bh=I8r4XUnjGFgLNuTVLLZlB3VAYa53sE3ttTIFXAJQppQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KG7KRJnuTrbtnA9b5OeX3sJ35IkNxb4+blSgOuwaNOQ3rfjCspfjDA/9okaNODuMS
-	 woRGKNnEA/fDJW9/sm2kDKI1G/R/Tdfin8qwahSLIEv+six8fAA5HRF00yXXPJbHSc
-	 dx2TQSy8n7Wc2LqwD18xx7Pj0UIMK3NxpHoMod20=
+	b=PqD1a8CWu3lNxnEX8JaIZ+NDb48Nt6uRSdvK6ak6O/enj/I6KuehUoT6Z0IGW5Hwr
+	 AkB0e4OFWET+5jgd5XjGl3EML2wQUeBL7mjsAUVSCiOqsHctY8HpYxyUAwajiSqAEp
+	 GVWiozOK6wkTeZVLJTY5zhCEEqoIMSzL+YR8n7kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Karsten Hohmeier <linux@hohmatik.de>
-Subject: [PATCH 6.18 138/277] ALSA: ctxfi: Fix missing SPDIFI1 index handling
+	kernel test robot <lkp@intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 206/312] MIPS: Fix the GCC version check for `__multi3 workaround
 Date: Wed,  8 Apr 2026 20:02:03 +0200
-Message-ID: <20260408175939.029135148@linuxfoundation.org>
+Message-ID: <20260408175941.454447945@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234569-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234161-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,47 +87,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,hohmatik.de:email]
-X-Rspamd-Queue-Id: B3CDD3C1C0B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,orcam.me.uk:email,gnu.org:url,franken.de:email]
+X-Rspamd-Queue-Id: 9E4483C0625
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit b045ab3dff97edae6d538eeff900a34c098761f8 upstream.
+commit ec8bf18814915460d9c617b556bf024efef26613 upstream.
 
-SPDIF1 DAIO type isn't properly handled in daio_device_index() for
-hw20k2, and it returned -EINVAL, which ended up with the out-of-bounds
-array access.  Follow the hw20k1 pattern and return the proper index
-for this type, too.
+It was only GCC 10 that fixed a MIPS64r6 code generation issue with a
+`__multi3' libcall inefficiently produced to perform 64-bit widening
+multiplication while suitable machine instructions exist to do such a
+calculation.  The fix went in with GCC commit 48b2123f6336 ("re PR
+target/82981 (unnecessary __multi3 call for mips64r6 linux kernel)").
 
-Reported-and-tested-by: Karsten Hohmeier <linux@hohmatik.de>
-Closes: https://lore.kernel.org/20260315155004.15633-1-linux@hohmatik.de
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260329091240.420194-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Adjust our code accordingly, removing build failures such as:
+
+mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
+div64.c:(.text+0x84): undefined reference to `__multi3'
+
+with the GCC versions affected.
+
+Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v4.15+
+Reviewed-by: David Laight <david.laight.linux@gmail.com.
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/ctxfi/ctdaio.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/lib/multi3.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/pci/ctxfi/ctdaio.c
-+++ b/sound/pci/ctxfi/ctdaio.c
-@@ -119,6 +119,7 @@ static unsigned int daio_device_index(en
- 		switch (type) {
- 		case SPDIFOO:	return 0;
- 		case SPDIFIO:	return 0;
-+		case SPDIFI1:	return 1;
- 		case LINEO1:	return 4;
- 		case LINEO2:	return 7;
- 		case LINEO3:	return 5;
+--- a/arch/mips/lib/multi3.c
++++ b/arch/mips/lib/multi3.c
+@@ -4,12 +4,12 @@
+ #include "libgcc.h"
+ 
+ /*
+- * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
++ * GCC 9 & older can suboptimally generate __multi3 calls for mips64r6, so for
+  * that specific case only we implement that intrinsic here.
+  *
+  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
+  */
+-#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
++#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 10)
+ 
+ /* multiply 64-bit values, low 64-bits returned */
+ static inline long long notrace dmulu(long long a, long long b)
+@@ -51,4 +51,4 @@ ti_type notrace __multi3(ti_type a, ti_t
+ }
+ EXPORT_SYMBOL(__multi3);
+ 
+-#endif /* 64BIT && CPU_MIPSR6 && GCC7 */
++#endif /* 64BIT && CPU_MIPSR6 && GCC9 */
 
 
 
