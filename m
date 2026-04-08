@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-234514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFgaJwmj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:41 +0200
+	id eKjfIjCb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2059C3C19E9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2315E3C043E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BACBB312C116
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E078B3012CC4
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33263B19A3;
-	Wed,  8 Apr 2026 18:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0268E3D891A;
+	Wed,  8 Apr 2026 18:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMrhbrqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcsL5gdy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FCF3D8906;
-	Wed,  8 Apr 2026 18:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E901E5724;
+	Wed,  8 Apr 2026 18:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673057; cv=none; b=sac6lwHsGO8NWZx7fwp8PVZuRZnNGlAOjAJkSPZAcP0cdBDF7qeCEhAd11LFsucGS4IDpxEkXUtj3stCbN4rz+ZAJ6jeJ1TzQUi+C1HiWtL34GfP+oRdtMa5woDgcFLksAt3aKpmkruhQWJQe4hGL4DNxCqyDaXxyOYaP10sDaE=
+	t=1775672010; cv=none; b=G6aRKH0DKBrfmm3Xb/61FM3vygmU5DxuNEzOWFtUHxSFEXgdYY0FQ4nreUaYH1kqSOKbTFIuMzZZsYOVb9b8BuLj/d3pXcNzBDi4l5qAnGH2Wipu0iGDJi2y2w6LVR0YdFGTU6zxM90yjzDDohgM1z+xoGXBuK/dsmDKdbPWB5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673057; c=relaxed/simple;
-	bh=h93cChpdlMx0f9W4WkVT0kmF0DEMTRMcReqJQE0wQoE=;
+	s=arc-20240116; t=1775672010; c=relaxed/simple;
+	bh=VTv2Cfb2Hv1yVJ2trHWrw+gDE1WOjR6EMh6YnXxSFnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXg6RVEw3QcfvxHGf+jg6tIsBf3SzuKX1lL7odIqK+ZfTY8RWO+eGQhLps39bjxM2OQmdWQS4r3Rq/KgK04YZuNgnc0Pw2bLo915Lica5IkPXHAgT82OGi/W11iWYn2ASwFL7NQgHPt3FtLKVxa2P0x1B+HidEUBeTr9vYXJWuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMrhbrqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3289FC19421;
-	Wed,  8 Apr 2026 18:30:57 +0000 (UTC)
+	 MIME-Version; b=M0ETSlD1a4uyPgW7PFvoNwUkjvZT4ZH8GuUR9AOrJs2AXC86MEdOGYsJ5GLZeSukuY3AI+2Cbeq4mur9sPEpnQ3CejxZC7jQNbaCU0KAztfgt1giaffskJ/ykcEqDnc3/6qm3OzmntTqoBmG6rMyv5k2bYXGZZa61vmAybnHB4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcsL5gdy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7BEC19421;
+	Wed,  8 Apr 2026 18:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673057;
-	bh=h93cChpdlMx0f9W4WkVT0kmF0DEMTRMcReqJQE0wQoE=;
+	s=korg; t=1775672010;
+	bh=VTv2Cfb2Hv1yVJ2trHWrw+gDE1WOjR6EMh6YnXxSFnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MMrhbrqSGMf2GK94nl/Pl6lexOlV8VgQFiKJ0sPuvbcH3NArAjvpN90XncNBK8Gtm
-	 Rv62miwk/QVJ7QFiTFaC7Dah3nyc930CQDhwGKQ7SNIu6dUAet8xU1Iqukf/S3/SoT
-	 hhFz6y9BoShqNCx3pJmbnnWarkKsFCPJlxaKsAOc=
+	b=KcsL5gdy1P7A7U4mNnUWT/TBxPh33F4+z8liMJ0orgdLB5RhiFGP5klPJgIjhu+f5
+	 CMxSDi23kyHiyiiUjNKjD9S3kZEoeZ0UXV0RUC45g3ldHg1bb2GpyvBa/yqRgar3gx
+	 1LvDZ2YTvucKuU+QBUjXM6LSq23UlW43LTfz1J3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Allison Henderson <achender@kernel.org>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 085/277] rds: ib: reject FRMR registration before IB connection is established
+Subject: [PATCH 6.1 153/312] bridge: br_nd_send: linearize skb before parsing ND options
 Date: Wed,  8 Apr 2026 20:01:10 +0200
-Message-ID: <20260408175937.037803583@linuxfoundation.org>
+Message-ID: <20260408175939.479777763@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,108 +72,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234514-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234110-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2059C3C19E9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2315E3C043E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
+[ Upstream commit a01aee7cafc575bb82f5529e8734e7052f9b16ea ]
 
-rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
-and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
-fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
-i_cm_id = NULL because the connection worker has not yet called
-rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
-RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
-the control message before any connection establishment, allowing
-rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
-kernel.
+br_nd_send() parses neighbour discovery options from ns->opt[] and
+assumes that these options are in the linear part of request.
 
-The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
-commit 9e630bcb7701), which does not catch this case since ic is allocated
-early and is always non-NULL once the connection object exists.
+Its callers only guarantee that the ICMPv6 header and target address
+are available, so the option area can still be non-linear. Parsing
+ns->opt[] in that case can access data past the linear buffer.
 
- KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
- RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
- Call Trace:
-  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
-  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
-  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
-  rds_ib_get_mr (net/rds/ib_rdma.c:615)
-  __rds_rdma_map (net/rds/rdma.c:295)
-  rds_cmsg_rdma_map (net/rds/rdma.c:860)
-  rds_sendmsg (net/rds/send.c:1363)
-  ____sys_sendmsg
-  do_syscall_64
+Linearize request before option parsing and derive ns from the linear
+network header.
 
-Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
-non-NULL before proceeding with FRMR registration, mirroring the guard
-already present in rds_ib_post_inv(). Return -ENODEV when the connection
-is not ready, which the existing error handling in rds_cmsg_send() converts
-to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
-start the connection worker.
-
-Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260326034441.2037420-2-n05ec@lzu.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/ib_rdma.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bridge/br_arp_nd_proxy.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
-index 6585164c70595..dd08ccc4246da 100644
---- a/net/rds/ib_rdma.c
-+++ b/net/rds/ib_rdma.c
-@@ -604,8 +604,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
- 		return ibmr;
- 	}
+diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
+index b45c00c01dea1..2852ac69101c0 100644
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -248,12 +248,12 @@ struct nd_msg *br_is_nd_neigh_msg(struct sk_buff *skb, struct nd_msg *msg)
  
--	if (conn)
-+	if (conn) {
- 		ic = conn->c_transport_data;
-+		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
-+			ret = -ENODEV;
-+			goto out;
-+		}
-+	}
+ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 		       struct sk_buff *request, struct neighbour *n,
+-		       __be16 vlan_proto, u16 vlan_tci, struct nd_msg *ns)
++		       __be16 vlan_proto, u16 vlan_tci)
+ {
+ 	struct net_device *dev = request->dev;
+ 	struct net_bridge_vlan_group *vg;
++	struct nd_msg *na, *ns;
+ 	struct sk_buff *reply;
+-	struct nd_msg *na;
+ 	struct ipv6hdr *pip6;
+ 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
+ 	int ns_olen;
+@@ -261,7 +261,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	u8 *daddr;
+ 	u16 pvid;
  
- 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
- 		ret = -ENODEV;
+-	if (!dev)
++	if (!dev || skb_linearize(request))
+ 		return;
+ 
+ 	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
+@@ -278,6 +278,8 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	skb_set_mac_header(reply, 0);
+ 
+ 	daddr = eth_hdr(request)->h_source;
++	ns = (struct nd_msg *)(skb_network_header(request) +
++			       sizeof(struct ipv6hdr));
+ 
+ 	/* Do we need option processing ? */
+ 	ns_olen = request->len - (skb_network_offset(request) +
+@@ -465,9 +467,9 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
+ 				if (vid != 0)
+ 					br_nd_send(br, p, skb, n,
+ 						   skb->vlan_proto,
+-						   skb_vlan_tag_get(skb), msg);
++						   skb_vlan_tag_get(skb));
+ 				else
+-					br_nd_send(br, p, skb, n, 0, 0, msg);
++					br_nd_send(br, p, skb, n, 0, 0);
+ 				replied = true;
+ 			}
+ 
 -- 
 2.53.0
 
