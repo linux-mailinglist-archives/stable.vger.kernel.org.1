@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-235238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDtHA26m1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:10 +0200
+	id aC/0BWaj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2493C245A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2963C1B6A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9BDF3021D2F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:02:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1296F3003830
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8353AD52A;
-	Wed,  8 Apr 2026 19:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9039534AB06;
+	Wed,  8 Apr 2026 18:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Po41f+kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbVH8yW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA1232692B;
-	Wed,  8 Apr 2026 19:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529B92727F3;
+	Wed,  8 Apr 2026 18:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674925; cv=none; b=VbRtXIJ5rbZIWAQYAGYuqRBrisXogooSUZAcQ6QYAqq9xVMzQh6iaIoxjb0Y1QCwQ4lnXg/nzbN02TiasgVVoCQrDxg4Y9m80gy2QGdXsT8tz8wqc5NAcxHp6uaOQ794/MRDFymCtOAHQz6VpfHwEEaIx3eM2JwgsuYpxcKlnG4=
+	t=1775674206; cv=none; b=ZfReTC+rF/TSWGqh8LBaDtP+k9AdWMEfZtx+Di/7w+QKKydDbzU0UFHvrezVYgwhF3dEIuFm/h51auP5BulHOIlYiCyzyv/jnsirIv/z5eXIqQy+8DG+VDfyC85DnKU5e6Zloqp0lNjrio7YeaAEa1S4OSKJuzb76HEIE971g6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674925; c=relaxed/simple;
-	bh=dXaP59EI5+tcNDh6U+k3NHP53kWSZOMBXRpOptHfgUc=;
+	s=arc-20240116; t=1775674206; c=relaxed/simple;
+	bh=TR2jjMXcVxeXm6RsCSZVlvjOHm49zvAhbzxrlDR1Zck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VCcdE6ngiFsRaxKgXZhfzmUGmHuCRk22kYVZleK+XdnSXctPNXnbbZNO3eMjXtcYuuNJ6VOWmFMRvDhFippYp7qscvcJy1IxLhmL0qvLjviBQtg7l7qNLESV/ppWpYl4YuqVLnU5pUeRzCQAh34YLVtkkEWI/Ab5d5xaOkxTfT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Po41f+kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EBBC19421;
-	Wed,  8 Apr 2026 19:02:04 +0000 (UTC)
+	 MIME-Version; b=VyjhBFWOZni8RPINqghow9nTHmCVGvbriGLAG2jUYUL4x1ovohsY88e3iWhK2jDNQhW+86i0cmzTRuuFiaxJuRDuoEiPPHpLQVHtOCVSCWKH61amvOWKOBGNLmZsfaTxskcfDejensvfm6rpahLngMjrghfHZb2CyuOc10+xKd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbVH8yW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD09CC19421;
+	Wed,  8 Apr 2026 18:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674925;
-	bh=dXaP59EI5+tcNDh6U+k3NHP53kWSZOMBXRpOptHfgUc=;
+	s=korg; t=1775674206;
+	bh=TR2jjMXcVxeXm6RsCSZVlvjOHm49zvAhbzxrlDR1Zck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Po41f+kfZzhdgBgIgd09hacJn1Mg7bhtWCBors2GF57QrvZjX47JzEg7d/DvWszbv
-	 EEPHH6LWmyKO9JyzxwJoUVjJJl7flqJL3Q2/8LLsJyeGrvO4NbZCASsXbVGZtnYOOt
-	 ZSlKfu7OAo1OhcUcWO36yXy7cuuDKWtTyojUUOFM=
+	b=wbVH8yW6HvKWQ9pZ4LsOYRPqG19nAD23sf1N18wlJzxJCrfYaXUvy3OH39sFfAJO7
+	 /z0c9doFD8x8FNqYH2IrJYZczWjT0NmpbxeiQFWC1FddOmWN0f5JQefuABuBzoFboD
+	 c9tyUdaxmLdbVDQVejpnjGIGOjr06SfKfJc7BSWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srujana Challa <schalla@marvell.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 279/311] virtio_net: clamp rss_max_key_size to NETDEV_RSS_KEY_LEN
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.12 239/242] selftests/bpf: Test invariants on JSLT crossing sign
 Date: Wed,  8 Apr 2026 20:04:39 +0200
-Message-ID: <20260408175949.798289079@linuxfoundation.org>
+Message-ID: <20260408175936.050905484@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +64,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235238-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234959-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email]
-X-Rspamd-Queue-Id: 8F2493C245A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1D2963C1B6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srujana Challa <schalla@marvell.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-commit b4e5f04c58a29c499faa85d12952ca9a4faf1cb9 upstream.
+[ Upstream commit f96841bbf4a1ee4ed0336ba192a01278fdea6383 ]
 
-rss_max_key_size in the virtio spec is the maximum key size supported by
-the device, not a mandatory size the driver must use. Also the value 40
-is a spec minimum, not a spec maximum.
+The improvement of the u64/s64 range refinement fixed the invariant
+violation that was happening on this test for BPF_JSLT when crossing the
+sign boundary.
 
-The current code rejects RSS and can fail probe when the device reports a
-larger rss_max_key_size than the driver buffer limit. Instead, clamp the
-effective key length to min(device rss_max_key_size, NETDEV_RSS_KEY_LEN)
-and keep RSS enabled.
+After this patch, we have one test remaining with a known invariant
+violation. It's the same test as fixed here but for 32 bits ranges.
 
-This keeps probe working on devices that advertise larger maximum key sizes
-while respecting the netdev RSS key buffer size limit.
-
-Fixes: 3f7d9c1964fc ("virtio_net: Add hash_key_length check")
-Cc: stable@vger.kernel.org
-Signed-off-by: Srujana Challa <schalla@marvell.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20260326142344.1171317-1-schalla@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/ad046fb0016428f1a33c3b81617aabf31b51183f.1753695655.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ tools/testing/selftests/bpf/progs/verifier_bounds.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -381,8 +381,6 @@ struct receive_queue {
- 	struct xdp_buff **xsk_buffs;
- };
- 
--#define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
--
- /* Control VQ buffers: protected by the rtnl lock */
- struct control_buf {
- 	struct virtio_net_ctrl_hdr hdr;
-@@ -486,7 +484,7 @@ struct virtnet_info {
- 
- 	/* Must be last as it ends in a flexible-array member. */
- 	TRAILING_OVERLAP(struct virtio_net_rss_config_trailer, rss_trailer, hash_key_data,
--		u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
-+		u8 rss_hash_key_data[NETDEV_RSS_KEY_LEN];
- 	);
- };
- static_assert(offsetof(struct virtnet_info, rss_trailer.hash_key_data) ==
-@@ -6708,6 +6706,7 @@ static int virtnet_probe(struct virtio_d
- 	struct virtnet_info *vi;
- 	u16 max_queue_pairs;
- 	int mtu = 0;
-+	u16 key_sz;
- 
- 	/* Find if host supports multiqueue/rss virtio_net device */
- 	max_queue_pairs = 1;
-@@ -6842,14 +6841,13 @@ static int virtnet_probe(struct virtio_d
- 	}
- 
- 	if (vi->has_rss || vi->has_rss_hash_report) {
--		vi->rss_key_size =
--			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
--		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
--			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
--				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
--			err = -EINVAL;
--			goto free;
--		}
-+		key_sz = virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
-+
-+		vi->rss_key_size = min_t(u16, key_sz, NETDEV_RSS_KEY_LEN);
-+		if (key_sz > vi->rss_key_size)
-+			dev_warn(&vdev->dev,
-+				 "rss_max_key_size=%u exceeds driver limit %u, clamping\n",
-+				 key_sz, vi->rss_key_size);
- 
- 		vi->rss_hash_types_supported =
- 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
+--- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
++++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
+@@ -1028,7 +1028,7 @@ l0_%=:	r0 = 0;						\
+ SEC("xdp")
+ __description("bound check with JMP_JSLT for crossing 64-bit signed boundary")
+ __success __retval(0)
+-__flag(!BPF_F_TEST_REG_INVARIANTS) /* known invariants violation */
++__flag(BPF_F_TEST_REG_INVARIANTS)
+ __naked void crossing_64_bit_signed_boundary_2(void)
+ {
+ 	asm volatile ("					\
 
 
 
