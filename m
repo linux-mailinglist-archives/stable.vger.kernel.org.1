@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDkZFzab1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:18 +0200
+	id UH5aJ5ih1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB503C0468
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5533C14AB
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC9E0303C619
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C916C3029A19
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC843D75AF;
-	Wed,  8 Apr 2026 18:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A97D3D75AF;
+	Wed,  8 Apr 2026 18:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvbK2ZlZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAE9qdoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18493AEF45;
-	Wed,  8 Apr 2026 18:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C063B0AFC;
+	Wed,  8 Apr 2026 18:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672039; cv=none; b=Wd98VC/Q+vCOg0mtoGQBuxHciFxstNam3vBCH8G0hFA6CpRiHQMFH4J7SNwB0jK6GqHb32hAWnzkxkgdtuS2elYcXEUR4oOKOmd6xKtI0nBoA305HAs4KLyqpRn9J9UQD/wjit47wsaYQE3xLj7vKya/c0G8r6zdEYFKy/lKrJA=
+	t=1775673751; cv=none; b=DozEu8ok8A85DeYwE/kU++ABiMLHnuNulIg2EFgo91BpNwcxpVWJ9oG05s5XxHX9vG1oYb0cmjKMcGQinPqWhx0uQQPB37cU97TiJtBzE5D2w0mkNlRYkVB4bOWJbkx1V7rXFmFK1xrwQRmELwxmBRrCQ9V4/ogrO9SmVrkX5FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672039; c=relaxed/simple;
-	bh=kH2mioqp1aCbOm3QeQuifrny8hZB2tg+y79dPHkhhFk=;
+	s=arc-20240116; t=1775673751; c=relaxed/simple;
+	bh=cl/HefTZwC6ZcBrFJbpIILahK0ggyw5uME+OdteULq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIhkW+BW7f4b/TqSjl4YJDtGl0ctvEctcFlg/X5vvN8HVq8PuOrd/rf3jQ0K+sqVUKbdvnSYnKfRO4A1z5ljM4STwaqjbfy8bMXlo46SEXlo2pyN/9LAnVN34N9S9KfyRrUO0XGdPvQbeCcXuTFzHmBcDQFj2t1GPeOgfs9nwYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvbK2ZlZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784AAC19421;
-	Wed,  8 Apr 2026 18:13:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GxjFZgsDuwWlfJVAA3PAoQJB85U/lq2bGAUjUTbpIBqkqr5lOuHIb3bSapzayoHspg4pc3jMGLc2WQLdglazBylb+0ZnrhmgQxxfColVZyhWkkwm4XxRgi7w61mihujrOwO7smFz2ec//4SaDFRgX1WyCOsW21rsfLtM3xI8Z7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAE9qdoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A95C19421;
+	Wed,  8 Apr 2026 18:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672038;
-	bh=kH2mioqp1aCbOm3QeQuifrny8hZB2tg+y79dPHkhhFk=;
+	s=korg; t=1775673750;
+	bh=cl/HefTZwC6ZcBrFJbpIILahK0ggyw5uME+OdteULq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvbK2ZlZ3AUArJcIbqVK+6NX+46FR563zLAiPSgYyYGmxHon/3ZsGUuUr+G06MisA
-	 at1dOQM4mifPw/LpeYnRlmeQdQMqFPwbXuGvy+MOD+zx29A3p+1XbYQsWYRA7RYbS7
-	 FhpCoRfqFtgsF2V6B0EMzIbP0dwkcVz+yvtej2yE=
+	b=LAE9qdoJIqFTszuAodRUtl17Q4hmunSMVZZd44GiCEAG8mtMvnRx/33Dq02JiPksX
+	 QyQKl5hTBtXcOfHMWEapzH0TcCP2Y1S5+qpm3zOfNRY4R8sFrx9SyR0IE2DzfoS98U
+	 mIJNJAMHIftqsHbnMCS+3bQ6mOf6i32uKkc3b2Sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/312] netfilter: ipset: use nla_strcmp for IPSET_ATTR_NAME attr
+Subject: [PATCH 6.12 043/242] crypto: caam - fix overflow on long hmac keys
 Date: Wed,  8 Apr 2026 20:01:23 +0200
-Message-ID: <20260408175939.964054310@linuxfoundation.org>
+Message-ID: <20260408175928.684563440@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234121-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234783-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,e.id:url]
-X-Rspamd-Queue-Id: BAB503C0468
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6D5533C14AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Horia Geantă <horia.geanta@nxp.com>
 
-[ Upstream commit b7e8590987aa94c9dc51518fad0e58cb887b1db5 ]
+[ Upstream commit 80688afb9c35b3934ce2d6be9973758915e2e0ef ]
 
-IPSET_ATTR_NAME and IPSET_ATTR_NAMEREF are of NLA_STRING type, they
-cannot be treated like a c-string.
+When a key longer than block size is supplied, it is copied and then
+hashed into the real key.  The memory allocated for the copy needs to
+be rounded to DMA cache alignment, as otherwise the hashed key may
+corrupt neighbouring memory.
 
-They either have to be switched to NLA_NUL_STRING, or the compare
-operations need to use the nla functions.
+The copying is performed using kmemdup, however this leads to an overflow:
+reading more bytes (aligned_len - keylen) from the keylen source buffer.
+Fix this by replacing kmemdup with kmalloc, followed by memcpy.
 
-Fixes: f830837f0eed ("netfilter: ipset: list:set set type support")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 199354d7fb6e ("crypto: caam - Remove GFP_DMA and add DMA alignment padding")
+Signed-off-by: Horia Geantă <horia.geanta@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netfilter/ipset/ip_set.h | 2 +-
- net/netfilter/ipset/ip_set_core.c      | 4 ++--
- net/netfilter/ipset/ip_set_list_set.c  | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/crypto/caam/caamalg_qi2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/netfilter/ipset/ip_set.h b/include/linux/netfilter/ipset/ip_set.h
-index 0b217d4ae2a48..d82413e6098a7 100644
---- a/include/linux/netfilter/ipset/ip_set.h
-+++ b/include/linux/netfilter/ipset/ip_set.h
-@@ -309,7 +309,7 @@ enum {
+diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
+index ece9f1e5a689f..9ef8ee77c52aa 100644
+--- a/drivers/crypto/caam/caamalg_qi2.c
++++ b/drivers/crypto/caam/caamalg_qi2.c
+@@ -3325,9 +3325,10 @@ static int ahash_setkey(struct crypto_ahash *ahash, const u8 *key,
+ 		if (aligned_len < keylen)
+ 			return -EOVERFLOW;
  
- /* register and unregister set references */
- extern ip_set_id_t ip_set_get_byname(struct net *net,
--				     const char *name, struct ip_set **set);
-+				     const struct nlattr *name, struct ip_set **set);
- extern void ip_set_put_byindex(struct net *net, ip_set_id_t index);
- extern void ip_set_name_byindex(struct net *net, ip_set_id_t index, char *name);
- extern ip_set_id_t ip_set_nfnl_get_byindex(struct net *net, ip_set_id_t index);
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 56215fb63b645..f4f65fa948ff8 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -823,7 +823,7 @@ EXPORT_SYMBOL_GPL(ip_set_del);
-  *
-  */
- ip_set_id_t
--ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
-+ip_set_get_byname(struct net *net, const struct nlattr *name, struct ip_set **set)
- {
- 	ip_set_id_t i, index = IPSET_INVALID_ID;
- 	struct ip_set *s;
-@@ -832,7 +832,7 @@ ip_set_get_byname(struct net *net, const char *name, struct ip_set **set)
- 	rcu_read_lock();
- 	for (i = 0; i < inst->ip_set_max; i++) {
- 		s = rcu_dereference(inst->ip_set_list)[i];
--		if (s && STRNCMP(s->name, name)) {
-+		if (s && nla_strcmp(name, s->name) == 0) {
- 			__ip_set_get(s);
- 			index = i;
- 			*set = s;
-diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
-index 5cc35b553a048..7d1ba6ad514f5 100644
---- a/net/netfilter/ipset/ip_set_list_set.c
-+++ b/net/netfilter/ipset/ip_set_list_set.c
-@@ -367,7 +367,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
- 	ret = ip_set_get_extensions(set, tb, &ext);
- 	if (ret)
- 		return ret;
--	e.id = ip_set_get_byname(map->net, nla_data(tb[IPSET_ATTR_NAME]), &s);
-+	e.id = ip_set_get_byname(map->net, tb[IPSET_ATTR_NAME], &s);
- 	if (e.id == IPSET_INVALID_ID)
- 		return -IPSET_ERR_NAME;
- 	/* "Loop detection" */
-@@ -389,7 +389,7 @@ list_set_uadt(struct ip_set *set, struct nlattr *tb[],
- 
- 	if (tb[IPSET_ATTR_NAMEREF]) {
- 		e.refid = ip_set_get_byname(map->net,
--					    nla_data(tb[IPSET_ATTR_NAMEREF]),
-+					    tb[IPSET_ATTR_NAMEREF],
- 					    &s);
- 		if (e.refid == IPSET_INVALID_ID) {
- 			ret = -IPSET_ERR_NAMEREF;
+-		hashed_key = kmemdup(key, aligned_len, GFP_KERNEL);
++		hashed_key = kmalloc(aligned_len, GFP_KERNEL);
+ 		if (!hashed_key)
+ 			return -ENOMEM;
++		memcpy(hashed_key, key, keylen);
+ 		ret = hash_digest_key(ctx, &keylen, hashed_key, digestsize);
+ 		if (ret)
+ 			goto bad_free_key;
 -- 
 2.53.0
 
