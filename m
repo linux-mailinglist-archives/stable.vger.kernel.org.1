@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-234862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IF55HCmo1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:33 +0200
+	id 0I6AGyKf1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF953C285A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC193C0E2E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C498930A9263
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C70A30B9CCF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F5A3D9022;
-	Wed,  8 Apr 2026 18:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF403AA4E4;
+	Wed,  8 Apr 2026 18:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymuwmvXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jE56+bUq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3A13D8905;
-	Wed,  8 Apr 2026 18:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9D02494F0;
+	Wed,  8 Apr 2026 18:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673958; cv=none; b=aciSp2EcSFRq+M3/RnyFrhMov8tGFyYNQpDMj8WPmexDtDpsffZQZRqcMSGYlBiqesRYNlzJECHEqI59ezQoS2xQsozaclWFc038cymrCZrNtRv+f7PVZlycL37SRHTEJh+nQ2AXqYaJCnR1EMxbiTRdihIvTCw2by66BabD8Ds=
+	t=1775672698; cv=none; b=BAC6kFAQepEyUKw/IJzLZNmww75F7fttIQEgpyMnLYepOHS0EUoVqRLcDXpzCSctVjq7LOs/f4/QlJFaqzFTQDrkLlB4z8DtkL/EbiOB4RvVXYTcls2FmdvKcbXCIWj4RrxM9YauY2ZuZwvpFt8x+EMwF2qddQGr0327gOy5mE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673958; c=relaxed/simple;
-	bh=TV6j/Xr579/nfKTKVV28Bi2mUB5YW7mxV2uF8KX0eGQ=;
+	s=arc-20240116; t=1775672698; c=relaxed/simple;
+	bh=bDcunfu5/TBMHacGmFpeWUkm7yID2zhiIsztcy16clU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQJVCscMdhFf06eOXD8eQQlyenytNI2L4StTQeCrr0TVWPssbKo+TeyLM+wu6istlViwuP6YWPwlo7zdQ3W3kVFH9QW0PbJ9ZBzwt/VUWkW7b48rBDC/vAaFFX4i4F89ayhr1gE5voGJME95w0Wa0euT2eviUmy7IAMXIud3l3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymuwmvXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFDCC2BCB1;
-	Wed,  8 Apr 2026 18:45:57 +0000 (UTC)
+	 MIME-Version; b=eRQ8CTxzTvkmMp7t1UXg59pstwr4nAaDGcXVW0q3grFn29nshMtvEwwY6xHcB2fpEbBAb3oE8cyhwlvrZN5Ggi/7vqXig28E8T6gIRo7BgxMil9iH1vgD8wc4oMTXvcqgqRD8Q1Tx9MJJ+/WoKNmtr2HgdOs+RYkDCW5tpbnx2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jE56+bUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC35C19421;
+	Wed,  8 Apr 2026 18:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673958;
-	bh=TV6j/Xr579/nfKTKVV28Bi2mUB5YW7mxV2uF8KX0eGQ=;
+	s=korg; t=1775672698;
+	bh=bDcunfu5/TBMHacGmFpeWUkm7yID2zhiIsztcy16clU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymuwmvXtOvj+rFZvsQJroNhlXIx0YxkYxxAWKtvvdwGPMEhwV39l3JW8kIqOdbp/7
-	 4WulAZzH7YxfL1zS53jQf2w9sPFgDjW5O469s1Qw3pxrrD/77XCaLTF5k0LRSy9W7h
-	 UaAyvDlJdnyxGdBIm4MOvWGW+jOQAx9//cXdM9VA=
+	b=jE56+bUqFVgIcVz9WCEFthIF9eVEa6YcjCGPD9IVL4WBfJnuLOW7lzA8fEnFsBVCg
+	 C4BCGcKDga507/WPnQvZ8ahFyyCnTusMwGG5heBjhpARqOdHC2IMszvEE91liv5iIH
+	 IFQaiMjA1ANrNrD5yXh21IcKSNn8cxgtsdOlyrdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 155/242] iio: gyro: mpu3050: Fix incorrect free_irq() variable
+	stable <stable@kernel.org>,
+	Juno Choi <juno.choi@lge.com>
+Subject: [PATCH 6.6 108/160] usb: dwc2: gadget: Fix spin_lock/unlock mismatch in dwc2_hsotg_udc_stop()
 Date: Wed,  8 Apr 2026 20:03:15 +0200
-Message-ID: <20260408175932.891790395@linuxfoundation.org>
+Message-ID: <20260408175917.215293535@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,64 +72,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-234862-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234376-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: CEF953C285A
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,lge.com:email]
+X-Rspamd-Queue-Id: CCC193C0E2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Juno Choi <juno.choi@lge.com>
 
-commit edb11a1aef4011a4b7b22cc3c3396c6fe371f4a6 upstream.
+commit 9bb4b5ed7f8c4f95cc556bdf042b0ba2fa13557a upstream.
 
-The handler for the IRQ part of this driver is mpu3050->trig but,
-in the teardown free_irq() is called with handler mpu3050.
+dwc2_gadget_exit_clock_gating() internally calls call_gadget() macro,
+which expects hsotg->lock to be held since it does spin_unlock/spin_lock
+around the gadget driver callback invocation.
 
-Use correct IRQ handler when calling free_irq().
+However, dwc2_hsotg_udc_stop() calls dwc2_gadget_exit_clock_gating()
+without holding the lock. This leads to:
+ - spin_unlock on a lock that is not held (undefined behavior)
+ - The lock remaining held after dwc2_gadget_exit_clock_gating() returns,
+   causing a deadlock when spin_lock_irqsave() is called later in the
+   same function.
 
-Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fix this by acquiring hsotg->lock before calling
+dwc2_gadget_exit_clock_gating() and releasing it afterwards, which
+satisfies the locking requirement of the call_gadget() macro.
+
+Fixes: af076a41f8a2 ("usb: dwc2: also exit clock_gating when stopping udc while suspended")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Juno Choi <juno.choi@lge.com>
+Link: https://patch.msgid.link/20260324014910.2798425-1-juno.choi@lge.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/mpu3050-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc2/gadget.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1272,7 +1272,7 @@ void mpu3050_common_remove(struct device
- 	pm_runtime_disable(dev);
- 	iio_triggered_buffer_cleanup(indio_dev);
- 	if (mpu3050->irq)
--		free_irq(mpu3050->irq, mpu3050);
-+		free_irq(mpu3050->irq, mpu3050->trig);
- 	iio_device_unregister(indio_dev);
- 	mpu3050_power_down(mpu3050);
- }
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -4604,7 +4604,9 @@ static int dwc2_hsotg_udc_stop(struct us
+ 	/* Exit clock gating when driver is stopped. */
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+ 	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
++		spin_lock_irqsave(&hsotg->lock, flags);
+ 		dwc2_gadget_exit_clock_gating(hsotg, 0);
++		spin_unlock_irqrestore(&hsotg->lock, flags);
+ 	}
+ 
+ 	/* all endpoints should be shutdown */
 
 
 
