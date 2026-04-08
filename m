@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEO7J32g1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:49 +0200
+	id yOyGIyeq1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B87C3C119A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E1D3C2C03
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 25B5B304BC6C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75EF131C584D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CAA3D6CB9;
-	Wed,  8 Apr 2026 18:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7672F39C2;
+	Wed,  8 Apr 2026 18:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNeA9R6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE12jli7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F7A3D411F;
-	Wed,  8 Apr 2026 18:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F7535B658;
+	Wed,  8 Apr 2026 18:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673269; cv=none; b=pIruil+FFibmYXllwmpvXPsoDC9d1cpvISE20XcgTWxVG0tFR9s6XYBRMIHgb82Q4y3HWXdu0b1XTu32OFlyAdD+DPb8eqHEWFFpMMyMYIRvj0GbDVqy0QYFW9hYj1eBzHTe1BpcPzER+/ktG/jINmULVSWcFzJQwPZjrDfjfLc=
+	t=1775674574; cv=none; b=kkQSlMOq8gLGF/ARfh/AVWXIjF80w9IzhRPB+l4waDFA2N2mdc6WQ9CYRYUCoLQcoEMpyoLN3iBQFoiR/o04OPwv9UpEPyXMjxPI1kX5qG5wTCb2LEO7VGbndEusBd24c3O4Hk/l5z3uvj312dUak1gff/ZBtnf4az/LW1qRrRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673269; c=relaxed/simple;
-	bh=3ProK/F0dJkh91SjV/2eR+9DvVKsyRvwHx0J2o19q7g=;
+	s=arc-20240116; t=1775674574; c=relaxed/simple;
+	bh=Ubfd1RdePg9AcF9UvMAD5O0x1lxyMqymjWbQxeRHnGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qjpe5ytgYam25WIrRXK/LcYma0kz97jlGCOo8oAv7nRSt7U1R6OhhdDK7TQfgBWK3skhpzVtbLwcD+BW0/mx5AWvibD5J3AN4AzXrl067Gaqf4oAl2XOZ9Hox752qLrDc3mJWyzmgzBoZX8gKxZFc9ehI+blGgSZLf5XzUOKFzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNeA9R6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4144C19421;
-	Wed,  8 Apr 2026 18:34:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b0PdKHC0HXvuGbNgtDcYOIQdAq09HwGPsAN2ivYeXkUrQ94hVkMmdfBhGe//HrL0YDGANr5j8pEYH8wto88WRj2+0jyOamIaU05kk+XppZw1YSjtnvA5r6ewCFNuYPY/nG61knisOh6TAldNqSrySd0w1mBYsstrZ6DjSxQ1hhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE12jli7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3E4C19421;
+	Wed,  8 Apr 2026 18:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673269;
-	bh=3ProK/F0dJkh91SjV/2eR+9DvVKsyRvwHx0J2o19q7g=;
+	s=korg; t=1775674574;
+	bh=Ubfd1RdePg9AcF9UvMAD5O0x1lxyMqymjWbQxeRHnGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNeA9R6wc3PSwgbz8LacaY4R3QLwUbk+gptPCvIFlS+MOCsq+NbuQ5NYG8zNXSGZ+
-	 vMIPMmePbpf5ISYXYYL9gmTbmZ6iR//fyHL+xsXBCeXdpkMPxRQ4D/tZe8JjbThxGF
-	 saqIDTqrD0L6vBzA9e7hK1pUXW9WgYNGYeFS0d9A=
+	b=zE12jli7rDfRIkWF9j/MgDg5w0gJ9lbq8a5EzHyHxNbMcNaBpbtWmeg287DiHWKDh
+	 9X7MYi3/skf7oUkm34sB5D1ctsKe7PV3NVKhIAypzCexVClYp+ib6h6FbxBHghfpWN
+	 wcsWPAMHIIhcPgjow7WXTHv5ExaGnAcyS6Ncstig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 166/277] drm/amdgpu: Change AMDGPU_VA_RESERVED_TRAP_SIZE to 64KB
+	Jessica Liu <liu.xuemei1@zte.com.cn>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 151/311] irqchip/riscv-aplic: Restrict genpd notifier to device tree only
 Date: Wed,  8 Apr 2026 20:02:31 +0200
-Message-ID: <20260408175940.067716015@linuxfoundation.org>
+Message-ID: <20260408175945.046433136@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,141 +68,90 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234596-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235102-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 9B87C3C119A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zte.com.cn:email]
+X-Rspamd-Queue-Id: F2E1D3C2C03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Jessica Liu <liu.xuemei1@zte.com.cn>
 
-commit 4487571ef17a30d274600b3bd6965f497a881299 upstream.
+[ Upstream commit af416cd9b3fb9d17ac7f4cfa12d1ea83dfd0e4be ]
 
-Currently, AMDGPU_VA_RESERVED_TRAP_SIZE is hardcoded to 8KB, while
-KFD_CWSR_TBA_TMA_SIZE is defined as 2 * PAGE_SIZE. On systems with
-4K pages, both values match (8KB), so allocation and reserved space
-are consistent.
+On ACPI systems, the aplic's pm_domain is set to acpi_general_pm_domain,
+which provides its own power management callbacks (e.g., runtime_suspend
+via acpi_subsys_runtime_suspend).
 
-However, on 64K page-size systems, KFD_CWSR_TBA_TMA_SIZE becomes 128KB,
-while the reserved trap area remains 8KB. This mismatch causes the
-kernel to crash when running rocminfo or rccl unit tests.
+aplic_pm_add() unconditionally calls dev_pm_genpd_add_notifier() when
+dev->pm_domain is non‑NULL, leading to a comparison between runtime_suspend
+and genpd_runtime_suspend. This results in the following errors when ACPI
+is enabled:
 
-Kernel attempted to read user page (2) - exploit attempt? (uid: 1001)
-BUG: Kernel NULL pointer dereference on read at 0x00000002
-Faulting instruction address: 0xc0000000002c8a64
-Oops: Kernel access of bad area, sig: 11 [#1]
-LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-CPU: 34 UID: 1001 PID: 9379 Comm: rocminfo Tainted: G E
-6.19.0-rc4-amdgpu-00320-gf23176405700 #56 VOLUNTARY
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: IBM,9105-42A POWER10 (architected) 0x800200 0xf000006
-of:IBM,FW1060.30 (ML1060_896) hv:phyp pSeries
-NIP:  c0000000002c8a64 LR: c00000000125dbc8 CTR: c00000000125e730
-REGS: c0000001e0957580 TRAP: 0300 Tainted: G E
-MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE> CR: 24008268
-XER: 00000036
-CFAR: c00000000125dbc4 DAR: 0000000000000002 DSISR: 40000000
-IRQMASK: 1
-GPR00: c00000000125d908 c0000001e0957820 c0000000016e8100
-c00000013d814540
-GPR04: 0000000000000002 c00000013d814550 0000000000000045
-0000000000000000
-GPR08: c00000013444d000 c00000013d814538 c00000013d814538
-0000000084002268
-GPR12: c00000000125e730 c000007e2ffd5f00 ffffffffffffffff
-0000000000020000
-GPR16: 0000000000000000 0000000000000002 c00000015f653000
-0000000000000000
-GPR20: c000000138662400 c00000013d814540 0000000000000000
-c00000013d814500
-GPR24: 0000000000000000 0000000000000002 c0000001e0957888
-c0000001e0957878
-GPR28: c00000013d814548 0000000000000000 c00000013d814540
-c0000001e0957888
-NIP [c0000000002c8a64] __mutex_add_waiter+0x24/0xc0
-LR [c00000000125dbc8] __mutex_lock.constprop.0+0x318/0xd00
-Call Trace:
-0xc0000001e0957890 (unreliable)
-__mutex_lock.constprop.0+0x58/0xd00
-amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x6fc/0xb60 [amdgpu]
-kfd_process_alloc_gpuvm+0x54/0x1f0 [amdgpu]
-kfd_process_device_init_cwsr_dgpu+0xa4/0x1a0 [amdgpu]
-kfd_process_device_init_vm+0xd8/0x2e0 [amdgpu]
-kfd_ioctl_acquire_vm+0xd0/0x130 [amdgpu]
-kfd_ioctl+0x514/0x670 [amdgpu]
-sys_ioctl+0x134/0x180
-system_call_exception+0x114/0x300
-system_call_vectored_common+0x15c/0x2ec
+  riscv-aplic RSCV0002:00: failed to create APLIC context
+  riscv-aplic RSCV0002:00: error -ENODEV: failed to setup APLIC in MSI mode
 
-This patch changes AMDGPU_VA_RESERVED_TRAP_SIZE to 64 KB and
-KFD_CWSR_TBA_TMA_SIZE to the AMD GPU page size. This means we reserve
-64 KB for the trap in the address space, but only allocate 8 KB within
-it. With this approach, the allocation size never exceeds the reserved
-area.
+Fix this by checking for dev->of_node before adding or removing the genpd
+notifier, ensuring it is only used for device tree based systems.
 
-Fixes: 34a1de0f7935 ("drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 31b8de5e55666f26ea7ece5f412b83eab3f56dbb)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 95a8ddde3660 ("irqchip/riscv-aplic: Preserve APLIC states across suspend/resume")
+Signed-off-by: Jessica Liu <liu.xuemei1@zte.com.cn>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260331093029749vRpdH-0qoEqjS0Wnn9M4x@zte.com.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h |    2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h  |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-riscv-aplic-main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-@@ -172,7 +172,7 @@ struct amdgpu_bo_vm;
- #define AMDGPU_VA_RESERVED_SEQ64_SIZE		(2ULL << 20)
- #define AMDGPU_VA_RESERVED_SEQ64_START(adev)	(AMDGPU_VA_RESERVED_CSA_START(adev) \
- 						 - AMDGPU_VA_RESERVED_SEQ64_SIZE)
--#define AMDGPU_VA_RESERVED_TRAP_SIZE		(2ULL << 12)
-+#define AMDGPU_VA_RESERVED_TRAP_SIZE		(1ULL << 16)
- #define AMDGPU_VA_RESERVED_TRAP_START(adev)	(AMDGPU_VA_RESERVED_SEQ64_START(adev) \
- 						 - AMDGPU_VA_RESERVED_TRAP_SIZE)
- #define AMDGPU_VA_RESERVED_BOTTOM		(1ULL << 16)
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -102,8 +102,8 @@
-  * The first chunk is the TBA used for the CWSR ISA code. The second
-  * chunk is used as TMA for user-mode trap handler setup in daisy-chain mode.
-  */
--#define KFD_CWSR_TBA_TMA_SIZE (PAGE_SIZE * 2)
--#define KFD_CWSR_TMA_OFFSET (PAGE_SIZE + 2048)
-+#define KFD_CWSR_TBA_TMA_SIZE (AMDGPU_GPU_PAGE_SIZE * 2)
-+#define KFD_CWSR_TMA_OFFSET (AMDGPU_GPU_PAGE_SIZE + 2048)
+diff --git a/drivers/irqchip/irq-riscv-aplic-main.c b/drivers/irqchip/irq-riscv-aplic-main.c
+index 9f53979b69625..d9afb6ae98cf5 100644
+--- a/drivers/irqchip/irq-riscv-aplic-main.c
++++ b/drivers/irqchip/irq-riscv-aplic-main.c
+@@ -150,7 +150,7 @@ static void aplic_pm_remove(void *data)
+ 	struct device *dev = priv->dev;
  
- #define KFD_MAX_NUM_OF_QUEUES_PER_DEVICE		\
- 	(KFD_MAX_NUM_OF_PROCESSES *			\
+ 	list_del(&priv->head);
+-	if (dev->pm_domain)
++	if (dev->pm_domain && dev->of_node)
+ 		dev_pm_genpd_remove_notifier(dev);
+ }
+ 
+@@ -165,7 +165,7 @@ static int aplic_pm_add(struct device *dev, struct aplic_priv *priv)
+ 
+ 	priv->saved_hw_regs.srcs = srcs;
+ 	list_add(&priv->head, &aplics);
+-	if (dev->pm_domain) {
++	if (dev->pm_domain && dev->of_node) {
+ 		priv->genpd_nb.notifier_call = aplic_pm_notifier;
+ 		ret = dev_pm_genpd_add_notifier(dev, &priv->genpd_nb);
+ 		if (ret)
+-- 
+2.53.0
+
 
 
 
