@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-235072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFu0Kouk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:07 +0200
+	id YPkWMEmn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555A33C1F22
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 244ED3C2697
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D27D30285DB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E9EE31A7F43
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26733D9031;
-	Wed,  8 Apr 2026 18:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A563D9022;
+	Wed,  8 Apr 2026 18:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCB/jVnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5bM+2ZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753883D9DA5;
-	Wed,  8 Apr 2026 18:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDF53D8906;
+	Wed,  8 Apr 2026 18:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674497; cv=none; b=FPOcFg4azB8v1KlbjdcpcwJ0hZldD/NHUo5Db02xhQX6ZH8jpjlieeuwCZ1fy2G6nT7Kc+lG0/dXXQ01NLyTo1QPPFeWwogWEnFwpKB9BsgVxqSgl9rz6AzVN+SQGR3AbISmLLAEiCbnqlgGjhrLdzoPDfg+aanSBYtIl7bWnWs=
+	t=1775673720; cv=none; b=GcJt2rMa9U5sgfybOWOL6r42+uF5fWR3SkadaWHnibJYkur3T5MNFyiPJ0IeLigN6oDKfABWHXHOaCj1QwcXAdnJTPTL/0p7Py/4VsgE0ExYETVf632hVIAyCj7APYmCXCtRPdOVWu4jyFiXvug/LRi2ta7pG1qWBRa6G4mLvBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674497; c=relaxed/simple;
-	bh=FfwSmCIbN6y2+5vT/wrjsaIQH3x6K17+BOGuE/g3N1w=;
+	s=arc-20240116; t=1775673720; c=relaxed/simple;
+	bh=HjP1qNAgJArGwuBMlebeuxn2EtLGbkwa7q/Askn8RRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cc34qKUJFkyQQzc8TRGyQvKylGP32TiA0gmdt+O70h+oNhefoHjaLtw5NEzECUybFGHsnh2RSlkZ3/jR08Om5uFztJRbSyosG34I+y349lAuPnCx737NjpL5rB4QlioZdj8IZBOdC4FXblQk7oPTxJ0pzaZJuSVSqh8qXonEdyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCB/jVnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC52C2BC87;
-	Wed,  8 Apr 2026 18:54:56 +0000 (UTC)
+	 MIME-Version; b=PlVw1vEDxr2Hj3c4mZAYoeVb9l5S1Zk9MDL+Y+HUXSm54ZJM8SetGCH4c/Ijs9qAdZzni2vlsGrg8gWaebNQ33LW6lI8vDYF1mvRiedKRY70ydcH+nMDqVbxZDEVdPttyCZAd1Yo8GiUQ1E7QYzpNZpvpQ+vNqwv9CjVY5oaexo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5bM+2ZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7065EC19421;
+	Wed,  8 Apr 2026 18:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674497;
-	bh=FfwSmCIbN6y2+5vT/wrjsaIQH3x6K17+BOGuE/g3N1w=;
+	s=korg; t=1775673719;
+	bh=HjP1qNAgJArGwuBMlebeuxn2EtLGbkwa7q/Askn8RRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCB/jVnl2IdGOL0qegwXE3aHreJ9ZXwwnaOh7YVHfGDojrlRzmwBId2yjpOTFpaNj
-	 VhM2vpJE+418y4oXpc7M84kIUAnTn1Siu/O/uR0mscDR4FW544F1H2eHJW15F2q4in
-	 rYVLnwm2WsEH8wkmOCcvYLua6vcv1jSDBJob8Fi0=
+	b=S5bM+2ZXmN+/lRKN/pwSXscxy6R8BBnt2EbuvsTC6sYMifJUlJqc7JCdLODzlH95c
+	 +03v+iEc0XN3HCPK1GqFNeIhIvtQj8VAlQJWWCM3+/eocM5vhwnIeQg6Fg+gzmVSNk
+	 m4WkkwjiviYhIil7/PSvy7FyrZIdpTY66XmadUhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 103/311] Bluetooth: hci_conn: fix potential UAF in set_cig_params_sync
+Subject: [PATCH 6.12 063/242] NFC: pn533: bound the UART receive buffer
 Date: Wed,  8 Apr 2026 20:01:43 +0200
-Message-ID: <20260408175943.260350722@linuxfoundation.org>
+Message-ID: <20260408175929.439357331@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235072-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234771-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,63 +89,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iki.fi:email]
-X-Rspamd-Queue-Id: 555A33C1F22
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 244ED3C2697
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit a2639a7f0f5bf7d73f337f8f077c19415c62ed2c ]
+[ Upstream commit 30fe3f5f6494f827d812ff179f295a8e532709d6 ]
 
-hci_conn lookup and field access must be covered by hdev lock in
-set_cig_params_sync, otherwise it's possible it is freed concurrently.
+pn532_receive_buf() appends every incoming byte to dev->recv_skb and
+only resets the buffer after pn532_uart_rx_is_frame() recognizes a
+complete frame. A continuous stream of bytes without a valid PN532 frame
+header therefore keeps growing the skb until skb_put_u8() hits the tail
+limit.
 
-Take hdev lock to prevent hci_conn from being deleted or modified
-concurrently.  Just RCU lock is not suitable here, as we also want to
-avoid "tearing" in the configuration.
+Drop the accumulated partial frame once the fixed receive buffer is full
+so malformed UART traffic cannot grow the skb past
+PN532_UART_SKB_BUFF_LEN.
 
-Fixes: a091289218202 ("Bluetooth: hci_conn: Fix hci_le_set_cig_params")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260326142033.82297-1-pengpeng@iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/nfc/pn533/uart.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 48aaccd35954a..a966d36d0e798 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1843,9 +1843,13 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
- 	u8 aux_num_cis = 0;
- 	u8 cis_id;
+diff --git a/drivers/nfc/pn533/uart.c b/drivers/nfc/pn533/uart.c
+index cfbbe0713317f..1393f83f3149b 100644
+--- a/drivers/nfc/pn533/uart.c
++++ b/drivers/nfc/pn533/uart.c
+@@ -211,6 +211,9 @@ static size_t pn532_receive_buf(struct serdev_device *serdev,
  
-+	hci_dev_lock(hdev);
+ 	del_timer(&dev->cmd_timeout);
+ 	for (i = 0; i < count; i++) {
++		if (unlikely(!skb_tailroom(dev->recv_skb)))
++			skb_trim(dev->recv_skb, 0);
 +
- 	conn = hci_conn_hash_lookup_cig(hdev, cig_id);
--	if (!conn)
-+	if (!conn) {
-+		hci_dev_unlock(hdev);
- 		return 0;
-+	}
- 
- 	qos = &conn->iso_qos;
- 	pdu->cig_id = cig_id;
-@@ -1884,6 +1888,8 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
- 	}
- 	pdu->num_cis = aux_num_cis;
- 
-+	hci_dev_unlock(hdev);
-+
- 	if (!pdu->num_cis)
- 		return 0;
- 
+ 		skb_put_u8(dev->recv_skb, *data++);
+ 		if (!pn532_uart_rx_is_frame(dev->recv_skb))
+ 			continue;
 -- 
 2.53.0
 
