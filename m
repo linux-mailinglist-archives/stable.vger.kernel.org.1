@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-234189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLj/BVic1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:08 +0200
+	id 2B1WHb6d1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8451F3C071A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:20:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E163F3C0B2A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AEFE3081E83
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C47DC3082DE1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED9E3A6B6B;
-	Wed,  8 Apr 2026 18:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8293D5647;
+	Wed,  8 Apr 2026 18:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfUSuMKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3uGqt8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DE937F01B;
-	Wed,  8 Apr 2026 18:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612033D668E;
+	Wed,  8 Apr 2026 18:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672214; cv=none; b=A3YsqqTgwnUDmhLLghsX/uDExwQxsJ1wHX2Db3HlWo54hrUoTwLdnH63VMrZGm6bE3UtGgqwwYTAlGL09zTpeMbnjV2YtaQIqODC4Gx9VQwBPf/ieWCBRNnF3X9rxTtaYkc7ksxGo4sR8H0x3bDn/6mQHfRqHSqQGd/6Awuw1Lw=
+	t=1775672569; cv=none; b=k6j4tjnoOoCDP3DZFYi0r37NndSKNh/AAm2WEUj70DjWKIX/h6dOlr3yyb07zO8cUWfYXfJmv4EkBE3A6+HZ3niRkqVBB3FYUmtXgultbdH0QQJZlSvjp1INdmA13RfdBGUa5Tvy46FG6HCew/lOa0YoBPDjvMfSNPK+7iqylF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672214; c=relaxed/simple;
-	bh=qeAk/PUrlojqxR+bBXUvAMmDrxsDzl9u9WnPz59oGtY=;
+	s=arc-20240116; t=1775672569; c=relaxed/simple;
+	bh=oYT9hBgHb3PV08u6ObhkroDxvOtzY/WNbc5T8evwQMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=minMvQuow3WWOSJR0YAYpAlSHJ720QXaoSaxCwSR/bs6V2TbGgX62Ni0J/6EvZjQ6DoQZTzh6C216t8lLxWBEqn0VOEAtjDUOhtFklBlujoSdD6w3Vl5/GNBtJf58CsYXNrJryrnSoa0AQc9epi8/7vJ6LQyBvrju72RF7IST1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfUSuMKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63677C19421;
-	Wed,  8 Apr 2026 18:16:53 +0000 (UTC)
+	 MIME-Version; b=Ar9SpNMCQK3rGFQyZzzEBVv88/bq6exOe20XlrAJRmqUbd1X4DzvTrPlLg07ZTdoi/wuaCuLVtloNWoF9//NkbGSoQZJe/HaE18c+F4Gy+jllF4vPE/lXOCY8bpFADg3LeTgpGl8ge/cyc+hpUCr+hjiPPAI4lXHZd53h5TNYww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3uGqt8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAE0C19421;
+	Wed,  8 Apr 2026 18:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672213;
-	bh=qeAk/PUrlojqxR+bBXUvAMmDrxsDzl9u9WnPz59oGtY=;
+	s=korg; t=1775672569;
+	bh=oYT9hBgHb3PV08u6ObhkroDxvOtzY/WNbc5T8evwQMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XfUSuMKtgrjJCwFHIWQncBlLkb73Jk5vOJWoEeCaGZ8hZA5Un1dKPSTYvZ1CeJBkc
-	 OzLaeTY9sb9eTxk9Qdc2QozlmKSZNLxCYsqcmxWpGHApeXq24o9Yb5CplT4g3JipsT
-	 OOg7vMgf81o9U3ypFCPFHieeJN6fVtiLYErD/5vI=
+	b=a3uGqt8FD3uU3HWVWt+C/tKXa9uooU00Ikk20IDYew+W4VhGIjXzBjOegzDkj27DJ
+	 3f1mvaIdl9QFbXq6vXtEdWbTZqogy5bDIl5FjLPfhBg1sMyXoApR/txRzEUSun26hT
+	 iu2uFwSDAikv/h9/DRWBuSybBdIqQtdlGJ9BoQm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 226/312] iio: gyro: mpu3050: Fix out-of-sequence free_irq()
+	Shay Drory <shayd@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 056/160] net/mlx5: lag: Check for LAG device before creating debugfs
 Date: Wed,  8 Apr 2026 20:02:23 +0200
-Message-ID: <20260408175942.197418911@linuxfoundation.org>
+Message-ID: <20260408175915.296686198@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,74 +70,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-234189-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234326-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8451F3C071A
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E163F3C0B2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit d14116f6529fa085b1a1b1f224dc9604e4d2a29c upstream.
+[ Upstream commit bf16bca6653679d8a514d6c1c5a2c67065033f14 ]
 
-The triggered buffer is initialized before the IRQ is requested. The
-removal path currently calls iio_triggered_buffer_cleanup() before
-free_irq(). This violates the expected LIFO.
+__mlx5_lag_dev_add_mdev() may return 0 (success) even when an error
+occurs that is handled gracefully. Consequently, the initialization
+flow proceeds to call mlx5_ldev_add_debugfs() even when there is no
+valid LAG context.
 
-Place free_irq() in the correct location relative to
-iio_triggered_buffer_cleanup().
+mlx5_ldev_add_debugfs() blindly created the debugfs directory and
+attributes. This exposed interfaces (like the members file) that rely on
+a valid ldev pointer, leading to potential NULL pointer dereferences if
+accessed when ldev is NULL.
 
-Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a check to verify that mlx5_lag_dev(dev) returns a valid pointer
+before attempting to create the debugfs entries.
+
+Fixes: 7f46a0b7327a ("net/mlx5: Lag, add debugfs to query hardware lag state")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260330194015.53585-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/gyro/mpu3050-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1288,9 +1288,9 @@ void mpu3050_common_remove(struct device
- 	pm_runtime_get_sync(dev);
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
--	iio_triggered_buffer_cleanup(indio_dev);
- 	if (mpu3050->irq)
- 		free_irq(mpu3050->irq, mpu3050->trig);
-+	iio_triggered_buffer_cleanup(indio_dev);
- 	mpu3050_power_down(mpu3050);
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
+index f4b777d4e1086..41ddca52e9547 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
+@@ -163,8 +163,11 @@ DEFINE_SHOW_ATTRIBUTE(members);
  
+ void mlx5_ldev_add_debugfs(struct mlx5_core_dev *dev)
+ {
++	struct mlx5_lag *ldev = mlx5_lag_dev(dev);
+ 	struct dentry *dbg;
+ 
++	if (!ldev)
++		return;
+ 	dbg = debugfs_create_dir("lag", mlx5_debugfs_get_dev_root(dev));
+ 	dev->priv.dbg.lag_debugfs = dbg;
+ 
+-- 
+2.53.0
+
 
 
 
