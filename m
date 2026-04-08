@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMHnKAik1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:56 +0200
+	id WPqhGvec1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D16A3C1D2D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48F03C08B3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8E2E303FDF7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14135300E602
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703F835CB6F;
-	Wed,  8 Apr 2026 18:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C543D9034;
+	Wed,  8 Apr 2026 18:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFoUGzdN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3J+em7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E6F28C87C;
-	Wed,  8 Apr 2026 18:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2748A3D7D74;
+	Wed,  8 Apr 2026 18:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673308; cv=none; b=Iby0OmwvkFbArHxhtbpOHqwb8remmyScgVXu310BTjBPQOR4sW2DaJlROe7iId+tTHUE/5zSVtwVMoUV+9ghmdVObxncvnbSDBC//uukuIIscaK+NfGF6iQgRDxGUGY858Tqje2P/5/DOZ1S8U7xZkZJvD/puBfpKFAEVnPjDfQ=
+	t=1775672543; cv=none; b=TfDrneIdpnGS7HPr9l4Pe1oHALV2MpGVjWYpnQwE41weZzvf9uCas2jUaAtRmp1aWAOfiWNESdr5uaQp7ZEaHm8+JuLXLEZ9EPMD7R25XVe5lcrWmGVCxhLLHekVbn5FCerVoD8Y+sLyfyBxyaa/3FUVzPGraTB6NUXg/WDz5SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673308; c=relaxed/simple;
-	bh=JhhPzIA7U3tm1ui+9TSZhOarzmpAN5tnF9gAmW4GdUU=;
+	s=arc-20240116; t=1775672543; c=relaxed/simple;
+	bh=KLJcjOVlI2Qef0AB0CHjZD78P/T7Ji+O/lAga2docN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFDGEIRBQZt4LVUYAk1A8Kb31nrIq9eJYcrAtJ6dKtrP8jZwvWwSULvGBsEzLOvCyvUMzmkpLQzhwRaYmgWCN63jFoaIlp/yexFsNN/lXl4n/d7AFiDPZbk/vfmLvKvs72OPXwE5iTHahoYkJ2jxnRUk8DRI5+X46FPekfV1hwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFoUGzdN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D783C19421;
-	Wed,  8 Apr 2026 18:35:07 +0000 (UTC)
+	 MIME-Version; b=Ex5yHj6183KlvZlJdJCls8K85AAEXr2xOprJRyboZLG1NE+YviyCHnwK1TJsVb+BCOIF1RabRn0GpBeeIoBK1qJVaHq/RVHcs9ftGtsR8UODeZME8b394xmnQehx7VjqJ2Iyldlz2qEXe4dluSzoOT+SIXaQN3mZfLDIta1/T0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3J+em7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0F7C4AF09;
+	Wed,  8 Apr 2026 18:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673307;
-	bh=JhhPzIA7U3tm1ui+9TSZhOarzmpAN5tnF9gAmW4GdUU=;
+	s=korg; t=1775672543;
+	bh=KLJcjOVlI2Qef0AB0CHjZD78P/T7Ji+O/lAga2docN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PFoUGzdNjgq4SlsIFNIRgfIawMrwYjd/y855Hc5dD91B/6rcd3cXeCpYD6QiG92Cc
-	 J1e8GHvghZSBCUWkOali2r/2Oo2hRe8MINUxjL4ogbQ6eRNj/Vt2y5h8cfw0t++Emx
-	 77KyUKcWm4JgEB27Dz3WSanjmLfdGyt5piW9YTNM=
+	b=o3J+em7slxwLihSkyQzDjVrCeN3SSuHssGBB2BEsJtu0GjkR3uGQWkAd62b2ItSxU
+	 9JwWuo5lz0D3n1G2642wub0bjHGtU66nhnRWkWcbAEHWioj/qjIbUN3pjhICQ+80yv
+	 ETpNbZtBCuMbr+ZVIRwxOq7+KqCBa1yImfW+Vp/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.18 149/277] mips: mm: Allocate tlb_vpn array atomically
+	Cen Zhang <zzzccc427@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 047/160] Bluetooth: SCO: fix race conditions in sco_sock_connect()
 Date: Wed,  8 Apr 2026 20:02:14 +0200
-Message-ID: <20260408175939.438047150@linuxfoundation.org>
+Message-ID: <20260408175914.965508757@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +66,179 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234316-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234611-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nokia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,franken.de:email]
-X-Rspamd-Queue-Id: 0D16A3C1D2D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E48F03C08B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Cen Zhang <zzzccc427@gmail.com>
 
-commit 01cc50ea5167bb14117257ec084637abe9e5f691 upstream.
+[ Upstream commit 8a5b0135d4a5d9683203a3d9a12a711ccec5936b ]
 
-Found by DEBUG_ATOMIC_SLEEP:
+sco_sock_connect() checks sk_state and sk_type without holding
+the socket lock. Two concurrent connect() syscalls on the same
+socket can both pass the check and enter sco_connect(), leading
+to use-after-free.
 
-  BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-  preempt_count: 1, expected: 0
-  RCU nest depth: 0, expected: 0
-  no locks held by swapper/1/0.
-  irq event stamp: 0
-  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-  hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
-  softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
-  Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
-          800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
-          ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
-          784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
-          0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
-          ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
-          ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
-          fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
-          ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
-          0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
-          ...
-  Call Trace:
-  [<ffffffff80129fd0>] show_stack+0x60/0x158
-  [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
-  [<ffffffff8018d3c8>] __might_resched+0x268/0x288
-  [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
-  [<ffffffff80302788>] __kmalloc+0x58/0xd0
-  [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
-  [<ffffffff80143e8c>] tlb_init+0x7c/0x110
-  [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
-  [<ffffffff80133258>] start_secondary+0x28/0x128
+The buggy scenario involves three participants and was confirmed
+with additional logging instrumentation:
 
-Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Thread A (connect):    HCI disconnect:      Thread B (connect):
+
+  sco_sock_connect(sk)                        sco_sock_connect(sk)
+  sk_state==BT_OPEN                           sk_state==BT_OPEN
+  (pass, no lock)                             (pass, no lock)
+  sco_connect(sk):                            sco_connect(sk):
+    hci_dev_lock                                hci_dev_lock
+    hci_connect_sco                               <- blocked
+      -> hcon1
+    sco_conn_add->conn1
+    lock_sock(sk)
+    sco_chan_add:
+      conn1->sk = sk
+      sk->conn = conn1
+    sk_state=BT_CONNECT
+    release_sock
+    hci_dev_unlock
+                           hci_dev_lock
+                           sco_conn_del:
+                             lock_sock(sk)
+                             sco_chan_del:
+                               sk->conn=NULL
+                               conn1->sk=NULL
+                               sk_state=
+                                 BT_CLOSED
+                               SOCK_ZAPPED
+                             release_sock
+                           hci_dev_unlock
+                                                  (unblocked)
+                                                  hci_connect_sco
+                                                    -> hcon2
+                                                  sco_conn_add
+                                                    -> conn2
+                                                  lock_sock(sk)
+                                                  sco_chan_add:
+                                                    sk->conn=conn2
+                                                  sk_state=
+                                                    BT_CONNECT
+                                                  // zombie sk!
+                                                  release_sock
+                                                  hci_dev_unlock
+
+Thread B revives a BT_CLOSED + SOCK_ZAPPED socket back to
+BT_CONNECT. Subsequent cleanup triggers double sock_put() and
+use-after-free. Meanwhile conn1 is leaked as it was orphaned
+when sco_conn_del() cleared the association.
+
+Fix this by:
+- Moving lock_sock() before the sk_state/sk_type checks in
+  sco_sock_connect() to serialize concurrent connect attempts
+- Fixing the sk_type != SOCK_SEQPACKET check to actually
+  return the error instead of just assigning it
+- Adding a state re-check in sco_connect() after lock_sock()
+  to catch state changes during the window between the locks
+- Adding sco_pi(sk)->conn check in sco_chan_add() to prevent
+  double-attach of a socket to multiple connections
+- Adding hci_conn_drop() on sco_chan_add failure to prevent
+  HCI connection leaks
+
+Fixes: 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm")
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlb-r4k.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/sco.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -538,7 +538,7 @@ static void __ref r4k_tlb_uniquify(void)
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index 56a146515df9e..1c9c54f35988b 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -238,7 +238,7 @@ static int sco_chan_add(struct sco_conn *conn, struct sock *sk,
+ 	int err = 0;
  
- 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
- 	tlb_vpns = (use_slab ?
--		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
- 		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
- 	if (WARN_ON(!tlb_vpns))
- 		return; /* Pray local_flush_tlb_all() is good enough. */
+ 	sco_conn_lock(conn);
+-	if (conn->sk)
++	if (conn->sk || sco_pi(sk)->conn)
+ 		err = -EBUSY;
+ 	else
+ 		__sco_chan_add(conn, sk, parent);
+@@ -292,9 +292,20 @@ static int sco_connect(struct sock *sk)
+ 
+ 	lock_sock(sk);
+ 
++	/* Recheck state after reacquiring the socket lock, as another
++	 * thread may have changed it (e.g., closed the socket).
++	 */
++	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
++		release_sock(sk);
++		hci_conn_drop(hcon);
++		err = -EBADFD;
++		goto unlock;
++	}
++
+ 	err = sco_chan_add(conn, sk, NULL);
+ 	if (err) {
+ 		release_sock(sk);
++		hci_conn_drop(hcon);
+ 		goto unlock;
+ 	}
+ 
+@@ -601,13 +612,18 @@ static int sco_sock_connect(struct socket *sock, struct sockaddr *addr, int alen
+ 	    addr->sa_family != AF_BLUETOOTH)
+ 		return -EINVAL;
+ 
+-	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND)
++	lock_sock(sk);
++
++	if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND) {
++		release_sock(sk);
+ 		return -EBADFD;
++	}
+ 
+-	if (sk->sk_type != SOCK_SEQPACKET)
+-		err = -EINVAL;
++	if (sk->sk_type != SOCK_SEQPACKET) {
++		release_sock(sk);
++		return -EINVAL;
++	}
+ 
+-	lock_sock(sk);
+ 	/* Set destination address and psm */
+ 	bacpy(&sco_pi(sk)->dst, &sa->sco_bdaddr);
+ 	release_sock(sk);
+-- 
+2.53.0
+
 
 
 
