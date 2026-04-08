@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJ/mACec1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:19 +0200
+	id +McXHv6j1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857823C069F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2B83C1D0A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACAF7304E0FA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1799531A890D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12ED2385513;
-	Wed,  8 Apr 2026 18:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AD335CB6F;
+	Wed,  8 Apr 2026 18:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsLOEiQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsSqcaFc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF91B67E;
-	Wed,  8 Apr 2026 18:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55850351C2E;
+	Wed,  8 Apr 2026 18:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672177; cv=none; b=LAjaoUSiO/zWnENaMkC1XXe99vPMc2kl+1e8IevwCrTFAON2jgsmKCa5rvARu6yQ5R/NTVBipZDZSsA7xOV6Nz0irmRrQZ4YUWKWQdYtjrR3CfyXDUirtjM3EOl55+c4ncnoAV+EH5mQExCp9fmxRqTf+PiT/kxp7UU3lbgbgtY=
+	t=1775673313; cv=none; b=J6ZuzML8jQG/PmcSov3YnDjQMPNUATQ1guqFMHGs3hCA3T4h0RHANEdw186tWPqqBapWfnbYYCS83ojtamn0n6+daLEw5L2BT//HZ8grA+NTUl1TiS9qf9HruUtMU9YcfxJRXadd27dzAjQYXIP6V5D+plgcchbDF9uOIaRERj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672177; c=relaxed/simple;
-	bh=KJBkDsoqkJ8CgFCbkbrx3M16Ha2+mVbn2BhT4TFoDYQ=;
+	s=arc-20240116; t=1775673313; c=relaxed/simple;
+	bh=Y15BEEZ0xqpCn+EOkJYZnf4HWfx3TbjEibUlAvCoTCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnvl9Iw/zOEgZNQdHRRgu14pXg3LF5A+yAWBJ9bPUIkMQBySb8Yop4ABgbJ3PESJOpbzNw49C9G6YaJfwf2/bN85dKKYI+8/L0wI8yHTkZC4My2qrI7am/ZFWs2DYRBRVpBjVKP+h9Hy9csgGSwInwBXj8FcwPf1A8Bsh2GIEDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsLOEiQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61005C19421;
-	Wed,  8 Apr 2026 18:16:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oH0Rd+KMDvsHipP4msCZTis7LTYjrc5ytwymnCrJ99+Iot53AYYrMDRFO2nrIpzG3Q2K2crCsADXjyTX3bcAtNHosDNcSw1ej9cDPJVOzi60Oe2f0bqpe8Ye7YrVwq/qxuTvwaf77YKKZfHRQAXOqT8gYHO6SHJpdFnR/eSmEjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsSqcaFc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905DDC19421;
+	Wed,  8 Apr 2026 18:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672177;
-	bh=KJBkDsoqkJ8CgFCbkbrx3M16Ha2+mVbn2BhT4TFoDYQ=;
+	s=korg; t=1775673312;
+	bh=Y15BEEZ0xqpCn+EOkJYZnf4HWfx3TbjEibUlAvCoTCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsLOEiQlE4abLfdesMP43HyYGiGuETDEUkB7/7yApKFCnDHhisfDtrZdyTZAEn+E6
-	 PY4CBtqzjmHLtaQ96ri7YTQ3OCS0QPpNlToRYiVXIB3muu9wuekuxKknVnIF9944AV
-	 Gb/ga4ftcnRSxcRlgOBl2/c3TyVGEA0Rr4PZHps4=
+	b=lsSqcaFcw+3ssn51ayGcHoeCBEWHcjrWJguCLHq2tcOU29BAQfb4oqQzPc6K6HApc
+	 5zb8iKJzU2TtgTeL0tJAdqkcNK/HCqep2Lqg7YQTIxnaQh9uq1bvpZ+BddEiFZi8Is
+	 0hhZWy37hfCnbTA2dv2cxjJJn9iFYPwKqp8JV848=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 219/312] iio: dac: ad5770r: fix error return in ad5770r_read_raw()
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Prike Liang <Prike.Liang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 151/277] drm/amdgpu: fix the idr allocation flags
 Date: Wed,  8 Apr 2026 20:02:16 +0200
-Message-ID: <20260408175941.937964259@linuxfoundation.org>
+Message-ID: <20260408175939.511229271@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234613-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234175-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 857823C069F
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,alien8.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EC2B83C1D0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-commit c354521708175d776d896f8bdae44b18711eccb6 upstream.
+commit 62f553d60a801384336f5867967c26ddf3b17038 upstream.
 
-Return the error code from regmap_bulk_read() instead of 0 so
-that I/O failures are properly propagated.
+Fix the IDR allocation flags by using atomic GFP
+flags in non‑sleepable contexts to avoid the __might_sleep()
+complaint.
 
-Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  268.290239] [drm] Initialized amdgpu 3.64.0 for 0000:03:00.0 on minor 0
+[  268.294900] BUG: sleeping function called from invalid context at ./include/linux/sched/mm.h:323
+[  268.295355] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1744, name: modprobe
+[  268.295705] preempt_count: 1, expected: 0
+[  268.295886] RCU nest depth: 0, expected: 0
+[  268.296072] 2 locks held by modprobe/1744:
+[  268.296077]  #0: ffff8c3a44abd1b8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0xe4/0x210
+[  268.296100]  #1: ffffffffc1a6ea78 (amdgpu_pasid_idr_lock){+.+.}-{3:3}, at: amdgpu_pasid_alloc+0x26/0xe0 [amdgpu]
+[  268.296494] CPU: 12 UID: 0 PID: 1744 Comm: modprobe Tainted: G     U     OE       6.19.0-custom #16 PREEMPT(voluntary)
+[  268.296498] Tainted: [U]=USER, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[  268.296499] Hardware name: AMD Majolica-RN/Majolica-RN, BIOS RMJ1009A 06/13/2021
+[  268.296501] Call Trace:
+
+Fixes: 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ea56aa2625708eaf96f310032391ff37746310ef)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5770r.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/dac/ad5770r.c
-+++ b/drivers/iio/dac/ad5770r.c
-@@ -323,7 +323,7 @@ static int ad5770r_read_raw(struct iio_d
- 				       chan->address,
- 				       st->transf_buf, 2);
- 		if (ret)
--			return 0;
-+			return ret;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+@@ -68,8 +68,11 @@ int amdgpu_pasid_alloc(unsigned int bits
+ 		return -EINVAL;
  
- 		buf16 = st->transf_buf[0] + (st->transf_buf[1] << 8);
- 		*val = buf16 >> 2;
+ 	spin_lock(&amdgpu_pasid_idr_lock);
++	/* TODO: Need to replace the idr with an xarry, and then
++	 * handle the internal locking with ATOMIC safe paths.
++	 */
+ 	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
+-				 1U << bits, GFP_KERNEL);
++				 1U << bits, GFP_ATOMIC);
+ 	spin_unlock(&amdgpu_pasid_idr_lock);
+ 
+ 	if (pasid >= 0)
 
 
 
