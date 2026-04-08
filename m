@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIVBM1Ch1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:20 +0200
+	id 2KbeBj+k1mmUGwgAu9opvQ
+	(envelope-from <stable+bounces-235040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681AB3C1397
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7693C1DFE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A559D3027CC1
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C6AD300AD9D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064BE3D6694;
-	Wed,  8 Apr 2026 18:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB693D75C9;
+	Wed,  8 Apr 2026 18:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Afa1620c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN7I69KF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7523624B0;
-	Wed,  8 Apr 2026 18:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52361337B81;
+	Wed,  8 Apr 2026 18:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673678; cv=none; b=PGAl6X24jodsvTyAPNin9/i3CCvoduvqCItOp9/2zZiVHKGqGlYFaBtY2sTL4GXqUC+A/lPKTEhIHe7dfatYt2TAJcoCcQopmlo1C6ObL51/oCD2Wuvu7J6f1bnXq1NMSuiQIYOE2KrRbX7oJoVb4Vudq+rCSTXFsasT12TmAVc=
+	t=1775674415; cv=none; b=SWeZ2qmnWFOy0Ng8OJTxygB1vAmNh4H6TZvHekoNuGyNOMYESaWh96KBCU+7Nwkj4JRlMa8mW+qcMLscY7XWxUXzmqtvG8Yyj0txsn1Lm47bPVToos1MX6e51t+mQeCerUkjMimZsz+bmcfgFAKfSk/P7g7BNfFzNLWljs5Eq10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673678; c=relaxed/simple;
-	bh=bDAZWNXD40VU5JBzeUITB98NAoVvRM/s6sj9wG94ttY=;
+	s=arc-20240116; t=1775674415; c=relaxed/simple;
+	bh=/6wfnpR8Q8hgALI+nIXR/BxFxWJd71XvtKKKVW+x8As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mn64uAW5swBDXE3APm5/dkONmk+kvUK1OkzN5qVpuSf+VcpeadexjKfrdVZqwGaVx5W39cgc06pQc/+Zrm0i5c/hxZ+WuR+dXLeHZJ8PEyxmej+g2Z/ZrFG5POBmUn9SmBvfKVeoAmUyHnfIr4Tbss6liUoE50sBqGj3Oynjui0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Afa1620c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7C8C19421;
-	Wed,  8 Apr 2026 18:41:18 +0000 (UTC)
+	 MIME-Version; b=R/cJZgccQDhxKPaqOrvgO2q/K1nRVOtRNUpll+zG6uOiqFx7PMsvjPx920pKaaKYMqJkG93s+uG6vh3tw9Xlc191FewI8f+GKNMlH8jMCefnadoa0jpalqd9hSxuMf3awIlhnnFCIctiJkkYEzQcreK9ekcH20zexg8p3JM+Js4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN7I69KF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB626C19421;
+	Wed,  8 Apr 2026 18:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673678;
-	bh=bDAZWNXD40VU5JBzeUITB98NAoVvRM/s6sj9wG94ttY=;
+	s=korg; t=1775674415;
+	bh=/6wfnpR8Q8hgALI+nIXR/BxFxWJd71XvtKKKVW+x8As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Afa1620c5wNf6FyXwTLiKZEwNS20gyeOllKJPxos8ClNzCid5PIX69VcqDeT8XYvd
-	 glGsGcanqEuU+ddTt6ADxT5KNN8j4cygRVpEoGdDAHK2KP/rgA5qICWfvKNqzlPKZe
-	 j3ttqePKvjtJzt+XFRN7+Ymm0b7XZU5eWT1T6pfs=
+	b=ZN7I69KFxuwDrFuMcXf90ZTIU4m8P/JlAu7FYUZjLphoGgBA/A6YWs/ZU18c1rzth
+	 Tdu3lYi7AtfojtNO7Va2hOi1Lix+TDQJxkod63Z5GpY7yRzOii9WVRdBEggyJlUcTH
+	 Q8ycluNuXI2C6j8gBa3eLi1l6HqjUuVcjIdowukM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	kernel test robot <lkp@intel.com>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/242] net/ipv6: ioam6: prevent schema length wraparound in trace fill
+Subject: [PATCH 6.19 088/311] netfilter: ctnetlink: zero expect NAT fields when CTA_EXPECT_NAT absent
 Date: Wed,  8 Apr 2026 20:01:28 +0200
-Message-ID: <20260408175928.869770551@linuxfoundation.org>
+Message-ID: <20260408175942.699801554@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +65,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234755-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,gmail.com,davemloft.net,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-235040-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,davemloft.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 681AB3C1397
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,netfilter.org:email]
+X-Rspamd-Queue-Id: 7C7693C1DFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Qi Tang <tpluszz77@gmail.com>
 
-[ Upstream commit 5e67ba9bb531e1ec6599a82a065dea9040b9ce50 ]
+[ Upstream commit 35177c6877134a21315f37d57a5577846225623e ]
 
-ioam6_fill_trace_data() stores the schema contribution to the trace
-length in a u8. With bit 22 enabled and the largest schema payload,
-sclen becomes 1 + 1020 / 4, wraps from 256 to 0, and bypasses the
-remaining-space check. __ioam6_fill_trace_data() then positions the
-write cursor without reserving the schema area but still copies the
-4-byte schema header and the full schema payload, overrunning the trace
-buffer.
+ctnetlink_alloc_expect() allocates expectations from a non-zeroing
+slab cache via nf_ct_expect_alloc().  When CTA_EXPECT_NAT is not
+present in the netlink message, saved_addr and saved_proto are
+never initialized.  Stale data from a previous slab occupant can
+then be dumped to userspace by ctnetlink_exp_dump_expect(), which
+checks these fields to decide whether to emit CTA_EXPECT_NAT.
 
-Keep sclen in an unsigned int so the remaining-space check and the write
-cursor calculation both see the full schema length.
+The safe sibling nf_ct_expect_init(), used by the packet path,
+explicitly zeroes these fields.
 
-Fixes: 8c6f6fa67726 ("ipv6: ioam: IOAM Generic Netlink API")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Zero saved_addr, saved_proto and dir in the else branch, guarded
+by IS_ENABLED(CONFIG_NF_NAT) since these fields only exist when
+NAT is enabled.
+
+Confirmed by priming the expect slab with NAT-bearing expectations,
+freeing them, creating a new expectation without CTA_EXPECT_NAT,
+and observing that the ctnetlink dump emits a spurious
+CTA_EXPECT_NAT containing stale data from the prior allocation.
+
+Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ioam6.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
-index b6ed67d7027c1..868a25c57b924 100644
---- a/net/ipv6/ioam6.c
-+++ b/net/ipv6/ioam6.c
-@@ -712,7 +712,7 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
- 				    struct ioam6_namespace *ns,
- 				    struct ioam6_trace_hdr *trace,
- 				    struct ioam6_schema *sc,
--				    u8 sclen, bool is_input)
-+				    unsigned int sclen, bool is_input)
- {
- 	struct timespec64 ts;
- 	ktime_t tstamp;
-@@ -942,7 +942,7 @@ void ioam6_fill_trace_data(struct sk_buff *skb,
- 			   bool is_input)
- {
- 	struct ioam6_schema *sc;
--	u8 sclen = 0;
-+	unsigned int sclen = 0;
- 
- 	/* Skip if Overflow flag is set
- 	 */
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index fea750653e967..3b5da5e7e9d27 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3576,6 +3576,12 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 						 exp, nf_ct_l3num(ct));
+ 		if (err < 0)
+ 			goto err_out;
++#if IS_ENABLED(CONFIG_NF_NAT)
++	} else {
++		memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
++		memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
++		exp->dir = 0;
++#endif
+ 	}
+ 	return exp;
+ err_out:
 -- 
 2.53.0
 
