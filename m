@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-234303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCaOHHuf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:31 +0200
+	id t6btJ2Wj1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28173C0F48
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 146813C1B68
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4EE93034E1C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8C5F30E051F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECCE3D4129;
-	Wed,  8 Apr 2026 18:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9B4328B75;
+	Wed,  8 Apr 2026 18:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMzwbU6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEZNTeNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6168A3ACA41;
-	Wed,  8 Apr 2026 18:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E563624B0;
+	Wed,  8 Apr 2026 18:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672509; cv=none; b=CVoiu3vpRJTL/5fnQHZjtby5XikmKq3FVjP4lHBWMco0QZDfIjEgF7iYg1dQRjQX69kxWwjle6EO+gGCNn6x6K3etdpL90ForGccp2vu3Q5cj1RzCHONND9niolyPneOBnWHKItmGS7qxXsX5lUr5QB4LnJyxxtyViTibU9B/YI=
+	t=1775673173; cv=none; b=BcjGrC5u9lukQz3wNwl2dO9bkyqnJaW7pesDwHfffpracFZk8BRLSeneqbQ72M0hsBe+URCSD7HSU2xpU/PGHfos73Zu94I3cAhGXb3lW5CY5mQ7gwP/irgyhZodYJKlbT4vGvAWQuwRaMVRCagROK3993xfc37A/H/2krug+hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672509; c=relaxed/simple;
-	bh=W/TSDni4HC5gN81YEZ6bojk89bw4nvKT+cx4X34zppI=;
+	s=arc-20240116; t=1775673173; c=relaxed/simple;
+	bh=1rqxBKbtsGxMp62K+S44MXraGX71PDsL6I9rLy4G78I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r/x4Ch7DidXrYEoLyBvcTqfT9UiAoCYEaTf30Z0uiYii1ljEhxzTU1tBO1CNIh4SyokRto7S9+ve38dB5QAkd+INOhrwXlqLd7RYC9FeBR7Jpq1weK+M1CmdCNjktBpqSD5fpp36YzCSNlLzQEMjDHvKiyFZh6PzQHjtVYnlMng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMzwbU6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE778C19421;
-	Wed,  8 Apr 2026 18:21:48 +0000 (UTC)
+	 MIME-Version; b=eDlhZC6w2izIuVbCDbpeUYQicJodySHxJgRO4esYz2/sNUXupousXIIhjPOqLJsB3XIJ54E5DGLUN+svepV5NyiyU1Re0mvqfklFUvjmrqtbxADtlAouVPy87Fr6I3KJUEbTs2x/cSBXjeQGsjE/eTjtH33YncaB4D+JWiGyo0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEZNTeNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D352C19425;
+	Wed,  8 Apr 2026 18:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672509;
-	bh=W/TSDni4HC5gN81YEZ6bojk89bw4nvKT+cx4X34zppI=;
+	s=korg; t=1775673173;
+	bh=1rqxBKbtsGxMp62K+S44MXraGX71PDsL6I9rLy4G78I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMzwbU6wHK7jzLAtV3PQj2WQQXU9hK+fII+ilrjyDzrZzEyiMhWj9lqVrdJ4ZCR/r
-	 Ft9PPNQzthM6Ow9lBL+qhSW+H4/gHvzAMD19NDT8eFITYIVBqnyFiZy28QaD4k4NwL
-	 cm7tCrCpah/GKJdf+ba/jSq1oALPfaO3M226x3i4=
+	b=XEZNTeNpO8r3b8BnCfEo3+C++FQpQ5cQzlBdRic243FcB3OeBWmhkyw8eh+MSmfke
+	 gVIxYdneFEmnMeysfIygO4YrYEkJtkZPtGKiU7gqRltIBXOTvb/8Z0Dm3zEkl1ASbx
+	 EfEsq7e9w0PTMwC5YK4LUzvgDB2sLS0OvxUGyeAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/160] ASoC: ep93xx: Fix unchecked clk_prepare_enable() and add rollback on failure
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 129/277] drm/ioc32: stop speculation on the drm_compat_ioctl path
 Date: Wed,  8 Apr 2026 20:01:54 +0200
-Message-ID: <20260408175914.224859019@linuxfoundation.org>
+Message-ID: <20260408175938.692348442@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +66,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234303-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
+	TAGGED_FROM(0.00)[bounces-234559-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F28173C0F48
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ffwll.ch:email]
+X-Rspamd-Queue-Id: 146813C1B68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 622363757b2286dd2c2984b0d80255cbb35a0495 ]
+commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
 
-ep93xx_i2s_enable() calls clk_prepare_enable() on three clocks in
-sequence (mclk, sclk, lrclk) without checking the return value of any
-of them. If an intermediate enable fails, the clocks that were already
-enabled are never rolled back, leaking them until the next disable cycle
-— which may never come if the stream never started cleanly.
+The drm compat ioctl path takes a user controlled pointer, and then
+dereferences it into a table of function pointers, the signature method
+of spectre problems.  Fix this up by calling array_index_nospec() on the
+index to the function pointer list.
 
-Change ep93xx_i2s_enable() from void to int. Add error checking after
-each clk_prepare_enable() call and unwind already-enabled clocks on
-failure. Propagate the error through ep93xx_i2s_startup() and
-ep93xx_i2s_resume(), both of which already return int.
-
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Fixes: f4ff6b56bc8a ("ASoC: cirrus: i2s: Prepare clock before using it")
-Link: https://patch.msgid.link/20260324210909.45494-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Simona Vetter <simona@ffwll.ch>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/cirrus/ep93xx-i2s.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/drm_ioc32.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/cirrus/ep93xx-i2s.c b/sound/soc/cirrus/ep93xx-i2s.c
-index 522de4b802939..a13fb1243379e 100644
---- a/sound/soc/cirrus/ep93xx-i2s.c
-+++ b/sound/soc/cirrus/ep93xx-i2s.c
-@@ -105,16 +105,28 @@ static inline unsigned ep93xx_i2s_read_reg(struct ep93xx_i2s_info *info,
- 	return __raw_readl(info->regs + reg);
- }
+--- a/drivers/gpu/drm/drm_ioc32.c
++++ b/drivers/gpu/drm/drm_ioc32.c
+@@ -28,6 +28,7 @@
+  * IN THE SOFTWARE.
+  */
+ #include <linux/compat.h>
++#include <linux/nospec.h>
+ #include <linux/ratelimit.h>
+ #include <linux/export.h>
  
--static void ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
-+static int ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
- {
- 	unsigned base_reg;
-+	int err;
+@@ -374,6 +375,7 @@ long drm_compat_ioctl(struct file *filp,
+ 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
+ 		return drm_ioctl(filp, cmd, arg);
  
- 	if ((ep93xx_i2s_read_reg(info, EP93XX_I2S_TX0EN) & 0x1) == 0 &&
- 	    (ep93xx_i2s_read_reg(info, EP93XX_I2S_RX0EN) & 0x1) == 0) {
- 		/* Enable clocks */
--		clk_prepare_enable(info->mclk);
--		clk_prepare_enable(info->sclk);
--		clk_prepare_enable(info->lrclk);
-+		err = clk_prepare_enable(info->mclk);
-+		if (err)
-+			return err;
-+		err = clk_prepare_enable(info->sclk);
-+		if (err) {
-+			clk_disable_unprepare(info->mclk);
-+			return err;
-+		}
-+		err = clk_prepare_enable(info->lrclk);
-+		if (err) {
-+			clk_disable_unprepare(info->sclk);
-+			clk_disable_unprepare(info->mclk);
-+			return err;
-+		}
- 
- 		/* Enable i2s */
- 		ep93xx_i2s_write_reg(info, EP93XX_I2S_GLCTRL, 1);
-@@ -133,6 +145,8 @@ static void ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
- 		ep93xx_i2s_write_reg(info, EP93XX_I2S_TXCTRL,
- 				     EP93XX_I2S_TXCTRL_TXEMPTY_LVL |
- 				     EP93XX_I2S_TXCTRL_TXUFIE);
-+
-+	return 0;
- }
- 
- static void ep93xx_i2s_disable(struct ep93xx_i2s_info *info, int stream)
-@@ -214,9 +228,7 @@ static int ep93xx_i2s_startup(struct snd_pcm_substream *substream,
- {
- 	struct ep93xx_i2s_info *info = snd_soc_dai_get_drvdata(dai);
- 
--	ep93xx_i2s_enable(info, substream->stream);
--
--	return 0;
-+	return ep93xx_i2s_enable(info, substream->stream);
- }
- 
- static void ep93xx_i2s_shutdown(struct snd_pcm_substream *substream,
-@@ -392,14 +404,16 @@ static int ep93xx_i2s_suspend(struct snd_soc_component *component)
- static int ep93xx_i2s_resume(struct snd_soc_component *component)
- {
- 	struct ep93xx_i2s_info *info = snd_soc_component_get_drvdata(component);
-+	int err;
- 
- 	if (!snd_soc_component_active(component))
- 		return 0;
- 
--	ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_PLAYBACK);
--	ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_CAPTURE);
-+	err = ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_PLAYBACK);
-+	if (err)
-+		return err;
- 
--	return 0;
-+	return ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_CAPTURE);
- }
- #else
- #define ep93xx_i2s_suspend	NULL
--- 
-2.53.0
-
++	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
+ 	fn = drm_compat_ioctls[nr].fn;
+ 	if (!fn)
+ 		return drm_ioctl(filp, cmd, arg);
 
 
 
