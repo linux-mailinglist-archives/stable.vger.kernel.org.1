@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +OezEcKb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:38 +0200
+	id gIVOMx6i1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CE33C05A2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982443C1693
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7409F3015D1D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01484302C486
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FB5385513;
-	Wed,  8 Apr 2026 18:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8083D4134;
+	Wed,  8 Apr 2026 18:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njUI6qiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+PO/iYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767E9B67E;
-	Wed,  8 Apr 2026 18:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5321A285;
+	Wed,  8 Apr 2026 18:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672255; cv=none; b=Dhk6CxWLTx92+D+pQzAEnaorK+M1JNBnY8h5WzFENHHZyzmx9RaD3ns1tKaVs4O9DnMqat4NlayJrnwhbJieuBoE5Fy7LLkx5RUScGjFi1ZInHrbsl5LU+Kl2C/j2rdj8yC5O0R8s8G4GHYVDetps+abH4Yogz/7354ecDzU0wc=
+	t=1775673884; cv=none; b=Rrk35G1GGvyQlPv2xdKKgUQvzIIo1d9DLrvDZetWwc+v+xq9qNrlID8CRXB8fTnRnnDN5Xh3Qggduv5Ow5IAAdH28Xm/yGBVYHQbgOp9+OLk83ww04ZjvVc6QodA5IsjxITyDsVfNhCJ+MViZQUVDPCujHGTn4UpEIDxBQNfFjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672255; c=relaxed/simple;
-	bh=dsQB7hgZkD6w/E2waNkCUq+gCZu2xDjKbcxVfBGVufo=;
+	s=arc-20240116; t=1775673884; c=relaxed/simple;
+	bh=UFSubLCLYrQERRLFvtCFg0Ez1BRg3M+HVvug7eqXCgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idLyGdhayNxgEls8YAP6o7k1AnwOFx6482LifE2UatC2bu9shtpH4vEA/IyhsQVWW94d2vrn2U34lFFR2rVgoQbG9VzqycjgZ1nbuoSYNdybZgGPvUMvcgk18lxtI1iqJd+ChrjGvcx5TQbOYJbX+zydAMvvRsKRUI77cj1Ttb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njUI6qiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AB5C19421;
-	Wed,  8 Apr 2026 18:17:34 +0000 (UTC)
+	 MIME-Version; b=kVSYfXmzvyF0Q2a1f2t22dOoSuOLSy/h+alyW6Anf/u15nJPxAimFbaBNkS6quvPgheoNiWmy4yf6BnIR9bywI+mngxcBAaalT0dpHd/rlRYLVHhUnp8thRCEicDpK9RhogluVIqOTBvj0mE9V7Vk3KabYk7t1xSzBFCmbdW6XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+PO/iYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADFDC19421;
+	Wed,  8 Apr 2026 18:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672255;
-	bh=dsQB7hgZkD6w/E2waNkCUq+gCZu2xDjKbcxVfBGVufo=;
+	s=korg; t=1775673884;
+	bh=UFSubLCLYrQERRLFvtCFg0Ez1BRg3M+HVvug7eqXCgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njUI6qivm8Rd3DQUADdqARY3Wd6Sb1uhcJ/6ORc7P3NqkzCYy6GVbCRLP2RCSNtjD
-	 di8Vd/SAVnIkKsxHFV2251hutbTlNzJzQqIjD+Bwu71104Zq6LRNORGs7cdL1ZVGya
-	 a+UWubWctZUey7j2oKLpRdTXYjJliHdEepKoZLd8=
+	b=l+PO/iYlEfi7CmqbCuzDh6tgCyravygB7CZqlYK0guok/Hk00hhF0q7Ew2hNk8wo8
+	 Ajcwz7eINShyc1D8pardl8eGn2ElvhQt+ouUFVIcW2CnNO20avMkL3z68k10g2B3aw
+	 97cbxAdi7sun2LslYuPzhWPC4EZ/rS1Vz4oLp/34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 249/312] comedi: me_daq: Fix potential overrun of firmware buffer
+	kernel test robot <lkp@intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 126/242] MIPS: Fix the GCC version check for `__multi3 workaround
 Date: Wed,  8 Apr 2026 20:02:46 +0200
-Message-ID: <20260408175943.045331423@linuxfoundation.org>
+Message-ID: <20260408175931.804321693@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234205-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234834-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,95 +87,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 12CE33C05A2
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,orcam.me.uk:email,franken.de:email,intel.com:email,gnu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 982443C1693
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit cc797d4821c754c701d9714b58bea947e31dbbe0 upstream.
+commit ec8bf18814915460d9c617b556bf024efef26613 upstream.
 
-`me2600_xilinx_download()` loads the firmware that was requested by
-`request_firmware()`.  It is possible for it to overrun the source
-buffer because it blindly trusts the file format.  It reads a data
-stream length from the first 4 bytes into variable `file_length` and
-reads the data stream contents of length `file_length` from offset 16
-onwards.  Although it checks that the supplied firmware is at least 16
-bytes long, it does not check that it is long enough to contain the data
-stream.
+It was only GCC 10 that fixed a MIPS64r6 code generation issue with a
+`__multi3' libcall inefficiently produced to perform 64-bit widening
+multiplication while suitable machine instructions exist to do such a
+calculation.  The fix went in with GCC commit 48b2123f6336 ("re PR
+target/82981 (unnecessary __multi3 call for mips64r6 linux kernel)").
 
-Add a test to ensure that the supplied firmware is long enough to
-contain the header and the data stream.  On failure, log an error and
-return `-EINVAL`.
+Adjust our code accordingly, removing build failures such as:
 
-Fixes: 85acac61096f9 ("Staging: comedi: add me_daq driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260205140130.76697-1-abbotti@mev.co.uk
+mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
+div64.c:(.text+0x84): undefined reference to `__multi3'
+
+with the GCC versions affected.
+
+Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v4.15+
+Reviewed-by: David Laight <david.laight.linux@gmail.com.
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/me_daq.c |   35 +++++++++++++++++++----------------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+ arch/mips/lib/multi3.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/comedi/drivers/me_daq.c
-+++ b/drivers/comedi/drivers/me_daq.c
-@@ -344,6 +344,25 @@ static int me2600_xilinx_download(struct
- 	unsigned int file_length;
- 	unsigned int i;
+--- a/arch/mips/lib/multi3.c
++++ b/arch/mips/lib/multi3.c
+@@ -4,12 +4,12 @@
+ #include "libgcc.h"
  
-+	/*
-+	 * Format of the firmware
-+	 * Build longs from the byte-wise coded header
-+	 * Byte 1-3:   length of the array
-+	 * Byte 4-7:   version
-+	 * Byte 8-11:  date
-+	 * Byte 12-15: reserved
-+	 */
-+	if (size >= 4) {
-+		file_length = (((unsigned int)data[0] & 0xff) << 24) +
-+			      (((unsigned int)data[1] & 0xff) << 16) +
-+			      (((unsigned int)data[2] & 0xff) << 8) +
-+			      ((unsigned int)data[3] & 0xff);
-+	}
-+	if (size < 16 || file_length > size - 16) {
-+		dev_err(dev->class_dev, "Firmware length inconsistency\n");
-+		return -EINVAL;
-+	}
-+
- 	/* disable irq's on PLX */
- 	writel(0x00, devpriv->plx_regbase + PLX9052_INTCSR);
+ /*
+- * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
++ * GCC 9 & older can suboptimally generate __multi3 calls for mips64r6, so for
+  * that specific case only we implement that intrinsic here.
+  *
+  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
+  */
+-#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
++#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 10)
  
-@@ -358,22 +377,6 @@ static int me2600_xilinx_download(struct
- 	sleep(1);
+ /* multiply 64-bit values, low 64-bits returned */
+ static inline long long notrace dmulu(long long a, long long b)
+@@ -51,4 +51,4 @@ ti_type notrace __multi3(ti_type a, ti_t
+ }
+ EXPORT_SYMBOL(__multi3);
  
- 	/*
--	 * Format of the firmware
--	 * Build longs from the byte-wise coded header
--	 * Byte 1-3:   length of the array
--	 * Byte 4-7:   version
--	 * Byte 8-11:  date
--	 * Byte 12-15: reserved
--	 */
--	if (size < 16)
--		return -EINVAL;
--
--	file_length = (((unsigned int)data[0] & 0xff) << 24) +
--	    (((unsigned int)data[1] & 0xff) << 16) +
--	    (((unsigned int)data[2] & 0xff) << 8) +
--	    ((unsigned int)data[3] & 0xff);
--
--	/*
- 	 * Loop for writing firmware byte by byte to xilinx
- 	 * Firmware data start at offset 16
- 	 */
+-#endif /* 64BIT && CPU_MIPSR6 && GCC7 */
++#endif /* 64BIT && CPU_MIPSR6 && GCC9 */
 
 
 
