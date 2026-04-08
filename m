@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKnFM4Of1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:39 +0200
+	id QHx1Hl+b1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6753C0F74
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE5A3C04AF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1351A300DDDB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F30AC300BCB7
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1DE3AF646;
-	Wed,  8 Apr 2026 18:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE880385513;
+	Wed,  8 Apr 2026 18:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYU2I5JB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HamIwFhR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68532494F0;
-	Wed,  8 Apr 2026 18:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826262727F3;
+	Wed,  8 Apr 2026 18:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672519; cv=none; b=BSQLIpiVfAj13KGNB+1Fq9dwtATf/Nuy6FPW/VglkZK3fG/j+CQr9Ru91TNdB49rLSXwai/4C9pztHZ95jg2gn4QBXM2nrgGvUhPFYyLhHQigQsAy6ehwK7Eb5WlMaPCoq9lwP11q8nrJVKY/sbxRghRXb5M7XfVwLlyYLqHvc0=
+	t=1775672149; cv=none; b=Gsd28aJZEIOr6ibTUkctHcvhg3KMprZZyWRi9n1zakuthUxkpHGIiNEIw5zKMayrr+Vd+56+c3PNByogBSZDYZU7JJayjPZ6xN0OAmY8qfGlSPC32oecf3/+Lv0mKhYcyn5X8EDsWuM70psZIGXkknIwTQKidx100D2mGt76FjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672519; c=relaxed/simple;
-	bh=u4RQZJAUpU64wT9aO1L9e5S1L5AOaKimx73XDH4cStw=;
+	s=arc-20240116; t=1775672149; c=relaxed/simple;
+	bh=cpZIUfyht+Uv5e8/oRx1BRePF4xghTtaSWTO2NUTCcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqKfEX4sJryKua0aKrNoOID0a7lOWoEf82BlHpwv8Rldd2yWJaac+7dAY0vCWlSwJOyxsBYenniToHTMNBoaodkI/rbH6xkfTD8cfJhigkp+8mJEftRQBw1eEh5re9WEeO4493Fszub9su7+IsXeYhuup70+jcZOW7rElX+tRds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYU2I5JB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDE4C19421;
-	Wed,  8 Apr 2026 18:21:59 +0000 (UTC)
+	 MIME-Version; b=GMbkxp0A/Vnn9HpI8uvi84GeWxu2Hx4qLotEUz7O9m1r3kgnCk2xV1FAqB2gxtnBrg1KKDC+tbCV/a9Pcdo8Pp017jTcKDr1kSDtuW+41oHygDZS6UZhbWs4Ul0e6xQ8WIYFLraZHs1QN8Tyq935+ocrTQ2IG3/hTsugr4CSrIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HamIwFhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175E0C19421;
+	Wed,  8 Apr 2026 18:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672519;
-	bh=u4RQZJAUpU64wT9aO1L9e5S1L5AOaKimx73XDH4cStw=;
+	s=korg; t=1775672149;
+	bh=cpZIUfyht+Uv5e8/oRx1BRePF4xghTtaSWTO2NUTCcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vYU2I5JBsFfoxBxe1KE6ytq8xNjRM8d7GcazPjD1/LV03wq010oD/3Aq0+dwjw9Gg
-	 TjaVWVAyVKjKPds/NwP+4G7NGSAPiv2psXucBrB0w0YNTjxkLz7OH5SyeFJ7ggi+8u
-	 xTOV/V5PC3qTTzfE7sKqF1mrMDQZZEgfVuQAgHsc=
+	b=HamIwFhR5Zp+Bnh0YWm8QuoEWNiQGVocYLO2PwmvaXRVnvghThQGnw6T4wraro9Xq
+	 ATUQs8OvoQdH/eO8uA34Fa7s7fs80EXEl0JHCbK8B3b+D3jkmchpNnm3rEkRqT+dyC
+	 AW0XVip7M3dwlCH8FI0YG+Ojow2Gow9xEBdWtGXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/160] netfilter: ctnetlink: zero expect NAT fields when CTA_EXPECT_NAT absent
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 209/312] iio: adc: ti-adc161s626: fix buffer read on big-endian
 Date: Wed,  8 Apr 2026 20:02:06 +0200
-Message-ID: <20260408175914.668766145@linuxfoundation.org>
+Message-ID: <20260408175941.566362986@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +68,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234307-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234164-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5F6753C0F74
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7AE5A3C04AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 35177c6877134a21315f37d57a5577846225623e ]
+commit 24869650dff34a6fc8fd1cc91b2058a72f9abc95 upstream.
 
-ctnetlink_alloc_expect() allocates expectations from a non-zeroing
-slab cache via nf_ct_expect_alloc().  When CTA_EXPECT_NAT is not
-present in the netlink message, saved_addr and saved_proto are
-never initialized.  Stale data from a previous slab occupant can
-then be dumped to userspace by ctnetlink_exp_dump_expect(), which
-checks these fields to decide whether to emit CTA_EXPECT_NAT.
+Rework ti_adc_trigger_handler() to properly handle data on big-endian
+architectures. The scan data format is 16-bit CPU-endian, so we can't
+cast it to a int * on big-endian and expect it to work. Instead, we
+introduce a local int variable to read the data into, and then copy it
+to the buffer.
 
-The safe sibling nf_ct_expect_init(), used by the packet path,
-explicitly zeroes these fields.
+Since the buffer isn't passed to any SPI functions, we don't need it to
+be DMA-safe. So we can drop it from the driver data struct and just
+use stack memory for the scan data.
 
-Zero saved_addr, saved_proto and dir in the else branch, guarded
-by IS_ENABLED(CONFIG_NF_NAT) since these fields only exist when
-NAT is enabled.
+Since there is only one data value (plus timestamp), we don't need an
+array and can just declare a struct with the correct data type instead.
 
-Confirmed by priming the expect slab with NAT-bearing expectations,
-freeing them, creating a new expectation without CTA_EXPECT_NAT,
-and observing that the ctnetlink dump emits a spurious
-CTA_EXPECT_NAT containing stale data from the prior allocation.
+Also fix alignment of iio_get_time_ns() to ( while we are touching this.
 
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4d671b71beef ("iio: adc: ti-adc161s626: add support for TI 1-channel differential ADCs")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/adc/ti-adc161s626.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 718526867ffdc..d980f462714a9 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3565,6 +3565,12 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 						 exp, nf_ct_l3num(ct));
- 		if (err < 0)
- 			goto err_out;
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+	} else {
-+		memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
-+		memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
-+		exp->dir = 0;
-+#endif
- 	}
- 	return exp;
- err_out:
--- 
-2.53.0
-
+--- a/drivers/iio/adc/ti-adc161s626.c
++++ b/drivers/iio/adc/ti-adc161s626.c
+@@ -70,8 +70,6 @@ struct ti_adc_data {
+ 
+ 	u8 read_size;
+ 	u8 shift;
+-
+-	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+ static int ti_adc_read_measurement(struct ti_adc_data *data,
+@@ -114,15 +112,20 @@ static irqreturn_t ti_adc_trigger_handle
+ 	struct iio_poll_func *pf = private;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct ti_adc_data *data = iio_priv(indio_dev);
+-	int ret;
++	struct {
++		s16 data;
++		aligned_s64 timestamp;
++	} scan = { };
++	int ret, val;
++
++	ret = ti_adc_read_measurement(data, &indio_dev->channels[0], &val);
++	if (ret)
++		goto exit_notify_done;
+ 
+-	ret = ti_adc_read_measurement(data, &indio_dev->channels[0],
+-				     (int *) &data->buffer);
+-	if (!ret)
+-		iio_push_to_buffers_with_timestamp(indio_dev,
+-					data->buffer,
+-					iio_get_time_ns(indio_dev));
++	scan.data = val;
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+ 
++ exit_notify_done:
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
 
 
