@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPZYEd+c1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:23 +0200
+	id IBgTKA2l1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1436A3C085C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43CD3C20C7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 23E7D3027CE2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 44F30303BE01
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695B53ACA41;
-	Wed,  8 Apr 2026 18:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4133D9031;
+	Wed,  8 Apr 2026 18:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQrzjoQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7ONWAis"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFA62494F0;
-	Wed,  8 Apr 2026 18:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F50F28980F;
+	Wed,  8 Apr 2026 18:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672473; cv=none; b=bwXs3WHaBHnPCTABNT+uBr/mj4luwRV8MHcQxaTcQCvIZ4zp2IUMS3Trl/QE6LVeZKOGoSjrvJ5zTHrd2W6Eg4ZGGr/IemTYYnsCC5146vLjYkO4ylgyqsXpEnX+z9GuNc+GTguc2q7DQCa6DYPgURpbOH4nSDiWmyMglOXwFhA=
+	t=1775674546; cv=none; b=BkMlek7yoICZomy5ehQtabC+WFeVRuv7mPnZLCYTwbA2t++8pAI8BOZw6lmMMriYShggzqDw7QJ1rsvGoUNxC0KE4aua/jBg0V0/bfuKcAHBtprzjIZqGPDNdeIrY2yrG1Q0WJQIAtankpEvexPlx42n7zrBQ2bgwaQlmeX9LNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672473; c=relaxed/simple;
-	bh=a9bsNPsLUP7H/uJCdSRoo8dhNTi0b7WD53TaxgZKZRE=;
+	s=arc-20240116; t=1775674546; c=relaxed/simple;
+	bh=a8n0Sr0FRdfWUyd78zKRzBJEICZngj1nknza1uWCRl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FmK0YdxwnGJZNpws6hjrYP4W89bzvRWmM56zFFobFBgycruQcnU6IxkoPX1bU+1LN7Sj58Rq3Ksd150LooaEeFvkxht+wXtP3uUxapOefR6g/kqsANU8QZS8B73rAEnVtBlk9COeefcXbbLhjbcPqNLQLCBWFppMoQV3NwvK2d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQrzjoQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E36C19421;
-	Wed,  8 Apr 2026 18:21:12 +0000 (UTC)
+	 MIME-Version; b=OIEMjzyb4M8FJO1rT09BOz/ri2/upZmxtF+5Bjvo8CsX83ECWSsMYSFGgPcEIPnNmShaCXhYlwLAaVwf0jswITSjI00sJM9tm+zxIMQe7SsSJlJd6iF8suMDdwG2Y/h4Xh8YVAkqepLHG0mWT3dX/OSY/gjj4GTLsCr14XSgkKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7ONWAis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092C2C19421;
+	Wed,  8 Apr 2026 18:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672473;
-	bh=a9bsNPsLUP7H/uJCdSRoo8dhNTi0b7WD53TaxgZKZRE=;
+	s=korg; t=1775674546;
+	bh=a8n0Sr0FRdfWUyd78zKRzBJEICZngj1nknza1uWCRl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQrzjoQtbuwEdIjVG6njqpNnzjmGITGuJqiugdiRsJbD7zMsVTe+WXqfkafJkuTAq
-	 CxCJlrdzX8mbIdfI2DbhAkYv7FKNqDY020oSs7eZkJ+OulY8stYlfJuslwCWOP5A4Z
-	 1OePMwdiO0+PXF2fBEDxsLHu7BN2pDeFB5qcXiQ4=
+	b=w7ONWAisKufyDB4MVMsQPIvyM5HN0akavAR4f7D5usgsS0rlb3Y3M1ZaRV4I5qFSf
+	 17RUhAlcbvWssyPCI1vpAVGnIEwHr8IBJrca2elMagl2eETXO2un527cezHMxbvLxA
+	 avyigVX/KgD49j/FBPzAyPI/DIodjKzy5HWtu/1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yochai Eisenrich <echelonh@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+2184232f07e3677fbaef@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/160] net: ipv6: ndisc: fix ndisc_ra_useropt to initialize nduseropt_padX fields to zero to prevent an info-leak
+Subject: [PATCH 6.19 107/311] bpf: sockmap: Fix use-after-free of sk->sk_socket in sk_psock_verdict_data_ready().
 Date: Wed,  8 Apr 2026 20:01:47 +0200
-Message-ID: <20260408175913.952479459@linuxfoundation.org>
+Message-ID: <20260408175943.409585804@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +66,178 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234289-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235091-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,2184232f07e3677fbaef];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1436A3C085C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,appspotmail.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A43CD3C20C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yochai Eisenrich <echelonh@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit ae05340ccaa9d347fe85415609e075545bec589f ]
+[ Upstream commit ad8391d37f334ee73ba91926f8b4e4cf6d31ea04 ]
 
-When processing Router Advertisements with user options the kernel
-builds an RTM_NEWNDUSEROPT netlink message. The nduseroptmsg struct
-has three padding fields that are never zeroed and can leak kernel data
+syzbot reported use-after-free of AF_UNIX socket's sk->sk_socket
+in sk_psock_verdict_data_ready(). [0]
 
-The fix is simple, just zeroes the padding fields.
+In unix_stream_sendmsg(), the peer socket's ->sk_data_ready() is
+called after dropping its unix_state_lock().
 
-Fixes: 31910575a9de ("[IPv6]: Export userland ND options through netlink (RDNSS support)")
-Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260324224925.2437775-1-echelonh@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Although the sender socket holds the peer's refcount, it does not
+prevent the peer's sock_orphan(), and the peer's sk_socket might
+be freed after one RCU grace period.
+
+Let's fetch the peer's sk->sk_socket and sk->sk_socket->ops under
+RCU in sk_psock_verdict_data_ready().
+
+[0]:
+BUG: KASAN: slab-use-after-free in sk_psock_verdict_data_ready+0xec/0x590 net/core/skmsg.c:1278
+Read of size 8 at addr ffff8880594da860 by task syz.4.1842/11013
+
+CPU: 1 UID: 0 PID: 11013 Comm: syz.4.1842 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xba/0x230 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ sk_psock_verdict_data_ready+0xec/0x590 net/core/skmsg.c:1278
+ unix_stream_sendmsg+0x8a3/0xe80 net/unix/af_unix.c:2482
+ sock_sendmsg_nosec net/socket.c:721 [inline]
+ __sock_sendmsg net/socket.c:736 [inline]
+ ____sys_sendmsg+0x972/0x9f0 net/socket.c:2585
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2639
+ __sys_sendmsg net/socket.c:2671 [inline]
+ __do_sys_sendmsg net/socket.c:2676 [inline]
+ __se_sys_sendmsg net/socket.c:2674 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2674
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7facf899c819
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007facf9827028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007facf8c15fa0 RCX: 00007facf899c819
+RDX: 0000000000000000 RSI: 0000200000000500 RDI: 0000000000000004
+RBP: 00007facf8a32c91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007facf8c16038 R14: 00007facf8c15fa0 R15: 00007ffd41b01c78
+ </TASK>
+
+Allocated by task 11013:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ unpoison_slab_object mm/kasan/common.c:340 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:366
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4538 [inline]
+ slab_alloc_node mm/slub.c:4866 [inline]
+ kmem_cache_alloc_lru_noprof+0x2b8/0x640 mm/slub.c:4885
+ sock_alloc_inode+0x28/0xc0 net/socket.c:316
+ alloc_inode+0x6a/0x1b0 fs/inode.c:347
+ new_inode_pseudo include/linux/fs.h:3003 [inline]
+ sock_alloc net/socket.c:631 [inline]
+ __sock_create+0x12d/0x9d0 net/socket.c:1562
+ sock_create net/socket.c:1656 [inline]
+ __sys_socketpair+0x1c4/0x560 net/socket.c:1803
+ __do_sys_socketpair net/socket.c:1856 [inline]
+ __se_sys_socketpair net/socket.c:1853 [inline]
+ __x64_sys_socketpair+0x9b/0xb0 net/socket.c:1853
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 15:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:253 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2685 [inline]
+ slab_free mm/slub.c:6165 [inline]
+ kmem_cache_free+0x187/0x630 mm/slub.c:6295
+ rcu_do_batch kernel/rcu/tree.c:2617 [inline]
+ rcu_core+0x7cd/0x1070 kernel/rcu/tree.c:2869
+ handle_softirqs+0x22a/0x870 kernel/softirq.c:622
+ run_ksoftirqd+0x36/0x60 kernel/softirq.c:1063
+ smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x51e/0xb90 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Fixes: c63829182c37 ("af_unix: Implement ->psock_update_sk_prot()")
+Closes: https://lore.kernel.org/bpf/69cc6b9f.a70a0220.128fd0.004b.GAE@google.com/
+Reported-by: syzbot+2184232f07e3677fbaef@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260401005418.2452999-1-kuniyu@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ndisc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/skmsg.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 80ceb401ecf2d..652263e2f2d02 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1216,6 +1216,9 @@ static void ndisc_ra_useropt(struct sk_buff *ra, struct nd_opt_hdr *opt)
- 	ndmsg->nduseropt_icmp_type = icmp6h->icmp6_type;
- 	ndmsg->nduseropt_icmp_code = icmp6h->icmp6_code;
- 	ndmsg->nduseropt_opts_len = opt->nd_opt_len << 3;
-+	ndmsg->nduseropt_pad1 = 0;
-+	ndmsg->nduseropt_pad2 = 0;
-+	ndmsg->nduseropt_pad3 = 0;
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 12fbb0545c712..35a6acbf9a579 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1267,17 +1267,20 @@ static int sk_psock_verdict_recv(struct sock *sk, struct sk_buff *skb)
  
- 	memcpy(ndmsg + 1, opt, opt->nd_opt_len << 3);
+ static void sk_psock_verdict_data_ready(struct sock *sk)
+ {
+-	struct socket *sock = sk->sk_socket;
+-	const struct proto_ops *ops;
++	const struct proto_ops *ops = NULL;
++	struct socket *sock;
+ 	int copied;
  
+ 	trace_sk_data_ready(sk);
+ 
+-	if (unlikely(!sock))
+-		return;
+-	ops = READ_ONCE(sock->ops);
++	rcu_read_lock();
++	sock = READ_ONCE(sk->sk_socket);
++	if (likely(sock))
++		ops = READ_ONCE(sock->ops);
++	rcu_read_unlock();
+ 	if (!ops || !ops->read_skb)
+ 		return;
++
+ 	copied = ops->read_skb(sk, sk_psock_verdict_recv);
+ 	if (copied >= 0) {
+ 		struct sk_psock *psock;
 -- 
 2.53.0
 
