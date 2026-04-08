@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-235245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cN79NbGm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:17 +0200
+	id WBy6HPym1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6DA3C2522
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F973C25F7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 13AF53001A7D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:02:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FDD4309DF1A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE2C3DA7E1;
-	Wed,  8 Apr 2026 19:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C977925A321;
+	Wed,  8 Apr 2026 19:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOVLEujK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klDuBFC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1426B3DA7DA;
-	Wed,  8 Apr 2026 19:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7F7348477;
+	Wed,  8 Apr 2026 19:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674944; cv=none; b=ubQunaT8t7knxzSlmyw180SX4Dogz0TE+MlOYkImqbfTYye5S23Ubmvbl+DggD83ThrdvSYrySZ/PijAf6IGjksn77MY1kz38yvMKscjHNz/iekfVCfqgA3ovX5fxiEshJfvnXKsuTd7VRE1G/7HghAznOA1P101N4uEBZzzbjo=
+	t=1775674946; cv=none; b=Y0Hw/yS3dCI67ghDCu+l4GzT/dRWlO+Bmw4pSz4JbXxtUHt5HB7C4gdRL2n4NCt2MWtXbJ6eJTGYUo/V171k4iKM4KkK96dxhwkMymomFLpUBPLqSx4KScLJCwwm5ts9o7PRVff3GdFZ2SdQL/xBKNwQUakqt8EFlUNPVXlq+Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674944; c=relaxed/simple;
-	bh=sLh7Z2hVTA/lC7vPsSCcPNpwSHE3VOQU+xdF0zatF/o=;
+	s=arc-20240116; t=1775674946; c=relaxed/simple;
+	bh=1QUusYiAuubIDkd40TcX3VFMf+lOfQJH4wgumGxDuEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rU/ePB+xtYvFmwnCSMIAMAV4/8yBUKU3t/M5drvEeJpQfm+GZ1OL8sPRw9sYHU6Ke4NJOtZ6K+DvKwCxME0W34d5SoHOf+XqQu8FY7vd2ol5qUwNLxBLaPuZCILgX+zfWetPVc1CKs3zurgVgcRRY7PrBfq5rCZMeD1swiRQNRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOVLEujK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3188CC2BC87;
-	Wed,  8 Apr 2026 19:02:23 +0000 (UTC)
+	 MIME-Version; b=h0lFmTlDInLSnJt+kYz5pFghBnCfJ6wNwlFV3yLhME+nk7AUxkWxGAU1P55lS7a+YXRuziW11bKUO51G0D1e8OjvuqfMcj81IwWhFL2GEvinsvygF6SKaIfLCbiC4kp3OAciq0DV/MSIoaKZggAtLhlglnME2VhbA8W9s+UCNCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klDuBFC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E81C19421;
+	Wed,  8 Apr 2026 19:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674943;
-	bh=sLh7Z2hVTA/lC7vPsSCcPNpwSHE3VOQU+xdF0zatF/o=;
+	s=korg; t=1775674946;
+	bh=1QUusYiAuubIDkd40TcX3VFMf+lOfQJH4wgumGxDuEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOVLEujKezRgbsJMkRfppwEAYmkPqMFVImKcOWzNKhE33wiUehZOeock730SBeR97
-	 GjJaGKzADQ+YDFdY6Zdv1lfBCvOPrZmtPHhZhdM9CyUgS3Q41mVYfqw53w1exlVW+l
-	 SDxZ8582niReTL+c7na77UG/3VLbvBU+4VXPJa4s=
+	b=klDuBFC2o7m1r0SPpT3hyxNRS6laTOG1HUtNfrNY4CrL7JrUHPQX4Z9wBtIitYPHQ
+	 p3F0JDkbalNod3SaKQ9d61nifR/hBiupO/Q0TAdm7w2kw4NBQVbilbQVMxNdPBjreX
+	 JRYbBgcUMfbpPNoECANszyoMT8Qrbbot+mnDpipU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Nathan Rebello <nathan.c.rebello@gmail.com>
-Subject: [PATCH 6.19 294/311] usb: typec: ucsi: validate connector number in ucsi_notify_common()
-Date: Wed,  8 Apr 2026 20:04:54 +0200
-Message-ID: <20260408175950.354119499@linuxfoundation.org>
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 295/311] HID: appletb-kbd: add .resume method in PM
+Date: Wed,  8 Apr 2026 20:04:55 +0200
+Message-ID: <20260408175950.390635184@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
 References: <20260408175939.393281918@linuxfoundation.org>
@@ -64,36 +64,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235245-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linux.intel.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235246-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,live.com,suse.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DD6DA3C2522
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,live.com:email]
+X-Rspamd-Queue-Id: E0F973C25F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,51 +100,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Nathan Rebello <nathan.c.rebello@gmail.com>
+From: Aditya Garg <gargaditya08@live.com>
 
-commit d2d8c17ac01a1b1f638ea5d340a884ccc5015186 upstream.
+commit 1965445e13c09b79932ca8154977b4408cb9610c upstream.
 
-The connector number extracted from CCI via UCSI_CCI_CONNECTOR() is a
-7-bit field (0-127) that is used to index into the connector array in
-ucsi_connector_change(). However, the array is only allocated for the
-number of connectors reported by the device (typically 2-4 entries).
+Upon resuming from suspend, the Touch Bar driver was missing a resume
+method in order to restore the original mode the Touch Bar was on before
+suspending. It is the same as the reset_resume method.
 
-A malicious or malfunctioning device could report an out-of-range
-connector number in the CCI, causing an out-of-bounds array access in
-ucsi_connector_change().
-
-Add a bounds check in ucsi_notify_common(), the central point where CCI
-is parsed after arriving from hardware, so that bogus connector numbers
-are rejected before they propagate further.
-
-Fixes: bdc62f2bae8f ("usb: typec: ucsi: Simplified registration and I/O API")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
-Link: https://patch.msgid.link/20260313222453.123-1-nathan.c.rebello@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/hid/hid-appletb-kbd.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -42,8 +42,13 @@ void ucsi_notify_common(struct ucsi *ucs
- 	if (cci & UCSI_CCI_BUSY)
- 		return;
+diff --git a/drivers/hid/hid-appletb-kbd.c b/drivers/hid/hid-appletb-kbd.c
+index b00687e67ce8e..0b10cff465e17 100644
+--- a/drivers/hid/hid-appletb-kbd.c
++++ b/drivers/hid/hid-appletb-kbd.c
+@@ -477,7 +477,7 @@ static int appletb_kbd_suspend(struct hid_device *hdev, pm_message_t msg)
+ 	return 0;
+ }
  
--	if (UCSI_CCI_CONNECTOR(cci))
--		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
-+	if (UCSI_CCI_CONNECTOR(cci)) {
-+		if (UCSI_CCI_CONNECTOR(cci) <= ucsi->cap.num_connectors)
-+			ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
-+		else
-+			dev_err(ucsi->dev, "bogus connector number in CCI: %lu\n",
-+				UCSI_CCI_CONNECTOR(cci));
-+	}
+-static int appletb_kbd_reset_resume(struct hid_device *hdev)
++static int appletb_kbd_resume(struct hid_device *hdev)
+ {
+ 	struct appletb_kbd *kbd = hid_get_drvdata(hdev);
  
- 	if (cci & UCSI_CCI_ACK_COMPLETE &&
- 	    test_and_clear_bit(ACK_PENDING, &ucsi->flags))
+@@ -503,7 +503,8 @@ static struct hid_driver appletb_kbd_hid_driver = {
+ 	.input_configured = appletb_kbd_input_configured,
+ #ifdef CONFIG_PM
+ 	.suspend = appletb_kbd_suspend,
+-	.reset_resume = appletb_kbd_reset_resume,
++	.resume = appletb_kbd_resume,
++	.reset_resume = appletb_kbd_resume,
+ #endif
+ 	.driver.dev_groups = appletb_kbd_groups,
+ };
+-- 
+2.53.0
+
 
 
 
