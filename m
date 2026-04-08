@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-233970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMp1OueZ1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-233970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:43 +0200
+	id sFPYMuyZ1mmgGggAu9opvQ
+	(envelope-from <stable+bounces-233971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD663C00AF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3123C00CC
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD887302DF48
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:07:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A48D8302F99C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B19347517;
-	Wed,  8 Apr 2026 18:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151D63D890E;
+	Wed,  8 Apr 2026 18:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bx/4/2uN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brTvkjtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E522A3D8917;
-	Wed,  8 Apr 2026 18:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF443D4134;
+	Wed,  8 Apr 2026 18:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671649; cv=none; b=iV9VwLOXGG3wpAH0n3K6TiXnW2AsUmeXSEQDfnX3ag7FPiFM1JhWwhVrMW0krEyb3MPc3Do5+IJufVJkvdPAS7Qe21khSj+tMindo5S3TQXOXi4kZNp/MXlYETt1sVUFq6iv6EK4aFqSczwckkmiGi8/ErW6cRGpvcIYZGlf4WU=
+	t=1775671651; cv=none; b=OmKwLRfF7AOfgCRkaRpXNOo7aKCrYiVMke9hdxTbvIx8W7OaNid1uSZ6DMu12XPau7Mf24W01/ILHXULH1BR+udpm1r8PWYWkaQ/I1lEGZg/crDadlRgQtBuUXlhTpTZj0x51b0Tkt0UVgJRSI1Fx+yf88xx8ZfsPGF6nD/BhDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671649; c=relaxed/simple;
-	bh=1Gk/L0XL7/+NPNP0JLWmb8NRVdtZ5uZ0bec8G5uOKpo=;
+	s=arc-20240116; t=1775671651; c=relaxed/simple;
+	bh=L44UdXe+0UGvrzB59+ItemGWWgSnqmi9EQVRvNazjdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XFAcDCNj2jnuXV+ogoXxkAR0T56tFQ06Pk0nTog88qr3cgNC1dXPWSFgTwsY6YiQ3Fp2YqTdAWSrIruFnGE10eY3W/TGgLtJ5d4AP/NOIn9nXHBo4Nw/X9ynhCNlIX/UWRyReIU9lEaPgifWtci+QesKweJk2cqjbfiRc9mYZIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bx/4/2uN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A06FC19421;
-	Wed,  8 Apr 2026 18:07:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZFxo7PR6RqU33FR0MAYIiLWYqW/0vRyTeb7xWW2j780XzVvjVRmiMkjTqoC83yvzXtQfIaibEgRKUo45cuU46/rFaicI77z3NBs6Eco68+slnfUlGqlXtCBzzYWYmv2f29vgR5QSSiwi89Hm5kCFmbw5N7tx4L0mHSIPMEX8Bfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brTvkjtM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6F1C19421;
+	Wed,  8 Apr 2026 18:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671648;
-	bh=1Gk/L0XL7/+NPNP0JLWmb8NRVdtZ5uZ0bec8G5uOKpo=;
+	s=korg; t=1775671651;
+	bh=L44UdXe+0UGvrzB59+ItemGWWgSnqmi9EQVRvNazjdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bx/4/2uNET5Q4Phe2Ao1LecDfXj9rbQ0JVYXOY8JSZUv3LvKYnGb9zVot2hMaVPId
-	 Z1fYLTo83tK9zU/+DUfmcA1Msk8D+C5ONl3x+nIm+Ouow5MUlj0bmLm+bJzZOboxZb
-	 rHMj59iUva3b5g7maJVeMJYtLlHvWD3mn/kOmj5o=
+	b=brTvkjtMDWrGDe//92UqzzzXUSRbbPE0Frpa/wAvkaxJiDwGvqtw3c8dkgeFROHGu
+	 UEK07LkuCKFp+CASP0Eydf2FUBza4N8re/NMpiqmI0CJqf6XOhViaZkICEoAJRpjBI
+	 Qzzr31c+SAHQKnvwqWlMbaZtqaTPr3z2VNzS51Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Peter Metz <peter.metz@unarin.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/312] HID: asus: avoid memory leak in asus_report_fixup()
-Date: Wed,  8 Apr 2026 19:58:40 +0200
-Message-ID: <20260408175933.850163776@linuxfoundation.org>
+Subject: [PATCH 6.1 004/312] platform/x86: intel-hid: Add Dell 14 Plus 2-in-1 to dmi_vgbs_allow_list
+Date: Wed,  8 Apr 2026 19:58:41 +0200
+Message-ID: <20260408175933.886772241@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -68,30 +69,30 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-233971-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233970-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6FD663C00AF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0E3123C00CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,60 +100,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Günther Noack <gnoack@google.com>
+From: Peter Metz <peter.metz@unarin.com>
 
-[ Upstream commit 2bad24c17742fc88973d6aea526ce1353f5334a3 ]
+[ Upstream commit 6b3fa0615cd8432148581de62a52f83847af3d70 ]
 
-The asus_report_fixup() function was returning a newly allocated
-kmemdup()-allocated buffer, but never freeing it.  Switch to
-devm_kzalloc() to ensure the memory is managed and freed automatically
-when the device is removed.
+The Dell 14 Plus 2-in-1 (model DB04250) requires the VGBS allow list
+entry to correctly enable the tablet mode switch. Without this, the
+chassis state is not reported, and the hinge rotation only emits
+unknown scancodes.
 
-The caller of report_fixup() does not take ownership of the returned
-pointer, but it is permitted to return a pointer whose lifetime is at
-least that of the input buffer.
+Verified on Dell 14 Plus 2-in-1 DB04250.
 
-Also fix a harmless out-of-bounds read by copying only the original
-descriptor size.
-
-Assisted-by: Gemini-CLI:Google Gemini 3
-Signed-off-by: Günther Noack <gnoack@google.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221090
+Signed-off-by: Peter Metz <peter.metz@unarin.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260213044627.203638-1-peter.metz@unarin.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/platform/x86/intel/hid.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index ff301fd25725a..a95e47ce6d1e5 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1206,14 +1206,21 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		 */
- 		if (*rsize == rsize_orig &&
- 			rdesc[offs] == 0x09 && rdesc[offs + 1] == 0x76) {
--			*rsize = rsize_orig + 1;
--			rdesc = kmemdup(rdesc, *rsize, GFP_KERNEL);
--			if (!rdesc)
--				return NULL;
-+			__u8 *new_rdesc;
-+
-+			new_rdesc = devm_kzalloc(&hdev->dev, rsize_orig + 1,
-+						 GFP_KERNEL);
-+			if (!new_rdesc)
-+				return rdesc;
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 051f2bb786e90..6e991cfa90c15 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -156,6 +156,12 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 12 Tablet RA02260"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell 14 Plus 2-in-1 DB04250"),
++		},
++	},
+ 	{ }
+ };
  
- 			hid_info(hdev, "Fixing up %s keyb report descriptor\n",
- 				drvdata->quirks & QUIRK_T100CHI ?
- 				"T100CHI" : "T90CHI");
-+
-+			memcpy(new_rdesc, rdesc, rsize_orig);
-+			*rsize = rsize_orig + 1;
-+			rdesc = new_rdesc;
-+
- 			memmove(rdesc + offs + 4, rdesc + offs + 2, 12);
- 			rdesc[offs] = 0x19;
- 			rdesc[offs + 1] = 0x00;
 -- 
 2.51.0
 
