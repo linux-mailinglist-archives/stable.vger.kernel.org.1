@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AFoFnym1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:24 +0200
+	id QFHqJB+s1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5CAE3C247E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A9E3C3036
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26F35314A80C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 248213034B01
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A303ACF16;
-	Wed,  8 Apr 2026 18:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77A335C1B4;
+	Wed,  8 Apr 2026 19:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fn1EYsog"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqKQbBHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9558227979A;
-	Wed,  8 Apr 2026 18:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE5C37DE90;
+	Wed,  8 Apr 2026 19:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673526; cv=none; b=CEj4D1H3R/IJ4aYd0xcX7zlFkhsiaKV2IaVQt3djz1GLuf9q2/t0CQeCm0ozmWmPGj8Y0oHRD5HW/aKAdL+FUPkaTSFOdj6bczh8tiB8lYmsZc/5/YvsIj0vK9UPnG/Y7P0fj8OdJ2ZFMDN8iV51zBQ/OW1czDhviw0XBtS+n20=
+	t=1775674835; cv=none; b=mcHIY5Gn6CiB+evSsyrajqp30Nk5DL+fHNYXKSovcLbb2FtEGkD6YVLdE4ZFsOmlu9vsovy8yWEV3pl5ck5BGoVPE6s+R+qtqOFT3VLOw/lg+GTfIjL5Sf/sgvsYG+9QMSOZ9bQqLcFGavgoCdlWUQYYh84GJ5fclm01zVgruSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673526; c=relaxed/simple;
-	bh=9999Rktd0IAjYaOiG/9FP0NLMDmaPsi8TESNvAR52DI=;
+	s=arc-20240116; t=1775674835; c=relaxed/simple;
+	bh=GLCG23flSVefV/JxyfRHYGsQpb4VA3b0MWtCyWmWo/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmWO2udbp5jaXES07N3ptCxCAGdOmMQ16baa+n+0hnpgjuziB1Sn+38CEY25tdPAaSJowFfRJwozJ0k2tDee3rtVlHUsLNmCdJgeCs2jOdf9mfI81toBtf6rn63jk7XfFeBXXmojfQTpOD1UI0xPvUC7OumvBQruN98oCnFePQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fn1EYsog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C88BC19421;
-	Wed,  8 Apr 2026 18:38:46 +0000 (UTC)
+	 MIME-Version; b=RFT6kbjijf2/cOEzICMQuqTRxM1mvN+VGTEAW0SqMFD3vVdl+6OtlP6gwcVxMT6G5TC0wwow128y/AGdXKXDR4DKgnpDuqi/hsln6AVvL19qfz3+bLhpdyC/LGgK2kmgh7/Py5/+73i+ZaJWzt6JtvF5vcGEOOHDmmEDjoqcXvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqKQbBHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038D2C19421;
+	Wed,  8 Apr 2026 19:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673526;
-	bh=9999Rktd0IAjYaOiG/9FP0NLMDmaPsi8TESNvAR52DI=;
+	s=korg; t=1775674835;
+	bh=GLCG23flSVefV/JxyfRHYGsQpb4VA3b0MWtCyWmWo/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fn1EYsognMY+NoC8F9P4gT8v2X9FAxDlrfLxAyh/RhH9y/omZ06/l8K7AAWb7WXYP
-	 oEco2J99+XlubLdWxSGjXFYc+4tlQqynBC0LjWr7IyEisvpPVuMGHH18PxpKmZlACF
-	 /DUWVQpAUV089tYtpp/R+5AWOcbCPJs/qfzaBfOY=
+	b=fqKQbBHUgXnJUZ6lVLqrpc2kQx8S5Qm8081MJDVvKy47oVljnrdVv/Pazf+Y8Lx6B
+	 QvQZ4Mrs0FaU7laQhthZl0+ynQWe/j8bLGvn/hnS6o3z+ktoyxWRKBHLPJsU6KIXfQ
+	 SQRyprQvc++7cl6BrJDvrQ+R0hDrFPQr7JuXVko4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Popov <alex.popov@linux.com>,
-	Breno Leitao <leitao@debian.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 267/277] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.19 252/311] cdc-acm: new quirk for EPSON HMD
 Date: Wed,  8 Apr 2026 20:04:12 +0200
-Message-ID: <20260408175943.830978626@linuxfoundation.org>
+Message-ID: <20260408175948.799278766@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234696-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235203-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,114 +86,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.com:email,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D5CAE3C247E
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 30A9E3C3036
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Popov <alex.popov@linux.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6 upstream.
+commit f97e96c303d689708f7f713d8f3afcc31f1237e9 upstream.
 
-Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
-the virt_wifi net devices. However, unregistering a virt_wifi device in
-netdev_run_todo() can happen together with the device referenced by
-SET_NETDEV_DEV().
+This device has a union descriptor that is just garbage
+and needs a custom descriptor.
+In principle this could be done with a (conditionally
+activated) heuristic. That would match more devices
+without a need for defining a new quirk. However,
+this always carries the risk that the heuristics
+does the wrong thing and leads to more breakage.
+Defining the quirk and telling it exactly what to do
+is the safe and conservative approach.
 
-It can result in use-after-free during the ethtool operations performed
-on a virt_wifi device that is currently being unregistered. Such a net
-device can have the `dev.parent` field pointing to the freed memory,
-but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
-
-Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
-
- ==================================================================
- BUG: KASAN: slab-use-after-free in __pm_runtime_resume+0xe2/0xf0
- Read of size 2 at addr ffff88810cfc46f8 by task pm/606
-
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4d/0x70
-  print_report+0x170/0x4f3
-  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-  kasan_report+0xda/0x110
-  ? __pm_runtime_resume+0xe2/0xf0
-  ? __pm_runtime_resume+0xe2/0xf0
-  __pm_runtime_resume+0xe2/0xf0
-  ethnl_ops_begin+0x49/0x270
-  ethnl_set_features+0x23c/0xab0
-  ? __pfx_ethnl_set_features+0x10/0x10
-  ? kvm_sched_clock_read+0x11/0x20
-  ? local_clock_noinstr+0xf/0xf0
-  ? local_clock+0x10/0x30
-  ? kasan_save_track+0x25/0x60
-  ? __kasan_kmalloc+0x7f/0x90
-  ? genl_family_rcv_msg_attrs_parse.isra.0+0x150/0x2c0
-  genl_family_rcv_msg_doit+0x1e7/0x2c0
-  ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
-  ? __pfx_cred_has_capability.isra.0+0x10/0x10
-  ? stack_trace_save+0x8e/0xc0
-  genl_rcv_msg+0x411/0x660
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_ethnl_set_features+0x10/0x10
-  netlink_rcv_skb+0x121/0x380
-  ? __pfx_genl_rcv_msg+0x10/0x10
-  ? __pfx_netlink_rcv_skb+0x10/0x10
-  ? __pfx_down_read+0x10/0x10
-  genl_rcv+0x23/0x30
-  netlink_unicast+0x60f/0x830
-  ? __pfx_netlink_unicast+0x10/0x10
-  ? __pfx___alloc_skb+0x10/0x10
-  netlink_sendmsg+0x6ea/0xbc0
-  ? __pfx_netlink_sendmsg+0x10/0x10
-  ? __futex_queue+0x10b/0x1f0
-  ____sys_sendmsg+0x7a2/0x950
-  ? copy_msghdr_from_user+0x26b/0x430
-  ? __pfx_____sys_sendmsg+0x10/0x10
-  ? __pfx_copy_msghdr_from_user+0x10/0x10
-  ___sys_sendmsg+0xf8/0x180
-  ? __pfx____sys_sendmsg+0x10/0x10
-  ? __pfx_futex_wait+0x10/0x10
-  ? fdget+0x2e4/0x4a0
-  __sys_sendmsg+0x11f/0x1c0
-  ? __pfx___sys_sendmsg+0x10/0x10
-  do_syscall_64+0xe2/0x570
-  ? exc_page_fault+0x66/0xb0
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  </TASK>
-
-This fix may be combined with another one in the ethtool subsystem:
-https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
-
-Fixes: d43c65b05b848e0b ("ethtool: runtime-resume netdev parent in ethnl_ops_begin")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Popov <alex.popov@linux.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260324224607.374327-1-alex.popov@linux.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260317084139.1461008-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/virtual/virt_wifi.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/class/cdc-acm.c |    9 +++++++++
+ drivers/usb/class/cdc-acm.h |    1 +
+ 2 files changed, 10 insertions(+)
 
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -557,7 +557,6 @@ static int virt_wifi_newlink(struct net_
- 	eth_hw_addr_inherit(dev, priv->lowerdev);
- 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1225,6 +1225,12 @@ static int acm_probe(struct usb_interfac
+ 		if (!data_interface || !control_interface)
+ 			return -ENODEV;
+ 		goto skip_normal_probe;
++	} else if (quirks == NO_UNION_12) {
++		data_interface = usb_ifnum_to_if(usb_dev, 2);
++		control_interface = usb_ifnum_to_if(usb_dev, 1);
++		if (!data_interface || !control_interface)
++			 return -ENODEV;
++		goto skip_normal_probe;
+ 	}
  
--	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
- 	dev->ieee80211_ptr = kzalloc(sizeof(*dev->ieee80211_ptr), GFP_KERNEL);
- 
- 	if (!dev->ieee80211_ptr) {
+ 	/* normal probing*/
+@@ -1748,6 +1754,9 @@ static const struct usb_device_id acm_id
+ 	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas R-Car E3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
++	{ USB_DEVICE(0x04b8, 0x0d12),	/* EPSON HMD Com&Sens */
++	.driver_info = NO_UNION_12,	/* union descriptor is garbage */
++	},
+ 	{ USB_DEVICE(0x0e8d, 0x0003), /* FIREFLY, MediaTek Inc; andrey.arapov@gmail.com */
+ 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
+ 	},
+--- a/drivers/usb/class/cdc-acm.h
++++ b/drivers/usb/class/cdc-acm.h
+@@ -114,3 +114,4 @@ struct acm {
+ #define SEND_ZERO_PACKET		BIT(6)
+ #define DISABLE_ECHO			BIT(7)
+ #define MISSING_CAP_BRK			BIT(8)
++#define NO_UNION_12			BIT(9)
 
 
 
