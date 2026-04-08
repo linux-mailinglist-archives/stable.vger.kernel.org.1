@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-234944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oO4lBVyk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:20 +0200
+	id gBnSIGKm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5743C1E32
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12EB23C241F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D71F3085521
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ECC9D30565AE
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90753D8905;
-	Wed,  8 Apr 2026 18:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860223019BA;
+	Wed,  8 Apr 2026 19:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmQD47+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iweOMYOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4AE337B81;
-	Wed,  8 Apr 2026 18:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470AB331A44;
+	Wed,  8 Apr 2026 19:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674167; cv=none; b=Of6mm4nYTM1XCVlZc/mf4St572k2+SGpkX4bqBdvKCphvRwv+C9Fbk7rqgQ0INLq9S8GcedmozsP0MWwRr/8ucTLaGciJmaW57oYWNo8A/th10pKsfKx3f92MTBNBrUx9LD5zbe69efNO5iYFAbea8IZbxxzcA7rd6MO4H7T+Rs=
+	t=1775674915; cv=none; b=DO9PhgpG+5/pRnncwf9c0HWrxSOkUSfdfmGnKOmDAizr6p5bkNqMUVSDNwToSylw+AwVv13oB6jxuKaHuqL1We6paeLF+/zgUV7V7c0jZb11h5TjQoAxw/vnUxKpRWACbOU3pM8v35Y8VZwFAid5+dTGSrrShywJ9X5PdSUbRf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674167; c=relaxed/simple;
-	bh=QXK2YycZ9kaMrt9tRjtVdlVcGZUzo4oluyexFfIijGA=;
+	s=arc-20240116; t=1775674915; c=relaxed/simple;
+	bh=rBAePdOoMyhsJBQfDWwpRPUi8UoGfuqzp/AbcQpP1jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oye70rC7lQMHfe1v4qJGhjJTvD7qUhVIMojl0C3G0Gg7MkbLqEqnMq8z88kn5trA9lIpdS9rITfhILVY1qHJMq13inHg+Tj5auYQN7Wxk+c5wG6N1Vpat+ZQK3qP5f9P6xa0a5zbYuIouOIG6vRPtJ44hpxZIm/8n3CTroriV30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmQD47+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226CEC2BC9E;
-	Wed,  8 Apr 2026 18:49:26 +0000 (UTC)
+	 MIME-Version; b=J/LEwd4P+ABB3dMv+tl/9RzYN361kKqFSMqbJXZ8fMDRzyXof74rdfR9UMH4GjyIAX78cxyU3A3RO1nU9unANNyn7nDXOzrSMTBpPX98nZP9sbLH1rolDjl4vn2iD+Ij/plFAX9dXUbyfgnP7wPsRUctO5PfhmbNxGfr/MkO0Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iweOMYOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0032C19421;
+	Wed,  8 Apr 2026 19:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674167;
-	bh=QXK2YycZ9kaMrt9tRjtVdlVcGZUzo4oluyexFfIijGA=;
+	s=korg; t=1775674915;
+	bh=rBAePdOoMyhsJBQfDWwpRPUi8UoGfuqzp/AbcQpP1jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SmQD47+AesQiiYswKStCqz9J/hEVS8YsxExqAeAwUlDsuGKrcbq/kSuvMajFVrSmX
-	 nxYM6MRRAQ4/xNR34+YezztwBO1pJwtPpgUULg8W6u/nTHXViTNNZbnM4BvYLWT+oY
-	 WEXlCKYU8+fmPDJFVrnth8x34hE204ioFYZ2pRrQ=
+	b=iweOMYOHq+6GvGfvRlSJkf8s0Xa92NQeIivB3hiM5s3aDp5tve5Wbhi5Li+vIEj+V
+	 dhLiad69Zlf67FfqvK79ZspVu/OrLlgIIx5Uh0069LRpHIItOIDA6tWyH4KCFW4zEn
+	 A+HyrMADo53zzZIhSvQN2MWQmdfrW/9RkvigJdlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.12 208/242] usb: gadget: f_subset: Fix net_device lifecycle with device_move
-Date: Wed,  8 Apr 2026 20:04:08 +0200
-Message-ID: <20260408175934.866190697@linuxfoundation.org>
+	Junxi Qian <qjx1298677004@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 249/311] io_uring: protect remaining lockless ctx->rings accesses with RCU
+Date: Wed,  8 Apr 2026 20:04:09 +0200
+Message-ID: <20260408175948.688178590@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,227 +66,290 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234944-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235234-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 7E5743C1E32
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel.dk:email]
+X-Rspamd-Queue-Id: 12EB23C241F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 06524cd1c9011bee141a87e43ab878641ed3652b upstream.
+Commit 61a11cf4812726aceaee17c96432e1c08f6ed6cb upstream.
 
-The net_device is allocated during function instance creation and
-registered during the bind phase with the gadget device as its sysfs
-parent. When the function unbinds, the parent device is destroyed, but
-the net_device survives, resulting in dangling sysfs symlinks:
+Commit 96189080265e addressed one case of ctx->rings being potentially
+accessed while a resize is happening on the ring, but there are still
+a few others that need handling. Add a helper for retrieving the
+rings associated with an io_uring context, and add some sanity checking
+to that to catch bad uses. ->rings_rcu is always valid, as long as it's
+used within RCU read lock. Any use of ->rings_rcu or ->rings inside
+either ->uring_lock or ->completion_lock is sane as well.
 
-  console:/ # ls -l /sys/class/net/usb0
-  lrwxrwxrwx ... /sys/class/net/usb0 ->
-  /sys/devices/platform/.../gadget.0/net/usb0
-  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
-  ls: .../gadget.0/net/usb0: No such file or directory
+Do the minimum fix for the current kernel, but set it up such that this
+basic infra can be extended for later kernels to make this harder to
+mess up in the future.
 
-Use device_move() to reparent the net_device between the gadget device
-tree and /sys/devices/virtual across bind and unbind cycles. During the
-final unbind, calling device_move(NULL) moves the net_device to the
-virtual device tree before the gadget device is destroyed. On rebinding,
-device_move() reparents the device back under the new gadget, ensuring
-proper sysfs topology and power management ordering.
+Thanks to Junxi Qian for finding and debugging this issue.
 
-To maintain compatibility with legacy composite drivers (e.g., multi.c),
-the bound flag is used to indicate whether the network device is shared
-and pre-registered during the legacy driver's bind phase.
-
-Fixes: 8cedba7c73af ("usb: gadget: f_subset: convert to new function interface with backward compatibility")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-6-4886b578161b@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79cfe9e59c2a ("io_uring/register: add IORING_REGISTER_RESIZE_RINGS")
+Reviewed-by: Junxi Qian <qjx1298677004@gmail.com>
+Tested-by: Junxi Qian <qjx1298677004@gmail.com>
+Link: https://lore.kernel.org/io-uring/20260330172348.89416-1-qjx1298677004@gmail.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_subset.c |   57 ++++++++++++++++-----------------
- drivers/usb/gadget/function/u_gether.h |   22 ++++++++----
- 2 files changed, 44 insertions(+), 35 deletions(-)
+ io_uring/io_uring.c | 62 +++++++++++++++++++++++++++++----------------
+ io_uring/io_uring.h | 34 +++++++++++++++++++++----
+ 2 files changed, 69 insertions(+), 27 deletions(-)
 
---- a/drivers/usb/gadget/function/f_subset.c
-+++ b/drivers/usb/gadget/function/f_subset.c
-@@ -299,25 +299,22 @@ geth_bind(struct usb_configuration *c, s
- 	struct usb_ep		*ep;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index ac1a5cf102870..84fb1f7b0d818 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -189,12 +189,15 @@ static void io_poison_req(struct io_kiocb *req)
  
- 	struct f_gether_opts	*gether_opts;
-+	struct net_device	*net __free(detach_gadget) = NULL;
- 
- 	gether_opts = container_of(f->fi, struct f_gether_opts, func_inst);
- 
--	/*
--	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
--	 * configurations are bound in sequence with list_for_each_entry,
--	 * in each configuration its functions are bound in sequence
--	 * with list_for_each_entry, so we assume no race condition
--	 * with regard to gether_opts->bound access
--	 */
--	if (!gether_opts->bound) {
--		mutex_lock(&gether_opts->lock);
--		gether_set_gadget(gether_opts->net, cdev->gadget);
--		status = gether_register_netdev(gether_opts->net);
--		mutex_unlock(&gether_opts->lock);
--		if (status)
--			return status;
--		gether_opts->bound = true;
--	}
-+	scoped_guard(mutex, &gether_opts->lock)
-+		if (gether_opts->bind_count == 0 && !gether_opts->bound) {
-+			if (!device_is_registered(&gether_opts->net->dev)) {
-+				gether_set_gadget(gether_opts->net, cdev->gadget);
-+				status = gether_register_netdev(gether_opts->net);
-+			} else
-+				status = gether_attach_gadget(gether_opts->net, cdev->gadget);
-+
-+			if (status)
-+				return status;
-+			net = gether_opts->net;
-+		}
- 
- 	us = usb_gstrings_attach(cdev, geth_strings,
- 				 ARRAY_SIZE(geth_string_defs));
-@@ -330,20 +327,18 @@ geth_bind(struct usb_configuration *c, s
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	subset_data_intf.bInterfaceNumber = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	geth->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	geth->port.out_ep = ep;
- 
- 	/* support all relevant hardware speeds... we expect that when
-@@ -361,21 +356,19 @@ geth_bind(struct usb_configuration *c, s
- 	status = usb_assign_descriptors(f, fs_eth_function, hs_eth_function,
- 			ss_eth_function, ss_eth_function);
- 	if (status)
--		goto fail;
-+		return status;
- 
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
- 	 * until we're activated via set_alt().
- 	 */
- 
-+	gether_opts->bind_count++;
-+	retain_and_null_ptr(net);
-+
- 	DBG(cdev, "CDC Subset: IN/%s OUT/%s\n",
- 			geth->port.in_ep->name, geth->port.out_ep->name);
- 	return 0;
--
--fail:
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- static inline struct f_gether_opts *to_f_gether_opts(struct config_item *item)
-@@ -418,7 +411,7 @@ static void geth_free_inst(struct usb_fu
- 	struct f_gether_opts *opts;
- 
- 	opts = container_of(f, struct f_gether_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -462,8 +455,16 @@ static void geth_free(struct usb_functio
- 
- static void geth_unbind(struct usb_configuration *c, struct usb_function *f)
+ static inline unsigned int __io_cqring_events(struct io_ring_ctx *ctx)
  {
-+	struct f_gether_opts *opts;
-+
-+	opts = container_of(f->fi, struct f_gether_opts, func_inst);
-+
- 	geth_string_defs[0].id = 0;
- 	usb_free_all_descriptors(f);
-+
-+	opts->bind_count--;
-+	if (opts->bind_count == 0 && !opts->bound)
-+		gether_detach_gadget(opts->net);
+-	return ctx->cached_cq_tail - READ_ONCE(ctx->rings->cq.head);
++	struct io_rings *rings = io_get_rings(ctx);
++	return ctx->cached_cq_tail - READ_ONCE(rings->cq.head);
  }
  
- static struct usb_function *geth_alloc(struct usb_function_instance *fi)
---- a/drivers/usb/gadget/function/u_gether.h
-+++ b/drivers/usb/gadget/function/u_gether.h
-@@ -15,17 +15,25 @@
+ static inline unsigned int __io_cqring_events_user(struct io_ring_ctx *ctx)
+ {
+-	return READ_ONCE(ctx->rings->cq.tail) - READ_ONCE(ctx->rings->cq.head);
++	struct io_rings *rings = io_get_rings(ctx);
++
++	return READ_ONCE(rings->cq.tail) - READ_ONCE(rings->cq.head);
+ }
  
- #include <linux/usb/composite.h>
+ static inline void req_fail_link_node(struct io_kiocb *req, int res)
+@@ -2536,12 +2539,15 @@ static enum hrtimer_restart io_cqring_min_timer_wakeup(struct hrtimer *timer)
+ 	if (io_has_work(ctx))
+ 		goto out_wake;
+ 	/* got events since we started waiting, min timeout is done */
+-	if (iowq->cq_min_tail != READ_ONCE(ctx->rings->cq.tail))
+-		goto out_wake;
+-	/* if we have any events and min timeout expired, we're done */
+-	if (io_cqring_events(ctx))
+-		goto out_wake;
++	scoped_guard(rcu) {
++		struct io_rings *rings = io_get_rings(ctx);
  
-+/**
-+ * struct f_gether_opts - subset function options
-+ * @func_inst: USB function instance.
-+ * @net: The net_device associated with the subset function.
-+ * @bound: True if the net_device is shared and pre-registered during the
-+ *         legacy composite driver's bind phase (e.g., multi.c). If false,
-+ *         the subset function will register the net_device during its own
-+ *         bind phase.
-+ * @bind_count: Tracks the number of configurations the subset function is
-+ *              bound to, preventing double-registration of the @net device.
-+ * @lock: Protects the data from concurrent access by configfs read/write
-+ *        and create symlink/remove symlink operations.
-+ * @refcnt: Reference counter for the function instance.
-+ */
- struct f_gether_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
- 	bool				bound;
++		if (iowq->cq_min_tail != READ_ONCE(rings->cq.tail))
++			goto out_wake;
++		/* if we have any events and min timeout expired, we're done */
++		if (io_cqring_events(ctx))
++			goto out_wake;
++	}
+ 	/*
+ 	 * If using deferred task_work running and application is waiting on
+ 	 * more than one request, ensure we reset it now where we are switching
+@@ -2652,9 +2658,9 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
+ 			  struct ext_arg *ext_arg)
+ {
+ 	struct io_wait_queue iowq;
+-	struct io_rings *rings = ctx->rings;
++	struct io_rings *rings;
+ 	ktime_t start_time;
+-	int ret;
++	int ret, nr_wait;
+ 
+ 	min_events = min_t(int, min_events, ctx->cq_entries);
+ 
+@@ -2667,15 +2673,23 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
+ 
+ 	if (unlikely(test_bit(IO_CHECK_CQ_OVERFLOW_BIT, &ctx->check_cq)))
+ 		io_cqring_do_overflow_flush(ctx);
+-	if (__io_cqring_events_user(ctx) >= min_events)
++
++	rcu_read_lock();
++	rings = io_get_rings(ctx);
++	if (__io_cqring_events_user(ctx) >= min_events) {
++		rcu_read_unlock();
+ 		return 0;
++	}
+ 
+ 	init_waitqueue_func_entry(&iowq.wq, io_wake_function);
+ 	iowq.wq.private = current;
+ 	INIT_LIST_HEAD(&iowq.wq.entry);
+ 	iowq.ctx = ctx;
+-	iowq.cq_tail = READ_ONCE(ctx->rings->cq.head) + min_events;
+-	iowq.cq_min_tail = READ_ONCE(ctx->rings->cq.tail);
++	iowq.cq_tail = READ_ONCE(rings->cq.head) + min_events;
++	iowq.cq_min_tail = READ_ONCE(rings->cq.tail);
++	nr_wait = (int) iowq.cq_tail - READ_ONCE(rings->cq.tail);
++	rcu_read_unlock();
++	rings = NULL;
+ 	iowq.nr_timeouts = atomic_read(&ctx->cq_timeouts);
+ 	iowq.hit_timeout = 0;
+ 	iowq.min_timeout = ext_arg->min_time;
+@@ -2706,14 +2720,6 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
+ 	trace_io_uring_cqring_wait(ctx, min_events);
+ 	do {
+ 		unsigned long check_cq;
+-		int nr_wait;
 -
--	/*
--	 * Read/write access to configfs attributes is handled by configfs.
--	 *
--	 * This is to protect the data from concurrent access by read/write
--	 * and create symlink/remove symlink.
--	 */
-+	int				bind_count;
- 	struct mutex			lock;
- 	int				refcnt;
+-		/* if min timeout has been hit, don't reset wait count */
+-		if (!iowq.hit_timeout)
+-			nr_wait = (int) iowq.cq_tail -
+-					READ_ONCE(ctx->rings->cq.tail);
+-		else
+-			nr_wait = 1;
+ 
+ 		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN) {
+ 			atomic_set(&ctx->cq_wait_nr, nr_wait);
+@@ -2764,13 +2770,22 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
+ 			break;
+ 		}
+ 		cond_resched();
++
++		/* if min timeout has been hit, don't reset wait count */
++		if (!iowq.hit_timeout)
++			scoped_guard(rcu)
++				nr_wait = (int) iowq.cq_tail -
++						READ_ONCE(io_get_rings(ctx)->cq.tail);
++		else
++			nr_wait = 1;
+ 	} while (1);
+ 
+ 	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
+ 		finish_wait(&ctx->cq_wait, &iowq.wq);
+ 	restore_saved_sigmask_unless(ret == -EINTR);
+ 
+-	return READ_ONCE(rings->cq.head) == READ_ONCE(rings->cq.tail) ? ret : 0;
++	guard(rcu)();
++	return READ_ONCE(io_get_rings(ctx)->cq.head) == READ_ONCE(io_get_rings(ctx)->cq.tail) ? ret : 0;
+ }
+ 
+ static void io_rings_free(struct io_ring_ctx *ctx)
+@@ -2954,7 +2969,9 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
+ 	 */
+ 	poll_wait(file, &ctx->poll_wq, wait);
+ 
+-	if (!io_sqring_full(ctx))
++	rcu_read_lock();
++
++	if (!__io_sqring_full(ctx))
+ 		mask |= EPOLLOUT | EPOLLWRNORM;
+ 
+ 	/*
+@@ -2974,6 +2991,7 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
+ 	if (__io_cqring_events_user(ctx) || io_has_work(ctx))
+ 		mask |= EPOLLIN | EPOLLRDNORM;
+ 
++	rcu_read_unlock();
+ 	return mask;
+ }
+ 
+diff --git a/io_uring/io_uring.h b/io_uring/io_uring.h
+index 0f096f44d34bf..6ee49991cec8b 100644
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -132,16 +132,28 @@ struct io_wait_queue {
+ #endif
  };
+ 
++static inline struct io_rings *io_get_rings(struct io_ring_ctx *ctx)
++{
++	return rcu_dereference_check(ctx->rings_rcu,
++			lockdep_is_held(&ctx->uring_lock) ||
++			lockdep_is_held(&ctx->completion_lock));
++}
++
+ static inline bool io_should_wake(struct io_wait_queue *iowq)
+ {
+ 	struct io_ring_ctx *ctx = iowq->ctx;
+-	int dist = READ_ONCE(ctx->rings->cq.tail) - (int) iowq->cq_tail;
++	struct io_rings *rings;
++	int dist;
++
++	guard(rcu)();
++	rings = io_get_rings(ctx);
+ 
+ 	/*
+ 	 * Wake up if we have enough events, or if a timeout occurred since we
+ 	 * started waiting. For timeouts, we always want to return to userspace,
+ 	 * regardless of event count.
+ 	 */
++	dist = READ_ONCE(rings->cq.tail) - (int) iowq->cq_tail;
+ 	return dist >= 0 || atomic_read(&ctx->cq_timeouts) != iowq->nr_timeouts;
+ }
+ 
+@@ -432,9 +444,9 @@ static inline void io_cqring_wake(struct io_ring_ctx *ctx)
+ 	__io_wq_wake(&ctx->cq_wait);
+ }
+ 
+-static inline bool io_sqring_full(struct io_ring_ctx *ctx)
++static inline bool __io_sqring_full(struct io_ring_ctx *ctx)
+ {
+-	struct io_rings *r = ctx->rings;
++	struct io_rings *r = io_get_rings(ctx);
+ 
+ 	/*
+ 	 * SQPOLL must use the actual sqring head, as using the cached_sq_head
+@@ -446,9 +458,15 @@ static inline bool io_sqring_full(struct io_ring_ctx *ctx)
+ 	return READ_ONCE(r->sq.tail) - READ_ONCE(r->sq.head) == ctx->sq_entries;
+ }
+ 
+-static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
++static inline bool io_sqring_full(struct io_ring_ctx *ctx)
+ {
+-	struct io_rings *rings = ctx->rings;
++	guard(rcu)();
++	return __io_sqring_full(ctx);
++}
++
++static inline unsigned int __io_sqring_entries(struct io_ring_ctx *ctx)
++{
++	struct io_rings *rings = io_get_rings(ctx);
+ 	unsigned int entries;
+ 
+ 	/* make sure SQ entry isn't read before tail */
+@@ -509,6 +527,12 @@ static inline void io_tw_lock(struct io_ring_ctx *ctx, io_tw_token_t tw)
+ 	lockdep_assert_held(&ctx->uring_lock);
+ }
+ 
++static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
++{
++	guard(rcu)();
++	return __io_sqring_entries(ctx);
++}
++
+ /*
+  * Don't complete immediately but use deferred completion infrastructure.
+  * Protected by ->uring_lock and can only be used either with
+-- 
+2.53.0
+
 
 
 
