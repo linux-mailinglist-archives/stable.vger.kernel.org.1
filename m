@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPFpF3yk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:52 +0200
+	id KJYdM3+l1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09A13C1EE7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722F93C21FE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 228FF30A746A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CAFB2300D1CB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776CD2DCF41;
-	Wed,  8 Apr 2026 18:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90D3D522C;
+	Wed,  8 Apr 2026 18:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2mDLYn0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feKbji8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C102F39C2;
-	Wed,  8 Apr 2026 18:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03E53176E4;
+	Wed,  8 Apr 2026 18:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673444; cv=none; b=QGNny6xycA1WE455euPu01hp6mfWiTGyjeD4sm0HO4ncVdQvszUBvCXgxBiRFnBBbPC2W/8eRw0pJP/MHK/FoWdpjqD2AYCU3QxLXMylVN/ESraW//OyTOWHc9dDsBYlewknxIVYaAYSYuhA166D12iiOVg3dbKZ9TnHukPszYg=
+	t=1775674749; cv=none; b=SoGLe09kaAMQCZdnHe79ps29boA7LwMOAl3jajtRQA1YfRgnezzXxhwFRsMV5lDPjJLzUzYg8UCuiLRlUYlYA9pE1LU+l/kvobhJQqfy7URuLaB0l1yfPaVnorvGk8eS593F+l+4XRacaj3p1ukySRFssTion4DPtBFEbS7F9r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673444; c=relaxed/simple;
-	bh=FoWHVLifwhPWRMCDgYFQH/Yz7AwjL9Vh6cAMEBY04yk=;
+	s=arc-20240116; t=1775674749; c=relaxed/simple;
+	bh=dx/3QpkysTvB1UhZSykH0cv+cwItnyvKbHuiw5qxVCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IeR7Te/zpeo99ZXCoW4x3G7t4bRqHvTAP72fZQCIyzxaJjK+qB8bM4N4xQ7pB5dp9EeL+j2mu6Fedoyq5W5OsokyG+4q3hYWGelqlIg/qvcmMbmLLGYH51wQmBrU+Lfq91rw94VAEcyORKc1/ZpXnH4v/EdFlTvN6I3KsoM/wrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2mDLYn0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FA7C2BC87;
-	Wed,  8 Apr 2026 18:37:23 +0000 (UTC)
+	 MIME-Version; b=Uv/uUMOBrY2ZLFeuC3Gm2t/8Z9gU5VxzC7G8VGxounVH+/3N1b+mzS1c2VfLph2J8X3K0KI00BApYvKTA1vg/vDFAV2RZFFW4SZdRucYpCnDQMndDOhnvmBn5p4DxL63JH01pb/Jll9eMeRDoBZxRPdD73J1Hqahd4BZhEmhYOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feKbji8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A08C19421;
+	Wed,  8 Apr 2026 18:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673444;
-	bh=FoWHVLifwhPWRMCDgYFQH/Yz7AwjL9Vh6cAMEBY04yk=;
+	s=korg; t=1775674749;
+	bh=dx/3QpkysTvB1UhZSykH0cv+cwItnyvKbHuiw5qxVCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2mDLYn0tdEhwGUM1bt9vouJ/05wqB0kTcDWk/tsi87+Ry6XThei8XGmQMMUz+A4z
-	 xx64V08aHwjtd69n4NmBiwSQq+efL2KdEIiv7uzwLWmYwWQDQpxR/X463XukAGIBNb
-	 tNDgPl3Pkp1tOrF3Q6LOGcJaDRcFa++IkfKx79xc=
+	b=feKbji8APaE7ovQQyJHxLbdaTwJUSECMmpBjkRt4jjaKjXxGxsQkO+DzIJ6XB9dyS
+	 tZj9I2nsLUjJTEmwZHBI6nnuglQypWl9OtksBT839RY9B4mH9gmwH00z7QUvo7YhZK
+	 YgCrl/d+OU0t9ECA4spd+DsxKRsE++slL/+x301I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 234/277] net: ethernet: mtk_ppe: avoid NULL deref when gmac0 is disabled
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 219/311] iio: adc: ade9000: move mutex init before IRQ registration
 Date: Wed,  8 Apr 2026 20:03:39 +0200
-Message-ID: <20260408175942.596244999@linuxfoundation.org>
+Message-ID: <20260408175947.581035683@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +69,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235170-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234664-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,simonwunderlich.de:email]
-X-Rspamd-Queue-Id: E09A13C1EE7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,huawei.com:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 722F93C21FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 976ff48c2ac6e6b25b01428c9d7997bcd0fb2949 upstream.
+commit 0206dd36418c104c0b3dea4ed7047e21eccb30b0 upstream.
 
-If the gmac0 is disabled, the precheck for a valid ingress device will
-cause a NULL pointer deref and crash the system. This happens because
-eth->netdev[0] will be NULL but the code will directly try to access
-netdev_ops.
+Move devm_mutex_init() before ade9000_request_irq() calls so that
+st->lock is initialized before any handler that depends on it can run.
 
-Instead of just checking for the first net_device, it must be checked if
-any of the mtk_eth net_devices is matching the netdev_ops of the ingress
-device.
-
-Cc: stable@vger.kernel.org
-Fixes: 73cfd947dbdb ("net: ethernet: mtk_eth_soc: ppe: prevent ppe update for non-mtk devices")
-Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260324-wed-crash-gmac0-disabled-v1-1-3bc388aee565@simonwunderlich.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 81de7b4619fc ("iio: adc: add ade9000 support")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ade9000.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -244,6 +244,25 @@ out:
- 	return 0;
- }
+--- a/drivers/iio/adc/ade9000.c
++++ b/drivers/iio/adc/ade9000.c
+@@ -1706,19 +1706,19 @@ static int ade9000_probe(struct spi_devi
  
-+static bool
-+mtk_flow_is_valid_idev(const struct mtk_eth *eth, const struct net_device *idev)
-+{
-+	size_t i;
-+
-+	if (!idev)
-+		return false;
-+
-+	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++) {
-+		if (!eth->netdev[i])
-+			continue;
-+
-+		if (idev->netdev_ops == eth->netdev[i]->netdev_ops)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int
- mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
- 			 int ppe_index)
-@@ -270,7 +289,7 @@ mtk_flow_offload_replace(struct mtk_eth
- 		flow_rule_match_meta(rule, &match);
- 		if (mtk_is_netsys_v2_or_greater(eth)) {
- 			idev = __dev_get_by_index(&init_net, match.key->ingress_ifindex);
--			if (idev && idev->netdev_ops == eth->netdev[0]->netdev_ops) {
-+			if (mtk_flow_is_valid_idev(eth, idev)) {
- 				struct mtk_mac *mac = netdev_priv(idev);
+ 	init_completion(&st->reset_completion);
  
- 				if (WARN_ON(mac->ppe_idx >= eth->soc->ppe_num))
+-	ret = ade9000_request_irq(dev, "irq0", ade9000_irq0_thread, indio_dev);
++	ret = devm_mutex_init(dev, &st->lock);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ade9000_request_irq(dev, "irq1", ade9000_irq1_thread, indio_dev);
++	ret = ade9000_request_irq(dev, "irq0", ade9000_irq0_thread, indio_dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ade9000_request_irq(dev, "dready", ade9000_dready_thread, indio_dev);
++	ret = ade9000_request_irq(dev, "irq1", ade9000_irq1_thread, indio_dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = devm_mutex_init(dev, &st->lock);
++	ret = ade9000_request_irq(dev, "dready", ade9000_dready_thread, indio_dev);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
