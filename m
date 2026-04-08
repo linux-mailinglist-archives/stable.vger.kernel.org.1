@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-234662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oO41LHqk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:50 +0200
+	id wJUlG02j1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146813C1ED1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063C53C1B01
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98D3630D748D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC83D302F157
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9373C5552;
-	Wed,  8 Apr 2026 18:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FD5355F30;
+	Wed,  8 Apr 2026 18:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdGwkHm5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fC451Dhv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1059E2F39C2;
-	Wed,  8 Apr 2026 18:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D90D2727F3;
+	Wed,  8 Apr 2026 18:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673439; cv=none; b=X/byQicyqwXWJ8yXFgsUmLMRoMK6ITFYxqWmBe1jiLNTqKMRdP0CJKQvfH7otrN2eKmx0rE+IiPRFU6pmz2hBnftedwQAvw2x1vPIAFNbOCfss/msy7aGaR7C1e+OdOxKZiHPB9LfTkMUjKr6n35mFiawSXL+KnYNBCLngEfDyg=
+	t=1775674102; cv=none; b=UBDhQW9/lvAv2V6JSmO4FxEn7vD411fPuDDGM8ZNBnvBON4yi9huCvmCuzeo+h+yVe82BWNJn/9fIZtldIzmCwDEui/drF/ONe26Of/FHA9ulXDQxJWwMdSHG43gXkd0tEm9yocnOpw+YSvjQIUGPP44BIrn0b7UMDl/F5XXb4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673439; c=relaxed/simple;
-	bh=aiGrJashckrkjjXZQJ0poqgrrH4onajL3n78iu+1x00=;
+	s=arc-20240116; t=1775674102; c=relaxed/simple;
+	bh=WFbX8B8VntRB2UEr/dn/njWdJetAwyW+2t0ig8HNGUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exxbdyTeAAmPenRQIbqJLyUu4eSh0bdN4Y3YkmMe9VczMI4pClB69W+ixq8pmlpfP+7Jd4tkx3d+q4k9WrFc1yGi/f9uVOJO4ha2bxi8xFzD1h3weYZUOaDOqMWtBjlooSHQnL1hdRomYjllONvTQJWhZl1SaCTvBAWPqXw4Uxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdGwkHm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B663C19421;
-	Wed,  8 Apr 2026 18:37:18 +0000 (UTC)
+	 MIME-Version; b=eXQCRUmHRoMSF9nChxHa1bW/lXPat3eg75qsnYWtU4H/JTTvKrkfBikKXeeO31KaYBCOLTPDwU2S5mxy98ccqraeV2vD5kIHDWDe1uQg5H6sbSZOSMMPU6EuYi3WcudHnicd/ebT8YcWugcGXmQaZ6j1E+0nCdEi/K4+ZftF+7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fC451Dhv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1377BC19421;
+	Wed,  8 Apr 2026 18:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673439;
-	bh=aiGrJashckrkjjXZQJ0poqgrrH4onajL3n78iu+1x00=;
+	s=korg; t=1775674102;
+	bh=WFbX8B8VntRB2UEr/dn/njWdJetAwyW+2t0ig8HNGUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jdGwkHm5+/fNCozI21nU5vujAhC4Yv24/8erJFhhw0IvdXGX8yQfj1HXsEMHi8we8
-	 T5g3qfrxF43uZJvRtyS2u/QM5g6p2cu6QISUo8MbCxxnO+g2RGqAbskQfKrt8esl5R
-	 4YcOx4ZXDqDZDNzWXqgZQMLHc9GY8tmCQVMttAsQ=
+	b=fC451DhvPd+b3am8iY38ghI5E4xKQuEWOdTtETazL+/wBXCNF+6Q3t7uBpMN1zJmh
+	 uH4kpmq9cbWMfieFGgCCMOOUONuswpNW5sCK6MdwWbAjiszRLRYCUT3ZYW3bZ8ErGk
+	 +UCDhnc6RQzthv58Yg8Xq5ADEQ6jW2vq2Sj3zTZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yufan Chen <yufan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 233/277] net: ftgmac100: fix ring allocation unwind on open failure
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.12 178/242] firmware: microchip: fail auto-update probe if no flash found
 Date: Wed,  8 Apr 2026 20:03:38 +0200
-Message-ID: <20260408175942.558153034@linuxfoundation.org>
+Message-ID: <20260408175933.748519479@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,115 +66,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234919-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234662-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 146813C1ED1
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,microchip.com:email]
+X-Rspamd-Queue-Id: 063C53C1B01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yufan Chen <yufan.chen@linux.dev>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-commit c0fd0fe745f5e8c568d898cd1513d0083e46204a upstream.
+commit c7596f9001e2b83293e3658e4e1addde69bb335d upstream.
 
-ftgmac100_alloc_rings() allocates rx_skbs, tx_skbs, rxdes, txdes, and
-rx_scratch in stages. On intermediate failures it returned -ENOMEM
-directly, leaking resources allocated earlier in the function.
+There's no point letting the driver probe if there is no flash, as
+trying to do a firmware upload will fail. Move the code that attempts
+to get the flash from firmware upload to probe, and let it emit a
+message to users stating why auto-update is not supported.
+The code currently could have a problem if there's a flash in
+devicetree, but the system controller driver fails to get a pointer to
+it from the mtd subsystem, which will cause
+mpfs_sys_controller_get_flash() to return an error. Check for errors and
+null, instead of just null, in the new clause.
 
-Rework the failure path to use staged local unwind labels and free
-allocated resources in reverse order before returning -ENOMEM. This
-matches common netdev allocation cleanup style.
-
-Fixes: d72e01a0430f ("ftgmac100: Use a scratch buffer for failed RX allocations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yufan Chen <yufan.chen@linux.dev>
-Link: https://patch.msgid.link/20260328163257.60836-1-yufan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: ec5b0f1193ad4 ("firmware: microchip: add PolarFire SoC Auto Update support")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c |   28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/firmware/microchip/mpfs-auto-update.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -964,19 +964,19 @@ static int ftgmac100_alloc_rings(struct
- 	priv->tx_skbs = kcalloc(MAX_TX_QUEUE_ENTRIES, sizeof(void *),
- 				GFP_KERNEL);
- 	if (!priv->tx_skbs)
--		return -ENOMEM;
-+		goto err_free_rx_skbs;
+--- a/drivers/firmware/microchip/mpfs-auto-update.c
++++ b/drivers/firmware/microchip/mpfs-auto-update.c
+@@ -113,10 +113,6 @@ static enum fw_upload_err mpfs_auto_upda
+ 	 * be added here.
+ 	 */
  
- 	/* Allocate descriptors */
- 	priv->rxdes = dma_alloc_coherent(priv->dev,
- 					 MAX_RX_QUEUE_ENTRIES * sizeof(struct ftgmac100_rxdes),
- 					 &priv->rxdes_dma, GFP_KERNEL);
- 	if (!priv->rxdes)
--		return -ENOMEM;
-+		goto err_free_tx_skbs;
- 	priv->txdes = dma_alloc_coherent(priv->dev,
- 					 MAX_TX_QUEUE_ENTRIES * sizeof(struct ftgmac100_txdes),
- 					 &priv->txdes_dma, GFP_KERNEL);
- 	if (!priv->txdes)
--		return -ENOMEM;
-+		goto err_free_rxdes;
+-	priv->flash = mpfs_sys_controller_get_flash(priv->sys_controller);
+-	if (!priv->flash)
+-		return FW_UPLOAD_ERR_HW_ERROR;
+-
+ 	erase_size = round_up(erase_size, (u64)priv->flash->erasesize);
  
- 	/* Allocate scratch packet buffer */
- 	priv->rx_scratch = dma_alloc_coherent(priv->dev,
-@@ -984,9 +984,29 @@ static int ftgmac100_alloc_rings(struct
- 					      &priv->rx_scratch_dma,
- 					      GFP_KERNEL);
- 	if (!priv->rx_scratch)
--		return -ENOMEM;
-+		goto err_free_txdes;
+ 	/*
+@@ -427,6 +423,12 @@ static int mpfs_auto_update_probe(struct
+ 		return dev_err_probe(dev, PTR_ERR(priv->sys_controller),
+ 				     "Could not register as a sub device of the system controller\n");
  
- 	return 0;
++	priv->flash = mpfs_sys_controller_get_flash(priv->sys_controller);
++	if (IS_ERR_OR_NULL(priv->flash)) {
++		dev_dbg(dev, "No flash connected to the system controller, auto-update not supported\n");
++		return -ENODEV;
++	}
 +
-+err_free_txdes:
-+	dma_free_coherent(priv->dev,
-+			  MAX_TX_QUEUE_ENTRIES *
-+			  sizeof(struct ftgmac100_txdes),
-+			  priv->txdes, priv->txdes_dma);
-+	priv->txdes = NULL;
-+err_free_rxdes:
-+	dma_free_coherent(priv->dev,
-+			  MAX_RX_QUEUE_ENTRIES *
-+			  sizeof(struct ftgmac100_rxdes),
-+			  priv->rxdes, priv->rxdes_dma);
-+	priv->rxdes = NULL;
-+err_free_tx_skbs:
-+	kfree(priv->tx_skbs);
-+	priv->tx_skbs = NULL;
-+err_free_rx_skbs:
-+	kfree(priv->rx_skbs);
-+	priv->rx_skbs = NULL;
-+	return -ENOMEM;
- }
+ 	priv->dev = dev;
+ 	platform_set_drvdata(pdev, priv);
  
- static void ftgmac100_init_rings(struct ftgmac100 *priv)
 
 
 
