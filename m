@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-234907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIsQMpmo1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:12:25 +0200
+	id uBHmGPCh1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9BB3C28E2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:12:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998BC3C15D8
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37D29310A922
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BD64C3068A6E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACFF355F30;
-	Wed,  8 Apr 2026 18:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5063D9033;
+	Wed,  8 Apr 2026 18:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bz2hUaD2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKYKpgjZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F832641FC;
-	Wed,  8 Apr 2026 18:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3413D75AF;
+	Wed,  8 Apr 2026 18:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674072; cv=none; b=t7YVFxRCr1pGucZM5erYWYg/VNPbvMDYFdA8jIrdQXDN/+wwfmEX8dvC8HSRo+2rLWAHmlD76CgUEk/sMR/FxQCpIHYBAF+uVBsKW+ncL8z/rUHiZlM2NKt9lwxjoGb5UlbYRCirkX6U9QxU2d5gleeapOl9wa1HxsVVK2elgsU=
+	t=1775673560; cv=none; b=JkiJLki9FMdrbrvvuO+Qn6Ttc24b8n8j7O6NCD0ES2VV3fOJq1Q2TPZxUX8vpUMMT2Cgh2Ct0T+3z07iTXjjLPPV8e/9hRavI2BksEwe275Gv1G3ZaloVdaxm9ANXKj1IS8aRx9vnxaLZTR9VvirvDlBXpbKPvXx+69lNEGmQtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674072; c=relaxed/simple;
-	bh=1oF13jNas+qUKS2HS7V0lTmB+DDrRYmdSL7qIBR2Onk=;
+	s=arc-20240116; t=1775673560; c=relaxed/simple;
+	bh=s67T6pENCQm5vPsiByc3heG0a5lAfwNFErsBcQ+kfwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSs0N0S2SL4I/QIT97CDM+aXVaLI/cSTa6f5ui1foIeYStuon6ElkgZn22UWorXq2BkDStiTdJdRqyMBS8CyqNLt95t53A+Z7QEOokuz03HsXa3yLgzijcgvXRUqDVQOKR9vFO6N+ob4uJKwCiHgtz2Q/s1Rk4KIjxx+gCD5ETo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bz2hUaD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B22C19421;
-	Wed,  8 Apr 2026 18:47:51 +0000 (UTC)
+	 MIME-Version; b=aFvHyucyeXohosDIvt5AJ7pQGsJAIPtZpQADK0gpzSeRKyjoPJDTsa8uhh2SBV60DtYslbw96GcjMQsmQVGTFq+4s7lPL1hVQsoP/fQqJgqiaFSiBzl/wW2jwKWOZf8bzJeqKEGgclqyo9+R0B51vNvqFy3xCSRqtElGpYUPL+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKYKpgjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C18C19421;
+	Wed,  8 Apr 2026 18:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674071;
-	bh=1oF13jNas+qUKS2HS7V0lTmB+DDrRYmdSL7qIBR2Onk=;
+	s=korg; t=1775673560;
+	bh=s67T6pENCQm5vPsiByc3heG0a5lAfwNFErsBcQ+kfwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bz2hUaD2Fl8rDeR6RxJxk+boc4Q6oirITS+96LGA9QIxes3DqCeLc0XPDsJqzCU4/
-	 7QhWHZhkf9x1uYw/29bxcLFVLvZ78SlqJ9x8Yqbyvgxc9oOFHNcz38MipBzPKD2aF6
-	 aFvX+WtEJyuHlGPHN/0WpUeSDHVX/JnqPNWFwOjc=
+	b=gKYKpgjZgeK3B+foWA2+EfFAn31twQT5mGHdqf34p06uMqHG6/DlXxmrdyRyWanRS
+	 jCT/6oB7nSsDisgaUFqL+y4kdrlNlQuTe9p44cfdkQpF19VxXIPTI7jljBCtDd10Ou
+	 HVYVPCeAxGCG7p0iq+56xUBuiKAZRgTgeEje6CYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 198/242] ice: Fix memory leak in ice_set_ringparam()
+	Val Packett <val@packett.cool>,
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.18 253/277] usb: gadget: u_ether: Fix NULL pointer deref in eth_get_drvinfo
 Date: Wed,  8 Apr 2026 20:03:58 +0200
-Message-ID: <20260408175934.493773211@linuxfoundation.org>
+Message-ID: <20260408175943.306017928@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,105 +68,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234907-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234709-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2D9BB3C28E2
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,packett.cool:email]
+X-Rspamd-Queue-Id: 998BC3C15D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit fe868b499d16f55bbeea89992edb98043c9de416 ]
+commit e002e92e88e12457373ed096b18716d97e7bbb20 upstream.
 
-In ice_set_ringparam, tx_rings and xdp_rings are allocated before
-rx_rings. If the allocation of rx_rings fails, the code jumps to
-the done label leaking both tx_rings and xdp_rings. Furthermore, if
-the setup of an individual Rx ring fails during the loop, the code jumps
-to the free_tx label which releases tx_rings but leaks xdp_rings.
+Commit ec35c1969650 ("usb: gadget: f_ncm: Fix net_device lifecycle with
+device_move") reparents the gadget device to /sys/devices/virtual during
+unbind, clearing the gadget pointer. If the userspace tool queries on
+the surviving interface during this detached window, this leads to a
+NULL pointer dereference.
 
-Fix this by introducing a free_xdp label and updating the error paths to
-ensure both xdp_rings and tx_rings are properly freed if rx_rings
-allocation or setup fails.
+Unable to handle kernel NULL pointer dereference
+Call trace:
+ eth_get_drvinfo+0x50/0x90
+ ethtool_get_drvinfo+0x5c/0x1f0
+ __dev_ethtool+0xaec/0x1fe0
+ dev_ethtool+0x134/0x2e0
+ dev_ioctl+0x338/0x560
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
+Add a NULL check for dev->gadget in eth_get_drvinfo(). When detached,
+skip copying the fw_version and bus_info strings, which is natively
+handled by ethtool_get_drvinfo for empty strings.
 
-Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
-Fixes: efc2214b6047 ("ice: Add support for XDP")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Val Packett <val@packett.cool>
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/linux-usb/10890524-cf83-4a71-b879-93e2b2cc1fcc@packett.cool/
+Fixes: ec35c1969650 ("usb: gadget: f_ncm: Fix net_device lifecycle with device_move")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260316-eth-null-deref-v1-1-07005f33be85@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/u_ether.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 606994fa99da9..c0bf93b38cbd8 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3331,7 +3331,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 	rx_rings = kcalloc(vsi->num_rxq, sizeof(*rx_rings), GFP_KERNEL);
- 	if (!rx_rings) {
- 		err = -ENOMEM;
--		goto done;
-+		goto free_xdp;
- 	}
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -112,8 +112,10 @@ static void eth_get_drvinfo(struct net_d
  
- 	ice_for_each_rxq(vsi, i) {
-@@ -3361,7 +3361,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 			}
- 			kfree(rx_rings);
- 			err = -ENOMEM;
--			goto free_tx;
-+			goto free_xdp;
- 		}
- 	}
- 
-@@ -3412,6 +3412,13 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 	}
- 	goto done;
- 
-+free_xdp:
-+	if (xdp_rings) {
-+		ice_for_each_xdp_txq(vsi, i)
-+			ice_free_tx_ring(&xdp_rings[i]);
-+		kfree(xdp_rings);
+ 	strscpy(p->driver, "g_ether", sizeof(p->driver));
+ 	strscpy(p->version, UETH__VERSION, sizeof(p->version));
+-	strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
+-	strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
++	if (dev->gadget) {
++		strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
++		strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
 +	}
-+
- free_tx:
- 	/* error cleanup if the Rx allocations failed after getting Tx */
- 	if (tx_rings) {
--- 
-2.53.0
-
+ }
+ 
+ /* REVISIT can also support:
 
 
 
