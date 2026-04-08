@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGMtEOGc1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:25 +0200
+	id +I5HImyi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958953C0864
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7913C1775
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C8BC303CD1D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 67773300A651
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A327386550;
-	Wed,  8 Apr 2026 18:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE8B3624B0;
+	Wed,  8 Apr 2026 18:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrTO5mn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErOvYyec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C776324B1F;
-	Wed,  8 Apr 2026 18:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334B01A285;
+	Wed,  8 Apr 2026 18:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672258; cv=none; b=NBvDqa/8WSr3lpggYDfyAlY9iHJ5ougpx3Ub2MFnDeUpcPkLm8FGZtutm3yNIqv1JQhoKhmfqNWO10Txi4RANTzWCXCuhO0A+gWt9IpA+5OvgGa1LYhL9lI3uIMW/NdXuUE6CFNPh4CbqfJ/w1dxlhNt3kzSUHPZzcC/xcWjQwU=
+	t=1775673887; cv=none; b=dadMkHeOKZKplwOTfUsy5FhknwhfvH5ZhAajA46yyXkp9vfGw0caZvPNCmou3MfVNy59iLa4cAaKsihDyVknaTwSQSb2niXi74NiR1T4gdSENDaB4NmtZw8sNlLgM7nLAIr60ERxBFSmH/2+flOrJQ3gzdIMYMonOW+DpEEYSNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672258; c=relaxed/simple;
-	bh=8lYJq+cPn0jfpiQ1PBehIdVeS0qW8rmIq7eHmiSf5Zw=;
+	s=arc-20240116; t=1775673887; c=relaxed/simple;
+	bh=xU2WLSTrytvIOYw5z3Pb3tPV8RJoFF0MhEPKmH3mzD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bO/4QBiQHhAGGitih0sub+IjmR1hI6G+cZWjFQrpDADP6hzR274imjYdbUGOCOfFlrNnnh1GCGKVaFlOQwa+ue7B+ZFHH6BnvuM0vQfcBlkdGncUXdfULDbtMkeZkVVXDWV5Tbrp8crCOfrw4+zUSnpbLGDrY1Ylb1emojxolDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrTO5mn5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C72C19421;
-	Wed,  8 Apr 2026 18:17:37 +0000 (UTC)
+	 MIME-Version; b=RbYiDY2o9RWIjUKSq6acHxKQ86cXz3iV4ppEku2HK7dc5+EftbNU2hXwnCdE03F2AmXwlkcwIWaKPdnP4GPKPvXkVoWeP1l4RXimUVu8QpeZr80yJuRKl+UyxIa9rs21ocUvm54rGk7owcIIrIMAJVqXBHsYjSPwk3zq3MpZs1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErOvYyec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE26FC19421;
+	Wed,  8 Apr 2026 18:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672257;
-	bh=8lYJq+cPn0jfpiQ1PBehIdVeS0qW8rmIq7eHmiSf5Zw=;
+	s=korg; t=1775673887;
+	bh=xU2WLSTrytvIOYw5z3Pb3tPV8RJoFF0MhEPKmH3mzD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrTO5mn55TDo5qwPtTGIc9cVKtNI1L3705sMzBSeCjz4kd4Gd5Z6mRWGfsa1SqatZ
-	 n4+zUTJzylEYfNJKpuznrXS0DnFZhBp07L9LrQMKrv7h38AZy+1jotmee3I4ISIuDg
-	 e0zoD/wjPYNo8danbBEUCk1upSf2UTAiMunn8ErI=
+	b=ErOvYyecVLP4XwUUXI86KCiCSBQDRKcszCLHwvRMWrE0dVWnu7KNZh0f3CjgO9QI4
+	 J+0ycjiRxoF6m29EwWNERGrnXWEOlePVwbq+QmTm5UTyXPNhE0Z7BfycQBlEIPUPVw
+	 RlZKfHpcX9gD59Tuj3+MVsKVPUR4uSuqgZTGVaTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 250/312] comedi: me4000: Fix potential overrun of firmware buffer
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 127/242] hwmon: (occ) Fix division by zero in occ_show_power_1()
 Date: Wed,  8 Apr 2026 20:02:47 +0200
-Message-ID: <20260408175943.081651480@linuxfoundation.org>
+Message-ID: <20260408175931.843166963@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234206-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234835-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,76 +88,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 958953C0864
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AB7913C1775
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 3fb43a7a5b44713f892c58ead2e5f3a1bc9f4ee7 upstream.
+commit 39e2a5bf970402a8530a319cf06122e216ba57b8 upstream.
 
-`me4000_xilinx_download()` loads the firmware that was requested by
-`request_firmware()`.  It is possible for it to overrun the source
-buffer because it blindly trusts the file format.  It reads a data
-stream length from the first 4 bytes into variable `file_length` and
-reads the data stream contents of length `file_length` from offset 16
-onwards.
+In occ_show_power_1() case 1, the accumulator is divided by
+update_tag without checking for zero. If no samples have been
+collected yet (e.g. during early boot when the sensor block is
+included but hasn't been updated), update_tag is zero, causing
+a kernel divide-by-zero crash.
 
-Add a test to ensure that the supplied firmware is long enough to
-contain the header and the data stream.  On failure, log an error and
-return `-EINVAL`.
+The 2019 fix in commit 211186cae14d ("hwmon: (occ) Fix division by
+zero issue") only addressed occ_get_powr_avg() used by
+occ_show_power_2() and occ_show_power_a0(). This separate code
+path in occ_show_power_1() was missed.
 
-Note: The firmware loading was totally broken before commit ac584af59945
-("staging: comedi: me4000: fix firmware downloading"), but that is the
-most sensible target for this fix.
+Fix this by reusing the existing occ_get_powr_avg() helper, which
+already handles the zero-sample case and uses mul_u64_u32_div()
+to multiply before dividing for better precision. Move the helper
+above occ_show_power_1() so it is visible at the call site.
 
-Fixes: ac584af59945 ("staging: comedi: me4000: fix firmware downloading")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260205133949.71722-1-abbotti@mev.co.uk
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260326224510.294619-2-sanman.pradhan@hpe.com
+[groeck: Fix alignment problems reported by checkpatch]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/me4000.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/hwmon/occ/common.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/comedi/drivers/me4000.c
-+++ b/drivers/comedi/drivers/me4000.c
-@@ -315,6 +315,18 @@ static int me4000_xilinx_download(struct
- 	unsigned int val;
- 	unsigned int i;
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -420,6 +420,12 @@ static ssize_t occ_show_freq_2(struct de
+ 	return sysfs_emit(buf, "%u\n", val);
+ }
  
-+	/* Get data stream length from header. */
-+	if (size >= 4) {
-+		file_length = (((unsigned int)data[0] & 0xff) << 24) +
-+			      (((unsigned int)data[1] & 0xff) << 16) +
-+			      (((unsigned int)data[2] & 0xff) << 8) +
-+			      ((unsigned int)data[3] & 0xff);
-+	}
-+	if (size < 16 || file_length > size - 16) {
-+		dev_err(dev->class_dev, "Firmware length inconsistency\n");
-+		return -EINVAL;
-+	}
++static u64 occ_get_powr_avg(u64 accum, u32 samples)
++{
++	return (samples == 0) ? 0 :
++		mul_u64_u32_div(accum, 1000000UL, samples);
++}
 +
- 	if (!xilinx_iobase)
- 		return -ENODEV;
+ static ssize_t occ_show_power_1(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
+@@ -441,9 +447,8 @@ static ssize_t occ_show_power_1(struct d
+ 		val = get_unaligned_be16(&power->sensor_id);
+ 		break;
+ 	case 1:
+-		val = get_unaligned_be32(&power->accumulator) /
+-			get_unaligned_be32(&power->update_tag);
+-		val *= 1000000ULL;
++		val = occ_get_powr_avg(get_unaligned_be32(&power->accumulator),
++				       get_unaligned_be32(&power->update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->update_tag) *
+@@ -459,12 +464,6 @@ static ssize_t occ_show_power_1(struct d
+ 	return sysfs_emit(buf, "%llu\n", val);
+ }
  
-@@ -346,10 +358,6 @@ static int me4000_xilinx_download(struct
- 	outl(val, devpriv->plx_regbase + PLX9052_CNTRL);
- 
- 	/* Download Xilinx firmware */
--	file_length = (((unsigned int)data[0] & 0xff) << 24) +
--		      (((unsigned int)data[1] & 0xff) << 16) +
--		      (((unsigned int)data[2] & 0xff) << 8) +
--		      ((unsigned int)data[3] & 0xff);
- 	usleep_range(10, 1000);
- 
- 	for (i = 0; i < file_length; i++) {
+-static u64 occ_get_powr_avg(u64 accum, u32 samples)
+-{
+-	return (samples == 0) ? 0 :
+-		mul_u64_u32_div(accum, 1000000UL, samples);
+-}
+-
+ static ssize_t occ_show_power_2(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
 
 
 
