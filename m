@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-235080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPliDJ6l1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:42 +0200
+	id WFQRBjGl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CDF3C226A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651643C2114
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F68D3088932
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A84D31F1AB3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CDF3D9041;
-	Wed,  8 Apr 2026 18:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44263D75AF;
+	Wed,  8 Apr 2026 18:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9e+hInu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBGwGPeW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082FE3D75C9;
-	Wed,  8 Apr 2026 18:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C18331A44;
+	Wed,  8 Apr 2026 18:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674518; cv=none; b=N+b1gy7rXX7eaf2Wt+lWT57+q2FqLvjt4zFf3uyjXdJ7u7AeEXC+ZpGgTi/uMLjF1yA/ugPTPz4SxhOopFQTJyjTOo/40pnhDcVzFoTw3IX82SscHPVKTZv7WbdBFMVyoNjyg6XeiH/br4+Dn2YK5ZMLfYhgaAcOtZwyA3HO+oM=
+	t=1775673782; cv=none; b=uirfG+T36Q90oXdsb6Aq5d4gKQ9Xhq2R11LvUT3A3tAtn6stdSDpGRvomoRXduqcn6rVT9MYZ5A1N4As1wsPjIy3PSn9ogVSyMFdnVy1BsF447qUSk9t8KiSLa8+RalqdmbXwX8MpLTFzu5IJ5e/dc7ji6OKfXF0fUBu2vJxuhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674518; c=relaxed/simple;
-	bh=pH0D8DMMrjDbG76v059w04Ow6JuYtS3RrYsolSoioWA=;
+	s=arc-20240116; t=1775673782; c=relaxed/simple;
+	bh=lE3kd2rGg5yLD5P7QkSun8I32hRkwFF+bYRGbBJb/R4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJ8FsKAm+w+sjSDR9J+sq+US2aF4zlI8MvRxXNoLoRmOaRvF3cDYs9gikVaZ86Y5dx7RzK6o0M+3Rz8HBAM5Gsm6z2zisaAIe+LLASVk6sj7Gb9U1LadinKYnzirIH2r72jDry5kKJwmbvIsHWEuV32W9wpo+cXICDBl7N24iLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9e+hInu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8967AC19421;
-	Wed,  8 Apr 2026 18:55:17 +0000 (UTC)
+	 MIME-Version; b=fwXgmtZAPbbKE+7cWcQdRAXrY0G9OocdDKCYYHRAe8Ghq8x3QOBsCJP0f7xI5tm+0a4tZUBvhMIuQ69GT4kbLh08gOUt7YgiECVJezEwNtXMMZ6OmIxKpGbAmxGYWtn0fx56/oa47mLsSTGL4vLNhW4BN92FNvHgSB5qot+odfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBGwGPeW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6CFC19421;
+	Wed,  8 Apr 2026 18:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674517;
-	bh=pH0D8DMMrjDbG76v059w04Ow6JuYtS3RrYsolSoioWA=;
+	s=korg; t=1775673782;
+	bh=lE3kd2rGg5yLD5P7QkSun8I32hRkwFF+bYRGbBJb/R4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9e+hInu3uI6PpF8Ws2Cpy9OGKteDLqzgvXYEGeLv3DCYOlay3BwWoTQEBZ7TriPD
-	 OY0v/uUhkDxq1hRDOgWc3lrm7Nxjuc15oaHzC6K+Htt66WzcFDKKU6C34NnHkRVM56
-	 DmDMIfcRtOMYea1FiIciicnEQ6z/rPYwzLgA/VJI=
+	b=HBGwGPeWx/oEPs2IiVKL3XzDbmLNxF7MsbRgmNUtHLIs0nJsvqLRWP89tETqcCTOc
+	 LUzR7cW8BzBaYdQSYBcTHLWcJsAfbE7t2Xaz6C+IrWeBYI4cIi8AYRp6BHUYHVOdGP
+	 6Hyyq4RoVUV/G1yotv9v1V3fLdAFbHGYG0ErBEw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Yucheng Lu <kanolyc@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 128/311] iio: imu: bno055: fix BNO055_SCAN_CH_COUNT off by one
+Subject: [PATCH 6.12 088/242] net/sched: sch_netem: fix out-of-bounds access in packet corruption
 Date: Wed,  8 Apr 2026 20:02:08 +0200
-Message-ID: <20260408175944.196374508@linuxfoundation.org>
+Message-ID: <20260408175930.380106395@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +72,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234795-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,networkplumber.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235080-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,baylibre.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C3CDF3C226A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 651643C2114
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Yucheng Lu <kanolyc@gmail.com>
 
-[ Upstream commit 773ef9f95385bae52dcb7fd129fefba3a71a04db ]
+[ Upstream commit d64cb81dcbd54927515a7f65e5e24affdc73c14b ]
 
-Fix an off-by-one error in the BNO055_SCAN_CH_COUNT macro. The count
-is derived by taking the difference of the last and first register
-addresses, dividing by the size of each channel (2 bytes). It needs to
-also add 1 to account for the fact that the count is inclusive of both
-the first and last channels.
+In netem_enqueue(), the packet corruption logic uses
+get_random_u32_below(skb_headlen(skb)) to select an index for
+modifying skb->data. When an AF_PACKET TX_RING sends fully non-linear
+packets over an IPIP tunnel, skb_headlen(skb) evaluates to 0.
 
-Thanks to the aligned_s64 timestamp field, there was already extra
-padding in the buffer, so there were no runtime issues caused by this
-bug.
+Passing 0 to get_random_u32_below() takes the variable-ceil slow path
+which returns an unconstrained 32-bit random integer. Using this
+unconstrained value as an offset into skb->data results in an
+out-of-bounds memory access.
 
-Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fix this by verifying skb_headlen(skb) is non-zero before attempting
+to corrupt the linear data area. Fully non-linear packets will silently
+bypass the corruption logic.
+
+Fixes: c865e5d99e25 ("[PKT_SCHED] netem: packet corruption option")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Link: https://patch.msgid.link/45435c0935df877853a81e6d06205ac738ec65fa.1774941614.git.kanolyc@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/bno055/bno055.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_netem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
-index 303bc308f80a8..c96fec2ebb3e7 100644
---- a/drivers/iio/imu/bno055/bno055.c
-+++ b/drivers/iio/imu/bno055/bno055.c
-@@ -64,7 +64,7 @@
- #define BNO055_GRAVITY_DATA_X_LSB_REG	0x2E
- #define BNO055_GRAVITY_DATA_Y_LSB_REG	0x30
- #define BNO055_GRAVITY_DATA_Z_LSB_REG	0x32
--#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2)
-+#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2 + 1)
- #define BNO055_TEMP_REG			0x34
- #define BNO055_CALIB_STAT_REG		0x35
- #define BNO055_CALIB_STAT_MAGN_SHIFT 0
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 2270547b51df8..825c398aa1232 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -517,8 +517,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			goto finish_segs;
+ 		}
+ 
+-		skb->data[get_random_u32_below(skb_headlen(skb))] ^=
+-			1<<get_random_u32_below(8);
++		if (skb_headlen(skb))
++			skb->data[get_random_u32_below(skb_headlen(skb))] ^=
++				1 << get_random_u32_below(8);
+ 	}
+ 
+ 	if (unlikely(q->t_len >= sch->limit)) {
 -- 
 2.53.0
 
