@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DtuCMam1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:38 +0200
+	id CA4zKgGj1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0ED3C255A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4E93C19A6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E08931D9FF9
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8613631285C6
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0543D522C;
-	Wed,  8 Apr 2026 18:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C073D3328;
+	Wed,  8 Apr 2026 18:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StR4jKhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNaSIteI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44913B0AFC;
-	Wed,  8 Apr 2026 18:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7EF26FA5A;
+	Wed,  8 Apr 2026 18:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673603; cv=none; b=Kobif//ZXPkr+T8Xg7L5y2WqNz2V7Zm3rL8QkrOPvfI6O+AgImY32+sFLD2wxMWZ0zuLBZ9gLTmpxKU+2KFPDdd9vVGilluj2507aR4Cm8AKruiFZS1np41pjVbOzr0Qk7f8/sOY8A0Bu8eDLctGjXhHAL20W2FZkL/BzxchRFE=
+	t=1775673049; cv=none; b=kXLqhRJHYRAdtKASaxLoyKABauFx5xBr+/xj6nzvN1QJu91SuTS2q2qU/SR9w3vP6qdg+hCCK1Lwcy05OfqNIWPYTeE+PIlHO22z74k7vHpFx7lgMNTAwu0PxF8BHdwc+Ym5hl0+FxssUz1Ag+cdWQE7gvfB9+JZR+2a8dojHAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673603; c=relaxed/simple;
-	bh=DCU+7awH5G52O/BMX5IztkPhri7TKCwCVFVgQGbnFeI=;
+	s=arc-20240116; t=1775673049; c=relaxed/simple;
+	bh=6KNo6czChJYp54Et2IFBSszvYfRqAZyot5dqzlRUKRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCMAD5NNLpGRsjy1r1fUPRguXlqDnW345IAy1MNxx3IZfzjNrCMaDEqlAqo4QZ81xk15G6l0w5c6jKwRxc0wzOSCMfHKP/IsOlih5+h5tBAKBvlj19WJsaEaQHKvR2HShwf6cVJfqOR+x1dLYhHJ36gC+rTHsRldsHYpDjxy4J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StR4jKhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C415C19421;
-	Wed,  8 Apr 2026 18:40:03 +0000 (UTC)
+	 MIME-Version; b=ItCUeq4CD2uIt4FZIhFACM+ldRnFULi91HBZ5BnaWLFdfnykID8z6eNyzA0UJvjCWA+vf2br9zZY2GqChRQKsy7Xmhx2XLakuRDyKGd3xPrqG67cR2r8mUuiBtLZdQCqKodXNU6CL1S69rxYwRi3EJQQKKQQ6HAao83Z9tPZtvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNaSIteI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D3AC19421;
+	Wed,  8 Apr 2026 18:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673603;
-	bh=DCU+7awH5G52O/BMX5IztkPhri7TKCwCVFVgQGbnFeI=;
+	s=korg; t=1775673049;
+	bh=6KNo6czChJYp54Et2IFBSszvYfRqAZyot5dqzlRUKRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StR4jKhLJ++LKxOU0LLlQc6c7fPuVk/35U4zjPIwAn0t1Yk09O3oRwlfYCg3TcUkm
-	 RncrSqUONv/k+4mhwczfHHFXV8Ks6qhY7KkyFcchgrLNPmI2DBYr1a6U3HG2rhQ7y8
-	 arwiTCy9gTMurd134YTJVcJ895b5Q4i/4pDcytww=
+	b=MNaSIteIcXPLItcZNgGH6dnIoe2D9EKcZrv8ivCzvkuLl4MCpVXe6oklhdGshz2IX
+	 T5MSwiS6l5lAQkNUfXbwag7MVqMKSbdvgffzTlhfxuoKUJnFa0s9Xuoy3Z4e58qXO+
+	 DGryqSaYYh4Nw9mrPutjNQfr2iBdZIkHWs+0QU1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 019/242] io_uring/rw: check for NULL io_br_sel when putting a buffer
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 074/277] netfilter: nf_conntrack_expect: store netns and zone in expectation
 Date: Wed,  8 Apr 2026 20:00:59 +0200
-Message-ID: <20260408175927.790469166@linuxfoundation.org>
+Message-ID: <20260408175936.627190022@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234726-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234511-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,65 +87,171 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BA0ED3C255A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3B4E93C19A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-Commit 18d6b1743eafeb3fb1e0ea5a2b7fd0a773d525a8 upstream.
+[ Upstream commit 02a3231b6d82efe750da6554ebf280e4a6f78756 ]
 
-Both the read and write side use kiocb_done() to finish a request, and
-kiocb_done() will call io_put_kbuf() in case a provided buffer was used
-for the request. Provided buffers are not supported for writes, hence
-NULL is being passed in. This normally works fine, as io_put_kbuf()
-won't actually use the value unless REQ_F_BUFFER_RING or
-REQ_F_BUFFER_SELECTED is set in the request flags. But depending on
-compiler (or whether or not CONFIG_CC_OPTIMIZE_FOR_SIZE is set), that
-may be done even though the value is never used. This will then cause a
-NULL pointer dereference.
+__nf_ct_expect_find() and nf_ct_expect_find_get() are called under
+rcu_read_lock() but they dereference the master conntrack via
+exp->master.
 
-Make it a bit more obvious and check for a NULL io_br_sel, and don't
-even bother calling io_put_kbuf() for that case.
+Since the expectation does not hold a reference on the master conntrack,
+this could be dying conntrack or different recycled conntrack than the
+real master due to SLAB_TYPESAFE_RCU.
 
-Fixes: 5fda51255439 ("io_uring/kbuf: switch to storing struct io_buffer_list locally")
-Reported-by: David Howells <dhowells@redhat.com>
-Tested-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Store the netns, the master_tuple and the zone in struct
+nf_conntrack_expect as a safety measure.
+
+This patch is required by the follow up fix not to dump expectations
+that do not belong to this netns.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 917b61fa2042 ("netfilter: ctnetlink: ignore explicit helper on new expectations")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rw.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/net/netfilter/nf_conntrack_expect.h | 18 +++++++++++++++++-
+ net/netfilter/nf_conntrack_broadcast.c      |  6 +++++-
+ net/netfilter/nf_conntrack_expect.c         |  9 +++++++--
+ net/netfilter/nf_conntrack_netlink.c        |  5 +++++
+ 4 files changed, 34 insertions(+), 4 deletions(-)
 
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -598,13 +598,16 @@ static int kiocb_done(struct io_kiocb *r
- 		req->file->f_pos = rw->kiocb.ki_pos;
- 	if (ret >= 0 && (rw->kiocb.ki_complete == io_complete_rw)) {
- 		if (!__io_complete_rw_common(req, ret)) {
-+			u32 cflags = 0;
+diff --git a/include/net/netfilter/nf_conntrack_expect.h b/include/net/netfilter/nf_conntrack_expect.h
+index 1b01400b10bdb..e9a8350e7ccfb 100644
+--- a/include/net/netfilter/nf_conntrack_expect.h
++++ b/include/net/netfilter/nf_conntrack_expect.h
+@@ -22,10 +22,16 @@ struct nf_conntrack_expect {
+ 	/* Hash member */
+ 	struct hlist_node hnode;
+ 
++	/* Network namespace */
++	possible_net_t net;
 +
- 			/*
- 			 * Safe to call io_end from here as we're inline
- 			 * from the submission path.
- 			 */
- 			io_req_io_end(req);
--			io_req_set_res(req, final_ret,
--				       io_put_kbuf(req, ret, sel->buf_list));
-+			if (sel)
-+				cflags = io_put_kbuf(req, ret, sel->buf_list);
-+			io_req_set_res(req, final_ret, cflags);
- 			io_req_rw_cleanup(req, issue_flags);
- 			return IOU_OK;
- 		}
+ 	/* We expect this tuple, with the following mask */
+ 	struct nf_conntrack_tuple tuple;
+ 	struct nf_conntrack_tuple_mask mask;
+ 
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	struct nf_conntrack_zone zone;
++#endif
+ 	/* Usage count. */
+ 	refcount_t use;
+ 
+@@ -62,7 +68,17 @@ struct nf_conntrack_expect {
+ 
+ static inline struct net *nf_ct_exp_net(struct nf_conntrack_expect *exp)
+ {
+-	return nf_ct_net(exp->master);
++	return read_pnet(&exp->net);
++}
++
++static inline bool nf_ct_exp_zone_equal_any(const struct nf_conntrack_expect *a,
++					    const struct nf_conntrack_zone *b)
++{
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	return a->zone.id == b->id;
++#else
++	return true;
++#endif
+ }
+ 
+ #define NF_CT_EXP_POLICY_NAME_LEN	16
+diff --git a/net/netfilter/nf_conntrack_broadcast.c b/net/netfilter/nf_conntrack_broadcast.c
+index 1964c596c6468..4f39bf7c843f2 100644
+--- a/net/netfilter/nf_conntrack_broadcast.c
++++ b/net/netfilter/nf_conntrack_broadcast.c
+@@ -21,6 +21,7 @@ int nf_conntrack_broadcast_help(struct sk_buff *skb,
+ 				unsigned int timeout)
+ {
+ 	const struct nf_conntrack_helper *helper;
++	struct net *net = read_pnet(&ct->ct_net);
+ 	struct nf_conntrack_expect *exp;
+ 	struct iphdr *iph = ip_hdr(skb);
+ 	struct rtable *rt = skb_rtable(skb);
+@@ -71,7 +72,10 @@ int nf_conntrack_broadcast_help(struct sk_buff *skb,
+ 	exp->flags                = NF_CT_EXPECT_PERMANENT;
+ 	exp->class		  = NF_CT_EXPECT_CLASS_DEFAULT;
+ 	rcu_assign_pointer(exp->helper, helper);
+-
++	write_pnet(&exp->net, net);
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	exp->zone = ct->zone;
++#endif
+ 	nf_ct_expect_related(exp, 0);
+ 	nf_ct_expect_put(exp);
+ 
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index b37ff73efb3e2..2234c444a320e 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -112,8 +112,8 @@ nf_ct_exp_equal(const struct nf_conntrack_tuple *tuple,
+ 		const struct net *net)
+ {
+ 	return nf_ct_tuple_mask_cmp(tuple, &i->tuple, &i->mask) &&
+-	       net_eq(net, nf_ct_net(i->master)) &&
+-	       nf_ct_zone_equal_any(i->master, zone);
++	       net_eq(net, read_pnet(&i->net)) &&
++	       nf_ct_exp_zone_equal_any(i, zone);
+ }
+ 
+ bool nf_ct_remove_expect(struct nf_conntrack_expect *exp)
+@@ -321,6 +321,7 @@ void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
+ {
+ 	struct nf_conntrack_helper *helper = NULL;
+ 	struct nf_conn *ct = exp->master;
++	struct net *net = read_pnet(&ct->ct_net);
+ 	struct nf_conn_help *help;
+ 	int len;
+ 
+@@ -338,6 +339,10 @@ void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
+ 		helper = rcu_dereference(help->helper);
+ 
+ 	rcu_assign_pointer(exp->helper, helper);
++	write_pnet(&exp->net, net);
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	exp->zone = ct->zone;
++#endif
+ 	exp->tuple.src.l3num = family;
+ 	exp->tuple.dst.protonum = proto;
+ 
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index f00afa6648376..8c5ae0665eaa4 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3521,6 +3521,7 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 		       struct nf_conntrack_tuple *tuple,
+ 		       struct nf_conntrack_tuple *mask)
+ {
++	struct net *net = read_pnet(&ct->ct_net);
+ 	struct nf_conntrack_expect *exp;
+ 	struct nf_conn_help *help;
+ 	u32 class = 0;
+@@ -3560,6 +3561,10 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 
+ 	exp->class = class;
+ 	exp->master = ct;
++	write_pnet(&exp->net, net);
++#ifdef CONFIG_NF_CONNTRACK_ZONES
++	exp->zone = ct->zone;
++#endif
+ 	if (!helper)
+ 		helper = rcu_dereference(help->helper);
+ 	rcu_assign_pointer(exp->helper, helper);
+-- 
+2.53.0
+
 
 
 
