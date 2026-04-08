@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCgaEaqg1mlDGwgAu9opvQ
-	(envelope-from <stable+bounces-234690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:34 +0200
+	id 6D/pFlGg1mkzGwgAu9opvQ
+	(envelope-from <stable+bounces-234428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB71D3C1246
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BDC3C1136
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AD7C23016011
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0245130CCBD9
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2393B19A3;
-	Wed,  8 Apr 2026 18:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E99F3D411F;
+	Wed,  8 Apr 2026 18:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW+GCG6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bujuV6D1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3229A27979A;
-	Wed,  8 Apr 2026 18:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623B83ACF13;
+	Wed,  8 Apr 2026 18:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673511; cv=none; b=goxbEdhKqaJUCGTI21Ua0jYPykoUiCn+GpS6WGb2jR9ChPWER9tOC7PWXm/lj5zAIAiNwXj7ZMKvWd/Bq0cCJpZI+NL7aCD+gNtvrEjzkfhISsw67gXfBlknsUepbF1oNxWW9ExaWEuLQSGC+WklxmrPrdE5snU4SOAeudnjug4=
+	t=1775672832; cv=none; b=px8J54y2iqyK9jVA9Im3LHUs0xKUfFR2d6GtrLEUejA6FyyFCvWm9mckrVtlZaO4aDSgtfdEkZNGRpgSoIriqziLYuKCiOeB+1PxFAR64alEQyZXrUfE+oj3uEAFfM6bMdjuEENXtDrxdeiSDX5Kijn10Fi6hXGXuJCpuHQdDAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673511; c=relaxed/simple;
-	bh=j5KQhBD1cJxZIYbKXF9CUqqSAQGp2gE7yK3CzFjVzZQ=;
+	s=arc-20240116; t=1775672832; c=relaxed/simple;
+	bh=nfKDcCXEX4381tnWyHhCWW1ycbd6QmjHB7ajQio0My4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rkjnp8KVbbPMG22yOJOKv7k2vuh2yDXZ9nATAOFbbnumxclaR/2kt950b29Vq9W7m3IjKgStIKoN4sXfotHpf3/2+1Tm+YN5FrSxzBjFITH3kCDhzm20O4SpZB1oq41qHLi741K0qWpq+66ZUNpss+pnh44gOoHmmFfGkA6LaIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW+GCG6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB79C19421;
-	Wed,  8 Apr 2026 18:38:30 +0000 (UTC)
+	 MIME-Version; b=rxURdFmOhJq24LH2xr3hlr5NA1zBNdF/XaIEdX5JfgEmx3T8KjA7zSp3wRTZFrMrIZObNXvJV7aUBZTRbAPRkmm0Ua2GQ7WpTspkayQlCraOi3UKWDCixNiEErAQLDeENPjns+5EtUwt1BpV/IgjsSFMYRNJyDmDWer4mE1rjTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bujuV6D1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB845C19421;
+	Wed,  8 Apr 2026 18:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673511;
-	bh=j5KQhBD1cJxZIYbKXF9CUqqSAQGp2gE7yK3CzFjVzZQ=;
+	s=korg; t=1775672832;
+	bh=nfKDcCXEX4381tnWyHhCWW1ycbd6QmjHB7ajQio0My4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nW+GCG6QAvetm0wodz9B8KMkDf5J20ZfnaAwgnkNGu7ogUboPPIowOSqJieaAWZWl
-	 gvYUUsXlgCOEDyuArG6i0QcTbWN8RY5OEiTcg4a2pNmE1stvF5FEzzEX73P7izvAC2
-	 hO6Rsb8ExWxre4vNyItst5N3DhlDoo6DcHGcRu9c=
+	b=bujuV6D14IHtiF3au3iifMYvwHOw1+ouJHeVKzd/CLnsZDdDaejNOABYkZ8T6zsCK
+	 iiBxNvHvbUwQC5dFavacfxpmnF+mqx94T/k1xz+ngbySPkJLSuKxpn9v9eCwZfWGdP
+	 hXlkLfXo88K7sko9JojMhBijI5R7Hq8JoN8+uQ1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Zimmermann <sigmaepsilon92@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 261/277] usb: gadget: f_hid: move list and spinlock inits from bind to alloc
+	Li Xiasong <lixiasong1@huawei.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 159/160] MPTCP: fix lock class name family in pm_nl_create_listen_socket
 Date: Wed,  8 Apr 2026 20:04:06 +0200
-Message-ID: <20260408175943.602016646@linuxfoundation.org>
+Message-ID: <20260408175919.141891561@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,110 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234690-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234428-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BB71D3C1246
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,huawei.com:email]
+X-Rspamd-Queue-Id: E9BDC3C1136
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Zimmermann <sigmaepsilon92@gmail.com>
+From: Li Xiasong <lixiasong1@huawei.com>
 
-commit 4e0a88254ad59f6c53a34bf5fa241884ec09e8b2 upstream.
+commit 7ab4a7c5d969642782b8a5b608da0dd02aa9f229 upstream.
 
-There was an issue when you did the following:
-- setup and bind an hid gadget
-- open /dev/hidg0
-- use the resulting fd in EPOLL_CTL_ADD
-- unbind the UDC
-- bind the UDC
-- use the fd in EPOLL_CTL_DEL
+In mptcp_pm_nl_create_listen_socket(), use entry->addr.family
+instead of sk->sk_family for lock class setup. The 'sk' parameter
+is a netlink socket, not the MPTCP subflow socket being created.
 
-When CONFIG_DEBUG_LIST was enabled, a list_del corruption was reported
-within remove_wait_queue (via ep_remove_wait_queue). After some
-debugging I found out that the queues, which f_hid registers via
-poll_wait were the problem. These were initialized using
-init_waitqueue_head inside hidg_bind. So effectively, the bind function
-re-initialized the queues while there were still items in them.
-
-The solution is to move the initialization from hidg_bind to hidg_alloc
-to extend their lifetimes to the lifetime of the function instance.
-
-Additionally, I found many other possibly problematic init calls in the
-bind function, which I moved as well.
-
-Signed-off-by: Michael Zimmermann <sigmaepsilon92@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260331184844.2388761-1-sigmaepsilon92@gmail.com
+Fixes: cee4034a3db1 ("mptcp: fix lockdep false positive in mptcp_pm_nl_create_listen_socket()")
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260319112159.3118874-1-lixiasong1@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict in pm_kernel.c, because commit 8617e85e04bd ("mptcp: pm:
+  split in-kernel PM specific code") is not in this version, and moves
+  code from pm_netlink.c to pm_kernel.c. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_hid.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ net/mptcp/pm_netlink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1262,17 +1262,8 @@ static int hidg_bind(struct usb_configur
- 	if (status)
- 		goto fail;
- 
--	spin_lock_init(&hidg->write_spinlock);
- 	hidg->write_pending = 1;
- 	hidg->req = NULL;
--	spin_lock_init(&hidg->read_spinlock);
--	spin_lock_init(&hidg->get_report_spinlock);
--	init_waitqueue_head(&hidg->write_queue);
--	init_waitqueue_head(&hidg->read_queue);
--	init_waitqueue_head(&hidg->get_queue);
--	init_waitqueue_head(&hidg->get_id_queue);
--	INIT_LIST_HEAD(&hidg->completed_out_req);
--	INIT_LIST_HEAD(&hidg->report_list);
- 
- 	INIT_WORK(&hidg->work, get_report_workqueue_handler);
- 	hidg->workqueue = alloc_workqueue("report_work",
-@@ -1609,6 +1600,16 @@ static struct usb_function *hidg_alloc(s
- 
- 	mutex_lock(&opts->lock);
- 
-+	spin_lock_init(&hidg->write_spinlock);
-+	spin_lock_init(&hidg->read_spinlock);
-+	spin_lock_init(&hidg->get_report_spinlock);
-+	init_waitqueue_head(&hidg->write_queue);
-+	init_waitqueue_head(&hidg->read_queue);
-+	init_waitqueue_head(&hidg->get_queue);
-+	init_waitqueue_head(&hidg->get_id_queue);
-+	INIT_LIST_HEAD(&hidg->completed_out_req);
-+	INIT_LIST_HEAD(&hidg->report_list);
-+
- 	device_initialize(&hidg->dev);
- 	hidg->dev.release = hidg_release;
- 	hidg->dev.class = &hidg_class;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1189,7 +1189,7 @@ static struct lock_class_key mptcp_keys[
+ static int mptcp_pm_nl_create_listen_socket(struct sock *sk,
+ 					    struct mptcp_pm_addr_entry *entry)
+ {
+-	bool is_ipv6 = sk->sk_family == AF_INET6;
++	bool is_ipv6 = entry->addr.family == AF_INET6;
+ 	int addrlen = sizeof(struct sockaddr_in);
+ 	struct sockaddr_storage addr;
+ 	struct sock *newsk, *ssk;
 
 
 
