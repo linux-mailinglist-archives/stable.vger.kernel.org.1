@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EqCCiak1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:26 +0200
+	id uOabKTKo1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE343C1DBA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504A23C2861
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C311631AC0AE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E72130AC995
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D83E35C1B2;
-	Wed,  8 Apr 2026 18:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AEB3624B9;
+	Wed,  8 Apr 2026 18:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vruho8RZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIDH22NC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C547528C87C;
-	Wed,  8 Apr 2026 18:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB3D2641FC;
+	Wed,  8 Apr 2026 18:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673343; cv=none; b=aI6olTo+X8rdpoWeW13l/+QiOL6L6XLczmOfgavh2fjBvOLMlETGe6vGiamKApKS91z7Mve6rJ61/utc3jFPA7nFsAqjmirHVYPh6UTY9Y/edKvJMjGB+dayPU0uwxOJLu7YixC1i2GjrSa4tkG1V48lXrc6wvzzCglrZURQC6w=
+	t=1775673968; cv=none; b=ouphyAH2quxC5RGKp12l5jwsPkibFycSFN7C4qCzdBovgbTj7+JagvkZI8WDLknZSOQBdJgi2+U4bS6iveEKuq0icSQfqt/eaONiUOtOY/mBHkceIlKXK9fDqVGEAvD+oGtU98h7Wkh8iZbHEXW5YEKtAqxL309hHndfB3mPUX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673343; c=relaxed/simple;
-	bh=qCEUtC0tUhR5++ELVCVAKlkrLo8F6wQzlTXRA2Oq78o=;
+	s=arc-20240116; t=1775673968; c=relaxed/simple;
+	bh=gxAEjpREyoS+pxZH2xpMBW396G1316QKTm6W1MFnQRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOmnBKWStXhK/wQG/4kHEcplSzGYqmF4oGiwGWDoe5FyEzjNzC9WAmPWDfHWgICUvVnpuNmGaPIobhloqLiUiPvbKrc195AMEdwfadTzDMcIHS1FIh1Cmssw+def9nu8feyIQmlZqin8PmYYcmOsdNPRUsxVJnKQ+/UlW9HgXX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vruho8RZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AEFC19425;
-	Wed,  8 Apr 2026 18:35:43 +0000 (UTC)
+	 MIME-Version; b=A280TwpJPdODA1/Qfpxnr/BHhjkvlcQMIaYqgLNjJxClxMr7gN/ZQ5utAvAzauL4Pai/pipSW+AO5TY595WC6R//16AUft0UhLtM23iyMByTGoAwZv6kExkl6yDgF+hAKd2nxgXZwXoSUXMxLKnQyViUvOVhePSJz2KRwWNNnoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIDH22NC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A65C19421;
+	Wed,  8 Apr 2026 18:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673343;
-	bh=qCEUtC0tUhR5++ELVCVAKlkrLo8F6wQzlTXRA2Oq78o=;
+	s=korg; t=1775673968;
+	bh=gxAEjpREyoS+pxZH2xpMBW396G1316QKTm6W1MFnQRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vruho8RZGQsJRL2TmtxtGzpz8NuBOdNc5GeCChwJfKyYsHd8T6JdTdWSINiB52C3Q
-	 vUc6tkZN+MUMBVRy7ncRWqgsfqsTfPM3CPYiFsk0nG2apnAuaGFKNlVGeKnFBqR5lx
-	 gK5waGX2+OsNoxEe1VbxoFHgrDCUNTDinAIJUGNQ=
+	b=wIDH22NCbHGKsbfdzCpUdJftUV/20erWupRJH5lrJMgGLHjzMB90fGz3dDhL3mNfx
+	 mL//8XbQhSFwoknEGtTOCxCGVYFIYwYRu2PsyXo/jSKBg+QnpQSZj6ZXX62xyuSwp1
+	 VmoS+RN51LAoCcgp6JugVp4xdbN1ITQyfPLv/+bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 196/277] gpib: lpvo_usb: fix memory leak on disconnect
+	Wanquan Zhong <wanquan.zhong@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 141/242] USB: serial: option: add support for Rolling Wireless RW135R-GL
 Date: Wed,  8 Apr 2026 20:03:01 +0200
-Message-ID: <20260408175941.183352517@linuxfoundation.org>
+Message-ID: <20260408175932.365019180@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +65,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234625-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234866-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BAE343C1DBA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fibocom.com:email]
+X-Rspamd-Queue-Id: 504A23C2861
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Wanquan Zhong <wanquan.zhong@fibocom.com>
 
-commit 5cefb52c1af6f69ea719e42788f6ec6a087eb74c upstream.
+commit 01e8d0f742222f1e68f48180d5480097adf7ae9f upstream.
 
-The driver iterates over the registered USB interfaces during GPIB
-attach and takes a reference to their USB devices until a match is
-found. These references are never released which leads to a memory leak
-when devices are disconnected.
+Add VID/PID 33f8:1003 for the Rolling Wireless RW135R-GL M.2 module,
+which is used in laptop debug cards with MBIM interface for
+Linux/Chrome OS. The device supports mbim, pipe functionalities.
 
-Fix the leak by dropping the unnecessary references.
+Here are the outputs of usb-devices:
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Fixes: fce79512a96a ("staging: gpib: Add LPVO DIY USB GPIB driver")
-Cc: stable <stable@kernel.org> # 6.13
-Cc: Dave Penkler <dpenkler@gmail.com>
+Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260310105127.17538-1-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/staging/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
-+++ b/drivers/staging/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
-@@ -405,7 +405,7 @@ static int usb_gpib_attach(struct gpib_b
- 		for (j = 0 ; j < MAX_DEV ; j++) {
- 			if ((assigned_usb_minors & 1 << j) == 0)
- 				continue;
--			udev =	usb_get_dev(interface_to_usbdev(lpvo_usb_interfaces[j]));
-+			udev = interface_to_usbdev(lpvo_usb_interfaces[j]);
- 			device_path = kobject_get_path(&udev->dev.kobj, GFP_KERNEL);
- 			match = gpib_match_device_path(&lpvo_usb_interfaces[j]->dev,
- 						       config->device_path);
-@@ -420,7 +420,7 @@ static int usb_gpib_attach(struct gpib_b
- 		for (j = 0 ; j < MAX_DEV ; j++) {
- 			if ((assigned_usb_minors & 1 << j) == 0)
- 				continue;
--			udev =	usb_get_dev(interface_to_usbdev(lpvo_usb_interfaces[j]));
-+			udev = interface_to_usbdev(lpvo_usb_interfaces[j]);
- 			DIA_LOG(1, "dev. %d: bus %d -> %d  dev: %d -> %d\n", j,
- 				udev->bus->busnum, config->pci_bus, udev->devnum, config->pci_slot);
- 			if (config->pci_bus == udev->bus->busnum &&
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2464,6 +2464,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
