@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234256-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gI6jL36l1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:10 +0200
+	id OC+tGNOd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234256-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3D63C21EE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B613C0B73
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 606F731068AF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78EE230D3821
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3043D9DAE;
-	Wed,  8 Apr 2026 18:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525B93D7D9D;
+	Wed,  8 Apr 2026 18:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8Iyzooq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oQmPAz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8843D9043;
-	Wed,  8 Apr 2026 18:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126413ACF11;
+	Wed,  8 Apr 2026 18:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674007; cv=none; b=jyssa6cav69p9aLN+KhT2IgBbY3eVCI+l9HpLWHyeLHCmp0PMU+g3VSNU5xC/JIbUHYSHTCotnUG40pOZnsCsGAhkniFkiYOaW1axVnsASguFJ3PBIwtQPsAlWOvgO4zQkvszv6Sn0Ewmxo2iq9BVt89cyhJZOtyt8RaTV7MeVY=
+	t=1775672388; cv=none; b=Dt8+67OBBHrCqftGo9HPi5A+Dg6qL1hc7KG5Ag2YzjkDcXL2m+6YIJZ01j/8pxbupMBcjqYipp+Dmc24ziW3hBNG/2JVdDNXpXeuXHOhC8T5w8UWor4EhnQpc1FrB7Dx2sqG+mDoBJg13NI19AGKJ/YUCnJ1l0CfPuDToiSJgYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674007; c=relaxed/simple;
-	bh=nA2RL1wQdY8PRFVVy5WVc06B7WIGLUR+lLzSlDm3g9M=;
+	s=arc-20240116; t=1775672388; c=relaxed/simple;
+	bh=HnhpyIChcZRzkg9t6gncwFFnA3ROXrNi+IwPkoUDrUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYm6kEmn1qjdrRVmSrChN7ciAH4fjakneTnE9kvER6hxkz/K+kQNWZE/+ZeLQAsgd+A3bNXdTPVChoFAaZ0RsycXUEmSPMRy4IGDgl7AQWS50ddlNsc0X+crOH8YhYuLET9hKOSgx9fJtsj5d8jbW0Ioa3cHneCYLct+wU8nesw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8Iyzooq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0CFC19425;
-	Wed,  8 Apr 2026 18:46:46 +0000 (UTC)
+	 MIME-Version; b=Y3jNqIFppxNvIYKqQJtfZrxRolIiofxrkIouHlsm+rgpH3Y5veM1ub3JHILJZMFohoDENWWV7vhHOYasutzElsKToVz/pUIaAP0RuAdK1FmXh1GvLMJAf7ujfcYtkSrv29LNu/zznx/yLVyIzmw7cwq7MECS/wS/eb9c6kOGquM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oQmPAz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C4A5C19421;
+	Wed,  8 Apr 2026 18:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674007;
-	bh=nA2RL1wQdY8PRFVVy5WVc06B7WIGLUR+lLzSlDm3g9M=;
+	s=korg; t=1775672388;
+	bh=HnhpyIChcZRzkg9t6gncwFFnA3ROXrNi+IwPkoUDrUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8IyzooqOhUhaVvdSW65xcNzHQnqehRG2TcWDyzgEecU7GUWZjd5dXkC6rjVnJkVH
-	 Y2A3Tlihfngy/4qr/BFTWGOayzY/b1WSYgO425uPlYYDfPapwlgx8eA3yCBqN5IDe5
-	 PXhnFn1LfbeAO9piYikMH6LONPXdoTqJ2DaEiVy0=
+	b=2oQmPAz+nKogPjDqTGaEqtMCykFYVCUBSC/AWgB/eCzRWR6iHnJsoIF5Wzrdzne+R
+	 P2fP3TFCjnJ0PcDMlwtfeKaVOj5o6lrEwyEpo2lAEOI8m2uY4YOCbClO3pyGlRD2xz
+	 net6wjxMQFiIWhXFGSAmcT8/VEon9LNir590soNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Mitchell <mitchell.liam@gmail.com>,
-	Henrik Rydberg <rydberg@bitmath.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 145/242] Input: bcm5974 - recover from failed mode switch
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Jimmy Hu <hhhuuu@google.com>
+Subject: [PATCH 6.1 268/312] usb: gadget: uvc: fix NULL pointer dereference during unbind race
 Date: Wed,  8 Apr 2026 20:03:05 +0200
-Message-ID: <20260408175932.520936887@linuxfoundation.org>
+Message-ID: <20260408175943.759442695@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,148 +64,249 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234882-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bitmath.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234256-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bitmath.org:email]
-X-Rspamd-Queue-Id: 3B3D63C21EE
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,harvard.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D9B613C0B73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam Mitchell <mitchell.liam@gmail.com>
+From: Jimmy Hu <hhhuuu@google.com>
 
-commit fc1e8a6f129d87c64ac8e58b50d9dfa66217cfda upstream.
+commit eba2936bbe6b752a31725a9eb5c674ecbf21ee7d upstream.
 
-Mode switches sent before control response are ignored. This results in
-an unresponsive trackpad and "bcm5974: bad trackpad package, length: 8"
-repeated in logs.
+Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
+shutdown") introduced two stages of synchronization waits totaling 1500ms
+in uvc_function_unbind() to prevent several types of kernel panics.
+However, this timing-based approach is insufficient during power
+management (PM) transitions.
 
-On receiving unknown 8-byte packets, assume that mode switch was ignored
-and schedule an asynchronous mode reset. The reset will switch the
-device to normal mode, wait, then switch back to wellspring mode.
+When the PM subsystem starts freezing user space processes, the
+wait_event_interruptible_timeout() is aborted early, which allows the
+unbind thread to proceed and nullify the gadget pointer
+(cdev->gadget = NULL):
 
-Signed-off-by: Liam Mitchell <mitchell.liam@gmail.com>
-Link: https://lore.kernel.org/linux-input/CAOQ1CL4+DP1TuLAGNsz5GdFBTHvnTg=5q=Dr2Z1OQc6RXydSYA@mail.gmail.com/
-Acked-by: Henrik Rydberg <rydberg@bitmath.org>
-Link: https://patch.msgid.link/20260213-bcm5974-reset-v2-1-1837851336b0@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
+[  814.178583][ T3173] PM: suspend entry (deep)
+[  814.192487][ T3173] Freezing user space processes
+[  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
+
+When the PM subsystem resumes or aborts the suspend and tasks are
+restarted, the V4L2 release path is executed and attempts to access the
+already nullified gadget pointer, triggering a kernel panic:
+
+[  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
+[  814.386727][ T3173] Restarting tasks ...
+[  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
+[  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
+[  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
+[  814.404078][ T4558] Call trace:
+[  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
+[  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
+[  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
+[  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
+[  814.404095][ T4558]  v4l2_release+0xcc/0x130
+
+Address the race condition and NULL pointer dereference by:
+
+1. State Synchronization (flag + mutex)
+Introduce a 'func_unbound' flag in struct uvc_device. This allows
+uvc_function_disconnect() to safely skip accessing the nullified
+cdev->gadget pointer. As suggested by Alan Stern, this flag is protected
+by a new mutex (uvc->lock) to ensure proper memory ordering and prevent
+instruction reordering or speculative loads. This mutex is also used to
+protect 'func_connected' for consistent state management.
+
+2. Explicit Synchronization (completion)
+Use a completion to synchronize uvc_function_unbind() with the
+uvc_vdev_release() callback. This prevents Use-After-Free (UAF) by
+ensuring struct uvc_device is freed after all video device resources
+are released.
+
+Fixes: b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly shutdown")
+Cc: stable <stable@kernel.org>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+Link: https://patch.msgid.link/20260320065427.1374555-1-hhhuuu@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/bcm5974.c |   42 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_uvc.c    |   39 ++++++++++++++++++++++++++++++---
+ drivers/usb/gadget/function/uvc.h      |    3 ++
+ drivers/usb/gadget/function/uvc_v4l2.c |    5 +++-
+ 3 files changed, 43 insertions(+), 4 deletions(-)
 
---- a/drivers/input/mouse/bcm5974.c
-+++ b/drivers/input/mouse/bcm5974.c
-@@ -286,6 +286,8 @@ struct bcm5974 {
- 	const struct tp_finger *index[MAX_FINGERS];	/* finger index data */
- 	struct input_mt_pos pos[MAX_FINGERS];		/* position array */
- 	int slots[MAX_FINGERS];				/* slot assignments */
-+	struct work_struct mode_reset_work;
-+	unsigned long last_mode_reset;
- };
+--- a/drivers/usb/gadget/function/f_uvc.c
++++ b/drivers/usb/gadget/function/f_uvc.c
+@@ -397,6 +397,12 @@ uvc_function_disconnect(struct uvc_devic
+ {
+ 	int ret;
  
- /* trackpad finger block data, le16-aligned */
-@@ -696,6 +698,32 @@ static int bcm5974_wellspring_mode(struc
- 	return retval;
- }
- 
-+/*
-+ * Mode switches sent before the control response are ignored.
-+ * Fixing this state requires switching to normal mode and waiting
-+ * about 1ms before switching back to wellspring mode.
-+ */
-+static void bcm5974_mode_reset_work(struct work_struct *work)
-+{
-+	struct bcm5974 *dev = container_of(work, struct bcm5974, mode_reset_work);
-+	int error;
-+
-+	guard(mutex)(&dev->pm_mutex);
-+	dev->last_mode_reset = jiffies;
-+
-+	error = bcm5974_wellspring_mode(dev, false);
-+	if (error) {
-+		dev_err(&dev->intf->dev, "reset to normal mode failed\n");
++	guard(mutex)(&uvc->lock);
++	if (uvc->func_unbound) {
++		dev_dbg(&uvc->vdev.dev, "skipping function deactivate (unbound)\n");
 +		return;
 +	}
 +
-+	fsleep(1000);
+ 	if ((ret = usb_function_deactivate(&uvc->func)) < 0)
+ 		uvcg_info(&uvc->func, "UVC disconnect failed with %d\n", ret);
+ }
+@@ -415,6 +421,15 @@ static ssize_t function_name_show(struct
+ 
+ static DEVICE_ATTR_RO(function_name);
+ 
++static void uvc_vdev_release(struct video_device *vdev)
++{
++	struct uvc_device *uvc = video_get_drvdata(vdev);
 +
-+	error = bcm5974_wellspring_mode(dev, true);
-+	if (error)
-+		dev_err(&dev->intf->dev, "mode switch after reset failed\n");
++	/* Signal uvc_function_unbind() that the video device has been released */
++	if (uvc->vdev_release_done)
++		complete(uvc->vdev_release_done);
 +}
 +
- static void bcm5974_irq_button(struct urb *urb)
+ static int
+ uvc_register_video(struct uvc_device *uvc)
  {
- 	struct bcm5974 *dev = urb->context;
-@@ -752,10 +780,20 @@ static void bcm5974_irq_trackpad(struct
- 	if (dev->tp_urb->actual_length == 2)
- 		goto exit;
+@@ -427,7 +442,7 @@ uvc_register_video(struct uvc_device *uv
+ 	uvc->vdev.v4l2_dev->dev = &cdev->gadget->dev;
+ 	uvc->vdev.fops = &uvc_v4l2_fops;
+ 	uvc->vdev.ioctl_ops = &uvc_v4l2_ioctl_ops;
+-	uvc->vdev.release = video_device_release_empty;
++	uvc->vdev.release = uvc_vdev_release;
+ 	uvc->vdev.vfl_dir = VFL_DIR_TX;
+ 	uvc->vdev.lock = &uvc->video.mutex;
+ 	uvc->vdev.device_caps = V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_STREAMING;
+@@ -602,6 +617,8 @@ uvc_function_bind(struct usb_configurati
+ 	int ret = -EINVAL;
  
--	if (report_tp_state(dev, dev->tp_urb->actual_length))
-+	if (report_tp_state(dev, dev->tp_urb->actual_length)) {
- 		dprintk(1, "bcm5974: bad trackpad package, length: %d\n",
- 			dev->tp_urb->actual_length);
+ 	uvcg_info(f, "%s()\n", __func__);
++	scoped_guard(mutex, &uvc->lock)
++		uvc->func_unbound = false;
  
-+		/*
-+		 * Receiving a HID packet means we aren't in wellspring mode.
-+		 * If we haven't tried a reset in the last second, try now.
-+		 */
-+		if (dev->tp_urb->actual_length == 8 &&
-+		    time_after(jiffies, dev->last_mode_reset + msecs_to_jiffies(1000))) {
-+			schedule_work(&dev->mode_reset_work);
-+		}
+ 	opts = fi_to_f_uvc_opts(f->fi);
+ 	/* Sanity check the streaming endpoint module parameters. */
+@@ -897,12 +914,19 @@ static void uvc_free(struct usb_function
+ static void uvc_function_unbind(struct usb_configuration *c,
+ 				struct usb_function *f)
+ {
++	DECLARE_COMPLETION_ONSTACK(vdev_release_done);
+ 	struct usb_composite_dev *cdev = c->cdev;
+ 	struct uvc_device *uvc = to_uvc(f);
+ 	struct uvc_video *video = &uvc->video;
+ 	long wait_ret = 1;
++	bool connected;
+ 
+ 	uvcg_info(f, "%s()\n", __func__);
++	scoped_guard(mutex, &uvc->lock) {
++		uvc->func_unbound = true;
++		uvc->vdev_release_done = &vdev_release_done;
++		connected = uvc->func_connected;
 +	}
+ 
+ 	if (video->async_wq)
+ 		destroy_workqueue(video->async_wq);
+@@ -913,7 +937,7 @@ static void uvc_function_unbind(struct u
+ 	 * though the video device removal uevent. Allow some time for the
+ 	 * application to close out before things get deleted.
+ 	 */
+-	if (uvc->func_connected) {
++	if (connected) {
+ 		uvcg_dbg(f, "waiting for clean disconnect\n");
+ 		wait_ret = wait_event_interruptible_timeout(uvc->func_connected_queue,
+ 				uvc->func_connected == false, msecs_to_jiffies(500));
+@@ -924,7 +948,10 @@ static void uvc_function_unbind(struct u
+ 	video_unregister_device(&uvc->vdev);
+ 	v4l2_device_unregister(&uvc->v4l2_dev);
+ 
+-	if (uvc->func_connected) {
++	scoped_guard(mutex, &uvc->lock)
++		connected = uvc->func_connected;
 +
- exit:
- 	error = usb_submit_urb(dev->tp_urb, GFP_ATOMIC);
- 	if (error)
-@@ -906,6 +944,7 @@ static int bcm5974_probe(struct usb_inte
- 	dev->intf = iface;
- 	dev->input = input_dev;
- 	dev->cfg = *cfg;
-+	INIT_WORK(&dev->mode_reset_work, bcm5974_mode_reset_work);
- 	mutex_init(&dev->pm_mutex);
++	if (connected) {
+ 		/*
+ 		 * Wait for the release to occur to ensure there are no longer any
+ 		 * pending operations that may cause panics when resources are cleaned
+@@ -936,6 +963,10 @@ static void uvc_function_unbind(struct u
+ 		uvcg_dbg(f, "done waiting for release with ret: %ld\n", wait_ret);
+ 	}
  
- 	/* setup urbs */
-@@ -998,6 +1037,7 @@ static void bcm5974_disconnect(struct us
- {
- 	struct bcm5974 *dev = usb_get_intfdata(iface);
++	/* Wait for the video device to be released */
++	wait_for_completion(&vdev_release_done);
++	uvc->vdev_release_done = NULL;
++
+ 	usb_ep_free_request(cdev->gadget->ep0, uvc->control_req);
+ 	kfree(uvc->control_buf);
  
-+	disable_work_sync(&dev->mode_reset_work);
- 	usb_set_intfdata(iface, NULL);
+@@ -954,6 +985,8 @@ static struct usb_function *uvc_alloc(st
+ 		return ERR_PTR(-ENOMEM);
  
- 	input_unregister_device(dev->input);
+ 	mutex_init(&uvc->video.mutex);
++	mutex_init(&uvc->lock);
++	uvc->func_unbound = true;
+ 	uvc->state = UVC_STATE_DISCONNECTED;
+ 	init_waitqueue_head(&uvc->func_connected_queue);
+ 	opts = fi_to_f_uvc_opts(fi);
+--- a/drivers/usb/gadget/function/uvc.h
++++ b/drivers/usb/gadget/function/uvc.h
+@@ -131,6 +131,9 @@ struct uvc_device {
+ 	enum uvc_state state;
+ 	struct usb_function func;
+ 	struct uvc_video video;
++	struct completion *vdev_release_done;
++	struct mutex lock;	/* protects func_unbound and func_connected */
++	bool func_unbound;
+ 	bool func_connected;
+ 	wait_queue_head_t func_connected_queue;
+ 
+--- a/drivers/usb/gadget/function/uvc_v4l2.c
++++ b/drivers/usb/gadget/function/uvc_v4l2.c
+@@ -497,6 +497,8 @@ uvc_v4l2_subscribe_event(struct v4l2_fh
+ 	if (sub->type < UVC_EVENT_FIRST || sub->type > UVC_EVENT_LAST)
+ 		return -EINVAL;
+ 
++	guard(mutex)(&uvc->lock);
++
+ 	if (sub->type == UVC_EVENT_SETUP && uvc->func_connected)
+ 		return -EBUSY;
+ 
+@@ -518,7 +520,8 @@ static void uvc_v4l2_disable(struct uvc_
+ 	uvc_function_disconnect(uvc);
+ 	uvcg_video_enable(&uvc->video, 0);
+ 	uvcg_free_buffers(&uvc->video.queue);
+-	uvc->func_connected = false;
++	scoped_guard(mutex, &uvc->lock)
++		uvc->func_connected = false;
+ 	wake_up_interruptible(&uvc->func_connected_queue);
+ }
+ 
 
 
 
