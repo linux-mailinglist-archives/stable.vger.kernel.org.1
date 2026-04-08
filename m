@@ -1,157 +1,124 @@
-Return-Path: <stable+bounces-235272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEC7OWep1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-235272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:15:51 +0200
+	id GOu7MQGt1mncHAgAu9opvQ
+	(envelope-from <stable+bounces-235273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:31:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3205F3C2A67
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:15:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320A33C3213
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 24634300461F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:15:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78F043060D54
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FAF3DA7CD;
-	Wed,  8 Apr 2026 19:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DD83DA7D4;
+	Wed,  8 Apr 2026 19:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="BdtkQo49"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZFGXE3AL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FD53B2FCD;
-	Wed,  8 Apr 2026 19:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B65D3DA7CD
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 19:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775675734; cv=none; b=r6tVwq6QhqdPwEpTBv6wG+z7kZfsBrmQE97dQQ+sVCWqEsVQxPYb2Jm633Rs1k8FzKGFQ97uwPP4Z6jQtKML3l72uF3kwGCvxVQ07wYJmuY9rvi3Hkfr48IcGae7qm+LsyLa3XTazgrVHEPpNyjVo8QbOMXZFWFwJRHCdZYxnYE=
+	t=1775676142; cv=none; b=q+GqbT+GYosovqATMLBl7eZt0SNvrigh+89bcPogq/6TRl4/kSn6hR6aTLynX8tn5O/hoaygduTnXCq4RGK2WUXkBCnQcWAUOu7+iYHfhKEMCTkvsQA6s2CQ4LvdzwWmcLXSSUZrC3pRaopKos4Ins16CsRX5rTsDNM4nAmHrSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775675734; c=relaxed/simple;
-	bh=JZpipuTa8f2r1rEwJmj1883sExcXgeGBZCPAzmjBpb0=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=IreVhHAGlV8z+17GWZQKj3VrnfchIANFCESRG2RejnC+21cJRFohaoxuK++1A128TVhxES65V9wgTgX9wHPqbvIyn1yRv1OQ0Bppt9AsjzByHb6ZGmtM2W3KiMz7oW70XNeFKjB+I2O3qNEKiteJF/gGGLDsrtsnOxRaCLX/HKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=BdtkQo49; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BA1FBA588E;
-	Wed,  8 Apr 2026 21:15:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1775675725; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=t1sBfATotgNvvEO2UQbvxW1BDDWsBRhyG+y/VKIZseU=;
-	b=BdtkQo49Comz61CfOwiLZoWJ1NgI5L+PAbCuET6kfzX0ybqeNm7Z6rQhII6rsvH7TwbVb5
-	hRwAeEmtB4BIv9TYwLZcDCEapMs1WiqJTasO+VLrlCc6LffoAkFiQzZ7+uUp8GsLwAPsif
-	50b82FP+sgBX5qPaNovgXOgQxVlJDCQFKEz/aKz9EQcFvJ398pMEfcZ519xFjAFUbkATx7
-	wYzl+IXATMVqcl2rREmsGVcB4jB+BFCxM5Rr0C4lyrqljdGjq3LEk3qaTCT50TPuWenfl7
-	bwJWUNmmr6N61mojsqt5Vk3OLCYtmoaPjnBFRy5PQyZC/NSeAz8krEFBDwXwnw==
+	s=arc-20240116; t=1775676142; c=relaxed/simple;
+	bh=GtoDxUV7jx4Q+glcVA7o4x3DItfhn1Pj/U50pTxFP7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hOPm7UHZLQDLEsyvx4VArFe2cmOUR09TfCJZbNhllNRFNP2oQcvhIx0RrYjwDrHDXy1FYVonTg43rjSWhWl+WNJ7xtXDzgaBUZLFmmj/otjer6d0K1uGCDk5wa7VKSQAnP2ZKENJ18W9gkop6iO8i+nsWmzYMCuN9aVpDY2sxBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZFGXE3AL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776B5C19421;
+	Wed,  8 Apr 2026 19:22:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775676141;
+	bh=GtoDxUV7jx4Q+glcVA7o4x3DItfhn1Pj/U50pTxFP7s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZFGXE3AL6wXIi7lveJ8KhF+h44fH/6NFbjQWJrcaPSpI8P+xLb9f8+P+cr6iD/XbL
+	 D2LvSO8izzn/UycXDenTf+6zzO5Ma1wLon55R9uVqQDrjeDlbjRMvJA5M6b35nPoBQ
+	 cO/0WJSfFe07SSB2RTQz5n4VTkRDuLhbfGQSu/gAJ0Az8go53JPzM8M3G9xpjQsHKX
+	 iCtb3y08W34ynT0eehQj9J+2nmEIhOUIyq6aJmLx+OjxxDb00Pa1h82tWwbVojh4EV
+	 lGAJTE6Ldd1hJ89oG4gVBEAtNNLNITnVKoI4sBit2NLQKJgDHnKnvuQZFE7HwUddcY
+	 lhQEYv7kzQ55g==
+Date: Wed, 8 Apr 2026 13:22:19 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Chaitanya Kulkarni <kch@nvidia.com>
+Cc: skumar47@syr.edu, hch@lst.de, sagi@grimberg.me,
+	linux-nvme@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] nvmet-tcp: fix race between ICReq handling and queue
+ teardown
+Message-ID: <adaq6xNK0Vy7pWW4@kbusch-mbp>
+References: <20260408075131.6221-1-kch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 08 Apr 2026 21:15:22 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Marek Vasut <marex@nabladev.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, "David S. Miller"
- <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui
- <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [net,PATCH] net: ks8851: Reinstate disabling of BHs around IRQ
- handler
-In-Reply-To: <a9845b8e-5d3f-472b-8f03-bba699ba3882@nabladev.com>
-References: <20260407212344.80265-1-marex@nabladev.com>
- <f4010cedaa49afc1648a73775a987ee5@tipi-net.de>
- <a9845b8e-5d3f-472b-8f03-bba699ba3882@nabladev.com>
-Message-ID: <215ad1cc5db3f352ac2a130c07dbd830@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408075131.6221-1-kch@nvidia.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,redhat.com,raritan.com,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[tipi-net.de:?];
-	TAGGED_FROM(0.00)[bounces-235272-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	NEURAL_SPAM(0.00)[0.903];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235273-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DMARC_DNSFAIL(0.00)[tipi-net.de : query timed out];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_TEMPFAIL(0.00)[tipi-net.de:s=dkim];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3205F3C2A67
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 320A33C3213
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 8.4.2026 17:41, Marek Vasut wrote:
-> On 4/8/26 12:54 PM, Nicolai Buchwitz wrote:
+On Wed, Apr 08, 2026 at 12:51:31AM -0700, Chaitanya Kulkarni wrote:
+> nvmet_tcp_handle_icreq() updates queue->state after sending an
+> Initialization Connection Response (ICResp), but it does so without
+> serializing against target-side queue teardown.
 > 
-> Hello Nicolai,
+> If an NVMe/TCP host sends an Initialization Connection Request
+> (ICReq) and immediately closes the connection, target-side teardown
+> may start in softirq context before io_work drains the already
+> buffered ICReq. In that case, nvmet_tcp_schedule_release_queue()
+> sets queue->state to NVMET_TCP_Q_DISCONNECTING and drops the queue
+> reference under state_lock.
 > 
-> thank you for testing on the SPI variant, that helped a lot.
+> If io_work later processes that ICReq, nvmet_tcp_handle_icreq() can
+> still overwrite the state back to NVMET_TCP_Q_LIVE. That defeats the
+> DISCONNECTING-state guard in nvmet_tcp_schedule_release_queue() and
+> allows a later socket state change to re-enter teardown and issue a
+> second kref_put() on an already released queue.
 > 
->> In order to make this work I would propose something like this (which 
->> works in my SPI setup):
->> 
->> --- a/drivers/net/ethernet/micrel/ks8851_par.c
->> +++ b/drivers/net/ethernet/micrel/ks8851_par.c
->> @@ -60,12 +60,14 @@ static void ks8851_lock_par(struct ks8851_net *ks, 
->> unsigned long *flags)
->>   {
->>       struct ks8851_net_par *ksp = to_ks8851_par(ks);
->> 
->> +    local_bh_disable();
->>       spin_lock_irqsave(&ksp->lock, *flags);
->>   }
->> 
->>   static void ks8851_unlock_par(struct ks8851_net *ks, unsigned long 
->> *flags)
->>   {
->>       struct ks8851_net_par *ksp = to_ks8851_par(ks);
->> 
->>       spin_unlock_irqrestore(&ksp->lock, *flags);
->> +    local_bh_enable();
->>   }
->> 
->> Tested-by: Nicolai Buchwitz <nb@tipi-net.de>  # KS8851 SPI, non-RT 
->> (regression + proposed fix)
+> The ICResp send failure path has the same problem. If teardown has
+> already moved the queue to DISCONNECTING, a send error can still
+> overwrite the state with NVMET_TCP_Q_FAILED, again reopening the
+> window for a second teardown path to drop the queue reference.
 > 
-> Are you also able to test the KS8851 driver with PREEMPT_RT enabled and 
-> heavy iperf3 traffic on the SPI variant ? Does that trigger any issues 
-> ? I ran 'iperf3 -s' on the KS8851 end and 'iperf3 -c 192.168.1.300 -t 0 
-> --bidir' on the host PC side.
+> Fix this by serializing both post-send state transitions with
+> state_lock and bailing out if teardown has already started.
 
-Successfully tested with both PREEMPT_RT and non-RT kernels using the 
-iperf3 command above - no issues observed. Both builds included the fix 
-from my previous message.
-If there is anything else worth testing on the KS8851 SPI variant, 
-please let me know.
-
-> 
-> Let me prepare a slightly updated fix and send a V2.
-
-Regards
-Nicolai
+This looks okay to me. Will give this a couple days then queue it up if
+no issues reported.
 
