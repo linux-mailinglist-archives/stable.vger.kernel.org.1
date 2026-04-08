@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDoVDUKn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:42 +0200
+	id IEkfNpeb1mnDGggAu9opvQ
+	(envelope-from <stable+bounces-234139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECAC3C2681
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A683C0544
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B40531A3BC7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF2873031AC6
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6183D75C9;
-	Wed,  8 Apr 2026 18:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641F83D75AF;
+	Wed,  8 Apr 2026 18:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbdjswQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dkegdr5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6DB3D669E;
-	Wed,  8 Apr 2026 18:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B303AEF45;
+	Wed,  8 Apr 2026 18:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673712; cv=none; b=ccjyrfsaX0loxYUQdqMqnVGsHGehiur+J9E/axOGO2i9+XODh//yugvkWAEf4Mv8MBTx6r7nj9lHdRKC7yMgFbA8pLhfnOZugPghZY5av6LzygrdIAXDIFNOOlcaZMRTIr5Dz68mWt3pICXI4YHqQd9sfj8PiBfl+zhOobJEweM=
+	t=1775672085; cv=none; b=rh/4ILrk9X4TBoabAcP4M3YZGFZg80+rCrt+IlAojh6TkewZ8ItD0IPfaia+rqM30XhQTugtYxDpGkPQ2V74fh8XQGsDl/bPkaY8fPBDOlU4zy8uXe64Dy0Kcdv4+8kiCACWFNYqYU7QnQKrHY0cn9KPLmI+NpztwhOs/kJpspk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673712; c=relaxed/simple;
-	bh=f4NN/5BdffefZIWJ4xAjs9m0RgcAe19g1wyRXcch6Tk=;
+	s=arc-20240116; t=1775672085; c=relaxed/simple;
+	bh=1BrArdDNwDbMhoR/IHM/A/VZIPVO2TWJpjrmb3JRey0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAOlbtpfy7Nnh/Ko37PMLHY/MXZ2XAme/dzZjH0/f6/mMTTPkPtmrIbFUJanAcUdUtEqcoufO03N3A1wmedh7aYVwY7RjgLSBjCQQBs8JNJus/b/ZhoqTkXe74KxRyLLl6+0BY6K2sD2tZDMXFaM1FSFgeuCsiDrEAcIpkJQgQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbdjswQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE046C19421;
-	Wed,  8 Apr 2026 18:41:51 +0000 (UTC)
+	 MIME-Version; b=AOnBuv3Qkzn1ZMfayZiB5v+99GaGYYpnomahR3KCUzIXO25uzULQ8f7arcRBGo/geDMdItWIbVzSDq/LCH69UGPfL+/oeazhVzc0BBemeBy4a4OEvV52eUYHTsf5g1WUobVpWCqL3pQEuJcP3j65/2DZlgGH4JnjMMnG6yEWWyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dkegdr5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1048C19421;
+	Wed,  8 Apr 2026 18:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673712;
-	bh=f4NN/5BdffefZIWJ4xAjs9m0RgcAe19g1wyRXcch6Tk=;
+	s=korg; t=1775672085;
+	bh=1BrArdDNwDbMhoR/IHM/A/VZIPVO2TWJpjrmb3JRey0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TbdjswQBw2r7L24bPSCnLxCkChJQPw0ZUvivDq0m97c0TqiG9HFUMm4Dsn6FHJJQ2
-	 y/UP/sLwkHP6AWOM0c8gWlsdG3nOUoqrf3C3SaJm9FJWTThSCNxUZHVZ8OSQH4Ze/K
-	 TFcu+9t4cm+7AaeKREjHxrJE18N/6QQ5PLTP4hHc=
+	b=Dkegdr5dpdoT63FOa02+mY3jJeMeCiASp8+AKFmmZPRCtpzvAWEIsZVX3dflIB0Qj
+	 6PxhjjQr6AMbBa/4f+F4xlZiM8QYvX7C5yyFXnHgLrWRR6LxsxAFQOAG4Buvam6uoq
+	 CdpUneFfYhaC036haZT32r/vHpnlZ4PuSKsOBb1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/242] net: introduce mangleid_features
+Subject: [PATCH 6.1 183/312] net/mlx5: lag: Check for LAG device before creating debugfs
 Date: Wed,  8 Apr 2026 20:01:40 +0200
-Message-ID: <20260408175929.325928819@linuxfoundation.org>
+Message-ID: <20260408175940.598456234@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234768-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234139-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,102 +89,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8ECAC3C2681
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 68A683C0544
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 31c5a71d982b57df75858974634c2f0a338f2fc6 ]
+[ Upstream commit bf16bca6653679d8a514d6c1c5a2c67065033f14 ]
 
-Some/most devices implementing gso_partial need to disable the GSO partial
-features when the IP ID can't be mangled; to that extend each of them
-implements something alike the following[1]:
+__mlx5_lag_dev_add_mdev() may return 0 (success) even when an error
+occurs that is handled gracefully. Consequently, the initialization
+flow proceeds to call mlx5_ldev_add_debugfs() even when there is no
+valid LAG context.
 
-	if (skb->encapsulation && !(features & NETIF_F_TSO_MANGLEID))
-		features &= ~NETIF_F_TSO;
+mlx5_ldev_add_debugfs() blindly created the debugfs directory and
+attributes. This exposed interfaces (like the members file) that rely on
+a valid ldev pointer, leading to potential NULL pointer dereferences if
+accessed when ldev is NULL.
 
-in the ndo_features_check() op, which leads to a bit of duplicate code.
+Add a check to verify that mlx5_lag_dev(dev) returns a valid pointer
+before attempting to create the debugfs entries.
 
-Later patch in the series will implement GSO partial support for virtual
-devices, and the current status quo will require more duplicate code and
-a new indirect call in the TX path for them.
-
-Introduce the mangleid_features mask, allowing the core to disable NIC
-features based on/requiring MANGLEID, without any further intervention
-from the driver.
-
-The same functionality could be alternatively implemented adding a single
-boolean flag to the struct net_device, but would require an additional
-checks in ndo_features_check().
-
-Also note that [1] is incorrect if the NIC additionally implements
-NETIF_F_GSO_UDP_L4, mangleid_features transparently handle even such a
-case.
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/5a7cdaeea40b0a29b88e525b6c942d73ed3b8ce7.1769011015.git.pabeni@redhat.com
+Fixes: 7f46a0b7327a ("net/mlx5: Lag, add debugfs to query hardware lag state")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260330194015.53585-2-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ddc748a391dd ("net: use skb_header_pointer() for TCPv4 GSO frag_off check")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 3 +++
- net/core/dev.c            | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index fcc1509ca7cb8..ea9b40b196de2 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1760,6 +1760,8 @@ enum netdev_reg_state {
-  *
-  *	@mpls_features:	Mask of features inheritable by MPLS
-  *	@gso_partial_features: value(s) from NETIF_F_GSO\*
-+ *	@mangleid_features:	Mask of features requiring MANGLEID, will be
-+ *				disabled together with the latter.
-  *
-  *	@ifindex:	interface index
-  *	@group:		The group the device belongs to
-@@ -2133,6 +2135,7 @@ struct net_device {
- 	netdev_features_t	vlan_features;
- 	netdev_features_t	hw_enc_features;
- 	netdev_features_t	mpls_features;
-+	netdev_features_t	mangleid_features;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
+index b8feaf0f5c4c8..a372cb13aa08b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
+@@ -163,8 +163,11 @@ DEFINE_SHOW_ATTRIBUTE(members);
  
- 	unsigned int		min_mtu;
- 	unsigned int		max_mtu;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 336257b515f04..2748ee051bd1b 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3613,7 +3613,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 				    inner_ip_hdr(skb) : ip_hdr(skb);
+ void mlx5_ldev_add_debugfs(struct mlx5_core_dev *dev)
+ {
++	struct mlx5_lag *ldev = mlx5_lag_dev(dev);
+ 	struct dentry *dbg;
  
- 		if (!(iph->frag_off & htons(IP_DF)))
--			features &= ~NETIF_F_TSO_MANGLEID;
-+			features &= ~dev->mangleid_features;
- 	}
++	if (!ldev)
++		return;
+ 	dbg = debugfs_create_dir("lag", mlx5_debugfs_get_dev_root(dev));
+ 	dev->priv.dbg.lag_debugfs = dbg;
  
- 	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
-@@ -10579,6 +10579,9 @@ int register_netdevice(struct net_device *dev)
- 	if (dev->hw_enc_features & NETIF_F_TSO)
- 		dev->hw_enc_features |= NETIF_F_TSO_MANGLEID;
- 
-+	/* TSO_MANGLEID belongs in mangleid_features by definition */
-+	dev->mangleid_features |= NETIF_F_TSO_MANGLEID;
-+
- 	/* Make NETIF_F_HIGHDMA inheritable to VLAN devices.
- 	 */
- 	dev->vlan_features |= NETIF_F_HIGHDMA;
 -- 
 2.53.0
 
