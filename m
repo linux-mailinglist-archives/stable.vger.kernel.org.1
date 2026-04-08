@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-235156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEh8JZ6r1mmmHAgAu9opvQ
-	(envelope-from <stable+bounces-235156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:18 +0200
+	id oPhlAVKm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1626D3C2F13
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779933C23CF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 214483185C0B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2050313E93E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C282A3AEF5F;
-	Wed,  8 Apr 2026 18:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92D83ACF16;
+	Wed,  8 Apr 2026 18:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZfeS+Ei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpvBi8Zq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D143176E4;
-	Wed,  8 Apr 2026 18:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D695B67E;
+	Wed,  8 Apr 2026 18:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674713; cv=none; b=QR1ZrMrZRbt8pVfn974Uu2TYpoIfMTq7NWc40WnRfRVFk7+igzSc4TQ+MqpLdsbwngRrRrHppTMqlXS6o2VoIe1X00kYYO4AY5Nl9RIjrxsvwyxMJfBcpyQksX9i/HmkpwINsK6+u2UhRkqjB+OAxXtxvRODyxaLylPIrn1/HSs=
+	t=1775673485; cv=none; b=Zjy1OJ8/5ww/wjkZe/F+PL9FlYYNZWFNsD92Hc5R1mAHvgbpS1veppV+YUAlxLWPjTePk9CHhpnemgTygktW6cK4b0xgE3yTgN4v/9iBtsOsNh5pxhFgY+eiyk8oMToyoU7zEbOj1UsvKc0COAsWigyOMqLucc2DXlDIEmgxp5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674713; c=relaxed/simple;
-	bh=dGTm/AzTADo84Tn93kT4eXRD8xN90m7PZDU8RZHgEws=;
+	s=arc-20240116; t=1775673485; c=relaxed/simple;
+	bh=gD10WxfGRO0461q69dC2AYTAy+/JKl3/z5gpDi0TqlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/VJmNKZCORaPSxOg0HvUBtwoToC5dYt4aKDLlpN6uooFQvmsmBLcTt21mVmPxDbk/ekS5X9uLk4+JkApkn2G+FmcWKq/+gBei1Ub8+4YwU9tx8qKW2aoFQ3RiL6JbnGrifeJSB0VVxT2VrvhYnsB+LskP/GwgG+dprjNULvD14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZfeS+Ei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197B2C19421;
-	Wed,  8 Apr 2026 18:58:32 +0000 (UTC)
+	 MIME-Version; b=antYnhNAdaiJCbDhMOAOYjGFU8H9dxAfewpd1Snxt2KcCVlpqoHX6yYcwwTsQC7Ml3ml1FZq141fw/NCuYFfWzQv257ImDgX6A6L+cD9jFo82GbO/eWq6V/gA8J5lcSHAZkYYLON8rIpXhg0G8aLdj6ed7Yp9ih/5UzcKSsSa5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpvBi8Zq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B45C19421;
+	Wed,  8 Apr 2026 18:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674713;
-	bh=dGTm/AzTADo84Tn93kT4eXRD8xN90m7PZDU8RZHgEws=;
+	s=korg; t=1775673485;
+	bh=gD10WxfGRO0461q69dC2AYTAy+/JKl3/z5gpDi0TqlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZfeS+EiHzy0KsaySN0EkJkVKe8fB0YvW4FtJe82BhqFzBm2p7ShQo5qVoo2+uQGw
-	 D23yRgEyyh0X5VEZy2fmAWLVTO8De7H5sAXZrBnlbGjtZZDo1WewUmxuEb1jGQxHwI
-	 VblZndGzfIbNsUB71MgJDXelcJ687uzKyzxDdVEU=
+	b=UpvBi8Zq79l5SnSJ4CuiqcP2/K3gEySJZYC0gEWLqu4sRpGgm/Y4J9DRYLlfCnE+G
+	 8qlmGTAmdjQThA5rH+qnEdWhqEUV2bMaHyGVrC2dFwKwj+9BLlrChArUyJq/5fWFEn
+	 Zdqtj+5tZnWHpYD++/3IVLxqr3Pb38LKZCs2mPCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.19 203/311] drm/amdgpu: Fix wait after reset sequence in S4
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.18 218/277] firmware: microchip: fail auto-update probe if no flash found
 Date: Wed,  8 Apr 2026 20:03:23 +0200
-Message-ID: <20260408175946.989919430@linuxfoundation.org>
+Message-ID: <20260408175941.999803071@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +66,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234680-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235156-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url,amd.com:email]
-X-Rspamd-Queue-Id: 1626D3C2F13
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 779933C23CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-commit daf470b8882b6f7f53cbfe9ec2b93a1b21528cdc upstream.
+commit c7596f9001e2b83293e3658e4e1addde69bb335d upstream.
 
-For a mode-1 reset done at the end of S4 on PSPv11 dGPUs, only check if
-TOS is unloaded.
+There's no point letting the driver probe if there is no flash, as
+trying to do a firmware upload will fail. Move the code that attempts
+to get the flash from firmware upload to probe, and let it emit a
+message to users stating why auto-update is not supported.
+The code currently could have a problem if there's a flash in
+devicetree, but the system controller driver fails to get a pointer to
+it from the mtd subsystem, which will cause
+mpfs_sys_controller_get_flash() to return an error. Check for errors and
+null, instead of just null, in the new clause.
 
-Fixes: 32f73741d6ee ("drm/amdgpu: Wait for bootloader after PSPv11 reset")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/4853
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2fb4883b884a437d760bd7bdf7695a7e5a60bba3)
-Cc: stable@vger.kernel.org
+CC: stable@vger.kernel.org
+Fixes: ec5b0f1193ad4 ("firmware: microchip: add PolarFire SoC Auto Update support")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    8 ++++++--
- drivers/gpu/drm/amd/amdgpu/psp_v11_0.c  |    3 ++-
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/firmware/microchip/mpfs-auto-update.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2703,8 +2703,12 @@ static int amdgpu_pmops_freeze(struct de
- 	if (r)
- 		return r;
+--- a/drivers/firmware/microchip/mpfs-auto-update.c
++++ b/drivers/firmware/microchip/mpfs-auto-update.c
+@@ -113,10 +113,6 @@ static enum fw_upload_err mpfs_auto_upda
+ 	 * be added here.
+ 	 */
  
--	if (amdgpu_acpi_should_gpu_reset(adev))
--		return amdgpu_asic_reset(adev);
-+	if (amdgpu_acpi_should_gpu_reset(adev)) {
-+		amdgpu_device_lock_reset_domain(adev->reset_domain);
-+		r = amdgpu_asic_reset(adev);
-+		amdgpu_device_unlock_reset_domain(adev->reset_domain);
-+		return r;
+-	priv->flash = mpfs_sys_controller_get_flash(priv->sys_controller);
+-	if (!priv->flash)
+-		return FW_UPLOAD_ERR_HW_ERROR;
+-
+ 	erase_size = round_up(erase_size, (u64)priv->flash->erasesize);
+ 
+ 	/*
+@@ -427,6 +423,12 @@ static int mpfs_auto_update_probe(struct
+ 		return dev_err_probe(dev, PTR_ERR(priv->sys_controller),
+ 				     "Could not register as a sub device of the system controller\n");
+ 
++	priv->flash = mpfs_sys_controller_get_flash(priv->sys_controller);
++	if (IS_ERR_OR_NULL(priv->flash)) {
++		dev_dbg(dev, "No flash connected to the system controller, auto-update not supported\n");
++		return -ENODEV;
 +	}
- 	return 0;
- }
++
+ 	priv->dev = dev;
+ 	platform_set_drvdata(pdev, priv);
  
---- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-@@ -170,7 +170,8 @@ static int psp_v11_0_wait_for_bootloader
- 	int retry_loop;
- 
- 	/* For a reset done at the end of S3, only wait for TOS to be unloaded */
--	if (adev->in_s3 && !(adev->flags & AMD_IS_APU) && amdgpu_in_reset(adev))
-+	if ((adev->in_s4 || adev->in_s3) && !(adev->flags & AMD_IS_APU) &&
-+	    amdgpu_in_reset(adev))
- 		return psp_v11_wait_for_tos_unload(psp);
- 
- 	for (retry_loop = 0; retry_loop < 20; retry_loop++) {
 
 
 
