@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGFVOnmb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:25 +0200
+	id SIhiMUqf1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496CD3C050F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 458E03C0ED8
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF295302D0AD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A14430A8DCB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F7B3D4134;
-	Wed,  8 Apr 2026 18:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99E43B960C;
+	Wed,  8 Apr 2026 18:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVfNSeAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vm7TQCbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A69347503;
-	Wed,  8 Apr 2026 18:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A34C324B1F;
+	Wed,  8 Apr 2026 18:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672072; cv=none; b=lK/UGWa6QEa8ye/MirrNYL+nJNhIU2k7hNHspNhlEwuEr7JUORYiTG7EZypTG8TBtw0j/eH4DGRrm965WyzDTg8IIdmc9A3ImU9B6gNO8RHNCNSoMbmFgKUf+4PVzkyDNHhL/sq/FI7QdxK6K3erCf8RL05o1N1E+dorfGBY3tI=
+	t=1775672501; cv=none; b=PIhHl7L7YCFNVMGJHmx6Sk66lv3S0FmHeW8Mm9gN7XSqeyOeNmvUyrl8xoovJ9JC6JRwWmrlPJ23zsjVYvq9K4IQ4136fdRTauvTMitJzasMH0WKHMBncQudYHl8N8XFRnh4M7fQl0e1DmAs6m0JVJ91XE2m/mdlGLRi73RLUws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672072; c=relaxed/simple;
-	bh=MpCSBtdBeFT3zw2D0oZ9aVHieJqFDJfmhGkctQf16L4=;
+	s=arc-20240116; t=1775672501; c=relaxed/simple;
+	bh=923NnilWvOK9vPTgriWgAp6f21SNseWFL3zTHrpPgzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zn9quvCOloiFU8v58EmQvMn6CzX0yeZU7pZ8p6t3xlmg/EkJpkty2a/FnLAefca7AGrkxehPhuxwFfI5XS5QhSMcqMp8sRHa2cioF2UFacpSd/xtcsW4cr7UKILtqFzn8uoCkAXk0qU8AMuKtiZV1j0xaarDUri4GBxn/GCBOjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVfNSeAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3364C19425;
-	Wed,  8 Apr 2026 18:14:31 +0000 (UTC)
+	 MIME-Version; b=qRxOHCQQn7dwHi7xWarh1OOAjYjkDNJfIUBAHB2LFI0e2sVhcIbhMCv9wzbO6Fwj1tMYKdacrgzF+HPFxW7cfx4WLGXyRfH0wiXWRS8kzjDXDwJwJg7UVE6L4Gid2mh9C1c+eIfjVIeYLNnBDC3/B/c1fx4QxVLAmwQQqtM8lUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vm7TQCbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22524C19421;
+	Wed,  8 Apr 2026 18:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672072;
-	bh=MpCSBtdBeFT3zw2D0oZ9aVHieJqFDJfmhGkctQf16L4=;
+	s=korg; t=1775672501;
+	bh=923NnilWvOK9vPTgriWgAp6f21SNseWFL3zTHrpPgzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVfNSeAKb5tpEDkYCKrw9OaEbJr1Z1zaLoFKLlqSmlBnCOYCwAZpebsQXIAvFw8NF
-	 O9J91Fzo8dro67IL8ir8lKY73KUTOO9RnTrlmXeW9S9Op8hQwsSxzvU8Ma+Vt0vhrQ
-	 IUH0GoGAYDy2gsQFxqVQijCjH5zM/uGrzKNlh880=
+	b=Vm7TQCbXifR2/xShPBUbViEbYA/icaIm3DhLCAha09jWWtODadKsWsS3VTQELcB+f
+	 WP1Sgg4FQ2ozpuXoYc5cdv4Wwe2gkfl1RBvPW/dkbWoY6bmCp6bYUlk6selgGqEwxV
+	 X1QUEhDhDa2Nn99gYd6Rq1LBsqUdR6OHgEYRhmGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/312] Bluetooth: hci_event: fix potential UAF in hci_le_remote_conn_param_req_evt
+Subject: [PATCH 6.6 008/160] i2c: tegra: Dont mark devices with pins as IRQ safe
 Date: Wed,  8 Apr 2026 20:01:35 +0200
-Message-ID: <20260408175940.411452816@linuxfoundation.org>
+Message-ID: <20260408175913.497200105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +65,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234134-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234300-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email]
-X-Rspamd-Queue-Id: 496CD3C050F
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,armlinux.org.uk:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 458E03C0ED8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Mikko Perttunen <mperttunen@nvidia.com>
 
-[ Upstream commit b255531b27da336571411248c2a72a350662bd09 ]
+[ Upstream commit ec69c9e88315c4be70c283f18c2ff130da6320b5 ]
 
-hci_conn lookup and field access must be covered by hdev lock in
-hci_le_remote_conn_param_req_evt, otherwise it's possible it is freed
-concurrently.
+I2C devices with associated pinctrl states (DPAUX I2C controllers)
+will change pinctrl state during runtime PM. This requires taking
+a mutex, so these devices cannot be marked as IRQ safe.
 
-Extend the hci_dev_lock critical section to cover all conn usage.
+Add PINCTRL as dependency to avoid build errors.
 
-Fixes: 95118dd4edfec ("Bluetooth: hci_event: Use of a function table to handle LE subevents")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Reported-by: Russell King <rmk+kernel@armlinux.org.uk>
+Link: https://lore.kernel.org/all/E1vsNBv-00000009nfA-27ZK@rmk-PC.armlinux.org.uk/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 33 ++++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+ drivers/i2c/busses/Kconfig     | 2 ++
+ drivers/i2c/busses/i2c-tegra.c | 5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index f713a9a27e934..1f05204ae1fe3 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6629,25 +6629,31 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
- 	latency = le16_to_cpu(ev->latency);
- 	timeout = le16_to_cpu(ev->timeout);
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 8d4270664ebd1..79ab924a4b2b9 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -1139,6 +1139,8 @@ config I2C_TEGRA
+ 	tristate "NVIDIA Tegra internal I2C controller"
+ 	depends on ARCH_TEGRA || (COMPILE_TEST && (ARC || ARM || ARM64 || M68K || RISCV || SUPERH || SPARC))
+ 	# COMPILE_TEST needs architectures with readsX()/writesX() primitives
++	depends on PINCTRL
++	# ARCH_TEGRA implies PINCTRL, but the COMPILE_TEST side doesn't.
+ 	help
+ 	  If you say yes to this option, support will be included for the
+ 	  I2C controller embedded in NVIDIA Tegra SOCs
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index 5766231b13cd1..a882f0f65d82a 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -1788,8 +1788,11 @@ static int tegra_i2c_probe(struct platform_device *pdev)
+ 	 *
+ 	 * VI I2C device shouldn't be marked as IRQ-safe because VI I2C won't
+ 	 * be used for atomic transfers. ACPI device is not IRQ safe also.
++	 *
++	 * Devices with pinctrl states cannot be marked IRQ-safe as the pinctrl
++	 * state transitions during runtime PM require mutexes.
+ 	 */
+-	if (!IS_VI(i2c_dev) && !has_acpi_companion(i2c_dev->dev))
++	if (!IS_VI(i2c_dev) && !has_acpi_companion(i2c_dev->dev) && !i2c_dev->dev->pins)
+ 		pm_runtime_irq_safe(i2c_dev->dev);
  
-+	hci_dev_lock(hdev);
-+
- 	hcon = hci_conn_hash_lookup_handle(hdev, handle);
--	if (!hcon || hcon->state != BT_CONNECTED)
--		return send_conn_param_neg_reply(hdev, handle,
--						 HCI_ERROR_UNKNOWN_CONN_ID);
-+	if (!hcon || hcon->state != BT_CONNECTED) {
-+		send_conn_param_neg_reply(hdev, handle,
-+					  HCI_ERROR_UNKNOWN_CONN_ID);
-+		goto unlock;
-+	}
- 
--	if (max > hcon->le_conn_max_interval)
--		return send_conn_param_neg_reply(hdev, handle,
--						 HCI_ERROR_INVALID_LL_PARAMS);
-+	if (max > hcon->le_conn_max_interval) {
-+		send_conn_param_neg_reply(hdev, handle,
-+					  HCI_ERROR_INVALID_LL_PARAMS);
-+		goto unlock;
-+	}
- 
--	if (hci_check_conn_params(min, max, latency, timeout))
--		return send_conn_param_neg_reply(hdev, handle,
--						 HCI_ERROR_INVALID_LL_PARAMS);
-+	if (hci_check_conn_params(min, max, latency, timeout)) {
-+		send_conn_param_neg_reply(hdev, handle,
-+					  HCI_ERROR_INVALID_LL_PARAMS);
-+		goto unlock;
-+	}
- 
- 	if (hcon->role == HCI_ROLE_MASTER) {
- 		struct hci_conn_params *params;
- 		u8 store_hint;
- 
--		hci_dev_lock(hdev);
--
- 		params = hci_conn_params_lookup(hdev, &hcon->dst,
- 						hcon->dst_type);
- 		if (params) {
-@@ -6660,8 +6666,6 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
- 			store_hint = 0x00;
- 		}
- 
--		hci_dev_unlock(hdev);
--
- 		mgmt_new_conn_param(hdev, &hcon->dst, hcon->dst_type,
- 				    store_hint, min, max, latency, timeout);
- 	}
-@@ -6675,6 +6679,9 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
- 	cp.max_ce_len = 0;
- 
- 	hci_send_cmd(hdev, HCI_OP_LE_CONN_PARAM_REQ_REPLY, sizeof(cp), &cp);
-+
-+unlock:
-+	hci_dev_unlock(hdev);
- }
- 
- static void hci_le_direct_adv_report_evt(struct hci_dev *hdev, void *data,
+ 	pm_runtime_enable(i2c_dev->dev);
 -- 
 2.53.0
 
