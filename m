@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHUcM8Oj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:47 +0200
+	id MMYwFcWd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248D03C1C78
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030D43C0B4F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFFD930FDC1F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C86A83084985
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B34E35CB6F;
-	Wed,  8 Apr 2026 18:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DD33D7D60;
+	Wed,  8 Apr 2026 18:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wT0mvxcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWGUfnq8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDD028C87C;
-	Wed,  8 Apr 2026 18:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057523D564E;
+	Wed,  8 Apr 2026 18:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673254; cv=none; b=Oqy+VxK5XexUDnn1O1QQu55/SiZN9hM5yfTUUeXVBBca8MOmzkW8q8lW2qhBCcjYaV7wgH7xFS/3hoV7U3gQu/EsZXdrMSnulz/aS3QbmSfP/lYspa7917zQTJhn0jsDb2KfezYN+gkZxISKQHXp3v/Zaf3T+deytrJb8eitqX8=
+	t=1775672577; cv=none; b=P2lYOn87HmtiK/mUIMmTe5VVFIDkkNGq66LLlFgaI8aSj+adRR+uMsQK87E2KBbOditfgJgc5C5waQjX21dnbQdxCOe/mg6f9X2KB/1G2vDQsZwdFkuycunsyhZ/rDHcy2vqzDhoGbiIKqOX2C/m6fA9+YXhRak1hO3FBEmV4Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673254; c=relaxed/simple;
-	bh=0n1fdfU4NT53UkqRIKqnr4n8j24URz6o0xjHY10N8k0=;
+	s=arc-20240116; t=1775672577; c=relaxed/simple;
+	bh=mrIR0Q4IfpVvSPmJq/p9yn/yk8fUV3I7FgBLeFQQUxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYhgiir6NMUDw/tmAyWpk0u9d49N6mID+TaYK4VJZSq4BSBZYwXIgZZbKuKugGQ1MRE8pSve1W4GctwCDgfBAWQfs8gQpOYH4+Nf17hP8ORilsEa/6IewSv7K3tiFKgZhB5ZlmOPIEK+NqmOVZEtS/3iC1G3pVyx16v2qzQ03Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wT0mvxcW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FFFC2BC9E;
-	Wed,  8 Apr 2026 18:34:13 +0000 (UTC)
+	 MIME-Version; b=T40CueYsWgWlrnuy3hOzLYs3vPpf7KOCACLlmi77+q7L5ycKSbYfyTSRl0nkSRSufSHLPUkSQVY5yF6y6z7XLWNZI+2wy/02JjyyJIV6VNag/XgiOQ6P8yhzRsuziJsUCCxTEi0bAnPVoD7GBJOfxMSRFEo2qZ/rlSip0wurEaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWGUfnq8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA7CC19421;
+	Wed,  8 Apr 2026 18:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673253;
-	bh=0n1fdfU4NT53UkqRIKqnr4n8j24URz6o0xjHY10N8k0=;
+	s=korg; t=1775672576;
+	bh=mrIR0Q4IfpVvSPmJq/p9yn/yk8fUV3I7FgBLeFQQUxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wT0mvxcW+xLjRvUMDKVuxgEAAMLuerVdl1tfbeF7UaiuI6/NEv4aUT4tfnixKBxsR
-	 wFYRomWQx0gmtyaoIubDOcmz5Pd4YdeESOH53KvefC1JHszjeQLifbAuTyflIMvEOX
-	 Peh3oO5HF3rlrKlBUOQ5TTSMenQ/ShwTCMv2sE+U=
+	b=kWGUfnq8y5G6ocFaXIlL71ExdIc8x3aq6T9OiLaIEQQSsPtQ/uipERxjKXPsQ4cK/
+	 TqL8i1xVNcfPU3bniCaaW0Nlg9C9ccmuWe8CRyj4z3V0G/p/spkeCa3pxAjzuJ0k9W
+	 QlXn3RbJwinHD+oLHLaBInPr7W+bwDANtI34vjBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.18 161/277] drm/ast: dp501: Fix initialization of SCU2C
+	Yiming Qian <yimingqian591@gmail.com>,
+	Martin Schiller <ms@dev.tdt.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 059/160] net/x25: Fix overflow when accumulating packets
 Date: Wed,  8 Apr 2026 20:02:26 +0200
-Message-ID: <20260408175939.882053468@linuxfoundation.org>
+Message-ID: <20260408175915.410577806@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dev.tdt.de,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234329-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234590-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email]
-X-Rspamd-Queue-Id: 248D03C1C78
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tdt.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 030D43C0B4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Martin Schiller <ms@dev.tdt.de>
 
-commit 2f42c1a6161646cbd29b443459fd635d29eda634 upstream.
+[ Upstream commit a1822cb524e89b4cd2cf0b82e484a2335496a6d9 ]
 
-Ast's DP501 initialization reads the register SCU2C at offset 0x1202c
-and tries to set it to source data from VGA. But writes the update to
-offset 0x0, with unknown results. Write the result to SCU instead.
+Add a check to ensure that `x25_sock.fraglen` does not overflow.
 
-The bug only happens in ast_init_analog(). There's similar code in
-ast_init_dvo(), which works correctly.
+The `fraglen` also needs to be resetted when purging `fragment_queue` in
+`x25_clear_queues()`.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 83c6620bae3f ("drm/ast: initial DP501 support (v0.2)")
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.16+
-Link: https://patch.msgid.link/20260327133532.79696-2-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+Link: https://patch.msgid.link/20260331-x25_fraglen-v4-2-3e69f18464b4@dev.tdt.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_dp501.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/x25/x25_in.c   | 4 ++++
+ net/x25/x25_subr.c | 1 +
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/ast/ast_dp501.c
-+++ b/drivers/gpu/drm/ast/ast_dp501.c
-@@ -436,7 +436,7 @@ static void ast_init_analog(struct ast_d
- 	/* Finally, clear bits [17:16] of SCU2c */
- 	data = ast_read32(ast, 0x1202c);
- 	data &= 0xfffcffff;
--	ast_write32(ast, 0, data);
-+	ast_write32(ast, 0x1202c, data);
+diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
+index 0dbc73efab1cb..e47ebd8acd21b 100644
+--- a/net/x25/x25_in.c
++++ b/net/x25/x25_in.c
+@@ -34,6 +34,10 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
+ 	struct sk_buff *skbo, *skbn = skb;
+ 	struct x25_sock *x25 = x25_sk(sk);
  
- 	/* Disable DVO */
- 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xa3, 0xcf, 0x00);
++	/* make sure we don't overflow */
++	if (x25->fraglen + skb->len > USHRT_MAX)
++		return 1;
++
+ 	if (more) {
+ 		x25->fraglen += skb->len;
+ 		skb_queue_tail(&x25->fragment_queue, skb);
+diff --git a/net/x25/x25_subr.c b/net/x25/x25_subr.c
+index 0285aaa1e93c1..159708d9ad20c 100644
+--- a/net/x25/x25_subr.c
++++ b/net/x25/x25_subr.c
+@@ -40,6 +40,7 @@ void x25_clear_queues(struct sock *sk)
+ 	skb_queue_purge(&x25->interrupt_in_queue);
+ 	skb_queue_purge(&x25->interrupt_out_queue);
+ 	skb_queue_purge(&x25->fragment_queue);
++	x25->fraglen = 0;
+ }
+ 
+ 
+-- 
+2.53.0
+
 
 
 
