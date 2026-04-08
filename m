@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-234075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJDjMLGa1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:05 +0200
+	id SMkfKdOp1mlmHAgAu9opvQ
+	(envelope-from <stable+bounces-235019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30CCC3C030F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F59D3C2B4A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BDE643045671
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B51A23126E03
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDBA3D903A;
-	Wed,  8 Apr 2026 18:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FB825A321;
+	Wed,  8 Apr 2026 18:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VU6zzlO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQ14nG38"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B413D9034;
-	Wed,  8 Apr 2026 18:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296A72727F3;
+	Wed,  8 Apr 2026 18:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671920; cv=none; b=qGnXZmJIYhV7PmYnQtcQ8wH6/DUkwcAwWb069IxetLNJo4skECb26BjkpKmRR0tleSqsSTlmToiJP1XwpmQgihnFXcg2L/pkzD0iwemEZW2e0aRxShO6ZSeDstfdLkHmufr2Y2g+r7VhVEYuihdLTzMrbJfMFwQclAV38QiWa8E=
+	t=1775674361; cv=none; b=AxIO0+FJmRWq1NJg138sA6RKQSBcbGn0HjizUklQnfLvpA0b4HIrMkEp8wJ2XIK2lCeRvjZhHgudA8ON+H29Dl/hlfZcLrKg7T0v03S9gOGuGXgoGyWKsOepZ1h3v6cTsN/FT/81osnwVqW8mfvWuvESrOYFFqDH9M2iQk/Fmq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671920; c=relaxed/simple;
-	bh=y+ZQnmGH10cFPaa90mOrJOTJLZBN6/oa2LeJlLZTZ8E=;
+	s=arc-20240116; t=1775674361; c=relaxed/simple;
+	bh=5g/GOeBGjNOhKMMi6cnBpqwtYS4QP2h4Lzx8WaqM3VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWRITctf3H5NnPEz/mMqrw6CzXs046YgejXGA0DraawEzfr5QB3GCOR/kNBJxv+NhWpoShPO2/GDQfJrpCV1OQeiPGNLD6QLN8A8JRLkj2gETQjTaZVSaxLCjKSlLTgUsgFug+dWQLj/kp6loPZsB/U2SU94E8J9tEU0LfCT8tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VU6zzlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BA7C19425;
-	Wed,  8 Apr 2026 18:12:00 +0000 (UTC)
+	 MIME-Version; b=U3x3ku+XwQOFeWQLIoxSkP/1HJ6dlhwzUmW7Blk8oJ/OZGt2b56KjYsQsBul3b6IJudffl0tPXeIXwwc67uLO0uyzkeRZHB96ON+1E4wvkIGqCzwzInXu4M/GU7T1l9JGwnC9a7CabWfGKYfMQorpknBxK3hGkG6MF0OHanjI1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQ14nG38; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0FBC19421;
+	Wed,  8 Apr 2026 18:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671920;
-	bh=y+ZQnmGH10cFPaa90mOrJOTJLZBN6/oa2LeJlLZTZ8E=;
+	s=korg; t=1775674361;
+	bh=5g/GOeBGjNOhKMMi6cnBpqwtYS4QP2h4Lzx8WaqM3VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2VU6zzlOPZL7ED0yScUnS8As8Y7ysUD2zDrS2aF7GSt6SkxwwXBmbKgLpgzRxGLAo
-	 X67RS4HTr8Rb0ryUrEre7uDfsRAG2a+0g0MUT5RhTUp7HVm8T8md+6Ai0OSk5rDgbz
-	 YJlyVorhW/4wSWwgk99EnMrFfCEe+ycGUn9yJvM4=
+	b=MQ14nG387hbxadfPTIUzmFn2AY/NFWlKASrAQ91Er+v/RuIA44CObnFWv/tsdPX2F
+	 f5C6EXp6VUkEHPHVufnE7oQ7Z/zqmZ4o5im75NTryXp5gTdGS82TO7Tom2ATxGIhNd
+	 cKEjlu0RdniRbuYeBJ3XBseJ4n4Op45rRNJ8NS4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 118/312] ext4: fix iloc.bh leak in ext4_fc_replay_inode() error paths
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 035/311] cgroup: Fix cgroup_drain_dying() testing the wrong condition
 Date: Wed,  8 Apr 2026 20:00:35 +0200
-Message-ID: <20260408175938.177076653@linuxfoundation.org>
+Message-ID: <20260408175940.725507528@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,116 +68,143 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234075-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235019-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.cz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,iloc.bh:url,alibaba.com:email]
-X-Rspamd-Queue-Id: 30CCC3C030F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1F59D3C2B4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun@linux.alibaba.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit ec0a7500d8eace5b4f305fa0c594dd148f0e8d29 upstream.
+[ Upstream commit 4c56a8ac6869855866de0bb368a4189739e1d24f ]
 
-During code review, Joseph found that ext4_fc_replay_inode() calls
-ext4_get_fc_inode_loc() to get the inode location, which holds a
-reference to iloc.bh that must be released via brelse().
+cgroup_drain_dying() was using cgroup_is_populated() to test whether there are
+dying tasks to wait for. cgroup_is_populated() tests nr_populated_csets,
+nr_populated_domain_children and nr_populated_threaded_children, but
+cgroup_drain_dying() only needs to care about this cgroup's own tasks - whether
+there are children is cgroup_destroy_locked()'s concern.
 
-However, several error paths jump to the 'out' label without
-releasing iloc.bh:
+This caused hangs during shutdown. When systemd tried to rmdir a cgroup that had
+no direct tasks but had a populated child, cgroup_drain_dying() would enter its
+wait loop because cgroup_is_populated() was true from
+nr_populated_domain_children. The task iterator found nothing to wait for, yet
+the populated state never cleared because it was driven by live tasks in the
+child cgroup.
 
- - ext4_handle_dirty_metadata() failure
- - sync_dirty_buffer() failure
- - ext4_mark_inode_used() failure
- - ext4_iget() failure
+Fix it by using cgroup_has_tasks() which only tests nr_populated_csets.
 
-Fix this by introducing an 'out_brelse' label placed just before
-the existing 'out' label to ensure iloc.bh is always released.
+v3: Fix cgroup_is_populated() -> cgroup_has_tasks() (Sebastian).
 
-Additionally, make ext4_fc_replay_inode() propagate errors
-properly instead of always returning 0.
+v2: https://lore.kernel.org/r/20260323200205.1063629-1-tj@kernel.org
 
-Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
-Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260323060836.3452660-1-libaokun@linux.alibaba.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: 1b164b876c36 ("cgroup: Wait for dying tasks to leave on rmdir")
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fast_commit.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ kernel/cgroup/cgroup.c | 42 ++++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -1623,19 +1623,21 @@ static int ext4_fc_replay_inode(struct s
- 	/* Immediately update the inode on disk. */
- 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
- 	ret = sync_dirty_buffer(iloc.bh);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
- 	ret = ext4_mark_inode_used(sb, ino);
- 	if (ret)
--		goto out;
-+		goto out_brelse;
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 257d1ddea1ada..9370100764904 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -6229,20 +6229,22 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
+  * cgroup_drain_dying - wait for dying tasks to leave before rmdir
+  * @cgrp: the cgroup being removed
+  *
+- * The PF_EXITING filter in css_task_iter_advance() hides exiting tasks from
+- * cgroup.procs so that userspace (e.g. systemd) doesn't see tasks that have
+- * already been reaped via waitpid(). However, the populated counter
+- * (nr_populated_csets) is only decremented when the task later passes through
++ * cgroup.procs and cgroup.threads use css_task_iter which filters out
++ * PF_EXITING tasks so that userspace doesn't see tasks that have already been
++ * reaped via waitpid(). However, cgroup_has_tasks() - which tests whether the
++ * cgroup has non-empty css_sets - is only updated when dying tasks pass through
+  * cgroup_task_dead() in finish_task_switch(). This creates a window where
+- * cgroup.procs appears empty but cgroup_is_populated() is still true, causing
+- * rmdir to fail with -EBUSY.
++ * cgroup.procs reads empty but cgroup_has_tasks() is still true, making rmdir
++ * fail with -EBUSY from cgroup_destroy_locked() even though userspace sees no
++ * tasks.
++ *
++ * This function aligns cgroup_has_tasks() with what userspace can observe. If
++ * cgroup_has_tasks() but the task iterator sees nothing (all remaining tasks are
++ * PF_EXITING), we wait for cgroup_task_dead() to finish processing them. As the
++ * window between PF_EXITING and cgroup_task_dead() is short, the wait is brief.
+  *
+- * This function bridges that gap. If the cgroup is populated but all remaining
+- * tasks have PF_EXITING set, we wait for cgroup_task_dead() to process them.
+- * Tasks are removed from the cgroup's css_set in cgroup_task_dead() called from
+- * finish_task_switch(). As the window between PF_EXITING and cgroup_task_dead()
+- * is short, the number of PF_EXITING tasks on the list is small and the wait
+- * is brief.
++ * This function only concerns itself with this cgroup's own dying tasks.
++ * Whether the cgroup has children is cgroup_destroy_locked()'s problem.
+  *
+  * Each cgroup_task_dead() kicks the waitqueue via cset->cgrp_links, and we
+  * retry the full check from scratch.
+@@ -6258,7 +6260,7 @@ static int cgroup_drain_dying(struct cgroup *cgrp)
  
- 	/* Given that we just wrote the inode on disk, this SHOULD succeed. */
- 	inode = ext4_iget(sb, ino, EXT4_IGET_NORMAL);
- 	if (IS_ERR(inode)) {
- 		ext4_debug("Inode not found.");
--		return -EFSCORRUPTED;
-+		inode = NULL;
-+		ret = -EFSCORRUPTED;
-+		goto out_brelse;
+ 	lockdep_assert_held(&cgroup_mutex);
+ retry:
+-	if (!cgroup_is_populated(cgrp))
++	if (!cgroup_has_tasks(cgrp))
+ 		return 0;
+ 
+ 	/* Same iterator as cgroup.threads - if any task is visible, it's busy */
+@@ -6273,15 +6275,15 @@ static int cgroup_drain_dying(struct cgroup *cgrp)
+ 	 * All remaining tasks are PF_EXITING and will pass through
+ 	 * cgroup_task_dead() shortly. Wait for a kick and retry.
+ 	 *
+-	 * cgroup_is_populated() can't transition from false to true while
+-	 * we're holding cgroup_mutex, but the true to false transition
+-	 * happens under css_set_lock (via cgroup_task_dead()). We must
+-	 * retest and prepare_to_wait() under css_set_lock. Otherwise, the
+-	 * transition can happen between our first test and
+-	 * prepare_to_wait(), and we sleep with no one to wake us.
++	 * cgroup_has_tasks() can't transition from false to true while we're
++	 * holding cgroup_mutex, but the true to false transition happens
++	 * under css_set_lock (via cgroup_task_dead()). We must retest and
++	 * prepare_to_wait() under css_set_lock. Otherwise, the transition
++	 * can happen between our first test and prepare_to_wait(), and we
++	 * sleep with no one to wake us.
+ 	 */
+ 	spin_lock_irq(&css_set_lock);
+-	if (!cgroup_is_populated(cgrp)) {
++	if (!cgroup_has_tasks(cgrp)) {
+ 		spin_unlock_irq(&css_set_lock);
+ 		return 0;
  	}
- 
- 	/*
-@@ -1652,13 +1654,14 @@ static int ext4_fc_replay_inode(struct s
- 	ext4_inode_csum_set(inode, ext4_raw_inode(&iloc), EXT4_I(inode));
- 	ret = ext4_handle_dirty_metadata(NULL, NULL, iloc.bh);
- 	sync_dirty_buffer(iloc.bh);
-+out_brelse:
- 	brelse(iloc.bh);
- out:
- 	iput(inode);
- 	if (!ret)
- 		blkdev_issue_flush(sb->s_bdev);
- 
--	return 0;
-+	return ret;
- }
- 
- /*
+-- 
+2.53.0
+
 
 
 
