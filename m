@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-233964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Fp6FFmZ1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-233964-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:07:21 +0200
+	id ABE6I+OZ1mmgGggAu9opvQ
+	(envelope-from <stable+bounces-233969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3809C3BFF6C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:07:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DACA63C009A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 35C173007AFC
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:07:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2DF2302BBA1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E9D4317D;
-	Wed,  8 Apr 2026 18:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC74D3D88FE;
+	Wed,  8 Apr 2026 18:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9c02/l6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSZKEbSD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE89A3D7D60;
-	Wed,  8 Apr 2026 18:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847523D9031;
+	Wed,  8 Apr 2026 18:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671632; cv=none; b=m1wNmQJLi1l7nVDfgos/2usV0GbF6by6JqpqmBk71LVXDvFjP8l0Hvix5ZygE6PWplqLM1MvakeZyJyiI43gLHj+QF83ANeCsKFFKVby1PufrIo28fgZoYB2yaooO3o2AVQcCrDgyjVBfrg48D+EFtk9Q/BH+X6yGybzzyQZRMs=
+	t=1775671646; cv=none; b=qrA0pKhGUqx+NiAT8sCXU2/BVaA7hk4goLJlLuf7dZsn73YhcfMUL9/iFK670LqO9bBjqQZ0ypHJPJbTDVapGQUjqDjqjRRjFDruWQamKJ8b159UGSxQN9RNbHYADU5hufXk40xiKLPCAV8dlHIzpLz91QvlMyVmQ9WUrjn8UzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671632; c=relaxed/simple;
-	bh=acmREW3ho1mZC8xqkwrdEKgh44hFgNzks/bQMUpF1uw=;
+	s=arc-20240116; t=1775671646; c=relaxed/simple;
+	bh=4QtF0fGUoB8UUK+so/ctrxJ8F1LbKT2dm2MAahXxzIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/KsWKxyah1WrxBnhdL9+6mAQX4f8smpPnLtcEfJqS5yK5u1q8wMJrxTr/9oVe0hTCr37Zo0UvzmWCaC8WS8sS3bpY9C8DWdiZ/T96d30R1hIEMb8gItLnvyiNbkXoomX2+wDUaMtNHZB9CFEO1xd1uxgmDITmEwnOsKUfYM4eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9c02/l6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD6FC19421;
-	Wed,  8 Apr 2026 18:07:11 +0000 (UTC)
+	 MIME-Version; b=jklrJyyW5QyGsYj7ZViLbPieRkX3AxL8hcDdn6SxNq8A/e+++I9cMb0IM8o4kmAl0G/JLGUSF6+8gLvCjVkA/DXzYPDoMRGb3mV20ESXWAiZr4jOCpZImzjmE83FvF/AWQH/DiHAJ15dj/O434w6TYUhD/0CDffHqtdWG0lhcU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSZKEbSD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB032C19421;
+	Wed,  8 Apr 2026 18:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671632;
-	bh=acmREW3ho1mZC8xqkwrdEKgh44hFgNzks/bQMUpF1uw=;
+	s=korg; t=1775671646;
+	bh=4QtF0fGUoB8UUK+so/ctrxJ8F1LbKT2dm2MAahXxzIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9c02/l60OfDBACYulYa19XzlpNsdYn2Hc31YQdKWajqM27H0WkHeuREtmut8d4qG
-	 zRNFRRDc536g1+C+PQmSc+2YsQJ2gkVz3to8+BugSBMJep7H4cJm3etzQpmL3jzZIP
-	 6vzGDemZJZ8sdPt4PYXK4QXYul5Qi6dbyBaT3iLk=
+	b=CSZKEbSD+/CZURRvrx1RAL3VTKDiYMb99qsWYbBOrXrcIcUO/oZv4FVEdD/OMyflv
+	 Kt1LNMOV7Q5xp32r4p6W1+ipmbLn1KjuNz8lq0v8o9s9BYK6sl6+3Y5xqb6WAr6aTk
+	 9yaHIV7YE8FmOZMCytKXwW6bMnHBSF+bBA2+/nKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Gregory Bell <grbell@redhat.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/312] sh: platform_early: remove pdev->driver_override check
-Date: Wed,  8 Apr 2026 19:58:38 +0200
-Message-ID: <20260408175933.775239177@linuxfoundation.org>
+Subject: [PATCH 6.1 002/312] bpf: Release module BTF IDR before module unload
+Date: Wed,  8 Apr 2026 19:58:39 +0200
+Message-ID: <20260408175933.812750547@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -64,35 +67,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233964-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,redhat.com,etsalapatis.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-233969-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,glider.be:email]
-X-Rspamd-Queue-Id: 3809C3BFF6C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DACA63C009A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,43 +103,126 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit c5f60e3f07b6609562d21efda878e83ce8860728 ]
+[ Upstream commit 146bd2a87a65aa407bb17fac70d8d583d19aba06 ]
 
-In commit 507fd01d5333 ("drivers: move the early platform device support to
-arch/sh") platform_match() was copied over to the sh platform_early
-code, accidentally including the driver_override check.
+Gregory reported in [0] that the global_map_resize test when run in
+repeatedly ends up failing during program load. This stems from the fact
+that BTF reference has not dropped to zero after the previous run's
+module is unloaded, and the older module's BTF is still discoverable and
+visible. Later, in libbpf, load_module_btfs() will find the ID for this
+stale BTF, open its fd, and then it will be used during program load
+where later steps taking module reference using btf_try_get_module()
+fail since the underlying module for the BTF is gone.
 
-This check does not make sense for platform_early, as sysfs is not even
-available in first place at this point in the boot process, hence remove
-the check.
+Logically, once a module is unloaded, it's associated BTF artifacts
+should become hidden. The BTF object inside the kernel may still remain
+alive as long its reference counts are alive, but it should no longer be
+discoverable.
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Fixes: 507fd01d5333 ("drivers: move the early platform device support to arch/sh")
-Link: https://lore.kernel.org/all/DH4M3DJ4P58T.1BGVAVXN71Z09@kernel.org/
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+To fix this, let us call btf_free_id() from the MODULE_STATE_GOING case
+for the module unload to free the BTF associated IDR entry, and disable
+its discovery once module unload returns to user space. If a race
+happens during unload, the outcome is non-deterministic anyway. However,
+user space should be able to rely on the guarantee that once it has
+synchronously established a successful module unload, no more stale
+artifacts associated with this module can be obtained subsequently.
+
+Note that we must be careful to not invoke btf_free_id() in btf_put()
+when btf_is_module() is true now. There could be a window where the
+module unload drops a non-terminal reference, frees the IDR, but the
+same ID gets reused and the second unconditional btf_free_id() ends up
+releasing an unrelated entry.
+
+To avoid a special case for btf_is_module() case, set btf->id to zero to
+make btf_free_id() idempotent, such that we can unconditionally invoke it
+from btf_put(), and also from the MODULE_STATE_GOING case. Since zero is
+an invalid IDR, the idr_remove() should be a noop.
+
+Note that we can be sure that by the time we reach final btf_put() for
+btf_is_module() case, the btf_free_id() is already done, since the
+module itself holds the BTF reference, and it will call this function
+for the BTF before dropping its own reference.
+
+  [0]: https://lore.kernel.org/bpf/cover.1773170190.git.grbell@redhat.com
+
+Fixes: 36e68442d1af ("bpf: Load and verify kernel module BTFs")
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Suggested-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reported-by: Gregory Bell <grbell@redhat.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20260312205307.1346991-1-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/drivers/platform_early.c | 4 ----
- 1 file changed, 4 deletions(-)
+ kernel/bpf/btf.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/arch/sh/drivers/platform_early.c b/arch/sh/drivers/platform_early.c
-index 143747c45206f..48ddbc547bd9a 100644
---- a/arch/sh/drivers/platform_early.c
-+++ b/arch/sh/drivers/platform_early.c
-@@ -26,10 +26,6 @@ static int platform_match(struct device *dev, struct device_driver *drv)
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct platform_driver *pdrv = to_platform_driver(drv);
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 9f9996cdb6e2f..d9f6ad515d890 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -1606,7 +1606,16 @@ static void btf_free_id(struct btf *btf)
+ 	 * of the _bh() version.
+ 	 */
+ 	spin_lock_irqsave(&btf_idr_lock, flags);
+-	idr_remove(&btf_idr, btf->id);
++	if (btf->id) {
++		idr_remove(&btf_idr, btf->id);
++		/*
++		 * Clear the id here to make this function idempotent, since it will get
++		 * called a couple of times for module BTFs: on module unload, and then
++		 * the final btf_put(). btf_alloc_id() starts IDs with 1, so we can use
++		 * 0 as sentinel value.
++		 */
++		WRITE_ONCE(btf->id, 0);
++	}
+ 	spin_unlock_irqrestore(&btf_idr_lock, flags);
+ }
  
--	/* When driver_override is set, only bind to the matching driver */
--	if (pdev->driver_override)
--		return !strcmp(pdev->driver_override, drv->name);
--
- 	/* Then try to match against the id table */
- 	if (pdrv->id_table)
- 		return platform_match_id(pdrv->id_table, pdev) != NULL;
+@@ -6875,7 +6884,7 @@ static void bpf_btf_show_fdinfo(struct seq_file *m, struct file *filp)
+ {
+ 	const struct btf *btf = filp->private_data;
+ 
+-	seq_printf(m, "btf_id:\t%u\n", btf->id);
++	seq_printf(m, "btf_id:\t%u\n", READ_ONCE(btf->id));
+ }
+ #endif
+ 
+@@ -6970,7 +6979,7 @@ int btf_get_info_by_fd(const struct btf *btf,
+ 	if (copy_from_user(&info, uinfo, info_copy))
+ 		return -EFAULT;
+ 
+-	info.id = btf->id;
++	info.id = READ_ONCE(btf->id);
+ 	ubtf = u64_to_user_ptr(info.btf);
+ 	btf_copy = min_t(u32, btf->data_size, info.btf_size);
+ 	if (copy_to_user(ubtf, btf->data, btf_copy))
+@@ -7033,7 +7042,7 @@ int btf_get_fd_by_id(u32 id)
+ 
+ u32 btf_obj_id(const struct btf *btf)
+ {
+-	return btf->id;
++	return READ_ONCE(btf->id);
+ }
+ 
+ bool btf_is_kernel(const struct btf *btf)
+@@ -7179,6 +7188,13 @@ static int btf_module_notify(struct notifier_block *nb, unsigned long op,
+ 			if (btf_mod->module != module)
+ 				continue;
+ 
++			/*
++			 * For modules, we do the freeing of BTF IDR as soon as
++			 * module goes away to disable BTF discovery, since the
++			 * btf_try_get_module() on such BTFs will fail. This may
++			 * be called again on btf_put(), but it's ok to do so.
++			 */
++			btf_free_id(btf_mod->btf);
+ 			list_del(&btf_mod->list);
+ 			if (btf_mod->sysfs_attr)
+ 				sysfs_remove_bin_file(btf_kobj, btf_mod->sysfs_attr);
 -- 
 2.51.0
 
