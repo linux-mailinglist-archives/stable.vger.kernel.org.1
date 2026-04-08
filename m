@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CA4zKgGj1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:33 +0200
+	id cOsWLv2a1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4E93C19A6
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B36C3C03E5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8613631285C6
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F11553058670
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C073D3328;
-	Wed,  8 Apr 2026 18:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0801C3D9030;
+	Wed,  8 Apr 2026 18:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNaSIteI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMEo+Q8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7EF26FA5A;
-	Wed,  8 Apr 2026 18:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB403D891A;
+	Wed,  8 Apr 2026 18:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673049; cv=none; b=kXLqhRJHYRAdtKASaxLoyKABauFx5xBr+/xj6nzvN1QJu91SuTS2q2qU/SR9w3vP6qdg+hCCK1Lwcy05OfqNIWPYTeE+PIlHO22z74k7vHpFx7lgMNTAwu0PxF8BHdwc+Ym5hl0+FxssUz1Ag+cdWQE7gvfB9+JZR+2a8dojHAg=
+	t=1775671979; cv=none; b=bULTOC95BttCx+Bakdl3Yj0O9NVcIVPqrRb5k7Vv2hzzoVpRdbGyeUlWeq7VPbcoqCBVOwSROrH8R2UCO7kM2FDyGlZiS8BqqzWdohYDSjM8FgrGUnqe1vW7d2IeNcIEIkioPARXPSoB4osB/cEJkbDjSBpAMT+j4sL3lA2yOec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673049; c=relaxed/simple;
-	bh=6KNo6czChJYp54Et2IFBSszvYfRqAZyot5dqzlRUKRA=;
+	s=arc-20240116; t=1775671979; c=relaxed/simple;
+	bh=SRXj2zp04/qY3fFsNn5uoscUoMUxYsgU0/0MOcZULZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItCUeq4CD2uIt4FZIhFACM+ldRnFULi91HBZ5BnaWLFdfnykID8z6eNyzA0UJvjCWA+vf2br9zZY2GqChRQKsy7Xmhx2XLakuRDyKGd3xPrqG67cR2r8mUuiBtLZdQCqKodXNU6CL1S69rxYwRi3EJQQKKQQ6HAao83Z9tPZtvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNaSIteI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D3AC19421;
-	Wed,  8 Apr 2026 18:30:49 +0000 (UTC)
+	 MIME-Version; b=VQfyggD+cvHV0NK7tOsZ2MNAwFFqNED24lyMC29Qz8RjUGr82F4vNKi347bznu9BUWZC2fpAvMj43rrVTiAV1H408J9IM5vybfYOH7ivohSENTiHEMeV3QAh/E64FVePx/91PmfbzG0I+5zskn9EsMFKJZ6tBHNjHQ9sGt3R5H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMEo+Q8I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B68C19421;
+	Wed,  8 Apr 2026 18:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673049;
-	bh=6KNo6czChJYp54Et2IFBSszvYfRqAZyot5dqzlRUKRA=;
+	s=korg; t=1775671979;
+	bh=SRXj2zp04/qY3fFsNn5uoscUoMUxYsgU0/0MOcZULZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNaSIteIcXPLItcZNgGH6dnIoe2D9EKcZrv8ivCzvkuLl4MCpVXe6oklhdGshz2IX
-	 T5MSwiS6l5lAQkNUfXbwag7MVqMKSbdvgffzTlhfxuoKUJnFa0s9Xuoy3Z4e58qXO+
-	 DGryqSaYYh4Nw9mrPutjNQfr2iBdZIkHWs+0QU1I=
+	b=UMEo+Q8Iq8d3kwG3dOKI8VHT1/peNyy0Bq4E1ZsEXemUmuW7rYNmwWfHBBooWC5Q5
+	 VNruZx+ZOlSPbn8WarHGwQqpMHdIVQDNzJwWqOyFIRXjLeMCweT7LH6EqCiy1E6XE1
+	 Hu+VJpmkyQS4Xn4u9Xe/jriXACoepW4JyfJMeRKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Lee Jones <lee@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 074/277] netfilter: nf_conntrack_expect: store netns and zone in expectation
+Subject: [PATCH 6.1 142/312] HID: multitouch: Check to ensure report responses match the request
 Date: Wed,  8 Apr 2026 20:00:59 +0200
-Message-ID: <20260408175936.627190022@linuxfoundation.org>
+Message-ID: <20260408175939.073776241@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234511-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234098-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,166 +89,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3B4E93C19A6
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5B36C3C03E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 02a3231b6d82efe750da6554ebf280e4a6f78756 ]
+[ Upstream commit e716edafedad4952fe3a4a273d2e039a84e8681a ]
 
-__nf_ct_expect_find() and nf_ct_expect_find_get() are called under
-rcu_read_lock() but they dereference the master conntrack via
-exp->master.
+It is possible for a malicious (or clumsy) device to respond to a
+specific report's feature request using a completely different report
+ID.  This can cause confusion in the HID core resulting in nasty
+side-effects such as OOB writes.
 
-Since the expectation does not hold a reference on the master conntrack,
-this could be dying conntrack or different recycled conntrack than the
-real master due to SLAB_TYPESAFE_RCU.
+Add a check to ensure that the report ID in the response, matches the
+one that was requested.  If it doesn't, omit reporting the raw event and
+return early.
 
-Store the netns, the master_tuple and the zone in struct
-nf_conntrack_expect as a safety measure.
-
-This patch is required by the follow up fix not to dump expectations
-that do not belong to this netns.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 917b61fa2042 ("netfilter: ctnetlink: ignore explicit helper on new expectations")
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_expect.h | 18 +++++++++++++++++-
- net/netfilter/nf_conntrack_broadcast.c      |  6 +++++-
- net/netfilter/nf_conntrack_expect.c         |  9 +++++++--
- net/netfilter/nf_conntrack_netlink.c        |  5 +++++
- 4 files changed, 34 insertions(+), 4 deletions(-)
+ drivers/hid/hid-multitouch.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/net/netfilter/nf_conntrack_expect.h b/include/net/netfilter/nf_conntrack_expect.h
-index 1b01400b10bdb..e9a8350e7ccfb 100644
---- a/include/net/netfilter/nf_conntrack_expect.h
-+++ b/include/net/netfilter/nf_conntrack_expect.h
-@@ -22,10 +22,16 @@ struct nf_conntrack_expect {
- 	/* Hash member */
- 	struct hlist_node hnode;
- 
-+	/* Network namespace */
-+	possible_net_t net;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index b6c2cb7153fde..0039508943626 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -472,12 +472,19 @@ static void mt_get_feature(struct hid_device *hdev, struct hid_report *report)
+ 		dev_warn(&hdev->dev, "failed to fetch feature %d\n",
+ 			 report->id);
+ 	} else {
++		/* The report ID in the request and the response should match */
++		if (report->id != buf[0]) {
++			hid_err(hdev, "Returned feature report did not match the request\n");
++			goto free;
++		}
 +
- 	/* We expect this tuple, with the following mask */
- 	struct nf_conntrack_tuple tuple;
- 	struct nf_conntrack_tuple_mask mask;
+ 		ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT, buf,
+ 					   size, 0);
+ 		if (ret)
+ 			dev_warn(&hdev->dev, "failed to report feature\n");
+ 	}
  
-+#ifdef CONFIG_NF_CONNTRACK_ZONES
-+	struct nf_conntrack_zone zone;
-+#endif
- 	/* Usage count. */
- 	refcount_t use;
- 
-@@ -62,7 +68,17 @@ struct nf_conntrack_expect {
- 
- static inline struct net *nf_ct_exp_net(struct nf_conntrack_expect *exp)
- {
--	return nf_ct_net(exp->master);
-+	return read_pnet(&exp->net);
-+}
-+
-+static inline bool nf_ct_exp_zone_equal_any(const struct nf_conntrack_expect *a,
-+					    const struct nf_conntrack_zone *b)
-+{
-+#ifdef CONFIG_NF_CONNTRACK_ZONES
-+	return a->zone.id == b->id;
-+#else
-+	return true;
-+#endif
++free:
+ 	kfree(buf);
  }
  
- #define NF_CT_EXP_POLICY_NAME_LEN	16
-diff --git a/net/netfilter/nf_conntrack_broadcast.c b/net/netfilter/nf_conntrack_broadcast.c
-index 1964c596c6468..4f39bf7c843f2 100644
---- a/net/netfilter/nf_conntrack_broadcast.c
-+++ b/net/netfilter/nf_conntrack_broadcast.c
-@@ -21,6 +21,7 @@ int nf_conntrack_broadcast_help(struct sk_buff *skb,
- 				unsigned int timeout)
- {
- 	const struct nf_conntrack_helper *helper;
-+	struct net *net = read_pnet(&ct->ct_net);
- 	struct nf_conntrack_expect *exp;
- 	struct iphdr *iph = ip_hdr(skb);
- 	struct rtable *rt = skb_rtable(skb);
-@@ -71,7 +72,10 @@ int nf_conntrack_broadcast_help(struct sk_buff *skb,
- 	exp->flags                = NF_CT_EXPECT_PERMANENT;
- 	exp->class		  = NF_CT_EXPECT_CLASS_DEFAULT;
- 	rcu_assign_pointer(exp->helper, helper);
--
-+	write_pnet(&exp->net, net);
-+#ifdef CONFIG_NF_CONNTRACK_ZONES
-+	exp->zone = ct->zone;
-+#endif
- 	nf_ct_expect_related(exp, 0);
- 	nf_ct_expect_put(exp);
- 
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index b37ff73efb3e2..2234c444a320e 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -112,8 +112,8 @@ nf_ct_exp_equal(const struct nf_conntrack_tuple *tuple,
- 		const struct net *net)
- {
- 	return nf_ct_tuple_mask_cmp(tuple, &i->tuple, &i->mask) &&
--	       net_eq(net, nf_ct_net(i->master)) &&
--	       nf_ct_zone_equal_any(i->master, zone);
-+	       net_eq(net, read_pnet(&i->net)) &&
-+	       nf_ct_exp_zone_equal_any(i, zone);
- }
- 
- bool nf_ct_remove_expect(struct nf_conntrack_expect *exp)
-@@ -321,6 +321,7 @@ void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
- {
- 	struct nf_conntrack_helper *helper = NULL;
- 	struct nf_conn *ct = exp->master;
-+	struct net *net = read_pnet(&ct->ct_net);
- 	struct nf_conn_help *help;
- 	int len;
- 
-@@ -338,6 +339,10 @@ void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
- 		helper = rcu_dereference(help->helper);
- 
- 	rcu_assign_pointer(exp->helper, helper);
-+	write_pnet(&exp->net, net);
-+#ifdef CONFIG_NF_CONNTRACK_ZONES
-+	exp->zone = ct->zone;
-+#endif
- 	exp->tuple.src.l3num = family;
- 	exp->tuple.dst.protonum = proto;
- 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index f00afa6648376..8c5ae0665eaa4 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3521,6 +3521,7 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 		       struct nf_conntrack_tuple *tuple,
- 		       struct nf_conntrack_tuple *mask)
- {
-+	struct net *net = read_pnet(&ct->ct_net);
- 	struct nf_conntrack_expect *exp;
- 	struct nf_conn_help *help;
- 	u32 class = 0;
-@@ -3560,6 +3561,10 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 
- 	exp->class = class;
- 	exp->master = ct;
-+	write_pnet(&exp->net, net);
-+#ifdef CONFIG_NF_CONNTRACK_ZONES
-+	exp->zone = ct->zone;
-+#endif
- 	if (!helper)
- 		helper = rcu_dereference(help->helper);
- 	rcu_assign_pointer(exp->helper, helper);
 -- 
 2.53.0
 
