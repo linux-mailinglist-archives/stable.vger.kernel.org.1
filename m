@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-234847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8O3SOlmi1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:45 +0200
+	id wCxGDiOk1mmUGwgAu9opvQ
+	(envelope-from <stable+bounces-234622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43093C1749
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2503C1DA4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 23BDD303022C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5C4031AB163
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA12D2641FC;
-	Wed,  8 Apr 2026 18:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7892935CB6F;
+	Wed,  8 Apr 2026 18:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPyDsUhH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jY54+UAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F0433121F;
-	Wed,  8 Apr 2026 18:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA7428C87C;
+	Wed,  8 Apr 2026 18:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673919; cv=none; b=O3FqMnOzo8wKfyK9+heE9xcaVfelDYCiEAkILW07DpdRw52NsGQerq3/6M5cvmWeNwS8DeKV388RFtiistwQ1+YDDxx2KZMLYcYv89/UOcr1MOcmP0ItjmcIn2tWC2o8v/ls0G67APeodYj91zgjBGN/lZV/6TLgHm39YDsFs9g=
+	t=1775673336; cv=none; b=YdHyOYn+l3DOdE3Yb5kNALQNvnmfzTLgsR4fFY2SWrujW64ZdBDD9OSLFbuEKkiCAacELqwLZokveBRvGkZIyqT7a/Vml40yei+vM2KUX3NQ9ORr4Rof9cV97y/yPv3xtE3eLgpOBP+1y6amHn7J/CCiEwsFDbphKAdrMf76wt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673919; c=relaxed/simple;
-	bh=+WyNpBznUguNk7tgs8P68HihyzW2jrJBUUaHB7capR8=;
+	s=arc-20240116; t=1775673336; c=relaxed/simple;
+	bh=rSsiq28t1InDEuwXQ6bh+Z7UoxKAPUzBaqDWRs0hOxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nz6isd1Vv9gUk4r8pfjWKXSlET8msAowWkiDpTFZgsjfT0BVouaBgMCp4zsExivYcPYiWLH4viWZtYFFH2YbQTYfSTRP19e8mY/16sS6tg9oaLTfhYX0yCg29JLsFnO0J6l72qKZx1YmP3GfJvdMNl25WDsOSrZ+AOFn4MOOIAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPyDsUhH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B85C19421;
-	Wed,  8 Apr 2026 18:45:18 +0000 (UTC)
+	 MIME-Version; b=LtCajzdQP8ErXQXrcjiu4gFAQki8MpNOx8aOJ6XOSYEWFvwPQza0YK8hgukKWeSLcqyW7fcRw5+K8JjN18NqcK2E7UrtpcpmJBZ4ci2IkS9Lcenk34a+YWKq+lyvPU6YBars7TpqvfdenQguHBz/NYfSU/IKgT04W2QOw7WG0RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jY54+UAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8A0C19421;
+	Wed,  8 Apr 2026 18:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673919;
-	bh=+WyNpBznUguNk7tgs8P68HihyzW2jrJBUUaHB7capR8=;
+	s=korg; t=1775673335;
+	bh=rSsiq28t1InDEuwXQ6bh+Z7UoxKAPUzBaqDWRs0hOxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPyDsUhHejkWJdnBBILtDBaJkigldN9CcL2ynQ8SDr4zXXtoTD/cNcTyYaCAqpUAv
-	 hazuxJPBWaM1mhZFI+BxQtne3rAeV1frNjqlAInkomgTEtiwomOUdLVVsR1P9pgyTJ
-	 3oBxQHBFGIon1w8V9AQUJRiwt/Y/qkIvffstgWDM=
+	b=jY54+UAdarTbXjjx7HRtBjBcCgPhSkGavVTac0W3iamIBDLY6tkRixbE+b6S6R8Vw
+	 E7GeqCfILnYQhULdGFR/N/sWDCFcr/piQ+/knNvb6j0pL2pF9YMzL8gyFGDzky4/Tw
+	 YFKpKdKEKh2KFymmVkgavMGjXKLe6RbjhN1Gsn3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 138/242] drm/amdgpu: Change AMDGPU_VA_RESERVED_TRAP_SIZE to 64KB
+	Jonathan Cameron <jic23@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 193/277] iio: gyro: mpu3050: Move iio_device_register() to correct location
 Date: Wed,  8 Apr 2026 20:02:58 +0200
-Message-ID: <20260408175932.254021863@linuxfoundation.org>
+Message-ID: <20260408175941.070607021@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,146 +66,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234847-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	TAGGED_FROM(0.00)[bounces-234622-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A43093C1749
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AB2503C1DA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-commit 4487571ef17a30d274600b3bd6965f497a881299 upstream.
+commit 4c05799449108fb0e0a6bd30e65fffc71e60db4d upstream.
 
-Currently, AMDGPU_VA_RESERVED_TRAP_SIZE is hardcoded to 8KB, while
-KFD_CWSR_TBA_TMA_SIZE is defined as 2 * PAGE_SIZE. On systems with
-4K pages, both values match (8KB), so allocation and reserved space
-are consistent.
+iio_device_register() should be at the end of the probe function to
+prevent race conditions.
 
-However, on 64K page-size systems, KFD_CWSR_TBA_TMA_SIZE becomes 128KB,
-while the reserved trap area remains 8KB. This mismatch causes the
-kernel to crash when running rocminfo or rccl unit tests.
+Place iio_device_register() at the end of the probe function and place
+iio_device_unregister() accordingly.
 
-Kernel attempted to read user page (2) - exploit attempt? (uid: 1001)
-BUG: Kernel NULL pointer dereference on read at 0x00000002
-Faulting instruction address: 0xc0000000002c8a64
-Oops: Kernel access of bad area, sig: 11 [#1]
-LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-CPU: 34 UID: 1001 PID: 9379 Comm: rocminfo Tainted: G E
-6.19.0-rc4-amdgpu-00320-gf23176405700 #56 VOLUNTARY
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: IBM,9105-42A POWER10 (architected) 0x800200 0xf000006
-of:IBM,FW1060.30 (ML1060_896) hv:phyp pSeries
-NIP:  c0000000002c8a64 LR: c00000000125dbc8 CTR: c00000000125e730
-REGS: c0000001e0957580 TRAP: 0300 Tainted: G E
-MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE> CR: 24008268
-XER: 00000036
-CFAR: c00000000125dbc4 DAR: 0000000000000002 DSISR: 40000000
-IRQMASK: 1
-GPR00: c00000000125d908 c0000001e0957820 c0000000016e8100
-c00000013d814540
-GPR04: 0000000000000002 c00000013d814550 0000000000000045
-0000000000000000
-GPR08: c00000013444d000 c00000013d814538 c00000013d814538
-0000000084002268
-GPR12: c00000000125e730 c000007e2ffd5f00 ffffffffffffffff
-0000000000020000
-GPR16: 0000000000000000 0000000000000002 c00000015f653000
-0000000000000000
-GPR20: c000000138662400 c00000013d814540 0000000000000000
-c00000013d814500
-GPR24: 0000000000000000 0000000000000002 c0000001e0957888
-c0000001e0957878
-GPR28: c00000013d814548 0000000000000000 c00000013d814540
-c0000001e0957888
-NIP [c0000000002c8a64] __mutex_add_waiter+0x24/0xc0
-LR [c00000000125dbc8] __mutex_lock.constprop.0+0x318/0xd00
-Call Trace:
-0xc0000001e0957890 (unreliable)
-__mutex_lock.constprop.0+0x58/0xd00
-amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x6fc/0xb60 [amdgpu]
-kfd_process_alloc_gpuvm+0x54/0x1f0 [amdgpu]
-kfd_process_device_init_cwsr_dgpu+0xa4/0x1a0 [amdgpu]
-kfd_process_device_init_vm+0xd8/0x2e0 [amdgpu]
-kfd_ioctl_acquire_vm+0xd0/0x130 [amdgpu]
-kfd_ioctl+0x514/0x670 [amdgpu]
-sys_ioctl+0x134/0x180
-system_call_exception+0x114/0x300
-system_call_vectored_common+0x15c/0x2ec
-
-This patch changes AMDGPU_VA_RESERVED_TRAP_SIZE to 64 KB and
-KFD_CWSR_TBA_TMA_SIZE to the AMD GPU page size. This means we reserve
-64 KB for the trap in the address space, but only allocate 8 KB within
-it. With this approach, the allocation size never exceeds the reserved
-area.
-
-Fixes: 34a1de0f7935 ("drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 31b8de5e55666f26ea7ece5f412b83eab3f56dbb)
-Cc: stable@vger.kernel.org
+Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h |    2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h  |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/gyro/mpu3050-core.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-@@ -172,7 +172,7 @@ struct amdgpu_mem_stats;
- #define AMDGPU_VA_RESERVED_SEQ64_SIZE		(2ULL << 20)
- #define AMDGPU_VA_RESERVED_SEQ64_START(adev)	(AMDGPU_VA_RESERVED_CSA_START(adev) \
- 						 - AMDGPU_VA_RESERVED_SEQ64_SIZE)
--#define AMDGPU_VA_RESERVED_TRAP_SIZE		(2ULL << 12)
-+#define AMDGPU_VA_RESERVED_TRAP_SIZE		(1ULL << 16)
- #define AMDGPU_VA_RESERVED_TRAP_START(adev)	(AMDGPU_VA_RESERVED_SEQ64_START(adev) \
- 						 - AMDGPU_VA_RESERVED_TRAP_SIZE)
- #define AMDGPU_VA_RESERVED_BOTTOM		(1ULL << 16)
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -102,8 +102,8 @@
-  * The first chunk is the TBA used for the CWSR ISA code. The second
-  * chunk is used as TMA for user-mode trap handler setup in daisy-chain mode.
-  */
--#define KFD_CWSR_TBA_TMA_SIZE (PAGE_SIZE * 2)
--#define KFD_CWSR_TMA_OFFSET (PAGE_SIZE + 2048)
-+#define KFD_CWSR_TBA_TMA_SIZE (AMDGPU_GPU_PAGE_SIZE * 2)
-+#define KFD_CWSR_TMA_OFFSET (AMDGPU_GPU_PAGE_SIZE + 2048)
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -1226,12 +1226,6 @@ int mpu3050_common_probe(struct device *
+ 		goto err_power_down;
+ 	}
  
- #define KFD_MAX_NUM_OF_QUEUES_PER_DEVICE		\
- 	(KFD_MAX_NUM_OF_PROCESSES *			\
+-	ret = iio_device_register(indio_dev);
+-	if (ret) {
+-		dev_err(dev, "device register failed\n");
+-		goto err_cleanup_buffer;
+-	}
+-
+ 	dev_set_drvdata(dev, indio_dev);
+ 
+ 	/* Check if we have an assigned IRQ to use as trigger */
+@@ -1254,9 +1248,20 @@ int mpu3050_common_probe(struct device *
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_put(dev);
+ 
++	ret = iio_device_register(indio_dev);
++	if (ret) {
++		dev_err(dev, "device register failed\n");
++		goto err_iio_device_register;
++	}
++
+ 	return 0;
+ 
+-err_cleanup_buffer:
++err_iio_device_register:
++	pm_runtime_get_sync(dev);
++	pm_runtime_put_noidle(dev);
++	pm_runtime_disable(dev);
++	if (irq)
++		free_irq(mpu3050->irq, mpu3050->trig);
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ err_power_down:
+ 	mpu3050_power_down(mpu3050);
+@@ -1269,13 +1274,13 @@ void mpu3050_common_remove(struct device
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
+ 
++	iio_device_unregister(indio_dev);
+ 	pm_runtime_get_sync(dev);
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ 	if (mpu3050->irq)
+ 		free_irq(mpu3050->irq, mpu3050->trig);
+-	iio_device_unregister(indio_dev);
+ 	mpu3050_power_down(mpu3050);
+ }
+ 
 
 
 
