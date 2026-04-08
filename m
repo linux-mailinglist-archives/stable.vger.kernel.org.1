@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFGEB9Ch1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:28 +0200
+	id 6JdGDC2c1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2693C1546
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989B73C06AE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 14DF73029D7F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D90A302C6C2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EA33624B0;
-	Wed,  8 Apr 2026 18:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6F7385513;
+	Wed,  8 Apr 2026 18:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StPtirIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCjzSAtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868DB2BEFFF;
-	Wed,  8 Apr 2026 18:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3273FB67E;
+	Wed,  8 Apr 2026 18:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673805; cv=none; b=txqOaxkdTxGH8ISpvqmIYfXyi2hEcL28hJp0l+eFfRevo7z6I/GZIuB05uMYs/ztawpQZU9sqiWs9elolpcgGnHiJeIj2PjD3dTwH/VHUhlMDyWlhlsnwniO/GWtknTAAQ8JnC7VLLMZqP/iIObcX9Ny1O9e8UdjP7daoc33F6o=
+	t=1775672183; cv=none; b=faP09wTtPCL7gd+JNpMqSMMW0o3u0PuiFFSsenqeHQqynlO6h65En4YXu2HUahSD0Ty5Xii5WWK0ndNd1ap9wBooyhNecG6oDlvCauN2bNBXNQE5VOm2nVxTvvjT9TUWOzC2/FazFa4W5DjCyXaOXih2b7zcrl78l4WGM6nq99A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673805; c=relaxed/simple;
-	bh=QYGz69mUc7soRj6lN6S7miZ7wNjp133MISC3RIsqRfg=;
+	s=arc-20240116; t=1775672183; c=relaxed/simple;
+	bh=ttNo7gZAsnhBXphsw84P+RmQgwQkd5VqBv+EcimnsiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gU+H4vxZdHd0d/riLkhji8ILiflUBzxW/PLhVkCwrKktG9JDFBUgI/udi2G0ieg/Dlk6RIxQDNq+OS80yXrRIOXye9MaPYOrcYpO1PvFTrWQsjBP305gxdbOpq7dsIi7dV8LKjywKdgg+Ik/N5Pwipk7ZKMDpRTIiwp8I+Cs8qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StPtirIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9786C19421;
-	Wed,  8 Apr 2026 18:43:24 +0000 (UTC)
+	 MIME-Version; b=b5mQePghY1pY87e4FE7350GJhUcVt+wddxkDQih4fz1EsgjHQ+AkWkanAPr1WRx+PoQoZ8OkgPCHDAV5q2NfjHgmPe4AmcDnZEcztwIlU20QOg30O6CGwdm5NBeqbgDAjiDjVphfbN/OLq31Nc351hK8IP87OXnkNf7Sja8eZEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCjzSAtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78739C19421;
+	Wed,  8 Apr 2026 18:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673805;
-	bh=QYGz69mUc7soRj6lN6S7miZ7wNjp133MISC3RIsqRfg=;
+	s=korg; t=1775672182;
+	bh=ttNo7gZAsnhBXphsw84P+RmQgwQkd5VqBv+EcimnsiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StPtirIvvMY32W4Z/BdXFtdJwI/oi8uMgHvihtcgkJPfq0vpw8/H7wncw8MKA+0PC
-	 yi0/AQPBoBBIibZKatxXq0lJaOX96wUh83ugvnQsstrkD0wcSVgFNPyM1m45gbt6oQ
-	 C1iq7ErHOFrKgkUhL+5iOKkONXC780soHVrVPQ8o=
+	b=QCjzSAtJJTOo3a8Xz19l4eC6RsfYi1qK+c635jfEXDC04UJuF4W25RLiRXiWCRNM7
+	 OQ6IRM5xmpOt0IyFZDkKn8ard75vIuPoSuh3caq/Xtw15fISpWEWXOMTIe3ThhnqCc
+	 gCvfCImyUK4pCjN9yuB/lW3BCbOHcHkNucX4rJg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Martin Schiller <ms@dev.tdt.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/242] net/x25: Fix overflow when accumulating packets
-Date: Wed,  8 Apr 2026 20:02:16 +0200
-Message-ID: <20260408175930.676732379@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 220/312] iio: light: vcnl4035: fix scan buffer on big-endian
+Date: Wed,  8 Apr 2026 20:02:17 +0200
+Message-ID: <20260408175941.975101559@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +68,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dev.tdt.de,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234804-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234177-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,tdt.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AE2693C1546
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 989B73C06AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit a1822cb524e89b4cd2cf0b82e484a2335496a6d9 ]
+commit fdc7aa54a5d44c05880a4aad7cfb41aacfd16d7b upstream.
 
-Add a check to ensure that `x25_sock.fraglen` does not overflow.
+Rework vcnl4035_trigger_consumer_handler() so that we are not passing
+what should be a u16 value as an int * to regmap_read(). This won't
+work on bit endian systems.
 
-The `fraglen` also needs to be resetted when purging `fragment_queue` in
-`x25_clear_queues()`.
+Instead, add a new unsigned int variable to pass to regmap_read(). Then
+copy that value into the buffer struct.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Link: https://patch.msgid.link/20260331-x25_fraglen-v4-2-3e69f18464b4@dev.tdt.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The buffer array is replaced with a struct since there is only one value
+being read. This allows us to use the correct u16 data type and has a
+side-effect of simplifying the alignment specification.
+
+Also fix the endianness of the scan format from little-endian to CPU
+endianness. Since we are using regmap to read the value, it will be
+CPU-endian.
+
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/x25/x25_in.c   | 4 ++++
- net/x25/x25_subr.c | 1 +
- 2 files changed, 5 insertions(+)
+ drivers/iio/light/vcnl4035.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
-index 0dbc73efab1cb..e47ebd8acd21b 100644
---- a/net/x25/x25_in.c
-+++ b/net/x25/x25_in.c
-@@ -34,6 +34,10 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
- 	struct sk_buff *skbo, *skbn = skb;
- 	struct x25_sock *x25 = x25_sk(sk);
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -105,17 +105,23 @@ static irqreturn_t vcnl4035_trigger_cons
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct vcnl4035_data *data = iio_priv(indio_dev);
+ 	/* Ensure naturally aligned timestamp */
+-	u8 buffer[ALIGN(sizeof(u16), sizeof(s64)) + sizeof(s64)]  __aligned(8) = { };
++	struct {
++		u16 als_data;
++		aligned_s64 timestamp;
++	} buffer = { };
++	unsigned int val;
+ 	int ret;
  
-+	/* make sure we don't overflow */
-+	if (x25->fraglen + skb->len > USHRT_MAX)
-+		return 1;
+-	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, (int *)buffer);
++	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, &val);
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev,
+ 			"Trigger consumer can't read from sensor.\n");
+ 		goto fail_read;
+ 	}
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+-					iio_get_time_ns(indio_dev));
 +
- 	if (more) {
- 		x25->fraglen += skb->len;
- 		skb_queue_tail(&x25->fragment_queue, skb);
-diff --git a/net/x25/x25_subr.c b/net/x25/x25_subr.c
-index 0285aaa1e93c1..159708d9ad20c 100644
---- a/net/x25/x25_subr.c
-+++ b/net/x25/x25_subr.c
-@@ -40,6 +40,7 @@ void x25_clear_queues(struct sock *sk)
- 	skb_queue_purge(&x25->interrupt_in_queue);
- 	skb_queue_purge(&x25->interrupt_out_queue);
- 	skb_queue_purge(&x25->fragment_queue);
-+	x25->fraglen = 0;
- }
++	buffer.als_data = val;
++	iio_push_to_buffers_with_timestamp(indio_dev, &buffer,
++					   iio_get_time_ns(indio_dev));
  
- 
--- 
-2.53.0
-
+ fail_read:
+ 	iio_trigger_notify_done(indio_dev->trig);
+@@ -378,7 +384,7 @@ static const struct iio_chan_spec vcnl40
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_LE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ 	{
+@@ -392,7 +398,7 @@ static const struct iio_chan_spec vcnl40
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_LE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ };
 
 
 
