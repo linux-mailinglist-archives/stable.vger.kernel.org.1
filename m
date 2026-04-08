@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-234689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFW5Lmem1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:03 +0200
+	id +ConOB+i1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4173C2436
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 425FC3C169A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F0B5312EFCD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 558133028350
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0B33ACF16;
-	Wed,  8 Apr 2026 18:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF743D6694;
+	Wed,  8 Apr 2026 18:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjM6bKi1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNIkvwo/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53E1B67E;
-	Wed,  8 Apr 2026 18:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D23D6674;
+	Wed,  8 Apr 2026 18:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673509; cv=none; b=p9MT0kKVDocsKCiiwB9xLHAZr11n6iA8bXlW5rETDQ/yWx+Dl5yRDq9Q7nraVApjrkp7MFiqYwmrnQPBuf3GFsuaY3SgzNzdl4KHHuvVNFFozADXMWm1sd3Arw6zpDwjcImiarrjtD+tm5RUitz9QWqsGgvOTQyVozZusZrM9Ys=
+	t=1775672829; cv=none; b=eFD3IBZ4q1s4fk8puvP4d/6+whU0cdbY0SpEC3W075bgJPzj7/3JHaMuULZwiDn+4tqalbSM6msGQKsf4FoCqDzFdmLh3XRmzduJ624xpp4mEUezpL5Mel3asTbLzovr2IMQnb8IPHkIuTj+Xmn+KZJTjEbXW5FQSZMG8jp9/N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673509; c=relaxed/simple;
-	bh=Mer2tGuaR/PBRbJPrF0q49sFLBDmgsUuE1aKbGY9aEE=;
+	s=arc-20240116; t=1775672829; c=relaxed/simple;
+	bh=B41VHLU87xsOWiQKSIMgLbWEZ9stYSbnvmy+4aUoq0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYECGxkKWiSDXsRX4lLwXvxCpHSuG3RbX0g3t+axOrrMWmAsdgV5EklztkviD/KOdNeDTWqyymnwSHSq3nCLYV1fWdRDR4Z2eF9zRqz4C8wJTjEOps56muu8FbHewXgP5UDDblcnfs+nyYNFcJv3cxZ4/6WyTxPSLaaBYS8Vxk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjM6bKi1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D9AC19421;
-	Wed,  8 Apr 2026 18:38:28 +0000 (UTC)
+	 MIME-Version; b=gmNKkzCla2SRGisBnuNcvMyozF7Ovo+9cn6iWAPkFWZ/f6qZIxyvFuLGWb/Tpx4mLOx8FD4jhzLMTwoMtDRLbEiVEJ9n7deyCK2U+4eOUM44eLSDrbj7JbmmGKfzqy0msmgGkllQyBLLHauZ4OgO5pw4LlfnyfqyNv5qu+XCeBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNIkvwo/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF2EC19421;
+	Wed,  8 Apr 2026 18:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673508;
-	bh=Mer2tGuaR/PBRbJPrF0q49sFLBDmgsUuE1aKbGY9aEE=;
+	s=korg; t=1775672829;
+	bh=B41VHLU87xsOWiQKSIMgLbWEZ9stYSbnvmy+4aUoq0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjM6bKi1O9/7WruSCU25jcmWKtQKXQMbuUaRn5J6L/Upvf8J0k6GjR14KJidEYXfg
-	 XIfmkp/jH5WmRYsJC9m3twr8OFtpc//dZKifrdtxZia2zT/XCAiupRrp34CxoTNuY+
-	 aqD8UzGB3pams7w8zRBT+7YSVsy6qm0k0EUlIZwg=
+	b=FNIkvwo/iSLWc8v7yigGCOpGuFekIwn1A1OMQa99PTx3244NMoj2rBThPxATkoa6s
+	 m3dMMB165t5sa0sihT2MAJZnLu3FCWBoMpJN5fweyJKJCPXS7XHu8cBdGX1QfyCYyN
+	 0Zsh3dU5RKz7BrUa7KUd9ZpI4nleCtM/w8kJl8pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.18 260/277] usb: gadget: f_rndis: Fix net_device lifecycle with device_move
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun@linux.alibaba.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 158/160] ext4: handle wraparound when searching for blocks for indirect mapped blocks
 Date: Wed,  8 Apr 2026 20:04:05 +0200
-Message-ID: <20260408175943.564838146@linuxfoundation.org>
+Message-ID: <20260408175919.104401903@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,222 +70,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234689-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234427-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 5B4173C2436
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,alibaba.com:email]
+X-Rspamd-Queue-Id: 425FC3C169A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit e367599529dc42578545a7f85fde517b35b3cda7 upstream.
+[ Upstream commit bb81702370fad22c06ca12b6e1648754dbc37e0f ]
 
-The net_device is allocated during function instance creation and
-registered during the bind phase with the gadget device as its sysfs
-parent. When the function unbinds, the parent device is destroyed, but
-the net_device survives, resulting in dangling sysfs symlinks:
+Commit 4865c768b563 ("ext4: always allocate blocks only from groups
+inode can use") restricts what blocks will be allocated for indirect
+block based files to block numbers that fit within 32-bit block
+numbers.
 
-  console:/ # ls -l /sys/class/net/usb0
-  lrwxrwxrwx ... /sys/class/net/usb0 ->
-  /sys/devices/platform/.../gadget.0/net/usb0
-  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
-  ls: .../gadget.0/net/usb0: No such file or directory
+However, when using a review bot running on the latest Gemini LLM to
+check this commit when backporting into an LTS based kernel, it raised
+this concern:
 
-Use device_move() to reparent the net_device between the gadget device
-tree and /sys/devices/virtual across bind and unbind cycles. During the
-final unbind, calling device_move(NULL) moves the net_device to the
-virtual device tree before the gadget device is destroyed. On rebinding,
-device_move() reparents the device back under the new gadget, ensuring
-proper sysfs topology and power management ordering.
+   If ac->ac_g_ex.fe_group is >= ngroups (for instance, if the goal
+   group was populated via stream allocation from s_mb_last_groups),
+   then start will be >= ngroups.
 
-To maintain compatibility with legacy composite drivers (e.g., multi.c),
-the borrowed_net flag is used to indicate whether the network device is
-shared and pre-registered during the legacy driver's bind phase.
+   Does this allow allocating blocks beyond the 32-bit limit for
+   indirect block mapped files? The commit message mentions that
+   ext4_mb_scan_groups_linear() takes care to not select unsupported
+   groups. However, its loop uses group = *start, and the very first
+   iteration will call ext4_mb_scan_group() with this unsupported
+   group because next_linear_group() is only called at the end of the
+   iteration.
 
-Fixes: f466c6353819 ("usb: gadget: f_rndis: convert to new function interface with backward compatibility")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-7-4886b578161b@google.com
+After reviewing the code paths involved and considering the LLM
+review, I determined that this can happen when there is a file system
+where some files/directories are extent-mapped and others are
+indirect-block mapped.  To address this, add a safety clamp in
+ext4_mb_scan_groups().
+
+Fixes: 4865c768b563 ("ext4: always allocate blocks only from groups inode can use")
+Cc: Jan Kara <jack@suse.cz>
+Reviewed-by: Baokun Li <libaokun@linux.alibaba.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://patch.msgid.link/20260326045834.1175822-1-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_rndis.c |   42 ++++++++++++++++++++--------------
- drivers/usb/gadget/function/u_rndis.h |   31 ++++++++++++++++++-------
- 2 files changed, 48 insertions(+), 25 deletions(-)
+ fs/ext4/mballoc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/gadget/function/f_rndis.c
-+++ b/drivers/usb/gadget/function/f_rndis.c
-@@ -666,6 +666,7 @@ rndis_bind(struct usb_configuration *c,
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2892,6 +2892,8 @@ repeat:
+ 		 * from the goal value specified
+ 		 */
+ 		group = ac->ac_g_ex.fe_group;
++		if (group >= ngroups)
++			group = 0;
+ 		ac->ac_groups_linear_remaining = sbi->s_mb_max_linear_groups;
+ 		prefetch_grp = group;
  
- 	struct f_rndis_opts *rndis_opts;
- 	struct usb_os_desc_table        *os_desc_table __free(kfree) = NULL;
-+	struct net_device		*net __free(detach_gadget) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_rndis(c))
-@@ -683,21 +684,18 @@ rndis_bind(struct usb_configuration *c,
- 		rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
- 		rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
- 		rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
--	}
- 
--	/*
--	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
--	 * configurations are bound in sequence with list_for_each_entry,
--	 * in each configuration its functions are bound in sequence
--	 * with list_for_each_entry, so we assume no race condition
--	 * with regard to rndis_opts->bound access
--	 */
--	if (!rndis_opts->bound) {
--		gether_set_gadget(rndis_opts->net, cdev->gadget);
--		status = gether_register_netdev(rndis_opts->net);
--		if (status)
--			return status;
--		rndis_opts->bound = true;
-+		if (rndis_opts->bind_count == 0 && !rndis_opts->borrowed_net) {
-+			if (!device_is_registered(&rndis_opts->net->dev)) {
-+				gether_set_gadget(rndis_opts->net, cdev->gadget);
-+				status = gether_register_netdev(rndis_opts->net);
-+			} else
-+				status = gether_attach_gadget(rndis_opts->net, cdev->gadget);
-+
-+			if (status)
-+				return status;
-+			net = rndis_opts->net;
-+		}
- 	}
- 
- 	us = usb_gstrings_attach(cdev, rndis_strings,
-@@ -796,6 +794,9 @@ rndis_bind(struct usb_configuration *c,
- 	}
- 	rndis->notify_req = no_free_ptr(request);
- 
-+	rndis_opts->bind_count++;
-+	retain_and_null_ptr(net);
-+
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
- 	 * until we're activated via set_alt().
-@@ -812,11 +813,11 @@ void rndis_borrow_net(struct usb_functio
- 	struct f_rndis_opts *opts;
- 
- 	opts = container_of(f, struct f_rndis_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
--	opts->borrowed_net = opts->bound = true;
-+	opts->borrowed_net = true;
- 	opts->net = net;
- }
- EXPORT_SYMBOL_GPL(rndis_borrow_net);
-@@ -874,7 +875,7 @@ static void rndis_free_inst(struct usb_f
- 
- 	opts = container_of(f, struct f_rndis_opts, func_inst);
- 	if (!opts->borrowed_net) {
--		if (opts->bound)
-+		if (device_is_registered(&opts->net->dev))
- 			gether_cleanup(netdev_priv(opts->net));
- 		else
- 			free_netdev(opts->net);
-@@ -943,6 +944,9 @@ static void rndis_free(struct usb_functi
- static void rndis_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct f_rndis		*rndis = func_to_rndis(f);
-+	struct f_rndis_opts	*rndis_opts;
-+
-+	rndis_opts = container_of(f->fi, struct f_rndis_opts, func_inst);
- 
- 	kfree(f->os_desc_table);
- 	f->os_desc_n = 0;
-@@ -950,6 +954,10 @@ static void rndis_unbind(struct usb_conf
- 
- 	kfree(rndis->notify_req->buf);
- 	usb_ep_free_request(rndis->notify, rndis->notify_req);
-+
-+	rndis_opts->bind_count--;
-+	if (rndis_opts->bind_count == 0 && !rndis_opts->borrowed_net)
-+		gether_detach_gadget(rndis_opts->net);
- }
- 
- static struct usb_function *rndis_alloc(struct usb_function_instance *fi)
---- a/drivers/usb/gadget/function/u_rndis.h
-+++ b/drivers/usb/gadget/function/u_rndis.h
-@@ -15,12 +15,34 @@
- 
- #include <linux/usb/composite.h>
- 
-+/**
-+ * struct f_rndis_opts - RNDIS function options
-+ * @func_inst: USB function instance.
-+ * @vendor_id: Vendor ID.
-+ * @manufacturer: Manufacturer string.
-+ * @net: The net_device associated with the RNDIS function.
-+ * @bind_count: Tracks the number of configurations the RNDIS function is
-+ *              bound to, preventing double-registration of the @net device.
-+ * @borrowed_net: True if the net_device is shared and pre-registered during
-+ *                the legacy composite driver's bind phase (e.g., multi.c).
-+ *                If false, the RNDIS function will register the net_device
-+ *                during its own bind phase.
-+ * @rndis_interf_group: ConfigFS group for RNDIS interface.
-+ * @rndis_os_desc: USB OS descriptor for RNDIS.
-+ * @rndis_ext_compat_id: Extended compatibility ID.
-+ * @class: USB class.
-+ * @subclass: USB subclass.
-+ * @protocol: USB protocol.
-+ * @lock: Protects the data from concurrent access by configfs read/write
-+ *        and create symlink/remove symlink operations.
-+ * @refcnt: Reference counter for the function instance.
-+ */
- struct f_rndis_opts {
- 	struct usb_function_instance	func_inst;
- 	u32				vendor_id;
- 	const char			*manufacturer;
- 	struct net_device		*net;
--	bool				bound;
-+	int				bind_count;
- 	bool				borrowed_net;
- 
- 	struct config_group		*rndis_interf_group;
-@@ -30,13 +52,6 @@ struct f_rndis_opts {
- 	u8				class;
- 	u8				subclass;
- 	u8				protocol;
--
--	/*
--	 * Read/write access to configfs attributes is handled by configfs.
--	 *
--	 * This is to protect the data from concurrent access by read/write
--	 * and create symlink/remove symlink.
--	 */
- 	struct mutex			lock;
- 	int				refcnt;
- };
 
 
 
