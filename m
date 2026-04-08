@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-235105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA+vJsKq1mmOHAgAu9opvQ
-	(envelope-from <stable+bounces-235105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:38 +0200
+	id +A3WLdSf1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9D13C2D42
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86EB03C102C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EDD6131823A7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BAA93029A1A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C3235C1B5;
-	Wed,  8 Apr 2026 18:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CDB3D902E;
+	Wed,  8 Apr 2026 18:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERKuxGdL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6Z/c3kR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F9332A3FD;
-	Wed,  8 Apr 2026 18:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F6E3ACF16;
+	Wed,  8 Apr 2026 18:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674582; cv=none; b=vFaCotkEvFYqP1te+/Xoma8ZM5uecEQpckdpGpaDE0yWIICpFK7+3Bu5z2vdlOCx3kcg/wqOZqHXTCBhxhOEle5qIVZqn0raXotuUbOQ+c3mXfSGRCvKoKNMvj0HriJQ4Mg8RK8cCaOBRUSjgJaBI6Ux8AjdpSEBRUdNHvQEIlY=
+	t=1775673277; cv=none; b=DWwgqGB861B2cNp/C3IB+ReRcvHaV9j1yJ4kzIGMdSg8glcu/GAXG5nBMxJQA8IMPUlcjD5YBLU9fceEg8LuCHjisw6LH2FGXMPB2Y6x+0zo7j7KWXNyBXg5/XiPCoFJCw6pRb27mz6phi8Ola3eXP64dNM428bJpeiq5nB4NDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674582; c=relaxed/simple;
-	bh=L6ZHPYQcLK8r5i/N1Emvm5HXJM47mBuAt+719YtRlWE=;
+	s=arc-20240116; t=1775673277; c=relaxed/simple;
+	bh=H/nlugm2LDHMf6iEWDoDN0RdxvAEHzYmbeTR0t+Fx0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcuMlepP3Tb9R4sWn8of1hD5lS+8i+BZ28SF6GOiD5aRgu3OPf21VJZER5oJQjpx8Y0R7K/Lg2u+66ZOpXmS6Y5cjLYS4JwFTjyWtDdDdIC1Oz7KC9LjNPR4estmtqABR3+aZTEBxMfHobU3sfVrNCIVlVshyf2dNnxzqMz770o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERKuxGdL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EB5C19421;
-	Wed,  8 Apr 2026 18:56:21 +0000 (UTC)
+	 MIME-Version; b=Q2MZfk5Mf11LIyWosn5uieeqhdbb3ldRjvW7tK+nUwAceLYqiujzS2fKtwjk4HB3Zy/ToNVwJbxTur1yxVnXlHy+0c0nrKw2nOZY1hT7qO5X/B9r/YK5yH1y3Q2ZsW/sEdZOqcOViRvzR+M+eqR6zlP/y1l2Jk7CSpk1qNkrB1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6Z/c3kR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825B5C19421;
+	Wed,  8 Apr 2026 18:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674582;
-	bh=L6ZHPYQcLK8r5i/N1Emvm5HXJM47mBuAt+719YtRlWE=;
+	s=korg; t=1775673276;
+	bh=H/nlugm2LDHMf6iEWDoDN0RdxvAEHzYmbeTR0t+Fx0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERKuxGdLiGnKng52YQEtd0cjyXkqaLpFMOQa8piUkrShSMZ83JdqLiDff+wKq45eC
-	 YQSZQJdCpDuaP2YfnsOOwd01ePGGKIhvmKrfwnSSSj5fULzXzYY0WL2/6+4FUo4vFR
-	 nG0+kYrsYdUicuQURb3znSVDFTeAjrP3PaCs79b4=
+	b=u6Z/c3kRvQQ7puVJBuaT7YfqAaxHXtY8HnoVm8R219CgnL8uE6AX0YjXzZ4YlLdqb
+	 zBID0TEYK6rHZ4jsPrIKNAVGcjWzSchy11MFdGbxDNxLp1l8dp6mlwsy91NtugYAk6
+	 6ZY1+EK+MqUrI4StA4ma7pQwFVxIn3Dk5QRPes+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mieczyslaw Nalewaj <namiltd@yahoo.com>,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 154/311] mips: ralink: update CPU clock index
+	Wanquan Zhong <wanquan.zhong@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 169/277] USB: serial: option: add support for Rolling Wireless RW135R-GL
 Date: Wed,  8 Apr 2026 20:02:34 +0200
-Message-ID: <20260408175945.157443893@linuxfoundation.org>
+Message-ID: <20260408175940.178313404@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +63,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-235105-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yahoo.com,outlook.com,gmail.com,alpha.franken.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234599-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,franken.de:email]
-X-Rspamd-Queue-Id: BA9D13C2D42
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fibocom.com:email]
+X-Rspamd-Queue-Id: 86EB03C102C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Wanquan Zhong <wanquan.zhong@fibocom.com>
 
-[ Upstream commit 43985a62bab9d35e5e9af41118ce2f44c01b97d2 ]
+commit 01e8d0f742222f1e68f48180d5480097adf7ae9f upstream.
 
-Update CPU clock index to match the clock driver changes.
+Add VID/PID 33f8:1003 for the Rolling Wireless RW135R-GL M.2 module,
+which is used in laptop debug cards with MBIM interface for
+Linux/Chrome OS. The device supports mbim, pipe functionalities.
 
-Fixes: d34db686a3d7 ("clk: ralink: mtmips: fix clocks probe order in oldest ralink SoCs")
-Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Here are the outputs of usb-devices:
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev=05.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/ralink/clk.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/ralink/clk.c b/arch/mips/ralink/clk.c
-index 9db73fcac522e..5c1eb46ef5d07 100644
---- a/arch/mips/ralink/clk.c
-+++ b/arch/mips/ralink/clk.c
-@@ -21,16 +21,16 @@ static const char *clk_cpu(int *idx)
- {
- 	switch (ralink_soc) {
- 	case RT2880_SOC:
--		*idx = 0;
-+		*idx = 1;
- 		return "ralink,rt2880-sysc";
- 	case RT3883_SOC:
--		*idx = 0;
-+		*idx = 1;
- 		return "ralink,rt3883-sysc";
- 	case RT305X_SOC_RT3050:
--		*idx = 0;
-+		*idx = 1;
- 		return "ralink,rt3050-sysc";
- 	case RT305X_SOC_RT3052:
--		*idx = 0;
-+		*idx = 1;
- 		return "ralink,rt3052-sysc";
- 	case RT305X_SOC_RT3350:
- 		*idx = 1;
--- 
-2.53.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2464,6 +2464,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
