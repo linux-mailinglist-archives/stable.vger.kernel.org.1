@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-235251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LeRAZum1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:55 +0200
+	id 0AlLK0On1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4213C24C8
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265CC3C2689
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1034C30343B2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:03:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7943C30C097D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876203DA5BE;
-	Wed,  8 Apr 2026 19:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EFE3D9DC4;
+	Wed,  8 Apr 2026 19:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqcQnX66"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tH3ldV0I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A46F3DA5BB;
-	Wed,  8 Apr 2026 19:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4483D525E;
+	Wed,  8 Apr 2026 19:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674959; cv=none; b=d1Vjo24j/oIF31Kvo8cxfg/8hh5xL5r70Xa2falSKNtruQkLCBPUuZ6QwAWjiXWGDAgKkM8uN3Fr7vkV3XynVrGeBivfU+lH1r1Z+9hCSzKaIhrxxqJFzO8oeHNb6/WYI9bQD5nQ6eNLyfZSbqamYF/5tb33tLnRK8Lz2KHkFnI=
+	t=1775674961; cv=none; b=EotVgabT0aoAEM3ZTl+ap0suU+2LIHj8DGpsX2mk6iv+xRDfSZ7jFguMkntNulqRb5P0AXHdEcmgNZlfySHygL1w9LyYweiI+LqYyWnqC4w2YTy1Xs4kSLu3TWme4H2OqcHgJjrM6iGOw7MPN9VY6Wv6pt1e/0vpuGtudNSED6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674959; c=relaxed/simple;
-	bh=oOSvkCdM5E9qIczrTiWCTZF03e6ZozCLmqLTwGXdH6A=;
+	s=arc-20240116; t=1775674961; c=relaxed/simple;
+	bh=657KaEB+fmAfNnP+VOLWwtIpbC7vePgFcXINNh+ix3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqyUjT9QI1nl7uVXyArLgZFfGw1AWI/vlav6BAjNPqf1+WrnTp2jJHHWdwx8iMnv8gFF/BZ9XXu5VOtIIhDmhz0iIUIwz5fGE9CmuR/qqwgfcFbyKCYN/m4ZHL/oPjZk+VpZwUUHZ4ujZWYpbFqrVEtxBHQJqIfxk3HYUBL9l14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqcQnX66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E166C2BC9E;
-	Wed,  8 Apr 2026 19:02:38 +0000 (UTC)
+	 MIME-Version; b=LuSEb8gH+eU2AztuhoS2sRUbQn+rF6CISP14yFh8v+VEbFuYMG2ZIzXh0Rv7UI5pvOhr6OzIrekJyfQ1GdsRYG7e+6haP+CxFNFEmy2HqOXxh+P+XFKW9Hc4HpD/29XZWLm17PfBtmftM45HEAHAGmRZR7TgFkt5dz2ozi6rgsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tH3ldV0I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30ED9C19421;
+	Wed,  8 Apr 2026 19:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674959;
-	bh=oOSvkCdM5E9qIczrTiWCTZF03e6ZozCLmqLTwGXdH6A=;
+	s=korg; t=1775674961;
+	bh=657KaEB+fmAfNnP+VOLWwtIpbC7vePgFcXINNh+ix3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqcQnX66+A08aOaefqCbv/k6MIs415vdov88zW+2eP05ZVNuBh6h5lU6oheHIDh+k
-	 XJeSVZFMcbl/QMvTyOXMKEWHGVAu4NBNnz8okgzGBABJSI5yyZzRGu5WBrh/BOOS/q
-	 6A2pkNtbbQ+yvTUBk1SfD74KlCPA+Olme7Oes670=
+	b=tH3ldV0IAFdJDMLXzGOgf8VaKxBdsxg/Mob05NiK4n2jrNck2AnDRDAo3K/Xc6BkR
+	 1VbA3jUYiEylGPkJ1Qa9R9NLs6XYqs395KP7d4pN9cQ/AV2rsd+lbvk6aFP4liW0i/
+	 AUhnLywI+pfViIQLjetFsZjemlJ4XXuaYaTjjuaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.19 299/311] usb: gadget: f_subset: Fix unbalanced refcnt in geth_free
-Date: Wed,  8 Apr 2026 20:04:59 +0200
-Message-ID: <20260408175950.536502396@linuxfoundation.org>
+Subject: [PATCH 6.19 300/311] usb: gadget: f_rndis: Protect RNDIS options with mutex
+Date: Wed,  8 Apr 2026 20:05:00 +0200
+Message-ID: <20260408175950.572575875@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
 References: <20260408175939.393281918@linuxfoundation.org>
@@ -66,13 +66,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235251-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235252-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -87,9 +87,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9A4213C24C8
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 265CC3C2689
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,47 +99,48 @@ X-Rspamd-Server: lfdr
 
 From: Kuen-Han Tsai <khtsai@google.com>
 
-commit caa27923aacd8a5869207842f2ab1657c6c0c7bc upstream.
+commit 8d8c68b1fc06ece60cf43e1306ff0f4ac121547e upstream.
 
-geth_alloc() increments the reference count, but geth_free() fails to
-decrement it. This prevents the configuration of attributes via configfs
-after unlinking the function.
+The class/subclass/protocol options are suspectible to race conditions
+as they can be accessed concurrently through configfs.
 
-Decrement the reference count in geth_free() to ensure proper cleanup.
+Use existing mutex to protect these options. This issue was identified
+during code inspection.
 
-Fixes: 02832e56f88a ("usb: gadget: f_subset: add configfs support")
+Fixes: 73517cf49bd4 ("usb: gadget: add RNDIS configfs options for class/subclass/protocol")
 Cc: stable@vger.kernel.org
 Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-1-4886b578161b@google.com
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-2-4886b578161b@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_subset.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/gadget/function/f_rndis.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/gadget/function/f_subset.c
-+++ b/drivers/usb/gadget/function/f_subset.c
-@@ -6,6 +6,7 @@
-  * Copyright (C) 2008 Nokia Corporation
-  */
+--- a/drivers/usb/gadget/function/f_rndis.c
++++ b/drivers/usb/gadget/function/f_rndis.c
+@@ -11,6 +11,7 @@
+ 
+ /* #define VERBOSE_DEBUG */
  
 +#include <linux/cleanup.h>
  #include <linux/slab.h>
  #include <linux/kernel.h>
  #include <linux/module.h>
-@@ -449,8 +450,13 @@ static struct usb_function_instance *get
- static void geth_free(struct usb_function *f)
- {
- 	struct f_gether *eth;
-+	struct f_gether_opts *opts;
-+
-+	opts = container_of(f->fi, struct f_gether_opts, func_inst);
+@@ -678,9 +679,11 @@ rndis_bind(struct usb_configuration *c,
+ 			return -ENOMEM;
+ 	}
  
- 	eth = func_to_geth(f);
-+	scoped_guard(mutex, &opts->lock)
-+		opts->refcnt--;
- 	kfree(eth);
- }
+-	rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
+-	rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
+-	rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
++	scoped_guard(mutex, &rndis_opts->lock) {
++		rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
++		rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
++		rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
++	}
  
+ 	/*
+ 	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
 
 
 
