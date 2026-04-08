@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4POSOcqj1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:54 +0200
+	id AJikGOab1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6301B3C1C89
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CAB3C05F3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AC14301ABB2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C411830068E8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC61035B653;
-	Wed,  8 Apr 2026 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0C7385513;
+	Wed,  8 Apr 2026 18:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UC0dGx3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mH2x6onO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2CA35CB6F;
-	Wed,  8 Apr 2026 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5C024B28;
+	Wed,  8 Apr 2026 18:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673256; cv=none; b=HX+5LrwxintacpbqTbmcFW4pwrpoy1NCQpIOjM4Fm+vKnA/DFok4tOKnBvEhxDaCYRzihZfbo1WssQtCrMwqXf5TqPaErIkeWO6OrUeLAy5J36JV0F1QVwVMzEnxSgItBBSZH9nUAJtMcCDDwYYYC3tSmO6xwnSLdH7krzNo10g=
+	t=1775672291; cv=none; b=i01RSsVHb0hhAbAOAedM/ZFdk/4YDcIvDiPf80SH9UTrAjGDddQDsL3DqFy4eLWIfdus01YeIqeTxELZZRowitIPGWZ01dtgBHpO1+A5aCo2gfmvHzqiCyC33A+BC+ujvyZT3pWI5265FfVrggAIAv+OMUP1scPuB65oQHMY0Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673256; c=relaxed/simple;
-	bh=kOZyaYqR3YnrynECefudQbGII0EYEBeKRJIMWPuatTc=;
+	s=arc-20240116; t=1775672291; c=relaxed/simple;
+	bh=RyI6W3HbW9C0H6vMDS7lzmIBfJl4YTEcPEXDLnu/Yvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NhGs0jWP8HiYFECFxGwEBhsmri/65nIYAdUBhY4n2AuKIdUNI20RPPoiWEmh3W5p8kypqIlCLxqjYfWAAQwH9KZutbJyfCYLUYwFCNyKao6itEoSeKnP1nOUIzOoLWw+r5subQ/RHYM5gz4I90fTv8xrsSZkOEh8oZkWRzdkiUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UC0dGx3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D4EC19421;
-	Wed,  8 Apr 2026 18:34:15 +0000 (UTC)
+	 MIME-Version; b=O1oULgreVgchbq65KyYkmMoMU8b2fFQoMGjz6uan1HvGttzNdl9AlsA8dIQgAKIfTf9R5Q78tO419CxBaQe6tyUu0z3tInnASD0LsyCFT52aRuQB1sRPQwZmsUfSj427QcGOuY/xhJIH+s9sY3IX/XMJJH0T/0HoDxoTIBPZYdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mH2x6onO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A1DC19421;
+	Wed,  8 Apr 2026 18:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673256;
-	bh=kOZyaYqR3YnrynECefudQbGII0EYEBeKRJIMWPuatTc=;
+	s=korg; t=1775672291;
+	bh=RyI6W3HbW9C0H6vMDS7lzmIBfJl4YTEcPEXDLnu/Yvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UC0dGx3vubimlUy0erbbxfQWeBpny8RoOkyY0I3gV16moJ6FeEwBBfS03DAzTHTSB
-	 DmQqWggcpBbtLhA2BfG3axn3FzBsyNc8cAMycfu5WtgXQWvtEgjQGBpkwQTLeU5Oc9
-	 pqBSjI1f+ef3T8gSIBOhNKrBm/z7E53RDFPRUqeo=
+	b=mH2x6onOT9pMFLiRNgC1AVyshj6nR6Wh1PsigK25tpuwtZimA//55oz01T83SXlG8
+	 lwW7WW+1nW9vmQLrES1zgrlXH/Pukp13NBx9AdtbphJ7q03gmS8+7tZ8mYNsvQU//u
+	 tq6B3OeUjeX9Ub92iCBOXlw399S/hfzJpbvQ65VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.18 162/277] drm/i915/dsi: Dont do DSC horizontal timing adjustments in command mode
+	stable <stable@kernel.org>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.1 230/312] usb: ehci-brcm: fix sleep during atomic
 Date: Wed,  8 Apr 2026 20:02:27 +0200
-Message-ID: <20260408175939.920357321@linuxfoundation.org>
+Message-ID: <20260408175942.345333200@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234591-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234219-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 6301B3C1C89
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D4CAB3C05F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-commit 4dfce79e098915d8e5fc2b9e1d980bc3251dd32c upstream.
+commit 679b771ea05ad0f8eeae83e14a91b8f4f39510c4 upstream.
 
-Stop adjusting the horizontal timing values based on the
-compression ratio in command mode. Bspec seems to be telling
-us to do this only in video mode, and this is also how the
-Windows driver does things.
+echi_brcm_wait_for_sof() gets called after disabling interrupts
+in ehci_brcm_hub_control(). Use the atomic version of poll_timeout
+to fix the warning.
 
-This should also fix a div-by-zero on some machines because
-the adjusted htotal ends up being so small that we end up with
-line_time_us==0 when trying to determine the vtotal value in
-command mode.
-
-Note that this doesn't actually make the display on the
-Huawei Matebook E work, but at least the kernel no longer
-explodes when the driver loads.
-
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12045
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260326111814.9800-2-ville.syrjala@linux.intel.com
-Fixes: 53693f02d80e ("drm/i915/dsi: account for DSC in horizontal timings")
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 0b475e91ecc2313207196c6d7fd5c53e1a878525)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: 9df231511bd6 ("usb: ehci: Add new EHCI driver for Broadcom STB SoC's")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260318185707.2588431-1-justin.chen@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/icl_dsi.c |    4 ++--
+ drivers/usb/host/ehci-brcm.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/icl_dsi.c
-+++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-@@ -890,7 +890,7 @@ gen11_dsi_set_transcoder_timings(struct
- 	 * non-compressed link speeds, and simplifies down to the ratio between
- 	 * compressed and non-compressed bpp.
- 	 */
--	if (crtc_state->dsc.compression_enable) {
-+	if (is_vid_mode(intel_dsi) && crtc_state->dsc.compression_enable) {
- 		mul = fxp_q4_to_int(crtc_state->dsc.compressed_bpp_x16);
- 		div = mipi_dsi_pixel_format_to_bpp(intel_dsi->pixel_format);
- 	}
-@@ -1506,7 +1506,7 @@ static void gen11_dsi_get_timings(struct
- 	struct drm_display_mode *adjusted_mode =
- 					&pipe_config->hw.adjusted_mode;
+--- a/drivers/usb/host/ehci-brcm.c
++++ b/drivers/usb/host/ehci-brcm.c
+@@ -31,8 +31,8 @@ static inline void ehci_brcm_wait_for_so
+ 	int res;
  
--	if (pipe_config->dsc.compressed_bpp_x16) {
-+	if (is_vid_mode(intel_dsi) && pipe_config->dsc.compressed_bpp_x16) {
- 		int div = fxp_q4_to_int(pipe_config->dsc.compressed_bpp_x16);
- 		int mul = mipi_dsi_pixel_format_to_bpp(intel_dsi->pixel_format);
- 
+ 	/* Wait for next microframe (every 125 usecs) */
+-	res = readl_relaxed_poll_timeout(&ehci->regs->frame_index, val,
+-					 val != frame_idx, 1, 130);
++	res = readl_relaxed_poll_timeout_atomic(&ehci->regs->frame_index,
++						val, val != frame_idx, 1, 130);
+ 	if (res)
+ 		ehci_err(ehci, "Error waiting for SOF\n");
+ 	udelay(delay);
 
 
 
