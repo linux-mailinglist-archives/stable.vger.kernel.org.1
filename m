@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-235051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234766-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PwDA3uk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:51 +0200
+	id uN9xCjKn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234766-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B11B3C1ED0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0FE3C266B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B28A53031939
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACC9D319E39B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7F83D905D;
-	Wed,  8 Apr 2026 18:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F373D8906;
+	Wed,  8 Apr 2026 18:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyfTLfuG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4csMCYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9A33D9054;
-	Wed,  8 Apr 2026 18:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160823D4134;
+	Wed,  8 Apr 2026 18:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674443; cv=none; b=GXirwXuxGOVpM2jWG4ukuzdzl/ZjvAvN0dOB+kOJ5S3wTIkf6qHuq0V5m698G9inYs1W7Prhjapl2X6A83ThjiRY6ZZF/tIst4RrerhQDG7fsU8/JXTMRv+F388nGJUEMOt+clds9OU18sydW0LWfW0WseL6mQHg7acrgd2+Rv8=
+	t=1775673707; cv=none; b=ZQr/PFbB0ItPi06wvErL+s2Wab5co1BRmRlipZDu0+7QER365yY2l1DBBMDtJZ+HMqMlZRSSr2lNVop3EJVo1ARkF34stCYuFI42J8ryqxxH5OfEBHmsCqgfGb2n5bwIcvyjJp5Y3/RgYCPeKx/qnidC8TO1Bnmgslo46FIf4WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674443; c=relaxed/simple;
-	bh=HFe7nCFAPOlbAvOwqUxU6L4XuGD6C31K7FV+Nie6qUA=;
+	s=arc-20240116; t=1775673707; c=relaxed/simple;
+	bh=LejNKrYly7KD9+OMeuwFRc8Ws+Tn1eCh4/Ob8cRbNps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esdUQuINPt1G1dVPZsDWNkoZI28pZB75Tu++LXrghM8R+FaMyuwI+AcsQfG8JP8l5VyQmHflUdSqzdBQ380EZ0G3wOlzTH2mzbz3oqAcDx3auLKB/bUp/kJXDOOpmTAMCxbHAyHrm2H+EcGm7VxJSRjPz0m+trvTI7Bo8VAP5fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyfTLfuG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE34C19421;
-	Wed,  8 Apr 2026 18:54:03 +0000 (UTC)
+	 MIME-Version; b=H4hOrVVgPmwAmBRKoHtcOzY7LAq/gNEEzq0S4wTYjW9tko9QhtNWtiskJ2xx2oE3rIF8/2rfP2vkFKi0OX+9j542CkCkQw0RDp8YkY4LOzn0ugKKGvZosXJDkkNpUmXlsymflzkfzcSlVryaHXnFtlxmzPcOoHyUPJxNutXsBAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4csMCYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B5DC19421;
+	Wed,  8 Apr 2026 18:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674443;
-	bh=HFe7nCFAPOlbAvOwqUxU6L4XuGD6C31K7FV+Nie6qUA=;
+	s=korg; t=1775673707;
+	bh=LejNKrYly7KD9+OMeuwFRc8Ws+Tn1eCh4/Ob8cRbNps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyfTLfuGdkOLK6ls1QPtKkIoLAhsRm7y02+Pfeut88igcC28h8FBmgSUOXtGn34is
-	 l53E2P/w97TG/ZpjH/oSFfs7ZRkxMYA23y6iwJ3hsKCDZH/XP9fgEOBjs/5gt9Zkpa
-	 yIMJ5zENA1QfLK3x3GaroFh9cvodZWZoIRL6Aj5Y=
+	b=E4csMCYzZFUgMI3VVWNqUztZ9ckvCvi82qG+ZDysX5ZbHJSgi4dsGMAQ5Sn2+t17s
+	 BFIqX4Z8eF2DI97/JmnvkiUFqP7TMWDzWWdoi3UN9Y10lFlfkPekhjSzgg6OlogLM2
+	 Qoayvi3VhHkXOuOZ1KbiShT3nQeEI/o5fUR4HfnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 098/311] Bluetooth: hci_sync: hci_cmd_sync_queue_once() return -EEXIST if exists
+Subject: [PATCH 6.12 058/242] ipv6: prevent possible UaF in addrconf_permanent_addr()
 Date: Wed,  8 Apr 2026 20:01:38 +0200
-Message-ID: <20260408175943.074261748@linuxfoundation.org>
+Message-ID: <20260408175929.251119941@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235051-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234766-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,182 +89,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,iki.fi:email]
-X-Rspamd-Queue-Id: 0B11B3C1ED0
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9E0FE3C266B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 2969554bcfccb5c609f6b6cd4a014933f3a66dd0 ]
+[ Upstream commit fd63f185979b047fb22a0dfc6bd94d0cab6a6a70 ]
 
-hci_cmd_sync_queue_once() needs to indicate whether a queue item was
-added, so caller can know if callbacks are called, so it can avoid
-leaking resources.
+The mentioned helper try to warn the user about an exceptional
+condition, but the message is delivered too late, accessing the ipv6
+after its possible deletion.
 
-Change the function to return -EEXIST if queue item already exists.
+Reorder the statement to avoid the possible UaF; while at it, place the
+warning outside the idev->lock as it needs no protection.
 
-Modify all callsites to handle that.
-
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 035c25007c9e ("Bluetooth: hci_sync: Fix UAF in le_read_features_complete")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://sashiko.dev/#/patchset/8c8bfe2e1a324e501f0e15fef404a77443fd8caf.1774365668.git.pabeni%40redhat.com
+Fixes: f1705ec197e7 ("net: ipv6: Make address flushing on ifdown optional")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/ef973c3a8cb4f8f1787ed469f3e5391b9fe95aa0.1774601542.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 53 +++++++++++++++++++++++++++-------------
- 1 file changed, 36 insertions(+), 17 deletions(-)
+ net/ipv6/addrconf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index b4b5789ef3ab0..b501f89caf619 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -780,7 +780,7 @@ int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 			    void *data, hci_cmd_sync_work_destroy_t destroy)
- {
- 	if (hci_cmd_sync_lookup_entry(hdev, func, data, destroy))
--		return 0;
-+		return -EEXIST;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 63ada312061c6..e104ec8efe1c0 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3642,12 +3642,12 @@ static void addrconf_permanent_addr(struct net *net, struct net_device *dev)
+ 		if ((ifp->flags & IFA_F_PERMANENT) &&
+ 		    fixup_permanent_addr(net, idev, ifp) < 0) {
+ 			write_unlock_bh(&idev->lock);
+-			in6_ifa_hold(ifp);
+-			ipv6_del_addr(ifp);
+-			write_lock_bh(&idev->lock);
  
- 	return hci_cmd_sync_queue(hdev, func, data, destroy);
- }
-@@ -3262,6 +3262,8 @@ static int update_passive_scan_sync(struct hci_dev *hdev, void *data)
+ 			net_info_ratelimited("%s: Failed to add prefix route for address %pI6c; dropping\n",
+ 					     idev->dev->name, &ifp->addr);
++			in6_ifa_hold(ifp);
++			ipv6_del_addr(ifp);
++			write_lock_bh(&idev->lock);
+ 		}
+ 	}
  
- int hci_update_passive_scan(struct hci_dev *hdev)
- {
-+	int err;
-+
- 	/* Only queue if it would have any effect */
- 	if (!test_bit(HCI_UP, &hdev->flags) ||
- 	    test_bit(HCI_INIT, &hdev->flags) ||
-@@ -3271,8 +3273,9 @@ int hci_update_passive_scan(struct hci_dev *hdev)
- 	    hci_dev_test_flag(hdev, HCI_UNREGISTER))
- 		return 0;
- 
--	return hci_cmd_sync_queue_once(hdev, update_passive_scan_sync, NULL,
--				       NULL);
-+	err = hci_cmd_sync_queue_once(hdev, update_passive_scan_sync, NULL,
-+				      NULL);
-+	return (err == -EEXIST) ? 0 : err;
- }
- 
- int hci_write_sc_support_sync(struct hci_dev *hdev, u8 val)
-@@ -6934,8 +6937,11 @@ static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
- 
- int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
- {
--	return hci_cmd_sync_queue_once(hdev, hci_acl_create_conn_sync, conn,
--				       NULL);
-+	int err;
-+
-+	err = hci_cmd_sync_queue_once(hdev, hci_acl_create_conn_sync, conn,
-+				      NULL);
-+	return (err == -EEXIST) ? 0 : err;
- }
- 
- static void create_le_conn_complete(struct hci_dev *hdev, void *data, int err)
-@@ -6971,8 +6977,11 @@ static void create_le_conn_complete(struct hci_dev *hdev, void *data, int err)
- 
- int hci_connect_le_sync(struct hci_dev *hdev, struct hci_conn *conn)
- {
--	return hci_cmd_sync_queue_once(hdev, hci_le_create_conn_sync, conn,
--				       create_le_conn_complete);
-+	int err;
-+
-+	err = hci_cmd_sync_queue_once(hdev, hci_le_create_conn_sync, conn,
-+				      create_le_conn_complete);
-+	return (err == -EEXIST) ? 0 : err;
- }
- 
- int hci_cancel_connect_sync(struct hci_dev *hdev, struct hci_conn *conn)
-@@ -7179,8 +7188,11 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
- 
- int hci_connect_pa_sync(struct hci_dev *hdev, struct hci_conn *conn)
- {
--	return hci_cmd_sync_queue_once(hdev, hci_le_pa_create_sync, conn,
--				       create_pa_complete);
-+	int err;
-+
-+	err = hci_cmd_sync_queue_once(hdev, hci_le_pa_create_sync, conn,
-+				      create_pa_complete);
-+	return (err == -EEXIST) ? 0 : err;
- }
- 
- static void create_big_complete(struct hci_dev *hdev, void *data, int err)
-@@ -7242,8 +7254,11 @@ static int hci_le_big_create_sync(struct hci_dev *hdev, void *data)
- 
- int hci_connect_big_sync(struct hci_dev *hdev, struct hci_conn *conn)
- {
--	return hci_cmd_sync_queue_once(hdev, hci_le_big_create_sync, conn,
--				       create_big_complete);
-+	int err;
-+
-+	err = hci_cmd_sync_queue_once(hdev, hci_le_big_create_sync, conn,
-+				      create_big_complete);
-+	return (err == -EEXIST) ? 0 : err;
- }
- 
- struct past_data {
-@@ -7335,7 +7350,7 @@ int hci_past_sync(struct hci_conn *conn, struct hci_conn *le)
- 	if (err)
- 		kfree(data);
- 
--	return err;
-+	return (err == -EEXIST) ? 0 : err;
- }
- 
- static void le_read_features_complete(struct hci_dev *hdev, void *data, int err)
-@@ -7422,7 +7437,7 @@ int hci_le_read_remote_features(struct hci_conn *conn)
- 	else
- 		err = -EOPNOTSUPP;
- 
--	return err;
-+	return (err == -EEXIST) ? 0 : err;
- }
- 
- static void pkt_type_changed(struct hci_dev *hdev, void *data, int err)
-@@ -7448,6 +7463,7 @@ int hci_acl_change_pkt_type(struct hci_conn *conn, u16 pkt_type)
- {
- 	struct hci_dev *hdev = conn->hdev;
- 	struct hci_cp_change_conn_ptype *cp;
-+	int err;
- 
- 	cp = kmalloc(sizeof(*cp), GFP_KERNEL);
- 	if (!cp)
-@@ -7456,8 +7472,9 @@ int hci_acl_change_pkt_type(struct hci_conn *conn, u16 pkt_type)
- 	cp->handle = cpu_to_le16(conn->handle);
- 	cp->pkt_type = cpu_to_le16(pkt_type);
- 
--	return hci_cmd_sync_queue_once(hdev, hci_change_conn_ptype_sync, cp,
--				       pkt_type_changed);
-+	err = hci_cmd_sync_queue_once(hdev, hci_change_conn_ptype_sync, cp,
-+				      pkt_type_changed);
-+	return (err == -EEXIST) ? 0 : err;
- }
- 
- static void le_phy_update_complete(struct hci_dev *hdev, void *data, int err)
-@@ -7483,6 +7500,7 @@ int hci_le_set_phy(struct hci_conn *conn, u8 tx_phys, u8 rx_phys)
- {
- 	struct hci_dev *hdev = conn->hdev;
- 	struct hci_cp_le_set_phy *cp;
-+	int err;
- 
- 	cp = kmalloc(sizeof(*cp), GFP_KERNEL);
- 	if (!cp)
-@@ -7493,6 +7511,7 @@ int hci_le_set_phy(struct hci_conn *conn, u8 tx_phys, u8 rx_phys)
- 	cp->tx_phys = tx_phys;
- 	cp->rx_phys = rx_phys;
- 
--	return hci_cmd_sync_queue_once(hdev, hci_le_set_phy_sync, cp,
--				       le_phy_update_complete);
-+	err = hci_cmd_sync_queue_once(hdev, hci_le_set_phy_sync, cp,
-+				      le_phy_update_complete);
-+	return (err == -EEXIST) ? 0 : err;
- }
 -- 
 2.53.0
 
