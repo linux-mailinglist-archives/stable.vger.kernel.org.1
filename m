@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CE6NNSek1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:27 +0200
+	id +EeuORmr1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C77F3C1DC8
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C10C3C2DDE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD841307E64B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7FB8321398D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90FBE3D8905;
-	Wed,  8 Apr 2026 18:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F923DA5B1;
+	Wed,  8 Apr 2026 19:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlgpiaLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRZsOSIZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5443A34AB06;
-	Wed,  8 Apr 2026 18:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDDC3DA5AE;
+	Wed,  8 Apr 2026 19:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674144; cv=none; b=k0RTCmQAer/KKJVvbcLUKdqAVkHYL8udc+EHqcLLS1Q52fc5mYzNqmNQR+58UL9Bdl+l5BEWhm1Tjud3lCsCYDxQnMYvEGTYcABRV6G+aqjSEmTqzRKYPCS4q3AJbGfsPN9RohlUiH7rRAVgT+oNorl//3e25pphYocjJpt4q+w=
+	t=1775674874; cv=none; b=Fo36uiKKht+O7FpGD2W1MuKY5G4+eSw0gB/+NXUrhK5vlHt+hpHm9LI4sijNtCot6hIT3vF5F0zwWOad/e6b2GGlowHz7uqYwk8eKiExRE7fNKu+TOFPPQ+iRtE0rEpfgUPnPGujm4HFg+SkupFQkkNemP6NNYY/TcUgztGU2eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674144; c=relaxed/simple;
-	bh=U6zQSUsJXDUhqy7Yg7D0wp0g3tWW9letEaEjaPgd3Tk=;
+	s=arc-20240116; t=1775674874; c=relaxed/simple;
+	bh=hwM93mLyfTf62PyGuBezcevuKTwflTk6mLjhWqrsOTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5+A5Rs3zdRmGTxGL8wR6x16O8rpAX7J3QyRKcD3udpjKqI+4KTEk8Nqupo16aE+7a9OlL2LDw+C00tnA9RJh0SzYhS90ccNOOhzXAvXhI1QXSKkbPkAd8ejAq8pdsXrs8mQGFEqZxR028274kAGKbOegW1b59Ci8T9ECojg4i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlgpiaLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D91C2BCB0;
-	Wed,  8 Apr 2026 18:49:03 +0000 (UTC)
+	 MIME-Version; b=mxS0Lc8hawQ0iE4p1EYzbiFhBG04l8aiSosQkb0GoLCW+sBgmkWr51Tnhq9qRcPnlQPNFRD+LsSIM5Hw59gykgGNfKKc+YTtW7VGV+mwjbKP3Cjbow0HATxoqxN0ILm3VQq1TzIAOhOI6P6WqEQAseb6gMW9F6Fg4fso7+q+ZOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRZsOSIZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC73C19421;
+	Wed,  8 Apr 2026 19:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674144;
-	bh=U6zQSUsJXDUhqy7Yg7D0wp0g3tWW9letEaEjaPgd3Tk=;
+	s=korg; t=1775674873;
+	bh=hwM93mLyfTf62PyGuBezcevuKTwflTk6mLjhWqrsOTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PlgpiaLf11dQhyqOMV3TcDPbmc0MI/dYfP13EkHz2ui93ndyhq5+X7tcQXSunxJuI
-	 cWUYr/ciJcUUqj6P99IAqp25SbjyxSbm2WTVUyatyN4lpf43xrppG+OihDCgKt6TkT
-	 U5o7CjpNmLIoePVhURzXpblmQ41Y2qGqV06lOUnM=
+	b=gRZsOSIZNvRDBLksEh+qyvEqSVmqSTPLDfOoDhPBhqsxhyHUn4bbthtVC0ZS6bcOr
+	 +BhPQiGFjjDxglR3s6bfxdFcrJVkV2/v7Kc5rF+BtcX7W1CS61HzV6TC/UeBpG64ze
+	 lQQnLXsvBfPoXb40dKNT3CXDniA0b7ghz0GtkQ/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Daniel Tobias <dan.g.tob@gmail.com>
-Subject: [PATCH 6.12 226/242] x86/CPU/AMD: Add additional fixed RDSEED microcode revisions
+	Christian Eggers <ceggers@arri.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.19 266/311] nvmem: imx: assign nvmem_cell_info::raw_len
 Date: Wed,  8 Apr 2026 20:04:26 +0200
-Message-ID: <20260408175935.553533121@linuxfoundation.org>
+Message-ID: <20260408175949.315434031@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234935-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,alien8.de,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235218-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arri.de,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,gitlab.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,alien8.de:email,amd.com:email,amd.com:url]
-X-Rspamd-Queue-Id: 5C77F3C1DC8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,arri.de:email]
+X-Rspamd-Queue-Id: 4C10C3C2DDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit e1a97a627cd01d73fac5dd054d8f3de601ef2781 ]
+commit 48b5163c957548f5854f14c90bfdedc33afbea3c upstream.
 
-Microcode that resolves the RDSEED failure (SB-7055 [1]) has been released for
-additional Zen5 models to linux-firmware [2]. Update the zen5_rdseed_microcode
-array to cover these new models.
+Avoid getting error messages at startup like the following on i.MX6ULL:
 
-Fixes: e980de2ff109 ("x86/CPU/AMD: Add RDSEED fix for Zen5")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7055.html [1]
-Link: https://gitlab.com/kernel-firmware/linux-firmware/-/commit/6167e5566900cf236f7a69704e8f4c441bc7212a [2]
-Link: https://patch.msgid.link/20251113223608.1495655-1-mario.limonciello@amd.com
-[ backport: 6.12.y uses a custom check_rdseed_microcode() function with
-  a switch statement. Updated the switch cases to include the new
-  models and revisions from the upstream patch. ]
-Signed-off-by: Daniel Tobias <dan.g.tob@gmail.com>
+nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
+nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
+
+This shouldn't cause any functional change as this alignment would
+otherwise be done in nvmem_cell_info_to_nvmem_cell_entry_nodup().
+
+Cc: stable@vger.kernel.org
+Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260327131645.3025781-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvmem/imx-ocotp-ele.c |    1 +
+ drivers/nvmem/imx-ocotp.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1034,7 +1034,14 @@ static bool check_rdseed_microcode(void)
- 	if (cpu_has(c, X86_FEATURE_ZEN5)) {
- 		switch (p.ucode_rev >> 8) {
- 		case 0xb0021:	min_rev = 0xb00215a; break;
-+		case 0xb0081:	min_rev = 0xb008121; break;
- 		case 0xb1010:	min_rev = 0xb101054; break;
-+		case 0xb2040:	min_rev = 0xb204037; break;
-+		case 0xb4040:	min_rev = 0xb404035; break;
-+		case 0xb4041:	min_rev = 0xb404108; break;
-+		case 0xb6000:	min_rev = 0xb600037; break;
-+		case 0xb6080:	min_rev = 0xb608038; break;
-+		case 0xb7000:	min_rev = 0xb700037; break;
- 		default:
- 			pr_debug("%s: ucode_rev: 0x%x, current revision: 0x%x\n",
- 				 __func__, p.ucode_rev, c->microcode);
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -131,6 +131,7 @@ static int imx_ocotp_cell_pp(void *conte
+ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
+ 					 struct nvmem_cell_info *cell)
+ {
++	cell->raw_len = round_up(cell->bytes, 4);
+ 	cell->read_post_process = imx_ocotp_cell_pp;
+ }
+ 
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -589,6 +589,7 @@ MODULE_DEVICE_TABLE(of, imx_ocotp_dt_ids
+ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
+ 					 struct nvmem_cell_info *cell)
+ {
++	cell->raw_len = round_up(cell->bytes, 4);
+ 	cell->read_post_process = imx_ocotp_cell_pp;
+ }
+ 
 
 
 
