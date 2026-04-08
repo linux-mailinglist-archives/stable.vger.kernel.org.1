@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-233863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIyEOaxE1mkFCwgAu9opvQ
-	(envelope-from <stable+bounces-233863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:06:04 +0200
+	id CP/8KHJE1mkFCwgAu9opvQ
+	(envelope-from <stable+bounces-233865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:05:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4AE3BBBC0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:06:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927863BBB8B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C6A0A3056EEE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:00:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 74CAD302FB4E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25AE3BBA13;
-	Wed,  8 Apr 2026 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21BA38F22E;
+	Wed,  8 Apr 2026 12:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcYA3pEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8L/6upu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E493BB9FA
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759B513B7AE
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775649612; cv=none; b=mI/8DPpqfWC3Pt2E3q5eu8JoTMuHcWD83OEb8LEZSD0gF9u+Qb7HchfOgl+Rfm9Nee1Zzi1UojjVfxaMm5WB8bBqYHwj4XUlSpBcw67tLJ96R0a185EidhVzrnT3BbPnwMT7f3bzy911wJPk6rSArYZ2gFePxP4Oq8ril26Dn7Q=
+	t=1775649637; cv=none; b=KJ1fTdyCRh7a+WLXhq8GkLX4hmCNvyQx++82OPEDSZLyofBL8vV/uDyjoKINNc/8AH+7vzQSILK7FWlFHSD0e/Y5ab2hztflmmIf1eJV12ma/lT0NlSXYDzYJhPGHs0r6eZSG8EWx09O3LtjlW3eNbdkTFbyRnUv2cnfexv6/aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775649612; c=relaxed/simple;
-	bh=tBhp81fTlLXnH5Bwiy/2Rh4xAeX6lKbiAtPd4iPeI04=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eNQfUhL+JP8BD2uQi+uSNcZ0ChCUqCOKMLvqOjiF09la947Xm8897LEu28BV9ISgF2ly+iycjoF1FibgSFA3h5+GgNQ6xVMt3hRjT49rNQLaYQM/MmIZu8Oy7vqZDxlvrpYmjx1mG6hNnsrqZ26k64gVR7NFM2f8+1ZrDfTP5ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcYA3pEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CA3C19424;
-	Wed,  8 Apr 2026 12:00:11 +0000 (UTC)
+	s=arc-20240116; t=1775649637; c=relaxed/simple;
+	bh=hquu901zfXtrOrq03R+3v2FDdBLE6NQ6SFTNF0tlj1Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MbtYyXFtPiu9gNTb46XvwdQcq4ZpaYCuzlqYhbmkEHt9/Vm+vkJvdahwGlgVGyPPggS9LQLoahn2kTL0dD4BwN61JTmFI8B7Pblw3oRRz/skg8Utb1pYZnbkQkLVcHyCllRq7S+wMLHk8ct7FQVpLIgaCUSZAXpsR8nLU0BI2YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8L/6upu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C665EC19424;
+	Wed,  8 Apr 2026 12:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775649612;
-	bh=tBhp81fTlLXnH5Bwiy/2Rh4xAeX6lKbiAtPd4iPeI04=;
+	s=korg; t=1775649637;
+	bh=hquu901zfXtrOrq03R+3v2FDdBLE6NQ6SFTNF0tlj1Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QcYA3pEnjXVaLG2IkjU2eWihIvJVZQxlWGqxZ1W/Xlc6hZJ3bCb180DZCDGM22mFb
-	 GgKH7OOt1UzRYocwsOkRE7sg+nYBUYWO2QGFcn6zvJ1n8Kf1JPuRGvogjZNAJMslgL
-	 6A5DjeK+u2OaPB3yH2KCw7XMBGTGqNDlRG4hnC74=
-Subject: FAILED: patch "[PATCH] usb: gadget: f_rndis: Fix net_device lifecycle with" failed to apply to 5.10-stable tree
-To: khtsai@google.com,gregkh@linuxfoundation.org
+	b=c8L/6upuYzxFUmUlVgkjik4G9EBVMux6Ao8+JkRE36E2f2Qh82rVg0i8vEDxWMpgp
+	 wVZODuHijzXwg9UQG5K6OTFGmmXMCu4qvcfXiIMujBYSoQfDP3QDLb/YpsUXcnE1IJ
+	 zXp5ELhNoIJCppoax13FNbJM1XQo53r5TvblQMZU=
+Subject: FAILED: patch "[PATCH] usb: gadget: f_hid: move list and spinlock inits from bind to" failed to apply to 6.1-stable tree
+To: sigmaepsilon92@gmail.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 08 Apr 2026 14:00:02 +0200
-Message-ID: <2026040801-pacifism-dodge-092d@gregkh>
+Date: Wed, 08 Apr 2026 14:00:26 +0200
+Message-ID: <2026040826-sternness-halt-9929@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,17 +59,17 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,msgid.link:server fail,tor.lore.kernel.org:server fail,gregkh:server fail];
-	TAGGED_FROM(0.00)[bounces-233863-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233865-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -77,30 +77,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5A4AE3BBBC0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 927863BBB8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x e367599529dc42578545a7f85fde517b35b3cda7
+git cherry-pick -x 4e0a88254ad59f6c53a34bf5fa241884ec09e8b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040801-pacifism-dodge-092d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040826-sternness-halt-9929@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,192 +112,76 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e367599529dc42578545a7f85fde517b35b3cda7 Mon Sep 17 00:00:00 2001
-From: Kuen-Han Tsai <khtsai@google.com>
-Date: Fri, 20 Mar 2026 16:54:50 +0800
-Subject: [PATCH] usb: gadget: f_rndis: Fix net_device lifecycle with
- device_move
+From 4e0a88254ad59f6c53a34bf5fa241884ec09e8b2 Mon Sep 17 00:00:00 2001
+From: Michael Zimmermann <sigmaepsilon92@gmail.com>
+Date: Tue, 31 Mar 2026 20:48:44 +0200
+Subject: [PATCH] usb: gadget: f_hid: move list and spinlock inits from bind to
+ alloc
 
-The net_device is allocated during function instance creation and
-registered during the bind phase with the gadget device as its sysfs
-parent. When the function unbinds, the parent device is destroyed, but
-the net_device survives, resulting in dangling sysfs symlinks:
+There was an issue when you did the following:
+- setup and bind an hid gadget
+- open /dev/hidg0
+- use the resulting fd in EPOLL_CTL_ADD
+- unbind the UDC
+- bind the UDC
+- use the fd in EPOLL_CTL_DEL
 
-  console:/ # ls -l /sys/class/net/usb0
-  lrwxrwxrwx ... /sys/class/net/usb0 ->
-  /sys/devices/platform/.../gadget.0/net/usb0
-  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
-  ls: .../gadget.0/net/usb0: No such file or directory
+When CONFIG_DEBUG_LIST was enabled, a list_del corruption was reported
+within remove_wait_queue (via ep_remove_wait_queue). After some
+debugging I found out that the queues, which f_hid registers via
+poll_wait were the problem. These were initialized using
+init_waitqueue_head inside hidg_bind. So effectively, the bind function
+re-initialized the queues while there were still items in them.
 
-Use device_move() to reparent the net_device between the gadget device
-tree and /sys/devices/virtual across bind and unbind cycles. During the
-final unbind, calling device_move(NULL) moves the net_device to the
-virtual device tree before the gadget device is destroyed. On rebinding,
-device_move() reparents the device back under the new gadget, ensuring
-proper sysfs topology and power management ordering.
+The solution is to move the initialization from hidg_bind to hidg_alloc
+to extend their lifetimes to the lifetime of the function instance.
 
-To maintain compatibility with legacy composite drivers (e.g., multi.c),
-the borrowed_net flag is used to indicate whether the network device is
-shared and pre-registered during the legacy driver's bind phase.
+Additionally, I found many other possibly problematic init calls in the
+bind function, which I moved as well.
 
-Fixes: f466c6353819 ("usb: gadget: f_rndis: convert to new function interface with backward compatibility")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-7-4886b578161b@google.com
+Signed-off-by: Michael Zimmermann <sigmaepsilon92@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260331184844.2388761-1-sigmaepsilon92@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/gadget/function/f_rndis.c b/drivers/usb/gadget/function/f_rndis.c
-index 521b4619d6be..7de1c5f8e326 100644
---- a/drivers/usb/gadget/function/f_rndis.c
-+++ b/drivers/usb/gadget/function/f_rndis.c
-@@ -666,6 +666,7 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index 8812ebf33d14..e5ccaec7750c 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -1262,17 +1262,8 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
+ 	if (status)
+ 		goto fail;
  
- 	struct f_rndis_opts *rndis_opts;
- 	struct usb_os_desc_table        *os_desc_table __free(kfree) = NULL;
-+	struct net_device		*net __free(detach_gadget) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
+-	spin_lock_init(&hidg->write_spinlock);
+ 	hidg->write_pending = 1;
+ 	hidg->req = NULL;
+-	spin_lock_init(&hidg->read_spinlock);
+-	spin_lock_init(&hidg->get_report_spinlock);
+-	init_waitqueue_head(&hidg->write_queue);
+-	init_waitqueue_head(&hidg->read_queue);
+-	init_waitqueue_head(&hidg->get_queue);
+-	init_waitqueue_head(&hidg->get_id_queue);
+-	INIT_LIST_HEAD(&hidg->completed_out_req);
+-	INIT_LIST_HEAD(&hidg->report_list);
  
- 	if (!can_support_rndis(c))
-@@ -683,21 +684,18 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 		rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
- 		rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
- 		rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
--	}
+ 	INIT_WORK(&hidg->work, get_report_workqueue_handler);
+ 	hidg->workqueue = alloc_workqueue("report_work",
+@@ -1608,6 +1599,16 @@ static struct usb_function *hidg_alloc(struct usb_function_instance *fi)
  
--	/*
--	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
--	 * configurations are bound in sequence with list_for_each_entry,
--	 * in each configuration its functions are bound in sequence
--	 * with list_for_each_entry, so we assume no race condition
--	 * with regard to rndis_opts->bound access
--	 */
--	if (!rndis_opts->bound) {
--		gether_set_gadget(rndis_opts->net, cdev->gadget);
--		status = gether_register_netdev(rndis_opts->net);
--		if (status)
--			return status;
--		rndis_opts->bound = true;
-+		if (rndis_opts->bind_count == 0 && !rndis_opts->borrowed_net) {
-+			if (!device_is_registered(&rndis_opts->net->dev)) {
-+				gether_set_gadget(rndis_opts->net, cdev->gadget);
-+				status = gether_register_netdev(rndis_opts->net);
-+			} else
-+				status = gether_attach_gadget(rndis_opts->net, cdev->gadget);
+ 	mutex_lock(&opts->lock);
+ 
++	spin_lock_init(&hidg->write_spinlock);
++	spin_lock_init(&hidg->read_spinlock);
++	spin_lock_init(&hidg->get_report_spinlock);
++	init_waitqueue_head(&hidg->write_queue);
++	init_waitqueue_head(&hidg->read_queue);
++	init_waitqueue_head(&hidg->get_queue);
++	init_waitqueue_head(&hidg->get_id_queue);
++	INIT_LIST_HEAD(&hidg->completed_out_req);
++	INIT_LIST_HEAD(&hidg->report_list);
 +
-+			if (status)
-+				return status;
-+			net = rndis_opts->net;
-+		}
- 	}
- 
- 	us = usb_gstrings_attach(cdev, rndis_strings,
-@@ -796,6 +794,9 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
- 	}
- 	rndis->notify_req = no_free_ptr(request);
- 
-+	rndis_opts->bind_count++;
-+	retain_and_null_ptr(net);
-+
- 	/* NOTE:  all that is done without knowing or caring about
- 	 * the network link ... which is unavailable to this code
- 	 * until we're activated via set_alt().
-@@ -812,11 +813,11 @@ void rndis_borrow_net(struct usb_function_instance *f, struct net_device *net)
- 	struct f_rndis_opts *opts;
- 
- 	opts = container_of(f, struct f_rndis_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
--	opts->borrowed_net = opts->bound = true;
-+	opts->borrowed_net = true;
- 	opts->net = net;
- }
- EXPORT_SYMBOL_GPL(rndis_borrow_net);
-@@ -874,7 +875,7 @@ static void rndis_free_inst(struct usb_function_instance *f)
- 
- 	opts = container_of(f, struct f_rndis_opts, func_inst);
- 	if (!opts->borrowed_net) {
--		if (opts->bound)
-+		if (device_is_registered(&opts->net->dev))
- 			gether_cleanup(netdev_priv(opts->net));
- 		else
- 			free_netdev(opts->net);
-@@ -943,6 +944,9 @@ static void rndis_free(struct usb_function *f)
- static void rndis_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct f_rndis		*rndis = func_to_rndis(f);
-+	struct f_rndis_opts	*rndis_opts;
-+
-+	rndis_opts = container_of(f->fi, struct f_rndis_opts, func_inst);
- 
- 	kfree(f->os_desc_table);
- 	f->os_desc_n = 0;
-@@ -950,6 +954,10 @@ static void rndis_unbind(struct usb_configuration *c, struct usb_function *f)
- 
- 	kfree(rndis->notify_req->buf);
- 	usb_ep_free_request(rndis->notify, rndis->notify_req);
-+
-+	rndis_opts->bind_count--;
-+	if (rndis_opts->bind_count == 0 && !rndis_opts->borrowed_net)
-+		gether_detach_gadget(rndis_opts->net);
- }
- 
- static struct usb_function *rndis_alloc(struct usb_function_instance *fi)
-diff --git a/drivers/usb/gadget/function/u_rndis.h b/drivers/usb/gadget/function/u_rndis.h
-index a8c409b2f52f..4e64619714dc 100644
---- a/drivers/usb/gadget/function/u_rndis.h
-+++ b/drivers/usb/gadget/function/u_rndis.h
-@@ -15,12 +15,34 @@
- 
- #include <linux/usb/composite.h>
- 
-+/**
-+ * struct f_rndis_opts - RNDIS function options
-+ * @func_inst: USB function instance.
-+ * @vendor_id: Vendor ID.
-+ * @manufacturer: Manufacturer string.
-+ * @net: The net_device associated with the RNDIS function.
-+ * @bind_count: Tracks the number of configurations the RNDIS function is
-+ *              bound to, preventing double-registration of the @net device.
-+ * @borrowed_net: True if the net_device is shared and pre-registered during
-+ *                the legacy composite driver's bind phase (e.g., multi.c).
-+ *                If false, the RNDIS function will register the net_device
-+ *                during its own bind phase.
-+ * @rndis_interf_group: ConfigFS group for RNDIS interface.
-+ * @rndis_os_desc: USB OS descriptor for RNDIS.
-+ * @rndis_ext_compat_id: Extended compatibility ID.
-+ * @class: USB class.
-+ * @subclass: USB subclass.
-+ * @protocol: USB protocol.
-+ * @lock: Protects the data from concurrent access by configfs read/write
-+ *        and create symlink/remove symlink operations.
-+ * @refcnt: Reference counter for the function instance.
-+ */
- struct f_rndis_opts {
- 	struct usb_function_instance	func_inst;
- 	u32				vendor_id;
- 	const char			*manufacturer;
- 	struct net_device		*net;
--	bool				bound;
-+	int				bind_count;
- 	bool				borrowed_net;
- 
- 	struct config_group		*rndis_interf_group;
-@@ -30,13 +52,6 @@ struct f_rndis_opts {
- 	u8				class;
- 	u8				subclass;
- 	u8				protocol;
--
--	/*
--	 * Read/write access to configfs attributes is handled by configfs.
--	 *
--	 * This is to protect the data from concurrent access by read/write
--	 * and create symlink/remove symlink.
--	 */
- 	struct mutex			lock;
- 	int				refcnt;
- };
+ 	device_initialize(&hidg->dev);
+ 	hidg->dev.release = hidg_release;
+ 	hidg->dev.class = &hidg_class;
 
 
