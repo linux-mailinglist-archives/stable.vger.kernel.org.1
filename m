@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-235201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHqNCkCm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:24 +0200
+	id eGW5BC+c1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD8E3C2382
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1032D3C06B5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3D9B303AF2D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2D75730074F8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873253AD52A;
-	Wed,  8 Apr 2026 19:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8543D6694;
+	Wed,  8 Apr 2026 18:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gx3K2aP6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bw2j8Ake"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F1D35C1B4;
-	Wed,  8 Apr 2026 19:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCA43B960C;
+	Wed,  8 Apr 2026 18:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674830; cv=none; b=TaNC8NUcev7eqX8ni74DKVN4swLJ9GCUHDynq83QiklU9g9s4InCLCUOIv7w0gzNWzeLx1RwCXzJOb2xzOlWrpu7A4owBQMxxL6z2KULRfQ8QWTzhOHk6SYPXeQlvBcceu7VvyK691HmXyvvGzX4IpHhLhFQGL2Z9tCm0Nk8x0k=
+	t=1775672362; cv=none; b=lCm3qr0XgkEaxkSCpVsphQvkWWpGBObkZPAV1Cr0gDjIyBQNUrk6SofiJvaFh1maPwzboTTcGegaLKjtiez1Ol4CSLwukGv5GSiunvEfRThwQ7M+6nrVjh9+mO5zVpiigJqz/rE7tsYIFoLwvy+7qTt3JodEhu/oxmXNHQ8KXlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674830; c=relaxed/simple;
-	bh=ftejznMcU91zhUj2HMB0h8miy1e5aEqJu9encK8XaLg=;
+	s=arc-20240116; t=1775672362; c=relaxed/simple;
+	bh=/YWLuS6Xy/BOu50HoJPsD+DJc+znJl7NcMmsbAy8YZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yah2/072h8BRrx8UqyNu6tmWBwnvSccQIboB+R6uwuOVviNX6KU4PUhVINu7pOSVOeeeY5XRV7uaqsQIGVsB/YN3HOQMEkm3+fq48tYd/mCoVez3SeaZEV8Sc2jqV5Dz5H5iqnL84kuXDPyDHHfUsDSzklSI2XWSgIeS/i3mMmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gx3K2aP6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5177C19425;
-	Wed,  8 Apr 2026 19:00:29 +0000 (UTC)
+	 MIME-Version; b=gdvKaozciKrkgNm+78lkNb22L8uEu00LQp62QxjmdBFCwPqedgMT535z6O6bXIgzzmvaeccL/zgPlfLIuiC51/W4UmHQ7VhPHC3hUhePC85PbheDEAPKY5szrwG/VpkmojQCtY40jI2dlFQvG+0gyhWD43wt83/iTIw/3e0TUGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bw2j8Ake; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847CFC19421;
+	Wed,  8 Apr 2026 18:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674830;
-	bh=ftejznMcU91zhUj2HMB0h8miy1e5aEqJu9encK8XaLg=;
+	s=korg; t=1775672361;
+	bh=/YWLuS6Xy/BOu50HoJPsD+DJc+znJl7NcMmsbAy8YZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gx3K2aP6m3ucGyaYO/eiVRzjG/vX3uywvMRPA5ZkK96OeTxp/0Zjz4mq3SvPgBTgt
-	 XPOnbWLQt+iTMEJ/5L/OfNWqcuwseJ3Q7MXTSwVNR7aFh52Yi/sTn4bHk7j4wA87/x
-	 8F5t+rc5qe3sTEz0rt33lSRSxzxeJ4WFXMWjigBc=
+	b=Bw2j8AkeOVs5CdEpu2jh+x4KrrnYoGzJdlQndaVU+syMQzPeA1zmpj6hpfDA1M1o1
+	 D+1CuxT0YKaUpxulr3W9RXrGGCE/WFse0VG4crKJaQnpqIoJKEu3kwcnyln62h13/4
+	 idUsBK/BiL8hA5hXnBQnpIJQBd+4qTDBpDFXuNoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frej Drejhammar <frej@stacken.kth.se>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.19 207/311] USB: serial: io_edgeport: add support for Blackbox IC135A
+	Li Chen <me@linux.beauty>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 290/312] ext4: publish jinode after initialization
 Date: Wed,  8 Apr 2026 20:03:27 +0200
-Message-ID: <20260408175947.135457106@linuxfoundation.org>
+Message-ID: <20260408175944.592645083@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,89 +70,181 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234246-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235201-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kth.se:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ACD8E3C2382
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.cz:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.beauty:email]
+X-Rspamd-Queue-Id: 1032D3C06B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frej Drejhammar <frej@stacken.kth.se>
+From: Li Chen <me@linux.beauty>
 
-commit 0e01c3416eb863ee7f156a9d7e7421ec0a9f68a0 upstream.
+[ Upstream commit 1aec30021edd410b986c156f195f3d23959a9d11 ]
 
-The Blackbox 724-746-5500 USB Director USB-RS-232 HUB, part number
-IC135A, is a rebadged Edgeport/4 with its own USB device id.
+ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
+It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
+allowing a reader to observe a non-NULL jinode with i_vfs_inode
+still unset.
 
-Signed-off-by: Frej Drejhammar <frej@stacken.kth.se>
+The fast commit flush path can then pass this jinode to
+jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
+may crash.
+
+Below is the crash I observe:
+```
+BUG: unable to handle page fault for address: 000000010beb47f4
+PGD 110e51067 P4D 110e51067 PUD 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+RIP: 0010:xas_find_marked+0x3d/0x2e0
+Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
+RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
+RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
+RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
+RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
+R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
+R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
+FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+<TASK>
+filemap_get_folios_tag+0x87/0x2a0
+__filemap_fdatawait_range+0x5f/0xd0
+? srso_alias_return_thunk+0x5/0xfbef5
+? __schedule+0x3e7/0x10c0
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? cap_safe_nice+0x37/0x70
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+filemap_fdatawait_range_keep_errors+0x12/0x40
+ext4_fc_commit+0x697/0x8b0
+? ext4_file_write_iter+0x64b/0x950
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? vfs_write+0x356/0x480
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+ext4_sync_file+0xf7/0x370
+do_fsync+0x3b/0x80
+? syscall_trace_enter+0x108/0x1d0
+__x64_sys_fdatasync+0x16/0x20
+do_syscall_64+0x62/0x2c0
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+...
+```
+
+Fix this by initializing the jbd2_inode first.
+Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
+initialization. Readers use READ_ONCE() to fetch the pointer.
+
+Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Li Chen <me@linux.beauty>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ adapted READ_ONCE(jinode) wrapping to split ext4_fc_submit_inode_data_all() and ext4_fc_wait_inode_data_all() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/io_edgeport.c |    3 +++
- drivers/usb/serial/io_usbvend.h  |    1 +
- 2 files changed, 4 insertions(+)
+ fs/ext4/fast_commit.c |    4 ++--
+ fs/ext4/inode.c       |   15 +++++++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/serial/io_edgeport.c
-+++ b/drivers/usb/serial/io_edgeport.c
-@@ -73,6 +73,7 @@ static const struct usb_device_id edgepo
- 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_22I) },
- 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_412_4) },
- 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_COMPATIBLE) },
-+	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_BLACKBOX_IC135A) },
- 	{ }
- };
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1019,7 +1019,7 @@ static int ext4_fc_submit_inode_data_all
+ 			finish_wait(&ei->i_fc_wait, &wait);
+ 		}
+ 		spin_unlock(&sbi->s_fc_lock);
+-		ret = jbd2_submit_inode_data(ei->jinode);
++		ret = jbd2_submit_inode_data(READ_ONCE(ei->jinode));
+ 		if (ret)
+ 			return ret;
+ 		spin_lock(&sbi->s_fc_lock);
+@@ -1044,7 +1044,7 @@ static int ext4_fc_wait_inode_data_all(j
+ 			continue;
+ 		spin_unlock(&sbi->s_fc_lock);
  
-@@ -121,6 +122,7 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_8R) },
- 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_8RR) },
- 	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_EDGEPORT_412_8) },
-+	{ USB_DEVICE(USB_VENDOR_ID_ION, ION_DEVICE_ID_BLACKBOX_IC135A) },
- 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0202) },
- 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0203) },
- 	{ USB_DEVICE(USB_VENDOR_ID_NCR, NCR_DEVICE_ID_EPIC_0310) },
-@@ -470,6 +472,7 @@ static void get_product_info(struct edge
- 	case ION_DEVICE_ID_EDGEPORT_2_DIN:
- 	case ION_DEVICE_ID_EDGEPORT_4_DIN:
- 	case ION_DEVICE_ID_EDGEPORT_16_DUAL_CPU:
-+	case ION_DEVICE_ID_BLACKBOX_IC135A:
- 		product_info->IsRS232 = 1;
- 		break;
+-		ret = jbd2_wait_inode_data(journal, pos->jinode);
++		ret = jbd2_wait_inode_data(journal, READ_ONCE(pos->jinode));
+ 		if (ret)
+ 			return ret;
+ 		spin_lock(&sbi->s_fc_lock);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -122,6 +122,8 @@ void ext4_inode_csum_set(struct inode *i
+ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 					      loff_t new_size)
+ {
++	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
++
+ 	trace_ext4_begin_ordered_truncate(inode, new_size);
+ 	/*
+ 	 * If jinode is zero, then we never opened the file for
+@@ -129,10 +131,10 @@ static inline int ext4_begin_ordered_tru
+ 	 * jbd2_journal_begin_ordered_truncate() since there's no
+ 	 * outstanding writes we need to flush.
+ 	 */
+-	if (!EXT4_I(inode)->jinode)
++	if (!jinode)
+ 		return 0;
+ 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
+-						   EXT4_I(inode)->jinode,
++						   jinode,
+ 						   new_size);
+ }
  
---- a/drivers/usb/serial/io_usbvend.h
-+++ b/drivers/usb/serial/io_usbvend.h
-@@ -211,6 +211,7 @@
- 
- //
- // Definitions for other product IDs
-+#define ION_DEVICE_ID_BLACKBOX_IC135A		0x0801	// OEM device (rebranded Edgeport/4)
- #define ION_DEVICE_ID_MT4X56USB			0x1403	// OEM device
- #define ION_DEVICE_ID_E5805A			0x1A01  // OEM device (rebranded Edgeport/4)
- 
+@@ -4184,8 +4186,13 @@ int ext4_inode_attach_jinode(struct inod
+ 			spin_unlock(&inode->i_lock);
+ 			return -ENOMEM;
+ 		}
+-		ei->jinode = jinode;
+-		jbd2_journal_init_jbd_inode(ei->jinode, inode);
++		jbd2_journal_init_jbd_inode(jinode, inode);
++		/*
++		 * Publish ->jinode only after it is fully initialized so that
++		 * readers never observe a partially initialized jbd2_inode.
++		 */
++		smp_wmb();
++		WRITE_ONCE(ei->jinode, jinode);
+ 		jinode = NULL;
+ 	}
+ 	spin_unlock(&inode->i_lock);
 
 
 
