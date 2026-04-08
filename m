@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-235053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sL/xFlKl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:26 +0200
+	id 2LwsKhmb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB5B3C2178
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A8D3C040B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 458F130803E4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AEC40301A758
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF66337B81;
-	Wed,  8 Apr 2026 18:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F177E3D902E;
+	Wed,  8 Apr 2026 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hj1WH+JO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2Y4P+V3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B353D9041;
-	Wed,  8 Apr 2026 18:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15673D4134;
+	Wed,  8 Apr 2026 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674449; cv=none; b=FesIBX7PGn/7xctQ8W6d/yNxV+P9Uj+ySDFSbjvKfbzIfxU5c1oKbOwHhHXR61AKxdvP5V7XjpyzGff49sz4f6t3LLqCjTA0UT0dtfdjtK69Kn6OZ88EHwxVVkZXjBJ30JQVr+Imm7lpJuBBk3vEHmC7frDAftZ5eQUfC57jqaQ=
+	t=1775672087; cv=none; b=TRkKBkdvLplLdx7l9vihTPwFMmw2Vzz/44jcKhG2HFVWiuzh6nrqBb93uixid3kQSGWEdWEd2+Aqe5PKeNFwwDYDmBV/dbSVWam48lRj3TTJb8NgWHaf1c2VHgNbQjTdto+ltdBcbfBfxZ5aA/oFOwP9aO9s0JfNcabSEViZT8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674449; c=relaxed/simple;
-	bh=pheqwr8resSZb70eLovDiAQVuogSrlJ51boF2eIdSCw=;
+	s=arc-20240116; t=1775672087; c=relaxed/simple;
+	bh=Xb008G09lpJ3KlRsnJNZi5CBM2fwH1B11FwlWyacZ08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eI5pFGz53aTtRJI0Zju7jrDyDA4kXtdILb/6PL9iJEYWyktgOTikngKkGQbe94Y2ndkSNftgVSPQ7dJNzYHrdjOEpFRMqj9OiOMy+7HsWn2U3XTI8ZsgQmg4Rm2pQbM2DFkCGDvxvqOeqo8JKYg5UaXIgsLphSwm/+4CXUh2NlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hj1WH+JO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E5BC19421;
-	Wed,  8 Apr 2026 18:54:08 +0000 (UTC)
+	 MIME-Version; b=g6FjfGaYVGTwLzBuQ42kOELa5ZrXFxn9W5GRPm3jyFonCiwBIYwDdJidMWYuuQXsLB3HM+uLNL/jdz2cShz/189j2O03wU7teWqD8fkO+EIfrbri0x7qynfbdNUW9fldA3DM0I4bPIkp4nZnR/ncQehZA7tUu7AZYAkYC4XRVDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2Y4P+V3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A04C19421;
+	Wed,  8 Apr 2026 18:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674448;
-	bh=pheqwr8resSZb70eLovDiAQVuogSrlJ51boF2eIdSCw=;
+	s=korg; t=1775672087;
+	bh=Xb008G09lpJ3KlRsnJNZi5CBM2fwH1B11FwlWyacZ08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hj1WH+JO3acpOn3tw3L5mJYxAdyFIW5WD8vVpLhg/tNdxnds+oBK8wtBgZDDnasn5
-	 47rhpZ2IMbBwjtZS3B1f0ztEU6QeODaW4+8ZAVOqGfZmUot79Aadmf93vaRfHGH87T
-	 aLT1bo2WzhEuGha+QgOix1vQDVKYnvJNk0WfYanU=
+	b=u2Y4P+V3AzXIBQYdj7KeWNU8DhuG1TpFTs8nM8jy7dkOb+JNXD7eWTFyCNjWdxlpa
+	 7YIpKTzKmI9g94+LoRT0GOkDNPUTgUw4lKZrTMtmk+bBY89T/ZUVOmdGJvc1Wb7STX
+	 LSfeEG9bcVrUP1ZwBRK/jDK/dW930kP1l/tuQsRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+87badbb9094e008e0685@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Pauli Virtanen <pav@iki.fi>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 100/311] Bluetooth: hci_sync: Fix UAF in le_read_features_complete
-Date: Wed,  8 Apr 2026 20:01:40 +0200
-Message-ID: <20260408175943.148302973@linuxfoundation.org>
+Subject: [PATCH 6.1 184/312] net/mlx5: Avoid "No data available" when FW version queries fail
+Date: Wed,  8 Apr 2026 20:01:41 +0200
+Message-ID: <20260408175940.634810451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,275 +66,208 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-235053-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234140-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,87badbb9094e008e0685];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzbot.org:url,appspotmail.com:email,iki.fi:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: CCB5B3C2178
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 48A8D3C040B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-[ Upstream commit 035c25007c9e698bef3826070ee34bb6d778020c ]
+[ Upstream commit 10dc35f6a443d488f219d1a1e3fb8f8dac422070 ]
 
-This fixes the following backtrace caused by hci_conn being freed
-before le_read_features_complete but after
-hci_le_read_remote_features_sync so hci_conn_del -> hci_cmd_sync_dequeue
-is not able to prevent it:
+Avoid printing the misleading "kernel answers: No data available" devlink
+output when querying firmware or pending firmware version fails
+(e.g. MLX5 fw state errors / flash failures).
 
-==================================================================
-BUG: KASAN: slab-use-after-free in instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
-BUG: KASAN: slab-use-after-free in atomic_dec_and_test include/linux/atomic/atomic-instrumented.h:1383 [inline]
-BUG: KASAN: slab-use-after-free in hci_conn_drop include/net/bluetooth/hci_core.h:1688 [inline]
-BUG: KASAN: slab-use-after-free in le_read_features_complete+0x5b/0x340 net/bluetooth/hci_sync.c:7344
-Write of size 4 at addr ffff8880796b0010 by task kworker/u9:0/52
+FW can fail on loading the pending flash image and get its version due
+to various reasons, examples:
 
-CPU: 0 UID: 0 PID: 52 Comm: kworker/u9:0 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: hci0 hci_cmd_sync_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xcd/0x630 mm/kasan/report.c:482
- kasan_report+0xe0/0x110 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:194 [inline]
- kasan_check_range+0x100/0x1b0 mm/kasan/generic.c:200
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_dec_and_test include/linux/atomic/atomic-instrumented.h:1383 [inline]
- hci_conn_drop include/net/bluetooth/hci_core.h:1688 [inline]
- le_read_features_complete+0x5b/0x340 net/bluetooth/hci_sync.c:7344
- hci_cmd_sync_work+0x1ff/0x430 net/bluetooth/hci_sync.c:334
- process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
+mlxfw: Firmware flash failed: key not applicable, err (7)
+mlx5_fw_image_pending: can't read pending fw version while fw state is 1
 
-Allocated by task 5932:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:56
- kasan_save_track+0x14/0x30 mm/kasan/common.c:77
- poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:417
- kmalloc_noprof include/linux/slab.h:957 [inline]
- kzalloc_noprof include/linux/slab.h:1094 [inline]
- __hci_conn_add+0xf8/0x1c70 net/bluetooth/hci_conn.c:963
- hci_conn_add_unset+0x76/0x100 net/bluetooth/hci_conn.c:1084
- le_conn_complete_evt+0x639/0x1f20 net/bluetooth/hci_event.c:5714
- hci_le_enh_conn_complete_evt+0x23d/0x380 net/bluetooth/hci_event.c:5861
- hci_le_meta_evt+0x357/0x5e0 net/bluetooth/hci_event.c:7408
- hci_event_func net/bluetooth/hci_event.c:7716 [inline]
- hci_event_packet+0x685/0x11c0 net/bluetooth/hci_event.c:7773
- hci_rx_work+0x2c9/0xeb0 net/bluetooth/hci_core.c:4076
- process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+and the resulting:
+$ devlink dev info
+kernel answers: No data available
 
-Freed by task 5932:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:56
- kasan_save_track+0x14/0x30 mm/kasan/common.c:77
- __kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:587
- kasan_save_free_info mm/kasan/kasan.h:406 [inline]
- poison_slab_object mm/kasan/common.c:252 [inline]
- __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:284
- kasan_slab_free include/linux/kasan.h:234 [inline]
- slab_free_hook mm/slub.c:2540 [inline]
- slab_free mm/slub.c:6663 [inline]
- kfree+0x2f8/0x6e0 mm/slub.c:6871
- device_release+0xa4/0x240 drivers/base/core.c:2565
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x1e7/0x590 lib/kobject.c:737
- put_device drivers/base/core.c:3797 [inline]
- device_unregister+0x2f/0xc0 drivers/base/core.c:3920
- hci_conn_del_sysfs+0xb4/0x180 net/bluetooth/hci_sysfs.c:79
- hci_conn_cleanup net/bluetooth/hci_conn.c:173 [inline]
- hci_conn_del+0x657/0x1180 net/bluetooth/hci_conn.c:1234
- hci_disconn_complete_evt+0x410/0xa00 net/bluetooth/hci_event.c:3451
- hci_event_func net/bluetooth/hci_event.c:7719 [inline]
- hci_event_packet+0xa10/0x11c0 net/bluetooth/hci_event.c:7773
- hci_rx_work+0x2c9/0xeb0 net/bluetooth/hci_core.c:4076
- process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+Instead, just report 0 or 0xfff.. versions in case of failure to indicate
+a problem, and let other information be shown.
 
-The buggy address belongs to the object at ffff8880796b0000
- which belongs to the cache kmalloc-8k of size 8192
-The buggy address is located 16 bytes inside of
- freed 8192-byte region [ffff8880796b0000, ffff8880796b2000)
+after the fix:
+$ devlink dev info
+pci/0000:00:06.0:
+  driver mlx5_core
+  serial_number xxx...
+  board.serial_number MT2225300179
+  versions:
+      fixed:
+        fw.psid MT_0000000436
+      running:
+        fw.version 22.41.0188
+        fw 22.41.0188
+      stored:
+        fw.version 255.255.65535
+        fw 255.255.65535
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x796b0
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-anon flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000040 ffff88813ff27280 0000000000000000 0000000000000001
-raw: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
-head: 00fff00000000040 ffff88813ff27280 0000000000000000 0000000000000001
-head: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
-head: 00fff00000000003 ffffea0001e5ac01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5657, tgid 5657 (dhcpcd-run-hook), ts 79819636908, free_ts 79814310558
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x1af/0x220 mm/page_alloc.c:1845
- prep_new_page mm/page_alloc.c:1853 [inline]
- get_page_from_freelist+0xd0b/0x31a0 mm/page_alloc.c:3879
- __alloc_frozen_pages_noprof+0x25f/0x2440 mm/page_alloc.c:5183
- alloc_pages_mpol+0x1fb/0x550 mm/mempolicy.c:2416
- alloc_slab_page mm/slub.c:3075 [inline]
- allocate_slab mm/slub.c:3248 [inline]
- new_slab+0x2c3/0x430 mm/slub.c:3302
- ___slab_alloc+0xe18/0x1c90 mm/slub.c:4651
- __slab_alloc.constprop.0+0x63/0x110 mm/slub.c:4774
- __slab_alloc_node mm/slub.c:4850 [inline]
- slab_alloc_node mm/slub.c:5246 [inline]
- __kmalloc_cache_noprof+0x477/0x800 mm/slub.c:5766
- kmalloc_noprof include/linux/slab.h:957 [inline]
- kzalloc_noprof include/linux/slab.h:1094 [inline]
- tomoyo_print_bprm security/tomoyo/audit.c:26 [inline]
- tomoyo_init_log+0xc8a/0x2140 security/tomoyo/audit.c:264
- tomoyo_supervisor+0x302/0x13b0 security/tomoyo/common.c:2198
- tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
- tomoyo_env_perm+0x191/0x200 security/tomoyo/environ.c:63
- tomoyo_environ security/tomoyo/domain.c:672 [inline]
- tomoyo_find_next_domain+0xec1/0x20b0 security/tomoyo/domain.c:888
- tomoyo_bprm_check_security security/tomoyo/tomoyo.c:102 [inline]
- tomoyo_bprm_check_security+0x12d/0x1d0 security/tomoyo/tomoyo.c:92
- security_bprm_check+0x1b9/0x1e0 security/security.c:794
- search_binary_handler fs/exec.c:1659 [inline]
- exec_binprm fs/exec.c:1701 [inline]
- bprm_execve fs/exec.c:1753 [inline]
- bprm_execve+0x81e/0x1620 fs/exec.c:1729
- do_execveat_common.isra.0+0x4a5/0x610 fs/exec.c:1859
-page last free pid 5657 tgid 5657 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1394 [inline]
- __free_frozen_pages+0x7df/0x1160 mm/page_alloc.c:2901
- discard_slab mm/slub.c:3346 [inline]
- __put_partials+0x130/0x170 mm/slub.c:3886
- qlink_free mm/kasan/quarantine.c:163 [inline]
- qlist_free_all+0x4c/0xf0 mm/kasan/quarantine.c:179
- kasan_quarantine_reduce+0x195/0x1e0 mm/kasan/quarantine.c:286
- __kasan_slab_alloc+0x69/0x90 mm/kasan/common.c:352
- kasan_slab_alloc include/linux/kasan.h:252 [inline]
- slab_post_alloc_hook mm/slub.c:4948 [inline]
- slab_alloc_node mm/slub.c:5258 [inline]
- __kmalloc_cache_noprof+0x274/0x800 mm/slub.c:5766
- kmalloc_noprof include/linux/slab.h:957 [inline]
- tomoyo_print_header security/tomoyo/audit.c:156 [inline]
- tomoyo_init_log+0x197/0x2140 security/tomoyo/audit.c:255
- tomoyo_supervisor+0x302/0x13b0 security/tomoyo/common.c:2198
- tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
- tomoyo_env_perm+0x191/0x200 security/tomoyo/environ.c:63
- tomoyo_environ security/tomoyo/domain.c:672 [inline]
- tomoyo_find_next_domain+0xec1/0x20b0 security/tomoyo/domain.c:888
- tomoyo_bprm_check_security security/tomoyo/tomoyo.c:102 [inline]
- tomoyo_bprm_check_security+0x12d/0x1d0 security/tomoyo/tomoyo.c:92
- security_bprm_check+0x1b9/0x1e0 security/security.c:794
- search_binary_handler fs/exec.c:1659 [inline]
- exec_binprm fs/exec.c:1701 [inline]
- bprm_execve fs/exec.c:1753 [inline]
- bprm_execve+0x81e/0x1620 fs/exec.c:1729
- do_execveat_common.isra.0+0x4a5/0x610 fs/exec.c:1859
- do_execve fs/exec.c:1933 [inline]
- __do_sys_execve fs/exec.c:2009 [inline]
- __se_sys_execve fs/exec.c:2004 [inline]
- __x64_sys_execve+0x8e/0xb0 fs/exec.c:2004
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
-
-Memory state around the buggy address:
- ffff8880796aff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff8880796aff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff8880796b0000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                         ^
- ffff8880796b0080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8880796b0100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-Fixes: a106e50be74b ("Bluetooth: HCI: Add support for LL Extended Feature Set")
-Reported-by: syzbot+87badbb9094e008e0685@syzkaller.appspotmail.com
-Tested-by: syzbot+87badbb9094e008e0685@syzkaller.appspotmail.com
-Closes: https://syzbot.org/bug?extid=87badbb9094e008e0685
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Fixes: 9c86b07e3069 ("net/mlx5: Added fw version query command")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260330194015.53585-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/devlink.c |  4 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fw.c  | 53 ++++++++++++-------
+ .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  4 +-
+ 3 files changed, 37 insertions(+), 24 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 7dfd630d38f05..312526a5a1efb 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -7359,10 +7359,8 @@ static void le_read_features_complete(struct hci_dev *hdev, void *data, int err)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 64dcfac9ce724..fbeea3e539109 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -54,9 +54,7 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+ 	if (err)
+ 		return err;
  
- 	bt_dev_dbg(hdev, "err %d", err);
+-	err = mlx5_fw_version_query(dev, &running_fw, &stored_fw);
+-	if (err)
+-		return err;
++	mlx5_fw_version_query(dev, &running_fw, &stored_fw);
  
--	if (err == -ECANCELED)
--		return;
--
- 	hci_conn_drop(conn);
-+	hci_conn_put(conn);
+ 	snprintf(version_str, sizeof(version_str), "%d.%d.%04d",
+ 		 mlx5_fw_ver_major(running_fw), mlx5_fw_ver_minor(running_fw),
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw.c b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
+index 9e26dda93f8ee..d2e4546a1efd0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
+@@ -808,48 +808,63 @@ mlx5_fw_image_pending(struct mlx5_core_dev *dev,
+ 	return 0;
  }
  
- static int hci_le_read_all_remote_features_sync(struct hci_dev *hdev,
-@@ -7432,10 +7430,12 @@ int hci_le_read_remote_features(struct hci_conn *conn)
- 	if (conn->out || (hdev->le_features[0] & HCI_LE_PERIPHERAL_FEATURES)) {
- 		err = hci_cmd_sync_queue_once(hdev,
- 					      hci_le_read_remote_features_sync,
--					      hci_conn_hold(conn),
-+					      hci_conn_hold(hci_conn_get(conn)),
- 					      le_read_features_complete);
--		if (err)
-+		if (err) {
- 			hci_conn_drop(conn);
-+			hci_conn_put(conn);
-+		}
- 	} else {
- 		err = -EOPNOTSUPP;
+-int mlx5_fw_version_query(struct mlx5_core_dev *dev,
+-			  u32 *running_ver, u32 *pending_ver)
++void mlx5_fw_version_query(struct mlx5_core_dev *dev,
++			   u32 *running_ver, u32 *pending_ver)
+ {
+ 	u32 reg_mcqi_version[MLX5_ST_SZ_DW(mcqi_version)] = {};
+ 	bool pending_version_exists;
+ 	int component_index;
+ 	int err;
+ 
++	*running_ver = 0;
++	*pending_ver = 0;
++
+ 	if (!MLX5_CAP_GEN(dev, mcam_reg) || !MLX5_CAP_MCAM_REG(dev, mcqi) ||
+ 	    !MLX5_CAP_MCAM_REG(dev, mcqs)) {
+ 		mlx5_core_warn(dev, "fw query isn't supported by the FW\n");
+-		return -EOPNOTSUPP;
++		return;
  	}
+ 
+ 	component_index = mlx5_get_boot_img_component_index(dev);
+-	if (component_index < 0)
+-		return component_index;
++	if (component_index < 0) {
++		mlx5_core_warn(dev, "fw query failed to find boot img component index, err %d\n",
++			       component_index);
++		return;
++	}
+ 
++	*running_ver = U32_MAX; /* indicate failure */
+ 	err = mlx5_reg_mcqi_version_query(dev, component_index,
+ 					  MCQI_FW_RUNNING_VERSION,
+ 					  reg_mcqi_version);
+-	if (err)
+-		return err;
+-
+-	*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
+-
++	if (!err)
++		*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
++					version);
++	else
++		mlx5_core_warn(dev, "failed to query running version, err %d\n",
++			       err);
++
++	*pending_ver = U32_MAX; /* indicate failure */
+ 	err = mlx5_fw_image_pending(dev, component_index, &pending_version_exists);
+-	if (err)
+-		return err;
++	if (err) {
++		mlx5_core_warn(dev, "failed to query pending image, err %d\n",
++			       err);
++		return;
++	}
+ 
+ 	if (!pending_version_exists) {
+ 		*pending_ver = 0;
+-		return 0;
++		return;
+ 	}
+ 
+ 	err = mlx5_reg_mcqi_version_query(dev, component_index,
+ 					  MCQI_FW_STORED_VERSION,
+ 					  reg_mcqi_version);
+-	if (err)
+-		return err;
+-
+-	*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
+-
+-	return 0;
++	if (!err)
++		*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
++					version);
++	else
++		mlx5_core_warn(dev, "failed to query pending version, err %d\n",
++			       err);
++
++	return;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index 07b5c86fc26a4..67c1afc1df8f5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -262,8 +262,8 @@ void mlx5_dm_cleanup(struct mlx5_core_dev *dev);
+ 
+ int mlx5_firmware_flash(struct mlx5_core_dev *dev, const struct firmware *fw,
+ 			struct netlink_ext_ack *extack);
+-int mlx5_fw_version_query(struct mlx5_core_dev *dev,
+-			  u32 *running_ver, u32 *stored_ver);
++void mlx5_fw_version_query(struct mlx5_core_dev *dev, u32 *running_ver,
++			   u32 *stored_ver);
+ 
+ #ifdef CONFIG_MLX5_CORE_EN
+ int mlx5e_init(void);
 -- 
 2.53.0
 
