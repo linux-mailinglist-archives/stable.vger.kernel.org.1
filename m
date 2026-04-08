@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMYwFcWd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:13 +0200
+	id kO2bE0ei1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030D43C0B4F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F923C171E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C86A83084985
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7BFDF300DA51
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DD33D7D60;
-	Wed,  8 Apr 2026 18:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E383D9022;
+	Wed,  8 Apr 2026 18:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWGUfnq8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d29IqDJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057523D564E;
-	Wed,  8 Apr 2026 18:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B43D4134;
+	Wed,  8 Apr 2026 18:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672577; cv=none; b=P2lYOn87HmtiK/mUIMmTe5VVFIDkkNGq66LLlFgaI8aSj+adRR+uMsQK87E2KBbOditfgJgc5C5waQjX21dnbQdxCOe/mg6f9X2KB/1G2vDQsZwdFkuycunsyhZ/rDHcy2vqzDhoGbiIKqOX2C/m6fA9+YXhRak1hO3FBEmV4Cs=
+	t=1775673877; cv=none; b=b+yB9WseW6o60ME+PBXsNrOLc/RuYkr9G8qiS+5tCStti2qpTeNH5vu7HKDiOailpTBJ9jHj6x4w+uwzbak5pz+9ktjOy/zSTOqcso6gO/VzpZ8s2p0e//PCCm+ZNpwX9zvEoQQiHa+kregaVyk5FgtdMWKHXdXHAd+/2jsoIUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672577; c=relaxed/simple;
-	bh=mrIR0Q4IfpVvSPmJq/p9yn/yk8fUV3I7FgBLeFQQUxY=;
+	s=arc-20240116; t=1775673877; c=relaxed/simple;
+	bh=VZY114+K0iJwyxr6RDEpai6VcwEvcVVWv8C7td1f+Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T40CueYsWgWlrnuy3hOzLYs3vPpf7KOCACLlmi77+q7L5ycKSbYfyTSRl0nkSRSufSHLPUkSQVY5yF6y6z7XLWNZI+2wy/02JjyyJIV6VNag/XgiOQ6P8yhzRsuziJsUCCxTEi0bAnPVoD7GBJOfxMSRFEo2qZ/rlSip0wurEaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWGUfnq8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA7CC19421;
-	Wed,  8 Apr 2026 18:22:56 +0000 (UTC)
+	 MIME-Version; b=HRBccczAKQTWeHr5TKUXXPihTpoN+aWN9tuIsoQ+7QHufzcP5D2H8dr6ZjE01+XJt6yr71e1LrnhUdR2DpCqlVgOrH+O8Xz3SaKyTXdYTLx6DNiZUGNhiwbVn+ZwImRvWth1uSvyCl70G3nvzU1us0yjiXpThjLT2Wv47++g70Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d29IqDJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8079FC19421;
+	Wed,  8 Apr 2026 18:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672576;
-	bh=mrIR0Q4IfpVvSPmJq/p9yn/yk8fUV3I7FgBLeFQQUxY=;
+	s=korg; t=1775673876;
+	bh=VZY114+K0iJwyxr6RDEpai6VcwEvcVVWv8C7td1f+Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWGUfnq8y5G6ocFaXIlL71ExdIc8x3aq6T9OiLaIEQQSsPtQ/uipERxjKXPsQ4cK/
-	 TqL8i1xVNcfPU3bniCaaW0Nlg9C9ccmuWe8CRyj4z3V0G/p/spkeCa3pxAjzuJ0k9W
-	 QlXn3RbJwinHD+oLHLaBInPr7W+bwDANtI34vjBM=
+	b=d29IqDJaxtM9yt7jfz4uCObt7cIxu4uzhG+svAzy7+N1aKCSAelyuUP9w9IDU8VWP
+	 uDCW//Q+MvlXAAXuhcw/+gAcbfNvsmT6fS3SPGu9ZHLaD82zaykqIUv6EuzfVDDYDC
+	 VWjgKNEsdXyE6GHoKHpZFv/2RPt2d8KO5LP/Y59Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Martin Schiller <ms@dev.tdt.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/160] net/x25: Fix overflow when accumulating packets
+Subject: [PATCH 6.12 106/242] hwmon: (ltc4286) Add missing MODULE_IMPORT_NS("PMBUS")
 Date: Wed,  8 Apr 2026 20:02:26 +0200
-Message-ID: <20260408175915.410577806@linuxfoundation.org>
+Message-ID: <20260408175931.051765729@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,80 +73,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dev.tdt.de,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234329-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-234831-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tdt.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 030D43C0B4F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,juniper.net:email]
+X-Rspamd-Queue-Id: D6F923C171E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit a1822cb524e89b4cd2cf0b82e484a2335496a6d9 ]
+[ Upstream commit a9d2fbd3ad0e6ac588386e699beeccfe7516755f ]
 
-Add a check to ensure that `x25_sock.fraglen` does not overflow.
+ltc4286.c uses PMBus core symbols exported in the PMBUS namespace,
+such as pmbus_do_probe(), but does not declare MODULE_IMPORT_NS("PMBUS").
 
-The `fraglen` also needs to be resetted when purging `fragment_queue` in
-`x25_clear_queues()`.
+Add the missing namespace import to avoid modpost warnings.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Link: https://patch.msgid.link/20260331-x25_fraglen-v4-2-3e69f18464b4@dev.tdt.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0c459759ca97 ("hwmon: (pmbus) Add ltc4286 driver")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260329170925.34581-5-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/x25/x25_in.c   | 4 ++++
- net/x25/x25_subr.c | 1 +
- 2 files changed, 5 insertions(+)
+ drivers/hwmon/pmbus/ltc4286.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
-index 0dbc73efab1cb..e47ebd8acd21b 100644
---- a/net/x25/x25_in.c
-+++ b/net/x25/x25_in.c
-@@ -34,6 +34,10 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
- 	struct sk_buff *skbo, *skbn = skb;
- 	struct x25_sock *x25 = x25_sk(sk);
- 
-+	/* make sure we don't overflow */
-+	if (x25->fraglen + skb->len > USHRT_MAX)
-+		return 1;
-+
- 	if (more) {
- 		x25->fraglen += skb->len;
- 		skb_queue_tail(&x25->fragment_queue, skb);
-diff --git a/net/x25/x25_subr.c b/net/x25/x25_subr.c
-index 0285aaa1e93c1..159708d9ad20c 100644
---- a/net/x25/x25_subr.c
-+++ b/net/x25/x25_subr.c
-@@ -40,6 +40,7 @@ void x25_clear_queues(struct sock *sk)
- 	skb_queue_purge(&x25->interrupt_in_queue);
- 	skb_queue_purge(&x25->interrupt_out_queue);
- 	skb_queue_purge(&x25->fragment_queue);
-+	x25->fraglen = 0;
- }
- 
- 
+diff --git a/drivers/hwmon/pmbus/ltc4286.c b/drivers/hwmon/pmbus/ltc4286.c
+index aabd0bcdfeee3..8715d380784a0 100644
+--- a/drivers/hwmon/pmbus/ltc4286.c
++++ b/drivers/hwmon/pmbus/ltc4286.c
+@@ -173,3 +173,4 @@ module_i2c_driver(ltc4286_driver);
+ MODULE_AUTHOR("Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>");
+ MODULE_DESCRIPTION("PMBUS driver for LTC4286 and compatibles");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("PMBUS");
 -- 
 2.53.0
 
