@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCfkMuum1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:15 +0200
+	id uOXxM8Wb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF423C25CB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9E13C05B7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 289A6309A067
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9EB8630626E0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEFF3D4134;
-	Wed,  8 Apr 2026 18:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716F63ACA41;
+	Wed,  8 Apr 2026 18:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCo8xScW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPQYFeJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D433EB67E;
-	Wed,  8 Apr 2026 18:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3344B39EF2B;
+	Wed,  8 Apr 2026 18:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673639; cv=none; b=JeYKhFsGiOmMGy/NNTVAJuHZ7ZTQasmK00dIF7Dq0JjuUIo7irelQhkJPgvYeBePJAFx7E8muylKRGnQJiGA4LHK7WMdWMpqLv+PMQrIcBDGQU8q+MimTDslbmnA881UyKU0nuJjBRyRsVh3tr4gdUp+eQZ/RhubqOD58SsJyIU=
+	t=1775672121; cv=none; b=JWCp6md5K7Oj0tD1Wk1rUDdfLjGuhYAyUznh6NUWslHPL608XsXjtZAohisQ4CnZ9cYiuSRPrgVsnjRZSWTJ/rXFJtFsgtjndnLAvJqa0EasCy7fYgQA9EzGfXLzaI3Ht9QerSthjgZr7ULS0eCuceZvl0FFi618cDukwRsGTQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673639; c=relaxed/simple;
-	bh=28uSl9mCKGYMmgqva5eIE4ccjHbfeYGBXgn36tUqSV4=;
+	s=arc-20240116; t=1775672121; c=relaxed/simple;
+	bh=FzBZhKqgOd/1tILc66DlGTKRjuuMlbEuGskVtRtyhqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqEfyFGvxApTOfTf1udz2UYgEr+E7t7S20PoYbIBbKh+n19RoBYH9ygGrGMq01w9hyJu5zG2tPS8BrgYzTLcYJ2jUACqlHjw1JMDyl7CkiGIU/E6CHQJ9otg93n6ZsXC4qvNj1LxNCtm9TowG7pnExolSup9nVQ4iy4PWiJRAMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCo8xScW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691FCC19421;
-	Wed,  8 Apr 2026 18:40:39 +0000 (UTC)
+	 MIME-Version; b=ADcXMxWXsMTcq2LHEJJ8gGbDcDsg1IMw1QjFbDddHYBB9MONvbyvntXrTcDz42abiUxf+AOwcY8BprYk+sEy7kPiygKrgXF23lJy7dD3cxK1rALopjz+LciY3/scKBB2wKOow5YW08TbCg9Sm+me0HDpFCBLh0qbtnjbO8HIUSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPQYFeJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD949C2BC87;
+	Wed,  8 Apr 2026 18:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673639;
-	bh=28uSl9mCKGYMmgqva5eIE4ccjHbfeYGBXgn36tUqSV4=;
+	s=korg; t=1775672121;
+	bh=FzBZhKqgOd/1tILc66DlGTKRjuuMlbEuGskVtRtyhqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCo8xScWZ2zt/runjGAjWHUpO49UWztNMS6ak6ps+zXGjzbV+4faBNvkg51Poknv0
-	 ZiWcDyI7quL0NjnrMkbMamicmMfKkwuGQYhS522jlQ4HD72ikKUZR9A0x01MM2ZVHH
-	 1B5fL+we6c6FnWFeAk/tco1uqe30draOIN8yPvZg=
+	b=MPQYFeJgoVTcBHDnPEWDT/BRRwwNE3oPbe6GeRSor2N3GUUerbWL3J+/YwpmN8YIb
+	 nIOQYhVL2+vF2KD7zwa6FVVbVFPBkcAWkTp3CvTo5XpmVyJh8dmXZd75Lt6x+nuFcN
+	 SFJpSQycspl/3OAwNDV1aCxY9RBM00JJiyAgoOOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/242] btrfs: dont take device_list_mutex when querying zone info
-Date: Wed,  8 Apr 2026 20:01:11 +0200
-Message-ID: <20260408175928.237016596@linuxfoundation.org>
+Subject: [PATCH 6.1 155/312] ASoC: ep93xx: i2s: move enable call to startup callback
+Date: Wed,  8 Apr 2026 20:01:12 +0200
+Message-ID: <20260408175939.555260708@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,229 +64,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234740-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234153-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4BF423C25CB
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4D9E13C05B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
 
-[ Upstream commit 77603ab10429fe713a03345553ca8dbbfb1d91c6 ]
+[ Upstream commit 80f47122538d40b1a6a2c1a3c2d37b6e51b74224 ]
 
-Shin'ichiro reported sporadic hangs when running generic/013 in our CI
-system. When enabling lockdep, there is a lockdep splat when calling
-btrfs_get_dev_zone_info_all_devices() in the mount path that can be
-triggered by i.e. generic/013:
+Make startup/shutdown callbacks symmetric to avoid clock subsystem warnings
+(reproduced with "aplay --dump-hw-params" + ctrl-c):
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  7.0.0-rc1+ #355 Not tainted
-  ------------------------------------------------------
-  mount/1043 is trying to acquire lock:
-  ffff8881020b5470 (&vblk->vdev_mutex){+.+.}-{4:4}, at: virtblk_report_zones+0xda/0x430
+WARNING: CPU: 0 PID: 102 at drivers/clk/clk.c:1048 clk_core_disable
+lrclk already disabled
+CPU: 0 PID: 102 Comm: aplay Not tainted 6.2.0-rc4 #1
+Hardware name: Generic DT based system
+ ...
+ clk_core_disable from clk_core_disable_lock
+ clk_core_disable_lock from ep93xx_i2s_shutdown
+ ep93xx_i2s_shutdown from snd_soc_dai_shutdown
+ snd_soc_dai_shutdown from soc_pcm_clean
+ soc_pcm_clean from soc_pcm_close
+ soc_pcm_close from snd_pcm_release_substream.part.0
+ snd_pcm_release_substream.part.0 from snd_pcm_release
+ snd_pcm_release from __fput
+ __fput from task_work_run
+ ...
 
-  but task is already holding lock:
-  ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
+WARNING: CPU: 0 PID: 102 at drivers/clk/clk.c:907 clk_core_unprepare
+lrclk already unprepared
+CPU: 0 PID: 102 Comm: aplay Tainted: G        W          6.2.0-rc4 #1
+Hardware name: Generic DT based system
+ ...
+ clk_core_unprepare from clk_unprepare
+ clk_unprepare from ep93xx_i2s_shutdown
+ ep93xx_i2s_shutdown from snd_soc_dai_shutdown
+ snd_soc_dai_shutdown from soc_pcm_clean
+ soc_pcm_clean from soc_pcm_close
+ soc_pcm_close from snd_pcm_release_substream.part.0
+ snd_pcm_release_substream.part.0 from snd_pcm_release
+ snd_pcm_release from __fput
+ __fput from task_work_run
+ ...
 
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #4 (&fs_devs->device_list_mutex){+.+.}-{4:4}:
-	 __mutex_lock+0xa3/0x1360
-	 btrfs_create_pending_block_groups+0x1f4/0x9d0
-	 __btrfs_end_transaction+0x3e/0x2e0
-	 btrfs_zoned_reserve_data_reloc_bg+0x2f8/0x390
-	 open_ctree+0x1934/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #3 (btrfs_trans_num_extwriters){++++}-{0:0}:
-	 join_transaction+0xc2/0x5c0
-	 start_transaction+0x17c/0xbc0
-	 btrfs_zoned_reserve_data_reloc_bg+0x2b4/0x390
-	 open_ctree+0x1934/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #2 (btrfs_trans_num_writers){++++}-{0:0}:
-	 lock_release+0x163/0x4b0
-	 __btrfs_end_transaction+0x1c7/0x2e0
-	 btrfs_dirty_inode+0x6f/0xd0
-	 touch_atime+0xe5/0x2c0
-	 btrfs_file_mmap_prepare+0x65/0x90
-	 __mmap_region+0x4b9/0xf00
-	 mmap_region+0xf7/0x120
-	 do_mmap+0x43d/0x610
-	 vm_mmap_pgoff+0xd6/0x190
-	 ksys_mmap_pgoff+0x7e/0xc0
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #1 (&mm->mmap_lock){++++}-{4:4}:
-	 __might_fault+0x68/0xa0
-	 _copy_to_user+0x22/0x70
-	 blkdev_copy_zone_to_user+0x22/0x40
-	 virtblk_report_zones+0x282/0x430
-	 blkdev_report_zones_ioctl+0xfd/0x130
-	 blkdev_ioctl+0x20f/0x2c0
-	 __x64_sys_ioctl+0x86/0xd0
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  -> #0 (&vblk->vdev_mutex){+.+.}-{4:4}:
-	 __lock_acquire+0x1522/0x2680
-	 lock_acquire+0xd5/0x2f0
-	 __mutex_lock+0xa3/0x1360
-	 virtblk_report_zones+0xda/0x430
-	 blkdev_report_zones_cached+0x162/0x190
-	 btrfs_get_dev_zones+0xdc/0x2e0
-	 btrfs_get_dev_zone_info+0x219/0xe80
-	 btrfs_get_dev_zone_info_all_devices+0x62/0x90
-	 open_ctree+0x1200/0x23db
-	 btrfs_get_tree.cold+0x105/0x26c
-	 vfs_get_tree+0x28/0xb0
-	 __do_sys_fsconfig+0x324/0x680
-	 do_syscall_64+0x92/0x4f0
-	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  other info that might help us debug this:
-
-  Chain exists of:
-    &vblk->vdev_mutex --> btrfs_trans_num_extwriters --> &fs_devs->device_list_mutex
-
-   Possible unsafe locking scenario:
-
-	 CPU0                    CPU1
-	 ----                    ----
-    lock(&fs_devs->device_list_mutex);
-				 lock(btrfs_trans_num_extwriters);
-				 lock(&fs_devs->device_list_mutex);
-    lock(&vblk->vdev_mutex);
-
-   *** DEADLOCK ***
-
-  3 locks held by mount/1043:
-   #0: ffff88811063e878 (&fc->uapi_mutex){+.+.}-{4:4}, at: __do_sys_fsconfig+0x2ae/0x680
-   #1: ffff88810cb9f0e8 (&type->s_umount_key#31/1){+.+.}-{4:4}, at: alloc_super+0xc0/0x3e0
-   #2: ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
-
-  stack backtrace:
-  CPU: 2 UID: 0 PID: 1043 Comm: mount Not tainted 7.0.0-rc1+ #355 PREEMPT(full)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/10/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5b/0x80
-   print_circular_bug.cold+0x18d/0x1d8
-   check_noncircular+0x10d/0x130
-   __lock_acquire+0x1522/0x2680
-   ? vmap_small_pages_range_noflush+0x3ef/0x820
-   lock_acquire+0xd5/0x2f0
-   ? virtblk_report_zones+0xda/0x430
-   ? lock_is_held_type+0xcd/0x130
-   __mutex_lock+0xa3/0x1360
-   ? virtblk_report_zones+0xda/0x430
-   ? virtblk_report_zones+0xda/0x430
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   ? virtblk_report_zones+0xda/0x430
-   virtblk_report_zones+0xda/0x430
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   blkdev_report_zones_cached+0x162/0x190
-   ? __pfx_copy_zone_info_cb+0x10/0x10
-   btrfs_get_dev_zones+0xdc/0x2e0
-   btrfs_get_dev_zone_info+0x219/0xe80
-   btrfs_get_dev_zone_info_all_devices+0x62/0x90
-   open_ctree+0x1200/0x23db
-   btrfs_get_tree.cold+0x105/0x26c
-   ? rcu_is_watching+0x18/0x50
-   vfs_get_tree+0x28/0xb0
-   __do_sys_fsconfig+0x324/0x680
-   do_syscall_64+0x92/0x4f0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f615e27a40e
-  RSP: 002b:00007fff11b18fb8 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
-  RAX: ffffffffffffffda RBX: 000055572e92ab10 RCX: 00007f615e27a40e
-  RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
-  RBP: 00007fff11b19100 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 000055572e92bc40 R14: 00007f615e3faa60 R15: 000055572e92bd08
-   </TASK>
-
-Don't hold the device_list_mutex while calling into
-btrfs_get_dev_zone_info() in btrfs_get_dev_zone_info_all_devices() to
-mitigate the issue. This is safe, as no other thread can touch the device
-list at the moment of execution.
-
-Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://lore.kernel.org/r/20230410223902.2321834-2-alexander.sverdlin@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 622363757b22 ("ASoC: ep93xx: Fix unchecked clk_prepare_enable() and add rollback on failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/cirrus/ep93xx-i2s.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index e0c5ff2e08c1f..d9c26f4be6634 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -331,7 +331,10 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
- 	if (!btrfs_fs_incompat(fs_info, ZONED))
- 		return 0;
- 
--	mutex_lock(&fs_devices->device_list_mutex);
-+	/*
-+	 * No need to take the device_list mutex here, we're still in the mount
-+	 * path and devices cannot be added to or removed from the list yet.
-+	 */
- 	list_for_each_entry(device, &fs_devices->devices, dev_list) {
- 		/* We can skip reading of zone info for missing devices */
- 		if (!device->bdev)
-@@ -341,7 +344,6 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
- 		if (ret)
- 			break;
- 	}
--	mutex_unlock(&fs_devices->device_list_mutex);
- 
- 	return ret;
+diff --git a/sound/soc/cirrus/ep93xx-i2s.c b/sound/soc/cirrus/ep93xx-i2s.c
+index 982151330c896..46160796af31a 100644
+--- a/sound/soc/cirrus/ep93xx-i2s.c
++++ b/sound/soc/cirrus/ep93xx-i2s.c
+@@ -208,6 +208,16 @@ static int ep93xx_i2s_dai_probe(struct snd_soc_dai *dai)
+ 	return 0;
  }
+ 
++static int ep93xx_i2s_startup(struct snd_pcm_substream *substream,
++			      struct snd_soc_dai *dai)
++{
++	struct ep93xx_i2s_info *info = snd_soc_dai_get_drvdata(dai);
++
++	ep93xx_i2s_enable(info, substream->stream);
++
++	return 0;
++}
++
+ static void ep93xx_i2s_shutdown(struct snd_pcm_substream *substream,
+ 				struct snd_soc_dai *dai)
+ {
+@@ -348,7 +358,6 @@ static int ep93xx_i2s_hw_params(struct snd_pcm_substream *substream,
+ 	if (err)
+ 		return err;
+ 
+-	ep93xx_i2s_enable(info, substream->stream);
+ 	return 0;
+ }
+ 
+@@ -395,6 +404,7 @@ static int ep93xx_i2s_resume(struct snd_soc_component *component)
+ #endif
+ 
+ static const struct snd_soc_dai_ops ep93xx_i2s_dai_ops = {
++	.startup	= ep93xx_i2s_startup,
+ 	.shutdown	= ep93xx_i2s_shutdown,
+ 	.hw_params	= ep93xx_i2s_hw_params,
+ 	.set_sysclk	= ep93xx_i2s_set_sysclk,
 -- 
 2.53.0
 
