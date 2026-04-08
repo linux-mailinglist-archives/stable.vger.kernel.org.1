@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-234260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCJSFJac1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:10 +0200
+	id oPNJLHyh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F443C0782
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A1A3C1425
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 598A33036B6E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 80FAF3067E19
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB72E3D9053;
-	Wed,  8 Apr 2026 18:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494123D6694;
+	Wed,  8 Apr 2026 18:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvASjKh/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APBP4xuj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE4E3D904D;
-	Wed,  8 Apr 2026 18:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C56A2DCF41;
+	Wed,  8 Apr 2026 18:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672398; cv=none; b=KTJ4ZbZ6GS/47FQjIzLX6b4CqPPAj5jLEKT0YSQCs6cJkHn0crjRUVDveolWxB6+jJaRNK670W9LVPd0RtddX+OWs9pBOYglw6vDae8Nw6rSAoSsUvrcqgfRL0HD1jvmVO9Xn4L2+tLq/VjVaOFM9f3lCvSSfWFnH+O5c+atxN4=
+	t=1775673429; cv=none; b=KcyUds6PndUKZhvuNp960Y9+hFr4p3enmwyUTanR6j5LADpQCS853Tkk2CgdCiewnThJo0M8MNpKSfpX2odT+FTtwQaJGvEuKFb1fyhROZ3JHxCdUPmOsfcC+AXftXBDNJ/QHvmSbWrZpNdrVBXE5ftUk3qGNzQQG19ghwOF/jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672398; c=relaxed/simple;
-	bh=ommKtNWEmQalCKhwYztBHafVqzqtJAp+L5VItLnVGLs=;
+	s=arc-20240116; t=1775673429; c=relaxed/simple;
+	bh=rSBWiJqzDLdGmrB6XRIlvrvU7DWJFFxXUBd2TC7rI1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tp69JZ6f+pv0vg7BSvqi+3XmnTP0rIBvf3O1kMpsxOjlQuoGixsnISUl17dwC3HE6xw2xDXobY12vd6dLjLXGD6PpcmzQWCyIPLVjDD0fSvdejAzo7jlpM2hipI8+b0Sd+x9EmYbnEWya+WQImW98nNwYBKgmxRowCgwGFx4EN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvASjKh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9517C19425;
-	Wed,  8 Apr 2026 18:19:57 +0000 (UTC)
+	 MIME-Version; b=dJoAGythrpk0kQGPyDjqIL8eri1ai+OnzSGz9hs6+eTtIyOrTwo4UmPBR3YYv2idPwrwzSLkATQccpZdRYVPlcxcv/W+k2KKNe3hhcY/fPKdA7tzj3WLb42SvTvxM3yfRPIBPzaqQUglCGCOBxsqZtdRbaF8+QsBe07uWovkv34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APBP4xuj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526C6C19421;
+	Wed,  8 Apr 2026 18:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672398;
-	bh=ommKtNWEmQalCKhwYztBHafVqzqtJAp+L5VItLnVGLs=;
+	s=korg; t=1775673428;
+	bh=rSBWiJqzDLdGmrB6XRIlvrvU7DWJFFxXUBd2TC7rI1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TvASjKh/vPSCYvWHm+P4aj6sGHhQikaaCarlrdIeY21Xd0sKTzkD42p/W+w4we/U/
-	 AyAabCtqbXL2AC7aUzo1WCLW0evhxfj4Ni9Ye2GXkFp/qCdiqD/wA79/wWEI7p6X8l
-	 4LzA9fqADoeCQSDuONiMS1DKUmv2YFalRikZbNkk=
+	b=APBP4xuj6FMu6nYpHDZjnt8C/XBAkH/Rb7lMHUp33iukBxlhWkPLKflvwa7fd5RTA
+	 bXYGPVR7Om9j+ACZJcauNw4SRa/4c+T5pgU+hLNh54bQZFU2VwGMeyN7jIsLQ6X3VC
+	 fg8Ax4af/29io0BkEagA44BhOzlwNNYYndAwl2m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com,
-	syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com,
-	syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com,
-	Alexey Panov <apanov@astralinux.ru>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.1 297/312] erofs: handle overlapped pclusters out of crafted images properly
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.18 229/277] counter: rz-mtu3-cnt: prevent counter from being toggled multiple times
 Date: Wed,  8 Apr 2026 20:03:34 +0200
-Message-ID: <20260408175944.858445194@linuxfoundation.org>
+Message-ID: <20260408175942.409905326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,205 +63,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234260-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,4fc98ed414ae63d1ada2,de04e06b28cfecf2281c,c8c8238b394be4a1087d];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234658-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email]
-X-Rspamd-Queue-Id: E5F443C0782
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B3A1A3C1425
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 
-commit 9e2f9d34dd12e6e5b244ec488bcebd0c2d566c50 upstream.
+commit 67c3f99bed6f422ba343d2b70a2eeeccdfd91bef upstream.
 
-syzbot reported a task hang issue due to a deadlock case where it is
-waiting for the folio lock of a cached folio that will be used for
-cache I/Os.
+Runtime PM counter is incremented / decremented each time the sysfs
+enable file is written to.
 
-After looking into the crafted fuzzed image, I found it's formed with
-several overlapped big pclusters as below:
+If user writes 0 to the sysfs enable file multiple times, runtime PM
+usage count underflows, generating the following message.
 
- Ext:   logical offset   |  length :     physical offset    |  length
-   0:        0..   16384 |   16384 :     151552..    167936 |   16384
-   1:    16384..   32768 |   16384 :     155648..    172032 |   16384
-   2:    32768..   49152 |   16384 :  537223168.. 537239552 |   16384
-...
+rz-mtu3-counter rz-mtu3-counter.0: Runtime PM usage count underflow!
 
-Here, extent 0/1 are physically overlapped although it's entirely
-_impossible_ for normal filesystem images generated by mkfs.
+At the same time, hardware registers end up being accessed with clocks
+off in rz_mtu3_terminate_counter() to disable an already disabled
+channel.
 
-First, managed folios containing compressed data will be marked as
-up-to-date and then unlocked immediately (unlike in-place folios) when
-compressed I/Os are complete.  If physical blocks are not submitted in
-the incremental order, there should be separate BIOs to avoid dependency
-issues.  However, the current code mis-arranges z_erofs_fill_bio_vec()
-and BIO submission which causes unexpected BIO waits.
+If user writes 1 to the sysfs enable file multiple times, runtime PM
+usage count will be incremented each time, requiring the same number of
+0 writes to get it back to 0.
 
-Second, managed folios will be connected to their own pclusters for
-efficient inter-queries.  However, this is somewhat hard to implement
-easily if overlapped big pclusters exist.  Again, these only appear in
-fuzzed images so let's simply fall back to temporary short-lived pages
-for correctness.
+If user writes 0 to the sysfs enable file while PWM is in progress, PWM
+is stopped without counter being the owner of the underlying MTU3
+channel.
 
-Additionally, it justifies that referenced managed folios cannot be
-truncated for now and reverts part of commit 2080ca1ed3e4 ("erofs: tidy
-up `struct z_erofs_bvec`") for simplicity although it shouldn't be any
-difference.
+Check against the cached count_is_enabled value and exit if the user
+is trying to set the same enable value.
 
-[Alexey: This patch follows linux 6.6.y conflict resolution changes of
-struct folio -> struct page]
-
-Reported-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
-Reported-by: syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com
-Reported-by: syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com
-Tested-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/0000000000002fda01061e334873@google.com
-Fixes: 8e6c8fa9f2e9 ("erofs: enable big pcluster feature")
-Link: https://lore.kernel.org/r/20240910070847.3356592-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
-Link: https://lore.kernel.org/r/20250304110558.8315-2-apanov@astralinux.ru
-Link: https://lore.kernel.org/r/20250304110558.8315-1-apanov@astralinux.ru
-[ Gao Xiang: re-address the previous Alexey's backport. ]
-CVE: CVE-2024-47736
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: stable@vger.kernel.org
+Fixes: 0be8907359df ("counter: Add Renesas RZ/G2L MTU3a counter driver")
+Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Link: https://lore.kernel.org/r/20260130122353.2263273-5-cosmin-gabriel.tanislav.xa@renesas.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zdata.c |   60 +++++++++++++++++++++++++++++--------------------------
- 1 file changed, 32 insertions(+), 28 deletions(-)
+ drivers/counter/rz-mtu3-cnt.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1331,14 +1331,14 @@ repeat:
- 		goto out;
+--- a/drivers/counter/rz-mtu3-cnt.c
++++ b/drivers/counter/rz-mtu3-cnt.c
+@@ -499,21 +499,25 @@ static int rz_mtu3_count_enable_write(st
+ 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
+ 	int ret = 0;
  
- 	lock_page(page);
--
--	/* only true if page reclaim goes wrong, should never happen */
--	DBG_BUGON(justfound && PagePrivate(page));
--
--	/* the page is still in manage cache */
--	if (page->mapping == mc) {
-+	if (likely(page->mapping == mc)) {
- 		WRITE_ONCE(pcl->compressed_bvecs[nr].page, page);
-+		oldpage = page;
- 
-+		/*
-+		 * The cached folio is still in managed cache but without
-+		 * a valid `->private` pcluster hint.  Let's reconnect them.
-+		 */
- 		if (!PagePrivate(page)) {
- 			/*
- 			 * impossible to be !PagePrivate(page) for
-@@ -1352,22 +1352,24 @@ repeat:
- 			SetPagePrivate(page);
- 		}
- 
--		/* no need to submit io if it is already up-to-date */
--		if (PageUptodate(page)) {
--			unlock_page(page);
--			page = NULL;
-+		if (likely(page->private == (unsigned long)pcl)) {
-+			/* don't submit cache I/Os again if already uptodate */
-+			if (PageUptodate(page)) {
-+				unlock_page(page);
-+				page = NULL;
++	mutex_lock(&priv->lock);
 +
-+			}
-+			goto out;
- 		}
--		goto out;
-+		/*
-+		 * Already linked with another pcluster, which only appears in
-+		 * crafted images by fuzzers for now.  But handle this anyway.
-+		 */
-+		tocache = false;	/* use temporary short-lived pages */
-+	} else {
-+		DBG_BUGON(1); /* referenced managed folios can't be truncated */
-+		tocache = true;
++	if (priv->count_is_enabled[count->id] == enable)
++		goto exit;
++
+ 	if (enable) {
+-		mutex_lock(&priv->lock);
+ 		pm_runtime_get_sync(ch->dev);
+ 		ret = rz_mtu3_initialize_counter(counter, count->id);
+ 		if (ret == 0)
+ 			priv->count_is_enabled[count->id] = true;
+-		mutex_unlock(&priv->lock);
+ 	} else {
+-		mutex_lock(&priv->lock);
+ 		rz_mtu3_terminate_counter(counter, count->id);
+ 		priv->count_is_enabled[count->id] = false;
+ 		pm_runtime_put(ch->dev);
+-		mutex_unlock(&priv->lock);
  	}
--
--	/*
--	 * the managed page has been truncated, it's unsafe to
--	 * reuse this one, let's allocate a new cache-managed page.
--	 */
--	DBG_BUGON(page->mapping);
--	DBG_BUGON(!justfound);
--
--	tocache = true;
- 	unlock_page(page);
- 	put_page(page);
- out_allocpage:
-@@ -1520,16 +1522,11 @@ static void z_erofs_submit_queue(struct
- 		end = cur + pcl->pclusterpages;
  
- 		do {
--			struct page *page;
--
--			page = pickup_page_for_submission(pcl, i++,
--					&f->pagepool, mc);
--			if (!page)
--				continue;
-+			struct page *page = NULL;
- 
- 			if (bio && (cur != last_index + 1 ||
- 				    last_bdev != mdev.m_bdev)) {
--submit_bio_retry:
-+drain_io:
- 				submit_bio(bio);
- 				if (memstall) {
- 					psi_memstall_leave(&pflags);
-@@ -1538,6 +1535,13 @@ submit_bio_retry:
- 				bio = NULL;
- 			}
- 
-+			if (!page) {
-+				page = pickup_page_for_submission(pcl, i++,
-+						&f->pagepool, mc);
-+				if (!page)
-+					continue;
-+			}
++exit:
++	mutex_unlock(&priv->lock);
 +
- 			if (unlikely(PageWorkingset(page)) && !memstall) {
- 				psi_memstall_enter(&pflags);
- 				memstall = 1;
-@@ -1558,7 +1562,7 @@ submit_bio_retry:
- 			}
+ 	return ret;
+ }
  
- 			if (bio_add_page(bio, page, PAGE_SIZE, 0) < PAGE_SIZE)
--				goto submit_bio_retry;
-+				goto drain_io;
- 
- 			last_index = cur;
- 			bypass = false;
 
 
 
