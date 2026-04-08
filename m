@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDeNAaKi1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:58 +0200
+	id sITJBtip1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8A03C1818
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 678263C2B51
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 182C8306777B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2315B31A9557
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22383D522C;
-	Wed,  8 Apr 2026 18:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7FA355F30;
+	Wed,  8 Apr 2026 18:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmT5I7p4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2sUs7tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B3C37F01B;
-	Wed,  8 Apr 2026 18:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3EF337B81;
+	Wed,  8 Apr 2026 18:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672969; cv=none; b=Wno/C2rxIyQ53IPO8Vh2GHyvGkvY7VpVDU+5+C5ZNbv7DrpxQH2+vyj/0cTm7k8TSkr/F4zMIn+dw/B2XyXUiciQOjD8nSPbET3zqrbYx1AFg341FzJFqR+MbhsdgR9ay9GqEPG1r8P/R04mxm50bH3ocfmVDKQ3VxjvfGoJzTY=
+	t=1775674363; cv=none; b=nIXfO/wW1vmWNHzzsLE8QbNoEeg9+dyHzkChjFEyrCYdwwEWRTVhCbbOw2oSxbDIh8crWgYqUaxxifi8khXI/QTuJXjUnev94rce2bE5Ie252Y0MzWE0KLb4zQQJnOtmWDOJG12V4F2UoaHBO35WQLLrkwiF+kh94VCmSJqD5w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672969; c=relaxed/simple;
-	bh=mBAo5M/4+N2Xs+tPWrIuyMVk5AYD1gLdPTsK4d0pCWI=;
+	s=arc-20240116; t=1775674363; c=relaxed/simple;
+	bh=yU6jnoN1RZ6CZlvMfI/77iw7hjCrZddJsHH0F5tbLlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwnpOeqpUTy9BxagXd6Sqbd4W40JOWlDfp0POj3AW8vJFFe4b0eWlyfsDq2v+96ptHIwG/QfTEasmaPgIPvFaMgQPNGWVinmOAr3/ptOdH7lIh3vuOwlXx/yf+9j3zqPamSvP1dc+CuEs0dGx1VchNBu7pI/N0rxowhz59U2LDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmT5I7p4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11018C19421;
-	Wed,  8 Apr 2026 18:29:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eUnH3SamYgjMPqFq6i88Tj0oMQCYrVfy0ZLxV/yhMLY4jIAK6KyRhNU+yJW0BglGOArQWbZXrSV939VQV/k7v7ro7a4NEotyyHWSSakkYATRKlItz5h8raZv915Z8ML9ymsr/YzuoRomUgDiN7quxqMrtm98+TmhBFZ7ByOkUEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2sUs7tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45584C19421;
+	Wed,  8 Apr 2026 18:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672969;
-	bh=mBAo5M/4+N2Xs+tPWrIuyMVk5AYD1gLdPTsK4d0pCWI=;
+	s=korg; t=1775674363;
+	bh=yU6jnoN1RZ6CZlvMfI/77iw7hjCrZddJsHH0F5tbLlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmT5I7p4pL7RXGUul4u1yQ9my3rsLP7gg0mqoBPwNdnRUm9uU2aixjx550RkT6aob
-	 G4dJLTBUOfhL/j3JpnsHYyBro2ubMOXggN79AfPPGOWzbXK5+HQXP7BqvOoCOIrqd3
-	 3Vg6c4gV7ymCNWUn2PHwJAwVIVb1BcC0mNGrmjwk=
+	b=C2sUs7tlk6ATe7H+I5IZCaHoTQA07RYh2VIE/eDGjAyJq/J+ThrD+vG14dspJeiD4
+	 9Z6oWnwZJoivYN20ZwrAFaPo/zDy8JrSU7+NPYlERl3YY5PcCp0YuBHXlX2ud+v7B6
+	 Zdk120Bm5zY83mMS1vSLQm0cKmv06zunGZUfaG7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yochai Eisenrich <echelonh@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paul Bunyan <pbunyan@redhat.com>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 051/277] net: sched: cls_api: fix tc_chain_fill_node to initialize tcm_info to zero to prevent an info-leak
+Subject: [PATCH 6.19 036/311] crypto: caam - fix DMA corruption on long hmac keys
 Date: Wed,  8 Apr 2026 20:00:36 +0200
-Message-ID: <20260408175935.763835439@linuxfoundation.org>
+Message-ID: <20260408175940.763491504@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235020-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234480-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,mojatatu.com:email]
-X-Rspamd-Queue-Id: 5F8A03C1818
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 678263C2B51
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yochai Eisenrich <echelonh@gmail.com>
+From: Horia Geantă <horia.geanta@nxp.com>
 
-[ Upstream commit e6e3eb5ee89ac4c163d46429391c889a1bb5e404 ]
+[ Upstream commit 5ddfdcbe10dc5f97afc4e46ca22be2be717e8caf ]
 
-When building netlink messages, tc_chain_fill_node() never initializes
-the tcm_info field of struct tcmsg. Since the allocation is not zeroed,
-kernel heap memory is leaked to userspace through this 4-byte field.
+When a key longer than block size is supplied, it is copied and then
+hashed into the real key.  The memory allocated for the copy needs to
+be rounded to DMA cache alignment, as otherwise the hashed key may
+corrupt neighbouring memory.
 
-The fix simply zeroes tcm_info alongside the other fields that are
-already initialized.
+The rounding was performed, but never actually used for the allocation.
+Fix this by replacing kmemdup with kmalloc for a larger buffer,
+followed by memcpy.
 
-Fixes: 32a4f5ecd738 ("net: sched: introduce chain object to uapi")
-Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260328211436.1010152-1-echelonh@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 199354d7fb6e ("crypto: caam - Remove GFP_DMA and add DMA alignment padding")
+Reported-by: Paul Bunyan <pbunyan@redhat.com>
+Signed-off-by: Horia Geantă <horia.geanta@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/caam/caamhash.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index bac9cd71ff8e9..b03dc4fe20e52 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -2969,6 +2969,7 @@ static int tc_chain_fill_node(const struct tcf_proto_ops *tmplt_ops,
- 	tcm->tcm__pad1 = 0;
- 	tcm->tcm__pad2 = 0;
- 	tcm->tcm_handle = 0;
-+	tcm->tcm_info = 0;
- 	if (block->q) {
- 		tcm->tcm_ifindex = qdisc_dev(block->q)->ifindex;
- 		tcm->tcm_parent = block->q->handle;
+diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
+index 25c02e2672585..053af748be86d 100644
+--- a/drivers/crypto/caam/caamhash.c
++++ b/drivers/crypto/caam/caamhash.c
+@@ -441,9 +441,10 @@ static int ahash_setkey(struct crypto_ahash *ahash,
+ 		if (aligned_len < keylen)
+ 			return -EOVERFLOW;
+ 
+-		hashed_key = kmemdup(key, keylen, GFP_KERNEL);
++		hashed_key = kmalloc(aligned_len, GFP_KERNEL);
+ 		if (!hashed_key)
+ 			return -ENOMEM;
++		memcpy(hashed_key, key, keylen);
+ 		ret = hash_digest_key(ctx, &keylen, hashed_key, digestsize);
+ 		if (ret)
+ 			goto bad_free_key;
 -- 
 2.53.0
 
