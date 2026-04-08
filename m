@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-234599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +A3WLdSf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:00 +0200
+	id iHFBOMSn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86EB03C102C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC733C27A5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2BAA93029A1A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D51843057616
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CDB3D902E;
-	Wed,  8 Apr 2026 18:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5863D669E;
+	Wed,  8 Apr 2026 18:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6Z/c3kR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2WydzMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F6E3ACF16;
-	Wed,  8 Apr 2026 18:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A902BEFFF;
+	Wed,  8 Apr 2026 18:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673277; cv=none; b=DWwgqGB861B2cNp/C3IB+ReRcvHaV9j1yJ4kzIGMdSg8glcu/GAXG5nBMxJQA8IMPUlcjD5YBLU9fceEg8LuCHjisw6LH2FGXMPB2Y6x+0zo7j7KWXNyBXg5/XiPCoFJCw6pRb27mz6phi8Ola3eXP64dNM428bJpeiq5nB4NDc=
+	t=1775673850; cv=none; b=liBOimordhh7eIWI1Z9PZI4zEi25cT/TcDyyIAk46Y/lGLFAplt1Tpx03jYuoXF4TNeSmPudJbk6daM9pKwM6i2p8r88OWZNb979952ZvFcXwaS4KdVBAXLhZOY55wTAvvZHPziWt2TbBEXBrkAnkb10TZL2CF7Iz/+ZvpcZ8II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673277; c=relaxed/simple;
-	bh=H/nlugm2LDHMf6iEWDoDN0RdxvAEHzYmbeTR0t+Fx0I=;
+	s=arc-20240116; t=1775673850; c=relaxed/simple;
+	bh=TJSqlayMEaRF+lcWdn22uxEN/NwfGleHItmaEGfDYys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2MZfk5Mf11LIyWosn5uieeqhdbb3ldRjvW7tK+nUwAceLYqiujzS2fKtwjk4HB3Zy/ToNVwJbxTur1yxVnXlHy+0c0nrKw2nOZY1hT7qO5X/B9r/YK5yH1y3Q2ZsW/sEdZOqcOViRvzR+M+eqR6zlP/y1l2Jk7CSpk1qNkrB1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6Z/c3kR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825B5C19421;
-	Wed,  8 Apr 2026 18:34:36 +0000 (UTC)
+	 MIME-Version; b=pKPMLByDOqCSe1bTp/QWdbcQ72vJqteMh3ZpVt8DFWnhOu0re1QDqwav7a2G2G77Qgpl1T8Dp4CVCWEW8iEKBheMQLRVBa3SQB2c2Sp2pXUxG46rbLt6TMBqBktjy22dSAgq6WrfET6fd/3Fk0sSRq7N4KQww98bMRMkxx3oAfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2WydzMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1BEC19425;
+	Wed,  8 Apr 2026 18:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673276;
-	bh=H/nlugm2LDHMf6iEWDoDN0RdxvAEHzYmbeTR0t+Fx0I=;
+	s=korg; t=1775673850;
+	bh=TJSqlayMEaRF+lcWdn22uxEN/NwfGleHItmaEGfDYys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6Z/c3kRvQQ7puVJBuaT7YfqAaxHXtY8HnoVm8R219CgnL8uE6AX0YjXzZ4YlLdqb
-	 zBID0TEYK6rHZ4jsPrIKNAVGcjWzSchy11MFdGbxDNxLp1l8dp6mlwsy91NtugYAk6
-	 6ZY1+EK+MqUrI4StA4ma7pQwFVxIn3Dk5QRPes+Q=
+	b=m2WydzMuACMW0z/HIiTU3cRSwKxXAnc3d8su2dFHy5qA/p4XDZ5sCSOL7DvmQ7TAV
+	 n9wGhMtICk23ZEeWINcz8fV/vLZ+AIorNKcEYKpvMzPqVFUOjKnzKl3vPCg34j5MDt
+	 cZjkASe5ODP+8eH0h/IsoKytg0Z7c7eGq5kYeLZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wanquan Zhong <wanquan.zhong@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 169/277] USB: serial: option: add support for Rolling Wireless RW135R-GL
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 114/242] drm/ioc32: stop speculation on the drm_compat_ioctl path
 Date: Wed,  8 Apr 2026 20:02:34 +0200
-Message-ID: <20260408175940.178313404@linuxfoundation.org>
+Message-ID: <20260408175931.353495031@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +71,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
+	TAGGED_FROM(0.00)[bounces-234821-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234599-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fibocom.com:email]
-X-Rspamd-Queue-Id: 86EB03C102C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,ffwll.ch:email]
+X-Rspamd-Queue-Id: 2DC733C27A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wanquan Zhong <wanquan.zhong@fibocom.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 01e8d0f742222f1e68f48180d5480097adf7ae9f upstream.
+commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
 
-Add VID/PID 33f8:1003 for the Rolling Wireless RW135R-GL M.2 module,
-which is used in laptop debug cards with MBIM interface for
-Linux/Chrome OS. The device supports mbim, pipe functionalities.
+The drm compat ioctl path takes a user controlled pointer, and then
+dereferences it into a table of function pointers, the signature method
+of spectre problems.  Fix this up by calling array_index_nospec() on the
+index to the function pointer list.
 
-Here are the outputs of usb-devices:
-T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=1003 Rev=05.15
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW135R-GL Module
-S:  SerialNumber=12345678
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Simona Vetter <simona@ffwll.ch>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_ioc32.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2464,6 +2464,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
+--- a/drivers/gpu/drm/drm_ioc32.c
++++ b/drivers/gpu/drm/drm_ioc32.c
+@@ -28,6 +28,7 @@
+  * IN THE SOFTWARE.
+  */
+ #include <linux/compat.h>
++#include <linux/nospec.h>
+ #include <linux/ratelimit.h>
+ #include <linux/export.h>
+ 
+@@ -374,6 +375,7 @@ long drm_compat_ioctl(struct file *filp,
+ 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
+ 		return drm_ioctl(filp, cmd, arg);
+ 
++	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
+ 	fn = drm_compat_ioctls[nr].fn;
+ 	if (!fn)
+ 		return drm_ioctl(filp, cmd, arg);
 
 
 
