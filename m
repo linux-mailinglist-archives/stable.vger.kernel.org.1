@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-234489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNuACgGf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:29 +0200
+	id WFq2FPKm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C20FD3C0DD1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57823C25E9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ACCD0300F14D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9DA7331DF975
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDF13D522C;
-	Wed,  8 Apr 2026 18:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22EF3D522C;
+	Wed,  8 Apr 2026 18:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lz/zJ9+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keCGQg7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E696525A321;
-	Wed,  8 Apr 2026 18:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9563F3B0AFC;
+	Wed,  8 Apr 2026 18:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672993; cv=none; b=RGt9UJ78Z6D9x9lWlHXRZ5zAkABV1LWeCgtr37juorjSdAp6WPg1iaOoE57JZpw9itHCzGcn93LsvdFMn6CP+BKZekfiksmViLKSeofyG1zIl0nwaA91zq0NtSc5/m3j6vynnu5NVaWIbzzQhv0g8GwhrRYnzjg7Q+b5TuHtFdY=
+	t=1775673647; cv=none; b=CZJtlyWaH9Iu6Mmj3fdPhHhA7SecIzDTLzevbHfw4ItUj8JFQli6eN7swDq3s9YO0WZXKB0eGvRHo+wu1YulKgKhGtsfEcBlZeUs2vtMDA8Lc3lYPRdUw1gLVSVppswGa9IVht7darQ9x7Gb2n7vWnnwhgHkohqo3ZLHKnYogbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672993; c=relaxed/simple;
-	bh=m0vZxFtZj3S4WMsXJ5mU1wtC0lR46wT79Cq1htyqw+s=;
+	s=arc-20240116; t=1775673647; c=relaxed/simple;
+	bh=EH0qqrOh05uLLKYAfiUSLM0vVZq5DzeRp711r7aRgeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOIbrckRo4DSvix+8cKoZ2A6fRdyEcBNC6fcdTfwsrxtrpPE5qRhzI2ezLwdI7k5pJJ18YKNgPbQKPg/j0ulXr+BgX419V9n6/xM7l2YQfkZO8kW0EQ1mbSI3bjEtau+V8C5VfwJuaA8ZhZdQotXY9nI6CKYwzFQ30pUn2iUJk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lz/zJ9+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2729CC19421;
-	Wed,  8 Apr 2026 18:29:51 +0000 (UTC)
+	 MIME-Version; b=tSJI+A4AMdFBoJKutyYyQk/tpivkZExrn+xCnZdPfPB0eyOdP3zLfXjd3bJyiOqn7u5/12MHc8Ow6iAjeUyoKLQ8Vx2RjqBw4Il1vlygRegcbweVDHUFK4YcOXjsb0WntC+MhZ7XU47bt4kPZfqSRSyMRx3BlwVdNEaVLOA/nOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keCGQg7Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8A7C19421;
+	Wed,  8 Apr 2026 18:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672992;
-	bh=m0vZxFtZj3S4WMsXJ5mU1wtC0lR46wT79Cq1htyqw+s=;
+	s=korg; t=1775673647;
+	bh=EH0qqrOh05uLLKYAfiUSLM0vVZq5DzeRp711r7aRgeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lz/zJ9+UDvT/uUbOQUt8bqtwdajPQrScs+INF0Z0mAriST2CdgIUs3mnyxDe5f4KA
-	 Rr1WxbuHnIxuOW1J1icoiPjH+sMkFj+PBRU4Fu0Jt0OGtf2PJhix+EC4YQgC+SQK0n
-	 beWU1F6qX/IQoCVMfZaAM6I04DVYPEN6Q6f5bfcw=
+	b=keCGQg7QNp6voXekY6OdK/3m5EzZpUBAqdng2GtNcDA/OVA78u+hDL8me8zB1gGh3
+	 8QGt2kD9oI7ATQbEuOlBvG7UbAYH2cbTxWq8/r9wjMerTACYb0QGdCnBEIOwzj6I20
+	 3iVIdx4UjvRoNnDXrfd+d4a0jNEEze8z4LH9zeqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Braha <julianbraha@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 059/277] ASoC: Intel: boards: fix unmet dependency on PINCTRL
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 004/242] io_uring/kbuf: remove legacy kbuf caching
 Date: Wed,  8 Apr 2026 20:00:44 +0200
-Message-ID: <20260408175936.064214829@linuxfoundation.org>
+Message-ID: <20260408175927.236688394@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +63,232 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,arndb.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234489-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email]
-X-Rspamd-Queue-Id: C20FD3C0DD1
+	TAGGED_FROM(0.00)[bounces-234743-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.994];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D57823C25E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Braha <julianbraha@gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit e920c36f2073d533bdf19ba6ab690432c8173b63 ]
+Commit 13ee854e7c04236a47a5beaacdcf51eb0bc7a8fa upstream.
 
-This reverts commit c073f0757663 ("ASoC: Intel: sof_sdw: select PINCTRL_CS42L43 and SPI_CS42L43")
+Remove all struct io_buffer caches. It makes it a fair bit simpler.
+Apart from from killing a bunch of lines and juggling between lists,
+__io_put_kbuf_list() doesn't need ->completion_lock locking now.
 
-Currently, SND_SOC_INTEL_SOUNDWIRE_SOF_MACH selects PINCTRL_CS42L43
-without also selecting or depending on PINCTRL, despite PINCTRL_CS42L43
-depending on PINCTRL.
-
-See the following Kbuild warning:
-
-WARNING: unmet direct dependencies detected for PINCTRL_CS42L43
-  Depends on [n]: PINCTRL [=n] && MFD_CS42L43 [=m]
-  Selected by [m]:
-  - SND_SOC_INTEL_SOUNDWIRE_SOF_MACH [=m] && SOUND [=y] && SND [=m] && SND_SOC [=m] && SND_SOC_INTEL_MACH [=y] && (SND_SOC_SOF_INTEL_COMMON [=m] || !SND_SOC_SOF_INTEL_COMMON [=m]) && SND_SOC_SOF_INTEL_SOUNDWIRE [=m] && I2C [=y] && SPI_MASTER [=y] && ACPI [=y] && (MFD_INTEL_LPSS [=n] || COMPILE_TEST [=y]) && (SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES [=n] || COMPILE_TEST [=y]) && SOUNDWIRE [=m]
-
-In response to v1 of this patch [1], Arnd pointed out that there is
-no compile-time dependency sof_sdw and the PINCTRL_CS42L43 driver.
-After testing, I can confirm that the kernel compiled with
-SND_SOC_INTEL_SOUNDWIRE_SOF_MACH enabled and PINCTRL_CS42L43 disabled.
-
-This unmet dependency was detected by kconfirm, a static analysis
-tool for Kconfig.
-
-Link: https://lore.kernel.org/all/b8aecc71-1fed-4f52-9f6c-263fbe56d493@app.fastmail.com/ [1]
-Fixes: c073f0757663 ("ASoC: Intel: sof_sdw: select PINCTRL_CS42L43 and SPI_CS42L43")
-Signed-off-by: Julian Braha <julianbraha@gmail.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20260325001522.1727678-1-julianbraha@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/18287217466ee2576ea0b1e72daccf7b22c7e856.1738724373.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/io_uring_types.h |    3 --
+ io_uring/io_uring.c            |    2 -
+ io_uring/kbuf.c                |   58 ++++-------------------------------------
+ io_uring/kbuf.h                |    5 +--
+ 4 files changed, 9 insertions(+), 59 deletions(-)
 
-diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
-index c23fdb6aad4ca..1031d6497f55e 100644
---- a/sound/soc/intel/boards/Kconfig
-+++ b/sound/soc/intel/boards/Kconfig
-@@ -525,8 +525,6 @@ config SND_SOC_INTEL_SOUNDWIRE_SOF_MACH
- 	select SND_SOC_CS42L43_SDW
- 	select MFD_CS42L43
- 	select MFD_CS42L43_SDW
--	select PINCTRL_CS42L43
--	select SPI_CS42L43
- 	select SND_SOC_CS35L56_SPI
- 	select SND_SOC_CS35L56_SDW
- 	select SND_SOC_DMIC
--- 
-2.53.0
-
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -341,7 +341,6 @@ struct io_ring_ctx {
+ 
+ 	spinlock_t		completion_lock;
+ 
+-	struct list_head	io_buffers_comp;
+ 	struct list_head	cq_overflow_list;
+ 	struct io_hash_table	cancel_table;
+ 
+@@ -361,8 +360,6 @@ struct io_ring_ctx {
+ 	unsigned int		file_alloc_start;
+ 	unsigned int		file_alloc_end;
+ 
+-	struct list_head	io_buffers_cache;
+-
+ 	/* Keep this last, we don't need it for the fast path */
+ 	struct wait_queue_head		poll_wq;
+ 	struct io_restriction		restrictions;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -305,7 +305,6 @@ static __cold struct io_ring_ctx *io_rin
+ 	init_waitqueue_head(&ctx->sqo_sq_wait);
+ 	INIT_LIST_HEAD(&ctx->sqd_list);
+ 	INIT_LIST_HEAD(&ctx->cq_overflow_list);
+-	INIT_LIST_HEAD(&ctx->io_buffers_cache);
+ 	ret = io_alloc_cache_init(&ctx->rsrc_node_cache, IO_NODE_ALLOC_CACHE_MAX,
+ 			    sizeof(struct io_rsrc_node));
+ 	ret |= io_alloc_cache_init(&ctx->apoll_cache, IO_POLL_ALLOC_CACHE_MAX,
+@@ -328,7 +327,6 @@ static __cold struct io_ring_ctx *io_rin
+ 	spin_lock_init(&ctx->completion_lock);
+ 	spin_lock_init(&ctx->timeout_lock);
+ 	INIT_WQ_LIST(&ctx->iopoll_list);
+-	INIT_LIST_HEAD(&ctx->io_buffers_comp);
+ 	INIT_LIST_HEAD(&ctx->defer_list);
+ 	INIT_LIST_HEAD(&ctx->timeout_list);
+ 	INIT_LIST_HEAD(&ctx->ltimeout_list);
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -78,9 +78,7 @@ bool io_kbuf_recycle_legacy(struct io_ki
+ 
+ void __io_put_kbuf(struct io_kiocb *req, int len, unsigned issue_flags)
+ {
+-	spin_lock(&req->ctx->completion_lock);
+ 	__io_put_kbuf_list(req, len);
+-	spin_unlock(&req->ctx->completion_lock);
+ }
+ 
+ static void __user *io_provided_buffer_select(struct io_kiocb *req, size_t *len,
+@@ -362,14 +360,15 @@ static int __io_remove_buffers(struct io
+ 		return i;
+ 	}
+ 
+-	/* protects io_buffers_cache */
+ 	lockdep_assert_held(&ctx->uring_lock);
+ 
+ 	while (!list_empty(&bl->buf_list)) {
+ 		struct io_buffer *nxt;
+ 
+ 		nxt = list_first_entry(&bl->buf_list, struct io_buffer, list);
+-		list_move(&nxt->list, &ctx->io_buffers_cache);
++		list_del(&nxt->list);
++		kfree(nxt);
++
+ 		if (++i == nbufs)
+ 			return i;
+ 		cond_resched();
+@@ -389,27 +388,12 @@ void io_put_bl(struct io_ring_ctx *ctx,
+ void io_destroy_buffers(struct io_ring_ctx *ctx)
+ {
+ 	struct io_buffer_list *bl;
+-	struct list_head *item, *tmp;
+-	struct io_buffer *buf;
+ 	unsigned long index;
+ 
+ 	xa_for_each(&ctx->io_bl_xa, index, bl) {
+ 		xa_erase(&ctx->io_bl_xa, bl->bgid);
+ 		io_put_bl(ctx, bl);
+ 	}
+-
+-	/*
+-	 * Move deferred locked entries to cache before pruning
+-	 */
+-	spin_lock(&ctx->completion_lock);
+-	if (!list_empty(&ctx->io_buffers_comp))
+-		list_splice_init(&ctx->io_buffers_comp, &ctx->io_buffers_cache);
+-	spin_unlock(&ctx->completion_lock);
+-
+-	list_for_each_safe(item, tmp, &ctx->io_buffers_cache) {
+-		buf = list_entry(item, struct io_buffer, list);
+-		kfree(buf);
+-	}
+ }
+ 
+ static void io_destroy_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
+@@ -499,33 +483,6 @@ int io_provide_buffers_prep(struct io_ki
+ 	return 0;
+ }
+ 
+-static int io_refill_buffer_cache(struct io_ring_ctx *ctx)
+-{
+-	struct io_buffer *buf;
+-
+-	/*
+-	 * Completions that don't happen inline (eg not under uring_lock) will
+-	 * add to ->io_buffers_comp. If we don't have any free buffers, check
+-	 * the completion list and splice those entries first.
+-	 */
+-	if (!list_empty_careful(&ctx->io_buffers_comp)) {
+-		spin_lock(&ctx->completion_lock);
+-		if (!list_empty(&ctx->io_buffers_comp)) {
+-			list_splice_init(&ctx->io_buffers_comp,
+-						&ctx->io_buffers_cache);
+-			spin_unlock(&ctx->completion_lock);
+-			return 0;
+-		}
+-		spin_unlock(&ctx->completion_lock);
+-	}
+-
+-	buf = kmalloc(sizeof(*buf), GFP_KERNEL_ACCOUNT);
+-	if (!buf)
+-		return -ENOMEM;
+-	list_add_tail(&buf->list, &ctx->io_buffers_cache);
+-	return 0;
+-}
+-
+ static int io_add_buffers(struct io_ring_ctx *ctx, struct io_provide_buf *pbuf,
+ 			  struct io_buffer_list *bl)
+ {
+@@ -534,12 +491,11 @@ static int io_add_buffers(struct io_ring
+ 	int i, bid = pbuf->bid;
+ 
+ 	for (i = 0; i < pbuf->nbufs; i++) {
+-		if (list_empty(&ctx->io_buffers_cache) &&
+-		    io_refill_buffer_cache(ctx))
++		buf = kmalloc(sizeof(*buf), GFP_KERNEL_ACCOUNT);
++		if (!buf)
+ 			break;
+-		buf = list_first_entry(&ctx->io_buffers_cache, struct io_buffer,
+-					list);
+-		list_move_tail(&buf->list, &bl->buf_list);
++
++		list_add_tail(&buf->list, &bl->buf_list);
+ 		buf->addr = addr;
+ 		buf->len = min_t(__u32, pbuf->len, MAX_RW_COUNT);
+ 		buf->bid = bid;
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -177,8 +177,9 @@ static inline void __io_put_kbuf_list(st
+ 		__io_put_kbuf_ring(req, len, 1);
+ 	} else {
+ 		req->buf_index = req->kbuf->bgid;
+-		list_add(&req->kbuf->list, &req->ctx->io_buffers_comp);
+ 		req->flags &= ~REQ_F_BUFFER_SELECTED;
++		kfree(req->kbuf);
++		req->kbuf = NULL;
+ 	}
+ }
+ 
+@@ -187,10 +188,8 @@ static inline void io_kbuf_drop(struct i
+ 	if (!(req->flags & (REQ_F_BUFFER_SELECTED|REQ_F_BUFFER_RING)))
+ 		return;
+ 
+-	spin_lock(&req->ctx->completion_lock);
+ 	/* len == 0 is fine here, non-ring will always drop all of it */
+ 	__io_put_kbuf_list(req, 0);
+-	spin_unlock(&req->ctx->completion_lock);
+ }
+ 
+ static inline unsigned int __io_put_kbufs(struct io_kiocb *req, int len,
 
 
 
