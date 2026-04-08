@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIJyNRal1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:26 +0200
+	id IOUqG16f1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B993C20E3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFC63C0EFD
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B8B5319E250
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 275DC302BF7D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8143B0AFC;
-	Wed,  8 Apr 2026 18:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B69D37F01B;
+	Wed,  8 Apr 2026 18:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpKb0nQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eo4p1Dfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE3132A3FD;
-	Wed,  8 Apr 2026 18:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F374126FA5A;
+	Wed,  8 Apr 2026 18:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673753; cv=none; b=pVXtSnUD4bx39L0hkC4vZAgA0Qg/rBTWYQ8T7AKMh4yp+FDAN/hh6+wOK/uCKyjLc6ejTqBEh/OGKJY8THF1EZSafJdWh225GZvpsjXyEme3iQvvLYv/knQLBNMi9kPXWizHuXRtq587MR6Erk5OThKLJa2DK+o5qf9sIz7awks=
+	t=1775673068; cv=none; b=LHTXYnALPV7PaqUb4tA2BngKYioKssRdNHzAJ6LTtisbYT39vlHLXDU9Xgzho7TOM6KEZXW7DtReLVY5ylOAgMjpIOxgXoQqrouji0bOsSBgoZspdIsQW1hPjtErb+Fzq64eRBFesBrhkseHjeliu7dnqOe1kgRghaphbBetAM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673753; c=relaxed/simple;
-	bh=X8xKL0zaf8uYiWU3qid33Nra1xTSPOS5aEZuATTQlyI=;
+	s=arc-20240116; t=1775673068; c=relaxed/simple;
+	bh=xuhtCJv8I7qW/gKfh1NazBWT+m4qETTXjZfdT4UYZLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oKj4tj90ppXesVcfM6f8Z8MNVDUEpwjTqh3ImTd5nBlcRX2OO7zvzwTSZRuhd5LKt1TQXZDu7GqFREOZvcN+6F/gGNE8/iDuaTufDl+wDrzv8KH68UAGBNRtMJe6ZblXikMDF7vofOu7Y0JVBCJysMHYwUmMDD0QiVCJpKUPB8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpKb0nQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C94C19421;
-	Wed,  8 Apr 2026 18:42:32 +0000 (UTC)
+	 MIME-Version; b=NmbJaf70QrBu6SXR6dmOa7rasfBlxSWGBDEwOf8EiL/47Wr1cB2wCTtdMsLToHFJnw/7WMWnge4VxjbUriv7hUy5yt57/wxwH4qmAMLdpJnf/F2e5R2jGe4EL+gNZexxpWjd05iV/g0q5UdjmXgDdQypON2ahZHlNyGjfecFzWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eo4p1Dfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA28C19421;
+	Wed,  8 Apr 2026 18:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673753;
-	bh=X8xKL0zaf8uYiWU3qid33Nra1xTSPOS5aEZuATTQlyI=;
+	s=korg; t=1775673067;
+	bh=xuhtCJv8I7qW/gKfh1NazBWT+m4qETTXjZfdT4UYZLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpKb0nQMXkqELBZmIftHdF+cRlKAjzqG1KuzLcWdr11s701UAaXmAVlTI9Od9PhjG
-	 Fb84WTO85rTw2tdCt1EpICY3M57d92GdfTdQ/DR4M88BfPhW6Ps6Sl9oFTm7MRXyPp
-	 AYg1O4azs9qeBvU1bIzxxwdrsxYo6n6R8HJFAL1U=
+	b=Eo4p1DfnpVRVmLKp7qY0coV7zSBY0CY9x5vT8SWEcIRFUeVrC2ibM8mZ+zNGaOEkY
+	 tz8w1JpB0pwStKOUjYzvkhyeWEga9woyZdqGVCuDaIGR48XjlLODISJWzjUWnJVBng
+	 c2yxeUQPKTjZu5imruX/Ejm5K+jqDhsHM1ir2Ggw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 034/242] HID: logitech-hidpp: Prevent use-after-free on force feedback initialisation failure
+Subject: [PATCH 6.18 089/277] net: macb: properly unregister fixed rate clocks
 Date: Wed,  8 Apr 2026 20:01:14 +0200
-Message-ID: <20260408175928.348708808@linuxfoundation.org>
+Message-ID: <20260408175937.197500047@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234784-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234518-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 58B993C20E3
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ispras.ru:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8BFC63C0EFD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit f7a4c78bfeb320299c1b641500fe7761eadbd101 ]
+[ Upstream commit f0f367a4f459cc8118aadc43c6bba53c60d93f8d ]
 
-Presently, if the force feedback initialisation fails when probing the
-Logitech G920 Driving Force Racing Wheel for Xbox One, an error number
-will be returned and propagated before the userspace infrastructure
-(sysfs and /dev/input) has been torn down.  If userspace ignores the
-errors and continues to use its references to these dangling entities, a
-UAF will promptly follow.
+The additional resources allocated with clk_register_fixed_rate() need
+to be released with clk_unregister_fixed_rate(), otherwise they are lost.
 
-We have 2 options; continue to return the error, but ensure that all of
-the infrastructure is torn down accordingly or continue to treat this
-condition as a warning by emitting the message but returning success.
-It is thought that the original author's intention was to emit the
-warning but keep the device functional, less the force feedback feature,
-so let's go with that.
-
-Signed-off-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Günther Noack <gnoack@google.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 83a77e9ec415 ("net: macb: Added PCI wrapper for Platform Driver.")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20260330184542.626619-2-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_pci.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index c9df222e894a1..d60cd4379e866 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4514,10 +4514,12 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 		if (!ret)
- 			ret = hidpp_ff_init(hidpp, &data);
+diff --git a/drivers/net/ethernet/cadence/macb_pci.c b/drivers/net/ethernet/cadence/macb_pci.c
+index 0ce5b736ea438..b79dec17e6b09 100644
+--- a/drivers/net/ethernet/cadence/macb_pci.c
++++ b/drivers/net/ethernet/cadence/macb_pci.c
+@@ -96,10 +96,10 @@ static int macb_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	return 0;
  
--		if (ret)
-+		if (ret) {
- 			hid_warn(hidpp->hid_dev,
- 		     "Unable to initialize force feedback support, errno %d\n",
- 				 ret);
-+			ret = 0;
-+		}
- 	}
+ err_plat_dev_register:
+-	clk_unregister(plat_data.hclk);
++	clk_unregister_fixed_rate(plat_data.hclk);
  
- 	/*
+ err_hclk_register:
+-	clk_unregister(plat_data.pclk);
++	clk_unregister_fixed_rate(plat_data.pclk);
+ 
+ err_pclk_register:
+ 	return err;
+@@ -113,8 +113,8 @@ static void macb_remove(struct pci_dev *pdev)
+ 	struct clk *hclk = plat_data->hclk;
+ 
+ 	platform_device_unregister(plat_dev);
+-	clk_unregister(pclk);
+-	clk_unregister(hclk);
++	clk_unregister_fixed_rate(pclk);
++	clk_unregister_fixed_rate(hclk);
+ }
+ 
+ static const struct pci_device_id dev_id_table[] = {
 -- 
 2.53.0
 
