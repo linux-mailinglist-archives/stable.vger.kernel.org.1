@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDHvOVqg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:14 +0200
+	id cC6BF1ya1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E893C114D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A63E93C01FE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 201C530D6955
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 743CB3032F62
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BFE3D8115;
-	Wed,  8 Apr 2026 18:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BAB347517;
+	Wed,  8 Apr 2026 18:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYXcjdFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYDBhaxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255B13D75C3;
-	Wed,  8 Apr 2026 18:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD6E37F8C2;
+	Wed,  8 Apr 2026 18:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672873; cv=none; b=Ur8wRCk7XwkuL/f2rGPg0FZ7tmpqnvXiDX3Ni7MuMrUnwgkGX1ZXqlzXXfztNdTGhu7HnA9vlHdStGpCXWrZxoOVx3MO4iwSijUFTRmeQq7DzRN1o6J89CAAHmcmHLgHISZlvd6e8eFDCs1KSlLzruRbyGEBJQQRM6aX0GtvzsM=
+	t=1775671827; cv=none; b=MAP6kS3YdArmYnxSeNcBcrDqlz+QRw7dIhdk56IM6FCMagf8M/uieFyy+jApQfUjOB9WJLfzx1N10H3nXKeA+t6iAsCvFizxl4HQba5XQkFeib+YCyaZgIqvx2WywHD0cQkY00TBnO2lRSrJXydfnbJjhp2oDu2n1Csxge+6DWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672873; c=relaxed/simple;
-	bh=D6NlHxG1I6ilnwzposXrkJt+tMErCaspkhC2oZ6Q8qE=;
+	s=arc-20240116; t=1775671827; c=relaxed/simple;
+	bh=Zv0XoKmJ+ctr6mSdXhQcR5zOhrKqglvg9ZIGkzUVDRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEqZbJKm/zbPihIKnd9Dqu8qED7ctr7jnOxHmIt8s2rnaFd5PNKn5l2FuGMSD2Q6TTGW9JjJfCWTel7GPWz/PCCne0RB6OVS9SbPtoyBWlidN+aq+pyRPkL54oy0YNbZ1i6qZazoZcjwwLp4/HoMmx5B3rRklq20xDPFLAxEbOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYXcjdFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE396C19421;
-	Wed,  8 Apr 2026 18:27:52 +0000 (UTC)
+	 MIME-Version; b=FXBtawVRxzZ4bBvPlF4Tkx1kzUH3XrY6Oylt+b2ZNy5XmVsiRk2n1LnCl7tE14jWsvA8jYiXuEJdB1SVJsiqPh/bhnOumARG8bVz7yZ6mvH3L501nnUmIxIWpPje+PIO9AdPMtbHlIvdQ3LnQhKT4/VgQDBVxJ2yua+MymMEqjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYDBhaxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AFFC19421;
+	Wed,  8 Apr 2026 18:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672873;
-	bh=D6NlHxG1I6ilnwzposXrkJt+tMErCaspkhC2oZ6Q8qE=;
+	s=korg; t=1775671827;
+	bh=Zv0XoKmJ+ctr6mSdXhQcR5zOhrKqglvg9ZIGkzUVDRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYXcjdFD7cu3zLHTk8FeoQxtwB8N9kUXLhi8B/Zoc88wB+mZeLdbduXPMoh8170Z8
-	 ZZb1nlmhAfvC3+iqRn0LZ0Ypf7JqCbnusgXA4LF9QcZD47lLJvnFaQwg8M+wVSpWn5
-	 vB4CkHAdDZ75/WVu2k7Fgh1nuweyjRgwRAWRBHS8=
+	b=dYDBhaxuwwD86W6LYKbSQqA94Wd/oFHTJKpH9nWHNasuHh2CstQkBE1mF1BsbSS3S
+	 5tyYULs8oJ7TBxTpOvN6VNp1AYqCDuIAeXfWeSlbsgP+C8NHlLTL5XH3PLNjXfz2Tz
+	 PX8rTqi1OwifnY8jido1424PYYB3UJ9NrUGJFV4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	ZhengYuan Huang <gality369@gmail.com>,
-	David Sterba <dsterba@suse.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 014/277] btrfs: reject root items with drop_progress and zero drop_level
+Subject: [PATCH 6.1 082/312] ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()
 Date: Wed,  8 Apr 2026 19:59:59 +0200
-Message-ID: <20260408175934.381294743@linuxfoundation.org>
+Message-ID: <20260408175936.807683872@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,8 +75,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234443-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234039-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -92,121 +92,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 78E893C114D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,asu.edu:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A63E93C01FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit b17b79ff896305fd74980a5f72afec370ee88ca4 ]
+[ Upstream commit f6484cadbcaf26b5844b51bd7307a663dda48ef6 ]
 
-[BUG]
-When recovering relocation at mount time, merge_reloc_root() and
-btrfs_drop_snapshot() both use BUG_ON(level == 0) to guard against
-an impossible state: a non-zero drop_progress combined with a zero
-drop_level in a root_item, which can be triggered:
+When ec_install_handlers() returns -EPROBE_DEFER on reduced-hardware
+platforms, it has already started the EC and installed the address
+space handler with the struct acpi_ec pointer as handler context.
+However, acpi_ec_setup() propagates the error without any cleanup.
 
-------------[ cut here ]------------
-kernel BUG at fs/btrfs/relocation.c:1545!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 1 UID: 0 PID: 283 ... Tainted: 6.18.0+ #16 PREEMPT(voluntary)
-Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-Hardware name: QEMU Ubuntu 24.04 PC v2, BIOS 1.16.3-debian-1.16.3-2
-RIP: 0010:merge_reloc_root+0x1266/0x1650 fs/btrfs/relocation.c:1545
-Code: ffff0000 00004589 d7e9acfa ffffe8a1 79bafebe 02000000
-Call Trace:
- merge_reloc_roots+0x295/0x890 fs/btrfs/relocation.c:1861
- btrfs_recover_relocation+0xd6e/0x11d0 fs/btrfs/relocation.c:4195
- btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
- open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
- btrfs_fill_super fs/btrfs/super.c:987 [inline]
- btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
- btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
- btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
- vfs_get_tree+0x9a/0x370 fs/super.c:1758
- fc_mount fs/namespace.c:1199 [inline]
- do_new_mount_fc fs/namespace.c:3642 [inline]
- do_new_mount fs/namespace.c:3718 [inline]
- path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
- do_mount fs/namespace.c:4041 [inline]
- __do_sys_mount fs/namespace.c:4229 [inline]
- __se_sys_mount fs/namespace.c:4206 [inline]
- __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
- ...
-RIP: 0033:0x7f969c9a8fde
-Code: 0f1f4000 48c7c2b0 fffffff7 d8648902 b8ffffff ffc3660f
----[ end trace 0000000000000000 ]---
+The caller acpi_ec_add() then frees the struct acpi_ec for non-boot
+instances, leaving a dangling handler context in ACPICA.
 
-The bug is reproducible on 7.0.0-rc2-next-20260310 with our dynamic
-metadata fuzzing tool that corrupts btrfs metadata at runtime.
+Any subsequent AML evaluation that accesses an EC OpRegion field
+dispatches into acpi_ec_space_handler() with the freed pointer,
+causing a use-after-free:
 
-[CAUSE]
-A non-zero drop_progress.objectid means an interrupted
-btrfs_drop_snapshot() left a resume point on disk, and in that case
-drop_level must be greater than 0 because the checkpoint is only
-saved at internal node levels.
+ BUG: KASAN: slab-use-after-free in mutex_lock (kernel/locking/mutex.c:289)
+ Write of size 8 at addr ffff88800721de38 by task init/1
+ Call Trace:
+  <TASK>
+  mutex_lock (kernel/locking/mutex.c:289)
+  acpi_ec_space_handler (drivers/acpi/ec.c:1362)
+  acpi_ev_address_space_dispatch (drivers/acpi/acpica/evregion.c:293)
+  acpi_ex_access_region (drivers/acpi/acpica/exfldio.c:246)
+  acpi_ex_field_datum_io (drivers/acpi/acpica/exfldio.c:509)
+  acpi_ex_extract_from_field (drivers/acpi/acpica/exfldio.c:700)
+  acpi_ex_read_data_from_field (drivers/acpi/acpica/exfield.c:327)
+  acpi_ex_resolve_node_to_value (drivers/acpi/acpica/exresolv.c:392)
+  </TASK>
 
-Although this invariant is enforced when the kernel writes the root
-item, it is not validated when the root item is read back from disk.
-That allows on-disk corruption to provide an invalid state with
-drop_progress.objectid != 0 and drop_level == 0.
+ Allocated by task 1:
+  acpi_ec_alloc (drivers/acpi/ec.c:1424)
+  acpi_ec_add (drivers/acpi/ec.c:1692)
 
-When relocation recovery later processes such a root item,
-merge_reloc_root() reads drop_level and hits BUG_ON(level == 0). The
-same invalid metadata can also trigger the corresponding BUG_ON() in
-btrfs_drop_snapshot().
+ Freed by task 1:
+  kfree (mm/slub.c:6876)
+  acpi_ec_add (drivers/acpi/ec.c:1751)
 
-[FIX]
-Fix this by validating the root_item invariant in tree-checker when
-reading root items from disk: if drop_progress.objectid is non-zero,
-drop_level must also be non-zero. Reject such malformed metadata with
--EUCLEAN before it reaches merge_reloc_root() or btrfs_drop_snapshot()
-and triggers the BUG_ON.
+The bug triggers on reduced-hardware EC platforms (ec->gpe < 0)
+when the GPIO IRQ provider defers probing. Once the stale handler
+exists, any unprivileged sysfs read that causes AML to touch an
+EC OpRegion (battery, thermal, backlight) exercises the dangling
+pointer.
 
-After the fix, the same corruption is correctly rejected by tree-checker
-and the BUG_ON is no longer triggered.
+Fix this by calling ec_remove_handlers() in the error path of
+acpi_ec_setup() before clearing first_ec. ec_remove_handlers()
+checks each EC_FLAGS_* bit before acting, so it is safe to call
+regardless of how far ec_install_handlers() progressed:
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+  -ENODEV  (handler not installed): only calls acpi_ec_stop()
+  -EPROBE_DEFER (handler installed): removes handler, stops EC
+
+Fixes: 03e9a0e05739 ("ACPI: EC: Consolidate event handler installation code")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260324165458.1337233-2-bestswngs@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/acpi/ec.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index 9b11b0a529dba..33a45737c4cf4 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1260,6 +1260,23 @@ static int check_root_item(struct extent_buffer *leaf, struct btrfs_key *key,
- 			    btrfs_root_drop_level(&ri), BTRFS_MAX_LEVEL - 1);
- 		return -EUCLEAN;
- 	}
-+	/*
-+	 * If drop_progress.objectid is non-zero, a btrfs_drop_snapshot() was
-+	 * interrupted and the resume point was recorded in drop_progress and
-+	 * drop_level.  In that case drop_level must be >= 1: level 0 is the
-+	 * leaf level and drop_snapshot never saves a checkpoint there (it
-+	 * only records checkpoints at internal node levels in DROP_REFERENCE
-+	 * stage).  A zero drop_level combined with a non-zero drop_progress
-+	 * objectid indicates on-disk corruption and would cause a BUG_ON in
-+	 * merge_reloc_root() and btrfs_drop_snapshot() at mount time.
-+	 */
-+	if (unlikely(btrfs_disk_key_objectid(&ri.drop_progress) != 0 &&
-+		     btrfs_root_drop_level(&ri) == 0)) {
-+		generic_err(leaf, slot,
-+			    "invalid root drop_level 0 with non-zero drop_progress objectid %llu",
-+			    btrfs_disk_key_objectid(&ri.drop_progress));
-+		return -EUCLEAN;
-+	}
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 3583ce4980c32..230fe6463cc1f 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1634,6 +1634,8 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
  
- 	/* Flags check */
- 	if (unlikely(btrfs_root_flags(&ri) & ~valid_root_flags)) {
+ 	ret = ec_install_handlers(ec, device, call_reg);
+ 	if (ret) {
++		ec_remove_handlers(ec);
++
+ 		if (ec == first_ec)
+ 			first_ec = NULL;
+ 
 -- 
 2.53.0
 
