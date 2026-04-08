@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-234383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHZFJPid1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:04 +0200
+	id qO66JmSd1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865813C0BDC
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3185F3C0A3C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 437D93035096
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC06B30297B8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC3F3ACA41;
-	Wed,  8 Apr 2026 18:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4248137F01B;
+	Wed,  8 Apr 2026 18:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFKxUbjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+BZ15Er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C552494F0;
-	Wed,  8 Apr 2026 18:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DB7B67E;
+	Wed,  8 Apr 2026 18:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672716; cv=none; b=LGbyOlDAXqP1ZTrur20WHZ6tqHTbW9zxre8QRin0iPjnAxwYIu+VaeQe9WtaIZ6uhVrSDGIWVpq/ehon9io1VZakMg1t9u1GuXR/ZOinvu0Ux2sfNr6yAoRG4cO86yYPitMLKR3h4KYJPyy4ojKZjgN2nf8TxfYsYkM1Ojd6tdQ=
+	t=1775672349; cv=none; b=bj3QC6RfFAjY+X+udRujJh0sL5KiW3KS7SCjOXf6j0IKdy2y1hGppaCpWgPHum2y2Knq+RKmAGpoxRNub7rlHttmnzoQTjrGhq5F6GvkDnXHmMYFS6lKQrB9pkmn+obOTUXsalQGylyjVJX+qRUE/Mg6h0NROwsApdEgzlVJIpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672716; c=relaxed/simple;
-	bh=QozBbus/43trH8iRLydoZWK+RUtdDHZg8cKoBigmfa8=;
+	s=arc-20240116; t=1775672349; c=relaxed/simple;
+	bh=4k6KRG+cUobYdv34MuRGwzUNpFQfCaG8G5SfY2rhGAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XN0B3fRIsYQTerLd5t77XACXQ98m7qRZH/Pd5Q3C62AE9vThzNhxtY9ajkpx2C3Xhx+J/lxQKpvUxFwYA+5I8TaCcvLUt1IkXgrcftX1h3aPv4ea4JCpCMEDPw35+zGcSAzvkk5SJ8ZguGfTo88hawAFS7f/ZR/t0CVyGXe274c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFKxUbjF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ADDC19421;
-	Wed,  8 Apr 2026 18:25:16 +0000 (UTC)
+	 MIME-Version; b=mas3pvoXtrKUB1KWWGKZs8wTtoZnn3EImo9aylNKGLj8PA+U1DP/NMltRq3LS3FTXIysuAAj5Z/8plpEZkhTeLfV7g9yulwugQgDp8uqt1gQNYld8giC8u7RYT20ZzJD3OePKw8xRJZ2M4u98UNOOOF5cOz/ZM6gvaPJTGu3iuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+BZ15Er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B08C19421;
+	Wed,  8 Apr 2026 18:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672716;
-	bh=QozBbus/43trH8iRLydoZWK+RUtdDHZg8cKoBigmfa8=;
+	s=korg; t=1775672348;
+	bh=4k6KRG+cUobYdv34MuRGwzUNpFQfCaG8G5SfY2rhGAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFKxUbjFX5dNqw4OLjt8OQxta3UuWwe/JeULRFKfcLw1OlyMqgSQgx6OufaBBMHyr
-	 +QZ9Sm20xGNnqbD/LU56k2M88P0B5hPbccLInmBFNZ8iCJ+xvAWubMTBq+2eYp8O+u
-	 08NmBW+3AAtkpjBQ6Dv2W2pJPedReFxSMFlfXrQ8=
+	b=G+BZ15ErLu7+yHe1/H74y0KblKKwRncf2FPAgnSKPd+gWrW0ndlAkUhMxqzHRkvau
+	 o6DdC1wYUTMsW9dpXZzhtatWzHso1ILBUkWWPv5m1cHk/tJyhHzNFYtClkq9xuB7kK
+	 P2gaxY6O4kxEgbTJCNo1nBXbhjPq4Fm5AsRZVzJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 115/160] bridge: br_nd_send: validate ND option lengths
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 285/312] hwmon: (pmbus/isl68137) Add mutex protection for AVS enable sysfs attributes
 Date: Wed,  8 Apr 2026 20:03:22 +0200
-Message-ID: <20260408175917.482971075@linuxfoundation.org>
+Message-ID: <20260408175944.402460955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,87 +68,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234383-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234241-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[blackwall.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email,outlook.com:email,msgid.link:url,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 865813C0BDC
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3185F3C0A3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 850837965af15707fd3142c1cf3c5bfaf022299b upstream.
+[ Upstream commit 3075a3951f7708da5a8ab47b0b7d068a32f69e58 ]
 
-br_nd_send() walks ND options according to option-provided lengths.
-A malformed option can make the parser advance beyond the computed
-option span or use a too-short source LLADDR option payload.
+The custom avs0_enable and avs1_enable sysfs attributes access PMBus
+registers through the exported API helpers (pmbus_read_byte_data,
+pmbus_read_word_data, pmbus_write_word_data, pmbus_update_byte_data)
+without holding the PMBus update_lock mutex. These exported helpers do
+not acquire the mutex internally, unlike the core's internal callers
+which hold the lock before invoking them.
 
-Validate option lengths against the remaining NS option area before
-advancing, and only read source LLADDR when the option is large enough
-for an Ethernet address.
+The store callback is especially vulnerable: it performs a multi-step
+read-modify-write sequence (read VOUT_COMMAND, write VOUT_COMMAND, then
+update OPERATION) where concurrent access from another thread could
+interleave and corrupt the register state.
 
-Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Add pmbus_lock_interruptible()/pmbus_unlock() around both the show and
+store callbacks to serialize PMBus register access with the rest of the
+driver.
+
+Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
 Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
-Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260326034441.2037420-3-n05ec@lzu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260319173055.125271-3-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_arp_nd_proxy.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/isl68137.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -285,12 +285,14 @@ static void br_nd_send(struct net_bridge
- 	ns_olen = request->len - (skb_network_offset(request) +
- 				  sizeof(struct ipv6hdr)) - sizeof(*ns);
- 	for (i = 0; i < ns_olen - 1; i += (ns->opt[i + 1] << 3)) {
--		if (!ns->opt[i + 1]) {
-+		if (!ns->opt[i + 1] || i + (ns->opt[i + 1] << 3) > ns_olen) {
- 			kfree_skb(reply);
- 			return;
- 		}
- 		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
--			daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
-+			if ((ns->opt[i + 1] << 3) >=
-+			    sizeof(struct nd_opt_hdr) + ETH_ALEN)
-+				daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
- 			break;
- 		}
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -78,7 +78,15 @@ static ssize_t isl68137_avs_enable_show_
+ 					     int page,
+ 					     char *buf)
+ {
+-	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
++	int val;
++
++	val = pmbus_lock_interruptible(client);
++	if (val)
++		return val;
++
++	val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
++
++	pmbus_unlock(client);
+ 
+ 	if (val < 0)
+ 		return val;
+@@ -100,6 +108,10 @@ static ssize_t isl68137_avs_enable_store
+ 
+ 	op_val = result ? ISL68137_VOUT_AVS : 0;
+ 
++	rc = pmbus_lock_interruptible(client);
++	if (rc)
++		return rc;
++
+ 	/*
+ 	 * Writes to VOUT setpoint over AVSBus will persist after the VRM is
+ 	 * switched to PMBus control. Switching back to AVSBus control
+@@ -111,17 +123,20 @@ static ssize_t isl68137_avs_enable_store
+ 		rc = pmbus_read_word_data(client, page, 0xff,
+ 					  PMBUS_VOUT_COMMAND);
+ 		if (rc < 0)
+-			return rc;
++			goto unlock;
+ 
+ 		rc = pmbus_write_word_data(client, page, PMBUS_VOUT_COMMAND,
+ 					   rc);
+ 		if (rc < 0)
+-			return rc;
++			goto unlock;
  	}
+ 
+ 	rc = pmbus_update_byte_data(client, page, PMBUS_OPERATION,
+ 				    ISL68137_VOUT_AVS, op_val);
+ 
++unlock:
++	pmbus_unlock(client);
++
+ 	return (rc < 0) ? rc : count;
+ }
+ 
 
 
 
