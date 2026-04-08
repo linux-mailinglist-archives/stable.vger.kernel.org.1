@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2ISgNI2j1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:53 +0200
+	id YHJmHNqd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6153C1BF5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D594F3C0B7A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8B20302204C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8CEAA30890E2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092F1328B75;
-	Wed,  8 Apr 2026 18:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997523D9DB2;
+	Wed,  8 Apr 2026 18:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l02ExSwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKcPUe+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C6D35B653;
-	Wed,  8 Apr 2026 18:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6923D9DB1;
+	Wed,  8 Apr 2026 18:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673194; cv=none; b=Z1cF9AptTjo1FTEt9cjax68Rs11doS6xbWsdJNucpLP3lKL+VVNaXhv9zdcm4uNgYYyZUp2U9M0zYRFDiSjjLK051xEBhXkQ667BOku+fbWcbJCaauxAvX5JO5+xHuozv9E57b5t1GwIhIhpOa0DUSJ6nFd3tHEUZNtx3eLeN08=
+	t=1775672595; cv=none; b=OsCm1CkBQJt+TTZOP3Su2WuYJmTekDACIODejJixqsWR1TFRRy+JNz5ZVz3ZnGRX4rVWOAq7KbKVJKLgrz5NuirVDHr4plNHTwOLSKoqAybT6rjOsCRzcx77xUWX5udzIkeKXdKtypFMR0awGvfW/AMnLBkGC4kAY8TjgN01N9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673194; c=relaxed/simple;
-	bh=25KDtHQw+YYd10L65TPy63xgXZCfkt5jrGN7Fb9nlZo=;
+	s=arc-20240116; t=1775672595; c=relaxed/simple;
+	bh=Sz8NP7jGYCX90GUdQJPnXHu7iTWMiUreEZhOD9q8BOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qft0oti4XujvPzsHZBRUlAfimeHyKOgQjVsf8Fqoyn5PG/B++LLGzNQqUXsvj6C5B4Yi8kPM7oylGU9xySC4VgmuxK7+aiPBeryWqB9N1gSBJmJUet8+MiBpq6OR2MHrLlHF0+wCfjt4VPmiiUq3izco+9ACwu9Kbhpl8GwA+7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l02ExSwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB37C19421;
-	Wed,  8 Apr 2026 18:33:13 +0000 (UTC)
+	 MIME-Version; b=nbFAeJORXwaIEo31AG5FgKH7D9+BuHUFYPpJqZ1ibC2U4S139EPINh2QIdmuXw7fqLYOSvSexiJ7vgQIN+lPZu2JukuuvaVZWiUCpgxWcLfj158fKY+ZUz4G5Fh2Vo1fhusuS1BzMXqAO7mLYI52SmtgROIG31yW6awIyT/ZzRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKcPUe+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7623C19421;
+	Wed,  8 Apr 2026 18:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673194;
-	bh=25KDtHQw+YYd10L65TPy63xgXZCfkt5jrGN7Fb9nlZo=;
+	s=korg; t=1775672595;
+	bh=Sz8NP7jGYCX90GUdQJPnXHu7iTWMiUreEZhOD9q8BOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l02ExSwVG8MWXx20zfgKP3hNXgEQlhXwm8bIX71aH7pNb9mzQg2U+0UJ/T68Bae/B
-	 uHbl/n8YOqzZwc2DjIuSHt+zequQXWpVr/XI0Hf0takqkfoYXSWxJtaY0PkqpHdVNM
-	 CiiUPu+Tku+xBk1tzBVf+fTND7gV2BDFWtAdC8LM=
+	b=lKcPUe+GhDyzv3zN9i5cu5qimMBrD6l7VMRaK+uYqmAjY1dSSDH/rb/zMP+dl2ocK
+	 NslOKmJgzWaPyHkQ78Ih+CG9vYmm3ibgLYt/aRXSIRCmcbMzCJn7OstAo8DUPm5NfR
+	 MNwWmeCgOyrs7BWMLEyEyKtNDQB6Z8qUweDe68Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 137/277] ALSA: caiaq: fix stack out-of-bounds read in init_card
+	Yiming Qian <yimingqian591@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 035/160] netfilter: nfnetlink_log: account for netlink header size
 Date: Wed,  8 Apr 2026 20:02:02 +0200
-Message-ID: <20260408175938.991705158@linuxfoundation.org>
+Message-ID: <20260408175914.521061474@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +67,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234567-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234336-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 7E6153C1BF5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,strlen.de:email,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D594F3C0B7A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 45424e871abf2a152e247a9cff78359f18dd95c0 upstream.
+[ Upstream commit 6d52a4a0520a6696bdde51caa11f2d6821cd0c01 ]
 
-The loop creates a whitespace-stripped copy of the card shortname
-where `len < sizeof(card->id)` is used for the bounds check. Since
-sizeof(card->id) is 16 and the local id buffer is also 16 bytes,
-writing 16 non-space characters fills the entire buffer,
-overwriting the terminating nullbyte.
+This is a followup to an old bug fix: NLMSG_DONE needs to account
+for the netlink header size, not just the attribute size.
 
-When this non-null-terminated string is later passed to
-snd_card_set_id() -> copy_valid_id_string(), the function scans
-forward with `while (*nid && ...)` and reads past the end of the
-stack buffer, reading the contents of the stack.
+This can result in a WARN splat + drop of the netlink message,
+but other than this there are no ill effects.
 
-A USB device with a product name containing many non-ASCII, non-space
-characters (e.g. multibyte UTF-8) will reliably trigger this as follows:
-
-  BUG: KASAN: stack-out-of-bounds in copy_valid_id_string
-       sound/core/init.c:696 [inline]
-  BUG: KASAN: stack-out-of-bounds in snd_card_set_id_no_lock+0x698/0x74c
-       sound/core/init.c:718
-
-The off-by-one has been present since commit bafeee5b1f8d ("ALSA:
-snd_usb_caiaq: give better shortname") from June 2009 (v2.6.31-rc1),
-which first introduced this whitespace-stripping loop. The original
-code never accounted for the null terminator when bounding the copy.
-
-Fix this by changing the loop bound to `sizeof(card->id) - 1`,
-ensuring at least one byte remains as the null terminator.
-
-Fixes: bafeee5b1f8d ("ALSA: snd_usb_caiaq: give better shortname")
-Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260329133825.581585-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9dfa1dfe4d5e ("netfilter: nf_log: account for size of NLMSG_DONE attribute")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/device.c |    2 +-
+ net/netfilter/nfnetlink_log.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -488,7 +488,7 @@ static int init_card(struct snd_usb_caia
- 		memset(id, 0, sizeof(id));
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index aa5fc9bffef0c..f96421ad14afb 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -726,7 +726,7 @@ nfulnl_log_packet(struct net *net,
+ 		+ nla_total_size(plen)			/* prefix */
+ 		+ nla_total_size(sizeof(struct nfulnl_msg_packet_hw))
+ 		+ nla_total_size(sizeof(struct nfulnl_msg_packet_timestamp))
+-		+ nla_total_size(sizeof(struct nfgenmsg));	/* NLMSG_DONE */
++		+ nlmsg_total_size(sizeof(struct nfgenmsg));	/* NLMSG_DONE */
  
- 		for (c = card->shortname, len = 0;
--			*c && len < sizeof(card->id); c++)
-+			*c && len < sizeof(card->id) - 1; c++)
- 			if (*c != ' ')
- 				id[len++] = *c;
- 
+ 	if (in && skb_mac_header_was_set(skb)) {
+ 		size += nla_total_size(skb->dev->hard_header_len)
+-- 
+2.53.0
+
 
 
 
