@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNS1Ogql1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:14 +0200
+	id iLrbBDKg1mkzGwgAu9opvQ
+	(envelope-from <stable+bounces-234580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8743C20B7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 173503C10E9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6214231A6A5B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CDFA0303AB00
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984E93D8115;
-	Wed,  8 Apr 2026 18:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615013D88F7;
+	Wed,  8 Apr 2026 18:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bogaxcLK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsjkXFdO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5519B3B0AFC;
-	Wed,  8 Apr 2026 18:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254D035B653;
+	Wed,  8 Apr 2026 18:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673717; cv=none; b=cVEE5GkA4KOkFdcK5TLh82jnxlGuPe0HA+SrOuzd/mKa0Vmp769UNNyRkbhEhvB9MiUBvBCNZhHBZKZb9mOLrojOHybuCEjid3DbyMmuLBJ3LVQxr7MxrPcS5aSZ7oYuxpoSh6jTbYJbW/9Vx3Oar30DQ9gJVboPcQEqavFUtbE=
+	t=1775673228; cv=none; b=AWzulAj083wEXmnRvgbn6PAo20qrsrKZf1Nc9nfsawR4oQjxWIHth8UhI9OYye+OBlnBcIPIQXqZIaCP/7VBxZ+DnKa1fPX0HdGqAJelOEphpYtkLDgfGLxzGEUYUa1vwGSYU/yLh7c7PBgLltNveS5BoGXeahDXUu97U51PO+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673717; c=relaxed/simple;
-	bh=6JQn+xWZpb/sGKdUV8Q2jcxQakbnKQ1JEvCC0zhLP/E=;
+	s=arc-20240116; t=1775673228; c=relaxed/simple;
+	bh=pMqZ2IkYl7942E22QFWBwSsrNJlWBvnMY42e4W9gQto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMOKKO5rnbiDXSMBl5wNfPXz85KKs3/J3+c6irsxtl03PGWxZ2e4dgt7ISlks4M7ZbXYdXPE4PT5N4OOaP5AwHaY/DojTqFjKyiicDsd7lzq9DvRa/KyL/BKXs0hIT2w2ASPW3L/AMaqDHofcnEdxzoNbXOrfIJeQ+1mUj5/zvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bogaxcLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEF7C19425;
-	Wed,  8 Apr 2026 18:41:56 +0000 (UTC)
+	 MIME-Version; b=VGBTqsDI7D9FKNAlbt7aqPp5ahFMf3IETR+dr7YnIj4QeWJgHq+YY63VSYlS9YKTwEUqX2XTpU8Y2r5o9fgwfGRndH9xHAqikOqu9QtsfeNkWREhO9WzJ2NNMB0TuhYbSMfL1AuW8TV5ZqczTRseZEh2f36/QOQ6xY3jEG2Xn2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsjkXFdO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07DDC19421;
+	Wed,  8 Apr 2026 18:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673717;
-	bh=6JQn+xWZpb/sGKdUV8Q2jcxQakbnKQ1JEvCC0zhLP/E=;
+	s=korg; t=1775673228;
+	bh=pMqZ2IkYl7942E22QFWBwSsrNJlWBvnMY42e4W9gQto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bogaxcLKO2ZB3MwDQAqYQzAl18YtrBuI3gXDmOyyFmW4bxgyPzYH5Ja9BV312wiR3
-	 1EF51VOch68GUrv8pIA1Q+ltX8TYoMMuBZbNu9FYbQF4HnG4TYhMDP/zYa5U8E6aBT
-	 y+JXjJF4o8ImWgaly2J2n7yF0vbc3yJdZucoO8cg=
+	b=VsjkXFdOturL6sCM51+ZKwtkXhG9ksfgYwKKgoP2CYSSoOshcVo7MHJGmwfl/4yBn
+	 GbEtUevsuVOZ16K+p+o+P5bhsa1uWwN+ygeUmuz0K7DXAL5hzy33CjzJqyFi38lOrl
+	 SjKyDzztOMdRLekaRnLWfXrx0demWQD1bq6xNSnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yochai Eisenrich <echelonh@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/242] net: sched: cls_api: fix tc_chain_fill_node to initialize tcm_info to zero to prevent an info-leak
+Subject: [PATCH 6.18 117/277] drm/xe/pxp: Clear restart flag in pxp_start after jumping back
 Date: Wed,  8 Apr 2026 20:01:42 +0200
-Message-ID: <20260408175929.402001600@linuxfoundation.org>
+Message-ID: <20260408175938.240758774@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +69,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234770-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234580-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,mojatatu.com:email]
-X-Rspamd-Queue-Id: 7A8743C20B7
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 173503C10E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yochai Eisenrich <echelonh@gmail.com>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-[ Upstream commit e6e3eb5ee89ac4c163d46429391c889a1bb5e404 ]
+[ Upstream commit 76903b2057c8677c2c006e87fede15f496555dc0 ]
 
-When building netlink messages, tc_chain_fill_node() never initializes
-the tcm_info field of struct tcmsg. Since the allocation is not zeroed,
-kernel heap memory is leaked to userspace through this 4-byte field.
+If we don't clear the flag we'll keep jumping back at the beginning of
+the function once we reach the end.
 
-The fix simply zeroes tcm_info alongside the other fields that are
-already initialized.
-
-Fixes: 32a4f5ecd738 ("net: sched: introduce chain object to uapi")
-Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260328211436.1010152-1-echelonh@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ccd3c6820a90 ("drm/xe/pxp: Decouple queue addition from PXP start")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Julia Filipchuk <julia.filipchuk@intel.com>
+Reviewed-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Link: https://patch.msgid.link/20260324153718.3155504-9-daniele.ceraolospurio@intel.com
+(cherry picked from commit 0850ec7bb2459602351639dccf7a68a03c9d1ee0)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_pxp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index d301d0ea2d315..24c1d0480bc54 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -2958,6 +2958,7 @@ static int tc_chain_fill_node(const struct tcf_proto_ops *tmplt_ops,
- 	tcm->tcm__pad1 = 0;
- 	tcm->tcm__pad2 = 0;
- 	tcm->tcm_handle = 0;
-+	tcm->tcm_info = 0;
- 	if (block->q) {
- 		tcm->tcm_ifindex = qdisc_dev(block->q)->ifindex;
- 		tcm->tcm_parent = block->q->handle;
+diff --git a/drivers/gpu/drm/xe/xe_pxp.c b/drivers/gpu/drm/xe/xe_pxp.c
+index fdcecc026e937..9261a8412b64f 100644
+--- a/drivers/gpu/drm/xe/xe_pxp.c
++++ b/drivers/gpu/drm/xe/xe_pxp.c
+@@ -532,7 +532,7 @@ static int __exec_queue_add(struct xe_pxp *pxp, struct xe_exec_queue *q)
+ static int pxp_start(struct xe_pxp *pxp, u8 type)
+ {
+ 	int ret = 0;
+-	bool restart = false;
++	bool restart;
+ 
+ 	if (!xe_pxp_is_enabled(pxp))
+ 		return -ENODEV;
+@@ -561,6 +561,8 @@ static int pxp_start(struct xe_pxp *pxp, u8 type)
+ 					 msecs_to_jiffies(PXP_ACTIVATION_TIMEOUT_MS)))
+ 		return -ETIMEDOUT;
+ 
++	restart = false;
++
+ 	mutex_lock(&pxp->mutex);
+ 
+ 	/* If PXP is not already active, turn it on */
 -- 
 2.53.0
 
