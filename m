@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-234024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GN4nDzua1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:07 +0200
+	id 0FGwLU+a1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD0C3C0172
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 114733C01BA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 46FFE302C764
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92F3C302BA4E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0C23D8918;
-	Wed,  8 Apr 2026 18:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE233D47A5;
+	Wed,  8 Apr 2026 18:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rydPE0yK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyCsWK5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BB13D890E;
-	Wed,  8 Apr 2026 18:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647D1347517;
+	Wed,  8 Apr 2026 18:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671789; cv=none; b=Bd2o9uiVjigcv/qrPKso0xZD2JKiYVyXmxb9TDT2Tnal8GKJE2vsXFmTgwIcVVjvXjS6gsCBq4wLyj5pI+wnpzzORQe79n61IyH0TbDOlkZ/Gubv67SQGW6DouUSRJhXuD3BKcHtlp1W4ig1dx0tLiG6bZ66z5AhMJSRdFr9EDs=
+	t=1775671817; cv=none; b=cWLKqLwNcLJfO6FYBxKq/AafeZ0r3eX0Ifa0D46r/KMisoVKNSLrCqSD2b6QFridH8aRFrXtQR9SKckq0l/byGnwrRgyFvHQaq4Xt4NLQzTa4XwwbxGoz1wDiw8fAOYb+7r8j89MKpZqaIOVy5heUSt5fqkVMZlfx20fSD6JqnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671789; c=relaxed/simple;
-	bh=vIaeKSV+0GHZNxl1aCMA2q52JSq/9Fxu8IX5ZfhChPo=;
+	s=arc-20240116; t=1775671817; c=relaxed/simple;
+	bh=pwSmbmuXyn6jJmypgKavvwBcJ8PrLXDwCY776q1eRrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXWtm75EExoS/1YFjW+MMWVnI80AUxT2ZrM8PMi1XN6bOsNw3lrswUHdrzdycfIo+fQZpc8oCTBNt4PUNyHmNawcDbw8xzNxPRnMVD5XAnk1Iv4cFX8DmDCBTdtxJquGmkEbJRFb+2LcIh5F0UP8xGVFb6l1fChVa5R2OosXtf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rydPE0yK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12F1C19421;
-	Wed,  8 Apr 2026 18:09:48 +0000 (UTC)
+	 MIME-Version; b=ga699IwsfScxs+Mi4RnytMy7XeU3UyKlcRnbhAXQXnx4DYQJqdYNKlz4/wIwmZ/ie4g+WVn5HoG7cPWVudf61kjd0AwGhQFubfQT6dx7KPqlyFJdIQHZ44Rmik1Wzzp6UzpUldpGx6QmABh6ESPeFozWlkSC12/D7FOUi8Rwv8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyCsWK5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE32FC19421;
+	Wed,  8 Apr 2026 18:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671789;
-	bh=vIaeKSV+0GHZNxl1aCMA2q52JSq/9Fxu8IX5ZfhChPo=;
+	s=korg; t=1775671817;
+	bh=pwSmbmuXyn6jJmypgKavvwBcJ8PrLXDwCY776q1eRrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rydPE0yK2niZn7V1e/k++uYXYATsLG2y5+HGaVfmMJfhzzdgIDCe76gy6MgaZODxM
-	 FRTITp09ZlvJT0PbTDeOeomtCesKph7Q1HwMQEYo7V9MQY5ttylCkVlwLSxLZrNg/S
-	 TihcPsBAnLgthkmevNbQS32ZrfKg/gYhb4M+7grc=
+	b=TyCsWK5CNoOemrcu5tU2nUJnAQ+mh1IeBbaV9lV1graaVWsdxrdas1eoD6fwkCvC4
+	 lod1c60wEtd2M2qOP5csDr3pa5CEIW9vWxRPhzWoqg0+dbujbYsGsWNTzUf0OrGIvR
+	 q5whduBdtL3hsaEh0EW/kaa/Eplwa2DixsRbw02I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/312] net: enetc: fix the output issue of ethtool --show-ring
-Date: Wed,  8 Apr 2026 19:59:28 +0200
-Message-ID: <20260408175935.642396090@linuxfoundation.org>
+Subject: [PATCH 6.1 052/312] dma-mapping: add missing `inline` for `dma_free_attrs`
+Date: Wed,  8 Apr 2026 19:59:29 +0200
+Message-ID: <20260408175935.679605030@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234024-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234035-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email]
-X-Rspamd-Queue-Id: BCD0C3C0172
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 114733C01BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,44 +99,53 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 70b439bf06f6a12e491f827fa81a9887a11501f9 ]
+[ Upstream commit 2cdaff22ed26f1e619aa2b43f27bb84f2c6ef8f8 ]
 
-Currently, enetc_get_ringparam() only provides rx_pending and tx_pending,
-but 'ethtool --show-ring' no longer displays these fields. Because the
-ringparam retrieval path has moved to the new netlink interface, where
-rings_fill_reply() emits the *x_pending only if the *x_max_pending values
-are non-zero. So rx_max_pending and tx_max_pending to are added to
-enetc_get_ringparam() to fix the issue.
+Under an UML build for an upcoming series [1], I got `-Wstatic-in-inline`
+for `dma_free_attrs`:
 
-Note that the maximum tx/rx ring size of hardware is 64K, but we haven't
-added set_ringparam() to make the ring size configurable. To avoid users
-mistakenly believing that the ring size can be increased, so set
-the *x_max_pending to priv->*x_bd_count.
+      BINDGEN rust/bindings/bindings_generated.rs - due to target missing
+    In file included from rust/helpers/helpers.c:59:
+    rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs' is used in an inline function with external linkage [-Wstatic-in-inline]
+       17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
+          |         ^
+    rust/helpers/dma.c:12:1: note: use 'static' to give inline function 'rust_helper_dma_free_attrs' internal linkage
+       12 | __rust_helper void rust_helper_dma_free_attrs(struct device *dev, size_t size,
+          | ^
+          | static
 
-Fixes: e4a1717b677c ("ethtool: provide ring sizes with RINGS_GET request")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20260320094222.706339-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The issue is that `dma_free_attrs` was not marked `inline` when it was
+introduced alongside the rest of the stubs.
+
+Thus mark it.
+
+Fixes: ed6ccf10f24b ("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA")
+Closes: https://lore.kernel.org/rust-for-linux/20260322194616.89847-1-ojeda@kernel.org/ [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20260325015548.70912-1-ojeda@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/dma-mapping.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-index c8369e3752b0e..d4623a41f0137 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -677,6 +677,8 @@ static void enetc_get_ringparam(struct net_device *ndev,
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index af3f39ecc1b87..5846e43779dc9 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -219,8 +219,8 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
  {
- 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
- 
-+	ring->rx_max_pending = priv->rx_bd_count;
-+	ring->tx_max_pending = priv->tx_bd_count;
- 	ring->rx_pending = priv->rx_bd_count;
- 	ring->tx_pending = priv->tx_bd_count;
- 
+ 	return NULL;
+ }
+-static void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
+-		dma_addr_t dma_handle, unsigned long attrs)
++static inline void dma_free_attrs(struct device *dev, size_t size,
++		void *cpu_addr, dma_addr_t dma_handle, unsigned long attrs)
+ {
+ }
+ static inline void *dmam_alloc_attrs(struct device *dev, size_t size,
 -- 
 2.51.0
 
