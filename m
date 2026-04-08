@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAioJGun1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:23 +0200
+	id SMdmOU6d1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB28F3C26EE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E76E3C09DD
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9D7E304CA6E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B5B2C30172F4
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC643D522C;
-	Wed,  8 Apr 2026 18:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67613B960C;
+	Wed,  8 Apr 2026 18:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9fHMsiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYuyES32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F05A32A3FD;
-	Wed,  8 Apr 2026 18:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897973AA4E4;
+	Wed,  8 Apr 2026 18:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673756; cv=none; b=uHcwFAnG64f24zUerGzXyg1Wpn7PfxdPOlqKGT7vZ0Oy2U+lTaz2VpPxDAtykpCHkGalvy8zg3PrUVYDPBzNx4gBHiiQlFAMVXKEbdGBWGyq5KoBtcbRyWUIz1uJmz/b4NXyiVMFnmEckoxaS6ag5BJNW+jJhT4D7XdUofcKBRg=
+	t=1775672483; cv=none; b=Ups0w6EQyp1S+iwc9feT2FU2AFW9UkHg3FHIArSDbAVeL6Ik7fIkuKvWXUHeCIKbAQiJlAdPDQgoh0pzueBFZeNE1+3J/NCtet/L3dDJQTgrq85FodNG0w8k8RGtazIA97XrQ4V/0l6tjRTKlQBbxeMUd8I4SHNDkFhYh1rZY9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673756; c=relaxed/simple;
-	bh=eY8qYIC/9oiRx0qBX5WeyXL4+xD24zHRQtAv0aYBSF0=;
+	s=arc-20240116; t=1775672483; c=relaxed/simple;
+	bh=wInYM72grT7XdYBGV1Hd0+k2/B+sX2ADMMnjqlfgSuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/LrTfShGBr6LBzpcANSL0TZuSh9mOPj+PMH7PI9m/nBEz46afb2AfwLfZI4DuPxGaXeXdoNjJFqrszerXjlrMQmOWczclw3ZDvl9+ZbcK3+t5O4gKZ0c7DW03y2p3Y0tUNqu9HarjM4iTU33pK8hEujho+DnfNTw9G7AOzi3Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9fHMsiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEAFC2BCB0;
-	Wed,  8 Apr 2026 18:42:35 +0000 (UTC)
+	 MIME-Version; b=sSQczIPBc3UY/VfyJF1j7cMZJzr9IGB9CkgHCZLBhC7FL7kqluRnsibD1RjHbKcP4HOBBIcKBGuAtCZmygI7UytTjpI1J9O7pkEOLWJWskk+EAk2vO9I2MFoDFCmokk+xn8xw3nVsBw4+Pb9e8qS75qB+aiQto3vQbvfAOD89iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYuyES32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20734C19421;
+	Wed,  8 Apr 2026 18:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673756;
-	bh=eY8qYIC/9oiRx0qBX5WeyXL4+xD24zHRQtAv0aYBSF0=;
+	s=korg; t=1775672483;
+	bh=wInYM72grT7XdYBGV1Hd0+k2/B+sX2ADMMnjqlfgSuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C9fHMsiU0azKzanQlXWsaWctlBqYIDouTF4Er/FFKgVWIrcHul+mvzElJ/WIrpDGb
-	 pgLO5Ju114ygeCtnnblWQYtHsdlzhNEuwyPEOMHnMWkWiwYDlLd34JMut+1m2R5WVB
-	 BJTKwRP0KAtPcBjPxmU3M8FkkZAYKdXzkWWn6X2c=
+	b=BYuyES32/EZb7InKtAq1o9CEukXpToGCpv7i+DR9Fc98WOLpAWQc2Wtx6gcVUzLzK
+	 jsxnKtOwBz+nUUS/hilpsKJlHFNF8xHYmswZRvWzbAkP3wNTD5wuKoyNhQPWZaG3i5
+	 e0TmsnisMXc9DcmhVcufBhKvXjgw9eGDvTmydTj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Oskar Kjos <oskar.kjos@hotmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/242] netfilter: x_tables: ensure names are nul-terminated
-Date: Wed,  8 Apr 2026 20:01:50 +0200
-Message-ID: <20260408175929.703965841@linuxfoundation.org>
+Subject: [PATCH 6.6 024/160] ip6_tunnel: clear skb2->cb[] in ip4ip6_err()
+Date: Wed,  8 Apr 2026 20:01:51 +0200
+Message-ID: <20260408175914.105629905@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,95 +70,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,google.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234293-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234785-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EB28F3C26EE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1E76E3C09DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a958a4f90ddd7de0800b33ca9d7b886b7d40f74e ]
+[ Upstream commit 2edfa31769a4add828a7e604b21cb82aaaa05925 ]
 
-Reject names that lack a \0 character before feeding them
-to functions that expect c-strings.
+Oskar Kjos reported the following problem.
 
-Fixes tag is the most recent commit that needs this change.
+ip4ip6_err() calls icmp_send() on a cloned skb whose cb[] was written
+by the IPv6 receive path as struct inet6_skb_parm. icmp_send() passes
+IPCB(skb2) to __ip_options_echo(), which interprets that cb[] region
+as struct inet_skb_parm (IPv4). The layouts differ: inet6_skb_parm.nhoff
+at offset 14 overlaps inet_skb_parm.opt.rr, producing a non-zero rr
+value. __ip_options_echo() then reads optlen from attacker-controlled
+packet data at sptr[rr+1] and copies that many bytes into dopt->__data,
+a fixed 40-byte stack buffer (IP_OPTIONS_DATA_FIXED_SIZE).
 
-Fixes: c38c4597e4bf ("netfilter: implement xt_cgroup cgroup2 path match")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+To fix this we clear skb2->cb[], as suggested by Oskar Kjos.
+
+Also add minimal IPv4 header validation (version == 4, ihl >= 5).
+
+Fixes: c4d3efafcc93 ("[IPV6] IP6TUNNEL: Add support to IPv4 over IPv6 tunnel.")
+Reported-by: Oskar Kjos <oskar.kjos@hotmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260326155138.2429480-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_cgroup.c  | 6 ++++++
- net/netfilter/xt_rateest.c | 5 +++++
- 2 files changed, 11 insertions(+)
+ net/ipv6/ip6_tunnel.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/netfilter/xt_cgroup.c b/net/netfilter/xt_cgroup.c
-index c0f5e9a4f3c65..bfc98719684e2 100644
---- a/net/netfilter/xt_cgroup.c
-+++ b/net/netfilter/xt_cgroup.c
-@@ -53,6 +53,9 @@ static int cgroup_mt_check_v1(const struct xt_mtchk_param *par)
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 69cace90ece16..5a2583a82f974 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -601,11 +601,16 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 	if (!skb2)
+ 		return 0;
  
- 	info->priv = NULL;
- 	if (info->has_path) {
-+		if (strnlen(info->path, sizeof(info->path)) >= sizeof(info->path))
-+			return -ENAMETOOLONG;
++	/* Remove debris left by IPv6 stack. */
++	memset(IPCB(skb2), 0, sizeof(*IPCB(skb2)));
 +
- 		cgrp = cgroup_get_from_path(info->path);
- 		if (IS_ERR(cgrp)) {
- 			pr_info_ratelimited("invalid path, errno=%ld\n",
-@@ -85,6 +88,9 @@ static int cgroup_mt_check_v2(const struct xt_mtchk_param *par)
+ 	skb_dst_drop(skb2);
  
- 	info->priv = NULL;
- 	if (info->has_path) {
-+		if (strnlen(info->path, sizeof(info->path)) >= sizeof(info->path))
-+			return -ENAMETOOLONG;
-+
- 		cgrp = cgroup_get_from_path(info->path);
- 		if (IS_ERR(cgrp)) {
- 			pr_info_ratelimited("invalid path, errno=%ld\n",
-diff --git a/net/netfilter/xt_rateest.c b/net/netfilter/xt_rateest.c
-index 72324bd976af8..b1d736c15fcbe 100644
---- a/net/netfilter/xt_rateest.c
-+++ b/net/netfilter/xt_rateest.c
-@@ -91,6 +91,11 @@ static int xt_rateest_mt_checkentry(const struct xt_mtchk_param *par)
- 		goto err1;
- 	}
+ 	skb_pull(skb2, offset);
+ 	skb_reset_network_header(skb2);
+ 	eiph = ip_hdr(skb2);
++	if (eiph->version != 4 || eiph->ihl < 5)
++		goto out;
  
-+	if (strnlen(info->name1, sizeof(info->name1)) >= sizeof(info->name1))
-+		return -ENAMETOOLONG;
-+	if (strnlen(info->name2, sizeof(info->name2)) >= sizeof(info->name2))
-+		return -ENAMETOOLONG;
-+
- 	ret  = -ENOENT;
- 	est1 = xt_rateest_lookup(par->net, info->name1);
- 	if (!est1)
+ 	/* Try to guess incoming interface */
+ 	rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL, eiph->saddr,
 -- 
 2.53.0
 
