@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMpMC6Gf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:09 +0200
+	id mAxmEyen1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494C43C0FC4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84933C264E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B9ACF301CC70
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88C273199CF6
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4003B19A3;
-	Wed,  8 Apr 2026 18:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20BC3D522C;
+	Wed,  8 Apr 2026 18:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSWWCmcI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqYSJSPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71E224B28;
-	Wed,  8 Apr 2026 18:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6751331A44;
+	Wed,  8 Apr 2026 18:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673139; cv=none; b=ho5ucDuIOkLrmKaIks4c979ABKjHyKFcpHxd7DlmfUROl4HpLnAH+y7NJp3O6e4lj0djEVvfED0795AS85wjWKk/KI5MeFLm3KfzW7iIL1Sy0bLbHUB3Vfmdzl9OaX0xfn7Ym32DzF01BRbLHmj89EkAKA3j+zkmpj8n/3w1jaQ=
+	t=1775673696; cv=none; b=a0DrOg7Nr/Qo9kDkyuSO2s98tFPBeCMwSElm//r2zk8k8f9e3NhF3ts6Trb75v6u8AK1UZlcS5I0FB7i3pY/fuVReF+D0NjOBFkxUtkettaUW+OxM5Jf8qAcm2D1L6iOa69G6rcOvYgg/rVciOy91S4Gg/60mu1UZPIHCjRoX8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673139; c=relaxed/simple;
-	bh=7v+uiWUVnCNKuiLB5op0U9IoqH22caWB8ctZRCY91dQ=;
+	s=arc-20240116; t=1775673696; c=relaxed/simple;
+	bh=cuIxTCmC9vrHdgOpyNm3K7g+1PDnUrMbQgpJ/Rnwujg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTqe8uh0wPny5N5lFUhrvXS5anlqqWZzUf+qHCFwGJuhzx3P7bsvabDQiSOeQzMZCX5ualgRfCdaLvLOtYh87Pwc95mcHLgR6YTX8m7v+5caWDrtUm8u35yK2BbCn4UsT2To67Y0kIo5mKya+uold+PAJ9kVrRy1UOXP0jDol4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSWWCmcI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C610C19421;
-	Wed,  8 Apr 2026 18:32:19 +0000 (UTC)
+	 MIME-Version; b=jDqfYjeYGg6oN61rEV4NqPZY8DRQSl9hNNpeJU6UxD7rH0yPR15uGxgir47S4EcaaRqDUhaSfkg5VN3nY4TRfY1ADVrBg2ndJw+acFSGcd1kW7f1yVUm3q567Rxq9e3eRTkJfgSfQm+PpyjUB4Iz+L8+F1/4V07ZjYZ5muNTs6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqYSJSPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9E1C2BCB3;
+	Wed,  8 Apr 2026 18:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673139;
-	bh=7v+uiWUVnCNKuiLB5op0U9IoqH22caWB8ctZRCY91dQ=;
+	s=korg; t=1775673696;
+	bh=cuIxTCmC9vrHdgOpyNm3K7g+1PDnUrMbQgpJ/Rnwujg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSWWCmcIZZgOV1aWPxQeuLb6/Hv1LrxB4IMOgXVDlA/pz0wkKXtPczVjs3UWY03++
-	 0bgY1dj8c5Sjs67La1ugnjoEpQvhU0jtd+YCwlVDz/uo1Lv8LsMPt7+w8vgwXUnMRW
-	 PVs9Sl9nQed6PeRNTfUicujcVY3jZACAxY1um68I=
+	b=GqYSJSPoV5WyYGJ97/IFaDWC7lMymdg066gS1TBj7mYaUeOD6zVbLF/L7Ljk4ik0l
+	 akD0kjKkxyegjKQzjWHbi83chnItxFqrVEsifxaL6PLMRUOhYNoe97KSdH3fWnORMW
+	 MynSb//so5l+FGGXkYFzUU93Wv41bD8O/M7LvX7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 109/277] hwmon: (tps53679) Fix array access with zero-length block read
+Subject: [PATCH 6.12 054/242] net/sched: sch_hfsc: fix divide-by-zero in rtsc_min()
 Date: Wed,  8 Apr 2026 20:01:34 +0200
-Message-ID: <20260408175937.944568416@linuxfoundation.org>
+Message-ID: <20260408175929.098795279@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +70,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234762-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234546-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 494C43C0FC4
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mojatatu.com:email]
+X-Rspamd-Queue-Id: B84933C264E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 0e211f6aaa6a00fd0ee0c1eea5498f168c6725e6 ]
+[ Upstream commit 4576100b8cd03118267513cafacde164b498b322 ]
 
-i2c_smbus_read_block_data() can return 0, indicating a zero-length
-read. When this happens, tps53679_identify_chip() accesses buf[ret - 1]
-which is buf[-1], reading one byte before the buffer on the stack.
+m2sm() converts a u32 slope to a u64 scaled value.  For large inputs
+(e.g. m1=4000000000), the result can reach 2^32.  rtsc_min() stores
+the difference of two such u64 values in a u32 variable `dsm` and
+uses it as a divisor.  When the difference is exactly 2^32 the
+truncation yields zero, causing a divide-by-zero oops in the
+concave-curve intersection path:
 
-Fix by changing the check from "ret < 0" to "ret <= 0", treating a
-zero-length read as an error (-EIO), which prevents the out-of-bounds
-array access.
+  Oops: divide error: 0000
+  RIP: 0010:rtsc_min (net/sched/sch_hfsc.c:601)
+  Call Trace:
+   init_ed (net/sched/sch_hfsc.c:629)
+   hfsc_enqueue (net/sched/sch_hfsc.c:1569)
+   [...]
 
-Also fix a typo in the adjacent comment: "if present" instead of
-duplicate "if".
+Widen `dsm` to u64 and replace do_div() with div64_u64() so the full
+difference is preserved.
 
-Fixes: 75ca1e5875fe ("hwmon: (pmbus/tps53679) Add support for TPS53685")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260329170925.34581-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260326204310.1549327-1-xmei5@asu.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/tps53679.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/sch_hfsc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
-index ca2bfa25eb04c..3bca543817a60 100644
---- a/drivers/hwmon/pmbus/tps53679.c
-+++ b/drivers/hwmon/pmbus/tps53679.c
-@@ -103,10 +103,10 @@ static int tps53679_identify_chip(struct i2c_client *client,
- 	}
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index d8fd35da32a7c..57221522fe56d 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -555,7 +555,7 @@ static void
+ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
+ {
+ 	u64 y1, y2, dx, dy;
+-	u32 dsm;
++	u64 dsm;
  
- 	ret = i2c_smbus_read_block_data(client, PMBUS_IC_DEVICE_ID, buf);
--	if (ret < 0)
--		return ret;
-+	if (ret <= 0)
-+		return ret < 0 ? ret : -EIO;
- 
--	/* Adjust length if null terminator if present */
-+	/* Adjust length if null terminator is present */
- 	buf_len = (buf[ret - 1] != '\x00' ? ret : ret - 1);
- 
- 	id_len = strlen(id);
+ 	if (isc->sm1 <= isc->sm2) {
+ 		/* service curve is convex */
+@@ -598,7 +598,7 @@ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
+ 	 */
+ 	dx = (y1 - y) << SM_SHIFT;
+ 	dsm = isc->sm1 - isc->sm2;
+-	do_div(dx, dsm);
++	dx = div64_u64(dx, dsm);
+ 	/*
+ 	 * check if (x, y1) belongs to the 1st segment of rtsc.
+ 	 * if so, add the offset.
 -- 
 2.53.0
 
