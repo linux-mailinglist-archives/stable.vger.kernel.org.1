@@ -1,161 +1,183 @@
-Return-Path: <stable+bounces-233938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APVbLKB/1mmQFwgAu9opvQ
-	(envelope-from <stable+bounces-233938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 18:17:36 +0200
+	id WFJZARyB1mnDFwgAu9opvQ
+	(envelope-from <stable+bounces-233939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 18:23:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D86F3BEC2A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 18:17:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 581583BECA1
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 18:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC032300D14D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 16:17:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDA663011C75
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 16:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350F6346782;
-	Wed,  8 Apr 2026 16:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB1139C00C;
+	Wed,  8 Apr 2026 16:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BIq1oqTf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2Wrpp3B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE64A258EE0
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 16:17:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4915127EFE9;
+	Wed,  8 Apr 2026 16:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775665054; cv=none; b=lWm0TeC/O31xeh98Cf4nSqvft4RqI8SVW/x5hAhBSyPE+jQUlTJg5STfMO96jLXhTlzkxCOgaRO1fNDLRcZie0Md0EwSzYrtfB9QAWoC0S+wmt2Xnq7QLnHMSrvlUCDQZEVo3JJl81sFKAEsLHl8ylh+fyeTzJLxFzR3qdHdDhY=
+	t=1775665409; cv=none; b=BO6guYLZGmw9j0eTyOTUd0c92tpyUDbcYgEFmPnlUKEUMk6wKcuRqFvpzrnPZaEgJYnaZ5BhXhFdbC6CaVuBeroP5ji4PxmYEG0q6fdmfLTeihiykh2fk45OoMAa5k1r9tyw43ACmxa1Omp+iBEjnLGfeaIgt5HUeMYVGcGa+Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775665054; c=relaxed/simple;
-	bh=4A0tIwDD9VHgCy7Bk1wUfoUS7YjldjWZiQz5d1R8gEk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fdGDLNIgQG3J0QQV18bNOmilgRQTyc+sfJHG0nXPMnxrHESmY4clt/UEklMzHsKr3lLfJG4o58A34PX69wk7QOTib7kiqGlDT16LyIHToZXQ9PUvNr/+fpCTH8repFTyEDKNnv4q/6pL9LiOfR0WgNugWs4jtDL40X81zrkIJRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BIq1oqTf; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B1929C5AA9A;
-	Wed,  8 Apr 2026 16:18:05 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 57C3C603CE;
-	Wed,  8 Apr 2026 16:17:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3EA6910450154;
-	Wed,  8 Apr 2026 18:17:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775665050; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=sW7PfS/oGOQ7K0BGI9Bt1TIPXOxXhcJbY+thwE8WW+g=;
-	b=BIq1oqTfqfW6AV6UWeme3jl+n9hN744rsHzRQCGMeshPn+VoDrOOPblFhtOjxu5WgCDfr6
-	PKEGzY8QPUG/LmPsvKpnDPVI97jfnGYLmFrSlogdV3v0Suax/HJIUaoW9BWwQFS6GKAcOX
-	0qW8rycPgQGQTZE+6RsCbq2l8Sax/Xi70S7+xyjsorrfNfInSStzLrunwiwgkuBG9QSmob
-	1eOsMKn8bplGk20ZTo5+7AutuhBGL+wciUCPWckqeMndhNTmla0rVmjnFoHCHsemUQ0QHq
-	1Mz5tcUfE2UiKvD+VK/2qvWbnv660f0uq/VdqVyk+QWArwAmvZOp8CkHJRem7A==
-Message-ID: <bd58a56f-f30c-491b-b50e-6cdede803139@bootlin.com>
-Date: Wed, 8 Apr 2026 18:18:07 +0200
+	s=arc-20240116; t=1775665409; c=relaxed/simple;
+	bh=d7s3hrpf1KIsN/M7lWyW01HXZUuo6L5BdYFQrNspxtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=So4UFhWxT8v341M7bf4+HGyVfFQGtf9mYUj/tkPH79EbcJ6yCHAXLupAB3Kh4vtoCNTlsXfo/HRK7OxO1mN3FvuyuAIE1XdfoYyFMxaltopu/kYEVjBt7VN6Hf03KD+Blj4iTCGl57CnTEtsz/i9zBk5mmeHsg48x88g4qnhbT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2Wrpp3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FDCC19421;
+	Wed,  8 Apr 2026 16:23:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775665408;
+	bh=d7s3hrpf1KIsN/M7lWyW01HXZUuo6L5BdYFQrNspxtw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V2Wrpp3BA3tWZ7wm6j/wz7KbPt/s8D8jiMocv1RxSGbKbvlwANn6Tkepqwu2ZC3P9
+	 SRCWyydWLJjw9J0O5TyhZIgnlKtva49GLD57dYLGjGL3osRiDcPx3g0tHmg/VvyjaO
+	 Xv07sl/1ABb7Ix48yT2cunHUl9UJ9NVPHBmPXwVpGBxDHeg2lO1epgrhfRNMDPIOyw
+	 AOt2CxRdDqfmNfPIEdJ8rLwDl7Gfmxi0PplbVbgUFGQ4moZRgFYA1q4V7IHJOS1p6/
+	 GK1+tb/2sP66cl3gcb/uPuZ77yxvMY3aBix2RmlcundvWMbzRo5LgnKmXs5Kis4Aoe
+	 blAJW6ZBqSL6g==
+Date: Wed, 8 Apr 2026 21:53:21 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: manivannan.sadhasivam@oss.qualcomm.com, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] net: qrtr: ns: Fix use-after-free in driver
+ remove()
+Message-ID: <ygxq427xqsewzqz5ub62v4v2r4mt2rclilwfg3apynemew3m4k@oefumgql46nl>
+References: <20260403-qrtr-fix-v2-0-f88a14859c63@oss.qualcomm.com>
+ <20260403-qrtr-fix-v2-5-f88a14859c63@oss.qualcomm.com>
+ <0ab00cb4-8335-472d-b43e-3bbd99b41480@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/arcpgu: fix device node leak
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Simona Vetter <simona.vetter@ffwll.ch>,
- Alexey Brodkin <abrodkin@synopsys.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- Ian Ray <ian.ray@gehealthcare.com>, stable@vger.kernel.org
-References: <20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com>
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0ab00cb4-8335-472d-b43e-3bbd99b41480@redhat.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233938-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233939-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[bootlin.com,ffwll.ch,synopsys.com,linux.intel.com,kernel.org,suse.de,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[louis.chauvet@bootlin.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:dkim,bootlin.com:email,bootlin.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2D86F3BEC2A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,sashiko.dev:url]
+X-Rspamd-Queue-Id: 581583BECA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-On 4/2/26 18:42, Luca Ceresoli wrote:
-> This function gets a device_node reference via
-> of_graph_get_remote_port_parent() and stores it in encoder_node, but never
-> puts that reference. Add it.
+On Tue, Apr 07, 2026 at 05:33:55PM +0200, Paolo Abeni wrote:
+> On 4/3/26 6:06 PM, Manivannan Sadhasivam via B4 Relay wrote:
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > 
+> > In the remove callback, if a packet arrives after destroy_workqueue() is
+> > called, but before sock_release(), the qrtr_ns_data_ready() callback will
+> > try to queue the work, causing use-after-free issue.
+> > 
+> > Fix this issue by saving the default 'sk_data_ready' callback during
+> > qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
+> > the start of remove(). This ensures that even if a packet arrives after
+> > destroy_workqueue(), the work struct will not be dereferenced.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > ---
+> >  net/qrtr/ns.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+> > index dfb5dad9473c..c62d79e03d64 100644
+> > --- a/net/qrtr/ns.c
+> > +++ b/net/qrtr/ns.c
+> > @@ -25,6 +25,7 @@ static struct {
+> >  	u32 lookup_count;
+> >  	struct workqueue_struct *workqueue;
+> >  	struct work_struct work;
+> > +	void (*saved_data_ready)(struct sock *sk);
+> >  	int local_node;
+> >  } qrtr_ns;
+> >  
+> > @@ -754,6 +755,7 @@ int qrtr_ns_init(void)
+> >  		goto err_sock;
+> >  	}
+> >  
+> > +	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
+> >  	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
+> >  
+> >  	sq.sq_port = QRTR_PORT_CTRL;
+> > @@ -803,6 +805,10 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
+> >  
+> >  void qrtr_ns_remove(void)
+> >  {
+> > +	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
+> > +	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
+> > +	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
 > 
-> There used to be a of_node_put(encoder_node) but it has been removed by
-> mistake during a rework in commit 3ea66a794fdc ("drm/arc: Inline
-> arcpgu_drm_hdmi_init").
+> Sashiko says:
 > 
-> Fixes: 3ea66a794fdc ("drm/arc: Inline arcpgu_drm_hdmi_init")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-
 > ---
-> Changes in v2:
-> - fix typos in commit message
+> Does this lock adequately protect against concurrent callback execution?
+> In the network receive path, __sock_queue_rcv_skb() typically evaluates
+> !sock_flag(sk, SOCK_DEAD) and invokes sk->sk_data_ready() locklessly,
+> without acquiring sk_callback_lock or being in an RCU read-side
+> critical section.
+> If a thread processing a packet fetches the qrtr_ns_data_ready pointer
+> and is preempted, could it resume and execute the callback after
+> qrtr_ns_remove() has already finished destroying the workqueue?
 > ---
->   drivers/gpu/drm/tiny/arcpgu.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
-> index 505888497482..c93d61ac0bb7 100644
-> --- a/drivers/gpu/drm/tiny/arcpgu.c
-> +++ b/drivers/gpu/drm/tiny/arcpgu.c
-> @@ -250,7 +250,8 @@ DEFINE_DRM_GEM_DMA_FOPS(arcpgu_drm_ops);
->   static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
->   {
->   	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
-> -	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
-> +	struct device_node *encoder_node __free(device_node) = NULL;
-> +	struct device_node *endpoint_node = NULL;
->   	struct drm_connector *connector = NULL;
->   	struct drm_device *drm = &arcpgu->drm;
->   	int ret;
-> 
-> ---
-> base-commit: 4b9c36c83b34f710da9573291404f6a2246251c1
-> change-id: 20251119-drm-arcgpu-fix-device-node-leak-f909bc1f7fbb
-> 
-> Best regards,
-> --
-> Luca Ceresoli <luca.ceresoli@bootlin.com>
 > 
 
+This is a legitimate concern. I believe adding synchronize_net() before
+destroy_workqueue() will ensure that all the RX packets are flushed before
+destroying the workqueue.
+
+> There are more remarks from sashiko:
+> 
+> https://sashiko.dev/#/patchset/20260403-qrtr-fix-v2-0-f88a14859c63%40oss.qualcomm.com
+> 
+> AFAICS they are pre-existing issues or false positive, but please have a
+> look.
+> 
+
+There are a couple of worth fixing issues mentioned there in the error path that
+I'll incorporate in the next revision. But for the issues not related to this
+series, I will defer them to follow up series.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
