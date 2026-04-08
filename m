@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-235035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBVeAduk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:27 +0200
+	id qOj+Bo+h1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71B73C2018
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEDF3C1472
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 18530307077F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CFEF1304A84E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BE43D890F;
-	Wed,  8 Apr 2026 18:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979DD3D8906;
+	Wed,  8 Apr 2026 18:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aL3T5DJF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXrdfQDl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A97D337B81;
-	Wed,  8 Apr 2026 18:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C523624B0;
+	Wed,  8 Apr 2026 18:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674402; cv=none; b=UYRdFXfHsv3ZapdPe41f7zukwR5so4XuWjugOLGaVShS0F5CVyg/zIrLV4zpkI/fvSardl+q+f82ofcvhSqq2z7ss0I/+VKZ6OgEhuwQvA4180cPIERj666pP6P6nl48C1w6b1olCMhjwtTke+cOe1ZohdzzA+3A8+dOjn3GJ4w=
+	t=1775673668; cv=none; b=Q8Rso3g1JngO5elMxPAmOg4ndEoTM3RjoAz4h2n8UuNvqE/qbz4FruhMPpMfHSFWBJLQDxteYvj3FFVH/vQMEe95ym+kqUOwKuIiK4HBdJcxGGRZ1bxPCTe2dtKbjF0erzekh2rOQ6y3svbiob1gi548v5g2ICzUA7VaMFTUYR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674402; c=relaxed/simple;
-	bh=SM7j62BYAPiM9wSeUPRkCvCWJXBVXN1ecVr4hesgj2s=;
+	s=arc-20240116; t=1775673668; c=relaxed/simple;
+	bh=RkEOaf7FDxqrhmQj2IgMTk+pt4mE0XbKnlKAAGypJ3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhJFRDuzhGEfWX1VQcHPxvVk4t/8UqAwspgcXirgy15uBBGKoVnk8HwVJchZ3S7YQ2utYEbwY/C9Hg4DKdedZmzdI02qXWFek1EMKJrVud5/IEr9sntXQnWqw7L7Gb9TNm347x8UBnhMDmJ2IsJOTFmK29uD8CUNduruTybQjcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aL3T5DJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF56C19421;
-	Wed,  8 Apr 2026 18:53:21 +0000 (UTC)
+	 MIME-Version; b=YmMExm3kes8pM5EgJytU3nAaX1DVvr6JZ9XVMf4jtccpkLuBNc4Fu5ajJ+rA+ZCs6XYxCFxJSVxPtPRZtRao3dgHcxoXfgHBHsgzyjtyWkh84VcAlxrypEoTH5kJMUE6d4pG8n6IrTkj10HWEqkint9PuWbq2SJcZMrk3wBteuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXrdfQDl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E448EC19421;
+	Wed,  8 Apr 2026 18:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674402;
-	bh=SM7j62BYAPiM9wSeUPRkCvCWJXBVXN1ecVr4hesgj2s=;
+	s=korg; t=1775673668;
+	bh=RkEOaf7FDxqrhmQj2IgMTk+pt4mE0XbKnlKAAGypJ3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aL3T5DJFQtbDQQyhKZbMnGW1W5KMfqnbHZnup1tVbEttgVtFTB7zfa8kK0nCY+WV0
-	 31RgfpLJ8jx82KnfcWoOp9opvhKPE+fW7NZJrRceUEW9QV3+Kw7l90oVAEcT4V9RNy
-	 OIBdufG34PURbRAF86ueGSDfHjmizDVSGUHx7SOQ=
+	b=kXrdfQDlnGDu5E35Q0DmQD1JBcpY3syHy64EPuxk2Dyq5LCbHjoSPoq5u/TdMVfhg
+	 Oas/GPSmlxhFZ0Mt6WbFfvP68SHFUatqKA0BH5EhOENOxC+924pTa/8j4JPmn47wDt
+	 BF84g0VBGEkZsinJtypjsagkDUQTvr49UtXBgzx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Norbert Szetei <norbert@doyensec.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 084/311] netfilter: nfnetlink_log: account for netlink header size
+Subject: [PATCH 6.12 044/242] crypto: af-alg - fix NULL pointer dereference in scatterwalk
 Date: Wed,  8 Apr 2026 20:01:24 +0200
-Message-ID: <20260408175942.549562098@linuxfoundation.org>
+Message-ID: <20260408175928.721237316@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +68,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-235035-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-234751-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,netfilter.org:email]
-X-Rspamd-Queue-Id: B71B73C2018
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,doyensec.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7BEDF3C1472
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Norbert Szetei <norbert@doyensec.com>
 
-[ Upstream commit 6d52a4a0520a6696bdde51caa11f2d6821cd0c01 ]
+[ Upstream commit 62397b493e14107ae82d8b80938f293d95425bcb ]
 
-This is a followup to an old bug fix: NLMSG_DONE needs to account
-for the netlink header size, not just the attribute size.
+The AF_ALG interface fails to unmark the end of a Scatter/Gather List (SGL)
+when chaining a new af_alg_tsgl structure. If a sendmsg() fills an SGL
+exactly to MAX_SGL_ENTS, the last entry is marked as the end. A subsequent
+sendmsg() allocates a new SGL and chains it, but fails to clear the end
+marker on the previous SGL's last data entry.
 
-This can result in a WARN splat + drop of the netlink message,
-but other than this there are no ill effects.
+This causes the crypto scatterwalk to hit a premature end, returning NULL
+on sg_next() and leading to a kernel panic during dereference.
 
-Fixes: 9dfa1dfe4d5e ("netfilter: nf_log: account for size of NLMSG_DONE attribute")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fix this by explicitly unmarking the end of the previous SGL when
+performing sg_chain() in af_alg_alloc_tsgl().
+
+Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_log.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/af_alg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
-index 27dd35224e629..dcd2493a9a404 100644
---- a/net/netfilter/nfnetlink_log.c
-+++ b/net/netfilter/nfnetlink_log.c
-@@ -726,7 +726,7 @@ nfulnl_log_packet(struct net *net,
- 		+ nla_total_size(plen)			/* prefix */
- 		+ nla_total_size(sizeof(struct nfulnl_msg_packet_hw))
- 		+ nla_total_size(sizeof(struct nfulnl_msg_packet_timestamp))
--		+ nla_total_size(sizeof(struct nfgenmsg));	/* NLMSG_DONE */
-+		+ nlmsg_total_size(sizeof(struct nfgenmsg));	/* NLMSG_DONE */
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 6c271e55f44d9..78e995dddf879 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -623,8 +623,10 @@ static int af_alg_alloc_tsgl(struct sock *sk)
+ 		sg_init_table(sgl->sg, MAX_SGL_ENTS + 1);
+ 		sgl->cur = 0;
  
- 	if (in && skb_mac_header_was_set(skb)) {
- 		size += nla_total_size(skb->dev->hard_header_len)
+-		if (sg)
++		if (sg) {
++			sg_unmark_end(sg + MAX_SGL_ENTS - 1);
+ 			sg_chain(sg, MAX_SGL_ENTS + 1, sgl->sg);
++		}
+ 
+ 		list_add_tail(&sgl->list, &ctx->tsgl_list);
+ 	}
 -- 
 2.53.0
 
