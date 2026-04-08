@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CO8cMiif1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:08 +0200
+	id oMBWDLKh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DB23C0E5B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BA63C1517
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 071E83029796
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09B6F300F154
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215DC3D890F;
-	Wed,  8 Apr 2026 18:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB243D9033;
+	Wed,  8 Apr 2026 18:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nx6RPb+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+jaVR4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96FF3D88F7;
-	Wed,  8 Apr 2026 18:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719F93D75C9;
+	Wed,  8 Apr 2026 18:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673075; cv=none; b=HPDRopMc5C0V5A0ZiTmpFNj8/j4NAtJ1j2iBAaiZhU0Y4SAsN/rbF12Hvu98cepAX/g+KPM679uCvswPF7BdbsbJDWRcCTJ0V9UrA6XShvsk55IM6R1hzrmtHwpC5blDj+UKRETH98fGTXegB4OnYF/Qt5yPKcNlaDcp3eLXbNs=
+	t=1775673722; cv=none; b=e+wue6vEixjs3I0c1jLdJ9XPm0VZCcEN0BtESdOwttBcgUXiMefL5BMOSog92+skBnzmCZFaWaSj5nmt2QfMH3HydTyBNA3eZjvCiK/pWV37hb77kupdY0cIJdencrfVEzQk1o/BHepJXqzM8MpVjj/nWPQTxO58fZASYyOaLvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673075; c=relaxed/simple;
-	bh=+8ArF1sGdu5weelo7Pe4cF/dejnIDoejcOk/lGVK3lw=;
+	s=arc-20240116; t=1775673722; c=relaxed/simple;
+	bh=j71PcQxG+HxTzda9oy2CO6jiRKmCJZBxLIaU2NlgKXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sI2zYucaPlHEuV1nc7EZbf8BwKQvcwZX1PvCXtgsUFbb60IPdnIRbj2RowVVAAFNUfyxQWCf69CCODqOQE5HeMMtZsswmpB7Nqlu0vwftc/6yX1dc1I+BPxSY3FIajt605eB3TQexsB/TfBSD6f//33o1veQ6n1UkPs+6SEztY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nx6RPb+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37262C19425;
-	Wed,  8 Apr 2026 18:31:15 +0000 (UTC)
+	 MIME-Version; b=KSRI3uKsgra+g029pfOPIhZvUhVWEMIrJwPAIidldalx57Gmjt1DLleSSSm/tIN9fd4OPSs1sL+gJjb+zVtRXfFel1fAxs13HuPZ6/UR8TUjSzRuhLkI46/DRmWEkBZVCPJt2OPwG1uscAyCqYz89e7VppZ1J3VdRstY+KgSWJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+jaVR4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05558C19421;
+	Wed,  8 Apr 2026 18:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673075;
-	bh=+8ArF1sGdu5weelo7Pe4cF/dejnIDoejcOk/lGVK3lw=;
+	s=korg; t=1775673722;
+	bh=j71PcQxG+HxTzda9oy2CO6jiRKmCJZBxLIaU2NlgKXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nx6RPb+MF/YgHPAgc5LZoTWkezHG7sIZhdC0eUss8IhKtIVZjym5vPf31zXaw+ZiH
-	 ZOERvQ9G3LjUUgoUkujKsaJi1/fYrDSMj+cUkTKctvXzxIfjmImQn8Msnv3JrGZhJP
-	 hhUGcg73Aq4gFKukpDVnOM1VRqpQD1ct0FVKNMQU=
+	b=j+jaVR4/ksEaDpHDXDhLbNan3BLAGn4i72ZiEiL1VYYFlYvnfaObmwRpEgm/sIMV+
+	 pZsgfgZatL2XTUza5Dwyuo5r0HiIHjTRPiepEFF5qsPXRax9QUpZNtY4dfme4GHaHl
+	 OYNWLwM86ciOuJhGkkPyPz1Dq4RE+I2md7BxOk2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 092/277] net/mlx5: Fix switchdev mode rollback in case of failure
+Subject: [PATCH 6.12 037/242] i2c: tegra: Dont mark devices with pins as IRQ safe
 Date: Wed,  8 Apr 2026 20:01:17 +0200
-Message-ID: <20260408175937.309372058@linuxfoundation.org>
+Message-ID: <20260408175928.461847831@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,119 +65,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234772-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234521-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 71DB23C0E5B
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[armlinux.org.uk:email,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A0BA63C1517
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Mikko Perttunen <mperttunen@nvidia.com>
 
-[ Upstream commit 403186400a1a6166efe7031edc549c15fee4723f ]
+[ Upstream commit ec69c9e88315c4be70c283f18c2ff130da6320b5 ]
 
-If for some internal reason switchdev mode fails, we rollback to legacy
-mode, before this patch, rollback will unregister the uplink netdev and
-leave it unregistered causing the below kernel bug.
+I2C devices with associated pinctrl states (DPAUX I2C controllers)
+will change pinctrl state during runtime PM. This requires taking
+a mutex, so these devices cannot be marked as IRQ safe.
 
-To fix this, we need to avoid netdev unregister by setting the proper
-rollback flag 'MLX5_PRIV_FLAGS_SWITCH_LEGACY' to indicate legacy mode.
+Add PINCTRL as dependency to avoid build errors.
 
-devlink (431) used greatest stack depth: 11048 bytes left
-mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), \
-	necvfs(0), active vports(0)
-mlx5_core 0000:00:03.0: E-Switch: Supported tc chains and prios offload
-mlx5_core 0000:00:03.0: Loading uplink representor for vport 65535
-mlx5_core 0000:00:03.0: mlx5_cmd_out_err:816:(pid 456): \
-	QUERY_HCA_CAP(0x100) op_mod(0x0) failed, \
-	status bad parameter(0x3), syndrome (0x3a3846), err(-22)
-mlx5_core 0000:00:03.0 enp0s3np0 (unregistered): Unloading uplink \
-	representor for vport 65535
- ------------[ cut here ]------------
-kernel BUG at net/core/dev.c:12070!
-Oops: invalid opcode: 0000 [#1] SMP NOPTI
-CPU: 2 UID: 0 PID: 456 Comm: devlink Not tainted 6.16.0-rc3+ \
-	#9 PREEMPT(voluntary)
-RIP: 0010:unregister_netdevice_many_notify+0x123/0xae0
-...
-Call Trace:
-[   90.923094]  unregister_netdevice_queue+0xad/0xf0
-[   90.923323]  unregister_netdev+0x1c/0x40
-[   90.923522]  mlx5e_vport_rep_unload+0x61/0xc6
-[   90.923736]  esw_offloads_enable+0x8e6/0x920
-[   90.923947]  mlx5_eswitch_enable_locked+0x349/0x430
-[   90.924182]  ? is_mp_supported+0x57/0xb0
-[   90.924376]  mlx5_devlink_eswitch_mode_set+0x167/0x350
-[   90.924628]  devlink_nl_eswitch_set_doit+0x6f/0xf0
-[   90.924862]  genl_family_rcv_msg_doit+0xe8/0x140
-[   90.925088]  genl_rcv_msg+0x18b/0x290
-[   90.925269]  ? __pfx_devlink_nl_pre_doit+0x10/0x10
-[   90.925506]  ? __pfx_devlink_nl_eswitch_set_doit+0x10/0x10
-[   90.925766]  ? __pfx_devlink_nl_post_doit+0x10/0x10
-[   90.926001]  ? __pfx_genl_rcv_msg+0x10/0x10
-[   90.926206]  netlink_rcv_skb+0x52/0x100
-[   90.926393]  genl_rcv+0x28/0x40
-[   90.926557]  netlink_unicast+0x27d/0x3d0
-[   90.926749]  netlink_sendmsg+0x1f7/0x430
-[   90.926942]  __sys_sendto+0x213/0x220
-[   90.927127]  ? __sys_recvmsg+0x6a/0xd0
-[   90.927312]  __x64_sys_sendto+0x24/0x30
-[   90.927504]  do_syscall_64+0x50/0x1c0
-[   90.927687]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   90.927929] RIP: 0033:0x7f7d0363e047
-
-Fixes: 2a4f56fbcc47 ("net/mlx5e: Keep netdev when leave switchdev for devlink set legacy only")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260330194015.53585-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Reported-by: Russell King <rmk+kernel@armlinux.org.uk>
+Link: https://lore.kernel.org/all/E1vsNBv-00000009nfA-27ZK@rmk-PC.armlinux.org.uk/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/Kconfig     | 2 ++
+ drivers/i2c/busses/i2c-tegra.c | 5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index f1585df13b732..8be0961cb6c7e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3623,6 +3623,8 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
- 	return 0;
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 0e679cc501488..b0185c09660b2 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -1177,6 +1177,8 @@ config I2C_TEGRA
+ 	tristate "NVIDIA Tegra internal I2C controller"
+ 	depends on ARCH_TEGRA || (COMPILE_TEST && (ARC || ARM || ARM64 || M68K || RISCV || SUPERH || SPARC))
+ 	# COMPILE_TEST needs architectures with readsX()/writesX() primitives
++	depends on PINCTRL
++	# ARCH_TEGRA implies PINCTRL, but the COMPILE_TEST side doesn't.
+ 	help
+ 	  If you say yes to this option, support will be included for the
+ 	  I2C controller embedded in NVIDIA Tegra SOCs
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index fbab82d457fb0..c57a2af5ea8cc 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -1786,8 +1786,11 @@ static int tegra_i2c_probe(struct platform_device *pdev)
+ 	 *
+ 	 * VI I2C device shouldn't be marked as IRQ-safe because VI I2C won't
+ 	 * be used for atomic transfers. ACPI device is not IRQ safe also.
++	 *
++	 * Devices with pinctrl states cannot be marked IRQ-safe as the pinctrl
++	 * state transitions during runtime PM require mutexes.
+ 	 */
+-	if (!IS_VI(i2c_dev) && !has_acpi_companion(i2c_dev->dev))
++	if (!IS_VI(i2c_dev) && !has_acpi_companion(i2c_dev->dev) && !i2c_dev->dev->pins)
+ 		pm_runtime_irq_safe(i2c_dev->dev);
  
- err_vports:
-+	/* rollback to legacy, indicates don't unregister the uplink netdev */
-+	esw->dev->priv.flags |= MLX5_PRIV_FLAGS_SWITCH_LEGACY;
- 	mlx5_esw_offloads_rep_unload(esw, MLX5_VPORT_UPLINK);
- err_uplink:
- 	esw_offloads_steering_cleanup(esw);
+ 	pm_runtime_enable(i2c_dev->dev);
 -- 
 2.53.0
 
