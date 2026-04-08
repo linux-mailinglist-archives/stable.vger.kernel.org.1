@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-234746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aI81N/2m1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:33 +0200
+	id gPmINJWp1mlmHAgAu9opvQ
+	(envelope-from <stable+bounces-234998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD9F3C25FE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795853C2AB1
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0F0F31E0536
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E08030FAD15
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9403D6694;
-	Wed,  8 Apr 2026 18:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F5933121F;
+	Wed,  8 Apr 2026 18:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdE1gET8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTp3JigR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEE2B67E;
-	Wed,  8 Apr 2026 18:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB2634AB06;
+	Wed,  8 Apr 2026 18:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673655; cv=none; b=SBiAqoXvr/tmNrahtynTn0QSHsgpI5xAxYoMBAs+Heuwx+Bnb6merob+wadgcfZuwEpvvyjOf7whzf0ku5D9fmYX6eZc0snPQ9IsRNPQUtN0HN2g0bH3pC1Vjc4NVcR4+k0JGVYUNaa6An7LU3mehFxYXOolZIBqgKQuOGdHt7Y=
+	t=1775674306; cv=none; b=kEpoPTW6eY7yQJEFHoqMyi+bDJv4cfsA1z5Tid/umfvJNl4/K7RNNo2JrF3pVqiRZrS8+E5HGI8WhPQqYQClaqATR/wPf/HhLohEGez6CZojSBZT/W0DU8Z17hM/smZAPGo2TyV/m/9nTlS9ijl+7adpxNBuFndd8FyTZBufvh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673655; c=relaxed/simple;
-	bh=8WURPUYzzLt+jBtSUG8xPUboNl0SuI2Ag3NZIjGcb3U=;
+	s=arc-20240116; t=1775674306; c=relaxed/simple;
+	bh=A4Q9rSrmcqdNc9X6FKF+1ORQASUAuU+NJTYLOjFbQwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQZ7acj9wP8EQkeW4WU+d4+7d+8LF7i+mApUjePXnn3ncCfbuOfs+r+cTR7bU3FeP2QznQM/eVhNIfdcky86CETS7Ekl2+pzxicZ4yT3n2xP/a/H3k14b3t9sVnCQt+X2VA67U13x0kCg01tgFYCCoM15VvUn3WaW0+SlXkZ86U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdE1gET8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94FDC19421;
-	Wed,  8 Apr 2026 18:40:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qHO2H01uz7faQPSf3dM5XbIfIpZApMiB5zhpC8vUimXElFDOiRmYEhlmKzY+whaL5aFCPcR2gyd3qt4ii8Nau3ZBmCGWYh/SOmw4LIcV8GfFbzESLw0S4R6AnBSxWUpj74R+PyaOWGekHS1fjMhSipvP9/Qj2FtLxjxm4b9hfGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTp3JigR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C16C19421;
+	Wed,  8 Apr 2026 18:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673655;
-	bh=8WURPUYzzLt+jBtSUG8xPUboNl0SuI2Ag3NZIjGcb3U=;
+	s=korg; t=1775674306;
+	bh=A4Q9rSrmcqdNc9X6FKF+1ORQASUAuU+NJTYLOjFbQwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdE1gET8G1kPzPFlaeRj7UEWIrgQ+T62mcmgHleLDmUZExbtz75oOrs8UrSR7JklS
-	 8pYKnNv5ws4u/KXJJevYnoKm5Ltxr55yIPsO5vURKmvYM8BjXB3j/12XwmirVNvGT2
-	 xJlzy5fGyPk2ooMixrKchpTz7Fo58BDcIcGy9Fng=
+	b=rTp3JigRVRzGXRvxfpKZyhUDZ/dPJL6MAQnFKxdRlPNF0oGQaa12Fpm20VSJ94LVQ
+	 NQUE+Q3201GF0W2zmdXm5eINLawN4z5V/txx9F+jlhVPYE3socm1SwqBvV1sLudxWK
+	 usjohlXDzbAxtx/WYgZiLorsuo4b78cLLtyAZsZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 007/242] io_uring/kbuf: uninline __io_put_kbufs
+	syzbot+006987d1be3586e13555@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 047/311] net: qrtr: replace qrtr_tx_flow radix_tree with xarray to fix memory leak
 Date: Wed,  8 Apr 2026 20:00:47 +0200
-Message-ID: <20260408175927.347004376@linuxfoundation.org>
+Message-ID: <20260408175941.172317777@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,242 +65,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234746-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234998-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,006987d1be3586e13555];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4AD9F3C25FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,shopee.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: 795853C2AB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Commit 5d3e51240d89678b87b5dc6987ea572048a0f0eb upstream.
+[ Upstream commit 2428083101f6883f979cceffa76cd8440751ffe6 ]
 
-__io_put_kbufs() and other helper functions are too large to be inlined,
-compilers would normally refuse to do so. Uninline it and move together
-with io_kbuf_commit into kbuf.c.
+__radix_tree_create() allocates and links intermediate nodes into the
+tree one by one. If a subsequent allocation fails, the already-linked
+nodes remain in the tree with no corresponding leaf entry. These orphaned
+internal nodes are never reclaimed because radix_tree_for_each_slot()
+only visits slots containing leaf values.
 
-io_kbuf_commitSigned-off-by: Pavel Begunkov <asml.silence@gmail.com>
+The radix_tree API is deprecated in favor of xarray. As suggested by
+Matthew Wilcox, migrate qrtr_tx_flow from radix_tree to xarray instead
+of fixing the radix_tree itself [1]. xarray properly handles cleanup of
+internal nodes — xa_destroy() frees all internal xarray nodes when the
+qrtr_node is released, preventing the leak.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/3dade7f55ad590e811aff83b1ec55c9c04e17b2b.1738724373.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://lore.kernel.org/all/20260225071623.41275-1-jiayuan.chen@linux.dev/T/
+Reported-by: syzbot+006987d1be3586e13555@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000bfba3a060bf4ffcf@google.com/T/
+Fixes: 5fdeb0d372ab ("net: qrtr: Implement outgoing flow control")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324080645.290197-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |   60 ++++++++++++++++++++++++++++++++++++++++++++++
- io_uring/kbuf.h |   73 +++++++-------------------------------------------------
- 2 files changed, 70 insertions(+), 63 deletions(-)
+ net/qrtr/af_qrtr.c | 31 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -20,6 +20,9 @@
- /* BIDs are addressed by a 16-bit field in a CQE */
- #define MAX_BIDS_PER_BGID (1 << 16)
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index dab839f61ee93..26609feff4f80 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -118,7 +118,7 @@ static DEFINE_XARRAY_ALLOC(qrtr_ports);
+  * @ep: endpoint
+  * @ref: reference count for node
+  * @nid: node id
+- * @qrtr_tx_flow: tree of qrtr_tx_flow, keyed by node << 32 | port
++ * @qrtr_tx_flow: xarray of qrtr_tx_flow, keyed by node << 32 | port
+  * @qrtr_tx_lock: lock for qrtr_tx_flow inserts
+  * @rx_queue: receive queue
+  * @item: list item for broadcast list
+@@ -129,7 +129,7 @@ struct qrtr_node {
+ 	struct kref ref;
+ 	unsigned int nid;
  
-+/* Mapped buffer ring, return io_uring_buf from head */
-+#define io_ring_head_to_buf(br, head, mask)	&(br)->bufs[(head) & (mask)]
-+
- struct io_provide_buf {
- 	struct file			*file;
- 	__u64				addr;
-@@ -29,6 +32,34 @@ struct io_provide_buf {
- 	__u16				bid;
- };
+-	struct radix_tree_root qrtr_tx_flow;
++	struct xarray qrtr_tx_flow;
+ 	struct mutex qrtr_tx_lock; /* for qrtr_tx_flow */
  
-+bool io_kbuf_commit(struct io_kiocb *req,
-+		    struct io_buffer_list *bl, int len, int nr)
-+{
-+	if (unlikely(!(req->flags & REQ_F_BUFFERS_COMMIT)))
-+		return true;
-+
-+	req->flags &= ~REQ_F_BUFFERS_COMMIT;
-+
-+	if (unlikely(len < 0))
-+		return true;
-+
-+	if (bl->flags & IOBL_INC) {
-+		struct io_uring_buf *buf;
-+
-+		buf = io_ring_head_to_buf(bl->buf_ring, bl->head, bl->mask);
-+		if (WARN_ON_ONCE(len > buf->len))
-+			len = buf->len;
-+		buf->len -= len;
-+		if (buf->len) {
-+			buf->addr += len;
-+			return false;
-+		}
-+	}
-+
-+	bl->head += nr;
-+	return true;
-+}
-+
- static inline struct io_buffer_list *io_buffer_get_list(struct io_ring_ctx *ctx,
- 							unsigned int bgid)
- {
-@@ -337,6 +368,35 @@ int io_buffers_peek(struct io_kiocb *req
- 	return io_provided_buffers_select(req, &arg->max_len, bl, arg->iovs);
+ 	struct sk_buff_head rx_queue;
+@@ -172,6 +172,7 @@ static void __qrtr_node_release(struct kref *kref)
+ 	struct qrtr_tx_flow *flow;
+ 	unsigned long flags;
+ 	void __rcu **slot;
++	unsigned long index;
+ 
+ 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
+ 	/* If the node is a bridge for other nodes, there are possibly
+@@ -189,11 +190,9 @@ static void __qrtr_node_release(struct kref *kref)
+ 	skb_queue_purge(&node->rx_queue);
+ 
+ 	/* Free tx flow counters */
+-	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
+-		flow = *slot;
+-		radix_tree_iter_delete(&node->qrtr_tx_flow, &iter, slot);
++	xa_for_each(&node->qrtr_tx_flow, index, flow)
+ 		kfree(flow);
+-	}
++	xa_destroy(&node->qrtr_tx_flow);
+ 	kfree(node);
  }
  
-+static inline bool __io_put_kbuf_ring(struct io_kiocb *req, int len, int nr)
-+{
-+	struct io_buffer_list *bl = req->buf_list;
-+	bool ret = true;
-+
-+	if (bl) {
-+		ret = io_kbuf_commit(req, bl, len, nr);
-+		req->buf_index = bl->bgid;
-+	}
-+	req->flags &= ~REQ_F_BUFFER_RING;
-+	return ret;
-+}
-+
-+unsigned int __io_put_kbufs(struct io_kiocb *req, int len, int nbufs)
-+{
-+	unsigned int ret;
-+
-+	ret = IORING_CQE_F_BUFFER | (req->buf_index << IORING_CQE_BUFFER_SHIFT);
-+
-+	if (unlikely(!(req->flags & REQ_F_BUFFER_RING))) {
-+		io_kbuf_drop_legacy(req);
-+		return ret;
-+	}
-+
-+	if (!__io_put_kbuf_ring(req, len, nbufs))
-+		ret |= IORING_CQE_F_BUF_MORE;
-+	return ret;
-+}
-+
- static int __io_remove_buffers(struct io_ring_ctx *ctx,
- 			       struct io_buffer_list *bl, unsigned nbufs)
- {
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -84,6 +84,10 @@ int io_register_pbuf_status(struct io_ri
- bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
- void io_kbuf_drop_legacy(struct io_kiocb *req);
+@@ -228,9 +227,7 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
  
-+unsigned int __io_put_kbufs(struct io_kiocb *req, int len, int nbufs);
-+bool io_kbuf_commit(struct io_kiocb *req,
-+		    struct io_buffer_list *bl, int len, int nr);
-+
- void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl);
- struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
- 				      unsigned long bgid);
-@@ -127,76 +131,19 @@ static inline bool io_kbuf_recycle(struc
- /* Mapped buffer ring, return io_uring_buf from head */
- #define io_ring_head_to_buf(br, head, mask)	&(br)->bufs[(head) & (mask)]
+ 	key = remote_node << 32 | remote_port;
  
--static inline bool io_kbuf_commit(struct io_kiocb *req,
--				  struct io_buffer_list *bl, int len, int nr)
--{
--	if (unlikely(!(req->flags & REQ_F_BUFFERS_COMMIT)))
--		return true;
--
--	req->flags &= ~REQ_F_BUFFERS_COMMIT;
--
--	if (unlikely(len < 0))
--		return true;
--
--	if (bl->flags & IOBL_INC) {
--		struct io_uring_buf *buf;
--
--		buf = io_ring_head_to_buf(bl->buf_ring, bl->head, bl->mask);
--		if (len > buf->len)
--			len = buf->len;
--		buf->len -= len;
--		if (buf->len) {
--			buf->addr += len;
--			return false;
--		}
--	}
--
--	bl->head += nr;
--	return true;
--}
--
--static inline bool __io_put_kbuf_ring(struct io_kiocb *req, int len, int nr)
--{
--	struct io_buffer_list *bl = req->buf_list;
--	bool ret = true;
--
--	if (bl) {
--		ret = io_kbuf_commit(req, bl, len, nr);
--		req->buf_index = bl->bgid;
--	}
--	if (ret && (req->flags & REQ_F_BUF_MORE))
--		ret = false;
--	req->flags &= ~(REQ_F_BUFFER_RING | REQ_F_BUF_MORE);
--	return ret;
--}
--
--static inline unsigned int __io_put_kbufs(struct io_kiocb *req, int len,
--					  int nbufs, unsigned issue_flags)
--{
--	unsigned int ret;
--
--	if (!(req->flags & (REQ_F_BUFFER_RING | REQ_F_BUFFER_SELECTED)))
--		return 0;
--
--	ret = IORING_CQE_F_BUFFER | (req->buf_index << IORING_CQE_BUFFER_SHIFT);
--	if (req->flags & REQ_F_BUFFER_RING) {
--		if (!__io_put_kbuf_ring(req, len, nbufs))
--			ret |= IORING_CQE_F_BUF_MORE;
--	} else {
--		io_kbuf_drop_legacy(req);
--	}
--	return ret;
--}
--
- static inline unsigned int io_put_kbuf(struct io_kiocb *req, int len,
- 				       unsigned issue_flags)
- {
--	return __io_put_kbufs(req, len, 1, issue_flags);
-+	if (!(req->flags & (REQ_F_BUFFER_RING | REQ_F_BUFFER_SELECTED)))
-+		return 0;
-+	return __io_put_kbufs(req, len, 1);
- }
+-	rcu_read_lock();
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
+-	rcu_read_unlock();
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (flow) {
+ 		spin_lock(&flow->resume_tx.lock);
+ 		flow->pending = 0;
+@@ -269,12 +266,13 @@ static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
+ 		return 0;
  
- static inline unsigned int io_put_kbufs(struct io_kiocb *req, int len,
- 					int nbufs, unsigned issue_flags)
- {
--	return __io_put_kbufs(req, len, nbufs, issue_flags);
-+	if (!(req->flags & (REQ_F_BUFFER_RING | REQ_F_BUFFER_SELECTED)))
-+		return 0;
-+	return __io_put_kbufs(req, len, nbufs);
- }
- #endif
+ 	mutex_lock(&node->qrtr_tx_lock);
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (!flow) {
+ 		flow = kzalloc(sizeof(*flow), GFP_KERNEL);
+ 		if (flow) {
+ 			init_waitqueue_head(&flow->resume_tx);
+-			if (radix_tree_insert(&node->qrtr_tx_flow, key, flow)) {
++			if (xa_err(xa_store(&node->qrtr_tx_flow, key, flow,
++					    GFP_KERNEL))) {
+ 				kfree(flow);
+ 				flow = NULL;
+ 			}
+@@ -326,9 +324,7 @@ static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
+ 	unsigned long key = (u64)dest_node << 32 | dest_port;
+ 	struct qrtr_tx_flow *flow;
+ 
+-	rcu_read_lock();
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
+-	rcu_read_unlock();
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (flow) {
+ 		spin_lock_irq(&flow->resume_tx.lock);
+ 		flow->tx_failed = 1;
+@@ -599,7 +595,7 @@ int qrtr_endpoint_register(struct qrtr_endpoint *ep, unsigned int nid)
+ 	node->nid = QRTR_EP_NID_AUTO;
+ 	node->ep = ep;
+ 
+-	INIT_RADIX_TREE(&node->qrtr_tx_flow, GFP_KERNEL);
++	xa_init(&node->qrtr_tx_flow);
+ 	mutex_init(&node->qrtr_tx_lock);
+ 
+ 	qrtr_node_assign(node, nid);
+@@ -627,6 +623,7 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 	struct qrtr_tx_flow *flow;
+ 	struct sk_buff *skb;
+ 	unsigned long flags;
++	unsigned long index;
+ 	void __rcu **slot;
+ 
+ 	mutex_lock(&node->ep_lock);
+@@ -649,10 +646,8 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 
+ 	/* Wake up any transmitters waiting for resume-tx from the node */
+ 	mutex_lock(&node->qrtr_tx_lock);
+-	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
+-		flow = *slot;
++	xa_for_each(&node->qrtr_tx_flow, index, flow)
+ 		wake_up_interruptible_all(&flow->resume_tx);
+-	}
+ 	mutex_unlock(&node->qrtr_tx_lock);
+ 
+ 	qrtr_node_release(node);
+-- 
+2.53.0
+
 
 
 
