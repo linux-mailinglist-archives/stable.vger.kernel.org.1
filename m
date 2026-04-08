@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGFpFuig1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:36 +0200
+	id sDSmFTyd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF813C12BA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66113C0966
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F0C13045BBE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88B413046981
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E7C3D8906;
-	Wed,  8 Apr 2026 18:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBBD386550;
+	Wed,  8 Apr 2026 18:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDOmQAsj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRx3+ddu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7803D9042;
-	Wed,  8 Apr 2026 18:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523962494F0;
+	Wed,  8 Apr 2026 18:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673372; cv=none; b=NXFNKoy9WydsECZyaQGg/329yseS7R3oN/ARfgfqJwBE6C9f1+vnapi5iRQ6fY0SmiCMUywr05YcaJB6VpbFvEIf1sSEcYa2wCiWwmr8Ow+MSfgk27nsudR9mQ1QdtOKaicLue2k+ehiyGdbY1kh+7hOXpnR4s9YRg7HpLogZQM=
+	t=1775672317; cv=none; b=SYANK68htsvdKn7AMKnt0BwhkT9i9X9TsPFyBLPqIELjKtSBvFqyM52SO+Whr32NDvwIOw2kEhkvjKiSYgP0FfMnVHqi1WdgTDM9TaZxMWGyJUCJ6Xu96jF8flMyOunaUgqdASdBpdEDKZlAg7T21Mqec383FlZ6XeTgVeQJVJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673372; c=relaxed/simple;
-	bh=adPCM+Ca68UQuLvDnRl9HOrcXzpoKu/vl7CtzTuoTgc=;
+	s=arc-20240116; t=1775672317; c=relaxed/simple;
+	bh=X/ih7MG/dZHaK0uHj1rSovLa2kdYYPD8eNvwgsAE4aM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FxI5FRz/xwsGgOIiyLL/XzySK/MwEaZVJvT3mN455njp0P1+u140p5ludkEwRIY5Yf8mTiCCJUe37a8cgC13kdsL/Q+EhXVnxJI8YzmBDvnzc72K4Yy3IXXOqKt3nMxoiChcA0Z4bF/5w9/4Zco0x+DXbRS8Qq/7cKsuSrGxeYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDOmQAsj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83941C19421;
-	Wed,  8 Apr 2026 18:36:11 +0000 (UTC)
+	 MIME-Version; b=ivP1sr83CjLD6K7ggoFn8gs2CEqq6TNryIjHBN66fZfleSFZX0e3UlIC5u+N0wn1NVzK6zTHz7LB8bADxWeiv1ERoE/+IjTZSzZCRj3dYBIg8TcwEg2cI3zCM7uWVlgw+R1atc87TY9wvc1ljgzo6r7us1Uvim6qvaL6XQUgWt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRx3+ddu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9C0C19421;
+	Wed,  8 Apr 2026 18:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673371;
-	bh=adPCM+Ca68UQuLvDnRl9HOrcXzpoKu/vl7CtzTuoTgc=;
+	s=korg; t=1775672317;
+	bh=X/ih7MG/dZHaK0uHj1rSovLa2kdYYPD8eNvwgsAE4aM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDOmQAsjCuiE6dlr1+DzbRxn1D28cvrzPwaBbqweCxadD9d251bYbHaRVBn49qr/E
-	 4tCA3hN2J3Z9kHI5JRO8LScH7trC36ePlhVySBE2gmGE2O72H9fhI0P16A76u8S5R/
-	 9rmJ1NG0Mv3YyCxVXgb/et0McdoLlKsMQwmMWW0g=
+	b=PRx3+dduvKD1fPeZCIxQ2NlOTWdTI3o5dEohOXTJ8EYnfFemsTFVzcqIxAJecHKnH
+	 v4kkrKTvDFGPB899KG3RjRB24AXD6yKZKeV4AppQyCKApOo85uJYuUEMOMHf6u3TzT
+	 Hg3oXEQN1FJBRYnxvDL56UUWEgpTp1tHBF1V6Spg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Zheng Qixing" <zhengqixing@huawei.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yongchao Wu <yongchao.wu@autochips.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.18 206/277] usb: cdns3: gadget: fix state inconsistency on gadget init failure
+	Christoph Hellwig <hch@lst.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 6.1 274/312] block: fix resource leak in blk_register_queue() error path
 Date: Wed,  8 Apr 2026 20:03:11 +0200
-Message-ID: <20260408175941.554483482@linuxfoundation.org>
+Message-ID: <20260408175943.981137531@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,93 +70,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,huawei.com,kernel.dk,163.com];
+	TAGGED_FROM(0.00)[bounces-234229-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234636-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,autochips.com:email]
-X-Rspamd-Queue-Id: 5CF813C12BA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A66113C0966
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongchao Wu <yongchao.wu@autochips.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-commit c32f8748d70c8fc77676ad92ed76cede17bf2c48 upstream.
+[ Upstream commit 40f2eb9b531475dd01b683fdaf61ca3cfd03a51e ]
 
-When cdns3_gadget_start() fails, the DRD hardware is left in gadget mode
-while software state remains INACTIVE, creating hardware/software state
-inconsistency.
+When registering a queue fails after blk_mq_sysfs_register() is
+successful but the function later encounters an error, we need
+to clean up the blk_mq_sysfs resources.
 
-When switching to host mode via sysfs:
-  echo host > /sys/class/usb_role/13180000.usb-role-switch/role
+Add the missing blk_mq_sysfs_unregister() call in the error path
+to properly clean up these resources and prevent a memory leak.
 
-The role state is not set to CDNS_ROLE_STATE_ACTIVE due to the error,
-so cdns_role_stop() skips cleanup because state is still INACTIVE.
-This violates the DRD controller design specification (Figure22),
-which requires returning to idle state before switching roles.
-
-This leads to a synchronous external abort in xhci_gen_setup() when
-setting up the host controller:
-
-[  516.440698] configfs-gadget 13180000.usb: failed to start g1: -19
-[  516.442035] cdns-usb3 13180000.usb: Failed to add gadget
-[  516.443278] cdns-usb3 13180000.usb: set role 2 has failed
-...
-[ 1301.375722] xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
-[ 1301.377716] Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
-[ 1301.382485] pc : xhci_gen_setup+0xa4/0x408
-[ 1301.393391] backtrace:
-    ...
-    xhci_gen_setup+0xa4/0x408    <-- CRASH
-    xhci_plat_setup+0x44/0x58
-    usb_add_hcd+0x284/0x678
-    ...
-    cdns_role_set+0x9c/0xbc        <-- Role switch
-
-Fix by calling cdns_drd_gadget_off() in the error path to properly
-clean up the DRD gadget state.
-
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20260401001000.5761-1-yongchao.wu@autochips.com
+Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250412092554.475218-1-zhengqixing@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Minor context change fixed. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |    1 +
- 1 file changed, 1 insertion(+)
+ block/blk-sysfs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -3432,6 +3432,7 @@ static int __cdns3_gadget_init(struct cd
- 	ret = cdns3_gadget_start(cdns);
- 	if (ret) {
- 		pm_runtime_put_sync(cdns->dev);
-+		cdns_drd_gadget_off(cdns);
- 		return ret;
- 	}
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -867,6 +867,8 @@ put_dev:
+ 	elv_unregister_queue(q);
+ 	disk_unregister_independent_access_ranges(disk);
+ 	mutex_unlock(&q->sysfs_lock);
++	if (queue_is_mq(q))
++		blk_mq_sysfs_unregister(disk);
+ 	mutex_unlock(&q->sysfs_dir_lock);
+ 	kobject_del(&q->kobj);
  
 
 
