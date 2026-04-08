@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMYlIhKc1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:58 +0200
+	id MGXjJ1Ch1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FBF3C066B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EAF3C1396
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA5703027100
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 175923103EE0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07E6385513;
-	Wed,  8 Apr 2026 18:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C620B3B0AFC;
+	Wed,  8 Apr 2026 18:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJ3pAYlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/W9o/6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A458B33F5A4;
-	Wed,  8 Apr 2026 18:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1D528C87C;
+	Wed,  8 Apr 2026 18:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672162; cv=none; b=FQyDOGbGZwN+uxb1t2S7+QYnso3HZh86UzI25OHSmH6HlhpFeptzQvCKnjhtDCA4iLKjEHtLeyDocA8IXbYD2icbPe36JBXuDYhF2jgLW2sYyWU9JWaOuYxhJcbD6t7iZHKBiBjFV1aYeGWkCrGjjjZUOEL5xqKD5Oy8TPB0Qmw=
+	t=1775673261; cv=none; b=aM95C7NrBSOv1Q0+K2UTwPtu7K3ozBbueWQzY51gBQGaX+1WUOiyJYsaVfY0xlGVs9msY4DItEAOmGDdq1FSXntllZ5CRr6R7pPdILqdp/ydZUPYuGcCKJ5POZ0amJG0XyS+9DEM6oRIGyjMamZsyypBk+vnGi1ESBzLJP2f3n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672162; c=relaxed/simple;
-	bh=ubW+gtu3Mn/AtUA7XkWaCufTZRqPJOpjGqd/efcN25g=;
+	s=arc-20240116; t=1775673261; c=relaxed/simple;
+	bh=FJL1FTkalpvy/ZJt5VFSD5ZEbd0Z0uUPW5HUzNfyrpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fh7GWQZ5GtnUCai7vnt6kBg9ZWqiJmMQeOndS5mHQhlt9gYtNBe1TaWy7JfpjNF9WDjZMp09pVesPneISIFJKtMHf4jYvaJhxncReOWIvuo5aT1VEboyBllZ4NAFxd1pm+CWeX02b+1ZMh4V5iCHMAYYFSnfnVuBxvNPbZjSIt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJ3pAYlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28C6C19421;
-	Wed,  8 Apr 2026 18:16:01 +0000 (UTC)
+	 MIME-Version; b=Umu/CAr6VhjjJsPiE1kx4lsv81QP7AIt2yqM0B9DU+4AEPeaq7lvU/8pZ4HC1DfVlAMPRAsvhkPE0CWuT1Tbp8cZro3OZPK6+Y8CMtNV861jLKqGAbw7eVIQGU3MXPCEIaAFMBwfplku39F6KxGDHIDKt0q/ExfKpXp07PsAjqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/W9o/6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2124DC19421;
+	Wed,  8 Apr 2026 18:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672162;
-	bh=ubW+gtu3Mn/AtUA7XkWaCufTZRqPJOpjGqd/efcN25g=;
+	s=korg; t=1775673261;
+	bh=FJL1FTkalpvy/ZJt5VFSD5ZEbd0Z0uUPW5HUzNfyrpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJ3pAYltWl2178lIK3j6pop+cQ2KxELZzwZ2xpcImiUlt0d0sRCjWHyF8hRtGUKcv
-	 tOp9+620eiU+5QcNqDM7fs2LYHnYStTbdDktx4oDKUslOTxcCE6AVje3EY8Fu4puXU
-	 YUdLWNI6fkS9EfaCDGhlF3yliHOLBzLfx5oqGcKE=
+	b=n/W9o/6vwRKAbhoUc4sYHJVC/5fFzKNXXsi9DYCVAZj0yQxePubSL8KnbioWzY0GG
+	 04itOt5WkSaISRN2O4HZykQdLQdEf3bD9f4csFZ2a3f6BKIPYMh34kgSHBymGjNjy7
+	 5CR+O6Ie+QMCAjvQPCbO0/SxcA/qx/z4N+QX2HkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	JP Hein <jp@jphein.com>
-Subject: [PATCH 6.1 213/312] USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
-Date: Wed,  8 Apr 2026 20:02:10 +0200
-Message-ID: <20260408175941.713986297@linuxfoundation.org>
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.18 146/277] MIPS: SiByte: Bring back cache initialisation
+Date: Wed,  8 Apr 2026 20:02:11 +0200
+Message-ID: <20260408175939.324626710@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234169-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234593-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,60 +89,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,launchpad.net:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,jphein.com:email]
-X-Rspamd-Queue-Id: 01FBF3C066B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,franken.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 00EAF3C1396
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Hein <jp@jphein.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 8b7a42ecdcdeb55580d9345412f7f8fc5aca3f6c upstream.
+commit d62cf1511743526f530a4c169424e50c757f5a5e upstream.
 
-The Razer Kiyo Pro (1532:0e05) is a USB 3.0 UVC webcam whose firmware
-does not handle USB Link Power Management transitions reliably. When LPM
-is active, the device can enter a state where it fails to respond to
-control transfers, producing EPIPE (-32) errors on UVC probe control
-SET_CUR requests. In the worst case, the stalled endpoint triggers an
-xHCI stop-endpoint command that times out, causing the host controller
-to be declared dead and every USB device on the bus to be disconnected.
+Bring back cache initialisation for Broadcom SiByte SB1 cores, which has
+been removed causing the kernel to hang at bootstrap right after:
 
-This has been reported as Ubuntu Launchpad Bug #2061177. The failure
-mode is:
+Dentry cache hash table entries: 524288 (order: 8, 4194304 bytes, linear)
+Inode-cache hash table entries: 262144 (order: 7, 2097152 bytes, linear)
 
-  1. UVC probe control SET_CUR returns -32 (EPIPE)
-  2. xHCI host not responding to stop endpoint command
-  3. xHCI host controller not responding, assume dead
-  4. All USB devices on the affected xHCI controller disconnect
+The cause of the problem is R4k cache handlers are also used by Broadcom
+SiByte SB1 cores, however with a different cache error exception handler
+and therefore not using CPU_R4K_CACHE_TLB:
 
-Disabling LPM prevents the firmware from entering the problematic low-
-power states that precede the stall. This is the same approach used for
-other webcams with similar firmware issues (e.g., Logitech HD Webcam C270).
+obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
+obj-$(CONFIG_CPU_SB1)           += c-r4k.o cerr-sb1.o cex-sb1.o tlb-r4k.o
 
-Cc: stable <stable@kernel.org>
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2061177
-Signed-off-by: JP Hein <jp@jphein.com>
-Link: https://patch.msgid.link/20260331003806.212565-2-jp@jphein.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(from arch/mips/mm/Makefile).
+
+Fixes: bbe4f634f48c ("mips: fix r3k_cache_init build regression")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.8+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/mm/cache.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -490,6 +490,8 @@ static const struct usb_device_id usb_qu
- 	/* Razer - Razer Blade Keyboard */
- 	{ USB_DEVICE(0x1532, 0x0116), .driver_info =
- 			USB_QUIRK_LINEAR_UFRAME_INTR_BINTERVAL },
-+	/* Razer - Razer Kiyo Pro Webcam */
-+	{ USB_DEVICE(0x1532, 0x0e05), .driver_info = USB_QUIRK_NO_LPM },
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -207,7 +207,8 @@ void cpu_cache_init(void)
+ {
+ 	if (IS_ENABLED(CONFIG_CPU_R3000) && cpu_has_3k_cache)
+ 		r3k_cache_init();
+-	if (IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) && cpu_has_4k_cache)
++	if ((IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) ||
++	     IS_ENABLED(CONFIG_CPU_SB1)) && cpu_has_4k_cache)
+ 		r4k_cache_init();
  
- 	/* Lenovo ThinkPad OneLink+ Dock twin hub controllers (VIA Labs VL812) */
- 	{ USB_DEVICE(0x17ef, 0x1018), .driver_info = USB_QUIRK_RESET_RESUME },
+ 	if (IS_ENABLED(CONFIG_CPU_CAVIUM_OCTEON) && cpu_has_octeon_cache)
 
 
 
