@@ -1,74 +1,59 @@
-Return-Path: <stable+bounces-234382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJtmGvSd1mkEGwgAu9opvQ
-	(envelope-from <stable+bounces-234382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:00 +0200
+	id GNQoHZ6i1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849743C0BD3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199013C1802
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8F98330347BC
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 787613036311
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF873ACF11;
-	Wed,  8 Apr 2026 18:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8BC2641FC;
+	Wed,  8 Apr 2026 18:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7hhxRvw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qk6tr1dd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDEE2494F0;
-	Wed,  8 Apr 2026 18:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22F93AEF5F;
+	Wed,  8 Apr 2026 18:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672714; cv=none; b=QkuHy9ybUS5JI1LNqXrkAhQzuZ2sKlMNN489aH/Prl9RQQvLyAR8hY2bpgV2y6D+HJIlZI83kYfqlC1A2/SLMKNHWbhLfw+fT/KCphgh9BFjyxerHFusj2wF6IO6SEhHRQ5kr3SUQFkf/LUKOF5xNF+eVF/EPGql3n14rSV1Gpk=
+	t=1775673979; cv=none; b=UglLQja7SzRHrBaCE68DDUskiL1L8zRJsRrMs/gInaL2jJjjK5RCFRfc7WhBSZi9OY/Aj3lkPt2ENNb7oq/f2xtOB4tdgwBRLLHuZ3+b2atoCx40dM4Spo0FQjyrWAKifea7Bns+P8cWJbhPZs63hwAQDV3dgcVaO0TsqzByt8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672714; c=relaxed/simple;
-	bh=rSjvwX8l8dN8EVpghN1rEpgXDOA78g16N6zqgtZ8ZJ0=;
+	s=arc-20240116; t=1775673979; c=relaxed/simple;
+	bh=AGEtcqz83Aw5sc+0t3nvyMzubx1HV+LkJTWLiLUsT/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HymFkFKt1l1ARPK6+NhFApvNKXlE9jNt1FbDrWfmmxWLuz3Cn00K4QlWVTbmeHSp1ygKgwQle3aWt4t0SZ36mK1s0S4d1r2gihsS09DwbVPAn2U4OOEPQpS8NE8LA/sTedN849FKS7kgMusTyzCjMY/6J+LcgDhF1czm/PXGpiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7hhxRvw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710E9C19421;
-	Wed,  8 Apr 2026 18:25:13 +0000 (UTC)
+	 MIME-Version; b=TZF+AM9G/QfqCzE5BtfY6VVd4n8JhPE4e9uGYrJaWkyvv6URtyLk0AMlI7u3dvg2cHpbkColu+TmYWYRPmOQQ/AVZafDF/jjZri2FwnbLJ9Vu6Xw2Dc3IhwWHSagVrANRC2ky9htAd860s60Z0XD0kx6NCzv6Tw4CxVfwvTaBdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qk6tr1dd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4D1C2BC9E;
+	Wed,  8 Apr 2026 18:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672713;
-	bh=rSjvwX8l8dN8EVpghN1rEpgXDOA78g16N6zqgtZ8ZJ0=;
+	s=korg; t=1775673978;
+	bh=AGEtcqz83Aw5sc+0t3nvyMzubx1HV+LkJTWLiLUsT/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7hhxRvwGIYf68Fpz1RtwWy1gnRTvJkFHbxCx9El/cB1N56juAe1aIIrC53B+9rVW
-	 NWTrwMovR2TSTy4P9a5hlCbj3KB0mEuErjTHT+wnJBKfTsj0Qzr153q9wdMo3QaPtn
-	 4pSct3Ok13dXq1TluFn++UcO5AOzCNkPXC/EHKRo=
+	b=qk6tr1dd2CPjubtWXW6vJtHFOtLHO28T7dQ90Nbx3oPadgCvvGTurEqAfkNLzPwrI
+	 QU/cgxBiQYcxvyQHTFwFEZNbEDQ4I8px9nYGWqFKwQY69OYZL1Ug+neUkQHBRQFvxb
+	 MlswjXZC/u98br9Q0Gqi47tIEusEKP8Cx+9OrALc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Thorvald Natvig <thorvald@google.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peng Zhang <zhangpeng.00@bytedance.com>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	=?UTF-8?q?David=20Nystr=C3=B6m?= <david.nystrom@est.tech>,
-	Tugrul Kukul <tugrul.kukul@est.tech>,
-	Alex Williamson <alex@shazbot.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/160] fork: defer linking file vma until vma is fully initialized
-Date: Wed,  8 Apr 2026 20:03:21 +0200
-Message-ID: <20260408175917.445234207@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.12 162/242] usb: ehci-brcm: fix sleep during atomic
+Date: Wed,  8 Apr 2026 20:03:22 +0200
+Message-ID: <20260408175933.152581409@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,156 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234382-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,google.com,oracle.com,kernel.org,linux.ibm.com,linux.dev,gmail.com,infradead.org,redhat.com,bytedance.com,netflix.com,linux-foundation.org,est.tech,shazbot.org];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234871-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 849743C0BD3
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 199013C1802
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 ]
+commit 679b771ea05ad0f8eeae83e14a91b8f4f39510c4 upstream.
 
-Thorvald reported a WARNING [1]. And the root cause is below race:
+echi_brcm_wait_for_sof() gets called after disabling interrupts
+in ehci_brcm_hub_control(). Use the atomic version of poll_timeout
+to fix the warning.
 
- CPU 1					CPU 2
- fork					hugetlbfs_fallocate
-  dup_mmap				 hugetlbfs_punch_hole
-   i_mmap_lock_write(mapping);
-   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
-   i_mmap_unlock_write(mapping);
-   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
-					 i_mmap_lock_write(mapping);
-   					 hugetlb_vmdelete_list
-					  vma_interval_tree_foreach
-					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
-   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
-					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
-					 i_mmap_unlock_write(mapping);
-
-hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
-i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
-by deferring linking file vma until vma is fully initialized.  Those vmas
-should be initialized first before they can be used.
-
-[tk: Adapted to 6.6 stable where vma_iter_bulk_store() can fail
-(unlike mainline which uses __mt_dup() for pre-allocation).
-Preserved error handling via goto fail_nomem_vmi_store. Previous
-backport (cec11fa2eb512) was reverted (dd782da470761) due to
-xfstests failures.]
-
-Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
-Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reported-by: Thorvald Natvig <thorvald@google.com>
-Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: Tycho Andersen <tandersen@netflix.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Assisted-by: Claude:claude-opus-4.6
-Suggested-by: David Nyström <david.nystrom@est.tech>
-Signed-off-by: Tugrul Kukul <tugrul.kukul@est.tech>
-Acked-by: Alex Williamson <alex@shazbot.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9df231511bd6 ("usb: ehci: Add new EHCI driver for Broadcom STB SoC's")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260318185707.2588431-1-justin.chen@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/fork.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ drivers/usb/host/ehci-brcm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index ce6f6e1e39057..5b60692b1a4ea 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -733,6 +733,21 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
- 		} else if (anon_vma_fork(tmp, mpnt))
- 			goto fail_nomem_anon_vma_fork;
- 		vm_flags_clear(tmp, VM_LOCKED_MASK);
-+		/*
-+		 * Copy/update hugetlb private vma information.
-+		 */
-+		if (is_vm_hugetlb_page(tmp))
-+			hugetlb_dup_vma_private(tmp);
-+
-+		/* Link the vma into the MT */
-+		if (vma_iter_bulk_store(&vmi, tmp))
-+			goto fail_nomem_vmi_store;
-+
-+		mm->map_count++;
-+
-+		if (tmp->vm_ops && tmp->vm_ops->open)
-+			tmp->vm_ops->open(tmp);
-+
- 		file = tmp->vm_file;
- 		if (file) {
- 			struct address_space *mapping = file->f_mapping;
-@@ -749,23 +764,9 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
- 			i_mmap_unlock_write(mapping);
- 		}
+--- a/drivers/usb/host/ehci-brcm.c
++++ b/drivers/usb/host/ehci-brcm.c
+@@ -31,8 +31,8 @@ static inline void ehci_brcm_wait_for_so
+ 	int res;
  
--		/*
--		 * Copy/update hugetlb private vma information.
--		 */
--		if (is_vm_hugetlb_page(tmp))
--			hugetlb_dup_vma_private(tmp);
--
--		/* Link the vma into the MT */
--		if (vma_iter_bulk_store(&vmi, tmp))
--			goto fail_nomem_vmi_store;
--
--		mm->map_count++;
- 		if (!(tmp->vm_flags & VM_WIPEONFORK))
- 			retval = copy_page_range(tmp, mpnt);
- 
--		if (tmp->vm_ops && tmp->vm_ops->open)
--			tmp->vm_ops->open(tmp);
--
- 		if (retval)
- 			goto loop_out;
- 	}
--- 
-2.53.0
-
+ 	/* Wait for next microframe (every 125 usecs) */
+-	res = readl_relaxed_poll_timeout(&ehci->regs->frame_index, val,
+-					 val != frame_idx, 1, 130);
++	res = readl_relaxed_poll_timeout_atomic(&ehci->regs->frame_index,
++						val, val != frame_idx, 1, 130);
+ 	if (res)
+ 		ehci_err(ehci, "Error waiting for SOF\n");
+ 	udelay(delay);
 
 
 
