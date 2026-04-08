@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-235076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yO3tOHOq1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-235076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:20:19 +0200
+	id ULKNJB6l1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1663C2C9F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 012213C2106
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90AE03117129
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68A3631B1BEE
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4283D903F;
-	Wed,  8 Apr 2026 18:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B953D890F;
+	Wed,  8 Apr 2026 18:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqwpL+7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToxX/nBd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E501A3D890F;
-	Wed,  8 Apr 2026 18:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029C21A285;
+	Wed,  8 Apr 2026 18:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674508; cv=none; b=iIuXJfPvp2Q4kq6FRO+mAUltxCIr/7s1iel1kvof3lnWQUKJHsXUEMmABwP58T2mBSllkSDVedbus8ENh0+HAhvGGK93wnwb/isUsCNsRxE0AaALwD5O5R6khMnk7uKbvzPhHcMUz/db7tWJOZFQS70bYaGa98TfHgeXpV/b5Ng=
+	t=1775673772; cv=none; b=KxfaJAvvRCqa9Luk8nUG5hCrVVAS3klJp0C5Fo+e4fwdYr0Ff6F8/3gHGbUqwDwi+zb35mOcwaSHbdyCveGGqRrk+LntE31kyX0rxyTXz9/GzvapYPlLytQgO9rd89kchHrcNdrlFomJC+di1EBdnEOu9HSGGruxrWWNZbm3RJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674508; c=relaxed/simple;
-	bh=IHKAtkxbcCEZI2rvMJSSQFHEir2gyBfgMdHyq8JxVAE=;
+	s=arc-20240116; t=1775673772; c=relaxed/simple;
+	bh=dPS7+NNo3bKGkJEG1xeg0J44yxAlrucjh4tGIKGsOWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqV9InB5jE/Km6IH3BOwqfzQ7MPUVpqVtpU90ql/CXWUzAZmnZmUntd5Tpa39solYe7nIa2iiObTRfspXyWcdL9D42g1Bw/+VcRGantaxdcVwA8xj6oxIrXEx9R8K/vCzevrbZuVRu5lXxSsRhKn0A0M0Rnay92aalZWiHaGfQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqwpL+7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A700C19421;
-	Wed,  8 Apr 2026 18:55:07 +0000 (UTC)
+	 MIME-Version; b=IxvWGUnKXxGNOfsVXVCBhwchlyT/zBRtpsOJ7g0/rjoAz0cVwQruWDA1VLphYkg1fPJMjqY33f14dKZsfiQ7y+xXW4BtUjPPSM4JlMhXmgfAnbhxyjU9XAkMi6hqo0/WtEoe5FAFgt8xBhxNEBi5WbhqH0y854A7ezfG6X8x8yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToxX/nBd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAB0C19421;
+	Wed,  8 Apr 2026 18:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674507;
-	bh=IHKAtkxbcCEZI2rvMJSSQFHEir2gyBfgMdHyq8JxVAE=;
+	s=korg; t=1775673771;
+	bh=dPS7+NNo3bKGkJEG1xeg0J44yxAlrucjh4tGIKGsOWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqwpL+7nP2/P6p9VdF+VTyjxG7oL8Hpgm/EYLPhYCDrz7Car9VupUxw0SJC58/CTc
-	 C7bg9pT8ezSEQUpoxPR5X33YsVwIfSF4nQ5cWdEQgYrGwFwUrp87RhNc/cj3UX3bL9
-	 7FGsqzlTFkRqDTRediSZO6uiEapqFugpxzLCve5I=
+	b=ToxX/nBd4Wugve19uYR9gSRSj5efHqcbInDsVhGv+QIcrJ6ynQ6DM/wN+xQntPqhi
+	 3DnHjvU+geffsn37YpYD9LUEX3d6MldYkVxCnG/nCkPirURfiu+BWq/xWUUQA+8neX
+	 EapOUR75FBy26dlwKmhGNcqfIf936mugIoZtAXHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 124/311] bpf: reject direct access to nullable PTR_TO_BUF pointers
+Subject: [PATCH 6.12 084/242] Bluetooth: hci_event: fix potential UAF in hci_le_remote_conn_param_req_evt
 Date: Wed,  8 Apr 2026 20:02:04 +0200
-Message-ID: <20260408175944.046542201@linuxfoundation.org>
+Message-ID: <20260408175930.225701897@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,70 +73,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-235076-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234791-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4D1663C2C9F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iki.fi:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 012213C2106
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit b0db1accbc7395657c2b79db59fa9fae0d6656f3 ]
+[ Upstream commit b255531b27da336571411248c2a72a350662bd09 ]
 
-check_mem_access() matches PTR_TO_BUF via base_type() which strips
-PTR_MAYBE_NULL, allowing direct dereference without a null check.
+hci_conn lookup and field access must be covered by hdev lock in
+hci_le_remote_conn_param_req_evt, otherwise it's possible it is freed
+concurrently.
 
-Map iterator ctx->key and ctx->value are PTR_TO_BUF | PTR_MAYBE_NULL.
-On stop callbacks these are NULL, causing a kernel NULL dereference.
+Extend the hci_dev_lock critical section to cover all conn usage.
 
-Add a type_may_be_null() guard to the PTR_TO_BUF branch, matching the
-existing PTR_TO_BTF_ID pattern.
-
-Fixes: 20b2aff4bc15 ("bpf: Introduce MEM_RDONLY flag")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20260402092923.38357-2-tpluszz77@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 95118dd4edfec ("Bluetooth: hci_event: Use of a function table to handle LE subevents")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_event.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 11fe83d6109d7..0aea870b87a6c 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7806,7 +7806,8 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
- 	} else if (reg->type == CONST_PTR_TO_MAP) {
- 		err = check_ptr_to_map_access(env, regs, regno, off, size, t,
- 					      value_regno);
--	} else if (base_type(reg->type) == PTR_TO_BUF) {
-+	} else if (base_type(reg->type) == PTR_TO_BUF &&
-+		   !type_may_be_null(reg->type)) {
- 		bool rdonly_mem = type_is_rdonly_mem(reg->type);
- 		u32 *max_access;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 498b7e4c76d59..0dd021c881cc4 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6616,25 +6616,31 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 	latency = le16_to_cpu(ev->latency);
+ 	timeout = le16_to_cpu(ev->timeout);
  
++	hci_dev_lock(hdev);
++
+ 	hcon = hci_conn_hash_lookup_handle(hdev, handle);
+-	if (!hcon || hcon->state != BT_CONNECTED)
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_UNKNOWN_CONN_ID);
++	if (!hcon || hcon->state != BT_CONNECTED) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_UNKNOWN_CONN_ID);
++		goto unlock;
++	}
+ 
+-	if (max > hcon->le_conn_max_interval)
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_INVALID_LL_PARAMS);
++	if (max > hcon->le_conn_max_interval) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_INVALID_LL_PARAMS);
++		goto unlock;
++	}
+ 
+-	if (hci_check_conn_params(min, max, latency, timeout))
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_INVALID_LL_PARAMS);
++	if (hci_check_conn_params(min, max, latency, timeout)) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_INVALID_LL_PARAMS);
++		goto unlock;
++	}
+ 
+ 	if (hcon->role == HCI_ROLE_MASTER) {
+ 		struct hci_conn_params *params;
+ 		u8 store_hint;
+ 
+-		hci_dev_lock(hdev);
+-
+ 		params = hci_conn_params_lookup(hdev, &hcon->dst,
+ 						hcon->dst_type);
+ 		if (params) {
+@@ -6647,8 +6653,6 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 			store_hint = 0x00;
+ 		}
+ 
+-		hci_dev_unlock(hdev);
+-
+ 		mgmt_new_conn_param(hdev, &hcon->dst, hcon->dst_type,
+ 				    store_hint, min, max, latency, timeout);
+ 	}
+@@ -6662,6 +6666,9 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 	cp.max_ce_len = 0;
+ 
+ 	hci_send_cmd(hdev, HCI_OP_LE_CONN_PARAM_REQ_REPLY, sizeof(cp), &cp);
++
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_le_direct_adv_report_evt(struct hci_dev *hdev, void *data,
 -- 
 2.53.0
 
