@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG33A5Wh1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:29 +0200
+	id yGTjOoel1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128DA3C1495
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236813C221C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 034203023589
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 929B93022C95
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DDA3D4134;
-	Wed,  8 Apr 2026 18:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365EA3AEF5F;
+	Wed,  8 Apr 2026 18:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVFj29fk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFPVM4OL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C5127979A;
-	Wed,  8 Apr 2026 18:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED24F3537DF;
+	Wed,  8 Apr 2026 18:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673470; cv=none; b=OjFnVzwGkeDX4N6mCfokgV05qM45yfo6a1vBD3pOqOwno4JXV76BpY4luLIZHuJJTbTfhAr65cZXcJM5sohX80ZeEtsctW6wUORzHlGCoDQBxHtF7ye1pBlU+Hj+r9PE4SA4dHE7qvZZudkKqgnmgJGqVgElL3+jxwNXa875KF0=
+	t=1775674711; cv=none; b=hAvVHayssG1XuInJNmG2jrRpgtnFHIsY7/aTVrB9J0JZl840EJPh9S6utXlsH+bNzofIBugknu4R94uiMHVIpwCym6itpHI9OEOo5LGoiUcCakoLzRRWV8/Js0bkjJs7DpxfXScKfN30UPHZNJnYNM1WRPt1XxmxakjrrWFyUuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673470; c=relaxed/simple;
-	bh=H+4w+ySpAoGw1p8com/dP/Wn8c5OXOODcBkICVn/0HA=;
+	s=arc-20240116; t=1775674711; c=relaxed/simple;
+	bh=5B3LnITiuKuA7UiAA42PG+NDEj6whSa55Esb/cff7a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8k5jdQk0unRNljvDNetUZxj55LvVrnMzxCiK4kh78th3FX8/cLvlcFgqWlBlwpPdYDsF8rFnJxYci3Z156gfVjpU7TwII3skMT+7hoP6V5mSsVCMB2icTWiSbijEtPE+AcpnnpFmm1mFlVBH+lEH6bzhahJ6KdTSqCEKpC5+r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVFj29fk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87664C19421;
-	Wed,  8 Apr 2026 18:37:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jbgWH7I2AhOF/83taKRfN61a44yod+lZRZwuL6R0uZfngEFb0F2sUtHsUYMrMo3YKMt8OSv0vbQH/KoDgHWCLV0bkUn1rA/nkKQs/Alnrv64W0ms1YfA1h32deD1jdlrYTnJGIMqBiyvjLknO/N9DvMuJoRO49riHqvrK6HHOx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFPVM4OL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83691C19421;
+	Wed,  8 Apr 2026 18:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673470;
-	bh=H+4w+ySpAoGw1p8com/dP/Wn8c5OXOODcBkICVn/0HA=;
+	s=korg; t=1775674710;
+	bh=5B3LnITiuKuA7UiAA42PG+NDEj6whSa55Esb/cff7a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVFj29fkFFBFuaBHpbahlfWOj2GeXMel3Hn3KBpYHbfN/TOUbnP4tW0e/K0rFFioW
-	 Up0kspN/w0/rE78paSNYFx+qRW49GHaQdvebB8sNlrUdW2HG9lMLwj30KfuWyGb1uV
-	 e3L/0BrwQQ7NpuZaJeuk9po9Sp/AI5YiOgUTsaZU=
+	b=UFPVM4OLHnFKhRCCWee0J1Qiq/365Tubielq6r5uZqOIE2+JxU7ENHhvdEXcpeemP
+	 mgA5oeWnlW/b3mc/Idlo+FDhQ/pOyzO8ZN+PyOwqKscdp9tbDvYY0V8GrBixkNjOeM
+	 I78MOPPnkzUBuxtuHYnJ/p679h644zQ7QbLVXvSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.18 217/277] comedi: me4000: Fix potential overrun of firmware buffer
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.19 202/311] drm/i915/cdclk: Do the full CDCLK dance for min_voltage_level changes
 Date: Wed,  8 Apr 2026 20:03:22 +0200
-Message-ID: <20260408175941.963134276@linuxfoundation.org>
+Message-ID: <20260408175946.953026348@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +64,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-235155-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234674-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mev.co.uk:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 128DA3C1495
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 236813C221C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 3fb43a7a5b44713f892c58ead2e5f3a1bc9f4ee7 upstream.
+commit e08e0754e690e4909cab83ac43fd2c93c6200514 upstream.
 
-`me4000_xilinx_download()` loads the firmware that was requested by
-`request_firmware()`.  It is possible for it to overrun the source
-buffer because it blindly trusts the file format.  It reads a data
-stream length from the first 4 bytes into variable `file_length` and
-reads the data stream contents of length `file_length` from offset 16
-onwards.
+Apparently I forgot about the pipe min_voltage_level when I
+decoupled the CDCLK calculations from modesets. Even if the
+CDCLK frequency doesn't need changing we may still need to
+bump the voltage level to accommodate an increase in the
+port clock frequency.
 
-Add a test to ensure that the supplied firmware is long enough to
-contain the header and the data stream.  On failure, log an error and
-return `-EINVAL`.
+Currently, even if there is a full modeset, we won't notice the
+need to go through the full CDCLK calculations/programming,
+unless the set of enabled/active pipes changes, or the
+pipe/dbuf min CDCLK changes.
 
-Note: The firmware loading was totally broken before commit ac584af59945
-("staging: comedi: me4000: fix firmware downloading"), but that is the
-most sensible target for this fix.
+Duplicate the same logic we use the pipe's min CDCLK frequency
+to also deal with its min voltage level.
 
-Fixes: ac584af59945 ("staging: comedi: me4000: fix firmware downloading")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260205133949.71722-1-abbotti@mev.co.uk
+Note that the 'allow_voltage_level_decrease' stuff isn't
+really useful here since the min voltage level can only
+change during a full modeset. But I think sticking to the
+same approach in the three similar parts (pipe min cdclk,
+pipe min voltage level, dbuf min cdclk) is a good idea.
+
+Cc: stable@vger.kernel.org
+Tested-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15826
+Fixes: ba91b9eecb47 ("drm/i915/cdclk: Decouple cdclk from state->modeset")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260325135849.12603-2-ville.syrjala@linux.intel.com
+Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
+(cherry picked from commit 0f21a14987ebae3c05ad1184ea872e7b7a7b8695)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/me4000.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_cdclk.c |   54 +++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
---- a/drivers/comedi/drivers/me4000.c
-+++ b/drivers/comedi/drivers/me4000.c
-@@ -315,6 +315,18 @@ static int me4000_xilinx_download(struct
- 	unsigned int val;
- 	unsigned int i;
+--- a/drivers/gpu/drm/i915/display/intel_cdclk.c
++++ b/drivers/gpu/drm/i915/display/intel_cdclk.c
+@@ -2930,6 +2930,53 @@ static int intel_cdclk_update_crtc_min_c
+ 	return 0;
+ }
  
-+	/* Get data stream length from header. */
-+	if (size >= 4) {
-+		file_length = (((unsigned int)data[0] & 0xff) << 24) +
-+			      (((unsigned int)data[1] & 0xff) << 16) +
-+			      (((unsigned int)data[2] & 0xff) << 8) +
-+			      ((unsigned int)data[3] & 0xff);
-+	}
-+	if (size < 16 || file_length > size - 16) {
-+		dev_err(dev->class_dev, "Firmware length inconsistency\n");
-+		return -EINVAL;
-+	}
++static int intel_cdclk_update_crtc_min_voltage_level(struct intel_atomic_state *state,
++						     struct intel_crtc *crtc,
++						     u8 old_min_voltage_level,
++						     u8 new_min_voltage_level,
++						     bool *need_cdclk_calc)
++{
++	struct intel_display *display = to_intel_display(state);
++	struct intel_cdclk_state *cdclk_state;
++	bool allow_voltage_level_decrease = intel_any_crtc_needs_modeset(state);
++	int ret;
 +
- 	if (!xilinx_iobase)
- 		return -ENODEV;
++	if (new_min_voltage_level == old_min_voltage_level)
++		return 0;
++
++	if (!allow_voltage_level_decrease &&
++	    new_min_voltage_level < old_min_voltage_level)
++		return 0;
++
++	cdclk_state = intel_atomic_get_cdclk_state(state);
++	if (IS_ERR(cdclk_state))
++		return PTR_ERR(cdclk_state);
++
++	old_min_voltage_level = cdclk_state->min_voltage_level[crtc->pipe];
++
++	if (new_min_voltage_level == old_min_voltage_level)
++		return 0;
++
++	if (!allow_voltage_level_decrease &&
++	    new_min_voltage_level < old_min_voltage_level)
++		return 0;
++
++	cdclk_state->min_voltage_level[crtc->pipe] = new_min_voltage_level;
++
++	ret = intel_atomic_lock_global_state(&cdclk_state->base);
++	if (ret)
++		return ret;
++
++	*need_cdclk_calc = true;
++
++	drm_dbg_kms(display->drm,
++		    "[CRTC:%d:%s] min voltage level: %d -> %d\n",
++		    crtc->base.base.id, crtc->base.name,
++		    old_min_voltage_level, new_min_voltage_level);
++
++	return 0;
++}
++
+ int intel_cdclk_update_dbuf_bw_min_cdclk(struct intel_atomic_state *state,
+ 					 int old_min_cdclk, int new_min_cdclk,
+ 					 bool *need_cdclk_calc)
+@@ -3345,6 +3392,13 @@ static int intel_crtcs_calc_min_cdclk(st
+ 							need_cdclk_calc);
+ 		if (ret)
+ 			return ret;
++
++		ret = intel_cdclk_update_crtc_min_voltage_level(state, crtc,
++								old_crtc_state->min_voltage_level,
++								new_crtc_state->min_voltage_level,
++								need_cdclk_calc);
++		if (ret)
++			return ret;
+ 	}
  
-@@ -346,10 +358,6 @@ static int me4000_xilinx_download(struct
- 	outl(val, devpriv->plx_regbase + PLX9052_CNTRL);
- 
- 	/* Download Xilinx firmware */
--	file_length = (((unsigned int)data[0] & 0xff) << 24) +
--		      (((unsigned int)data[1] & 0xff) << 16) +
--		      (((unsigned int)data[2] & 0xff) << 8) +
--		      ((unsigned int)data[3] & 0xff);
- 	usleep_range(10, 1000);
- 
- 	for (i = 0; i < file_length; i++) {
+ 	return 0;
 
 
 
