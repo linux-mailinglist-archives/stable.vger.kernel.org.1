@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gN6QKUKe1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:18 +0200
+	id iHRKLC2m1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441433C0C79
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A093C2344
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EE5A30158AA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1669E3023079
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4473A16A0;
-	Wed,  8 Apr 2026 18:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79C237F8AC;
+	Wed,  8 Apr 2026 18:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urMKcpez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrPSoPg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20AEB67E;
-	Wed,  8 Apr 2026 18:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6DA1F91D6;
+	Wed,  8 Apr 2026 18:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672739; cv=none; b=SaC6WosKXqsZ9q7jyVqiR6AolBGddRlv0tpENCdGfzWB2F7g4iHRI54FRGv7HuaqHxKDXgUii0F/NI0mYDsafudbSdVSZI36ZWxg8vh29rwKxvVZ+zD41SwgNS/NRuOgO+ATEZ2IidGIQQaCUCD1zEVg8sOu+iukbFiSm3oe1Ns=
+	t=1775674798; cv=none; b=oartxAu5jRy/Z+SGfHCswtghMnObvpHh66c1XzUpOfuIiNbyziH3WUBIsJbI82aqDt1R/yKOGscjMEnFkdWlI3ZURWuPZbJPfYdjtB2GnVbSuFyP895BQKjfIRLQvJoLno/6nJYynz6UqbkqSp1R4Dc1JdqZt/v+OlFIMDDbuT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672739; c=relaxed/simple;
-	bh=Opy3yPQ9r2oFlmtt+UGlV30GW1HCqPz3l0Qt4xx7QME=;
+	s=arc-20240116; t=1775674798; c=relaxed/simple;
+	bh=nAW5wr7A3mKmpO9xbT/Qfhle7NJpBfqBZYvqA+UJ0/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ti+xJcTeoCHZ6/nzgbqnH52pZSAYVGHMI+YZ2RRW/y7JgMhnNeUJX3BJ5Giw2jhNz49LgmYF5GvgBewVrwsjkBz5NiG9DTorBFSfzlYfYy3BCSXpEDuX7KwISU1RzthfTN0KIaFyl5j/TYIJNohzhZnaCqgnRF9MST0S6K/troY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urMKcpez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389A3C19421;
-	Wed,  8 Apr 2026 18:25:39 +0000 (UTC)
+	 MIME-Version; b=ux2SmtJhoSEGOVMpSD3W1mprPn7rNl+lr0Bt6pQPMHK0YIQ6AFerUe9eQyqOU67XC/UAQoa8juKsCugJDZDkpEerz9huGaiWA/l5a80JwFWkssuDuCiJrvPi03jAmNuZ1hr97EK5EMWZcR+VnKhl+vfbnPQhks4aufG7aDwGXLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrPSoPg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12711C19421;
+	Wed,  8 Apr 2026 18:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672739;
-	bh=Opy3yPQ9r2oFlmtt+UGlV30GW1HCqPz3l0Qt4xx7QME=;
+	s=korg; t=1775674798;
+	bh=nAW5wr7A3mKmpO9xbT/Qfhle7NJpBfqBZYvqA+UJ0/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=urMKcpezrr/0EKszLDDRPP18g1hJiyFpJTgegNTxDKvRJdZ+dyIWYjDkl5ZLBcYqI
-	 JtRQvZ6RJZDiyRY9hDz8CWUjUJ2Cwb1atccPkNBW5e8RWwi+5g9HCQPelQGP4IAD/6
-	 awtp3IKoHtXBSce3KY/wkU3olmE35vLCzEai6/4M=
+	b=jrPSoPg6uZyniI5PJ/NLEa3IqShBH9ZgroDeCSjwu5KH5tXGIU7hbpHxMYBqFJLRY
+	 wLDlMgpoXXND+gjpb8uWNslBRO0XLY77kJpK8ID77EE9khI9Iv+1CPMs0njm2t5OKa
+	 G3xDgQpvInh7sHcoDKG7Oa3onjIcm/dF1FS4Sk7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.6 123/160] nvmem: imx: assign nvmem_cell_info::raw_len
+	Bart Van Assche <bvanassche@acm.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.19 210/311] Input: synaptics-rmi4 - fix a locking bug in an error path
 Date: Wed,  8 Apr 2026 20:03:30 +0200
-Message-ID: <20260408175917.783922360@linuxfoundation.org>
+Message-ID: <20260408175947.245536429@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234392-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arri.de,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235189-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,acm.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arri.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 441433C0C79
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,acm.org:email]
+X-Rspamd-Queue-Id: 57A093C2344
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 48b5163c957548f5854f14c90bfdedc33afbea3c upstream.
+commit 7adaaee5edd35a423ae199c41b86bd1ed60ed483 upstream.
 
-Avoid getting error messages at startup like the following on i.MX6ULL:
+Lock f54->data_mutex when entering the function statement since jumping
+to the 'error' label when checking report_size fails causes that mutex
+to be unlocked.
 
-nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
-nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
+This bug has been detected by the Clang thread-safety checker.
 
-This shouldn't cause any functional change as this alignment would
-otherwise be done in nvmem_cell_info_to_nvmem_cell_entry_nodup().
-
+Fixes: 3a762dbd5347 ("[media] Input: synaptics-rmi4 - add support for F54 diagnostics")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223215118.2154194-16-bvanassche@acm.org
 Cc: stable@vger.kernel.org
-Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260327131645.3025781-2-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/imx-ocotp-ele.c |    1 +
- drivers/nvmem/imx-ocotp.c     |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/input/rmi4/rmi_f54.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -127,6 +127,7 @@ static int imx_ocotp_cell_pp(void *conte
- static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
- 					 struct nvmem_cell_info *cell)
- {
-+	cell->raw_len = round_up(cell->bytes, 4);
- 	cell->read_post_process = imx_ocotp_cell_pp;
- }
+--- a/drivers/input/rmi4/rmi_f54.c
++++ b/drivers/input/rmi4/rmi_f54.c
+@@ -538,6 +538,8 @@ static void rmi_f54_work(struct work_str
+ 	int error;
+ 	int i;
  
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -589,6 +589,7 @@ MODULE_DEVICE_TABLE(of, imx_ocotp_dt_ids
- static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
- 					 struct nvmem_cell_info *cell)
- {
-+	cell->raw_len = round_up(cell->bytes, 4);
- 	cell->read_post_process = imx_ocotp_cell_pp;
- }
++	mutex_lock(&f54->data_mutex);
++
+ 	report_size = rmi_f54_get_report_size(f54);
+ 	if (report_size == 0) {
+ 		dev_err(&fn->dev, "Bad report size, report type=%d\n",
+@@ -546,8 +548,6 @@ static void rmi_f54_work(struct work_str
+ 		goto error;     /* retry won't help */
+ 	}
  
+-	mutex_lock(&f54->data_mutex);
+-
+ 	/*
+ 	 * Need to check if command has completed.
+ 	 * If not try again later.
 
 
 
