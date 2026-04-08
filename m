@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-234423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GiWCBai1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:38 +0200
+	id +J1HLOqj1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883E83C167E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C96A3C1CEE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1BBA93080798
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F80D3034CAA
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB01324B1F;
-	Wed,  8 Apr 2026 18:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358092E7F2C;
+	Wed,  8 Apr 2026 18:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc5T2yG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMBG2Aj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D78B3ACF11;
-	Wed,  8 Apr 2026 18:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED46A33121F;
+	Wed,  8 Apr 2026 18:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672819; cv=none; b=goZSnulNKvx1+3LWEHbggGwcun82rTwZKzzWnSulyrEkGSdLgXknkf1AH2vYxaZTEqqHSW9eYojnCo6loUqytC0sEZGYSRV0YuoR23/uDRIj2cQragN9vBkQjUGFlWz5I+fiC7w5AL1iI7n0nhUzwz1afYNYt+9iz7i/DzRgUHc=
+	t=1775674082; cv=none; b=BRq3WxSZslIAduUUxjSzZqXf0nzsNSG2vGoSPKMSQpCmIXThK+w8NhMHqYA2lf7qWteiLTbT+7WnueDEZqx/64p+je96ois4Hti9pvLGAfY9+iVezk3neO4nQzMaQWTULt7d80TjHAjvytBga4VBx0zJOZPZnyoVf7z6cNlSYh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672819; c=relaxed/simple;
-	bh=/OYOPPnUAmrH4ITzExyMLDq3eOzER8c/6EodyiSVPfI=;
+	s=arc-20240116; t=1775674082; c=relaxed/simple;
+	bh=p7VBz8VDBS25lM8Sy3pKPWDpd7sChbx7q1HExhSrhVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWCX1/ee2+t9OCIMRBN/mPI1YAawx63C3aOZsZcgPOKW9b1yIqfY9OZqDNbChLDmFMxDpa/eAg0hTfT6xrpdxVnHJZfFj1mfPvy9wwL/pGR38ld7abuwEjsr00gZZ6oryN/1uMjJgJb6leU1JhbctGGB1RJBT6rgURo3TRZW/Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mc5T2yG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F61C19421;
-	Wed,  8 Apr 2026 18:26:58 +0000 (UTC)
+	 MIME-Version; b=PA1hC61C+tscaFPQ+JmadtY26nxB6HAwdksFYO8EHcbwr35JGvcJd2AyBXHoICyaH+cr63vBG3yEu8B+QTxMYHBZimRZ7sdSGZVhMHTwcyVpMZiDbXqIRrtA1T3rorCntwd/7AkFv+QrC1nGvX3nVof+G7htqBLV5TJqYmI/lSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMBG2Aj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83758C19421;
+	Wed,  8 Apr 2026 18:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672819;
-	bh=/OYOPPnUAmrH4ITzExyMLDq3eOzER8c/6EodyiSVPfI=;
+	s=korg; t=1775674081;
+	bh=p7VBz8VDBS25lM8Sy3pKPWDpd7sChbx7q1HExhSrhVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mc5T2yG/K9R0eM0XKqaTIKiiSzzmgZCUMY9uEK4id/NLjOkBv5g1pzmzDTEDzHh+2
-	 LNmmTy2USf+/7u4AdTATGNL3wRmI6tVltD3tkh+ufOaGsZPDxn4VD44KyuxWa6IGVP
-	 EYDtjFJQkaUo41k3dSy1s+Unp0mMOP0xxVTcmvQg=
+	b=OMBG2Aj/3lWLhrZdrtryKHxUP5Xc0ZwR3CvCm4i5JmTHsb5P18egeBgBsYYR+czDu
+	 dapyAGiuJcArcG+ySF5e2KATydNDNYuHBfMyfQIFPQItlBKwoJaRTGXIvBj1VBVzDx
+	 xbvr9F5yMzicM4akFPpJJC6BaGhLfZGeeYKdhGt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/160] x86/cpu: Enable FSGSBASE early in cpu_init_exception_handling()
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.12 201/242] usb: gadget: u_ether: Fix race between gether_disconnect and eth_stop
 Date: Wed,  8 Apr 2026 20:04:01 +0200
-Message-ID: <20260408175918.950546872@linuxfoundation.org>
+Message-ID: <20260408175934.604529159@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,171 +67,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234423-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234911-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 883E83C167E
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 2C96A3C1CEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikunj A Dadhania <nikunj@amd.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 05243d490bb7852a8acca7b5b5658019c7797a52 ]
+commit e1eabb072c75681f78312c484ccfffb7430f206e upstream.
 
-Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handling()
-to ensure it is enabled before any exceptions can occur on both boot and
-secondary CPUs.
+A race condition between gether_disconnect() and eth_stop() leads to a
+NULL pointer dereference. Specifically, if eth_stop() is triggered
+concurrently while gether_disconnect() is tearing down the endpoints,
+eth_stop() attempts to access the cleared endpoint descriptor, causing
+the following NPE:
 
-== Background ==
+  Unable to handle kernel NULL pointer dereference
+  Call trace:
+   __dwc3_gadget_ep_enable+0x60/0x788
+   dwc3_gadget_ep_enable+0x70/0xe4
+   usb_ep_enable+0x60/0x15c
+   eth_stop+0xb8/0x108
 
-Exception entry code (paranoid_entry()) uses ALTERNATIVE patching based on
-X86_FEATURE_FSGSBASE to decide whether to use RDGSBASE/WRGSBASE instructions
-or the slower RDMSR/SWAPGS sequence for saving/restoring GSBASE.
+Because eth_stop() crashes while holding the dev->lock, the thread
+running gether_disconnect() fails to acquire the same lock and spins
+forever, resulting in a hardlockup:
 
-On boot CPU, ALTERNATIVE patching happens after enabling FSGSBASE in CR4.
-When the feature is available, the code is permanently patched to use
-RDGSBASE/WRGSBASE, which require CR4.FSGSBASE=1 to execute without triggering
+  Core - Debugging Information for Hardlockup core(7)
+  Call trace:
+   queued_spin_lock_slowpath+0x94/0x488
+   _raw_spin_lock+0x64/0x6c
+   gether_disconnect+0x19c/0x1e8
+   ncm_set_alt+0x68/0x1a0
+   composite_setup+0x6a0/0xc50
 
-== Boot Sequence ==
+The root cause is that the clearing of dev->port_usb in
+gether_disconnect() is delayed until the end of the function.
 
-Boot CPU (with CR pinning enabled):
-  trap_init()
-    cpu_init()                   <- Uses unpatched code (RDMSR/SWAPGS)
-      x2apic_setup()
-  ...
-  arch_cpu_finalize_init()
-    identify_boot_cpu()
-      identify_cpu()
-        cr4_set_bits(X86_CR4_FSGSBASE)  # Enables the feature
-	# This becomes part of cr4_pinned_bits
-    ...
-    alternative_instructions()   <- Patches code to use RDGSBASE/WRGSBASE
+Move the clearing of dev->port_usb to the very beginning of
+gether_disconnect() while holding dev->lock. This cuts off the link
+immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+safely bail out.
 
-Secondary CPUs (with CR pinning enabled):
-  start_secondary()
-    cr4_init()                   <- Code already patched, CR4.FSGSBASE=1
-                                    set implicitly via cr4_pinned_bits
-
-    cpu_init()                   <- exceptions work because FSGSBASE is
-                                    already enabled
-
-Secondary CPU (with CR pinning disabled):
-  start_secondary()
-    cr4_init()                   <- Code already patched, CR4.FSGSBASE=0
-    cpu_init()
-      x2apic_setup()
-        rdmsrq(MSR_IA32_APICBASE)  <- Triggers #VC in SNP guests
-          exc_vmm_communication()
-            paranoid_entry()       <- Uses RDGSBASE with CR4.FSGSBASE=0
-                                      (patched code)
-    ...
-    ap_starting()
-      identify_secondary_cpu()
-        identify_cpu()
-	  cr4_set_bits(X86_CR4_FSGSBASE)  <- Enables the feature, which is
-                                             too late
-
-== CR Pinning ==
-
-Currently, for secondary CPUs, CR4.FSGSBASE is set implicitly through
-CR-pinning: the boot CPU sets it during identify_cpu(), it becomes part of
-cr4_pinned_bits, and cr4_init() applies those pinned bits to secondary CPUs.
-This works but creates an undocumented dependency between cr4_init() and the
-pinning mechanism.
-
-== Problem ==
-
-Secondary CPUs boot after alternatives have been applied globally. They
-execute already-patched paranoid_entry() code that uses RDGSBASE/WRGSBASE
-instructions, which require CR4.FSGSBASE=1. Upcoming changes to CR pinning
-behavior will break the implicit dependency, causing secondary CPUs to
-generate #UD.
-
-This issue manifests itself on AMD SEV-SNP guests, where the rdmsrq() in
-x2apic_setup() triggers a #VC exception early during cpu_init(). The #VC
-handler (exc_vmm_communication()) executes the patched paranoid_entry() path.
-Without CR4.FSGSBASE enabled, RDGSBASE instructions trigger #UD.
-
-== Fix ==
-
-Enable FSGSBASE explicitly in cpu_init_exception_handling() before loading
-exception handlers. This makes the dependency explicit and ensures both
-boot and secondary CPUs have FSGSBASE enabled before paranoid_entry()
-executes.
-
-Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Suggested-by: Sohil Mehta <sohil.mehta@intel.com>
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20260318075654.1792916-2-nikunj@amd.com
-[ adapted to cpu_init_exception_handling(void) lacking FRED and LASS support ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/function/u_ether.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2012,12 +2012,6 @@ static void identify_cpu(struct cpuinfo_
- 	setup_smap(c);
- 	setup_umip(c);
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1222,6 +1222,11 @@ void gether_disconnect(struct gether *li
  
--	/* Enable FSGSBASE instructions if available. */
--	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
--		cr4_set_bits(X86_CR4_FSGSBASE);
--		elf_hwcap2 |= HWCAP2_FSGSBASE;
--	}
--
- 	/*
- 	 * The vendor-specific functions might have changed features.
- 	 * Now we do "generic changes."
-@@ -2349,6 +2343,18 @@ void cpu_init_exception_handling(void)
- 	/* GHCB needs to be setup to handle #VC. */
- 	setup_ghcb();
+ 	DBG(dev, "%s\n", __func__);
  
-+	/*
-+	 * On CPUs with FSGSBASE support, paranoid_entry() uses
-+	 * ALTERNATIVE-patched RDGSBASE/WRGSBASE instructions. Secondary CPUs
-+	 * boot after alternatives are patched globally, so early exceptions
-+	 * execute patched code that depends on FSGSBASE. Enable the feature
-+	 * before any exceptions occur.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_FSGSBASE)) {
-+		cr4_set_bits(X86_CR4_FSGSBASE);
-+		elf_hwcap2 |= HWCAP2_FSGSBASE;
-+	}
++	spin_lock(&dev->lock);
++	dev->port_usb = NULL;
++	link->is_suspend = false;
++	spin_unlock(&dev->lock);
 +
- 	/* Finally load the IDT */
- 	load_current_idt();
+ 	netif_stop_queue(dev->net);
+ 	netif_carrier_off(dev->net);
+ 
+@@ -1259,11 +1264,6 @@ void gether_disconnect(struct gether *li
+ 	dev->header_len = 0;
+ 	dev->unwrap = NULL;
+ 	dev->wrap = NULL;
+-
+-	spin_lock(&dev->lock);
+-	dev->port_usb = NULL;
+-	link->is_suspend = false;
+-	spin_unlock(&dev->lock);
  }
+ EXPORT_SYMBOL_GPL(gether_disconnect);
+ 
 
 
 
