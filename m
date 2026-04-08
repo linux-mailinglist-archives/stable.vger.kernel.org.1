@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-234813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DHtAbCn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:32 +0200
+	id QELrBXml1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681AA3C278F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 994AD3C21CA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BFF7311E546
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0CFC3022F7D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6453D75C9;
-	Wed,  8 Apr 2026 18:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CCF3D9045;
+	Wed,  8 Apr 2026 18:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUzGSZY2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAZuouPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800233624B0;
-	Wed,  8 Apr 2026 18:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0493D8912;
+	Wed,  8 Apr 2026 18:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673829; cv=none; b=ZF0qoWB0hLjELuNAcWVJHIigxNYT4GA8KncBOuDXvZFdEgXV4hwzyWAnSvETI/6PwOJ1sl+8TnnL4NB8XYK6wohJKFluYrMl7Z2ggZFIXNUG83VM6YGREHU6Ep0wO+xNOk79iBQFTV73ot3qF6GF3wcnFaEQjitPuHZa73NIHB8=
+	t=1775674479; cv=none; b=pvU3tlYJWo05DXs5mMCb1l4EZMw/JUYmWfCtQRI2Cz2fFNH7Q9UpAYOBhrgyPJQuWuiZBiLx6U3A9VNZX5V490CSnYDCsAZSusT1S5ySoaCmxPPNf42kf3Rb/fBQCfZF0RUK/zUKxnS70to2II4atbtMxcUXgbe5IJdTcPhQTAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673829; c=relaxed/simple;
-	bh=91GYypUcTxRJop9qIRQht3O5KUI82qm1KmmQj4/7OGI=;
+	s=arc-20240116; t=1775674479; c=relaxed/simple;
+	bh=2E6VDJhKOCOlrhMiPtt4PJNsvw3aPKqU5nkSOGlqgMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnC391xzipX1qZ37AjDtdfCUm8WHJ5hprEWrGDfIk+Wb4Zr4xSVaQ2GpL6rjkQJE+MYs1DOh4AKIwiTAcZJMLju5dK73iks+tz4088h3g5KKQ6AGQn/hnFVj/S1xkiHAsE3kiNbcZcuk3QSnNNjIvyXniVRO1Vq8EtkvNQWBygg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUzGSZY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80A8C2BC9E;
-	Wed,  8 Apr 2026 18:43:48 +0000 (UTC)
+	 MIME-Version; b=RTAmsX1NDNrX4QkZvaI24TGI/1cYzuvo12oGR3k21zS2kqmNUi9diKXda88h1uAaBnQr4yVOZhaSxNBCk2iBJB24pQ9cpCKm0Gsa9uAdofZQDLfFqlKF59OToiVmrTQCqVmBhh7u64TUWMkqIQSSTElLJR9Ba9p7ryHkHo+uI+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAZuouPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F751C19421;
+	Wed,  8 Apr 2026 18:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673829;
-	bh=91GYypUcTxRJop9qIRQht3O5KUI82qm1KmmQj4/7OGI=;
+	s=korg; t=1775674479;
+	bh=2E6VDJhKOCOlrhMiPtt4PJNsvw3aPKqU5nkSOGlqgMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUzGSZY2QsohoRYhWxbLFlWpCt+HTVUAPOqdXZkUUgzLGYzfVZyY0YiXtv6L0eBmE
-	 S5X7PIIault3CqTFZshnycKbN+Bj2ZSBiRTYBM+iRt6EBFwl3FWqLB9TGTA+4rJfDP
-	 5E+eQ3HTYVbxSfSc5ZphTy1PR67CG6fsjRvAwYmc=
+	b=QAZuouPDz29yGuh2a+o+vd0mWdJ5IHom3E1Bn6uQs0LIgjGPCu7UhQhgnIyvkYUNw
+	 aAnImMmryQ9bgAfd7IWJyhTkNndygaIIDy7XHdLugUw0szt58YOEqbJyckf5xd8KeH
+	 KqBYdX7mjCv9bR1hFi5ihH4SnuiAcbiSw9pn55rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/242] netfilter: ctnetlink: zero expect NAT fields when CTA_EXPECT_NAT absent
-Date: Wed,  8 Apr 2026 20:01:53 +0200
-Message-ID: <20260408175929.815166025@linuxfoundation.org>
+Subject: [PATCH 6.19 114/311] bnxt_en: Refactor some basic ring setup and adjustment logic
+Date: Wed,  8 Apr 2026 20:01:54 +0200
+Message-ID: <20260408175943.671096973@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +71,221 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234813-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235065-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,netfilter.org:email]
-X-Rspamd-Queue-Id: 681AA3C278F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email]
+X-Rspamd-Queue-Id: 994AD3C21CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 35177c6877134a21315f37d57a5577846225623e ]
+[ Upstream commit ceee35e5674aa84cf9e504c2a9dae4587511556c ]
 
-ctnetlink_alloc_expect() allocates expectations from a non-zeroing
-slab cache via nf_ct_expect_alloc().  When CTA_EXPECT_NAT is not
-present in the netlink message, saved_addr and saved_proto are
-never initialized.  Stale data from a previous slab occupant can
-then be dumped to userspace by ctnetlink_exp_dump_expect(), which
-checks these fields to decide whether to emit CTA_EXPECT_NAT.
+Refactor out the basic code that trims the default rings, sets up and
+adjusts XDP TX rings and CP rings.  There is no change in behavior.
+This is to prepare for the next bug fix patch.
 
-The safe sibling nf_ct_expect_init(), used by the packet path,
-explicitly zeroes these fields.
-
-Zero saved_addr, saved_proto and dir in the else branch, guarded
-by IS_ENABLED(CONFIG_NF_NAT) since these fields only exist when
-NAT is enabled.
-
-Confirmed by priming the expect slab with NAT-bearing expectations,
-freeing them, creating a new expectation without CTA_EXPECT_NAT,
-and observing that the ctnetlink dump emits a spurious
-CTA_EXPECT_NAT containing stale data from the prior allocation.
-
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20260331065138.948205-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e4bf81dcad0a ("bnxt_en: Don't assume XDP is never enabled in bnxt_init_dflt_ring_mode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 53 +++++++++++++------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  1 +
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  5 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |  5 +-
+ 4 files changed, 41 insertions(+), 23 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 3fe37bdd625eb..1fd4371ff6369 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3571,6 +3571,12 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 						 exp, nf_ct_l3num(ct));
- 		if (err < 0)
- 			goto err_out;
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+	} else {
-+		memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
-+		memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
-+		exp->dir = 0;
-+#endif
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 300324ea1e8aa..bf888be2c54ed 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -12917,6 +12917,21 @@ static int bnxt_tx_nr_rings_per_tc(struct bnxt *bp)
+ 	return bp->num_tc ? bp->tx_nr_rings / bp->num_tc : bp->tx_nr_rings;
+ }
+ 
++static void bnxt_set_xdp_tx_rings(struct bnxt *bp)
++{
++	bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
++	bp->tx_nr_rings += bp->tx_nr_rings_xdp;
++}
++
++static void bnxt_adj_tx_rings(struct bnxt *bp)
++{
++	/* Make adjustments if reserved TX rings are less than requested */
++	bp->tx_nr_rings -= bp->tx_nr_rings_xdp;
++	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
++	if (bp->tx_nr_rings_xdp)
++		bnxt_set_xdp_tx_rings(bp);
++}
++
+ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+ {
+ 	int rc = 0;
+@@ -12934,13 +12949,7 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+ 	if (rc)
+ 		return rc;
+ 
+-	/* Make adjustments if reserved TX rings are less than requested */
+-	bp->tx_nr_rings -= bp->tx_nr_rings_xdp;
+-	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
+-	if (bp->tx_nr_rings_xdp) {
+-		bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
+-		bp->tx_nr_rings += bp->tx_nr_rings_xdp;
+-	}
++	bnxt_adj_tx_rings(bp);
+ 	rc = bnxt_alloc_mem(bp, irq_re_init);
+ 	if (rc) {
+ 		netdev_err(bp->dev, "bnxt_alloc_mem err: %x\n", rc);
+@@ -15377,11 +15386,19 @@ static int bnxt_change_mtu(struct net_device *dev, int new_mtu)
+ 	return 0;
+ }
+ 
++void bnxt_set_cp_rings(struct bnxt *bp, bool sh)
++{
++	int tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings);
++
++	bp->cp_nr_rings = sh ? max_t(int, tx_cp, bp->rx_nr_rings) :
++			       tx_cp + bp->rx_nr_rings;
++}
++
+ int bnxt_setup_mq_tc(struct net_device *dev, u8 tc)
+ {
+ 	struct bnxt *bp = netdev_priv(dev);
+ 	bool sh = false;
+-	int rc, tx_cp;
++	int rc;
+ 
+ 	if (tc > bp->max_tc) {
+ 		netdev_err(dev, "Too many traffic classes requested: %d. Max supported is %d.\n",
+@@ -15414,9 +15431,7 @@ int bnxt_setup_mq_tc(struct net_device *dev, u8 tc)
+ 		bp->num_tc = 0;
  	}
- 	return exp;
- err_out:
+ 	bp->tx_nr_rings += bp->tx_nr_rings_xdp;
+-	tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings);
+-	bp->cp_nr_rings = sh ? max_t(int, tx_cp, bp->rx_nr_rings) :
+-			       tx_cp + bp->rx_nr_rings;
++	bnxt_set_cp_rings(bp, sh);
+ 
+ 	if (netif_running(bp->dev))
+ 		return bnxt_open_nic(bp, true, false);
+@@ -16421,6 +16436,15 @@ static void bnxt_trim_dflt_sh_rings(struct bnxt *bp)
+ 	bp->tx_nr_rings = bnxt_tx_nr_rings(bp);
+ }
+ 
++static void bnxt_adj_dflt_rings(struct bnxt *bp, bool sh)
++{
++	if (sh)
++		bnxt_trim_dflt_sh_rings(bp);
++	else
++		bp->cp_nr_rings = bp->tx_nr_rings_per_tc + bp->rx_nr_rings;
++	bp->tx_nr_rings = bnxt_tx_nr_rings(bp);
++}
++
+ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+ {
+ 	int dflt_rings, max_rx_rings, max_tx_rings, rc;
+@@ -16446,11 +16470,8 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+ 		return rc;
+ 	bp->rx_nr_rings = min_t(int, dflt_rings, max_rx_rings);
+ 	bp->tx_nr_rings_per_tc = min_t(int, dflt_rings, max_tx_rings);
+-	if (sh)
+-		bnxt_trim_dflt_sh_rings(bp);
+-	else
+-		bp->cp_nr_rings = bp->tx_nr_rings_per_tc + bp->rx_nr_rings;
+-	bp->tx_nr_rings = bnxt_tx_nr_rings(bp);
++
++	bnxt_adj_dflt_rings(bp, sh);
+ 
+ 	avail_msix = bnxt_get_max_func_irqs(bp) - bp->cp_nr_rings;
+ 	if (avail_msix >= BNXT_MIN_ROCE_CP_RINGS) {
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 4d94bacf9f012..9413818788c4e 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2971,6 +2971,7 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
+ 		     int tx_xdp);
+ int bnxt_fw_init_one(struct bnxt *bp);
+ bool bnxt_hwrm_reset_permitted(struct bnxt *bp);
++void bnxt_set_cp_rings(struct bnxt *bp, bool sh);
+ int bnxt_setup_mq_tc(struct net_device *dev, u8 tc);
+ struct bnxt_ntuple_filter *bnxt_lookup_ntp_filter_from_idx(struct bnxt *bp,
+ 				struct bnxt_ntuple_filter *fltr, u32 idx);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index fa452d6272e0f..34d9264d51950 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -945,7 +945,6 @@ static int bnxt_set_channels(struct net_device *dev,
+ 	bool sh = false;
+ 	int tx_xdp = 0;
+ 	int rc = 0;
+-	int tx_cp;
+ 
+ 	if (channel->other_count)
+ 		return -EINVAL;
+@@ -1013,9 +1012,7 @@ static int bnxt_set_channels(struct net_device *dev,
+ 	if (tcs > 1)
+ 		bp->tx_nr_rings = bp->tx_nr_rings_per_tc * tcs + tx_xdp;
+ 
+-	tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings);
+-	bp->cp_nr_rings = sh ? max_t(int, tx_cp, bp->rx_nr_rings) :
+-			       tx_cp + bp->rx_nr_rings;
++	bnxt_set_cp_rings(bp, sh);
+ 
+ 	/* After changing number of rx channels, update NTUPLE feature. */
+ 	netdev_update_features(dev);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+index c94a391b1ba5b..06f35a61c1774 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -384,7 +384,7 @@ int bnxt_xdp_xmit(struct net_device *dev, int num_frames,
+ static int bnxt_xdp_set(struct bnxt *bp, struct bpf_prog *prog)
+ {
+ 	struct net_device *dev = bp->dev;
+-	int tx_xdp = 0, tx_cp, rc, tc;
++	int tx_xdp = 0, rc, tc;
+ 	struct bpf_prog *old;
+ 
+ 	netdev_assert_locked(dev);
+@@ -431,8 +431,7 @@ static int bnxt_xdp_set(struct bnxt *bp, struct bpf_prog *prog)
+ 	}
+ 	bp->tx_nr_rings_xdp = tx_xdp;
+ 	bp->tx_nr_rings = bp->tx_nr_rings_per_tc * tc + tx_xdp;
+-	tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings);
+-	bp->cp_nr_rings = max_t(int, tx_cp, bp->rx_nr_rings);
++	bnxt_set_cp_rings(bp, true);
+ 	bnxt_set_tpa_flags(bp);
+ 	bnxt_set_ring_params(bp);
+ 
 -- 
 2.53.0
 
