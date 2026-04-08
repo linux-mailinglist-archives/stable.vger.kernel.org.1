@@ -1,182 +1,270 @@
-Return-Path: <stable+bounces-233871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PcfCcFF1mkFCwgAu9opvQ
-	(envelope-from <stable+bounces-233871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:10:41 +0200
+	id kByiKcZF1ml+DAgAu9opvQ
+	(envelope-from <stable+bounces-233872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:10:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC7A3BBCC0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:10:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F723BBCD5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6E25D300902F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:09:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C23F330329B5
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746103BD63B;
-	Wed,  8 Apr 2026 12:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E96A3876B0;
+	Wed,  8 Apr 2026 12:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Y/GoaL0K";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xLG8T2Xo";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Y/GoaL0K";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xLG8T2Xo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmckCQkU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B54B37F75C
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2283B34D90C
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775650151; cv=none; b=WE/XQL+UuNqM46ssq/7Ld4c5dgG6A126Dle2zs7qNiuW41ex0SGoytCuC/2YzZqQ5x3Og0KifGtfYP4AxNw0kl2DaNmYiU/4ScN6Q+mlnVK4jDO/g4dJzgK43tUsv5VbObs7nDuY+0xVVEmav7opn4kHhIbu0Yq5PKzc3X/OhNA=
+	t=1775650182; cv=none; b=UlC93lNUpmclFtxjgPWCfmaWnH78/rtEigUCwpPXYnplIkEr7TXSM/mTACXauANTEl/NBJVGhHdlJUURY0G6aJDGPG2XwVdpPjZXCyKRJPpZt7sdG3nRRwUwF+ZYdjibTnjizOcS8zdI7jz0gZyzavMkkYQTB2uF86won2MfGH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775650151; c=relaxed/simple;
-	bh=cJJPMECuR0b5SldMWykynCxfwS08Wa+d/fuyEbNF378=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uk7kd0jJSHOvJTChoQe3Jy4gHxvla7FCheRm6oTI2PZnylVagGZXRteaLQ051Mcnym09ahUyyDPHbyYeRbBmHo800JqaPPwPOOInAj4N2rSi7pkrBfZK4Kj+I+draN3sHVLofsbi/vLXcbrhKfob8Oqh9GONEgR0/5GeNEC+7gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Y/GoaL0K; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xLG8T2Xo; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Y/GoaL0K; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xLG8T2Xo; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3A12A5BCD7;
-	Wed,  8 Apr 2026 12:09:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775650148; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sWRUttLm7Y0cW7SkTFzyLmU51nuTrLWmw7PqGuB5GJU=;
-	b=Y/GoaL0K0CkWD4iai5gQf1eMkxfh5P7w6eVFvEs1YQ8teWgUQXMUkCD/qJtZtgapB7fjaI
-	wsOQvrf24yTMRw+NHTPFvfJ/fwH0xPpj4JzTIcIRKPR+0VPr2V9jGaOa80o1HhqfNaKIOM
-	FHqqVUHTQLeAWRS1emHIcS3U+vX6Zac=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775650148;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sWRUttLm7Y0cW7SkTFzyLmU51nuTrLWmw7PqGuB5GJU=;
-	b=xLG8T2XotBksuc6H2mlAaUKKHH3CM5kcedxmCS71BgicxXhL1LfWMQoXy8+XuIigu1m1W7
-	/WsLA5wlyrjy4xAg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Y/GoaL0K";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xLG8T2Xo
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775650148; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sWRUttLm7Y0cW7SkTFzyLmU51nuTrLWmw7PqGuB5GJU=;
-	b=Y/GoaL0K0CkWD4iai5gQf1eMkxfh5P7w6eVFvEs1YQ8teWgUQXMUkCD/qJtZtgapB7fjaI
-	wsOQvrf24yTMRw+NHTPFvfJ/fwH0xPpj4JzTIcIRKPR+0VPr2V9jGaOa80o1HhqfNaKIOM
-	FHqqVUHTQLeAWRS1emHIcS3U+vX6Zac=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775650148;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sWRUttLm7Y0cW7SkTFzyLmU51nuTrLWmw7PqGuB5GJU=;
-	b=xLG8T2XotBksuc6H2mlAaUKKHH3CM5kcedxmCS71BgicxXhL1LfWMQoXy8+XuIigu1m1W7
-	/WsLA5wlyrjy4xAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D6ABC4A0B3;
-	Wed,  8 Apr 2026 12:09:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id B5gvM2NF1mkDVAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 08 Apr 2026 12:09:07 +0000
-Date: Wed, 08 Apr 2026 14:09:07 +0200
-Message-ID: <87h5pllkm4.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Mark Brown <broonie@kernel.org>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	lgirdwood@gmail.com,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	linux-sound@vger.kernel.org,
-	kai.vehmanen@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	stable@vger.kernel.org,
-	liam.r.girdwood@intel.com
-Subject: Re: [PATCH for 7.0 0/2] ALSA/SOF Intel: Enforce stricter period size for NVL
-In-Reply-To: <2d45e521-8ac7-4c4b-929c-f7d941dc3250@sirena.org.uk>
-References: <20260408084514.24325-1-peter.ujfalusi@linux.intel.com>
-	<87jyuhllwd.wl-tiwai@suse.de>
-	<2d45e521-8ac7-4c4b-929c-f7d941dc3250@sirena.org.uk>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1775650182; c=relaxed/simple;
+	bh=jb4CowtCPH8lG9TQGqbqvrqTs2gNt+bQooOjqswPlMw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BZ5iLXzqIzxbRH+o3rEG8iAiqqhH/MnCu9EKBRe2Nid3pJTaIFlbmH2gXDPcU3q9qWB4EWdzlCLC2WgyxvO21D2yvAyCbOVjymycumUN4QYtxFGhsTr/PPK+J2jRXeg0in+63O+MX0QcapDNsgyEuIe4U7tcH5HwAY6D9KsPhU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmckCQkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719AFC19421;
+	Wed,  8 Apr 2026 12:09:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775650181;
+	bh=jb4CowtCPH8lG9TQGqbqvrqTs2gNt+bQooOjqswPlMw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=kmckCQkUAd4zGx+2bqYbyBLalKCJrN+kg1lbCuNzD7of+AFwItWJFKZNBZdVN87zw
+	 DnEBDH2afrnqcNuwchRLH0InKrEJxK/vwGYhXpTCkYYJdBxQt4hQwXWj7vzSj71ceB
+	 HHjzTKyN2nXiN18WRKELlfMsA7pMIcMzI6RT15ug=
+Subject: FAILED: patch "[PATCH] usb: gadget: f_ecm: Fix net_device lifecycle with device_move" failed to apply to 6.6-stable tree
+To: khtsai@google.com,gregkh@linuxfoundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 08 Apr 2026 14:09:39 +0200
+Message-ID: <2026040839-snippet-gangrene-082f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[suse.de,gmail.com,linux.intel.com,vger.kernel.org,linux.dev,intel.com];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TAGGED_FROM(0.00)[bounces-233871-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233872-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8BC7A3BBCC0
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email,msgid.link:url]
+X-Rspamd-Queue-Id: 01F723BBCD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 08 Apr 2026 14:05:59 +0200,
-Mark Brown wrote:
-> 
-> On Wed, Apr 08, 2026 at 01:41:22PM +0200, Takashi Iwai wrote:
-> > Peter Ujfalusi wrote:
-> 
-> > > NVL and NVL-S (ACE4) needs to use stricter period size constraint to
-> > > meet the address alignment for each BDLE buffer (start of each period in
-> > > the continuous ALSA buffer) set in the HDA specification.
-> 
-> > > It would be great if these can be sent for 7.0 as last minute if it is
-> > > doable, I left out the Fixes tag from the first patch as that is
-> > > introduced in 7.0.
-> 
-> > Mark, shall I pick up both patches to my tree for the next PR (planned
-> > for tomorrow or on Friday)?
-> > Basically both patches are independent, and I can apply the first one
-> > in anyway.
-> 
-> I've already got the ASoC one in process for a final fixes PR today and
-> was going to complain at Peter about combining patches for multiple
-> trees into a single series when there's no dependencies.
 
-OK, then I'll wait for your PR for the second patch, while I take the
-first one on mine.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x b2cc4fae67a51f60d81d6af2678696accb07c656
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040839-snippet-gangrene-082f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
 
 
 thanks,
 
-Takashi
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b2cc4fae67a51f60d81d6af2678696accb07c656 Mon Sep 17 00:00:00 2001
+From: Kuen-Han Tsai <khtsai@google.com>
+Date: Fri, 20 Mar 2026 16:54:47 +0800
+Subject: [PATCH] usb: gadget: f_ecm: Fix net_device lifecycle with device_move
+
+The net_device is allocated during function instance creation and
+registered during the bind phase with the gadget device as its sysfs
+parent. When the function unbinds, the parent device is destroyed, but
+the net_device survives, resulting in dangling sysfs symlinks:
+
+  console:/ # ls -l /sys/class/net/usb0
+  lrwxrwxrwx ... /sys/class/net/usb0 ->
+  /sys/devices/platform/.../gadget.0/net/usb0
+  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
+  ls: .../gadget.0/net/usb0: No such file or directory
+
+Use device_move() to reparent the net_device between the gadget device
+tree and /sys/devices/virtual across bind and unbind cycles. During the
+final unbind, calling device_move(NULL) moves the net_device to the
+virtual device tree before the gadget device is destroyed. On rebinding,
+device_move() reparents the device back under the new gadget, ensuring
+proper sysfs topology and power management ordering.
+
+To maintain compatibility with legacy composite drivers (e.g., multi.c),
+the bound flag is used to indicate whether the network device is shared
+and pre-registered during the legacy driver's bind phase.
+
+Fixes: fee562a6450b ("usb: gadget: f_ecm: convert to new function interface with backward compatibility")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-4-4886b578161b@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/gadget/function/f_ecm.c b/drivers/usb/gadget/function/f_ecm.c
+index e0c02121374e..e495bac4efeb 100644
+--- a/drivers/usb/gadget/function/f_ecm.c
++++ b/drivers/usb/gadget/function/f_ecm.c
+@@ -681,6 +681,7 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	struct usb_ep		*ep;
+ 
+ 	struct f_ecm_opts	*ecm_opts;
++	struct net_device	*net __free(detach_gadget) = NULL;
+ 	struct usb_request	*request __free(free_usb_request) = NULL;
+ 
+ 	if (!can_support_ecm(cdev->gadget))
+@@ -688,18 +689,18 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	ecm_opts = container_of(f->fi, struct f_ecm_opts, func_inst);
+ 
+-	mutex_lock(&ecm_opts->lock);
++	scoped_guard(mutex, &ecm_opts->lock)
++		if (ecm_opts->bind_count == 0 && !ecm_opts->bound) {
++			if (!device_is_registered(&ecm_opts->net->dev)) {
++				gether_set_gadget(ecm_opts->net, cdev->gadget);
++				status = gether_register_netdev(ecm_opts->net);
++			} else
++				status = gether_attach_gadget(ecm_opts->net, cdev->gadget);
+ 
+-	gether_set_gadget(ecm_opts->net, cdev->gadget);
+-
+-	if (!ecm_opts->bound) {
+-		status = gether_register_netdev(ecm_opts->net);
+-		ecm_opts->bound = true;
+-	}
+-
+-	mutex_unlock(&ecm_opts->lock);
+-	if (status)
+-		return status;
++			if (status)
++				return status;
++			net = ecm_opts->net;
++		}
+ 
+ 	ecm_string_defs[1].s = ecm->ethaddr;
+ 
+@@ -790,6 +791,9 @@ ecm_bind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	ecm->notify_req = no_free_ptr(request);
+ 
++	ecm_opts->bind_count++;
++	retain_and_null_ptr(net);
++
+ 	DBG(cdev, "CDC Ethernet: IN/%s OUT/%s NOTIFY/%s\n",
+ 			ecm->port.in_ep->name, ecm->port.out_ep->name,
+ 			ecm->notify->name);
+@@ -836,7 +840,7 @@ static void ecm_free_inst(struct usb_function_instance *f)
+ 	struct f_ecm_opts *opts;
+ 
+ 	opts = container_of(f, struct f_ecm_opts, func_inst);
+-	if (opts->bound)
++	if (device_is_registered(&opts->net->dev))
+ 		gether_cleanup(netdev_priv(opts->net));
+ 	else
+ 		free_netdev(opts->net);
+@@ -906,9 +910,12 @@ static void ecm_free(struct usb_function *f)
+ static void ecm_unbind(struct usb_configuration *c, struct usb_function *f)
+ {
+ 	struct f_ecm		*ecm = func_to_ecm(f);
++	struct f_ecm_opts	*ecm_opts;
+ 
+ 	DBG(c->cdev, "ecm unbind\n");
+ 
++	ecm_opts = container_of(f->fi, struct f_ecm_opts, func_inst);
++
+ 	usb_free_all_descriptors(f);
+ 
+ 	if (atomic_read(&ecm->notify_count)) {
+@@ -918,6 +925,10 @@ static void ecm_unbind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	kfree(ecm->notify_req->buf);
+ 	usb_ep_free_request(ecm->notify, ecm->notify_req);
++
++	ecm_opts->bind_count--;
++	if (ecm_opts->bind_count == 0 && !ecm_opts->bound)
++		gether_detach_gadget(ecm_opts->net);
+ }
+ 
+ static struct usb_function *ecm_alloc(struct usb_function_instance *fi)
+diff --git a/drivers/usb/gadget/function/u_ecm.h b/drivers/usb/gadget/function/u_ecm.h
+index 77cfb89932be..7f666b9dea02 100644
+--- a/drivers/usb/gadget/function/u_ecm.h
++++ b/drivers/usb/gadget/function/u_ecm.h
+@@ -15,17 +15,26 @@
+ 
+ #include <linux/usb/composite.h>
+ 
++/**
++ * struct f_ecm_opts - ECM function options
++ * @func_inst: USB function instance.
++ * @net: The net_device associated with the ECM function.
++ * @bound: True if the net_device is shared and pre-registered during the
++ *         legacy composite driver's bind phase (e.g., multi.c). If false,
++ *         the ECM function will register the net_device during its own
++ *         bind phase.
++ * @bind_count: Tracks the number of configurations the ECM function is
++ *              bound to, preventing double-registration of the @net device.
++ * @lock: Protects the data from concurrent access by configfs read/write
++ *        and create symlink/remove symlink operations.
++ * @refcnt: Reference counter for the function instance.
++ */
+ struct f_ecm_opts {
+ 	struct usb_function_instance	func_inst;
+ 	struct net_device		*net;
+ 	bool				bound;
++	int				bind_count;
+ 
+-	/*
+-	 * Read/write access to configfs attributes is handled by configfs.
+-	 *
+-	 * This is to protect the data from concurrent access by read/write
+-	 * and create symlink/remove symlink.
+-	 */
+ 	struct mutex			lock;
+ 	int				refcnt;
+ };
+
 
