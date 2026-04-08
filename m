@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235073-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHyeNYmj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:49 +0200
+	id +KOzBY6k1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235073-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C12C3C1BDF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3BC3C1F2A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D480309E81B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18C363024792
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3083B19A3;
-	Wed,  8 Apr 2026 18:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1A13D8918;
+	Wed,  8 Apr 2026 18:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWXcHOVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQyy9fb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E222D3ACF16;
-	Wed,  8 Apr 2026 18:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106293D75C9;
+	Wed,  8 Apr 2026 18:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673192; cv=none; b=VzWYJCXUvMDduQSvxKnppTqc0uI149R35KI7I4NruJFkTTDp3QpXaStr1uKp3bubgWzWt/oMfOEDA6klXDBR39zj9tbNdgtVFbXqoX243P6MJPYTXm2Bmn3EeiEY+Nn1Iqqg0FZ1L3prQVXFzuMDXvnEFlGr2/wFFPfE+fLapNQ=
+	t=1775674500; cv=none; b=gPXboH8UQcUI0XPePs7oDIVADWkmM2kZPyRwKe7QlTbooVUnQ1Tb3ljp20RikEsTtVX12sM2ANVqy0r5syQSRLgrXFdYzlSnt9cog9t8RVPe2uTzCbGA77oYpr9N8ErWZmqNkDywUm4HgRbBpb9RLLqMI1/PzXO6sxslQj4CYx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673192; c=relaxed/simple;
-	bh=S/3KCJGT0PjMb9BA1PRjfk/99yQQRX2Bx/kKJ/KC2cE=;
+	s=arc-20240116; t=1775674500; c=relaxed/simple;
+	bh=5dkvnvoWhUeAakwmhsxzpHkmx8VvEcumOu2CUDPdPuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXXLB5/Rx3DXarvGcNpDAWI+e29XKNXPyfXmtXW2PKkRpIKwy9tWL/e6W+bk8IzsLzHwS1jr7gfG/OUUfZG8YrlWEqwAh0CW8KiO/eCJg5xI7aNzWQ8u8huSOznEYlx3IWO3jCA9TbsLxkWJtIH+XQiVbLk0mOyjs5U5vuC/FzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWXcHOVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794BCC19421;
-	Wed,  8 Apr 2026 18:33:11 +0000 (UTC)
+	 MIME-Version; b=g1ShQNkO+jIlMQivxNwEGPO3cEf2Gf0Q7x1TJtXV6TbZt9J1ks4bxecs6sqheT1c3PDYhHe+PC2UCcxIb32IsWefRJgWtai18SR6G6qMu4iL37SbcaPKdWklTYhV8fLlPIQ3YTBzynK75bRxf+o+8QS8ZJajJRC0Ycev3Vy0YAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQyy9fb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96698C19421;
+	Wed,  8 Apr 2026 18:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673191;
-	bh=S/3KCJGT0PjMb9BA1PRjfk/99yQQRX2Bx/kKJ/KC2cE=;
+	s=korg; t=1775674499;
+	bh=5dkvnvoWhUeAakwmhsxzpHkmx8VvEcumOu2CUDPdPuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWXcHOVXHMWbT422lAeJR331aL9Igeyf2eUFw50gU24w2I1JJNZp96y4M0vgHCCCH
-	 a15uf9DAM5M6qslyLm+7nivnCupwL6PyMzwUdptQHfyMy5a0AnSXcWI3s4wdx+NXo6
-	 DyXPGIUBE6fosYGxe3Yk10ipvnJ49bcnFuHdly+M=
+	b=QQyy9fb1mkt4jD7nth4wOeELGOT9EEonO6bJneAfLn5lSRJZ1s5E74/E0oso/zmu/
+	 JBl53F4lNydCXTRKaZU22JzEI/qTqqqIzNXHKDxdAzDYWrIUHPYnLMUnC9qr6TLRTB
+	 aTzeOk3Q/VF++YaL7xY9sNe7lzIs8txwnot0hdJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.18 136/277] lib/crypto: chacha: Zeroize permuted_state before it leaves scope
+	Luka Gejak <luka.gejak@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 121/311] net: hsr: fix VLAN add unwind on slave errors
 Date: Wed,  8 Apr 2026 20:02:01 +0200
-Message-ID: <20260408175938.954167040@linuxfoundation.org>
+Message-ID: <20260408175943.934757109@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234566-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235073-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,62 +87,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3C12C3C1BDF
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: AC3BC3C1F2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Luka Gejak <luka.gejak@linux.dev>
 
-commit e5046823f8fa3677341b541a25af2fcb99a5b1e0 upstream.
+[ Upstream commit 2e3514e63bfb0e972b1f19668547a455d0129e88 ]
 
-Since the ChaCha permutation is invertible, the local variable
-'permuted_state' is sufficient to compute the original 'state', and thus
-the key, even after the permutation has been done.
+When vlan_vid_add() fails for a secondary slave, the error path calls
+vlan_vid_del() on the failing port instead of the peer slave that had
+already succeeded. This results in asymmetric VLAN state across the HSR
+pair.
 
-While the kernel is quite inconsistent about zeroizing secrets on the
-stack (and some prominent userspace crypto libraries don't bother at all
-since it's not guaranteed to work anyway), the kernel does try to do it
-as a best practice, especially in cases involving the RNG.
+Fix this by switching to a centralized unwind path that removes the VID
+from any slave device that was already programmed.
 
-Thus, explicitly zeroize 'permuted_state' before it goes out of scope.
-
-Fixes: c08d0e647305 ("crypto: chacha20 - Add a generic ChaCha20 stream cipher implementation")
-Cc: stable@vger.kernel.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20260326032920.39408-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Link: https://patch.msgid.link/20260401092243.52121-3-luka.gejak@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/crypto/chacha-block-generic.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/hsr/hsr_device.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
---- a/lib/crypto/chacha-block-generic.c
-+++ b/lib/crypto/chacha-block-generic.c
-@@ -87,6 +87,8 @@ void chacha_block_generic(struct chacha_
- 				   &out[i * sizeof(u32)]);
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index d1bfc49b5f017..fd2fea25eff0d 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -532,8 +532,8 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
+ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+ 				   __be16 proto, u16 vid)
+ {
+-	bool is_slave_a_added = false;
+-	bool is_slave_b_added = false;
++	struct net_device *slave_a_dev = NULL;
++	struct net_device *slave_b_dev = NULL;
+ 	struct hsr_port *port;
+ 	struct hsr_priv *hsr;
+ 	int ret = 0;
+@@ -549,33 +549,35 @@ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+ 		switch (port->type) {
+ 		case HSR_PT_SLAVE_A:
+ 			if (ret) {
+-				/* clean up Slave-B */
+ 				netdev_err(dev, "add vid failed for Slave-A\n");
+-				if (is_slave_b_added)
+-					vlan_vid_del(port->dev, proto, vid);
+-				return ret;
++				goto unwind;
+ 			}
+-
+-			is_slave_a_added = true;
++			slave_a_dev = port->dev;
+ 			break;
+-
+ 		case HSR_PT_SLAVE_B:
+ 			if (ret) {
+-				/* clean up Slave-A */
+ 				netdev_err(dev, "add vid failed for Slave-B\n");
+-				if (is_slave_a_added)
+-					vlan_vid_del(port->dev, proto, vid);
+-				return ret;
++				goto unwind;
+ 			}
+-
+-			is_slave_b_added = true;
++			slave_b_dev = port->dev;
+ 			break;
+ 		default:
++			if (ret)
++				goto unwind;
+ 			break;
+ 		}
+ 	}
  
- 	state->x[12]++;
+ 	return 0;
 +
-+	chacha_zeroize_state(&permuted_state);
- }
- EXPORT_SYMBOL(chacha_block_generic);
- 
-@@ -110,5 +112,7 @@ void hchacha_block_generic(const struct
- 
- 	memcpy(&out[0], &permuted_state.x[0], 16);
- 	memcpy(&out[4], &permuted_state.x[12], 16);
++unwind:
++	if (slave_a_dev)
++		vlan_vid_del(slave_a_dev, proto, vid);
 +
-+	chacha_zeroize_state(&permuted_state);
++	if (slave_b_dev)
++		vlan_vid_del(slave_b_dev, proto, vid);
++
++	return ret;
  }
- EXPORT_SYMBOL(hchacha_block_generic);
+ 
+ static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
+-- 
+2.53.0
+
 
 
 
