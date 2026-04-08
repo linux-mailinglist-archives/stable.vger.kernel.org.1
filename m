@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJxHIF2g1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:17 +0200
+	id eN6CMM+d1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF8E3C1154
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F413C0B65
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0879300C309
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17D1530D20A7
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A653624B0;
-	Wed,  8 Apr 2026 18:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33663D6CAE;
+	Wed,  8 Apr 2026 18:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWgEGQWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXilYP5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53E83D4134;
-	Wed,  8 Apr 2026 18:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DC53AA4E4;
+	Wed,  8 Apr 2026 18:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673423; cv=none; b=dNT45nTc01dac0GBhKmX02gwyi9BM1fTESe9YG9XG+wvPMW9XDmHRQ4MOXLB1EXO789RoK/bXmcj37ShFezdZl25+sekmRLLXfVaMyaSe4WJWHhIInD0rIIF4SGa3icrLm7T9yCmkcolHO/6XfbMb/tMVhsEKqsL65sHfWpXnRM=
+	t=1775672377; cv=none; b=Izm7uBuLJ11z3tMXz3qKhVsdp1n6VnNFXv7Wt05Z0swlvYWCFGz/S1WCQuGbiypJM8N8Xvacc/n8qfy1d/aRvPE6h68iHS6U+4K0vuS/EMOHiuIHjZdVfd+h+tAOdLvIILJw/MUfJ+93wBwJE9WinEI1pL6nk+3Kew3r8QZ4VD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673423; c=relaxed/simple;
-	bh=XbEUwuCHYOsg9Tdt/Pf78YLv1XuRptVWe+T1mIdiB50=;
+	s=arc-20240116; t=1775672377; c=relaxed/simple;
+	bh=e9gSpV4LbHIBjmo5SuJDwzZUdzd7qbijwvdVij3NL2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpDSNg3ZLB0DLoH/yV6n77Q4fzJ4riBwUQNIHYlwmC1n10QYVp8NkPJrD90Bz38Z/uE8s1WG0waKY6GVbe9e6PnBRBrYt0r19XTqjMxGAoPEwkW6qSQ+C29mUqpPs/mHLitKzSvCzs0L5H5GELx3ySz3et+Gq1aXwZ2N971tLnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWgEGQWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF8BC19421;
-	Wed,  8 Apr 2026 18:37:03 +0000 (UTC)
+	 MIME-Version; b=c+9Toc0EsOvRJj3phwTCpx9TAhlx86OY2KeLnBrO4RRx9OIJucLBxfKux8NEnrE4WdHr1PobBHnkyHPUA7B8wJEXWnO9cyHvDdfoH8RX50KKM+2ZVOvEsN1tU9Vv80hMu77Tc9L5cHle7utInoMOpjJJDYCRQyxaOX1nQeBq51Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXilYP5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFA7C19421;
+	Wed,  8 Apr 2026 18:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673423;
-	bh=XbEUwuCHYOsg9Tdt/Pf78YLv1XuRptVWe+T1mIdiB50=;
+	s=korg; t=1775672377;
+	bh=e9gSpV4LbHIBjmo5SuJDwzZUdzd7qbijwvdVij3NL2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWgEGQWnw+7Qv5VlvKjFvRTN5J0jG0l+S9ZOF8L4syX5aKPQtWbjaovT2nMM+KKND
-	 swAE/GE43VhpWAVEZwG3rGCjxTZx7HVKkZLQL12i9qOcur6pAUgUVTqg1cupNJH+Je
-	 i6Chmzi05sNrdsCUDZx3uHavgYr0U9qszuWx8oxE=
+	b=pXilYP5hJOpd5H/HH77KOH0oco8/u9yV/EPF3xFgfTN/bz81FNoU+ygSgdLEsWCOl
+	 1+dq0Gg8pGypKjeH2sDcIjVqm/dS/Rzt6Q0/Ei6m+DIdWu0Tjf9q2640QoVg9mR3Rf
+	 f57ZQpvc6RznF4rCkQOk3kV5N7GmQGudfQsYUXdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Liav Mordouch <liavmordouch@gmail.com>,
-	Nicolas Pitre <nico@fluxnic.net>
-Subject: [PATCH 6.18 227/277] vt: discard stale unicode buffer on alt screen exit after resize
+	Pratyush Yadav <p.yadav@ti.com>,
+	Michael Walle <michael@walle.cc>,
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Liyin Zhang <liyin.zhang.cn@windriver.com>
+Subject: [PATCH 6.1 295/312] mtd: spi-nor: core: avoid odd length/address reads on 8D-8D-8D mode
 Date: Wed,  8 Apr 2026 20:03:32 +0200
-Message-ID: <20260408175942.331816257@linuxfoundation.org>
+Message-ID: <20260408175944.785955230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,109 +68,166 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234656-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,fluxnic.net];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234252-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,fluxnic.net:email]
-X-Rspamd-Queue-Id: 3CF8E3C1154
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,walle.cc:email]
+X-Rspamd-Queue-Id: 30F413C0B65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liav Mordouch <liavmordouch@gmail.com>
+From: Pratyush Yadav <p.yadav@ti.com>
 
-commit 40014493cece72a0be5672cd86763e53fb3ec613 upstream.
+[ Upstream commit f156b23df6a84efb2f6686156be94d4988568954 ]
 
-When enter_alt_screen() saves vc_uni_lines into vc_saved_uni_lines and
-sets vc_uni_lines to NULL, a subsequent console resize via vc_do_resize()
-skips reallocating the unicode buffer because vc_uni_lines is NULL.
-However, vc_saved_uni_lines still points to the old buffer allocated for
-the original dimensions.
+On Octal DTR capable flashes like Micron Xcella reads cannot start or
+end at an odd address in Octal DTR mode. Extra bytes need to be read at
+the start or end to make sure both the start address and length remain
+even.
 
-When leave_alt_screen() later restores vc_saved_uni_lines, the buffer
-dimensions no longer match vc_rows/vc_cols. Any operation that iterates
-over the unicode buffer using the current dimensions (e.g. csi_J clearing
-the screen) will access memory out of bounds, causing a kernel oops:
+To avoid allocating too much extra memory, thereby putting unnecessary
+memory pressure on the system, the temporary buffer containing the extra
+padding bytes is capped at PAGE_SIZE bytes. The rest of the 2-byte
+aligned part should be read directly in the main buffer.
 
-  BUG: unable to handle page fault for address: 0x0000002000000020
-  RIP: 0010:csi_J+0x133/0x2d0
-
-The faulting address 0x0000002000000020 is two adjacent u32 space
-characters (0x20) interpreted as a pointer, read from the row data area
-past the end of the 25-entry pointer array in a buffer allocated for
-80x25 but accessed with 240x67 dimensions.
-
-Fix this by checking whether the console dimensions changed while in the
-alternate screen. If they did, free the stale saved buffer instead of
-restoring it. The unicode screen will be lazily rebuilt via
-vc_uniscr_check() when next needed.
-
-Fixes: 5eb608319bb5 ("vt: save/restore unicode screen buffer for alternate screen")
-Cc: stable <stable@kernel.org>
-Tested-by: Liav Mordouch <liavmordouch@gmail.com>
-Signed-off-by: Liav Mordouch <liavmordouch@gmail.com>
-Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
-Link: https://patch.msgid.link/20260327170204.29706-1-liavmordouch@gmail.com
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Reviewed-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20250708091646.292-1-ziniu.wang_1@nxp.com
+[ Resolve conflict in drivers/mtd/spi-nor/core.c.
+  In spi_nor_read(), 6.1.y contains a spi_nor_convert_addr() call
+  before spi_nor_read_data(), introduced by 364995962803 ("mtd:
+  spi-nor: Add a ->convert_addr() method"), which does not exist in
+  mainline. This call is specific to Xilinx S3AN flashes, which use a
+  non-standard address format. In mainline, S3AN flash support was
+  removed entirely, and the corresponding spi_nor_convert_addr() call
+  was dropped by 9539d12d9f52 ("mtd: spi-nor: get rid of non-power-of-2
+  page size handling"). Keep the existing spi_nor_convert_addr() call
+  and insert the new spi_nor_octal_dtr_read() branch after it. ]
+Signed-off-by: Liyin Zhang <liyin.zhang.cn@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vt.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/mtd/spi-nor/core.c |   76 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 75 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1907,6 +1907,7 @@ static void leave_alt_screen(struct vc_d
- 	unsigned int rows = min(vc->vc_saved_rows, vc->vc_rows);
- 	unsigned int cols = min(vc->vc_saved_cols, vc->vc_cols);
- 	u16 *src, *dest;
-+	bool uni_lines_stale;
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -1677,6 +1677,76 @@ static const struct flash_info *spi_nor_
+ 	return info;
+ }
  
- 	if (vc->vc_saved_screen == NULL)
- 		return; /* Not inside an alt-screen */
-@@ -1915,7 +1916,18 @@ static void leave_alt_screen(struct vc_d
- 		dest = ((u16 *)vc->vc_origin) + r * vc->vc_cols;
- 		memcpy(dest, src, 2 * cols);
- 	}
--	vc_uniscr_set(vc, vc->vc_saved_uni_lines);
++/*
++ * On Octal DTR capable flashes, reads cannot start or end at an odd
++ * address in Octal DTR mode. Extra bytes need to be read at the start
++ * or end to make sure both the start address and length remain even.
++ */
++static int spi_nor_octal_dtr_read(struct spi_nor *nor, loff_t from, size_t len,
++				  u_char *buf)
++{
++	u_char *tmp_buf;
++	size_t tmp_len;
++	loff_t start, end;
++	int ret, bytes_read;
++
++	if (IS_ALIGNED(from, 2) && IS_ALIGNED(len, 2))
++		return spi_nor_read_data(nor, from, len, buf);
++	else if (IS_ALIGNED(from, 2) && len > PAGE_SIZE)
++		return spi_nor_read_data(nor, from, round_down(len, PAGE_SIZE),
++					 buf);
++
++	tmp_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
++	if (!tmp_buf)
++		return -ENOMEM;
++
++	start = round_down(from, 2);
++	end = round_up(from + len, 2);
++
 +	/*
-+	 * If the console was resized while in the alternate screen,
-+	 * vc_saved_uni_lines was allocated for the old dimensions.
-+	 * Restoring it would cause out-of-bounds accesses. Discard it
-+	 * and let the unicode screen be lazily rebuilt.
++	 * Avoid allocating too much memory. The requested read length might be
++	 * quite large. Allocating a buffer just as large (slightly bigger, in
++	 * fact) would put unnecessary memory pressure on the system.
++	 *
++	 * For example if the read is from 3 to 1M, then this will read from 2
++	 * to 4098. The reads from 4098 to 1M will then not need a temporary
++	 * buffer so they can proceed as normal.
 +	 */
-+	uni_lines_stale = vc->vc_saved_rows != vc->vc_rows ||
-+			  vc->vc_saved_cols != vc->vc_cols;
-+	if (uni_lines_stale)
-+		vc_uniscr_free(vc->vc_saved_uni_lines);
-+	else
-+		vc_uniscr_set(vc, vc->vc_saved_uni_lines);
- 	vc->vc_saved_uni_lines = NULL;
- 	restore_cur(vc);
- 	/* Update the entire screen */
++	tmp_len = min_t(size_t, end - start, PAGE_SIZE);
++
++	ret = spi_nor_read_data(nor, start, tmp_len, tmp_buf);
++	if (ret == 0) {
++		ret = -EIO;
++		goto out;
++	}
++	if (ret < 0)
++		goto out;
++
++	/*
++	 * More bytes are read than actually requested, but that number can't be
++	 * reported to the calling function or it will confuse its calculations.
++	 * Calculate how many of the _requested_ bytes were read.
++	 */
++	bytes_read = ret;
++
++	if (from != start)
++		ret -= from - start;
++
++	/*
++	 * Only account for extra bytes at the end if they were actually read.
++	 * For example, if the total length was truncated because of temporary
++	 * buffer size limit then the adjustment for the extra bytes at the end
++	 * is not needed.
++	 */
++	if (start + bytes_read == end)
++		ret -= end - (from + len);
++
++	memcpy(buf, tmp_buf + (from - start), ret);
++out:
++	kfree(tmp_buf);
++	return ret;
++}
++
+ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+ 			size_t *retlen, u_char *buf)
+ {
+@@ -1694,7 +1764,11 @@ static int spi_nor_read(struct mtd_info
+ 
+ 		addr = spi_nor_convert_addr(nor, addr);
+ 
+-		ret = spi_nor_read_data(nor, addr, len, buf);
++		if (nor->read_proto == SNOR_PROTO_8_8_8_DTR)
++			ret = spi_nor_octal_dtr_read(nor, addr, len, buf);
++		else
++			ret = spi_nor_read_data(nor, addr, len, buf);
++
+ 		if (ret == 0) {
+ 			/* We shouldn't see 0-length reads */
+ 			ret = -EIO;
 
 
 
