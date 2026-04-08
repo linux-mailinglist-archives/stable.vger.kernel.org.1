@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mB7IF5ea1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:39 +0200
+	id mEjHFvWi1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFB73C02F3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B47F93C196D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C2BD301BEE9
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C16D300696B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0593D8919;
-	Wed,  8 Apr 2026 18:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4C33D3328;
+	Wed,  8 Apr 2026 18:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKer9oOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS9AajwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20290347503;
-	Wed,  8 Apr 2026 18:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B088E3859FE;
+	Wed,  8 Apr 2026 18:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671905; cv=none; b=OjP7gCPoeiGh9aqwJsfZhmu8INFVT8zfRSFAndFHYgMZSvuDQvU6vwe+a4j5fUNp1GXK5hyKdAS/p0IV9uCCbCTRWw2BNSMlJQPdopgIChRq2AcR6UeGUkquo2IVhrhxBoqLrEt2X3oXJ3H0HmGRWo1yJ24Tkp/zZUQdPABy8Pk=
+	t=1775673039; cv=none; b=Cru77wx0ishvsDA3zCKPiFkY7LNPW3vFljuS7OwiojgVsCdaUeLQjVWj8b/ApuqM9UGt6CZ3+2m5pHFGM1ex9kZepbxhvWsstONzz/CVccX/iAlQ3rcqmRR4xpeZ8pkEkboCdwv8rXf7VM9I2FjAIkIo9E3gzd3BuQkrcHu/98M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671905; c=relaxed/simple;
-	bh=v14ISn1WG9Ul3dT6iOQfwU38UKFTo3Xp+GBXS8o2yvc=;
+	s=arc-20240116; t=1775673039; c=relaxed/simple;
+	bh=eXxCyytGJBOUrAuDkOahyEKRK0cIa2CYMfbh3KscotU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmYz+bEooZfK2Au09Z2TBSBq676OplPR006TstJxn20+eEiCV2/tjwFGDvx593TnovBAuhtaE1/ZOJc3l6eLTFgXDpI2b5pdeQg0f50HSkjzb50pAI/XI49dzYUwZkbR0aAqBEXPnuzZiwoNx4R+eAVmH+rTM6hSIvWF8d3U0/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKer9oOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0D5C19421;
-	Wed,  8 Apr 2026 18:11:44 +0000 (UTC)
+	 MIME-Version; b=sjp+cVocgrvn/VFGfkvvuHUENd7XvWwBlOzeRizHoaLaJfTvBwvDpunTVcvdqlOBKd22rnPEIHo0SnPPZIe3ZcRqkC4CVsrGf/sbWpE+hgORiVmG0AMb9RjzHc1yqHERL4j+rm6MI34IOUzPs3RPQbnghfZh8vgyAsInhbvAp1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS9AajwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0040BC19421;
+	Wed,  8 Apr 2026 18:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671905;
-	bh=v14ISn1WG9Ul3dT6iOQfwU38UKFTo3Xp+GBXS8o2yvc=;
+	s=korg; t=1775673039;
+	bh=eXxCyytGJBOUrAuDkOahyEKRK0cIa2CYMfbh3KscotU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKer9oOxDPDBCoAwIPmHckRvJJIv3t/tYwGylidFsoGmYB0kOtnZo1Gkv7ZWy0cnO
-	 5L2nVVUPm5W5KEgm0fQ0A3Cu9iJECfuSmiC4BbAC5j9ej8zKDVop+E6Rp+4kA1msnG
-	 silfjvINZxyiMhl6BKQtT5wga2w7X3BpnL78sg3A=
+	b=sS9AajwU7Q3kum+aHaIkkAYaD5G3m8HQTSLjc0k/iSzqydzEmCI3rFFSeBo3h/Mad
+	 vADfjA349ZqhSdJyLipQIS8u6ufMUx6EZLMqMfrUO7xltzHrRhTizuYJSvGON3dmyY
+	 wowpGpsiuh/vGEwwcCh27mxJlYDZLNPTmcrwrMs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 113/312] ext4: convert inline data to extents when truncate exceeds inline size
+	Dag Smedberg <dag@dsmedberg.se>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 045/277] ALSA: usb-audio: Exclude Scarlett Solo 1st Gen from SKIP_IFACE_SETUP
 Date: Wed,  8 Apr 2026 20:00:30 +0200
-Message-ID: <20260408175937.989858435@linuxfoundation.org>
+Message-ID: <20260408175935.539684950@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +64,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234069-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7de5fe447862fc37576f];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234507-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: CAFB73C02F3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: B47F93C196D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Dag Smedberg <dag@dsmedberg.se>
 
-commit ed9356a30e59c7cc3198e7fc46cfedf3767b9b17 upstream.
+[ Upstream commit f025ac8c698ac7d29eb3b5025bcdaf7ad675785d ]
 
-Add a check in ext4_setattr() to convert files from inline data storage
-to extent-based storage when truncate() grows the file size beyond the
-inline capacity. This prevents the filesystem from entering an
-inconsistent state where the inline data flag is set but the file size
-exceeds what can be stored inline.
+Same issue that the Scarlett 2i2 1st Gen had:
+QUIRK_FLAG_SKIP_IFACE_SETUP causes distorted audio on the
+Scarlett Solo 1st Gen (1235:801c).
 
-Without this fix, the following sequence causes a kernel BUG_ON():
-
-1. Mount filesystem with inode that has inline flag set and small size
-2. truncate(file, 50MB) - grows size but inline flag remains set
-3. sendfile() attempts to write data
-4. ext4_write_inline_data() hits BUG_ON(write_size > inline_capacity)
-
-The crash occurs because ext4_write_inline_data() expects inline storage
-to accommodate the write, but the actual inline capacity (~60 bytes for
-i_block + ~96 bytes for xattrs) is far smaller than the file size and
-write request.
-
-The fix checks if the new size from setattr exceeds the inode's actual
-inline capacity (EXT4_I(inode)->i_inline_size) and converts the file to
-extent-based storage before proceeding with the size change.
-
-This addresses the root cause by ensuring the inline data flag and file
-size remain consistent during truncate operations.
-
-Reported-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7de5fe447862fc37576f
-Tested-by: syzbot+7de5fe447862fc37576f@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260207043607.1175976-1-kartikey406@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 38c322068a26 ("ALSA: usb-audio: Add QUIRK_FLAG_SKIP_IFACE_SETUP")
+Reported-by: Dag Smedberg <dag@dsmedberg.se>
+Tested-by: Dag Smedberg <dag@dsmedberg.se>
+Signed-off-by: Dag Smedberg <dag@dsmedberg.se>
+Link: https://patch.msgid.link/20260329170420.4122-1-dag@dsmedberg.se
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ sound/usb/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5551,6 +5551,18 @@ int ext4_setattr(struct user_namespace *
- 		if (attr->ia_size == inode->i_size)
- 			inc_ivers = false;
- 
-+		/*
-+		 * If file has inline data but new size exceeds inline capacity,
-+		 * convert to extent-based storage first to prevent inconsistent
-+		 * state (inline flag set but size exceeds inline capacity).
-+		 */
-+		if (ext4_has_inline_data(inode) &&
-+		    attr->ia_size > EXT4_I(inode)->i_inline_size) {
-+			error = ext4_convert_inline_data(inode);
-+			if (error)
-+				goto err_out;
-+		}
-+
- 		if (shrink) {
- 			if (ext4_should_order_data(inode)) {
- 				error = ext4_begin_ordered_truncate(inode,
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 45d0e1364dd98..2c01412a225ef 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2424,6 +2424,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_VALIDATE_RATES),
+ 	DEVICE_FLG(0x1235, 0x8006, 0), /* Focusrite Scarlett 2i2 1st Gen */
+ 	DEVICE_FLG(0x1235, 0x800a, 0), /* Focusrite Scarlett 2i4 1st Gen */
++	DEVICE_FLG(0x1235, 0x801c, 0), /* Focusrite Scarlett Solo 1st Gen */
+ 	VENDOR_FLG(0x1235, /* Focusrite Novation */
+ 		   QUIRK_FLAG_SKIP_IFACE_SETUP),
+ 	VENDOR_FLG(0x1511, /* AURALiC */
+-- 
+2.53.0
+
 
 
 
