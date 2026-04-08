@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-234584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOipN0mh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:13 +0200
+	id aBBrNUWd1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACF33C1388
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 815703C09A0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06C2530EB2EA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0040130227E6
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B653B0AFC;
-	Wed,  8 Apr 2026 18:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539633DB65A;
+	Wed,  8 Apr 2026 18:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4Qecp9u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuNTim6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CF035CB6F;
-	Wed,  8 Apr 2026 18:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1758D3DB658;
+	Wed,  8 Apr 2026 18:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673238; cv=none; b=FrBhu61tkWkzPDz/q1wduPtthlZwgz6AlijJZTqfk9IvIMU6J3gQ5OOYjpw1X5sDPTt8dpZX6tjLL1Lk+2P2ZMctmHfrpbHtbA/VzjdCwyrP8Bui4c2yntcTxPgJBvbGubN+6qG9With90gHVMUFdIFLJkMb363wXv17kBJsoV4=
+	t=1775672559; cv=none; b=FWHKAc2m0lhatwvk7bjynMXBa/MFvtsh3WwsprZNSSzdXAfQsgdXT4xhjoOco+rdXBZi53FhrlUqklRv9i0BCAt3C5BDQgLQqBRsjXT4cxanR1VqWgVrMk7cKuSUUG1q1Y1EWOWfUYwbj0rpUmn4dyVt7zJcvcRUenckZTbeVoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673238; c=relaxed/simple;
-	bh=MqfBAu12hiMLTn7kZ3NtdtbUEq+ym8qBhqDndslrVA8=;
+	s=arc-20240116; t=1775672559; c=relaxed/simple;
+	bh=TTMJJ+07iGLrJzRnVlaxgAOcw4brE/fH7alZwhEuMeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rVAs8l55/hbFHw/slB21GypPLmapSYqjoHJbZ2+QZ0TnFDBTjfdBaCNX/fUjLGO2phvwuOeI/8OkJfSgvenecIrJrpF8wDT31pmUc6f6X6B3d5QB/fbP0ULIYJZxh1qRSTZCvKfarumx52ohJsiOBxRKipYxbSTNZMogMx+jbuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4Qecp9u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01C5C19421;
-	Wed,  8 Apr 2026 18:33:57 +0000 (UTC)
+	 MIME-Version; b=ZoWjoceeQYetGUQjOvcaLQpVpDk1ZSPoUyT7z9AkKip5yHmsY6rjTdeIw8rwgQ72z0FF81DzGx58OazsQy0BlF+NBtOyJtHuPwWe8BYfRNRHQZp+6yzxg6rQWRSziBq5aH0ZzwwL8q/rBobaEb57FIOVr59vK3dlFGse9n3iFTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuNTim6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5567EC2BC87;
+	Wed,  8 Apr 2026 18:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673238;
-	bh=MqfBAu12hiMLTn7kZ3NtdtbUEq+ym8qBhqDndslrVA8=;
+	s=korg; t=1775672558;
+	bh=TTMJJ+07iGLrJzRnVlaxgAOcw4brE/fH7alZwhEuMeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4Qecp9uFkiQEMJLZ8v249aGqy0kRpvwAWgH4b1wHptwZTY4SpQmD8db5vqVuj+Pc
-	 ydei6UFR8OXCyEMVOlAlCXqRsOjGgEFJm6zeSv5UN6Ru5f5Gt6uXcEl7X4RwUHOLvp
-	 Vst90/ITIgaLhQ5Tj1g7mbDuKbpOCv5uk2hJ1CmE=
+	b=tuNTim6fQeOCqZN9Cstft15RWi+grUvYjUAhyHcan+j3rQKHIJe877xbcv8uGASS4
+	 OXR4nuAlu0HxhKAYlnRZ1qAXOCEfKz8VLPyjimD6FxlkLV6rVRH8pYwWdt/HUpMjs1
+	 eD0Z63WLQuA32fTp+gPJhwrhOczD94YOUT3Q4kNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 155/277] iio: orientation: hid-sensor-rotation: add timestamp hack to not break userspace
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Yucheng Lu <kanolyc@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 053/160] net/sched: sch_netem: fix out-of-bounds access in packet corruption
 Date: Wed,  8 Apr 2026 20:02:20 +0200
-Message-ID: <20260408175939.658743562@linuxfoundation.org>
+Message-ID: <20260408175915.185202705@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,113 +69,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234584-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234322-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,networkplumber.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6ACF33C1388
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,lzu.edu.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,networkplumber.org:email]
+X-Rspamd-Queue-Id: 815703C09A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Yucheng Lu <kanolyc@gmail.com>
 
-commit 79a86a6cc3669416a21fef32d0767d39ba84b3aa upstream.
+[ Upstream commit d64cb81dcbd54927515a7f65e5e24affdc73c14b ]
 
-Add a hack to push two timestamps in the hid-sensor-rotation scan data
-to avoid breaking userspace applications that depend on the timestamp
-being at the incorrect location in the scan data due to unintentional
-misalignment in older kernels.
+In netem_enqueue(), the packet corruption logic uses
+get_random_u32_below(skb_headlen(skb)) to select an index for
+modifying skb->data. When an AF_PACKET TX_RING sends fully non-linear
+packets over an IPIP tunnel, skb_headlen(skb) evaluates to 0.
 
-When this driver was written, the timestamp was in the correct location
-because of the way iio_compute_scan_bytes() was implemented at the time.
-(Samples were 24 bytes each.) Then commit 883f61653069 ("iio: buffer:
-align the size of scan bytes to size of the largest element") changed
-the computed scan_bytes to be a different size (32 bytes), which caused
-iio_push_to_buffers_with_timestamp() to place the timestamp at an
-incorrect offset.
+Passing 0 to get_random_u32_below() takes the variable-ceil slow path
+which returns an unconstrained 32-bit random integer. Using this
+unconstrained value as an offset into skb->data results in an
+out-of-bounds memory access.
 
-There have been long periods of time (6 years each) where the timestamp
-was in either location, so to not break either case, we open-code the
-timestamps to be pushed to both locations in the scan data.
+Fix this by verifying skb_headlen(skb) is non-zero before attempting
+to corrupt the linear data area. Fully non-linear packets will silently
+bypass the corruption logic.
 
-Reported-by: Jonathan Cameron <jic23@kernel.org>
-Closes: https://lore.kernel.org/linux-iio/20260215162351.79f40b32@jic23-huawei/
-Fixes: 883f61653069 ("iio: buffer: align the size of scan bytes to size of the largest element")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c865e5d99e25 ("[PKT_SCHED] netem: packet corruption option")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Link: https://patch.msgid.link/45435c0935df877853a81e6d06205ac738ec65fa.1774941614.git.kanolyc@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/orientation/hid-sensor-rotation.c |   22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ net/sched/sch_netem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/orientation/hid-sensor-rotation.c
-+++ b/drivers/iio/orientation/hid-sensor-rotation.c
-@@ -20,7 +20,12 @@ struct dev_rot_state {
- 	struct hid_sensor_hub_attribute_info quaternion;
- 	struct {
- 		IIO_DECLARE_QUATERNION(s32, sampled_vals);
--		aligned_s64 timestamp;
-+		/*
-+		 * ABI regression avoidance: There are two copies of the same
-+		 * timestamp in case of userspace depending on broken alignment
-+		 * from older kernels.
-+		 */
-+		aligned_s64 timestamp[2];
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
-@@ -154,8 +159,19 @@ static int dev_rot_proc_event(struct hid
- 		if (!rot_state->timestamp)
- 			rot_state->timestamp = iio_get_time_ns(indio_dev);
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 0ad231e94e14d..7361f90c8c1a1 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -517,8 +517,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			goto finish_segs;
+ 		}
  
--		iio_push_to_buffers_with_timestamp(indio_dev, &rot_state->scan,
--						   rot_state->timestamp);
-+		/*
-+		 * ABI regression avoidance: IIO previously had an incorrect
-+		 * implementation of iio_push_to_buffers_with_timestamp() that
-+		 * put the timestamp in the last 8 bytes of the buffer, which
-+		 * was incorrect according to the IIO ABI. To avoid breaking
-+		 * userspace that may be depending on this broken behavior, we
-+		 * put the timestamp in both the correct place [0] and the old
-+		 * incorrect place [1].
-+		 */
-+		rot_state->scan.timestamp[0] = rot_state->timestamp;
-+		rot_state->scan.timestamp[1] = rot_state->timestamp;
-+
-+		iio_push_to_buffers(indio_dev, &rot_state->scan);
- 
- 		rot_state->timestamp = 0;
+-		skb->data[get_random_u32_below(skb_headlen(skb))] ^=
+-			1<<get_random_u32_below(8);
++		if (skb_headlen(skb))
++			skb->data[get_random_u32_below(skb_headlen(skb))] ^=
++				1 << get_random_u32_below(8);
  	}
+ 
+ 	if (unlikely(q->t_len >= sch->limit)) {
+-- 
+2.53.0
+
 
 
 
