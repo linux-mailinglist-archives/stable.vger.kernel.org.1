@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-235084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234799-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNIXLYeq1mmKHAgAu9opvQ
-	(envelope-from <stable+bounces-235084-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:20:39 +0200
+	id oI51JOih1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234799-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F26D3C2CBC
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:20:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 289143C15B9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09B0A318E87F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2BC213011052
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A4A34AB06;
-	Wed,  8 Apr 2026 18:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD62346FB0;
+	Wed,  8 Apr 2026 18:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sP4Sg9V2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bflwfBZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482DE3D890F;
-	Wed,  8 Apr 2026 18:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49241A285;
+	Wed,  8 Apr 2026 18:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674528; cv=none; b=hHloBY1k2uPRfXRBsopvmSl09jIcbgKJ4NuL2fvfyqcYqSWX0GAmXm3iiraOw1tO/2iKxPFzIXjKoagyo+iKXYmFfpjFweK3Ug4sCdeZmuR7MkGPxIDsc/VoUsGIk9QmCmpgzwSrDjoTblOBpyzK367dllUicrb11s6XDcSFOh4=
+	t=1775673792; cv=none; b=g1Mxjg3vASdWCRhN9LkJr0Z19lB66jRDiFZDjius5gb9vn5MKybRFTuQET/FiOYv2xjch73PAL7HrT5Uqt7wdcZQ4Qh/TGmzYrnclz6v3FGeaaPsCR2LC1gIZ5BgFehPKoNK5IOvi7ObqUgGuP/VBuEWwmjvSU5eZPie1Wad3nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674528; c=relaxed/simple;
-	bh=02Ey/LAuGf0JU/2YynBYyYkvtOAARtIksyLSxKoUGgQ=;
+	s=arc-20240116; t=1775673792; c=relaxed/simple;
+	bh=yI/DxdUgbzYFkYb4CpeHT8XcU1yS1moH6KbWy/4nHt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOFOS4KAIn8z3SCVJXzFMb4Wzydzyl4MV0eW0R0vcbHfT5EMPuTklL3WnRreZx4p/t/IpMk7wVJi/BhH26Fll8j+CQWiw0lLrw2frHaZr8zyFtXXHpyvoYphN1/RxJyJjyIhoey0htBSMvd0ZfIqEsCjUEJWMfZkCs7mzl9JUds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sP4Sg9V2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2939C19421;
-	Wed,  8 Apr 2026 18:55:27 +0000 (UTC)
+	 MIME-Version; b=NkwV+COiBHu+CuPmhqRST9mh4DIq+twAIi1j3px2o2HIXmcARqvoAd+CwOoNOCXKAP0ujtFzyiWH/e3clMdOX0tBRUOFch/0kjclc74h6gR2BF2EuMnyEmYHCKdE0G5NO5XJlqIRyfwrAbFAQDDAF72aNYqG0oOu7FgWr4BqR18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bflwfBZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3B0C19421;
+	Wed,  8 Apr 2026 18:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674528;
-	bh=02Ey/LAuGf0JU/2YynBYyYkvtOAARtIksyLSxKoUGgQ=;
+	s=korg; t=1775673792;
+	bh=yI/DxdUgbzYFkYb4CpeHT8XcU1yS1moH6KbWy/4nHt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sP4Sg9V2rirVe9f0+h7A0PAnokTup9cM+kWGTOuyzWr8UzdQjlsHLnFS3y4lRn0sv
-	 xE7ODdsHPXrmqqIejQ0pSPthP39bFSX0LSOOYMzEke+vu/F+0W/vWot+4+V3CIzbnn
-	 cRYbUQE7+kC+zym3hWrQeuiplakK6t5tBU72SlXM=
+	b=bflwfBZalSCpzWKLGe/Yo6dl2odDmoLb7nSDzhwUEKTqrrBFlk8uuBtUlP64Sv/lT
+	 otnUkD8oNf+S982bNYYkJuSbnHFjz8qSo82odEBEQUF1uSfOfxl+su+wDeQmjalXaM
+	 Rwg+hAGlOjlR1emHeQgnnFBPbrcEfyvufIyI0jb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 131/311] gpio: shared: call gpio_chip::of_xlate() if set
+Subject: [PATCH 6.12 091/242] net/mlx5: lag: Check for LAG device before creating debugfs
 Date: Wed,  8 Apr 2026 20:02:11 +0200
-Message-ID: <20260408175944.307661583@linuxfoundation.org>
+Message-ID: <20260408175930.490880123@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235084-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234799-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,141 +87,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 1F26D3C2CBC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email]
+X-Rspamd-Queue-Id: 289143C15B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 710abda58055ed5eaa8958107633cc12a365c328 ]
+[ Upstream commit bf16bca6653679d8a514d6c1c5a2c67065033f14 ]
 
-OF-based GPIO controller drivers may provide a translation function that
-calculates the real chip offset from whatever devicetree sources
-provide. We need to take this into account in the shared GPIO management
-and call of_xlate() if it's provided and adjust the entry->offset we
-initially set when scanning the tree.
+__mlx5_lag_dev_add_mdev() may return 0 (success) even when an error
+occurs that is handled gracefully. Consequently, the initialization
+flow proceeds to call mlx5_ldev_add_debugfs() even when there is no
+valid LAG context.
 
-To that end: modify the shared GPIO API to take the GPIO chip as
-argument on setup (to avoid having to rcu_dereference() it from the GPIO
-device) and protect the access to entry->offset with the existing lock.
+mlx5_ldev_add_debugfs() blindly created the debugfs directory and
+attributes. This exposed interfaces (like the members file) that rely on
+a valid ldev pointer, leading to potential NULL pointer dereferences if
+accessed when ldev is NULL.
 
-Fixes: a060b8c511ab ("gpiolib: implement low-level, shared GPIO support")
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/all/921ba8ce-b18e-4a99-966d-c763d22081e2@nvidia.com/
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260318-gpio-shared-xlate-v2-1-0ce34c707e81@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Add a check to verify that mlx5_lag_dev(dev) returns a valid pointer
+before attempting to create the debugfs entries.
+
+Fixes: 7f46a0b7327a ("net/mlx5: Lag, add debugfs to query hardware lag state")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260330194015.53585-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-shared.c | 27 ++++++++++++++++++++++++++-
- drivers/gpio/gpiolib-shared.h |  4 ++--
- drivers/gpio/gpiolib.c        |  2 +-
- 3 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-shared.c b/drivers/gpio/gpiolib-shared.c
-index e16f467b72e7a..6316ae5a1c310 100644
---- a/drivers/gpio/gpiolib-shared.c
-+++ b/drivers/gpio/gpiolib-shared.c
-@@ -511,8 +511,9 @@ static void gpio_shared_remove_adev(struct auxiliary_device *adev)
- 	auxiliary_device_uninit(adev);
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
+index f4b777d4e1086..41ddca52e9547 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/debugfs.c
+@@ -163,8 +163,11 @@ DEFINE_SHOW_ATTRIBUTE(members);
  
--int gpio_device_setup_shared(struct gpio_device *gdev)
-+int gpiochip_setup_shared(struct gpio_chip *gc)
+ void mlx5_ldev_add_debugfs(struct mlx5_core_dev *dev)
  {
-+	struct gpio_device *gdev = gc->gpiodev;
- 	struct gpio_shared_entry *entry;
- 	struct gpio_shared_ref *ref;
- 	struct gpio_desc *desc;
-@@ -537,12 +538,34 @@ int gpio_device_setup_shared(struct gpio_device *gdev)
- 	 * exposing shared pins. Find them and create the proxy devices.
- 	 */
- 	list_for_each_entry(entry, &gpio_shared_list, list) {
-+		guard(mutex)(&entry->lock);
-+
- 		if (!device_match_fwnode(&gdev->dev, entry->fwnode))
- 			continue;
++	struct mlx5_lag *ldev = mlx5_lag_dev(dev);
+ 	struct dentry *dbg;
  
- 		if (list_count_nodes(&entry->refs) <= 1)
- 			continue;
- 
-+#if IS_ENABLED(CONFIG_OF)
-+		if (is_of_node(entry->fwnode) && gc->of_xlate) {
-+			/*
-+			 * This is the earliest that we can tranlate the
-+			 * devicetree offset to the chip offset.
-+			 */
-+			struct of_phandle_args gpiospec = { };
-+
-+			gpiospec.np = to_of_node(entry->fwnode);
-+			gpiospec.args_count = 2;
-+			gpiospec.args[0] = entry->offset;
-+
-+			ret = gc->of_xlate(gc, &gpiospec, NULL);
-+			if (ret < 0)
-+				return ret;
-+
-+			entry->offset = ret;
-+		}
-+#endif /* CONFIG_OF */
-+
- 		desc = &gdev->descs[entry->offset];
- 
- 		__set_bit(GPIOD_FLAG_SHARED, &desc->flags);
-@@ -580,6 +603,8 @@ void gpio_device_teardown_shared(struct gpio_device *gdev)
- 	struct gpio_shared_ref *ref;
- 
- 	list_for_each_entry(entry, &gpio_shared_list, list) {
-+		guard(mutex)(&entry->lock);
-+
- 		if (!device_match_fwnode(&gdev->dev, entry->fwnode))
- 			continue;
- 
-diff --git a/drivers/gpio/gpiolib-shared.h b/drivers/gpio/gpiolib-shared.h
-index 40568ef7364cc..e11e260e1f590 100644
---- a/drivers/gpio/gpiolib-shared.h
-+++ b/drivers/gpio/gpiolib-shared.h
-@@ -14,14 +14,14 @@ struct device;
- 
- #if IS_ENABLED(CONFIG_GPIO_SHARED)
- 
--int gpio_device_setup_shared(struct gpio_device *gdev);
-+int gpiochip_setup_shared(struct gpio_chip *gc);
- void gpio_device_teardown_shared(struct gpio_device *gdev);
- int gpio_shared_add_proxy_lookup(struct device *consumer, const char *con_id,
- 				 unsigned long lflags);
- 
- #else
- 
--static inline int gpio_device_setup_shared(struct gpio_device *gdev)
-+static inline int gpiochip_setup_shared(struct gpio_chip *gc)
- {
- 	return 0;
- }
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 04068f4eb3422..0285142893642 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1211,7 +1211,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	if (ret)
- 		goto err_remove_irqchip_mask;
- 
--	ret = gpio_device_setup_shared(gdev);
-+	ret = gpiochip_setup_shared(gc);
- 	if (ret)
- 		goto err_remove_irqchip;
++	if (!ldev)
++		return;
+ 	dbg = debugfs_create_dir("lag", mlx5_debugfs_get_dev_root(dev));
+ 	dev->priv.dbg.lag_debugfs = dbg;
  
 -- 
 2.53.0
