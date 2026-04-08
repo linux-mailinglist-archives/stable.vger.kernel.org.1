@@ -1,183 +1,248 @@
-Return-Path: <stable+bounces-233939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFJZARyB1mnDFwgAu9opvQ
-	(envelope-from <stable+bounces-233939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 18:23:56 +0200
+	id GHTSLY2B1mmwFwgAu9opvQ
+	(envelope-from <stable+bounces-233940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 18:25:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581583BECA1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 18:23:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 297483BECD6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 18:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDA663011C75
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 16:23:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 473DE3016833
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 16:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB1139C00C;
-	Wed,  8 Apr 2026 16:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1523A1E66;
+	Wed,  8 Apr 2026 16:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2Wrpp3B"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="PVW3QDFE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4915127EFE9;
-	Wed,  8 Apr 2026 16:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84889293C42;
+	Wed,  8 Apr 2026 16:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775665409; cv=none; b=BO6guYLZGmw9j0eTyOTUd0c92tpyUDbcYgEFmPnlUKEUMk6wKcuRqFvpzrnPZaEgJYnaZ5BhXhFdbC6CaVuBeroP5ji4PxmYEG0q6fdmfLTeihiykh2fk45OoMAa5k1r9tyw43ACmxa1Omp+iBEjnLGfeaIgt5HUeMYVGcGa+Sw=
+	t=1775665542; cv=none; b=BcuxXutmxacRIUpjGGo9aLPkuZzQQz1LkUoSXdJxG3PXuHiL/WIvW5RXaAFltvb9czcMpdmpHhgyLbDDY7IDANMw4tte85KBo/SC5v9OJt7FGZ1Vbd7d1QsppTGMbOem+62FHN1qObK6hcLgYYbt8DwtvZzV+ZyD3xCANSAa14c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775665409; c=relaxed/simple;
-	bh=d7s3hrpf1KIsN/M7lWyW01HXZUuo6L5BdYFQrNspxtw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=So4UFhWxT8v341M7bf4+HGyVfFQGtf9mYUj/tkPH79EbcJ6yCHAXLupAB3Kh4vtoCNTlsXfo/HRK7OxO1mN3FvuyuAIE1XdfoYyFMxaltopu/kYEVjBt7VN6Hf03KD+Blj4iTCGl57CnTEtsz/i9zBk5mmeHsg48x88g4qnhbT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2Wrpp3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FDCC19421;
-	Wed,  8 Apr 2026 16:23:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775665408;
-	bh=d7s3hrpf1KIsN/M7lWyW01HXZUuo6L5BdYFQrNspxtw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V2Wrpp3BA3tWZ7wm6j/wz7KbPt/s8D8jiMocv1RxSGbKbvlwANn6Tkepqwu2ZC3P9
-	 SRCWyydWLJjw9J0O5TyhZIgnlKtva49GLD57dYLGjGL3osRiDcPx3g0tHmg/VvyjaO
-	 Xv07sl/1ABb7Ix48yT2cunHUl9UJ9NVPHBmPXwVpGBxDHeg2lO1epgrhfRNMDPIOyw
-	 AOt2CxRdDqfmNfPIEdJ8rLwDl7Gfmxi0PplbVbgUFGQ4moZRgFYA1q4V7IHJOS1p6/
-	 GK1+tb/2sP66cl3gcb/uPuZ77yxvMY3aBix2RmlcundvWMbzRo5LgnKmXs5Kis4Aoe
-	 blAJW6ZBqSL6g==
-Date: Wed, 8 Apr 2026 21:53:21 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] net: qrtr: ns: Fix use-after-free in driver
- remove()
-Message-ID: <ygxq427xqsewzqz5ub62v4v2r4mt2rclilwfg3apynemew3m4k@oefumgql46nl>
-References: <20260403-qrtr-fix-v2-0-f88a14859c63@oss.qualcomm.com>
- <20260403-qrtr-fix-v2-5-f88a14859c63@oss.qualcomm.com>
- <0ab00cb4-8335-472d-b43e-3bbd99b41480@redhat.com>
+	s=arc-20240116; t=1775665542; c=relaxed/simple;
+	bh=oU3cGNG1gyzGMkL230cK8OgbwNBgqqNZjYe/TtXjBnk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aN55O+tVuOdd09yAMfsv8UFUSQqgD3j70PsZnv4EXrtvJQX31XOffdlfe0raYEBdx5vYeizResvYMZIfbCXj3notXPQOD8nmP+V3fg23bc2MCi0jnQHmFi8uokQjoFRQdTzDH4Q0QSYt8aSvJNsAB8r5b/frONfABnk3vfcj5ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=PVW3QDFE; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 20B971133C9;
+	Wed,  8 Apr 2026 18:25:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1775665537; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=H3MDv5DrE3n0lO8SZbH60eyp94/nbiqdmXCVjHsR7ik=;
+	b=PVW3QDFEErM2AkbuNXMgZx0PpJbQ8AaXz4of9awayj6Fq0Ikbatd7DXnCmHHLqkVzMj3MS
+	5KhvpJIlXZ+D70wyuL+5UR5h4c5qaQSLIYYrYxbLpj6EirkOG4y6FcU4yk9dPDviS5mkhQ
+	i1+B+dGu0g/4tY9NQ7NbRjo1esSpUw8fF5CCo0AAZ42N6JtshWErkaV1L98N3PWL393vj7
+	uGIWcQks8OLVJUGt8aO+Pm9Tnm776Mtmt7TLcRLcye8wnAr6A+YX/SRst9cBSyvY0h9qPr
+	IpxkxHCiryFE0pkWkKHeRgZ38gQMW7Y22CWzIZ2rjpLoRwmk7M3dYk4nUbKWHA==
+From: Marek Vasut <marex@nabladev.com>
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Yicong Hui <yiconghui@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: [net,PATCH v2] net: ks8851: Reinstate disabling of BHs around IRQ handler
+Date: Wed,  8 Apr 2026 18:24:58 +0200
+Message-ID: <20260408162535.98108-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0ab00cb4-8335-472d-b43e-3bbd99b41480@redhat.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-233940-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233939-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nabladev.com,vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,tipi-net.de,redhat.com,raritan.com,gmail.com];
+	DKIM_TRACE(0.00)[nabladev.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,sashiko.dev:url]
-X-Rspamd-Queue-Id: 581583BECA1
+	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tipi-net.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,raritan.com:email]
+X-Rspamd-Queue-Id: 297483BECD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 07, 2026 at 05:33:55PM +0200, Paolo Abeni wrote:
-> On 4/3/26 6:06 PM, Manivannan Sadhasivam via B4 Relay wrote:
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > 
-> > In the remove callback, if a packet arrives after destroy_workqueue() is
-> > called, but before sock_release(), the qrtr_ns_data_ready() callback will
-> > try to queue the work, causing use-after-free issue.
-> > 
-> > Fix this issue by saving the default 'sk_data_ready' callback during
-> > qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
-> > the start of remove(). This ensures that even if a packet arrives after
-> > destroy_workqueue(), the work struct will not be dereferenced.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  net/qrtr/ns.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> > index dfb5dad9473c..c62d79e03d64 100644
-> > --- a/net/qrtr/ns.c
-> > +++ b/net/qrtr/ns.c
-> > @@ -25,6 +25,7 @@ static struct {
-> >  	u32 lookup_count;
-> >  	struct workqueue_struct *workqueue;
-> >  	struct work_struct work;
-> > +	void (*saved_data_ready)(struct sock *sk);
-> >  	int local_node;
-> >  } qrtr_ns;
-> >  
-> > @@ -754,6 +755,7 @@ int qrtr_ns_init(void)
-> >  		goto err_sock;
-> >  	}
-> >  
-> > +	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
-> >  	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
-> >  
-> >  	sq.sq_port = QRTR_PORT_CTRL;
-> > @@ -803,6 +805,10 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
-> >  
-> >  void qrtr_ns_remove(void)
-> >  {
-> > +	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
-> > +	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
-> > +	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
-> 
-> Sashiko says:
-> 
-> ---
-> Does this lock adequately protect against concurrent callback execution?
-> In the network receive path, __sock_queue_rcv_skb() typically evaluates
-> !sock_flag(sk, SOCK_DEAD) and invokes sk->sk_data_ready() locklessly,
-> without acquiring sk_callback_lock or being in an RCU read-side
-> critical section.
-> If a thread processing a packet fetches the qrtr_ns_data_ready pointer
-> and is preempted, could it resume and execute the callback after
-> qrtr_ns_remove() has already finished destroying the workqueue?
-> ---
-> 
+If CONFIG_PREEMPT_RT=y is set AND the driver executes ks8851_irq() AND
+KSZ_ISR register bit IRQ_RXI is set AND ks8851_rx_pkts() detects that
+there are packets in the RX FIFO, then netdev_alloc_skb_ip_align() is
+called to allocate SKBs. If netdev_alloc_skb_ip_align() is called with
+BH enabled, local_bh_enable() at the end of netdev_alloc_skb_ip_align()
+will call __local_bh_enable_ip(), which will call __do_softirq(), which
+may trigger net_tx_action() softirq, which may ultimately call the xmit
+callback ks8851_start_xmit_par(). The ks8851_start_xmit_par() will try
+to lock struct ks8851_net_par .lock spinlock, which is already locked
+by ks8851_irq() from which ks8851_start_xmit_par() was called. This
+leads to a deadlock, which is reported by the kernel, including a trace
+listed below.
 
-This is a legitimate concern. I believe adding synchronize_net() before
-destroy_workqueue() will ensure that all the RX packets are flushed before
-destroying the workqueue.
+Fix the problem by disabling BH around the IRQ handler, thus preventing
+the net_tx_action() softirq from triggering during the IRQ handler. The
+net_tx_action() softirq is now triggered at the end of the IRQ handler,
+once all the other IRQ handler actions have been completed.
 
-> There are more remarks from sashiko:
-> 
-> https://sashiko.dev/#/patchset/20260403-qrtr-fix-v2-0-f88a14859c63%40oss.qualcomm.com
-> 
-> AFAICS they are pre-existing issues or false positive, but please have a
-> look.
-> 
+  __schedule from schedule_rtlock+0x1c/0x34
+  schedule_rtlock from rtlock_slowlock_locked+0x538/0x894
+  rtlock_slowlock_locked from rt_spin_lock+0x44/0x5c
+  rt_spin_lock from ks8851_start_xmit_par+0x68/0x1a0
+  ks8851_start_xmit_par from netdev_start_xmit+0x1c/0x40
+  netdev_start_xmit from dev_hard_start_xmit+0xec/0x1b0
+  dev_hard_start_xmit from sch_direct_xmit+0xb8/0x25c
+  sch_direct_xmit from __qdisc_run+0x20c/0x4fc
+  __qdisc_run from qdisc_run+0x1c/0x28
+  qdisc_run from net_tx_action+0x1f4/0x244
+  net_tx_action from handle_softirqs+0x1c0/0x29c
+  handle_softirqs from __local_bh_enable_ip+0xdc/0xf4
+  __local_bh_enable_ip from __netdev_alloc_skb+0x140/0x194
+  __netdev_alloc_skb from ks8851_irq+0x348/0x4d8
+  ks8851_irq from irq_thread_fn+0x24/0x64
+  irq_thread_fn from irq_thread+0x110/0x1dc
+  irq_thread from kthread+0x104/0x10c
+  kthread from ret_from_fork+0x14/0x28
 
-There are a couple of worth fixing issues mentioned there in the error path that
-I'll incorporate in the next revision. But for the issues not related to this
-series, I will defer them to follow up series.
+Fixes: e0863634bf9f ("net: ks8851: Queue RX packets in IRQ handler instead of disabling BHs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ronald Wahl <ronald.wahl@raritan.com>
+Cc: Yicong Hui <yiconghui@gmail.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+V2: Register dedicated IRQ handler wrapper which disables BH for the
+    parallel variant of the MAC, the variant which uses spinlocks as
+    the locking primitive. Use stock IRQ handler with BH unchanged
+    for the SPI variant, which uses mutexes as locking primitive.
+---
+ drivers/net/ethernet/micrel/ks8851.h        |  2 ++
+ drivers/net/ethernet/micrel/ks8851_common.c | 22 ++++++++++++++++++++-
+ drivers/net/ethernet/micrel/ks8851_par.c    |  1 +
+ drivers/net/ethernet/micrel/ks8851_spi.c    |  1 +
+ 4 files changed, 25 insertions(+), 1 deletion(-)
 
-- Mani
-
+diff --git a/drivers/net/ethernet/micrel/ks8851.h b/drivers/net/ethernet/micrel/ks8851.h
+index 31f75b4a67fd7..71213b44b0d04 100644
+--- a/drivers/net/ethernet/micrel/ks8851.h
++++ b/drivers/net/ethernet/micrel/ks8851.h
+@@ -394,6 +394,8 @@ struct ks8851_net {
+ 	u16			rc_rxqcr;
+ 	u16			rc_ccr;
+ 
++	bool			no_bh_in_irq_handler;
++
+ 	struct mii_if_info	mii;
+ 	struct ks8851_rxctrl	rxctrl;
+ 
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index 8048770958d60..0d7c548d18356 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -385,6 +385,24 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 	return IRQ_HANDLED;
+ }
+ 
++/**
++ * ks8851_irq_nobh - IRQ handler with BH disabled
++ * @irq: IRQ number
++ * @_ks: cookie
++ *
++ * Wrapper which calls ks8851_irq() with BH disabled.
++ */
++static irqreturn_t ks8851_irq_nobh(int irq, void *_ks)
++{
++	irqreturn_t ret;
++
++	local_bh_disable();
++	ret = ks8851_irq(irq, _ks);
++	local_bh_enable();
++
++	return ret;
++}
++
+ /**
+  * ks8851_flush_tx_work - flush outstanding TX work
+  * @ks: The device state
+@@ -408,7 +426,9 @@ static int ks8851_net_open(struct net_device *dev)
+ 	unsigned long flags;
+ 	int ret;
+ 
+-	ret = request_threaded_irq(dev->irq, NULL, ks8851_irq,
++	ret = request_threaded_irq(dev->irq, NULL,
++				   ks->no_bh_in_irq_handler ?
++				   ks8851_irq_nobh : ks8851_irq,
+ 				   IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+ 				   dev->name, ks);
+ 	if (ret < 0) {
+diff --git a/drivers/net/ethernet/micrel/ks8851_par.c b/drivers/net/ethernet/micrel/ks8851_par.c
+index 78695be2570bf..0fe3e40291a24 100644
+--- a/drivers/net/ethernet/micrel/ks8851_par.c
++++ b/drivers/net/ethernet/micrel/ks8851_par.c
+@@ -288,6 +288,7 @@ static int ks8851_probe_par(struct platform_device *pdev)
+ 	ks->rdfifo = ks8851_rdfifo_par;
+ 	ks->wrfifo = ks8851_wrfifo_par;
+ 	ks->start_xmit = ks8851_start_xmit_par;
++	ks->no_bh_in_irq_handler = true;
+ 
+ #define STD_IRQ (IRQ_LCI |	/* Link Change */	\
+ 		 IRQ_RXI |	/* RX done */		\
+diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
+index a161ae45743ab..9afdb7eb7953f 100644
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -424,6 +424,7 @@ static int ks8851_probe_spi(struct spi_device *spi)
+ 	ks->wrfifo = ks8851_wrfifo_spi;
+ 	ks->start_xmit = ks8851_start_xmit_spi;
+ 	ks->flush_tx_work = ks8851_flush_tx_work_spi;
++	ks->no_bh_in_irq_handler = false;
+ 
+ #define STD_IRQ (IRQ_LCI |	/* Link Change */	\
+ 		 IRQ_TXI |	/* TX done */		\
 -- 
-மணிவண்ணன் சதாசிவம்
+2.53.0
+
 
