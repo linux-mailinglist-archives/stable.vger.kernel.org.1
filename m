@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-235077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMiUJ/mp1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-235077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:17 +0200
+	id yKtkJwqg1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BA63C2BA2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBC23C1093
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 406A03162AC3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 19BBD30386AD
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C483D9048;
-	Wed,  8 Apr 2026 18:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDCA3D9DAE;
+	Wed,  8 Apr 2026 18:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVOZspue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GukGxFU9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9687B3D9043;
-	Wed,  8 Apr 2026 18:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B6C3D9DA5;
+	Wed,  8 Apr 2026 18:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674510; cv=none; b=hCvZbfstu0jLqRQTHzxx6HJaeAStKxhnZ6I3ibYW+bhDeMiPrrs0uDCnTcBHJyr/BM88vIQHvcb5mAbn8fP7TX38uIiYfYgv3jB1VLlneGIUuhkIy6UVZXQ8csJb0zIeFFYAEjroq91ywh6j1qNfMLgS76hcoy+ilvxinCGdMDo=
+	t=1775673205; cv=none; b=YZ9C0ZbKIsnrfPmmb4IZ+ImTwGN+j9ydq81cG9cGVcW31xlILklfCFY+DKEX4iy+oaebmocP6tqL+8y8nCuyj4jkSNGp8n7MFbgLdc25qcPoz4w/dE/gfryrnCIwvLi3GJcqjvMosEGdOpwjvaJAYm48RyBqWQKpYQx08cEXY1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674510; c=relaxed/simple;
-	bh=5wznJaxBRALTTn0+ULWSdJNcsllIhd6oa9Xj4zpCcY8=;
+	s=arc-20240116; t=1775673205; c=relaxed/simple;
+	bh=OMOkAb3vwJFU/RT4LC5svJav25ft+udVqmN2wUZOG7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQwq2YQ14gzOyc4h1V6ggm21wLO0pwySMAsDaNPkr8UpawPE6NdODENG0ncNOx3wwcRupcWwKsHlcBAlBWpkXNaI3u1h4cSFVjs0HLKZ0cYQMRtpfFsLFZ6z339//BMF3s08MR+qW3Kfm3hg+hfOoPWXw+/Cqwx+b9U4Ji1j3GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVOZspue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FE2C2BCB2;
-	Wed,  8 Apr 2026 18:55:09 +0000 (UTC)
+	 MIME-Version; b=msZ7pRm6wRZhE4d0sAnA4YFtxaGPFhU1qR5/h2Fs3O1wpjtjxUfsYOgsrAeqnLa6AtlvY1tAwlwyDgTGwtlVW23SaOzlkQPvyfSfs2+Jl84x6+Swvi8csMiKKSCv7ihMjt3VsE5VVUZnxynHgeSlLAdLEDzzlkpjJBzSqgcIjk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GukGxFU9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A561C4AF09;
+	Wed,  8 Apr 2026 18:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674510;
-	bh=5wznJaxBRALTTn0+ULWSdJNcsllIhd6oa9Xj4zpCcY8=;
+	s=korg; t=1775673204;
+	bh=OMOkAb3vwJFU/RT4LC5svJav25ft+udVqmN2wUZOG7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVOZspueGhw+xp9DIIhyqKnkW8htvslQCSBZUrIPoJmi9B/HHpCtuRcLAH1H0eSvH
-	 mF8SRnr93Ty25xFdDq0Vr83Zw2cDwItvYqre5P9a6QVzPbdbtxPR6RLlMmEzEjP5H7
-	 2NvDKX53A23yLDU2PalwCyj0r4XvGrpHxZMTDi8g=
+	b=GukGxFU9xQepVzx9+DCaOUuDVvuecPE0xFzD7WB1EaUi3YwutkR7s40Mm1LOZH2iO
+	 FS7BxTp8DLLJ1cr+u981lTZZE5FBTJvrRCXWXoRSEGdloz28jm+j2/D8yKcbUgDMd2
+	 9NIkNrHMqAB3+DF/3JI8yqhMVGDfHRaMesdQFKII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Varun R Mallya <varunrmallya@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 125/311] bpf: Reject sleepable kprobe_multi programs at attach time
+	Sourav Nayak <nonameblank007@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 140/277] ALSA: hda/realtek: add quirk for HP Victus 15-fb0xxx
 Date: Wed,  8 Apr 2026 20:02:05 +0200
-Message-ID: <20260408175944.083937270@linuxfoundation.org>
+Message-ID: <20260408175939.103499480@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +65,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
-	TAGGED_FROM(0.00)[bounces-235077-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234571-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: C3BA63C2BA2
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email]
+X-Rspamd-Queue-Id: 9DBC23C1093
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varun R Mallya <varunrmallya@gmail.com>
+From: Sourav Nayak <nonameblank007@gmail.com>
 
-[ Upstream commit eb7024bfcc5f68ed11ed9dd4891a3073c15f04a8 ]
+commit 1fbf85dbf02c96c318e056fb5b8fc614758fee3c upstream.
 
-kprobe.multi programs run in atomic/RCU context and cannot sleep.
-However, bpf_kprobe_multi_link_attach() did not validate whether the
-program being attached had the sleepable flag set, allowing sleepable
-helpers such as bpf_copy_from_user() to be invoked from a non-sleepable
-context.
+This adds a mute led quirck for HP Victus 15-fb0xxx (103c:8a3d) model
 
-This causes a "sleeping function called from invalid context" splat:
+- As it used 0x8(full bright)/0x7f(little dim) for mute led on and other
+  values as 0ff (0x0, 0x4, ...)
 
-  BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:169
-  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1787, name: sudo
-  preempt_count: 1, expected: 0
-  RCU nest depth: 2, expected: 0
+- So, use ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT insted for safer approach
 
-Fix this by rejecting sleepable programs early in
-bpf_kprobe_multi_link_attach(), before any further processing.
-
-Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
-Signed-off-by: Varun R Mallya <varunrmallya@gmail.com>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Acked-by: Leon Hwang <leon.hwang@linux.dev>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20260401191126.440683-1-varunrmallya@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Sourav Nayak <nonameblank007@gmail.com>
+Link: https://patch.msgid.link/20260327142805.17139-1-nonameblank007@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/bpf_trace.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/hda/codecs/realtek/alc269.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index e448a2553f7ce..42734975a06bc 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2739,6 +2739,10 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- 	if (!is_kprobe_multi(prog))
- 		return -EINVAL;
- 
-+	/* kprobe_multi is not allowed to be sleepable. */
-+	if (prog->sleepable)
-+		return -EINVAL;
-+
- 	/* Writing to context is not allowed for kprobes. */
- 	if (prog->aux->kprobe_write_ctx)
- 		return -EINVAL;
--- 
-2.53.0
-
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6832,6 +6832,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8a30, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a31, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a34, "HP Pavilion x360 2-in-1 Laptop 14-ek0xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
++	SND_PCI_QUIRK(0x103c, 0x8a3d, "HP Victus 15-fb0xxx (MB 8A3D)", ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a4f, "HP Victus 15-fa0xxx (MB 8A4F)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a6e, "HP EDNA 360", ALC287_FIXUP_CS35L41_I2C_4),
+ 	SND_PCI_QUIRK(0x103c, 0x8a74, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
