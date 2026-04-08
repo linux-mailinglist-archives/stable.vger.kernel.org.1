@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFEGADOb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:15 +0200
+	id fXZEJLOi1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F773C0453
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB24E3C186D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 30CA03018C39
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3ED4730FE9AB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC0F3D3D06;
-	Wed,  8 Apr 2026 18:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC4C3D564E;
+	Wed,  8 Apr 2026 18:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVCviuTh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cP6ABATq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69141E5724;
-	Wed,  8 Apr 2026 18:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D34D3D411F;
+	Wed,  8 Apr 2026 18:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672015; cv=none; b=suGJvafgnRZVWyPX33angqbcW4Oz7ym/iubE+BsgRO2T8+ECj0BjqrBOHrN4h/qhufWPkBNhtubd7LqikpYz7TgxqbS1CVVosr1GGO0bmoA7qCWcF/wfqcWEUagxl07fW+3F9eQijWkKDph4lDAQ2nkXQdm3/KA769Id4YiRpFA=
+	t=1775672982; cv=none; b=SokfwqaTNXVBF2nMMqsUNTFkl3Ej6/R9CScXkLpYzeBUzSba9kPgLP0h6NF9womhTCHT8E/YCPk9XgkwQQotRxOaIwHp+pvxcV0bEl+NRzLXc3ZeZKJbridlsCuNV4KpYIJSz4A1N1+jqWkNx24CImH2Y93XU63UPvgm3bg0HC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672015; c=relaxed/simple;
-	bh=EVkKKZK6KJqx6fSK+JCydLmas8fscAgbwEvbg1vkf1w=;
+	s=arc-20240116; t=1775672982; c=relaxed/simple;
+	bh=nf7Ej7nMZDZ8c61h0Fey7ZTWhlLxvH8hxVcOWsoKnLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHGI2YLrPwt/RS+hRBQCouLXypp+JwfrRAlaroqdmN2z5FyQogfVFxD1DkP0dSAVTZ8hPtpS9P/1KIaWvwfZ1irTZZo9UW98OOEVJHXUdSHcojA7wyUHNocvcej9snLBv+km/VZDMbJPTZBblgBUvCG+z8S1ll/3+2VWVxQw2QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVCviuTh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D394C19421;
-	Wed,  8 Apr 2026 18:13:35 +0000 (UTC)
+	 MIME-Version; b=pzuHuk46E8VP8Sz45/Za4ya7HAw0TcWEU4unAgAwPXfNZTvheFbjbf1jgkSIkbv0NVCTWqO3A5/KgPhjZ2nF0vyZeZ5p/mh0Or8oE/qc4PKilNPh2msxXdK3ShlynkeUV5qDqDV48ieznCyWXFle9meN80GS0qPokvOe2hewjCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cP6ABATq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DBCC19425;
+	Wed,  8 Apr 2026 18:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672015;
-	bh=EVkKKZK6KJqx6fSK+JCydLmas8fscAgbwEvbg1vkf1w=;
+	s=korg; t=1775672982;
+	bh=nf7Ej7nMZDZ8c61h0Fey7ZTWhlLxvH8hxVcOWsoKnLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVCviuThEfCblGmux30a/YnSKb8DiDtw+wY3j9fCWqHqtMKpxm93o1fU6bRaG6wk6
-	 eHc6Y+4g4lnin3/0Wh5iLCVMpAAa07BB+6QYfKQV4tZ8YhMxTnYN9grTwv0FwVVRim
-	 ZySiAWOW3CsmaWOwlONGvkuvWnCR3AemUWRa01Uw=
+	b=cP6ABATqCACWoqB6wnEWy+c3Z+JAZJo915KPXp5GxJAJbKK1d3CUShvBj/NuHuN+K
+	 8Ux0tHSFX+jvlmsYYcIeeU03X7+ECxPKWb5lwqalSaw86P0Qw59pXO8B2SSOn3SWQB
+	 WTXW0FBrxjacYp98eFBrDo/3bTALI2AGhRuBhhWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/312] phy: ti: j721e-wiz: Fix device node reference leak in wiz_get_lane_phy_types()
+Subject: [PATCH 6.18 056/277] NFC: pn533: bound the UART receive buffer
 Date: Wed,  8 Apr 2026 20:00:41 +0200
-Message-ID: <20260408175938.398851688@linuxfoundation.org>
+Message-ID: <20260408175935.952140650@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234112-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234485-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 97F773C0453
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: EB24E3C186D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 584b457f4166293bdfa50f930228e9fb91a38392 ]
+[ Upstream commit 30fe3f5f6494f827d812ff179f295a8e532709d6 ]
 
-The serdes device_node is obtained using of_get_child_by_name(),
-which increments the reference count. However, it is never put,
-leading to a reference leak.
+pn532_receive_buf() appends every incoming byte to dev->recv_skb and
+only resets the buffer after pn532_uart_rx_is_frame() recognizes a
+complete frame. A continuous stream of bytes without a valid PN532 frame
+header therefore keeps growing the skb until skb_put_u8() hits the tail
+limit.
 
-Add the missing of_node_put() calls to ensure the reference count is
-properly balanced.
+Drop the accumulated partial frame once the fixed receive buffer is full
+so malformed UART traffic cannot grow the skb past
+PN532_UART_SKB_BUFF_LEN.
 
-Fixes: 7ae14cf581f2 ("phy: ti: j721e-wiz: Implement DisplayPort mode to the wiz driver")
-Suggested-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20260212-wiz-v2-1-6e8bd4cc7a4a@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: c656aa4c27b1 ("nfc: pn533: add UART phy driver")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260326142033.82297-1-pengpeng@iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-j721e-wiz.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nfc/pn533/uart.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/phy/ti/phy-j721e-wiz.c b/drivers/phy/ti/phy-j721e-wiz.c
-index 6a63380f6a71f..c4ff31d0df192 100644
---- a/drivers/phy/ti/phy-j721e-wiz.c
-+++ b/drivers/phy/ti/phy-j721e-wiz.c
-@@ -1339,6 +1339,7 @@ static int wiz_get_lane_phy_types(struct device *dev, struct wiz *wiz)
- 			dev_err(dev,
- 				"%s: Reading \"reg\" from \"%s\" failed: %d\n",
- 				__func__, subnode->name, ret);
-+			of_node_put(serdes);
- 			return ret;
- 		}
- 		of_property_read_u32(subnode, "cdns,num-lanes", &num_lanes);
-@@ -1351,6 +1352,7 @@ static int wiz_get_lane_phy_types(struct device *dev, struct wiz *wiz)
- 			wiz->lane_phy_type[i] = phy_type;
- 	}
+diff --git a/drivers/nfc/pn533/uart.c b/drivers/nfc/pn533/uart.c
+index a081bce61c29f..49c399a571750 100644
+--- a/drivers/nfc/pn533/uart.c
++++ b/drivers/nfc/pn533/uart.c
+@@ -211,6 +211,9 @@ static size_t pn532_receive_buf(struct serdev_device *serdev,
  
-+	of_node_put(serdes);
- 	return 0;
- }
- 
+ 	timer_delete(&dev->cmd_timeout);
+ 	for (i = 0; i < count; i++) {
++		if (unlikely(!skb_tailroom(dev->recv_skb)))
++			skb_trim(dev->recv_skb, 0);
++
+ 		skb_put_u8(dev->recv_skb, *data++);
+ 		if (!pn532_uart_rx_is_frame(dev->recv_skb))
+ 			continue;
 -- 
 2.53.0
 
