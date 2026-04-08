@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKI/I1Sa1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:32 +0200
+	id OFtjMcyg1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180AC3C01D1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305803C1288
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 745E3302F0D5
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD05830F12CD
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A573D88FE;
-	Wed,  8 Apr 2026 18:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62183D5647;
+	Wed,  8 Apr 2026 18:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNjOz4JO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X13d11lT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD9F37F8C2;
-	Wed,  8 Apr 2026 18:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782B83B0ADA;
+	Wed,  8 Apr 2026 18:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671822; cv=none; b=eqbcel2qsr7NIHgfmRf6YiwXg42x3iWGV9oJdXs6Y56i0v6QyjHdtFJn5kSDDuRYYvBPW/fD7DLWceELhrz3m4qlIzQchoLcORiqBbbh5jf6o2qrzuYBnbV1eeCFPCVf1NcjXlMNjNDJqI6z1QEV8qXFXkw5raTliPWOBJVHjss=
+	t=1775672951; cv=none; b=ViII6i1XJ4BTQRRWKbQeyLYz5Qqn42ReC4WdF1aDrSuBbM82NFhdLH9gk91dNFz5e69zFzGBDt7cEh4fZUjk/kUunELN0kw/GMjzYq4EKi05lWtyuV0bnU666hWYTg815I7jXCGbueIpXoQL7P5SGR1gXxQOOXpWGbyWwICrohM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671822; c=relaxed/simple;
-	bh=RzmrwcqLgFvXf5NaKJaREoS5SduDlVWT9/gzkwU2E3g=;
+	s=arc-20240116; t=1775672951; c=relaxed/simple;
+	bh=o9P4xgaYwjyslUx5LeeWiMdufHS4bCJ/ZB3F9lDL00w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rdfuqY3xou+hOi272TU2/emAugToGjyXSk2FQ5iCnydOL3pGId4YteBNFzWWhX3rmehQSg9VMDHnpyVqMgYiGU68fXG0YCwqRvXFofv7inqUsGcAYxyNeCOacLDHZsteGUM0Huyg6FL0PGPETTxE8LdwJ98HbGMo6JUnl3zugik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNjOz4JO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D33C19421;
-	Wed,  8 Apr 2026 18:10:21 +0000 (UTC)
+	 MIME-Version; b=XUtTHuyR3oHo1cJGTpZiPectnB4CcWSnrHYSCRpcZE3g/aPVGBXhb1Y+TA/Yi5AkSmm5bd4LSSo0BaqSVUqTPc1/crko+whTq+L4WjwG6QBwUxIOrwVbv4XEsKSgeTzD/URtvGEkXaKZ1TwshJr4Llv3yHUfxIwYchWEEnU4Zk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X13d11lT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E307C19421;
+	Wed,  8 Apr 2026 18:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671822;
-	bh=RzmrwcqLgFvXf5NaKJaREoS5SduDlVWT9/gzkwU2E3g=;
+	s=korg; t=1775672951;
+	bh=o9P4xgaYwjyslUx5LeeWiMdufHS4bCJ/ZB3F9lDL00w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNjOz4JOdt90dN6EEVS5SSQA4Of5ylPJ4lkBxIs21uYZmOUZg1lqAKSuZFsjaL0Ok
-	 yecDh/OwBmM/PCJmtd4cJbUoNceqPgPSubCsNox2DtV7t7KIPDQabhWBivF898oOv2
-	 VczWOx6zRONPUy+N6XrPAGOpRXC32a6aSm8fVauY=
+	b=X13d11lT195qJ0MNE7fJ/b92lLx49FPSy0oZ+kpS8ylC6tAjlg44FoSwM+18b/IKy
+	 muWW57/ohK7NU8tBZIuN8fUZHknqTGAYTYae55oc9g6zOsjH/BVdRnzydiNXG6sstz
+	 3oF7JOanTxqcXr5WPpUosTlzxiS3b8CHnnOYpX3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	=?UTF-8?q?Johannes=20Pen=C3=9Fel?= <johannespenssel@posteo.net>
-Subject: [PATCH 6.1 080/312] ACPI: EC: Fix ECDT probe ordering issues
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 012/277] btrfs: reserve enough transaction items for qgroup ioctls
 Date: Wed,  8 Apr 2026 19:59:57 +0200
-Message-ID: <20260408175936.731894059@linuxfoundation.org>
+Message-ID: <20260408175934.305216552@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,186 +65,180 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234037-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234473-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 180AC3C01D1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bur.io:email,test.sh:url]
+X-Rspamd-Queue-Id: 305803C1288
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ab4620f58d38206687b9f99d9d2cc1d5a2640985 ]
+[ Upstream commit f9a4e3015db1aeafbef407650eb8555445ca943e ]
 
-ACPI-2.0 says that the EC OpRegion handler must be available immediately
-(like the standard default OpRegion handlers):
+Currently our qgroup ioctls don't reserve any space, they just do a
+transaction join, which does not reserve any space, neither for the quota
+tree updates nor for the delayed refs generated when updating the quota
+tree. The quota root uses the global block reserve, which is fine most of
+the time since we don't expect a lot of updates to the quota root, or to
+be too close to -ENOSPC such that other critical metadata updates need to
+resort to the global reserve.
 
-Quoting from the ACPI spec version 6.3: "6.5.4 _REG (Region) ...
-2. OSPM must make Embedded Controller operation regions, accessed via
-the Embedded Controllers described in ECDT, available before executing
-any control method. These operation regions may become inaccessible
-after OSPM runs _REG(EmbeddedControl, 0)."
+However this is not optimal, as not reserving proper space may result in a
+transaction abort due to not reserving space for delayed refs and then
+abusing the use of the global block reserve.
 
-So acpi_bus_init() calls acpi_ec_ecdt_probe(), which calls
-acpi_install_address_space_handler() to install the EC's OpRegion
-handler, early on.
+For example, the following reproducer (which is unlikely to model any
+real world use case, but just to illustrate the problem), triggers such a
+transaction abort due to -ENOSPC when running delayed refs:
 
-This not only installs the OpRegion handler, but also calls the EC's
-_REG method. The _REG method call is a problem because it may rely on
-initialization done by the _INI methods of one of the PCI / _SB root devs,
-see for example: https://bugzilla.kernel.org/show_bug.cgi?id=214899 .
+  $ cat test.sh
+  #!/bin/bash
 
-Generally speaking _REG methods are executed when the ACPI-device they
-are part of has a driver bound to it. Where as _INI methods must be
-executed at table load time (according to the spec). The problem here
-is that the early acpi_install_address_space_handler() call causes
-the _REG handler to run too early.
+  DEV=/dev/nullb0
+  MNT=/mnt/nullb0
 
-To allow fixing this the ACPICA code now allows to split the OpRegion
-handler installation and the executing of _REG into 2 separate steps.
+  umount $DEV &> /dev/null
+  # Limit device to 1G so that it's much faster to reproduce the issue.
+  mkfs.btrfs -f -b 1G $DEV
+  mount -o commit=600 $DEV $MNT
 
-This commit uses this ACPICA functionality to fix the EC probe ordering
-by delaying the executing of _REG for ECDT described ECs till the matching
-EC device in the DSDT gets parsed and acpi_ec_add() for it gets called.
-This moves the calling of _REG for the EC on devices with an ECDT to
-the same point in time where it is called on devices without an ECDT table.
+  fallocate -l 800M $MNT/filler
+  btrfs quota enable $MNT
 
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214899
-Reported-and-tested-by: Johannes Penßel <johannespenssel@posteo.net>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
+  for ((i = 1; i <= 400000; i++)); do
+      btrfs qgroup create 1/$i $MNT
+  done
+
+  umount $MNT
+
+When running this, we can see in dmesg/syslog that a transaction abort
+happened:
+
+  [436.490] BTRFS error (device nullb0): failed to run delayed ref for logical 30408704 num_bytes 16384 type 176 action 1 ref_mod 1: -28
+  [436.493] ------------[ cut here ]------------
+  [436.494] BTRFS: Transaction aborted (error -28)
+  [436.495] WARNING: fs/btrfs/extent-tree.c:2247 at btrfs_run_delayed_refs+0xd9/0x110 [btrfs], CPU#4: umount/2495372
+  [436.497] Modules linked in: btrfs loop (...)
+  [436.508] CPU: 4 UID: 0 PID: 2495372 Comm: umount Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
+  [436.510] Tainted: [W]=WARN
+  [436.511] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [436.513] RIP: 0010:btrfs_run_delayed_refs+0xdf/0x110 [btrfs]
+  [436.514] Code: 0f 82 ea (...)
+  [436.518] RSP: 0018:ffffd511850b7d78 EFLAGS: 00010292
+  [436.519] RAX: 00000000ffffffe4 RBX: ffff8f120dad37e0 RCX: 0000000002040001
+  [436.520] RDX: 0000000000000002 RSI: 00000000ffffffe4 RDI: ffffffffc090fd80
+  [436.522] RBP: 0000000000000000 R08: 0000000000000001 R09: ffffffffc04d1867
+  [436.523] R10: ffff8f18dc1fffa8 R11: 0000000000000003 R12: ffff8f173aa89400
+  [436.524] R13: 0000000000000000 R14: ffff8f173aa89400 R15: 0000000000000000
+  [436.526] FS:  00007fe59045d840(0000) GS:ffff8f192e22e000(0000) knlGS:0000000000000000
+  [436.527] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [436.528] CR2: 00007fe5905ff2b0 CR3: 000000060710a002 CR4: 0000000000370ef0
+  [436.530] Call Trace:
+  [436.530]  <TASK>
+  [436.530]  btrfs_commit_transaction+0x73/0xc00 [btrfs]
+  [436.531]  ? btrfs_attach_transaction_barrier+0x1e/0x70 [btrfs]
+  [436.532]  sync_filesystem+0x7a/0x90
+  [436.533]  generic_shutdown_super+0x28/0x180
+  [436.533]  kill_anon_super+0x12/0x40
+  [436.534]  btrfs_kill_super+0x12/0x20 [btrfs]
+  [436.534]  deactivate_locked_super+0x2f/0xb0
+  [436.534]  cleanup_mnt+0xea/0x180
+  [436.535]  task_work_run+0x58/0xa0
+  [436.535]  exit_to_user_mode_loop+0xed/0x480
+  [436.536]  ? __x64_sys_umount+0x68/0x80
+  [436.536]  do_syscall_64+0x2a5/0xf20
+  [436.537]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [436.537] RIP: 0033:0x7fe5906b6217
+  [436.538] Code: 0d 00 f7 (...)
+  [436.540] RSP: 002b:00007ffcd87a61f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+  [436.541] RAX: 0000000000000000 RBX: 00005618b9ecadc8 RCX: 00007fe5906b6217
+  [436.541] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00005618b9ecb100
+  [436.542] RBP: 0000000000000000 R08: 00007ffcd87a4fe0 R09: 00000000ffffffff
+  [436.544] R10: 0000000000000103 R11: 0000000000000246 R12: 00007fe59081626c
+  [436.544] R13: 00005618b9ecb100 R14: 0000000000000000 R15: 00005618b9ecacc0
+  [436.545]  </TASK>
+  [436.545] ---[ end trace 0000000000000000 ]---
+
+Fix this by changing the qgroup ioctls to use start transaction instead of
+joining so that proper space is reserved for the delayed refs generated
+for the updates to the quota root. This way we don't get any transaction
+abort.
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ fs/btrfs/ioctl.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index cecc521e2d30f..a20b59a554414 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -94,6 +94,7 @@ enum {
- 	EC_FLAGS_QUERY_ENABLED,		/* Query is enabled */
- 	EC_FLAGS_EVENT_HANDLER_INSTALLED,	/* Event handler installed */
- 	EC_FLAGS_EC_HANDLER_INSTALLED,	/* OpReg handler installed */
-+	EC_FLAGS_EC_REG_CALLED,		/* OpReg ACPI _REG method called */
- 	EC_FLAGS_QUERY_METHODS_INSTALLED, /* _Qxx handlers installed */
- 	EC_FLAGS_STARTED,		/* Driver is started */
- 	EC_FLAGS_STOPPED,		/* Driver is stopped */
-@@ -1495,6 +1496,7 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
-  * ec_install_handlers - Install service callbacks and register query methods.
-  * @ec: Target EC.
-  * @device: ACPI device object corresponding to @ec.
-+ * @call_reg: If _REG should be called to notify OpRegion availability
-  *
-  * Install a handler for the EC address space type unless it has been installed
-  * already.  If @device is not NULL, also look for EC query methods in the
-@@ -1507,7 +1509,8 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
-  * -EPROBE_DEFER if GPIO IRQ acquisition needs to be deferred,
-  * or 0 (success) otherwise.
-  */
--static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
-+static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
-+			       bool call_reg)
- {
- 	acpi_status status;
- 
-@@ -1515,10 +1518,10 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
- 
- 	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
- 		acpi_ec_enter_noirq(ec);
--		status = acpi_install_address_space_handler(ec->handle,
--							    ACPI_ADR_SPACE_EC,
--							    &acpi_ec_space_handler,
--							    NULL, ec);
-+		status = acpi_install_address_space_handler_no_reg(ec->handle,
-+								   ACPI_ADR_SPACE_EC,
-+								   &acpi_ec_space_handler,
-+								   NULL, ec);
- 		if (ACPI_FAILURE(status)) {
- 			acpi_ec_stop(ec, false);
- 			return -ENODEV;
-@@ -1527,6 +1530,11 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
- 		ec->address_space_handler_holder = ec->handle;
- 	}
- 
-+	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
-+		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
-+		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
-+	}
-+
- 	if (!device)
- 		return 0;
- 
-@@ -1613,11 +1621,11 @@ static void ec_remove_handlers(struct acpi_ec *ec)
- 	}
- }
- 
--static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device)
-+static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool call_reg)
- {
- 	int ret;
- 
--	ret = ec_install_handlers(ec, device);
-+	ret = ec_install_handlers(ec, device, call_reg);
- 	if (ret)
- 		return ret;
- 
-@@ -1682,7 +1690,7 @@ static int acpi_ec_add(struct acpi_device *device)
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index c7977bd5442b3..bfe253c2849a5 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3749,7 +3749,8 @@ static long btrfs_ioctl_qgroup_assign(struct file *file, void __user *arg)
  		}
  	}
  
--	ret = acpi_ec_setup(ec, device);
-+	ret = acpi_ec_setup(ec, device, true);
- 	if (ret)
- 		goto err;
+-	trans = btrfs_join_transaction(root);
++	/* 2 BTRFS_QGROUP_RELATION_KEY items. */
++	trans = btrfs_start_transaction(root, 2);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
+ 		goto out;
+@@ -3821,7 +3822,11 @@ static long btrfs_ioctl_qgroup_create(struct file *file, void __user *arg)
+ 		goto out;
+ 	}
  
-@@ -1802,7 +1810,7 @@ void __init acpi_ec_dsdt_probe(void)
- 	 * At this point, the GPE is not fully initialized, so do not to
- 	 * handle the events.
- 	 */
--	ret = acpi_ec_setup(ec, NULL);
-+	ret = acpi_ec_setup(ec, NULL, true);
- 	if (ret) {
- 		acpi_ec_free(ec);
- 		return;
-@@ -2017,7 +2025,7 @@ void __init acpi_ec_ecdt_probe(void)
- 	 * At this point, the namespace is not initialized, so do not find
- 	 * the namespace objects, or handle the events.
- 	 */
--	ret = acpi_ec_setup(ec, NULL);
-+	ret = acpi_ec_setup(ec, NULL, false);
- 	if (ret) {
- 		acpi_ec_free(ec);
+-	trans = btrfs_join_transaction(root);
++	/*
++	 * 1 BTRFS_QGROUP_INFO_KEY item.
++	 * 1 BTRFS_QGROUP_LIMIT_KEY item.
++	 */
++	trans = btrfs_start_transaction(root, 2);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
+ 		goto out;
+@@ -3870,7 +3875,8 @@ static long btrfs_ioctl_qgroup_limit(struct file *file, void __user *arg)
+ 		goto drop_write;
+ 	}
+ 
+-	trans = btrfs_join_transaction(root);
++	/* 1 BTRFS_QGROUP_LIMIT_KEY item. */
++	trans = btrfs_start_transaction(root, 1);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
  		goto out;
 -- 
 2.53.0
