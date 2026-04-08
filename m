@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-235208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oE4iA+ml1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:57 +0200
+	id +IpgF4im1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83C13C22D8
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D01863C24A3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E16AF3004DDB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81CDC315DCB1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869D23D903F;
-	Wed,  8 Apr 2026 19:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB633D669E;
+	Wed,  8 Apr 2026 18:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN9JafkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5MSCQQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAA13D9030;
-	Wed,  8 Apr 2026 19:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208503624B0;
+	Wed,  8 Apr 2026 18:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674848; cv=none; b=uAnPPAz555XWL2tT8rRpdgr9ufBfi6JlZLIogVEVuPL1XIVrjKl8mjASUQILVGmeqlzRQG/4PCC2KO+PtaI1vGv6q4wuq6gSd7hywU6vB8GhIBeSdcNTLJhLXTerdhb6AGoTj2IvnptjqwaAIcQuf1RgBaSm8R3oesVPdJsyN8Y=
+	t=1775673542; cv=none; b=M6ifdusMRES6dgJMKQVcuq0nfECU83F5HXsESsl0LkTUXUDcqXfJB6lYHTJXLxK2JTVPPT4zxlWoLEV8U+aW211FKNnYejRv+lUd+jRADITyQZBgSaXN9/R+x5Z3/ez71IqIJig6OiLIOKfph0aP0iiBfUltbQvnr2aF0QgOjDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674848; c=relaxed/simple;
-	bh=OhpWR9eTadG3UIcbBPwUd+oG6X7wF5OPaUKEI2L3fzc=;
+	s=arc-20240116; t=1775673542; c=relaxed/simple;
+	bh=VcvZyT5lYfiG6eR8yv7LUiymJFGCof/5+nK9BGXbudo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJIEeHoUx33y1Vry30viAHwNX74rxow2XfL7KidvrE1z/GAg2Or4hQ39sdLlNMotf566NkRmXkDIymv8XJqSXCEjidK4K+nqICILw/54tpZvSC/7Yv5ENGkK7mRpKNjFxC/vAOVT6qrN2EQdcpGIvTNWC83ugmS3sdWxpASp9x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN9JafkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A09C19421;
-	Wed,  8 Apr 2026 19:00:47 +0000 (UTC)
+	 MIME-Version; b=hGb/F3q/mNoYRSoPoLS6gf8MBIBR4AmbcmFUcLwk/IXTUpEA2V1WmNNiPaXrgWTLViigcpX4oLPpI+c7RzcDz4Kw6Z1hUFwqBzqH7JA/KLFnirdUqxQHT2C0NDhkjwCrgmOfVegANZ1kFuFDPXzk8Qr11YYM8Sbh2S3X2ezpg18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5MSCQQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABFFC19421;
+	Wed,  8 Apr 2026 18:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674848;
-	bh=OhpWR9eTadG3UIcbBPwUd+oG6X7wF5OPaUKEI2L3fzc=;
+	s=korg; t=1775673542;
+	bh=VcvZyT5lYfiG6eR8yv7LUiymJFGCof/5+nK9BGXbudo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sN9JafkV9LKVIWAa1ngTuOcarI6KiMwI3YOEhfQ29AmaCePJtVCV0jamATy4QdkKi
-	 06uxr01X1v48VNZJ28Yf1/88oNBhTY80MzD19brdZqQce9WN/9lFdEZGKz3IWW0n9D
-	 9lOz1jIjdOdazHVTNWh9P5LgUO6EkcvlvCVWteKI=
+	b=E5MSCQQqw+vrwejB/hC7JAEMiYtnL4eQy6wbUtanARHtoBYPUhbLvBoHk+mq0J6SY
+	 0a0A7mKlJitkpT3NrmFEF6kBbCqQmQYXAsomrVILcWlAELoctjem9Cg0oFqjXi+gDy
+	 hOFdqGuoL4wkEwLzOGZK7AAl33GbvY6lR0S7a/G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.19 257/311] comedi: me_daq: Fix potential overrun of firmware buffer
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 272/277] scsi: target: file: Use kzalloc_flex for aio_cmd
 Date: Wed,  8 Apr 2026 20:04:17 +0200
-Message-ID: <20260408175948.983686202@linuxfoundation.org>
+Message-ID: <20260408175944.022475855@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235208-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234702-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,95 +87,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,mev.co.uk:email]
-X-Rspamd-Queue-Id: A83C13C22D8
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,synopsys.com:email]
+X-Rspamd-Queue-Id: D01863C24A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit cc797d4821c754c701d9714b58bea947e31dbbe0 upstream.
+[ Upstream commit 01f784fc9d0ab2a6dac45ee443620e517cb2a19b ]
 
-`me2600_xilinx_download()` loads the firmware that was requested by
-`request_firmware()`.  It is possible for it to overrun the source
-buffer because it blindly trusts the file format.  It reads a data
-stream length from the first 4 bytes into variable `file_length` and
-reads the data stream contents of length `file_length` from offset 16
-onwards.  Although it checks that the supplied firmware is at least 16
-bytes long, it does not check that it is long enough to contain the data
-stream.
+The target_core_file doesn't initialize the aio_cmd->iocb for the
+ki_write_stream. When a write command fd_execute_rw_aio() is executed,
+we may get a bogus ki_write_stream value, causing unintended write
+failure status when checking iocb->ki_write_stream > max_write_streams
+in the block device.
 
-Add a test to ensure that the supplied firmware is long enough to
-contain the header and the data stream.  On failure, log an error and
-return `-EINVAL`.
+Let's just use kzalloc_flex when allocating the aio_cmd and let
+ki_write_stream=0 to fix this issue.
 
-Fixes: 85acac61096f9 ("Staging: comedi: add me_daq driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260205140130.76697-1-abbotti@mev.co.uk
+Fixes: 732f25a2895a ("fs: add a write stream field to the kiocb")
+Fixes: c27683da6406 ("block: expose write streams for block device nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/f1a2f81c62f043e31f80bb92d5f29893400c8ee2.1773450782.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ changed kmalloc() to kzalloc() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/me_daq.c |   35 +++++++++++++++++++----------------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+ drivers/target/target_core_file.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers/me_daq.c
-+++ b/drivers/comedi/drivers/me_daq.c
-@@ -344,6 +344,25 @@ static int me2600_xilinx_download(struct
- 	unsigned int file_length;
- 	unsigned int i;
+--- a/drivers/target/target_core_file.c
++++ b/drivers/target/target_core_file.c
+@@ -276,7 +276,7 @@ fd_execute_rw_aio(struct se_cmd *cmd, st
+ 	ssize_t len = 0;
+ 	int ret = 0, i;
  
-+	/*
-+	 * Format of the firmware
-+	 * Build longs from the byte-wise coded header
-+	 * Byte 1-3:   length of the array
-+	 * Byte 4-7:   version
-+	 * Byte 8-11:  date
-+	 * Byte 12-15: reserved
-+	 */
-+	if (size >= 4) {
-+		file_length = (((unsigned int)data[0] & 0xff) << 24) +
-+			      (((unsigned int)data[1] & 0xff) << 16) +
-+			      (((unsigned int)data[2] & 0xff) << 8) +
-+			      ((unsigned int)data[3] & 0xff);
-+	}
-+	if (size < 16 || file_length > size - 16) {
-+		dev_err(dev->class_dev, "Firmware length inconsistency\n");
-+		return -EINVAL;
-+	}
-+
- 	/* disable irq's on PLX */
- 	writel(0x00, devpriv->plx_regbase + PLX9052_INTCSR);
+-	aio_cmd = kmalloc(struct_size(aio_cmd, bvecs, sgl_nents), GFP_KERNEL);
++	aio_cmd = kzalloc(struct_size(aio_cmd, bvecs, sgl_nents), GFP_KERNEL);
+ 	if (!aio_cmd)
+ 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
  
-@@ -358,22 +377,6 @@ static int me2600_xilinx_download(struct
- 	sleep(1);
- 
- 	/*
--	 * Format of the firmware
--	 * Build longs from the byte-wise coded header
--	 * Byte 1-3:   length of the array
--	 * Byte 4-7:   version
--	 * Byte 8-11:  date
--	 * Byte 12-15: reserved
--	 */
--	if (size < 16)
--		return -EINVAL;
--
--	file_length = (((unsigned int)data[0] & 0xff) << 24) +
--	    (((unsigned int)data[1] & 0xff) << 16) +
--	    (((unsigned int)data[2] & 0xff) << 8) +
--	    ((unsigned int)data[3] & 0xff);
--
--	/*
- 	 * Loop for writing firmware byte by byte to xilinx
- 	 * Firmware data start at offset 16
- 	 */
 
 
 
