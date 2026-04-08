@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-235249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yI5zDYum1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:39 +0200
+	id ILA7K/am1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2DE03C24B1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75C53C25F0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 01B673039CC3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:02:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 277BA304A175
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7561A3D8139;
-	Wed,  8 Apr 2026 19:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EFE35C1B5;
+	Wed,  8 Apr 2026 19:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbjs8Iop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJ2boGJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385981A683C;
-	Wed,  8 Apr 2026 19:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9CF3BB4A;
+	Wed,  8 Apr 2026 19:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674954; cv=none; b=pqa6SQbvEEN2CMtVn6N/YjEZQPE7aKfWWmoxcSkkr2SzoJYSHM5nrVhitTcwppUo87QTGapvnx7lHHpNTsLtBj6R3QBVTv/aXFYx1FpdGtdeYjzs00W6adiJ6cZF8YphoPzzKzidL9jjhg3s01aSJ1vhHr+AW2D+hzUaGp/dLFU=
+	t=1775674982; cv=none; b=Mi7oGfjKSWBPEP9KBvQenDKEaPu8+dStW624POhZYoC2K2l/dQTd6NllGxU4Tnbm3HFg5usMPCmZROfRyvd3wv+CH7DuRycVjE3A6e1CWck02JvLJELR1YYnmxwBMQWpNKPhiN3AnWYCG0x17uTRgVKMRdlpbqrUAQifVBDGQPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674954; c=relaxed/simple;
-	bh=utLumobUo32HvzDUF8ManzZuO3OJOst8tltMFJ0DiOw=;
+	s=arc-20240116; t=1775674982; c=relaxed/simple;
+	bh=6mLRmDQspn+DvNlOCUKVm/qxVNZR9Gre1BoRNeHwL4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nyyYNPV+89+kOl0jebQXxNz9aNn8dbYdC8gkhjK6FPzj4Kgo3ybmFwx0sfJtUMDqPNm4NfY/YiSEr+Bh5dAiSWHlmarDQvrRPPtMvPMgQAnP2ImhBcOzvsE3ACLO0tTUCxExYCXFABFXtZzkcFwfRVwZuYjj+n4AepNnNPF8G88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbjs8Iop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEE1C2BC87;
-	Wed,  8 Apr 2026 19:02:33 +0000 (UTC)
+	 MIME-Version; b=RJgKjvE2SB5rMq7PvKQT5z8qgX0UVre6kMGOJ6xq/84Y9VClmZ+W9+r9pBkROU5PmnhTPyP4I1dE57duR1yv9b/NvT459SNkk8TZbp6CV+p+2ZSbdRBvVoCe/0LoOqOi9baOp1QDXJRPpNrzgX1+LfjLHW/jo1HGVjFxJPc++Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJ2boGJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9DEC19421;
+	Wed,  8 Apr 2026 19:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674953;
-	bh=utLumobUo32HvzDUF8ManzZuO3OJOst8tltMFJ0DiOw=;
+	s=korg; t=1775674982;
+	bh=6mLRmDQspn+DvNlOCUKVm/qxVNZR9Gre1BoRNeHwL4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbjs8IopOrxCE7FpDkGmJX4zP9eeRl8T00kMRkVv/0pNSAwPj1G8vb60whW3Mj6Gv
-	 R0lfIVpgFUq+drthSgBECRKOy4UaxzAZeLXd7fKWor1FcBagDG73r3WG0TlrcAlwKl
-	 NzKqrs10nTaRGy5Tbu1Vy06Bh1ejN9BNrHg06ZEk=
+	b=FJ2boGJl+90OE7ReP5xIJORle4ITu4tDLDKypqs5JJEVzqf7DEtD48QdAfWYZ5ve5
+	 Ia8reCLb2sgUxPXwYSrLuP67fLwgT7YY0RCDJzYnN43CvfXx1YzSK9CzPCOBNMONjk
+	 jephg+sEpPTVcsqnTfsOzEUxk+zP05OpZvMaCZxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.19 280/311] cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path
-Date: Wed,  8 Apr 2026 20:04:40 +0200
-Message-ID: <20260408175949.835204232@linuxfoundation.org>
+	Changwoo Min <changwoo@igalia.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.19 281/311] sched_ext: Fix is_bpf_migration_disabled() false negative on non-PREEMPT_RCU
+Date: Wed,  8 Apr 2026 20:04:41 +0200
+Message-ID: <20260408175949.872378234@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
 References: <20260408175939.393281918@linuxfoundation.org>
@@ -69,31 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,linaro.org,intel.com];
-	TAGGED_FROM(0.00)[bounces-235249-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-235260-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,linaro.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E2DE03C24B1
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B75C53C25F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,53 +99,82 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Changwoo Min <changwoo@igalia.com>
 
-commit 6dcf9d0064ce2f3e3dfe5755f98b93abe6a98e1e upstream.
+commit 0c4a59df370bea245695c00aaae6ae75747139bd upstream.
 
-When kobject_init_and_add() fails, cpufreq_dbs_governor_init() calls
-kobject_put(&dbs_data->attr_set.kobj).
+Since commit 8e4f0b1ebcf2 ("bpf: use rcu_read_lock_dont_migrate() for
+trampoline.c"), the BPF prolog (__bpf_prog_enter) calls migrate_disable()
+only when CONFIG_PREEMPT_RCU is enabled, via rcu_read_lock_dont_migrate().
+Without CONFIG_PREEMPT_RCU, the prolog never touches migration_disabled,
+so migration_disabled == 1 always means the task is truly
+migration-disabled regardless of whether it is the current task.
 
-The kobject release callback cpufreq_dbs_data_release() calls
-gov->exit(dbs_data) and kfree(dbs_data), but the current error path
-then calls gov->exit(dbs_data) and kfree(dbs_data) again, causing a
-double free.
+The old unconditional p == current check was a false negative in this
+case, potentially allowing a migration-disabled task to be dispatched to
+a remote CPU and triggering scx_error in task_can_run_on_remote_rq().
 
-Keep the direct kfree(dbs_data) for the gov->init() failure path, but
-after kobject_init_and_add() has been called, let kobject_put() handle
-the cleanup through cpufreq_dbs_data_release().
+Only apply the p == current disambiguation when CONFIG_PREEMPT_RCU is
+enabled, where the ambiguity with the BPF prolog still exists.
 
-Fixes: 4ebe36c94aed ("cpufreq: Fix kobject memleak")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260401024535.1395801-1-lgs201920130244@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 8e4f0b1ebcf2 ("bpf: use rcu_read_lock_dont_migrate() for trampoline.c")
+Cc: stable@vger.kernel.org # v6.18+
+Link: https://lore.kernel.org/lkml/20250821090609.42508-8-dongml2@chinatelecom.cn/
+Signed-off-by: Changwoo Min <changwoo@igalia.com>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq_governor.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/ext_idle.c |   31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -468,13 +468,13 @@ int cpufreq_dbs_governor_init(struct cpu
- 	/* Failure, so roll back. */
- 	pr_err("initialization failed (dbs_data kobject init error %d)\n", ret);
+--- a/kernel/sched/ext_idle.c
++++ b/kernel/sched/ext_idle.c
+@@ -861,25 +861,32 @@ static bool check_builtin_idle_enabled(s
+  * code.
+  *
+  * We can't simply check whether @p->migration_disabled is set in a
+- * sched_ext callback, because migration is always disabled for the current
+- * task while running BPF code.
++ * sched_ext callback, because the BPF prolog (__bpf_prog_enter) may disable
++ * migration for the current task while running BPF code.
+  *
+- * The prolog (__bpf_prog_enter) and epilog (__bpf_prog_exit) respectively
+- * disable and re-enable migration. For this reason, the current task
+- * inside a sched_ext callback is always a migration-disabled task.
++ * Since the BPF prolog calls migrate_disable() only when CONFIG_PREEMPT_RCU
++ * is enabled (via rcu_read_lock_dont_migrate()), migration_disabled == 1 for
++ * the current task is ambiguous only in that case: it could be from the BPF
++ * prolog rather than a real migrate_disable() call.
+  *
+- * Therefore, when @p->migration_disabled == 1, check whether @p is the
+- * current task or not: if it is, then migration was not disabled before
+- * entering the callback, otherwise migration was disabled.
++ * Without CONFIG_PREEMPT_RCU, the BPF prolog never calls migrate_disable(),
++ * so migration_disabled == 1 always means the task is truly
++ * migration-disabled.
++ *
++ * Therefore, when migration_disabled == 1 and CONFIG_PREEMPT_RCU is enabled,
++ * check whether @p is the current task or not: if it is, then migration was
++ * not disabled before entering the callback, otherwise migration was disabled.
+  *
+  * Returns true if @p is migration-disabled, false otherwise.
+  */
+ static bool is_bpf_migration_disabled(const struct task_struct *p)
+ {
+-	if (p->migration_disabled == 1)
+-		return p != current;
+-	else
+-		return p->migration_disabled;
++	if (p->migration_disabled == 1) {
++		if (IS_ENABLED(CONFIG_PREEMPT_RCU))
++			return p != current;
++		return true;
++	}
++	return p->migration_disabled;
+ }
  
--	kobject_put(&dbs_data->attr_set.kobj);
--
- 	policy->governor_data = NULL;
- 
- 	if (!have_governor_per_policy())
- 		gov->gdbs_data = NULL;
--	gov->exit(dbs_data);
-+
-+	kobject_put(&dbs_data->attr_set.kobj);
-+	goto free_policy_dbs_info;
- 
- free_dbs_data:
- 	kfree(dbs_data);
+ static s32 select_cpu_from_kfunc(struct scx_sched *sch, struct task_struct *p,
 
 
 
