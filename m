@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235015-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qObsED+f1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:31 +0200
+	id mDk9I8ep1mlmHAgAu9opvQ
+	(envelope-from <stable+bounces-235015-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD11E3C0EA5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7313C2B27
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67F503009024
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E06A31A6345
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AF83D4134;
-	Wed,  8 Apr 2026 18:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDD0337B81;
+	Wed,  8 Apr 2026 18:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AceSZYFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWhnCCsg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F4F328B75;
-	Wed,  8 Apr 2026 18:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF30425A321;
+	Wed,  8 Apr 2026 18:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673106; cv=none; b=BLwE+ovzH9m5uT4DMr/P8MGbJaHcjsRw2VMOWGuo7qVmr6/feGdtbbkozAcQKuZZ8Z5uMXBNsNR1b9cLh8Gn98IFV4odvvNChAEvjTnDT3O+vuFC74YR9T449OnRFahnzLOnyPZkiKfnYlVutQBQ6s1wGQuTwjZ9HEnHXkPjAq0=
+	t=1775674350; cv=none; b=AyLooJtViMUV2gjxGObGHTOx028dve8DkM1G5o1LFUnANDotLTSf7KiQvJJs8aRNYwExqgeUgYyyTo3WH08U2SzvTGcFaaD3xtcOB9gLYmofp1o4FD5mxfK9BKYCZX7H5i0xKKd5JbiJeN0OSlAPxyZdZs5tEeX/wyvIqcZuwQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673106; c=relaxed/simple;
-	bh=DoHP7HAeRQs8tzUPljuyW7FioGBIyv6pl+q/JmpfT9c=;
+	s=arc-20240116; t=1775674350; c=relaxed/simple;
+	bh=+1C3OCJQLG9uhCR4l2qiG54lShbSasjlb+5jov8QWtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBOpbmAJ2Gmsba0qLsuIqjyeicuhy9Q7HqATh8A+WeWrInU/9Bc/aQTQ+fCFznRj3R9xTfR7kmM8ivdxYktum37h2JVWGufJMYQ6dhEFmrXZBHpprtxmkwO336fEKoWDf15n2i2qDH2smCc86JKeqFf60qqfHfkDximxRNHo8Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AceSZYFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B5AC19421;
-	Wed,  8 Apr 2026 18:31:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dxIwFt+vseOXAW/6bzCQ7QwSuxCQO+TRO2qFHt/AkaT/969Ez1pZIldizoNr70XqVJWHfooo+Z8byWLZqmZuNQR1fmkulzVADQlpbp/UsoymL9vPB2hTstGw89tKykM7G3aluNz14HsKEBfEB8v57EwpD8QyQp2A1luCvZhWNC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWhnCCsg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449E7C19421;
+	Wed,  8 Apr 2026 18:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673106;
-	bh=DoHP7HAeRQs8tzUPljuyW7FioGBIyv6pl+q/JmpfT9c=;
+	s=korg; t=1775674350;
+	bh=+1C3OCJQLG9uhCR4l2qiG54lShbSasjlb+5jov8QWtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AceSZYFFD6haPO2pFxFkOPGiu67WV68DVZPfRutmyPL5NZ5q7TVVRXxl52OQ3l/Zi
-	 qiy5qmSQPrlNMOH733cXNF0UfeBZYs9WiGWpRohcrNItIc2tDlUn8AgexdKxYKys48
-	 qCMBXjyA0vB4wMfw81GjIsWxabbSijmPVmKctiKs=
+	b=tWhnCCsgSGaf1OVK/mlEuKh8QBUZBYW/YKZ5KOjul/djQoowv75Hb5mk59FQOnjPG
+	 oN+2Rs1W31fmFUaeKc4VzoauqMp/vx2nJcj+Mf9+NfQbjyjPHlXu1r8r6UI+GBqm8u
+	 1OssmI6AJnMTIb3VJtp7OBYz9o+rTpU363kE7d3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 076/277] netfilter: x_tables: restrict xt_check_match/xt_check_target extensions for NFPROTO_ARP
-Date: Wed,  8 Apr 2026 20:01:01 +0200
-Message-ID: <20260408175936.703255103@linuxfoundation.org>
+Subject: [PATCH 6.19 062/311] ASoC: ep93xx: Fix unchecked clk_prepare_enable() and add rollback on failure
+Date: Wed,  8 Apr 2026 20:01:02 +0200
+Message-ID: <20260408175941.731390045@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +63,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234533-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-235015-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CD11E3C0EA5
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0E7313C2B27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit 3d5d488f11776738deab9da336038add95d342d1 ]
+[ Upstream commit 622363757b2286dd2c2984b0d80255cbb35a0495 ]
 
-Weiming Shi says:
+ep93xx_i2s_enable() calls clk_prepare_enable() on three clocks in
+sequence (mclk, sclk, lrclk) without checking the return value of any
+of them. If an intermediate enable fails, the clocks that were already
+enabled are never rolled back, leaking them until the next disable cycle
+— which may never come if the stream never started cleanly.
 
-xt_match and xt_target structs registered with NFPROTO_UNSPEC can be
-loaded by any protocol family through nft_compat. When such a
-match/target sets .hooks to restrict which hooks it may run on, the
-bitmask uses NF_INET_* constants. This is only correct for families
-whose hook layout matches NF_INET_*: IPv4, IPv6, INET, and bridge
-all share the same five hooks (PRE_ROUTING ... POST_ROUTING).
+Change ep93xx_i2s_enable() from void to int. Add error checking after
+each clk_prepare_enable() call and unwind already-enabled clocks on
+failure. Propagate the error through ep93xx_i2s_startup() and
+ep93xx_i2s_resume(), both of which already return int.
 
-ARP only has three hooks (IN=0, OUT=1, FORWARD=2) with different
-semantics. Because NF_ARP_OUT == 1 == NF_INET_LOCAL_IN, the .hooks
-validation silently passes for the wrong reasons, allowing matches to
-run on ARP chains where the hook assumptions (e.g. state->in being
-set on input hooks) do not hold. This leads to NULL pointer
-dereferences; xt_devgroup is one concrete example:
-
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000044: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000220-0x0000000000000227]
- RIP: 0010:devgroup_mt+0xff/0x350
- Call Trace:
-  <TASK>
-  nft_match_eval (net/netfilter/nft_compat.c:407)
-  nft_do_chain (net/netfilter/nf_tables_core.c:285)
-  nft_do_chain_arp (net/netfilter/nft_chain_filter.c:61)
-  nf_hook_slow (net/netfilter/core.c:623)
-  arp_xmit (net/ipv4/arp.c:666)
-  </TASK>
- Kernel panic - not syncing: Fatal exception in interrupt
-
-Fix it by restricting arptables to NFPROTO_ARP extensions only.
-Note that arptables-legacy only supports:
-
-- arpt_CLASSIFY
-- arpt_mangle
-- arpt_MARK
-
-that provide explicit NFPROTO_ARP match/target declarations.
-
-Fixes: 9291747f118d ("netfilter: xtables: add device group match")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Fixes: f4ff6b56bc8a ("ASoC: cirrus: i2s: Prepare clock before using it")
+Link: https://patch.msgid.link/20260324210909.45494-1-jihed.chaibi.dev@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/x_tables.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ sound/soc/cirrus/ep93xx-i2s.c | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 48105ea3df152..1ca4fa9d249b8 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -501,6 +501,17 @@ int xt_check_match(struct xt_mtchk_param *par,
- 				    par->match->table, par->table);
- 		return -EINVAL;
- 	}
-+
-+	/* NFPROTO_UNSPEC implies NF_INET_* hooks which do not overlap with
-+	 * NF_ARP_IN,OUT,FORWARD, allow explicit extensions with NFPROTO_ARP
-+	 * support.
-+	 */
-+	if (par->family == NFPROTO_ARP &&
-+	    par->match->family != NFPROTO_ARP) {
-+		pr_info_ratelimited("%s_tables: %s match: not valid for this family\n",
-+				    xt_prefix[par->family], par->match->name);
-+		return -EINVAL;
-+	}
- 	if (par->match->hooks && (par->hook_mask & ~par->match->hooks) != 0) {
- 		char used[64], allow[64];
+diff --git a/sound/soc/cirrus/ep93xx-i2s.c b/sound/soc/cirrus/ep93xx-i2s.c
+index cca01c03f0486..5dba741594fab 100644
+--- a/sound/soc/cirrus/ep93xx-i2s.c
++++ b/sound/soc/cirrus/ep93xx-i2s.c
+@@ -91,16 +91,28 @@ static inline unsigned ep93xx_i2s_read_reg(struct ep93xx_i2s_info *info,
+ 	return __raw_readl(info->regs + reg);
+ }
  
-@@ -1016,6 +1027,18 @@ int xt_check_target(struct xt_tgchk_param *par,
- 				    par->target->table, par->table);
- 		return -EINVAL;
- 	}
-+
-+	/* NFPROTO_UNSPEC implies NF_INET_* hooks which do not overlap with
-+	 * NF_ARP_IN,OUT,FORWARD, allow explicit extensions with NFPROTO_ARP
-+	 * support.
-+	 */
-+	if (par->family == NFPROTO_ARP &&
-+	    par->target->family != NFPROTO_ARP) {
-+		pr_info_ratelimited("%s_tables: %s target: not valid for this family\n",
-+				    xt_prefix[par->family], par->target->name);
-+		return -EINVAL;
-+	}
-+
- 	if (par->target->hooks && (par->hook_mask & ~par->target->hooks) != 0) {
- 		char used[64], allow[64];
+-static void ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
++static int ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
+ {
+ 	unsigned base_reg;
++	int err;
  
+ 	if ((ep93xx_i2s_read_reg(info, EP93XX_I2S_TX0EN) & 0x1) == 0 &&
+ 	    (ep93xx_i2s_read_reg(info, EP93XX_I2S_RX0EN) & 0x1) == 0) {
+ 		/* Enable clocks */
+-		clk_prepare_enable(info->mclk);
+-		clk_prepare_enable(info->sclk);
+-		clk_prepare_enable(info->lrclk);
++		err = clk_prepare_enable(info->mclk);
++		if (err)
++			return err;
++		err = clk_prepare_enable(info->sclk);
++		if (err) {
++			clk_disable_unprepare(info->mclk);
++			return err;
++		}
++		err = clk_prepare_enable(info->lrclk);
++		if (err) {
++			clk_disable_unprepare(info->sclk);
++			clk_disable_unprepare(info->mclk);
++			return err;
++		}
+ 
+ 		/* Enable i2s */
+ 		ep93xx_i2s_write_reg(info, EP93XX_I2S_GLCTRL, 1);
+@@ -119,6 +131,8 @@ static void ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
+ 		ep93xx_i2s_write_reg(info, EP93XX_I2S_TXCTRL,
+ 				     EP93XX_I2S_TXCTRL_TXEMPTY_LVL |
+ 				     EP93XX_I2S_TXCTRL_TXUFIE);
++
++	return 0;
+ }
+ 
+ static void ep93xx_i2s_disable(struct ep93xx_i2s_info *info, int stream)
+@@ -195,9 +209,7 @@ static int ep93xx_i2s_startup(struct snd_pcm_substream *substream,
+ {
+ 	struct ep93xx_i2s_info *info = snd_soc_dai_get_drvdata(dai);
+ 
+-	ep93xx_i2s_enable(info, substream->stream);
+-
+-	return 0;
++	return ep93xx_i2s_enable(info, substream->stream);
+ }
+ 
+ static void ep93xx_i2s_shutdown(struct snd_pcm_substream *substream,
+@@ -373,14 +385,16 @@ static int ep93xx_i2s_suspend(struct snd_soc_component *component)
+ static int ep93xx_i2s_resume(struct snd_soc_component *component)
+ {
+ 	struct ep93xx_i2s_info *info = snd_soc_component_get_drvdata(component);
++	int err;
+ 
+ 	if (!snd_soc_component_active(component))
+ 		return 0;
+ 
+-	ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_PLAYBACK);
+-	ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_CAPTURE);
++	err = ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_PLAYBACK);
++	if (err)
++		return err;
+ 
+-	return 0;
++	return ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_CAPTURE);
+ }
+ #else
+ #define ep93xx_i2s_suspend	NULL
 -- 
 2.53.0
 
