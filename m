@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-235260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILA7K/am1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:26 +0200
+	id mBlJFBip1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-234957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75C53C25F0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD923C2A14
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 277BA304A175
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:03:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E35CF322C655
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EFE35C1B5;
-	Wed,  8 Apr 2026 19:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF2F33121F;
+	Wed,  8 Apr 2026 18:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJ2boGJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1xvpgbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9CF3BB4A;
-	Wed,  8 Apr 2026 19:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE9425A321;
+	Wed,  8 Apr 2026 18:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674982; cv=none; b=Mi7oGfjKSWBPEP9KBvQenDKEaPu8+dStW624POhZYoC2K2l/dQTd6NllGxU4Tnbm3HFg5usMPCmZROfRyvd3wv+CH7DuRycVjE3A6e1CWck02JvLJELR1YYnmxwBMQWpNKPhiN3AnWYCG0x17uTRgVKMRdlpbqrUAQifVBDGQPs=
+	t=1775674201; cv=none; b=qdJw1i0gfhtDvybA5XBKSlrhJzpo2ENRDIyrCWEMlpQOToGAxilVxj+Dpx4oM8E++LXKUWYhyx09Z8qoXSSbLh17V8JSOqrBy7tTR5MISGVDi8Hme+8StdTQc8YGwFCurEMmZ8b/tZIYo4MLhaBu2JhmeZJs6rZyvqbMCS5dyC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674982; c=relaxed/simple;
-	bh=6mLRmDQspn+DvNlOCUKVm/qxVNZR9Gre1BoRNeHwL4Q=;
+	s=arc-20240116; t=1775674201; c=relaxed/simple;
+	bh=PyqLWYlWHOw2Bl2ZekQn+I51LDhohzHiL28ui6m87R4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJgKjvE2SB5rMq7PvKQT5z8qgX0UVre6kMGOJ6xq/84Y9VClmZ+W9+r9pBkROU5PmnhTPyP4I1dE57duR1yv9b/NvT459SNkk8TZbp6CV+p+2ZSbdRBvVoCe/0LoOqOi9baOp1QDXJRPpNrzgX1+LfjLHW/jo1HGVjFxJPc++Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJ2boGJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9DEC19421;
-	Wed,  8 Apr 2026 19:03:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ItasCdL58du9IokCWkDLpVQaSGKY3R0wxL6plq8h3cHVxqCfiAz8xhChdpAVqNrpa71JS/ci9mFS99sSLCkJsOC6n7eyPFY2h7M6QqRbwm0HmQZwe6PHrXleKmZbW+NUXgi75MAs07gnBz4tj+6Q5IdzEPFoob73E3uAp+JbcJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1xvpgbJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4561C19421;
+	Wed,  8 Apr 2026 18:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674982;
-	bh=6mLRmDQspn+DvNlOCUKVm/qxVNZR9Gre1BoRNeHwL4Q=;
+	s=korg; t=1775674201;
+	bh=PyqLWYlWHOw2Bl2ZekQn+I51LDhohzHiL28ui6m87R4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJ2boGJl+90OE7ReP5xIJORle4ITu4tDLDKypqs5JJEVzqf7DEtD48QdAfWYZ5ve5
-	 Ia8reCLb2sgUxPXwYSrLuP67fLwgT7YY0RCDJzYnN43CvfXx1YzSK9CzPCOBNMONjk
-	 jephg+sEpPTVcsqnTfsOzEUxk+zP05OpZvMaCZxo=
+	b=F1xvpgbJZhid8ckTPWEzNb/9dfEPNJYL4bLH09FBC+gj5Gx6cGrEOGSH4RSfsAIpM
+	 aDpNzOTy0acO+BsxUf3aHdPN4AtEwo2OAt+W8RYZ39hojxLBXv3Ge3nAYtl9Y/0wu6
+	 xI741JXFI9Nbiei/D8NWHvmGWw920P5yrxLx9oos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Changwoo Min <changwoo@igalia.com>,
 	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.19 281/311] sched_ext: Fix is_bpf_migration_disabled() false negative on non-PREEMPT_RCU
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Paul Chaignon <paul.chaignon@gmail.com>
+Subject: [PATCH 6.12 241/242] bpf: Fix u32/s32 bounds when ranges cross min/max boundary
 Date: Wed,  8 Apr 2026 20:04:41 +0200
-Message-ID: <20260408175949.872378234@linuxfoundation.org>
+Message-ID: <20260408175936.124866499@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +66,231 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,etsalapatis.com,suse.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234957-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235260-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B75C53C25F0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,etsalapatis.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.com:email]
+X-Rspamd-Queue-Id: 9FD923C2A14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Changwoo Min <changwoo@igalia.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 0c4a59df370bea245695c00aaae6ae75747139bd upstream.
+[ Upstream commit fbc7aef517d8765e4c425d2792409bb9bf2e1f13 ]
 
-Since commit 8e4f0b1ebcf2 ("bpf: use rcu_read_lock_dont_migrate() for
-trampoline.c"), the BPF prolog (__bpf_prog_enter) calls migrate_disable()
-only when CONFIG_PREEMPT_RCU is enabled, via rcu_read_lock_dont_migrate().
-Without CONFIG_PREEMPT_RCU, the prolog never touches migration_disabled,
-so migration_disabled == 1 always means the task is truly
-migration-disabled regardless of whether it is the current task.
+Same as in __reg64_deduce_bounds(), refine s32/u32 ranges
+in __reg32_deduce_bounds() in the following situations:
 
-The old unconditional p == current check was a false negative in this
-case, potentially allowing a migration-disabled task to be dispatched to
-a remote CPU and triggering scx_error in task_can_run_on_remote_rq().
+- s32 range crosses U32_MAX/0 boundary, positive part of the s32 range
+  overlaps with u32 range:
 
-Only apply the p == current disambiguation when CONFIG_PREEMPT_RCU is
-enabled, where the ambiguity with the BPF prolog still exists.
+  0                                                   U32_MAX
+  |  [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]              |
+  |----------------------------|----------------------------|
+  |xxxxx s32 range xxxxxxxxx]                       [xxxxxxx|
+  0                     S32_MAX S32_MIN                    -1
 
-Fixes: 8e4f0b1ebcf2 ("bpf: use rcu_read_lock_dont_migrate() for trampoline.c")
-Cc: stable@vger.kernel.org # v6.18+
-Link: https://lore.kernel.org/lkml/20250821090609.42508-8-dongml2@chinatelecom.cn/
-Signed-off-by: Changwoo Min <changwoo@igalia.com>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+- s32 range crosses U32_MAX/0 boundary, negative part of the s32 range
+  overlaps with u32 range:
+
+  0                                                   U32_MAX
+  |              [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]  |
+  |----------------------------|----------------------------|
+  |xxxxxxxxx]                       [xxxxxxxxxxxx s32 range |
+  0                     S32_MAX S32_MIN                    -1
+
+- No refinement if ranges overlap in two intervals.
+
+This helps for e.g. consider the following program:
+
+   call %[bpf_get_prandom_u32];
+   w0 &= 0xffffffff;
+   if w0 < 0x3 goto 1f;    // on fall-through u32 range [3..U32_MAX]
+   if w0 s> 0x1 goto 1f;   // on fall-through s32 range [S32_MIN..1]
+   if w0 s< 0x0 goto 1f;   // range can be narrowed to  [S32_MIN..-1]
+   r10 = 0;
+1: ...;
+
+The reg_bounds.c selftest is updated to incorporate identical logic,
+refinement based on non-overflowing range halves:
+
+  ((x ∩ [0, smax]) ∩ (y ∩ [0, smax])) ∪
+  ((x ∩ [smin,-1]) ∩ (y ∩ [smin,-1]))
+
+Reported-by: Andrea Righi <arighi@nvidia.com>
+Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
+Closes: https://lore.kernel.org/bpf/aakqucg4vcujVwif@gpd4/T/
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20260306-bpf-32-bit-range-overflow-v3-1-f7f67e060a6b@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext_idle.c |   31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ kernel/bpf/verifier.c                               |   24 +++++++
+ tools/testing/selftests/bpf/prog_tests/reg_bounds.c |   62 ++++++++++++++++++--
+ 2 files changed, 82 insertions(+), 4 deletions(-)
 
---- a/kernel/sched/ext_idle.c
-+++ b/kernel/sched/ext_idle.c
-@@ -861,25 +861,32 @@ static bool check_builtin_idle_enabled(s
-  * code.
-  *
-  * We can't simply check whether @p->migration_disabled is set in a
-- * sched_ext callback, because migration is always disabled for the current
-- * task while running BPF code.
-+ * sched_ext callback, because the BPF prolog (__bpf_prog_enter) may disable
-+ * migration for the current task while running BPF code.
-  *
-- * The prolog (__bpf_prog_enter) and epilog (__bpf_prog_exit) respectively
-- * disable and re-enable migration. For this reason, the current task
-- * inside a sched_ext callback is always a migration-disabled task.
-+ * Since the BPF prolog calls migrate_disable() only when CONFIG_PREEMPT_RCU
-+ * is enabled (via rcu_read_lock_dont_migrate()), migration_disabled == 1 for
-+ * the current task is ambiguous only in that case: it could be from the BPF
-+ * prolog rather than a real migrate_disable() call.
-  *
-- * Therefore, when @p->migration_disabled == 1, check whether @p is the
-- * current task or not: if it is, then migration was not disabled before
-- * entering the callback, otherwise migration was disabled.
-+ * Without CONFIG_PREEMPT_RCU, the BPF prolog never calls migrate_disable(),
-+ * so migration_disabled == 1 always means the task is truly
-+ * migration-disabled.
-+ *
-+ * Therefore, when migration_disabled == 1 and CONFIG_PREEMPT_RCU is enabled,
-+ * check whether @p is the current task or not: if it is, then migration was
-+ * not disabled before entering the callback, otherwise migration was disabled.
-  *
-  * Returns true if @p is migration-disabled, false otherwise.
-  */
- static bool is_bpf_migration_disabled(const struct task_struct *p)
- {
--	if (p->migration_disabled == 1)
--		return p != current;
--	else
--		return p->migration_disabled;
-+	if (p->migration_disabled == 1) {
-+		if (IS_ENABLED(CONFIG_PREEMPT_RCU))
-+			return p != current;
-+		return true;
-+	}
-+	return p->migration_disabled;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2046,6 +2046,30 @@ static void __reg32_deduce_bounds(struct
+ 	if ((u32)reg->s32_min_value <= (u32)reg->s32_max_value) {
+ 		reg->u32_min_value = max_t(u32, reg->s32_min_value, reg->u32_min_value);
+ 		reg->u32_max_value = min_t(u32, reg->s32_max_value, reg->u32_max_value);
++	} else {
++		if (reg->u32_max_value < (u32)reg->s32_min_value) {
++			/* See __reg64_deduce_bounds() for detailed explanation.
++			 * Refine ranges in the following situation:
++			 *
++			 * 0                                                   U32_MAX
++			 * |  [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]              |
++			 * |----------------------------|----------------------------|
++			 * |xxxxx s32 range xxxxxxxxx]                       [xxxxxxx|
++			 * 0                     S32_MAX S32_MIN                    -1
++			 */
++			reg->s32_min_value = (s32)reg->u32_min_value;
++			reg->u32_max_value = min_t(u32, reg->u32_max_value, reg->s32_max_value);
++		} else if ((u32)reg->s32_max_value < reg->u32_min_value) {
++			/*
++			 * 0                                                   U32_MAX
++			 * |              [xxxxxxxxxxxxxx u32 range xxxxxxxxxxxxxx]  |
++			 * |----------------------------|----------------------------|
++			 * |xxxxxxxxx]                       [xxxxxxxxxxxx s32 range |
++			 * 0                     S32_MAX S32_MIN                    -1
++			 */
++			reg->s32_max_value = (s32)reg->u32_max_value;
++			reg->u32_min_value = max_t(u32, reg->u32_min_value, reg->s32_min_value);
++		}
+ 	}
  }
  
- static s32 select_cpu_from_kfunc(struct scx_sched *sch, struct task_struct *p,
+--- a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
++++ b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
+@@ -422,15 +422,69 @@ static bool is_valid_range(enum num_t t,
+ 	}
+ }
+ 
+-static struct range range_improve(enum num_t t, struct range old, struct range new)
++static struct range range_intersection(enum num_t t, struct range old, struct range new)
+ {
+ 	return range(t, max_t(t, old.a, new.a), min_t(t, old.b, new.b));
+ }
+ 
++/*
++ * Result is precise when 'x' and 'y' overlap or form a continuous range,
++ * result is an over-approximation if 'x' and 'y' do not overlap.
++ */
++static struct range range_union(enum num_t t, struct range x, struct range y)
++{
++	if (!is_valid_range(t, x))
++		return y;
++	if (!is_valid_range(t, y))
++		return x;
++	return range(t, min_t(t, x.a, y.a), max_t(t, x.b, y.b));
++}
++
++/*
++ * This function attempts to improve x range intersecting it with y.
++ * range_cast(... to_t ...) looses precision for ranges that pass to_t
++ * min/max boundaries. To avoid such precision loses this function
++ * splits both x and y into halves corresponding to non-overflowing
++ * sub-ranges: [0, smin] and [smax, -1].
++ * Final result is computed as follows:
++ *
++ *   ((x ∩ [0, smax]) ∩ (y ∩ [0, smax])) ∪
++ *   ((x ∩ [smin,-1]) ∩ (y ∩ [smin,-1]))
++ *
++ * Precision might still be lost if final union is not a continuous range.
++ */
++static struct range range_refine_in_halves(enum num_t x_t, struct range x,
++					   enum num_t y_t, struct range y)
++{
++	struct range x_pos, x_neg, y_pos, y_neg, r_pos, r_neg;
++	u64 smax, smin, neg_one;
++
++	if (t_is_32(x_t)) {
++		smax = (u64)(u32)S32_MAX;
++		smin = (u64)(u32)S32_MIN;
++		neg_one = (u64)(u32)(s32)(-1);
++	} else {
++		smax = (u64)S64_MAX;
++		smin = (u64)S64_MIN;
++		neg_one = U64_MAX;
++	}
++	x_pos = range_intersection(x_t, x, range(x_t, 0, smax));
++	x_neg = range_intersection(x_t, x, range(x_t, smin, neg_one));
++	y_pos = range_intersection(y_t, y, range(x_t, 0, smax));
++	y_neg = range_intersection(y_t, y, range(y_t, smin, neg_one));
++	r_pos = range_intersection(x_t, x_pos, range_cast(y_t, x_t, y_pos));
++	r_neg = range_intersection(x_t, x_neg, range_cast(y_t, x_t, y_neg));
++	return range_union(x_t, r_pos, r_neg);
++
++}
++
+ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t, struct range y)
+ {
+ 	struct range y_cast;
+ 
++	if (t_is_32(x_t) == t_is_32(y_t))
++		x = range_refine_in_halves(x_t, x, y_t, y);
++
+ 	y_cast = range_cast(y_t, x_t, y);
+ 
+ 	/* If we know that
+@@ -444,7 +498,7 @@ static struct range range_refine(enum nu
+ 	 */
+ 	if (x_t == S64 && y_t == S32 && y_cast.a <= S32_MAX  && y_cast.b <= S32_MAX &&
+ 	    (s64)x.a >= S32_MIN && (s64)x.b <= S32_MAX)
+-		return range_improve(x_t, x, y_cast);
++		return range_intersection(x_t, x, y_cast);
+ 
+ 	/* the case when new range knowledge, *y*, is a 32-bit subregister
+ 	 * range, while previous range knowledge, *x*, is a full register
+@@ -462,11 +516,11 @@ static struct range range_refine(enum nu
+ 		x_swap = range(x_t, swap_low32(x.a, y_cast.a), swap_low32(x.b, y_cast.b));
+ 		if (!is_valid_range(x_t, x_swap))
+ 			return x;
+-		return range_improve(x_t, x, x_swap);
++		return range_intersection(x_t, x, x_swap);
+ 	}
+ 
+ 	/* otherwise, plain range cast and intersection works */
+-	return range_improve(x_t, x, y_cast);
++	return range_intersection(x_t, x, y_cast);
+ }
+ 
+ /* =======================
 
 
 
