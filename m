@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-234388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMWnBASe1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:16 +0200
+	id kK0JO1em1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED023C0BF1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 743693C23F2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A1E75300F29F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC1C3318E85F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CF6B67E;
-	Wed,  8 Apr 2026 18:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839153B19A3;
+	Wed,  8 Apr 2026 18:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrahNkNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dCD6y5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46ED3A16A0;
-	Wed,  8 Apr 2026 18:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B8327979A;
+	Wed,  8 Apr 2026 18:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672729; cv=none; b=n3nQBd+B03yhJwvASJDS8To/AD91PLJHMH23XcEtX5XDMdws9bNGvLKwUhOKfgDt2wXjWbqxQAnjICRcVNshB7LzbH2VuNJszBQW9QfUYBw9M9Fg+eLLCZMUgey4vO6mgK3OPmoXvfJA4riCuhQsYz6SHeuzpldrblJYGhwpGyg=
+	t=1775673493; cv=none; b=bEcorWZAI4tu3BeDKB+yJHBLrZvlNbHpPIb0kKpRn6Thy6qUu5aiO431Sy3IkrYYZkFfO0nzyztxu3s7wLHrGOVWYeUH6Nubo8OvBTnU003ThvGn49bU+0zOKx7+yu2ONsKQIOSvdTm/8SQMbd8f35ryqLUu8bB63oIWFO3s03I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672729; c=relaxed/simple;
-	bh=I6DoBRU0xVRmGcteYsnuAg2CdscR3NGdYpxSlrYmQV0=;
+	s=arc-20240116; t=1775673493; c=relaxed/simple;
+	bh=88GmAjOiyY6Lx6Jj/IZuAyLHq5CYv+VybfAK6FAAUo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azBYiA3ueZzGMK1htTgE6nu8FVjIeRHamrIjUPBV6tpYbRPWyD2cHPLsuBYrcXS9RCPTHYpDjWizfDHgNaSbnr6s7247Y4vZ3LAw/Xq7nVSU8vEiol0SOReQlDbIBpTrSM73/IsOIMLjXj1jJKPeFH5rIx5rxQHJS3bFbqQRofQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrahNkNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03186C19421;
-	Wed,  8 Apr 2026 18:25:28 +0000 (UTC)
+	 MIME-Version; b=FSQwkXZNEf7d6JxgNRXofPtGasTKZLxtKyHiVzAU8TwQkrr12mA/iV9A/MfWH2ivi6qeaCSEILnWQcfMzyOsN0qiEd7nC8amhGid8UvXGdCOX4puZoLRFYlR2e7vAwSOr1eGmayXK5s5T46KeIndZYXCiQvWCsklPfxvK0xXNIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dCD6y5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2ADFC19421;
+	Wed,  8 Apr 2026 18:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672729;
-	bh=I6DoBRU0xVRmGcteYsnuAg2CdscR3NGdYpxSlrYmQV0=;
+	s=korg; t=1775673493;
+	bh=88GmAjOiyY6Lx6Jj/IZuAyLHq5CYv+VybfAK6FAAUo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mrahNkNgQjHZMbdBT3edGyggk4RKjpVNbvQ5x4Ha5G22lpn5EIAZ2aXW9TJoc6CIr
-	 4Tn3JUuSR/bTckXVs/RPswf3uKtI69qRanhlRzprRMjgSb7kUfSes3xrTCoKn0cEbM
-	 0Hbw/5ifrTE8fR0342x6TcoLcBpehEupc8P4cLvA=
+	b=0dCD6y5SVVofdmYNx9Xa93J1Ed2b7//Z6R2s97SaS2HFTTM1TboDRgbSi2lhGBVKu
+	 VLJA4dcdkA2sV5OjuL1g0NDm3oGT8bPcZvtmEeAqaHIidO8RKdV/KaI0jkXo1jDt98
+	 DB1UxgYasR65jVkq0hgpJwGUlozbFuWBFXb1hkUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.6 119/160] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
+	Yi Zhang <yi.zhang@redhat.com>,
+	Nadja Hariz <Nadia.Hariz@ibm.com>,
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.18 221/277] s390/zcrypt: Fix memory leak with CCA cards used as accelerator
 Date: Wed,  8 Apr 2026 20:03:26 +0200
-Message-ID: <20260408175917.635992101@linuxfoundation.org>
+Message-ID: <20260408175942.108937150@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +72,154 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234683-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234388-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mev.co.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0ED023C0BF1
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 743693C23F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-commit 101ab946b79ad83b36d5cfd47de587492a80acf0 upstream.
+commit c8d46f17c2fc7d25c18e60c008928aecab26184d upstream.
 
-If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
-returns an error, the COMEDI core will call the driver's "detach"
-handler function (`atmio16d_detach()`) to clean up.  This calls
-`reset_atmio16d()` unconditionally, but depending on where the error
-occurred in the attach handler, the device may not have been
-sufficiently initialized to call `reset_atmio16d()`.  It uses
-`dev->iobase` as the I/O port base address and `dev->private` as the
-pointer to the COMEDI device's private data structure.  `dev->iobase`
-may still be set to its initial value of 0, which would result in
-undesired writes to low I/O port addresses.  `dev->private` may still be
-`NULL`, which would result in null pointer dereferences.
+Tests showed that there is a memory leak if CCA cards are used as
+accelerator for clear key RSA requests (ME and CRT). With the last
+rework for the memory allocation the AP messages are allocated by
+ap_init_apmsg() but for some reason on two places (ME and CRT) the
+older allocation was still in place. So the first allocation simple
+was never freed.
 
-Fix `atmio16d_detach()` by checking that `dev->private` is valid
-(non-null) before calling `reset_atmio16d()`.  This implies that
-`dev->iobase` was set correctly since that is set up before
-`dev->private`.
-
-Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260128150011.5006-1-abbotti@mev.co.uk
+Fixes: 57db62a130ce ("s390/ap/zcrypt: Rework AP message buffer allocation")
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/linux-s390/CAHj4cs9H67Uz0iVaRQv447p7JFPRPy3TKAT4=Y6_e=wSHCZM5w@mail.gmail.com/
+Reported-by: Nadja Hariz <Nadia.Hariz@ibm.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/ni_atmio16d.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/s390/crypto/zcrypt_msgtype6.c |   32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
---- a/drivers/comedi/drivers/ni_atmio16d.c
-+++ b/drivers/comedi/drivers/ni_atmio16d.c
-@@ -698,7 +698,8 @@ static int atmio16d_attach(struct comedi
+--- a/drivers/s390/crypto/zcrypt_msgtype6.c
++++ b/drivers/s390/crypto/zcrypt_msgtype6.c
+@@ -954,6 +954,10 @@ static atomic_t zcrypt_step = ATOMIC_INI
+ /*
+  * The request distributor calls this function if it picked the CEXxC
+  * device to handle a modexpo request.
++ * This function assumes that ap_msg has been initialized with
++ * ap_init_apmsg() and thus a valid buffer with the size of
++ * ap_msg->bufsize is available within ap_msg. Also the caller has
++ * to make sure ap_release_apmsg() is always called even on failure.
+  * @zq: pointer to zcrypt_queue structure that identifies the
+  *	CEXxC device to the request distributor
+  * @mex: pointer to the modexpo request buffer
+@@ -965,21 +969,17 @@ static long zcrypt_msgtype6_modexpo(stru
+ 	struct ap_response_type *resp_type = &ap_msg->response;
+ 	int rc;
  
- static void atmio16d_detach(struct comedi_device *dev)
- {
--	reset_atmio16d(dev);
-+	if (dev->private)
-+		reset_atmio16d(dev);
- 	comedi_legacy_detach(dev);
+-	ap_msg->msg = (void *)get_zeroed_page(GFP_KERNEL);
+-	if (!ap_msg->msg)
+-		return -ENOMEM;
+-	ap_msg->bufsize = PAGE_SIZE;
+ 	ap_msg->receive = zcrypt_msgtype6_receive;
+ 	ap_msg->psmid = (((unsigned long)current->pid) << 32) +
+ 		atomic_inc_return(&zcrypt_step);
+ 	rc = icamex_msg_to_type6mex_msgx(zq, ap_msg, mex);
+ 	if (rc)
+-		goto out_free;
++		goto out;
+ 	resp_type->type = CEXXC_RESPONSE_TYPE_ICA;
+ 	init_completion(&resp_type->work);
+ 	rc = ap_queue_message(zq->queue, ap_msg);
+ 	if (rc)
+-		goto out_free;
++		goto out;
+ 	rc = wait_for_completion_interruptible(&resp_type->work);
+ 	if (rc == 0) {
+ 		rc = ap_msg->rc;
+@@ -992,15 +992,17 @@ static long zcrypt_msgtype6_modexpo(stru
+ 		ap_cancel_message(zq->queue, ap_msg);
+ 	}
+ 
+-out_free:
+-	free_page((unsigned long)ap_msg->msg);
+-	ap_msg->msg = NULL;
++out:
+ 	return rc;
+ }
+ 
+ /*
+  * The request distributor calls this function if it picked the CEXxC
+  * device to handle a modexpo_crt request.
++ * This function assumes that ap_msg has been initialized with
++ * ap_init_apmsg() and thus a valid buffer with the size of
++ * ap_msg->bufsize is available within ap_msg. Also the caller has
++ * to make sure ap_release_apmsg() is always called even on failure.
+  * @zq: pointer to zcrypt_queue structure that identifies the
+  *	CEXxC device to the request distributor
+  * @crt: pointer to the modexpoc_crt request buffer
+@@ -1012,21 +1014,17 @@ static long zcrypt_msgtype6_modexpo_crt(
+ 	struct ap_response_type *resp_type = &ap_msg->response;
+ 	int rc;
+ 
+-	ap_msg->msg = (void *)get_zeroed_page(GFP_KERNEL);
+-	if (!ap_msg->msg)
+-		return -ENOMEM;
+-	ap_msg->bufsize = PAGE_SIZE;
+ 	ap_msg->receive = zcrypt_msgtype6_receive;
+ 	ap_msg->psmid = (((unsigned long)current->pid) << 32) +
+ 		atomic_inc_return(&zcrypt_step);
+ 	rc = icacrt_msg_to_type6crt_msgx(zq, ap_msg, crt);
+ 	if (rc)
+-		goto out_free;
++		goto out;
+ 	resp_type->type = CEXXC_RESPONSE_TYPE_ICA;
+ 	init_completion(&resp_type->work);
+ 	rc = ap_queue_message(zq->queue, ap_msg);
+ 	if (rc)
+-		goto out_free;
++		goto out;
+ 	rc = wait_for_completion_interruptible(&resp_type->work);
+ 	if (rc == 0) {
+ 		rc = ap_msg->rc;
+@@ -1039,9 +1037,7 @@ static long zcrypt_msgtype6_modexpo_crt(
+ 		ap_cancel_message(zq->queue, ap_msg);
+ 	}
+ 
+-out_free:
+-	free_page((unsigned long)ap_msg->msg);
+-	ap_msg->msg = NULL;
++out:
+ 	return rc;
  }
  
 
