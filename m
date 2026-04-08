@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235079-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKCJB9+h1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:43 +0200
+	id UIY7Jf+k1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235079-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B501A3C1567
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC9E3C2091
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCF603052412
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5ABBC3033D78
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45A03D9022;
-	Wed,  8 Apr 2026 18:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0043D9DA7;
+	Wed,  8 Apr 2026 18:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeRu4Boo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSH3k3ps"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C6F3D4134;
-	Wed,  8 Apr 2026 18:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3163D905D;
+	Wed,  8 Apr 2026 18:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673779; cv=none; b=pQT8ZE/dQsAM7EJIyR9fAabDMQdGNNWQIK0xBNOpLiiGkrUpNZnwhDSw3JnVk7oRerCwnzYDuPpbE3QwE6h59OsoTmZOXLAZhnpIzjmrXikns4ZZe9NWNagV83OAuAL+Gv7EtauP1kuAgjqfHbqj1WTXFYkmmsIfOGJQEnqROb0=
+	t=1775674515; cv=none; b=RaqjU12g2F1ODdeTZA6kMERQiHBqVYSk/23LLrmV0MBUp+q5lO1VrS3zrpoSKBsM9c+32pkHzn4X5yyUADLAkvT7nYFgeHALpQeqnOvoEnMwUhn3A6t64/4icR73qynYXMPm/MukZXnnqgnFVvLyOqvLp+44xZ0UAr0528eLsNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673779; c=relaxed/simple;
-	bh=jp7TgvDWYxIB8I+BxH1vDJFFjieO9HX2Ht7VZ9y0JaM=;
+	s=arc-20240116; t=1775674515; c=relaxed/simple;
+	bh=3iU2INjtiSkTHHhiloX+pBIQ0BdhqltsrXz3WDAeiiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoYkXd5rw4g7am1yARYoOzbY1Xg9dGVqN1mLzc5T+5JMGdRvwjwwUsk/c8YXg7bpUsIgwXa672+up9+xWQCTkT/YUyyGohIY98MaH0vkv8wcbmv/HIcX7fT7Zfy+fUiaVtl2gz6aHWdxnOSEn7ZSR9pt6egnQ3UzhjNxVLL3Gf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeRu4Boo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A92C19421;
-	Wed,  8 Apr 2026 18:42:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ui3tSXKNBVEtd59Z4HkzAL8bSRsKjtdzXYIcG0ok7HqdBERDlELcs7u3bd86Mvd7ajeyNFcEIySaFqL2C9aI/oKhLJDq8o0jQmedKpbQZnl/O8GmPLEOLaMrDQkgCFNGmIN3ugGz68ZN7o6YmUeyK8U2fJ6CNkd6hPhgR/4JO5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSH3k3ps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83F6C19421;
+	Wed,  8 Apr 2026 18:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673779;
-	bh=jp7TgvDWYxIB8I+BxH1vDJFFjieO9HX2Ht7VZ9y0JaM=;
+	s=korg; t=1775674515;
+	bh=3iU2INjtiSkTHHhiloX+pBIQ0BdhqltsrXz3WDAeiiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeRu4Bootov6hvjy/pVz3Rr6Gy4VKeGorxk0PkpZ6zObD237x4WHXAOIOIJJDFEb7
-	 9W2W/CeTzH5Kk4Ubg8HyJYeoLSiI5zUqPRbX8sC+wAG+RoPYkSGLiKxxI/mAaTsT+t
-	 zLEW+9nvoYTg1fE0NLUTX8lnmNe7xRWQitvtiRpg=
+	b=HSH3k3psQQWfYNEDc8IGAOeFRl0VQDU6wBj5K4XROl7Fcfhs0HlfEismysqU5HfXq
+	 XZeuy1sslJKEIZMMWf5/Q338lCEJosEv8DQksDLowPHGhCG5eC+gURsXJHN4RGfOjr
+	 OtuBvKuYd6v1RemMQ8xxN6kVw/ytgZgv47IKLLfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2184232f07e3677fbaef@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/242] bpf: sockmap: Fix use-after-free of sk->sk_socket in sk_psock_verdict_data_ready().
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Maarten Lankhorst <dev@lankhorst.se>
+Subject: [PATCH 6.19 127/311] Revert "drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug"
 Date: Wed,  8 Apr 2026 20:02:07 +0200
-Message-ID: <20260408175930.340293431@linuxfoundation.org>
+Message-ID: <20260408175944.158495361@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,182 +64,210 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234794-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235079-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,2184232f07e3677fbaef];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,appspotmail.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: B501A3C1567
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,ffwll.ch:email,roeck-us.net:email,lankhorst.se:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8CC9E3C2091
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-[ Upstream commit ad8391d37f334ee73ba91926f8b4e4cf6d31ea04 ]
+commit 45ebe43ea00d6b9f5b3e0db9c35b8ca2a96b7e70 upstream.
 
-syzbot reported use-after-free of AF_UNIX socket's sk->sk_socket
-in sk_psock_verdict_data_ready(). [0]
+This reverts commit 6bee098b91417654703e17eb5c1822c6dfd0c01d.
 
-In unix_stream_sendmsg(), the peer socket's ->sk_data_ready() is
-called after dropping its unix_state_lock().
+Den 2026-03-25 kl. 22:11, skrev Simona Vetter:
+> On Wed, Mar 25, 2026 at 10:26:40AM -0700, Guenter Roeck wrote:
+>> Hi,
+>>
+>> On Fri, Mar 13, 2026 at 04:17:27PM +0100, Maarten Lankhorst wrote:
+>>> When trying to do a rather aggressive test of igt's "xe_module_load
+>>> --r reload" with a full desktop environment and game running I noticed
+>>> a few OOPSes when dereferencing freed pointers, related to
+>>> framebuffers and property blobs after the compositor exits.
+>>>
+>>> Solve this by guarding the freeing in drm_file with drm_dev_enter/exit,
+>>> and immediately put the references from struct drm_file objects during
+>>> drm_dev_unplug().
+>>>
+>>
+>> With this patch in v6.18.20, I get the warning backtraces below.
+>> The backtraces are gone with the patch reverted.
+>
+> Yeah, this needs to be reverted, reasoning below. Maarten, can you please
+> take care of that and feed the revert through the usual channels? I don't
+> think it's critical enough that we need to fast-track this into drm.git
+> directly.
+>
+> Quoting the patch here again:
+>
+>>  drivers/gpu/drm/drm_file.c        | 5 ++++-
+>>  drivers/gpu/drm/drm_mode_config.c | 9 ++++++---
+>>  2 files changed, 10 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
+>> index ec820686b3021..f52141f842a1f 100644
+>> --- a/drivers/gpu/drm/drm_file.c
+>> +++ b/drivers/gpu/drm/drm_file.c
+>> @@ -233,6 +233,7 @@ static void drm_events_release(struct drm_file *file_priv)
+>>  void drm_file_free(struct drm_file *file)
+>>  {
+>>  	struct drm_device *dev;
+>> +	int idx;
+>>
+>>  	if (!file)
+>>  		return;
+>> @@ -249,9 +250,11 @@ void drm_file_free(struct drm_file *file)
+>>
+>>  	drm_events_release(file);
+>>
+>> -	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
+>> +	if (drm_core_check_feature(dev, DRIVER_MODESET) &&
+>> +	    drm_dev_enter(dev, &idx)) {
+>
+> This is misplaced for two reasons:
+>
+> - Even if we'd want to guarantee that we hold a drm_dev_enter/exit
+>   reference during framebuffer teardown, we'd need to do this
+>   _consistently over all callsites. Not ad-hoc in just one place that a
+>   testcase hits. This also means kerneldoc updates of the relevant hooks
+>   and at least a bunch of acks from other driver people to document the
+>   consensus.
+>
+> - More importantly, this is driver responsibilities in general unless we
+>   have extremely good reasons to the contrary. Which means this must be
+>   placed in xe.
+>
+>>  		drm_fb_release(file);
+>>  		drm_property_destroy_user_blobs(dev, file);
+>> +		drm_dev_exit(idx);
+>>  	}
+>>
+>>  	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
+>> diff --git a/drivers/gpu/drm/drm_mode_config.c b/drivers/gpu/drm/drm_mode_config.c
+>> index 84ae8a23a3678..e349418978f79 100644
+>> --- a/drivers/gpu/drm/drm_mode_config.c
+>> +++ b/drivers/gpu/drm/drm_mode_config.c
+>> @@ -583,10 +583,13 @@ void drm_mode_config_cleanup(struct drm_device *dev)
+>>  	 */
+>>  	WARN_ON(!list_empty(&dev->mode_config.fb_list));
+>>  	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
+>> -		struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
+>> +		if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1) {
+>> +			struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
+>
+> This is also wrong:
+>
+> - Firstly, it's a completely independent bug, we do not smash two bugfixes
+>   into one patch.
+>
+> - Secondly, it's again a driver bug: drm_mode_cleanup must be called when
+>   the last drm_device reference disappears (hence the existence of
+>   drmm_mode_config_init), not when the driver gets unbound. The fact that
+>   this shows up in a callchain from a devres cleanup means the intel
+>   driver gets this wrong (like almost everyone else because historically
+>   we didn't know better).
+>
+>   If we don't follow this rule, then we get races with this code here
+>   running concurrently with drm_file fb cleanups, which just does not
+>   work. Review pointed that out, but then shrugged it off with a confused
+>   explanation:
+>
+>   https://lore.kernel.org/all/e61e64c796ccfb17ae673331a3df4b877bf42d82.camel@linux.intel.com/
+>
+>   Yes this also means a lot of the other drm_device teardown that drivers
+>   do happens way too early. There is a massive can of worms here of a
+>   magnitude that most likely is much, much bigger than what you can
+>   backport to stable kernels. Hotunplug is _hard_.
 
-Although the sender socket holds the peer's refcount, it does not
-prevent the peer's sock_orphan(), and the peer's sk_socket might
-be freed after one RCU grace period.
+Back to the drawing board, and fixing it in the intel display driver
+instead.
 
-Let's fetch the peer's sk->sk_socket and sk->sk_socket->ops under
-RCU in sk_psock_verdict_data_ready().
-
-[0]:
-BUG: KASAN: slab-use-after-free in sk_psock_verdict_data_ready+0xec/0x590 net/core/skmsg.c:1278
-Read of size 8 at addr ffff8880594da860 by task syz.4.1842/11013
-
-CPU: 1 UID: 0 PID: 11013 Comm: syz.4.1842 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xba/0x230 mm/kasan/report.c:482
- kasan_report+0x117/0x150 mm/kasan/report.c:595
- sk_psock_verdict_data_ready+0xec/0x590 net/core/skmsg.c:1278
- unix_stream_sendmsg+0x8a3/0xe80 net/unix/af_unix.c:2482
- sock_sendmsg_nosec net/socket.c:721 [inline]
- __sock_sendmsg net/socket.c:736 [inline]
- ____sys_sendmsg+0x972/0x9f0 net/socket.c:2585
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2639
- __sys_sendmsg net/socket.c:2671 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7facf899c819
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007facf9827028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007facf8c15fa0 RCX: 00007facf899c819
-RDX: 0000000000000000 RSI: 0000200000000500 RDI: 0000000000000004
-RBP: 00007facf8a32c91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007facf8c16038 R14: 00007facf8c15fa0 R15: 00007ffd41b01c78
- </TASK>
-
-Allocated by task 11013:
- kasan_save_stack mm/kasan/common.c:57 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
- unpoison_slab_object mm/kasan/common.c:340 [inline]
- __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:366
- kasan_slab_alloc include/linux/kasan.h:253 [inline]
- slab_post_alloc_hook mm/slub.c:4538 [inline]
- slab_alloc_node mm/slub.c:4866 [inline]
- kmem_cache_alloc_lru_noprof+0x2b8/0x640 mm/slub.c:4885
- sock_alloc_inode+0x28/0xc0 net/socket.c:316
- alloc_inode+0x6a/0x1b0 fs/inode.c:347
- new_inode_pseudo include/linux/fs.h:3003 [inline]
- sock_alloc net/socket.c:631 [inline]
- __sock_create+0x12d/0x9d0 net/socket.c:1562
- sock_create net/socket.c:1656 [inline]
- __sys_socketpair+0x1c4/0x560 net/socket.c:1803
- __do_sys_socketpair net/socket.c:1856 [inline]
- __se_sys_socketpair net/socket.c:1853 [inline]
- __x64_sys_socketpair+0x9b/0xb0 net/socket.c:1853
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 15:
- kasan_save_stack mm/kasan/common.c:57 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
- kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
- poison_slab_object mm/kasan/common.c:253 [inline]
- __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
- kasan_slab_free include/linux/kasan.h:235 [inline]
- slab_free_hook mm/slub.c:2685 [inline]
- slab_free mm/slub.c:6165 [inline]
- kmem_cache_free+0x187/0x630 mm/slub.c:6295
- rcu_do_batch kernel/rcu/tree.c:2617 [inline]
- rcu_core+0x7cd/0x1070 kernel/rcu/tree.c:2869
- handle_softirqs+0x22a/0x870 kernel/softirq.c:622
- run_ksoftirqd+0x36/0x60 kernel/softirq.c:1063
- smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x51e/0xb90 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Fixes: c63829182c37 ("af_unix: Implement ->psock_update_sk_prot()")
-Closes: https://lore.kernel.org/bpf/69cc6b9f.a70a0220.128fd0.004b.GAE@google.com/
-Reported-by: syzbot+2184232f07e3677fbaef@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260401005418.2452999-1-kuniyu@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 6bee098b9141 ("drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+Link: https://patch.msgid.link/20260326082217.39941-2-dev@lankhorst.se
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skmsg.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_file.c        |    5 +----
+ drivers/gpu/drm/drm_mode_config.c |    9 +++------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 6ece4eaecd489..2e89087b95c24 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1266,17 +1266,20 @@ static int sk_psock_verdict_recv(struct sock *sk, struct sk_buff *skb)
- 
- static void sk_psock_verdict_data_ready(struct sock *sk)
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -233,7 +233,6 @@ static void drm_events_release(struct dr
+ void drm_file_free(struct drm_file *file)
  {
--	struct socket *sock = sk->sk_socket;
--	const struct proto_ops *ops;
-+	const struct proto_ops *ops = NULL;
-+	struct socket *sock;
- 	int copied;
+ 	struct drm_device *dev;
+-	int idx;
  
- 	trace_sk_data_ready(sk);
- 
--	if (unlikely(!sock))
--		return;
--	ops = READ_ONCE(sock->ops);
-+	rcu_read_lock();
-+	sock = READ_ONCE(sk->sk_socket);
-+	if (likely(sock))
-+		ops = READ_ONCE(sock->ops);
-+	rcu_read_unlock();
- 	if (!ops || !ops->read_skb)
+ 	if (!file)
  		return;
-+
- 	copied = ops->read_skb(sk, sk_psock_verdict_recv);
- 	if (copied >= 0) {
- 		struct sk_psock *psock;
--- 
-2.53.0
-
+@@ -250,11 +249,9 @@ void drm_file_free(struct drm_file *file
+ 
+ 	drm_events_release(file);
+ 
+-	if (drm_core_check_feature(dev, DRIVER_MODESET) &&
+-	    drm_dev_enter(dev, &idx)) {
++	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
+ 		drm_fb_release(file);
+ 		drm_property_destroy_user_blobs(dev, file);
+-		drm_dev_exit(idx);
+ 	}
+ 
+ 	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
+--- a/drivers/gpu/drm/drm_mode_config.c
++++ b/drivers/gpu/drm/drm_mode_config.c
+@@ -577,13 +577,10 @@ void drm_mode_config_cleanup(struct drm_
+ 	 */
+ 	WARN_ON(!list_empty(&dev->mode_config.fb_list));
+ 	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
+-		if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1) {
+-			struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
++		struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
+ 
+-			drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
+-			drm_framebuffer_print_info(&p, 1, fb);
+-		}
+-		list_del_init(&fb->filp_head);
++		drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
++		drm_framebuffer_print_info(&p, 1, fb);
+ 		drm_framebuffer_free(&fb->base.refcount);
+ 	}
+ 
 
 
 
