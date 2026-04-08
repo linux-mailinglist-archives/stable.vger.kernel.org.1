@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMdmOU6d1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:14 +0200
+	id SH10Fmej1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E76E3C09DD
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDEC3C1B77
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5B2C30172F4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8645C30A6B7F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67613B960C;
-	Wed,  8 Apr 2026 18:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A5E3AF643;
+	Wed,  8 Apr 2026 18:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYuyES32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2i5+5mNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897973AA4E4;
-	Wed,  8 Apr 2026 18:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261BF26FA5A;
+	Wed,  8 Apr 2026 18:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672483; cv=none; b=Ups0w6EQyp1S+iwc9feT2FU2AFW9UkHg3FHIArSDbAVeL6Ik7fIkuKvWXUHeCIKbAQiJlAdPDQgoh0pzueBFZeNE1+3J/NCtet/L3dDJQTgrq85FodNG0w8k8RGtazIA97XrQ4V/0l6tjRTKlQBbxeMUd8I4SHNDkFhYh1rZY9Y=
+	t=1775673163; cv=none; b=ZG16X3PLvzg0I+bOqraP+ZGtxnTrYN5n/2djLy9j3fGkvvx2s51/wvOvBYBefKTSBdjJa7LKBfuwXfaSmZgDgnMlr2ej9dwmtT4ukoH6ZuYZmwgor4N9Z2KMc+v31YlytIu4BB/IUMkwVkGcCWlUxBZq882Y6hYuZ3ujAHUA+5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672483; c=relaxed/simple;
-	bh=wInYM72grT7XdYBGV1Hd0+k2/B+sX2ADMMnjqlfgSuw=;
+	s=arc-20240116; t=1775673163; c=relaxed/simple;
+	bh=r65fmGZdjwOiXdCeqveA/9T0G//zaSFC9O4IczDuROk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSQczIPBc3UY/VfyJF1j7cMZJzr9IGB9CkgHCZLBhC7FL7kqluRnsibD1RjHbKcP4HOBBIcKBGuAtCZmygI7UytTjpI1J9O7pkEOLWJWskk+EAk2vO9I2MFoDFCmokk+xn8xw3nVsBw4+Pb9e8qS75qB+aiQto3vQbvfAOD89iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYuyES32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20734C19421;
-	Wed,  8 Apr 2026 18:21:22 +0000 (UTC)
+	 MIME-Version; b=Z6aT3ygR13vHeqLaWZtw4bDNab4G0Kle0wfZUP0xVQlcVN7Uo6xdEon8vYa1Lv1NDjIQCqv4Hgt5gkwePAE+mbtUSqXw2/m+HUTm5YQiSfpEfEKBu49NkG8fW2+HNsW9ULB+T8Bz9PtEEAQCbT6rRYBwlb1FbRs5dx6VvhI1yrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2i5+5mNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B182EC19421;
+	Wed,  8 Apr 2026 18:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672483;
-	bh=wInYM72grT7XdYBGV1Hd0+k2/B+sX2ADMMnjqlfgSuw=;
+	s=korg; t=1775673163;
+	bh=r65fmGZdjwOiXdCeqveA/9T0G//zaSFC9O4IczDuROk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYuyES32/EZb7InKtAq1o9CEukXpToGCpv7i+DR9Fc98WOLpAWQc2Wtx6gcVUzLzK
-	 jsxnKtOwBz+nUUS/hilpsKJlHFNF8xHYmswZRvWzbAkP3wNTD5wuKoyNhQPWZaG3i5
-	 e0TmsnisMXc9DcmhVcufBhKvXjgw9eGDvTmydTj4=
+	b=2i5+5mNVBlpJkBiUjdRfWSun+S/fMWXE50ZUoC54OfYy7BNH6u/SxUlaADakwb8Si
+	 uIx5s9K4Xy+Etr+17vDYWQWZ0SQ6n2ANsOVtDhy1PliYplivMDddUiKpTmOr4djld+
+	 UpRq/4QDGMYvmp4TbALA5qHKUemzykwe0j5E2q8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vincent Chen <vincent.chen@sifive.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/160] ip6_tunnel: clear skb2->cb[] in ip4ip6_err()
+Subject: [PATCH 6.18 126/277] riscv: kgdb: fix several debug register assignment bugs
 Date: Wed,  8 Apr 2026 20:01:51 +0200
-Message-ID: <20260408175914.105629905@linuxfoundation.org>
+Message-ID: <20260408175938.580987328@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,89 +68,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,google.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234293-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234555-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1E76E3C09DD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sifive.com:email]
+X-Rspamd-Queue-Id: CEDEC3C1B77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Paul Walmsley <pjw@kernel.org>
 
-[ Upstream commit 2edfa31769a4add828a7e604b21cb82aaaa05925 ]
+[ Upstream commit 834911eb8eef2501485d819b4eabebadc25c3497 ]
 
-Oskar Kjos reported the following problem.
+Fix several bugs in the RISC-V kgdb implementation:
 
-ip4ip6_err() calls icmp_send() on a cloned skb whose cb[] was written
-by the IPv6 receive path as struct inet6_skb_parm. icmp_send() passes
-IPCB(skb2) to __ip_options_echo(), which interprets that cb[] region
-as struct inet_skb_parm (IPv4). The layouts differ: inet6_skb_parm.nhoff
-at offset 14 overlaps inet_skb_parm.opt.rr, producing a non-zero rr
-value. __ip_options_echo() then reads optlen from attacker-controlled
-packet data at sptr[rr+1] and copies that many bytes into dopt->__data,
-a fixed 40-byte stack buffer (IP_OPTIONS_DATA_FIXED_SIZE).
+- The element of dbg_reg_def[] that is supposed to pertain to the S1
+  register embeds instead the struct pt_regs offset of the A1
+  register.  Fix this to use the S1 register offset in struct pt_regs.
 
-To fix this we clear skb2->cb[], as suggested by Oskar Kjos.
+- The sleeping_thread_to_gdb_regs() function copies the value of the
+  S10 register into the gdb_regs[] array element meant for the S9
+  register, and copies the value of the S11 register into the array
+  element meant for the S10 register.  It also neglects to copy the
+  value of the S11 register.  Fix all of these issues.
 
-Also add minimal IPv4 header validation (version == 4, ihl >= 5).
-
-Fixes: c4d3efafcc93 ("[IPV6] IP6TUNNEL: Add support to IPv4 over IPv6 tunnel.")
-Reported-by: Oskar Kjos <oskar.kjos@hotmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326155138.2429480-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fe89bd2be8667 ("riscv: Add KGDB support")
+Cc: Vincent Chen <vincent.chen@sifive.com>
+Link: https://patch.msgid.link/fde376f8-bcfd-bfe4-e467-07d8f7608d05@kernel.org
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/riscv/kernel/kgdb.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 69cace90ece16..5a2583a82f974 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -601,11 +601,16 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	if (!skb2)
- 		return 0;
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 15fec5d1e6dec..0bf629204c76a 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -175,7 +175,7 @@ struct dbg_reg_def_t dbg_reg_def[DBG_MAX_REG_NUM] = {
+ 	{DBG_REG_T1, GDB_SIZEOF_REG, offsetof(struct pt_regs, t1)},
+ 	{DBG_REG_T2, GDB_SIZEOF_REG, offsetof(struct pt_regs, t2)},
+ 	{DBG_REG_FP, GDB_SIZEOF_REG, offsetof(struct pt_regs, s0)},
+-	{DBG_REG_S1, GDB_SIZEOF_REG, offsetof(struct pt_regs, a1)},
++	{DBG_REG_S1, GDB_SIZEOF_REG, offsetof(struct pt_regs, s1)},
+ 	{DBG_REG_A0, GDB_SIZEOF_REG, offsetof(struct pt_regs, a0)},
+ 	{DBG_REG_A1, GDB_SIZEOF_REG, offsetof(struct pt_regs, a1)},
+ 	{DBG_REG_A2, GDB_SIZEOF_REG, offsetof(struct pt_regs, a2)},
+@@ -244,8 +244,9 @@ sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *task)
+ 	gdb_regs[DBG_REG_S6_OFF] = task->thread.s[6];
+ 	gdb_regs[DBG_REG_S7_OFF] = task->thread.s[7];
+ 	gdb_regs[DBG_REG_S8_OFF] = task->thread.s[8];
+-	gdb_regs[DBG_REG_S9_OFF] = task->thread.s[10];
+-	gdb_regs[DBG_REG_S10_OFF] = task->thread.s[11];
++	gdb_regs[DBG_REG_S9_OFF] = task->thread.s[9];
++	gdb_regs[DBG_REG_S10_OFF] = task->thread.s[10];
++	gdb_regs[DBG_REG_S11_OFF] = task->thread.s[11];
+ 	gdb_regs[DBG_REG_EPC_OFF] = task->thread.ra;
+ }
  
-+	/* Remove debris left by IPv6 stack. */
-+	memset(IPCB(skb2), 0, sizeof(*IPCB(skb2)));
-+
- 	skb_dst_drop(skb2);
- 
- 	skb_pull(skb2, offset);
- 	skb_reset_network_header(skb2);
- 	eiph = ip_hdr(skb2);
-+	if (eiph->version != 4 || eiph->ihl < 5)
-+		goto out;
- 
- 	/* Try to guess incoming interface */
- 	rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL, eiph->saddr,
 -- 
 2.53.0
 
