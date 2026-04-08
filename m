@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEjHFvWi1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:21 +0200
+	id WESbJ6yj1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47F93C196D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A80B03C1C37
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C16D300696B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA2E330060B0
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4C33D3328;
-	Wed,  8 Apr 2026 18:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BBF3D9022;
+	Wed,  8 Apr 2026 18:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS9AajwU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNAhjSlv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B088E3859FE;
-	Wed,  8 Apr 2026 18:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA78A3D75C9;
+	Wed,  8 Apr 2026 18:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673039; cv=none; b=Cru77wx0ishvsDA3zCKPiFkY7LNPW3vFljuS7OwiojgVsCdaUeLQjVWj8b/ApuqM9UGt6CZ3+2m5pHFGM1ex9kZepbxhvWsstONzz/CVccX/iAlQ3rcqmRR4xpeZ8pkEkboCdwv8rXf7VM9I2FjAIkIo9E3gzd3BuQkrcHu/98M=
+	t=1775674268; cv=none; b=B8harbGp3+VTdlYujKhYnOZ7rImID93sKg+z+lAcgrMMRsEYBHO/1pJ8Iy/iHYKEBGXCZJdtpaI2FoAk2IXu5mMJXDs9PUqSH5Dh88Rm4Pk81Tg7A4h8H/B4GWdubHWINcs12bff3B5sl/nfdlXkmRJHm2+3g+58g3r/+77hLmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673039; c=relaxed/simple;
-	bh=eXxCyytGJBOUrAuDkOahyEKRK0cIa2CYMfbh3KscotU=;
+	s=arc-20240116; t=1775674268; c=relaxed/simple;
+	bh=N6pF9w4vPW6a/3GQd4PiSZExHtXYazbs29P/n9fHC/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjp+cVocgrvn/VFGfkvvuHUENd7XvWwBlOzeRizHoaLaJfTvBwvDpunTVcvdqlOBKd22rnPEIHo0SnPPZIe3ZcRqkC4CVsrGf/sbWpE+hgORiVmG0AMb9RjzHc1yqHERL4j+rm6MI34IOUzPs3RPQbnghfZh8vgyAsInhbvAp1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS9AajwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0040BC19421;
-	Wed,  8 Apr 2026 18:30:38 +0000 (UTC)
+	 MIME-Version; b=I4AnAd+Jy1YQNZsULZaaznsNyuHQ+fSxBmFaJglmQBU2hYNiDbHiOOkQcK5ByrewllQ/+th2Zu+DZ+WLqvfQmsA5QldgzT0A0/tabnioNOdk+GLhx3SOSsszud1GNOGrkIY0BlXuYzMDYBO2RZ32aMoWe/jI4n4amMwJMjz+zt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNAhjSlv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805B7C19421;
+	Wed,  8 Apr 2026 18:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673039;
-	bh=eXxCyytGJBOUrAuDkOahyEKRK0cIa2CYMfbh3KscotU=;
+	s=korg; t=1775674267;
+	bh=N6pF9w4vPW6a/3GQd4PiSZExHtXYazbs29P/n9fHC/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sS9AajwU7Q3kum+aHaIkkAYaD5G3m8HQTSLjc0k/iSzqydzEmCI3rFFSeBo3h/Mad
-	 vADfjA349ZqhSdJyLipQIS8u6ufMUx6EZLMqMfrUO7xltzHrRhTizuYJSvGON3dmyY
-	 wowpGpsiuh/vGEwwcCh27mxJlYDZLNPTmcrwrMs4=
+	b=ZNAhjSlvsb1+aWrnM4IlGOWK9eauzG8OI+vcXTq+nc9i0Q2aIbmcmR6n1wL9sK+5N
+	 frpXGFEqs1jP9htABEY5uVNnjMasaWj70I8OA9AU85vWbjKvSB6dwlQhdH8g3OKtBY
+	 /GzaU5wkbyHq3Bw/Jw7g4qXhIGLsgANdc+N4xlo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dag Smedberg <dag@dsmedberg.se>,
-	Takashi Iwai <tiwai@suse.de>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/277] ALSA: usb-audio: Exclude Scarlett Solo 1st Gen from SKIP_IFACE_SETUP
+Subject: [PATCH 6.19 030/311] wifi: iwlwifi: mvm: dont send a 6E related command when not supported
 Date: Wed,  8 Apr 2026 20:00:30 +0200
-Message-ID: <20260408175935.539684950@linuxfoundation.org>
+Message-ID: <20260408175940.540688436@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +69,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234983-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234507-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
-X-Rspamd-Queue-Id: B47F93C196D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: A80B03C1C37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dag Smedberg <dag@dsmedberg.se>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit f025ac8c698ac7d29eb3b5025bcdaf7ad675785d ]
+[ Upstream commit 323156c3541e23da7e582008a7ac30cd51b60acd ]
 
-Same issue that the Scarlett 2i2 1st Gen had:
-QUIRK_FLAG_SKIP_IFACE_SETUP causes distorted audio on the
-Scarlett Solo 1st Gen (1235:801c).
+MCC_ALLOWED_AP_TYPE_CMD is related to 6E support. Do not send it if the
+device doesn't support 6E.
+Apparently, the firmware is mistakenly advertising support for this
+command even on AX201 which does not support 6E and then the firmware
+crashes.
 
-Fixes: 38c322068a26 ("ALSA: usb-audio: Add QUIRK_FLAG_SKIP_IFACE_SETUP")
-Reported-by: Dag Smedberg <dag@dsmedberg.se>
-Tested-by: Dag Smedberg <dag@dsmedberg.se>
-Signed-off-by: Dag Smedberg <dag@dsmedberg.se>
-Link: https://patch.msgid.link/20260329170420.4122-1-dag@dsmedberg.se
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 0d2fc8821a7d ("wifi: iwlwifi: nvm: parse the VLP/AFC bit from regulatory")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220804
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260324113316.e171f0163f2a.I0c444d1f82d1773054e7ffc391ad49697d58f44e@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 45d0e1364dd98..2c01412a225ef 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2424,6 +2424,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_VALIDATE_RATES),
- 	DEVICE_FLG(0x1235, 0x8006, 0), /* Focusrite Scarlett 2i2 1st Gen */
- 	DEVICE_FLG(0x1235, 0x800a, 0), /* Focusrite Scarlett 2i4 1st Gen */
-+	DEVICE_FLG(0x1235, 0x801c, 0), /* Focusrite Scarlett Solo 1st Gen */
- 	VENDOR_FLG(0x1235, /* Focusrite Novation */
- 		   QUIRK_FLAG_SKIP_IFACE_SETUP),
- 	VENDOR_FLG(0x1511, /* AURALiC */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index edae13755ee61..b9c9ee30272ec 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -470,7 +470,8 @@ static void iwl_mvm_uats_init(struct iwl_mvm *mvm)
+ 		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
+ 	};
+ 
+-	if (mvm->trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210) {
++	if (mvm->trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210 ||
++	    !mvm->trans->cfg->uhb_supported) {
+ 		IWL_DEBUG_RADIO(mvm, "UATS feature is not supported\n");
+ 		return;
+ 	}
 -- 
 2.53.0
 
