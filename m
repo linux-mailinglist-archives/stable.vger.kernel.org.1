@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-234412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHgvHOid1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:48 +0200
+	id 8HDlIsaj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A8D3C0B9E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39A93C1C82
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2427B3026CFA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26EB030C0C9A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5377B3A16A0;
-	Wed,  8 Apr 2026 18:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6792727F3;
+	Wed,  8 Apr 2026 18:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvRtkjaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjVhHNVN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172A2324B1F;
-	Wed,  8 Apr 2026 18:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4673D9045;
+	Wed,  8 Apr 2026 18:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672791; cv=none; b=pXh26O+QpD3WPeR3U0DzUrsBdbmIDEEmkqy9hxjEakOW9ZMliiNrlvkUt9APFRYSgAxKqvEF7wCQfmcp6Yibdb3xUk9hN7rNU3hTNfHmk5BS7JNz1w3LGI5bomtw1snlXTOoN5n4wtjm+I0DY1KfJcTo7Sh2PIysPTQifMKdRV4=
+	t=1775674053; cv=none; b=UyfNP11hDqTM6ROy2CriQewIyFnFIG397rELzCbaCwXYN/0m1C41yMH0c2VgKV5kGrQOkUF6vFWKyEVOeJ0N9XRf/K6P2o6yScm9sYo3B/4eI3UYkLM4Jhzpz7zGaqn620oNJ3d860F3StU5Caf/aT2HsSzgUqjRcZpLGC17Ahw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672791; c=relaxed/simple;
-	bh=QV3iNBlDcw89yyORDOI0NFglyby/RW7RidZ8jU+O3EM=;
+	s=arc-20240116; t=1775674053; c=relaxed/simple;
+	bh=93dpg5cp61tdsQr6kmyR7HTvIe0H/OGTUixFpt0Nfik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ch+BOhB8fPIqOhocwvnXjUaTpst7+tDDKTkj0OaRHL5n4c5WPWpVLkAOAgTjcalQsoEZ5SSXanMpmZC6vW7n9Q33o/Rt/+VUy738rHrfGQfFAsc6I62SokHQamQNBvV6FKzF1XDekNx4rzNniCkV6a7b7ON1vnRMLrAk8CoA6yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvRtkjaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B9EC19421;
-	Wed,  8 Apr 2026 18:26:30 +0000 (UTC)
+	 MIME-Version; b=rXakIBvXCSqZvDYorSeXwLNuZPjMWfOHykUX1hXPwsk9TraJt2+dbPxm7S8A8a0vKVEnnIQp9ft/zXlHMHz7+s2CiFygUjoQ2dHOWKUp9E0fZhWj0EEBVssxiMHWyFFWf5lngU82Zr4R8GIHgct76NGjIml4tNBeNzNQHkGaz7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjVhHNVN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD35C2BC9E;
+	Wed,  8 Apr 2026 18:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672791;
-	bh=QV3iNBlDcw89yyORDOI0NFglyby/RW7RidZ8jU+O3EM=;
+	s=korg; t=1775674053;
+	bh=93dpg5cp61tdsQr6kmyR7HTvIe0H/OGTUixFpt0Nfik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvRtkjaKzCW9aC5NnK3Q7qoWtlLj+WsHPd7+FtH1K65tLq1Mpl2A6ON836XGtNimg
-	 fOkTGAyt775yDr2nVvaRrB/BP06ENvDgkbFs1F0+ujAwQjwqWePCGkH8vdOYpG+Y8F
-	 TXCusMtezyoU5ElmpEPIdqvT20rPFmE6Ux0shG14=
+	b=vjVhHNVNX/LF7BkZGTlbkr/1rtSiy9BfT/25J0lyMfNGAP0wbnnWCXXwgT9eOFcB6
+	 /V2XLEbRFFlSicmfue8et4OBXfI1zlBKqiL69Uc3p1bAr0kLRb2lkYav8wRC8q3tH1
+	 b4Ie1ppf4k1mc+Yo0CUFGM5z0xX+ocNUelu6nyEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.6 144/160] usb: gadget: f_subset: Fix unbalanced refcnt in geth_free
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>
+Subject: [PATCH 6.12 191/242] thermal: core: Fix thermal zone device registration error path
 Date: Wed,  8 Apr 2026 20:03:51 +0200
-Message-ID: <20260408175918.569509260@linuxfoundation.org>
+Message-ID: <20260408175934.233619372@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +67,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234412-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234900-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 54A8D3C0B9E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email,arm.com:email]
+X-Rspamd-Queue-Id: F39A93C1C82
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit caa27923aacd8a5869207842f2ab1657c6c0c7bc upstream.
+commit 9e07e3b81807edd356e1f794cffa00a428eff443 upstream.
 
-geth_alloc() increments the reference count, but geth_free() fails to
-decrement it. This prevents the configuration of attributes via configfs
-after unlinking the function.
+If thermal_zone_device_register_with_trips() fails after registering
+a thermal zone device, it needs to wait for the tz->removal completion
+like thermal_zone_device_unregister(), in case user space has managed
+to take a reference to the thermal zone device's kobject, in which case
+thermal_release() may not be called by the error path itself and tz may
+be freed prematurely.
 
-Decrement the reference count in geth_free() to ensure proper cleanup.
+Add the missing wait_for_completion() call to the thermal zone device
+registration error path.
 
-Fixes: 02832e56f88a ("usb: gadget: f_subset: add configfs support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-1-4886b578161b@google.com
+Fixes: 04e6ccfc93c5 ("thermal: core: Fix NULL pointer dereference in zone registration error path")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: All applicable <stable@vger.kernel.org>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/2849815.mvXUDI8C0e@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_subset.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/thermal/thermal_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_subset.c
-+++ b/drivers/usb/gadget/function/f_subset.c
-@@ -6,6 +6,7 @@
-  * Copyright (C) 2008 Nokia Corporation
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/slab.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -449,8 +450,13 @@ static struct usb_function_instance *get
- static void geth_free(struct usb_function *f)
- {
- 	struct f_gether *eth;
-+	struct f_gether_opts *opts;
-+
-+	opts = container_of(f->fi, struct f_gether_opts, func_inst);
- 
- 	eth = func_to_geth(f);
-+	scoped_guard(mutex, &opts->lock)
-+		opts->refcnt--;
- 	kfree(eth);
- }
- 
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -1543,6 +1543,7 @@ unregister:
+ 	device_del(&tz->device);
+ release_device:
+ 	put_device(&tz->device);
++	wait_for_completion(&tz->removal);
+ remove_id:
+ 	ida_free(&thermal_tz_ida, id);
+ free_tzp:
 
 
 
