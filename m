@@ -1,190 +1,307 @@
-Return-Path: <stable+bounces-233823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPZoLw8b1mkxBAgAu9opvQ
-	(envelope-from <stable+bounces-233823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 11:08:31 +0200
+	id aKQ3AsIe1mluBAgAu9opvQ
+	(envelope-from <stable+bounces-233824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 11:24:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C3A3B99BA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 11:08:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AAA3B9D45
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 11:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 304F9300A114
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 09:04:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F7E2300B85C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 09:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C3935A933;
-	Wed,  8 Apr 2026 09:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D3038D01F;
+	Wed,  8 Apr 2026 09:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f+JLbXuC"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="jtQvqYyH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11021134.outbound.protection.outlook.com [40.107.208.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1F61C84A6
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 09:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775639070; cv=none; b=q7lpqM7YQomaDePII6dyr9Bn2MfkvfibXi3FBOGKJSA9CJROnRSzlRbTl9DAZubrx/XTOAR6pGe1ouSMihuFGEo2kjHnZygem36FIHWIai7NXFUjJaRYZDNL7pKuP4vjf8fTyd9iX8EDYdcIajGhmuF+hiRxUHQHHmEv9dxfAP8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775639070; c=relaxed/simple;
-	bh=Hf4AR3X4Jku554EJUXICua7KBz3Q+mG+2x5b5uP4zas=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MAaAWUrbWj93Oi+p/a6+vT7nii4GPfvsNYDYoia0QF4eyXZ6yMKpT26nexpM1WI4xHh4j2/4+l5fU3bcHPvTB3QYCpO11rb3EQxwHzJUOiOEdzRxwm4Hs6+3mZai+yvDENkPrBIIauIR+FtnmKIFazqKu2TxnDIdeDng9LELik0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f+JLbXuC; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488a88aeec9so47509135e9.2
-        for <stable@vger.kernel.org>; Wed, 08 Apr 2026 02:04:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775639067; x=1776243867; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yONtgHo/ibMHxFcK/bkUiwx1+imCGkUo9ttALQtsF3Q=;
-        b=f+JLbXuC/V2vybscXDYltvTI5ZVN1O/sSocegcp4ASbLfA8FJovF5cHnHzeVRD/+V7
-         aWNM7d85TShyZKGcg0Crz+nuZgoGp+CoJInVp2BuJjUIP8f+H/NGFpNh6v4qEM0r82Yt
-         C/b9ewPpTyKysofS6RBP741nMvAJIiScUSE6QD0zwJNLtsEsir6sT6ontCUK/kcA8ic5
-         TpErIHv8Gcxr+vhX5WA7i2O2stKmKsn2876J1EsrjVR8zsUhum3p8sthPsdj/b2D52CF
-         FT6DxxdAvP+SjJa9gALBtS0ey36wSBj1i/C2kBzIkFUwRsZ/ohfdeNNYP9jkS+P/CvJl
-         MrWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775639067; x=1776243867;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yONtgHo/ibMHxFcK/bkUiwx1+imCGkUo9ttALQtsF3Q=;
-        b=PsfjP6D1PL9lxyHZuKkR5JDR2EUfTHZc+ZZb28RONlP4GiBGnz/aN3dBlUhqa1MtDI
-         bb1xJp1JuWcxd24eEG95/HiahVaOSoT7T+x3klAYwXVEJFDHHaloB9mr4j5jEfYyBAjB
-         Y8JphDSI2tscLdPWs49/rkYcG1mzbBc5xfQHD+C7TK2IY3yxJiYEClyK4iuZ2EzrY+68
-         QiIzHdeSFHxqPQsRZSO48Dorp8CJBlHHBF62UoQ+4t9dhEIS/ByYLfX9X7mibJn2MAuU
-         /C/NLlE2nqsXPNQK7jRnhqIFH4dp058LdW5VWSihWkhFq9nL0b+yuVXvOPc6rrXuc7mX
-         riJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVYGIW4vQSUqRdbcl17XXu/IUugIptjV5pwasKD34xadY7Zd4DigVGKNiT5+qPSLTSjh9WRCSw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyH3UTUVcagVRBy1UuHlDmsUcacF+fRE0vBpv1VrNTNP6rsPesk
-	jqCgqNueq4bLzIbr4dXBJ3eKruvuFAi9B7H5sdLA+XgN5o88i6VPnrfp
-X-Gm-Gg: AeBDiesx2Iioxm2uWFjPWr7lEZ1CE0pWH78X00ss6fhvGXhbX1F57YpMlcud/MG8Etq
-	/DqgGErsdYfb/Xn//ylYjk9zRzHe17IQuRDoA7ZJmlx6eNyaEvZl9tM/RTW6Mrzwqwm+VzlBeEi
-	TckBPv5OOuPhsMY9Gy9IihPET5Waa+x23IoMe2hbRBS0Bz+XXMqcbJ9npdujZlUlqG2CuINW6oV
-	lRJ5jWww7lUePCEo0u8kQoq+isK1Rs4bINoi/6nncHPgxsZoWumVST3Rs86PsrBagI99e2yYHcg
-	ino0fZEQaQjt2BJnVdhtjslAzY4BbWPqj3NEpVLobuK0v9s9ZKdOBsBsy0APv7l594Afm/nYb+p
-	nz7v/eXV3kOIazV3ckycfRo7STPaUepmPmrDWIrWCFj7qHjHvwa39kyTw1/R1KrvPkMY2gc9/+5
-	FX/f5KYR5p2f7wECabY5tqKqdwbFGIIF5zos5NF2mgeBBzjD7r2CyKq/iMfuuFo4fVcD8kwj9NE
-	iE=
-X-Received: by 2002:a05:600c:8b46:b0:485:4006:960c with SMTP id 5b1f17b1804b1-4889978e22emr291042355e9.16.1775639066900;
-        Wed, 08 Apr 2026 02:04:26 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c555def8sm16296545e9.13.2026.04.08.02.04.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 02:04:26 -0700 (PDT)
-Date: Wed, 8 Apr 2026 10:04:25 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Tamir Duberstein
- <tamird@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky
- <senozhatsky@chromium.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] printf: mark errptr() noinline
-Message-ID: <20260408100425.7231966a@pumpkin>
-In-Reply-To: <adYCyvTlIoTdnKcL@pathway.suse.cz>
-References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
-	<20260406111531.779571d7@gandalf.local.home>
-	<CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
-	<20260406123232.3dacbe94@gandalf.local.home>
-	<20260407160809.48d5fe2a@pumpkin>
-	<adYCyvTlIoTdnKcL@pathway.suse.cz>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7235D2C027B;
+	Wed,  8 Apr 2026 09:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775640249; cv=fail; b=AWDi4sGYNtUXZkL26vHa9rpTzws0DKu3WKjE9VGYz/FVCcXF67MQAwBo8zQ+eGQ+0VLCCsYQIc/FZ28VY4LMVA8eJ9uHDNuHWW/1gIy0IeXdD1f2sdsTwlolST3t9qJVbcdCmkVw7h8TSLlu5F35fewy7Cynm5+qzUH+Zq1fUdc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775640249; c=relaxed/simple;
+	bh=BQQbgl7cuJ8vSaR5yXX71HXraCZIyrOcuS4aVFA0DlQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=U+PtuhM1MvTz3BZQmy91ySfvCXzJQvpdhhU6nbT8O7068QDokHCaxDIHuLoCDrffIWmCxbA9i5k4XnMAxGIaUrohp37oZ548qlPEC8ataMvAR690NFt17z3fS6ae0Cgc3EBBJZ43zISgcuW4Yldhmx7jsOD2thTKVBuPL1OZn7Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=jtQvqYyH; arc=fail smtp.client-ip=40.107.208.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F94x5DC9D7l/xQGe6gP/mhB21fkHP+TQPok6W8yaayHPk5QwD0wfSPzovBIsQ7cJ/U0R/mzdWcCnqK+qUkf+D/CrRO0RT2zTNrrbqc/WOODb277c/Tlvoa7UArqUPuabu+GDaH0+5kYE9vA7RsxLUx9AyT3jbVTMFcWqqKkxFUOxd864mwbBDXNBByUZVU7NMOz/fl+a6irK33X8Bl5bBkBhhVCu78pDUtLb+72Qx9cwrLTy7nI0J51oOk3ZbdMI9+ddeWpnfnI0Eq9drJd5CKequTF+3GZPckDqSr6uns4lHCD/8Xa39eq4wOic38umZhmv+48Ve0SfwJ5uGEavAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oQBrZljt7aRXwzN9db6mwZI8sQpBlE2Mw2X1kOGZdbw=;
+ b=bxjsr1DTf+ArGRAEj9KBkarnsS6wb2pcHG9S6d6GJAI0ISVSdjYEJApPftOqyuhNxJY5H5NUtfx0lx0xgGZOvhmEFEGuBdDubfkRUbKxJu8lvBEuu5YMNxEFaytsrll5Rb3Rm7O6LLKTMTyRgzAAFo+fMxMViZmhf5uYurLqT/KZeWM6p6+ccDfIg7XIUrTFhtuBMR+A8nk1UrN7apzYCgYDFAQqLkaXeF971RDpkI5w3maR1105XQg8Ux0rSCXBv+MT0LlB6tpM6FOB9LUAfVows/gbGPuiPVEggNaxPugN3iUS1T4HpQx0BbcjnlfmLFMXChveCXaJeFKE2lxXHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oQBrZljt7aRXwzN9db6mwZI8sQpBlE2Mw2X1kOGZdbw=;
+ b=jtQvqYyH9wlsR0BZyS9RuVyxOSWQMKX//5cVdnZn+BBgRPKAr7X4Ep+ftDHP6uD4v2jhhM2659YfPo+pm7yc+9T9UlsNRigzJRCyHJL+10fbJTtKFiJHA4Wcr2fFR4j+FYniNbVdV0RfkcfQp1D0xUeQceqKfzzHGw6V+xzdb1w=
+Received: from SA1PR21MB6921.namprd21.prod.outlook.com (2603:10b6:806:4a7::11)
+ by SA1PR21MB6584.namprd21.prod.outlook.com (2603:10b6:806:4a3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.34; Wed, 8 Apr
+ 2026 09:24:05 +0000
+Received: from SA1PR21MB6921.namprd21.prod.outlook.com
+ ([fe80::51cf:497c:e5df:f6d]) by SA1PR21MB6921.namprd21.prod.outlook.com
+ ([fe80::51cf:497c:e5df:f6d%2]) with mapi id 15.20.9769.014; Wed, 8 Apr 2026
+ 09:24:05 +0000
+From: Dexuan Cui <DECUI@microsoft.com>
+To: Michael Kelley <mhklinux@outlook.com>, KY Srinivasan <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, "wei.liu@kernel.org"
+	<wei.liu@kernel.org>, Long Li <longli@microsoft.com>, "lpieralisi@kernel.org"
+	<lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"mani@kernel.org" <mani@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>, Jake Oshins
+	<jakeo@microsoft.com>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "matthew.ruffell@canonical.com"
+	<matthew.ruffell@canonical.com>, "kjlx@templeofstupid.com"
+	<kjlx@templeofstupid.com>
+CC: Krister Johansen <johansen@templeofstupid.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH v2] PCI: hv: Allocate MMIO from above 4GB for the config
+ window
+Thread-Topic: [PATCH v2] PCI: hv: Allocate MMIO from above 4GB for the config
+ window
+Thread-Index: AQHcwvqZ7/kLR2JkdUmudlv9HY41bLXRHh0QgAOgeDA=
+Date: Wed, 8 Apr 2026 09:24:05 +0000
+Message-ID:
+ <SA1PR21MB69215C164B06109C6682984EBF5BA@SA1PR21MB6921.namprd21.prod.outlook.com>
+References: <20260402234313.2490779-1-decui@microsoft.com>
+ <SN6PR02MB415794E53D2B621F6A8BA382D45CA@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To:
+ <SN6PR02MB415794E53D2B621F6A8BA382D45CA@SN6PR02MB4157.namprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=8081b72c-a943-4099-8407-b0c722844253;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-04-08T06:38:12Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR21MB6921:EE_|SA1PR21MB6584:EE_
+x-ms-office365-filtering-correlation-id: ebc7f554-ad5b-4acc-778a-08de9550946e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020|38070700021|22082099003|18002099003|56012099003;
+x-microsoft-antispam-message-info:
+ 5HIsaWU6h2QcByCAv18YXwi4DXaU0ZRSXb5DA5p57N+WJDu27n6stAENgrCfyRXG5RrLuxHbd529NO92jm5VjAU0FWWQ/xXub+CaMOLLbbLKZ/aJs6nereekX2st/2Nu6WgyQ71wX+2tArMEx2zc1YwcoQA3yEb97rtUCup1GsCKSHNvHA6KZkkdpMX55jeAw95gIF1J8LfUI78eqkU/GnrQQPfYOQ+DhCn9JMjMDJdCUSmpcNb9UCq/8h8xVoE+RQMbWqdJhCzh3Ee/WTL9PvOr5z5cL7EGxKvlqeJtrBTpoAV3f8QOYgqGpm+1XT2QqnVUGrrBClXiyEif0djv/5B0Q7z8545g7SJ0qGXXlsYigPE4tiYd9LkXJ1DIkaud2uAYhLLdEK/W1fPPhNkWIT7HmF8o3QHvqGUGIHJ1YTJzRT6VaWD55XrogQl3uAi3I8fiEfwUGRLL7gwS4cOEArfgHGbonY/Y4EslS5JBqF/3iVwBvbZE5ozuU8RIHEFJZ0E0eLFHv8mv+0ZmglLw5s99QF1XetmIghMtlgko1lKhevqy965LGdG9+2ffRqXFcLxusmydi7e6ousNHLmTLe3lzuP9sGNQhysj2hudoF0GehRidd0H+AiqvvqGe5oWZNDiG5G2ziwFnlPMCs0qg9uytIljxIfR/HIqTqBgNJdbHxHvF98m1NmSqWr0jGZNXmF7C7r+r+7nDS1FyEsURTj3HxNjOpMFoDlSsfO8JKheVtRQtj6BMQ8k9lQNR7iVG9WwOWMqJtiA+Rw/bOGwloq2GEqepJNk2sB9bJG6CWfqYvwbjHN/80X4FSLm0S55
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6921.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020)(38070700021)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?iN+gotDcZLOMwo/ZfYB29gkdb4co7HKL9MTGHy9BCTHllKX2gapY+ke+z+Xl?=
+ =?us-ascii?Q?fmoVzQ96zz0E65eBP9D5CjJKaf0ecCTDxDOK/F+7GsW2gPgMRVc0MBx+NNl+?=
+ =?us-ascii?Q?2pX8hzoTHiSwpZKNVfjrUOR0ofTiZ4w68WbX0A80w1tPu3cEbArM0l8PjXUJ?=
+ =?us-ascii?Q?oLO/Ry72Lmbc9FL0k09vOWUrMK5/6swl1yYAO3XWInulV7h53yrjpj84Neja?=
+ =?us-ascii?Q?V7xavuilFmzg4Ziz071a54wUQXs6TgyDhQWGer7QyCwd/fop10SVY91zl1HR?=
+ =?us-ascii?Q?oEl+abpEnkGcYl0kcyYKV5mJfUrVDcjuzciNEu967QCjYD3klDV+bdfO/eJC?=
+ =?us-ascii?Q?ORjG7hNS+oHMAg/Q5AXodZBHKaL8Y7bBvhcjoLvA+bu8bkhGQ7rAlUvisd9d?=
+ =?us-ascii?Q?/drUsQvosIK2Xgsi4E3VKxBibs2zFbcpMnxE+O/pF9zUyzx09Nl6Z4mXPtBP?=
+ =?us-ascii?Q?xh51d1cDPGC1eI1HmH+db2JeLmIg2fjHSufEAb5PLo+g8VT++ifIm3kgsaAe?=
+ =?us-ascii?Q?lXezEAsfzQ+22m2ofjQ9CXyQo/Uxew7f5ErnceZmn16IzN5YWfRTWFYm3Svb?=
+ =?us-ascii?Q?sdmEC195DLA0/CcJAVNLyYxsQ/YsBUk0FLnE8GZpWNbcOirDb11hzeSKAWfv?=
+ =?us-ascii?Q?fv7mmIu4CeiQhDFtl0lmodU0pgReKOHd9bS6h2E6itZ8vrSLsa0Ix2RKAdYn?=
+ =?us-ascii?Q?ldSfdlJanMq6pu7BXq2/CzWC5Z8X1hlqwY6ZQr7nF3byGLTq+ChihuOpgmcP?=
+ =?us-ascii?Q?TInFXgLJuORtOQE6i3cmddCSh+Zu5VD8UFLsS3gFqpz2bQeV0yNp7i5kzzs0?=
+ =?us-ascii?Q?c1MxEHsJ4Y5VknFZ4H6LHggcb00kuUWPI3GfqEkYPHaf29465nPkSFh2T8+m?=
+ =?us-ascii?Q?n6J0Dy6SSiPzU0nga4gv5PKr6fCMzBUIBf7XgvxCRKRNd+rWIKrkaxYengly?=
+ =?us-ascii?Q?eJivzPNqzBcmTX88i0lr4pPw+Wigb1ZXjJOqJBZageXRgvSbDSWUupsfiKJj?=
+ =?us-ascii?Q?kROKA5nurbiYcu8ZOyM1pEVdGy/XAaJqT5hNmJC6p0d67sbua3cDqh2ts0jF?=
+ =?us-ascii?Q?mbM3ySPZ+b2zkiA+6ym/seDBlM/JoxmZK/15XYENrVDvxRjw6CwqXGzmdqod?=
+ =?us-ascii?Q?ZSZLFeorEZYnnWv53SvWIBMgDITMps3rlQ8TL1jid/fvgKkTupQZ2h1XcoAZ?=
+ =?us-ascii?Q?qTDnjDVd05vvo9VuVWgzSbguZwNis+W/5wWf6fiMXMgDqx0oJhPcV3iJTJGY?=
+ =?us-ascii?Q?ukouL+SdrydS4cFJSqMdJ96G/hoHvEyLzPx0LP6sQX2rlJxnI6eEl3tPYQmJ?=
+ =?us-ascii?Q?Vxt18LCSqCQh1dOUfUG/vlMhXStFtn+wi31UapJ4aV+/CtGFYSl5M/XAKF2o?=
+ =?us-ascii?Q?8l/SyO8HMdf7U8ZAU9QRGYsOd+geELKWEOerifIHnz1NxtjWp+aoOCi5TMtz?=
+ =?us-ascii?Q?Y93EkQTSD9v0ELjwDfX8Ri3S1ZPQGFZx53w12Yk2FMMpl+4MPppq9sw9Ak1z?=
+ =?us-ascii?Q?vGIvJbdXivhZ2AXst90Mx4XShutyKMfJ+PhKbMcjv7b8tkHQNRvpIEpokIsR?=
+ =?us-ascii?Q?svnWrUcvkJtbhcBRla07GOpNIEfYAqUNp3TCwvRLObg0Hj1u/AAaoRTLHN5w?=
+ =?us-ascii?Q?eoSbuhel3+tuCvRMX8MIbtnRZYjPo7IYdnl+uY2QT9Dgo43DjgidYlF1/EB/?=
+ =?us-ascii?Q?fpyG2mgvLLpA720wkO10H6fs87KPOMYEVm2CYEmMmjr6pDKt?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6921.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebc7f554-ad5b-4acc-778a-08de9550946e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2026 09:24:05.3300
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YZUBYyBaPxFfEgHKV7Wg3CcVMNmKOHX1+lnZH/pBNLnS2bDkn2fU7+grTgnSLPrzJLnEQH6wSRIY6EbixGEcNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR21MB6584
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[microsoft.com,reject];
+	R_DKIM_ALLOW(-0.20)[microsoft.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233823-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233824-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com,microsoft.com,kernel.org,google.com,vger.kernel.org,canonical.com,templeofstupid.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[microsoft.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[DECUI@microsoft.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goodmis.org:email,suse.com:email]
-X-Rspamd-Queue-Id: 26C3A3B99BA
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 73AAA3B9D45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 8 Apr 2026 09:24:58 +0200
-Petr Mladek <pmladek@suse.com> wrote:
+> From: Michael Kelley <mhklinux@outlook.com>
+> Sent: Sunday, April 5, 2026 4:15 PM
+> > ...
+> > Note: we still need to figure out how to address the possible MMIO
+> > conflict between hyperv_drm and pci_hyperv in the case of 32-bit PCI
+> > MMIO BARs, but that's of low priority because all PCI devices available
+> > to a Linux VM on Azure or on a modern host should use 64-bit BARs and
+> > should not use 32-bit BARs -- I checked Mellanox VFs, MANA VFs, NVMe
+> > devices, and GPUs in Linux VMs on Azure, and found no 32-bit BARs.
+>=20
+> Just to clarify, since this patch is predicated on all BARs being 64-bit,
+> hv_pci_alloc_bridge_windows() never encounters a non-zero
+> hbus->low_mmio_space, and hence also never allocates from low
+> MMIO space. So hv_pci_alloc_bridge_windows() does not need to be
+> patched. Is that correct?
 
-> On Tue 2026-04-07 16:08:09, David Laight wrote:
-> > On Mon, 6 Apr 2026 12:32:32 -0400
-> > Steven Rostedt <rostedt@goodmis.org> wrote:
-> >   
-> > > On Mon, 6 Apr 2026 11:21:39 -0400
-> > > Tamir Duberstein <tamird@kernel.org> wrote:
-> > >   
-> > > > Thanks Steve. IMO that is a very big hammer and not warranted in this
-> > > > case. There's been talk of encouraging distros to enable CONFIG_KUNIT
-> > > > by default [0], which would probably interact poorly with the change
-> > > > you propose.
-> > > >     
-> > > 
-> > > Branch profiling is really just a niche that is enabled specifically for
-> > > seeing all branches taken in the kernel. It hooks to all "if" statements!
-> > > As you can imagine, it causes a rather large overhead in performance.
-> > > 
-> > > This option is only used by developers doing special analysis of their code
-> > > (namely me ;-).  
-> > 
-> > Is there any way to stop randconfig picking up options like these?
-> > It is rather a waste of brain-cycles trying to fix them.
-> > If you want the option to test a specific bit of code it is easy to
-> > hack/disable any problematic parts.
-> > 
-> > Even having the KASAN/KMSAN code compiled into allmodconfig is a PITA
-> > when you are trying to check that code compiles to something sensible.  
-> 
-> This does not look like a good idea. KASAN/KMSAN are very useful
-> features. People will want to keep them working. Removing them from
-> randconfig would just postpone detection of the problem. We would
-> need to deal with it sooner or later anyway.
+Correct. For 32-bit BARs (if any), IMO we can't really do anything for
+them in hv_pci_allocate_bridge_windows(), since they must reside
+below 4GB.
 
-True, but when I build an allmodconfig build to check how the asm looks
-I really don't want them.
-For the 'bot' builds you also want to know whether they are defined.
-Changes to how things are built rather than what is built can throw
-up unexpected warnings that are very hard to pin down.
+Note: while the patch doesn't fix the MMIO conflict if there are any
+32-bit BARs, the patch doesn't make things worse for 32-bit BARs (if any).
 
-It is bad enough finding things that affect one obscure architecture
-with a specific compiler version when the compiler just makes slightly
-different decisions, without having unusual compilation/config options
-is the mix to muddy the waters further.
+> Taking a broader view, fundamentally the current MMIO location of
+> the frame buffer may be unknown to the Linux guest. At the same time,
+> Linux must ensure that PCI devices don't get assigned to the MMIO space
+> where the frame buffer is located. While the current MMIO location of
+> the frame buffer may be unknown, we can assume it was placed in low
+> MMIO space by the host -- either Windows Hyper-V or Linux/VMM
+> in the root partition, and perhaps as mediated by a paravisor. Probably
+> need to confirm with the Linux-in-the-root partition team (and maybe
+> the OpenHCL team) that this assumption is true.=20
 
-	David
+IMO this is a good idea! It looks like the framebuffer base always starts
+at the beginning of the low MMIO space. We can reserve some
+MMIO for the framebuffer at the beginning of the low MMIO space.
 
-> 
-> Best Regards,
-> Petr
+> Presumably the
+> hyperv_drm driver doesn't need to move the frame buffer, but if it
+> does, it must stay in the low MMIO space.
 
+It looks like this assumption is true.
+
+> This patch depends on this assumption, and effectively reserves
+> the entire low MMIO space for the frame buffer.=20
+
+To make it precise, the patch reserves the entire low MMIO space for
+the frame buffer and the 32-bit BARs (if any), and there is no MMIO
+conflict in the first kernel (assuming hyperv_drm doesn't relocate the
+MMIO range), and there can be an MMIO conflict in the
+kdump/kexec kernel if there is any 32-bit BAR.
+
+> The low MMIO space
+> size defaults to 128 MiB on a local Hyper-V,=20
+Yes, by default, the low MMIO base =3D0xf800_0000, size=3D128MB,=20
+but the range [0xfed4_0000, 0xffff_ffff], whose size is 18.75MB,
+is reserved for vTPM: see vmbus_walk_resources(). So by default
+the available low MMIO size for hyperv_drm is 128 - 18.75 =3D=20
+109.25 MB.
+
+The size of the framebuffer should be aligned to 2MB, so if the
+framebuffer size is bigger than 108MB, it looks like there is no
+enough MMIO space in the low MMIO range, e.g. with the below
+command:
+Set-VMVideo -VMName vm_name -HorizontalResolution 7680
+-VerticalResolution 4320 -ResolutionType Maximum
+, the resulting max framebuffer size is=20
+7680 * 4320 * 32/8 /1024.0/1024 =3D 126.5625, which would be
+rounded up to 128MB.
+
+However, according to my testing, with the above command,
+the low MMIO base =3D 0xf000_0000, size=3D256MB, so it's probably
+ok to reserve 128 MB for the frame buffer.=20
+
+In case the low MMIO size is <=3D64MB, we would want to reserve
+less MMIO for the frame buffer.
+
+> and is set to 3 GiB in most
+> Azure VMs (or to 1 GiB in an Azure CVM), so that all gets reserved.
+>=20
+> A slightly different approach to the whole problem is to change
+> vmbus_reserve_fb(). If it is unable to get a non-zero "start" value, then
+> it should use the same assumption as above, and reserve a frame buffer
+> area starting at the lowest address in low MMIO space. The reserved size
+> could be the max possible frame buffer size, which I think is 64 MiB (?).
+
+It can be 128MB with the highest resolution 7680*4320 (I hope the
+highest resolution won't become bigger in the future).
+
+> This still leaves low MMIO space for subsequent PCI devices, and allows
+> 32-bit BARs to continue to work. This approach requires one further
+> assumption, which is that the host, plus any movement by hyperv_drm,
+> has kept the frame buffer at the low end of the low MMIO space. From
+> what I've seen, that assumption is reality -- the frame buffer always
+> starts at the beginning of low MMIO space.
+>=20
+> This approach could be taken one step further, where vmbus_reserve_fb()
+> *always* reserves 64 MiB starting at the low end of low MMIO space,
+> regardless of the value of "start". The messy code for getting "start"
+> could be dropped entirely, and the dependency on CONFIG_SYSFB goes
+> away. Or maybe still get the value of "start" and "size", and if non-zero
+> just do a sanity check that they are within the fixed 64 MiB reserved are=
+a.
+>=20
+> Thoughts? To me tweaking vmbus_reserve_fb() is a more
+> straightforward and explicit way to do the reserving, vs. modifying
+> the requested range in the Hyper-V PCI driver.=20
+
+Agreed. Let me try to make a new patch for review.
+
+> And FWIW, it avoids  introducing the 32-bit BAR limitation.
+
+This patch addresses the MMIO conflict for 64-bit BARs and not for
+32-bit BARs (if any). The patch does not introduce the 32-bit BAR limitatio=
+n.
+
+Thanks,
+-- Dexuan
 
