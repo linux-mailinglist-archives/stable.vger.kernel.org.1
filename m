@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-234520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OM9Fxej1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234520-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:55 +0200
+	id YFY0Myin1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD983C1A08
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 505FE3C2656
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACFDD31274BB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C25F3114CBF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BE63D411F;
-	Wed,  8 Apr 2026 18:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B0D3D522C;
+	Wed,  8 Apr 2026 18:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gl//wPOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="visbgo5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE1037F8CA;
-	Wed,  8 Apr 2026 18:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099BF32A3FD;
+	Wed,  8 Apr 2026 18:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673073; cv=none; b=F1+bRK+9Hvd4EYNuVCpRSGphgKCM6xZAtM4myp9ukjE1iaEWsBgGHPemLYRHCIuvVYE7mHdA892E8ZtDgXHLRhGXYVdu5HoJpBezAkD8o8FjBrCD0xthZtZQQw8+oqMWLqTaqVS7vIo684/Ud0s0SGX0k7/i71BPLueQcVJO0Ds=
+	t=1775673694; cv=none; b=RjjuH976+zW3pdOvd9RHRbOzqIQDowXrXlomuEqmuBj0suFN1AsA9oUjr1ZyWrfTbqObvSIitZdfROdaOszqjdNRWz7A8oU/kmk11eZGwFFzNvavbtheQPQZEUcJupS0LnW+FJ3kqzMV3J+VrszxOhFLr6EB8eOz+DiFVX4x8kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673073; c=relaxed/simple;
-	bh=D7EK64zlyUOJ+eFjjp10ej8pQkZwOwxJYBJM7BqUd5I=;
+	s=arc-20240116; t=1775673694; c=relaxed/simple;
+	bh=eOMQvtSnUz8VVuL3IkL/DPEp7vI4hovPeO77nPXgJXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V92KglXGTJtlDzdWtkqktOWhquMQSb2U1WLiCUYhQZt8Nd0hbRT2LEs6r6NkSESWB2lZB9UMFno17pcTehhjUo/DUxOXIBhSE80+6QIoTtXZQ6mMpriru4iWB2q+HOhaKgdV/TqgzVOhEvqt13SPi4TL8QlsKk8CyFqVdjfdrvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gl//wPOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0163C19421;
-	Wed,  8 Apr 2026 18:31:12 +0000 (UTC)
+	 MIME-Version; b=Hc1RZOsHF8ldVYyDm9lkfO2lPbI3J9IYkVMhk34vMEoMDqm6LrNYIzcY3dT9QQsaEBZlu1DOTOl7gz2bPb9zkJjgnXizrm8aobHp/ewQfrNyk+9AoEMPJhSPK9tr3aXJk8KOdrpO86FIOaCSV46syxSFJwURx9r0koJnmIp5emg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=visbgo5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E8BC19421;
+	Wed,  8 Apr 2026 18:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673073;
-	bh=D7EK64zlyUOJ+eFjjp10ej8pQkZwOwxJYBJM7BqUd5I=;
+	s=korg; t=1775673693;
+	bh=eOMQvtSnUz8VVuL3IkL/DPEp7vI4hovPeO77nPXgJXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gl//wPOf+kGE8rvyEwB4AY+oyjyS2Imks5emX2P7XjpW7qzXefsDIrRKe1JgLeCP3
-	 okd5hQyvWKUx8NYxsP0QKfWEg8oCo4VUNy+VuDnYf6g/o+inzAmbwmWu5x0tirI2JN
-	 naXfvG7KFZUpm2Mhm2UX9cB8/VDs/8w1udsAQKow=
+	b=visbgo5jkz2zohkH53wtkp15IJdlAZOigbBBFb5Zm2eNnmt4MmSsWW0EtkIZTINE5
+	 PFOw12X7QpOpsMma5wlgENq6B3RXouZOggG3OJZ9rX7PbWyQP6tWBY5x9QBlBGmrfF
+	 l1g/T+5RscYXvj/MyhunapKBsd9Mp64GPsDq+e3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 091/277] net/mlx5: Avoid "No data available" when FW version queries fail
+Subject: [PATCH 6.12 036/242] btrfs: reserve enough transaction items for qgroup ioctls
 Date: Wed,  8 Apr 2026 20:01:16 +0200
-Message-ID: <20260408175937.272694054@linuxfoundation.org>
+Message-ID: <20260408175928.423853185@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234520-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234761-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,187 +87,159 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: DBD983C1A08
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,test.sh:url,bur.io:email,qemu.org:url]
+X-Rspamd-Queue-Id: 505FE3C2656
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 10dc35f6a443d488f219d1a1e3fb8f8dac422070 ]
+[ Upstream commit f9a4e3015db1aeafbef407650eb8555445ca943e ]
 
-Avoid printing the misleading "kernel answers: No data available" devlink
-output when querying firmware or pending firmware version fails
-(e.g. MLX5 fw state errors / flash failures).
+Currently our qgroup ioctls don't reserve any space, they just do a
+transaction join, which does not reserve any space, neither for the quota
+tree updates nor for the delayed refs generated when updating the quota
+tree. The quota root uses the global block reserve, which is fine most of
+the time since we don't expect a lot of updates to the quota root, or to
+be too close to -ENOSPC such that other critical metadata updates need to
+resort to the global reserve.
 
-FW can fail on loading the pending flash image and get its version due
-to various reasons, examples:
+However this is not optimal, as not reserving proper space may result in a
+transaction abort due to not reserving space for delayed refs and then
+abusing the use of the global block reserve.
 
-mlxfw: Firmware flash failed: key not applicable, err (7)
-mlx5_fw_image_pending: can't read pending fw version while fw state is 1
+For example, the following reproducer (which is unlikely to model any
+real world use case, but just to illustrate the problem), triggers such a
+transaction abort due to -ENOSPC when running delayed refs:
 
-and the resulting:
-$ devlink dev info
-kernel answers: No data available
+  $ cat test.sh
+  #!/bin/bash
 
-Instead, just report 0 or 0xfff.. versions in case of failure to indicate
-a problem, and let other information be shown.
+  DEV=/dev/nullb0
+  MNT=/mnt/nullb0
 
-after the fix:
-$ devlink dev info
-pci/0000:00:06.0:
-  driver mlx5_core
-  serial_number xxx...
-  board.serial_number MT2225300179
-  versions:
-      fixed:
-        fw.psid MT_0000000436
-      running:
-        fw.version 22.41.0188
-        fw 22.41.0188
-      stored:
-        fw.version 255.255.65535
-        fw 255.255.65535
+  umount $DEV &> /dev/null
+  # Limit device to 1G so that it's much faster to reproduce the issue.
+  mkfs.btrfs -f -b 1G $DEV
+  mount -o commit=600 $DEV $MNT
 
-Fixes: 9c86b07e3069 ("net/mlx5: Added fw version query command")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260330194015.53585-3-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  fallocate -l 800M $MNT/filler
+  btrfs quota enable $MNT
+
+  for ((i = 1; i <= 400000; i++)); do
+      btrfs qgroup create 1/$i $MNT
+  done
+
+  umount $MNT
+
+When running this, we can see in dmesg/syslog that a transaction abort
+happened:
+
+  [436.490] BTRFS error (device nullb0): failed to run delayed ref for logical 30408704 num_bytes 16384 type 176 action 1 ref_mod 1: -28
+  [436.493] ------------[ cut here ]------------
+  [436.494] BTRFS: Transaction aborted (error -28)
+  [436.495] WARNING: fs/btrfs/extent-tree.c:2247 at btrfs_run_delayed_refs+0xd9/0x110 [btrfs], CPU#4: umount/2495372
+  [436.497] Modules linked in: btrfs loop (...)
+  [436.508] CPU: 4 UID: 0 PID: 2495372 Comm: umount Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
+  [436.510] Tainted: [W]=WARN
+  [436.511] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [436.513] RIP: 0010:btrfs_run_delayed_refs+0xdf/0x110 [btrfs]
+  [436.514] Code: 0f 82 ea (...)
+  [436.518] RSP: 0018:ffffd511850b7d78 EFLAGS: 00010292
+  [436.519] RAX: 00000000ffffffe4 RBX: ffff8f120dad37e0 RCX: 0000000002040001
+  [436.520] RDX: 0000000000000002 RSI: 00000000ffffffe4 RDI: ffffffffc090fd80
+  [436.522] RBP: 0000000000000000 R08: 0000000000000001 R09: ffffffffc04d1867
+  [436.523] R10: ffff8f18dc1fffa8 R11: 0000000000000003 R12: ffff8f173aa89400
+  [436.524] R13: 0000000000000000 R14: ffff8f173aa89400 R15: 0000000000000000
+  [436.526] FS:  00007fe59045d840(0000) GS:ffff8f192e22e000(0000) knlGS:0000000000000000
+  [436.527] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [436.528] CR2: 00007fe5905ff2b0 CR3: 000000060710a002 CR4: 0000000000370ef0
+  [436.530] Call Trace:
+  [436.530]  <TASK>
+  [436.530]  btrfs_commit_transaction+0x73/0xc00 [btrfs]
+  [436.531]  ? btrfs_attach_transaction_barrier+0x1e/0x70 [btrfs]
+  [436.532]  sync_filesystem+0x7a/0x90
+  [436.533]  generic_shutdown_super+0x28/0x180
+  [436.533]  kill_anon_super+0x12/0x40
+  [436.534]  btrfs_kill_super+0x12/0x20 [btrfs]
+  [436.534]  deactivate_locked_super+0x2f/0xb0
+  [436.534]  cleanup_mnt+0xea/0x180
+  [436.535]  task_work_run+0x58/0xa0
+  [436.535]  exit_to_user_mode_loop+0xed/0x480
+  [436.536]  ? __x64_sys_umount+0x68/0x80
+  [436.536]  do_syscall_64+0x2a5/0xf20
+  [436.537]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [436.537] RIP: 0033:0x7fe5906b6217
+  [436.538] Code: 0d 00 f7 (...)
+  [436.540] RSP: 002b:00007ffcd87a61f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+  [436.541] RAX: 0000000000000000 RBX: 00005618b9ecadc8 RCX: 00007fe5906b6217
+  [436.541] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00005618b9ecb100
+  [436.542] RBP: 0000000000000000 R08: 00007ffcd87a4fe0 R09: 00000000ffffffff
+  [436.544] R10: 0000000000000103 R11: 0000000000000246 R12: 00007fe59081626c
+  [436.544] R13: 00005618b9ecb100 R14: 0000000000000000 R15: 00005618b9ecacc0
+  [436.545]  </TASK>
+  [436.545] ---[ end trace 0000000000000000 ]---
+
+Fix this by changing the qgroup ioctls to use start transaction instead of
+joining so that proper space is reserved for the delayed refs generated
+for the updates to the quota root. This way we don't get any transaction
+abort.
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/devlink.c |  4 +-
- drivers/net/ethernet/mellanox/mlx5/core/fw.c  | 53 ++++++++++++-------
- .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  4 +-
- 3 files changed, 37 insertions(+), 24 deletions(-)
+ fs/btrfs/ioctl.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-index ea77fbd98396a..055ee020c56f4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-@@ -107,9 +107,7 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
- 	if (err)
- 		return err;
- 
--	err = mlx5_fw_version_query(dev, &running_fw, &stored_fw);
--	if (err)
--		return err;
-+	mlx5_fw_version_query(dev, &running_fw, &stored_fw);
- 
- 	snprintf(version_str, sizeof(version_str), "%d.%d.%04d",
- 		 mlx5_fw_ver_major(running_fw), mlx5_fw_ver_minor(running_fw),
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw.c b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-index eeb4437975f20..c1f220e5fe185 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-@@ -822,48 +822,63 @@ mlx5_fw_image_pending(struct mlx5_core_dev *dev,
- 	return 0;
- }
- 
--int mlx5_fw_version_query(struct mlx5_core_dev *dev,
--			  u32 *running_ver, u32 *pending_ver)
-+void mlx5_fw_version_query(struct mlx5_core_dev *dev,
-+			   u32 *running_ver, u32 *pending_ver)
- {
- 	u32 reg_mcqi_version[MLX5_ST_SZ_DW(mcqi_version)] = {};
- 	bool pending_version_exists;
- 	int component_index;
- 	int err;
- 
-+	*running_ver = 0;
-+	*pending_ver = 0;
-+
- 	if (!MLX5_CAP_GEN(dev, mcam_reg) || !MLX5_CAP_MCAM_REG(dev, mcqi) ||
- 	    !MLX5_CAP_MCAM_REG(dev, mcqs)) {
- 		mlx5_core_warn(dev, "fw query isn't supported by the FW\n");
--		return -EOPNOTSUPP;
-+		return;
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 9a548f2eec3af..45852dbf9dfbc 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3861,7 +3861,8 @@ static long btrfs_ioctl_qgroup_assign(struct file *file, void __user *arg)
+ 		}
  	}
  
- 	component_index = mlx5_get_boot_img_component_index(dev);
--	if (component_index < 0)
--		return component_index;
-+	if (component_index < 0) {
-+		mlx5_core_warn(dev, "fw query failed to find boot img component index, err %d\n",
-+			       component_index);
-+		return;
-+	}
- 
-+	*running_ver = U32_MAX; /* indicate failure */
- 	err = mlx5_reg_mcqi_version_query(dev, component_index,
- 					  MCQI_FW_RUNNING_VERSION,
- 					  reg_mcqi_version);
--	if (err)
--		return err;
--
--	*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
--
-+	if (!err)
-+		*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
-+					version);
-+	else
-+		mlx5_core_warn(dev, "failed to query running version, err %d\n",
-+			       err);
-+
-+	*pending_ver = U32_MAX; /* indicate failure */
- 	err = mlx5_fw_image_pending(dev, component_index, &pending_version_exists);
--	if (err)
--		return err;
-+	if (err) {
-+		mlx5_core_warn(dev, "failed to query pending image, err %d\n",
-+			       err);
-+		return;
-+	}
- 
- 	if (!pending_version_exists) {
- 		*pending_ver = 0;
--		return 0;
-+		return;
+-	trans = btrfs_join_transaction(root);
++	/* 2 BTRFS_QGROUP_RELATION_KEY items. */
++	trans = btrfs_start_transaction(root, 2);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
+ 		goto out;
+@@ -3933,7 +3934,11 @@ static long btrfs_ioctl_qgroup_create(struct file *file, void __user *arg)
+ 		goto out;
  	}
  
- 	err = mlx5_reg_mcqi_version_query(dev, component_index,
- 					  MCQI_FW_STORED_VERSION,
- 					  reg_mcqi_version);
--	if (err)
--		return err;
--
--	*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
--
--	return 0;
-+	if (!err)
-+		*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
-+					version);
-+	else
-+		mlx5_core_warn(dev, "failed to query pending version, err %d\n",
-+			       err);
-+
-+	return;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index da5345e19082d..09c544bdf70da 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -391,8 +391,8 @@ int mlx5_port_max_linkspeed(struct mlx5_core_dev *mdev, u32 *speed);
+-	trans = btrfs_join_transaction(root);
++	/*
++	 * 1 BTRFS_QGROUP_INFO_KEY item.
++	 * 1 BTRFS_QGROUP_LIMIT_KEY item.
++	 */
++	trans = btrfs_start_transaction(root, 2);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
+ 		goto out;
+@@ -3982,7 +3987,8 @@ static long btrfs_ioctl_qgroup_limit(struct file *file, void __user *arg)
+ 		goto drop_write;
+ 	}
  
- int mlx5_firmware_flash(struct mlx5_core_dev *dev, const struct firmware *fw,
- 			struct netlink_ext_ack *extack);
--int mlx5_fw_version_query(struct mlx5_core_dev *dev,
--			  u32 *running_ver, u32 *stored_ver);
-+void mlx5_fw_version_query(struct mlx5_core_dev *dev, u32 *running_ver,
-+			   u32 *stored_ver);
- 
- #ifdef CONFIG_MLX5_CORE_EN
- int mlx5e_init(void);
+-	trans = btrfs_join_transaction(root);
++	/* 1 BTRFS_QGROUP_LIMIT_KEY item. */
++	trans = btrfs_start_transaction(root, 1);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
+ 		goto out;
 -- 
 2.53.0
 
