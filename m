@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-235138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GD2FKm2r1mmmHAgAu9opvQ
-	(envelope-from <stable+bounces-235138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:29 +0200
+	id QP+BB7ig1mlDGwgAu9opvQ
+	(envelope-from <stable+bounces-234632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313E53C2E85
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 137DD3C1263
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B6F231B57BA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2FBB03036BFB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A1C3AEF5F;
-	Wed,  8 Apr 2026 18:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D05351C2E;
+	Wed,  8 Apr 2026 18:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J06S0xgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCl1s0pE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF00337B81;
-	Wed,  8 Apr 2026 18:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA613D6CA2;
+	Wed,  8 Apr 2026 18:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674667; cv=none; b=MJmA1RgJXoIX2Xe9U8f+lRmiD58hOVNoLyKKoOQ4uNNymKsWsB4evmpofJFO2n5L4dzhBGm4nkqE/zERNfCAJJoiThGdanwR2D+nPanqUMUbxca8CWRkTkp9qzUA10cxhS1gakfQoLHF/o9ejwiXWvBfjzPz80hpUzzEXsJ0QOI=
+	t=1775673362; cv=none; b=f333Rs1zUDsdpkqV+VWjB6q1rS41aZfEiqxVPL38MOxL7f0U/WDaQvhZWjQQuS03lTPWwfW34dQTyGaskj/bDU5JXitSf0FsHOAwrX+Y6jFiBYK3wE4U/5GH1biZigLgsDo/peHXyHP1WwUOPezIsW5nSKaWiycLQvQN9pbN4WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674667; c=relaxed/simple;
-	bh=8/rkNgBW8wbVO2jCj/wJCT+ofNDwRvDsswisSNzpJKs=;
+	s=arc-20240116; t=1775673362; c=relaxed/simple;
+	bh=zHv5rUXX1wS7x07KXwy4PiOl1x3csQ/MUbKcZTz1Kl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcQBNFs3maE+tUQj3wNNi05vGBV9OzpbvO7q5zVTY/BqEeHmro2RiLUcjvG2X2NTgJJsXMKhwg9PoXBDLnZL4vabzEcp3h4MZqNNxuwZmM/KGqMm3r4VhBoXP7Ift7a6ru+JClJmczYQEdO66z1XTcRaAiJG/8+YQfkV8J04sUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J06S0xgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB94FC19421;
-	Wed,  8 Apr 2026 18:57:46 +0000 (UTC)
+	 MIME-Version; b=Gs9rKbhiccW037ydpQCf1IvHnPeFpRj1e1m/3r/ojubHXGqPk6P+IOkzJ967V6thVom8CZqmQhjzM+7MlQ2SZLgE4jIAz0+piOsSOVf65FuXn7zfOsDf//lNywdm8alx4QkGCFQ8VhkFhQpoSh0CKt2NIb01WbzQaOjpaNSPwJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCl1s0pE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E51BC19421;
+	Wed,  8 Apr 2026 18:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674667;
-	bh=8/rkNgBW8wbVO2jCj/wJCT+ofNDwRvDsswisSNzpJKs=;
+	s=korg; t=1775673361;
+	bh=zHv5rUXX1wS7x07KXwy4PiOl1x3csQ/MUbKcZTz1Kl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J06S0xgXNWLfRjue96yMGyVSinGHorl1qM4UbH2dUEAhLpFJGkbWyJV8fMW2O0qJF
-	 5HVtbVjK2r3ku+iuw2Hgrjlexm/ds7liep3bh+jvLs8RIBifQkikWOQV59GHSsK3Zr
-	 yMV0kGGH/3MpUJy4sRp1UNYhqHvStWtqDk2ewjH0=
+	b=wCl1s0pEQfL37CsS1xSPKySN8SigpJp+qobFUflCpLKcNBOk13YiKKBFE8hcyk0im
+	 KrO4FhDfiR2LZ8sDfPeDo3HbjpRWfwbWfjad0tbLxGf79lij4vPTEogemvFHj52RY4
+	 oX+Ax1Q1mh00zN67OLEWnRxtfKrJC4LekpL9Tgxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.19 187/311] mips: mm: Allocate tlb_vpn array atomically
+	stable <stable@kernel.org>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.18 202/277] usb: ehci-brcm: fix sleep during atomic
 Date: Wed,  8 Apr 2026 20:03:07 +0200
-Message-ID: <20260408175946.395135353@linuxfoundation.org>
+Message-ID: <20260408175941.406098325@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235138-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234632-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,77 +87,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nokia.com:email]
-X-Rspamd-Queue-Id: 313E53C2E85
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 137DD3C1263
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-commit 01cc50ea5167bb14117257ec084637abe9e5f691 upstream.
+commit 679b771ea05ad0f8eeae83e14a91b8f4f39510c4 upstream.
 
-Found by DEBUG_ATOMIC_SLEEP:
+echi_brcm_wait_for_sof() gets called after disabling interrupts
+in ehci_brcm_hub_control(). Use the atomic version of poll_timeout
+to fix the warning.
 
-  BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-  preempt_count: 1, expected: 0
-  RCU nest depth: 0, expected: 0
-  no locks held by swapper/1/0.
-  irq event stamp: 0
-  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-  hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
-  softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
-  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
-  Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
-          800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
-          ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
-          784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
-          0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
-          ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
-          ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
-          fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
-          ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
-          0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
-          ...
-  Call Trace:
-  [<ffffffff80129fd0>] show_stack+0x60/0x158
-  [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
-  [<ffffffff8018d3c8>] __might_resched+0x268/0x288
-  [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
-  [<ffffffff80302788>] __kmalloc+0x58/0xd0
-  [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
-  [<ffffffff80143e8c>] tlb_init+0x7c/0x110
-  [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
-  [<ffffffff80133258>] start_secondary+0x28/0x128
-
-Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 9df231511bd6 ("usb: ehci: Add new EHCI driver for Broadcom STB SoC's")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260318185707.2588431-1-justin.chen@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/ehci-brcm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -538,7 +538,7 @@ static void __ref r4k_tlb_uniquify(void)
+--- a/drivers/usb/host/ehci-brcm.c
++++ b/drivers/usb/host/ehci-brcm.c
+@@ -31,8 +31,8 @@ static inline void ehci_brcm_wait_for_so
+ 	int res;
  
- 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
- 	tlb_vpns = (use_slab ?
--		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
- 		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
- 	if (WARN_ON(!tlb_vpns))
- 		return; /* Pray local_flush_tlb_all() is good enough. */
+ 	/* Wait for next microframe (every 125 usecs) */
+-	res = readl_relaxed_poll_timeout(&ehci->regs->frame_index, val,
+-					 val != frame_idx, 1, 130);
++	res = readl_relaxed_poll_timeout_atomic(&ehci->regs->frame_index,
++						val, val != frame_idx, 1, 130);
+ 	if (res)
+ 		ehci_err(ehci, "Error waiting for SOF\n");
+ 	udelay(delay);
 
 
 
