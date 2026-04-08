@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKhvC22a1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:57 +0200
+	id mMMxNrCj1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCF73C0259
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A12C3C1C45
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8C62300868B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 24D57300B44B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5773D8919;
-	Wed,  8 Apr 2026 18:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7773D890F;
+	Wed,  8 Apr 2026 18:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4s341Gx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKiTAAA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5E837F8C2;
-	Wed,  8 Apr 2026 18:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27924355F30;
+	Wed,  8 Apr 2026 18:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671910; cv=none; b=Vgtpq4EVs/y7v7A8U+p204w/bpAIuN1fA/VUbSws5n0BLcuH68btFAMJ9SnYOFFTllFJ7qpO6vD5kBeuYMc1yN8PsEt0k8/ncIFqrfcpOAGFlmTzTWAv/gFAmKc0L5mhOVSfcn65uu3wc5/TWZYz6cLvuZF6E33760p31r4aOAw=
+	t=1775674273; cv=none; b=q5jF2ZxykHVCco/tqvVry2Yus3JqOhZZL3iDTj2/t69jd4aL8RT0+YvjUTu1jU9JNgyKf52a0zZpbb2HjmgjAMBYqoN+BMC/53xNTlPwa16TyjmzRjbfe/aBtjzLOpsFiCso2D+5ozw/KpYDxB6+j4d9nNXDeJk/lVWv/vsvWls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671910; c=relaxed/simple;
-	bh=VcZRfN19WlTqLnytL/YC+biLArvEvg/gJ3VkxMCuJn0=;
+	s=arc-20240116; t=1775674273; c=relaxed/simple;
+	bh=OTqQM1z+aI3tIW/YegV+OWEcQuB+uXonUkkEx3NcWqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2cLU0UTgYVOw0iMfruRqjNubM1y6Fiybdic5EgYnZpTIuytXYr/9jUsr0Db4YjZJtp2S/V9tQ5M1UsI+Wk2lqJ576a8LfCntDbqX4RG50GwTlwEXdF8fvTjmPIR0AbHAE34ieWF8w3cPJTjcz0q+pKSpAEqvxoBo0fiKh2rlA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4s341Gx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3177C19421;
-	Wed,  8 Apr 2026 18:11:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pp4WDjUwyUn4rf51mzy09AxM489aiTxvM+n2BMQLHKUNe045afm1WyWxgxVkvqXuSgskuDjx83C7thq88U13Bl/uLM4hswlHScZtdSZ6S/qwISzv18bW8xUvSCgOrSwqZSmiQ31Y/ti4fSfyIpCwyMw+3DGKDhgHF+saiveuDFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKiTAAA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2211C19421;
+	Wed,  8 Apr 2026 18:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671910;
-	bh=VcZRfN19WlTqLnytL/YC+biLArvEvg/gJ3VkxMCuJn0=;
+	s=korg; t=1775674273;
+	bh=OTqQM1z+aI3tIW/YegV+OWEcQuB+uXonUkkEx3NcWqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4s341GxFS1Oc6k/eps5HhuYrZof2rzCfaowZf4dKGx8bpqBiJsDYlCfu7Ws+W8VG
-	 iPqHuNvYxGPkXV8spH8rpBQMJKzS5aMo1OiSV8lc/Jz/wghY1hXHAxMfdZbQu842rN
-	 TkC3qO4jtKmu0zGWepfpiOmttLNII03Ys7FG9rec=
+	b=iKiTAAA91OclX+6RLs5U6h7h9+YbWX8NYRJUp1ws50y3UJBf7+yR9VaAgQ6F4P6wq
+	 gPcafZbFt7hzBAXLTovZiXWcCWB3RcADlMkW7PG2sq3PYxNKUSCi8XIDAKPlNCZzBz
+	 MFGs18L+4MaWnFr5XpNwKVIvcAOErGOThCS5hktA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/312] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
+Subject: [PATCH 6.19 005/311] scsi: target: tcm_loop: Drain commands in target_reset handler
 Date: Wed,  8 Apr 2026 20:00:05 +0200
-Message-ID: <20260408175937.032777795@linuxfoundation.org>
+Message-ID: <20260408175939.604806440@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,181 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234071-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234985-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email]
-X-Rspamd-Queue-Id: 4BCF73C0259
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,toxicpanda.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 0A12C3C1C45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit b341c1176f2e001b3adf0b47154fc31589f7410e ]
+[ Upstream commit 1333eee56cdf3f0cf67c6ab4114c2c9e0a952026 ]
 
-There is a teardown order issue in the driver. The SPI controller is
-registered using devm_spi_register_controller(), which delays
-unregistration of the SPI controller until after the fsl_lpspi_remove()
-function returns.
+tcm_loop_target_reset() violates the SCSI EH contract: it returns SUCCESS
+without draining any in-flight commands.  The SCSI EH documentation
+(scsi_eh.rst) requires that when a reset handler returns SUCCESS the driver
+has made lower layers "forget about timed out scmds" and is ready for new
+commands.  Every other SCSI LLD (virtio_scsi, mpt3sas, ipr, scsi_debug,
+mpi3mr) enforces this by draining or completing outstanding commands before
+returning SUCCESS.
 
-As the fsl_lpspi_remove() function synchronously tears down the DMA
-channels, a running SPI transfer triggers the following NULL pointer
-dereference due to use after free:
+Because tcm_loop_target_reset() doesn't drain, the SCSI EH reuses in-flight
+scsi_cmnd structures for recovery commands (e.g. TUR) while the target core
+still has async completion work queued for the old se_cmd.  The memset in
+queuecommand zeroes se_lun and lun_ref_active, causing
+transport_lun_remove_cmd() to skip its percpu_ref_put().  The leaked LUN
+reference prevents transport_clear_lun_ref() from completing, hanging
+configfs LUN unlink forever in D-state:
 
-| fsl_lpspi 42550000.spi: I/O Error in DMA RX
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[...]
-| Call trace:
-|  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
-|  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
-|  spi_transfer_one_message+0x49c/0x7c8
-|  __spi_pump_transfer_message+0x120/0x420
-|  __spi_sync+0x2c4/0x520
-|  spi_sync+0x34/0x60
-|  spidev_message+0x20c/0x378 [spidev]
-|  spidev_ioctl+0x398/0x750 [spidev]
-[...]
+  INFO: task rm:264 blocked for more than 122 seconds.
+  rm              D    0   264    258 0x00004000
+  Call Trace:
+   __schedule+0x3d0/0x8e0
+   schedule+0x36/0xf0
+   transport_clear_lun_ref+0x78/0x90 [target_core_mod]
+   core_tpg_remove_lun+0x28/0xb0 [target_core_mod]
+   target_fabric_port_unlink+0x50/0x60 [target_core_mod]
+   configfs_unlink+0x156/0x1f0 [configfs]
+   vfs_unlink+0x109/0x290
+   do_unlinkat+0x1d5/0x2d0
 
-Switch from devm_spi_register_controller() to spi_register_controller() in
-fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
-fsl_lpspi_remove().
+Fix this by making tcm_loop_target_reset() actually drain commands:
 
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://patch.msgid.link/20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+ 1. Issue TMR_LUN_RESET via tcm_loop_issue_tmr() to drain all commands that
+    the target core knows about (those not yet CMD_T_COMPLETE).
+
+ 2. Use blk_mq_tagset_busy_iter() to iterate all started requests and
+    flush_work() on each se_cmd — this drains any deferred completion work
+    for commands that already had CMD_T_COMPLETE set before the TMR (which
+    the TMR skips via __target_check_io_state()).  This is the same pattern
+    used by mpi3mr, scsi_debug, and libsas to drain outstanding commands
+    during reset.
+
+Fixes: e0eb5d38b732 ("scsi: target: tcm_loop: Use block cmd allocator for se_cmds")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Link: https://patch.msgid.link/27011aa34c8f6b1b94d2e3cf5655b6d037f53428.1773706803.git.josef@toxicpanda.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/target/loopback/tcm_loop.c |   52 ++++++++++++++++++++++++++++++++-----
+ 1 file changed, 46 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index c0e15d8a913df..b3e6dcdb47f60 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -913,7 +913,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		enable_irq(irq);
- 	}
+--- a/drivers/target/loopback/tcm_loop.c
++++ b/drivers/target/loopback/tcm_loop.c
+@@ -26,6 +26,7 @@
+ #include <linux/slab.h>
+ #include <linux/types.h>
+ #include <linux/configfs.h>
++#include <linux/blk-mq.h>
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_tcq.h>
+ #include <scsi/scsi_host.h>
+@@ -268,15 +269,27 @@ static int tcm_loop_device_reset(struct
+ 	return (ret == TMR_FUNCTION_COMPLETE) ? SUCCESS : FAILED;
+ }
  
--	ret = devm_spi_register_controller(&pdev->dev, controller);
-+	ret = spi_register_controller(controller);
- 	if (ret < 0) {
- 		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
- 		goto free_dma;
-@@ -942,6 +942,7 @@ static int fsl_lpspi_remove(struct platform_device *pdev)
- 	struct fsl_lpspi_data *fsl_lpspi =
- 				spi_controller_get_devdata(controller);
++static bool tcm_loop_flush_work_iter(struct request *rq, void *data)
++{
++	struct scsi_cmnd *sc = blk_mq_rq_to_pdu(rq);
++	struct tcm_loop_cmd *tl_cmd = scsi_cmd_priv(sc);
++	struct se_cmd *se_cmd = &tl_cmd->tl_se_cmd;
++
++	flush_work(&se_cmd->work);
++	return true;
++}
++
+ static int tcm_loop_target_reset(struct scsi_cmnd *sc)
+ {
+ 	struct tcm_loop_hba *tl_hba;
+ 	struct tcm_loop_tpg *tl_tpg;
++	struct Scsi_Host *sh = sc->device->host;
++	int ret;
  
-+	spi_unregister_controller(controller);
- 	fsl_lpspi_dma_exit(controller);
+ 	/*
+ 	 * Locate the tcm_loop_hba_t pointer
+ 	 */
+-	tl_hba = *(struct tcm_loop_hba **)shost_priv(sc->device->host);
++	tl_hba = *(struct tcm_loop_hba **)shost_priv(sh);
+ 	if (!tl_hba) {
+ 		pr_err("Unable to perform device reset without active I_T Nexus\n");
+ 		return FAILED;
+@@ -285,11 +298,38 @@ static int tcm_loop_target_reset(struct
+ 	 * Locate the tl_tpg pointer from TargetID in sc->device->id
+ 	 */
+ 	tl_tpg = &tl_hba->tl_hba_tpgs[sc->device->id];
+-	if (tl_tpg) {
+-		tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
+-		return SUCCESS;
+-	}
+-	return FAILED;
++	if (!tl_tpg)
++		return FAILED;
++
++	/*
++	 * Issue a LUN_RESET to drain all commands that the target core
++	 * knows about.  This handles commands not yet marked CMD_T_COMPLETE.
++	 */
++	ret = tcm_loop_issue_tmr(tl_tpg, sc->device->lun, 0, TMR_LUN_RESET);
++	if (ret != TMR_FUNCTION_COMPLETE)
++		return FAILED;
++
++	/*
++	 * Flush any deferred target core completion work that may still be
++	 * queued.  Commands that already had CMD_T_COMPLETE set before the TMR
++	 * are skipped by the TMR drain, but their async completion work
++	 * (transport_lun_remove_cmd → percpu_ref_put, release_cmd → scsi_done)
++	 * may still be pending in target_completion_wq.
++	 *
++	 * The SCSI EH will reuse in-flight scsi_cmnd structures for recovery
++	 * commands (e.g. TUR) immediately after this handler returns SUCCESS —
++	 * if deferred work is still pending, the memset in queuecommand would
++	 * zero the se_cmd while the work accesses it, leaking the LUN
++	 * percpu_ref and hanging configfs unlink forever.
++	 *
++	 * Use blk_mq_tagset_busy_iter() to find all started requests and
++	 * flush_work() on each — the same pattern used by mpi3mr, scsi_debug,
++	 * and other SCSI drivers to drain outstanding commands during reset.
++	 */
++	blk_mq_tagset_busy_iter(&sh->tag_set, tcm_loop_flush_work_iter, NULL);
++
++	tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
++	return SUCCESS;
+ }
  
- 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
--- 
-2.53.0
-
+ static const struct scsi_host_template tcm_loop_driver_template = {
 
 
 
