@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4J1rNEih1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:12 +0200
+	id iMYlIhKc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3103C1381
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FBF3C066B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 256433186093
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA5703027100
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BC935CB6F;
-	Wed,  8 Apr 2026 18:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07E6385513;
+	Wed,  8 Apr 2026 18:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+mV+3eq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJ3pAYlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466C63D522C;
-	Wed,  8 Apr 2026 18:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A458B33F5A4;
+	Wed,  8 Apr 2026 18:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673233; cv=none; b=RJMCKbSTBZkWYuPtGRhnSSRn/7r6ES9VCR3W0p33cBDkV9sV//vSPMP+ZBvDDDqha/uSX+gu+Xw89hM7+3voyvSYmnAe+Ayo0hQwqymQhpzizKqXRzVFNAhTRawCu6dkejBCH/y9nLdyArIHCR1VjHD39V9w3CaUcNil9f5ZBmU=
+	t=1775672162; cv=none; b=FQyDOGbGZwN+uxb1t2S7+QYnso3HZh86UzI25OHSmH6HlhpFeptzQvCKnjhtDCA4iLKjEHtLeyDocA8IXbYD2icbPe36JBXuDYhF2jgLW2sYyWU9JWaOuYxhJcbD6t7iZHKBiBjFV1aYeGWkCrGjjjZUOEL5xqKD5Oy8TPB0Qmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673233; c=relaxed/simple;
-	bh=YYgz15bqPI7NhdyNLHkvDBYPQ0sXmBV5nK/K762ay+4=;
+	s=arc-20240116; t=1775672162; c=relaxed/simple;
+	bh=ubW+gtu3Mn/AtUA7XkWaCufTZRqPJOpjGqd/efcN25g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kC0eELtHp1CJ0rXCdO/7TeGyiL8n0trO2CYL//ObfxKUicghKzVOqrSpovwOKLidCux5+5RQNusZWUf9DymZz/6ytmpGpl4duTj6aPGfZixJEbtMmBGr3V73txjyXzbrOP21F2tm5MH+D4H10z5nvWxw2K/sACrTVwqvrZvtXAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+mV+3eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02D8C19421;
-	Wed,  8 Apr 2026 18:33:52 +0000 (UTC)
+	 MIME-Version; b=Fh7GWQZ5GtnUCai7vnt6kBg9ZWqiJmMQeOndS5mHQhlt9gYtNBe1TaWy7JfpjNF9WDjZMp09pVesPneISIFJKtMHf4jYvaJhxncReOWIvuo5aT1VEboyBllZ4NAFxd1pm+CWeX02b+1ZMh4V5iCHMAYYFSnfnVuBxvNPbZjSIt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJ3pAYlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28C6C19421;
+	Wed,  8 Apr 2026 18:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673233;
-	bh=YYgz15bqPI7NhdyNLHkvDBYPQ0sXmBV5nK/K762ay+4=;
+	s=korg; t=1775672162;
+	bh=ubW+gtu3Mn/AtUA7XkWaCufTZRqPJOpjGqd/efcN25g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+mV+3eqc3fgQE9ZlxtknFb4hHSXTL64vRBgsXIEVQ5P0zglDJs+jXao7S2BrZ8ZC
-	 8G/jPsyU3QKw77X0wJmNGobvtTsVvXCTidx01YnOpzNTrFmONv1KNSHXTLwbGvMzhC
-	 x3MriezmdzRWuFGxaGE59M8IEGp9nG/MzAelSW3A=
+	b=uJ3pAYltWl2178lIK3j6pop+cQ2KxELZzwZ2xpcImiUlt0d0sRCjWHyF8hRtGUKcv
+	 tOp9+620eiU+5QcNqDM7fs2LYHnYStTbdDktx4oDKUslOTxcCE6AVje3EY8Fu4puXU
+	 YUdLWNI6fkS9EfaCDGhlF3yliHOLBzLfx5oqGcKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 145/277] ksmbd: fix OOB write in QUERY_INFO for compound requests
+	stable <stable@kernel.org>,
+	JP Hein <jp@jphein.com>
+Subject: [PATCH 6.1 213/312] USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
 Date: Wed,  8 Apr 2026 20:02:10 +0200
-Message-ID: <20260408175939.287513858@linuxfoundation.org>
+Message-ID: <20260408175941.713986297@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234582-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234169-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,341 +86,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pm.me:email]
-X-Rspamd-Queue-Id: 4B3103C1381
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,launchpad.net:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,jphein.com:email]
+X-Rspamd-Queue-Id: 01FBF3C066B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
+From: JP Hein <jp@jphein.com>
 
-commit fda9522ed6afaec45cabc198d8492270c394c7bc upstream.
+commit 8b7a42ecdcdeb55580d9345412f7f8fc5aca3f6c upstream.
 
-When a compound request such as READ + QUERY_INFO(Security) is received,
-and the first command (READ) consumes most of the response buffer,
-ksmbd could write beyond the allocated buffer while building a security
-descriptor.
+The Razer Kiyo Pro (1532:0e05) is a USB 3.0 UVC webcam whose firmware
+does not handle USB Link Power Management transitions reliably. When LPM
+is active, the device can enter a state where it fails to respond to
+control transfers, producing EPIPE (-32) errors on UVC probe control
+SET_CUR requests. In the worst case, the stalled endpoint triggers an
+xHCI stop-endpoint command that times out, causing the host controller
+to be declared dead and every USB device on the bus to be disconnected.
 
-The root cause was that smb2_get_info_sec() checked buffer space using
-ppntsd_size from xattr, while build_sec_desc() often synthesized a
-significantly larger descriptor from POSIX ACLs.
+This has been reported as Ubuntu Launchpad Bug #2061177. The failure
+mode is:
 
-This patch introduces smb_acl_sec_desc_scratch_len() to accurately
-compute the final descriptor size beforehand, performs proper buffer
-checking with smb2_calc_max_out_buf_len(), and uses exact-sized
-allocation + iov pinning.
+  1. UVC probe control SET_CUR returns -32 (EPIPE)
+  2. xHCI host not responding to stop endpoint command
+  3. xHCI host controller not responding, assume dead
+  4. All USB devices on the affected xHCI controller disconnect
 
-Cc: stable@vger.kernel.org
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Disabling LPM prevents the firmware from entering the problematic low-
+power states that precede the stall. This is the same approach used for
+other webcams with similar firmware issues (e.g., Logitech HD Webcam C270).
+
+Cc: stable <stable@kernel.org>
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2061177
+Signed-off-by: JP Hein <jp@jphein.com>
+Link: https://patch.msgid.link/20260331003806.212565-2-jp@jphein.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |  121 +++++++++++++++++++++++++++++++++++-------------
- fs/smb/server/smbacl.c  |   43 +++++++++++++++++
- fs/smb/server/smbacl.h  |    2 
- 3 files changed, 134 insertions(+), 32 deletions(-)
+ drivers/usb/core/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3411,20 +3411,24 @@ int smb2_open(struct ksmbd_work *work)
- 							   KSMBD_SHARE_FLAG_ACL_XATTR)) {
- 					struct smb_fattr fattr;
- 					struct smb_ntsd *pntsd;
--					int pntsd_size, ace_num = 0;
-+					int pntsd_size;
-+					size_t scratch_len;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -490,6 +490,8 @@ static const struct usb_device_id usb_qu
+ 	/* Razer - Razer Blade Keyboard */
+ 	{ USB_DEVICE(0x1532, 0x0116), .driver_info =
+ 			USB_QUIRK_LINEAR_UFRAME_INTR_BINTERVAL },
++	/* Razer - Razer Kiyo Pro Webcam */
++	{ USB_DEVICE(0x1532, 0x0e05), .driver_info = USB_QUIRK_NO_LPM },
  
- 					ksmbd_acls_fattr(&fattr, idmap, inode);
--					if (fattr.cf_acls)
--						ace_num = fattr.cf_acls->a_count;
--					if (fattr.cf_dacls)
--						ace_num += fattr.cf_dacls->a_count;
--
--					pntsd = kmalloc(sizeof(struct smb_ntsd) +
--							sizeof(struct smb_sid) * 3 +
--							sizeof(struct smb_acl) +
--							sizeof(struct smb_ace) * ace_num * 2,
--							KSMBD_DEFAULT_GFP);
-+					scratch_len = smb_acl_sec_desc_scratch_len(&fattr,
-+							NULL, 0,
-+							OWNER_SECINFO | GROUP_SECINFO |
-+							DACL_SECINFO);
-+					if (!scratch_len || scratch_len == SIZE_MAX) {
-+						rc = -EFBIG;
-+						posix_acl_release(fattr.cf_acls);
-+						posix_acl_release(fattr.cf_dacls);
-+						goto err_out;
-+					}
-+
-+					pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
- 					if (!pntsd) {
-+						rc = -ENOMEM;
- 						posix_acl_release(fattr.cf_acls);
- 						posix_acl_release(fattr.cf_dacls);
- 						goto err_out;
-@@ -3439,7 +3443,7 @@ int smb2_open(struct ksmbd_work *work)
- 					posix_acl_release(fattr.cf_acls);
- 					posix_acl_release(fattr.cf_dacls);
- 					if (rc) {
--						kfree(pntsd);
-+						kvfree(pntsd);
- 						goto err_out;
- 					}
- 
-@@ -3449,7 +3453,7 @@ int smb2_open(struct ksmbd_work *work)
- 								    pntsd,
- 								    pntsd_size,
- 								    false);
--					kfree(pntsd);
-+					kvfree(pntsd);
- 					if (rc)
- 						pr_err("failed to store ntacl in xattr : %d\n",
- 						       rc);
-@@ -5381,8 +5385,9 @@ static int smb2_get_info_file(struct ksm
- 	if (test_share_config_flag(work->tcon->share_conf,
- 				   KSMBD_SHARE_FLAG_PIPE)) {
- 		/* smb2 info file called for pipe */
--		return smb2_get_info_file_pipe(work->sess, req, rsp,
-+		rc = smb2_get_info_file_pipe(work->sess, req, rsp,
- 					       work->response_buf);
-+		goto iov_pin_out;
- 	}
- 
- 	if (work->next_smb2_rcv_hdr_off) {
-@@ -5482,6 +5487,12 @@ static int smb2_get_info_file(struct ksm
- 		rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
- 				      rsp, work->response_buf);
- 	ksmbd_fd_put(work, fp);
-+
-+iov_pin_out:
-+	if (!rc)
-+		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
-+				offsetof(struct smb2_query_info_rsp, Buffer) +
-+				le32_to_cpu(rsp->OutputBufferLength));
- 	return rc;
- }
- 
-@@ -5701,6 +5712,11 @@ static int smb2_get_info_filesystem(stru
- 	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
- 			      rsp, work->response_buf);
- 	path_put(&path);
-+
-+	if (!rc)
-+		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
-+				offsetof(struct smb2_query_info_rsp, Buffer) +
-+				le32_to_cpu(rsp->OutputBufferLength));
- 	return rc;
- }
- 
-@@ -5710,13 +5726,14 @@ static int smb2_get_info_sec(struct ksmb
- {
- 	struct ksmbd_file *fp;
- 	struct mnt_idmap *idmap;
--	struct smb_ntsd *pntsd = (struct smb_ntsd *)rsp->Buffer, *ppntsd = NULL;
-+	struct smb_ntsd *pntsd = NULL, *ppntsd = NULL;
- 	struct smb_fattr fattr = {{0}};
- 	struct inode *inode;
- 	__u32 secdesclen = 0;
- 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
- 	int addition_info = le32_to_cpu(req->AdditionalInformation);
--	int rc = 0, ppntsd_size = 0;
-+	int rc = 0, ppntsd_size = 0, max_len;
-+	size_t scratch_len = 0;
- 
- 	if (addition_info & ~(OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO |
- 			      PROTECTED_DACL_SECINFO |
-@@ -5724,6 +5741,11 @@ static int smb2_get_info_sec(struct ksmb
- 		ksmbd_debug(SMB, "Unsupported addition info: 0x%x)\n",
- 		       addition_info);
- 
-+		pntsd = kzalloc(ALIGN(sizeof(struct smb_ntsd), 8),
-+				KSMBD_DEFAULT_GFP);
-+		if (!pntsd)
-+			return -ENOMEM;
-+
- 		pntsd->revision = cpu_to_le16(1);
- 		pntsd->type = cpu_to_le16(SELF_RELATIVE | DACL_PROTECTED);
- 		pntsd->osidoffset = 0;
-@@ -5732,9 +5754,7 @@ static int smb2_get_info_sec(struct ksmb
- 		pntsd->dacloffset = 0;
- 
- 		secdesclen = sizeof(struct smb_ntsd);
--		rsp->OutputBufferLength = cpu_to_le32(secdesclen);
--
--		return 0;
-+		goto iov_pin;
- 	}
- 
- 	if (work->next_smb2_rcv_hdr_off) {
-@@ -5766,18 +5786,58 @@ static int smb2_get_info_sec(struct ksmb
- 						     &ppntsd);
- 
- 	/* Check if sd buffer size exceeds response buffer size */
--	if (smb2_resp_buf_len(work, 8) > ppntsd_size)
--		rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
--				    addition_info, &secdesclen, &fattr);
-+	max_len = smb2_calc_max_out_buf_len(work,
-+			offsetof(struct smb2_query_info_rsp, Buffer),
-+			le32_to_cpu(req->OutputBufferLength));
-+	if (max_len < 0) {
-+		rc = -EINVAL;
-+		goto release_acl;
-+	}
-+
-+	scratch_len = smb_acl_sec_desc_scratch_len(&fattr, ppntsd,
-+			ppntsd_size, addition_info);
-+	if (!scratch_len || scratch_len == SIZE_MAX) {
-+		rc = -EFBIG;
-+		goto release_acl;
-+	}
-+
-+	pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
-+	if (!pntsd) {
-+		rc = -ENOMEM;
-+		goto release_acl;
-+	}
-+
-+	rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
-+			addition_info, &secdesclen, &fattr);
-+
-+release_acl:
- 	posix_acl_release(fattr.cf_acls);
- 	posix_acl_release(fattr.cf_dacls);
- 	kfree(ppntsd);
- 	ksmbd_fd_put(work, fp);
-+
-+	if (!rc && ALIGN(secdesclen, 8) > scratch_len)
-+		rc = -EFBIG;
- 	if (rc)
--		return rc;
-+		goto err_out;
- 
-+iov_pin:
- 	rsp->OutputBufferLength = cpu_to_le32(secdesclen);
--	return 0;
-+	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
-+			      rsp, work->response_buf);
-+	if (rc)
-+		goto err_out;
-+
-+	rc = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
-+			offsetof(struct smb2_query_info_rsp, Buffer),
-+			pntsd, secdesclen);
-+err_out:
-+	if (rc) {
-+		rsp->OutputBufferLength = 0;
-+		kvfree(pntsd);
-+	}
-+
-+	return rc;
- }
- 
- /**
-@@ -5801,6 +5861,9 @@ int smb2_query_info(struct ksmbd_work *w
- 		goto err_out;
- 	}
- 
-+	rsp->StructureSize = cpu_to_le16(9);
-+	rsp->OutputBufferOffset = cpu_to_le16(72);
-+
- 	switch (req->InfoType) {
- 	case SMB2_O_INFO_FILE:
- 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
-@@ -5821,14 +5884,6 @@ int smb2_query_info(struct ksmbd_work *w
- 	}
- 	ksmbd_revert_fsids(work);
- 
--	if (!rc) {
--		rsp->StructureSize = cpu_to_le16(9);
--		rsp->OutputBufferOffset = cpu_to_le16(72);
--		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
--				       offsetof(struct smb2_query_info_rsp, Buffer) +
--					le32_to_cpu(rsp->OutputBufferLength));
--	}
--
- err_out:
- 	if (rc < 0) {
- 		if (rc == -EACCES)
-@@ -5839,6 +5894,8 @@ err_out:
- 			rsp->hdr.Status = STATUS_UNEXPECTED_IO_ERROR;
- 		else if (rc == -ENOMEM)
- 			rsp->hdr.Status = STATUS_INSUFFICIENT_RESOURCES;
-+		else if (rc == -EINVAL && rsp->hdr.Status == 0)
-+			rsp->hdr.Status = STATUS_INVALID_PARAMETER;
- 		else if (rc == -EOPNOTSUPP || rsp->hdr.Status == 0)
- 			rsp->hdr.Status = STATUS_INVALID_INFO_CLASS;
- 		smb2_set_err_rsp(work);
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -915,6 +915,49 @@ int parse_sec_desc(struct mnt_idmap *idm
- 	return 0;
- }
- 
-+size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
-+		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info)
-+{
-+	size_t len = sizeof(struct smb_ntsd);
-+	size_t tmp;
-+
-+	if (addition_info & OWNER_SECINFO)
-+		len += sizeof(struct smb_sid);
-+	if (addition_info & GROUP_SECINFO)
-+		len += sizeof(struct smb_sid);
-+	if (!(addition_info & DACL_SECINFO))
-+		return len;
-+
-+	len += sizeof(struct smb_acl);
-+	if (ppntsd && ppntsd_size > 0) {
-+		unsigned int dacl_offset = le32_to_cpu(ppntsd->dacloffset);
-+
-+		if (dacl_offset < ppntsd_size &&
-+		    check_add_overflow(len, ppntsd_size - dacl_offset, &len))
-+			return 0;
-+	}
-+
-+	if (fattr->cf_acls) {
-+		if (check_mul_overflow((size_t)fattr->cf_acls->a_count,
-+					2 * sizeof(struct smb_ace), &tmp) ||
-+		    check_add_overflow(len, tmp, &len))
-+			return 0;
-+	} else {
-+		/* default/minimum DACL */
-+		if (check_add_overflow(len, 5 * sizeof(struct smb_ace), &len))
-+			return 0;
-+	}
-+
-+	if (fattr->cf_dacls) {
-+		if (check_mul_overflow((size_t)fattr->cf_dacls->a_count,
-+					sizeof(struct smb_ace), &tmp) ||
-+		    check_add_overflow(len, tmp, &len))
-+			return 0;
-+	}
-+
-+	return len;
-+}
-+
- /* Convert permission bits from mode to equivalent CIFS ACL */
- int build_sec_desc(struct mnt_idmap *idmap,
- 		   struct smb_ntsd *pntsd, struct smb_ntsd *ppntsd,
---- a/fs/smb/server/smbacl.h
-+++ b/fs/smb/server/smbacl.h
-@@ -101,6 +101,8 @@ int set_info_sec(struct ksmbd_conn *conn
- 		 bool type_check, bool get_write);
- void id_to_sid(unsigned int cid, uint sidtype, struct smb_sid *ssid);
- void ksmbd_init_domain(u32 *sub_auth);
-+size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
-+		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info);
- 
- static inline uid_t posix_acl_uid_translate(struct mnt_idmap *idmap,
- 					    struct posix_acl_entry *pace)
+ 	/* Lenovo ThinkPad OneLink+ Dock twin hub controllers (VIA Labs VL812) */
+ 	{ USB_DEVICE(0x17ef, 0x1018), .driver_info = USB_QUIRK_RESET_RESUME },
 
 
 
