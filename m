@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-234988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234079-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBU0I52k1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:25 +0200
+	id EOwPOr2a1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234079-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B213C1F63
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A01033C0326
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9E3C30297BF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09259302E7EF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C72538736D;
-	Wed,  8 Apr 2026 18:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C99F3D8919;
+	Wed,  8 Apr 2026 18:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkl16SPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5NZ49e2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1452727F3;
-	Wed,  8 Apr 2026 18:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41803D4134;
+	Wed,  8 Apr 2026 18:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674280; cv=none; b=kxgH+X7zV2QEFq7eveUpRStk9UQcQ06PlE2JeHWSkR5lDPI27ITfgN01Kn0To7GhQo60c2edC1TVUeFWGRvEbWOs6L7DyGT4F0xwy5I1R8B8wraooClLXrR2yOrMDNft9ECTquLHuqDED9RES7TMNdGCpXLDrCfRyb+PddJSrJU=
+	t=1775671931; cv=none; b=SdmYFlRjnYw2CXXLpxUDcmAum6xiv9zh/Q4AmLplIBlzMAXuCRY/eUciqWX7AE/J+bgqs3vxjH3t3i1X0hjlA9oX9T8joFQ8zxnUvzBCJQtkCULMAnSfBelDGsHkqkFvEyv6u5N4diBDw9LFHOLR/WKGhlc91EcQanqb5xcs8SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674280; c=relaxed/simple;
-	bh=Q6k7POYz9Rq2O9LDaYhnLjX6mbajFlLizpJolfLQCwE=;
+	s=arc-20240116; t=1775671931; c=relaxed/simple;
+	bh=6CNeoDcLAOBbFNX47FgrrE7Wgtc1XntNIN/6+5n34i8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ugBSIr9cJPiBATtzUS8FBLxTrwNRfKMo5xVBm9BrJafJ4cykJO6E8r+lOoA0AmbLRgOIv7j5aNTLHBPH5u5tp8TDnHVgPzsix4APh3HeLNnBDrw9XS1P/oDb2wuiHeelwbBCXn73Ya4uBGsBCousTqVaYnJeyQmF14DYeaJHPjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkl16SPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5495FC19421;
-	Wed,  8 Apr 2026 18:51:20 +0000 (UTC)
+	 MIME-Version; b=Sr9rKf7aermi+MjweFpas/n1jfek3ghqqYz8aZOT0cbbIFWBxTD0RSw3veo1q/sWirtoQgguh8ruHqpuTBL8PTnt+uQ2710GCVZEjDdlaP3+CRg3Wh2K7LzkUC/SfxHGLaOrGrvkfPzOT3TnDmFzHbkGy0m5LPOmrl2YvxVl/es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5NZ49e2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD29C19421;
+	Wed,  8 Apr 2026 18:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674280;
-	bh=Q6k7POYz9Rq2O9LDaYhnLjX6mbajFlLizpJolfLQCwE=;
+	s=korg; t=1775671930;
+	bh=6CNeoDcLAOBbFNX47FgrrE7Wgtc1XntNIN/6+5n34i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkl16SPiBR+ROXSy38txGp92Yov8EAPPpkjhUOsYsmGEHqcTxworPMb6dTuIoaRbK
-	 YuwP2opinbd8iLqxklEq3qEO1q0fjoqqWubq9u0B6Rz583xcw5x+Q4oixEUP9yDdlM
-	 iIyel439ZcNxPspVcDh70TQvvBuLPOgQOw1Fnlss=
+	b=m5NZ49e2kIVdoUu/BhUXDktxmI+FwMwBGd2LgA0DI8LzJOKC96gqUStBX3KzQqzn8
+	 MPY6gUB6BDygw54X5Ti6jU/AQZJi+kQcjAk3E/CKptg0eyFTWYBRN+ABSssAaM8WJ6
+	 Au322PcUndJGV3a7yYPr9/xTxSuIzxtY97C/o0yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 008/311] xfs: close crash window in attr dabtree inactivation
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 091/312] ksmbd: replace hardcoded hdr2_len with offsetof() in smb2_calc_max_out_buf_len()
 Date: Wed,  8 Apr 2026 20:00:08 +0200
-Message-ID: <20260408175939.720196538@linuxfoundation.org>
+Message-ID: <20260408175937.160311306@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,292 +67,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234988-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234079-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 40B213C1F63
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A01033C0326
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit b854e1c4eff3473b6d3a9ae74129ac5c48bc0b61 ]
+commit 0e55f63dd08f09651d39e1b709a91705a8a0ddcb upstream.
 
-When inactivating an inode with node-format extended attributes,
-xfs_attr3_node_inactive() invalidates all child leaf/node blocks via
-xfs_trans_binval(), but intentionally does not remove the corresponding
-entries from their parent node blocks.  The implicit assumption is that
-xfs_attr_inactive() will truncate the entire attr fork to zero extents
-afterwards, so log recovery will never reach the root node and follow
-those stale pointers.
+After this commit (e2b76ab8b5c9 "ksmbd: add support for read compound"),
+response buffer management was changed to use dynamic iov array.
+In the new design, smb2_calc_max_out_buf_len() expects the second
+argument (hdr2_len) to be the offset of ->Buffer field in the
+response structure, not a hardcoded magic number.
+Fix the remaining call sites to use the correct offsetof() value.
 
-However, if a log shutdown occurs after the leaf/node block cancellations
-commit but before the attr bmap truncation commits, this assumption
-breaks.  Recovery replays the attr bmap intact (the inode still has
-attr fork extents), but suppresses replay of all cancelled leaf/node
-blocks, maybe leaving them as stale data on disk.  On the next mount,
-xlog_recover_process_iunlinks() retries inactivation and attempts to
-read the root node via the attr bmap. If the root node was not replayed,
-reading the unreplayed root block triggers a metadata verification
-failure immediately; if it was replayed, following its child pointers
-to unreplayed child blocks triggers the same failure:
-
- XFS (pmem0): Metadata corruption detected at
- xfs_da3_node_read_verify+0x53/0x220, xfs_da3_node block 0x78
- XFS (pmem0): Unmount and run xfs_repair
- XFS (pmem0): First 128 bytes of corrupted metadata buffer:
- 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- XFS (pmem0): metadata I/O error in "xfs_da_read_buf+0x104/0x190" at daddr 0x78 len 8 error 117
-
-Fix this in two places:
-
-In xfs_attr3_node_inactive(), after calling xfs_trans_binval() on a
-child block, immediately remove the entry that references it from the
-parent node in the same transaction.  This eliminates the window where
-the parent holds a pointer to a cancelled block.  Once all children are
-removed, the now-empty root node is converted to a leaf block within the
-same transaction. This node-to-leaf conversion is necessary for crash
-safety. If the system shutdown after the empty node is written to the
-log but before the second-phase bmap truncation commits, log recovery
-will attempt to verify the root block on disk. xfs_da3_node_verify()
-does not permit a node block with count == 0; such a block will fail
-verification and trigger a metadata corruption shutdown. on the other
-hand, leaf blocks are allowed to have this transient state.
-
-In xfs_attr_inactive(), split the attr fork truncation into two explicit
-phases.  First, truncate all extents beyond the root block (the child
-extents whose parent references have already been removed above).
-Second, invalidate the root block and truncate the attr bmap to zero in
-a single transaction.  The two operations in the second phase must be
-atomic: as long as the attr bmap has any non-zero length, recovery can
-follow it to the root block, so the root block invalidation must commit
-together with the bmap-to-zero truncation.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_attr_inactive.c |   95 +++++++++++++++++++++++++++------------------
- 1 file changed, 57 insertions(+), 38 deletions(-)
+ fs/smb/server/smb2pdu.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/fs/xfs/xfs_attr_inactive.c
-+++ b/fs/xfs/xfs_attr_inactive.c
-@@ -140,7 +140,7 @@ xfs_attr3_node_inactive(
- 	xfs_daddr_t		parent_blkno, child_blkno;
- 	struct xfs_buf		*child_bp;
- 	struct xfs_da3_icnode_hdr ichdr;
--	int			error, i;
-+	int			error;
- 
- 	/*
- 	 * Since this code is recursive (gasp!) we must protect ourselves.
-@@ -152,7 +152,7 @@ xfs_attr3_node_inactive(
- 		return -EFSCORRUPTED;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4124,8 +4124,9 @@ int smb2_query_dir(struct ksmbd_work *wo
+ 	d_info.wptr = (char *)rsp->Buffer;
+ 	d_info.rptr = (char *)rsp->Buffer;
+ 	d_info.out_buf_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_directory_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (d_info.out_buf_len < 0) {
+ 		rc = -EINVAL;
+ 		goto err_out;
+@@ -4392,8 +4393,9 @@ static int smb2_get_ea(struct ksmbd_work
  	}
  
--	xfs_da3_node_hdr_from_disk(dp->i_mount, &ichdr, bp->b_addr);
-+	xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
- 	parent_blkno = xfs_buf_daddr(bp);
- 	if (!ichdr.count) {
- 		xfs_trans_brelse(*trans, bp);
-@@ -167,7 +167,7 @@ xfs_attr3_node_inactive(
- 	 * over the leaves removing all of them.  If this is higher up
- 	 * in the tree, recurse downward.
- 	 */
--	for (i = 0; i < ichdr.count; i++) {
-+	while (ichdr.count > 0) {
- 		/*
- 		 * Read the subsidiary block to see what we have to work with.
- 		 * Don't do this in a transaction.  This is a depth-first
-@@ -218,29 +218,32 @@ xfs_attr3_node_inactive(
- 		xfs_trans_binval(*trans, child_bp);
- 		child_bp = NULL;
+ 	buf_free_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_info_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (buf_free_len < 0)
+ 		return -EINVAL;
  
-+		error = xfs_da3_node_read_mapped(*trans, dp,
-+				parent_blkno, &bp, XFS_ATTR_FORK);
-+		if (error)
-+			return error;
-+
- 		/*
--		 * If we're not done, re-read the parent to get the next
--		 * child block number.
-+		 * Remove entry from parent node, prevents being indexed to.
- 		 */
--		if (i + 1 < ichdr.count) {
--			struct xfs_da3_icnode_hdr phdr;
-+		xfs_attr3_node_entry_remove(*trans, dp, bp, 0);
+@@ -4690,8 +4692,9 @@ static void get_file_stream_info(struct
+ 	file_info = (struct smb2_file_stream_info *)rsp->Buffer;
  
--			error = xfs_da3_node_read_mapped(*trans, dp,
--					parent_blkno, &bp, XFS_ATTR_FORK);
-+		xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
-+		bp = NULL;
-+
-+		if (ichdr.count > 0) {
-+			/*
-+			 * If we're not done, get the next child block number.
-+			 */
-+			child_fsb = be32_to_cpu(ichdr.btree[0].before);
-+
-+			/*
-+			 * Atomically commit the whole invalidate stuff.
-+			 */
-+			error = xfs_trans_roll_inode(trans, dp);
- 			if (error)
- 				return error;
--			xfs_da3_node_hdr_from_disk(dp->i_mount, &phdr,
--						  bp->b_addr);
--			child_fsb = be32_to_cpu(phdr.btree[i + 1].before);
--			xfs_trans_brelse(*trans, bp);
--			bp = NULL;
- 		}
--		/*
--		 * Atomically commit the whole invalidate stuff.
--		 */
--		error = xfs_trans_roll_inode(trans, dp);
--		if (error)
--			return  error;
- 	}
+ 	buf_free_len =
+-		smb2_calc_max_out_buf_len(work, 8,
+-					  le32_to_cpu(req->OutputBufferLength));
++		smb2_calc_max_out_buf_len(work,
++				offsetof(struct smb2_query_info_rsp, Buffer),
++				le32_to_cpu(req->OutputBufferLength));
+ 	if (buf_free_len < 0)
+ 		goto out;
  
- 	return 0;
-@@ -257,10 +260,8 @@ xfs_attr3_root_inactive(
- 	struct xfs_trans	**trans,
- 	struct xfs_inode	*dp)
- {
--	struct xfs_mount	*mp = dp->i_mount;
- 	struct xfs_da_blkinfo	*info;
- 	struct xfs_buf		*bp;
--	xfs_daddr_t		blkno;
- 	int			error;
+@@ -7740,8 +7743,9 @@ int smb2_ioctl(struct ksmbd_work *work)
+ 	buffer = (char *)req + le32_to_cpu(req->InputOffset);
  
- 	/*
-@@ -272,7 +273,6 @@ xfs_attr3_root_inactive(
- 	error = xfs_da3_node_read(*trans, dp, 0, &bp, XFS_ATTR_FORK);
- 	if (error)
- 		return error;
--	blkno = xfs_buf_daddr(bp);
- 
- 	/*
- 	 * Invalidate the tree, even if the "tree" is only a single leaf block.
-@@ -283,10 +283,26 @@ xfs_attr3_root_inactive(
- 	case cpu_to_be16(XFS_DA_NODE_MAGIC):
- 	case cpu_to_be16(XFS_DA3_NODE_MAGIC):
- 		error = xfs_attr3_node_inactive(trans, dp, bp, 1);
-+		/*
-+		 * Empty root node block are not allowed, convert it to leaf.
-+		 */
-+		if (!error)
-+			error = xfs_attr3_leaf_init(*trans, dp, 0);
-+		if (!error)
-+			error = xfs_trans_roll_inode(trans, dp);
- 		break;
- 	case cpu_to_be16(XFS_ATTR_LEAF_MAGIC):
- 	case cpu_to_be16(XFS_ATTR3_LEAF_MAGIC):
- 		error = xfs_attr3_leaf_inactive(trans, dp, bp);
-+		/*
-+		 * Reinit the leaf before truncating extents so that a crash
-+		 * mid-truncation leaves an empty leaf rather than one with
-+		 * entries that may reference freed remote value blocks.
-+		 */
-+		if (!error)
-+			error = xfs_attr3_leaf_init(*trans, dp, 0);
-+		if (!error)
-+			error = xfs_trans_roll_inode(trans, dp);
- 		break;
- 	default:
- 		xfs_dirattr_mark_sick(dp, XFS_ATTR_FORK);
-@@ -295,21 +311,6 @@ xfs_attr3_root_inactive(
- 		xfs_trans_brelse(*trans, bp);
- 		break;
- 	}
--	if (error)
--		return error;
--
--	/*
--	 * Invalidate the incore copy of the root block.
--	 */
--	error = xfs_trans_get_buf(*trans, mp->m_ddev_targp, blkno,
--			XFS_FSB_TO_BB(mp, mp->m_attr_geo->fsbcount), 0, &bp);
--	if (error)
--		return error;
--	xfs_trans_binval(*trans, bp);	/* remove from cache */
--	/*
--	 * Commit the invalidate and start the next transaction.
--	 */
--	error = xfs_trans_roll_inode(trans, dp);
- 
- 	return error;
- }
-@@ -328,6 +329,7 @@ xfs_attr_inactive(
- {
- 	struct xfs_trans	*trans;
- 	struct xfs_mount	*mp;
-+	struct xfs_buf          *bp;
- 	int			lock_mode = XFS_ILOCK_SHARED;
- 	int			error = 0;
- 
-@@ -363,10 +365,27 @@ xfs_attr_inactive(
- 	 * removal below.
- 	 */
- 	if (dp->i_af.if_nextents > 0) {
-+		/*
-+		 * Invalidate and truncate all blocks but leave the root block.
-+		 */
- 		error = xfs_attr3_root_inactive(&trans, dp);
- 		if (error)
- 			goto out_cancel;
- 
-+		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK,
-+				XFS_FSB_TO_B(mp, mp->m_attr_geo->fsbcount));
-+		if (error)
-+			goto out_cancel;
-+
-+		/*
-+		 * Invalidate and truncate the root block and ensure that the
-+		 * operation is completed within a single transaction.
-+		 */
-+		error = xfs_da_get_buf(trans, dp, 0, &bp, XFS_ATTR_FORK);
-+		if (error)
-+			goto out_cancel;
-+
-+		xfs_trans_binval(trans, bp);
- 		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK, 0);
- 		if (error)
- 			goto out_cancel;
+ 	cnt_code = le32_to_cpu(req->CtlCode);
+-	ret = smb2_calc_max_out_buf_len(work, 48,
+-					le32_to_cpu(req->MaxOutputResponse));
++	ret = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_ioctl_rsp, Buffer),
++			le32_to_cpu(req->MaxOutputResponse));
+ 	if (ret < 0) {
+ 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		goto out;
 
 
 
