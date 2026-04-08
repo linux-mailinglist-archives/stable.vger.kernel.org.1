@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-235230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234947-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YAjvFlam1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:46 +0200
+	id KHf2KF+k1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234947-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11343C23DE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5223C1E47
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E054130532FA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 00EFB3053BDA
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227803B19A3;
-	Wed,  8 Apr 2026 19:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775B034AB06;
+	Wed,  8 Apr 2026 18:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoSan/L5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZ/4fpTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B680D3D6694;
-	Wed,  8 Apr 2026 19:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4922727F3;
+	Wed,  8 Apr 2026 18:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674905; cv=none; b=Osm34mFMMnd/SdkHdUYOSZjy3LtjkSaHOkMFv9KkhwV8Yo6tfz9+aSH8T9EdaGZQXFtRQxQm769CFgvTu9TPJ+KbPm7q7x8HdypPU3vMdrPSqb4kB1hmn4FNQ4xp7AtyTUu8nnPDYsJDTfP7yyimZQq7tGu/C6mvzGp52HfhtgU=
+	t=1775674175; cv=none; b=R/h6AFAx8can1K/Bm0GplV/90dQVaopxUchBbOgVAt6R1hq5MO8sLF5SelZJcvLpQpgvDYzO7abSx/+6kLX7pRBKBUdh+uz6n5ANITgotN8ip9AdOttbBzq4mmvMaVaAZ0BaUIeiqGvMK/ztN/ncLREFeJV0Uss5+CQHCrBccaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674905; c=relaxed/simple;
-	bh=IWYB195z31ONlyuMYdK/WZpe/shblcm6Uv4Ynda4R3A=;
+	s=arc-20240116; t=1775674175; c=relaxed/simple;
+	bh=V5jBlWKkKkLQJh/flHAZ7VDTumCe6GrsVqPwKYm3Fd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fhs+e7nfacnYihczLB0PHz0B6lEYiQ7877fDFqwFOXymtLbje6hvDGNz+0+aQIj7X0pIG3h9vb1/9ebLoq0xtdg+YJAOBeZDkvHCRl/89/93TS8kufawnAgyqJ7pU8408j8ccsFT3bY7z/zVB206cybNmstfTlyOx3lGHQQENyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoSan/L5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79496C19421;
-	Wed,  8 Apr 2026 19:01:44 +0000 (UTC)
+	 MIME-Version; b=g7esBnI8ol0b2zfnHhFbemHaw0pBBJnDjucM8jnnqF422eoF8kwPgmxAWS1ufxuzeRcfqCorM0q/bQxrIwtN7ibQdVNgbKiuwExL+Tvjj7RaSJZVKJjfTOgbg+hEEWB4zQvYEVAVKJnh/bCSnESfYeedsCUr7j4Wuh9We+z6Obw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZ/4fpTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44B4C19421;
+	Wed,  8 Apr 2026 18:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674904;
-	bh=IWYB195z31ONlyuMYdK/WZpe/shblcm6Uv4Ynda4R3A=;
+	s=korg; t=1775674175;
+	bh=V5jBlWKkKkLQJh/flHAZ7VDTumCe6GrsVqPwKYm3Fd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xoSan/L5JPrj8BU9Oi7E7ReBx5Mmqk4TEwKEwppIO85KhYTiFMZu9nNHq0P26xjSy
-	 h0k0zA83zR/Nf7IXSLxikeRNYafVCki50RytH6mG5ZMfTu3DPffc9mraZcryIv7hmg
-	 9kF3LY81b2CEnacPqIwtYpcCYREma0FaZEiTO0Es=
+	b=ZZ/4fpTmrOAEnGWf60T0DfAKoCIM2vIk7qY1WavXQhRZTeDXeBVkTtCwvYox5De9k
+	 8N0+k99EVZJ8UDXamtvTzWNxo7VagmrFzit1V4psoT65ejt2GrF9RQ6E1TIpY+MlbW
+	 gO0CQ4jncWmSxK/40KYd9Od+adkQx9eXgjGyj0n0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 277/311] net: ethernet: mtk_ppe: avoid NULL deref when gmac0 is disabled
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.12 237/242] bpf: Improve bounds when s64 crosses sign boundary
 Date: Wed,  8 Apr 2026 20:04:37 +0200
-Message-ID: <20260408175949.722933213@linuxfoundation.org>
+Message-ID: <20260408175935.977382257@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +65,150 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235230-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234947-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.994];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,simonwunderlich.de:email]
-X-Rspamd-Queue-Id: E11343C23DE
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2F5223C1E47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-commit 976ff48c2ac6e6b25b01428c9d7997bcd0fb2949 upstream.
+[ Upstream commit 00bf8d0c6c9be0c481fc45a3f7d87c7f8812f229 ]
 
-If the gmac0 is disabled, the precheck for a valid ingress device will
-cause a NULL pointer deref and crash the system. This happens because
-eth->netdev[0] will be NULL but the code will directly try to access
-netdev_ops.
+__reg64_deduce_bounds currently improves the s64 range using the u64
+range and vice versa, but only if it doesn't cross the sign boundary.
 
-Instead of just checking for the first net_device, it must be checked if
-any of the mtk_eth net_devices is matching the netdev_ops of the ingress
-device.
+This patch improves __reg64_deduce_bounds to cover the case where the
+s64 range crosses the sign boundary but overlaps with the u64 range on
+only one end. In that case, we can improve both ranges. Consider the
+following example, with the s64 range crossing the sign boundary:
 
-Cc: stable@vger.kernel.org
-Fixes: 73cfd947dbdb ("net: ethernet: mtk_eth_soc: ppe: prevent ppe update for non-mtk devices")
-Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260324-wed-crash-gmac0-disabled-v1-1-3bc388aee565@simonwunderlich.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    0                                                   U64_MAX
+    |  [xxxxxxxxxxxxxx u64 range xxxxxxxxxxxxxx]              |
+    |----------------------------|----------------------------|
+    |xxxxx s64 range xxxxxxxxx]                       [xxxxxxx|
+    0                     S64_MAX S64_MIN                    -1
+
+The u64 range overlaps only with positive portion of the s64 range. We
+can thus derive the following new s64 and u64 ranges.
+
+    0                                                   U64_MAX
+    |  [xxxxxx u64 range xxxxx]                               |
+    |----------------------------|----------------------------|
+    |  [xxxxxx s64 range xxxxx]                               |
+    0                     S64_MAX S64_MIN                    -1
+
+The same logic can probably apply to the s32/u32 ranges, but this patch
+doesn't implement that change.
+
+In addition to the selftests, the __reg64_deduce_bounds change was
+also tested with Agni, the formal verification tool for the range
+analysis [1].
+
+Link: https://github.com/bpfverif/agni [1]
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/933bd9ce1f36ded5559f92fdc09e5dbc823fa245.1753695655.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c |   52 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -244,6 +244,25 @@ out:
- 	return 0;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2129,6 +2129,58 @@ static void __reg64_deduce_bounds(struct
+ 	if ((u64)reg->smin_value <= (u64)reg->smax_value) {
+ 		reg->umin_value = max_t(u64, reg->smin_value, reg->umin_value);
+ 		reg->umax_value = min_t(u64, reg->smax_value, reg->umax_value);
++	} else {
++		/* If the s64 range crosses the sign boundary, then it's split
++		 * between the beginning and end of the U64 domain. In that
++		 * case, we can derive new bounds if the u64 range overlaps
++		 * with only one end of the s64 range.
++		 *
++		 * In the following example, the u64 range overlaps only with
++		 * positive portion of the s64 range.
++		 *
++		 * 0                                                   U64_MAX
++		 * |  [xxxxxxxxxxxxxx u64 range xxxxxxxxxxxxxx]              |
++		 * |----------------------------|----------------------------|
++		 * |xxxxx s64 range xxxxxxxxx]                       [xxxxxxx|
++		 * 0                     S64_MAX S64_MIN                    -1
++		 *
++		 * We can thus derive the following new s64 and u64 ranges.
++		 *
++		 * 0                                                   U64_MAX
++		 * |  [xxxxxx u64 range xxxxx]                               |
++		 * |----------------------------|----------------------------|
++		 * |  [xxxxxx s64 range xxxxx]                               |
++		 * 0                     S64_MAX S64_MIN                    -1
++		 *
++		 * If they overlap in two places, we can't derive anything
++		 * because reg_state can't represent two ranges per numeric
++		 * domain.
++		 *
++		 * 0                                                   U64_MAX
++		 * |  [xxxxxxxxxxxxxxxxx u64 range xxxxxxxxxxxxxxxxx]        |
++		 * |----------------------------|----------------------------|
++		 * |xxxxx s64 range xxxxxxxxx]                    [xxxxxxxxxx|
++		 * 0                     S64_MAX S64_MIN                    -1
++		 *
++		 * The first condition below corresponds to the first diagram
++		 * above.
++		 */
++		if (reg->umax_value < (u64)reg->smin_value) {
++			reg->smin_value = (s64)reg->umin_value;
++			reg->umax_value = min_t(u64, reg->umax_value, reg->smax_value);
++		} else if ((u64)reg->smax_value < reg->umin_value) {
++			/* This second condition considers the case where the u64 range
++			 * overlaps with the negative portion of the s64 range:
++			 *
++			 * 0                                                   U64_MAX
++			 * |              [xxxxxxxxxxxxxx u64 range xxxxxxxxxxxxxx]  |
++			 * |----------------------------|----------------------------|
++			 * |xxxxxxxxx]                       [xxxxxxxxxxxx s64 range |
++			 * 0                     S64_MAX S64_MIN                    -1
++			 */
++			reg->smax_value = (s64)reg->umax_value;
++			reg->umin_value = max_t(u64, reg->umin_value, reg->smin_value);
++		}
+ 	}
  }
  
-+static bool
-+mtk_flow_is_valid_idev(const struct mtk_eth *eth, const struct net_device *idev)
-+{
-+	size_t i;
-+
-+	if (!idev)
-+		return false;
-+
-+	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++) {
-+		if (!eth->netdev[i])
-+			continue;
-+
-+		if (idev->netdev_ops == eth->netdev[i]->netdev_ops)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int
- mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
- 			 int ppe_index)
-@@ -270,7 +289,7 @@ mtk_flow_offload_replace(struct mtk_eth
- 		flow_rule_match_meta(rule, &match);
- 		if (mtk_is_netsys_v2_or_greater(eth)) {
- 			idev = __dev_get_by_index(&init_net, match.key->ingress_ifindex);
--			if (idev && idev->netdev_ops == eth->netdev[0]->netdev_ops) {
-+			if (mtk_flow_is_valid_idev(eth, idev)) {
- 				struct mtk_mac *mac = netdev_priv(idev);
- 
- 				if (WARN_ON(mac->ppe_idx >= eth->soc->ppe_num))
 
 
 
