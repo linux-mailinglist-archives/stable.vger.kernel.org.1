@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-234826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPMhANSn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:09:08 +0200
+	id 2DCoNeWf1mkzGwgAu9opvQ
+	(envelope-from <stable+bounces-234341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F243C27C2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CF33C105F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E30043089F1B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 883A33135D38
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65ED63D669E;
-	Wed,  8 Apr 2026 18:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786A73D6689;
+	Wed,  8 Apr 2026 18:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPa7R1Zf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le4OWn9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EE8346FB0;
-	Wed,  8 Apr 2026 18:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B703AA4E4;
+	Wed,  8 Apr 2026 18:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673863; cv=none; b=PpV8vOYZdsxI1WwkU3EFCrHOtShG7D/bQ8Z/Z61syqRwHY32hmBgAoqC8kpmdwjhoXV31AYRHO+AgsOZSoi9YHa7Ld72tON4rOZ2rQXlnVLQVWaDCJvG0dtIReiTCPLADor7jVSdx8Q5t0ZSZBlHVrX8lTXc6LKXJtFepHFCU5E=
+	t=1775672608; cv=none; b=Qy0/Ml+0+xrbfW8XkEVEcx4zb0CJwyB40/c50aoysNhLl8VJzD0VCA5tajjsA7RW0u9RR4EnxY8p4lGjaKATP1w3mVV8YkkAeg4RAF7l1kTkFAlTO4go8F280VIA1zUdiIfG2XEpGTzdEpYeEDTNNso0h7KDFBVD/U8gZLSKwfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673863; c=relaxed/simple;
-	bh=Ok9msOjVvjPdGwy0E8T3BMypb7tIUgRh3rKPtOj1LIc=;
+	s=arc-20240116; t=1775672608; c=relaxed/simple;
+	bh=VRyR5BUibPMaNF8k28IgP7tvP/3iKhjmR3kjYaSBkbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkuITSR91reu+eueRahX4yn9fe4OxgdmuWxrXA7slYX2LTi7mfRlt08mnEVfvuYBVGEk3ruieee//CKKuTOPS2ePnS22yyE5pvJ4HKPO+z5joi3jWY0u8LSiVz6uvhle809OOaxLh0+NXdMrf8jXcfD9W0XSFlv7GlzC8x61E6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPa7R1Zf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A825CC19421;
-	Wed,  8 Apr 2026 18:44:22 +0000 (UTC)
+	 MIME-Version; b=FB/opdWF82EJuhTfw+XvctI6L54Onwsfw/vcJk+K5odXrllHKIjVe6QzzPeoAWLK24gnHaLOZZaKz1ZuIeDdFeUNbGzfWflqBb32Xsxh5WVb/gxKLIPLmiu1fQE/xkRav+xT1U4qkUQEqEst71XQy8x48Sv3A0SiUG8UPuQgpfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le4OWn9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C380FC19421;
+	Wed,  8 Apr 2026 18:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673863;
-	bh=Ok9msOjVvjPdGwy0E8T3BMypb7tIUgRh3rKPtOj1LIc=;
+	s=korg; t=1775672608;
+	bh=VRyR5BUibPMaNF8k28IgP7tvP/3iKhjmR3kjYaSBkbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPa7R1ZftoekVWqW/UgRYb80wl8x8Orv6dxMd1gPudICJsGcHT5+osytcWhD3yFc1
-	 SK6FUAGUDSAwWtIkBiA6rnzfUUy3yimes7F20kdsrrK2LP+jwgREDbGQf0JbtCjNuh
-	 LTw05buZkQwLYW579Z4QoYpbIjR2tUKhi5C57TgU=
+	b=Le4OWn9HqEib9seo10h97xkrkG6Em62ZtK2yqP5s60rUb+Wrd1SgWM0jYJyweaPrO
+	 dVCukCY5jcshitPx8oTCCiS2pHX/PtCY/yWBIEvKoYkCDSrlhrgt3pbaik4Iu42CWy
+	 tp2cCiDJb1/sRMNuZn3qfUQMFjf/GHSLdSCcqZIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Karsten Hohmeier <linux@hohmatik.de>
-Subject: [PATCH 6.12 119/242] ALSA: ctxfi: Fix missing SPDIFI1 index handling
-Date: Wed,  8 Apr 2026 20:02:39 +0200
-Message-ID: <20260408175931.541257263@linuxfoundation.org>
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 073/160] drm/ioc32: stop speculation on the drm_compat_ioctl path
+Date: Wed,  8 Apr 2026 20:02:40 +0200
+Message-ID: <20260408175915.926029782@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,61 +76,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
+	TAGGED_FROM(0.00)[bounces-234341-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234826-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hohmatik.de:email]
-X-Rspamd-Queue-Id: 84F243C27C2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ffwll.ch:email]
+X-Rspamd-Queue-Id: 95CF33C105F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit b045ab3dff97edae6d538eeff900a34c098761f8 upstream.
+commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
 
-SPDIF1 DAIO type isn't properly handled in daio_device_index() for
-hw20k2, and it returned -EINVAL, which ended up with the out-of-bounds
-array access.  Follow the hw20k1 pattern and return the proper index
-for this type, too.
+The drm compat ioctl path takes a user controlled pointer, and then
+dereferences it into a table of function pointers, the signature method
+of spectre problems.  Fix this up by calling array_index_nospec() on the
+index to the function pointer list.
 
-Reported-and-tested-by: Karsten Hohmeier <linux@hohmatik.de>
-Closes: https://lore.kernel.org/20260315155004.15633-1-linux@hohmatik.de
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260329091240.420194-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Simona Vetter <simona@ffwll.ch>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/ctxfi/ctdaio.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_ioc32.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/ctxfi/ctdaio.c
-+++ b/sound/pci/ctxfi/ctdaio.c
-@@ -119,6 +119,7 @@ static unsigned int daio_device_index(en
- 		switch (type) {
- 		case SPDIFOO:	return 0;
- 		case SPDIFIO:	return 0;
-+		case SPDIFI1:	return 1;
- 		case LINEO1:	return 4;
- 		case LINEO2:	return 7;
- 		case LINEO3:	return 5;
+--- a/drivers/gpu/drm/drm_ioc32.c
++++ b/drivers/gpu/drm/drm_ioc32.c
+@@ -28,6 +28,7 @@
+  * IN THE SOFTWARE.
+  */
+ #include <linux/compat.h>
++#include <linux/nospec.h>
+ #include <linux/ratelimit.h>
+ #include <linux/export.h>
+ 
+@@ -983,6 +984,7 @@ long drm_compat_ioctl(struct file *filp,
+ 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
+ 		return drm_ioctl(filp, cmd, arg);
+ 
++	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
+ 	fn = drm_compat_ioctls[nr].fn;
+ 	if (!fn)
+ 		return drm_ioctl(filp, cmd, arg);
 
 
 
