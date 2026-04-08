@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHBaDq+b1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:19 +0200
+	id UCu6AReq1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A073C0577
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 568373C2BDF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABE5A3008217
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61CEF31B0E0A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DF03859FE;
-	Wed,  8 Apr 2026 18:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EE03D890F;
+	Wed,  8 Apr 2026 18:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs4LMwdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nN4RZhSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DD33822A3;
-	Wed,  8 Apr 2026 18:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEFB34AB06;
+	Wed,  8 Apr 2026 18:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672103; cv=none; b=dAjhkG8tMRXj/GY4SPkahM3kXGSRJ8u4IknCQobCzVm+jXJvlpaMBflG2kreNEdgU8bQ2PBGRTl0eYkJ3XWRs9e+cUn+htAcnL5a6dSQV5ycSUxL86+DRgZ8xaliAf8e5d5EtVgm9D2wrhOC1VTJAX7m3Er3ega2DqCbdI/dWvA=
+	t=1775674544; cv=none; b=PF/o5HXl/uD/ja/Q4GUatVhSxPlmvKRMIxZcOAR6HcvgEYrIdYctBcYSUV5SWeLId9FiKM0EjKWUlW5kTW4NibdDFHfDdyHW54k3+xRoXMTg23YPtZg5EIXokBM+Er4pazsCrfrqRatP8VsK/wQ0eq5eQwYJfuFSziKTgPDK7so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672103; c=relaxed/simple;
-	bh=elH5q12n7Xol1dUKL7c84H5xGFAj22mqD1OAOMAm6VU=;
+	s=arc-20240116; t=1775674544; c=relaxed/simple;
+	bh=ugL37jODfL3A5ogWd/rea1VYOQc6R4ZooW3jzJluwBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5tgBGmqjWcFg3EKVjerDRmoNFSOYRVZNpC/CM+KriQGaBl0qRyYU+S1dDbtGG443xR2JaIb2mc1DAVFJ4S1XO8yPCQesXxJ/VWMlwQ28F0wDxKnv5vkuZ42P30kNjNcixng5TlXyLnbBMaYMsgf34mPn7+5RYZS7gqOedp4o9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs4LMwdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35E0C19421;
-	Wed,  8 Apr 2026 18:15:02 +0000 (UTC)
+	 MIME-Version; b=haQTjZOuk1yYHXYQ3UB750BAvM6qpVbW+NpY/o7CkEsUmyWwo+Nnul9oB6m1WaQkamkZTsebZMHpJtA3TPbkckqz/5bgOO21lNb1BDXINciFfGcXuwXiiIYENiS2PclXhKVQqdjBLHiA/XB2BMGeHLuj+EezvbO1v7QcIThBo2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nN4RZhSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0EDC19421;
+	Wed,  8 Apr 2026 18:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672103;
-	bh=elH5q12n7Xol1dUKL7c84H5xGFAj22mqD1OAOMAm6VU=;
+	s=korg; t=1775674543;
+	bh=ugL37jODfL3A5ogWd/rea1VYOQc6R4ZooW3jzJluwBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qs4LMwdR1c0znEOlBmWrI4cAavjkBMIr9ZxMvSH595TJLofl8vpsVbFfhdB7yVDAr
-	 SP7d2bOlidSWir+3dc1WS413nlPibKDHyVONIRHZB0/+AJ3DdJ1HZjItRnGn7uhI1D
-	 +5/YfEf+Lmdod09qFuM6jox/SE1H+dow6AT5h25E=
+	b=nN4RZhSH6iZQcb3sEqg/6n882+1FUoEKtRWcjfOdZdgtOf7oefX27OeMr+baL9sSx
+	 Dh7Wh8i8RBGWXBmEbsiWafFXUCWXVNd8Jfh6KtEHuYu/yII4mxXO/9FI4yDQg1Q6ac
+	 KBnK/orLF2QfMLD3XrG2W5YyrFeaOk3UOLVzwnWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luka Gejak <luka.gejak@linux.dev>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Allison Henderson <achender@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 189/312] net: hsr: fix VLAN add unwind on slave errors
+Subject: [PATCH 6.19 106/311] rds: ib: reject FRMR registration before IB connection is established
 Date: Wed,  8 Apr 2026 20:01:46 +0200
-Message-ID: <20260408175940.819290356@linuxfoundation.org>
+Message-ID: <20260408175943.372353542@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,122 +70,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-235090-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234146-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 94A073C0577
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 568373C2BDF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luka Gejak <luka.gejak@linux.dev>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 2e3514e63bfb0e972b1f19668547a455d0129e88 ]
+[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
 
-When vlan_vid_add() fails for a secondary slave, the error path calls
-vlan_vid_del() on the failing port instead of the peer slave that had
-already succeeded. This results in asymmetric VLAN state across the HSR
-pair.
+rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
+and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
+fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
+i_cm_id = NULL because the connection worker has not yet called
+rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
+RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
+the control message before any connection establishment, allowing
+rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
+kernel.
 
-Fix this by switching to a centralized unwind path that removes the VID
-from any slave device that was already programmed.
+The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
+commit 9e630bcb7701), which does not catch this case since ic is allocated
+early and is always non-NULL once the connection object exists.
 
-Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-Link: https://patch.msgid.link/20260401092243.52121-3-luka.gejak@linux.dev
+ KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+ RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
+ Call Trace:
+  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
+  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
+  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
+  rds_ib_get_mr (net/rds/ib_rdma.c:615)
+  __rds_rdma_map (net/rds/rdma.c:295)
+  rds_cmsg_rdma_map (net/rds/rdma.c:860)
+  rds_sendmsg (net/rds/send.c:1363)
+  ____sys_sendmsg
+  do_syscall_64
+
+Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
+non-NULL before proceeding with FRMR registration, mirroring the guard
+already present in rds_ib_post_inv(). Return -ENODEV when the connection
+is not ready, which the existing error handling in rds_cmsg_send() converts
+to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
+start the connection worker.
+
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_device.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ net/rds/ib_rdma.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 81eaae4c19da1..48f34ad9219fd 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -473,8 +473,8 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
- static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
- 				   __be16 proto, u16 vid)
- {
--	bool is_slave_a_added = false;
--	bool is_slave_b_added = false;
-+	struct net_device *slave_a_dev = NULL;
-+	struct net_device *slave_b_dev = NULL;
- 	struct hsr_port *port;
- 	struct hsr_priv *hsr;
- 	int ret = 0;
-@@ -490,33 +490,35 @@ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
- 		switch (port->type) {
- 		case HSR_PT_SLAVE_A:
- 			if (ret) {
--				/* clean up Slave-B */
- 				netdev_err(dev, "add vid failed for Slave-A\n");
--				if (is_slave_b_added)
--					vlan_vid_del(port->dev, proto, vid);
--				return ret;
-+				goto unwind;
- 			}
--
--			is_slave_a_added = true;
-+			slave_a_dev = port->dev;
- 			break;
--
- 		case HSR_PT_SLAVE_B:
- 			if (ret) {
--				/* clean up Slave-A */
- 				netdev_err(dev, "add vid failed for Slave-B\n");
--				if (is_slave_a_added)
--					vlan_vid_del(port->dev, proto, vid);
--				return ret;
-+				goto unwind;
- 			}
--
--			is_slave_b_added = true;
-+			slave_b_dev = port->dev;
- 			break;
- 		default:
-+			if (ret)
-+				goto unwind;
- 			break;
- 		}
+diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
+index 6585164c70595..dd08ccc4246da 100644
+--- a/net/rds/ib_rdma.c
++++ b/net/rds/ib_rdma.c
+@@ -604,8 +604,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
+ 		return ibmr;
  	}
  
- 	return 0;
-+
-+unwind:
-+	if (slave_a_dev)
-+		vlan_vid_del(slave_a_dev, proto, vid);
-+
-+	if (slave_b_dev)
-+		vlan_vid_del(slave_b_dev, proto, vid);
-+
-+	return ret;
- }
+-	if (conn)
++	if (conn) {
+ 		ic = conn->c_transport_data;
++		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
++			ret = -ENODEV;
++			goto out;
++		}
++	}
  
- static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
+ 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
+ 		ret = -ENODEV;
 -- 
 2.53.0
 
