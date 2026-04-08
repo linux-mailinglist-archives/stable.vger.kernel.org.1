@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-235176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIKnKgir1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:48 +0200
+	id AAEyCYmk1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5A73C2DC0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6713C1F13
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C72FD31FE6F0
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB6E6317275C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699F73D411F;
-	Wed,  8 Apr 2026 18:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA233D4134;
+	Wed,  8 Apr 2026 18:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAuzzZ/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWkzWHsW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D57C3176E4;
-	Wed,  8 Apr 2026 18:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E226EB67E;
+	Wed,  8 Apr 2026 18:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674765; cv=none; b=tWw/uZWNTlheS+QkU2eRIvkVJHjwy/zdtO7t6n5a+yfDp56NJCQlyTakK7NQhov4FqbmkBe+c+w2uH+ViqXGi3et8IgEiF5zo/9wYmMvdDMh64TMeIOxwkU4SUa2X2wgS+BgOps+mBe1UQPNzMy43waLCk/pB7QlqT+AhLPr0xM=
+	t=1775673460; cv=none; b=dKVMAa0Rxn9c+2otrAIZRycJXEa+TQfuOuAr7lTbSUg0EB16pHT/4/MBrXbBi5lT8xZCOk7Zjii2+Yx14lDAcfLozwrgm0JW+S6fH+P2bfCtnLijYfBHUFo5hd4q3FdpLyc08rSpGrW2aNMe+8VWuyT2PcQnZJXkXWkxlmpuEmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674765; c=relaxed/simple;
-	bh=aj/DozRDyJFM5gQs+/5JwqhQqMRv03Qn/1kU2PO47y4=;
+	s=arc-20240116; t=1775673460; c=relaxed/simple;
+	bh=3tbIyaAjAFUO17MuR18a9mkL1YsTn8hGo7L7c7YrAyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCQ6vYkUOn77rbhz09ZtVrivDexTd3XTXl2AJwN0B7LLSz3zn2R8DXXIXioJ1AI5qZ9TgzQIa+dD28H3ZILv5AVWws9DgcMSKNJbekjDcxg/+bOPZWKSwSp8LyB4yYzARkb+LGSURSKOkgiDXAm9/gbFXJ9ZI5wL68UytxErxys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAuzzZ/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B803CC19421;
-	Wed,  8 Apr 2026 18:59:24 +0000 (UTC)
+	 MIME-Version; b=EpAdP8INjZblDzg9ADvueqeyYUv6c4kKKj/6bHHWuDWluTtqbSYQBDIHsUWGipkGv0+Z7SCKfWKeoV1OtIXPjJdtXWeMFevyKZZSj4Lxm/6q2VWBBzwuHOi9CNs53ITK1PoC1NSrdn/hBHn9HsDyfhMOmVSQ52rYBsYnblGrHWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWkzWHsW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C55C19421;
+	Wed,  8 Apr 2026 18:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674765;
-	bh=aj/DozRDyJFM5gQs+/5JwqhQqMRv03Qn/1kU2PO47y4=;
+	s=korg; t=1775673459;
+	bh=3tbIyaAjAFUO17MuR18a9mkL1YsTn8hGo7L7c7YrAyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CAuzzZ/ZbLXy0m3HYtBexWZGmPwjTapwO/Ya86uqV/AlClcwz5yZL7zrUxEzEYMZ3
-	 pN76vAj8BhY7UUvvgRSQX8/jIOphVYSOT+kpP17q3JJ5OOsiCg4PMS2S0WLaGcqjJ0
-	 IXsBRx0oZsbmxz7XqWcqwgqA80PY/OW/F0phaKDQ=
+	b=zWkzWHsWRn6OHKaZiJTcSIy5bwP6OliSuOC2GJsRHVEWLf4xtZiOukaL8t651Z1Pb
+	 oafFafygl9JFqA98HbjofCWksZR0dLmpsJtyszV1yx4RTwRZe4s2yXkPu9R4Gfci0V
+	 abdmk1DqeNH0M/syjlIEBKFGY/V5nvXFNcBkrVcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Robert Budai <robert.budai@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 225/311] iio: imu: adis16550: fix swapped gyro/accel filter functions
+	syzbot+3b3852c6031d0f30dfaf@syzkaller.appspotmail.com,
+	Mauricio Faria de Oliveira <mfo@igalia.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>
+Subject: [PATCH 6.18 240/277] thermal: core: Address thermal zone removal races with resume
 Date: Wed,  8 Apr 2026 20:03:45 +0200
-Message-ID: <20260408175947.801899524@linuxfoundation.org>
+Message-ID: <20260408175942.821192224@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +65,207 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234670-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235176-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 3D5A73C2DC0
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,3b3852c6031d0f30dfaf];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url,igalia.com:email,arm.com:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzbot.org:url]
+X-Rspamd-Queue-Id: 9B6713C1F13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit ea7e2e43d768102e2601dbbda42041c78d7a99f9 upstream.
+commit 45b859b0728267a6199ee5002d62e6c6f3e8c89d upstream.
 
-The low-pass filter handlers for IIO_ANGL_VEL and IIO_ACCEL call each
-other's filter functions in both read_raw and write_raw. Swap them so
-each channel type uses its correct filter accessor.
+Since thermal_zone_pm_complete() and thermal_zone_device_resume()
+re-initialize the poll_queue delayed work for the given thermal zone,
+the cancel_delayed_work_sync() in thermal_zone_device_unregister()
+may miss some already running work items and the thermal zone may
+be freed prematurely [1].
 
-Fixes: bac4368fab62 ("iio: imu: adis16550: add adis16550 support")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Acked-by: Robert Budai <robert.budai@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+There are two failing scenarios that both start with
+running thermal_pm_notify_complete() right before invoking
+thermal_zone_device_unregister() for one of the thermal zones.
+
+In the first scenario, there is a work item already running for
+the given thermal zone when thermal_pm_notify_complete() calls
+thermal_zone_pm_complete() for that thermal zone and it continues to
+run when thermal_zone_device_unregister() starts.  Since the poll_queue
+delayed work has been re-initialized by thermal_pm_notify_complete(), the
+running work item will be missed by the cancel_delayed_work_sync() in
+thermal_zone_device_unregister() and if it continues to run past the
+freeing of the thermal zone object, a use-after-free will occur.
+
+In the second scenario, thermal_zone_device_resume() queued up by
+thermal_pm_notify_complete() runs right after the thermal_zone_exit()
+called by thermal_zone_device_unregister() has returned.  The poll_queue
+delayed work is re-initialized by it before cancel_delayed_work_sync() is
+called by thermal_zone_device_unregister(), so it may continue to run
+after the freeing of the thermal zone object, which also leads to a
+use-after-free.
+
+Address the first failing scenario by ensuring that no thermal work
+items will be running when thermal_pm_notify_complete() is called.
+For this purpose, first move the cancel_delayed_work() call from
+thermal_zone_pm_complete() to thermal_zone_pm_prepare() to prevent
+new work from entering the workqueue going forward.  Next, switch
+over to using a dedicated workqueue for thermal events and update
+the code in thermal_pm_notify() to flush that workqueue after
+thermal_pm_notify_prepare() has returned which will take care of
+all leftover thermal work already on the workqueue (that leftover
+work would do nothing useful anyway because all of the thermal zones
+have been flagged as suspended).
+
+The second failing scenario is addressed by adding a tz->state check
+to thermal_zone_device_resume() to prevent it from re-initializing
+the poll_queue delayed work if the thermal zone is going away.
+
+Note that the above changes will also facilitate relocating the suspend
+and resume of thermal zones closer to the suspend and resume of devices,
+respectively.
+
+Fixes: 5a5efdaffda5 ("thermal: core: Resume thermal zones asynchronously")
+Reported-by: syzbot+3b3852c6031d0f30dfaf@syzkaller.appspotmail.com
+Closes: https://syzbot.org/bug?extid=3b3852c6031d0f30dfaf
+Reported-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+Closes: https://lore.kernel.org/linux-pm/20260324-thermal-core-uaf-init_delayed_work-v1-1-6611ae76a8a1@igalia.com/ [1]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+Tested-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/6267615.lOV4Wx5bFT@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/adis16550.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/thermal/thermal_core.c |   31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/imu/adis16550.c
-+++ b/drivers/iio/imu/adis16550.c
-@@ -643,12 +643,12 @@ static int adis16550_read_raw(struct iio
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		switch (chan->type) {
- 		case IIO_ANGL_VEL:
--			ret = adis16550_get_accl_filter_freq(st, val);
-+			ret = adis16550_get_gyro_filter_freq(st, val);
- 			if (ret)
- 				return ret;
- 			return IIO_VAL_INT;
- 		case IIO_ACCEL:
--			ret = adis16550_get_gyro_filter_freq(st, val);
-+			ret = adis16550_get_accl_filter_freq(st, val);
- 			if (ret)
- 				return ret;
- 			return IIO_VAL_INT;
-@@ -681,9 +681,9 @@ static int adis16550_write_raw(struct ii
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		switch (chan->type) {
- 		case IIO_ANGL_VEL:
--			return adis16550_set_accl_filter_freq(st, val);
--		case IIO_ACCEL:
- 			return adis16550_set_gyro_filter_freq(st, val);
-+		case IIO_ACCEL:
-+			return adis16550_set_accl_filter_freq(st, val);
- 		default:
- 			return -EINVAL;
- 		}
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -41,6 +41,8 @@ static struct thermal_governor *def_gove
+ 
+ static bool thermal_pm_suspended;
+ 
++static struct workqueue_struct *thermal_wq __ro_after_init;
++
+ /*
+  * Governor section: set of functions to handle thermal governors
+  *
+@@ -313,7 +315,7 @@ static void thermal_zone_device_set_poll
+ 	if (delay > HZ)
+ 		delay = round_jiffies_relative(delay);
+ 
+-	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, delay);
++	mod_delayed_work(thermal_wq, &tz->poll_queue, delay);
+ }
+ 
+ static void thermal_zone_recheck(struct thermal_zone_device *tz, int error)
+@@ -1781,6 +1783,10 @@ static void thermal_zone_device_resume(s
+ 
+ 	guard(thermal_zone)(tz);
+ 
++	/* If the thermal zone is going away, there's nothing to do. */
++	if (tz->state & TZ_STATE_FLAG_EXIT)
++		return;
++
+ 	tz->state &= ~(TZ_STATE_FLAG_SUSPENDED | TZ_STATE_FLAG_RESUMING);
+ 
+ 	thermal_debug_tz_resume(tz);
+@@ -1807,6 +1813,9 @@ static void thermal_zone_pm_prepare(stru
+ 	}
+ 
+ 	tz->state |= TZ_STATE_FLAG_SUSPENDED;
++
++	/* Prevent new work from getting to the workqueue subsequently. */
++	cancel_delayed_work(&tz->poll_queue);
+ }
+ 
+ static void thermal_pm_notify_prepare(void)
+@@ -1825,8 +1834,6 @@ static void thermal_zone_pm_complete(str
+ {
+ 	guard(thermal_zone)(tz);
+ 
+-	cancel_delayed_work(&tz->poll_queue);
+-
+ 	reinit_completion(&tz->resume);
+ 	tz->state |= TZ_STATE_FLAG_RESUMING;
+ 
+@@ -1836,7 +1843,7 @@ static void thermal_zone_pm_complete(str
+ 	 */
+ 	INIT_DELAYED_WORK(&tz->poll_queue, thermal_zone_device_resume);
+ 	/* Queue up the work without a delay. */
+-	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, 0);
++	mod_delayed_work(thermal_wq, &tz->poll_queue, 0);
+ }
+ 
+ static void thermal_pm_notify_complete(void)
+@@ -1859,6 +1866,11 @@ static int thermal_pm_notify(struct noti
+ 	case PM_RESTORE_PREPARE:
+ 	case PM_SUSPEND_PREPARE:
+ 		thermal_pm_notify_prepare();
++		/*
++		 * Allow any leftover thermal work items already on the
++		 * worqueue to complete so they don't get in the way later.
++		 */
++		flush_workqueue(thermal_wq);
+ 		break;
+ 	case PM_POST_HIBERNATION:
+ 	case PM_POST_RESTORE:
+@@ -1891,9 +1903,16 @@ static int __init thermal_init(void)
+ 	if (result)
+ 		goto error;
+ 
++	thermal_wq = alloc_workqueue("thermal_events",
++				      WQ_FREEZABLE | WQ_POWER_EFFICIENT | WQ_PERCPU, 0);
++	if (!thermal_wq) {
++		result = -ENOMEM;
++		goto unregister_netlink;
++	}
++
+ 	result = thermal_register_governors();
+ 	if (result)
+-		goto unregister_netlink;
++		goto destroy_workqueue;
+ 
+ 	thermal_class = kzalloc(sizeof(*thermal_class), GFP_KERNEL);
+ 	if (!thermal_class) {
+@@ -1920,6 +1939,8 @@ static int __init thermal_init(void)
+ 
+ unregister_governors:
+ 	thermal_unregister_governors();
++destroy_workqueue:
++	destroy_workqueue(thermal_wq);
+ unregister_netlink:
+ 	thermal_netlink_exit();
+ error:
 
 
 
