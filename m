@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAeuMnmh1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:01 +0200
+	id wN6wKOua1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD6D3C1417
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA273C03B9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 488BE300902D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08214300F12C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FFA3D669E;
-	Wed,  8 Apr 2026 18:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA323D9022;
+	Wed,  8 Apr 2026 18:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFA4UoFV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEJqZlnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D513B0AFC;
-	Wed,  8 Apr 2026 18:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6CF3D8918;
+	Wed,  8 Apr 2026 18:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673626; cv=none; b=iaPtdjHAd/cJjKsskvvWPJEph49BPVOM7WsukcKTjV7zNS37XQbNfaRwjDImDW/4F5ImQxdexXnv0bcmx5fUthG1JNSs5WRkzX5bOoWumfXquz6gFjXwfSnChJODsb1asRsKO4vXTnNrlpDXT8YLjWiFpfsa8x3gnzwqOxfmItw=
+	t=1775672005; cv=none; b=YE8Oq8d9p2n0pz2zNDX8qBhzUx2/MlHQzjDvrOgrVHB4VXxN7d5Ft0L2lbaAWfpZKUt2KcEn4RGUPinwuBwr1tQZ6/d+seGZAOEIPJdkKGpA0SBXB5+wdCV806yJ+EydfEFqEGvnRYpwY9DZzjkGfTjs8N/PNErbdgK4HHwtXvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673626; c=relaxed/simple;
-	bh=tsCkIEt0fQUOT3GLkBf2L8N9uUC8i/bAStE781xl/xk=;
+	s=arc-20240116; t=1775672005; c=relaxed/simple;
+	bh=ICIcgYwO3bIvWoKAQvH29DLZFtEus5wCDxDSL5FPpiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwiOCrHlTZyo/rfJmf/pI5Lbzx+7NOJnHikt6QbZsuW/YAr2mq/pqBK2Lri4Qx43VGzeZsODqtCD4lT8TSkm1kt6EocWN6OZAHrhUO2ngvxwus/5logU+onTVAnqNkWDzhymyNO9JqXkzgClafAxrrk8OVGwN0IvhcLbYUTDRoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFA4UoFV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606A7C19421;
-	Wed,  8 Apr 2026 18:40:26 +0000 (UTC)
+	 MIME-Version; b=BCWhFd8baq8F+b3S8SR1nnYSC71K+nsf/O8NI5i6u2/jHnzaZsAKHOIq3cEeCP+6+1SNkYa9P+gJaXpxQfjqqdAiaM7zs4/tHuxcJJVLXtvLVgpLaU4aduDkNmpbks6HVYesNr1jqe2FmHAbX/3KMW3DZQjv+AtcjoNQMhnL7Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEJqZlnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2138FC19425;
+	Wed,  8 Apr 2026 18:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673626;
-	bh=tsCkIEt0fQUOT3GLkBf2L8N9uUC8i/bAStE781xl/xk=;
+	s=korg; t=1775672005;
+	bh=ICIcgYwO3bIvWoKAQvH29DLZFtEus5wCDxDSL5FPpiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFA4UoFVluosNxp2mwrnwTt1oTEqTXkWk25oNLA2fUodUS4C07llw6pTB4Y93cVa8
-	 5Oo/lzKHAIkdYF2QCRe767+M7yuLpD65VIXnes3eHCkqfgY/Thz3MyUK/fbm2JEud0
-	 13MJjdU5/zA22kjrOB2f8mYdQOq8e/TRYhLFaiDg=
+	b=XEJqZlnIWxQT3hUpnxNVHpy/77St+oL4xv8mwSxgv5q6xlPWd/7aoKI/tN1rJAJv7
+	 HT5rL8nhus66uNurR1GUoFyBnwgY71cseBGBfJ+wKZTucCR6/Op30n2YvLinAULExb
+	 /NavgxtWNI4qR8py+nu//ii4Ekjo+WpGRzd+xyoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Freund <adrian@freund.io>,
-	Jiri Kosina <jkosina@suse.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Oskar Kjos <oskar.kjos@hotmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/242] HID: logitech-hidpp: Enable MX Master 4 over bluetooth
-Date: Wed,  8 Apr 2026 20:01:07 +0200
-Message-ID: <20260408175928.086072166@linuxfoundation.org>
+Subject: [PATCH 6.1 151/312] ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach()
+Date: Wed,  8 Apr 2026 20:01:08 +0200
+Message-ID: <20260408175939.406138996@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +70,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,google.com,hotmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234108-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234735-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,freund.io:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6BD6D3C1417
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email]
+X-Rspamd-Queue-Id: 0CA273C03B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Freund <adrian@freund.io>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 70031e70ca15ede6a39db4d978e53a6cc720d454 ]
+[ Upstream commit 86ab3e55673a7a49a841838776f1ab18d23a67b5 ]
 
-The Logitech MX Master 4 can be connected over bluetooth or through a
-Logitech Bolt receiver. This change adds support for non-standard HID
-features, such as high resolution scrolling when the mouse is connected
-over bluetooth.
-Because no Logitech Bolt receiver driver exists yet those features
-won't be available when the mouse is connected through the receiver.
+Sashiko AI-review observed:
 
-Signed-off-by: Adrian Freund <adrian@freund.io>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+  In ip6_err_gen_icmpv6_unreach(), the skb is an outer IPv4 ICMP error packet
+  where its cb contains an IPv4 inet_skb_parm. When skb is cloned into skb2
+  and passed to icmp6_send(), it uses IP6CB(skb2).
+
+  IP6CB interprets the IPv4 inet_skb_parm as an inet6_skb_parm. The cipso
+  offset in inet_skb_parm.opt directly overlaps with dsthao in inet6_skb_parm
+  at offset 18.
+
+  If an attacker sends a forged ICMPv4 error with a CIPSO IP option, dsthao
+  would be a non-zero offset. Inside icmp6_send(), mip6_addr_swap() is called
+  and uses ipv6_find_tlv(skb, opt->dsthao, IPV6_TLV_HAO).
+
+  This would scan the inner, attacker-controlled IPv6 packet starting at that
+  offset, potentially returning a fake TLV without checking if the remaining
+  packet length can hold the full 18-byte struct ipv6_destopt_hao.
+
+  Could mip6_addr_swap() then perform a 16-byte swap that extends past the end
+  of the packet data into skb_shared_info?
+
+  Should the cb array also be cleared in ip6_err_gen_icmpv6_unreach() and
+  ip6ip6_err() to prevent this?
+
+This patch implements the first suggestion.
+
+I am not sure if ip6ip6_err() needs to be changed.
+A separate patch would be better anyway.
+
+Fixes: ca15a078bd90 ("sit: generate icmpv6 error when receiving icmpv4 error")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Closes: https://sashiko.dev/#/patchset/20260326155138.2429480-1-edumazet%40google.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Oskar Kjos <oskar.kjos@hotmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260326202608.2976021-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/icmp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 492a02ca80594..c9df222e894a1 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4695,6 +4695,8 @@ static const struct hid_device_id hidpp_devices[] = {
- 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb038) },
- 	{ /* Slim Solar+ K980 Keyboard over Bluetooth */
- 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb391) },
-+	{ /* MX Master 4 mouse over Bluetooth */
-+	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb042) },
- 	{}
- };
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index ea1cdacbdcf1b..80eabb22d144f 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -677,6 +677,9 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
+ 	if (!skb2)
+ 		return 1;
  
++	/* Remove debris left by IPv4 stack. */
++	memset(IP6CB(skb2), 0, sizeof(*IP6CB(skb2)));
++
+ 	skb_dst_drop(skb2);
+ 	skb_pull(skb2, nhs);
+ 	skb_reset_network_header(skb2);
 -- 
 2.53.0
 
