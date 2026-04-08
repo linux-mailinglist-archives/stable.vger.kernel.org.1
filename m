@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCd7DtWa1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:41 +0200
+	id 2PSNOwef1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C669E3C037A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A013C0DED
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5B433035A66
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 58ADD3013B5F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B983D8917;
-	Wed,  8 Apr 2026 18:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30435357A20;
+	Wed,  8 Apr 2026 18:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOhDaUFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrz980oz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2A6347503;
-	Wed,  8 Apr 2026 18:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68123D6CB9;
+	Wed,  8 Apr 2026 18:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671951; cv=none; b=qMAHCX7TmusIpxoAjVqHhUnueGJczSxyfPzU6isE5HupO68TIoobAbpLi38GOJGar42t3h4aYtg+kw1ukqidOTR/EkkxECa8Lrw/N+iRavTCK2372vRH/Hb/52Vawhl9Ki/xbn+9FEgXtm3qOuc7M+XOiFb7LVuB1Ma4jVucRPQ=
+	t=1775673006; cv=none; b=mrf5G+HWhJyQFAWRawk8iL+4fp6u6hTqIciCiV9XG91+ZUUW9cfqQQOTokf20XqcMbwZorjX5Z8Gj9yiUAqRTOHgnNBH9Q07HejsflsCWq5bZ5SHWYQtjeuPzTOz6NC9zky71t1H4DdcsJsAQJPnNS8MyZ6/6zj/Vq0r5IBk2Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671951; c=relaxed/simple;
-	bh=TbTAwjXV5VIKkLHOg3tk6HKHTYxIWfVrRmWGHtI0fxY=;
+	s=arc-20240116; t=1775673006; c=relaxed/simple;
+	bh=kvq+gltYEhVSlkYfAh+eQ7QII4aIlLyTHp/nUKBwy2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBktUecoq5WeTwVBOX9cXPkU5sGjadU7DQAiweHY081+rtLW+dmNZALpE/JS/wwy2Tphr4JsKBDmD6Pcp7D9rmflyI0v51XRt81Bh/9+XFLq1byMg31vW3od76blq6/Wgo2IKht9yYuzqmrXu+FeZ7p2WhdSry1PneM3aVznjI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOhDaUFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19020C19421;
-	Wed,  8 Apr 2026 18:12:30 +0000 (UTC)
+	 MIME-Version; b=sgDjSHWb/WpPX2+xofCs2WCE9TP3GsQxcsyeHtdWCAU5xQBlZl90HXL+woFcHOOabvK9lADvrn8r0kko9a4H3H4D8QPaZ1hBKhELHzwrd4MLywtq/vHd3ZY9CdRo08viLaVUDRUSof/2JIoUM9XSPgBmWntv+F/R8DW81MuO568=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrz980oz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB24C19421;
+	Wed,  8 Apr 2026 18:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671951;
-	bh=TbTAwjXV5VIKkLHOg3tk6HKHTYxIWfVrRmWGHtI0fxY=;
+	s=korg; t=1775673005;
+	bh=kvq+gltYEhVSlkYfAh+eQ7QII4aIlLyTHp/nUKBwy2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOhDaUFdltjYZlMGkwhylzm9fYikoNRdPxxFl0QHk2LQT9FvBgLcm+z3kDVP7bPYB
-	 wc6N1HA5Jq+IG5H4pdaDa+gIaLfxvLQju5I6AEHoxNQPpG26n2fiMmCRFe8V3ZSAOL
-	 cLNSzsQ7Utr1JI5Bt7oepovEL2ToWjPS4BnzpBow=
+	b=mrz980oz+k0jkZNFhA2CclOw4Wq27Bysvg6p67qiHCvIufuor/xYCHkZ8xnrG66I1
+	 j9Q61xHOXAuO0gj6S6GtIJGb22Lw5+8GlQ+662B0LHKlRdJKZJdiAZgCTAJgbXku0I
+	 +u3ivOeTTTATjX6fEXbmjXWfnOcBnXArFdGvcD6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Michal Piekos <michal.piekos@mmpsystems.pl>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/312] dmaengine: idxd: Fix freeing the allocated ida too late
+Subject: [PATCH 6.18 064/277] net: stmmac: skip VLAN restore when VLAN hash ops are missing
 Date: Wed,  8 Apr 2026 20:00:49 +0200
-Message-ID: <20260408175938.701562443@linuxfoundation.org>
+Message-ID: <20260408175936.249951745@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +68,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234087-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234494-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C669E3C037A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,mmpsystems.pl:email]
+X-Rspamd-Queue-Id: 75A013C0DED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Michal Piekos <michal.piekos@mmpsystems.pl>
 
-[ Upstream commit c311f5e9248471a950f0a524c2fd736414d98900 ]
+[ Upstream commit 48b3cd69265f346f64b93064723492da46206e9b ]
 
-It can happen that when the cdev .release() is called, the driver
-already called ida_destroy(). Move ida_free() to the _del() path.
+stmmac_vlan_restore() unconditionally calls stmmac_vlan_update() when
+NETIF_F_VLAN_FEATURES is set. On platforms where priv->hw->vlan (or
+->update_vlan_hash) is not provided, stmmac_update_vlan_hash() returns
+-EINVAL via stmmac_do_void_callback(), resulting in a spurious
+"Failed to restore VLANs" error even when no VLAN filtering is in use.
 
-We see with DEBUG_KOBJECT_RELEASE enabled and forcing an early PCI
-unbind.
+Remove not needed comment.
+Remove not used return value from stmmac_vlan_restore().
 
-Fixes: 04922b7445a1 ("dmaengine: idxd: fix cdev setup and free device lifetime issues")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-9-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Tested on Orange Pi Zero 3.
+
+Fixes: bd7ad51253a7 ("net: stmmac: Fix VLAN HW state restore")
+Signed-off-by: Michal Piekos <michal.piekos@mmpsystems.pl>
+Link: https://patch.msgid.link/20260328-vlan-restore-error-v4-1-f88624c530dc@mmpsystems.pl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/cdev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index e42c9a9f3c238..622cc47c6a182 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -45,11 +45,7 @@ struct idxd_user_context {
- static void idxd_cdev_dev_release(struct device *dev)
- {
- 	struct idxd_cdev *idxd_cdev = dev_to_cdev(dev);
--	struct idxd_cdev_context *cdev_ctx;
--	struct idxd_wq *wq = idxd_cdev->wq;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index eeeb9f50c265c..f8df0609e0e69 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -139,7 +139,7 @@ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue);
+ static void stmmac_flush_tx_descriptors(struct stmmac_priv *priv, int queue);
+ static void stmmac_set_dma_operation_mode(struct stmmac_priv *priv, u32 txmode,
+ 					  u32 rxmode, u32 chan);
+-static int stmmac_vlan_restore(struct stmmac_priv *priv);
++static void stmmac_vlan_restore(struct stmmac_priv *priv);
  
--	cdev_ctx = &ictx[wq->idxd->data->type];
--	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
- 	kfree(idxd_cdev);
+ #ifdef CONFIG_DEBUG_FS
+ static const struct net_device_ops stmmac_netdev_ops;
+@@ -6668,21 +6668,15 @@ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vi
+ 	return ret;
  }
  
-@@ -410,11 +406,15 @@ int idxd_wq_add_cdev(struct idxd_wq *wq)
- 
- void idxd_wq_del_cdev(struct idxd_wq *wq)
+-static int stmmac_vlan_restore(struct stmmac_priv *priv)
++static void stmmac_vlan_restore(struct stmmac_priv *priv)
  {
-+	struct idxd_cdev_context *cdev_ctx;
- 	struct idxd_cdev *idxd_cdev;
+-	int ret;
+-
+ 	if (!(priv->dev->features & NETIF_F_VLAN_FEATURES))
+-		return 0;
++		return;
  
- 	idxd_cdev = wq->idxd_cdev;
- 	wq->idxd_cdev = NULL;
- 	cdev_device_del(&idxd_cdev->cdev, cdev_dev(idxd_cdev));
-+
-+	cdev_ctx = &ictx[wq->idxd->data->type];
-+	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
- 	put_device(cdev_dev(idxd_cdev));
+ 	if (priv->hw->num_vlan)
+ 		stmmac_restore_hw_vlan_rx_fltr(priv, priv->dev, priv->hw);
+ 
+-	ret = stmmac_vlan_update(priv, priv->num_double_vlans);
+-	if (ret)
+-		netdev_err(priv->dev, "Failed to restore VLANs\n");
+-
+-	return ret;
++	stmmac_vlan_update(priv, priv->num_double_vlans);
  }
  
+ static int stmmac_bpf(struct net_device *dev, struct netdev_bpf *bpf)
 -- 
 2.53.0
 
