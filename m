@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKOPHnWj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234561-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:29 +0200
+	id YC48F1Cb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C698C3C1BA3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4BB3C0492
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A9B13018BE7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 113CE300ADB3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F64F3B19A3;
-	Wed,  8 Apr 2026 18:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C925A33BBCF;
+	Wed,  8 Apr 2026 18:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGNTr5Ko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGlg5JTN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1293028C87C;
-	Wed,  8 Apr 2026 18:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0FC28C87C;
+	Wed,  8 Apr 2026 18:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673179; cv=none; b=ReYzGXgL8sFeTUsZn9oz12JJIsdh4eDijEN7m6RdwEdf6uCeTQFoT04LSEyqmJ+QNOSzK/VVQmWqDIPupzkCiayU1b6yATutCJsSgO/S/YUj83RH1rG4E/Oq2VSGaH/jxW5o2thKOcPLB5xrp4z0+v8XbZMLoJRmYX7NLdpKE08=
+	t=1775672126; cv=none; b=MXwTXQnfhhdXbWFkPawh8A57itATDj5y6m7xjiV5BB4x7Q0lQ1FxvWg3cNGeMPFcoRRRatCDyTdJkamTya9BTLn8gKFNetope+0z/ufOzAMd/Fs4/tjmEO4kYgSfdndKpR6F7bb65K9T5lqjdvVzoGcvlTm7tOAAn73MLqWvM9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673179; c=relaxed/simple;
-	bh=iyltWt9RVc9EKU6gKERH+ANn3f7xBbIVWpHA7u3xgkk=;
+	s=arc-20240116; t=1775672126; c=relaxed/simple;
+	bh=8shrDCqomLkkUv3Dqw3rsP0i6qnOw0tZyXkImH7By1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqXOHjGQV/H9QSXnDaVmZGmr00EVMTXDC7kERQ9Fu4ZVVswr1yDHP14dgOIm1OaRwSv1F3Gcfi178ZYlYpEshRwe7TE+LmYbFTWOIZWszZEO+9NHZcotIKj3nFcdM7SNK7RKn7xMI0C9v7fJcIoG3jKlGucCuPjdrr/h1J+okxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGNTr5Ko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBE1C19421;
-	Wed,  8 Apr 2026 18:32:58 +0000 (UTC)
+	 MIME-Version; b=rfUm4oRmaCVxAbMiJuMeW2mgfFww+v0ylY8gS0S/i//UMWoBHvQnrKb719jumqmyeHt0nLqsyNzf9ePbLsw8HTO0g4h/dQnkp84DTugKD56H720xoZryRQAak4buAYlOo77+9Lwmd0tQKqXIs8F4B0s2R6qznRpqGFXxs6IvDHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGlg5JTN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215DEC2BC87;
+	Wed,  8 Apr 2026 18:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673179;
-	bh=iyltWt9RVc9EKU6gKERH+ANn3f7xBbIVWpHA7u3xgkk=;
+	s=korg; t=1775672126;
+	bh=8shrDCqomLkkUv3Dqw3rsP0i6qnOw0tZyXkImH7By1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGNTr5KolwCUJ1+QF42LhM4fkI31rMY+yWhVi3UEzzOuQAHlKyHX44Q9t8dAvYXTp
-	 OpYZrQHHwplnTqfzIk6JjhOdvKMRwnt7ny2hd+7MefB+IC6GMpZhCipA3i33TVnenD
-	 9gZn5JSfwPC+pv7EKsoV+aNcNWrsWCHpi3o9ti/4=
+	b=NGlg5JTNXKatEypm06LTYLy1sdHSodhk1q7u6lraXRhYslQAZerFSNCWyYByOU+Ur
+	 /wZDtOf3iffqBLOUF1KuQHzdTUE3HqoGeQ86QLLXTsXRq9RcVyhOAa6fesbgZjKxAB
+	 N2CAyqxL306rkB4yvJLZOjfl6i3j2YITo1QncKgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yasuaki Torimaru <yasuakitorimaru@gmail.com>,
+	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 131/277] wifi: wilc1000: fix u8 overflow in SSID scan buffer size calculation
-Date: Wed,  8 Apr 2026 20:01:56 +0200
-Message-ID: <20260408175938.766556435@linuxfoundation.org>
+Subject: [PATCH 6.1 200/312] wifi: iwlwifi: mvm: fix potential out-of-bounds read in iwl_mvm_nd_match_info_handler()
+Date: Wed,  8 Apr 2026 20:01:57 +0200
+Message-ID: <20260408175941.230448124@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +65,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234561-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234155-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: C698C3C1BA3
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ispras.ru:email]
+X-Rspamd-Queue-Id: 3D4BB3C0492
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
 
-commit d049e56b1739101d1c4d81deedb269c52a8dbba0 upstream.
+commit 744fabc338e87b95c4d1ff7c95bc8c0f834c6d99 upstream.
 
-The variable valuesize is declared as u8 but accumulates the total
-length of all SSIDs to scan. Each SSID contributes up to 33 bytes
-(IEEE80211_MAX_SSID_LEN + 1), and with WILC_MAX_NUM_PROBED_SSID (10)
-SSIDs the total can reach 330, which wraps around to 74 when stored
-in a u8.
+The memcpy function assumes the dynamic array notif->matches is at least
+as large as the number of bytes to copy. Otherwise, results->matches may
+contain unwanted data. To guarantee safety, extend the validation in one
+of the checks to ensure sufficient packet length.
 
-This causes kmalloc to allocate only 75 bytes while the subsequent
-memcpy writes up to 331 bytes into the buffer, resulting in a 256-byte
-heap buffer overflow.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Widen valuesize from u8 to u32 to accommodate the full range.
-
-Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Link: https://patch.msgid.link/20260324100624.983458-1-yasuakitorimaru@gmail.com
+Fixes: 5ac54afd4d97 ("wifi: iwlwifi: mvm: Add handling for scan offload match info notification")
+Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+Link: https://patch.msgid.link/20260207150335.1013646-1-a.velichayshiy@ispras.ru
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c |    2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -163,7 +163,7 @@ int wilc_scan(struct wilc_vif *vif, u8 s
- 	u32 index = 0;
- 	u32 i, scan_timeout;
- 	u8 *buffer;
--	u8 valuesize = 0;
-+	u32 valuesize = 0;
- 	u8 *search_ssid_vals = NULL;
- 	const u8 ch_list_len = request->n_channels;
- 	struct host_if_drv *hif_drv = vif->hif_drv;
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -2678,7 +2678,7 @@ static void iwl_mvm_nd_match_info_handle
+ 	if (IS_ERR_OR_NULL(vif))
+ 		return;
+ 
+-	if (len < sizeof(struct iwl_scan_offload_match_info)) {
++	if (len < sizeof(struct iwl_scan_offload_match_info) + matches_len) {
+ 		IWL_ERR(mvm, "Invalid scan match info notification\n");
+ 		return;
+ 	}
 
 
 
