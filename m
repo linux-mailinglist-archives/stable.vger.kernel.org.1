@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-233805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOWdGB0F1mnbAQgAu9opvQ
-	(envelope-from <stable+bounces-233805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:34:53 +0200
+	id oJT9IrAE1mnbAQgAu9opvQ
+	(envelope-from <stable+bounces-233804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:33:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051FB3B85B9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:34:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EA63B840D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 09:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 73C46302AED0
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 07:31:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8756302C6E9
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 07:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D2738423C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02938383C9C;
 	Wed,  8 Apr 2026 07:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQOEqoQW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOU/doeV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B638E382391;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6426382394;
 	Wed,  8 Apr 2026 07:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775633514; cv=none; b=SWpYQ1Z7wOXbxJ+f1UiWFRMtPfVk9yd1bMvqmVwhQ5DXq40INqBfEovQwyFGedmucgfxpLTRC1awWX5StP0sI5dZTqPNV8Ls154PJgcB+MqTsx4IyFypsH83f0FpkWhHOxSBOj17YSk5fumrDA77LcRQSoY7T3DHHWykncPhqtI=
+	t=1775633514; cv=none; b=W8U2cAEXztuguWopj6ZchOWF6foLxBwIK845/vrLGMujXXsSRt/X0LsQpXTEijRSzadG5UXyR2156JVqmn5LoVZji+rLsPmV8aWn9V6b3S53yNVd4wgWIop1ENkm3Cn2KPvgGsIIW47BiaqrdzLgmBBjCBfmOlr4VACa0UpX3IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775633514; c=relaxed/simple;
-	bh=slJlP5Oupwv22k8EjAyL7vWShwGKljKVWC/OLb7mvT8=;
+	bh=dHtIUpJe5O9O5vYplwuFO+s0enNeFKqbjvD27gE7yVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqhXoUZ+orF0fWBwf7WTGWH7KuHiBVPdOzD2MzMkWNHItvlDSBB3ONTwqi3pX0uEm7ZLU6yHt8VMPtFHpzqkkMdNdxUFzB/2VXZTTInULotG8yU0048hFH8o3Rw3bPlLeo8uZ6HQIFeYJTKnh8lYc89JhuAQ1CFsR4aCsZlwdFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQOEqoQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636B4C2BCB0;
+	 MIME-Version; b=elCs0zB71brL9stwzwT0vHQtDp3JqxlwSPK0JLd1uj2zq2J780PiDe3fQGjbKJvKPnPcQ3BhwCiV46UZWtgGppwS4tJWPeCnU4u//1BdLH0Lq/FJnt/3JRPsdAo5WkP7XTJj334fOgiV1cxg6OaFjz1JDUCophUGpWgA0iOFrBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOU/doeV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F94C19425;
 	Wed,  8 Apr 2026 07:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775633514;
-	bh=slJlP5Oupwv22k8EjAyL7vWShwGKljKVWC/OLb7mvT8=;
+	bh=dHtIUpJe5O9O5vYplwuFO+s0enNeFKqbjvD27gE7yVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQOEqoQWloPSOQE7rPu6gn8DpCMMR3iHcC34jeF8eya+wNeGK4Y+I4UyGUD3Z6jD4
-	 ZpjSvv4+ZTZaSmjv3qBtb+DcwBJH6lVMF5mVErASbMOuqgiEtMu/nFqksU0kJh6Iwv
-	 QTna/OeQ06gaSbEheKdkbIt7LwtOR45ol+xMgqcHu+fqU5R6wCNX178ElARKKO70qL
-	 o2fjD5jxHYdNo8MmDMTmIYjJRwHqq2UjIocR573+PzY8QrzwI8Oq/9K4C2VcQEn2p2
-	 s+IeCTvQ8qp40k57T6Bht4T+Q06cWIT3xYMn8EdZmxuhsu45Fn0G2VrX8JC4IRtIOn
-	 dPR3VVVrsiatw==
+	b=XOU/doeVTSd4plLbqFcraRosHoTrlJpqYEYBmORwml/9X63ZXU6a99tLwAFkmJQSn
+	 NlA8tjQMcZcu1FRlW3fIGugxLhpwj4iToEK8fy5PlpO5TkaaGNKlNpS5bie7P3BdIt
+	 rUTwUAYPVVZc3e3U/LbEuTnGVEX3fUlev7ikM/R/AeyYXUGp9GI0fJL7LGUEC2sE4C
+	 l/rSXEpW6Zl8RBV6hbKVqD+vrMxywUInuCr0PJTVB2HpwyoBivdxHkAj9OmnQujz1h
+	 rhtjG1eS6qtRyZiBnlVSzToVPEKkH2dj6IOGfgFUyqG7ZDs8IsfKYgt4U114n7KU5X
+	 kg5Ke/gj+BEqA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wANOB-000000001Mb-3uDV;
+	id 1wANOB-000000001Md-40xV;
 	Wed, 08 Apr 2026 09:31:51 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -61,10 +61,10 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH v2 1/7] regulator: bq257xx: fix OF node reference imbalance
-Date: Wed,  8 Apr 2026 09:30:49 +0200
-Message-ID: <20260408073055.5183-2-johan@kernel.org>
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH v2 2/7] regulator: rk808: fix OF node reference imbalance
+Date: Wed,  8 Apr 2026 09:30:50 +0200
+Message-ID: <20260408073055.5183-3-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260408073055.5183-1-johan@kernel.org>
 References: <20260408073055.5183-1-johan@kernel.org>
@@ -81,18 +81,18 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,collabora.com,linaro.org,chromium.org,vger.kernel.org,hotmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,collabora.com,linaro.org,chromium.org,vger.kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233805-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233804-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
@@ -103,8 +103,8 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-0.996];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 051FB3B85B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email]
+X-Rspamd-Queue-Id: 02EA63B840D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -115,29 +115,29 @@ devices.
 
 Fix this by using the intended helper for reusing OF nodes.
 
-Fixes: 981dd162b635 ("regulator: bq257xx: Add bq257xx boost regulator driver")
-Cc: stable@vger.kernel.org	# 6.18
-Cc: Chris Morgan <macromorgan@hotmail.com>
+Fixes: 647e57351f8e ("regulator: rk808: reduce 'struct rk808' usage")
+Cc: stable@vger.kernel.org	# 6.2
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/regulator/bq257xx-regulator.c | 3 +--
+ drivers/regulator/rk808-regulator.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/bq257xx-regulator.c b/drivers/regulator/bq257xx-regulator.c
-index dab8f1ab4450..711dbe045383 100644
---- a/drivers/regulator/bq257xx-regulator.c
-+++ b/drivers/regulator/bq257xx-regulator.c
-@@ -142,8 +142,7 @@ static int bq257xx_regulator_probe(struct platform_device *pdev)
- 	struct device_node *np = dev->of_node;
- 	struct regulator_config cfg = {};
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index e66408f23bb6..1e956153427e 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -2114,8 +2114,7 @@ static int rk808_regulator_probe(struct platform_device *pdev)
+ 	struct regmap *regmap;
+ 	int ret, i, nregulators;
  
 -	pdev->dev.of_node = pdev->dev.parent->of_node;
 -	pdev->dev.of_node_reused = true;
 +	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
  
- 	pdata = devm_kzalloc(&pdev->dev, sizeof(struct bq257xx_reg_data), GFP_KERNEL);
- 	if (!pdata)
+ 	regmap = dev_get_regmap(pdev->dev.parent, NULL);
+ 	if (!regmap)
 -- 
 2.52.0
 
