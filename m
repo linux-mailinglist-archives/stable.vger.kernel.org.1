@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id tBM+C4yg1mlDGwgAu9opvQ
-	(envelope-from <stable+bounces-234451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:04 +0200
+	id wBU0I52k1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780213C11D7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B213C1F63
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1517C3182D1F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:28:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9E3C30297BF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC0E3D522C;
-	Wed,  8 Apr 2026 18:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C72538736D;
+	Wed,  8 Apr 2026 18:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALLfgIcB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkl16SPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7ED3537EF;
-	Wed,  8 Apr 2026 18:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1452727F3;
+	Wed,  8 Apr 2026 18:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672894; cv=none; b=CG5aEGQ86Gc0GgAq8E43qOmzJ6bljIoVolwG1wE+dOqDZabRqChSV0OI6BW+qGsGjvvy9vc7MtET35mLGNxSyxqVDVccj9vJn2dhd2TIiiptfXaSPvCZ9UuIccrGfCvPmD3uJ2TeIyGua1V/6P0wSSk+whOmGfK0/JRa6jkLslM=
+	t=1775674280; cv=none; b=kxgH+X7zV2QEFq7eveUpRStk9UQcQ06PlE2JeHWSkR5lDPI27ITfgN01Kn0To7GhQo60c2edC1TVUeFWGRvEbWOs6L7DyGT4F0xwy5I1R8B8wraooClLXrR2yOrMDNft9ECTquLHuqDED9RES7TMNdGCpXLDrCfRyb+PddJSrJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672894; c=relaxed/simple;
-	bh=ec2pFFwCWXF4x9JkTDwZmofrlRye0slkuScxeB/0s30=;
+	s=arc-20240116; t=1775674280; c=relaxed/simple;
+	bh=Q6k7POYz9Rq2O9LDaYhnLjX6mbajFlLizpJolfLQCwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f8Nc/n1qTRgsUClLxe+fDlesW2XUChz9rZq1RJ2k8cjD6I0yIVmCMBYLFrd5f2MkAMhE6vBgZgfC719vpI7R/bOxV9ioPZB7Bp1rzlegGq2NgXPNPtJvrdtY61JO9fdfIoDniKzOF8R4tqgoPjNiveqJX5MtMtMq+p3uuba1D30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALLfgIcB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E2CC19421;
-	Wed,  8 Apr 2026 18:28:13 +0000 (UTC)
+	 MIME-Version; b=ugBSIr9cJPiBATtzUS8FBLxTrwNRfKMo5xVBm9BrJafJ4cykJO6E8r+lOoA0AmbLRgOIv7j5aNTLHBPH5u5tp8TDnHVgPzsix4APh3HeLNnBDrw9XS1P/oDb2wuiHeelwbBCXn73Ya4uBGsBCousTqVaYnJeyQmF14DYeaJHPjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkl16SPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5495FC19421;
+	Wed,  8 Apr 2026 18:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672894;
-	bh=ec2pFFwCWXF4x9JkTDwZmofrlRye0slkuScxeB/0s30=;
+	s=korg; t=1775674280;
+	bh=Q6k7POYz9Rq2O9LDaYhnLjX6mbajFlLizpJolfLQCwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ALLfgIcBAJg4OqNYd5U49PBuXhNSTGAJkfwUwLO8w9f/R87cPy27seclOHg20Z9ts
-	 ygH2zanJjtZZXKbHQ0kn46rXSmaB1NHd0lLmPtkLkDC7O5I7A1ZKC+dSPaJK4vjeGB
-	 tD11ewjhvn/cBxIMCwWIEkHkeeL2EBX6nRMPnG3Q=
+	b=qkl16SPiBR+ROXSy38txGp92Yov8EAPPpkjhUOsYsmGEHqcTxworPMb6dTuIoaRbK
+	 YuwP2opinbd8iLqxklEq3qEO1q0fjoqqWubq9u0B6Rz583xcw5x+Q4oixEUP9yDdlM
+	 iIyel439ZcNxPspVcDh70TQvvBuLPOgQOw1Fnlss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 022/277] wifi: iwlwifi: disable EHT if the device doesnt allow it
-Date: Wed,  8 Apr 2026 20:00:07 +0200
-Message-ID: <20260408175934.681820162@linuxfoundation.org>
+Subject: [PATCH 6.19 008/311] xfs: close crash window in attr dabtree inactivation
+Date: Wed,  8 Apr 2026 20:00:08 +0200
+Message-ID: <20260408175939.720196538@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,168 +69,292 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234988-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234451-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 780213C11D7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 40B213C1F63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit 7ed47d42943fba8ced505f62d4358f63963bb968 ]
+[ Upstream commit b854e1c4eff3473b6d3a9ae74129ac5c48bc0b61 ]
 
-We have a few devices that don't allow EHT. Make sure we reflect this
-towards mac80211 so that we won't try to enable it.
+When inactivating an inode with node-format extended attributes,
+xfs_attr3_node_inactive() invalidates all child leaf/node blocks via
+xfs_trans_binval(), but intentionally does not remove the corresponding
+entries from their parent node blocks.  The implicit assumption is that
+xfs_attr_inactive() will truncate the entire attr fork to zero extents
+afterwards, so log recovery will never reach the root node and follow
+those stale pointers.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251019114304.71121f4e5557.I49e2329d4121f9e52d0889156d0c3e8778e27d88@changeid
-Stable-dep-of: 687a95d204e7 ("wifi: iwlwifi: mld: correctly set wifi generation data")
+However, if a log shutdown occurs after the leaf/node block cancellations
+commit but before the attr bmap truncation commits, this assumption
+breaks.  Recovery replays the attr bmap intact (the inode still has
+attr fork extents), but suppresses replay of all cancelled leaf/node
+blocks, maybe leaving them as stale data on disk.  On the next mount,
+xlog_recover_process_iunlinks() retries inactivation and attempts to
+read the root node via the attr bmap. If the root node was not replayed,
+reading the unreplayed root block triggers a metadata verification
+failure immediately; if it was replayed, following its child pointers
+to unreplayed child blocks triggers the same failure:
+
+ XFS (pmem0): Metadata corruption detected at
+ xfs_da3_node_read_verify+0x53/0x220, xfs_da3_node block 0x78
+ XFS (pmem0): Unmount and run xfs_repair
+ XFS (pmem0): First 128 bytes of corrupted metadata buffer:
+ 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ XFS (pmem0): metadata I/O error in "xfs_da_read_buf+0x104/0x190" at daddr 0x78 len 8 error 117
+
+Fix this in two places:
+
+In xfs_attr3_node_inactive(), after calling xfs_trans_binval() on a
+child block, immediately remove the entry that references it from the
+parent node in the same transaction.  This eliminates the window where
+the parent holds a pointer to a cancelled block.  Once all children are
+removed, the now-empty root node is converted to a leaf block within the
+same transaction. This node-to-leaf conversion is necessary for crash
+safety. If the system shutdown after the empty node is written to the
+log but before the second-phase bmap truncation commits, log recovery
+will attempt to verify the root block on disk. xfs_da3_node_verify()
+does not permit a node block with count == 0; such a block will fail
+verification and trigger a metadata corruption shutdown. on the other
+hand, leaf blocks are allowed to have this transient state.
+
+In xfs_attr_inactive(), split the attr fork truncation into two explicit
+phases.  First, truncate all extents beyond the root block (the child
+extents whose parent references have already been removed above).
+Second, invalidate the root block and truncate the attr bmap to zero in
+a single transaction.  The two operations in the second phase must be
+atomic: as long as the attr bmap has any non-zero length, recovery can
+follow it to the root block, so the root block invalidation must commit
+together with the bmap-to-zero truncation.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/intel/iwlwifi/cfg/rf-fm.c    |  1 +
- .../net/wireless/intel/iwlwifi/cfg/rf-wh.c    | 23 +++++++++++++++++++
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  5 +++-
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  6 +++--
- 5 files changed, 33 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_attr_inactive.c |   95 +++++++++++++++++++++++++++------------------
+ 1 file changed, 57 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c b/drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c
-index 456a666c8dfdf..fd82050e33a3c 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/rf-fm.c
-@@ -19,6 +19,7 @@
- 	.non_shared_ant = ANT_B,					\
- 	.vht_mu_mimo_supported = true,					\
- 	.uhb_supported = true,						\
-+	.eht_supported = true,						\
- 	.num_rbds = IWL_NUM_RBDS_EHT,					\
- 	.nvm_ver = IWL_FM_NVM_VERSION,					\
- 	.nvm_type = IWL_NVM_EXT
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/rf-wh.c b/drivers/net/wireless/intel/iwlwifi/cfg/rf-wh.c
-index b8c6b06e70991..b5803ea1eb782 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/rf-wh.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/rf-wh.c
-@@ -4,8 +4,31 @@
-  */
- #include "iwl-config.h"
+--- a/fs/xfs/xfs_attr_inactive.c
++++ b/fs/xfs/xfs_attr_inactive.c
+@@ -140,7 +140,7 @@ xfs_attr3_node_inactive(
+ 	xfs_daddr_t		parent_blkno, child_blkno;
+ 	struct xfs_buf		*child_bp;
+ 	struct xfs_da3_icnode_hdr ichdr;
+-	int			error, i;
++	int			error;
  
-+/* NVM versions */
-+#define IWL_WH_NVM_VERSION		0x0a1d
+ 	/*
+ 	 * Since this code is recursive (gasp!) we must protect ourselves.
+@@ -152,7 +152,7 @@ xfs_attr3_node_inactive(
+ 		return -EFSCORRUPTED;
+ 	}
+ 
+-	xfs_da3_node_hdr_from_disk(dp->i_mount, &ichdr, bp->b_addr);
++	xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
+ 	parent_blkno = xfs_buf_daddr(bp);
+ 	if (!ichdr.count) {
+ 		xfs_trans_brelse(*trans, bp);
+@@ -167,7 +167,7 @@ xfs_attr3_node_inactive(
+ 	 * over the leaves removing all of them.  If this is higher up
+ 	 * in the tree, recurse downward.
+ 	 */
+-	for (i = 0; i < ichdr.count; i++) {
++	while (ichdr.count > 0) {
+ 		/*
+ 		 * Read the subsidiary block to see what we have to work with.
+ 		 * Don't do this in a transaction.  This is a depth-first
+@@ -218,29 +218,32 @@ xfs_attr3_node_inactive(
+ 		xfs_trans_binval(*trans, child_bp);
+ 		child_bp = NULL;
+ 
++		error = xfs_da3_node_read_mapped(*trans, dp,
++				parent_blkno, &bp, XFS_ATTR_FORK);
++		if (error)
++			return error;
 +
-+#define IWL_DEVICE_WH							\
-+	.ht_params = {							\
-+		.stbc = true,						\
-+		.ldpc = true,						\
-+		.ht40_bands = BIT(NL80211_BAND_2GHZ) |			\
-+			      BIT(NL80211_BAND_5GHZ),			\
-+	},								\
-+	.led_mode = IWL_LED_RF_STATE,					\
-+	.non_shared_ant = ANT_B,					\
-+	.vht_mu_mimo_supported = true,					\
-+	.uhb_supported = true,						\
-+	.num_rbds = IWL_NUM_RBDS_EHT,					\
-+	.nvm_ver = IWL_WH_NVM_VERSION,					\
-+	.nvm_type = IWL_NVM_EXT
+ 		/*
+-		 * If we're not done, re-read the parent to get the next
+-		 * child block number.
++		 * Remove entry from parent node, prevents being indexed to.
+ 		 */
+-		if (i + 1 < ichdr.count) {
+-			struct xfs_da3_icnode_hdr phdr;
++		xfs_attr3_node_entry_remove(*trans, dp, bp, 0);
+ 
+-			error = xfs_da3_node_read_mapped(*trans, dp,
+-					parent_blkno, &bp, XFS_ATTR_FORK);
++		xfs_da3_node_hdr_from_disk(mp, &ichdr, bp->b_addr);
++		bp = NULL;
 +
- /* currently iwl_rf_wh/iwl_rf_wh_160mhz are just defines for the FM ones */
- 
-+const struct iwl_rf_cfg iwl_rf_wh_non_eht = {
-+	IWL_DEVICE_WH,
-+	.eht_supported = false,
-+};
++		if (ichdr.count > 0) {
++			/*
++			 * If we're not done, get the next child block number.
++			 */
++			child_fsb = be32_to_cpu(ichdr.btree[0].before);
 +
- const char iwl_killer_be1775s_name[] =
- 	"Killer(R) Wi-Fi 7 BE1775s 320MHz Wireless Network Adapter (BE211D2W)";
- const char iwl_killer_be1775i_name[] =
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 0b34c9f90b3ff..3b4f990a8d0bb 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -418,6 +418,7 @@ struct iwl_mac_cfg {
-  * @vht_mu_mimo_supported: VHT MU-MIMO support
-  * @nvm_type: see &enum iwl_nvm_type
-  * @uhb_supported: ultra high band channels supported
-+ * @eht_supported: EHT supported
-  * @num_rbds: number of receive buffer descriptors to use
-  *	(only used for multi-queue capable devices)
-  *
-@@ -450,7 +451,8 @@ struct iwl_rf_cfg {
- 	    host_interrupt_operation_mode:1,
- 	    lp_xtal_workaround:1,
- 	    vht_mu_mimo_supported:1,
--	    uhb_supported:1;
-+	    uhb_supported:1,
-+	    eht_supported:1;
- 	u8 valid_tx_ant;
- 	u8 valid_rx_ant;
- 	u8 non_shared_ant;
-@@ -744,6 +746,7 @@ extern const struct iwl_rf_cfg iwl_rf_fm;
- extern const struct iwl_rf_cfg iwl_rf_fm_160mhz;
- #define iwl_rf_wh iwl_rf_fm
- #define iwl_rf_wh_160mhz iwl_rf_fm_160mhz
-+extern const struct iwl_rf_cfg iwl_rf_wh_non_eht;
- #define iwl_rf_pe iwl_rf_fm
- #endif /* CONFIG_IWLMLD */
++			/*
++			 * Atomically commit the whole invalidate stuff.
++			 */
++			error = xfs_trans_roll_inode(trans, dp);
+ 			if (error)
+ 				return error;
+-			xfs_da3_node_hdr_from_disk(dp->i_mount, &phdr,
+-						  bp->b_addr);
+-			child_fsb = be32_to_cpu(phdr.btree[i + 1].before);
+-			xfs_trans_brelse(*trans, bp);
+-			bp = NULL;
+ 		}
+-		/*
+-		 * Atomically commit the whole invalidate stuff.
+-		 */
+-		error = xfs_trans_roll_inode(trans, dp);
+-		if (error)
+-			return  error;
+ 	}
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 23465e4c4b399..e021fc57d85d2 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -2080,7 +2080,7 @@ struct iwl_nvm_data *iwl_get_nvm(struct iwl_trans *trans,
- 		!!(mac_flags & NVM_MAC_SKU_FLAGS_BAND_5_2_ENABLED);
- 	nvm->sku_cap_mimo_disabled =
- 		!!(mac_flags & NVM_MAC_SKU_FLAGS_MIMO_DISABLED);
--	if (CSR_HW_RFID_TYPE(trans->info.hw_rf_id) >= IWL_CFG_RF_TYPE_FM)
-+	if (trans->cfg->eht_supported)
- 		nvm->sku_cap_11be_enable = true;
+ 	return 0;
+@@ -257,10 +260,8 @@ xfs_attr3_root_inactive(
+ 	struct xfs_trans	**trans,
+ 	struct xfs_inode	*dp)
+ {
+-	struct xfs_mount	*mp = dp->i_mount;
+ 	struct xfs_da_blkinfo	*info;
+ 	struct xfs_buf		*bp;
+-	xfs_daddr_t		blkno;
+ 	int			error;
  
- 	/* Initialize PHY sku data */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index de04a84def0d8..73001cdce13aa 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1061,8 +1061,10 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
+ 	/*
+@@ -272,7 +273,6 @@ xfs_attr3_root_inactive(
+ 	error = xfs_da3_node_read(*trans, dp, 0, &bp, XFS_ATTR_FORK);
+ 	if (error)
+ 		return error;
+-	blkno = xfs_buf_daddr(bp);
  
- /* WH RF */
- 	IWL_DEV_INFO(iwl_rf_wh, iwl_be211_name, RF_TYPE(WH)),
--	IWL_DEV_INFO(iwl_rf_wh, iwl_ax221_name, RF_TYPE(WH), SUBDEV(0x0514)),
--	IWL_DEV_INFO(iwl_rf_wh, iwl_ax221_name, RF_TYPE(WH), SUBDEV(0x4514)),
-+	IWL_DEV_INFO(iwl_rf_wh_non_eht, iwl_ax221_name, RF_TYPE(WH),
-+		     SUBDEV(0x0514)),
-+	IWL_DEV_INFO(iwl_rf_wh_non_eht, iwl_ax221_name, RF_TYPE(WH),
-+		     SUBDEV(0x4514)),
- 	IWL_DEV_INFO(iwl_rf_wh_160mhz, iwl_be213_name, RF_TYPE(WH), BW_LIMITED),
+ 	/*
+ 	 * Invalidate the tree, even if the "tree" is only a single leaf block.
+@@ -283,10 +283,26 @@ xfs_attr3_root_inactive(
+ 	case cpu_to_be16(XFS_DA_NODE_MAGIC):
+ 	case cpu_to_be16(XFS_DA3_NODE_MAGIC):
+ 		error = xfs_attr3_node_inactive(trans, dp, bp, 1);
++		/*
++		 * Empty root node block are not allowed, convert it to leaf.
++		 */
++		if (!error)
++			error = xfs_attr3_leaf_init(*trans, dp, 0);
++		if (!error)
++			error = xfs_trans_roll_inode(trans, dp);
+ 		break;
+ 	case cpu_to_be16(XFS_ATTR_LEAF_MAGIC):
+ 	case cpu_to_be16(XFS_ATTR3_LEAF_MAGIC):
+ 		error = xfs_attr3_leaf_inactive(trans, dp, bp);
++		/*
++		 * Reinit the leaf before truncating extents so that a crash
++		 * mid-truncation leaves an empty leaf rather than one with
++		 * entries that may reference freed remote value blocks.
++		 */
++		if (!error)
++			error = xfs_attr3_leaf_init(*trans, dp, 0);
++		if (!error)
++			error = xfs_trans_roll_inode(trans, dp);
+ 		break;
+ 	default:
+ 		xfs_dirattr_mark_sick(dp, XFS_ATTR_FORK);
+@@ -295,21 +311,6 @@ xfs_attr3_root_inactive(
+ 		xfs_trans_brelse(*trans, bp);
+ 		break;
+ 	}
+-	if (error)
+-		return error;
+-
+-	/*
+-	 * Invalidate the incore copy of the root block.
+-	 */
+-	error = xfs_trans_get_buf(*trans, mp->m_ddev_targp, blkno,
+-			XFS_FSB_TO_BB(mp, mp->m_attr_geo->fsbcount), 0, &bp);
+-	if (error)
+-		return error;
+-	xfs_trans_binval(*trans, bp);	/* remove from cache */
+-	/*
+-	 * Commit the invalidate and start the next transaction.
+-	 */
+-	error = xfs_trans_roll_inode(trans, dp);
  
- /* PE RF */
--- 
-2.53.0
-
+ 	return error;
+ }
+@@ -328,6 +329,7 @@ xfs_attr_inactive(
+ {
+ 	struct xfs_trans	*trans;
+ 	struct xfs_mount	*mp;
++	struct xfs_buf          *bp;
+ 	int			lock_mode = XFS_ILOCK_SHARED;
+ 	int			error = 0;
+ 
+@@ -363,10 +365,27 @@ xfs_attr_inactive(
+ 	 * removal below.
+ 	 */
+ 	if (dp->i_af.if_nextents > 0) {
++		/*
++		 * Invalidate and truncate all blocks but leave the root block.
++		 */
+ 		error = xfs_attr3_root_inactive(&trans, dp);
+ 		if (error)
+ 			goto out_cancel;
+ 
++		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK,
++				XFS_FSB_TO_B(mp, mp->m_attr_geo->fsbcount));
++		if (error)
++			goto out_cancel;
++
++		/*
++		 * Invalidate and truncate the root block and ensure that the
++		 * operation is completed within a single transaction.
++		 */
++		error = xfs_da_get_buf(trans, dp, 0, &bp, XFS_ATTR_FORK);
++		if (error)
++			goto out_cancel;
++
++		xfs_trans_binval(trans, bp);
+ 		error = xfs_itruncate_extents(&trans, dp, XFS_ATTR_FORK, 0);
+ 		if (error)
+ 			goto out_cancel;
 
 
 
