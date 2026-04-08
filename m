@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-235163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPQnHpKl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:30 +0200
+	id qE6UFa2g1mlDGwgAu9opvQ
+	(envelope-from <stable+bounces-234623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905283C222B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5989D3C124D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BA1DD300251D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CFD553033963
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B873D411F;
-	Wed,  8 Apr 2026 18:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8103ACF16;
+	Wed,  8 Apr 2026 18:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7mgHx41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qX8V4/9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2D437F01B;
-	Wed,  8 Apr 2026 18:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A315928C87C;
+	Wed,  8 Apr 2026 18:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674731; cv=none; b=RImYmw34cQjFUzkjtt3OE3JescwUPvm1WCPb6xx17AIQz3PqoR4WjvtH7iCQDUrdMubqbrWhux2TF4Qesx4IEi/iZCXZAANgCuFFJ6RxbMP70d45Lm10W0nHF4vKaPWBSIWTQDE3Vjj8qUN06PchP3WFw+YS+MUQUH88xSDcIeI=
+	t=1775673338; cv=none; b=nqKaGQ3VVn+f7czsioR7McVBta2yGCda+oZRFncjcCW7WhvAcuXnuOtdGVtRAku4mk1VvzrFVpvR1MOdPSjgGldvqteaF5sRZLY6mUXUQQvGxs1DHtWImgalDGtTvDLNa64vFKay6Nrs/wX/G9vE3E1XDMzumCO/YKUwrn7vQlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674731; c=relaxed/simple;
-	bh=ufybht9EdzybxgL+IoIqu0SrrGnx1VJQoyWgr0rlGog=;
+	s=arc-20240116; t=1775673338; c=relaxed/simple;
+	bh=yXTNGJvLs0zlCVqucgS1ACywAkN65X+WBqcBB1uOpVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFTWYPgYk98xvbCkdNsmmtrr5geiYF9cgbANYM5V97XWLRIxUdmgcNkeAC377eJxJMTBWGJtld7t/Xww8GeawT5ZxLpYm6kPS2ugLjzf9iqt5JSJ5XV8xKZYA0T/Nc/BPYOah+8XjWPCGtozbupH/R++Rb2L0NOURLw9IqR41rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7mgHx41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2154EC19421;
-	Wed,  8 Apr 2026 18:58:50 +0000 (UTC)
+	 MIME-Version; b=EzfdskScqB828Pkz/Bip8VeyTPWmNbo5c0Jcw2VU+7B1Ck6vmZEywqsG9ix4mWFBqg5qV/KkqRSXYsLh/EsNDgxjimiaiA2t/na+oYoPcAgXd2BYAj0NZ1IUUR/HEfe9W5YORvYAIeyHEiuZ0GXohLsFIQE6+6oLQNxhguz2Rlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qX8V4/9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1579BC19421;
+	Wed,  8 Apr 2026 18:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674731;
-	bh=ufybht9EdzybxgL+IoIqu0SrrGnx1VJQoyWgr0rlGog=;
+	s=korg; t=1775673338;
+	bh=yXTNGJvLs0zlCVqucgS1ACywAkN65X+WBqcBB1uOpVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7mgHx414KmfZ74xpEOOQKkcubdbj/b/00iM9eHIvsMfuVWrn4ZmMF6g3YYJvRcwR
-	 vdV+TSHP4/gcKX/HPopAtfsM+kvwWAY9gEbjXVR9Q/h1yIJXwBZWU6plK5PEUggKmm
-	 EfBjkJVjORe1nOPcpyElG1ld2V0GTrDu9kKWa56E=
+	b=qX8V4/9R9ddO6lasG/Pde6ao7UoKeJfFIW3/DXckQNmabSFQN+V6YCDXuNA6G8UwO
+	 2foV85CZjCiBe+Vjlv+GQCPUviTjui0zqGClRHjWyJUN6x5EL7dgaXoSI0wEn93DOy
+	 lwQaexnFyUY2dvEfRWuj/vQY11qc6V0AUQ1astpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleh Konko <security@1seal.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.19 179/311] Bluetooth: SMP: derive legacy responder STK authentication from MITM state
+	Jonathan Cameron <jic23@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 194/277] iio: gyro: mpu3050: Fix out-of-sequence free_irq()
 Date: Wed,  8 Apr 2026 20:02:59 +0200
-Message-ID: <20260408175946.090909276@linuxfoundation.org>
+Message-ID: <20260408175941.107333795@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,72 +76,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	TAGGED_FROM(0.00)[bounces-234623-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235163-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[1seal.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 905283C222B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5989D3C124D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleh Konko <security@1seal.org>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-commit 20756fec2f0108cb88e815941f1ffff88dc286fe upstream.
+commit d14116f6529fa085b1a1b1f224dc9604e4d2a29c upstream.
 
-The legacy responder path in smp_random() currently labels the stored
-STK as authenticated whenever pending_sec_level is BT_SECURITY_HIGH.
-That reflects what the local service requested, not what the pairing
-flow actually achieved.
+The triggered buffer is initialized before the IRQ is requested. The
+removal path currently calls iio_triggered_buffer_cleanup() before
+free_irq(). This violates the expected LIFO.
 
-For Just Works/Confirm legacy pairing, SMP_FLAG_MITM_AUTH stays clear
-and the resulting STK should remain unauthenticated even if the local
-side requested HIGH security. Use the established MITM state when
-storing the responder STK so the key metadata matches the pairing result.
+Place free_irq() in the correct location relative to
+iio_triggered_buffer_cleanup().
 
-This also keeps the legacy path aligned with the Secure Connections code,
-which already treats JUST_WORKS/JUST_CFM as unauthenticated.
-
-Fixes: fff3490f4781 ("Bluetooth: Fix setting correct authentication information for SMP STK")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleh Konko <security@1seal.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/smp.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/iio/gyro/mpu3050-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -1018,10 +1018,7 @@ static u8 smp_random(struct smp_chan *sm
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -1278,9 +1278,9 @@ void mpu3050_common_remove(struct device
+ 	pm_runtime_get_sync(dev);
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+ 	if (mpu3050->irq)
+ 		free_irq(mpu3050->irq, mpu3050->trig);
++	iio_triggered_buffer_cleanup(indio_dev);
+ 	mpu3050_power_down(mpu3050);
+ }
  
- 		smp_s1(smp->tk, smp->prnd, smp->rrnd, stk);
- 
--		if (hcon->pending_sec_level == BT_SECURITY_HIGH)
--			auth = 1;
--		else
--			auth = 0;
-+		auth = test_bit(SMP_FLAG_MITM_AUTH, &smp->flags) ? 1 : 0;
- 
- 		/* Even though there's no _RESPONDER suffix this is the
- 		 * responder STK we're adding for later lookup (the initiator
 
 
 
