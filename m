@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-235135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEAPJ2Wr1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:21 +0200
+	id kIMAFFGj1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C783C2E70
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0283C1B25
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67C9F31D6094
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C7BE3019145
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F263C5552;
-	Wed,  8 Apr 2026 18:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEABD3D9047;
+	Wed,  8 Apr 2026 18:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3E6zo4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hdi2xxE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B4637F01B;
-	Wed,  8 Apr 2026 18:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C233D9DAD;
+	Wed,  8 Apr 2026 18:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674659; cv=none; b=uo6fKtiTqlsxBD4SbQ/pCKlSVJNpmSCDaoW0Nhtq9tjGlW3iz92vflVl6g1IopWWLCOBO9+R41QdnEZ8Ony5SKhanq60Vj5+SnlFDTzOYQHtE6apNE0HT8ivdIRZthfrVC/QuyuISFdhjTrsltjisPZe2cBoME6GM5URrrKVOLA=
+	t=1775674004; cv=none; b=u/OTVuru9KyRZDn6iDXlEjBSioVcvyu61IEJbnR7ewv4cW019dF1T5K7ZL+LXSYfMAtAP8UQPRokZdpEeKhK9xFVBy5omMPUEOFXlxBGkdum3IlMTy14emvdVJBuuxpWVBiM12rqSyJWyF/PU2uH1qqFqR1al8fSgN+E3vrvLBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674659; c=relaxed/simple;
-	bh=XnZGJPoPuesh6prm8Va91VrHW05AoAP4YLqmqqQm22M=;
+	s=arc-20240116; t=1775674004; c=relaxed/simple;
+	bh=V3GUkpS2LC8nDym6fdlKynYdPnoydRn6U7wR1AhDZiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c817642vgBIRl84G676UBRv2c9JqEm78397YFd6yPyb/GfrD7J7tKBH3OhynO/YXZ8hgCT8H4uD1ZQVooaLqsfC9zwe/CXYljkwZbXKGkCPTJQO4A2auDPkhi9w1g4hzmEiHL/8OW9F11y5yboFwV03roYCv4maIb77dxlVG9Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3E6zo4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3880FC19421;
-	Wed,  8 Apr 2026 18:57:39 +0000 (UTC)
+	 MIME-Version; b=XzJC4KjWNQ1FXA+MwsokXY6GXg166tZ8q39U3Ef187zezg2NcNMjs+iIDkJy5Eoh3feIO5uWtn3QmuaE46Xu1Xn/iLd5/8b/c+MkUBDjW5NoTRwN4kBNzXAC4wPXiXuYyImA1dCEZq9eJsNyYNVt/A2zqGZHyj2cASGM1dkyql0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hdi2xxE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3750FC19421;
+	Wed,  8 Apr 2026 18:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674659;
-	bh=XnZGJPoPuesh6prm8Va91VrHW05AoAP4YLqmqqQm22M=;
+	s=korg; t=1775674004;
+	bh=V3GUkpS2LC8nDym6fdlKynYdPnoydRn6U7wR1AhDZiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V3E6zo4E3fHhU2R0GJSZ4g7vSMs19Y00yPKCz6sSU1Mq3gYfcdRlruPkgN7T7UIM1
-	 WHtQx6Tov2hihs4g/Ns1g3XVyl+OSUhhbgecyXzR3H8RKGAbJDcJZ+qNKLf5xIaHkq
-	 2P7WFU1i7NG7g853orscbr6P7+sJpgvShmm49q7M=
+	b=Hdi2xxE6x4YmontkzroMuYzstUy73JpgZw31c1HH+TWI3rDjr3LjRGqzKbPupSZI/
+	 88AhNvd3Y77+p5ABYSUsDR8NbradgLgKcHDYGAkpB6qYPDfLTorz/1s9ifVCI020km
+	 UIGKQlaw3dpvqGFL33JzzD5JxbZgpN5DN512fK14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.19 184/311] MIPS: SiByte: Bring back cache initialisation
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 144/242] Input: i8042 - add TUXEDO InfinityBook Max 16 Gen10 AMD to i8042 quirk table
 Date: Wed,  8 Apr 2026 20:03:04 +0200
-Message-ID: <20260408175946.281528662@linuxfoundation.org>
+Message-ID: <20260408175932.478492420@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235135-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234881-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedo.de,tuxedocomputers.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E4C783C2E70
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tuxedocomputers.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tuxedo.de:email]
+X-Rspamd-Queue-Id: DC0283C1B25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit d62cf1511743526f530a4c169424e50c757f5a5e upstream.
+commit 5839419cffc7788a356428d321e3ec18055c0286 upstream.
 
-Bring back cache initialisation for Broadcom SiByte SB1 cores, which has
-been removed causing the kernel to hang at bootstrap right after:
+The device occasionally wakes up from suspend with missing input on the
+internal keyboard and the following suspend attempt results in an instant
+wake-up. The quirks fix both issues for this device.
 
-Dentry cache hash table entries: 524288 (order: 8, 4194304 bytes, linear)
-Inode-cache hash table entries: 262144 (order: 7, 2097152 bytes, linear)
-
-The cause of the problem is R4k cache handlers are also used by Broadcom
-SiByte SB1 cores, however with a different cache error exception handler
-and therefore not using CPU_R4K_CACHE_TLB:
-
-obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
-obj-$(CONFIG_CPU_SB1)           += c-r4k.o cerr-sb1.o cex-sb1.o tlb-r4k.o
-
-(from arch/mips/mm/Makefile).
-
-Fixes: bbe4f634f48c ("mips: fix r3k_cache_init build regression")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v6.8+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260223142054.50310-1-wse@tuxedocomputers.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/cache.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -207,7 +207,8 @@ void cpu_cache_init(void)
- {
- 	if (IS_ENABLED(CONFIG_CPU_R3000) && cpu_has_3k_cache)
- 		r3k_cache_init();
--	if (IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) && cpu_has_4k_cache)
-+	if ((IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) ||
-+	     IS_ENABLED(CONFIG_CPU_SB1)) && cpu_has_4k_cache)
- 		r4k_cache_init();
- 
- 	if (IS_ENABLED(CONFIG_CPU_CAVIUM_OCTEON) && cpu_has_octeon_cache)
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1189,6 +1189,13 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "X6KK45xU_X6SP45xU"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
