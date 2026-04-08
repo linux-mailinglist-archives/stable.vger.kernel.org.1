@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0F5lDGKk1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:26 +0200
+	id UMvUFEui1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76643C1E51
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE683C172D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22D39316AB6A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 59163301D955
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D395C3B19A3;
-	Wed,  8 Apr 2026 18:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C622F3B0AFC;
+	Wed,  8 Apr 2026 18:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2d0Rwvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5KbTQWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975EC331A44;
-	Wed,  8 Apr 2026 18:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2F81A285;
+	Wed,  8 Apr 2026 18:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673410; cv=none; b=S12Xe7jpIVze/jpA+OlPQKr2oPwltApiHyzRCxErdMMRUA5E17Slkocalxi9o3xYkuKhjPBTmGgLjbgxbju9iAC7RU2CxVJhDaVaJfHPFu+zohFX+olOHxFFLa3jrevomL0tSnyVzoGAG30yf2ba4fwtu9DdZtVCcMC0y0aXLqk=
+	t=1775673879; cv=none; b=dgfdcwuyDIqjATNJs/7x8MIDhFHTmjTFj2mTJjwPq9lEc/sab7f1zuZQfs/Vwus5suN9eAA0PFXkqRq/rboQld6SdFAZq6zrwYDjHsokCd8XXIDMg4xMZQkvMQJmh7by03uJ5J1Er0P/fFmx+dum1UyvDENd69IliypkjZ19vOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673410; c=relaxed/simple;
-	bh=CAL6PHoSE3Kr2TnZHcszBhRiwuRWpoWR6BwAi5XzfiU=;
+	s=arc-20240116; t=1775673879; c=relaxed/simple;
+	bh=R0hz2BCRQqFWGplvVt8bt0t804pZ7NTuADI6mCsk3MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNPnqGGi7D1zp9YK4NYEVRBAH9m9Sjc7b/YKFd4xR6J27py88m++ZHitXsyUUljRTQN5NZ3tw3uACIa6dqWZooxnOs08VtikHGb93eLKtlK77/PbFSeSydB5hACpxEuO8MFLzJr14jBmR/AjiWJtRxMrDLwb4CnYVCQDo6Rr2Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2d0Rwvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECD5C19421;
-	Wed,  8 Apr 2026 18:36:50 +0000 (UTC)
+	 MIME-Version; b=YhPYIZ7NqnVMfxI8vDHTr7r7k76atHxBo6QxzJ7ghyMgh1ed2F7tMBY8WQjTjK1PLkIov9SXOItd7py6OMFQ8HHU+Axtv54Qpfz52Nf7C92MBmY9PribyVUsM2RsZQW//WzNDxeIx9Td1peuQ7/O449coozVgV9ohihrFGbnH5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5KbTQWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1738EC19421;
+	Wed,  8 Apr 2026 18:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673410;
-	bh=CAL6PHoSE3Kr2TnZHcszBhRiwuRWpoWR6BwAi5XzfiU=;
+	s=korg; t=1775673879;
+	bh=R0hz2BCRQqFWGplvVt8bt0t804pZ7NTuADI6mCsk3MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2d0RwvhCe9lTgjff+15MWXDcGs2IUAeTRdys1DQInewDf8xUA3GXb8qVurznj1Er
-	 mGpavicD0VJcMwcPuqIunjYm+QLZ1J79JFmllzbKwTiBoiZh/u3VLWcWZI3YPvt9cA
-	 R53Tvna3YK20i1uPh7L2/tIMacIdGdmlWg1WdyIY=
+	b=a5KbTQWfqLk1NRa64lEXwiZby7hM2pwplpuA2AOGQ0BlgP0/te/vH+b+E+weMwKFj
+	 FodXGzCZq5hqXhEHfLy4Qw0dBbDjLFnBGE0Xch+duJpX2RLTlKzYQOHuPDvzeJjz2c
+	 OLUojczvYapyZfMvmK+FPwKz+rypApN7SgsyXJX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 179/277] iio: adc: ade9000: fix wrong register in CALIBBIAS case for active power
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 124/242] ksmbd: fix OOB write in QUERY_INFO for compound requests
 Date: Wed,  8 Apr 2026 20:02:44 +0200
-Message-ID: <20260408175940.548938382@linuxfoundation.org>
+Message-ID: <20260408175931.729022687@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +68,360 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-234651-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-234832-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C76643C1E51
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pm.me:email]
+X-Rspamd-Queue-Id: EEE683C172D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+From: Asim Viladi Oglu Manizada <manizada@pm.me>
 
-commit 86133fb1ec36b2f5cec29d71fbae84877c3a1358 upstream.
+commit fda9522ed6afaec45cabc198d8492270c394c7bc upstream.
 
-The switch statement in ade9000_write_raw() attempts to match
-chan->address against ADE9000_REG_AWATTOS (0x00F) to dispatch
-the calibration offset write for active power channels. However,
-chan->address is set via ADE9000_ADDR_ADJUST(ADE9000_REG_AWATT,
-num), so after masking the phase bits, tmp holds
-ADE9000_REG_AWATT (0x210), which never matches 0x00F.
+When a compound request such as READ + QUERY_INFO(Security) is received,
+and the first command (READ) consumes most of the response buffer,
+ksmbd could write beyond the allocated buffer while building a security
+descriptor.
 
-As a result, writing IIO_CHAN_INFO_CALIBBIAS for IIO_POWER always
-falls through to the default case and returns -EINVAL, making
-active power offset calibration silently broken.
+The root cause was that smb2_get_info_sec() checked buffer space using
+ppntsd_size from xattr, while build_sec_desc() often synthesized a
+significantly larger descriptor from POSIX ACLs.
 
-Fix this by matching against ADE9000_REG_AWATT instead, which is
-the actual base address stored in chan->address for watt channels.
+This patch introduces smb_acl_sec_desc_scratch_len() to accurately
+compute the final descriptor size beforehand, performs proper buffer
+checking with smb2_calc_max_out_buf_len(), and uses exact-sized
+allocation + iov pinning.
 
-Reference:ADE9000 datasheet (Rev. B), AWATTOS is the offset correction
-register at 0x00F (p. 44), while AWATT is the total active power
-register at 0x210 (p. 48).
-
-Fixes: 81de7b4619fc ("iio: adc: add ade9000 support")
-Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-Reviewed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ade9000.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |  121 +++++++++++++++++++++++++++++++++++-------------
+ fs/smb/server/smbacl.c  |   43 +++++++++++++++++
+ fs/smb/server/smbacl.h  |    2 
+ 3 files changed, 134 insertions(+), 32 deletions(-)
 
---- a/drivers/iio/adc/ade9000.c
-+++ b/drivers/iio/adc/ade9000.c
-@@ -1123,7 +1123,7 @@ static int ade9000_write_raw(struct iio_
- 			tmp &= ~ADE9000_PHASE_C_POS_BIT;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3403,20 +3403,24 @@ int smb2_open(struct ksmbd_work *work)
+ 							   KSMBD_SHARE_FLAG_ACL_XATTR)) {
+ 					struct smb_fattr fattr;
+ 					struct smb_ntsd *pntsd;
+-					int pntsd_size, ace_num = 0;
++					int pntsd_size;
++					size_t scratch_len;
  
- 			switch (tmp) {
--			case ADE9000_REG_AWATTOS:
-+			case ADE9000_REG_AWATT:
- 				return regmap_write(st->regmap,
- 						    ADE9000_ADDR_ADJUST(ADE9000_REG_AWATTOS,
- 									chan->channel), val);
+ 					ksmbd_acls_fattr(&fattr, idmap, inode);
+-					if (fattr.cf_acls)
+-						ace_num = fattr.cf_acls->a_count;
+-					if (fattr.cf_dacls)
+-						ace_num += fattr.cf_dacls->a_count;
+-
+-					pntsd = kmalloc(sizeof(struct smb_ntsd) +
+-							sizeof(struct smb_sid) * 3 +
+-							sizeof(struct smb_acl) +
+-							sizeof(struct smb_ace) * ace_num * 2,
+-							KSMBD_DEFAULT_GFP);
++					scratch_len = smb_acl_sec_desc_scratch_len(&fattr,
++							NULL, 0,
++							OWNER_SECINFO | GROUP_SECINFO |
++							DACL_SECINFO);
++					if (!scratch_len || scratch_len == SIZE_MAX) {
++						rc = -EFBIG;
++						posix_acl_release(fattr.cf_acls);
++						posix_acl_release(fattr.cf_dacls);
++						goto err_out;
++					}
++
++					pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
+ 					if (!pntsd) {
++						rc = -ENOMEM;
+ 						posix_acl_release(fattr.cf_acls);
+ 						posix_acl_release(fattr.cf_dacls);
+ 						goto err_out;
+@@ -3431,7 +3435,7 @@ int smb2_open(struct ksmbd_work *work)
+ 					posix_acl_release(fattr.cf_acls);
+ 					posix_acl_release(fattr.cf_dacls);
+ 					if (rc) {
+-						kfree(pntsd);
++						kvfree(pntsd);
+ 						goto err_out;
+ 					}
+ 
+@@ -3441,7 +3445,7 @@ int smb2_open(struct ksmbd_work *work)
+ 								    pntsd,
+ 								    pntsd_size,
+ 								    false);
+-					kfree(pntsd);
++					kvfree(pntsd);
+ 					if (rc)
+ 						pr_err("failed to store ntacl in xattr : %d\n",
+ 						       rc);
+@@ -5357,8 +5361,9 @@ static int smb2_get_info_file(struct ksm
+ 	if (test_share_config_flag(work->tcon->share_conf,
+ 				   KSMBD_SHARE_FLAG_PIPE)) {
+ 		/* smb2 info file called for pipe */
+-		return smb2_get_info_file_pipe(work->sess, req, rsp,
++		rc = smb2_get_info_file_pipe(work->sess, req, rsp,
+ 					       work->response_buf);
++		goto iov_pin_out;
+ 	}
+ 
+ 	if (work->next_smb2_rcv_hdr_off) {
+@@ -5458,6 +5463,12 @@ static int smb2_get_info_file(struct ksm
+ 		rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
+ 				      rsp, work->response_buf);
+ 	ksmbd_fd_put(work, fp);
++
++iov_pin_out:
++	if (!rc)
++		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
++				offsetof(struct smb2_query_info_rsp, Buffer) +
++				le32_to_cpu(rsp->OutputBufferLength));
+ 	return rc;
+ }
+ 
+@@ -5677,6 +5688,11 @@ static int smb2_get_info_filesystem(stru
+ 	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
+ 			      rsp, work->response_buf);
+ 	path_put(&path);
++
++	if (!rc)
++		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
++				offsetof(struct smb2_query_info_rsp, Buffer) +
++				le32_to_cpu(rsp->OutputBufferLength));
+ 	return rc;
+ }
+ 
+@@ -5686,13 +5702,14 @@ static int smb2_get_info_sec(struct ksmb
+ {
+ 	struct ksmbd_file *fp;
+ 	struct mnt_idmap *idmap;
+-	struct smb_ntsd *pntsd = (struct smb_ntsd *)rsp->Buffer, *ppntsd = NULL;
++	struct smb_ntsd *pntsd = NULL, *ppntsd = NULL;
+ 	struct smb_fattr fattr = {{0}};
+ 	struct inode *inode;
+ 	__u32 secdesclen = 0;
+ 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
+ 	int addition_info = le32_to_cpu(req->AdditionalInformation);
+-	int rc = 0, ppntsd_size = 0;
++	int rc = 0, ppntsd_size = 0, max_len;
++	size_t scratch_len = 0;
+ 
+ 	if (addition_info & ~(OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO |
+ 			      PROTECTED_DACL_SECINFO |
+@@ -5700,6 +5717,11 @@ static int smb2_get_info_sec(struct ksmb
+ 		ksmbd_debug(SMB, "Unsupported addition info: 0x%x)\n",
+ 		       addition_info);
+ 
++		pntsd = kzalloc(ALIGN(sizeof(struct smb_ntsd), 8),
++				KSMBD_DEFAULT_GFP);
++		if (!pntsd)
++			return -ENOMEM;
++
+ 		pntsd->revision = cpu_to_le16(1);
+ 		pntsd->type = cpu_to_le16(SELF_RELATIVE | DACL_PROTECTED);
+ 		pntsd->osidoffset = 0;
+@@ -5708,9 +5730,7 @@ static int smb2_get_info_sec(struct ksmb
+ 		pntsd->dacloffset = 0;
+ 
+ 		secdesclen = sizeof(struct smb_ntsd);
+-		rsp->OutputBufferLength = cpu_to_le32(secdesclen);
+-
+-		return 0;
++		goto iov_pin;
+ 	}
+ 
+ 	if (work->next_smb2_rcv_hdr_off) {
+@@ -5742,18 +5762,58 @@ static int smb2_get_info_sec(struct ksmb
+ 						     &ppntsd);
+ 
+ 	/* Check if sd buffer size exceeds response buffer size */
+-	if (smb2_resp_buf_len(work, 8) > ppntsd_size)
+-		rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
+-				    addition_info, &secdesclen, &fattr);
++	max_len = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_query_info_rsp, Buffer),
++			le32_to_cpu(req->OutputBufferLength));
++	if (max_len < 0) {
++		rc = -EINVAL;
++		goto release_acl;
++	}
++
++	scratch_len = smb_acl_sec_desc_scratch_len(&fattr, ppntsd,
++			ppntsd_size, addition_info);
++	if (!scratch_len || scratch_len == SIZE_MAX) {
++		rc = -EFBIG;
++		goto release_acl;
++	}
++
++	pntsd = kvzalloc(scratch_len, KSMBD_DEFAULT_GFP);
++	if (!pntsd) {
++		rc = -ENOMEM;
++		goto release_acl;
++	}
++
++	rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
++			addition_info, &secdesclen, &fattr);
++
++release_acl:
+ 	posix_acl_release(fattr.cf_acls);
+ 	posix_acl_release(fattr.cf_dacls);
+ 	kfree(ppntsd);
+ 	ksmbd_fd_put(work, fp);
++
++	if (!rc && ALIGN(secdesclen, 8) > scratch_len)
++		rc = -EFBIG;
+ 	if (rc)
+-		return rc;
++		goto err_out;
+ 
++iov_pin:
+ 	rsp->OutputBufferLength = cpu_to_le32(secdesclen);
+-	return 0;
++	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
++			      rsp, work->response_buf);
++	if (rc)
++		goto err_out;
++
++	rc = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
++			offsetof(struct smb2_query_info_rsp, Buffer),
++			pntsd, secdesclen);
++err_out:
++	if (rc) {
++		rsp->OutputBufferLength = 0;
++		kvfree(pntsd);
++	}
++
++	return rc;
+ }
+ 
+ /**
+@@ -5777,6 +5837,9 @@ int smb2_query_info(struct ksmbd_work *w
+ 		goto err_out;
+ 	}
+ 
++	rsp->StructureSize = cpu_to_le16(9);
++	rsp->OutputBufferOffset = cpu_to_le16(72);
++
+ 	switch (req->InfoType) {
+ 	case SMB2_O_INFO_FILE:
+ 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
+@@ -5797,14 +5860,6 @@ int smb2_query_info(struct ksmbd_work *w
+ 	}
+ 	ksmbd_revert_fsids(work);
+ 
+-	if (!rc) {
+-		rsp->StructureSize = cpu_to_le16(9);
+-		rsp->OutputBufferOffset = cpu_to_le16(72);
+-		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
+-				       offsetof(struct smb2_query_info_rsp, Buffer) +
+-					le32_to_cpu(rsp->OutputBufferLength));
+-	}
+-
+ err_out:
+ 	if (rc < 0) {
+ 		if (rc == -EACCES)
+@@ -5815,6 +5870,8 @@ err_out:
+ 			rsp->hdr.Status = STATUS_UNEXPECTED_IO_ERROR;
+ 		else if (rc == -ENOMEM)
+ 			rsp->hdr.Status = STATUS_INSUFFICIENT_RESOURCES;
++		else if (rc == -EINVAL && rsp->hdr.Status == 0)
++			rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		else if (rc == -EOPNOTSUPP || rsp->hdr.Status == 0)
+ 			rsp->hdr.Status = STATUS_INVALID_INFO_CLASS;
+ 		smb2_set_err_rsp(work);
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -915,6 +915,49 @@ int parse_sec_desc(struct mnt_idmap *idm
+ 	return 0;
+ }
+ 
++size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
++		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info)
++{
++	size_t len = sizeof(struct smb_ntsd);
++	size_t tmp;
++
++	if (addition_info & OWNER_SECINFO)
++		len += sizeof(struct smb_sid);
++	if (addition_info & GROUP_SECINFO)
++		len += sizeof(struct smb_sid);
++	if (!(addition_info & DACL_SECINFO))
++		return len;
++
++	len += sizeof(struct smb_acl);
++	if (ppntsd && ppntsd_size > 0) {
++		unsigned int dacl_offset = le32_to_cpu(ppntsd->dacloffset);
++
++		if (dacl_offset < ppntsd_size &&
++		    check_add_overflow(len, ppntsd_size - dacl_offset, &len))
++			return 0;
++	}
++
++	if (fattr->cf_acls) {
++		if (check_mul_overflow((size_t)fattr->cf_acls->a_count,
++					2 * sizeof(struct smb_ace), &tmp) ||
++		    check_add_overflow(len, tmp, &len))
++			return 0;
++	} else {
++		/* default/minimum DACL */
++		if (check_add_overflow(len, 5 * sizeof(struct smb_ace), &len))
++			return 0;
++	}
++
++	if (fattr->cf_dacls) {
++		if (check_mul_overflow((size_t)fattr->cf_dacls->a_count,
++					sizeof(struct smb_ace), &tmp) ||
++		    check_add_overflow(len, tmp, &len))
++			return 0;
++	}
++
++	return len;
++}
++
+ /* Convert permission bits from mode to equivalent CIFS ACL */
+ int build_sec_desc(struct mnt_idmap *idmap,
+ 		   struct smb_ntsd *pntsd, struct smb_ntsd *ppntsd,
+--- a/fs/smb/server/smbacl.h
++++ b/fs/smb/server/smbacl.h
+@@ -101,6 +101,8 @@ int set_info_sec(struct ksmbd_conn *conn
+ 		 bool type_check, bool get_write);
+ void id_to_sid(unsigned int cid, uint sidtype, struct smb_sid *ssid);
+ void ksmbd_init_domain(u32 *sub_auth);
++size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
++		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info);
+ 
+ static inline uid_t posix_acl_uid_translate(struct mnt_idmap *idmap,
+ 					    struct posix_acl_entry *pace)
 
 
 
