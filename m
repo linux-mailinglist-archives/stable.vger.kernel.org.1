@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-234933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLPkCSSk1mmUGwgAu9opvQ
-	(envelope-from <stable+bounces-234933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:24 +0200
+	id iAVBOySi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A6E3C1DB1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB113C16A8
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D2D5307D4DE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38DDA302EEB2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBC2337B81;
-	Wed,  8 Apr 2026 18:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413A13D411F;
+	Wed,  8 Apr 2026 18:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5aFyhq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoiPIqNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39923D75C3;
-	Wed,  8 Apr 2026 18:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030F3324B1F;
+	Wed,  8 Apr 2026 18:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674138; cv=none; b=sBxXWohdDZz99S+UV3lvZm40hQlHZ4sXe8I5H4UkKprAMUodKzALGAuR2pu0jJ2Cc+n1hkPdKuZ6UxaFwQ7BsOILN42dFlrY0zw5PXp0B2pkSs8ZJuYAOIstajU5NAazBxiIwh0w4Z0y6NCS1v2++q3sv6kEWFSyxNkgMLcLLLI=
+	t=1775672835; cv=none; b=G6SF3JEyEdcylbvukZm3VHhZoDluTbF1/Aw+POHahlSqNiv9oaYBLIrY0YH/meR4Q5JzOalrAtiLe3LbW2HzgouB6Lw4Nnu8TfjUExBlC8DOnBsWgBJ+C92WEpgSXPjOmSqn9GS+ZM6Syn5HY5MYCS1SAUwsxs179ga8Ax88fn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674138; c=relaxed/simple;
-	bh=syJBIgJOvkkm/q85URyJ6D6C5/mfKf5pvywCcoBcaMk=;
+	s=arc-20240116; t=1775672835; c=relaxed/simple;
+	bh=+T1ioicHgkXab4Z0rify9b0unKMaueW01Erb+ngcVR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsbO4zndbxCwUyrUJt/xfjI7dW1EAA4jEQtnNsywAqYDUbTJ82aBJ+0EKvhiuNsZmqhds3pFDe0ti7LLqtHPPZBTyXyLNIesG8xbcG5BrzB8oXsnuKcwi3PTpAmwHJOky3NUeo+v3g1Lz1UZw+Nwicp4CsoNvuTTSzPdE7kJ0wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5aFyhq9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E8EC2BC87;
-	Wed,  8 Apr 2026 18:48:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ErsKh9/wOfEb+TeNY6eOzUvSmwQ6pW+F0WqxTuYo1YDPi3T+gCAN7CJ1tWk9ZqBftPCYmnJkV4ALlNWl97SvUxmAZdS3sBoTIsZj+BJr4ZD+OoYRNrES+f/HnMp9uHdF4Q22wxHYJ6bEBquz2wkiQHN3SQTN3YR0m9zMmQphGU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoiPIqNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8657DC19421;
+	Wed,  8 Apr 2026 18:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674138;
-	bh=syJBIgJOvkkm/q85URyJ6D6C5/mfKf5pvywCcoBcaMk=;
+	s=korg; t=1775672834;
+	bh=+T1ioicHgkXab4Z0rify9b0unKMaueW01Erb+ngcVR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5aFyhq94SgkN9aj1o0K77C5ylNYPW6NF40x9X1L16Gtb3ljjd1DREABtuSUkUFrs
-	 hc3uproeYMZU7R7H1mhm06HnJ8g25raxzc5kgv9jFhvkz/zY//FlSSKnXfqz2pZm1i
-	 g1uWLRpWB+HcYvkrhZp1Nlkq0iyWOpd1m5j9Q6Zw=
+	b=eoiPIqNAkIPeueX7QELt07kISEHXEmAiAR3JGaZmkzJdrNLAFjd+QQIRhWZzoIDrJ
+	 cdh5ux5sw7LO4V9W8TdvAooc/rXONF76mAJQdQDBebzguTlvo8YfFkVBXOITVPZ9ph
+	 uOg14QZwscIZpzsYqq+899Q9Kvrm02nRhWgBIjTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.12 207/242] usb: gadget: f_eem: Fix net_device lifecycle with device_move
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 160/160] net: sfp: Fix Ubiquiti U-Fiber Instant SFP module on mvneta
 Date: Wed,  8 Apr 2026 20:04:07 +0200
-Message-ID: <20260408175934.827311337@linuxfoundation.org>
+Message-ID: <20260408175919.181356238@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,235 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234933-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234429-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B3A6E3C1DB1
+	TAGGED_RCPT(0.00)[stable,kernel];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,armlinux.org.uk:email]
+X-Rspamd-Queue-Id: 4DB113C16A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: "Marek Behún" <kabel@kernel.org>
 
-commit d9270c9a8118c1535409db926ac1e2545dc97b81 upstream.
+[ Upstream commit eeee5a710f26ce57807024ef330fe5a850eaecd8 ]
 
-The net_device is allocated during function instance creation and
-registered during the bind phase with the gadget device as its sysfs
-parent. When the function unbinds, the parent device is destroyed, but
-the net_device survives, resulting in dangling sysfs symlinks:
+In commit 8110633db49d7de2 ("net: sfp-bus: allow SFP quirks to override
+Autoneg and pause bits") we moved the setting of Autoneg and pause bits
+before the call to SFP quirk when parsing SFP module support.
 
-console:/ # ls -l /sys/class/net/usb0
-lrwxrwxrwx ... /sys/class/net/usb0 ->
-/sys/devices/platform/.../gadget.0/net/usb0
-console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
-ls: .../gadget.0/net/usb0: No such file or directory
+Since the quirk for Ubiquiti U-Fiber Instant SFP module zeroes the
+support bits and sets 1000baseX_Full only, the above mentioned commit
+changed the overall computed support from
+  1000baseX_Full, Autoneg, Pause, Asym_Pause
+to just
+  1000baseX_Full.
 
-Use device_move() to reparent the net_device between the gadget device
-tree and /sys/devices/virtual across bind and unbind cycles. During the
-final unbind, calling device_move(NULL) moves the net_device to the
-virtual device tree before the gadget device is destroyed. On rebinding,
-device_move() reparents the device back under the new gadget, ensuring
-proper sysfs topology and power management ordering.
+This broke the SFP module for mvneta, which requires Autoneg for
+1000baseX since commit c762b7fac1b249a9 ("net: mvneta: deny disabling
+autoneg for 802.3z modes").
 
-To maintain compatibility with legacy composite drivers (e.g., multi.c),
-the bound flag is used to indicate whether the network device is shared
-and pre-registered during the legacy driver's bind phase.
+Fix this by setting back the Autoneg, Pause and Asym_Pause bits in the
+quirk.
 
-Fixes: b29002a15794 ("usb: gadget: f_eem: convert to new function interface with backward compatibility")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-5-4886b578161b@google.com
+Fixes: 8110633db49d7de2 ("net: sfp-bus: allow SFP quirks to override Autoneg and pause bits")
+Signed-off-by: Marek BehÃºn <kabel@kernel.org>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20260326122038.2489589-1-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_eem.c |   59 ++++++++++++++++++------------------
- drivers/usb/gadget/function/u_eem.h |   21 +++++++++---
- 2 files changed, 46 insertions(+), 34 deletions(-)
+ drivers/net/phy/sfp.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_eem.c
-+++ b/drivers/usb/gadget/function/f_eem.c
-@@ -7,6 +7,7 @@
-  * Copyright (C) 2009 EF Johnson Technologies
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
-@@ -251,24 +252,22 @@ static int eem_bind(struct usb_configura
- 	struct usb_ep		*ep;
- 
- 	struct f_eem_opts	*eem_opts;
-+	struct net_device	*net __free(detach_gadget) = NULL;
- 
- 	eem_opts = container_of(f->fi, struct f_eem_opts, func_inst);
--	/*
--	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
--	 * configurations are bound in sequence with list_for_each_entry,
--	 * in each configuration its functions are bound in sequence
--	 * with list_for_each_entry, so we assume no race condition
--	 * with regard to eem_opts->bound access
--	 */
--	if (!eem_opts->bound) {
--		mutex_lock(&eem_opts->lock);
--		gether_set_gadget(eem_opts->net, cdev->gadget);
--		status = gether_register_netdev(eem_opts->net);
--		mutex_unlock(&eem_opts->lock);
--		if (status)
--			return status;
--		eem_opts->bound = true;
--	}
-+
-+	scoped_guard(mutex, &eem_opts->lock)
-+		if (eem_opts->bind_count == 0 && !eem_opts->bound) {
-+			if (!device_is_registered(&eem_opts->net->dev)) {
-+				gether_set_gadget(eem_opts->net, cdev->gadget);
-+				status = gether_register_netdev(eem_opts->net);
-+			} else
-+				status = gether_attach_gadget(eem_opts->net, cdev->gadget);
-+
-+			if (status)
-+				return status;
-+			net = eem_opts->net;
-+		}
- 
- 	us = usb_gstrings_attach(cdev, eem_strings,
- 				 ARRAY_SIZE(eem_string_defs));
-@@ -279,21 +278,19 @@ static int eem_bind(struct usb_configura
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	eem->ctrl_id = status;
- 	eem_intf.bInterfaceNumber = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &eem_fs_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	eem->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &eem_fs_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	eem->port.out_ep = ep;
- 
- 	/* support all relevant hardware speeds... we expect that when
-@@ -309,16 +306,14 @@ static int eem_bind(struct usb_configura
- 	status = usb_assign_descriptors(f, eem_fs_function, eem_hs_function,
- 			eem_ss_function, eem_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
-+
-+	eem_opts->bind_count++;
-+	retain_and_null_ptr(net);
- 
- 	DBG(cdev, "CDC Ethernet (EEM): IN/%s OUT/%s\n",
- 			eem->port.in_ep->name, eem->port.out_ep->name);
- 	return 0;
--
--fail:
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
- }
- 
- static void eem_cmd_complete(struct usb_ep *ep, struct usb_request *req)
-@@ -597,7 +592,7 @@ static void eem_free_inst(struct usb_fun
- 	struct f_eem_opts *opts;
- 
- 	opts = container_of(f, struct f_eem_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -640,9 +635,17 @@ static void eem_free(struct usb_function
- 
- static void eem_unbind(struct usb_configuration *c, struct usb_function *f)
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -465,10 +465,15 @@ static void sfp_quirk_ubnt_uf_instant(co
  {
-+	struct f_eem_opts *opts;
+ 	/* Ubiquiti U-Fiber Instant module claims that support all transceiver
+ 	 * types including 10G Ethernet which is not truth. So clear all claimed
+-	 * modes and set only one mode which module supports: 1000baseX_Full.
++	 * modes and set only one mode which module supports: 1000baseX_Full,
++	 * along with the Autoneg and pause bits.
+ 	 */
+ 	linkmode_zero(modes);
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT, modes);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, modes);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, modes);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, modes);
 +
- 	DBG(c->cdev, "eem unbind\n");
- 
-+	opts = container_of(f->fi, struct f_eem_opts, func_inst);
-+
- 	usb_free_all_descriptors(f);
-+
-+	opts->bind_count--;
-+	if (opts->bind_count == 0 && !opts->bound)
-+		gether_detach_gadget(opts->net);
+ 	phy_interface_zero(interfaces);
+ 	__set_bit(PHY_INTERFACE_MODE_1000BASEX, interfaces);
  }
- 
- static struct usb_function *eem_alloc(struct usb_function_instance *fi)
---- a/drivers/usb/gadget/function/u_eem.h
-+++ b/drivers/usb/gadget/function/u_eem.h
-@@ -15,17 +15,26 @@
- 
- #include <linux/usb/composite.h>
- 
-+/**
-+ * struct f_eem_opts - EEM function options
-+ * @func_inst: USB function instance.
-+ * @net: The net_device associated with the EEM function.
-+ * @bound: True if the net_device is shared and pre-registered during the
-+ *         legacy composite driver's bind phase (e.g., multi.c). If false,
-+ *         the EEM function will register the net_device during its own
-+ *         bind phase.
-+ * @bind_count: Tracks the number of configurations the EEM function is
-+ *              bound to, preventing double-registration of the @net device.
-+ * @lock: Protects the data from concurrent access by configfs read/write
-+ *        and create symlink/remove symlink operations.
-+ * @refcnt: Reference counter for the function instance.
-+ */
- struct f_eem_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
- 	bool				bound;
-+	int				bind_count;
- 
--	/*
--	 * Read/write access to configfs attributes is handled by configfs.
--	 *
--	 * This is to protect the data from concurrent access by read/write
--	 * and create symlink/remove symlink.
--	 */
- 	struct mutex			lock;
- 	int				refcnt;
- };
 
 
 
