@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-234795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFQRBjGl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:53 +0200
+	id 2ElzEICq1mmOHAgAu9opvQ
+	(envelope-from <stable+bounces-235081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:20:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651643C2114
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AACC73C2CAD
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A84D31F1AB3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 672E7313E4A7
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44263D75AF;
-	Wed,  8 Apr 2026 18:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD363D890F;
+	Wed,  8 Apr 2026 18:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBGwGPeW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrY0UMuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C18331A44;
-	Wed,  8 Apr 2026 18:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBD33176E4;
+	Wed,  8 Apr 2026 18:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673782; cv=none; b=uirfG+T36Q90oXdsb6Aq5d4gKQ9Xhq2R11LvUT3A3tAtn6stdSDpGRvomoRXduqcn6rVT9MYZ5A1N4As1wsPjIy3PSn9ogVSyMFdnVy1BsF447qUSk9t8KiSLa8+RalqdmbXwX8MpLTFzu5IJ5e/dc7ji6OKfXF0fUBu2vJxuhs=
+	t=1775674520; cv=none; b=aud2Pcb+GtN6mrFQnbD/Fpbaxzt8xzxkFmXHYw08ySYLmsyi+JU2Amvj2eKkWbONPQUKa3ZRaLe/AXqiDAt0xcjyp6Dt2i0QBxEmpyF6n/PItYQ7J+ey0HuAK4+CLkyYuVl0JmfyvrZZef1cVId1xdNv5l+7cgcP/P7N0tdtNh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673782; c=relaxed/simple;
-	bh=lE3kd2rGg5yLD5P7QkSun8I32hRkwFF+bYRGbBJb/R4=;
+	s=arc-20240116; t=1775674520; c=relaxed/simple;
+	bh=Kb0et+H1niiquJzjifBRoWw2ROZhcVCSMH5zAOmDdJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwXgmtZAPbbKE+7cWcQdRAXrY0G9OocdDKCYYHRAe8Ghq8x3QOBsCJP0f7xI5tm+0a4tZUBvhMIuQ69GT4kbLh08gOUt7YgiECVJezEwNtXMMZ6OmIxKpGbAmxGYWtn0fx56/oa47mLsSTGL4vLNhW4BN92FNvHgSB5qot+odfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBGwGPeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6CFC19421;
-	Wed,  8 Apr 2026 18:43:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iCuwjAAN0xLpbfIjBu9+92qQ6Vv4lGsAeQFIX6bDGrNbMwj3pG5rPhyILKZwGc6f+rf1YhgwR2pi0xKysSliwQvbevC508Wur4kG0RlOnjTw03x/opxqZ2ZV38xTQE8xagzwJdBzo7gti3/XtOd1yajCNUCwAQezjiBqSpaOjmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrY0UMuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20AF5C19425;
+	Wed,  8 Apr 2026 18:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673782;
-	bh=lE3kd2rGg5yLD5P7QkSun8I32hRkwFF+bYRGbBJb/R4=;
+	s=korg; t=1775674520;
+	bh=Kb0et+H1niiquJzjifBRoWw2ROZhcVCSMH5zAOmDdJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBGwGPeWx/oEPs2IiVKL3XzDbmLNxF7MsbRgmNUtHLIs0nJsvqLRWP89tETqcCTOc
-	 LUzR7cW8BzBaYdQSYBcTHLWcJsAfbE7t2Xaz6C+IrWeBYI4cIi8AYRp6BHUYHVOdGP
-	 6Hyyq4RoVUV/G1yotv9v1V3fLdAFbHGYG0ErBEw4=
+	b=GrY0UMuQ3uLiUsCXcdyDXStZqHUduKGLqbGzk+RdfWIMc+HAcP+iJZqTWLCRQau6k
+	 FXHETXu4WQnPKh/CEyWIVOFcrar4G8pWAYFLot733KQ42wLnRiu2oF0nj1BtUfax1B
+	 LpF58PV72Ii/X/LYHwEumxrbN7VoHYNXGtbxCNE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuhang Zheng <z1652074432@gmail.com>,
-	Yucheng Lu <kanolyc@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/242] net/sched: sch_netem: fix out-of-bounds access in packet corruption
-Date: Wed,  8 Apr 2026 20:02:08 +0200
-Message-ID: <20260408175930.380106395@linuxfoundation.org>
+Subject: [PATCH 6.19 129/311] gpiolib: clear requested flag if line is invalid
+Date: Wed,  8 Apr 2026 20:02:09 +0200
+Message-ID: <20260408175944.233474000@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234795-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,networkplumber.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,protonmail.com,gmail.com,oss.qualcomm.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235081-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 651643C2114
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,protonmail.com:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: AACC73C2CAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yucheng Lu <kanolyc@gmail.com>
+From: Barnabás Pőcze <pobrn@protonmail.com>
 
-[ Upstream commit d64cb81dcbd54927515a7f65e5e24affdc73c14b ]
+[ Upstream commit 6df6ea4b3d1567dbe6442f308735c23b63007c7f ]
 
-In netem_enqueue(), the packet corruption logic uses
-get_random_u32_below(skb_headlen(skb)) to select an index for
-modifying skb->data. When an AF_PACKET TX_RING sends fully non-linear
-packets over an IPIP tunnel, skb_headlen(skb) evaluates to 0.
+If `gpiochip_line_is_valid()` fails, then `-EINVAL` is returned, but
+`desc->flags` will have `GPIOD_FLAG_REQUESTED` set, which will result
+in subsequent calls misleadingly returning `-EBUSY`.
 
-Passing 0 to get_random_u32_below() takes the variable-ceil slow path
-which returns an unconstrained 32-bit random integer. Using this
-unconstrained value as an offset into skb->data results in an
-out-of-bounds memory access.
+Fix that by clearing the flag in case of failure.
 
-Fix this by verifying skb_headlen(skb) is non-zero before attempting
-to corrupt the linear data area. Fully non-linear packets will silently
-bypass the corruption logic.
-
-Fixes: c865e5d99e25 ("[PKT_SCHED] netem: packet corruption option")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
-Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
-Link: https://patch.msgid.link/45435c0935df877853a81e6d06205ac738ec65fa.1774941614.git.kanolyc@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a501624864f3 ("gpio: Respect valid_mask when requesting GPIOs")
+Signed-off-by: Barnabás Pőcze <pobrn@protonmail.com>
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://patch.msgid.link/20260310204359.1202451-1-pobrn@protonmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 2270547b51df8..825c398aa1232 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -517,8 +517,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			goto finish_segs;
- 		}
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 2e33afbbfda48..04068f4eb3422 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -2466,8 +2466,10 @@ int gpiod_request_commit(struct gpio_desc *desc, const char *label)
+ 		return -EBUSY;
  
--		skb->data[get_random_u32_below(skb_headlen(skb))] ^=
--			1<<get_random_u32_below(8);
-+		if (skb_headlen(skb))
-+			skb->data[get_random_u32_below(skb_headlen(skb))] ^=
-+				1 << get_random_u32_below(8);
- 	}
+ 	offset = gpiod_hwgpio(desc);
+-	if (!gpiochip_line_is_valid(guard.gc, offset))
+-		return -EINVAL;
++	if (!gpiochip_line_is_valid(guard.gc, offset)) {
++		ret = -EINVAL;
++		goto out_clear_bit;
++	}
  
- 	if (unlikely(q->t_len >= sch->limit)) {
+ 	/* NOTE:  gpio_request() can be called in early boot,
+ 	 * before IRQs are enabled, for non-sleeping (SOC) GPIOs.
 -- 
 2.53.0
 
