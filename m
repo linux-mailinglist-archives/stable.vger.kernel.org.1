@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-235050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aD+0Kzql1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235050-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:02 +0200
+	id kP2TBi+d1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466583C2129
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7093C0931
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4DF0930B63CD
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 69588301493D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418843D9DAE;
-	Wed,  8 Apr 2026 18:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8773AA4E4;
+	Wed,  8 Apr 2026 18:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UROjQv1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7fWcCpj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EDA3D9041;
-	Wed,  8 Apr 2026 18:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F923537FC;
+	Wed,  8 Apr 2026 18:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674441; cv=none; b=B8z960rqGaBfDZigQnvzDEMr7A7QqojC0Gcgtf3KbYm+g/P4ZJTgujL7gpdjYAVbwXWl0akAM+vZInQazUBwCGP7J2gdVFFtf5uXmGUpR/Uh+qTmC3u3Doa5EHDIj89IDjSto46mibhp3hwWSuHPA+zuNvMl8+5rr8m5ehro7ZY=
+	t=1775672444; cv=none; b=YZMDKW0Avjyn88u7OBU2pggpjUSBKtmn/yioTuYHVhBWfmbZsJkx5T0IpyLcrmPMKDFpxd/T4jQSVD+UqIspb6aZXVRkYutiIVTsumQECWUDtFZoXtoArd3PEoK7oPfOvyV1MD9vhirUlPLWa0AugLZ+XhuKQaxk+ekxHKZlhIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674441; c=relaxed/simple;
-	bh=x9sTzbMmi98OQq5LCUy46siZVn8QbwvStTNVbY463EY=;
+	s=arc-20240116; t=1775672444; c=relaxed/simple;
+	bh=LR192lMBNVFdOHyQ91qAfuadFQmokAuNobbQQdnFE+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqBUa7zO/tizvIWQ8HaKQP/tTrh3BTaNyfIZoUnKbaiKH+AhnzyEW+zExHm6rWPdYII/E0TPSAgcmcplQGA91xmS+0ytlLve1CZ8bY/5UFnkK4nmLKCflnbhiTNRXPfLbwPPI5HFY3/nYMIX/e4nf2nh9UKYgU8le8lfez2sARs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UROjQv1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D263C19425;
-	Wed,  8 Apr 2026 18:54:00 +0000 (UTC)
+	 MIME-Version; b=Pu5m1DaBMPWgpGVENO8x+/sYzaBSZrG+xW+nxhhxrwfN6+tR3FwcM11igZNUuYxiVuqImMQiPgvAiBrkCT6BSK9GoPPskxGCFPO4ho92u98daNpwrmkADGvS+a9sru/v7FqFmsjh2THTQigoTjrvPEi0TuTKLDmTAkFfBYh05zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7fWcCpj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9B8C19421;
+	Wed,  8 Apr 2026 18:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674440;
-	bh=x9sTzbMmi98OQq5LCUy46siZVn8QbwvStTNVbY463EY=;
+	s=korg; t=1775672444;
+	bh=LR192lMBNVFdOHyQ91qAfuadFQmokAuNobbQQdnFE+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UROjQv1JEUAxtelh1a3uUOQYPDNwTUHszGAmBvMdLUXztDcL8jhH6Erc2v3UH/G0D
-	 VG2PuCGsmSd/S7Q1C+Oe9BkhBGENYtIv0W6aGx+gYNIlwCgoC43VzbZ/rGEzrcqcvK
-	 tz6CTs612NI0ngb7u6eKNQwIJFX3aKxYY8Pqk+7w=
+	b=B7fWcCpjpSmf+VzsvPutDA49S17ormsoZLc2Vn4/H+mcjsu1TlUXAG92sfjH5mjoC
+	 zYCCimbaAEwkT16wDAjT9ZcEjCvxt7fn5NaFISpF93Qdxh7VZGJRUcEQA1La3NqeFL
+	 XfKUQTIc2UsQaw0ptZqMD5VQmnvwYZMI9Ra6Ygmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 097/311] Bluetooth: L2CAP: Add support for setting BT_PHY
+Subject: [PATCH 6.6 010/160] spi: geni-qcom: Check DMA interrupts early in ISR
 Date: Wed,  8 Apr 2026 20:01:37 +0200
-Message-ID: <20260408175943.035901694@linuxfoundation.org>
+Message-ID: <20260408175913.572473701@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,477 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234278-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235050-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 466583C2129
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3C7093C0931
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
 
-[ Upstream commit 132c0779d4a2d08541519cf04783bca52c6ec85c ]
+[ Upstream commit 8c89a077ca796a2fe248c584e9d7e66cff0388c8 ]
 
-This enables client to use setsockopt(BT_PHY) to set the connection
-packet type/PHY:
+The current interrupt handler only checks the GENI main IRQ status
+(m_irq) before deciding to return IRQ_NONE. This can lead to spurious
+IRQ_NONE returns when DMA interrupts are pending but m_irq is zero.
 
-Example setting BT_PHY_BR_1M_1SLOT:
+Move the DMA TX/RX status register reads to the beginning of the ISR,
+right after reading m_irq. Update the early return condition to check
+all three status registers (m_irq, dma_tx_status, dma_rx_status) before
+returning IRQ_NONE.
 
-< HCI Command: Change Conne.. (0x01|0x000f) plen 4
-        Handle: 1 Address: 00:AA:01:01:00:00 (Intel Corporation)
-        Packet type: 0x331e
-          2-DH1 may not be used
-          3-DH1 may not be used
-          DM1 may be used
-          DH1 may be used
-          2-DH3 may not be used
-          3-DH3 may not be used
-          2-DH5 may not be used
-          3-DH5 may not be used
-> HCI Event: Command Status (0x0f) plen 4
-      Change Connection Packet Type (0x01|0x000f) ncmd 1
-        Status: Success (0x00)
-> HCI Event: Connection Packet Typ.. (0x1d) plen 5
-        Status: Success (0x00)
-        Handle: 1 Address: 00:AA:01:01:00:00 (Intel Corporation)
-        Packet type: 0x331e
-          2-DH1 may not be used
-          3-DH1 may not be used
-          DM1 may be used
-          DH1 may be used
-          2-DH3 may not be used
-          3-DH3 may not be used
-          2-DH5 may not be used
-
-Example setting BT_PHY_LE_1M_TX and BT_PHY_LE_1M_RX:
-
-< HCI Command: LE Set PHY (0x08|0x0032) plen 7
-        Handle: 1 Address: 00:AA:01:01:00:00 (Intel Corporation)
-        All PHYs preference: 0x00
-        TX PHYs preference: 0x01
-          LE 1M
-        RX PHYs preference: 0x01
-          LE 1M
-        PHY options preference: Reserved (0x0000)
-> HCI Event: Command Status (0x0f) plen 4
-      LE Set PHY (0x08|0x0032) ncmd 1
-        Status: Success (0x00)
-> HCI Event: LE Meta Event (0x3e) plen 6
-      LE PHY Update Complete (0x0c)
-        Status: Success (0x00)
-        Handle: 1 Address: 00:AA:01:01:00:00 (Intel Corporation)
-        TX PHY: LE 1M (0x01)
-        RX PHY: LE 1M (0x01)
-
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 035c25007c9e ("Bluetooth: hci_sync: Fix UAF in le_read_features_complete")
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260313-spi-geni-qcom-fix-dma-irq-handling-v1-1-0bd122589e02@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/bluetooth.h |  39 ++++++-----
- include/net/bluetooth/hci.h       |   9 +++
- include/net/bluetooth/hci_core.h  |   1 +
- include/net/bluetooth/hci_sync.h  |   3 +
- net/bluetooth/hci_conn.c          | 105 ++++++++++++++++++++++++++++++
- net/bluetooth/hci_event.c         |  26 ++++++++
- net/bluetooth/hci_sync.c          |  72 ++++++++++++++++++++
- net/bluetooth/l2cap_sock.c        |  20 +++++-
- 8 files changed, 259 insertions(+), 16 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index d46ed9011ee5d..89a60919050b0 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -130,21 +130,30 @@ struct bt_voice {
- #define BT_RCVMTU		13
- #define BT_PHY			14
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 37a20652fd2e7..ef1a05837cb97 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -948,10 +948,13 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 	struct spi_master *spi = data;
+ 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
+ 	struct geni_se *se = &mas->se;
+-	u32 m_irq;
++	u32 m_irq, dma_tx_status, dma_rx_status;
  
--#define BT_PHY_BR_1M_1SLOT	0x00000001
--#define BT_PHY_BR_1M_3SLOT	0x00000002
--#define BT_PHY_BR_1M_5SLOT	0x00000004
--#define BT_PHY_EDR_2M_1SLOT	0x00000008
--#define BT_PHY_EDR_2M_3SLOT	0x00000010
--#define BT_PHY_EDR_2M_5SLOT	0x00000020
--#define BT_PHY_EDR_3M_1SLOT	0x00000040
--#define BT_PHY_EDR_3M_3SLOT	0x00000080
--#define BT_PHY_EDR_3M_5SLOT	0x00000100
--#define BT_PHY_LE_1M_TX		0x00000200
--#define BT_PHY_LE_1M_RX		0x00000400
--#define BT_PHY_LE_2M_TX		0x00000800
--#define BT_PHY_LE_2M_RX		0x00001000
--#define BT_PHY_LE_CODED_TX	0x00002000
--#define BT_PHY_LE_CODED_RX	0x00004000
-+#define BT_PHY_BR_1M_1SLOT	BIT(0)
-+#define BT_PHY_BR_1M_3SLOT	BIT(1)
-+#define BT_PHY_BR_1M_5SLOT	BIT(2)
-+#define BT_PHY_EDR_2M_1SLOT	BIT(3)
-+#define BT_PHY_EDR_2M_3SLOT	BIT(4)
-+#define BT_PHY_EDR_2M_5SLOT	BIT(5)
-+#define BT_PHY_EDR_3M_1SLOT	BIT(6)
-+#define BT_PHY_EDR_3M_3SLOT	BIT(7)
-+#define BT_PHY_EDR_3M_5SLOT	BIT(8)
-+#define BT_PHY_LE_1M_TX		BIT(9)
-+#define BT_PHY_LE_1M_RX		BIT(10)
-+#define BT_PHY_LE_2M_TX		BIT(11)
-+#define BT_PHY_LE_2M_RX		BIT(12)
-+#define BT_PHY_LE_CODED_TX	BIT(13)
-+#define BT_PHY_LE_CODED_RX	BIT(14)
+ 	m_irq = readl(se->base + SE_GENI_M_IRQ_STATUS);
+-	if (!m_irq)
++	dma_tx_status = readl_relaxed(se->base + SE_DMA_TX_IRQ_STAT);
++	dma_rx_status = readl_relaxed(se->base + SE_DMA_RX_IRQ_STAT);
 +
-+#define BT_PHY_BREDR_MASK	(BT_PHY_BR_1M_1SLOT | BT_PHY_BR_1M_3SLOT | \
-+				 BT_PHY_BR_1M_5SLOT | BT_PHY_EDR_2M_1SLOT | \
-+				 BT_PHY_EDR_2M_3SLOT | BT_PHY_EDR_2M_5SLOT | \
-+				 BT_PHY_EDR_3M_1SLOT | BT_PHY_EDR_3M_3SLOT | \
-+				 BT_PHY_EDR_3M_5SLOT)
-+#define BT_PHY_LE_MASK		(BT_PHY_LE_1M_TX | BT_PHY_LE_1M_RX | \
-+				 BT_PHY_LE_2M_TX | BT_PHY_LE_2M_RX | \
-+				 BT_PHY_LE_CODED_TX | BT_PHY_LE_CODED_RX)
++	if (!m_irq && !dma_tx_status && !dma_rx_status)
+ 		return IRQ_NONE;
  
- #define BT_MODE			15
+ 	if (m_irq & (M_CMD_OVERRUN_EN | M_ILLEGAL_CMD_EN | M_CMD_FAILURE_EN |
+@@ -999,8 +1002,6 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 		}
+ 	} else if (mas->cur_xfer_mode == GENI_SE_DMA) {
+ 		const struct spi_transfer *xfer = mas->cur_xfer;
+-		u32 dma_tx_status = readl_relaxed(se->base + SE_DMA_TX_IRQ_STAT);
+-		u32 dma_rx_status = readl_relaxed(se->base + SE_DMA_RX_IRQ_STAT);
  
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index a27cd3626b872..a2beda3b0071d 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -1883,6 +1883,15 @@ struct hci_cp_le_set_default_phy {
- #define HCI_LE_SET_PHY_2M		0x02
- #define HCI_LE_SET_PHY_CODED		0x04
- 
-+#define HCI_OP_LE_SET_PHY		0x2032
-+struct hci_cp_le_set_phy {
-+	__le16  handle;
-+	__u8    all_phys;
-+	__u8    tx_phys;
-+	__u8    rx_phys;
-+	__le16   phy_opts;
-+} __packed;
-+
- #define HCI_OP_LE_SET_EXT_SCAN_PARAMS   0x2041
- struct hci_cp_le_set_ext_scan_params {
- 	__u8    own_addr_type;
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 8aadf4cdead2b..71bbaa7dc790b 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -2336,6 +2336,7 @@ void *hci_sent_cmd_data(struct hci_dev *hdev, __u16 opcode);
- void *hci_recv_event_data(struct hci_dev *hdev, __u8 event);
- 
- u32 hci_conn_get_phy(struct hci_conn *conn);
-+int hci_conn_set_phy(struct hci_conn *conn, u32 phys);
- 
- /* ----- HCI Sockets ----- */
- void hci_send_to_sock(struct hci_dev *hdev, struct sk_buff *skb);
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index 56076bbc981d9..73e494b2591de 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -191,3 +191,6 @@ int hci_connect_big_sync(struct hci_dev *hdev, struct hci_conn *conn);
- int hci_past_sync(struct hci_conn *conn, struct hci_conn *le);
- 
- int hci_le_read_remote_features(struct hci_conn *conn);
-+
-+int hci_acl_change_pkt_type(struct hci_conn *conn, u16 pkt_type);
-+int hci_le_set_phy(struct hci_conn *conn, u8 tx_phys, u8 rx_phys);
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 0f512c2c2fd3c..48aaccd35954a 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -2958,6 +2958,111 @@ u32 hci_conn_get_phy(struct hci_conn *conn)
- 	return phys;
- }
- 
-+static u16 bt_phy_pkt_type(struct hci_conn *conn, u32 phys)
-+{
-+	u16 pkt_type = conn->pkt_type;
-+
-+	if (phys & BT_PHY_BR_1M_3SLOT)
-+		pkt_type |= HCI_DM3 | HCI_DH3;
-+	else
-+		pkt_type &= ~(HCI_DM3 | HCI_DH3);
-+
-+	if (phys & BT_PHY_BR_1M_5SLOT)
-+		pkt_type |= HCI_DM5 | HCI_DH5;
-+	else
-+		pkt_type &= ~(HCI_DM5 | HCI_DH5);
-+
-+	if (phys & BT_PHY_EDR_2M_1SLOT)
-+		pkt_type &= ~HCI_2DH1;
-+	else
-+		pkt_type |= HCI_2DH1;
-+
-+	if (phys & BT_PHY_EDR_2M_3SLOT)
-+		pkt_type &= ~HCI_2DH3;
-+	else
-+		pkt_type |= HCI_2DH3;
-+
-+	if (phys & BT_PHY_EDR_2M_5SLOT)
-+		pkt_type &= ~HCI_2DH5;
-+	else
-+		pkt_type |= HCI_2DH5;
-+
-+	if (phys & BT_PHY_EDR_3M_1SLOT)
-+		pkt_type &= ~HCI_3DH1;
-+	else
-+		pkt_type |= HCI_3DH1;
-+
-+	if (phys & BT_PHY_EDR_3M_3SLOT)
-+		pkt_type &= ~HCI_3DH3;
-+	else
-+		pkt_type |= HCI_3DH3;
-+
-+	if (phys & BT_PHY_EDR_3M_5SLOT)
-+		pkt_type &= ~HCI_3DH5;
-+	else
-+		pkt_type |= HCI_3DH5;
-+
-+	return pkt_type;
-+}
-+
-+static int bt_phy_le_phy(u32 phys, u8 *tx_phys, u8 *rx_phys)
-+{
-+	if (!tx_phys || !rx_phys)
-+		return -EINVAL;
-+
-+	*tx_phys = 0;
-+	*rx_phys = 0;
-+
-+	if (phys & BT_PHY_LE_1M_TX)
-+		*tx_phys |= HCI_LE_SET_PHY_1M;
-+
-+	if (phys & BT_PHY_LE_1M_RX)
-+		*rx_phys |= HCI_LE_SET_PHY_1M;
-+
-+	if (phys & BT_PHY_LE_2M_TX)
-+		*tx_phys |= HCI_LE_SET_PHY_2M;
-+
-+	if (phys & BT_PHY_LE_2M_RX)
-+		*rx_phys |= HCI_LE_SET_PHY_2M;
-+
-+	if (phys & BT_PHY_LE_CODED_TX)
-+		*tx_phys |= HCI_LE_SET_PHY_CODED;
-+
-+	if (phys & BT_PHY_LE_CODED_RX)
-+		*rx_phys |= HCI_LE_SET_PHY_CODED;
-+
-+	return 0;
-+}
-+
-+int hci_conn_set_phy(struct hci_conn *conn, u32 phys)
-+{
-+	u8 tx_phys, rx_phys;
-+
-+	switch (conn->type) {
-+	case SCO_LINK:
-+	case ESCO_LINK:
-+		return -EINVAL;
-+	case ACL_LINK:
-+		/* Only allow setting BR/EDR PHYs if link type is ACL */
-+		if (phys & ~BT_PHY_BREDR_MASK)
-+			return -EINVAL;
-+
-+		return hci_acl_change_pkt_type(conn,
-+					       bt_phy_pkt_type(conn, phys));
-+	case LE_LINK:
-+		/* Only allow setting LE PHYs if link type is LE */
-+		if (phys & ~BT_PHY_LE_MASK)
-+			return -EINVAL;
-+
-+		if (bt_phy_le_phy(phys, &tx_phys, &rx_phys))
-+			return -EINVAL;
-+
-+		return hci_le_set_phy(conn, tx_phys, rx_phys);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int abort_conn_sync(struct hci_dev *hdev, void *data)
- {
- 	struct hci_conn *conn = data;
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 58075bf720554..467710a42d453 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2869,6 +2869,31 @@ static void hci_cs_le_ext_create_conn(struct hci_dev *hdev, u8 status)
- 	hci_dev_unlock(hdev);
- }
- 
-+static void hci_cs_le_set_phy(struct hci_dev *hdev, u8 status)
-+{
-+	struct hci_cp_le_set_phy *cp;
-+	struct hci_conn *conn;
-+
-+	bt_dev_dbg(hdev, "status 0x%2.2x", status);
-+
-+	if (status)
-+		return;
-+
-+	cp = hci_sent_cmd_data(hdev, HCI_OP_LE_SET_PHY);
-+	if (!cp)
-+		return;
-+
-+	hci_dev_lock(hdev);
-+
-+	conn = hci_conn_hash_lookup_handle(hdev, __le16_to_cpu(cp->handle));
-+	if (conn) {
-+		conn->le_tx_def_phys = cp->tx_phys;
-+		conn->le_rx_def_phys = cp->rx_phys;
-+	}
-+
-+	hci_dev_unlock(hdev);
-+}
-+
- static void hci_cs_le_read_remote_features(struct hci_dev *hdev, u8 status)
- {
- 	struct hci_cp_le_read_remote_features *cp;
-@@ -4359,6 +4384,7 @@ static const struct hci_cs {
- 	HCI_CS(HCI_OP_LE_CREATE_CONN, hci_cs_le_create_conn),
- 	HCI_CS(HCI_OP_LE_READ_REMOTE_FEATURES, hci_cs_le_read_remote_features),
- 	HCI_CS(HCI_OP_LE_START_ENC, hci_cs_le_start_enc),
-+	HCI_CS(HCI_OP_LE_SET_PHY, hci_cs_le_set_phy),
- 	HCI_CS(HCI_OP_LE_EXT_CREATE_CONN, hci_cs_le_ext_create_conn),
- 	HCI_CS(HCI_OP_LE_CREATE_CIS, hci_cs_le_create_cis),
- 	HCI_CS(HCI_OP_LE_CREATE_BIG, hci_cs_le_create_big),
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index a7fc43273815c..b4b5789ef3ab0 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -7424,3 +7424,75 @@ int hci_le_read_remote_features(struct hci_conn *conn)
- 
- 	return err;
- }
-+
-+static void pkt_type_changed(struct hci_dev *hdev, void *data, int err)
-+{
-+	struct hci_cp_change_conn_ptype *cp = data;
-+
-+	bt_dev_dbg(hdev, "err %d", err);
-+
-+	kfree(cp);
-+}
-+
-+static int hci_change_conn_ptype_sync(struct hci_dev *hdev, void *data)
-+{
-+	struct hci_cp_change_conn_ptype *cp = data;
-+
-+	return __hci_cmd_sync_status_sk(hdev, HCI_OP_CHANGE_CONN_PTYPE,
-+					sizeof(*cp), cp,
-+					HCI_EV_PKT_TYPE_CHANGE,
-+					HCI_CMD_TIMEOUT, NULL);
-+}
-+
-+int hci_acl_change_pkt_type(struct hci_conn *conn, u16 pkt_type)
-+{
-+	struct hci_dev *hdev = conn->hdev;
-+	struct hci_cp_change_conn_ptype *cp;
-+
-+	cp = kmalloc(sizeof(*cp), GFP_KERNEL);
-+	if (!cp)
-+		return -ENOMEM;
-+
-+	cp->handle = cpu_to_le16(conn->handle);
-+	cp->pkt_type = cpu_to_le16(pkt_type);
-+
-+	return hci_cmd_sync_queue_once(hdev, hci_change_conn_ptype_sync, cp,
-+				       pkt_type_changed);
-+}
-+
-+static void le_phy_update_complete(struct hci_dev *hdev, void *data, int err)
-+{
-+	struct hci_cp_le_set_phy *cp = data;
-+
-+	bt_dev_dbg(hdev, "err %d", err);
-+
-+	kfree(cp);
-+}
-+
-+static int hci_le_set_phy_sync(struct hci_dev *hdev, void *data)
-+{
-+	struct hci_cp_le_set_phy *cp = data;
-+
-+	return __hci_cmd_sync_status_sk(hdev, HCI_OP_LE_SET_PHY,
-+					sizeof(*cp), cp,
-+					HCI_EV_LE_PHY_UPDATE_COMPLETE,
-+					HCI_CMD_TIMEOUT, NULL);
-+}
-+
-+int hci_le_set_phy(struct hci_conn *conn, u8 tx_phys, u8 rx_phys)
-+{
-+	struct hci_dev *hdev = conn->hdev;
-+	struct hci_cp_le_set_phy *cp;
-+
-+	cp = kmalloc(sizeof(*cp), GFP_KERNEL);
-+	if (!cp)
-+		return -ENOMEM;
-+
-+	memset(cp, 0, sizeof(*cp));
-+	cp->handle = cpu_to_le16(conn->handle);
-+	cp->tx_phys = tx_phys;
-+	cp->rx_phys = rx_phys;
-+
-+	return hci_cmd_sync_queue_once(hdev, hci_le_set_phy_sync, cp,
-+				       le_phy_update_complete);
-+}
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index f1131e4415c95..e8106d09f2a42 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -885,7 +885,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 	struct bt_power pwr;
- 	struct l2cap_conn *conn;
- 	int err = 0;
--	u32 opt;
-+	u32 opt, phys;
- 	u16 mtu;
- 	u8 mode;
- 
-@@ -1066,6 +1066,24 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 		break;
- 
-+	case BT_PHY:
-+		if (sk->sk_state != BT_CONNECTED) {
-+			err = -ENOTCONN;
-+			break;
-+		}
-+
-+		err = copy_safe_from_sockptr(&phys, sizeof(phys), optval,
-+					     optlen);
-+		if (err)
-+			break;
-+
-+		if (!chan->conn)
-+			break;
-+
-+		conn = chan->conn;
-+		err = hci_conn_set_phy(conn->hcon, phys);
-+		break;
-+
- 	case BT_MODE:
- 		if (!enable_ecred) {
- 			err = -ENOPROTOOPT;
+ 		if (dma_tx_status)
+ 			writel(dma_tx_status, se->base + SE_DMA_TX_IRQ_CLR);
 -- 
 2.53.0
 
