@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-234757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KJ1Maeh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:47 +0200
+	id yPIhCuec1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491923C14F4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B68D73C0878
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4FAE63058335
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF0E53015D1D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A7E3D75C9;
-	Wed,  8 Apr 2026 18:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84B33AF646;
+	Wed,  8 Apr 2026 18:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI0V/wQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7B7yyN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162373B0AFC;
-	Wed,  8 Apr 2026 18:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC72DB67E;
+	Wed,  8 Apr 2026 18:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673684; cv=none; b=n+ZkrBo3j3mwic5cTcYoQ1zkYez3VRPnNfdUBJS0OJjvrPAmyeSbcTiTHhqoi1QHZrmYQI2eTzJljnKiNO9BllPyLh9FPkjG+W+Q2BiJ74XSAZBclSfERDOvT4/AcmqDinLStiSgHaTc2QT4dL+n8M4ZvQwR/UDwLD4596nG/k0=
+	t=1775672488; cv=none; b=RvncnOUipzKkT2H74iPL7dJGbdj2yo/WhcGh4Pj/mPsEl8GrYf5gYSYjD4L+MvDWY+bbY9YHdY8d7FI1EzOL6UgD29FBd00CuJzgBLzOlqRtImStZeFUjG+bpYGly7adotW6COVefp2Q1icBdVeJAnVTx9x/JTJ1cOfzCBM+8Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673684; c=relaxed/simple;
-	bh=yoq/FgCXm0Us15A6r5sL5HH3XDEcMu88ee/8PD7Ag2Y=;
+	s=arc-20240116; t=1775672488; c=relaxed/simple;
+	bh=N3JVmbOFNXhQAac/Z1Wi75H2S+/DskL/g7lAZ3SFpDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqryfxpj8HxXpHaeM3qQ9VwJn+wtlelMM51OqxNiTS0YZsVtESME4dgZ9thbnxNxxg5XwjIi/AMaOG9QmlcFXPjprFedu5Xlr8zLvSzmSjyNjoXrSA9pUDf3Dc4ZpGU28rbi4NmmfBSh/IZ3xzr/D0D2SYe5H/p2D3keGIi7byg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI0V/wQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4812CC19421;
-	Wed,  8 Apr 2026 18:41:23 +0000 (UTC)
+	 MIME-Version; b=YmkFnHCWabKf05rvV/6yfGF7lyYAo04g/RLUOh7v4P8el9fzc0ZlwQEH1z8unpr93cJgn36Gvx9U+AgIlgrwrqOPiO9U/0Jg6xDu4rGT9JAZmuPtPgcQWyaJumooeMwDHswlKp9yGE7hmjJ7wbwaCu/XABQ7TlNFHCwKmhLhG/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7B7yyN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACE3C2BC87;
+	Wed,  8 Apr 2026 18:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673683;
-	bh=yoq/FgCXm0Us15A6r5sL5HH3XDEcMu88ee/8PD7Ag2Y=;
+	s=korg; t=1775672488;
+	bh=N3JVmbOFNXhQAac/Z1Wi75H2S+/DskL/g7lAZ3SFpDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fI0V/wQ2dHhB702NmgoR+vMQifGOa6VROpkzlJs7kKHoU6c71nH+NpOajSotTZGpC
-	 S/JDc7NxL6GBYp4ud6YHdDhR7gdALIpd5L3gUl6zlpiiSlW6DPhWk3d8noFLAYHJCt
-	 R35HG0kdnJ1zKNxnpR9ZOwpDjmMotiZCOPu84Guw=
+	b=b7B7yyN/ZRbmcc+vlevE+ziFSVw4TmGOkQ1IaPEzW0R4CfW0U3kaehy6q2PPgM/UX
+	 XS1XDaHKHO3COgBLEIEb0srh2kaXn01RJU8mP6ovHEeyVTU3TuI/0KPmYH8FWammau
+	 rT1GUGiLh3Nwp/WfDgNPTVBQN1RF8O+TNR45BXlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+f50072212ab792c86925@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/242] ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach()
+Subject: [PATCH 6.6 003/160] atm: lec: fix use-after-free in sock_def_readable()
 Date: Wed,  8 Apr 2026 20:01:30 +0200
-Message-ID: <20260408175928.945211606@linuxfoundation.org>
+Message-ID: <20260408175913.311719828@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +66,272 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,google.com,hotmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234757-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234295-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,google.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,f50072212ab792c86925];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 491923C14F4
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email]
+X-Rspamd-Queue-Id: B68D73C0878
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 86ab3e55673a7a49a841838776f1ab18d23a67b5 ]
+[ Upstream commit 922814879542c2e397b0e9641fd36b8202a8e555 ]
 
-Sashiko AI-review observed:
+A race condition exists between lec_atm_close() setting priv->lecd
+to NULL and concurrent access to priv->lecd in send_to_lecd(),
+lec_handle_bridge(), and lec_atm_send(). When the socket is freed
+via RCU while another thread is still using it, a use-after-free
+occurs in sock_def_readable() when accessing the socket's wait queue.
 
-  In ip6_err_gen_icmpv6_unreach(), the skb is an outer IPv4 ICMP error packet
-  where its cb contains an IPv4 inet_skb_parm. When skb is cloned into skb2
-  and passed to icmp6_send(), it uses IP6CB(skb2).
+The root cause is that lec_atm_close() clears priv->lecd without
+any synchronization, while callers dereference priv->lecd without
+any protection against concurrent teardown.
 
-  IP6CB interprets the IPv4 inet_skb_parm as an inet6_skb_parm. The cipso
-  offset in inet_skb_parm.opt directly overlaps with dsthao in inet6_skb_parm
-  at offset 18.
+Fix this by converting priv->lecd to an RCU-protected pointer:
+- Mark priv->lecd as __rcu in lec.h
+- Use rcu_assign_pointer() in lec_atm_close() and lecd_attach()
+  for safe pointer assignment
+- Use rcu_access_pointer() for NULL checks that do not dereference
+  the pointer in lec_start_xmit(), lec_push(), send_to_lecd() and
+  lecd_attach()
+- Use rcu_read_lock/rcu_dereference/rcu_read_unlock in send_to_lecd(),
+  lec_handle_bridge() and lec_atm_send() to safely access lecd
+- Use rcu_assign_pointer() followed by synchronize_rcu() in
+  lec_atm_close() to ensure all readers have completed before
+  proceeding. This is safe since lec_atm_close() is called from
+  vcc_release() which holds lock_sock(), a sleeping lock.
+- Remove the manual sk_receive_queue drain from lec_atm_close()
+  since vcc_destroy_socket() already drains it after lec_atm_close()
+  returns.
 
-  If an attacker sends a forged ICMPv4 error with a CIPSO IP option, dsthao
-  would be a non-zero offset. Inside icmp6_send(), mip6_addr_swap() is called
-  and uses ipv6_find_tlv(skb, opt->dsthao, IPV6_TLV_HAO).
+v2: Switch from spinlock + sock_hold/put approach to RCU to properly
+    fix the race. The v1 spinlock approach had two issues pointed out
+    by Eric Dumazet:
+    1. priv->lecd was still accessed directly after releasing the
+       lock instead of using a local copy.
+    2. The spinlock did not prevent packets being queued after
+       lec_atm_close() drains sk_receive_queue since timer and
+       workqueue paths bypass netif_stop_queue().
 
-  This would scan the inner, attacker-controlled IPv6 packet starting at that
-  offset, potentially returning a fake TLV without checking if the remaining
-  packet length can hold the full 18-byte struct ipv6_destopt_hao.
+Note: Syzbot patch testing was attempted but the test VM terminated
+    unexpectedly with "Connection to localhost closed by remote host",
+    likely due to a QEMU AHCI emulation issue unrelated to this fix.
+    Compile testing with "make W=1 net/atm/lec.o" passes cleanly.
 
-  Could mip6_addr_swap() then perform a 16-byte swap that extends past the end
-  of the packet data into skb_shared_info?
-
-  Should the cb array also be cleared in ip6_err_gen_icmpv6_unreach() and
-  ip6ip6_err() to prevent this?
-
-This patch implements the first suggestion.
-
-I am not sure if ip6ip6_err() needs to be changed.
-A separate patch would be better anyway.
-
-Fixes: ca15a078bd90 ("sit: generate icmpv6 error when receiving icmpv4 error")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Closes: https://sashiko.dev/#/patchset/20260326155138.2429480-1-edumazet%40google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Oskar Kjos <oskar.kjos@hotmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326202608.2976021-1-edumazet@google.com
+Reported-by: syzbot+f50072212ab792c86925@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f50072212ab792c86925
+Link: https://lore.kernel.org/all/20260309093614.502094-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260309155908.508768-1-kartikey406@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/icmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/atm/lec.c | 72 +++++++++++++++++++++++++++++++++------------------
+ net/atm/lec.h |  2 +-
+ 2 files changed, 48 insertions(+), 26 deletions(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index e43b49f1ddbb2..387400829b207 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -681,6 +681,9 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
- 	if (!skb2)
- 		return 1;
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index 0d4b8e5936dcf..d8ab969625790 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -154,10 +154,19 @@ static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
+ 					/* 0x01 is topology change */
  
-+	/* Remove debris left by IPv4 stack. */
-+	memset(IP6CB(skb2), 0, sizeof(*IP6CB(skb2)));
+ 		priv = netdev_priv(dev);
+-		atm_force_charge(priv->lecd, skb2->truesize);
+-		sk = sk_atm(priv->lecd);
+-		skb_queue_tail(&sk->sk_receive_queue, skb2);
+-		sk->sk_data_ready(sk);
++		struct atm_vcc *vcc;
 +
- 	skb_dst_drop(skb2);
- 	skb_pull(skb2, nhs);
- 	skb_reset_network_header(skb2);
++		rcu_read_lock();
++		vcc = rcu_dereference(priv->lecd);
++		if (vcc) {
++			atm_force_charge(vcc, skb2->truesize);
++			sk = sk_atm(vcc);
++			skb_queue_tail(&sk->sk_receive_queue, skb2);
++			sk->sk_data_ready(sk);
++		} else {
++			dev_kfree_skb(skb2);
++		}
++		rcu_read_unlock();
+ 	}
+ }
+ #endif /* IS_ENABLED(CONFIG_BRIDGE) */
+@@ -216,7 +225,7 @@ static netdev_tx_t lec_start_xmit(struct sk_buff *skb,
+ 	int is_rdesc;
+ 
+ 	pr_debug("called\n");
+-	if (!priv->lecd) {
++	if (!rcu_access_pointer(priv->lecd)) {
+ 		pr_info("%s:No lecd attached\n", dev->name);
+ 		dev->stats.tx_errors++;
+ 		netif_stop_queue(dev);
+@@ -449,10 +458,19 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
+ 				break;
+ 			skb2->len = sizeof(struct atmlec_msg);
+ 			skb_copy_to_linear_data(skb2, mesg, sizeof(*mesg));
+-			atm_force_charge(priv->lecd, skb2->truesize);
+-			sk = sk_atm(priv->lecd);
+-			skb_queue_tail(&sk->sk_receive_queue, skb2);
+-			sk->sk_data_ready(sk);
++			struct atm_vcc *vcc;
++
++			rcu_read_lock();
++			vcc = rcu_dereference(priv->lecd);
++			if (vcc) {
++				atm_force_charge(vcc, skb2->truesize);
++				sk = sk_atm(vcc);
++				skb_queue_tail(&sk->sk_receive_queue, skb2);
++				sk->sk_data_ready(sk);
++			} else {
++				dev_kfree_skb(skb2);
++			}
++			rcu_read_unlock();
+ 		}
+ 	}
+ #endif /* IS_ENABLED(CONFIG_BRIDGE) */
+@@ -468,23 +486,16 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
+ 
+ static void lec_atm_close(struct atm_vcc *vcc)
+ {
+-	struct sk_buff *skb;
+ 	struct net_device *dev = (struct net_device *)vcc->proto_data;
+ 	struct lec_priv *priv = netdev_priv(dev);
+ 
+-	priv->lecd = NULL;
++	rcu_assign_pointer(priv->lecd, NULL);
++	synchronize_rcu();
+ 	/* Do something needful? */
+ 
+ 	netif_stop_queue(dev);
+ 	lec_arp_destroy(priv);
+ 
+-	if (skb_peek(&sk_atm(vcc)->sk_receive_queue))
+-		pr_info("%s closing with messages pending\n", dev->name);
+-	while ((skb = skb_dequeue(&sk_atm(vcc)->sk_receive_queue))) {
+-		atm_return(vcc, skb->truesize);
+-		dev_kfree_skb(skb);
+-	}
+-
+ 	pr_info("%s: Shut down!\n", dev->name);
+ 	module_put(THIS_MODULE);
+ }
+@@ -510,12 +521,14 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
+ 	     const unsigned char *mac_addr, const unsigned char *atm_addr,
+ 	     struct sk_buff *data)
+ {
++	struct atm_vcc *vcc;
+ 	struct sock *sk;
+ 	struct sk_buff *skb;
+ 	struct atmlec_msg *mesg;
+ 
+-	if (!priv || !priv->lecd)
++	if (!priv || !rcu_access_pointer(priv->lecd))
+ 		return -1;
++
+ 	skb = alloc_skb(sizeof(struct atmlec_msg), GFP_ATOMIC);
+ 	if (!skb)
+ 		return -1;
+@@ -532,18 +545,27 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
+ 	if (atm_addr)
+ 		memcpy(&mesg->content.normal.atm_addr, atm_addr, ATM_ESA_LEN);
+ 
+-	atm_force_charge(priv->lecd, skb->truesize);
+-	sk = sk_atm(priv->lecd);
++	rcu_read_lock();
++	vcc = rcu_dereference(priv->lecd);
++	if (!vcc) {
++		rcu_read_unlock();
++		kfree_skb(skb);
++		return -1;
++	}
++
++	atm_force_charge(vcc, skb->truesize);
++	sk = sk_atm(vcc);
+ 	skb_queue_tail(&sk->sk_receive_queue, skb);
+ 	sk->sk_data_ready(sk);
+ 
+ 	if (data != NULL) {
+ 		pr_debug("about to send %d bytes of data\n", data->len);
+-		atm_force_charge(priv->lecd, data->truesize);
++		atm_force_charge(vcc, data->truesize);
+ 		skb_queue_tail(&sk->sk_receive_queue, data);
+ 		sk->sk_data_ready(sk);
+ 	}
+ 
++	rcu_read_unlock();
+ 	return 0;
+ }
+ 
+@@ -618,7 +640,7 @@ static void lec_push(struct atm_vcc *vcc, struct sk_buff *skb)
+ 
+ 		atm_return(vcc, skb->truesize);
+ 		if (*(__be16 *) skb->data == htons(priv->lecid) ||
+-		    !priv->lecd || !(dev->flags & IFF_UP)) {
++		    !rcu_access_pointer(priv->lecd) || !(dev->flags & IFF_UP)) {
+ 			/*
+ 			 * Probably looping back, or if lecd is missing,
+ 			 * lecd has gone down
+@@ -753,12 +775,12 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
+ 		priv = netdev_priv(dev_lec[i]);
+ 	} else {
+ 		priv = netdev_priv(dev_lec[i]);
+-		if (priv->lecd)
++		if (rcu_access_pointer(priv->lecd))
+ 			return -EADDRINUSE;
+ 	}
+ 	lec_arp_init(priv);
+ 	priv->itfnum = i;	/* LANE2 addition */
+-	priv->lecd = vcc;
++	rcu_assign_pointer(priv->lecd, vcc);
+ 	vcc->dev = &lecatm_dev;
+ 	vcc_insert_socket(sk_atm(vcc));
+ 
+diff --git a/net/atm/lec.h b/net/atm/lec.h
+index be0e2667bd8c3..ec85709bf8185 100644
+--- a/net/atm/lec.h
++++ b/net/atm/lec.h
+@@ -91,7 +91,7 @@ struct lec_priv {
+ 						 */
+ 	spinlock_t lec_arp_lock;
+ 	struct atm_vcc *mcast_vcc;		/* Default Multicast Send VCC */
+-	struct atm_vcc *lecd;
++	struct atm_vcc __rcu *lecd;
+ 	struct delayed_work lec_arp_work;	/* C10 */
+ 	unsigned int maximum_unknown_frame_count;
+ 						/*
 -- 
 2.53.0
 
