@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJ31EC+b1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:11 +0200
+	id 2B7hLGul1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA77E3C0436
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0FA3C2191
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F28F630131E8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4DEB3076CAC
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6BA3D891A;
-	Wed,  8 Apr 2026 18:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E333D9031;
+	Wed,  8 Apr 2026 18:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWHHS9PY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8IKFoJq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16403AEF45;
-	Wed,  8 Apr 2026 18:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247263D75C9;
+	Wed,  8 Apr 2026 18:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672033; cv=none; b=GpMTOq2/KvDV38xzDrFka4JkSx9swFtxQc+aPxBXjWyjkAa6XnL93KR4S9cL45t+2r48lnmOF+GSAE+WMlwAtVBZO4fdsHYbVR/LfsUK1gIUWQ3WI+RGg5YocnXPJfz2P82kw3JV3BqdTvam031X4zGRojI0KoTN7Ni3bf5B57U=
+	t=1775674459; cv=none; b=YYOQRolTa8MEe0LCS/eI8o2YFxsy5K7k6u+z/Im0FNbhLxS6NuzLuhzQtnsKAQoxFybA2EEU/SPoRVgx2Gb6IhRlRkRH3GQZJFrOu/J1XHRuLB1iwODYAMlw+Vu4Zo6Suh+4ACCJgrxdjt3NMH6eauci4gge7M5+cpCwAsZ6v6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672033; c=relaxed/simple;
-	bh=m4qUdH3BYZFoudEcPRjQAIbLILmlVtJohkdkNKje3gg=;
+	s=arc-20240116; t=1775674459; c=relaxed/simple;
+	bh=KV7hHzf4TaqbyrNeh30HtLlTs0+8QH72/Dp3v6O7pWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kB6ad5uq6e7M5IN2JGlKEISAEfU78J5FmrPf2pTvVNM9Ndzqg8VyxrSJY+bK/7oiCtULsAYMvefMoIdJSWIe5Momd71ixGBMfV8Xwtn6m+2hPz1eM/IfYz+5d2igcUqAJ893JOVVKWagINztvtAhKLR4CdpgSncCg0XgB2/5hww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWHHS9PY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D2EC19421;
-	Wed,  8 Apr 2026 18:13:53 +0000 (UTC)
+	 MIME-Version; b=UEZlqMyMchwzuZx4p9Ad1WXund4I6NFQ8nc3xzPcZb5oVmzcXHTjT2KE6hPYLFuPHxff/XsQRRSWm/fSnjCzJGZAn/TfeAqtt0D/Vxr3iseo+9Q54Vhz8Q8sprKDfMUTGtMtsJE7ixcM7qQDCiRppPcmQnMyfDmJXx97CVTJtq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8IKFoJq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4E0C19421;
+	Wed,  8 Apr 2026 18:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672033;
-	bh=m4qUdH3BYZFoudEcPRjQAIbLILmlVtJohkdkNKje3gg=;
+	s=korg; t=1775674459;
+	bh=KV7hHzf4TaqbyrNeh30HtLlTs0+8QH72/Dp3v6O7pWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWHHS9PYlhTBG4CHc+XRhCLJIWaRd0erH7L19tquy5gOgdHj/F7sxbaf1mHGjHu+t
-	 v3+fG77QsEDL5JXkBzFL77cBxO2qq1EhlbBpwVQ5CeLUp3VD/AxAt1iFqCA4WDIQ6F
-	 EME9DTmjc0OMVqiplATA8gw7Kteiiep2D1gfYX78=
+	b=z8IKFoJqsbtVsN1YVD9trXe3dqZfpzyZJXK1T+aC57sgU0M+6pLscVsGWnfYLkI+L
+	 pVVAfN1OQEmXpHSD7OZ3cMY+i+vOo4np3q2Ky6gUGYFltQUsJ7EZ4mp7olYXkQoXG+
+	 WJbkui4QpKzVvVkgY7ulbmtAtdPvJw/TSKUMDj/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Suraj Gupta <suraj.gupta2@amd.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/312] ASoC: ep93xx: Fix unchecked clk_prepare_enable() and add rollback on failure
+Subject: [PATCH 6.19 073/311] net: xilinx: axienet: Correct BD length masks to match AXIDMA IP spec
 Date: Wed,  8 Apr 2026 20:01:13 +0200
-Message-ID: <20260408175939.592343389@linuxfoundation.org>
+Message-ID: <20260408175942.140046820@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234119-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235057-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BA77E3C0436
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,msgid.link:url,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2D0FA3C2191
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Suraj Gupta <suraj.gupta2@amd.com>
 
-[ Upstream commit 622363757b2286dd2c2984b0d80255cbb35a0495 ]
+[ Upstream commit 393e0b4f178ec7fce1141dacc3304e3607a92ee9 ]
 
-ep93xx_i2s_enable() calls clk_prepare_enable() on three clocks in
-sequence (mclk, sclk, lrclk) without checking the return value of any
-of them. If an intermediate enable fails, the clocks that were already
-enabled are never rolled back, leaking them until the next disable cycle
-— which may never come if the stream never started cleanly.
+The XAXIDMA_BD_CTRL_LENGTH_MASK and XAXIDMA_BD_STS_ACTUAL_LEN_MASK
+macros were defined as 0x007FFFFF (23 bits), but the AXI DMA IP
+product guide (PG021) specifies the buffer length field as bits 25:0
+(26 bits). Update both masks to match the IP documentation.
 
-Change ep93xx_i2s_enable() from void to int. Add error checking after
-each clk_prepare_enable() call and unwind already-enabled clocks on
-failure. Propagate the error through ep93xx_i2s_startup() and
-ep93xx_i2s_resume(), both of which already return int.
+In practice this had no functional impact, since Ethernet frames are
+far smaller than 2^23 bytes and the extra bits were always zero, but
+the masks should still reflect the hardware specification.
 
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Fixes: f4ff6b56bc8a ("ASoC: cirrus: i2s: Prepare clock before using it")
-Link: https://patch.msgid.link/20260324210909.45494-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20260327073238.134948-2-suraj.gupta2@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/cirrus/ep93xx-i2s.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/cirrus/ep93xx-i2s.c b/sound/soc/cirrus/ep93xx-i2s.c
-index 46160796af31a..f5034b03740f7 100644
---- a/sound/soc/cirrus/ep93xx-i2s.c
-+++ b/sound/soc/cirrus/ep93xx-i2s.c
-@@ -104,16 +104,28 @@ static inline unsigned ep93xx_i2s_read_reg(struct ep93xx_i2s_info *info,
- 	return __raw_readl(info->regs + reg);
- }
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+index 5ff742103beb9..fcd3aaef27fc3 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -105,7 +105,7 @@
+ #define XAXIDMA_BD_HAS_DRE_MASK		0xF00 /* Whether has DRE mask */
+ #define XAXIDMA_BD_WORDLEN_MASK		0xFF /* Whether has DRE mask */
  
--static void ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
-+static int ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
- {
- 	unsigned base_reg;
-+	int err;
+-#define XAXIDMA_BD_CTRL_LENGTH_MASK	0x007FFFFF /* Requested len */
++#define XAXIDMA_BD_CTRL_LENGTH_MASK	GENMASK(25, 0) /* Requested len */
+ #define XAXIDMA_BD_CTRL_TXSOF_MASK	0x08000000 /* First tx packet */
+ #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
+ #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
+@@ -130,7 +130,7 @@
+ #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
+ #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
  
- 	if ((ep93xx_i2s_read_reg(info, EP93XX_I2S_TX0EN) & 0x1) == 0 &&
- 	    (ep93xx_i2s_read_reg(info, EP93XX_I2S_RX0EN) & 0x1) == 0) {
- 		/* Enable clocks */
--		clk_prepare_enable(info->mclk);
--		clk_prepare_enable(info->sclk);
--		clk_prepare_enable(info->lrclk);
-+		err = clk_prepare_enable(info->mclk);
-+		if (err)
-+			return err;
-+		err = clk_prepare_enable(info->sclk);
-+		if (err) {
-+			clk_disable_unprepare(info->mclk);
-+			return err;
-+		}
-+		err = clk_prepare_enable(info->lrclk);
-+		if (err) {
-+			clk_disable_unprepare(info->sclk);
-+			clk_disable_unprepare(info->mclk);
-+			return err;
-+		}
- 
- 		/* Enable i2s */
- 		ep93xx_i2s_write_reg(info, EP93XX_I2S_GLCTRL, 1);
-@@ -132,6 +144,8 @@ static void ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
- 		ep93xx_i2s_write_reg(info, EP93XX_I2S_TXCTRL,
- 				     EP93XX_I2S_TXCTRL_TXEMPTY_LVL |
- 				     EP93XX_I2S_TXCTRL_TXUFIE);
-+
-+	return 0;
- }
- 
- static void ep93xx_i2s_disable(struct ep93xx_i2s_info *info, int stream)
-@@ -213,9 +227,7 @@ static int ep93xx_i2s_startup(struct snd_pcm_substream *substream,
- {
- 	struct ep93xx_i2s_info *info = snd_soc_dai_get_drvdata(dai);
- 
--	ep93xx_i2s_enable(info, substream->stream);
--
--	return 0;
-+	return ep93xx_i2s_enable(info, substream->stream);
- }
- 
- static void ep93xx_i2s_shutdown(struct snd_pcm_substream *substream,
-@@ -389,14 +401,16 @@ static int ep93xx_i2s_suspend(struct snd_soc_component *component)
- static int ep93xx_i2s_resume(struct snd_soc_component *component)
- {
- 	struct ep93xx_i2s_info *info = snd_soc_component_get_drvdata(component);
-+	int err;
- 
- 	if (!snd_soc_component_active(component))
- 		return 0;
- 
--	ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_PLAYBACK);
--	ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_CAPTURE);
-+	err = ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_PLAYBACK);
-+	if (err)
-+		return err;
- 
--	return 0;
-+	return ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_CAPTURE);
- }
- #else
- #define ep93xx_i2s_suspend	NULL
+-#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	0x007FFFFF /* Actual len */
++#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	GENMASK(25, 0) /* Actual len */
+ #define XAXIDMA_BD_STS_COMPLETE_MASK	0x80000000 /* Completed */
+ #define XAXIDMA_BD_STS_DEC_ERR_MASK	0x40000000 /* Decode error */
+ #define XAXIDMA_BD_STS_SLV_ERR_MASK	0x20000000 /* Slave error */
 -- 
 2.53.0
 
