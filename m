@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-234704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COF5FfOg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:47 +0200
+	id yK+OEu2l1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6D73C12C2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6743C22DF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64C99302DE1C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C5E13302B42E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A60B3D9054;
-	Wed,  8 Apr 2026 18:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFD73D9DA1;
+	Wed,  8 Apr 2026 19:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UWVXV7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2S6ymbF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F9E3D9051;
-	Wed,  8 Apr 2026 18:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F334D3D75AF;
+	Wed,  8 Apr 2026 19:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673547; cv=none; b=esy84LMfAP2x2PPVwRrshSlpEly8bZ3/uM4NZroe2aen9ifBnBaf0Ju2XiDDvrS0CAW299AbicKozJr5JCEzhTsiNigL/paRd2cjRyb+BTBMRS49oqSG04LAeRYCOVFfgmASG5yPoegGsYv2rvphPhG6XMBOjVP5DaWfpv0pWrw=
+	t=1775674856; cv=none; b=bsSKxcv3D40+Roetx9mPBAgFoDQ8L0aYNOhiUQjdcANjSLFlWERl0NJ8D1Z+hdSJr+u0nFzf5J8MhDoBgMZFByafOtjrZ8rRcpg/9pIfZ+yGO3EGPgI+0kpqZD6eLU2zDV9UT9jFGfW2XmMAXPxdT0H4WHDj+Z0X/P8uKjZDO8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673547; c=relaxed/simple;
-	bh=dCgGhe/VDutDV2POOx0/TE58F92yLD/guaSX/6v9kbo=;
+	s=arc-20240116; t=1775674856; c=relaxed/simple;
+	bh=Y9wOola1C63umNaqrTlUH3VJQlqxe455L68E2GqjXP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHOXISUSU03IdEd7yVPPN8dr40YTIKX/EhcBttbr6Y0vZewb9WhakTzBsGc0hWLCq4ncLTpb7Jg6TW+/VbkRmsrA5OmSby0u2dOeYU7pND7OQA1XWDEgWVuFDWFso+yDeAxCXyTjTvoEwwRwdscdXQbFus7xfJgeAxSgs2Mgcvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UWVXV7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02B7C2BCB1;
-	Wed,  8 Apr 2026 18:39:06 +0000 (UTC)
+	 MIME-Version; b=lKvj3X+GmqUig1H8DXqtSNyxUHGoh3xT05YqecaJGXh7pxaZVCIrtomKOyO9NdYoVS/jLviB2zQ+FJUpxF4J0r17SzZn4J9EJyD6s/m2u31YRjSC8ckG9Otk6PKQS7/D8QlXZBIhVM0W8Hp+gztW+QUvSG/bLj69g7w9txacHPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2S6ymbF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8938CC19421;
+	Wed,  8 Apr 2026 19:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673547;
-	bh=dCgGhe/VDutDV2POOx0/TE58F92yLD/guaSX/6v9kbo=;
+	s=korg; t=1775674855;
+	bh=Y9wOola1C63umNaqrTlUH3VJQlqxe455L68E2GqjXP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UWVXV7aj38Iwgp4nupkSM4/v2xbmHNJzGgAlr/bK+iR2wC2EXJrb5WurBtNnh6cD
-	 DkX40Jw64xXDsfq1Uj0kk/D3KUQvTC5PcV9DgXWCuQmYDbrtJ0ILNmXdc352ZDlR2/
-	 8N7DhoPaSR70Y0KsLAZLIaDEMheGb1qDvcCr42is=
+	b=w2S6ymbFrNlSK3WQ5BoVI+2ME/aUJoHDRYGlA5EwMjppgmpId16LXfmPztYpyU8SA
+	 q+MymHmG6ogdX5QhsgD7yNeP2fOuB6zyeywcSgxV6bdgn2WccypDRlhP/mWxyuHK3U
+	 hynMzOa9OYJjLcWLQmfGam/1+myqQedBL4NKp7Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 274/277] mm: replace READ_ONCE() with standard page table accessors
-Date: Wed,  8 Apr 2026 20:04:19 +0200
-Message-ID: <20260408175944.098324288@linuxfoundation.org>
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable <stable@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 6.19 260/311] dt-bindings: connector: add pd-disable dependency
+Date: Wed,  8 Apr 2026 20:04:20 +0200
+Message-ID: <20260408175949.093950884@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,177 +64,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234704-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,redhat.com,linux.dev,gmail.com,linux-foundation.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235211-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email,arm.com:email]
-X-Rspamd-Queue-Id: BC6D73C12C2
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,microchip.com:email]
+X-Rspamd-Queue-Id: 0E6743C22DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit c0efdb373c3aaacb32db59cadb0710cac13e44ae ]
+commit 269c26464dcf8b54b0dd9c333721c30ee44ae297 upstream.
 
-Replace all READ_ONCE() with a standard page table accessors i.e
-pxdp_get() that defaults into READ_ONCE() in cases where platform does not
-override.
+When Power Delivery is not supported, the source is unable to obtain the
+current capability from the Source PDO. As a result, typec-power-opmode
+needs to be added to advertise such capability.
 
-Link: https://lkml.kernel.org/r/20251007063100.2396936-1-anshuman.khandual@arm.com
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ffef67b93aa3 ("mm/memory: fix PMD/PUD checks in follow_pfnmap_start()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260330063518.719345-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/gup.c            |   10 +++++-----
- mm/hmm.c            |    2 +-
- mm/memory.c         |    4 ++--
- mm/mprotect.c       |    2 +-
- mm/sparse-vmemmap.c |    2 +-
- mm/vmscan.c         |    2 +-
- 6 files changed, 11 insertions(+), 11 deletions(-)
+ Documentation/devicetree/bindings/connector/usb-connector.yaml |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -950,7 +950,7 @@ static struct page *follow_pud_mask(stru
- 	struct mm_struct *mm = vma->vm_mm;
+--- a/Documentation/devicetree/bindings/connector/usb-connector.yaml
++++ b/Documentation/devicetree/bindings/connector/usb-connector.yaml
+@@ -301,6 +301,7 @@ properties:
+     maxItems: 4
  
- 	pudp = pud_offset(p4dp, address);
--	pud = READ_ONCE(*pudp);
-+	pud = pudp_get(pudp);
- 	if (!pud_present(pud))
- 		return no_page_table(vma, flags, address);
- 	if (pud_leaf(pud)) {
-@@ -975,7 +975,7 @@ static struct page *follow_p4d_mask(stru
- 	p4d_t *p4dp, p4d;
- 
- 	p4dp = p4d_offset(pgdp, address);
--	p4d = READ_ONCE(*p4dp);
-+	p4d = p4dp_get(p4dp);
- 	BUILD_BUG_ON(p4d_leaf(p4d));
- 
- 	if (!p4d_present(p4d) || p4d_bad(p4d))
-@@ -3060,7 +3060,7 @@ static int gup_fast_pud_range(p4d_t *p4d
- 
- 	pudp = pud_offset_lockless(p4dp, p4d, addr);
- 	do {
--		pud_t pud = READ_ONCE(*pudp);
-+		pud_t pud = pudp_get(pudp);
- 
- 		next = pud_addr_end(addr, end);
- 		if (unlikely(!pud_present(pud)))
-@@ -3086,7 +3086,7 @@ static int gup_fast_p4d_range(pgd_t *pgd
- 
- 	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
- 	do {
--		p4d_t p4d = READ_ONCE(*p4dp);
-+		p4d_t p4d = p4dp_get(p4dp);
- 
- 		next = p4d_addr_end(addr, end);
- 		if (!p4d_present(p4d))
-@@ -3108,7 +3108,7 @@ static void gup_fast_pgd_range(unsigned
- 
- 	pgdp = pgd_offset(current->mm, addr);
- 	do {
--		pgd_t pgd = READ_ONCE(*pgdp);
-+		pgd_t pgd = pgdp_get(pgdp);
- 
- 		next = pgd_addr_end(addr, end);
- 		if (pgd_none(pgd))
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -491,7 +491,7 @@ static int hmm_vma_walk_pud(pud_t *pudp,
- 	/* Normally we don't want to split the huge page */
- 	walk->action = ACTION_CONTINUE;
- 
--	pud = READ_ONCE(*pudp);
-+	pud = pudp_get(pudp);
- 	if (!pud_present(pud)) {
- 		spin_unlock(ptl);
- 		return hmm_vma_walk_hole(start, end, -1, walk);
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6691,12 +6691,12 @@ retry:
- 		goto out;
- 
- 	p4dp = p4d_offset(pgdp, address);
--	p4d = READ_ONCE(*p4dp);
-+	p4d = p4dp_get(p4dp);
- 	if (p4d_none(p4d) || unlikely(p4d_bad(p4d)))
- 		goto out;
- 
- 	pudp = pud_offset(p4dp, address);
--	pud = READ_ONCE(*pudp);
-+	pud = pudp_get(pudp);
- 	if (pud_none(pud))
- 		goto out;
- 	if (pud_leaf(pud)) {
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -599,7 +599,7 @@ again:
- 			break;
- 		}
- 
--		pud = READ_ONCE(*pudp);
-+		pud = pudp_get(pudp);
- 		if (pud_none(pud))
- 			continue;
- 
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -439,7 +439,7 @@ int __meminit vmemmap_populate_hugepages
- 			return -ENOMEM;
- 
- 		pmd = pmd_offset(pud, addr);
--		if (pmd_none(READ_ONCE(*pmd))) {
-+		if (pmd_none(pmdp_get(pmd))) {
- 			void *p;
- 
- 			p = vmemmap_alloc_block_buf(PMD_SIZE, node, altmap);
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3783,7 +3783,7 @@ static int walk_pud_range(p4d_t *p4d, un
- 	pud = pud_offset(p4d, start & P4D_MASK);
- restart:
- 	for (i = pud_index(start), addr = start; addr != end; i++, addr = next) {
--		pud_t val = READ_ONCE(pud[i]);
-+		pud_t val = pudp_get(pud + i);
- 
- 		next = pud_addr_end(addr, end);
+ dependencies:
++  pd-disable: [typec-power-opmode]
+   sink-vdos-v1: [ sink-vdos ]
+   sink-vdos: [ sink-vdos-v1 ]
  
 
 
