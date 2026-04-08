@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-235194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oExoKPCr1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:40 +0200
+	id OHaNCvSh1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B2C3C2FC1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AD83C15E7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 100B3321381A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C6D23069166
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932BA364924;
-	Wed,  8 Apr 2026 19:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E33C3624B0;
+	Wed,  8 Apr 2026 18:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgJYDknQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAZW9ogU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D822857C1;
-	Wed,  8 Apr 2026 19:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52933B19A3;
+	Wed,  8 Apr 2026 18:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674812; cv=none; b=cFpc3/4H4hhyAy8U5TNH2RGfB5upJmXp562+6T7OBKNnclEUKEpiIt0999EcWm8ouSeNcm/s6UMULTKY8YEtQhC1vo+T8sj34TU6a0PEB7evize8ks+H/R4RCB29EM6rINJRCXQzEvahKI9Az9eQqL8Ur0D/SxJ6IfY6PCs0Ktk=
+	t=1775673567; cv=none; b=IBdlCoaEW+Zqq3EO512PjU43IzhnUimlf9hd643tbaij7F0iBPnttNJqxIJycrJrnzKXuUfMuN83p+zciRO8roqSumOYjaG693K2ztm52Po3zhrCeBQiZOXx2Uxg+6LZDm+yo6yXUNFGzz3Jykjwq/rlgnasV23Bcc1M7SpNpKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674812; c=relaxed/simple;
-	bh=iCQWWGDVPEcKUMegOQuCpo6KN3v5FZZnJ4Cj8Pezqtc=;
+	s=arc-20240116; t=1775673567; c=relaxed/simple;
+	bh=1qDB07Rpk87GRL7pUnxa9NZitR5CAhMM3Evbzf8l3W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEC5wuYmMX1CHh32cyOocrXqPAFg5lw111LWW8zUFQCPFphkllXN/kWokCnpvLt77w5aoUm2jJILI5qEOpX84cK/5YArEDMnENLhaZ00YUYSn6NI7wNZofbyv6lwOWExbkWMiTgpzcVycQuXS85kxzYW6U0ZolpKpJwNltexctc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgJYDknQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1247C19421;
-	Wed,  8 Apr 2026 19:00:11 +0000 (UTC)
+	 MIME-Version; b=uYF2mmFUnWGynzp2C85BC1evjhQfPYmNtAvrSk7Wv39IHotttU8piGRQZhpUBi60/eN6XHtoDOc/W3QXSTzMUy9KEAmPEpEpQNgYMIx3i3aoZq9VWqOl9oUwJy1IpmhX4uP8srj7gu64pt9xPjjVsiICCryYzxGz1oJpoAqZpW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAZW9ogU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4A0C19425;
+	Wed,  8 Apr 2026 18:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674812;
-	bh=iCQWWGDVPEcKUMegOQuCpo6KN3v5FZZnJ4Cj8Pezqtc=;
+	s=korg; t=1775673567;
+	bh=1qDB07Rpk87GRL7pUnxa9NZitR5CAhMM3Evbzf8l3W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgJYDknQ+iwsup0QFtf1a+Z6Nk5yFHq+MJMiESJjRkt1fmRG3FGtzGAxw4SwUEw1A
-	 +evj8ocqYo4BZhDS4K7RNFuGQxWk3QWr2VXygFoSFbq80eSl8p0g0MERasiMu/BfXw
-	 OlObIhppad0c68R/qPNUHalrB9XT1jMzBSMR/BEg=
+	b=cAZW9ogUNdiGnNU5iH2G8IBYEMDfYOdi0WUoAVdb42VFxwZ8W7mKl9FORQs6WaVo4
+	 5kKpHR2IdRhTU+AaoXxgGy3ecLqn86zis824M7yq4fZHpS4fD+WCZuT4WkakQJEyI8
+	 QQphfAEHK/+BWCiEsErh2MprXmSrQS0WwnHex3pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Guan-Yu Lin <guanyulin@google.com>,
-	Hailong Liu <hailong.liu@oppo.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.19 241/311] usb: host: xhci-sideband: delegate offload_usage tracking to class drivers
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.18 256/277] usb: gadget: f_rndis: Protect RNDIS options with mutex
 Date: Wed,  8 Apr 2026 20:04:01 +0200
-Message-ID: <20260408175948.392107572@linuxfoundation.org>
+Message-ID: <20260408175943.416291850@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,154 +66,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235194-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234712-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,oppo.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: F2B2C3C2FC1
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 65AD83C15E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guan-Yu Lin <guanyulin@google.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 5abbe6ecc6203355c770bf232ade88e29c960049 upstream.
+commit 8d8c68b1fc06ece60cf43e1306ff0f4ac121547e upstream.
 
-Remove usb_offload_get() and usb_offload_put() from the xHCI sideband
-interrupter creation and removal paths.
+The class/subclass/protocol options are suspectible to race conditions
+as they can be accessed concurrently through configfs.
 
-The responsibility of manipulating offload_usage now lies entirely with
-the USB class drivers. They have the precise context of when an offload
-data stream actually starts and stops, ensuring a much more accurate
-representation of offload activity for power management.
+Use existing mutex to protect these options. This issue was identified
+during code inspection.
 
-Cc: stable <stable@kernel.org>
-Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
-Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
-Tested-by: Hailong Liu <hailong.liu@oppo.com>
-Tested-by: hailong.liu@oppo.com
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20260401123238.3790062-3-guanyulin@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 73517cf49bd4 ("usb: gadget: add RNDIS configfs options for class/subclass/protocol")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-2-4886b578161b@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-sideband.c  |   14 +-------------
- sound/usb/qcom/qc_audio_offload.c |   10 +++++++++-
- 2 files changed, 10 insertions(+), 14 deletions(-)
+ drivers/usb/gadget/function/f_rndis.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-sideband.c
-+++ b/drivers/usb/host/xhci-sideband.c
-@@ -93,8 +93,6 @@ __xhci_sideband_remove_endpoint(struct x
- static void
- __xhci_sideband_remove_interrupter(struct xhci_sideband *sb)
- {
--	struct usb_device *udev;
--
- 	lockdep_assert_held(&sb->mutex);
+--- a/drivers/usb/gadget/function/f_rndis.c
++++ b/drivers/usb/gadget/function/f_rndis.c
+@@ -11,6 +11,7 @@
  
- 	if (!sb->ir)
-@@ -102,10 +100,6 @@ __xhci_sideband_remove_interrupter(struc
+ /* #define VERBOSE_DEBUG */
  
- 	xhci_remove_secondary_interrupter(xhci_to_hcd(sb->xhci), sb->ir);
- 	sb->ir = NULL;
--	udev = sb->vdev->udev;
--
--	if (udev->state != USB_STATE_NOTATTACHED)
--		usb_offload_put(udev);
- }
- 
- /* sideband api functions */
-@@ -328,9 +322,6 @@ int
- xhci_sideband_create_interrupter(struct xhci_sideband *sb, int num_seg,
- 				 bool ip_autoclear, u32 imod_interval, int intr_num)
- {
--	int ret = 0;
--	struct usb_device *udev;
--
- 	if (!sb || !sb->xhci)
- 		return -ENODEV;
- 
-@@ -348,12 +339,9 @@ xhci_sideband_create_interrupter(struct
- 	if (!sb->ir)
- 		return -ENOMEM;
- 
--	udev = sb->vdev->udev;
--	ret = usb_offload_get(udev);
--
- 	sb->ir->ip_autoclear = ip_autoclear;
- 
--	return ret;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(xhci_sideband_create_interrupter);
- 
---- a/sound/usb/qcom/qc_audio_offload.c
-+++ b/sound/usb/qcom/qc_audio_offload.c
-@@ -699,6 +699,7 @@ static void uaudio_event_ring_cleanup_fr
- 		uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE,
- 				   PAGE_SIZE);
- 		xhci_sideband_remove_interrupter(uadev[dev->chip->card->number].sb);
-+		usb_offload_put(dev->udev);
- 	}
- }
- 
-@@ -1182,12 +1183,16 @@ static int uaudio_event_ring_setup(struc
- 	dma_coherent = dev_is_dma_coherent(subs->dev->bus->sysdev);
- 	er_pa = 0;
- 
-+	ret = usb_offload_get(subs->dev);
-+	if (ret < 0)
-+		goto exit;
-+
- 	/* event ring */
- 	ret = xhci_sideband_create_interrupter(uadev[card_num].sb, 1, false,
- 					       0, uaudio_qdev->data->intr_num);
- 	if (ret < 0) {
- 		dev_err(&subs->dev->dev, "failed to fetch interrupter\n");
--		goto exit;
-+		goto put_offload;
++#include <linux/cleanup.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -678,9 +679,11 @@ rndis_bind(struct usb_configuration *c,
+ 			return -ENOMEM;
  	}
  
- 	sgt = xhci_sideband_get_event_buffer(uadev[card_num].sb);
-@@ -1219,6 +1224,8 @@ clear_pa:
- 	mem_info->dma = 0;
- remove_interrupter:
- 	xhci_sideband_remove_interrupter(uadev[card_num].sb);
-+put_offload:
-+	usb_offload_put(subs->dev);
- exit:
- 	return ret;
- }
-@@ -1483,6 +1490,7 @@ unmap_er:
- 	uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE, PAGE_SIZE);
- free_sec_ring:
- 	xhci_sideband_remove_interrupter(uadev[card_num].sb);
-+	usb_offload_put(subs->dev);
- drop_sync_ep:
- 	if (subs->sync_endpoint) {
- 		uaudio_iommu_unmap(MEM_XFER_RING,
+-	rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
+-	rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
+-	rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
++	scoped_guard(mutex, &rndis_opts->lock) {
++		rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
++		rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
++		rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
++	}
+ 
+ 	/*
+ 	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
 
 
 
