@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNWVHgqn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234750-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:46 +0200
+	id OMEdJZ+b1mnDGggAu9opvQ
+	(envelope-from <stable+bounces-234141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41B13C2622
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC5C3C054C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A13E3178080
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A66E3032F70
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555DF3D75AF;
-	Wed,  8 Apr 2026 18:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D713D4134;
+	Wed,  8 Apr 2026 18:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKTc269e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0p/5juY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181FD3D522C;
-	Wed,  8 Apr 2026 18:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FFA347503;
+	Wed,  8 Apr 2026 18:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673666; cv=none; b=FZXQFPLCh87j4LUTqCQ2vJol76uC5nw+nWw8mgnjmgp7DRzxpG4S6tDvwwjmIRVqPKyDr2bjyd9A2ffcH2SimXcTJ21iylqNyainrygE4hVLlKMpjBUQnXc78idL0zjotQYUVzvBo955RyzWrvPtmGbCyPVOcXWUi/dKbsXik+k=
+	t=1775672090; cv=none; b=bhKbai+vSczMmiCff/FR9Jn/nEM+iCpuxb7odPNur7hPi8NSDzaAufXCrSv/zYZAAyQ38Y79nkS42Kg0Xe44pCp3tg4h5FJkNaOrI0LOVdeslhgZAeytL5Kiscu0CXMQqTCWNiaKJgJI+B4Bnn/85pxJ85kD34/2tgsXrSyak4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673666; c=relaxed/simple;
-	bh=oakTcjRIs3mD+s1WEUSS5jq0bm/pP/ElhZW9kozhZEM=;
+	s=arc-20240116; t=1775672090; c=relaxed/simple;
+	bh=mZUZBZ7zq6XHd4rmNXn4dk6GHIZKzCf6IwEfl2IVipU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQm19BqGG1nWDd24NftJCKPsm08O9J4Y+u9DaKQJEbBHChPTQkVnmgmB1/ZYIF1egOFUmwOjtZEXcdp+SK+SBIRZl9CYN6DFie2/jXNkxVvyE2/e03qjRtpFKSif+2gPUnlGHFnd9TzupZzimBtdzCdzCmgQRdSADZtv+l+tPes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKTc269e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597A8C19421;
-	Wed,  8 Apr 2026 18:41:05 +0000 (UTC)
+	 MIME-Version; b=uyRgSz9y6+RbBZcb8y3c3yOperKNPU76nQGOYXQCJa21ajnEBby5c+1REaj89tyCwwtVyDCC+rLiU6cZzmQjeGHbNfrd4naJg0hWCHeO/gjxE9UE9Qd3MbXQmsW756PFEvkXZZg6WXP3GGDyPdIVTtFOcloDATBAHXCTkle+xac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0p/5juY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19B5C19421;
+	Wed,  8 Apr 2026 18:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673665;
-	bh=oakTcjRIs3mD+s1WEUSS5jq0bm/pP/ElhZW9kozhZEM=;
+	s=korg; t=1775672090;
+	bh=mZUZBZ7zq6XHd4rmNXn4dk6GHIZKzCf6IwEfl2IVipU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKTc269ezwtLIkh2x75Vq36zBB0yCvkmJKkZqhLZJ0pzMZ+w+IXiHUvx6Gfu0rH/z
-	 R/IWGgSuYxoG1ibRHIEcmwozgZvAwIRUP5BapyLHIq/rjjmzI5F8a9YlCYg5gx45Is
-	 rjLwPvxWKzG8FdvAvp8QI+DJQ87nllXBRWH5Wois=
+	b=J0p/5juYmL63hy2tIXXQ2ESXwR71oEM8VnNblFLrWijMiCjyicmRzh/qqEFGrvUYD
+	 bPVL93n12AgXpNky9n9uyBBHGuHKLgXgsXhNYGSgNejvfFcOqTtvSl2h+jvUCbRpBp
+	 Ldi1MR53RciFHJj065nMw6fHGDub39iKA1kl4wxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Yochai Eisenrich <echelonh@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/242] HID: multitouch: Check to ensure report responses match the request
+Subject: [PATCH 6.1 158/312] net: sched: cls_api: fix tc_chain_fill_node to initialize tcm_info to zero to prevent an info-leak
 Date: Wed,  8 Apr 2026 20:01:15 +0200
-Message-ID: <20260408175928.386742824@linuxfoundation.org>
+Message-ID: <20260408175939.667120409@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,76 +74,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234141-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234750-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: F41B13C2622
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AEC5C3C054C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Yochai Eisenrich <echelonh@gmail.com>
 
-[ Upstream commit e716edafedad4952fe3a4a273d2e039a84e8681a ]
+[ Upstream commit e6e3eb5ee89ac4c163d46429391c889a1bb5e404 ]
 
-It is possible for a malicious (or clumsy) device to respond to a
-specific report's feature request using a completely different report
-ID.  This can cause confusion in the HID core resulting in nasty
-side-effects such as OOB writes.
+When building netlink messages, tc_chain_fill_node() never initializes
+the tcm_info field of struct tcmsg. Since the allocation is not zeroed,
+kernel heap memory is leaked to userspace through this 4-byte field.
 
-Add a check to ensure that the report ID in the response, matches the
-one that was requested.  If it doesn't, omit reporting the raw event and
-return early.
+The fix simply zeroes tcm_info alongside the other fields that are
+already initialized.
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 32a4f5ecd738 ("net: sched: introduce chain object to uapi")
+Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260328211436.1010152-1-echelonh@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/sched/cls_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index eb148988484bf..fcf9a806f109a 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -493,12 +493,19 @@ static void mt_get_feature(struct hid_device *hdev, struct hid_report *report)
- 		dev_warn(&hdev->dev, "failed to fetch feature %d\n",
- 			 report->id);
- 	} else {
-+		/* The report ID in the request and the response should match */
-+		if (report->id != buf[0]) {
-+			hid_err(hdev, "Returned feature report did not match the request\n");
-+			goto free;
-+		}
-+
- 		ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT, buf,
- 					   size, 0);
- 		if (ret)
- 			dev_warn(&hdev->dev, "failed to report feature\n");
- 	}
- 
-+free:
- 	kfree(buf);
- }
- 
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index e5d4e64ce479c..0ccd8bf57a93b 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -2726,6 +2726,7 @@ static int tc_chain_fill_node(const struct tcf_proto_ops *tmplt_ops,
+ 	tcm->tcm__pad1 = 0;
+ 	tcm->tcm__pad2 = 0;
+ 	tcm->tcm_handle = 0;
++	tcm->tcm_info = 0;
+ 	if (block->q) {
+ 		tcm->tcm_ifindex = qdisc_dev(block->q)->ifindex;
+ 		tcm->tcm_parent = block->q->handle;
 -- 
 2.53.0
 
