@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-235157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOueL/aq1mmOHAgAu9opvQ
-	(envelope-from <stable+bounces-235157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:30 +0200
+	id WEiuAVem1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AA43C2DAB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868553C23E7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3DC5318DE17
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1526D31895EF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1DA37F8AC;
-	Wed,  8 Apr 2026 18:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00463ACF16;
+	Wed,  8 Apr 2026 18:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEKvohMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgV80PxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1413176E4;
-	Wed,  8 Apr 2026 18:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F4527979A;
+	Wed,  8 Apr 2026 18:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674716; cv=none; b=Wq9kdvYBKTfGhgKdOcSYZivIlVcj/Q7P+6Dqrd0/g3uSnoGcm9r06HcinZT1RFACZlgcc6/JgxYga+7oMuwA4FugjFZo1CFpBi2gyXLgivyIN1a+Hli/1/AYY6NJvusO0TjTuGRd52L9L3Tyf2WW/tIMjtLjvdJq3zcMy/1p8Ww=
+	t=1775673488; cv=none; b=uDlp8o+uFR1/Skvl99l8iW3FWPlDtTO+rwGv2SVp7Bb3ThD1jAuD+V/3zw7NOAeEJhl/3HWAsbarUwztyIfLIVou5E7xOi5kFYzG4UhK85Dl5sMGXpxyZqva79uvV95XY4WAAEvV/0b8P1Oh79he2dG6mJZ5cq8TEK9k7SnfWhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674716; c=relaxed/simple;
-	bh=yo1PGd2l8RYgzPxKBKvn1aCl8ln5wqD884yBMYr5XU4=;
+	s=arc-20240116; t=1775673488; c=relaxed/simple;
+	bh=u5uJK5ABzO8uX780ArYwKUJvdiZdb3avnuPDri9RWM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2CdklmPK+tH6KzXe11E2KMfMFj6WCaVm/UHRJNbN9GSq8thNypEXYj72kTQ4Bie3bsWDIc3S5TVWXRM2OHZnSB/HZELqzaGc5bd7nHIyRh1NzexjbxEVPoPRzvPh5v58D2G7qAi8IlJpe2EvS7w7XS34hkwv1+vw2+yfPyX8xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEKvohMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6185C19421;
-	Wed,  8 Apr 2026 18:58:35 +0000 (UTC)
+	 MIME-Version; b=gQt4KdYBoeovcZGwpxxg+JtGTlggsSxxrtdfWTB4YDcfpQLEVbclIL6sh8tRza2f1BCayXMuSM5j+A9rNKy9trH7qBCU6NqnF31JIii1nziosqVuqZLEoOepowGB6iYPx4ZWHtzpv0LylZCTrNavEmHByMykae3qCAtNYSR2d0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgV80PxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE490C19425;
+	Wed,  8 Apr 2026 18:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674716;
-	bh=yo1PGd2l8RYgzPxKBKvn1aCl8ln5wqD884yBMYr5XU4=;
+	s=korg; t=1775673488;
+	bh=u5uJK5ABzO8uX780ArYwKUJvdiZdb3avnuPDri9RWM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEKvohMiX/RzdA7Kn3PnrkGm/9yuGXGL/cwNdAT8+7mNlADAG5f1YO2f2/gdyxcp5
-	 DSehrEOr0wN6FWhixczC2RxhVSkCYR8RabkVCZdwhv+jRI5gOhVA6LO0/Qzf0e5sYB
-	 /JOsImFKrPYrS9o6S9vDynmqnme0mJwrYTG6+S5s=
+	b=YgV80PxM/DiJGpgxNSxEq0gUZ0drQXPJ3Xdxi8NR+ZAn9RN1YtYBmnGPODobxTzpr
+	 T2f7VZq4gL9pTeKAnKezfvySeuwgKL+5CnJ1e38ci+4cOvVhIhaDSNdROHVt97kxn+
+	 UsuUSny/KlQWKuWL4yEi3bgJ6saqiinJt8Gbsty4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.19 204/311] drm/amdgpu: validate doorbell_offset in user queue creation
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable <stable@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 6.18 219/277] dt-bindings: connector: add pd-disable dependency
 Date: Wed,  8 Apr 2026 20:03:24 +0200
-Message-ID: <20260408175947.026372427@linuxfoundation.org>
+Message-ID: <20260408175942.034911415@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +66,66 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235157-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,amd.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234681-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 21AA43C2DAB
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,nxp.com:email]
+X-Rspamd-Queue-Id: 868553C23E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit a018d1819f158991b7308e4f74609c6c029b670c upstream.
+commit 269c26464dcf8b54b0dd9c333721c30ee44ae297 upstream.
 
-amdgpu_userq_get_doorbell_index() passes the user-provided
-doorbell_offset to amdgpu_doorbell_index_on_bar() without bounds
-checking. An arbitrarily large doorbell_offset can cause the
-calculated doorbell index to fall outside the allocated doorbell BO,
-potentially corrupting kernel doorbell space.
+When Power Delivery is not supported, the source is unable to obtain the
+current capability from the Source PDO. As a result, typec-power-opmode
+needs to be added to advertise such capability.
 
-Validate that doorbell_offset falls within the doorbell BO before
-computing the BAR index, using u64 arithmetic to prevent overflow.
-
-Fixes: f09c1e6077ab ("drm/amdgpu: generate doorbell index for userqueue")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit de1ef4ffd70e1d15f0bf584fd22b1f28cbd5e2ec)
-Cc: stable@vger.kernel.org
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260330063518.719345-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/devicetree/bindings/connector/usb-connector.yaml |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-@@ -550,6 +550,13 @@ amdgpu_userq_get_doorbell_index(struct a
- 		goto unpin_bo;
- 	}
+--- a/Documentation/devicetree/bindings/connector/usb-connector.yaml
++++ b/Documentation/devicetree/bindings/connector/usb-connector.yaml
+@@ -301,6 +301,7 @@ properties:
+     maxItems: 4
  
-+	/* Validate doorbell_offset is within the doorbell BO */
-+	if ((u64)db_info->doorbell_offset * db_size + db_size >
-+	    amdgpu_bo_size(db_obj->obj)) {
-+		r = -EINVAL;
-+		goto unpin_bo;
-+	}
-+
- 	index = amdgpu_doorbell_index_on_bar(uq_mgr->adev, db_obj->obj,
- 					     db_info->doorbell_offset, db_size);
- 	drm_dbg_driver(adev_to_drm(uq_mgr->adev),
+ dependencies:
++  pd-disable: [typec-power-opmode]
+   sink-vdos-v1: [ sink-vdos ]
+   sink-vdos: [ sink-vdos-v1 ]
+ 
 
 
 
