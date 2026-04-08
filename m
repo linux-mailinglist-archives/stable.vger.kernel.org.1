@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-233999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234001-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLXRNcWZ1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-233999-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:09 +0200
+	id +PeHCsmZ1mmgGggAu9opvQ
+	(envelope-from <stable+bounces-234001-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4D13C0056
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 923613C005F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E946C30166CE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:08:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4BD6A300B75A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E693D88FE;
-	Wed,  8 Apr 2026 18:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758A33D8919;
+	Wed,  8 Apr 2026 18:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqpGNYiL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xg77Mckv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC14A347517;
-	Wed,  8 Apr 2026 18:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D163D813D;
+	Wed,  8 Apr 2026 18:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671724; cv=none; b=SE6THG9znSJNi0jgIHYQc/16FiwQL/KQIsypMZigoBTwZe8n/bMdxyOg+4jUqwAV2tFYxonnSmz0GBLvZszs/57xwv3v3tR4poIJGWwF5XFa5rdRFMLFRIYkyjHkaS6/UR9uyHGSUpL2efAKrB7L4W8yPEwnXaEPnuCe+Q7yXVE=
+	t=1775671730; cv=none; b=Bc3I/M9wECQcq6JIHxUV795Fz4XUapeDruYrgcAkBU0y8x3jx9nV3XEmE+SFKCOI8GCxBa2GmUVhXRtoUOQf/TowAQ4JCNxiA0rsADkk76vYMRCaa1Wc56oGcwDVvTIPPG6+4F/jEWM0myKr6GCZ/QhumDsxXZD8C7gJGaPDjC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671724; c=relaxed/simple;
-	bh=wIyfX9h5jgJJCcZOhJdSv8gd8ya7c3gghh4JNzx0J94=;
+	s=arc-20240116; t=1775671730; c=relaxed/simple;
+	bh=H2W7Ia6OqgplEeNHmQYDhY83L4OEpxkDvaKpbtS0R9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBeTFxo6gjGadW73Ln7I7I1HNLcKnpKI9wbHjgashCxmyFU9DqnCvUn1WjIINyyYHfvlAqcX7SO+ZIRZtk3xGhPYlQNAalMYCWbDVnsfJbI45Raqk4CTn0TJYJy7l1GvcP3XjcErc8iP9LFA6BOtHR82trwOt8mJrcUodVpfo80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqpGNYiL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C81C19421;
-	Wed,  8 Apr 2026 18:08:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uwwv1zn/ReKJ+fZWht0LO+QQL+7N716NBbLSbjKyNGFApaTwi64uYuoJ4bl7n/uhp1yIv7q3LxnJ8N+QYBv6fnXPhRwoKnFB5cJERwYS4BjI8QViNGjzbCoNiTzevsU8jDOw/93ZCQg/NZCAXs9hP3QfZlXArr9mrJ63VcCo0YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xg77Mckv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEC1C19421;
+	Wed,  8 Apr 2026 18:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671724;
-	bh=wIyfX9h5jgJJCcZOhJdSv8gd8ya7c3gghh4JNzx0J94=;
+	s=korg; t=1775671729;
+	bh=H2W7Ia6OqgplEeNHmQYDhY83L4OEpxkDvaKpbtS0R9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqpGNYiLEUV0nnq+w09JtaQnYVeN3IiWwYLBMFZzNqAU1NUXE9AzkB6zwT8bJPQCO
-	 sc6QvZvROxg3mS9ADStDCOTbNvE2NPG7IjwfR214I55zwNbTLdAwR/sq5mbci/InMJ
-	 jJf3PU2J2MeLva6JX14ot4usDFmXJOwkGm4iYWZc=
+	b=Xg77Mckv2AilJUwpdah/JEEnj0FEpRnPJIQxqcpNMfXPudMvdNfwnB7r20L8JLPWL
+	 Lk5sCz48m/I+ggHIIrykEK5n/uCWLRLNQ53PIMN+/pXHC56uGH8MFG2qfub/a1ebU3
+	 VmSqa8nOnoVr+PosMY7dlhnEvEOawfC5khXIAcyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/312] rtnetlink: count IFLA_INFO_SLAVE_KIND in if_nlmsg_size
-Date: Wed,  8 Apr 2026 19:59:20 +0200
-Message-ID: <20260408175935.343677479@linuxfoundation.org>
+Subject: [PATCH 6.1 044/312] platform/olpc: olpc-xo175-ec: Fix overflow error message to print inlen
+Date: Wed,  8 Apr 2026 19:59:21 +0200
+Message-ID: <20260408175935.381697225@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -64,35 +65,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233999-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234001-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,queasysnail.net:email,nvidia.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6D4D13C0056
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email]
+X-Rspamd-Queue-Id: 923613C005F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,46 +101,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit ee00a12593ffb69db4dd1a1c00ecb0253376874a ]
+[ Upstream commit 2061f7b042f88d372cca79615f8425f3564c0b40 ]
 
-rtnl_link_get_slave_info_data_size counts IFLA_INFO_SLAVE_DATA, but
-rtnl_link_slave_info_fill adds both IFLA_INFO_SLAVE_DATA and
-IFLA_INFO_SLAVE_KIND.
+The command length check validates inlen (> 5), but the error message
+incorrectly printed resp_len. Print inlen so the log reflects the
+actual command length.
 
-Fixes: ba7d49b1f0f8 ("rtnetlink: provide api for getting and setting slave info")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/049843b532e23cde7ddba263c0bbe35ba6f0d26d.1773919462.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0c3d931b3ab9e ("Platform: OLPC: Add XO-1.75 EC driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Acked-by: Lubomir Rintel <lkundrak@v3.sk>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260310130138.700687-1-alok.a.tiwari@oracle.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/platform/olpc/olpc-xo175-ec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 78e39543e408b..e5bfa3cbfcc41 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -567,11 +567,14 @@ static size_t rtnl_link_get_slave_info_data_size(const struct net_device *dev)
- 		goto out;
+diff --git a/drivers/platform/olpc/olpc-xo175-ec.c b/drivers/platform/olpc/olpc-xo175-ec.c
+index 4823bd2819f64..8ecb7048bcc4c 100644
+--- a/drivers/platform/olpc/olpc-xo175-ec.c
++++ b/drivers/platform/olpc/olpc-xo175-ec.c
+@@ -482,7 +482,7 @@ static int olpc_xo175_ec_cmd(u8 cmd, u8 *inbuf, size_t inlen, u8 *resp,
+ 	dev_dbg(dev, "CMD %x, %zd bytes expected\n", cmd, resp_len);
  
- 	ops = master_dev->rtnl_link_ops;
--	if (!ops || !ops->get_slave_size)
-+	if (!ops)
-+		goto out;
-+	size += nla_total_size(strlen(ops->kind) + 1);  /* IFLA_INFO_SLAVE_KIND */
-+	if (!ops->get_slave_size)
- 		goto out;
- 	/* IFLA_INFO_SLAVE_DATA + nested data */
--	size = nla_total_size(sizeof(struct nlattr)) +
--	       ops->get_slave_size(master_dev, dev);
-+	size += nla_total_size(sizeof(struct nlattr)) +
-+		ops->get_slave_size(master_dev, dev);
+ 	if (inlen > 5) {
+-		dev_err(dev, "command len %zd too big!\n", resp_len);
++		dev_err(dev, "command len %zd too big!\n", inlen);
+ 		return -EOVERFLOW;
+ 	}
  
- out:
- 	rcu_read_unlock();
 -- 
 2.51.0
 
