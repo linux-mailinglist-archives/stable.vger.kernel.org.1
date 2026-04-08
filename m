@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBCIKSqf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:10 +0200
+	id iI94LjSb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B753C0E63
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628D63C0460
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D1396301C3F9
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 42495301EC56
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202B63D668E;
-	Wed,  8 Apr 2026 18:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AE23D9030;
+	Wed,  8 Apr 2026 18:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLi5WMK5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10/4xmp1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D646F3D47AC;
-	Wed,  8 Apr 2026 18:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DE13D8134;
+	Wed,  8 Apr 2026 18:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672984; cv=none; b=holzyE8Z4fNIMK59wOvHuWr5fhlxNVrbQS+BYLO5fs5uZYqTOMChU5Y4kBN1uP6zrG+mfuNxmvxZxUdh3rCWtihvb0ckjf80jxhW7ezdmJcO6qkxiT9kMT/mwucHhINSCMvijZqrsUuro+ESEJREof4M1hghIBkGIFYkhY+O6jg=
+	t=1775672018; cv=none; b=kFEsWI2m1lwZdiCzW0Q6O+/0W4w2XuQqLnYhJReS0GouJA2sdl3wCNPuKF/l7BD7HElENa9OaXSxRG3a6TH9M937uuKKME2R8OExNmPxE5vDmpD8aC0F6eXkowap3NqUoR9THjvPf572oHv4ittu+mI7HOfR6QH143FdAvGkcUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672984; c=relaxed/simple;
-	bh=jriySFuukDLtSWerJR24ShaosmgJEZPBm/DAObsqFZ8=;
+	s=arc-20240116; t=1775672018; c=relaxed/simple;
+	bh=isxb2WXsfIC3ysQinBQrAKhFL19tQrqcLo9wNMMxn0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5vDLEy4k5Q5aHhA1Auz80EZVH5DEwFUXLNQ5t04mFEoRX8LdbMJqnhGobv6Sm3w6ACJ+/Neq+W8j6uv/bDHuagE0uYF7WmgpIblEFQww7jufVnDpWrbxHSB3HY2GFFCPOdX9ASQ0FShIro65IOrUUeLhxFU+QexHpnN+pRvaJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLi5WMK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4D6C19425;
-	Wed,  8 Apr 2026 18:29:44 +0000 (UTC)
+	 MIME-Version; b=GBUmaEZsO7o/uVNwj1owJhpH0/VsL1PNVZDSfzyxhRSPbJkzGt4Cgxflf41soAG4a9kjHcIO3IXcR07V0IrrCZjTQm+0WhsY32Eb8kOU/uZNr0+se7kBr/ZnL9NsedbN+VIBXifjULK9FYhLUQUGRfqLuMH5YPQ+xYA8tBmFB5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10/4xmp1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08534C19421;
+	Wed,  8 Apr 2026 18:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672984;
-	bh=jriySFuukDLtSWerJR24ShaosmgJEZPBm/DAObsqFZ8=;
+	s=korg; t=1775672018;
+	bh=isxb2WXsfIC3ysQinBQrAKhFL19tQrqcLo9wNMMxn0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLi5WMK5JHXBfRYBfqVqsKHgLOpqabS0P2SJhQfdye9iggqdfeoIYTzGixv3zAS/s
-	 VXuXQ6O7cPykHiNFknU+aktz+0Mgq6lDA5/BU3cpzr3dpVtgVjbRtztOEIc99XBSAw
-	 UldZdd0yyMFGAb74+0D4GCKyuctoK5ejJC/EnRgI=
+	b=10/4xmp1GNL43KAQPGBDXxZHhJHV0BZrLyPa2SXoZG/ylDbVykyjL4UNthKvLCWgo
+	 naZzpmmbO8NfEre3s8FUR5gAkxaL7INlBZlTCLcxOSRtd/OttJ6ERILf3qldB+VEnB
+	 XkvcsM56pUnCSzWG9lvXNkEcHwEGvFO3eWZlQnsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 057/277] net: xilinx: axienet: Correct BD length masks to match AXIDMA IP spec
+Subject: [PATCH 6.1 125/312] dmaengine: xilinx: xilinx_dma: Fix dma_device directions
 Date: Wed,  8 Apr 2026 20:00:42 +0200
-Message-ID: <20260408175935.989058362@linuxfoundation.org>
+Message-ID: <20260408175938.436875443@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +68,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234486-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234113-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,amd.com:email]
-X-Rspamd-Queue-Id: A8B753C0E63
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nabladev.com:email]
+X-Rspamd-Queue-Id: 628D63C0460
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Gupta <suraj.gupta2@amd.com>
+From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit 393e0b4f178ec7fce1141dacc3304e3607a92ee9 ]
+[ Upstream commit e9cc95397bb7da13fe8a5b53a2f23cfaf9018ade ]
 
-The XAXIDMA_BD_CTRL_LENGTH_MASK and XAXIDMA_BD_STS_ACTUAL_LEN_MASK
-macros were defined as 0x007FFFFF (23 bits), but the AXI DMA IP
-product guide (PG021) specifies the buffer length field as bits 25:0
-(26 bits). Update both masks to match the IP documentation.
+Unlike chan->direction , struct dma_device .directions field is a
+bitfield. Turn chan->direction into a bitfield to make it compatible
+with struct dma_device .directions .
 
-In practice this had no functional impact, since Ethernet frames are
-far smaller than 2^23 bytes and the extra bits were always zero, but
-the masks should still reflect the hardware specification.
-
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20260327073238.134948-2-suraj.gupta2@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7e01511443c3 ("dmaengine: xilinx_dma: Set dma_device directions")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316221728.160139-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index 5ff742103beb9..fcd3aaef27fc3 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -105,7 +105,7 @@
- #define XAXIDMA_BD_HAS_DRE_MASK		0xF00 /* Whether has DRE mask */
- #define XAXIDMA_BD_WORDLEN_MASK		0xFF /* Whether has DRE mask */
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 8402dc3d3a352..ce5f4bedf059d 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -2860,7 +2860,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
+ 		return -EINVAL;
+ 	}
  
--#define XAXIDMA_BD_CTRL_LENGTH_MASK	0x007FFFFF /* Requested len */
-+#define XAXIDMA_BD_CTRL_LENGTH_MASK	GENMASK(25, 0) /* Requested len */
- #define XAXIDMA_BD_CTRL_TXSOF_MASK	0x08000000 /* First tx packet */
- #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
- #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
-@@ -130,7 +130,7 @@
- #define XAXIDMA_BD_CTRL_TXEOF_MASK	0x04000000 /* Last tx packet */
- #define XAXIDMA_BD_CTRL_ALL_MASK	0x0C000000 /* All control bits */
+-	xdev->common.directions |= chan->direction;
++	xdev->common.directions |= BIT(chan->direction);
  
--#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	0x007FFFFF /* Actual len */
-+#define XAXIDMA_BD_STS_ACTUAL_LEN_MASK	GENMASK(25, 0) /* Actual len */
- #define XAXIDMA_BD_STS_COMPLETE_MASK	0x80000000 /* Completed */
- #define XAXIDMA_BD_STS_DEC_ERR_MASK	0x40000000 /* Decode error */
- #define XAXIDMA_BD_STS_SLV_ERR_MASK	0x20000000 /* Slave error */
+ 	/* Request the interrupt */
+ 	chan->irq = of_irq_get(node, chan->tdest);
 -- 
 2.53.0
 
