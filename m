@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKoxDquk1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:39 +0200
+	id 2DVSHQ+p1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-234953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B923C1F9E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E173F3C29FF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C27B830EBD3B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C008D322B436
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7933B19A3;
-	Wed,  8 Apr 2026 18:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2DF337B81;
+	Wed,  8 Apr 2026 18:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdBNcoZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNw5kJYn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322AB3624B0;
-	Wed,  8 Apr 2026 18:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18B03D9037;
+	Wed,  8 Apr 2026 18:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673529; cv=none; b=SZxjKD5LJ6OEI5V+15jlQ5ihDgXhBxmfZ5yM9rzNDL9OBPoFNEDUdHcLsLFnzNREuLkLbtuDegvOFR0v4/QWM5Q39GzVtQIVU44raIKp/AhwccxXaM3tPCgUKLmd6qM7poVpTfuabQFFyEWRAKrYYGq+rgXggyFkkAKyawOueLk=
+	t=1775674191; cv=none; b=YOLat3r7gdr0/uhZOdPW8R4n6X5K0mmXa3QqKyyL9zb69NZFLjTH0tuPY8NkJofFsQqlUugVee9iJhJBzXmZgwUr22EVsxzoer6JnkDJO2EnFMOeSCT2DmvCmweWPV4Mr4RF1Q6rwDGPJMmMeqaZTg1izuWRj7PCaZv2gcivgJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673529; c=relaxed/simple;
-	bh=hxge7EJ1h+38DNkArEvgMHXoF8M4FJdyy6IRkx9p3uE=;
+	s=arc-20240116; t=1775674191; c=relaxed/simple;
+	bh=qnJLzJDRqFAXhb4vK+UOWlOYm7Te59HOwIiUnw3q2pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAWbSDRhwH0kBkq7DpxeCez6nc6qyMHrC8RFsrKnvYfZtaFFx0u9dfBddRJGFRd5IGf3aeJW1dHJPS9qV/GpNxUNjjDSBi+sqmAJGy5Zk2I97jc6EQE+d5YYXgOh+2QG8MZvtbIe3Owv/HmYKAoK6iXu0P3Jb3UBErUDKvQdP28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdBNcoZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7C5C19421;
-	Wed,  8 Apr 2026 18:38:48 +0000 (UTC)
+	 MIME-Version; b=aoo42m+/2jjiYB+k2mkq8DW3CrEWujKXfY+qrJp5R7b+T4o/kW2a7lQrQzzXKxBGWblDs+Dsnjx2PsIZx03veDfEn94OxxWGSKXvY39IqBw7zsNec5bYUnh7Dt5YtHk+qWnIrX2S2aXFh+8bleSozfsLCYlGymSI3OXvN8dcjx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNw5kJYn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3980DC2BC87;
+	Wed,  8 Apr 2026 18:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673529;
-	bh=hxge7EJ1h+38DNkArEvgMHXoF8M4FJdyy6IRkx9p3uE=;
+	s=korg; t=1775674190;
+	bh=qnJLzJDRqFAXhb4vK+UOWlOYm7Te59HOwIiUnw3q2pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdBNcoZOfPuyrtYWVIBo+sIcWL41koTSku9Ub92fMb23kJcKhy6myI3ApGNvAPnw0
-	 JyRkK6LZUdWcSHI6R0e7yEZQGNGX2NLGDTa+ZZh1VrqxBu285HHl94GHSseUulUc+G
-	 s+fBWxTIksQAjQGMPTf+0yDV3yomL3PrNc5eZ+V4=
+	b=RNw5kJYn30mqnRULCJ35x8PF5tGZBwwJB9DfmlmprTrEfq86kBR9kzuExi5DeDMik
+	 vJFUrXJfokro4mwDgSWK1W8PkgheW4rj2yLffryu00ZDm/F6w4CqYy9D30b89gXXkb
+	 txxYpRGPSUfFFCfEAEu6uSP0o9mAGYoIsuIUSZLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 268/277] drm/amd/pm: disable OD_FAN_CURVE if temp or pwm range invalid for smu v13
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 213/242] spi: cadence-qspi: Fix exec_mem_op error handling
 Date: Wed,  8 Apr 2026 20:04:13 +0200
-Message-ID: <20260408175943.870115064@linuxfoundation.org>
+Message-ID: <20260408175935.052127592@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234697-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234953-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,158 +86,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: B7B923C1F9E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,toradex.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E173F3C29FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit 3e6dd28a11083e83e11a284d99fcc9eb748c321c ]
+commit 59e1be1278f064d7172b00473b7e0c453cb1ec52 upstream.
 
-Forcibly disable the OD_FAN_CURVE feature when temperature or PWM range is invalid,
-otherwise PMFW will reject this configuration on smu v13.0.x
+cqspi_exec_mem_op() increments the runtime PM usage counter before all
+refcount checks are performed. If one of these checks fails, the function
+returns without dropping the PM reference.
 
-example:
-$ sudo cat /sys/bus/pci/devices/<BDF>/gpu_od/fan_ctrl/fan_curve
+Move the pm_runtime_resume_and_get() call after the refcount checks so
+that runtime PM is only acquired when the operation can proceed and
+drop the inflight_ops refcount if the PM resume fails.
 
-OD_FAN_CURVE:
-0: 0C 0%
-1: 0C 0%
-2: 0C 0%
-3: 0C 0%
-4: 0C 0%
-OD_RANGE:
-FAN_CURVE(hotspot temp): 0C 0C
-FAN_CURVE(fan speed): 0% 0%
-
-$ echo "0 50 40" | sudo tee fan_curve
-
-kernel log:
-[  756.442527] amdgpu 0000:03:00.0: amdgpu: Fan curve temp setting(50) must be within [0, 0]!
-[  777.345800] amdgpu 0000:03:00.0: amdgpu: Fan curve temp setting(50) must be within [0, 0]!
-
-Closes: https://github.com/ROCm/amdgpu/issues/208
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 470891606c5a97b1d0d937e0aa67a3bed9fcb056)
 Cc: stable@vger.kernel.org
-[ adapted forward declaration placement to existing FEATURE_MASK macro ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7446284023e8 ("spi: cadence-quadspi: Implement refcount to handle unbind during busy")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Link: https://patch.msgid.link/20260313135236.46642-1-ghidoliemanuele@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   33 ++++++++++++++++++-
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |   33 ++++++++++++++++++-
- 2 files changed, 64 insertions(+), 2 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -59,6 +59,10 @@
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1461,12 +1461,6 @@ static int cqspi_exec_mem_op(struct spi_
+ 	if (refcount_read(&cqspi->inflight_ops) == 0)
+ 		return -ENODEV;
  
- #define to_amdgpu_device(x) (container_of(x, struct amdgpu_device, pm.smu_i2c))
+-	ret = pm_runtime_resume_and_get(dev);
+-	if (ret) {
+-		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
+-		return ret;
+-	}
+-
+ 	if (!refcount_read(&cqspi->refcount))
+ 		return -EBUSY;
  
-+static void smu_v13_0_0_get_od_setting_limits(struct smu_context *smu,
-+					      int od_feature_bit,
-+					      int32_t *min, int32_t *max);
-+
- #define FEATURE_MASK(feature) (1ULL << feature)
- #define SMC_DPM_FEATURE ( \
- 	FEATURE_MASK(FEATURE_DPM_GFXCLK_BIT)     | \
-@@ -1061,8 +1065,35 @@ static bool smu_v13_0_0_is_od_feature_su
- 	PPTable_t *pptable = smu->smu_table.driver_pptable;
- 	const OverDriveLimits_t * const overdrive_upperlimits =
- 				&pptable->SkuTable.OverDriveLimitsBasicMax;
-+	int32_t min_value, max_value;
-+	bool feature_enabled;
-+
-+	switch (od_feature_bit) {
-+	case PP_OD_FEATURE_FAN_CURVE_BIT:
-+		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
-+		if (feature_enabled) {
-+			smu_v13_0_0_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_TEMP,
-+							  &min_value, &max_value);
-+			if (!min_value && !max_value) {
-+				feature_enabled = false;
-+				goto out;
-+			}
-+
-+			smu_v13_0_0_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_PWM,
-+							  &min_value, &max_value);
-+			if (!min_value && !max_value) {
-+				feature_enabled = false;
-+				goto out;
-+			}
-+		}
-+		break;
-+	default:
-+		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
-+		break;
+@@ -1478,6 +1472,12 @@ static int cqspi_exec_mem_op(struct spi_
+ 		return -EBUSY;
+ 	}
+ 
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret) {
++		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
++		goto dec_inflight_refcount;
 +	}
- 
--	return overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit);
-+out:
-+	return feature_enabled;
- }
- 
- static void smu_v13_0_0_get_od_setting_limits(struct smu_context *smu,
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -59,6 +59,10 @@
- 
- #define to_amdgpu_device(x) (container_of(x, struct amdgpu_device, pm.smu_i2c))
- 
-+static void smu_v13_0_7_get_od_setting_limits(struct smu_context *smu,
-+					      int od_feature_bit,
-+					      int32_t *min, int32_t *max);
 +
- #define FEATURE_MASK(feature) (1ULL << feature)
- #define SMC_DPM_FEATURE ( \
- 	FEATURE_MASK(FEATURE_DPM_GFXCLK_BIT)     | \
-@@ -1050,8 +1054,35 @@ static bool smu_v13_0_7_is_od_feature_su
- 	PPTable_t *pptable = smu->smu_table.driver_pptable;
- 	const OverDriveLimits_t * const overdrive_upperlimits =
- 				&pptable->SkuTable.OverDriveLimitsBasicMax;
-+	int32_t min_value, max_value;
-+	bool feature_enabled;
-+
-+	switch (od_feature_bit) {
-+	case PP_OD_FEATURE_FAN_CURVE_BIT:
-+		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
-+		if (feature_enabled) {
-+			smu_v13_0_7_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_TEMP,
-+							  &min_value, &max_value);
-+			if (!min_value && !max_value) {
-+				feature_enabled = false;
-+				goto out;
-+			}
-+
-+			smu_v13_0_7_get_od_setting_limits(smu, PP_OD_FEATURE_FAN_CURVE_PWM,
-+							  &min_value, &max_value);
-+			if (!min_value && !max_value) {
-+				feature_enabled = false;
-+				goto out;
-+			}
-+		}
-+		break;
-+	default:
-+		feature_enabled = !!(overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit));
-+		break;
-+	}
+ 	ret = cqspi_mem_process(mem, op);
  
--	return overdrive_upperlimits->FeatureCtrlMask & (1U << od_feature_bit);
-+out:
-+	return feature_enabled;
- }
+ 	pm_runtime_mark_last_busy(dev);
+@@ -1486,6 +1486,7 @@ static int cqspi_exec_mem_op(struct spi_
+ 	if (ret)
+ 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
  
- static void smu_v13_0_7_get_od_setting_limits(struct smu_context *smu,
++dec_inflight_refcount:
+ 	if (refcount_read(&cqspi->inflight_ops) > 1)
+ 		refcount_dec(&cqspi->inflight_ops);
+ 
 
 
 
