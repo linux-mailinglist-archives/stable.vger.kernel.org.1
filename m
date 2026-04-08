@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-234775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMf8N7ah1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:02 +0200
+	id 8GnGFked1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858203C1520
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701B43C09A7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D25C302BA2E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 20DB0302FAB9
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887D93D522C;
-	Wed,  8 Apr 2026 18:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BA73AA4E4;
+	Wed,  8 Apr 2026 18:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eY5VYY3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqXB6eEe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B76F32A3FD;
-	Wed,  8 Apr 2026 18:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6CF2494F0;
+	Wed,  8 Apr 2026 18:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673730; cv=none; b=rnTz1nkGivPECpT+GlO8XHJEiexpJgd6XLWe+TeU/I2alltFTbsrp0heEck0MVIN3A2wC/LxYeebSzvFlS5zASR8nq25WbzPYWR3FPuz7zsmWpB08UhAKAj8o1DsmMMZDEVoRvnYNHCjfTulHmnSkPsbyditrvQoOVOAAGtyrQc=
+	t=1775672468; cv=none; b=S4gh/WhhsCSUdJx2oa0/e0lM1HANTlZkGT7axac3rEZvc7Fv272XSfpAyfCaG3++qZ6rkrT3aZmsntFwkH3nc3UN/BE+q0aYjjQ27kONBuaYaF0DbvUT0EmUPpUqtVwHaZ/c3wZm9CTh8/v/uH1nv3V1E3SKj/U+wpM+fFFlRY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673730; c=relaxed/simple;
-	bh=w+t9hBl6EFZZGh7J3bqXIIMdz4QSnj23u0IWd7dcMUk=;
+	s=arc-20240116; t=1775672468; c=relaxed/simple;
+	bh=Op4bCCpI/xZd6yKkusjgszdGVFyYacLtRD7dcgVFdCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYzvHWSTA2PoFNkcnNWzmPA91Z6RnQz/1waAdsMzbX4Myqga1D8GG/0+UPW6ZLqGYxMVQooFHNlOCh1lFJZu4YjtdGSe2cDBTI3AnAcs3oWqmVcCWHisZQ2eh0lp6cVLO0Qq/HRjOQ8pyTKdbmTrc8RhDen3DzPYTvqaslhZhjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eY5VYY3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5545C19421;
-	Wed,  8 Apr 2026 18:42:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J/oqx2yKtThaKHiZy0+PsN952loW+Eq0ahwaxxd4a981jXSojomCVdUcqI28LhUz74COaT/5lKS1kbz4VndJmNSFnWGsNkjgA7wYfcGkkNbLEsYhIMDPAousOx4AfG3hOhWDCCBWuR1WU8Xee27Nl0ozM8JljsMFsQCd/s7U9bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqXB6eEe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E11C19421;
+	Wed,  8 Apr 2026 18:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673730;
-	bh=w+t9hBl6EFZZGh7J3bqXIIMdz4QSnj23u0IWd7dcMUk=;
+	s=korg; t=1775672467;
+	bh=Op4bCCpI/xZd6yKkusjgszdGVFyYacLtRD7dcgVFdCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eY5VYY3ohGUOPUjtglaguzTMl72j1XmPH/ZPCtw9kmYNSiFo2+tj6WQwEQoy0DIdj
-	 nTfp92U841HBd9oZHLiHyMrYUTklAfi2ok7LQP467qjg+xurnNf5QpIdlfofvpN/fe
-	 83VOaAQL144wb55OCM5rd4U8gdMfCRxzIvGRQfSQ=
+	b=nqXB6eEeK247apwGXOErjjruxhBWcI7EROo+HJas1EYD3rxf4itJQzHLeZQqIywM+
+	 Gl1hU5W1tok37Wzs/iEb7nOwWI3qJ8lIRCMnugw3EXOCzLlamB/95O9XY54H1pSDEZ
+	 iPAgnsw5Oox3GAcC+JhHZIq5X66OmCSxDFWhXlIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Amery Hung <ameryhung@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	syzbot+006987d1be3586e13555@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/242] bpf: Fix regsafe() for pointers to packet
+Subject: [PATCH 6.6 019/160] net: qrtr: replace qrtr_tx_flow radix_tree with xarray to fix memory leak
 Date: Wed,  8 Apr 2026 20:01:46 +0200
-Message-ID: <20260408175929.554461261@linuxfoundation.org>
+Message-ID: <20260408175913.915190178@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +65,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,iogearbox.net,gmail.com];
-	TAGGED_FROM(0.00)[bounces-234775-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234287-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,iogearbox.net:email]
-X-Rspamd-Queue-Id: 858203C1520
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,006987d1be3586e13555];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,shopee.com:email]
+X-Rspamd-Queue-Id: 701B43C09A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit a8502a79e832b861e99218cbd2d8f4312d62e225 ]
+[ Upstream commit 2428083101f6883f979cceffa76cd8440751ffe6 ]
 
-In case rold->reg->range == BEYOND_PKT_END && rcur->reg->range == N
-regsafe() may return true which may lead to current state with
-valid packet range not being explored. Fix the bug.
+__radix_tree_create() allocates and links intermediate nodes into the
+tree one by one. If a subsequent allocation fails, the already-linked
+nodes remain in the tree with no corresponding leaf entry. These orphaned
+internal nodes are never reclaimed because radix_tree_for_each_slot()
+only visits slots containing leaf values.
 
-Fixes: 6d94e741a8ff ("bpf: Support for pointers beyond pkt_end.")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Amery Hung <ameryhung@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20260331204228.26726-1-alexei.starovoitov@gmail.com
+The radix_tree API is deprecated in favor of xarray. As suggested by
+Matthew Wilcox, migrate qrtr_tx_flow from radix_tree to xarray instead
+of fixing the radix_tree itself [1]. xarray properly handles cleanup of
+internal nodes — xa_destroy() frees all internal xarray nodes when the
+qrtr_node is released, preventing the leak.
+
+[1] https://lore.kernel.org/all/20260225071623.41275-1-jiayuan.chen@linux.dev/T/
+Reported-by: syzbot+006987d1be3586e13555@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000bfba3a060bf4ffcf@google.com/T/
+Fixes: 5fdeb0d372ab ("net: qrtr: Implement outgoing flow control")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260324080645.290197-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/qrtr/af_qrtr.c | 31 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 68fa30852051e..9bdc19587948c 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -17562,8 +17562,13 @@ static bool regsafe(struct bpf_verifier_env *env, struct bpf_reg_state *rold,
- 		 * since someone could have accessed through (ptr - k), or
- 		 * even done ptr -= k in a register, to get a safe access.
- 		 */
--		if (rold->range > rcur->range)
-+		if (rold->range < 0 || rcur->range < 0) {
-+			/* special case for [BEYOND|AT]_PKT_END */
-+			if (rold->range != rcur->range)
-+				return false;
-+		} else if (rold->range > rcur->range) {
- 			return false;
-+		}
- 		/* If the offsets don't match, we can't trust our alignment;
- 		 * nor can we be sure that we won't fall out of range.
- 		 */
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index 00c51cf693f3d..b703e4c645853 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -118,7 +118,7 @@ static DEFINE_XARRAY_ALLOC(qrtr_ports);
+  * @ep: endpoint
+  * @ref: reference count for node
+  * @nid: node id
+- * @qrtr_tx_flow: tree of qrtr_tx_flow, keyed by node << 32 | port
++ * @qrtr_tx_flow: xarray of qrtr_tx_flow, keyed by node << 32 | port
+  * @qrtr_tx_lock: lock for qrtr_tx_flow inserts
+  * @rx_queue: receive queue
+  * @item: list item for broadcast list
+@@ -129,7 +129,7 @@ struct qrtr_node {
+ 	struct kref ref;
+ 	unsigned int nid;
+ 
+-	struct radix_tree_root qrtr_tx_flow;
++	struct xarray qrtr_tx_flow;
+ 	struct mutex qrtr_tx_lock; /* for qrtr_tx_flow */
+ 
+ 	struct sk_buff_head rx_queue;
+@@ -172,6 +172,7 @@ static void __qrtr_node_release(struct kref *kref)
+ 	struct qrtr_tx_flow *flow;
+ 	unsigned long flags;
+ 	void __rcu **slot;
++	unsigned long index;
+ 
+ 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
+ 	/* If the node is a bridge for other nodes, there are possibly
+@@ -189,11 +190,9 @@ static void __qrtr_node_release(struct kref *kref)
+ 	skb_queue_purge(&node->rx_queue);
+ 
+ 	/* Free tx flow counters */
+-	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
+-		flow = *slot;
+-		radix_tree_iter_delete(&node->qrtr_tx_flow, &iter, slot);
++	xa_for_each(&node->qrtr_tx_flow, index, flow)
+ 		kfree(flow);
+-	}
++	xa_destroy(&node->qrtr_tx_flow);
+ 	kfree(node);
+ }
+ 
+@@ -228,9 +227,7 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
+ 
+ 	key = remote_node << 32 | remote_port;
+ 
+-	rcu_read_lock();
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
+-	rcu_read_unlock();
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (flow) {
+ 		spin_lock(&flow->resume_tx.lock);
+ 		flow->pending = 0;
+@@ -269,12 +266,13 @@ static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
+ 		return 0;
+ 
+ 	mutex_lock(&node->qrtr_tx_lock);
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (!flow) {
+ 		flow = kzalloc(sizeof(*flow), GFP_KERNEL);
+ 		if (flow) {
+ 			init_waitqueue_head(&flow->resume_tx);
+-			if (radix_tree_insert(&node->qrtr_tx_flow, key, flow)) {
++			if (xa_err(xa_store(&node->qrtr_tx_flow, key, flow,
++					    GFP_KERNEL))) {
+ 				kfree(flow);
+ 				flow = NULL;
+ 			}
+@@ -326,9 +324,7 @@ static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
+ 	unsigned long key = (u64)dest_node << 32 | dest_port;
+ 	struct qrtr_tx_flow *flow;
+ 
+-	rcu_read_lock();
+-	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
+-	rcu_read_unlock();
++	flow = xa_load(&node->qrtr_tx_flow, key);
+ 	if (flow) {
+ 		spin_lock_irq(&flow->resume_tx.lock);
+ 		flow->tx_failed = 1;
+@@ -599,7 +595,7 @@ int qrtr_endpoint_register(struct qrtr_endpoint *ep, unsigned int nid)
+ 	node->nid = QRTR_EP_NID_AUTO;
+ 	node->ep = ep;
+ 
+-	INIT_RADIX_TREE(&node->qrtr_tx_flow, GFP_KERNEL);
++	xa_init(&node->qrtr_tx_flow);
+ 	mutex_init(&node->qrtr_tx_lock);
+ 
+ 	qrtr_node_assign(node, nid);
+@@ -627,6 +623,7 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 	struct qrtr_tx_flow *flow;
+ 	struct sk_buff *skb;
+ 	unsigned long flags;
++	unsigned long index;
+ 	void __rcu **slot;
+ 
+ 	mutex_lock(&node->ep_lock);
+@@ -649,10 +646,8 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 
+ 	/* Wake up any transmitters waiting for resume-tx from the node */
+ 	mutex_lock(&node->qrtr_tx_lock);
+-	radix_tree_for_each_slot(slot, &node->qrtr_tx_flow, &iter, 0) {
+-		flow = *slot;
++	xa_for_each(&node->qrtr_tx_flow, index, flow)
+ 		wake_up_interruptible_all(&flow->resume_tx);
+-	}
+ 	mutex_unlock(&node->qrtr_tx_lock);
+ 
+ 	qrtr_node_release(node);
 -- 
 2.53.0
 
