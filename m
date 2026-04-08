@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOn9Ggqk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:58 +0200
+	id mLoNHZSe1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB78C3C1D3B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D8C3C0D26
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C4E1313287E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B53730FEABD
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA8E28C87C;
-	Wed,  8 Apr 2026 18:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062D63AA4E4;
+	Wed,  8 Apr 2026 18:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oejguH4O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/JLnGXf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC07351C2E;
-	Wed,  8 Apr 2026 18:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83023D9DB9;
+	Wed,  8 Apr 2026 18:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673310; cv=none; b=Limtcn7iqHUeC4aYgPEtBlUxWTitfdIYlpJhFMt0ouvAuGynuh6sUyaajJjYs8jFSBnEjSDhDeb20Qz6Zj9BBGwqIWy1mhuMvR0l6dsMXHpJkn3pWo4klGg3n2N2R2zJ678jBWdGDYaSxnM/jQCnAoJk3chNERmuJxA9vLCcjXU=
+	t=1775672545; cv=none; b=XquAF5EZXlEG1dhITzdKsogN7iD7zPbQk1SNo+OkY/xxQJlriYY9tVCHGZUSGPr5IvyG/qAbt5B2xpwFEY9MdlIYmEokDavabwedftu3LOL2IeSfrTpEBgSVmK0ShIeOYVPr9BjrtG328o5Nc+PvBn9/5zgIUnuhUanSfVY0Hzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673310; c=relaxed/simple;
-	bh=kaKQenjDFiu1wrYJIJAeG2w2Gzz/+yrkxCNkkO428w0=;
+	s=arc-20240116; t=1775672545; c=relaxed/simple;
+	bh=7HYjXKHPHrm5GBiAMC7i+QsYk6txo0JQsa5CcvgTjII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNGhmAiGpjCEZm1sX43ge8v3MYy8ynAJldWz51pQ3kMZAn9Mj3g/ltGMpOr47joxjZtnsZ4usWH5ZJPTu6ApD9ZoSk9AKwsPAExBZMk5sMUWIO+h3+AhuB/k/IYhujjk8K7laWIlvAzcpM9Mbx9KaNMMpxZ0lsoyY7H6ItRI5DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oejguH4O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04166C19421;
-	Wed,  8 Apr 2026 18:35:09 +0000 (UTC)
+	 MIME-Version; b=ZVf63WmExpssMMdhiK7Y9M24kJzbSyhVVmU+SsLNOGSvz9xviFNTRctr3wlStSfiYu2ylro+8v1uPx30q+7a84JZpy6zS/WhA0Qvw0GR34fHd3hns8x037uiofvSGxRevdvm8SIpcrc3GWnQaK/e58Sx/N2TVXGIqjE8Ts3E8z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/JLnGXf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEA3C19421;
+	Wed,  8 Apr 2026 18:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673310;
-	bh=kaKQenjDFiu1wrYJIJAeG2w2Gzz/+yrkxCNkkO428w0=;
+	s=korg; t=1775672545;
+	bh=7HYjXKHPHrm5GBiAMC7i+QsYk6txo0JQsa5CcvgTjII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oejguH4OSQ6UGxknSgvunSQRoD3WMCaKbiRLVJjKivM2rEAYt1FEEldF4JAQYkfmq
-	 Qt58Px4KCYO64IU4dralxgSpR+4C8rOCW6SDD/X0/S8+zxCLeTYMvX/2WX75ZY9u3C
-	 SIJ0Q/ZR/DxqhJunw9vKwN3jvdfUd3TuyTEcWcjM=
+	b=J/JLnGXfPZQFTP19WHXn7kh9bnDIICJsomLKX7C6DHo3gS220d1FH+qGddMhy9jcp
+	 vQBb5X654gJJ25X2PIL7bZvhNTJZSiOsgaIpCb5REinh1smdntdkHHrex9qpV+dsoW
+	 h9lRLwlNn5fn+pqSiaHoGaB2xHlh/6LQWNWupN0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Nogikh <nogikh@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dmitry Vyukov <dvyukov@google.com>
-Subject: [PATCH 6.18 150/277] x86/kexec: Disable KCOV instrumentation after load_segments()
+	Keenan Dong <keenanat2000@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 048/160] Bluetooth: MGMT: validate LTK enc_size on load
 Date: Wed,  8 Apr 2026 20:02:15 +0200
-Message-ID: <20260408175939.474457087@linuxfoundation.org>
+Message-ID: <20260408175915.002099352@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,118 +66,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234317-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234612-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: EB78C3C1D3B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: E5D8C3C0D26
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Nogikh <nogikh@google.com>
+From: Keenan Dong <keenanat2000@gmail.com>
 
-commit 917e3ad3321e75ca0223d5ccf26ceda116aa51e1 upstream.
+[ Upstream commit b8dbe9648d69059cfe3a28917bfbf7e61efd7f15 ]
 
-The load_segments() function changes segment registers, invalidating GS base
-(which KCOV relies on for per-cpu data). When CONFIG_KCOV is enabled, any
-subsequent instrumented C code call (e.g. native_gdt_invalidate()) begins
-crashing the kernel in an endless loop.
+Load Long Term Keys stores the user-provided enc_size and later uses
+it to size fixed-size stack operations when replying to LE LTK
+requests. An enc_size larger than the 16-byte key buffer can therefore
+overflow the reply stack buffer.
 
-To reproduce the problem, it's sufficient to do kexec on a KCOV-instrumented
-kernel:
+Reject oversized enc_size values while validating the management LTK
+record so invalid keys never reach the stored key state.
 
-  $ kexec -l /boot/otherKernel
-  $ kexec -e
-
-The real-world context for this problem is enabling crash dump collection in
-syzkaller. For this, the tool loads a panic kernel before fuzzing and then
-calls makedumpfile after the panic. This workflow requires both CONFIG_KEXEC
-and CONFIG_KCOV to be enabled simultaneously.
-
-Adding safeguards directly to the KCOV fast-path (__sanitizer_cov_trace_pc())
-is also undesirable as it would introduce an extra performance overhead.
-
-Disabling instrumentation for the individual functions would be too fragile,
-so disable KCOV instrumentation for the entire machine_kexec_64.c and
-physaddr.c. If coverage-guided fuzzing ever needs these components in the
-future, other approaches should be considered.
-
-The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not supported
-there.
-
-  [ bp: Space out comment for better readability. ]
-
-Fixes: 0d345996e4cb ("x86/kernel: increase kcov coverage under arch/x86/kernel folder")
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260325154825.551191-1-nogikh@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 346af67b8d11 ("Bluetooth: Add MGMT handlers for dealing with SMP LTK's")
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/Makefile |   14 ++++++++++++++
- arch/x86/mm/Makefile     |    2 ++
- 2 files changed, 16 insertions(+)
+ net/bluetooth/mgmt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -44,6 +44,20 @@ KCOV_INSTRUMENT_unwind_orc.o				:= n
- KCOV_INSTRUMENT_unwind_frame.o				:= n
- KCOV_INSTRUMENT_unwind_guess.o				:= n
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 7de0a0d752629..81651f8ed03d0 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -7145,6 +7145,9 @@ static bool ltk_is_valid(struct mgmt_ltk_info *key)
+ 	if (key->initiator != 0x00 && key->initiator != 0x01)
+ 		return false;
  
-+# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
-+# the GS base, which KCOV relies on for per-CPU data.
-+#
-+# As KCOV and KEXEC compatibility should be preserved (e.g. syzkaller is
-+# using it to collect crash dumps during kernel fuzzing), disabling
-+# KCOV for KEXEC kernels is not an option. Selectively disabling KCOV
-+# instrumentation for individual affected functions can be fragile, while
-+# adding more checks to KCOV would slow it down.
-+#
-+# As a compromise solution, disable KCOV instrumentation for the whole
-+# source code file. If its coverage is ever needed, other approaches
-+# should be considered.
-+KCOV_INSTRUMENT_machine_kexec_64.o			:= n
++	if (key->enc_size > sizeof(key->val))
++		return false;
 +
- CFLAGS_head32.o := -fno-stack-protector
- CFLAGS_head64.o := -fno-stack-protector
- CFLAGS_irq.o := -I $(src)/../include/asm/trace
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -4,6 +4,8 @@ KCOV_INSTRUMENT_tlb.o			:= n
- KCOV_INSTRUMENT_mem_encrypt.o		:= n
- KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
- KCOV_INSTRUMENT_pgprot.o		:= n
-+# See the "Disable KCOV" comment in arch/x86/kernel/Makefile.
-+KCOV_INSTRUMENT_physaddr.o		:= n
- 
- KASAN_SANITIZE_mem_encrypt.o		:= n
- KASAN_SANITIZE_mem_encrypt_amd.o	:= n
+ 	switch (key->addr.type) {
+ 	case BDADDR_LE_PUBLIC:
+ 		return true;
+-- 
+2.53.0
+
 
 
 
