@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AC5FDzan1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234765-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:30 +0200
+	id SAizLiOg1mkzGwgAu9opvQ
+	(envelope-from <stable+bounces-234575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A8B3C267A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25063C10CD
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E4B33015E14
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A1C8E304654E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0327F3D75AF;
-	Wed,  8 Apr 2026 18:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFB93D411F;
+	Wed,  8 Apr 2026 18:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LaX5cijp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvTs3cjn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAA032A3FD;
-	Wed,  8 Apr 2026 18:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C83D3D522C;
+	Wed,  8 Apr 2026 18:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673704; cv=none; b=elESvMZPe48yMgcY+wkMjlVebQ92S6QJl2HI6aewth+8abtpIbrUcP4JA/Z8wCaRdL9fN9KzaAjtBVzYnKiD5L61v7IxqNerkGsBGALxnRAd25UZbgxwPxCpz7FrmOrIApK4jLWjfW1n69+ZJGYPEJnpx55ecDg3ogCNChNFgOo=
+	t=1775673215; cv=none; b=jTww0evTJugUjii+qpVgS0lweyjqnkdEiFVJpAwwvqr9SZUuzE5m7CFXpT0XxmKDb9ZkfGsLQlJizp4/AE2GK8IFRS3xYiFxZR4Q7aeYk5sRRNlj5UyGbXn4KQaeVGZIRjOXlM+eyLECs9mqBlgx4in+RnZGK9McrXu5N/6XT6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673704; c=relaxed/simple;
-	bh=1lIqqPjOsgMXSLAhZ05COjpAU6QVhIZvFKanq9lv0iI=;
+	s=arc-20240116; t=1775673215; c=relaxed/simple;
+	bh=jObjep/pNCtmgiHLXxB65iRiq1bJzDfe8rym0Hmk+lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iV42eY6h9WpULRi2m6OidFMbDmnLgAl31HYqLP2r2boCmM4nXp2QMWQjnw6ittq+7t5jVZbAZqSphU45WdSXwfLG8Ft5YLI9JyvdX3j9ji1eod5GIdQro+0KXiQVz6xyjhQivh5XFHpTaxBvFSycy/ublwVwpw6KElnCe1nEmoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaX5cijp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1056AC19421;
-	Wed,  8 Apr 2026 18:41:43 +0000 (UTC)
+	 MIME-Version; b=LQheoiuOEeNlZioM5bjazCw1HDzWaz3bv5A+oGyNzeMuVWly/Ei9cVdSRhKA9RXpMsUXRseamqiYiJoMXccJft9saakKnDtrqmcn1fg0UZk+Ibur/XJz5ETLdr45U+zGDscAdlnFN0b+3PxEX2FaWoouIGJDvxuB1Zu/flDRWvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvTs3cjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F85C19421;
+	Wed,  8 Apr 2026 18:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673704;
-	bh=1lIqqPjOsgMXSLAhZ05COjpAU6QVhIZvFKanq9lv0iI=;
+	s=korg; t=1775673215;
+	bh=jObjep/pNCtmgiHLXxB65iRiq1bJzDfe8rym0Hmk+lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LaX5cijpSYh1I6l3dGpPlau3RJfMM6B97NS2KRiZ2i16TPnMagdv2Gdfk3u+WWabv
-	 lROWEOLBxQUuve0ckF/jYneP144bWRqE40neVFauUmpBYe1I695fLCqmIyatd14lc9
-	 3+LQ5Vjfxy3d7gq4p975l+CVm4Xizj8RfZOvUckU=
+	b=GvTs3cjnud4KRZNekIA68o+UqFxwjR0edAGjimZ+rFuOZnpMVMho8NMkIaGy1dMNN
+	 172+Y//StoaAGDAcxsPi5uLSzlpYHL0kEEQBcILK4E64bWh4oOwiXbPah+bBUCjcge
+	 6MOoFTL0X05NIBhxC57q65PVZr6qjP259RwJQxAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jamie Gibbons <jamie.gibbons@microchip.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/242] ASoC: ep93xx: Fix unchecked clk_prepare_enable() and add rollback on failure
+Subject: [PATCH 6.18 112/277] dt-bindings: gpio: fix microchip #interrupt-cells
 Date: Wed,  8 Apr 2026 20:01:37 +0200
-Message-ID: <20260408175929.213291404@linuxfoundation.org>
+Message-ID: <20260408175938.055199376@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234765-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234575-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 95A8B3C267A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,microchip.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C25063C10CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+From: Jamie Gibbons <jamie.gibbons@microchip.com>
 
-[ Upstream commit 622363757b2286dd2c2984b0d80255cbb35a0495 ]
+[ Upstream commit 6b5ef8c88854b343b733b574ea8754c9dab61f41 ]
 
-ep93xx_i2s_enable() calls clk_prepare_enable() on three clocks in
-sequence (mclk, sclk, lrclk) without checking the return value of any
-of them. If an intermediate enable fails, the clocks that were already
-enabled are never rolled back, leaking them until the next disable cycle
-— which may never come if the stream never started cleanly.
+The GPIO controller on PolarFire SoC supports more than one type of
+interrupt and needs two interrupt cells.
 
-Change ep93xx_i2s_enable() from void to int. Add error checking after
-each clk_prepare_enable() call and unwind already-enabled clocks on
-failure. Propagate the error through ep93xx_i2s_startup() and
-ep93xx_i2s_resume(), both of which already return int.
-
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Fixes: f4ff6b56bc8a ("ASoC: cirrus: i2s: Prepare clock before using it")
-Link: https://patch.msgid.link/20260324210909.45494-1-jihed.chaibi.dev@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 735806d8a68e9 ("dt-bindings: gpio: add bindings for microchip mpfs gpio")
+Signed-off-by: Jamie Gibbons <jamie.gibbons@microchip.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260326-wise-gumdrop-49217723a72a@spud
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/cirrus/ep93xx-i2s.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ .../devicetree/bindings/gpio/microchip,mpfs-gpio.yaml         | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/cirrus/ep93xx-i2s.c b/sound/soc/cirrus/ep93xx-i2s.c
-index cca01c03f0486..5dba741594fab 100644
---- a/sound/soc/cirrus/ep93xx-i2s.c
-+++ b/sound/soc/cirrus/ep93xx-i2s.c
-@@ -91,16 +91,28 @@ static inline unsigned ep93xx_i2s_read_reg(struct ep93xx_i2s_info *info,
- 	return __raw_readl(info->regs + reg);
- }
+diff --git a/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml b/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
+index d78da7dd2a566..dafd80bdd23aa 100644
+--- a/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
+@@ -34,7 +34,7 @@ properties:
+     const: 2
  
--static void ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
-+static int ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
- {
- 	unsigned base_reg;
-+	int err;
+   "#interrupt-cells":
+-    const: 1
++    const: 2
  
- 	if ((ep93xx_i2s_read_reg(info, EP93XX_I2S_TX0EN) & 0x1) == 0 &&
- 	    (ep93xx_i2s_read_reg(info, EP93XX_I2S_RX0EN) & 0x1) == 0) {
- 		/* Enable clocks */
--		clk_prepare_enable(info->mclk);
--		clk_prepare_enable(info->sclk);
--		clk_prepare_enable(info->lrclk);
-+		err = clk_prepare_enable(info->mclk);
-+		if (err)
-+			return err;
-+		err = clk_prepare_enable(info->sclk);
-+		if (err) {
-+			clk_disable_unprepare(info->mclk);
-+			return err;
-+		}
-+		err = clk_prepare_enable(info->lrclk);
-+		if (err) {
-+			clk_disable_unprepare(info->sclk);
-+			clk_disable_unprepare(info->mclk);
-+			return err;
-+		}
- 
- 		/* Enable i2s */
- 		ep93xx_i2s_write_reg(info, EP93XX_I2S_GLCTRL, 1);
-@@ -119,6 +131,8 @@ static void ep93xx_i2s_enable(struct ep93xx_i2s_info *info, int stream)
- 		ep93xx_i2s_write_reg(info, EP93XX_I2S_TXCTRL,
- 				     EP93XX_I2S_TXCTRL_TXEMPTY_LVL |
- 				     EP93XX_I2S_TXCTRL_TXUFIE);
-+
-+	return 0;
- }
- 
- static void ep93xx_i2s_disable(struct ep93xx_i2s_info *info, int stream)
-@@ -195,9 +209,7 @@ static int ep93xx_i2s_startup(struct snd_pcm_substream *substream,
- {
- 	struct ep93xx_i2s_info *info = snd_soc_dai_get_drvdata(dai);
- 
--	ep93xx_i2s_enable(info, substream->stream);
--
--	return 0;
-+	return ep93xx_i2s_enable(info, substream->stream);
- }
- 
- static void ep93xx_i2s_shutdown(struct snd_pcm_substream *substream,
-@@ -373,14 +385,16 @@ static int ep93xx_i2s_suspend(struct snd_soc_component *component)
- static int ep93xx_i2s_resume(struct snd_soc_component *component)
- {
- 	struct ep93xx_i2s_info *info = snd_soc_component_get_drvdata(component);
-+	int err;
- 
- 	if (!snd_soc_component_active(component))
- 		return 0;
- 
--	ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_PLAYBACK);
--	ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_CAPTURE);
-+	err = ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_PLAYBACK);
-+	if (err)
-+		return err;
- 
--	return 0;
-+	return ep93xx_i2s_enable(info, SNDRV_PCM_STREAM_CAPTURE);
- }
- #else
- #define ep93xx_i2s_suspend	NULL
+   ngpios:
+     description:
+@@ -83,7 +83,7 @@ examples:
+         gpio-controller;
+         #gpio-cells = <2>;
+         interrupt-controller;
+-        #interrupt-cells = <1>;
++        #interrupt-cells = <2>;
+         interrupts = <53>, <53>, <53>, <53>,
+                      <53>, <53>, <53>, <53>,
+                      <53>, <53>, <53>, <53>,
 -- 
 2.53.0
 
