@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHzDLb6n1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:46 +0200
+	id eOG2CGyl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF883C279E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DAC3C2192
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63B8F30FCC97
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 19DFF300AD6B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF33346FB0;
-	Wed,  8 Apr 2026 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13325348453;
+	Wed,  8 Apr 2026 18:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnOhsl2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZ6AATxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF36A1A285;
-	Wed,  8 Apr 2026 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7E83176E4;
+	Wed,  8 Apr 2026 18:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673847; cv=none; b=a1ast5HG1LjE2grBKVM+VVnBfgZh2r8UuIXN7XejGbDv3nGXYXc2EQof6YT5fosNjHXvWPCzcgbwqMwjp6dE3IoOGXbHULp/1GRLQopz3qG38HQ7JhNslnOmh+TkLkA2wBwaFI7bddjkdwX4TEJLCq1df8B7uqFkogIlObkwvuA=
+	t=1775674646; cv=none; b=gbHiipeeiP1Kl5IKDaCoUgggS/Yp5fWWtsOJamTOZL7ld4f6ZmdKm8+Evnh61ro4N1kPoGmtwbjOAzNdL7vHeCLWTvjoh70egypDGx8F1MxeKdHoFHyzdmxQ/1//pWTx0nR9fejmP9kAaareduqViV+Yhnw+PckDQ6mH4E38F3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673847; c=relaxed/simple;
-	bh=EP4kvimurt2ua0caJ1F41ud1K66N7cCSH527Kg5fK4Q=;
+	s=arc-20240116; t=1775674646; c=relaxed/simple;
+	bh=9/wzK7qht0NaO7ZAv7LAxI7os9v5lSfdrYQDL2x4yb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UY2793ODffUHxSp/9gqwU0/QWv2EFIDkefJDaSuwWRvpN8nFGU9LaqU4ZQdP5QW3Ch8d/Bro0tW2YzOCYNKVl131KQ8iYBsioiWf9VkJChSyDZBgSJo2BRuk7MO82I08ttfx3BBW+8LIdKn4oThY05GnL91rWNFnS6SnWNN8rWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnOhsl2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A7BC19421;
-	Wed,  8 Apr 2026 18:44:07 +0000 (UTC)
+	 MIME-Version; b=mE5airuAKEx6yts+26MjzbnKSTt35eVzqJe111YgrSTkBQYyokudWnSbz/JwnLHQnFbyGBkbt17lyp8589WbfS4p6Z6J381vnQ62ODstsT4/2CUaL9v1cOxRF+PZYqbhTiewoTk/6/b9AZkQ9kpzNygkClic/NVHgakHoRpZH4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZ6AATxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E98BC19421;
+	Wed,  8 Apr 2026 18:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673847;
-	bh=EP4kvimurt2ua0caJ1F41ud1K66N7cCSH527Kg5fK4Q=;
+	s=korg; t=1775674646;
+	bh=9/wzK7qht0NaO7ZAv7LAxI7os9v5lSfdrYQDL2x4yb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnOhsl2vx2J8qfcQirqYXCtS0RNDD6XdOQm9w1bW3GBa24d9g/p5VsV5Ny+kAHi3T
-	 x86/1mgSzs0cmbg/aTRLHjmBpqa9ZfC3BUlpW3eTBQfoGnaBAyS0jIlsf3OfTU0xbu
-	 y+JyWEKTwAgajX7N1EUn6rBXhoU91/vuqBeZre8E=
+	b=cZ6AATxBCMmh3pQCRFOPpJpz1RUgwZHE2TPxEZg9Qqe+f+PHu6dhHyz0OAqcuoUpS
+	 mOzLQdnCpVA3OBkH6n8q1pyLVyjXoHrENEOt5NOZomI0qYQPytw9UCFe8xGpfqIUEi
+	 JBwVYqW3izTAskdyBxHHhdP8NRt58c91daztYo1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Alan Previn Teres Alexis <alan.previn.teres.alexis@intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/242] hwmon: (pxe1610) Check return value of page-select write in probe
+Subject: [PATCH 6.19 145/311] drm/xe/pxp: Clean up termination status on failure
 Date: Wed,  8 Apr 2026 20:02:25 +0200
-Message-ID: <20260408175931.015451803@linuxfoundation.org>
+Message-ID: <20260408175944.825305928@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +70,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235130-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234820-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email]
-X-Rspamd-Queue-Id: 1AF883C279E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 46DAC3C2192
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-[ Upstream commit ccf70c41e562b29d1c05d1bbf53391785e09c6fb ]
+[ Upstream commit e2628e670bb0923fcdc00828bfcd67b26a7df020 ]
 
-pxe1610_probe() writes PMBUS_PAGE to select page 0 but does not check
-the return value. If the write fails, subsequent register reads operate
-on an indeterminate page, leading to silent misconfiguration.
+If the PXP HW termination fails during PXP start, the normal completion
+code won't be called, so the termination will remain uncomplete. To avoid
+unnecessary waits, mark the termination as completed from the error path.
+Note that we already do this if the termination fails when handling a
+termination irq from the HW.
 
-Check the return value and propagate the error using dev_err_probe(),
-which also handles -EPROBE_DEFER correctly without log spam.
-
-Fixes: 344757bac526 ("hwmon: (pmbus) Add Infineon PXE1610 VR driver")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260329170925.34581-4-sanman.pradhan@hpe.com
-[groeck: Fix "Fixes" SHA]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: f8caa80154c4 ("drm/xe/pxp: Add PXP queue tracking and session start")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn Teres Alexis <alan.previn.teres.alexis@intel.com>
+Cc: Julia Filipchuk <julia.filipchuk@intel.com>
+Reviewed-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Link: https://patch.msgid.link/20260324153718.3155504-7-daniele.ceraolospurio@intel.com
+(cherry picked from commit 5d9e708d2a69ab1f64a17aec810cd7c70c5b9fab)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pxe1610.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_pxp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/pmbus/pxe1610.c b/drivers/hwmon/pmbus/pxe1610.c
-index 5ac476d3cdd2a..4cf98ffae841c 100644
---- a/drivers/hwmon/pmbus/pxe1610.c
-+++ b/drivers/hwmon/pmbus/pxe1610.c
-@@ -104,7 +104,10 @@ static int pxe1610_probe(struct i2c_client *client)
- 	 * By default this device doesn't boot to page 0, so set page 0
- 	 * to access all pmbus registers.
- 	 */
--	i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	if (ret < 0)
-+		return dev_err_probe(&client->dev, ret,
-+				     "Failed to set page 0\n");
+diff --git a/drivers/gpu/drm/xe/xe_pxp.c b/drivers/gpu/drm/xe/xe_pxp.c
+index bdbdbbf6a6781..ba4d52001b853 100644
+--- a/drivers/gpu/drm/xe/xe_pxp.c
++++ b/drivers/gpu/drm/xe/xe_pxp.c
+@@ -603,6 +603,7 @@ static int pxp_start(struct xe_pxp *pxp, u8 type)
+ 			drm_err(&pxp->xe->drm, "PXP termination failed before start\n");
+ 			mutex_lock(&pxp->mutex);
+ 			pxp->status = XE_PXP_ERROR;
++			complete_all(&pxp->termination);
  
- 	/* Read Manufacturer id */
- 	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, buf);
+ 			goto out_unlock;
+ 		}
 -- 
 2.53.0
 
