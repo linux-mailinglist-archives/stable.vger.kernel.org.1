@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOOTKjKh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:50 +0200
+	id sNv+Gn+l1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF6A3C134D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0B53C21F6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C6DF5305C96F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 205583018B6E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D303D9034;
-	Wed,  8 Apr 2026 18:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8EE357A20;
+	Wed,  8 Apr 2026 18:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqOyRtOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXGu8SXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995F63D6CA2;
-	Wed,  8 Apr 2026 18:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5C12F39C2;
+	Wed,  8 Apr 2026 18:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673392; cv=none; b=WRRW0N68CWIBUA+hBOyDVLmCYq9kzDf8K8ka1ds/yfU2I/2lFUtWW2rLtnEkgtUYeG73ODt8y3SXGsEmE6/cJBmPzjT5kvK7HYcbj+4Z5y1/LZIFonk/OX/hbe1uts/qX+zrtWa3gXsLSQc3DFwPMbCtBNpwevrJ+iNTXkkxHSM=
+	t=1775674698; cv=none; b=GZpPRZKWZQ+jBiRjIl+6VcqtHDX8y7VeMgQpoydv/iyyR3PY1Cb+KKYGBRvAg0rdWce2GeR3ixiriSL5+si2KB0QbFC8FYzja9y+F/cK+Ppbvz2mtWBh4kAMRrRfRy8afY69bt41zXNYu/+MlRuwR5HcjIUXu9qHnecC8Rps/b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673392; c=relaxed/simple;
-	bh=KmjAtXQmN1hwuhYSGNFjxsIJ/FF5UzLEGoxmxq8sMI4=;
+	s=arc-20240116; t=1775674698; c=relaxed/simple;
+	bh=7dbb9eM6EUzeDM8AgIU9Lg0sp5baX2sNFEjDf3mHD0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnDXYI7wws2kbGeNRUxo11qcGMJVxc67MyUFvdRUk7shz8aHMVVYDpP49fMWDcgoejJHmTn5XsiW1qY09htsU95WrVjI2BGcg2FPGZD+puLQjqbPSzfL63uyxskG/ltDofKDRKxzntJa1oPzuoknwjJ2UehVpkzaxK/7AYe5hiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqOyRtOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D3CC2BC87;
-	Wed,  8 Apr 2026 18:36:31 +0000 (UTC)
+	 MIME-Version; b=t3iogpqwBuQJejOEDtE8WmG7UyXcA06fYPsJlRMUurv1dI1/8Z81jxBimpWZ3eqsQ1iyZtStNdFWlvhEgIIFS2f6YhECbFvgb+g03DAHZ8NjfUgQ2+4R8exLtsaiiCIEi/8oo+oyPWKt8KgiPyLGx0NNEywkfW3Gvy6FbQJPi9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXGu8SXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890B4C2BC87;
+	Wed,  8 Apr 2026 18:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673392;
-	bh=KmjAtXQmN1hwuhYSGNFjxsIJ/FF5UzLEGoxmxq8sMI4=;
+	s=korg; t=1775674697;
+	bh=7dbb9eM6EUzeDM8AgIU9Lg0sp5baX2sNFEjDf3mHD0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vqOyRtOPOCTJq3W3InMy/GHNKYgNX/6rMiVkzOoqYqNNdkdfQ2zpZw0wMI61ECE0+
-	 ZxtY0/bXQnCgNjr4LDDJzZRoDjQ/lnujDSaS9TzR0bLsWdPR3HHXjSNqaIVB0/PnYf
-	 W3xdLNAa/SzrUiOUvXjEQJrZ4ZP89K0mXWxScwcs=
+	b=cXGu8SXCRSxyrEJFbx6sYrFarWV39USsS6xMVVaNe8rPV1irErxyG+XZm+BwTYaPB
+	 /5QyNWyuF19Lnkj54Fcp7pEKe/LcN9imx7276oWtQbTSVP5WGSzhXKOzzK96lPe6FQ
+	 vd1pHY2LjJq4Q8KHdmXfWfVWYf+yqLFkhRXEyKek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: [PATCH 6.18 213/277] comedi: dt2815: add hardware detection to prevent crash
+	Felix Gu <ustc.gu@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 198/311] iio: adc: ti-ads1119: Replace IRQF_ONESHOT with IRQF_NO_THREAD
 Date: Wed,  8 Apr 2026 20:03:18 +0200
-Message-ID: <20260408175941.815069228@linuxfoundation.org>
+Message-ID: <20260408175946.805555525@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,90 +76,70 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234644-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235150-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,baylibre.com,vger.kernel.org,huawei.com];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mev.co.uk:email]
-X-Rspamd-Queue-Id: BCF6A3C134D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,baylibre.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AE0B53C21F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
+commit 36f6d4db3c5cb0f58fb02b1f54f9e86522d2f918 upstream.
 
-The dt2815 driver crashes when attached to I/O ports without actual
-hardware present. This occurs because syzkaller or users can attach
-the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
+As there is no threaded handler, replace devm_request_threaded_irq()
+with devm_request_irq(), and as the handler calls iio_trigger_poll()
+which may not be called from a threaded handler replace IRQF_ONESHOT
+with IRQF_NO_THREAD.
 
-When no hardware exists at the specified port, inb() operations return
-0xff (floating bus), but outb() operations can trigger page faults due
-to undefined behavior, especially under race conditions:
+Since commit aef30c8d569c ("genirq: Warn about using IRQF_ONESHOT
+without a threaded handler"), the IRQ core checks IRQF_ONESHOT flag
+in IRQ request and gives a warning if there is no threaded handler.
 
-  BUG: unable to handle page fault for address: 000000007fffff90
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  RIP: 0010:dt2815_attach+0x6e0/0x1110
-
-Add hardware detection by reading the status register before attempting
-any write operations. If the read returns 0xff, assume no hardware is
-present and fail the attach with -ENODEV. This prevents crashes from
-outb() operations on non-existent hardware.
-
-Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
-Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
-Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
-Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/dt2815.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/iio/adc/ti-ads1119.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/comedi/drivers/dt2815.c
-+++ b/drivers/comedi/drivers/dt2815.c
-@@ -175,6 +175,18 @@ static int dt2815_attach(struct comedi_d
- 		    ? current_range_type : voltage_range_type;
- 	}
+--- a/drivers/iio/adc/ti-ads1119.c
++++ b/drivers/iio/adc/ti-ads1119.c
+@@ -738,10 +738,8 @@ static int ads1119_probe(struct i2c_clie
+ 		return dev_err_probe(dev, ret, "Failed to setup IIO buffer\n");
  
-+	/*
-+	 * Check if hardware is present before attempting any I/O operations.
-+	 * Reading 0xff from status register typically indicates no hardware
-+	 * on the bus (floating bus reads as all 1s).
-+	 */
-+	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
-+		dev_err(dev->class_dev,
-+			"No hardware detected at I/O base 0x%lx\n",
-+			dev->iobase);
-+		return -ENODEV;
-+	}
-+
- 	/* Init the 2815 */
- 	outb(0x00, dev->iobase + DT2815_STATUS);
- 	for (i = 0; i < 100; i++) {
+ 	if (client->irq > 0) {
+-		ret = devm_request_threaded_irq(dev, client->irq,
+-						ads1119_irq_handler,
+-						NULL, IRQF_ONESHOT,
+-						"ads1119", indio_dev);
++		ret = devm_request_irq(dev, client->irq, ads1119_irq_handler,
++				       IRQF_NO_THREAD, "ads1119", indio_dev);
+ 		if (ret)
+ 			return dev_err_probe(dev, ret,
+ 					     "Failed to allocate irq\n");
 
 
 
