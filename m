@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFj7LmOe1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:51 +0200
+	id iPliDJ6l1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5F53C0CCE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CDF3C226A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5817230E5D39
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:22:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F68D3088932
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F77F2494F0;
-	Wed,  8 Apr 2026 18:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CDF3D9041;
+	Wed,  8 Apr 2026 18:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYjSs/8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9e+hInu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67FF324B1F;
-	Wed,  8 Apr 2026 18:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082FE3D75C9;
+	Wed,  8 Apr 2026 18:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672525; cv=none; b=SKD+7uE0jQgjUxzaOhtb6tfaOxI+Ajpj+frsN8YAeIkWV0mTwOTvsC0NKcQrZ9D8JKceMxMkHkLKiV739dTiXKGZbjK8l6pBpMWxJ6iVpV5i0QZS2ttRQvw6rxCUFrOzckYzDW6BIe2K/0DBnFPL5n4/gxYyHGNS3KcpxGsDMAU=
+	t=1775674518; cv=none; b=N+b1gy7rXX7eaf2Wt+lWT57+q2FqLvjt4zFf3uyjXdJ7u7AeEXC+ZpGgTi/uMLjF1yA/ugPTPz4SxhOopFQTJyjTOo/40pnhDcVzFoTw3IX82SscHPVKTZv7WbdBFMVyoNjyg6XeiH/br4+Dn2YK5ZMLfYhgaAcOtZwyA3HO+oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672525; c=relaxed/simple;
-	bh=xskJVLFS4wdgL2xJFlXzM7rQyNJg4St0xMHIrLWXp/g=;
+	s=arc-20240116; t=1775674518; c=relaxed/simple;
+	bh=pH0D8DMMrjDbG76v059w04Ow6JuYtS3RrYsolSoioWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftMQOZchVK88F3BacgmWTFZojA14BT4RIp47YsiEWZ4lvyal4tYBTqWaSATFl1pGakfqq9BQGvNk8QiqX1zAKyKqsA1Iyjl/JBIF73WK+PimsyWZcMSNCe2gKxaV5oRVVIDeMHpk+77JC8SNekKNIV0key725dj3NTg8v3M0v4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYjSs/8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4C5C19421;
-	Wed,  8 Apr 2026 18:22:04 +0000 (UTC)
+	 MIME-Version; b=NJ8FsKAm+w+sjSDR9J+sq+US2aF4zlI8MvRxXNoLoRmOaRvF3cDYs9gikVaZ86Y5dx7RzK6o0M+3Rz8HBAM5Gsm6z2zisaAIe+LLASVk6sj7Gb9U1LadinKYnzirIH2r72jDry5kKJwmbvIsHWEuV32W9wpo+cXICDBl7N24iLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9e+hInu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8967AC19421;
+	Wed,  8 Apr 2026 18:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672524;
-	bh=xskJVLFS4wdgL2xJFlXzM7rQyNJg4St0xMHIrLWXp/g=;
+	s=korg; t=1775674517;
+	bh=pH0D8DMMrjDbG76v059w04Ow6JuYtS3RrYsolSoioWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYjSs/8kEsHEBNW7YbJxq+X203izgsmsjHz3iadYutVu5TISYnmKd8xKMoG3Te5nS
-	 mvtYnZE5taUQXrIS1+UYVp233N/W+zYLQgCuB5j7N7Xm3if1QMHJuQl8ua1q4VVplL
-	 M46a5uPFyCPrjBYll3ZN3SEZMJBxo13tEw11aDQs=
+	b=Z9e+hInu3uI6PpF8Ws2Cpy9OGKteDLqzgvXYEGeLv3DCYOlay3BwWoTQEBZ7TriPD
+	 OY0v/uUhkDxq1hRDOgWc3lrm7Nxjuc15oaHzC6K+Htt66WzcFDKKU6C34NnHkRVM56
+	 DmDMIfcRtOMYea1FiIciicnEQ6z/rPYwzLgA/VJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/160] netfilter: nf_conntrack_expect: use expect->helper
+Subject: [PATCH 6.19 128/311] iio: imu: bno055: fix BNO055_SCAN_CH_COUNT off by one
 Date: Wed,  8 Apr 2026 20:02:08 +0200
-Message-ID: <20260408175914.743632273@linuxfoundation.org>
+Message-ID: <20260408175944.196374508@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,178 +68,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234309-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-235080-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,netfilter.org:email]
-X-Rspamd-Queue-Id: 2C5F53C0CCE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,baylibre.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C3CDF3C226A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit f01794106042ee27e54af6fdf5b319a2fe3df94d ]
+[ Upstream commit 773ef9f95385bae52dcb7fd129fefba3a71a04db ]
 
-Use expect->helper in ctnetlink and /proc to dump the helper name.
-Using nfct_help() without holding a reference to the master conntrack
-is unsafe.
+Fix an off-by-one error in the BNO055_SCAN_CH_COUNT macro. The count
+is derived by taking the difference of the last and first register
+addresses, dividing by the size of each channel (2 bytes). It needs to
+also add 1 to account for the fact that the count is inclusive of both
+the first and last channels.
 
-Use exp->master->helper in ctnetlink path if userspace does not provide
-an explicit helper when creating an expectation to retain the existing
-behaviour. The ctnetlink expectation path holds the reference on the
-master conntrack and nf_conntrack_expect lock and the nfnetlink glue
-path refers to the master ct that is attached to the skb.
+Thanks to the aligned_s64 timestamp field, there was already extra
+padding in the buffer, so there were no runtime issues caused by this
+bug.
 
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 917b61fa2042 ("netfilter: ctnetlink: ignore explicit helper on new expectations")
+Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_expect.c  |  2 +-
- net/netfilter/nf_conntrack_helper.c  |  6 +-----
- net/netfilter/nf_conntrack_netlink.c | 24 ++++++++++--------------
- net/netfilter/nf_conntrack_sip.c     |  2 +-
- 4 files changed, 13 insertions(+), 21 deletions(-)
+ drivers/iio/imu/bno055/bno055.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index 43c6fc0576177..e0eb844c2cdcb 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -670,7 +670,7 @@ static int exp_seq_show(struct seq_file *s, void *v)
- 	if (expect->flags & NF_CT_EXPECT_USERSPACE)
- 		seq_printf(s, "%sUSERSPACE", delim);
- 
--	helper = rcu_dereference(nfct_help(expect->master)->helper);
-+	helper = rcu_dereference(expect->helper);
- 	if (helper) {
- 		seq_printf(s, "%s%s", expect->flags ? " " : "", helper->name);
- 		if (helper->expect_policy[expect->class].name[0])
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index d7bf2fa414a87..7d5e4f67f268c 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -400,14 +400,10 @@ EXPORT_SYMBOL_GPL(nf_conntrack_helper_register);
- 
- static bool expect_iter_me(struct nf_conntrack_expect *exp, void *data)
- {
--	struct nf_conn_help *help = nfct_help(exp->master);
- 	const struct nf_conntrack_helper *me = data;
- 	const struct nf_conntrack_helper *this;
- 
--	if (rcu_access_pointer(exp->helper) == me)
--		return true;
--
--	this = rcu_dereference_protected(help->helper,
-+	this = rcu_dereference_protected(exp->helper,
- 					 lockdep_is_held(&nf_conntrack_expect_lock));
- 	return this == me;
- }
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 97d2f5eacbe1e..2a601dc58b856 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -2994,7 +2994,7 @@ ctnetlink_exp_dump_expect(struct sk_buff *skb,
- {
- 	struct nf_conn *master = exp->master;
- 	long timeout = ((long)exp->timeout.expires - (long)jiffies) / HZ;
--	struct nf_conn_help *help;
-+	struct nf_conntrack_helper *helper;
- #if IS_ENABLED(CONFIG_NF_NAT)
- 	struct nlattr *nest_parms;
- 	struct nf_conntrack_tuple nat_tuple = {};
-@@ -3039,15 +3039,12 @@ ctnetlink_exp_dump_expect(struct sk_buff *skb,
- 	    nla_put_be32(skb, CTA_EXPECT_FLAGS, htonl(exp->flags)) ||
- 	    nla_put_be32(skb, CTA_EXPECT_CLASS, htonl(exp->class)))
- 		goto nla_put_failure;
--	help = nfct_help(master);
--	if (help) {
--		struct nf_conntrack_helper *helper;
- 
--		helper = rcu_dereference(help->helper);
--		if (helper &&
--		    nla_put_string(skb, CTA_EXPECT_HELP_NAME, helper->name))
--			goto nla_put_failure;
--	}
-+	helper = rcu_dereference(exp->helper);
-+	if (helper &&
-+	    nla_put_string(skb, CTA_EXPECT_HELP_NAME, helper->name))
-+		goto nla_put_failure;
-+
- 	expfn = nf_ct_helper_expectfn_find_by_symbol(exp->expectfn);
- 	if (expfn != NULL &&
- 	    nla_put_string(skb, CTA_EXPECT_FN, expfn->name))
-@@ -3376,12 +3373,9 @@ static int ctnetlink_get_expect(struct sk_buff *skb,
- static bool expect_iter_name(struct nf_conntrack_expect *exp, void *data)
- {
- 	struct nf_conntrack_helper *helper;
--	const struct nf_conn_help *m_help;
- 	const char *name = data;
- 
--	m_help = nfct_help(exp->master);
--
--	helper = rcu_dereference(m_help->helper);
-+	helper = rcu_dereference(exp->helper);
- 	if (!helper)
- 		return false;
- 
-@@ -3516,9 +3510,9 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 		       struct nf_conntrack_tuple *tuple,
- 		       struct nf_conntrack_tuple *mask)
- {
--	u_int32_t class = 0;
- 	struct nf_conntrack_expect *exp;
- 	struct nf_conn_help *help;
-+	u32 class = 0;
- 	int err;
- 
- 	help = nfct_help(ct);
-@@ -3555,6 +3549,8 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
- 
- 	exp->class = class;
- 	exp->master = ct;
-+	if (!helper)
-+		helper = rcu_dereference(help->helper);
- 	rcu_assign_pointer(exp->helper, helper);
- 	exp->tuple = *tuple;
- 	exp->mask.src.u3 = mask->src.u3;
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 6ae30a4cf3601..fda6fc1fc4c58 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -924,7 +924,7 @@ static int set_expected_rtp_rtcp(struct sk_buff *skb, unsigned int protoff,
- 		exp = __nf_ct_expect_find(net, nf_ct_zone(ct), &tuple);
- 
- 		if (!exp || exp->master == ct ||
--		    nfct_help(exp->master)->helper != nfct_help(ct)->helper ||
-+		    exp->helper != nfct_help(ct)->helper ||
- 		    exp->class != class)
- 			break;
- #if IS_ENABLED(CONFIG_NF_NAT)
+diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
+index 303bc308f80a8..c96fec2ebb3e7 100644
+--- a/drivers/iio/imu/bno055/bno055.c
++++ b/drivers/iio/imu/bno055/bno055.c
+@@ -64,7 +64,7 @@
+ #define BNO055_GRAVITY_DATA_X_LSB_REG	0x2E
+ #define BNO055_GRAVITY_DATA_Y_LSB_REG	0x30
+ #define BNO055_GRAVITY_DATA_Z_LSB_REG	0x32
+-#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2)
++#define BNO055_SCAN_CH_COUNT ((BNO055_GRAVITY_DATA_Z_LSB_REG - BNO055_ACC_DATA_X_LSB_REG) / 2 + 1)
+ #define BNO055_TEMP_REG			0x34
+ #define BNO055_CALIB_STAT_REG		0x35
+ #define BNO055_CALIB_STAT_MAGN_SHIFT 0
 -- 
 2.53.0
 
