@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDYCCXGk1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:41 +0200
+	id WDJMC0Ka1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6963C1EB7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE473C0188
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4850B3020E89
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1A8AE30028EC
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B788355F30;
-	Wed,  8 Apr 2026 18:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF45D3D88E1;
+	Wed,  8 Apr 2026 18:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBnkPF0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pw/qyNBE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273F825A321;
-	Wed,  8 Apr 2026 18:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83363347517;
+	Wed,  8 Apr 2026 18:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674227; cv=none; b=hJmhmGM9JrJ8WUOAO5TU8t1U1P+kBFuFGZSim4Tysidwqp+/ADQBMQGLFuJxQ5YqpttJ0xNaYzBGFNRqFxCSgNGJmP9FHWxFEvqdZpXOfWs0PljRiyuvwxawmAbqCyugjQPsiYMttQyDLRrsAiG6zSVPQIPG1pxpRU7+CoBeZnA=
+	t=1775671866; cv=none; b=Gwj4EhsavZ3XwM4MHyVd5uCM6TdpAM9/ZvNP800u7mfuB8wrsPGVxeSHSwS49oXrOg2IfxCRli+BAh/Ep+Ru9XJ9Ej0jiHVXeVgfZoBZoDuV7kk60lShEOqw0lmbUqvl6uypPABdlrxjHSsOL1XQoWBsY+yVexJBxN0PhBDPpKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674227; c=relaxed/simple;
-	bh=ovbFBkR8KQMl+4jMRATitREmvavxwU1huB6J+fAyQVM=;
+	s=arc-20240116; t=1775671866; c=relaxed/simple;
+	bh=lUyWb21MUXEHIul0Iehi64j2Ntw6hnIK90ZzwC/rpQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XGgEHijZDwoaQM6DuopittipFiSKYMFUmX5ky4IdEygClKbf2kybOunOA4T2XoHTBnxWQFfzphY81eWmtwRJZk0tkbLy/D2IMRY8cqkDABI5BvJsutkzoiSBS4pxqeYEKPX8ywlP5PnvDpThRRNNHYthQD15YrqmJni6m90RxlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBnkPF0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B82C19421;
-	Wed,  8 Apr 2026 18:50:26 +0000 (UTC)
+	 MIME-Version; b=plvbV52EVcoUPuH2alYLfzrtX267zaV9nhiHqxRWIaY7OUqEt2poanRncbcGG4/tLAr9Lu592FB48gysVEjZ6jR6eHFZLmavtqLtfpXFrn5PZ9BWW4CuXM+wZaRPeIkvOlu7ByLl/0GDR8adOwSPRCZT8pZc5ybGuYGA/agyTGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pw/qyNBE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11209C19421;
+	Wed,  8 Apr 2026 18:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674226;
-	bh=ovbFBkR8KQMl+4jMRATitREmvavxwU1huB6J+fAyQVM=;
+	s=korg; t=1775671866;
+	bh=lUyWb21MUXEHIul0Iehi64j2Ntw6hnIK90ZzwC/rpQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZBnkPF0yp9epYcd2dINO8s6nHl17H2sWByyr+zMa6wXnnxC8MseYOtlhTRzObG8Ii
-	 J8b717qbUF7CmZDF5KadVwzDwdaY+aKt8RwOaWOzb9bOGOTq4by09LB32rcvZb08d0
-	 jAE8aAL9VRsqZUCruU4TcRMEpyBuHCQbW5HeHSPQ=
+	b=Pw/qyNBESBIR7wEIsiflWBqQ1B05alfaVbQrr6KlI2NiCGvsf13VwxSZpDpSGYDXH
+	 25ywHWOFK4xPHlHeeM8spqgBsPhjg5oSJiZtDtfLTHgttR2wz5BbSbIyelpSpz3lxF
+	 lYkQ7akTLrkZRqnvuM+XMfyOQrwfXuTeke1cw8fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 016/311] objtool: Fix Clang jump table detection
+	xietangxin <xietangxin@yeah.net>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 099/312] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
 Date: Wed,  8 Apr 2026 20:00:16 +0200
-Message-ID: <20260408175940.018703250@linuxfoundation.org>
+Message-ID: <20260408175937.460719626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +66,125 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234054-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yeah.net,linux.alibaba.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234967-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AB6963C1EB7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,yeah.net:email]
+X-Rspamd-Queue-Id: 1DE473C0188
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: xietangxin <xietangxin@yeah.net>
 
-[ Upstream commit 4e5019216402ad0b4a84cff457b662d26803f103 ]
+commit ba8bda9a0896746053aa97ac6c3e08168729172c upstream.
 
-With Clang, there can be a conditional forward jump between the load of
-the jump table address and the indirect branch.
+A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
+and the device's IFF_XMIT_DST_RELEASE flag is cleared
+(e.g., during the configuration of tc route filter rules).
 
-Fixes the following warning:
+When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
+expects the driver to hold the reference to skb->dst until the packet
+is fully transmitted and freed. In virtio_net with napi_tx=N,
+skbs may remain in the virtio transmit ring for an extended period.
 
-  vmlinux.o: warning: objtool: ___bpf_prog_run+0x1c5: sibling call from callable instruction with modified stack frame
+If the network namespace is destroyed while these skbs are still pending,
+the corresponding dst_ops structure has freed. When a subsequent packet
+is transmitted, free_old_xmit() is triggered to clean up old skbs.
+It then calls dst_release() on the skb associated with the stale dst_entry.
+Since the dst_ops (referenced by the dst_entry) has already been freed,
+a UAF kernel paging request occurs.
 
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
-Link: https://patch.msgid.link/7d8600caed08901b6679767488acd639f6df9688.1773071992.git.jpoimboe@kernel.org
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
+the dst reference before the skb is queued in virtio_net.
+
+Call Trace:
+ Unable to handle kernel paging request at virtual address ffff80007e150000
+ CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
+  ...
+  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
+  dst_release+0xe0/0x110  net/core/dst.c:177
+  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
+  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
+  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
+  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
+  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
+  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
+  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
+  ...
+
+Reproduction Steps:
+NETDEV="enp3s0"
+
+config_qdisc_route_filter() {
+    tc qdisc del dev $NETDEV root
+    tc qdisc add dev $NETDEV root handle 1: prio
+    tc filter add dev $NETDEV parent 1:0 \
+	protocol ip prio 100 route to 100 flowid 1:1
+    ip route add 192.168.1.100/32 dev $NETDEV realm 100
+}
+
+test_ns() {
+    ip netns add testns
+    ip link set $NETDEV netns testns
+    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
+    ip netns exec testns ping -c 1 10.0.32.1
+    ip netns del testns
+}
+
+config_qdisc_route_filter
+
+test_ns
+sleep 2
+test_ns
+
+Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
+Cc: stable@vger.kernel.org
+Signed-off-by: xietangxin <xietangxin@yeah.net>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")
+Link: https://patch.msgid.link/20260312025406.15641-1-xietangxin@yeah.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/virtio_net.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 30609aed5d37e..2f63f938d0890 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2144,12 +2144,11 @@ static void mark_func_jump_tables(struct objtool_file *file,
- 			last = insn;
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -1924,6 +1924,7 @@ static netdev_tx_t start_xmit(struct sk_
+ 	/* Don't wait up for transmitted skbs to be freed. */
+ 	if (!use_napi) {
+ 		skb_orphan(skb);
++		skb_dst_drop(skb);
+ 		nf_reset_ct(skb);
+ 	}
  
- 		/*
--		 * Store back-pointers for unconditional forward jumps such
-+		 * Store back-pointers for forward jumps such
- 		 * that find_jump_table() can back-track using those and
- 		 * avoid some potentially confusing code.
- 		 */
--		if (insn->type == INSN_JUMP_UNCONDITIONAL && insn->jump_dest &&
--		    insn->offset > last->offset &&
-+		if (insn->jump_dest &&
- 		    insn->jump_dest->offset > insn->offset &&
- 		    !insn->jump_dest->first_jump_src) {
- 
--- 
-2.53.0
-
 
 
 
