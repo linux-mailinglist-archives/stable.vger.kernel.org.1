@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEzRAv+e1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:27 +0200
+	id mDa9Ldqc1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784DD3C0DCA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242F23C084F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7C1E3077694
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F8C0305FFEC
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7123D903D;
-	Wed,  8 Apr 2026 18:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2053D385513;
+	Wed,  8 Apr 2026 18:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKZuyVs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icUUPmkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228E93D9033;
-	Wed,  8 Apr 2026 18:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84F6324B1F;
+	Wed,  8 Apr 2026 18:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672621; cv=none; b=tVpuvxw9fA1Fb/9TOub9dQEAYzLwaTV5kXaEJkwd591uOE0Q45OQyGCtUDTZsxSRTuBg1w5vhNHqvxBhGvXya/kFVjJBMjMs50H4gP6VmTHQmoevd8InPLeKGQ+WdPy5A74OEwItiCUqRVmZ4irhIVHf7ssjIVKYqM9p8JvhSB4=
+	t=1775672252; cv=none; b=Wgo1AEmEoa5TbbHJePJ80W3lbK1LTX5LfmVxSX+VkEiwP26uXfD7AXkSbMBa4gXKeR8ZEUIQs7lfz9aGtqL0tgDdSMgHLgUjiFDxpvQjJ2MCPHWY+O+g15nJQb5MfpV1a+ZaTlt7qTXX8D6jspw5fBtrProV7PtGuThPxmO1mzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672621; c=relaxed/simple;
-	bh=0VP1pkd9Z6TsEmZHWupoKBeRB2wwsbdZppUdimOjy0A=;
+	s=arc-20240116; t=1775672252; c=relaxed/simple;
+	bh=KxSax9H9/BLWfI7R8vzBTJR2V8vhWnLrcPodeSa5Yko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6kX+m8Hcy3l0bJMw0Lm3sCvcVbJHDFu4m/3a2SL6kL1ET4/8iSjopCJ2LYDtl7Okl/9tjUPg5mR1ujHUqAZKgesyL3NiM4ebSq1AURfbaOo94+JMEXtPFDTInwDRgsvCUugv6KZEPzQfKYYKph4FH6L546xMi2wZupeeF1h3ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKZuyVs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6F1C19421;
-	Wed,  8 Apr 2026 18:23:40 +0000 (UTC)
+	 MIME-Version; b=tV5zdoMKKRAPtYap3FjMP3pmWPKtw+Pr+qqyJy2Smb5CuZv7wppiE7DltQDXP7ZkNnPgrSEKjVzpVT5WGXpplSfkdaJTznHhrcy/TRnZEns1g1/JNbn978KYbLms9P/fW2n8pt4meH6QSHzQD1z/b9PgB3nVS2NUW9A3sAs5yRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icUUPmkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAD9C19421;
+	Wed,  8 Apr 2026 18:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672621;
-	bh=0VP1pkd9Z6TsEmZHWupoKBeRB2wwsbdZppUdimOjy0A=;
+	s=korg; t=1775672252;
+	bh=KxSax9H9/BLWfI7R8vzBTJR2V8vhWnLrcPodeSa5Yko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKZuyVs49pELfXp7bPNCwuw0U3X9hT+kCq79M/cPxR5VT7Yu1EIYrrtgt80K9sjTE
-	 SQhJ6pfYqn6II/LXXcC7hEs6CYtJFImW+yJ8IwIWun/1pDWh0pZb2TOPcq55dvkViH
-	 ov93s4e1J4sKHwge5FqFvN9yLlnE8qkJr2VN2ago=
+	b=icUUPmkQEw10771bcljabuPq2QRQgKoLA8J12pZWL6A7NXB18b1KtUmw/03OZLtzm
+	 TzGiB1JXrovCbph2Idw+XX5gsdj1EEllmsObUKkuwp3vOf9e3/tX0I1JRXY0om4dNv
+	 yVrrKzjmkhXeUCWmUmabwcJfF6NmfInWujhdNaDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Karsten Hohmeier <linux@hohmatik.de>
-Subject: [PATCH 6.6 078/160] ALSA: ctxfi: Fix missing SPDIFI1 index handling
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 248/312] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
 Date: Wed,  8 Apr 2026 20:02:45 +0200
-Message-ID: <20260408175916.108508690@linuxfoundation.org>
+Message-ID: <20260408175943.009813562@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234346-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234204-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,45 +88,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email]
-X-Rspamd-Queue-Id: 784DD3C0DCA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 242F23C084F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit b045ab3dff97edae6d538eeff900a34c098761f8 upstream.
+commit 101ab946b79ad83b36d5cfd47de587492a80acf0 upstream.
 
-SPDIF1 DAIO type isn't properly handled in daio_device_index() for
-hw20k2, and it returned -EINVAL, which ended up with the out-of-bounds
-array access.  Follow the hw20k1 pattern and return the proper index
-for this type, too.
+If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
+returns an error, the COMEDI core will call the driver's "detach"
+handler function (`atmio16d_detach()`) to clean up.  This calls
+`reset_atmio16d()` unconditionally, but depending on where the error
+occurred in the attach handler, the device may not have been
+sufficiently initialized to call `reset_atmio16d()`.  It uses
+`dev->iobase` as the I/O port base address and `dev->private` as the
+pointer to the COMEDI device's private data structure.  `dev->iobase`
+may still be set to its initial value of 0, which would result in
+undesired writes to low I/O port addresses.  `dev->private` may still be
+`NULL`, which would result in null pointer dereferences.
 
-Reported-and-tested-by: Karsten Hohmeier <linux@hohmatik.de>
-Closes: https://lore.kernel.org/20260315155004.15633-1-linux@hohmatik.de
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260329091240.420194-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix `atmio16d_detach()` by checking that `dev->private` is valid
+(non-null) before calling `reset_atmio16d()`.  This implies that
+`dev->iobase` was set correctly since that is set up before
+`dev->private`.
+
+Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260128150011.5006-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/ctxfi/ctdaio.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/comedi/drivers/ni_atmio16d.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/ctxfi/ctdaio.c
-+++ b/sound/pci/ctxfi/ctdaio.c
-@@ -119,6 +119,7 @@ static unsigned int daio_device_index(en
- 		switch (type) {
- 		case SPDIFOO:	return 0;
- 		case SPDIFIO:	return 0;
-+		case SPDIFI1:	return 1;
- 		case LINEO1:	return 4;
- 		case LINEO2:	return 7;
- 		case LINEO3:	return 5;
+--- a/drivers/comedi/drivers/ni_atmio16d.c
++++ b/drivers/comedi/drivers/ni_atmio16d.c
+@@ -698,7 +698,8 @@ static int atmio16d_attach(struct comedi
+ 
+ static void atmio16d_detach(struct comedi_device *dev)
+ {
+-	reset_atmio16d(dev);
++	if (dev->private)
++		reset_atmio16d(dev);
+ 	comedi_legacy_detach(dev);
+ }
+ 
 
 
 
