@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-234607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMkqCYeh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:15 +0200
+	id qJUPAzOl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841B33C1451
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1BA3C211B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB8AB3123C5E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B4A47302967E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE6135CB6F;
-	Wed,  8 Apr 2026 18:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915C13624B9;
+	Wed,  8 Apr 2026 18:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FaXrNEAl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrISRsuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947C5351C2E;
-	Wed,  8 Apr 2026 18:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3DF3D8912;
+	Wed,  8 Apr 2026 18:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673297; cv=none; b=naeXTj+ePPndBJNN5cTpbBuxWSYdW5Kg0JOID9yQylQTflW2Dj26lZtSTCNztx+L5L8I+uZ2/82GyZs36xHkwKzmlTl/mEQa944U798c1irmNZZ5fyLsAIae9slnH7erK2cEHOW0SGmTHnt4dq/6ghD8YnSKXtkJpy3WdP1Vfp8=
+	t=1775674603; cv=none; b=jiT0MIrPEVTxWOYTarj5acGroOZ6D7G/HYk90lPJikxyaMUCWI8/osKfL4xpVftA/KrPFuvpMvfvnP8jX3rlz/9SbvttMlzlRV4BuFW5zKEOQ7B6dHlfsn14VrcOj31x2DxTkU6ZhYxhfodr6MPKKGX1k5JwytwrmgNUxlLp5ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673297; c=relaxed/simple;
-	bh=OuTO4H7+HfWKikubpDYOiPIqNGlrAFxtttGgbJiLNxA=;
+	s=arc-20240116; t=1775674603; c=relaxed/simple;
+	bh=y4YwnDr4zNY/qW0b4ErusYbeNP6vQuY2e/At+lrLLTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvI3PAdtz1g3B4hqH5SldPmiD5s7U1xzPg4PiSQTHXrmuDnU6n/zohkzBtU0BdT99p2sc3qsiFQdbjuY4Rm0Lv6LjNesZeSqKqaZjiZ3/Oly5QcEAHY3kT/QzlI0Z4ALCtZaoXWcz8vVFaEz3ofSAAJrZLu8ZpU2GpRDlNWykWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FaXrNEAl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A77EC19421;
-	Wed,  8 Apr 2026 18:34:57 +0000 (UTC)
+	 MIME-Version; b=Zjnk5xGbRXDIPHW2phfBJOVSVaZFn3KcRGUKYtWvX4jGsLzjz7JXcYnOljTz8CIid6trMHm/w4BTEH79B4Zmkz37GoBA/nNYN9K/chi5K4gSIu5+InTWUgDyC1W+BoELJeQwai/wIQx9iLctQ1YCYE3Sl3kdgkzfmYokLD6Un/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrISRsuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73655C19421;
+	Wed,  8 Apr 2026 18:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673297;
-	bh=OuTO4H7+HfWKikubpDYOiPIqNGlrAFxtttGgbJiLNxA=;
+	s=korg; t=1775674602;
+	bh=y4YwnDr4zNY/qW0b4ErusYbeNP6vQuY2e/At+lrLLTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FaXrNEAl8SWcAgNoVnWb6EJh//qg9IDpcNjB7vAVoUDLxwiPqaqZIvqt16IzFiQkx
-	 pgyikd3Y+1yUD/MyXvY9j7BycFDeSGEfJilBTLDaRkfEoc7jzN3GRk2NRVLzcGB1q5
-	 EuDX/nmb8tosNz0XqUfoM79t4/zyM6Gs5Bnrn4BY=
+	b=LrISRsuQ/dnZNSEeaTo8xRoK7IM3ev0uaop5q/TiUi82wSQ4EsBQUNLReZT03rF1t
+	 lB0b58N+PJ0NQ6IMjg5HJ67NUK3zx527ivBxcMIEOpih1C2dE8RMZyK0loCJU0DExI
+	 q4hJRgkDf3W4vTxM7pvfh7sMaXvUaT+WlKpDMfcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 176/277] iio: adc: ti-ads7950: normalize return value of gpio_get
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.19 161/311] drm/ioc32: stop speculation on the drm_compat_ioctl path
 Date: Wed,  8 Apr 2026 20:02:41 +0200
-Message-ID: <20260408175940.436965343@linuxfoundation.org>
+Message-ID: <20260408175945.415491746@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +67,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234607-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,oss.qualcomm.com,kernel.org,gmail.com,vger.kernel.org,huawei.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
+	TAGGED_FROM(0.00)[bounces-235113-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,intel.com:email]
-X-Rspamd-Queue-Id: 841B33C1451
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,ffwll.ch:email,suse.de:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0A1BA3C211B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit e2fa075d5ce1963e7cb7b0ac708ba567e5af66db upstream.
+commit f8995c2df519f382525ca4bc90553ad2ec611067 upstream.
 
-The GPIO get callback is expected to return 0 or 1 (or a negative error
-code). Ensure that the value returned by ti_ads7950_get() for output
-pins is normalized to the [0, 1] range.
+The drm compat ioctl path takes a user controlled pointer, and then
+dereferences it into a table of function pointers, the signature method
+of spectre problems.  Fix this up by calling array_index_nospec() on the
+index to the function pointer list.
 
-Fixes: 86ef402d805d ("gpiolib: sanitize the return value of gpio_chip::get()")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 505b5240329b ("drm/ioctl: Fix Spectre v1 vulnerabilities")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Simona Vetter <simona@ffwll.ch>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/2026032451-playing-rummage-8fa2@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ti-ads7950.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_ioc32.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/adc/ti-ads7950.c
-+++ b/drivers/iio/adc/ti-ads7950.c
-@@ -433,7 +433,7 @@ static int ti_ads7950_get(struct gpio_ch
+--- a/drivers/gpu/drm/drm_ioc32.c
++++ b/drivers/gpu/drm/drm_ioc32.c
+@@ -28,6 +28,7 @@
+  * IN THE SOFTWARE.
+  */
+ #include <linux/compat.h>
++#include <linux/nospec.h>
+ #include <linux/ratelimit.h>
+ #include <linux/export.h>
  
- 	/* If set as output, return the output */
- 	if (st->gpio_cmd_settings_bitmask & BIT(offset)) {
--		ret = st->cmd_settings_bitmask & BIT(offset);
-+		ret = (st->cmd_settings_bitmask & BIT(offset)) ? 1 : 0;
- 		goto out;
- 	}
+@@ -374,6 +375,7 @@ long drm_compat_ioctl(struct file *filp,
+ 	if (nr >= ARRAY_SIZE(drm_compat_ioctls))
+ 		return drm_ioctl(filp, cmd, arg);
  
++	nr = array_index_nospec(nr, ARRAY_SIZE(drm_compat_ioctls));
+ 	fn = drm_compat_ioctls[nr].fn;
+ 	if (!fn)
+ 		return drm_ioctl(filp, cmd, arg);
 
 
 
