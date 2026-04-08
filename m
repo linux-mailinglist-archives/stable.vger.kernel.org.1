@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDHLGn6g1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:50 +0200
+	id 8NXFKJil1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E25B3C11A1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2167D3C224E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EBBF4301FC01
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83C3B320EF3C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E483D4134;
-	Wed,  8 Apr 2026 18:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FF12727F3;
+	Wed,  8 Apr 2026 18:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqJe1Onk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RF953mct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A10EB67E;
-	Wed,  8 Apr 2026 18:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3402BD030;
+	Wed,  8 Apr 2026 18:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673467; cv=none; b=kvu+j3OAqNE6ufntI822q5mEV7AoP0l7eQefk+ZtWjPNYVKhwXNxIWLtih+dv66Tq8lF1W6gLkFzc7vTJSWxJx6Q51dCfcRlb5vZiTeg+heXHGEPT316vN1Xcm4QKw+llpe4FZFPNx/G9e7g1IUiNpsMIVOMiCBeyb4t4CHDFxA=
+	t=1775674045; cv=none; b=FnWtKgiaPIcxx8Mp7FbQU3xEuOjRTM4NdFcjmHL9d5n6m4CUOCJwqsN8H9p4KELggZV1L+QYp+ShgMEFjZIRpT48wM/yrc/wYYGqVuBju2Q7vqesmxbn4w4SUNIxLnCzv01blMQobgeqSJ3FMtGXPdY5VflY1T0aluOUy9LAbdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673467; c=relaxed/simple;
-	bh=ngWPWngUaF22j/25YUBsyxuUC1+M7dcfex6/S5mUctg=;
+	s=arc-20240116; t=1775674045; c=relaxed/simple;
+	bh=3XlNO0orh+0ctYaVZKi6RTopgCYOHGIE+7vF5Jab3qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bA5BB6yv6/+0FXFmjdZ+Zs/CgCg2oTTok6J2jRIzr2AUzEyvqzA3uKCK6wqbGlG3ZEMyVzyS3GG7WnwOW9PIh0gJruYoo11Zyei3vW7U67KijtrgcYm1r3qOEFzmYOSEGgx1EmEp6XEEMJCxLKQSJnv+nqQPB6HEJ5FuM30wYoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqJe1Onk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02043C19421;
-	Wed,  8 Apr 2026 18:37:46 +0000 (UTC)
+	 MIME-Version; b=fTMOFxXlMS7gIRzmdE20eqhnrVvV/ZSmAIUkdQpWYTsNK55Rwp6w/1bm74du0e7y+Bz5vFZttNbMJTBTsruXPqjM3xgdnzSvkd7HW3U1vR/6voD4ktuUI1tn9KnMxKOpfi1j4TQfKrQcDuRAabf4sfwlg/4uoeO6viIzS2AebUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RF953mct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C8DC19421;
+	Wed,  8 Apr 2026 18:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673467;
-	bh=ngWPWngUaF22j/25YUBsyxuUC1+M7dcfex6/S5mUctg=;
+	s=korg; t=1775674045;
+	bh=3XlNO0orh+0ctYaVZKi6RTopgCYOHGIE+7vF5Jab3qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqJe1Onk1IvJnQ1TcXOlLPvoRbusU0KlhEPgaOf8pTABPea9tWunCde28IJcpUz3d
-	 CZ1rENxWdnZKqqweOaqg8zGqJJy5Kny6uObxM9vN2YGO2l0wen4hjCLW+jvuCMGqXy
-	 KjKZzxJrCNjycJTHrlh1wZO3qqVBMx9hjOEVteX4=
+	b=RF953mct3gixLle2l1bfwOhCKO5/4mrrhxxlYiLCgoAmBVW3hEru3K3hg8Pisvo4C
+	 ozPmK3oO0aIldMCAFT1BhLQFYDoroNo+uEoCcSaTgCt4VlugNutkojvZ/6pPSXUoo3
+	 +chWkJZMpzOpmoWpC23Y7VPNrwqz6AYbvK33C0Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingjing Deng <xjdeng@buaa.edu.cn>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.18 243/277] misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe
-Date: Wed,  8 Apr 2026 20:03:48 +0200
-Message-ID: <20260408175942.933349023@linuxfoundation.org>
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 189/242] cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path
+Date: Wed,  8 Apr 2026 20:03:49 +0200
+Message-ID: <20260408175934.159892115@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +69,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,linaro.org,intel.com];
+	TAGGED_FROM(0.00)[bounces-234897-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234673-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,buaa.edu.cn:email,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 0E25B3C11A1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email]
+X-Rspamd-Queue-Id: 2167D3C224E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingjing Deng <micro6947@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 6a502776f4a4f80fb839b22f12aeaf0267fca344 upstream.
+commit 6dcf9d0064ce2f3e3dfe5755f98b93abe6a98e1e upstream.
 
-In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
-reserved memory to the configured VMIDs, but its return value was not checked.
+When kobject_init_and_add() fails, cpufreq_dbs_governor_init() calls
+kobject_put(&dbs_data->attr_set.kobj).
 
-Fail the probe if the SCM call fails to avoid continuing with an
-unexpected/incorrect memory permission configuration.
+The kobject release callback cpufreq_dbs_data_release() calls
+gov->exit(dbs_data) and kfree(dbs_data), but the current error path
+then calls gov->exit(dbs_data) and kfree(dbs_data) again, causing a
+double free.
 
-This issue was found by an in-house analysis workflow that extracts AST-based
-information and runs static checks, with LLM assistance for triage, and was
-confirmed by manual code review.
-No hardware testing was performed.
+Keep the direct kfree(dbs_data) for the gov->init() failure path, but
+after kobject_init_and_add() has been called, let kobject_put() handle
+the cleanup through cpufreq_dbs_data_release().
 
-Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access to the DSP")
-Cc: stable@vger.kernel.org # 6.11-rc1
-Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260131065539.2124047-1-xjdeng@buaa.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ebe36c94aed ("cpufreq: Fix kobject memleak")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260401024535.1395801-1-lgs201920130244@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq_governor.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2338,8 +2338,10 @@ static int fastrpc_rpmsg_probe(struct rp
- 		if (!err) {
- 			src_perms = BIT(QCOM_SCM_VMID_HLOS);
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -468,13 +468,13 @@ int cpufreq_dbs_governor_init(struct cpu
+ 	/* Failure, so roll back. */
+ 	pr_err("initialization failed (dbs_data kobject init error %d)\n", ret);
  
--			qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
-+			err = qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
- 				    data->vmperms, data->vmcount);
-+			if (err)
-+				goto err_free_data;
- 		}
+-	kobject_put(&dbs_data->attr_set.kobj);
+-
+ 	policy->governor_data = NULL;
  
- 	}
+ 	if (!have_governor_per_policy())
+ 		gov->gdbs_data = NULL;
+-	gov->exit(dbs_data);
++
++	kobject_put(&dbs_data->attr_set.kobj);
++	goto free_policy_dbs_info;
+ 
+ free_dbs_data:
+ 	kfree(dbs_data);
 
 
 
