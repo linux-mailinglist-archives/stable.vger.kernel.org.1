@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-234748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPp9LoCh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:08 +0200
+	id QCd7DtWa1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E503C1442
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C669E3C037A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1DB8F30372E7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D5B433035A66
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A393D9037;
-	Wed,  8 Apr 2026 18:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B983D8917;
+	Wed,  8 Apr 2026 18:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5DOLX+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOhDaUFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71C43D8115;
-	Wed,  8 Apr 2026 18:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2A6347503;
+	Wed,  8 Apr 2026 18:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673660; cv=none; b=jIuVOE2xqBruu02n/s0y+UYEDKlrQjm27EqISk2kjUoY7J6EVazBd4DJZFmB4ClMwV0q8DEjk3DygiIWPkfp/xyUHhsKCqEu2STq/1Dqn+OU/NmCJK930pUKg4ljvOqr/+aauU6cbEaY2G4vjxvu5nVPSUtFh1xpVy5Izh0+Ku8=
+	t=1775671951; cv=none; b=qMAHCX7TmusIpxoAjVqHhUnueGJczSxyfPzU6isE5HupO68TIoobAbpLi38GOJGar42t3h4aYtg+kw1ukqidOTR/EkkxECa8Lrw/N+iRavTCK2372vRH/Hb/52Vawhl9Ki/xbn+9FEgXtm3qOuc7M+XOiFb7LVuB1Ma4jVucRPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673660; c=relaxed/simple;
-	bh=oSixiJ4XGw975jpFgAhZ8kV931KI9jePcsCyqfkniCo=;
+	s=arc-20240116; t=1775671951; c=relaxed/simple;
+	bh=TbTAwjXV5VIKkLHOg3tk6HKHTYxIWfVrRmWGHtI0fxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gvp0n/GUnSOeq7awXBoZeToDD/RIKqx5+PUzVNHzolNAc9ZX9pZo/SYztXPeuc/qfkXTPWhd/dYovXwDJM2VVpJ8h0WMBJzoNStwOnKrDJjemgeV1YzrDtXiIaoywAQpUx63fCiEtkFAnWowffFtPIGziF9vkIEAb7hGQt59mE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5DOLX+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13468C19421;
-	Wed,  8 Apr 2026 18:40:59 +0000 (UTC)
+	 MIME-Version; b=ZBktUecoq5WeTwVBOX9cXPkU5sGjadU7DQAiweHY081+rtLW+dmNZALpE/JS/wwy2Tphr4JsKBDmD6Pcp7D9rmflyI0v51XRt81Bh/9+XFLq1byMg31vW3od76blq6/Wgo2IKht9yYuzqmrXu+FeZ7p2WhdSry1PneM3aVznjI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOhDaUFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19020C19421;
+	Wed,  8 Apr 2026 18:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673660;
-	bh=oSixiJ4XGw975jpFgAhZ8kV931KI9jePcsCyqfkniCo=;
+	s=korg; t=1775671951;
+	bh=TbTAwjXV5VIKkLHOg3tk6HKHTYxIWfVrRmWGHtI0fxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5DOLX+RnHWZeemqAobNm+LVGOtNE/m+g/4o9uwhiDF1V5MZGNU9LH88s5eyjDgiD
-	 L9BqhATbw3vSq+TAF1NjWyS+LL1G/lBcj4EI06xY/fmRY/M78Ui2l8+Go4zXEGKqbc
-	 H0L6QAhCajr3NlMUWq7RmR5Vm2VD3lMbVfa8rSCM=
+	b=mOhDaUFdltjYZlMGkwhylzm9fYikoNRdPxxFl0QHk2LQT9FvBgLcm+z3kDVP7bPYB
+	 wc6N1HA5Jq+IG5H4pdaDa+gIaLfxvLQju5I6AEHoxNQPpG26n2fiMmCRFe8V3ZSAOL
+	 cLNSzsQ7Utr1JI5Bt7oepovEL2ToWjPS4BnzpBow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 009/242] io_uring/net: dont use io_net_kbuf_recyle() for non-provided cases
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 132/312] dmaengine: idxd: Fix freeing the allocated ida too late
 Date: Wed,  8 Apr 2026 20:00:49 +0200
-Message-ID: <20260408175927.421297448@linuxfoundation.org>
+Message-ID: <20260408175938.701562443@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,77 +74,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234748-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234087-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 40E503C1442
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C669E3C037A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-Commit 15ba5e51e689ceb1c2e921c5180a70c88cfdc8e9 upstream.
+[ Upstream commit c311f5e9248471a950f0a524c2fd736414d98900 ]
 
-A previous commit used io_net_kbuf_recyle() for any network helper that
-did IO and needed partial retry. However, that's only needed if the
-opcode does buffer selection, which isnt support for sendzc, sendmsg_zc,
-or sendmsg. Just remove them - they don't do any harm, but it is a bit
-confusing when reading the code.
+It can happen that when the cdev .release() is called, the driver
+already called ida_destroy(). Move ida_free() to the _del() path.
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We see with DEBUG_KOBJECT_RELEASE enabled and forcing an early PCI
+unbind.
+
+Fixes: 04922b7445a1 ("dmaengine: idxd: fix cdev setup and free device lifetime issues")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-9-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/dma/idxd/cdev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -578,7 +578,7 @@ int io_sendmsg(struct io_kiocb *req, uns
- 			kmsg->msg.msg_controllen = 0;
- 			kmsg->msg.msg_control = NULL;
- 			sr->done_io += ret;
--			return io_net_kbuf_recyle(req, kmsg, ret);
-+			return -EAGAIN;
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -1448,7 +1448,7 @@ int io_send_zc(struct io_kiocb *req, uns
- 			zc->len -= ret;
- 			zc->buf += ret;
- 			zc->done_io += ret;
--			return io_net_kbuf_recyle(req, kmsg, ret);
-+			return -EAGAIN;
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -1508,7 +1508,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index e42c9a9f3c238..622cc47c6a182 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -45,11 +45,7 @@ struct idxd_user_context {
+ static void idxd_cdev_dev_release(struct device *dev)
+ {
+ 	struct idxd_cdev *idxd_cdev = dev_to_cdev(dev);
+-	struct idxd_cdev_context *cdev_ctx;
+-	struct idxd_wq *wq = idxd_cdev->wq;
  
- 		if (ret > 0 && io_net_retry(sock, flags)) {
- 			sr->done_io += ret;
--			return io_net_kbuf_recyle(req, kmsg, ret);
-+			return -EAGAIN;
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
+-	cdev_ctx = &ictx[wq->idxd->data->type];
+-	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
+ 	kfree(idxd_cdev);
+ }
+ 
+@@ -410,11 +406,15 @@ int idxd_wq_add_cdev(struct idxd_wq *wq)
+ 
+ void idxd_wq_del_cdev(struct idxd_wq *wq)
+ {
++	struct idxd_cdev_context *cdev_ctx;
+ 	struct idxd_cdev *idxd_cdev;
+ 
+ 	idxd_cdev = wq->idxd_cdev;
+ 	wq->idxd_cdev = NULL;
+ 	cdev_device_del(&idxd_cdev->cdev, cdev_dev(idxd_cdev));
++
++	cdev_ctx = &ictx[wq->idxd->data->type];
++	ida_free(&cdev_ctx->minor_ida, idxd_cdev->minor);
+ 	put_device(cdev_dev(idxd_cdev));
+ }
+ 
+-- 
+2.53.0
+
 
 
 
