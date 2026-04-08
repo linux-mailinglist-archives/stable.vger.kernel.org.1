@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-234294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGeBK0Gf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:33 +0200
+	id uL2xI0yq1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB8E3C0EAD
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4E63C2C5B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CBB16309FD69
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57170304D27A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682B2B67E;
-	Wed,  8 Apr 2026 18:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AE43D8918;
+	Wed,  8 Apr 2026 18:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAsfYQ/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfNuVdC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD2134252D;
-	Wed,  8 Apr 2026 18:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A977D337B81;
+	Wed,  8 Apr 2026 18:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672486; cv=none; b=j40pUBJSYtA1qwhx1qpq/drVrNQTThkmGlqFro60WYEqK98kPRpbnbFOQBLvTpoYo/6+LTg7oqLD5ODZp4ZZTBAOC/ndkUMSsMK16dG6pNczMBxop38LpUjKNyZGIBG14HD+9sEzR02mEzJ/lOir+4ktq6mNdoubMmH1xiUvyfQ=
+	t=1775674474; cv=none; b=s1fsnNSa7JGL+it8DMe/HYcwv7IoaksTeVwe8Ve3nfFV/J43oongH35BciNqywTqdUe2nxZ7egrFXon5iyknW983y+N6N2broPqKewqMO+yJkumZr/9D9iQmpcTyPa9Xhvt+x/va8pQNYxBNOovlq+fWw32P+21ChhNpNPny87o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672486; c=relaxed/simple;
-	bh=twIhOr40BkxJPioTRqgYrf1ZjGbS+6GUUrHXHWHEhJ8=;
+	s=arc-20240116; t=1775674474; c=relaxed/simple;
+	bh=EXftcF8IxkGOja6Ej5witn+YMid9XCO9GpUJ+qcF+sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrI35c2F17o7ZlwrU/tZPH8d/RYAnUh2/4/WvETyuLhueTcvbxNIZJbezslnMKzD10WUSQrmQGQdeBzSmX58eFZE+4c2EkAEXedFEorKM+QZpUJvNhd3+k2iVmuMPqbD8zG9kbas5JxYMFUaM0GCbm9OBoeL+PXA7mzFbkSmgUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAsfYQ/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC294C19425;
-	Wed,  8 Apr 2026 18:21:25 +0000 (UTC)
+	 MIME-Version; b=iL3qQiwyfzgbTTlEh2HAT2fEtZfrz5JvhPSNJhxSl1M245qYC07Xl0nZMRmoBeNcDuUQh+lb66vyjs1Khj5DbmBhwZclia9YDmPYu00m1hWrHiQkZSBdqYa0h7aKP0W8731AYGuT6PbtLdZabtMy1hpvT6/pyPzKFxlGrlbO3WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfNuVdC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0309FC19425;
+	Wed,  8 Apr 2026 18:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672486;
-	bh=twIhOr40BkxJPioTRqgYrf1ZjGbS+6GUUrHXHWHEhJ8=;
+	s=korg; t=1775674474;
+	bh=EXftcF8IxkGOja6Ej5witn+YMid9XCO9GpUJ+qcF+sI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAsfYQ/d1wL46LIWLXLBCTfJ9xmh3xTE8GgZckQaObKmk6Gi28Mp4pbnRzR/3nEac
-	 Gq8/6Nj+xyCuO/LFEOe7YaNhxOT7v3u8xCh5ahR2023NKJA0uWI2uqlVh/JG1CYQl7
-	 ko40852gpRy434TGS6adWquX5I7zikTc/zS67NWw=
+	b=zfNuVdC9vQSflLZCkbv+rWIa197GQWhwZILegBP4amZlxzk4vBXicPQtz5EofdmBx
+	 bB7SErpgdFdIGDzIPVVRxatd+cVSbv99nAE5jTKSTv+kQtBKu5h+yV+qM9qdMc1l4d
+	 ZxdShhwrYfYTmmz+wyWjEdT2dLbLPmktwBEqYWig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/160] bridge: br_nd_send: linearize skb before parsing ND options
+Subject: [PATCH 6.19 112/311] net/mlx5: Avoid "No data available" when FW version queries fail
 Date: Wed,  8 Apr 2026 20:01:52 +0200
-Message-ID: <20260408175914.143366032@linuxfoundation.org>
+Message-ID: <20260408175943.596720591@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,120 +68,206 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234294-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235063-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,blackwall.org:email,lzu.edu.cn:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 1CB8E3C0EAD
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email]
+X-Rspamd-Queue-Id: CB4E63C2C5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-[ Upstream commit a01aee7cafc575bb82f5529e8734e7052f9b16ea ]
+[ Upstream commit 10dc35f6a443d488f219d1a1e3fb8f8dac422070 ]
 
-br_nd_send() parses neighbour discovery options from ns->opt[] and
-assumes that these options are in the linear part of request.
+Avoid printing the misleading "kernel answers: No data available" devlink
+output when querying firmware or pending firmware version fails
+(e.g. MLX5 fw state errors / flash failures).
 
-Its callers only guarantee that the ICMPv6 header and target address
-are available, so the option area can still be non-linear. Parsing
-ns->opt[] in that case can access data past the linear buffer.
+FW can fail on loading the pending flash image and get its version due
+to various reasons, examples:
 
-Linearize request before option parsing and derive ns from the linear
-network header.
+mlxfw: Firmware flash failed: key not applicable, err (7)
+mlx5_fw_image_pending: can't read pending fw version while fw state is 1
 
-Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
-Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260326034441.2037420-2-n05ec@lzu.edu.cn
+and the resulting:
+$ devlink dev info
+kernel answers: No data available
+
+Instead, just report 0 or 0xfff.. versions in case of failure to indicate
+a problem, and let other information be shown.
+
+after the fix:
+$ devlink dev info
+pci/0000:00:06.0:
+  driver mlx5_core
+  serial_number xxx...
+  board.serial_number MT2225300179
+  versions:
+      fixed:
+        fw.psid MT_0000000436
+      running:
+        fw.version 22.41.0188
+        fw 22.41.0188
+      stored:
+        fw.version 255.255.65535
+        fw 255.255.65535
+
+Fixes: 9c86b07e3069 ("net/mlx5: Added fw version query command")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260330194015.53585-3-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_arp_nd_proxy.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/devlink.c |  4 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fw.c  | 53 ++++++++++++-------
+ .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  4 +-
+ 3 files changed, 37 insertions(+), 24 deletions(-)
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index c7869a286df40..b8bfc336ff7a7 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -248,12 +248,12 @@ struct nd_msg *br_is_nd_neigh_msg(struct sk_buff *skb, struct nd_msg *msg)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index ea77fbd98396a..055ee020c56f4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -107,9 +107,7 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+ 	if (err)
+ 		return err;
  
- static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 		       struct sk_buff *request, struct neighbour *n,
--		       __be16 vlan_proto, u16 vlan_tci, struct nd_msg *ns)
-+		       __be16 vlan_proto, u16 vlan_tci)
+-	err = mlx5_fw_version_query(dev, &running_fw, &stored_fw);
+-	if (err)
+-		return err;
++	mlx5_fw_version_query(dev, &running_fw, &stored_fw);
+ 
+ 	snprintf(version_str, sizeof(version_str), "%d.%d.%04d",
+ 		 mlx5_fw_ver_major(running_fw), mlx5_fw_ver_minor(running_fw),
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw.c b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
+index eeb4437975f20..c1f220e5fe185 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
+@@ -822,48 +822,63 @@ mlx5_fw_image_pending(struct mlx5_core_dev *dev,
+ 	return 0;
+ }
+ 
+-int mlx5_fw_version_query(struct mlx5_core_dev *dev,
+-			  u32 *running_ver, u32 *pending_ver)
++void mlx5_fw_version_query(struct mlx5_core_dev *dev,
++			   u32 *running_ver, u32 *pending_ver)
  {
- 	struct net_device *dev = request->dev;
- 	struct net_bridge_vlan_group *vg;
-+	struct nd_msg *na, *ns;
- 	struct sk_buff *reply;
--	struct nd_msg *na;
- 	struct ipv6hdr *pip6;
- 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
- 	int ns_olen;
-@@ -261,7 +261,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 	u8 *daddr;
- 	u16 pvid;
+ 	u32 reg_mcqi_version[MLX5_ST_SZ_DW(mcqi_version)] = {};
+ 	bool pending_version_exists;
+ 	int component_index;
+ 	int err;
  
--	if (!dev)
-+	if (!dev || skb_linearize(request))
- 		return;
++	*running_ver = 0;
++	*pending_ver = 0;
++
+ 	if (!MLX5_CAP_GEN(dev, mcam_reg) || !MLX5_CAP_MCAM_REG(dev, mcqi) ||
+ 	    !MLX5_CAP_MCAM_REG(dev, mcqs)) {
+ 		mlx5_core_warn(dev, "fw query isn't supported by the FW\n");
+-		return -EOPNOTSUPP;
++		return;
+ 	}
  
- 	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
-@@ -278,6 +278,8 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 	skb_set_mac_header(reply, 0);
+ 	component_index = mlx5_get_boot_img_component_index(dev);
+-	if (component_index < 0)
+-		return component_index;
++	if (component_index < 0) {
++		mlx5_core_warn(dev, "fw query failed to find boot img component index, err %d\n",
++			       component_index);
++		return;
++	}
  
- 	daddr = eth_hdr(request)->h_source;
-+	ns = (struct nd_msg *)(skb_network_header(request) +
-+			       sizeof(struct ipv6hdr));
++	*running_ver = U32_MAX; /* indicate failure */
+ 	err = mlx5_reg_mcqi_version_query(dev, component_index,
+ 					  MCQI_FW_RUNNING_VERSION,
+ 					  reg_mcqi_version);
+-	if (err)
+-		return err;
+-
+-	*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
+-
++	if (!err)
++		*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
++					version);
++	else
++		mlx5_core_warn(dev, "failed to query running version, err %d\n",
++			       err);
++
++	*pending_ver = U32_MAX; /* indicate failure */
+ 	err = mlx5_fw_image_pending(dev, component_index, &pending_version_exists);
+-	if (err)
+-		return err;
++	if (err) {
++		mlx5_core_warn(dev, "failed to query pending image, err %d\n",
++			       err);
++		return;
++	}
  
- 	/* Do we need option processing ? */
- 	ns_olen = request->len - (skb_network_offset(request) +
-@@ -465,9 +467,9 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- 				if (vid != 0)
- 					br_nd_send(br, p, skb, n,
- 						   skb->vlan_proto,
--						   skb_vlan_tag_get(skb), msg);
-+						   skb_vlan_tag_get(skb));
- 				else
--					br_nd_send(br, p, skb, n, 0, 0, msg);
-+					br_nd_send(br, p, skb, n, 0, 0);
- 				replied = true;
- 			}
+ 	if (!pending_version_exists) {
+ 		*pending_ver = 0;
+-		return 0;
++		return;
+ 	}
  
+ 	err = mlx5_reg_mcqi_version_query(dev, component_index,
+ 					  MCQI_FW_STORED_VERSION,
+ 					  reg_mcqi_version);
+-	if (err)
+-		return err;
+-
+-	*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
+-
+-	return 0;
++	if (!err)
++		*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
++					version);
++	else
++		mlx5_core_warn(dev, "failed to query pending version, err %d\n",
++			       err);
++
++	return;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index f2d74382fb85d..c048839f07d6d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -392,8 +392,8 @@ int mlx5_port_max_linkspeed(struct mlx5_core_dev *mdev, u32 *speed);
+ 
+ int mlx5_firmware_flash(struct mlx5_core_dev *dev, const struct firmware *fw,
+ 			struct netlink_ext_ack *extack);
+-int mlx5_fw_version_query(struct mlx5_core_dev *dev,
+-			  u32 *running_ver, u32 *stored_ver);
++void mlx5_fw_version_query(struct mlx5_core_dev *dev, u32 *running_ver,
++			   u32 *stored_ver);
+ 
+ #ifdef CONFIG_MLX5_CORE_EN
+ int mlx5e_init(void);
 -- 
 2.53.0
 
