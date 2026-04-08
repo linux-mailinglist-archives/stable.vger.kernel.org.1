@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-234675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGJmE5Wk1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:17 +0200
+	id 4Eh2OJak1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25F63C1F40
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 767093C1F47
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFC293095CA8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAA623132489
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0F53D4134;
-	Wed,  8 Apr 2026 18:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8099A27979A;
+	Wed,  8 Apr 2026 18:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtWHpiVh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzRnpflW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC75B67E;
-	Wed,  8 Apr 2026 18:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B9536166F;
+	Wed,  8 Apr 2026 18:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673472; cv=none; b=UMaXOH/1Dqp9L/DtKzgQVQNpysBpnkjW2pw9OKsd+Rkji9GiPMtEym0d+hw4hO28KOrh9jBDLm72YGMwqVt+d3Fzdtc+FZZq1uv8qyg0xQ6cMxdx68rRX+x36fDewKp19B7YY8Tqpg41GvvquFDvANRk4d27NDX9GtaucGHYlyY=
+	t=1775673475; cv=none; b=jdoL2OCyR7kPGEZdplPE+bX/AK2deAcSA+Vlu6ernynkDciu8+l6689oRWYnVpCIz0X4ZZIut7BVO6aW3U5CKVOtH6+Z0cxdJQ6YSoQUHJ0L2hI8EHOENJBESrMawagclT3/clvZSfy19n86RRRetHmPeDNcw9hyXve9+cAUK68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673472; c=relaxed/simple;
-	bh=F6rlD1g8c6SzBS8KVnLXuaUmYzF9MGO7rwZDB5SSi6w=;
+	s=arc-20240116; t=1775673475; c=relaxed/simple;
+	bh=djxeK3yp77I/zJhI1nA5t0VGUIR85nuFxzx5cAzqdJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YT4sFXjHITvatEAr8FeHUEQ5Fue0cDzIzpg87cM7nJD9dAfnFcJcN+SaNujzo8GbsZoYmCwjBQtp6OYUn94RDqKt1T+AyCT9mfjBRCngOV9ClZ+j6k4qAuo05Qn+PRBW8QafUCCn6hindxBZsLE4q4Udn073VbQsue2fsXxc/1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtWHpiVh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4565AC19421;
-	Wed,  8 Apr 2026 18:37:52 +0000 (UTC)
+	 MIME-Version; b=nbsQupFnCD46HS3Kz+NDWsVmNS0tecmk57aKmaJT3URnaq90XmzPVykYsYwI+HGrsZJa1trSexC2sjXVgRcI3LHs6YnjJyAUatBqwBUikguSCxG5mV+T+OQC7+tksaURHcoUSqYUFIuVTHFfHCY7AhjeceN6J16oCcLv3wgYLzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzRnpflW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD55BC19421;
+	Wed,  8 Apr 2026 18:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673472;
-	bh=F6rlD1g8c6SzBS8KVnLXuaUmYzF9MGO7rwZDB5SSi6w=;
+	s=korg; t=1775673475;
+	bh=djxeK3yp77I/zJhI1nA5t0VGUIR85nuFxzx5cAzqdJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rtWHpiVhMGBbX0mmx4rDOXm0/QUPb8RDK/p5f9A1IxVYzyuOGsnQJJo4spcb3KC6Y
-	 89JbWo09YCmtPYhYOnNJUitIM//HBREUMeuX4IgFzA+orXLc/YvE+g9UsGfnCmFJBl
-	 q6X2ILTRR1nwuZ/a6l2CYB8AYlyVr3UkEpiy2JSU=
+	b=pzRnpflWRPWxcvUVf9LaLKtXDM0V03JUIE+xWMlxCpaaPUb5lLxcWhWR6vkG877jN
+	 cIIPVgXr0qjI2OEDtQXoMxB6uGPfGCWTS4cp14I0Rls88K0pawwkmH1Kw8cXqRRf8M
+	 2ffW2HQr4hIjtQevPokcZD9IsIv8QO7m4OD7uE/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Madhu M <madhu.m@intel.corp-partner.google.com>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>
-Subject: [PATCH 6.18 244/277] usb: typec: thunderbolt: Set enter_vdo during initialization
-Date: Wed,  8 Apr 2026 20:03:49 +0200
-Message-ID: <20260408175942.970707853@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.18 245/277] thunderbolt: Fix property read in nhi_wake_supported()
+Date: Wed,  8 Apr 2026 20:03:50 +0200
+Message-ID: <20260408175943.007403878@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
 References: <20260408175933.836769063@linuxfoundation.org>
@@ -75,25 +72,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234675-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234676-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: D25F63C1F40
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 767093C1F47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,100 +98,38 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-commit 3b8ae9817686efb3ea789ca9d4efdff2ce9c1c04 upstream.
+commit 73a505dc48144ec72e25874e2b2a72487b02d3bc upstream.
 
-In the current implementation, if a cable's alternate mode enter operation
-is not supported, the tbt->plug[TYPEC_PLUG_SOP_P] pointer is cleared by the
-time tbt_enter_mode() is called. This prevents the driver from identifying
-the cable's VDO.
+device_property_read_foo() returns 0 on success and only then modifies
+'val'. Currently, val is left uninitialized if the aforementioned
+function returns non-zero, making nhi_wake_supported() return true
+almost always (random != 0) if the property is not present in device
+firmware.
 
-As a result, the Thunderbolt connection falls back to the default
-TBT_CABLE_USB3_PASSIVE speed, even if the cable supports higher speeds.
-To ensure the correct VDO value is used during mode entry, calculate and
-store the enter_vdo earlier during the initialization phase in tbt_ready().
+Invert the check to make it make sense.
 
-Cc: stable <stable@kernel.org>
-Fixes: 100e25738659 ("usb: typec: Add driver for Thunderbolt 3 Alternate Mode")
-Tested-by: Madhu M <madhu.m@intel.corp-partner.google.com>
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://patch.msgid.link/20260324103012.1417616-1-akuchynski@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3cdb9446a117 ("thunderbolt: Add support for Intel Ice Lake")
+Cc: stable@vger.kernel.org
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/thunderbolt.c |   44 +++++++++++++++----------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/thunderbolt/nhi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/altmodes/thunderbolt.c
-+++ b/drivers/usb/typec/altmodes/thunderbolt.c
-@@ -39,28 +39,7 @@ static bool tbt_ready(struct typec_altmo
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1020,7 +1020,7 @@ static bool nhi_wake_supported(struct pc
+ 	 * If power rails are sustainable for wakeup from S4 this
+ 	 * property is set by the BIOS.
+ 	 */
+-	if (device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
++	if (!device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
+ 		return !!val;
  
- static int tbt_enter_mode(struct tbt_altmode *tbt)
- {
--	struct typec_altmode *plug = tbt->plug[TYPEC_PLUG_SOP_P];
--	u32 vdo;
--
--	vdo = tbt->alt->vdo & (TBT_VENDOR_SPECIFIC_B0 | TBT_VENDOR_SPECIFIC_B1);
--	vdo |= tbt->alt->vdo & TBT_INTEL_SPECIFIC_B0;
--	vdo |= TBT_MODE;
--
--	if (plug) {
--		if (typec_cable_is_active(tbt->cable))
--			vdo |= TBT_ENTER_MODE_ACTIVE_CABLE;
--
--		vdo |= TBT_ENTER_MODE_CABLE_SPEED(TBT_CABLE_SPEED(plug->vdo));
--		vdo |= plug->vdo & TBT_CABLE_ROUNDED;
--		vdo |= plug->vdo & TBT_CABLE_OPTICAL;
--		vdo |= plug->vdo & TBT_CABLE_RETIMER;
--		vdo |= plug->vdo & TBT_CABLE_LINK_TRAINING;
--	} else {
--		vdo |= TBT_ENTER_MODE_CABLE_SPEED(TBT_CABLE_USB3_PASSIVE);
--	}
--
--	tbt->enter_vdo = vdo;
--	return typec_altmode_enter(tbt->alt, &vdo);
-+	return typec_altmode_enter(tbt->alt, &tbt->enter_vdo);
- }
- 
- static void tbt_altmode_work(struct work_struct *work)
-@@ -337,6 +316,7 @@ static bool tbt_ready(struct typec_altmo
- {
- 	struct tbt_altmode *tbt = typec_altmode_get_drvdata(alt);
- 	struct typec_altmode *plug;
-+	u32 vdo;
- 
- 	if (tbt->cable)
- 		return true;
-@@ -364,6 +344,26 @@ static bool tbt_ready(struct typec_altmo
- 		tbt->plug[i] = plug;
- 	}
- 
-+	vdo = tbt->alt->vdo & (TBT_VENDOR_SPECIFIC_B0 | TBT_VENDOR_SPECIFIC_B1);
-+	vdo |= tbt->alt->vdo & TBT_INTEL_SPECIFIC_B0;
-+	vdo |= TBT_MODE;
-+	plug = tbt->plug[TYPEC_PLUG_SOP_P];
-+
-+	if (plug) {
-+		if (typec_cable_is_active(tbt->cable))
-+			vdo |= TBT_ENTER_MODE_ACTIVE_CABLE;
-+
-+		vdo |= TBT_ENTER_MODE_CABLE_SPEED(TBT_CABLE_SPEED(plug->vdo));
-+		vdo |= plug->vdo & TBT_CABLE_ROUNDED;
-+		vdo |= plug->vdo & TBT_CABLE_OPTICAL;
-+		vdo |= plug->vdo & TBT_CABLE_RETIMER;
-+		vdo |= plug->vdo & TBT_CABLE_LINK_TRAINING;
-+	} else {
-+		vdo |= TBT_ENTER_MODE_CABLE_SPEED(TBT_CABLE_USB3_PASSIVE);
-+	}
-+
-+	tbt->enter_vdo = vdo;
-+
  	return true;
- }
- 
 
 
 
