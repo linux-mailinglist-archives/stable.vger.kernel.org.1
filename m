@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-235107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AdmOSmq1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-235107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:05 +0200
+	id KG1XJy+c1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848B73C2C0A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA763C06B6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06DD2315BF2B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23C80307FC6C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA88C35B658;
-	Wed,  8 Apr 2026 18:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB2FB67E;
+	Wed,  8 Apr 2026 18:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRW4mj9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7GKXgwy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F0E3176E4;
-	Wed,  8 Apr 2026 18:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1986386550;
+	Wed,  8 Apr 2026 18:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674587; cv=none; b=JZF6cEJk7RaDT66LeiYKLNVIIEif17FGeDk0OZsxQxAzYfOna1Gk7ji8YMasKoVvcAszJGx0Utt0aeuwCTkj+xQJsUNcaO9csaPkHsKkP1ZpULjEFNDSsSUpkwWITvL7BaOoT9qiKbc53M9Zn8tpE3PbMcRqmX6dvpTy5rOMs+o=
+	t=1775672185; cv=none; b=IyEtNVy/OCIOaZt5kaswLLn0uyJ51qo8K80CnHXvI+yykRIga7Nrhz0iYs7d39Jud8etfVTrEK6SXXLtCDvmy78jyfG9Dl9QCZoUGW6DgSF3GUIYbMVObUt90Bvhd41+NBZL3YcsEETBL3zeZW3Hx7jmKUtAjN7t3XSYB6qzpIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674587; c=relaxed/simple;
-	bh=FAuPJAEqal5+y9jaAilGIfu3Ofl56/PjssXGXCk8FC0=;
+	s=arc-20240116; t=1775672185; c=relaxed/simple;
+	bh=O809oX1B3we1M9hf/RpWVY570vWlnUQnFxUrkkwvMA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oo3nsipI4uqurA7YtS3KAscThxt93CvXJ4nF6Hz092K8+qbaywSOjPMbehg7mSAIGoZX3mAoMwfQBHxFeCkMOg19Ew6RuhSW78KBLRLRWe9t3g1bDCItm7ppAnrsSuAwcMi5OnMoY9Q4Xk6PxZ/SCJURfTqiVDnlJ/HUzCSdvxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRW4mj9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D90C19421;
-	Wed,  8 Apr 2026 18:56:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=itpY1KJ9ilD41gYXJngNWmCVWXo7zVjaKYeJE1yquRYxw3YcndM+nMMije6MGaRXQGNwEn1HeEVaG6n1RsijV34yEneaa7DCanNuMQ57v0d2r42my79Sc0wHWAL9txS8IDoc9ZRLQoC7hWrSZzqB4Iedfx6tGWyTaYKeqH8oh5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7GKXgwy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DFFC19421;
+	Wed,  8 Apr 2026 18:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674587;
-	bh=FAuPJAEqal5+y9jaAilGIfu3Ofl56/PjssXGXCk8FC0=;
+	s=korg; t=1775672185;
+	bh=O809oX1B3we1M9hf/RpWVY570vWlnUQnFxUrkkwvMA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRW4mj9p9c1N9olEDTNsGGshxSewQ+TU2uWcK9TZVOdxfLN1u1zDR0SEq2wEjQVv6
-	 hHcgDX2a/tABeWz5CSepdW+1xuxXdpRc8c4/QmFFuSbZUoyeYuHNdrYiDQN33VXEkq
-	 KyJWY5AjWWmyC2G57kXChJ+pAQSQNIG6AKGzJRKs=
+	b=m7GKXgwyh9ze0HlV4UPenZXp2ZW/r9LQucT0gVx/t9tInl7B9gIpYn6xaxAcSBEmu
+	 wQZZOq7hLeF7WfEOu1Te4KohXsfQZcGGRGHZ2vtHtQdWNwlEsXN3V6JBQhDpU5g45+
+	 54w9R5+E9waMPHXsHgPshf5lluWfbqzhTCu/5+C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 138/311] hwmon: (pxe1610) Check return value of page-select write in probe
+	Arnd Bergmann <arnd@arndb.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 221/312] iio: imu: bmi160: Remove potential undefined behavior in bmi160_config_pin()
 Date: Wed,  8 Apr 2026 20:02:18 +0200
-Message-ID: <20260408175944.566299581@linuxfoundation.org>
+Message-ID: <20260408175942.011068499@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +66,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234178-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235107-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 848B73C2C0A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,arndb.de:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0FA763C06B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit ccf70c41e562b29d1c05d1bbf53391785e09c6fb ]
+commit c05a87d9ec3bf8727a5d746ce855003c6f2f8bb4 upstream.
 
-pxe1610_probe() writes PMBUS_PAGE to select page 0 but does not check
-the return value. If the write fails, subsequent register reads operate
-on an indeterminate page, leading to silent misconfiguration.
+If 'pin' is not one of its expected values, the value of
+'int_out_ctrl_shift' is undefined.  With UBSAN enabled, this causes
+Clang to generate undefined behavior, resulting in the following
+warning:
 
-Check the return value and propagate the error using dev_err_probe(),
-which also handles -EPROBE_DEFER correctly without log spam.
+  drivers/iio/imu/bmi160/bmi160_core.o: warning: objtool: bmi160_setup_irq() falls through to next function __cfi_bmi160_core_runtime_resume()
 
-Fixes: 344757bac526 ("hwmon: (pmbus) Add Infineon PXE1610 VR driver")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260329170925.34581-4-sanman.pradhan@hpe.com
-[groeck: Fix "Fixes" SHA]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Prevent the UB and improve error handling by returning an error if 'pin'
+has an unexpected value.
+
+While at it, simplify the code a bit by moving the 'pin_name' assignment
+to the first switch statement.
+
+Fixes: 895bf81e6bbf ("iio:bmi160: add drdy interrupt support")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Closes: https://lore.kernel.org/a426d669-58bb-4be1-9eaa-6f3d83109e2d@app.fastmail.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/pxe1610.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/iio/imu/bmi160/bmi160_core.c |   15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pxe1610.c b/drivers/hwmon/pmbus/pxe1610.c
-index 6a4a978eca7e8..24c1f961c7668 100644
---- a/drivers/hwmon/pmbus/pxe1610.c
-+++ b/drivers/hwmon/pmbus/pxe1610.c
-@@ -104,7 +104,10 @@ static int pxe1610_probe(struct i2c_client *client)
- 	 * By default this device doesn't boot to page 0, so set page 0
- 	 * to access all pmbus registers.
- 	 */
--	i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	if (ret < 0)
-+		return dev_err_probe(&client->dev, ret,
-+				     "Failed to set page 0\n");
+--- a/drivers/iio/imu/bmi160/bmi160_core.c
++++ b/drivers/iio/imu/bmi160/bmi160_core.c
+@@ -568,12 +568,16 @@ static int bmi160_config_pin(struct regm
+ 		int_out_ctrl_shift = BMI160_INT1_OUT_CTRL_SHIFT;
+ 		int_latch_mask = BMI160_INT1_LATCH_MASK;
+ 		int_map_mask = BMI160_INT1_MAP_DRDY_EN;
++		pin_name = "INT1";
+ 		break;
+ 	case BMI160_PIN_INT2:
+ 		int_out_ctrl_shift = BMI160_INT2_OUT_CTRL_SHIFT;
+ 		int_latch_mask = BMI160_INT2_LATCH_MASK;
+ 		int_map_mask = BMI160_INT2_MAP_DRDY_EN;
++		pin_name = "INT2";
+ 		break;
++	default:
++		return -EINVAL;
+ 	}
+ 	int_out_ctrl_mask = BMI160_INT_OUT_CTRL_MASK << int_out_ctrl_shift;
  
- 	/* Read Manufacturer id */
- 	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, buf);
--- 
-2.53.0
-
+@@ -607,17 +611,8 @@ static int bmi160_config_pin(struct regm
+ 	ret = bmi160_write_conf_reg(regmap, BMI160_REG_INT_MAP,
+ 				    int_map_mask, int_map_mask,
+ 				    write_usleep);
+-	if (ret) {
+-		switch (pin) {
+-		case BMI160_PIN_INT1:
+-			pin_name = "INT1";
+-			break;
+-		case BMI160_PIN_INT2:
+-			pin_name = "INT2";
+-			break;
+-		}
++	if (ret)
+ 		dev_err(dev, "Failed to configure %s IRQ pin", pin_name);
+-	}
+ 
+ 	return ret;
+ }
 
 
 
