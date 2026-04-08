@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-235090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCu6AReq1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-235090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:47 +0200
+	id CGzdEl6j1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568373C2BDF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CADF83C1B4A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61CEF31B0E0A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 865D83181072
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EE03D890F;
-	Wed,  8 Apr 2026 18:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077393624B0;
+	Wed,  8 Apr 2026 18:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nN4RZhSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ieWTkPld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEFB34AB06;
-	Wed,  8 Apr 2026 18:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5FB26FA5A;
+	Wed,  8 Apr 2026 18:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674544; cv=none; b=PF/o5HXl/uD/ja/Q4GUatVhSxPlmvKRMIxZcOAR6HcvgEYrIdYctBcYSUV5SWeLId9FiKM0EjKWUlW5kTW4NibdDFHfDdyHW54k3+xRoXMTg23YPtZg5EIXokBM+Er4pazsCrfrqRatP8VsK/wQ0eq5eQwYJfuFSziKTgPDK7so=
+	t=1775673152; cv=none; b=VWoaX9nvCA/TEtX2fIvxK5+twv0RLIQmjioCQgxE8WnMB9PaAUroPhbspuBmUdIM7ZnTBk5zPFuEgB9KfOV3cFHDYUyW6e8x/JKV6uSK7BwsMH35BkOyVULDpgY7HsWzoaRIPvLd1ZUTP/8viWYipJdWvMxm5djaR+oR1eL+Tm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674544; c=relaxed/simple;
-	bh=ugL37jODfL3A5ogWd/rea1VYOQc6R4ZooW3jzJluwBI=;
+	s=arc-20240116; t=1775673152; c=relaxed/simple;
+	bh=wxVv2DUTbcDYBSWySEKnSsMd9MUNKcBECwHaWrkTu30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=haQTjZOuk1yYHXYQ3UB750BAvM6qpVbW+NpY/o7CkEsUmyWwo+Nnul9oB6m1WaQkamkZTsebZMHpJtA3TPbkckqz/5bgOO21lNb1BDXINciFfGcXuwXiiIYENiS2PclXhKVQqdjBLHiA/XB2BMGeHLuj+EezvbO1v7QcIThBo2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nN4RZhSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0EDC19421;
-	Wed,  8 Apr 2026 18:55:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IaOkDlhxd2HrE6YCJvoiOIro/tL12hgZhciatwvDVN/yqBrdQhhT7pqFg6MxhXS2SsdJF+Dp+6eo7alX9FlQyfanlIxLC3hdyjtMsKfhm3iM1IEYhYvqA/nhdq4Iu8vTqLbpb9Ry3e0ys1rgUl8WsJ3XjYG8e4CtqUaiF6PT8WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ieWTkPld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54894C19421;
+	Wed,  8 Apr 2026 18:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674543;
-	bh=ugL37jODfL3A5ogWd/rea1VYOQc6R4ZooW3jzJluwBI=;
+	s=korg; t=1775673152;
+	bh=wxVv2DUTbcDYBSWySEKnSsMd9MUNKcBECwHaWrkTu30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nN4RZhSH6iZQcb3sEqg/6n882+1FUoEKtRWcjfOdZdgtOf7oefX27OeMr+baL9sSx
-	 Dh7Wh8i8RBGWXBmEbsiWafFXUCWXVNd8Jfh6KtEHuYu/yII4mxXO/9FI4yDQg1Q6ac
-	 KBnK/orLF2QfMLD3XrG2W5YyrFeaOk3UOLVzwnWY=
+	b=ieWTkPld/u/P3QZOPb4eSRwK659BTxwPwERs6SzodfcibvNZ5q989OIs9g8dNxUJu
+	 M0v8LW8IcxAdH3CaGWokCp2MHOiqKFguZnJGnYZvOpCAEEH/yA8PVTfCpfmc7P/cL5
+	 /TwgqaAj6QK97rmgpyFXfQJW1d/e0/Gf1HNFg2EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Corey Hickey <bugfood-c@fatooh.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 106/311] rds: ib: reject FRMR registration before IB connection is established
-Date: Wed,  8 Apr 2026 20:01:46 +0200
-Message-ID: <20260408175943.372353542@linuxfoundation.org>
+Subject: [PATCH 6.18 122/277] hwmon: (asus-ec-sensors) Fix T_Sensor for PRIME X670E-PRO WIFI
+Date: Wed,  8 Apr 2026 20:01:47 +0200
+Message-ID: <20260408175938.429083044@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +63,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-235090-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234551-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 568373C2BDF
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fatooh.org:email]
+X-Rspamd-Queue-Id: CADF83C1B4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Corey Hickey <bugfood-c@fatooh.org>
 
-[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
+[ Upstream commit cffff6df669a438ecac506dadd49a53d4475a796 ]
 
-rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
-and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
-fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
-i_cm_id = NULL because the connection worker has not yet called
-rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
-RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
-the control message before any connection establishment, allowing
-rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
-kernel.
+On the Asus PRIME X670E-PRO WIFI, the driver reports a constant value of
+zero for T_Sensor. On this board, the register for T_Sensor is at a
+different address, as found by experimentation and confirmed by
+comparison to an independent temperature reading.
 
-The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
-commit 9e630bcb7701), which does not catch this case since ic is allocated
-early and is always non-NULL once the connection object exists.
+* sensor disconnected: -62.0°C
+* ambient temperature: +22.0°C
+* held between fingers: +30.0°C
 
- KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
- RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
- Call Trace:
-  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
-  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
-  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
-  rds_ib_get_mr (net/rds/ib_rdma.c:615)
-  __rds_rdma_map (net/rds/rdma.c:295)
-  rds_cmsg_rdma_map (net/rds/rdma.c:860)
-  rds_sendmsg (net/rds/send.c:1363)
-  ____sys_sendmsg
-  do_syscall_64
+Introduce SENSOR_TEMP_T_SENSOR_ALT1 to support the PRIME X670E-PRO WIFI
+without causing a regression for other 600-series boards
 
-Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
-non-NULL before proceeding with FRMR registration, mirroring the guard
-already present in rds_ib_post_inv(). Return -ENODEV when the connection
-is not ready, which the existing error handling in rds_cmsg_send() converts
-to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
-start the connection worker.
-
-Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e0444758dd1b ("hwmon: (asus-ec-sensors) add PRIME X670E-PRO WIFI")
+Signed-off-by: Corey Hickey <bugfood-c@fatooh.org>
+Link: https://lore.kernel.org/r/20260331215414.368785-1-bugfood-ml@fatooh.org
+[groeck: Fixed typo, updated Fixes: reference]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/ib_rdma.c | 7 ++++++-
+ drivers/hwmon/asus-ec-sensors.c | 7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
-index 6585164c70595..dd08ccc4246da 100644
---- a/net/rds/ib_rdma.c
-+++ b/net/rds/ib_rdma.c
-@@ -604,8 +604,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
- 		return ibmr;
- 	}
- 
--	if (conn)
-+	if (conn) {
- 		ic = conn->c_transport_data;
-+		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
-+			ret = -ENODEV;
-+			goto out;
-+		}
-+	}
- 
- 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
- 		ret = -ENODEV;
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index 34a8f6b834c97..95c50d3a788ce 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -111,6 +111,8 @@ enum ec_sensors {
+ 	ec_sensor_temp_mb,
+ 	/* "T_Sensor" temperature sensor reading [℃] */
+ 	ec_sensor_temp_t_sensor,
++	/* like ec_sensor_temp_t_sensor, but at an alternate address [℃] */
++	ec_sensor_temp_t_sensor_alt1,
+ 	/* VRM temperature [℃] */
+ 	ec_sensor_temp_vrm,
+ 	/* CPU Core voltage [mV] */
+@@ -156,6 +158,7 @@ enum ec_sensors {
+ #define SENSOR_TEMP_CPU_PACKAGE BIT(ec_sensor_temp_cpu_package)
+ #define SENSOR_TEMP_MB BIT(ec_sensor_temp_mb)
+ #define SENSOR_TEMP_T_SENSOR BIT(ec_sensor_temp_t_sensor)
++#define SENSOR_TEMP_T_SENSOR_ALT1 BIT(ec_sensor_temp_t_sensor_alt1)
+ #define SENSOR_TEMP_VRM BIT(ec_sensor_temp_vrm)
+ #define SENSOR_IN_CPU_CORE BIT(ec_sensor_in_cpu_core)
+ #define SENSOR_FAN_CPU_OPT BIT(ec_sensor_fan_cpu_opt)
+@@ -272,6 +275,8 @@ static const struct ec_sensor_info sensors_family_amd_600[] = {
+ 		EC_SENSOR("VRM", hwmon_temp, 1, 0x00, 0x33),
+ 	[ec_sensor_temp_t_sensor] =
+ 		EC_SENSOR("T_Sensor", hwmon_temp, 1, 0x00, 0x36),
++	[ec_sensor_temp_t_sensor_alt1] =
++		EC_SENSOR("T_Sensor", hwmon_temp, 1, 0x00, 0x37),
+ 	[ec_sensor_fan_cpu_opt] =
+ 		EC_SENSOR("CPU_Opt", hwmon_fan, 2, 0x00, 0xb0),
+ 	[ec_sensor_temp_water_in] =
+@@ -489,7 +494,7 @@ static const struct ec_board_info board_info_prime_x570_pro = {
+ static const struct ec_board_info board_info_prime_x670e_pro_wifi = {
+ 	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
+ 		SENSOR_TEMP_MB | SENSOR_TEMP_VRM |
+-		SENSOR_TEMP_T_SENSOR | SENSOR_FAN_CPU_OPT,
++		SENSOR_TEMP_T_SENSOR_ALT1 | SENSOR_FAN_CPU_OPT,
+ 	.mutex_path = ACPI_GLOBAL_LOCK_PSEUDO_PATH,
+ 	.family = family_amd_600_series,
+ };
 -- 
 2.53.0
 
