@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APguKaem1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:07 +0200
+	id MFEGADOb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B54E3C24EE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F773C0453
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E6CA31D366C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 30CA03018C39
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F483D4134;
-	Wed,  8 Apr 2026 18:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC0F3D3D06;
+	Wed,  8 Apr 2026 18:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePw83QT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVCviuTh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F903D522C;
-	Wed,  8 Apr 2026 18:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69141E5724;
+	Wed,  8 Apr 2026 18:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673578; cv=none; b=pCVmxmO3ROGJWD9+w9alsioOGVo5SeZG7C03+D7VfzJ5ufZKWx12orEqKNW5Lc9o0pE0f/1Yb/CMBsIFmuVmWgJXJagBr7mXEKInaWoolIyrCYk11fGwdQWbwssA+p6LTLOfyB61f5zOh8pVnSOfwFF1yJUC2sIAxqdEQQsj5eY=
+	t=1775672015; cv=none; b=suGJvafgnRZVWyPX33angqbcW4Oz7ym/iubE+BsgRO2T8+ECj0BjqrBOHrN4h/qhufWPkBNhtubd7LqikpYz7TgxqbS1CVVosr1GGO0bmoA7qCWcF/wfqcWEUagxl07fW+3F9eQijWkKDph4lDAQ2nkXQdm3/KA769Id4YiRpFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673578; c=relaxed/simple;
-	bh=z/eqAiawmOC75XXU7FjVm1qZIfPsByOsMf0w6vRqoc4=;
+	s=arc-20240116; t=1775672015; c=relaxed/simple;
+	bh=EVkKKZK6KJqx6fSK+JCydLmas8fscAgbwEvbg1vkf1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/nwH4iCXWlpEuOJ1tznx0khp4iTMoB2NEcUoEOcynD76zf7FkNNsPUy9CisjynjUoGJd2PEKopISZUus6/Mv4U9tdJKnisOFWMrxHnyfZqsRSC4H8tlvk4FahC5NgsHYdh015JNJhcDZfkzEMfaUMRzTxED5nqGGxUTPz5GgSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePw83QT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96293C19421;
-	Wed,  8 Apr 2026 18:39:37 +0000 (UTC)
+	 MIME-Version; b=eHGI2YLrPwt/RS+hRBQCouLXypp+JwfrRAlaroqdmN2z5FyQogfVFxD1DkP0dSAVTZ8hPtpS9P/1KIaWvwfZ1irTZZo9UW98OOEVJHXUdSHcojA7wyUHNocvcej9snLBv+km/VZDMbJPTZBblgBUvCG+z8S1ll/3+2VWVxQw2QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVCviuTh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D394C19421;
+	Wed,  8 Apr 2026 18:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673577;
-	bh=z/eqAiawmOC75XXU7FjVm1qZIfPsByOsMf0w6vRqoc4=;
+	s=korg; t=1775672015;
+	bh=EVkKKZK6KJqx6fSK+JCydLmas8fscAgbwEvbg1vkf1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePw83QT/UH6F1WBempU6HPiOOaBAG23d0DXQ0rJJlc8jiaRFJpaiTmuUwU/I6kfbW
-	 ci3qQh/gxhV10OO+Mx64RJbItMhO9oyurI8ixIhYUIqL0VRtqW4+b3wfXBkXOhfxxz
-	 Q73v08u6WYOKWFZRF+hh9S7PoalWXExLUq/q8YcE=
+	b=GVCviuThEfCblGmux30a/YnSKb8DiDtw+wY3j9fCWqHqtMKpxm93o1fU6bRaG6wk6
+	 eHc6Y+4g4lnin3/0Wh5iLCVMpAAa07BB+6QYfKQV4tZ8YhMxTnYN9grTwv0FwVVRim
+	 ZySiAWOW3CsmaWOwlONGvkuvWnCR3AemUWRa01Uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 001/242] io_uring/kbuf: remove legacy kbuf bulk allocation
+	Vladimir Oltean <olteanv@gmail.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 124/312] phy: ti: j721e-wiz: Fix device node reference leak in wiz_get_lane_phy_types()
 Date: Wed,  8 Apr 2026 20:00:41 +0200
-Message-ID: <20260408175927.125557169@linuxfoundation.org>
+Message-ID: <20260408175938.398851688@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +68,85 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234716-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-234112-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1B54E3C24EE
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 97F773C0453
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-Commit 7919292a961421bfdb22f83c16657684c96076b3 upstream.
+[ Upstream commit 584b457f4166293bdfa50f930228e9fb91a38392 ]
 
-Legacy provided buffers are slow and discouraged in favour of the ring
-variant. Remove the bulk allocation to keep it simpler as we don't care
-about performance.
+The serdes device_node is obtained using of_get_child_by_name(),
+which increments the reference count. However, it is never put,
+leading to a reference leak.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/a064d70370e590efed8076e9501ae4cfc20fe0ca.1738724373.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add the missing of_node_put() calls to ensure the reference count is
+properly balanced.
+
+Fixes: 7ae14cf581f2 ("phy: ti: j721e-wiz: Implement DisplayPort mode to the wiz driver")
+Suggested-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20260212-wiz-v2-1-6e8bd4cc7a4a@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |   30 +++++-------------------------
- 1 file changed, 5 insertions(+), 25 deletions(-)
+ drivers/phy/ti/phy-j721e-wiz.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -521,12 +521,9 @@ int io_provide_buffers_prep(struct io_ki
- 	return 0;
- }
- 
--#define IO_BUFFER_ALLOC_BATCH 64
--
- static int io_refill_buffer_cache(struct io_ring_ctx *ctx)
- {
--	struct io_buffer *bufs[IO_BUFFER_ALLOC_BATCH];
--	int allocated;
-+	struct io_buffer *buf;
- 
- 	/*
- 	 * Completions that don't happen inline (eg not under uring_lock) will
-@@ -544,27 +541,10 @@ static int io_refill_buffer_cache(struct
- 		spin_unlock(&ctx->completion_lock);
+diff --git a/drivers/phy/ti/phy-j721e-wiz.c b/drivers/phy/ti/phy-j721e-wiz.c
+index 6a63380f6a71f..c4ff31d0df192 100644
+--- a/drivers/phy/ti/phy-j721e-wiz.c
++++ b/drivers/phy/ti/phy-j721e-wiz.c
+@@ -1339,6 +1339,7 @@ static int wiz_get_lane_phy_types(struct device *dev, struct wiz *wiz)
+ 			dev_err(dev,
+ 				"%s: Reading \"reg\" from \"%s\" failed: %d\n",
+ 				__func__, subnode->name, ret);
++			of_node_put(serdes);
+ 			return ret;
+ 		}
+ 		of_property_read_u32(subnode, "cdns,num-lanes", &num_lanes);
+@@ -1351,6 +1352,7 @@ static int wiz_get_lane_phy_types(struct device *dev, struct wiz *wiz)
+ 			wiz->lane_phy_type[i] = phy_type;
  	}
  
--	/*
--	 * No free buffers and no completion entries either. Allocate a new
--	 * batch of buffer entries and add those to our freelist.
--	 */
--
--	allocated = kmem_cache_alloc_bulk(io_buf_cachep, GFP_KERNEL_ACCOUNT,
--					  ARRAY_SIZE(bufs), (void **) bufs);
--	if (unlikely(!allocated)) {
--		/*
--		 * Bulk alloc is all-or-nothing. If we fail to get a batch,
--		 * retry single alloc to be on the safe side.
--		 */
--		bufs[0] = kmem_cache_alloc(io_buf_cachep, GFP_KERNEL);
--		if (!bufs[0])
--			return -ENOMEM;
--		allocated = 1;
--	}
--
--	while (allocated)
--		list_add_tail(&bufs[--allocated]->list, &ctx->io_buffers_cache);
--
-+	buf = kmem_cache_alloc(io_buf_cachep, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+	list_add_tail(&buf->list, &ctx->io_buffers_cache);
++	of_node_put(serdes);
  	return 0;
  }
  
+-- 
+2.53.0
+
 
 
 
