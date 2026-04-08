@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGCIAkmf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:41 +0200
+	id SIeEGhel1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06563C0EC2
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D2D3C20E4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D84D930A534C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75BE830A760C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EB53AF646;
-	Wed,  8 Apr 2026 18:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B8D3D9DA1;
+	Wed,  8 Apr 2026 18:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5uNJEQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJBr7QcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4815A324B1F;
-	Wed,  8 Apr 2026 18:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA883D890F;
+	Wed,  8 Apr 2026 18:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672499; cv=none; b=qJ7iK2bFCWbXbRw9MNqu6KxEQX9e4V4ulHu4Q0KbXEhGDJqTI6U8V0iJBtglEC0ngW4s1TuAvoIF58k3JKvhsfyI/+wxYuqe8JPd4BHYZ/PKNPi1wqhcgt4vSbNqzjBLYvoIbl2cOKgKxcuY8v7F6CpqoTc1e3MOFul+UXFG5sI=
+	t=1775674433; cv=none; b=ZsKggRJppJeO17yxVEXXIQV4HeS+q00VE/9/EK3hkEcrjXhqS+u7h0YEMQIvOkFGVnHPQ2o/cphvZwhpCT8sr4Oj44yPQMVIixr922y32fuMp4hQ0wXzdvSf/EbSv9VXRU6jSyh0BGU/414WLqvyfoiXEUYpam9OiJ4fRsTiJsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672499; c=relaxed/simple;
-	bh=QW1QXpGLPzn7wvKn7cHaSBmAGyMS+9RX0nija80CROA=;
+	s=arc-20240116; t=1775674433; c=relaxed/simple;
+	bh=2uBHfUA20UVQn3zbNdKJQO0HMaVe13RThKX6S+i1RsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=de6KuM3O78E+EL69leaB9TWyIuHfV0ZPs6RiYGEKHHKG8QgQt1wuQU4q80owT666nSgtGZjmGFMuuGgflLE9JIr5m/jCN0SfOkqD7970R1G51pj4f36Try1yO9x9ftb77oXGbeIymutZ6y1ok/SFp4vzeyirBZBCJFmQkSG99fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5uNJEQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E910C19421;
-	Wed,  8 Apr 2026 18:21:38 +0000 (UTC)
+	 MIME-Version; b=jcb1CzSY5D0VtY05f7bUza7A4GUIJvBjreLVLSds545y8cwLQNlbufOfTMtMgVpYywbLasNJwaLEw+1qKxrR+d/CxM9GcpqqAg3kNr90T2O82uv5SBms/lURIdaqoT3xobgilQt9XSx0GMnbCzp2vU6jfCNP/LrFMosuisTneNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJBr7QcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14C1C19421;
+	Wed,  8 Apr 2026 18:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672498;
-	bh=QW1QXpGLPzn7wvKn7cHaSBmAGyMS+9RX0nija80CROA=;
+	s=korg; t=1775674433;
+	bh=2uBHfUA20UVQn3zbNdKJQO0HMaVe13RThKX6S+i1RsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5uNJEQzcZdHGnWGRj2qRC+XHRwocw8MIq1lhcxRorvH78g5KguElQ+YqD4DQrxCU
-	 6E7Lj9p9mr7beUAIAQrh1Ng29Yi76uR0eghmZmJTNPdlXrUUTw4qne7RpiIErKxy5c
-	 eJkpLIAqb62mQMKefQYCYAsb3cpA+yRdxyI9bEQ0=
+	b=wJBr7QcRbrXY+pCiz+Xo7Xo0kbtOgTToSS1n2MS+RhEpWBrX/ZBswZu2fguxFnSzT
+	 DyckAlImO2c88/FLFL+g9S9CKbA8huY2czwWzhiZrC8+4FVcHyoBkhys0aeu/RVFjJ
+	 VDrfKoJAtF+WGAUryeez8YQUPn3W0WXwDR0VdP8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/160] HID: multitouch: Check to ensure report responses match the request
-Date: Wed,  8 Apr 2026 20:01:34 +0200
-Message-ID: <20260408175913.459385199@linuxfoundation.org>
+Subject: [PATCH 6.19 095/311] Bluetooth: hci_sync: call destroy in hci_cmd_sync_run if immediate
+Date: Wed,  8 Apr 2026 20:01:35 +0200
+Message-ID: <20260408175942.961318624@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234299-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235047-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,60 +89,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A06563C0EC2
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D2D2D3C20E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit e716edafedad4952fe3a4a273d2e039a84e8681a ]
+[ Upstream commit a834a0b66ec6fb743377201a0f4229bb2503f4ce ]
 
-It is possible for a malicious (or clumsy) device to respond to a
-specific report's feature request using a completely different report
-ID.  This can cause confusion in the HID core resulting in nasty
-side-effects such as OOB writes.
+hci_cmd_sync_run() may run the work immediately if called from existing
+sync work (otherwise it queues a new sync work). In this case it fails
+to call the destroy() function.
 
-Add a check to ensure that the report ID in the response, matches the
-one that was requested.  If it doesn't, omit reporting the raw event and
-return early.
+On immediate run, make it behave same way as if item was queued
+successfully: call destroy, and return 0.
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+The only callsite is hci_abort_conn() via hci_cmd_sync_run_once(), and
+this changes its return value. However, its return value is not used
+except as the return value for hci_disconnect(), and nothing uses the
+return value of hci_disconnect(). Hence there should be no behavior
+change anywhere.
+
+Fixes: c898f6d7b093b ("Bluetooth: hci_sync: Introduce hci_cmd_sync_run/hci_cmd_sync_run_once")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/bluetooth/hci_sync.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index b6c2cb7153fde..0039508943626 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -472,12 +472,19 @@ static void mt_get_feature(struct hid_device *hdev, struct hid_report *report)
- 		dev_warn(&hdev->dev, "failed to fetch feature %d\n",
- 			 report->id);
- 	} else {
-+		/* The report ID in the request and the response should match */
-+		if (report->id != buf[0]) {
-+			hid_err(hdev, "Returned feature report did not match the request\n");
-+			goto free;
-+		}
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 43b36581e336d..a7fc43273815c 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -801,8 +801,15 @@ int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ 		return -ENETDOWN;
+ 
+ 	/* If on cmd_sync_work then run immediately otherwise queue */
+-	if (current_work() == &hdev->cmd_sync_work)
+-		return func(hdev, data);
++	if (current_work() == &hdev->cmd_sync_work) {
++		int err;
 +
- 		ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT, buf,
- 					   size, 0);
- 		if (ret)
- 			dev_warn(&hdev->dev, "failed to report feature\n");
- 	}
++		err = func(hdev, data);
++		if (destroy)
++			destroy(hdev, data, err);
++
++		return 0;
++	}
  
-+free:
- 	kfree(buf);
+ 	return hci_cmd_sync_submit(hdev, func, data, destroy);
  }
- 
 -- 
 2.53.0
 
