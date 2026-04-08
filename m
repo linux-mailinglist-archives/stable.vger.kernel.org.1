@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDGzIp2i1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:53 +0200
+	id GJ4aDNSj1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3531C3C17FB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93C63C1CA0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28FEC300E3E8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D164B3186AC2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD73346FB0;
-	Wed,  8 Apr 2026 18:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AE93B0AFC;
+	Wed,  8 Apr 2026 18:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhkLruex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ijnk5zSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8376E355F30;
-	Wed,  8 Apr 2026 18:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C498331A44;
+	Wed,  8 Apr 2026 18:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673924; cv=none; b=ZJTVTwO2D6kCdi9TdN8BP7P99hAF+5FHUptYV1tVzt9ngwb4xZfS1E0F3bXlvReuZ/42kTZo2npkOyuyE1zj0ZnS5+9xfvPwojwP1HFpRawZVKpidKii+3MDTaqNCpc/qKVh+/Sw04fGgh0auzPCh4RkIHUZm/VcdOd4/jM0bgA=
+	t=1775673264; cv=none; b=Vh+heljm0O2hZgDG0a1G5xX2l3nO3wtclORu3mRIWKTCohFPckfwkr83WBoNc2+e5q3xlNHxb9g7hywdIUmyKyKaB6RlizlKuVABmCQaFTcds02zpa7PJstZ7LTGnZHH+GskelfU5lYgzSql+CR2h/6ub32SCBI3uwSRASMLH1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673924; c=relaxed/simple;
-	bh=cOru9OilVGQH4fpJDnPWiByPFe0hqzjyeuGITAinag0=;
+	s=arc-20240116; t=1775673264; c=relaxed/simple;
+	bh=vkJmgLp0UZCP+8E/GeBDTV07tqSRsD3g1RSbmvpygGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFqKM/D/yqGbzo2gM8LHuJ774OTO5Qpj/o6ZUbvs0vGtHgRy9kFy0NupffV9iwoLBXArtbmC0D+49BVg2Ue8o/yhZPi6lOKdz+EgpuJ5rcieLUvZAO912hUL6VO/ObSwlwLlgeC2t2ue99H5KG5EXj2/VVqNljn4iPPOAnpn+xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhkLruex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D2CC19421;
-	Wed,  8 Apr 2026 18:45:23 +0000 (UTC)
+	 MIME-Version; b=TLCJbDNppw7CO2q7K8mkjE+t3okWyHZ9ft5Iu+Y6YRLCal9Eaht3TpKl8lhHdmMTVAq2Qo3aZs6LUjPcpwhRrpeLBskOfhYIzRDu5K5cfpeTet6fZ1Tx6QFpx9BLtUHwYUHDtO8A3A/7OwhnvoRUyUl/dc9Tvn594eDkrTvf0i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ijnk5zSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B791CC19421;
+	Wed,  8 Apr 2026 18:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673924;
-	bh=cOru9OilVGQH4fpJDnPWiByPFe0hqzjyeuGITAinag0=;
+	s=korg; t=1775673264;
+	bh=vkJmgLp0UZCP+8E/GeBDTV07tqSRsD3g1RSbmvpygGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhkLruexne7Pmzy7EoKzLQFWT9NHFhYnGcGbPAenUoh/QGehq4ZAzJrCxSFAtifRG
-	 Vt3B4MdEwOJKPfNgUcAqt/hdhzHHeojwDjTTaAuQ65oAL6/Z+VvtVXbuulanR5ujlz
-	 WmnkZrSAH2Q1XRrmrlughxvL+b+5KmAEzwvKXLwI=
+	b=Ijnk5zSfy5xGZkvqDTrEU6quf7db/J12TBTT0F8ZNiTSMl1pCgkgi/qwmyjHCVrAZ
+	 3Ywx3BDuaPQ9pKp8zhQ2mLmgX+gnhDgsVInEKKLUKMLaecIdGj9S3/gKkw9RZ4H/YB
+	 Jv9A1OeC5VLA+L0cBLMgo4t+CVy7LjBrGD9tY9mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/242] hwmon: (occ) Fix missing newline in occ_show_extended()
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 164/277] drm/amdgpu: Fix wait after reset sequence in S4
 Date: Wed,  8 Apr 2026 20:02:29 +0200
-Message-ID: <20260408175931.165941635@linuxfoundation.org>
+Message-ID: <20260408175939.993774840@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234849-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234594-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,55 +86,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,juniper.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:email]
-X-Rspamd-Queue-Id: 3531C3C17FB
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,gitlab.freedesktop.org:url,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C93C63C1CA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 09773978879ecf71a7990fe9a28ce4eb92bce645 ]
+commit daf470b8882b6f7f53cbfe9ec2b93a1b21528cdc upstream.
 
-In occ_show_extended() case 0, when the EXTN_FLAG_SENSOR_ID flag
-is set, the sysfs_emit format string "%u" is missing the trailing
-newline that the sysfs ABI expects. The else branch correctly uses
-"%4phN\n", and all other show functions in this file include the
-trailing newline.
+For a mode-1 reset done at the end of S4 on PSPv11 dGPUs, only check if
+TOS is unloaded.
 
-Add the missing "\n" for consistency and correct sysfs output.
-
-Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260326224510.294619-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 32f73741d6ee ("drm/amdgpu: Wait for bootloader after PSPv11 reset")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/4853
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2fb4883b884a437d760bd7bdf7695a7e5a60bba3)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/occ/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    8 ++++++--
+ drivers/gpu/drm/amd/amdgpu/psp_v11_0.c  |    3 ++-
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
-index 89928d38831b6..86c79156a46b9 100644
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -725,7 +725,7 @@ static ssize_t occ_show_extended(struct device *dev,
- 	switch (sattr->nr) {
- 	case 0:
- 		if (extn->flags & EXTN_FLAG_SENSOR_ID) {
--			rc = sysfs_emit(buf, "%u",
-+			rc = sysfs_emit(buf, "%u\n",
- 					get_unaligned_be32(&extn->sensor_id));
- 		} else {
- 			rc = sysfs_emit(buf, "%4phN\n", extn->name);
--- 
-2.53.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2683,8 +2683,12 @@ static int amdgpu_pmops_freeze(struct de
+ 	if (r)
+ 		return r;
+ 
+-	if (amdgpu_acpi_should_gpu_reset(adev))
+-		return amdgpu_asic_reset(adev);
++	if (amdgpu_acpi_should_gpu_reset(adev)) {
++		amdgpu_device_lock_reset_domain(adev->reset_domain);
++		r = amdgpu_asic_reset(adev);
++		amdgpu_device_unlock_reset_domain(adev->reset_domain);
++		return r;
++	}
+ 	return 0;
+ }
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
+@@ -170,7 +170,8 @@ static int psp_v11_0_wait_for_bootloader
+ 	int retry_loop;
+ 
+ 	/* For a reset done at the end of S3, only wait for TOS to be unloaded */
+-	if (adev->in_s3 && !(adev->flags & AMD_IS_APU) && amdgpu_in_reset(adev))
++	if ((adev->in_s4 || adev->in_s3) && !(adev->flags & AMD_IS_APU) &&
++	    amdgpu_in_reset(adev))
+ 		return psp_v11_wait_for_tos_unload(psp);
+ 
+ 	for (retry_loop = 0; retry_loop < 20; retry_loop++) {
 
 
 
