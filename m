@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-235196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCXfJQ6s1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:10 +0200
+	id 0PUBFTmj1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE543C2FFA
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:27:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024E13C1AA7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0832E3116536
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:00:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD748302C495
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1D735C1B4;
-	Wed,  8 Apr 2026 19:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0803AEF5F;
+	Wed,  8 Apr 2026 18:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pu8UKGV+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPtUTTxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1C635BDDB;
-	Wed,  8 Apr 2026 19:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39BB361DB5;
+	Wed,  8 Apr 2026 18:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674817; cv=none; b=YEL817ARMeJkST5pnesIEcTORt8yx9tgP2k3WSGzbkvgmOrpppDgef2XxPOOtaoyqZ2hccIXb6xHEQbTJIkpPUOb4s6LiIVdzeuljFCfrI7a3H36RtMH9z48sFCsOTngCA/uIrMn5avYV6Ei8oyvErvnvKaN5rDBc+oSHAUKa6s=
+	t=1775674076; cv=none; b=fHsTHW/X6jAetwtz9+uPoH8Tipxei0Sx7eDOAQ3aKikXrCSR+TJn052xyxAiO/YRYKAK1FrKCvX9cJMzXzcyWzuWdOC4VKdqS3dF27xluN0uv3jbxKk0bcHHQzD+f5HYZ5jl/GXMgxn0PMjvJLcYVPasGIv+FigUclJyH0W6CGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674817; c=relaxed/simple;
-	bh=QmTIiQJTpuYCcXTkdfL3kVLgBdCypttUP0QSbo3ZfbE=;
+	s=arc-20240116; t=1775674076; c=relaxed/simple;
+	bh=8+J7sDCVNAJSWAHhv8VM7Oe3lQD9fgZLapOjpRJtvJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBrauNz8Uu+llV/0m0oNv2TaXY/cP/WJ9tUaiWUiUhnipfAjq5HZCyEGllJt7GGnws3wG7I90HVr8LRZjEXVc3kvy6wOlg59g4hQLosfP/oOhQWC0lKBNcPO9IG8UhEjOsgIfflKjSG/dMbc5ZDRvp1Z0iKHmCIKtd0ncZnawLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pu8UKGV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B7BC19425;
-	Wed,  8 Apr 2026 19:00:16 +0000 (UTC)
+	 MIME-Version; b=ft/mLY2h3jUx6EJt+y9fGe9a2YdEBEtal1xmb0H40Pcu28IVptRLUTrAJvsBdc+mNNBkfbeAHNJoCjXI2olT/ZdThm8ixUQshIVzWUcecHSARNRwuV2xq/hd5K3DV7RWiks8KlruG6L/Xhr4fcnogEscawWk1uVEaDuYAnkdyk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPtUTTxT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F008C19421;
+	Wed,  8 Apr 2026 18:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674817;
-	bh=QmTIiQJTpuYCcXTkdfL3kVLgBdCypttUP0QSbo3ZfbE=;
+	s=korg; t=1775674076;
+	bh=8+J7sDCVNAJSWAHhv8VM7Oe3lQD9fgZLapOjpRJtvJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pu8UKGV+pPRaYMNhW3wi7XGrEBc37CXeLs5QNuMfSm9zNPqblVqzrZW4OY/TxI44b
-	 f0FqZUsFhS4l28eHnWMJmpSfpIWsqYp4ewFStPytuzgF8IyTEDcMb0bbL0k5ELgju1
-	 SIzqW6yQseAau5+wEdVHsp3pTA2WHFkFJQxWSJvk=
+	b=JPtUTTxTYA0a0HxVsNjJpTwgouoYu1P9Yj9YRToSKDNzbEnZP+zpUfU5K0COstofP
+	 oC6H+Qrv5P8uoDRKYdA1ZQPDzNsWeQbmX3rkc8JEKxBNjmAg7fIGV+7OCY6lD2ZFr8
+	 sZwPU2VTMNW7b2/hTaPfPP4boDR1o9E8amIanB2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Mitchell <mitchell.liam@gmail.com>,
-	Henrik Rydberg <rydberg@bitmath.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.19 212/311] Input: bcm5974 - recover from failed mode switch
-Date: Wed,  8 Apr 2026 20:03:32 +0200
-Message-ID: <20260408175947.319473593@linuxfoundation.org>
+	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: [PATCH 6.12 173/242] comedi: dt2815: add hardware detection to prevent crash
+Date: Wed,  8 Apr 2026 20:03:33 +0200
+Message-ID: <20260408175933.563204280@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,145 +68,98 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235196-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bitmath.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234909-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bitmath.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: 0CE543C2FFA
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,mev.co.uk:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 024E13C1AA7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam Mitchell <mitchell.liam@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit fc1e8a6f129d87c64ac8e58b50d9dfa66217cfda upstream.
+commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
 
-Mode switches sent before control response are ignored. This results in
-an unresponsive trackpad and "bcm5974: bad trackpad package, length: 8"
-repeated in logs.
+The dt2815 driver crashes when attached to I/O ports without actual
+hardware present. This occurs because syzkaller or users can attach
+the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
 
-On receiving unknown 8-byte packets, assume that mode switch was ignored
-and schedule an asynchronous mode reset. The reset will switch the
-device to normal mode, wait, then switch back to wellspring mode.
+When no hardware exists at the specified port, inb() operations return
+0xff (floating bus), but outb() operations can trigger page faults due
+to undefined behavior, especially under race conditions:
 
-Signed-off-by: Liam Mitchell <mitchell.liam@gmail.com>
-Link: https://lore.kernel.org/linux-input/CAOQ1CL4+DP1TuLAGNsz5GdFBTHvnTg=5q=Dr2Z1OQc6RXydSYA@mail.gmail.com/
-Acked-by: Henrik Rydberg <rydberg@bitmath.org>
-Link: https://patch.msgid.link/20260213-bcm5974-reset-v2-1-1837851336b0@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+  BUG: unable to handle page fault for address: 000000007fffff90
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  RIP: 0010:dt2815_attach+0x6e0/0x1110
+
+Add hardware detection by reading the status register before attempting
+any write operations. If the read returns 0xff, assume no hardware is
+present and fail the attach with -ENODEV. This prevents crashes from
+outb() operations on non-existent hardware.
+
+Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
+Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
+Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/bcm5974.c |   42 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ drivers/comedi/drivers/dt2815.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/input/mouse/bcm5974.c
-+++ b/drivers/input/mouse/bcm5974.c
-@@ -286,6 +286,8 @@ struct bcm5974 {
- 	const struct tp_finger *index[MAX_FINGERS];	/* finger index data */
- 	struct input_mt_pos pos[MAX_FINGERS];		/* position array */
- 	int slots[MAX_FINGERS];				/* slot assignments */
-+	struct work_struct mode_reset_work;
-+	unsigned long last_mode_reset;
- };
+--- a/drivers/comedi/drivers/dt2815.c
++++ b/drivers/comedi/drivers/dt2815.c
+@@ -175,6 +175,18 @@ static int dt2815_attach(struct comedi_d
+ 		    ? current_range_type : voltage_range_type;
+ 	}
  
- /* trackpad finger block data, le16-aligned */
-@@ -696,6 +698,32 @@ static int bcm5974_wellspring_mode(struc
- 	return retval;
- }
- 
-+/*
-+ * Mode switches sent before the control response are ignored.
-+ * Fixing this state requires switching to normal mode and waiting
-+ * about 1ms before switching back to wellspring mode.
-+ */
-+static void bcm5974_mode_reset_work(struct work_struct *work)
-+{
-+	struct bcm5974 *dev = container_of(work, struct bcm5974, mode_reset_work);
-+	int error;
-+
-+	guard(mutex)(&dev->pm_mutex);
-+	dev->last_mode_reset = jiffies;
-+
-+	error = bcm5974_wellspring_mode(dev, false);
-+	if (error) {
-+		dev_err(&dev->intf->dev, "reset to normal mode failed\n");
-+		return;
++	/*
++	 * Check if hardware is present before attempting any I/O operations.
++	 * Reading 0xff from status register typically indicates no hardware
++	 * on the bus (floating bus reads as all 1s).
++	 */
++	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
++		dev_err(dev->class_dev,
++			"No hardware detected at I/O base 0x%lx\n",
++			dev->iobase);
++		return -ENODEV;
 +	}
 +
-+	fsleep(1000);
-+
-+	error = bcm5974_wellspring_mode(dev, true);
-+	if (error)
-+		dev_err(&dev->intf->dev, "mode switch after reset failed\n");
-+}
-+
- static void bcm5974_irq_button(struct urb *urb)
- {
- 	struct bcm5974 *dev = urb->context;
-@@ -752,10 +780,20 @@ static void bcm5974_irq_trackpad(struct
- 	if (dev->tp_urb->actual_length == 2)
- 		goto exit;
- 
--	if (report_tp_state(dev, dev->tp_urb->actual_length))
-+	if (report_tp_state(dev, dev->tp_urb->actual_length)) {
- 		dprintk(1, "bcm5974: bad trackpad package, length: %d\n",
- 			dev->tp_urb->actual_length);
- 
-+		/*
-+		 * Receiving a HID packet means we aren't in wellspring mode.
-+		 * If we haven't tried a reset in the last second, try now.
-+		 */
-+		if (dev->tp_urb->actual_length == 8 &&
-+		    time_after(jiffies, dev->last_mode_reset + msecs_to_jiffies(1000))) {
-+			schedule_work(&dev->mode_reset_work);
-+		}
-+	}
-+
- exit:
- 	error = usb_submit_urb(dev->tp_urb, GFP_ATOMIC);
- 	if (error)
-@@ -906,6 +944,7 @@ static int bcm5974_probe(struct usb_inte
- 	dev->intf = iface;
- 	dev->input = input_dev;
- 	dev->cfg = *cfg;
-+	INIT_WORK(&dev->mode_reset_work, bcm5974_mode_reset_work);
- 	mutex_init(&dev->pm_mutex);
- 
- 	/* setup urbs */
-@@ -998,6 +1037,7 @@ static void bcm5974_disconnect(struct us
- {
- 	struct bcm5974 *dev = usb_get_intfdata(iface);
- 
-+	disable_work_sync(&dev->mode_reset_work);
- 	usb_set_intfdata(iface, NULL);
- 
- 	input_unregister_device(dev->input);
+ 	/* Init the 2815 */
+ 	outb(0x00, dev->iobase + DT2815_STATUS);
+ 	for (i = 0; i < 100; i++) {
 
 
 
