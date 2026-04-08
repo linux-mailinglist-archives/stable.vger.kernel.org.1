@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEpLLX+i1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:23 +0200
+	id sFHmDc2j1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C05803C17A9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5FE3C1C91
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92F883011694
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8B793102859
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21963D9025;
-	Wed,  8 Apr 2026 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FF23ACF16;
+	Wed,  8 Apr 2026 18:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3TuRPTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqR0ng6W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB233D6CAE;
-	Wed,  8 Apr 2026 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0638035B653;
+	Wed,  8 Apr 2026 18:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673905; cv=none; b=gD65qMQwJOoX9MDBUTMKMd3yXms34GbXFZV4p+i1GhbmYUVrYak6mpeasw33kLHn+YAWiW1HtiAn/k3swqcCOfm+vjIscq2RxT/aHbqVuejiJVEHLDapC4LjsUjNupOd1IX2kZlw8CQpwUmK3K2yju880RQa6A7sJHC5OGWUvIs=
+	t=1775673259; cv=none; b=SiJEVVEZL+YKbAUI+CBiwFxPYk69MXKY1WgAlmBJvZU+HvNVeL2MiCkkmlBk8nY5xMNZTr/kHFyA4cwBQHcoar8LDbE93dyS/4AifQ1S2CPOYz6zSrTO1gHAFz2vwyGRKF0sZiuY/Gli6EkTHuiKUikbKAGG3xSyg4z+g1WY0xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673905; c=relaxed/simple;
-	bh=6Iq3LuEYpJBBypHhyUKFgIbMsjGN8VM91zGCABA6Ij0=;
+	s=arc-20240116; t=1775673259; c=relaxed/simple;
+	bh=6sRItdu/rbrjEyKXlaTupuwbhGEZWVSz4kaISDFc2kY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kyAL9xnhurH8rP1b8AdRKogJy5gzvFbmVC867mR2GdYXZg9JmfKCSAHWyPRTvHZhAdtmNjWGzXy7a4PS0u/SSFIJmJFID1UCXpRiLkZeVYlk89E7uFcTO4RFL5n+xO7slXYW8R8LWa7oYEs799XrS7EXloOn/mQ8LhEmNy1QFwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3TuRPTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FB7C2BCB0;
-	Wed,  8 Apr 2026 18:45:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QKjKSNI0oHoKsMKYa9FrsYnRF9zC2q7oXBTfISVl9vh9ePpnQ4bHQy+0bVTCcH+fXR56My0nSPtH4pI6J/KUDfiSZi3EPUtHEvBFH8k8/9Lzmrx2urX5kjAqqB1GyQsCgVHI2HdIVFGIWQce/ctx424/U4xfK0gBXH4sknZOsHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqR0ng6W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9254AC19421;
+	Wed,  8 Apr 2026 18:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673905;
-	bh=6Iq3LuEYpJBBypHhyUKFgIbMsjGN8VM91zGCABA6Ij0=;
+	s=korg; t=1775673258;
+	bh=6sRItdu/rbrjEyKXlaTupuwbhGEZWVSz4kaISDFc2kY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3TuRPTJukKmZv7H+/AaOr+kHfQ781PBIBN9bzMUqFFuRTvPG/fTMLkiolWMvag6K
-	 7FAIb1pdKLy7sjb75bb8Ljc3PjCNfCUiX7fycDK71HyXFdHFTIcSPBHQJCfMmkBlN8
-	 XK1NL6+8mHRY3OXaQEa1pbh4G+4jzlgBZXiiaZ6o=
+	b=lqR0ng6W99AGdR52E/nGaCoxFCY4E2z1sGruY4bo+vJIDugMjbQrniUQ9QxkBoZ5u
+	 7lWFP8zK/Q5lbsXyPwrBrgByjFbTWQq0WFmHPpxN4szGTnzNyil8RgeYNiXMD78L+5
+	 DGS+YqKy+mINNYMnnE5tD6UmG3DvcOX6sS8HxmOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Gibbons <jamie.gibbons@microchip.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/242] dt-bindings: gpio: fix microchip #interrupt-cells
-Date: Wed,  8 Apr 2026 20:02:27 +0200
-Message-ID: <20260408175931.089413997@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.18 163/277] drm/i915/dp: Use crtc_state->enhanced_framing properly on ivb/hsw CPU eDP
+Date: Wed,  8 Apr 2026 20:02:28 +0200
+Message-ID: <20260408175939.957264455@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234842-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234592-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C05803C17A9
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BE5FE3C1C91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Gibbons <jamie.gibbons@microchip.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 6b5ef8c88854b343b733b574ea8754c9dab61f41 ]
+commit 9c9a57e4e337f94e23ddf69263fd0685c91155fb upstream.
 
-The GPIO controller on PolarFire SoC supports more than one type of
-interrupt and needs two interrupt cells.
+Looks like I missed the drm_dp_enhanced_frame_cap() in the ivb/hsw CPU
+eDP code when I introduced crtc_state->enhanced_framing. Fix it up so
+that the state we program to the hardware is guaranteed to match what
+we computed earlier.
 
-Fixes: 735806d8a68e9 ("dt-bindings: gpio: add bindings for microchip mpfs gpio")
-Signed-off-by: Jamie Gibbons <jamie.gibbons@microchip.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260326-wise-gumdrop-49217723a72a@spud
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3072a24c778a ("drm/i915: Introduce crtc_state->enhanced_framing")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260325135849.12603-3-ville.syrjala@linux.intel.com
+Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
+(cherry picked from commit 799fe8dc2af52f35c78c4ac97f8e34994dfd8760)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../devicetree/bindings/gpio/microchip,mpfs-gpio.yaml         | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/g4x_dp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml b/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
-index d78da7dd2a566..dafd80bdd23aa 100644
---- a/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
-+++ b/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
-@@ -34,7 +34,7 @@ properties:
-     const: 2
+--- a/drivers/gpu/drm/i915/display/g4x_dp.c
++++ b/drivers/gpu/drm/i915/display/g4x_dp.c
+@@ -137,7 +137,7 @@ static void intel_dp_prepare(struct inte
+ 			intel_dp->DP |= DP_SYNC_VS_HIGH;
+ 		intel_dp->DP |= DP_LINK_TRAIN_OFF_CPT;
  
-   "#interrupt-cells":
--    const: 1
-+    const: 2
+-		if (drm_dp_enhanced_frame_cap(intel_dp->dpcd))
++		if (pipe_config->enhanced_framing)
+ 			intel_dp->DP |= DP_ENHANCED_FRAMING;
  
-   ngpios:
-     description:
-@@ -83,7 +83,7 @@ examples:
-         gpio-controller;
-         #gpio-cells = <2>;
-         interrupt-controller;
--        #interrupt-cells = <1>;
-+        #interrupt-cells = <2>;
-         interrupts = <53>, <53>, <53>, <53>,
-                      <53>, <53>, <53>, <53>,
-                      <53>, <53>, <53>, <53>,
--- 
-2.53.0
-
+ 		intel_dp->DP |= DP_PIPE_SEL_IVB(crtc->pipe);
 
 
 
