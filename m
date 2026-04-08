@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-234306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJjADnOd1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:51 +0200
+	id MMiUJ/mp1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF1D3C0A66
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3BA63C2BA2
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:18:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 856853037189
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 406A03162AC3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B4A3ACA41;
-	Wed,  8 Apr 2026 18:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C483D9048;
+	Wed,  8 Apr 2026 18:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aI/uPnHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVOZspue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5A2324B1F;
-	Wed,  8 Apr 2026 18:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9687B3D9043;
+	Wed,  8 Apr 2026 18:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672517; cv=none; b=Z7s8ayLYxjDuAG5NJlbxCvmlKlvBTfkiXxX8kSzmcPK0DVeX8PvcSni5/z/HFI96WwhqXM3v+6U/8NvglZqNy0RVQpWC7OHyhiYidCDP0OfajJ+qBhEJL6MYpkBNiuOm/lf+9W4jeTv3YkPfuYxLjm5zGPGGHrrLf4eNK5nMcUc=
+	t=1775674510; cv=none; b=hCvZbfstu0jLqRQTHzxx6HJaeAStKxhnZ6I3ibYW+bhDeMiPrrs0uDCnTcBHJyr/BM88vIQHvcb5mAbn8fP7TX38uIiYfYgv3jB1VLlneGIUuhkIy6UVZXQ8csJb0zIeFFYAEjroq91ywh6j1qNfMLgS76hcoy+ilvxinCGdMDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672517; c=relaxed/simple;
-	bh=d5FKFN8IGk2RMXlMsekPxuyy+VHd2JkXBhigb1yKnGM=;
+	s=arc-20240116; t=1775674510; c=relaxed/simple;
+	bh=5wznJaxBRALTTn0+ULWSdJNcsllIhd6oa9Xj4zpCcY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iG/8cBsruemiFt3m0XrFrVE7gq+fnzhpMGxCRY7DIE6tsvbH05yB4c1JZ0Jg68eyQfJdkyOdXVIb23XxYVoTETAeDgu/vfhfbpgOt8AfccTeosO1+HImu6oaFxRwICyjGy8OSUlP9aSiggtMMlS0WFf6n+KOT8z3yFDpoWaxs60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aI/uPnHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34DBC19421;
-	Wed,  8 Apr 2026 18:21:56 +0000 (UTC)
+	 MIME-Version; b=lQwq2YQ14gzOyc4h1V6ggm21wLO0pwySMAsDaNPkr8UpawPE6NdODENG0ncNOx3wwcRupcWwKsHlcBAlBWpkXNaI3u1h4cSFVjs0HLKZ0cYQMRtpfFsLFZ6z339//BMF3s08MR+qW3Kfm3hg+hfOoPWXw+/Cqwx+b9U4Ji1j3GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVOZspue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FE2C2BCB2;
+	Wed,  8 Apr 2026 18:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672517;
-	bh=d5FKFN8IGk2RMXlMsekPxuyy+VHd2JkXBhigb1yKnGM=;
+	s=korg; t=1775674510;
+	bh=5wznJaxBRALTTn0+ULWSdJNcsllIhd6oa9Xj4zpCcY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aI/uPnHATnCj5QfjgUOvYnKZUblI0hi2zf36Q/bgKikgDHJi/6WE5nytzbgvaGYQN
-	 3RitnVLxKEL4jOc96Ns3r1qHEckPCU0dhcfIhMfeVDoSABRdYv/elXYU/h/Kw/WMOF
-	 ZnkZOpgWX6nNBISV8ECeK/Ak50GEuXNLDCJzh4w4=
+	b=KVOZspueGhw+xp9DIIhyqKnkW8htvslQCSBZUrIPoJmi9B/HHpCtuRcLAH1H0eSvH
+	 mF8SRnr93Ty25xFdDq0Vr83Zw2cDwItvYqre5P9a6QVzPbdbtxPR6RLlMmEzEjP5H7
+	 2NvDKX53A23yLDU2PalwCyj0r4XvGrpHxZMTDi8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Varun R Mallya <varunrmallya@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/160] netfilter: nf_conntrack_helper: pass helper to expect cleanup
+Subject: [PATCH 6.19 125/311] bpf: Reject sleepable kprobe_multi programs at attach time
 Date: Wed,  8 Apr 2026 20:02:05 +0200
-Message-ID: <20260408175914.632950635@linuxfoundation.org>
+Message-ID: <20260408175944.083937270@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +71,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nwl.cc,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234306-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
+	TAGGED_FROM(0.00)[bounces-235077-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,netfilter.org:email,nwl.cc:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3BF1D3C0A66
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: C3BA63C2BA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Varun R Mallya <varunrmallya@gmail.com>
 
-[ Upstream commit a242a9ae58aa46ff7dae51ce64150a93957abe65 ]
+[ Upstream commit eb7024bfcc5f68ed11ed9dd4891a3073c15f04a8 ]
 
-nf_conntrack_helper_unregister() calls nf_ct_expect_iterate_destroy()
-to remove expectations belonging to the helper being unregistered.
-However, it passes NULL instead of the helper pointer as the data
-argument, so expect_iter_me() never matches any expectation and all
-of them survive the cleanup.
+kprobe.multi programs run in atomic/RCU context and cannot sleep.
+However, bpf_kprobe_multi_link_attach() did not validate whether the
+program being attached had the sleepable flag set, allowing sleepable
+helpers such as bpf_copy_from_user() to be invoked from a non-sleepable
+context.
 
-After unregister returns, nfnl_cthelper_del() frees the helper
-object immediately.  Subsequent expectation dumps or packet-driven
-init_conntrack() calls then dereference the freed exp->helper,
-causing a use-after-free.
+This causes a "sleeping function called from invalid context" splat:
 
-Pass the actual helper pointer so expectations referencing it are
-properly destroyed before the helper object is freed.
+  BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:169
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1787, name: sudo
+  preempt_count: 1, expected: 0
+  RCU nest depth: 2, expected: 0
 
-  BUG: KASAN: slab-use-after-free in string+0x38f/0x430
-  Read of size 1 at addr ffff888003b14d20 by task poc/103
-  Call Trace:
-   string+0x38f/0x430
-   vsnprintf+0x3cc/0x1170
-   seq_printf+0x17a/0x240
-   exp_seq_show+0x2e5/0x560
-   seq_read_iter+0x419/0x1280
-   proc_reg_read+0x1ac/0x270
-   vfs_read+0x179/0x930
-   ksys_read+0xef/0x1c0
-  Freed by task 103:
-  The buggy address is located 32 bytes inside of
-   freed 192-byte region [ffff888003b14d00, ffff888003b14dc0)
+Fix this by rejecting sleepable programs early in
+bpf_kprobe_multi_link_attach(), before any further processing.
 
-Fixes: ac7b84839003 ("netfilter: expect: add and use nf_ct_expect_iterate helpers")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Reviewed-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
+Signed-off-by: Varun R Mallya <varunrmallya@gmail.com>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Acked-by: Leon Hwang <leon.hwang@linux.dev>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20260401191126.440683-1-varunrmallya@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/bpf_trace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index 10f72b5b4e1ad..01d125fa2f76e 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -424,7 +424,7 @@ void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
- 	 */
- 	synchronize_rcu();
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index e448a2553f7ce..42734975a06bc 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2739,6 +2739,10 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	if (!is_kprobe_multi(prog))
+ 		return -EINVAL;
  
--	nf_ct_expect_iterate_destroy(expect_iter_me, NULL);
-+	nf_ct_expect_iterate_destroy(expect_iter_me, me);
- 	nf_ct_iterate_destroy(unhelp, me);
- }
- EXPORT_SYMBOL_GPL(nf_conntrack_helper_unregister);
++	/* kprobe_multi is not allowed to be sleepable. */
++	if (prog->sleepable)
++		return -EINVAL;
++
+ 	/* Writing to context is not allowed for kprobes. */
+ 	if (prog->aux->kprobe_write_ctx)
+ 		return -EINVAL;
 -- 
 2.53.0
 
