@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-234194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eD9fG7Wc1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:41 +0200
+	id 4BdxFJ6d1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B3B3C07B4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C9E43C0AB7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D33F305D1F1
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 325AF301B84A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088623A16A0;
-	Wed,  8 Apr 2026 18:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A872494F0;
+	Wed,  8 Apr 2026 18:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYZ8ZjJz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxlKS5yS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C028EB67E;
-	Wed,  8 Apr 2026 18:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8E7B67E;
+	Wed,  8 Apr 2026 18:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672226; cv=none; b=UckbO/6JSyvaF/8XerKv8I5JTvjRxSV+BggXB5Gxv6I3ToqoU5xMIQjSzlZf+E+xqv5j+D2E5++iSmZ/txxRUmmFPAJ3Xv6I4zKpvCKB43k/nSm/Od/120FKOklk9mk6JAsRPOJOKDpLxUomE+nw7vZtdY+NxZCbQqPADN7ASxM=
+	t=1775672685; cv=none; b=fo2hN8sCmhqu0/rNENmL9w4J4CFDTkKGeLyDGtA1blAe//gGn8NFiInXrdKrrYq3IQBH4haqA0x7Jyd79jUs2RI+6rLImcPasRs30hwYn/Cre8iB6i7hQLtHKicUY7DpYw7d0A1s85Xi5covsIgszEdhnzsuA0Y7TZ6/39tGXW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672226; c=relaxed/simple;
-	bh=xjrHZvI4oO/Ex0zDuoALgO0TxrWFEVfDiraCKn7o244=;
+	s=arc-20240116; t=1775672685; c=relaxed/simple;
+	bh=SbFBtAtDqZPHB1Qa4Lu7EP3VZO78X8x9Bg7OrHeSkfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=orzFxR5gTZA96F4Dv/5Q0nR1kRljoEeDNH1WXVrvVHTa0m8qc5dhbd6hE21bH9mHnFGD7EcqjxdNbKeW8iiFigQekW4Qg56tOGJWwkR4WkMH15Ysd4NoXUzgq7xEFt5CGF7oUHCwPq9qvbP8d50tUHoUZmxc4pCT6qOMdbG/HTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYZ8ZjJz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5E6C19421;
-	Wed,  8 Apr 2026 18:17:06 +0000 (UTC)
+	 MIME-Version; b=UyVrKhrIAlKhHidEYUaZfSV9mlVVtC5Hm5Dmm++N2BsWc0/Lgz+dnODTrS1yiqSp7L6sibpUDh5yvfWnF1pY/aNBr4OS8JgGLIe9KEeajjspvZcx9fwoPyeJ/pc2q09sYWXkXgP11JF5glF4EZwwWc1/cHrHhHR+Iq4Q5ndZowE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxlKS5yS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51B6C19425;
+	Wed,  8 Apr 2026 18:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672226;
-	bh=xjrHZvI4oO/Ex0zDuoALgO0TxrWFEVfDiraCKn7o244=;
+	s=korg; t=1775672685;
+	bh=SbFBtAtDqZPHB1Qa4Lu7EP3VZO78X8x9Bg7OrHeSkfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYZ8ZjJz1aak2vAN8BZkMiB+PTUbPgdEN3biHB6HwxzKDGJohv2CntxSjddJUGIpt
-	 +flv8u9PqwFj1Lo3usIChokZ5FIvwsuOzy5jOvaNbLiWKkjlptl1QGYbQLbe3vgUlW
-	 iWJ+UOl3PVuvngG4KqfGUVV8gnDgOgpKyRxQJ9a0=
+	b=BxlKS5ySnaiGEW6WPqezOABg0aeRzLejHCqsoRPBc8QXliCuP1YB5piJ3KzTlUjJF
+	 5+M6JADJ1kTqwS1p0cVEjFhllrngW7Fy8lZyE7a5+w8qUZPezLeG5OjDozokHBKDff
+	 rDHHezH3uD0oMiNoHHpYHac0BwvHPVEANX40EuS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 239/312] Revert "ext4: get rid of ppath in ext4_split_extent_at()"
+Subject: [PATCH 6.6 069/160] hwmon: (tps53679) Fix device ID comparison and printing in tps53676_identify()
 Date: Wed,  8 Apr 2026 20:02:36 +0200
-Message-ID: <20260408175942.677671756@linuxfoundation.org>
+Message-ID: <20260408175915.781053645@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,242 +68,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234194-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234371-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E6B3B3C07B4
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,juniper.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 4C9E43C0AB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit 4d03e2046f73158feb886a45d5682c3b79066872.
+From: Sanman Pradhan <psanman@juniper.net>
 
+[ Upstream commit ca34ee6d0307a0b4e52c870dfc1bb8a3c3eb956e ]
+
+tps53676_identify() uses strncmp() to compare the device ID buffer
+against a byte sequence containing embedded non-printable bytes
+(\x53\x67\x60). strncmp() is semantically wrong for binary data
+comparison; use memcmp() instead.
+
+Additionally, the buffer from i2c_smbus_read_block_data() is not
+NUL-terminated, so printing it with "%s" in the error path is
+undefined behavior and may read past the buffer. Use "%*ph" to
+hex-dump the actual bytes returned.
+
+Per the datasheet, the expected device ID is the 6-byte sequence
+54 49 53 67 60 00 ("TI\x53\x67\x60\x00"), so compare all 6 bytes
+including the trailing NUL.
+
+Fixes: cb3d37b59012 ("hwmon: (pmbus/tps53679) Add support for TI TPS53676")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260330155618.77403-1-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 85 +++++++++++++++++++++--------------------------
- 1 file changed, 38 insertions(+), 47 deletions(-)
+ drivers/hwmon/pmbus/tps53679.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 6da0bf3cf406d..59c0bffc691d1 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -84,11 +84,12 @@ static void ext4_extent_block_csum_set(struct inode *inode,
- 	et->et_checksum = ext4_extent_block_csum(inode, eh);
- }
- 
--static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
--						  struct inode *inode,
--						  struct ext4_ext_path *path,
--						  ext4_lblk_t split,
--						  int split_flag, int flags);
-+static int ext4_split_extent_at(handle_t *handle,
-+			     struct inode *inode,
-+			     struct ext4_ext_path **ppath,
-+			     ext4_lblk_t split,
-+			     int split_flag,
-+			     int flags);
- 
- static int ext4_ext_trunc_restart_fn(struct inode *inode, int *dropped)
- {
-@@ -334,15 +335,9 @@ ext4_force_split_extent_at(handle_t *handle, struct inode *inode,
- 	if (nofail)
- 		flags |= EXT4_GET_BLOCKS_METADATA_NOFAIL | EXT4_EX_NOFAIL;
- 
--	path = ext4_split_extent_at(handle, inode, path, lblk, unwritten ?
-+	return ext4_split_extent_at(handle, inode, ppath, lblk, unwritten ?
- 			EXT4_EXT_MARK_UNWRIT1|EXT4_EXT_MARK_UNWRIT2 : 0,
- 			flags);
--	if (IS_ERR(path)) {
--		*ppath = NULL;
--		return PTR_ERR(path);
--	}
--	*ppath = path;
--	return 0;
- }
- 
- static int
-@@ -694,7 +689,7 @@ static void ext4_ext_show_leaf(struct inode *inode, struct ext4_ext_path *path)
- 	struct ext4_extent *ex;
- 	int i;
- 
--	if (IS_ERR_OR_NULL(path))
-+	if (!path)
- 		return;
- 
- 	eh = path[depth].p_hdr;
-@@ -3160,14 +3155,16 @@ static int ext4_ext_zeroout(struct inode *inode, struct ext4_extent *ex)
-  *  a> the extent are splitted into two extent.
-  *  b> split is not needed, and just mark the extent.
-  *
-- * Return an extent path pointer on success, or an error pointer on failure.
-+ * return 0 on success.
-  */
--static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
--						  struct inode *inode,
--						  struct ext4_ext_path *path,
--						  ext4_lblk_t split,
--						  int split_flag, int flags)
-+static int ext4_split_extent_at(handle_t *handle,
-+			     struct inode *inode,
-+			     struct ext4_ext_path **ppath,
-+			     ext4_lblk_t split,
-+			     int split_flag,
-+			     int flags)
- {
-+	struct ext4_ext_path *path = *ppath;
- 	ext4_fsblk_t newblock;
- 	ext4_lblk_t ee_block;
- 	struct ext4_extent *ex, newex, orig_ex, zero_ex;
-@@ -3241,12 +3238,14 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
- 		ext4_ext_mark_unwritten(ex2);
- 
- 	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
--	if (!IS_ERR(path))
-+	if (!IS_ERR(path)) {
-+		*ppath = path;
- 		goto out;
--
-+	}
-+	*ppath = NULL;
- 	err = PTR_ERR(path);
- 	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
--		return path;
-+		return err;
- 
- 	/*
- 	 * Get a new path to try to zeroout or fix the extent length.
-@@ -3256,14 +3255,16 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
- 	 * in ext4_da_update_reserve_space() due to an incorrect
- 	 * ee_len causing the i_reserved_data_blocks exception.
- 	 */
--	path = ext4_find_extent(inode, ee_block, NULL, flags | EXT4_EX_NOFAIL);
-+	path = ext4_find_extent(inode, ee_block, NULL,
-+				flags | EXT4_EX_NOFAIL);
- 	if (IS_ERR(path)) {
- 		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
- 				 split, PTR_ERR(path));
--		return path;
-+		return PTR_ERR(path);
- 	}
- 	depth = ext_depth(inode);
- 	ex = path[depth].p_ext;
-+	*ppath = path;
- 
- 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
- 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
-@@ -3315,13 +3316,10 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
- 	 * and err is a non-zero error code.
- 	 */
- 	ext4_ext_dirty(handle, inode, path + path->p_depth);
-+	return err;
- out:
--	if (err) {
--		ext4_free_ext_path(path);
--		path = ERR_PTR(err);
--	}
- 	ext4_ext_show_leaf(inode, path);
--	return path;
-+	return err;
- }
- 
- /*
-@@ -3368,14 +3366,10 @@ static int ext4_split_extent(handle_t *handle,
- 				       EXT4_EXT_MARK_UNWRIT2;
- 		if (split_flag & EXT4_EXT_DATA_VALID2)
- 			split_flag1 |= EXT4_EXT_DATA_VALID1;
--		path = ext4_split_extent_at(handle, inode, path,
-+		err = ext4_split_extent_at(handle, inode, ppath,
- 				map->m_lblk + map->m_len, split_flag1, flags1);
--		if (IS_ERR(path)) {
--			err = PTR_ERR(path);
--			*ppath = NULL;
-+		if (err)
- 			goto out;
--		}
--		*ppath = path;
- 	} else {
- 		allocated = ee_len - (map->m_lblk - ee_block);
- 	}
-@@ -3383,7 +3377,7 @@ static int ext4_split_extent(handle_t *handle,
- 	 * Update path is required because previous ext4_split_extent_at() may
- 	 * result in split of original leaf or extent zeroout.
- 	 */
--	path = ext4_find_extent(inode, map->m_lblk, path, flags);
-+	path = ext4_find_extent(inode, map->m_lblk, *ppath, flags);
- 	if (IS_ERR(path)) {
- 		*ppath = NULL;
- 		return PTR_ERR(path);
-@@ -3405,17 +3399,13 @@ static int ext4_split_extent(handle_t *handle,
- 			split_flag1 |= split_flag & (EXT4_EXT_MAY_ZEROOUT |
- 						     EXT4_EXT_MARK_UNWRIT2);
- 		}
--		path = ext4_split_extent_at(handle, inode, path,
-+		err = ext4_split_extent_at(handle, inode, ppath,
- 				map->m_lblk, split_flag1, flags);
--		if (IS_ERR(path)) {
--			err = PTR_ERR(path);
--			*ppath = NULL;
-+		if (err)
- 			goto out;
--		}
--		*ppath = path;
+diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
+index 5c9466244d70d..ecc1be33b3b1b 100644
+--- a/drivers/hwmon/pmbus/tps53679.c
++++ b/drivers/hwmon/pmbus/tps53679.c
+@@ -156,8 +156,8 @@ static int tps53676_identify(struct i2c_client *client,
+ 	ret = i2c_smbus_read_block_data(client, PMBUS_IC_DEVICE_ID, buf);
+ 	if (ret < 0)
+ 		return ret;
+-	if (strncmp("TI\x53\x67\x60", buf, 5)) {
+-		dev_err(&client->dev, "Unexpected device ID: %s\n", buf);
++	if (ret != 6 || memcmp(buf, "TI\x53\x67\x60\x00", 6)) {
++		dev_err(&client->dev, "Unexpected device ID: %*ph\n", ret, buf);
+ 		return -ENODEV;
  	}
  
--	ext4_ext_show_leaf(inode, path);
-+	ext4_ext_show_leaf(inode, *ppath);
- out:
- 	return err ? err : allocated;
- }
-@@ -5611,21 +5601,22 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
- 			if (ext4_ext_is_unwritten(extent))
- 				split_flag = EXT4_EXT_MARK_UNWRIT1 |
- 					EXT4_EXT_MARK_UNWRIT2;
--			path = ext4_split_extent_at(handle, inode, path,
-+			ret = ext4_split_extent_at(handle, inode, &path,
- 					offset_lblk, split_flag,
- 					EXT4_EX_NOCACHE |
- 					EXT4_GET_BLOCKS_PRE_IO |
- 					EXT4_GET_BLOCKS_METADATA_NOFAIL);
- 		}
- 
--		if (IS_ERR(path)) {
-+		ext4_free_ext_path(path);
-+		if (ret < 0) {
- 			up_write(&EXT4_I(inode)->i_data_sem);
--			ret = PTR_ERR(path);
- 			goto out_stop;
- 		}
-+	} else {
-+		ext4_free_ext_path(path);
- 	}
- 
--	ext4_free_ext_path(path);
- 	ext4_es_remove_extent(inode, offset_lblk, EXT_MAX_BLOCKS - offset_lblk);
- 
- 	/*
 -- 
 2.53.0
 
