@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cG2SCGOn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:15 +0200
+	id GNlrKh+k1mmUGwgAu9opvQ
+	(envelope-from <stable+bounces-235033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDB83C26D9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:07:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BADE3C1D95
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A06F331AB819
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B5B0C3015D3C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C38E3D522C;
-	Wed,  8 Apr 2026 18:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B5E3D890F;
+	Wed,  8 Apr 2026 18:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wgf+r9D4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UT+Gaymg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402B732A3FD;
-	Wed,  8 Apr 2026 18:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55235337B81;
+	Wed,  8 Apr 2026 18:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673748; cv=none; b=S6F+PILtjJMNpStLrX8k+XqPFCluzyugYm10q6TkoAcAEh22YKxVKRQbeZxb94eWiWznbPWqzZXMOFk1x6xjIm0RsS8gTvO+0v5HYQPylZCP881GtspNLZRBT8pSBdwyvxyCt6nZHWVkTGBMJOfFDJKm9VIGmXmqf0jwbcSg3jI=
+	t=1775674397; cv=none; b=poaWoBlr5TQRRCoTBl6P2sfEJ4+fPyg2wJmHw4dBnZOf/xP9FTmY65DCFTSGctLMFnt3Py2hhDu1DcGi9jMlUOqJB770CwJXNf4XKIpAZEPJ6VJ2y6SfXERTMiE/Gbw6+tKj4YzKc3pcp5k/FaytSt0hrkHQ6NIVZN9XRoFbMyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673748; c=relaxed/simple;
-	bh=MJRX5jtGZqkPxkORI1Z8gbepOkBmEuDZQllDaZO1H/0=;
+	s=arc-20240116; t=1775674397; c=relaxed/simple;
+	bh=0IaUfkxg7y12BYEzImPc6J+YD0k+Hnw3JWWIClV9rcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RWs1YSICKlAlXkRdxmg0dcbFlaKWhePowwZ5zh5GhW65CoUGE8UtdZlUhOymADJkHFOeMRDs+Bbj1C/70BFLAc7YKtojdH2fPwdlOLw9aJHYAFWVAs5jZHhtGQVppPq9Y041tmmtLirsrFzVHdSqvjhQDjdLFsvo5WOdxfnbVZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wgf+r9D4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93F4C19421;
-	Wed,  8 Apr 2026 18:42:27 +0000 (UTC)
+	 MIME-Version; b=jVwZBt+5JRmi3LnbOXiaESmohZEpDGrcSCld0cF04h8SyjFUz82Ks+20njNTJ5vE4OuOGG/v3LhdDjPph0e4u1fEChuoimrNLAG5NY3Rylbd57QQLOMjC7pQKwTuOD+TtwVsG+VkdrsH45Bp5EJMf4dfnjY+h/h/uC7yubbg3wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UT+Gaymg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F5EC19421;
+	Wed,  8 Apr 2026 18:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673748;
-	bh=MJRX5jtGZqkPxkORI1Z8gbepOkBmEuDZQllDaZO1H/0=;
+	s=korg; t=1775674397;
+	bh=0IaUfkxg7y12BYEzImPc6J+YD0k+Hnw3JWWIClV9rcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wgf+r9D4Iyt6ITKHnuxIX3NY2vTgO5kSbZEfJpjBwCVpTB0PpsqrXOrtXdkyt+/Rt
-	 UjohCgdx17x4bgbFDPpTv64iGS6QFpmDJq672YbbhNiDTaS14aeLajoJdCaYP+2GAs
-	 0xmyE72cFZw2pUgwrxyg0hmsl/UARIEJyMsedcv0=
+	b=UT+Gaymgy8aAw4BJpkLOh+KIbMG52/KG+ibz3Xg/5WGtrRy1OHoEmLBlO3FCNaZL5
+	 5fENv+ZQr/rRxH0BG8tWeTXgsRFwTEFTK4bhBqjBmEQaPlFMFVdbMEoUDIfnSU8f3p
+	 +/cnvD69tBkPB1AoWlEGPJ7Bc3rfEpEMNzN88zrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Bunyan <pbunyan@redhat.com>,
-	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/242] crypto: caam - fix DMA corruption on long hmac keys
+Subject: [PATCH 6.19 082/311] ALSA: usb-audio: Exclude Scarlett 2i2 1st Gen (8016) from SKIP_IFACE_SETUP
 Date: Wed,  8 Apr 2026 20:01:22 +0200
-Message-ID: <20260408175928.647320990@linuxfoundation.org>
+Message-ID: <20260408175942.474181083@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234782-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235033-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6EDB83C26D9
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,msgid.link:url,b4.vu:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5BADE3C1D95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horia Geantă <horia.geanta@nxp.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 5ddfdcbe10dc5f97afc4e46ca22be2be717e8caf ]
+[ Upstream commit a0dafdbd1049a8ea661a1a471be1b840bd8aed13 ]
 
-When a key longer than block size is supplied, it is copied and then
-hashed into the real key.  The memory allocated for the copy needs to
-be rounded to DMA cache alignment, as otherwise the hashed key may
-corrupt neighbouring memory.
+Same issue as the other 1st Gen Scarletts: QUIRK_FLAG_SKIP_IFACE_SETUP
+causes distorted audio on this revision of the Scarlett 2i2 1st Gen
+(1235:8016).
 
-The rounding was performed, but never actually used for the allocation.
-Fix this by replacing kmemdup with kmalloc for a larger buffer,
-followed by memcpy.
-
-Fixes: 199354d7fb6e ("crypto: caam - Remove GFP_DMA and add DMA alignment padding")
-Reported-by: Paul Bunyan <pbunyan@redhat.com>
-Signed-off-by: Horia Geantă <horia.geanta@nxp.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 38c322068a26 ("ALSA: usb-audio: Add QUIRK_FLAG_SKIP_IFACE_SETUP")
+Reported-by: lukas-reineke [https://github.com/geoffreybennett/linux-fcp/issues/54]
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/acytr8aEUba4VXmZ@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/caamhash.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
-index 25c02e2672585..053af748be86d 100644
---- a/drivers/crypto/caam/caamhash.c
-+++ b/drivers/crypto/caam/caamhash.c
-@@ -441,9 +441,10 @@ static int ahash_setkey(struct crypto_ahash *ahash,
- 		if (aligned_len < keylen)
- 			return -EOVERFLOW;
- 
--		hashed_key = kmemdup(key, keylen, GFP_KERNEL);
-+		hashed_key = kmalloc(aligned_len, GFP_KERNEL);
- 		if (!hashed_key)
- 			return -ENOMEM;
-+		memcpy(hashed_key, key, keylen);
- 		ret = hash_digest_key(ctx, &keylen, hashed_key, digestsize);
- 		if (ret)
- 			goto bad_free_key;
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index f0554f023d3cb..a56fb8ef987ea 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2427,6 +2427,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_VALIDATE_RATES),
+ 	DEVICE_FLG(0x1235, 0x8006, 0), /* Focusrite Scarlett 2i2 1st Gen */
+ 	DEVICE_FLG(0x1235, 0x800a, 0), /* Focusrite Scarlett 2i4 1st Gen */
++	DEVICE_FLG(0x1235, 0x8016, 0), /* Focusrite Scarlett 2i2 1st Gen */
+ 	DEVICE_FLG(0x1235, 0x801c, 0), /* Focusrite Scarlett Solo 1st Gen */
+ 	VENDOR_FLG(0x1235, /* Focusrite Novation */
+ 		   QUIRK_FLAG_SKIP_IFACE_SETUP),
 -- 
 2.53.0
 
