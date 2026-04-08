@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JDAM5Kf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:54 +0200
+	id +AXNDAGn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64433C0F98
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5663C2606
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8233303AB11
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45EC63178BC3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F125F3B19A3;
-	Wed,  8 Apr 2026 18:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222F43D522C;
+	Wed,  8 Apr 2026 18:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxXFyO45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3i5lpHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57DA24B28;
-	Wed,  8 Apr 2026 18:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3A1331A44;
+	Wed,  8 Apr 2026 18:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673116; cv=none; b=EI92khpTbtn/CqYd1bJryJW/CeIR0+gf41j1L2MHP2nItnbE4FPNti4Lge2i5Cql3Bk2ewQ9C7gwI1UDVkxG8X6CdR2QzeKx0oJK3pnfzb1YdQYQxOCXwF8OFhuJkVYOlPl4Y8Ms0FA4IoQzeiT9nZKgT9wyjUFXIpDJk+nFHRw=
+	t=1775673688; cv=none; b=hz2NrcaNSf9qd+NSZD81gB2vZXUYDSNtDm05jl1j+ox7OIInzVnrCybb21ZuWxSYVIpHzGC+lz6+Hiyi3ko0qqTbuFMymKG0Tq0LHayvOsObojEQGO96qddNCPP6medPs5dk8bNXPhZm9TaSe7BKP8KJ1VxR11Y0wHUuzUf+vUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673116; c=relaxed/simple;
-	bh=I6Ali0TIK4XhFwEKmZKblIZqJJs0AOgEFnLsfXCGGcg=;
+	s=arc-20240116; t=1775673688; c=relaxed/simple;
+	bh=hmHrzGwp2ZW4cRjvLRzUQ1tOcTlpq2wNldCKLDqd8e0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GNGwz8iUbbujebZYEBoo044Ga9dQZPW8wyUiqsdARThJM+kL7m/ct46AdrZxve5VxOvXW1bWOf0xTJjTh18w+h78IMIssO7TYKnORs8pKrSA1sobUUdMSKbbiUMHGGdnPY369Ys7b8rxqJOOCMo6cJ+OR29WpBxZQDWm/coiQBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxXFyO45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A890C19425;
-	Wed,  8 Apr 2026 18:31:56 +0000 (UTC)
+	 MIME-Version; b=kbarRWS47/ooMYr2hVGqFNy4JjFWHT6oR0xn68uIpzlqzBDIFzxVHQXTJ3+fclwjUwtljA8WYaV7EGuh1N0TIhooXjoboqEpbGN3tNQFbMaCxPsHzsvdrrS96NgQwr4I/dHlqT7AcoZe9h6FW5NBi7L2EcYqYaP3kLQQ1av/cOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3i5lpHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716CAC19421;
+	Wed,  8 Apr 2026 18:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673116;
-	bh=I6Ali0TIK4XhFwEKmZKblIZqJJs0AOgEFnLsfXCGGcg=;
+	s=korg; t=1775673688;
+	bh=hmHrzGwp2ZW4cRjvLRzUQ1tOcTlpq2wNldCKLDqd8e0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxXFyO45SZ0vUzfv0N7mmS3t7zXzGeLQuqWCwaEWB+c/QrZyiu2O7uQMe1z1Sgqnm
-	 uGeruz9nTHHTJcnyWu9S7PWJOKBrDu4ga6wgx1BLO1fK/EWT4LN4dJB0BC2LyfnfIn
-	 tFk9L6r/8LVBn5c0vCB0QtwVRU4st1l7Y7dbvsBg=
+	b=G3i5lpHOUgvF6vgLxZzS/EesMhbRUsz/ty8g1JiHKAKd3s9NFKismyQxHYmYZQVV8
+	 nOWwkI6yvvNGCZspWr9Cwf2cpRyzPgF2PnipdcbE3o6ahPio/O3Z9SW+ZuQK+5kmE/
+	 I/atDtuIdm8ohYBPoNg8/cuBKVpXBREV/TC+Z4/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Dimitri Daskalakis <daskald@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 106/277] gpiolib: clear requested flag if line is invalid
-Date: Wed,  8 Apr 2026 20:01:31 +0200
-Message-ID: <20260408175937.831165866@linuxfoundation.org>
+Subject: [PATCH 6.12 052/242] eth: fbnic: Account for page fragments when updating BDQ tail
+Date: Wed,  8 Apr 2026 20:01:32 +0200
+Message-ID: <20260408175929.024538416@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +63,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,protonmail.com,gmail.com,oss.qualcomm.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234537-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234759-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,protonmail.com:email]
-X-Rspamd-Queue-Id: D64433C0F98
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,meta.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AF5663C2606
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Pőcze <pobrn@protonmail.com>
+From: Dimitri Daskalakis <daskald@meta.com>
 
-[ Upstream commit 6df6ea4b3d1567dbe6442f308735c23b63007c7f ]
+[ Upstream commit b38c55320bf85a84a4f04803c57b261fc87e9b4b ]
 
-If `gpiochip_line_is_valid()` fails, then `-EINVAL` is returned, but
-`desc->flags` will have `GPIOD_FLAG_REQUESTED` set, which will result
-in subsequent calls misleadingly returning `-EBUSY`.
+FBNIC supports fixed size buffers of 4K. When PAGE_SIZE > 4K, we
+fragment the page across multiple descriptors (FBNIC_BD_FRAG_COUNT).
+When refilling the BDQ, the correct number of entries are populated,
+but tail was only incremented by one. So on a system with 64K pages,
+HW would get one descriptor refilled for every 16 we populate.
 
-Fix that by clearing the flag in case of failure.
+Additionally, we program the ring size in the HW when enabling the BDQ.
+This was not accounting for page fragments, so on systems with 64K pages,
+the HW used 1/16th of the ring.
 
-Fixes: a501624864f3 ("gpio: Respect valid_mask when requesting GPIOs")
-Signed-off-by: Barnabás Pőcze <pobrn@protonmail.com>
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://patch.msgid.link/20260310204359.1202451-1-pobrn@protonmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Fixes: 0cb4c0a13723 ("eth: fbnic: Implement Rx queue alloc/start/stop/free")
+Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
+Link: https://patch.msgid.link/20260324195123.3486219-2-dimitri.daskalakis1@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 497fda9bf8f1e..9dd22b4bbff54 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -2447,8 +2447,10 @@ static int gpiod_request_commit(struct gpio_desc *desc, const char *label)
- 		return -EBUSY;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index fc52db8e36f2e..16a0e30f8aaa5 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -544,7 +544,7 @@ static void fbnic_fill_bdq(struct fbnic_napi_vector *nv, struct fbnic_ring *bdq)
+ 		/* Force DMA writes to flush before writing to tail */
+ 		dma_wmb();
  
- 	offset = gpiod_hwgpio(desc);
--	if (!gpiochip_line_is_valid(guard.gc, offset))
--		return -EINVAL;
-+	if (!gpiochip_line_is_valid(guard.gc, offset)) {
-+		ret = -EINVAL;
-+		goto out_clear_bit;
-+	}
+-		writel(i, bdq->doorbell);
++		writel(i * FBNIC_BD_FRAG_COUNT, bdq->doorbell);
+ 	}
+ }
  
- 	/* NOTE:  gpio_request() can be called in early boot,
- 	 * before IRQs are enabled, for non-sleeping (SOC) GPIOs.
+@@ -1783,7 +1783,7 @@ static void fbnic_enable_bdq(struct fbnic_ring *hpq, struct fbnic_ring *ppq)
+ 	hpq->tail = 0;
+ 	hpq->head = 0;
+ 
+-	log_size = fls(hpq->size_mask);
++	log_size = fls(hpq->size_mask) + ilog2(FBNIC_BD_FRAG_COUNT);
+ 
+ 	/* Store descriptor ring address and size */
+ 	fbnic_ring_wr32(hpq, FBNIC_QUEUE_BDQ_HPQ_BAL, lower_32_bits(hpq->dma));
+@@ -1795,7 +1795,7 @@ static void fbnic_enable_bdq(struct fbnic_ring *hpq, struct fbnic_ring *ppq)
+ 	if (!ppq->size_mask)
+ 		goto write_ctl;
+ 
+-	log_size = fls(ppq->size_mask);
++	log_size = fls(ppq->size_mask) + ilog2(FBNIC_BD_FRAG_COUNT);
+ 
+ 	/* Add enabling of PPQ to BDQ control */
+ 	bdq_ctl |= FBNIC_QUEUE_BDQ_CTL_PPQ_ENABLE;
 -- 
 2.53.0
 
