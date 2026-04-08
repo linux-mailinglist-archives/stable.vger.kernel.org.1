@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BdxFJ6d1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:34 +0200
+	id 0JQfK8mn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9E43C0AB7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D003C27B3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 325AF301B84A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFE7C3080189
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A872494F0;
-	Wed,  8 Apr 2026 18:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC4A346FB0;
+	Wed,  8 Apr 2026 18:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxlKS5yS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7K97q2c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8E7B67E;
-	Wed,  8 Apr 2026 18:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620A22BEFFF;
+	Wed,  8 Apr 2026 18:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672685; cv=none; b=fo2hN8sCmhqu0/rNENmL9w4J4CFDTkKGeLyDGtA1blAe//gGn8NFiInXrdKrrYq3IQBH4haqA0x7Jyd79jUs2RI+6rLImcPasRs30hwYn/Cre8iB6i7hQLtHKicUY7DpYw7d0A1s85Xi5covsIgszEdhnzsuA0Y7TZ6/39tGXW0=
+	t=1775673855; cv=none; b=oLv5KQEvxqghr6Cw9I6SMJoUkAw0e4dybm8HcMLWPt2cSmdFPA/S5r2dUfsyNYOaMpYsCaOpvm/I4mrfeIfwSOeBH5UuGaY5WpA6eKr3Uo6lhdC0Cp+bXn0Ae1h8kiRTxXBF6HlWe0PpcCIhHJtRGIrKCmgAxHPk+pOsWeERvms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672685; c=relaxed/simple;
-	bh=SbFBtAtDqZPHB1Qa4Lu7EP3VZO78X8x9Bg7OrHeSkfg=;
+	s=arc-20240116; t=1775673855; c=relaxed/simple;
+	bh=SNplQiqoSOcfYwe1S2YMv3WpOwJ5yiwgkGpvGDoXRHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UyVrKhrIAlKhHidEYUaZfSV9mlVVtC5Hm5Dmm++N2BsWc0/Lgz+dnODTrS1yiqSp7L6sibpUDh5yvfWnF1pY/aNBr4OS8JgGLIe9KEeajjspvZcx9fwoPyeJ/pc2q09sYWXkXgP11JF5glF4EZwwWc1/cHrHhHR+Iq4Q5ndZowE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxlKS5yS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51B6C19425;
-	Wed,  8 Apr 2026 18:24:44 +0000 (UTC)
+	 MIME-Version; b=omYbmt2KsSdMK4nMPO7owyisg3fBQPMICMY5uBMsRJI3CXWPuVYzZZK3S0optMyz83ZGRQqHNHoYHWJoJQIIWmswJ7AasFIGCH0XFlvdH2X0ppPA13jhVsV7b10/RHN2m0tdrFZyBjxjcYGJcS2DhlH0EOx/L9f2EXaDcGcYxac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7K97q2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC98DC2BC87;
+	Wed,  8 Apr 2026 18:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672685;
-	bh=SbFBtAtDqZPHB1Qa4Lu7EP3VZO78X8x9Bg7OrHeSkfg=;
+	s=korg; t=1775673855;
+	bh=SNplQiqoSOcfYwe1S2YMv3WpOwJ5yiwgkGpvGDoXRHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxlKS5ySnaiGEW6WPqezOABg0aeRzLejHCqsoRPBc8QXliCuP1YB5piJ3KzTlUjJF
-	 5+M6JADJ1kTqwS1p0cVEjFhllrngW7Fy8lZyE7a5+w8qUZPezLeG5OjDozokHBKDff
-	 rDHHezH3uD0oMiNoHHpYHac0BwvHPVEANX40EuS0=
+	b=l7K97q2crkI+gKjUNGORvGWgzqcRBd1e0r3nhWsijZ6XBCP/oADFG50u46M6EfRk2
+	 72u5yWQq8cQdR6FYBTb9QONoqRkJS9j47M75n39ZG7xEUE4U1qvtVDi8B3Z9l6fa+9
+	 n7tpIwzx0VYIxkdhyrp+s7lTyjKw6yU/iJw28MX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/160] hwmon: (tps53679) Fix device ID comparison and printing in tps53676_identify()
+	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 116/242] wifi: iwlwifi: mvm: fix potential out-of-bounds read in iwl_mvm_nd_match_info_handler()
 Date: Wed,  8 Apr 2026 20:02:36 +0200
-Message-ID: <20260408175915.781053645@linuxfoundation.org>
+Message-ID: <20260408175931.429955769@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234371-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234823-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,63 +86,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,juniper.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4C9E43C0AB7
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ispras.ru:email,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 24D003C27B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
 
-[ Upstream commit ca34ee6d0307a0b4e52c870dfc1bb8a3c3eb956e ]
+commit 744fabc338e87b95c4d1ff7c95bc8c0f834c6d99 upstream.
 
-tps53676_identify() uses strncmp() to compare the device ID buffer
-against a byte sequence containing embedded non-printable bytes
-(\x53\x67\x60). strncmp() is semantically wrong for binary data
-comparison; use memcmp() instead.
+The memcpy function assumes the dynamic array notif->matches is at least
+as large as the number of bytes to copy. Otherwise, results->matches may
+contain unwanted data. To guarantee safety, extend the validation in one
+of the checks to ensure sufficient packet length.
 
-Additionally, the buffer from i2c_smbus_read_block_data() is not
-NUL-terminated, so printing it with "%s" in the error path is
-undefined behavior and may read past the buffer. Use "%*ph" to
-hex-dump the actual bytes returned.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Per the datasheet, the expected device ID is the 6-byte sequence
-54 49 53 67 60 00 ("TI\x53\x67\x60\x00"), so compare all 6 bytes
-including the trailing NUL.
-
-Fixes: cb3d37b59012 ("hwmon: (pmbus/tps53679) Add support for TI TPS53676")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260330155618.77403-1-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5ac54afd4d97 ("wifi: iwlwifi: mvm: Add handling for scan offload match info notification")
+Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+Link: https://patch.msgid.link/20260207150335.1013646-1-a.velichayshiy@ispras.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/tps53679.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
-index 5c9466244d70d..ecc1be33b3b1b 100644
---- a/drivers/hwmon/pmbus/tps53679.c
-+++ b/drivers/hwmon/pmbus/tps53679.c
-@@ -156,8 +156,8 @@ static int tps53676_identify(struct i2c_client *client,
- 	ret = i2c_smbus_read_block_data(client, PMBUS_IC_DEVICE_ID, buf);
- 	if (ret < 0)
- 		return ret;
--	if (strncmp("TI\x53\x67\x60", buf, 5)) {
--		dev_err(&client->dev, "Unexpected device ID: %s\n", buf);
-+	if (ret != 6 || memcmp(buf, "TI\x53\x67\x60\x00", 6)) {
-+		dev_err(&client->dev, "Unexpected device ID: %*ph\n", ret, buf);
- 		return -ENODEV;
- 	}
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -3195,7 +3195,7 @@ static void iwl_mvm_nd_match_info_handle
+ 	if (IS_ERR_OR_NULL(vif))
+ 		return;
  
--- 
-2.53.0
-
+-	if (len < sizeof(struct iwl_scan_offload_match_info)) {
++	if (len < sizeof(struct iwl_scan_offload_match_info) + matches_len) {
+ 		IWL_ERR(mvm, "Invalid scan match info notification\n");
+ 		return;
+ 	}
 
 
 
