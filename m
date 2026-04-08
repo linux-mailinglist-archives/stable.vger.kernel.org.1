@@ -1,177 +1,169 @@
-Return-Path: <stable+bounces-233839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMPdAhQ01mlZBwgAu9opvQ
-	(envelope-from <stable+bounces-233839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 12:55:16 +0200
+	id aHB5MNY31mlZBwgAu9opvQ
+	(envelope-from <stable+bounces-233843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 13:11:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C9C3BAFD9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 12:55:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BA23BB1D3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 13:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 59CD2300FA1B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 10:55:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C56B2300CE4A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 11:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40E43BB9E6;
-	Wed,  8 Apr 2026 10:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A6F3815F7;
+	Wed,  8 Apr 2026 11:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="2kG8acJh"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="JR79XSfT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A8C271A9A;
-	Wed,  8 Apr 2026 10:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3B82E8B8A;
+	Wed,  8 Apr 2026 11:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775645704; cv=none; b=e1u+0M1chQwJfcajLpXiyyvDm1638zoPNoYuctjqQd7WhapL6eTYM/vOtHDcpBy/uPM+AdsOCXx7JthFbQYPim/i3ml47h1Qewn/DQXR8xcbul8CPwAumlyJblhdFvVRlUAOtoDRP/mZlkWi9D/4Rw8jITnxk9++NfEAVuUwIUI=
+	t=1775646631; cv=none; b=m12zmOdxwzUtuN1z6rKDR3/HOM86dqF964RzlF/Me/EEnchf0x0l4ctA60VK5srWaMr2tn2j2u6qnYrzp6ZAyp1hDP9UNbH041f3Re/oVDrtAHq8fj55gw4TekFvtgAEDuzsh+gziubBaNvG8eWkx5Xn2Q4pcFPkTyLkNXVIj/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775645704; c=relaxed/simple;
-	bh=K9vERO3r4Wm0Pee0HOUkFPW6kyABCG0E7jn/Bphl4iM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=GBkAkpHnivn+LHmfxI7GVGyS7+3H8OpHFooTr8GgU9SPgPDvqn4QY3gcQnJb1i7NUMkSKPAi8X+/pik90uSpjKrWE/sf/akdsmJu8fmLbH4Dv4gKrl6huuPn0K842EJ4mB4NcZaH2GmEPxvcts5vkmHHX3ycNQ83KFrFJEWONLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=2kG8acJh; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0595FA26FD;
-	Wed,  8 Apr 2026 12:54:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1775645696; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ny+cR8zPTNl+JdyK7d/rOcDQJx/7poisHyXHHddlJ5k=;
-	b=2kG8acJh1RsKgyv00H4Wv28b+YILwa6bjSJQrvgtEUxuJUL15D7JbHZjs9376B28YPj6JY
-	Tj6U1D+bd3V+J6CpHlNWFPU/MzM+xQl99+/pFa4RSu2IcqZaqjYAnL2B85IN3fd0HFCCVh
-	4zFD1+UUx2R5TQEF2gRcvFY1FFOx3RthfmWjtB652UcgxdNbYvXxZqFuG5YaNTe9axC7Vq
-	qe6s6y0bpJbLJpP+LUMotnZFjlExWqN03PFRlg9XXcOus6bn6ymqJq0Y3lQYua5G1CCoYo
-	2wG0oYGo8tSPeMdgVV7WlmWYgx440HwAz/epWmTgLC0/Rlg8mj39Ypt7uxTIBg==
+	s=arc-20240116; t=1775646631; c=relaxed/simple;
+	bh=ewebgP88rabZ5q6Rb9BHsBLPczflW31S+pvdmrvosKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HmWdZgUxQFIO3fE0wwvgwVarC3/JKpCjJS4W5+MFFCDj7lAPbjLtYI0DSAy5GJ9WDFnXX3JhzPkxsPKBzBzmQmHBZ4ebMvObwikeSVJ3QRUNo2MAK79N3zw+NR94Hzbv41HZPHZuCBfF2xu3H47QrmMGzJv2S4IIoYXcLRbgdHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=JR79XSfT; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1775646188;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EiD/I9JLAgaiEHPTSYMk70AntE8XVl+GewE0tXnVpDI=;
+	b=JR79XSfTzK7KzWTU4trA4DXkN5Ci8Mx4PicNz6Vdj2uuQHPsfZ9OQGqCzQJ3BlICvg7GJh
+	LcQFG9TtZGjyJJzwmMTC4YkggyDjeyaaNoED9venR9bswImr4akeRqiQrDnvQscLRVAQl2
+	B1RhM7T5SKEuiBrKUrfIGceojCW3adcZLANakiwyiESdWpBjeuGMgJ6wwrtvYqMKRH/BYG
+	PVrIrF2aSKxywJYEqfVNiQRvSvWJYaLrqJmhSenvRh5d8RQqx2yNwsKn6fswWSnSoA9DuP
+	BXr0aMB9XO87jM+qbrgVNCAA/fnFrrJCDfZXQo2ItL7TlqouWvhW/5QZ2/vRkg==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: netdev@vger.kernel.org,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Ruide Cao <caoruide123@gmail.com>,
+	stable@vger.kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 1/2] batman-adv: reject oversized global TT response buffers
+Date: Wed,  8 Apr 2026 13:02:54 +0200
+Message-ID: <20260408110255.976389-2-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260408110255.976389-1-sw@simonwunderlich.de>
+References: <20260408110255.976389-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 08 Apr 2026 12:54:53 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Marek Vasut <marex@nabladev.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, "David S. Miller"
- <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Ronald Wahl <ronald.wahl@raritan.com>, Yicong Hui
- <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [net,PATCH] net: ks8851: Reinstate disabling of BHs around IRQ
- handler
-In-Reply-To: <20260407212344.80265-1-marex@nabladev.com>
-References: <20260407212344.80265-1-marex@nabladev.com>
-Message-ID: <f4010cedaa49afc1648a73775a987ee5@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[tipi-net.de:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[simonwunderlich.de,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[simonwunderlich.de:s=09092022];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233839-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,lunn.ch,google.com,kernel.org,redhat.com,raritan.com,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[tipi-net.de:+];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.open-mesh.org,gmail.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233843-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DMARC_DNSFAIL(0.00)[tipi-net.de : query timed out];
+	FROM_NEQ_ENVFROM(0.00)[sw@simonwunderlich.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[simonwunderlich.de:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 27C9C3BAFD9
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,lzu.edu.cn:email,simonwunderlich.de:dkim,simonwunderlich.de:email,simonwunderlich.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 30BA23BB1D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 7.4.2026 23:23, Marek Vasut wrote:
+From: Ruide Cao <caoruide123@gmail.com>
 
-> [...]
+batadv_tt_prepare_tvlv_global_data() builds the allocation length for a
+global TT response in 16-bit temporaries. When a remote originator
+advertises a large enough global TT, the TT payload length plus the VLAN
+header offset can exceed 65535 and wrap before kmalloc().
 
-> 
-> diff --git a/drivers/net/ethernet/micrel/ks8851_common.c 
-> b/drivers/net/ethernet/micrel/ks8851_common.c
-> index 8048770958d60..dadedea016fac 100644
-> --- a/drivers/net/ethernet/micrel/ks8851_common.c
-> +++ b/drivers/net/ethernet/micrel/ks8851_common.c
-> @@ -316,6 +316,7 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
->  	unsigned int status;
->  	struct sk_buff *skb;
-> 
-> +	local_bh_disable();
->  	ks8851_lock(ks, &flags);
+The full-table response path still uses the original TT payload length when
+it fills tt_change, so the wrapped allocation is too small and
+batadv_tt_prepare_tvlv_global_data() writes past the end of the heap object
+before the later packet-size check runs.
 
-This breaks the SPI variant on non-RT. The SPI path sleeps in
-spi_sync() -> wait_for_completion_timeout(), which can't be
-done with BH disabled. Confirmed on hardware (KS8851 SPI on
-CM4S, PREEMPT non-RT):
+Fix this by rejecting TT responses whose TVLV value length cannot fit in
+the 16-bit TVLV payload length field.
 
-   BUG: scheduling while atomic: irq/38-eth2/708/0x00000201
-   ...
-   spi_transfer_one_message+0x518/0x770
-   __spi_pump_transfer_message+0x1dc/0x5f0
-   __spi_sync+0x2b4/0x460
-   spi_sync+0x38/0x68
-   ks8851_rdfifo_spi+0x60/0xc0
-   ks8851_irq+0x310/0x3c8
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/translation-table.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-The fix needs to be PAR-specific since the SPI variant doesn't
-have the deadlock problem anyway (ks8851_start_xmit_spi doesn't
-take the lock).
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 6e95e883c2bf0..05cddcf994f65 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -798,8 +798,8 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ {
+ 	u16 num_vlan = 0;
+ 	u16 num_entries = 0;
+-	u16 change_offset;
+-	u16 tvlv_len;
++	u16 tvlv_len = 0;
++	unsigned int change_offset;
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_orig_node_vlan *vlan;
+ 	u8 *tt_change_ptr;
+@@ -816,6 +816,11 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 	if (*tt_len < 0)
+ 		*tt_len = batadv_tt_len(num_entries);
+ 
++	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
++		*tt_len = 0;
++		goto out;
++	}
++
+ 	tvlv_len = *tt_len;
+ 	tvlv_len += change_offset;
+ 
+-- 
+2.47.3
 
-> 
->  	status = ks8851_rdreg16(ks, KS_ISR);
-> @@ -381,6 +382,7 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
->  	if (status & IRQ_RXI)
->  		while ((skb = __skb_dequeue(&rxq)))
->  			netif_rx(skb);
-> +	local_bh_enable();
-> 
->  	return IRQ_HANDLED;
->  }
-
-In order to make this work I would propose something like this (which 
-works in my SPI setup):
-
---- a/drivers/net/ethernet/micrel/ks8851_par.c
-+++ b/drivers/net/ethernet/micrel/ks8851_par.c
-@@ -60,12 +60,14 @@ static void ks8851_lock_par(struct ks8851_net *ks, 
-unsigned long *flags)
-  {
-  	struct ks8851_net_par *ksp = to_ks8851_par(ks);
-
-+	local_bh_disable();
-  	spin_lock_irqsave(&ksp->lock, *flags);
-  }
-
-  static void ks8851_unlock_par(struct ks8851_net *ks, unsigned long 
-*flags)
-  {
-  	struct ks8851_net_par *ksp = to_ks8851_par(ks);
-
-  	spin_unlock_irqrestore(&ksp->lock, *flags);
-+	local_bh_enable();
-  }
-
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de>  # KS8851 SPI, non-RT 
-(regression + proposed fix)
 
