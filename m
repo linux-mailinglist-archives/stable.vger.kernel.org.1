@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-235143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGsqF3ir1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:40 +0200
+	id eORdNv+c1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0473C2EC1
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 688F53C08CA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03C2E31F0358
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74046306E5EA
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EC1357A20;
-	Wed,  8 Apr 2026 18:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C70E37F01B;
+	Wed,  8 Apr 2026 18:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgWI+wr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9Pz0Ax0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166982F39C2;
-	Wed,  8 Apr 2026 18:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8A1B67E;
+	Wed,  8 Apr 2026 18:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674680; cv=none; b=gBOf60BbHSCsyQCzVTIOlH3ZH1KIZMXM5WtyL5jwWiDs9bSfqdd4pHLuOfI8r/WgzA4aNHKv4DvTzhzdlYm42daeRCDIj2A0CljoVKKBDiRnufZAbp3f0N/zjxSgUv+vROyqQIsPCnjEhcJnoaJX9dSVXtkFcizUtSxnQHJMY4Y=
+	t=1775672281; cv=none; b=KLmFgL5M2yZydpJsknwTjd0ODs6p4hjs2I2HQruthYmux1fPqBf6AUW2dHdr/SmKSUZsKUJDKIoQNp4D2XMr84X5h0hTHYz4p3meQpbdvG5qutBnHuOHRnjh94iDSs3O5BRERkmIHBLxKNjsJB+kZeqGuD+AvODG6WkyeTKx7Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674680; c=relaxed/simple;
-	bh=ROxwJ+2EIVG51ougz3/PwhgRhiqr5LwarUdhCcASsGA=;
+	s=arc-20240116; t=1775672281; c=relaxed/simple;
+	bh=2UEgRN233IXVRHyED9tqrttCGAdB0ZdS9CmlMTo99VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+vj9bN32tvEPcxCWG6FJHSXCGpXR5K9ldR61Xq/SODsrcbMhoxJhhlEkDbv1ld+73GABs9KY2PQ3L6tXJ4dwGJxiD0FBY5bPO1T4HVUtunWEcaAuh6LnEgcZNxprwUF4mwW91JbWaAMJmRsz22hjkdk3qscz/wWwvFIRdpEPr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgWI+wr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27B3C19421;
-	Wed,  8 Apr 2026 18:57:59 +0000 (UTC)
+	 MIME-Version; b=jvfdoE8qGxwZJp/UTr3IftrC9Vum/5PY0B0r+TwWIYzetB7Ys4nIk+FNDAr9iow06G/RJ6vprKQDNH5T/+fqTDcuvriSV+MShgsrHv15SN+lS9SRrXpmlm8It8YfQWun8STzMzIL14S1PWa26iGFFvcS1KKx4o1nyl77f4u9pC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9Pz0Ax0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9222C19421;
+	Wed,  8 Apr 2026 18:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674680;
-	bh=ROxwJ+2EIVG51ougz3/PwhgRhiqr5LwarUdhCcASsGA=;
+	s=korg; t=1775672281;
+	bh=2UEgRN233IXVRHyED9tqrttCGAdB0ZdS9CmlMTo99VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgWI+wr8EeH0KMqsWR0U5ChO0TJh32CBq0cl0C8kc10kGOT8EBtPJh6tWbzoGmEZn
-	 PAhcn/BQuQcMf7lpjdDTRwSGQrvIVOo7sVuGPl5e8txfQ5TlPe3F5rrvhT+RyrUkJo
-	 0AYhx6IkpIRNOpiyEhYa8WnEAjthpqojPxELEQck=
+	b=A9Pz0Ax08fUJHC17B1XZBMz3Ayowt5dpezlR2wgMGdigl4ZZRHBEINkCHfMGCI+pX
+	 rkiNy67uw2zD1RFKsY2EDN54s9Fgq1uZNEdtplOanz2Z8WZcDVKhmoszDPjJdu93qa
+	 tZ5IfeW1xsy3t0TjyB0Q6+KBym0Tn8ZOcAPEX3So=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 174/311] ALSA: hda/realtek: add quirk for Acer Swift SFG14-73
-Date: Wed,  8 Apr 2026 20:02:54 +0200
-Message-ID: <20260408175945.903846948@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 258/312] btrfs: fix the qgroup data free range for inline data extents
+Date: Wed,  8 Apr 2026 20:02:55 +0200
+Message-ID: <20260408175943.381755163@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,58 +74,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234215-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235143-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,suse.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BB0473C2EC1
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 688F53C08CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Qu Wenruo <wqu@suse.com>
 
-commit dd9b99b822684f421f9b7e1e5a69d791ffc1d48f upstream.
+[ Upstream commit 0bb067ca64e35536f1f5d9ef6aaafc40f4833623 ]
 
-fix mute/micmute LEDs and headset microphone for Acer Swift SFG14-73.
+Inside function __cow_file_range_inline() since the inlined data no
+longer take any data space, we need to free up the reserved space.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220279
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260331094614.186063-1-zhangheng@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However the code is still using the old page size == sector size
+assumption, and will not handle subpage case well.
+
+Thankfully it is not going to cause any problems because we have two extra
+safe nets:
+
+- Inline data extents creation is disabled for sector size < page size
+  cases for now
+  But it won't stay that for long.
+
+- btrfs_qgroup_free_data() will only clear ranges which have been already
+  reserved
+  So even if we pass a range larger than what we need, it should still
+  be fine, especially there is only reserved space for a single block at
+  file offset 0 of an inline data extent.
+
+But just for the sake of consistency, fix the call site to use
+sectorsize instead of page size.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: f8da41de0bff ("btrfs: do not free data reservation in fallback from inline due to -ENOSPC")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6685,6 +6685,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1025, 0x1597, "Acer Nitro 5 AN517-55", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x169a, "Acer Swift SFG16", ALC256_FIXUP_ACER_SFG16_MICMUTE_LED),
- 	SND_PCI_QUIRK(0x1025, 0x171e, "Acer Nitro ANV15-51", ALC245_FIXUP_ACER_MICMUTE_LED),
-+	SND_PCI_QUIRK(0x1025, 0x173a, "Acer Swift SFG14-73", ALC245_FIXUP_ACER_MICMUTE_LED),
- 	SND_PCI_QUIRK(0x1025, 0x1826, "Acer Helios ZPC", ALC287_FIXUP_PREDATOR_SPK_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1025, 0x182c, "Acer Helios ZPD", ALC287_FIXUP_PREDATOR_SPK_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1025, 0x1844, "Acer Helios ZPS", ALC287_FIXUP_PREDATOR_SPK_CS35L41_I2C_2),
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 2b4a667367225..45c6cbbd686fd 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -469,7 +469,7 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode, u64 size,
+ 	 * And at reserve time, it's always aligned to page size, so
+ 	 * just free one page here.
+ 	 */
+-	btrfs_qgroup_free_data(inode, NULL, 0, PAGE_SIZE, NULL);
++	btrfs_qgroup_free_data(inode, NULL, 0, fs_info->sectorsize, NULL);
+ 	btrfs_free_path(path);
+ 	if (trans)
+ 		btrfs_end_transaction(trans);
+-- 
+2.53.0
+
 
 
 
