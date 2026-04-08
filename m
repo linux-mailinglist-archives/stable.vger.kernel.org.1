@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-235129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULNJF9aq1mmOHAgAu9opvQ
-	(envelope-from <stable+bounces-235129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:58 +0200
+	id yFOpF/Oc1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8460D3C2D77
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E83933C08A4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5CEB31CE5F7
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FFC43067C9D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759B6348453;
-	Wed,  8 Apr 2026 18:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A17386550;
+	Wed,  8 Apr 2026 18:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIuz48WU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pvodc9Gn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C513176E4;
-	Wed,  8 Apr 2026 18:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCC03537FC;
+	Wed,  8 Apr 2026 18:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674644; cv=none; b=esrrdp1XRCJTuQa0HQgpRgZgS7in4IFbWceDMJZWnGWGjhBxqs/x6nHFb/n1FQFztctLMcIYn7oiJ4HyuRr1yvcZ5EvS0mT6TVSdyN/m+uJobSMquNoVE0gBsRIJoXKIOiWINIfYBR6/WwJgF06UUPD6U1I7riEuCtvXjCWbM0E=
+	t=1775672270; cv=none; b=TIQSK7tDqGutqk0yausmoiUpq/VHbl2Oue3IBv3kFmmdYwqGx1k9k+ynJ7b0pykSnQNJNebxMDUQL9sZiGmakBKy6pBdYS2X/owUR0NIwuTEuTtV9NAqke4f8palSVRwTUMKKTmJj//OOc1jlmNhYi/FBTC0ARCr+PTvoFRLHps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674644; c=relaxed/simple;
-	bh=qOTkJLKvsL09Cn7cndlgV2DH4VlGfEfUjCtiWU2jQWs=;
+	s=arc-20240116; t=1775672270; c=relaxed/simple;
+	bh=XsiJ8vOaSjyJqF679fkw/MPKtzT4H71QYZ5mD/mseP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMYltOdAsQ4jGuRzRvujQrb55+KHFNEYM2I6zhCreHJr+Zon4/YhKSa/q1Ur/brIAaQIhzWc1qJhzaMkk0CTMbyojrJSguFoxxNQlYBOPXKxrBzEmurE/E92KOppFOeNrNaf/MI5nfEJSW+/NcEEIwctsVpVCDfC5X2ulBtQP0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIuz48WU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47B0C19421;
-	Wed,  8 Apr 2026 18:57:23 +0000 (UTC)
+	 MIME-Version; b=F4eV+2HQyy836i2TBGzE7+4DKglDqeZz+7HrnG/xFZYnrGDmep7ahXxWAtNexLE8z3id124gtf3JPjcp/8DmUypG7lz5bpmUR1dGTluqpxF4dN9Be34QRvjr3BXw9XO/f5E4gbEbgQDWIF8PD1KLd0QjffBraiav0coLuZAnqEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pvodc9Gn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66601C19421;
+	Wed,  8 Apr 2026 18:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674644;
-	bh=qOTkJLKvsL09Cn7cndlgV2DH4VlGfEfUjCtiWU2jQWs=;
+	s=korg; t=1775672270;
+	bh=XsiJ8vOaSjyJqF679fkw/MPKtzT4H71QYZ5mD/mseP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIuz48WUyheBD3au49dyRXxLqSXpNT3dAXBPbcVaYB49Bt1nUZLsW/doB160Zb4Q2
-	 X/T7Pg3hioobV3mVmErhTEYCdLfD6Z41Yd7vdgRuGAWIq0tFBEYUnSPpkL18pBJKHJ
-	 PHUf9HI3DiIwX42KXuwK0jx0R14ERvDWdwbk7S5s=
+	b=Pvodc9GnN9jVFevuZr5xHzZKP06y/DeOkj73WLZHJeLIBFGuj3e0FxRZPN3VgLG6Q
+	 F/ITNriKlKbtsQ7w5RFFPgVr8wPpENHuiST1jINZMsdaCRFbQA6goDrcbVpBn82lEJ
+	 DBHPVoaiVeFzdm8TYd6NzPuRnoZpAIQe0Nhfdb1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 144/311] drm/xe/xe_pagefault: Disallow writes to read-only VMAs
-Date: Wed,  8 Apr 2026 20:02:24 +0200
-Message-ID: <20260408175944.789416498@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 228/312] usb: ulpi: fix double free in ulpi_register_interface() error path
+Date: Wed,  8 Apr 2026 20:02:25 +0200
+Message-ID: <20260408175942.271353036@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +66,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234211-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235129-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 8460D3C2D77
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E83933C08A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 6d192b4f2d644d15d9a9f1d33dab05af936f6540 ]
+commit 01af542392b5d41fd659d487015a71f627accce3 upstream.
 
-The page fault handler should reject write/atomic access to read only
-VMAs.  Add code to handle this in xe_pagefault_service after the VMA
-lookup.
+When device_register() fails, ulpi_register() calls put_device() on
+ulpi->dev.
 
-v2:
-- Apply max line length (Matthew)
+The device release callback ulpi_dev_release() drops the OF node
+reference and frees ulpi, but the current error path in
+ulpi_register_interface() then calls kfree(ulpi) again, causing a
+double free.
 
-Fixes: fb544b844508 ("drm/xe: Implement xe_pagefault_queue_work")
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Suggested-by: Matthew Brost <matthew.brost@intel.com>
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260324152935.72444-7-jonathan.cavitt@intel.com
-(cherry picked from commit 714ee6754ac5fa3dc078856a196a6b124cd797a0)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let put_device() handle the cleanup through ulpi_dev_release() and
+avoid freeing ulpi again in ulpi_register_interface().
+
+Fixes: 289fcff4bcdb1 ("usb: add bus type for USB ULPI")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260401025142.1398996-1-lgs201920130244@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_pagefault.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/common/ulpi.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pagefault.c b/drivers/gpu/drm/xe/xe_pagefault.c
-index afb06598b6e1a..0b625a52a5984 100644
---- a/drivers/gpu/drm/xe/xe_pagefault.c
-+++ b/drivers/gpu/drm/xe/xe_pagefault.c
-@@ -187,6 +187,12 @@ static int xe_pagefault_service(struct xe_pagefault *pf)
- 		goto unlock_vm;
- 	}
+--- a/drivers/usb/common/ulpi.c
++++ b/drivers/usb/common/ulpi.c
+@@ -331,10 +331,9 @@ struct ulpi *ulpi_register_interface(str
+ 	ulpi->ops = ops;
  
-+	if (xe_vma_read_only(vma) &&
-+	    pf->consumer.access_type != XE_PAGEFAULT_ACCESS_TYPE_READ) {
-+		err = -EPERM;
-+		goto unlock_vm;
-+	}
+ 	ret = ulpi_register(dev, ulpi);
+-	if (ret) {
+-		kfree(ulpi);
++	if (ret)
+ 		return ERR_PTR(ret);
+-	}
 +
- 	atomic = xe_pagefault_access_is_atomic(pf->consumer.access_type);
  
- 	if (xe_vma_is_cpu_addr_mirror(vma))
--- 
-2.53.0
-
+ 	return ulpi;
+ }
 
 
 
