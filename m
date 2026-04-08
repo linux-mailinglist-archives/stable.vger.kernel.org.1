@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MsiDN+m1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:03 +0200
+	id MOV2BRWf1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9449D3C25AD
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0D23C0DFB
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D85BB30A7D2C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CACC03006F10
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54153D522C;
-	Wed,  8 Apr 2026 18:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CB83D3328;
+	Wed,  8 Apr 2026 18:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2CCsr1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMzF0TDm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F97B67E;
-	Wed,  8 Apr 2026 18:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757B526FA5A;
+	Wed,  8 Apr 2026 18:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673629; cv=none; b=f++crXlhyqEl4INSUKrAtAbSG182Pe6bK75+PZRVjWrC5hOlBvf+xIsGCuz3K5Fn8tPzfs/lls/Qf4j2FaJXUipjA/RVqqrlLdX9Pg2QzRWGzOH59McLJn/KcnUwWBS6C+Bhkf2rONw+O06vU4qVUQTdLuZrWbXO7BqJJNGkHO0=
+	t=1775673052; cv=none; b=CkpZuFyRSWnnTWmQIVsOVFhCvqqTQK+8n63o48ipJZQtmPg7NdOJl07LWN4lFOkgpQKxDGw1jlihwgvR6Hho5wHItQu3CPIkuOtpSjeFQeLbYJyhbNfrJj4hbQxAtvFwVgWk8L0cdKqcMlb06aT04APZhg32uSDOB5T0/785yxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673629; c=relaxed/simple;
-	bh=A/cDTU/G3ZskOnsMjBKikO3ly12YuRfYpBcaJPMMgSU=;
+	s=arc-20240116; t=1775673052; c=relaxed/simple;
+	bh=k3q/yMX4OBUr8pbQtKvkR/IkP7ha3MhRKmZir5rLn64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWIYU5etFa2xIA+lJCGeoCbzKDMvbzcU2tFC662JBQmg71J+Kp6GUbe2vzb3XIZy1MGei+vYPKxDVfBjMg1uRjwf5WjAfiIj1J6WR3kMtnaLJkIOHgxYmjEnQ5q7gvY7aHJ5aB4IiBeYiz+X+yFn782HL7UPtUHTRrnFkVYoDAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2CCsr1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2C2C19421;
-	Wed,  8 Apr 2026 18:40:28 +0000 (UTC)
+	 MIME-Version; b=m2loPruacVBs4h4YM8o42eodUQbi5Kt/vaBQFFKA0BqTxREbjGv8StSFECZMLf8pB4J4u59vtVV0wC+JxCGEsWUsnM1YWDSTszZ7byJOB694PemKrF7pRQIzCRybm2mwUmxqz4a+D8IJ1okYBOxUpWXxqWQEEPeuFHi7fee4k5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMzF0TDm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B6CC19421;
+	Wed,  8 Apr 2026 18:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673629;
-	bh=A/cDTU/G3ZskOnsMjBKikO3ly12YuRfYpBcaJPMMgSU=;
+	s=korg; t=1775673052;
+	bh=k3q/yMX4OBUr8pbQtKvkR/IkP7ha3MhRKmZir5rLn64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2CCsr1CGtf1Pvhzx9RyC8xFMteLC5Jirvz57VkNQPXRFB8wnnGW7VfGvJHr8Wj9P
-	 ZGA4tkJ3tI7HVwToKFPUXVuCcC+ODjdx6vrH26OpJUVj2SktpB3p70FrC5qbs2C2p+
-	 61ZIkMtDqzDL5tz1rJwX1Cik4KZ02DGyAULXlyI8=
+	b=wMzF0TDmoGoJ8NtwQ5FVquVMyeTRxVmBWDDyQLF0YGXM/9AELD1WwHo7w1/LGC5df
+	 SXs9MKJg5rc2T1TkTWiin2MfodJWc/vwmV9xprJiffm04fiuTvUQE29Ck85ZYm8hVt
+	 3yhNyVF1ZygcpSuA5tV4QLrz21+kg9LRshgkKmKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/242] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
+Subject: [PATCH 6.18 083/277] Bluetooth: hci_event: fix potential UAF in hci_le_remote_conn_param_req_evt
 Date: Wed,  8 Apr 2026 20:01:08 +0200
-Message-ID: <20260408175928.123582495@linuxfoundation.org>
+Message-ID: <20260408175936.963010934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +64,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234736-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,sipsolutions.net,gmail.com,intel.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,56b6a844a4ea74487b7b];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234512-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,syzkaller.appspot.com:url,sipsolutions.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 9449D3C25AD
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email]
+X-Rspamd-Queue-Id: 7B0D23C0DFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b ]
+[ Upstream commit b255531b27da336571411248c2a72a350662bd09 ]
 
-When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
-station exists but not whether it is actually a TDLS station. This
-allows the operation to proceed for non-TDLS stations, causing
-unintended side effects like modifying channel context and HT
-protection before failing.
+hci_conn lookup and field access must be covered by hdev lock in
+hci_le_remote_conn_param_req_evt, otherwise it's possible it is freed
+concurrently.
 
-Add a check for sta->sta.tdls early in the ENABLE_LINK case, before
-any side effects occur, to ensure the operation is only allowed for
-actual TDLS peers.
+Extend the hci_dev_lock critical section to cover all conn usage.
 
-Reported-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=56b6a844a4ea74487b7b
-Tested-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260313092417.520807-1-kartikey406@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 95118dd4edfec ("Bluetooth: hci_event: Use of a function table to handle LE subevents")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tdls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_event.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index 1cb42c5b9b04b..92ab7be3d4824 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1448,7 +1448,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 3838b90343d91..7794f4f981596 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6653,25 +6653,31 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 	latency = le16_to_cpu(ev->latency);
+ 	timeout = le16_to_cpu(ev->timeout);
+ 
++	hci_dev_lock(hdev);
++
+ 	hcon = hci_conn_hash_lookup_handle(hdev, handle);
+-	if (!hcon || hcon->state != BT_CONNECTED)
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_UNKNOWN_CONN_ID);
++	if (!hcon || hcon->state != BT_CONNECTED) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_UNKNOWN_CONN_ID);
++		goto unlock;
++	}
+ 
+-	if (max > hcon->le_conn_max_interval)
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_INVALID_LL_PARAMS);
++	if (max > hcon->le_conn_max_interval) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_INVALID_LL_PARAMS);
++		goto unlock;
++	}
+ 
+-	if (hci_check_conn_params(min, max, latency, timeout))
+-		return send_conn_param_neg_reply(hdev, handle,
+-						 HCI_ERROR_INVALID_LL_PARAMS);
++	if (hci_check_conn_params(min, max, latency, timeout)) {
++		send_conn_param_neg_reply(hdev, handle,
++					  HCI_ERROR_INVALID_LL_PARAMS);
++		goto unlock;
++	}
+ 
+ 	if (hcon->role == HCI_ROLE_MASTER) {
+ 		struct hci_conn_params *params;
+ 		u8 store_hint;
+ 
+-		hci_dev_lock(hdev);
+-
+ 		params = hci_conn_params_lookup(hdev, &hcon->dst,
+ 						hcon->dst_type);
+ 		if (params) {
+@@ -6684,8 +6690,6 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 			store_hint = 0x00;
  		}
  
- 		sta = sta_info_get(sdata, peer);
--		if (!sta)
-+		if (!sta || !sta->sta.tdls)
- 			return -ENOLINK;
+-		hci_dev_unlock(hdev);
+-
+ 		mgmt_new_conn_param(hdev, &hcon->dst, hcon->dst_type,
+ 				    store_hint, min, max, latency, timeout);
+ 	}
+@@ -6699,6 +6703,9 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 	cp.max_ce_len = 0;
  
- 		iee80211_tdls_recalc_chanctx(sdata, sta);
+ 	hci_send_cmd(hdev, HCI_OP_LE_CONN_PARAM_REQ_REPLY, sizeof(cp), &cp);
++
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_le_direct_adv_report_evt(struct hci_dev *hdev, void *data,
 -- 
 2.53.0
 
