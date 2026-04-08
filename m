@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sM0eHdee1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:30:47 +0200
+	id YIJGE6ap1mlmHAgAu9opvQ
+	(envelope-from <stable+bounces-235013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979C73C0D78
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:30:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2433C2AE0
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B3EE3018B57
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27CA83195248
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917E33D564E;
-	Wed,  8 Apr 2026 18:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3103D75C9;
+	Wed,  8 Apr 2026 18:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAJUBlTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrfXExgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531D43D411F;
-	Wed,  8 Apr 2026 18:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB232727F3;
+	Wed,  8 Apr 2026 18:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672964; cv=none; b=X0mbGiJZ7Vd7dL+magNU8jcaZOyIQYTcVPUs3hanNimp22MRduz+qExjBg5YSyR2HzwdGcPMli7qOp+EnjDsc9Xr6unGL59UFB4MaMc1mDxMfFkqMx36X3pIj/j9ntIFMNaPq8l96KuC0dTbGgtoKVzawiS7EVsTGPacbfnwKnM=
+	t=1775674345; cv=none; b=ueWrxcWLydiRiG5Ptc2Eq4Hl+wAxQptl9hKKyTLpuyyvYodMrbrllkGSnpAmOlz6bWrPoZDxh54D7srIe41QriHEMtb6GsvUO+92VRBp0Krmgf11F7m/7zHa26+jbhwHdUteMbuwVzhGyTyAE+6ahnIpMf1JM7iVkoG0DJo/kfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672964; c=relaxed/simple;
-	bh=o1gKXhjIb9Za+mAT5Cxe75/VLcPbzJEpXt3nOxxZjc8=;
+	s=arc-20240116; t=1775674345; c=relaxed/simple;
+	bh=SELW4TiPptRnmXdWxotjOyA8YS4BchLlO1nacMGkv0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrG8TinawDQ6KT8+7UGWIuuRO7KTAWAXy7l0CdvzqYQ7nAhP+0mcug0AAT/qya1oTc5JeK9UdnMZfVlMsYAIWWh4jqSfEJ4c7vu1BI7WxEGjyZIGAfEQHTAI2i3kgyitR54eJCtWpP20gZ3+Pd/qCIJo1GowxnqtZceFEhNIkO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAJUBlTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7AAC19421;
-	Wed,  8 Apr 2026 18:29:23 +0000 (UTC)
+	 MIME-Version; b=O6/DYzY6+Ta9qVSCEERfImnTck2vxHmODxa2Lt2R2wJmbB7fsoTqtLmvES185kSLek/Aj/r5PXtEYHeyxLD/dEkaquSrtD9oTC83sCwBbAst9jEt51ZnSIbLq810zQYauKhkAOceRBcmoIPt4lQlzueZxtMaZMZ6l6FTfOPre+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrfXExgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BE3C19421;
+	Wed,  8 Apr 2026 18:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672964;
-	bh=o1gKXhjIb9Za+mAT5Cxe75/VLcPbzJEpXt3nOxxZjc8=;
+	s=korg; t=1775674345;
+	bh=SELW4TiPptRnmXdWxotjOyA8YS4BchLlO1nacMGkv0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAJUBlTASULjBW/D1DM97LkLRn2nIpDJSaNS0ucOViyzoLi/Ez2xyfpk4di7AF9hi
-	 5vnJBcli3I//6H5UvK3uhy+3B9OyjGQkjtPWlgKVWGSZeicAipMdSThnNmkxG9k3Rm
-	 3WvHZVI218hlr5TiYEjZD/jWYF24tWtGp2kSr7pA=
+	b=LrfXExgC9mZ6zR2d2+voUKOxgql672vZmMJyY+qTi5bbIgLcG5QRA4PvuafTK/ILl
+	 DQavDPl1NP8CmiW4XYQ98ZlcE7EaNyhFdlCD2wL8OfgR5XiK4lnSt+CdqC5zEtupgj
+	 oY0qoegv7aPKcU0+mcEv1PgggFzyN8JX65d/fJ0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Tejun Heo <tj@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	cgroups@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 049/277] net: introduce mangleid_features
+Subject: [PATCH 6.19 034/311] selftests/cgroup: Dont require synchronous populated update on task exit
 Date: Wed,  8 Apr 2026 20:00:34 +0200
-Message-ID: <20260408175935.688667703@linuxfoundation.org>
+Message-ID: <20260408175940.688785924@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234478-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235013-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,104 +87,142 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 979C73C0D78
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cgroup.events:url]
+X-Rspamd-Queue-Id: 9D2433C2AE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 31c5a71d982b57df75858974634c2f0a338f2fc6 ]
+[ Upstream commit 6680c162b4850976ee52b57372eddc4450c1d074 ]
 
-Some/most devices implementing gso_partial need to disable the GSO partial
-features when the IP ID can't be mangled; to that extend each of them
-implements something alike the following[1]:
+test_cgcore_populated (test_core) and test_cgkill_{simple,tree,forkbomb}
+(test_kill) check cgroup.events "populated 0" immediately after reaping
+child tasks with waitpid(). This used to work because cgroup_task_exit() in
+do_exit() unlinked tasks from css_sets before exit_notify() woke up
+waitpid().
 
-	if (skb->encapsulation && !(features & NETIF_F_TSO_MANGLEID))
-		features &= ~NETIF_F_TSO;
+d245698d727a ("cgroup: Defer task cgroup unlink until after the task is done
+switching out") moved the unlink to cgroup_task_dead() in
+finish_task_switch(), which runs after exit_notify(). The populated counter
+is now decremented after the parent's waitpid() can return, so there is no
+longer a synchronous ordering guarantee. On PREEMPT_RT, where
+cgroup_task_dead() is further deferred through lazy irq_work, the race
+window is even larger.
 
-in the ndo_features_check() op, which leads to a bit of duplicate code.
+The synchronous populated transition was never part of the cgroup interface
+contract - it was an implementation artifact. Use cg_read_strcmp_wait() which
+retries for up to 1 second, matching what these tests actually need to
+verify: that the cgroup eventually becomes unpopulated after all tasks exit.
 
-Later patch in the series will implement GSO partial support for virtual
-devices, and the current status quo will require more duplicate code and
-a new indirect call in the TX path for them.
-
-Introduce the mangleid_features mask, allowing the core to disable NIC
-features based on/requiring MANGLEID, without any further intervention
-from the driver.
-
-The same functionality could be alternatively implemented adding a single
-boolean flag to the struct net_device, but would require an additional
-checks in ndo_features_check().
-
-Also note that [1] is incorrect if the NIC additionally implements
-NETIF_F_GSO_UDP_L4, mangleid_features transparently handle even such a
-case.
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/5a7cdaeea40b0a29b88e525b6c942d73ed3b8ce7.1769011015.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ddc748a391dd ("net: use skb_header_pointer() for TCPv4 GSO frag_off check")
+Fixes: d245698d727a ("cgroup: Defer task cgroup unlink until after the task is done switching out")
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: cgroups@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 3 +++
- net/core/dev.c            | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ tools/testing/selftests/cgroup/lib/cgroup_util.c  | 15 +++++++++++++++
+ .../selftests/cgroup/lib/include/cgroup_util.h    |  2 ++
+ tools/testing/selftests/cgroup/test_core.c        |  3 ++-
+ tools/testing/selftests/cgroup/test_kill.c        |  7 ++++---
+ 4 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 20bd42fa160c9..fc55157a44860 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1817,6 +1817,8 @@ enum netdev_reg_state {
-  *
-  *	@mpls_features:	Mask of features inheritable by MPLS
-  *	@gso_partial_features: value(s) from NETIF_F_GSO\*
-+ *	@mangleid_features:	Mask of features requiring MANGLEID, will be
-+ *				disabled together with the latter.
-  *
-  *	@ifindex:	interface index
-  *	@group:		The group the device belongs to
-@@ -2205,6 +2207,7 @@ struct net_device {
- 	netdev_features_t	vlan_features;
- 	netdev_features_t	hw_enc_features;
- 	netdev_features_t	mpls_features;
-+	netdev_features_t	mangleid_features;
+diff --git a/tools/testing/selftests/cgroup/lib/cgroup_util.c b/tools/testing/selftests/cgroup/lib/cgroup_util.c
+index 44c52f620fda1..4b0f2c46d4322 100644
+--- a/tools/testing/selftests/cgroup/lib/cgroup_util.c
++++ b/tools/testing/selftests/cgroup/lib/cgroup_util.c
+@@ -123,6 +123,21 @@ int cg_read_strcmp(const char *cgroup, const char *control,
+ 	return ret;
+ }
  
- 	unsigned int		min_mtu;
- 	unsigned int		max_mtu;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index c8e49eef45198..90b029c311a14 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3795,7 +3795,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 				    inner_ip_hdr(skb) : ip_hdr(skb);
- 
- 		if (!(iph->frag_off & htons(IP_DF)))
--			features &= ~NETIF_F_TSO_MANGLEID;
-+			features &= ~dev->mangleid_features;
- 	}
- 
- 	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
-@@ -11295,6 +11295,9 @@ int register_netdevice(struct net_device *dev)
- 	if (dev->hw_enc_features & NETIF_F_TSO)
- 		dev->hw_enc_features |= NETIF_F_TSO_MANGLEID;
- 
-+	/* TSO_MANGLEID belongs in mangleid_features by definition */
-+	dev->mangleid_features |= NETIF_F_TSO_MANGLEID;
++int cg_read_strcmp_wait(const char *cgroup, const char *control,
++			    const char *expected)
++{
++	int i, ret;
 +
- 	/* Make NETIF_F_HIGHDMA inheritable to VLAN devices.
- 	 */
- 	dev->vlan_features |= NETIF_F_HIGHDMA;
++	for (i = 0; i < 100; i++) {
++		ret = cg_read_strcmp(cgroup, control, expected);
++		if (!ret)
++			return ret;
++		usleep(10000);
++	}
++
++	return ret;
++}
++
+ int cg_read_strstr(const char *cgroup, const char *control, const char *needle)
+ {
+ 	char buf[PAGE_SIZE];
+diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+index 7ab2824ed7b54..1cbe3b0ac6f73 100644
+--- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
++++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+@@ -59,6 +59,8 @@ extern int cg_read(const char *cgroup, const char *control,
+ 		   char *buf, size_t len);
+ extern int cg_read_strcmp(const char *cgroup, const char *control,
+ 			  const char *expected);
++extern int cg_read_strcmp_wait(const char *cgroup, const char *control,
++				   const char *expected);
+ extern int cg_read_strstr(const char *cgroup, const char *control,
+ 			  const char *needle);
+ extern long cg_read_long(const char *cgroup, const char *control);
+diff --git a/tools/testing/selftests/cgroup/test_core.c b/tools/testing/selftests/cgroup/test_core.c
+index 102262555a599..7b83c7e7c9d4f 100644
+--- a/tools/testing/selftests/cgroup/test_core.c
++++ b/tools/testing/selftests/cgroup/test_core.c
+@@ -233,7 +233,8 @@ static int test_cgcore_populated(const char *root)
+ 	if (err)
+ 		goto cleanup;
+ 
+-	if (cg_read_strcmp(cg_test_d, "cgroup.events", "populated 0\n"))
++	if (cg_read_strcmp_wait(cg_test_d, "cgroup.events",
++				   "populated 0\n"))
+ 		goto cleanup;
+ 
+ 	/* Remove cgroup. */
+diff --git a/tools/testing/selftests/cgroup/test_kill.c b/tools/testing/selftests/cgroup/test_kill.c
+index c8c9d306925b6..f6cd23a8ecc71 100644
+--- a/tools/testing/selftests/cgroup/test_kill.c
++++ b/tools/testing/selftests/cgroup/test_kill.c
+@@ -86,7 +86,7 @@ static int test_cgkill_simple(const char *root)
+ 		wait_for_pid(pids[i]);
+ 
+ 	if (ret == KSFT_PASS &&
+-	    cg_read_strcmp(cgroup, "cgroup.events", "populated 0\n"))
++	    cg_read_strcmp_wait(cgroup, "cgroup.events", "populated 0\n"))
+ 		ret = KSFT_FAIL;
+ 
+ 	if (cgroup)
+@@ -190,7 +190,8 @@ static int test_cgkill_tree(const char *root)
+ 		wait_for_pid(pids[i]);
+ 
+ 	if (ret == KSFT_PASS &&
+-	    cg_read_strcmp(cgroup[0], "cgroup.events", "populated 0\n"))
++	    cg_read_strcmp_wait(cgroup[0], "cgroup.events",
++				   "populated 0\n"))
+ 		ret = KSFT_FAIL;
+ 
+ 	for (i = 9; i >= 0 && cgroup[i]; i--) {
+@@ -251,7 +252,7 @@ static int test_cgkill_forkbomb(const char *root)
+ 		wait_for_pid(pid);
+ 
+ 	if (ret == KSFT_PASS &&
+-	    cg_read_strcmp(cgroup, "cgroup.events", "populated 0\n"))
++	    cg_read_strcmp_wait(cgroup, "cgroup.events", "populated 0\n"))
+ 		ret = KSFT_FAIL;
+ 
+ 	if (cgroup)
 -- 
 2.53.0
 
