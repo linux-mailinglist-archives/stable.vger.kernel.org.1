@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-235132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PkFItmq1mmOHAgAu9opvQ
-	(envelope-from <stable+bounces-235132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:01 +0200
+	id UM7uGhSe1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AC23C2D7E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:22:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41043C0C1B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68EC931AF78D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA0C2300AEDD
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3276D37F8AC;
-	Wed,  8 Apr 2026 18:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CC93ACF11;
+	Wed,  8 Apr 2026 18:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1tbbhWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1D4f6GbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DD6337B81;
-	Wed,  8 Apr 2026 18:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F502494F0;
+	Wed,  8 Apr 2026 18:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674652; cv=none; b=Wp3m7wmHCPoo1Arv/310TQuUvqzlNc3pPyvmBItclrg0+zJIpj/MvY4xJL2m+jlPGqfZV3C9uSJHdjURJ0MDjhbNXfiIXBooECyp74oy+Ft0JeeAsNBgWHRPzZ4ItAAa39vVhbo9KwzQX4GF+RlNNYa4DSITVQLHAxTH1zaWMUw=
+	t=1775672644; cv=none; b=uoQMZf54WToEXPEcseFp1f1222DhojTbSgzNGttfY75nLuugwJm7IjA4A+Q7h0+uUdEmzIO+YOdACqAtVCKCoVGGjEUlT7jhLUZxcIIILu0IP4+sfaZwGw3mJ+UfJCnwJBiYXFT6Q1F59vkoJVrP8eX4AcblQOqqKwd4LU5thXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674652; c=relaxed/simple;
-	bh=xy1gW/Rf33a0l/WK5XlieSN/lPk85gAHmbe+gT/cwrc=;
+	s=arc-20240116; t=1775672644; c=relaxed/simple;
+	bh=yIcwhwzcPwcDxjjW0nm/SvRQUHb7Ii1CtGdYITs/e9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8XDjtwsCAQRhXwQxvA5gR4E1QMHQD0KBpTmc5ykf/l1FYmZjeAL0LbwVW1CFhUl5c6gkpgvm0up5cm2PinAWMl5hus6XdCLDg4IPl20BWEz9QFxMScsB4GN9Mb/wSp8gJjD7ttgSlKLXzFNcjMAWeW1VaTrPYVoiWtbmT64R4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1tbbhWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7E2C19421;
-	Wed,  8 Apr 2026 18:57:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fctj4qu2PXS9KjN0ceHIAAevO4kyhcKWITMkvp3j286pJZyT7GA+UcRUb2O9dzZOaaOU7WJyXVn/xesgeBtKDPRNgTv5XGsg9CpabfMaH99SgBWFsXuQNPgXwppAe8LPFBj0NnHjHyoAUiDSK30JXQVdxeMI/xRZZYfGBOkJLOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1D4f6GbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0847C19421;
+	Wed,  8 Apr 2026 18:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674651;
-	bh=xy1gW/Rf33a0l/WK5XlieSN/lPk85gAHmbe+gT/cwrc=;
+	s=korg; t=1775672644;
+	bh=yIcwhwzcPwcDxjjW0nm/SvRQUHb7Ii1CtGdYITs/e9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1tbbhWVCirheIgffQHWFVgxzxdpZcTAkkG+9UD7S+KQEuzwDzCNas03MH3MJD1w4
-	 YU1lUvvoxm+8uR76Me9DJ0cs5M53yKYSehBZNDayTSxahdf1sw04ZGi+b81p8FUYMm
-	 cFaQ/PAgj72fDBPEmoiN23IufGnmHibEqiiC0pdc=
+	b=1D4f6GbDbrI3L7bvdYSJrOQvgN4sTzWNQer77mWPAAvRgvYTs0A+M1eDfVaXpk9bk
+	 yLO/oOMyopWtvI96l7yrG9RZeCP6MvL0KlLwONJsl7uJtT9uoZty1iGMWURFnNYNAM
+	 YhIM8vkvYZPCxZpUomKvgpQVTUCm5hdvoscwGQYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 173/311] ALSA: ctxfi: Dont enumerate SPDIF1 at DAIO initialization
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.6 086/160] drm/i915/dp: Use crtc_state->enhanced_framing properly on ivb/hsw CPU eDP
 Date: Wed,  8 Apr 2026 20:02:53 +0200
-Message-ID: <20260408175945.867231254@linuxfoundation.org>
+Message-ID: <20260408175916.408107374@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235132-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234355-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 79AC23C2D7E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E41043C0C1B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 75dc1980cf48826287e43dc7a49e310c6691f97e upstream.
+commit 9c9a57e4e337f94e23ddf69263fd0685c91155fb upstream.
 
-The recent refactoring of xfi driver changed the assignment of
-atc->daios[] at atc_get_resources(); now it loops over all enum
-DAIOTYP entries while it looped formerly only a part of them.
-The problem is that the last entry, SPDIF1, is a special type that
-is used only for hw20k1 CTSB073X model (as a replacement of SPDIFIO),
-and there is no corresponding definition for hw20k2.  Due to the lack
-of the info, it caused a kernel crash on hw20k2, which was already
-worked around by the commit b045ab3dff97 ("ALSA: ctxfi: Fix missing
-SPDIFI1 index handling").
+Looks like I missed the drm_dp_enhanced_frame_cap() in the ivb/hsw CPU
+eDP code when I introduced crtc_state->enhanced_framing. Fix it up so
+that the state we program to the hardware is guaranteed to match what
+we computed earlier.
 
-This patch addresses the root cause of the regression above properly,
-simply by skipping the incorrect SPDIF1 type in the parser loop.
-
-For making the change clearer, the code is slightly arranged, too.
-
-Fixes: a2dbaeb5c61e ("ALSA: ctxfi: Refactor resource alloc for sparse mappings")
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1259925
-Link: https://patch.msgid.link/20260331081227.216134-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Fixes: 3072a24c778a ("drm/i915: Introduce crtc_state->enhanced_framing")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260325135849.12603-3-ville.syrjala@linux.intel.com
+Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
+(cherry picked from commit 799fe8dc2af52f35c78c4ac97f8e34994dfd8760)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/ctxfi/ctatc.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/g4x_dp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/ctxfi/ctatc.c
-+++ b/sound/pci/ctxfi/ctatc.c
-@@ -1427,10 +1427,14 @@ static int atc_get_resources(struct ct_a
- 	daio_mgr = (struct daio_mgr *)atc->rsc_mgrs[DAIO];
- 	da_desc.msr = atc->msr;
- 	for (i = 0; i < NUM_DAIOTYP; i++) {
--		if (((i == MIC) && !cap.dedicated_mic) || ((i == RCA) && !cap.dedicated_rca))
-+		if (((i == MIC) && !cap.dedicated_mic) ||
-+		    ((i == RCA) && !cap.dedicated_rca) ||
-+		    i == SPDIFI1)
- 			continue;
--		da_desc.type = (atc->model != CTSB073X) ? i :
--			     ((i == SPDIFIO) ? SPDIFI1 : i);
-+		if (atc->model == CTSB073X && i == SPDIFIO)
-+			da_desc.type = SPDIFI1;
-+		else
-+			da_desc.type = i;
- 		da_desc.output = (i < LINEIM) || (i == RCA);
- 		err = daio_mgr->get_daio(daio_mgr, &da_desc,
- 					(struct daio **)&atc->daios[i]);
+--- a/drivers/gpu/drm/i915/display/g4x_dp.c
++++ b/drivers/gpu/drm/i915/display/g4x_dp.c
+@@ -132,7 +132,7 @@ static void intel_dp_prepare(struct inte
+ 			intel_dp->DP |= DP_SYNC_VS_HIGH;
+ 		intel_dp->DP |= DP_LINK_TRAIN_OFF_CPT;
+ 
+-		if (drm_dp_enhanced_frame_cap(intel_dp->dpcd))
++		if (pipe_config->enhanced_framing)
+ 			intel_dp->DP |= DP_ENHANCED_FRAMING;
+ 
+ 		intel_dp->DP |= DP_PIPE_SEL_IVB(crtc->pipe);
 
 
 
