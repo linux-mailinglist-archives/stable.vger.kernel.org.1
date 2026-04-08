@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yC+vF+qc1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:34 +0200
+	id 8DOIDUeh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A789C3C087F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 402E83C137A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF842306465F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E7E2305EE16
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E5037F01B;
-	Wed,  8 Apr 2026 18:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853343D9022;
+	Wed,  8 Apr 2026 18:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHIKQ6O1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4Z3zJu2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5880B67E;
-	Wed,  8 Apr 2026 18:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484173D6694;
+	Wed,  8 Apr 2026 18:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672265; cv=none; b=pna+I52xcF0tUYgqGw15upVKUkACYxQF4KCUw90MlSLjNsc3u9IqmcIqf3SCwo1hfrNeAnHhGB8wU+GAMBIMCx1NBt3431SnaAinWlALeHha0afaiaakyVNG7Q50dX+59JqZp60A90QOyJiznKPBgUpTQAVlsWeTh+dnHpBLd/8=
+	t=1775673400; cv=none; b=BwcowiNMEDyGte1/KK5032CXbEbFfXQRPCd2sozTHeBBBOaXKeA/75YTyugMMJxTDo/Pzx5JhUGTLdaazeBrWIpHf/YKZppIYHiBb+ETdvEviEnVZM9u3Sb8GkrAi1mQPU54xrXk9WTYhMCyr1tV5FDI3aO4j15BuwIKcaMFjIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672265; c=relaxed/simple;
-	bh=4OXh/hi7lEaW9KxMC3yh3pmAOHrk4GPCHkAHb3eQiLs=;
+	s=arc-20240116; t=1775673400; c=relaxed/simple;
+	bh=QNHyByrgJlcKZt98N5aPpeahC8LIUa4uydtkxxzAONs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbkPpdbAS2jfqAYdT5onBFygyDa7LHnZ9CqSNI3iq6CspO2uWhDbRJFNDK8BujSNpByJotgMLKPjtmWGlapRfIsKa3vRiSzH+GZKhyouvCha8IF5Ak+x52UNUkGH0Ipgt+0J1YMkoqH1OIF9/If8YeYtGjVdYa3gcR8s80Gvp4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHIKQ6O1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C48FC19421;
-	Wed,  8 Apr 2026 18:17:45 +0000 (UTC)
+	 MIME-Version; b=gVgpIggDE3SQut0Qvs7jaMfinFPDdSIwA+AWsv1mt8HW6QqafZHMB3XMGaeVHfhIvFvF07QuTRgfFs7Lyg+rRCLoSQn9WSTGVy2C+qbQru6TbCRiAYBhnVb08oCi4gXt5b6QuITwwgAR61PfmiB6G4i0ZRqocoxFrXf8yfioU8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4Z3zJu2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34D2C19421;
+	Wed,  8 Apr 2026 18:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672265;
-	bh=4OXh/hi7lEaW9KxMC3yh3pmAOHrk4GPCHkAHb3eQiLs=;
+	s=korg; t=1775673400;
+	bh=QNHyByrgJlcKZt98N5aPpeahC8LIUa4uydtkxxzAONs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pHIKQ6O1BlByh88Y4yha3tC4NhliaUSLQe9XxWfG/2LwKaVk2PkCQnggzSwRgAhMC
-	 INcWKDpWwx5YeuTkMcajlg/8PvNsDSxNPgqTKfClpHUF1chPKJbbiquRUAxnGEeSAG
-	 QuMVUM89zfg8y4dQb3XVha5jfpfviGhS0b/1d6d0=
+	b=Z4Z3zJu2lTtmgULegmd0T/RS4Vms3zQTHkePKhh/G21s5mFnNVcVzLh/Tiu4u1lmw
+	 uiV71JZ3PYo10hKnsfsNi4ysllrIr5bNz4UwS3FfUuvuUoNnUFuR4DCoKeOz44KYwL
+	 IepUZ1YjfQUJWdMLrrCNSmmgFwQt9qRXUlJewcmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yufan Chen <yufan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 253/312] net: ftgmac100: fix ring allocation unwind on open failure
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 185/277] iio: dac: ad5770r: fix error return in ad5770r_read_raw()
 Date: Wed,  8 Apr 2026 20:02:50 +0200
-Message-ID: <20260408175943.193470452@linuxfoundation.org>
+Message-ID: <20260408175940.771392033@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234209-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234647-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,94 +88,43 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A789C3C087F
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,analog.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 402E83C137A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yufan Chen <yufan.chen@linux.dev>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit c0fd0fe745f5e8c568d898cd1513d0083e46204a upstream.
+commit c354521708175d776d896f8bdae44b18711eccb6 upstream.
 
-ftgmac100_alloc_rings() allocates rx_skbs, tx_skbs, rxdes, txdes, and
-rx_scratch in stages. On intermediate failures it returned -ENOMEM
-directly, leaking resources allocated earlier in the function.
+Return the error code from regmap_bulk_read() instead of 0 so
+that I/O failures are properly propagated.
 
-Rework the failure path to use staged local unwind labels and free
-allocated resources in reverse order before returning -ENOMEM. This
-matches common netdev allocation cleanup style.
-
-Fixes: d72e01a0430f ("ftgmac100: Use a scratch buffer for failed RX allocations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yufan Chen <yufan.chen@linux.dev>
-Link: https://patch.msgid.link/20260328163257.60836-1-yufan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c |   28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/iio/dac/ad5770r.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -928,19 +928,19 @@ static int ftgmac100_alloc_rings(struct
- 	priv->tx_skbs = kcalloc(MAX_TX_QUEUE_ENTRIES, sizeof(void *),
- 				GFP_KERNEL);
- 	if (!priv->tx_skbs)
--		return -ENOMEM;
-+		goto err_free_rx_skbs;
+--- a/drivers/iio/dac/ad5770r.c
++++ b/drivers/iio/dac/ad5770r.c
+@@ -322,7 +322,7 @@ static int ad5770r_read_raw(struct iio_d
+ 				       chan->address,
+ 				       st->transf_buf, 2);
+ 		if (ret)
+-			return 0;
++			return ret;
  
- 	/* Allocate descriptors */
- 	priv->rxdes = dma_alloc_coherent(priv->dev,
- 					 MAX_RX_QUEUE_ENTRIES * sizeof(struct ftgmac100_rxdes),
- 					 &priv->rxdes_dma, GFP_KERNEL);
- 	if (!priv->rxdes)
--		return -ENOMEM;
-+		goto err_free_tx_skbs;
- 	priv->txdes = dma_alloc_coherent(priv->dev,
- 					 MAX_TX_QUEUE_ENTRIES * sizeof(struct ftgmac100_txdes),
- 					 &priv->txdes_dma, GFP_KERNEL);
- 	if (!priv->txdes)
--		return -ENOMEM;
-+		goto err_free_rxdes;
- 
- 	/* Allocate scratch packet buffer */
- 	priv->rx_scratch = dma_alloc_coherent(priv->dev,
-@@ -948,9 +948,29 @@ static int ftgmac100_alloc_rings(struct
- 					      &priv->rx_scratch_dma,
- 					      GFP_KERNEL);
- 	if (!priv->rx_scratch)
--		return -ENOMEM;
-+		goto err_free_txdes;
- 
- 	return 0;
-+
-+err_free_txdes:
-+	dma_free_coherent(priv->dev,
-+			  MAX_TX_QUEUE_ENTRIES *
-+			  sizeof(struct ftgmac100_txdes),
-+			  priv->txdes, priv->txdes_dma);
-+	priv->txdes = NULL;
-+err_free_rxdes:
-+	dma_free_coherent(priv->dev,
-+			  MAX_RX_QUEUE_ENTRIES *
-+			  sizeof(struct ftgmac100_rxdes),
-+			  priv->rxdes, priv->rxdes_dma);
-+	priv->rxdes = NULL;
-+err_free_tx_skbs:
-+	kfree(priv->tx_skbs);
-+	priv->tx_skbs = NULL;
-+err_free_rx_skbs:
-+	kfree(priv->rx_skbs);
-+	priv->rx_skbs = NULL;
-+	return -ENOMEM;
- }
- 
- static void ftgmac100_init_rings(struct ftgmac100 *priv)
+ 		buf16 = get_unaligned_le16(st->transf_buf);
+ 		*val = buf16 >> 2;
 
 
 
