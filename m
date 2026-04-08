@@ -1,146 +1,174 @@
-Return-Path: <stable+bounces-235277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJGOLa+w1mlWHQgAu9opvQ
-	(envelope-from <stable+bounces-235277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:46:55 +0200
+	id 8HR/Ja621mlxHggAu9opvQ
+	(envelope-from <stable+bounces-235278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 22:12:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD3E3C360F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:46:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC6F3C39F7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 22:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F98A307411A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:44:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A3C6301D4FF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 20:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D89C374E5B;
-	Wed,  8 Apr 2026 19:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E027A37754E;
+	Wed,  8 Apr 2026 20:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svifh28n"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tgLumnaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2337B37F8A2;
-	Wed,  8 Apr 2026 19:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B54336F41F;
+	Wed,  8 Apr 2026 20:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775677482; cv=none; b=RhuX42v2bQDNJD7U+8DpF4vd8/5EHhIGbfYxv6SgB3gvfNnqCTd8K+DBT6TDcK7XP0nyDF2MHfTQTWOHB456QPP2HmY9gGWkomUPSKMS7FzvgXnBqAc6HsNvQpKtglvAGU0uzJ82tBWkU8yz8EB1B2idWPVbvLUVgqd+ofuamOE=
+	t=1775679146; cv=none; b=dAq+bFMIQu0H9kYVFovj/VyzxsU1oK8Mpc0PnrQuagxGye6fHbJ8z2q1CGKEkrB8an1bMewimd5rP5eNC6z2DpjfdbJ6HrfvTtC3aHntdqpGCyGdQ2S7VPr/etIea8NpKQP4RCLNLWRYA2UTtH5g+ExWtBn8DQrO4zqNq6JiS94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775677482; c=relaxed/simple;
-	bh=JUpYxGyPQlp1KuwkrQ6xDUZhhBN+S9yq6i/Oyj1j8Jk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JjM0lZHZNML4wSR8XPTHkErM2NbmzcQ0H7RoFSxesrvQ2lMGycKDmsdWu9LAAhRXdxByZWs7I0mYxgKHGoLM0OgUUN1+nqc8qiMsvk4N714WWLI2/viRHT3MbVpCmR7RxhXFbsz7i/rud4oLc1kIjwHazr7N7NJna8mv2yxM7Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svifh28n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2A1C19421;
-	Wed,  8 Apr 2026 19:44:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775677481;
-	bh=JUpYxGyPQlp1KuwkrQ6xDUZhhBN+S9yq6i/Oyj1j8Jk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=svifh28n3dFWyH9j6BCiTGtC16JR6vEZz0+zCIKy98bPVfQMagqzgaz7JMi5aqGP7
-	 u1lodhiu0T4ESe9NuP5uPLyrKILloLrrINEIEL3U5RpQhSX3oHGGOw1jDjWWJgXR4v
-	 +Tc7+aMpZ6Qgo3Jz5VV28mmgYFihB1badrx4f0PI=
-Date: Wed, 8 Apr 2026 21:44:13 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Tugrul Kukul <tugrul.kukul@est.tech>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"Pavel Machek (CIP)" <pavel@denx.de>, Ron Economos <re@w6rz.net>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Mark Brown <broonie@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Peter Schneider <pschneider1968@googlemail.com>,
-	Alex Williamson <alex@shazbot.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 111/160] vfio: Create vfio_fs_type with inode per
- device
-Message-ID: <2026040839-around-uplifting-b023@gregkh>
-References: <20260408175913.177092714@linuxfoundation.org>
- <20260408175917.326372651@linuxfoundation.org>
+	s=arc-20240116; t=1775679146; c=relaxed/simple;
+	bh=jWtxorWDJl53Q0KzQv0WXS2TVhuItrBnYfd9ReIJmW8=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ejfp4Fm+FSvdFDZDb9NIe39lu1TgwrtC1bs3Z553E2lZuD3eorlKzzOvn/Az/4kVDxOzVIRKhBNQ+lXxR+XvvbGLTkdQWD18JeQLXfP1ZZTams+FkZcIqOyCVjVCWXATtjSpqy+wJu0aFU4Ggevi7kmyh5GR5a40iAcGz8R5aHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tgLumnaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C85C19421;
+	Wed,  8 Apr 2026 20:12:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775679146;
+	bh=jWtxorWDJl53Q0KzQv0WXS2TVhuItrBnYfd9ReIJmW8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tgLumnaXpH345q8jT9Fjm5Jax/6HIDiasQn0qyheeqSLsR7CxefEmP+tDgUKZeeSs
+	 ALNYHppWzlS34EcYXoUiGum5AO7eKjvSl6fH5E7XXE46xZOwSw0G3ToMz7WwlGuI8H
+	 Q5TTxlsR9BmmPfQjTYiP+hsmQ8N5IRm8d5wro/YQ=
+Date: Wed, 8 Apr 2026 13:12:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: tejas bharambe <tejas.bharambe@outlook.com>
+Cc: Tejas Bharambe <thbharam@gmail.com>, "ocfs2-devel@lists.linux.dev"
+ <ocfs2-devel@lists.linux.dev>, "mark@fasheh.com" <mark@fasheh.com>,
+ "jlbec@evilplan.org" <jlbec@evilplan.org>, "joseph.qi@linux.alibaba.com"
+ <joseph.qi@linux.alibaba.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>,
+ "syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com"
+ <syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v4] ocfs2: fix use-after-free in ocfs2_fault() when
+ VM_FAULT_RETRY
+Message-Id: <20260408131225.a37cd581ca47b3512a4219bc@linux-foundation.org>
+In-Reply-To: <JH0PR06MB6632F1A4381AB798FED980CE895BA@JH0PR06MB6632.apcprd06.prod.outlook.com>
+References: <20260403035333.136824-1-tejas.bharambe@outlook.com>
+	<20260403122947.2afc337b5333fb1990a78a65@linux-foundation.org>
+	<JH0PR06MB66320ABCFAD8F239FE5112B2895CA@JH0PR06MB6632.apcprd06.prod.outlook.com>
+	<20260404175040.40a746040ddb0cb5ce347fe3@linux-foundation.org>
+	<JH0PR06MB6632F1A4381AB798FED980CE895BA@JH0PR06MB6632.apcprd06.prod.outlook.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260408175917.326372651@linuxfoundation.org>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-235278-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235277-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,nvidia.com,intel.com,redhat.com,google.com,est.tech,broadcom.com,denx.de,w6rz.net,fedoraproject.org,kernel.org,microchip.com,linuxfoundation.org,googlemail.com,shazbot.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[outlook.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,lists.linux.dev,fasheh.com,evilplan.org,linux.alibaba.com,vger.kernel.org,syzkaller.appspotmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 1CD3E3C360F
+	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 0CC6F3C39F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 08, 2026 at 08:03:18PM +0200, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Alex Williamson <alex.williamson@redhat.com>
-> 
-> commit b7c5e64fecfa88764791679cca4786ac65de739e upstream.
-> 
-> By linking all the device fds we provide to userspace to an
-> address space through a new pseudo fs, we can use tools like
-> unmap_mapping_range() to zap all vmas associated with a device.
-> 
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Link: https://lore.kernel.org/r/20240530045236.1005864-2-alex.williamson@redhat.com
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-> Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
-> Signed-off-by: Tugrul Kukul <tugrul.kukul@est.tech>
-> Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-> Tested-by: Ron Economos <re@w6rz.net>
-> Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-> Tested-by: Mark Brown <broonie@kernel.org>
-> Tested-by: Conor Dooley <conor.dooley@microchip.com>
-> Tested-by: Jon Hunter <jonathanh@nvidia.com>
-> Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-> Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-> Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-> Acked-by: Alex Williamson <alex@shazbot.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Wed, 8 Apr 2026 03:50:17 +0000 tejas bharambe <tejas.bharambe@outlook.com> wrote:
 
-Sasha, something went odd with your scripts to pull all of these names
-in as "tested-by", right?  The original commit did not say that :(
+> Hi Andrew,
+> 
+> You're right, I missed that scenario.
+> 
+> The inode can be freed if the file descriptor is closed after mmap() and munmap() races with the fault handler.
+> 
+> I can do one of the following:
+> 1. I can skip the trace firing when VM_FAULT_RETRY is set as I did in v1. It was changed to v4 after Joseph's suggestion to keep traces.
+> 2. If we want to keep traces, we can use ihold()/iput() as shown below:
+> 
+> ihold(inode);   //pin inode
+> ret = filemap_fault(vmf);
+> trace_ocfs2_fault(OCFS2_I(inode)->ip_blkno, ...);  // safe, refcount held
+> iput(inode);  //release inode
+> 
+> 
+> Which approach do you prefer?
 
-thanks,
+Well, that's down to the ocfs2 maintiners.  Me, omitting traces doesn't
+sound good.
 
-greg k-h
+But we should consider performance implications - this is a fairly hot
+path and iget/iput are a little costly.  Perhaps there's a way to avoid
+the iget/iput if tracing isn't enabled.  As long as we handle the case
+where tracing get enabled immediately after we've done the
+
+	if (tracing enabled)
+		iget()
+
+
+> Thanks,
+> Tejas
+> ________________________________________
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Sent: Saturday, April 4, 2026 5:50 PM
+> To: tejas bharambe <tejas.bharambe@outlook.com>
+> Cc: Tejas Bharambe <thbharam@gmail.com>; ocfs2-devel@lists.linux.dev <ocfs2-devel@lists.linux.dev>; mark@fasheh.com <mark@fasheh.com>; jlbec@evilplan.org <jlbec@evilplan.org>; joseph.qi@linux.alibaba.com <joseph.qi@linux.alibaba.com>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>; syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com <syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com>; stable@vger.kernel.org <stable@vger.kernel.org>
+> Subject: Re: [PATCH v4] ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
+> 
+> On Sun, 5 Apr 2026 00:30:14 +0000 tejas bharambe <tejas.bharambe@outlook.com> wrote:
+> 
+> > Following is my response for question posted on https://sashiko.dev/#/patchset/20260403035333.136824-1-tejas.bharambe%40outlook.com
+> >
+> >
+> > No. For ocfs2_fault() to be executing, the file must be open and
+> > the process holds an active file descriptor. The inode's lifetime
+> > is tied to the file's reference count, which remains held by the
+> > file descriptor for the duration of the fault handler. munmap()
+> > can free the VMA (decrementing vm_file's refcount) but cannot
+> > free the inode as long as the file descriptor is open. The faulting
+> > thread cannot call close() while it is inside the fault handler,
+> > so the inode is guaranteed to outlive the trace call.
+> 
+> I don't think that's the scenario which Sashiko is suggesting.
+> 
+> Suppose userspace does
+> 
+>         fd = open(...);
+>         p = mmap(fd, ...);
+>         close(fd);
+> 
+> Now, that mmap is the only ref against fd.
+> 
+> Now, suppose that userspace does munmap() while another thread is in
+> the fault handler.
 
