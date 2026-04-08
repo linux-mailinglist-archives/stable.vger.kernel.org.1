@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-234595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFidCmqg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:30 +0200
+	id mN4eLiud1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B9F3C117B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FA33C092A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DEBC4300D554
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BECE2301BC08
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F047332A3FD;
-	Wed,  8 Apr 2026 18:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCC924B28;
+	Wed,  8 Apr 2026 18:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8m5QZ2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsTzGUVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B173D3D9041;
-	Wed,  8 Apr 2026 18:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D762494F0;
+	Wed,  8 Apr 2026 18:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673266; cv=none; b=nIOhezYMgGtjN3UTLnLj4/46+E2i8KYA7CdlrRymXMI+oB8VQ3EPU/NoM24pV9isRu7Sl/LZo8z1BY6iRAPSsEF0LR4GW7t1CgIC54/IirXICVqpD5HG5NMIMoyxDqp50MdiOqDe+TCjOaeaHnXxOX5clJCifpz1FarhtE8RQf4=
+	t=1775672301; cv=none; b=c9m33JHkdv8KiMUe74eSLnOXZGjWV2TpVpsF+S6qTCSL9ArSJWKrPAGAIKuVdviNpXeNBLvbN0/JZXFVF5+jKtzSPvIbPBNXJx7CuU1//S+gPnZQNKFClUnAAqrJX5IW1ccrRMdqHrubPgCduBKeTs4ESNhJAOs4vFE1A0a7ipo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673266; c=relaxed/simple;
-	bh=IfpuPuiiQuOKFbpx+F2sPahwY8rb7CyRGhrDNCHrEsM=;
+	s=arc-20240116; t=1775672301; c=relaxed/simple;
+	bh=HMids3lujWR1PKHPlYYmBGTcK+RvRlLn/CKtdZj19BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sX48RhyO4wTjg/PhvM8OXlGa7K2FLr8s6Q5pDmzgfcgY1sqe2UNm4jU2upX+F4tYsfhmb49iWybSak5qlI+WLIE5auFmnGUj6d0b7mfTihB3idCVP+6zYlTkQa0wZP+9Cn9ziqoheU/af7tBIDkV8u6Tx36dVuissiIDpk6/iVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8m5QZ2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A576C2BC87;
-	Wed,  8 Apr 2026 18:34:26 +0000 (UTC)
+	 MIME-Version; b=uXjy5IBM8I0Eg6lxbiIwMFM1cW1xBrayNjO0EoMWRV5qUhzMAeKdQ4TLO/+6PBaVIlpd3ET5UfLgJoajWixWG09lVHJilEZKwMd9GbdqUgxIvAZHq705aJFqK7HMirm0Z5Bov87wDa6pr6W8FKtzkaGVHNGXfcRPxNdUm7ZOyHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsTzGUVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EF6C19421;
+	Wed,  8 Apr 2026 18:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673266;
-	bh=IfpuPuiiQuOKFbpx+F2sPahwY8rb7CyRGhrDNCHrEsM=;
+	s=korg; t=1775672301;
+	bh=HMids3lujWR1PKHPlYYmBGTcK+RvRlLn/CKtdZj19BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8m5QZ2r8SyY3ZM1ayZP1NAY5HUhrcE0KI1+GwE/rqecBYs4cUB58Ih2e8kxRykgp
-	 CWBjIxpViNQvknN4x3NFhaXpUBTEdWiW7e62qjPB8nlAmTpkEqJ+b7fV8TMEGJXYQo
-	 Y+/wCQlFt87kFuhcP/wAuQgjig3lqfByFV/aUA4M=
+	b=IsTzGUVkfKM7gRIYLrrX+9CA4wmwY9jLy+xGjIqhsjv2b84hy1C728VrtFfOPWTxe
+	 740qpXpCnuw/rQgvbkDB0+KG7IztWFPAWqtLim9M+LySVzzScY2W5zXaqn+b+LO5r1
+	 aFnNurQuNPFbrLtf83mLSDlCDoUTgWG1WeX7pcAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 165/277] drm/amdgpu: validate doorbell_offset in user queue creation
-Date: Wed,  8 Apr 2026 20:02:30 +0200
-Message-ID: <20260408175940.030903201@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 234/312] Revert "ext4: avoid infinite loops caused by residual data"
+Date: Wed,  8 Apr 2026 20:02:31 +0200
+Message-ID: <20260408175942.493312250@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +64,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234595-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,amd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234223-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 30B9F3C117B
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 15FA33C092A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+This reverts commit 4fee3f2f4839571a6294946a2efcdb69caa61393.
 
-commit a018d1819f158991b7308e4f74609c6c029b670c upstream.
-
-amdgpu_userq_get_doorbell_index() passes the user-provided
-doorbell_offset to amdgpu_doorbell_index_on_bar() without bounds
-checking. An arbitrarily large doorbell_offset can cause the
-calculated doorbell index to fall outside the allocated doorbell BO,
-potentially corrupting kernel doorbell space.
-
-Validate that doorbell_offset falls within the doorbell BO before
-computing the BAR index, using u64 arithmetic to prevent overflow.
-
-Fixes: f09c1e6077ab ("drm/amdgpu: generate doorbell index for userqueue")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit de1ef4ffd70e1d15f0bf584fd22b1f28cbd5e2ec)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ext4/extents.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-@@ -358,6 +358,13 @@ amdgpu_userq_get_doorbell_index(struct a
- 		goto unpin_bo;
- 	}
- 
-+	/* Validate doorbell_offset is within the doorbell BO */
-+	if ((u64)db_info->doorbell_offset * db_size + db_size >
-+	    amdgpu_bo_size(db_obj->obj)) {
-+		r = -EINVAL;
-+		goto unpin_bo;
-+	}
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 42a06360086a8..bb27c04798d2b 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4424,13 +4424,9 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
+ 	if (IS_ERR(path)) {
+ 		err = PTR_ERR(path);
+-		/*
+-		 * Gracefully handle out of space conditions. If the filesystem
+-		 * is inconsistent, we'll just leak allocated blocks to avoid
+-		 * causing even more damage.
+-		 */
+-		if (allocated_clusters && (err == -EDQUOT || err == -ENOSPC)) {
++		if (allocated_clusters) {
+ 			int fb_flags = 0;
 +
- 	index = amdgpu_doorbell_index_on_bar(uq_mgr->adev, db_obj->obj,
- 					     db_info->doorbell_offset, db_size);
- 	drm_dbg_driver(adev_to_drm(uq_mgr->adev),
+ 			/*
+ 			 * free data blocks we just allocated.
+ 			 * not a good idea to call discard here directly,
+-- 
+2.53.0
+
 
 
 
