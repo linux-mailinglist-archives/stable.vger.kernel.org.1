@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKoeIqig1mlDGwgAu9opvQ
-	(envelope-from <stable+bounces-234458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:32 +0200
+	id aM5GKIia1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094C03C123F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045B83C02D5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40FE9305DB8C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:28:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B91A8301CCD5
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EF43D5647;
-	Wed,  8 Apr 2026 18:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57383D88E1;
+	Wed,  8 Apr 2026 18:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGvBAXjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJ/BlDAn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458FF3537EF;
-	Wed,  8 Apr 2026 18:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B0537F8C2;
+	Wed,  8 Apr 2026 18:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672912; cv=none; b=nDUEZVEtUUln26N6kl2fqQOCf/4g30HFp53XIL01fOAODlZjb+HvKT4kGsU7LLdh/P2azQBCXJiTs6q6hv91RaixwYsWFYT6/HaPgvvGRCGP9OLfiTfR14Qn/BiC/XRVNWciokR9pdSRZmwT07S4FtNhx2Uo3z533uMCXlGAmpU=
+	t=1775671858; cv=none; b=Nec49CGrcSwdOS67ZXcU5Flh6H/SL242ED5Lh7QuN1d10LJNQU2LmVmhqcrTwDSJQYtykYy6v2QbL5bjfn1+sVPYIpTl8bXhMKNN084IG42x0MNXRowyU0eZxTNM2zJyAp84jTTwKkZnXjfcO0SpF1nDIGTScvgrzJfH973IPNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672912; c=relaxed/simple;
-	bh=ZWbLcg5sFmS1DsrSjRB4lDuOx+btpVxPeCHxVpn7mw4=;
+	s=arc-20240116; t=1775671858; c=relaxed/simple;
+	bh=LzpA0uNotGTfnorKGXT/eTRfWJ98eIeKILXj4dxtatQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6ceXzSFLADoGdJHKdmiyznEsa7ljNLQP289BjX13UcTmP7vgcTgNaB7AidBerOkGpOtXdCmJQQa8MFtSG4PyegmVFDe6b37stnzfBjH7nokaQq6L7lQykXswUGAU2wGD0MYNBnS4+uUqFDpBz+tgJGOVk/VpsEzBl0nRLclEEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGvBAXjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D184DC19421;
-	Wed,  8 Apr 2026 18:28:31 +0000 (UTC)
+	 MIME-Version; b=HVnxwSFeODHplF0NQRxs6/IBF4v+PgL+zfZ7sojL3tHcxNJrbX8ifxBKBqVqm8uXfRwT6b7XYUZ6wmtbf8VSj030QF/q2OsvRcAVdrv4FnatEa6aqOj5Np1AXxqJKHCilnWUO5r94hdJB05o5GecpjCahHFjP/i5qoqPWj5bmu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJ/BlDAn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEDEC19421;
+	Wed,  8 Apr 2026 18:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672912;
-	bh=ZWbLcg5sFmS1DsrSjRB4lDuOx+btpVxPeCHxVpn7mw4=;
+	s=korg; t=1775671858;
+	bh=LzpA0uNotGTfnorKGXT/eTRfWJ98eIeKILXj4dxtatQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGvBAXjKDC2+cQNWF13Llf+AnqJnZ9QlUPEZr9qY/+LhSfLY+3MAbbGAVAk2hQrJM
-	 NtlbLCpHH2s4pQC9c2GZaoiFeqMl2HYXiEao4IUEW42TwcJOX5c98CwdewOegTKtcS
-	 OqlLxg2R/CODVJPxxccRlYNCioR3DiMWZi7nbf1Y=
+	b=nJ/BlDAnNaGVxE7o1yoZMveYbdbnbYfjurkvRS5cVN8wgwLVcJMZzuoQ+W3wCvmDX
+	 9geFQtgjeUEtvE3hYR5bqIrLpm318B1O2q2PoezM8OjPTcF+YWBwYE+LlBdK6gilbT
+	 U6Z/HP3QgsFVvL41w/FQMcWM3hwiKMHD4BMvQi7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 028/277] crypto: af-alg - fix NULL pointer dereference in scatterwalk
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 096/312] hwmon: (peci/cputemp) Fix crit_hyst returning delta instead of absolute temperature
 Date: Wed,  8 Apr 2026 20:00:13 +0200
-Message-ID: <20260408175934.903778726@linuxfoundation.org>
+Message-ID: <20260408175937.348811015@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234458-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234051-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,61 +86,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,doyensec.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 094C03C123F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 045B83C02D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit 62397b493e14107ae82d8b80938f293d95425bcb ]
+commit 0adc752b4f7d82af7bd14f7cad3091b3b5d702ba upstream.
 
-The AF_ALG interface fails to unmark the end of a Scatter/Gather List (SGL)
-when chaining a new af_alg_tsgl structure. If a sendmsg() fills an SGL
-exactly to MAX_SGL_ENTS, the last entry is marked as the end. A subsequent
-sendmsg() allocates a new SGL and chains it, but fails to clear the end
-marker on the previous SGL's last data entry.
+The hwmon sysfs ABI expects tempN_crit_hyst to report the temperature at
+which the critical condition clears, not the hysteresis delta from the
+critical limit.
 
-This causes the crypto scatterwalk to hit a premature end, returning NULL
-on sg_next() and leading to a kernel panic during dereference.
+The peci cputemp driver currently returns tjmax - tcontrol for
+crit_hyst_type, which is the hysteresis margin rather than the
+corresponding absolute temperature.
 
-Fix this by explicitly unmarking the end of the previous SGL when
-performing sg_chain() in af_alg_alloc_tsgl().
+Return tcontrol directly, and update the documentation accordingly.
 
-Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf3608f338e9 ("hwmon: peci: Add cputemp driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260323002352.93417-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/af_alg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/hwmon/peci-cputemp.rst |   10 ++++++----
+ drivers/hwmon/peci/cputemp.c         |    2 +-
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 6c271e55f44d9..78e995dddf879 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -623,8 +623,10 @@ static int af_alg_alloc_tsgl(struct sock *sk)
- 		sg_init_table(sgl->sg, MAX_SGL_ENTS + 1);
- 		sgl->cur = 0;
+--- a/Documentation/hwmon/peci-cputemp.rst
++++ b/Documentation/hwmon/peci-cputemp.rst
+@@ -51,8 +51,9 @@ temp1_max		Provides thermal control temp
+ temp1_crit		Provides shutdown temperature of the CPU package which
+ 			is also known as the maximum processor junction
+ 			temperature, Tjmax or Tprochot.
+-temp1_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
+-			the CPU package.
++temp1_crit_hyst		Provides the hysteresis temperature of the CPU
++			package. Returns Tcontrol, the temperature at which
++			the critical condition clears.
  
--		if (sg)
-+		if (sg) {
-+			sg_unmark_end(sg + MAX_SGL_ENTS - 1);
- 			sg_chain(sg, MAX_SGL_ENTS + 1, sgl->sg);
-+		}
+ temp2_label		"DTS"
+ temp2_input		Provides current temperature of the CPU package scaled
+@@ -62,8 +63,9 @@ temp2_max		Provides thermal control temp
+ temp2_crit		Provides shutdown temperature of the CPU package which
+ 			is also known as the maximum processor junction
+ 			temperature, Tjmax or Tprochot.
+-temp2_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
+-			the CPU package.
++temp2_crit_hyst		Provides the hysteresis temperature of the CPU
++			package. Returns Tcontrol, the temperature at which
++			the critical condition clears.
  
- 		list_add_tail(&sgl->list, &ctx->tsgl_list);
- 	}
--- 
-2.53.0
-
+ temp3_label		"Tcontrol"
+ temp3_input		Provides current Tcontrol temperature of the CPU
+--- a/drivers/hwmon/peci/cputemp.c
++++ b/drivers/hwmon/peci/cputemp.c
+@@ -133,7 +133,7 @@ static int get_temp_target(struct peci_c
+ 		*val = priv->temp.target.tjmax;
+ 		break;
+ 	case crit_hyst_type:
+-		*val = priv->temp.target.tjmax - priv->temp.target.tcontrol;
++		*val = priv->temp.target.tcontrol;
+ 		break;
+ 	default:
+ 		ret = -EOPNOTSUPP;
 
 
 
