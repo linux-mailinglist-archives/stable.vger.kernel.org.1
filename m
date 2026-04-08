@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-234754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234532-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MAUEhWn1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:57 +0200
+	id mIUIB4if1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234532-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D003C2631
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A89D3C0F89
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8346C3067769
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DF62E3038686
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9083D4134;
-	Wed,  8 Apr 2026 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A29D3AF643;
+	Wed,  8 Apr 2026 18:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6uTtOKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxu4MfyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFDA3D522C;
-	Wed,  8 Apr 2026 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82E024B28;
+	Wed,  8 Apr 2026 18:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673676; cv=none; b=Ee+3GuFjRRVI2HclBlbkPx7NaH4Qq+s2bisDC2jOSYeVpbUfHG04kyFI+owHJZzSZngX2l1GO5aRJfsyLJ/A0UOVoP2EoNAWjlz8MZ2MVIjTnbNVqsoA0rABLkTdl/8b3+FUsscUBFAZhc7mDyL3/qer+guu8tjHOQoXouxtMCY=
+	t=1775673103; cv=none; b=Hjz7jsCDlCa4T/+32+T2/fkXLxUPx4tJmp5Wm9kWLDJZfWbRB7XLuMZ1aPd2QQXKb4N1s3PQwoB3PiMBnHKA8bXHRPJZY/QTuR3htQYpj2/wZhD0no3a9UeF76DcVphi4ps+5jhrWq8UnrACxmHuoYN4mAXQTv7wAmRJOpW33rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673676; c=relaxed/simple;
-	bh=rl7D71K0Ngv9hZCczjZ8wIBzvcHapdee8A/W6bG/Deg=;
+	s=arc-20240116; t=1775673103; c=relaxed/simple;
+	bh=RcYJw67zqP/2vgT/4zyMMcDS20WzAP1TQMy3lhY27Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHlAPW7BhPQNWjPMBNcCscDKq+dy97tT/FSQaG9r2ClmNNPyy6z3tlGaoZYIVqmliMrT9uilG4mJj1OvCiam4AfBRudYZ1nNmv9rJkJPmvv0V1T1O9PFUhX/KbuEpdSzQ772t1dDY+iZGB5bApiJ3SJ1VDPGUGKC0l7qyy1+vmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6uTtOKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953EBC19421;
-	Wed,  8 Apr 2026 18:41:15 +0000 (UTC)
+	 MIME-Version; b=DoIcGHE5sX/UdVev5Oozfpolx9yqVyTWoBlObnQZda7keiy/gYK1LsOZP047Yk6bdU1IQaF1OPj0FAs/yylkT26oxg7OUCrur4jv6FiOG9ATVDwLwnyip8Nyand1iRnbYn+FAU1+EPUxEfFhoi3ksPxPzj3vFeNVyRV5ZCu1dG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxu4MfyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E328C19421;
+	Wed,  8 Apr 2026 18:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673675;
-	bh=rl7D71K0Ngv9hZCczjZ8wIBzvcHapdee8A/W6bG/Deg=;
+	s=korg; t=1775673103;
+	bh=RcYJw67zqP/2vgT/4zyMMcDS20WzAP1TQMy3lhY27Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6uTtOKL3BgCPJ1qVcDg+Q6lwv7Ef8rDZ9sdYZ0j1bo+7BVqjlBbFoYhRo68dNIVS
-	 WS+7+CoqIYjlagxJmSvRHPc2KI53GM5JJnCSXkqc0Dkaa2yRCQXMhCkOpvmgPfMip5
-	 p9XE+/nn/2DRSpkW99dqEwaRoCRAerq0FSV2JdGs=
+	b=zxu4MfyG6wYCdNPaoGBn5qGwjrhJUsa9wqiO6bkLkhsH12TBeG+WXP3issGrfUaLo
+	 3Ua8MqmrXeD+R66zIdy4A+KsiirZL3SXHzPvfyW5QATkZREl9ZPst+UpKMM1vxbOZv
+	 ifik9p+HuKxblQZnTfWL218M7f1wEhIMtmKI5p0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yochai Eisenrich <echelonh@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Varun R Mallya <varunrmallya@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/242] net: ipv6: ndisc: fix ndisc_ra_useropt to initialize nduseropt_padX fields to zero to prevent an info-leak
+Subject: [PATCH 6.18 102/277] bpf: Reject sleepable kprobe_multi programs at attach time
 Date: Wed,  8 Apr 2026 20:01:27 +0200
-Message-ID: <20260408175928.831977894@linuxfoundation.org>
+Message-ID: <20260408175937.680594892@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +71,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234754-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234532-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A2D003C2631
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1A89D3C0F89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yochai Eisenrich <echelonh@gmail.com>
+From: Varun R Mallya <varunrmallya@gmail.com>
 
-[ Upstream commit ae05340ccaa9d347fe85415609e075545bec589f ]
+[ Upstream commit eb7024bfcc5f68ed11ed9dd4891a3073c15f04a8 ]
 
-When processing Router Advertisements with user options the kernel
-builds an RTM_NEWNDUSEROPT netlink message. The nduseroptmsg struct
-has three padding fields that are never zeroed and can leak kernel data
+kprobe.multi programs run in atomic/RCU context and cannot sleep.
+However, bpf_kprobe_multi_link_attach() did not validate whether the
+program being attached had the sleepable flag set, allowing sleepable
+helpers such as bpf_copy_from_user() to be invoked from a non-sleepable
+context.
 
-The fix is simple, just zeroes the padding fields.
+This causes a "sleeping function called from invalid context" splat:
 
-Fixes: 31910575a9de ("[IPv6]: Export userland ND options through netlink (RDNSS support)")
-Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260324224925.2437775-1-echelonh@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:169
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1787, name: sudo
+  preempt_count: 1, expected: 0
+  RCU nest depth: 2, expected: 0
+
+Fix this by rejecting sleepable programs early in
+bpf_kprobe_multi_link_attach(), before any further processing.
+
+Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
+Signed-off-by: Varun R Mallya <varunrmallya@gmail.com>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Acked-by: Leon Hwang <leon.hwang@linux.dev>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20260401191126.440683-1-varunrmallya@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ndisc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/bpf_trace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 480c906cb374c..64bd0cbb67d70 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1220,6 +1220,9 @@ static void ndisc_ra_useropt(struct sk_buff *ra, struct nd_opt_hdr *opt)
- 	ndmsg->nduseropt_icmp_type = icmp6h->icmp6_type;
- 	ndmsg->nduseropt_icmp_code = icmp6h->icmp6_code;
- 	ndmsg->nduseropt_opts_len = opt->nd_opt_len << 3;
-+	ndmsg->nduseropt_pad1 = 0;
-+	ndmsg->nduseropt_pad2 = 0;
-+	ndmsg->nduseropt_pad3 = 0;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index d8da00fe73f0b..70f1292b7ddbd 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2739,6 +2739,10 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	if (!is_kprobe_multi(prog))
+ 		return -EINVAL;
  
- 	memcpy(ndmsg + 1, opt, opt->nd_opt_len << 3);
- 
++	/* kprobe_multi is not allowed to be sleepable. */
++	if (prog->sleepable)
++		return -EINVAL;
++
+ 	/* Writing to context is not allowed for kprobes. */
+ 	if (prog->aux->kprobe_write_ctx)
+ 		return -EINVAL;
 -- 
 2.53.0
 
