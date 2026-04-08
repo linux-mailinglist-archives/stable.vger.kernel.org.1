@@ -1,72 +1,61 @@
-Return-Path: <stable+bounces-234379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2P5uMumd1mkEGwgAu9opvQ
-	(envelope-from <stable+bounces-234379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:49 +0200
+	id 0L/+Fhmc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A4A3C0BAB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1F33C067A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EC54B303236C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 74D1C3007B3C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9B63D564E;
-	Wed,  8 Apr 2026 18:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFBA37C10F;
+	Wed,  8 Apr 2026 18:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLCXt97e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHjQMh+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB873D4134;
-	Wed,  8 Apr 2026 18:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF04BB67E;
+	Wed,  8 Apr 2026 18:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672706; cv=none; b=WYStBz4AD8oDk+4M7xiJBiArQGkA/skBWfKeKWjj89zDBtHfHpXa3I/j/bK/BhGBPdj4WjlPzFAC5Rl0QtWFP5D0MeCmP9SWMqT6oLcvYD9YL9S0nohcmgKMpKRpumEcDRA/ki9uSODtNHvQoTn1u4GF6C8wWMQ+ciHuvlDS+VI=
+	t=1775672338; cv=none; b=pbehYZTNcYyKUFVmNDsHjH+ChCssmcBsQ2sfN5G4nvaRhlTyFYZdaNLptaRL7mjYz1ktga4O/2mheXQTpg16YN36OVCykN2BNvSbnX/ASpDi+xn+HvCkVe5QQW4mLZnAvlOG+Q5o+qhoaKxLwSerhIUFqTREZouvf4x8+WraNLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672706; c=relaxed/simple;
-	bh=pq408kuXVjbvhDINshqMRt4oWCr/h9fqJ0rv7UyDNyg=;
+	s=arc-20240116; t=1775672338; c=relaxed/simple;
+	bh=aGICxead0iEbkm/INdas3PPO3P4R1Hyp3W+YxwK58kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9hmt9c1bfey/Dhwx/oZWU7bhM48DdTPEFx/p7jWsdsAz8ymjUKrOkOCD/Q5JKjXusMYwCsC7ncNYYPxtgDwIWDPEO981RNul5thpwQj9FP6eVtvSLqJpYRRNxMzHM9Uf/62EXkKMil+YmwQ99AEGOge4PE9nRLAcW7/QmUU21s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLCXt97e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D15C19421;
-	Wed,  8 Apr 2026 18:25:05 +0000 (UTC)
+	 MIME-Version; b=t8ppv2ugX0VsZM7SCLsUDwS1MtlT9qzHr9XMqN851R2k6mLB7AzUNKsXXzLH+L+A0YXy4+cse6Q+9bWuy4bH6l2FO1XO0wJ2PZNW0xzjQQG1hYxkCyH+ZvQ0XZE7Sdmafsc2D8Cx1Qe0zYp1KrMW2Ijd6egatvZvx+c8glrsFsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHjQMh+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44384C19421;
+	Wed,  8 Apr 2026 18:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672706;
-	bh=pq408kuXVjbvhDINshqMRt4oWCr/h9fqJ0rv7UyDNyg=;
+	s=korg; t=1775672338;
+	bh=aGICxead0iEbkm/INdas3PPO3P4R1Hyp3W+YxwK58kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLCXt97euzDargsXUQN5O6622LSr0y7dCcqBOh3Wx5twrgOqdwDwMGYWOwkfTeYh8
-	 TNibAjn0aRTKMTs7p/8r66zC7541CmwhFwrkGF6Ia+r9NStnSfAmjv70JwGMSiJzmt
-	 E7olGu8bmfSgDHnU2CWnf9EjkuKWcPfPKBTee0kM=
+	b=wHjQMh+O2/XiNlP1bkxbjMnfHQnVYw2xSR0i8rNWwH4bBTg2T3dGUr9EmVxtPBL8h
+	 npfRKUhVNfj+yxNLOQiDjOXel1roOYG2YHqVQjz+JA5+vDIrF7H7pjgmHCl4Cu4cYh
+	 LDfPQva1apz+1VLIbO1iPUHOxB9QIRjrj6o+BAZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Tugrul Kukul <tugrul.kukul@est.tech>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"Pavel Machek (CIP)" <pavel@denx.de>,
-	Ron Economos <re@w6rz.net>,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Mark Brown <broonie@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Peter Schneider <pschneider1968@googlemail.com>,
-	Alex Williamson <alex@shazbot.org>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Werner Kasselman <werner@verivus.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/160] vfio: Create vfio_fs_type with inode per device
+Subject: [PATCH 6.1 281/312] ksmbd: fix memory leaks and NULL deref in smb2_lock()
 Date: Wed,  8 Apr 2026 20:03:18 +0200
-Message-ID: <20260408175917.326372651@linuxfoundation.org>
+Message-ID: <20260408175944.248833072@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,220 +68,150 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234379-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,intel.com,redhat.com,google.com,est.tech,broadcom.com,denx.de,w6rz.net,fedoraproject.org,kernel.org,microchip.com,googlemail.com,shazbot.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234237-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C4A4A3C0BAB
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,verivus.com:email]
+X-Rspamd-Queue-Id: 5A1F33C067A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Werner Kasselman <werner@verivus.com>
 
-commit b7c5e64fecfa88764791679cca4786ac65de739e upstream.
+[ Upstream commit 309b44ed684496ed3f9c5715d10b899338623512 ]
 
-By linking all the device fds we provide to userspace to an
-address space through a new pseudo fs, we can use tools like
-unmap_mapping_range() to zap all vmas associated with a device.
+smb2_lock() has three error handling issues after list_del() detaches
+smb_lock from lock_list at no_check_cl:
 
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240530045236.1005864-2-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
-Signed-off-by: Tugrul Kukul <tugrul.kukul@est.tech>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-Tested-by: Ron Economos <re@w6rz.net>
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Acked-by: Alex Williamson <alex@shazbot.org>
+1) If vfs_lock_file() returns an unexpected error in the non-UNLOCK
+   path, goto out leaks smb_lock and its flock because the out:
+   handler only iterates lock_list and rollback_list, neither of
+   which contains the detached smb_lock.
+
+2) If vfs_lock_file() returns -ENOENT in the UNLOCK path, goto out
+   leaks smb_lock and flock for the same reason.  The error code
+   returned to the dispatcher is also stale.
+
+3) In the rollback path, smb_flock_init() can return NULL on
+   allocation failure.  The result is dereferenced unconditionally,
+   causing a kernel NULL pointer dereference.  Add a NULL check to
+   prevent the crash and clean up the bookkeeping; the VFS lock
+   itself cannot be rolled back without the allocation and will be
+   released at file or connection teardown.
+
+Fix cases 1 and 2 by hoisting the locks_free_lock()/kfree() to before
+the if(!rc) check in the UNLOCK branch so all exit paths share one
+free site, and by freeing smb_lock and flock before goto out in the
+non-UNLOCK branch.  Propagate the correct error code in both cases.
+Fix case 3 by wrapping the VFS unlock in an if(rlock) guard and adding
+a NULL check for locks_free_lock(rlock) in the shared cleanup.
+
+Found via call-graph analysis using sqry.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Suggested-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Werner Kasselman <werner@verivus.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted rlock->c.flc_type to rlock->fl_type ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/device_cdev.c |  7 ++++++
- drivers/vfio/group.c       |  7 ++++++
- drivers/vfio/vfio_main.c   | 44 ++++++++++++++++++++++++++++++++++++++
- include/linux/vfio.h       |  1 +
- 4 files changed, 59 insertions(+)
+ fs/smb/server/smb2pdu.c |   29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-index e75da0a70d1f8..bb1817bd4ff31 100644
---- a/drivers/vfio/device_cdev.c
-+++ b/drivers/vfio/device_cdev.c
-@@ -39,6 +39,13 @@ int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7145,14 +7145,15 @@ retry:
+ 		rc = vfs_lock_file(filp, smb_lock->cmd, flock, NULL);
+ skip:
+ 		if (smb_lock->flags & SMB2_LOCKFLAG_UNLOCK) {
++			locks_free_lock(flock);
++			kfree(smb_lock);
+ 			if (!rc) {
+ 				ksmbd_debug(SMB, "File unlocked\n");
+ 			} else if (rc == -ENOENT) {
+ 				rsp->hdr.Status = STATUS_NOT_LOCKED;
++				err = rc;
+ 				goto out;
+ 			}
+-			locks_free_lock(flock);
+-			kfree(smb_lock);
+ 		} else {
+ 			if (rc == FILE_LOCK_DEFERRED) {
+ 				void **argv;
+@@ -7221,6 +7222,9 @@ skip:
+ 				spin_unlock(&work->conn->llist_lock);
+ 				ksmbd_debug(SMB, "successful in taking lock\n");
+ 			} else {
++				locks_free_lock(flock);
++				kfree(smb_lock);
++				err = rc;
+ 				goto out;
+ 			}
+ 		}
+@@ -7251,13 +7255,17 @@ out:
+ 		struct file_lock *rlock = NULL;
  
- 	filep->private_data = df;
- 
-+	/*
-+	 * Use the pseudo fs inode on the device to link all mmaps
-+	 * to the same address space, allowing us to unmap all vmas
-+	 * associated to this device using unmap_mapping_range().
-+	 */
-+	filep->f_mapping = device->inode->i_mapping;
+ 		rlock = smb_flock_init(filp);
+-		rlock->fl_type = F_UNLCK;
+-		rlock->fl_start = smb_lock->start;
+-		rlock->fl_end = smb_lock->end;
+-
+-		rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
+-		if (rc)
+-			pr_err("rollback unlock fail : %d\n", rc);
++		if (rlock) {
++			rlock->fl_type = F_UNLCK;
++			rlock->fl_start = smb_lock->start;
++			rlock->fl_end = smb_lock->end;
 +
- 	return 0;
++			rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
++			if (rc)
++				pr_err("rollback unlock fail : %d\n", rc);
++		} else {
++			pr_err("rollback unlock alloc failed\n");
++		}
  
- err_put_registration:
-diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
-index 54c3079031e16..4cd857ff0259b 100644
---- a/drivers/vfio/group.c
-+++ b/drivers/vfio/group.c
-@@ -285,6 +285,13 @@ static struct file *vfio_device_open_file(struct vfio_device *device)
- 	 */
- 	filep->f_mode |= (FMODE_PREAD | FMODE_PWRITE);
+ 		list_del(&smb_lock->llist);
+ 		spin_lock(&work->conn->llist_lock);
+@@ -7267,7 +7275,8 @@ out:
+ 		spin_unlock(&work->conn->llist_lock);
  
-+	/*
-+	 * Use the pseudo fs inode on the device to link all mmaps
-+	 * to the same address space, allowing us to unmap all vmas
-+	 * associated to this device using unmap_mapping_range().
-+	 */
-+	filep->f_mapping = device->inode->i_mapping;
-+
- 	if (device->group->type == VFIO_NO_IOMMU)
- 		dev_warn(device->dev, "vfio-noiommu device opened by user "
- 			 "(%s:%d)\n", current->comm, task_pid_nr(current));
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 6dfb290c339f9..ec4fbd993bf00 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -22,8 +22,10 @@
- #include <linux/list.h>
- #include <linux/miscdevice.h>
- #include <linux/module.h>
-+#include <linux/mount.h>
- #include <linux/mutex.h>
- #include <linux/pci.h>
-+#include <linux/pseudo_fs.h>
- #include <linux/rwsem.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-@@ -43,9 +45,13 @@
- #define DRIVER_AUTHOR	"Alex Williamson <alex.williamson@redhat.com>"
- #define DRIVER_DESC	"VFIO - User Level meta-driver"
- 
-+#define VFIO_MAGIC 0x5646494f /* "VFIO" */
-+
- static struct vfio {
- 	struct class			*device_class;
- 	struct ida			device_ida;
-+	struct vfsmount			*vfs_mount;
-+	int				fs_count;
- } vfio;
- 
- #ifdef CONFIG_VFIO_NOIOMMU
-@@ -186,6 +192,8 @@ static void vfio_device_release(struct device *dev)
- 	if (device->ops->release)
- 		device->ops->release(device);
- 
-+	iput(device->inode);
-+	simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
- 	kvfree(device);
- }
- 
-@@ -228,6 +236,34 @@ struct vfio_device *_vfio_alloc_device(size_t size, struct device *dev,
- }
- EXPORT_SYMBOL_GPL(_vfio_alloc_device);
- 
-+static int vfio_fs_init_fs_context(struct fs_context *fc)
-+{
-+	return init_pseudo(fc, VFIO_MAGIC) ? 0 : -ENOMEM;
-+}
-+
-+static struct file_system_type vfio_fs_type = {
-+	.name = "vfio",
-+	.owner = THIS_MODULE,
-+	.init_fs_context = vfio_fs_init_fs_context,
-+	.kill_sb = kill_anon_super,
-+};
-+
-+static struct inode *vfio_fs_inode_new(void)
-+{
-+	struct inode *inode;
-+	int ret;
-+
-+	ret = simple_pin_fs(&vfio_fs_type, &vfio.vfs_mount, &vfio.fs_count);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	inode = alloc_anon_inode(vfio.vfs_mount->mnt_sb);
-+	if (IS_ERR(inode))
-+		simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
-+
-+	return inode;
-+}
-+
- /*
-  * Initialize a vfio_device so it can be registered to vfio core.
-  */
-@@ -246,6 +282,11 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
- 	init_completion(&device->comp);
- 	device->dev = dev;
- 	device->ops = ops;
-+	device->inode = vfio_fs_inode_new();
-+	if (IS_ERR(device->inode)) {
-+		ret = PTR_ERR(device->inode);
-+		goto out_inode;
-+	}
- 
- 	if (ops->init) {
- 		ret = ops->init(device);
-@@ -260,6 +301,9 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
- 	return 0;
- 
- out_uninit:
-+	iput(device->inode);
-+	simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
-+out_inode:
- 	vfio_release_device_set(device);
- 	ida_free(&vfio.device_ida, device->index);
- 	return ret;
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 5ac5f182ce0bb..514a7f9b3ef4b 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -64,6 +64,7 @@ struct vfio_device {
- 	struct completion comp;
- 	struct iommufd_access *iommufd_access;
- 	void (*put_kvm)(struct kvm *kvm);
-+	struct inode *inode;
- #if IS_ENABLED(CONFIG_IOMMUFD)
- 	struct iommufd_device *iommufd_device;
- 	u8 iommufd_attached:1;
--- 
-2.53.0
-
+ 		locks_free_lock(smb_lock->fl);
+-		locks_free_lock(rlock);
++		if (rlock)
++			locks_free_lock(rlock);
+ 		kfree(smb_lock);
+ 	}
+ out2:
 
 
 
