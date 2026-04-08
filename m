@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-235115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDpRA0aq1mmKHAgAu9opvQ
-	(envelope-from <stable+bounces-235115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:34 +0200
+	id 4DpDM1Sd1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740783C2C54
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995A23C09FA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CEAF31C5499
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD1AA302C4AB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740EA3AEF5F;
-	Wed,  8 Apr 2026 18:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626FB3D4129;
+	Wed,  8 Apr 2026 18:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3QTkRs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvz+jCCC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306A83D9DB9;
-	Wed,  8 Apr 2026 18:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEE23D9030;
+	Wed,  8 Apr 2026 18:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674608; cv=none; b=iy6Gqa7ffOxYjCkg1R+VsfhYMT64VMphbFR+SGcFfuYa8qfbDa7peM4K72kH+xB1ul3Oq5ND1JrbJxmccIG20lHjmfTmZ0iy/xU1PER8C/MQBTZAwR0aNHx7xddfranvOCznh73jpSfJi2IIi3WxKKRlq/bufMVVDreWaa2/Y1g=
+	t=1775672616; cv=none; b=AHLdmaxrEen0bMQRn9keH1IcLtWvFudNMxXPdmqS6OoZzqRna8zP5L6rCeYh2tor97k25o5CI2AxbtodFlsxK9esyoR3tpCrIMMqeasaGDVrqJRhuSOqHeztL6vPNUq+AL4mYZXbvfxKsrGvofq04a/OFOzmJ5lODh5FsSDcKWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674608; c=relaxed/simple;
-	bh=aG3SaGh4nSzhRRLKdVmBxsx14HX0YTGSmlC1SUb1ezA=;
+	s=arc-20240116; t=1775672616; c=relaxed/simple;
+	bh=fdaK+kn3jTHpAJVxKMsHteeL4vc0zcz3lvEt2pF4uFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SqSQq7VkgMIQgiI2wpS/exwLBmQ9u689NE/IGzu9gF7RtPuJXanHVFOK2e8lETMXX8/5Hs57OZXQ3T8qPsqCQa9DS4QlLbbsoltMS7qZP8OW6Qi/AghTfGvbPkyJjKzAuJVApUS7vX7t+zXEZWG0Ec56aET/iufOIgX9vFNCRiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3QTkRs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BAAC2BC87;
-	Wed,  8 Apr 2026 18:56:47 +0000 (UTC)
+	 MIME-Version; b=bdHECtgkaZ7quXx1CU4hEQncqDxuq/cS95XWbMLRgVp0YqfhsZIgGGZ3qi1/KE4FfrVPqT0w8K6Npi20QfPJRraRMRITuwRLUAw0SZH9RXCIbx5vIgfgjKe3Z5FEdX81cKJMPOGRb79DZe/0XSYrYLChNFIFyMud/OIo9T5+FEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvz+jCCC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CD6C19421;
+	Wed,  8 Apr 2026 18:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674607;
-	bh=aG3SaGh4nSzhRRLKdVmBxsx14HX0YTGSmlC1SUb1ezA=;
+	s=korg; t=1775672615;
+	bh=fdaK+kn3jTHpAJVxKMsHteeL4vc0zcz3lvEt2pF4uFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t3QTkRs7gN2UMGWNfgz1DDQ8lBbmmsYQy4CQwXFeceKnPICYv6hP1nV35EzezKOU5
-	 A8GMWU8HUdsvlGAlUDNMaBQkZrq71oAz9acTIPkS6tWIGG6UpQgHEk8S/eDuY68wk7
-	 pRFHB3UA4BYe4QUyZBYGJJoqhByAj9WiPEX+Pwq4=
+	b=uvz+jCCCIiMsQqab6S0F8nZQNP/ptubatKigqxXOjSyn3IcaSBV2w+xjPdO0zF5jo
+	 ctfs6GSflj6ynK7G1Q7HxliWRx+Vr4eWjIwVCA7sbIPZsy5h01W56+6ixS8v/t5y4P
+	 RStl2kfp6V0LI/fPxGs3jYZFp5XsDB5+aRoGMYek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yasuaki Torimaru <yasuakitorimaru@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.19 163/311] wifi: wilc1000: fix u8 overflow in SSID scan buffer size calculation
+	Ernestas Kulik <ernestas.k@iconn-networks.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 076/160] USB: serial: option: add MeiG Smart SRM825WN
 Date: Wed,  8 Apr 2026 20:02:43 +0200
-Message-ID: <20260408175945.489636600@linuxfoundation.org>
+Message-ID: <20260408175916.036470083@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +65,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235115-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234344-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 740783C2C54
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,iconn-networks.com:email]
+X-Rspamd-Queue-Id: 995A23C09FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+From: Ernestas Kulik <ernestas.k@iconn-networks.com>
 
-commit d049e56b1739101d1c4d81deedb269c52a8dbba0 upstream.
+commit e8d0ed37bd51da52da6225d278e330c2f18a6198 upstream.
 
-The variable valuesize is declared as u8 but accumulates the total
-length of all SSIDs to scan. Each SSID contributes up to 33 bytes
-(IEEE80211_MAX_SSID_LEN + 1), and with WILC_MAX_NUM_PROBED_SSID (10)
-SSIDs the total can reach 330, which wraps around to 74 when stored
-in a u8.
+Add support for the SDX62-based MeiG Smart SRM825WN module.
 
-This causes kmalloc to allocate only 75 bytes while the subsequent
-memcpy writes up to 331 bytes into the buffer, resulting in a 256-byte
-heap buffer overflow.
+If#= 0: RNDIS
+If#= 1: RNDIS
+If#= 2: Diag
+If#= 3: AT
+If#= 4: AT
+If#= 5: NMEA
 
-Widen valuesize from u8 to u32 to accommodate the full range.
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#= 19 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d38 Rev= 5.04
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=da47a175
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E:  Ad=81(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
+Signed-off-by: Ernestas Kulik <ernestas.k@iconn-networks.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Link: https://patch.msgid.link/20260324100624.983458-1-yasuakitorimaru@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -163,7 +163,7 @@ int wilc_scan(struct wilc_vif *vif, u8 s
- 	u32 index = 0;
- 	u32 i, scan_timeout;
- 	u8 *buffer;
--	u8 valuesize = 0;
-+	u32 valuesize = 0;
- 	u8 *search_ssid_vals = NULL;
- 	const u8 ch_list_len = request->n_channels;
- 	struct host_if_drv *hif_drv = vif->hif_drv;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2441,6 +2441,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
 
 
 
