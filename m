@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPUPKsen1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:55 +0200
+	id OBmSK9Wf1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A703C27AC
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD983C1033
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD5503059E0D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 04283302AF2D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139883624B0;
-	Wed,  8 Apr 2026 18:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30C43D9035;
+	Wed,  8 Apr 2026 18:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfhLydnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umDgPigN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB94D2BEFFF;
-	Wed,  8 Apr 2026 18:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8639F3D4134;
+	Wed,  8 Apr 2026 18:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673852; cv=none; b=u084AXhE33zIOEa4vuMLn7TRqPGqnOF/5UJXj+Clq2fwmqqSlq5E19dCEphUEWaSzQTj1avAxoBgopa7hke53mnq34iwFgE3n0/RVcg69+BFrPvXYtGRFAvUbsKjbpHnw5C7VLNhiHMuG49jlmmGhXekCdq4LY/qMElXU5/dQho=
+	t=1775673279; cv=none; b=pBFv32AJ6dNuSmRtGFQVhmBStw7wDBkqtXHbFw7na5WDtMtQdxaOKpl6pbBhtjy6WjvJx8i2IM9luJAU/5CoCHq0qSx3HfU6fv2EJp8Z/HaaYBOVV2pyR6aX5i0/H36waop8PY6GO9eoLtaUXYD4X38QVw01zDy6DyvnAa5js7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673852; c=relaxed/simple;
-	bh=7L3yQSrvC8uCYWlgeRYS4sRXWVT5ldzX+hNUdfq2Pe0=;
+	s=arc-20240116; t=1775673279; c=relaxed/simple;
+	bh=ZytMJ/vuxKqY0rU33cIylcGhvkVeRQzi7g0KKQTYhhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZRenjn4l3pet/eaGg+IuoWy8RAYZ5bltQroU0vy/9RrgKgNR+zMeLh4e7wbsfm9QTIcufvXL24wN7MWVcr1FgJv63l8Ike+bPoHG1eheu8OHqszEGd8+mATdJzjm6LhEkUMCdC0JBJhuEipe14n8q05EimStSC1jAQuNkcjAwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfhLydnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FF9C2BC87;
-	Wed,  8 Apr 2026 18:44:12 +0000 (UTC)
+	 MIME-Version; b=CvcM9dD3+h//m/pYDbM+gAuLklMe53Ay8SL24SLxdQtrXz2yK5Mf3+AtmfaOIjptNJK4MDhWeZFcZ167d+YB/ciZj4JCfil1cuDtQvTRRvr80J6xNbJbCz4baBBgjGMrTQnTBWkSD8XYhXjJYoUuzrr6RW5KKkVyIoXxMYIYvcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umDgPigN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C96FC19421;
+	Wed,  8 Apr 2026 18:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673852;
-	bh=7L3yQSrvC8uCYWlgeRYS4sRXWVT5ldzX+hNUdfq2Pe0=;
+	s=korg; t=1775673279;
+	bh=ZytMJ/vuxKqY0rU33cIylcGhvkVeRQzi7g0KKQTYhhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfhLydnloU9zUBdCTkoinvyGpI1sBqsUNSPPpkWKPjhrhkBr9l5IXZPcVnmAl9DQx
-	 6EwK3DBqeGcIDEaI9dCZUYdOTMimjMgs6pj80y5RLHgdMhf55ISVXpSry+1g0Gxgo7
-	 Xjvp8hmo/7dtAM1W6nBRfUMsrvZEum2RL3t/3bKs=
+	b=umDgPigNYL1LYcg70zs+MawkyyDbBp6YBXqJnWOF+TzICiyvx8zEXrXwmcVX6ZyBS
+	 N7hrdqDUwlXaZaPtRROBFxzEZabGa1N+XGiSboDekOTYqhcvQmj9lWKZTfTLjP2V/1
+	 FJ3EsLgRXGtzwDTUQcoWDLD3gTNDW0xfifO7Yiko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yasuaki Torimaru <yasuakitorimaru@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 115/242] wifi: wilc1000: fix u8 overflow in SSID scan buffer size calculation
+	stable <stable@kernel.org>,
+	JP Hein <jp@jphein.com>
+Subject: [PATCH 6.18 170/277] USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
 Date: Wed,  8 Apr 2026 20:02:35 +0200
-Message-ID: <20260408175931.391157798@linuxfoundation.org>
+Message-ID: <20260408175940.214786280@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +65,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234822-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234600-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 52A703C27AC
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,launchpad.net:url,jphein.com:email]
+X-Rspamd-Queue-Id: 7FD983C1033
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+From: JP Hein <jp@jphein.com>
 
-commit d049e56b1739101d1c4d81deedb269c52a8dbba0 upstream.
+commit 8b7a42ecdcdeb55580d9345412f7f8fc5aca3f6c upstream.
 
-The variable valuesize is declared as u8 but accumulates the total
-length of all SSIDs to scan. Each SSID contributes up to 33 bytes
-(IEEE80211_MAX_SSID_LEN + 1), and with WILC_MAX_NUM_PROBED_SSID (10)
-SSIDs the total can reach 330, which wraps around to 74 when stored
-in a u8.
+The Razer Kiyo Pro (1532:0e05) is a USB 3.0 UVC webcam whose firmware
+does not handle USB Link Power Management transitions reliably. When LPM
+is active, the device can enter a state where it fails to respond to
+control transfers, producing EPIPE (-32) errors on UVC probe control
+SET_CUR requests. In the worst case, the stalled endpoint triggers an
+xHCI stop-endpoint command that times out, causing the host controller
+to be declared dead and every USB device on the bus to be disconnected.
 
-This causes kmalloc to allocate only 75 bytes while the subsequent
-memcpy writes up to 331 bytes into the buffer, resulting in a 256-byte
-heap buffer overflow.
+This has been reported as Ubuntu Launchpad Bug #2061177. The failure
+mode is:
 
-Widen valuesize from u8 to u32 to accommodate the full range.
+  1. UVC probe control SET_CUR returns -32 (EPIPE)
+  2. xHCI host not responding to stop endpoint command
+  3. xHCI host controller not responding, assume dead
+  4. All USB devices on the affected xHCI controller disconnect
 
-Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Link: https://patch.msgid.link/20260324100624.983458-1-yasuakitorimaru@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Disabling LPM prevents the firmware from entering the problematic low-
+power states that precede the stall. This is the same approach used for
+other webcams with similar firmware issues (e.g., Logitech HD Webcam C270).
+
+Cc: stable <stable@kernel.org>
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2061177
+Signed-off-by: JP Hein <jp@jphein.com>
+Link: https://patch.msgid.link/20260331003806.212565-2-jp@jphein.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -163,7 +163,7 @@ int wilc_scan(struct wilc_vif *vif, u8 s
- 	u32 index = 0;
- 	u32 i, scan_timeout;
- 	u8 *buffer;
--	u8 valuesize = 0;
-+	u32 valuesize = 0;
- 	u8 *search_ssid_vals = NULL;
- 	const u8 ch_list_len = request->n_channels;
- 	struct host_if_drv *hif_drv = vif->hif_drv;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -493,6 +493,8 @@ static const struct usb_device_id usb_qu
+ 	/* Razer - Razer Blade Keyboard */
+ 	{ USB_DEVICE(0x1532, 0x0116), .driver_info =
+ 			USB_QUIRK_LINEAR_UFRAME_INTR_BINTERVAL },
++	/* Razer - Razer Kiyo Pro Webcam */
++	{ USB_DEVICE(0x1532, 0x0e05), .driver_info = USB_QUIRK_NO_LPM },
+ 
+ 	/* Lenovo ThinkPad OneLink+ Dock twin hub controllers (VIA Labs VL812) */
+ 	{ USB_DEVICE(0x17ef, 0x1018), .driver_info = USB_QUIRK_RESET_RESUME },
 
 
 
