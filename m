@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-234118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKGXJDqb1mnDGggAu9opvQ
-	(envelope-from <stable+bounces-234118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:22 +0200
+	id IL09Es2a1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2983C047C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C408B3C035B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A09CC30156DB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB4CE301829B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66793D75AF;
-	Wed,  8 Apr 2026 18:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC533D88E1;
+	Wed,  8 Apr 2026 18:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8ADfAws"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8tHCUBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1621E5724;
-	Wed,  8 Apr 2026 18:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39EF347503;
+	Wed,  8 Apr 2026 18:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672031; cv=none; b=CtsnxRSNuiyKF7cNSZUtNMD2Uwz/e9OzOjrr+uuK8Wtqmn+eiAFplXH6wG1Y6GVvEmRmNwmZRfUZfNykI5M5UWofPtA5Ej5MFTeHBiSC+KMFgyPtQduO/1OR+NWTidL+kSCb2aFjCTForgy4PA+whmRTb2Lu022qyXJOtb/KSCI=
+	t=1775671943; cv=none; b=Ji/r8r9uNAAj0iLhThm6dgumIvBGhyqOVrXlIBD7OypVIfcvYh4uFDLcRfM8Fsv71pOfInb8QzXmd8zOS7TQdSut6TBP1tssKSiMkmy9XZzblGWEQ8iAgW7NsfOKY9tTv2lQIzU0vkbpTWpSVP6//WVMB9XJIWcblm8dVjGRQfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672031; c=relaxed/simple;
-	bh=5bLbvokWOUlU/WohsVXv1KRmZ38n0V4hhWzOUfmfnXc=;
+	s=arc-20240116; t=1775671943; c=relaxed/simple;
+	bh=okhoLLdnlsL7B8GcEu3ImMBk4ButMhx0LFSv2qVM2k0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfnjAOmo45GytTJLnhpFSIgC3QoKyXn0uN07RAg3Fz/BNgS1e7vdpp3PRQk1W7uwp0YHmOt0f8p3uL2RqrsoAZCmAcssB9imb0Qct0D0ODIlWITuOa8URS1yVu0EoiuZUypxGTdeqHljoN4BkBzgsvFGcZ5w2OKdfAerhj2DC/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8ADfAws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CE0C19421;
-	Wed,  8 Apr 2026 18:13:50 +0000 (UTC)
+	 MIME-Version; b=I2rwz/wXn1sx/LF5iQjhQgtXQU+i3wYRyBFp+/Q0SjxwssWGV6xO9jTp8Qosm4pj7lAGnMnuQjr5xIH+Vw0KChRBgZ61DYVKiXkZF59FOnqG4Ea87ebn737G1jHUejk1FXbIugv3AjBFxZPJe7kvfsKKuWUSytRdlQjPbIoFd2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8tHCUBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619FDC19421;
+	Wed,  8 Apr 2026 18:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672031;
-	bh=5bLbvokWOUlU/WohsVXv1KRmZ38n0V4hhWzOUfmfnXc=;
+	s=korg; t=1775671943;
+	bh=okhoLLdnlsL7B8GcEu3ImMBk4ButMhx0LFSv2qVM2k0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8ADfAwscXdesdj+kVgvMtUb/7JK7hOaUOXJWR9G+Gj2UD/rueR5XEvNSLHoteYrE
-	 NMKWXio7Uf57TIYs+vsGtlV6n893BHFNWBf+GnSpassi6lL58cgRdDjCZY+b3VlNea
-	 k27kyaZsyCqNNqthfjvzGmv60/7seckIuJlHaqrQ=
+	b=p8tHCUBlMXYCNMfHajJEYmDLoNqYW1TM/Hovq+lLFM6jOKWVKVOF17DTxeIeus0XX
+	 EN2dcC9fpnzeXONeUs8jaiLUynwSpAQj8hVeZIf+C5QfyfQWrg05J6CAB+jsFIqo4F
+	 QhpxkGLe9lQnPgP9+oH6M5K7l9DxQNdkXosGt59U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.1 120/312] arm64: dts: imx8mn-tqma8mqnl: fix LDO5 power off
-Date: Wed,  8 Apr 2026 20:00:37 +0200
-Message-ID: <20260408175938.250313342@linuxfoundation.org>
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.1 121/312] powerpc64/bpf: do not increment tailcall count when prog is NULL
+Date: Wed,  8 Apr 2026 20:00:38 +0200
+Message-ID: <20260408175938.288123609@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234118-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234084-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1D2983C047C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C408B3C035B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,114 +99,71 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
 
-commit 8adc841d43ebceabec996c9dcff6e82d3e585268 upstream.
+commit 521bd39d9d28ce54cbfec7f9b89c94ad4fdb8350 upstream.
 
-Fix SD card removal caused by automatic LDO5 power off after boot
+Do not increment tailcall count, if tailcall did not succeed due to
+missing BPF program.
 
-To prevent this, add vqmmc regulator for USDHC, using a GPIO-controlled
-regulator that is supplied by LDO5. Since this is implemented on SoM but
-used on baseboards with SD-card interface, implement the functionality
-on SoM part and optionally enable it on baseboards if needed.
-
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
+Cc: stable@vger.kernel.org
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260303181031.390073-2-hbathini@linux.ibm.com
+[ Conflict due to missing feature commit 2ed2d8f6fb38 ("powerpc64/bpf:
+  Support tailcalls with subprogs") resolved accordingly. ]
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts |   13 ++++----
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi       |   22 ++++++++++++++
- 2 files changed, 29 insertions(+), 6 deletions(-)
+ arch/powerpc/net/bpf_jit_comp64.c |   23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-@@ -63,6 +63,10 @@
- 	};
- };
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -288,27 +288,32 @@ static int bpf_jit_emit_tail_call(u32 *i
  
-+&reg_usdhc2_vqmmc {
-+	status = "okay";
-+};
+ 	/*
+ 	 * tail_call_cnt++;
++	 * Writeback this updated value only if tailcall succeeds.
+ 	 */
+ 	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), 1));
+-	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
+ 
+ 	/* prog = array->ptrs[index]; */
+-	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_1), b2p_index, 8));
+-	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), b2p_bpf_array));
+-	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_array, ptrs)));
++	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_2), b2p_index, 8));
++	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2), b2p_bpf_array));
++	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			offsetof(struct bpf_array, ptrs)));
+ 
+ 	/*
+ 	 * if (prog == NULL)
+ 	 *   goto out;
+ 	 */
+-	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_1), 0));
++	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_2), 0));
+ 	PPC_BCC_SHORT(COND_EQ, out);
+ 
+ 	/* goto *(prog->bpf_func + prologue_size); */
+-	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_prog, bpf_func)));
+-	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1),
+-			FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
+-	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_1)));
++	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			offsetof(struct bpf_prog, bpf_func)));
++	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
++			  FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
++	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_2)));
 +
- &sai3 {
- 	assigned-clocks = <&clk IMX8MN_CLK_SAI3>;
- 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
-@@ -207,8 +211,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
++	/* Writeback updated tailcall count */
++	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, bpf_jit_stack_tailcallcnt(ctx)));
  
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-@@ -217,8 +220,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-@@ -227,8 +229,7 @@
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-@@ -30,6 +30,20 @@
- 		regulator-max-microvolt = <3300000>;
- 	};
- 
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usdhc2_vqmmc>;
-+		regulator-name = "V_SD2";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 0x1>,
-+			 <3300000 0x0>;
-+		vin-supply = <&ldo5_reg>;
-+		status = "disabled";
-+	};
-+
- 	reserved-memory {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-@@ -217,6 +231,10 @@
- 	};
- };
- 
-+&usdhc2 {
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
-+};
-+
- &usdhc3 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
- 	pinctrl-0 = <&pinctrl_usdhc3>;
-@@ -271,6 +289,10 @@
- 		fsl,pins = <MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x84>;
- 	};
- 
-+	pinctrl_reg_usdhc2_vqmmc: regusdhc2vqmmcgrp {
-+		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO04_GPIO1_IO4		0xc0>;
-+	};
-+
- 	pinctrl_usdhc3: usdhc3grp {
- 		fsl,pins = <MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x1d4>,
- 			   <MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d2>,
+ 	/* tear down stack, restore NVRs, ... */
+ 	bpf_jit_emit_common_epilogue(image, ctx);
 
 
 
