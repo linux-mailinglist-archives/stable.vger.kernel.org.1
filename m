@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-234510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2L/dAk6f1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:46 +0200
+	id wPCdAYyj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A653C0EE8
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3E53C1BE6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 210FF30131BE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C5493004053
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827B63AF643;
-	Wed,  8 Apr 2026 18:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9593D890F;
+	Wed,  8 Apr 2026 18:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oT9b0EqJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvRFbPKw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B2826FA5A;
-	Wed,  8 Apr 2026 18:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5173D3D75C9;
+	Wed,  8 Apr 2026 18:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673047; cv=none; b=fgbBr6eXbaJcb/EcIt9PdyhyFHGMCUESHkDZlwA+wizIi6vImVevOWBWR9YkyIIEYdfJWGl5uxy496N85h9KtUoAZwaJbO33tsyNRGHRLechn6wSc3lGJwHCaCIFZSBgKf/PHuZGmjLmRC+1fOg6We3H2dkwOzfJcRSZIo1ez+M=
+	t=1775674247; cv=none; b=DPIBN+pSc44GX7MLXqMxF1COu+7Sge4qo4NJVd2xKKEd1Zo4c7c5Hn9jdK8v2TCIhVISOQLpgCvrVupkXANE9qIH6qSKgubce8TXIsr4gEi9g7jriwFlIWkR7N2c4yGgzPg8uAYAvhYyKlf0FzpTx8/huYcFVhEuuoX1PLH1YHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673047; c=relaxed/simple;
-	bh=KGdplWXZVJ2lOq33oHu6bW+hn2/zHLaWCfJknMd6XwU=;
+	s=arc-20240116; t=1775674247; c=relaxed/simple;
+	bh=5I3RdwPBT/SsAVyD4tPYhiBsAbADI1x4DCEiWCn2f1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbOJ1DvvF/IT1/44QsVCke0Wag7oZNruSdNX9ap5EztqMrp1m7igWIFN99JelHp9jocbqB1+tCSYtvZ706a6/krFWZENYX+77Qj3HtT/S3e8eyHsWFPmivMQuYk0mcL58lQRxlBBwu3nLSQ/0eP7MlG5S25Bv+NZmEU4ls27CIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oT9b0EqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E24C19421;
-	Wed,  8 Apr 2026 18:30:46 +0000 (UTC)
+	 MIME-Version; b=arxa3NKLJNEA9yWvYQ+wTN1yu7CkpnhfiJVL1zE/t4V+g1PkjvWxlgm5M9jc+GGhYhHbEZJ6NOSfbZxNDm28ZZ8fc5wfQncyW34Kr0CZH3QRhvky102vllp/ZM7VrrKXz8lAdG6dHQ9Vs1DlTSX7Qr06zd87sF+A13nNHYYoMJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvRFbPKw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2E4C2BC9E;
+	Wed,  8 Apr 2026 18:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673047;
-	bh=KGdplWXZVJ2lOq33oHu6bW+hn2/zHLaWCfJknMd6XwU=;
+	s=korg; t=1775674247;
+	bh=5I3RdwPBT/SsAVyD4tPYhiBsAbADI1x4DCEiWCn2f1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oT9b0EqJkjgNyfdvjOMio1QveFvTYOwAGumprxbwcOhkf1BQ2FB2KiuXlrLpSgA4C
-	 vAPWSkQ/PnS1WNyDcS0hz5NMRV+9AtGj2/38ySv+s6ax4GkE7oTnk4RZz8rgybusoI
-	 EONeOlalFhAebF90/OgaPQC4Kc1G7xQHuoVZWX8Y=
+	b=bvRFbPKw1YBdeNcjwTRhW1lrdFWEE4BxEaG7RtbNWhnL6dkHvGtpEIXC0x1WzEbgp
+	 y6MS+SlG6N6DTOdndIEdrBvlgBvvF0mziKyqCOvS4FAdzWeHrhuFpLaZ2ZUrwRiqrl
+	 GWVMvYhBGDkzsuC40rnx/Ebymz/72BQ8kuWPnj0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 038/277] ip6_tunnel: clear skb2->cb[] in ip4ip6_err()
+Subject: [PATCH 6.19 023/311] btrfs: reject root items with drop_progress and zero drop_level
 Date: Wed,  8 Apr 2026 20:00:23 +0200
-Message-ID: <20260408175935.277275926@linuxfoundation.org>
+Message-ID: <20260408175940.279056817@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,8 +75,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,google.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234510-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234975-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -89,70 +88,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 09A653C0EE8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 2A3E53C1BE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit 2edfa31769a4add828a7e604b21cb82aaaa05925 ]
+[ Upstream commit b17b79ff896305fd74980a5f72afec370ee88ca4 ]
 
-Oskar Kjos reported the following problem.
+[BUG]
+When recovering relocation at mount time, merge_reloc_root() and
+btrfs_drop_snapshot() both use BUG_ON(level == 0) to guard against
+an impossible state: a non-zero drop_progress combined with a zero
+drop_level in a root_item, which can be triggered:
 
-ip4ip6_err() calls icmp_send() on a cloned skb whose cb[] was written
-by the IPv6 receive path as struct inet6_skb_parm. icmp_send() passes
-IPCB(skb2) to __ip_options_echo(), which interprets that cb[] region
-as struct inet_skb_parm (IPv4). The layouts differ: inet6_skb_parm.nhoff
-at offset 14 overlaps inet_skb_parm.opt.rr, producing a non-zero rr
-value. __ip_options_echo() then reads optlen from attacker-controlled
-packet data at sptr[rr+1] and copies that many bytes into dopt->__data,
-a fixed 40-byte stack buffer (IP_OPTIONS_DATA_FIXED_SIZE).
+------------[ cut here ]------------
+kernel BUG at fs/btrfs/relocation.c:1545!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 1 UID: 0 PID: 283 ... Tainted: 6.18.0+ #16 PREEMPT(voluntary)
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Ubuntu 24.04 PC v2, BIOS 1.16.3-debian-1.16.3-2
+RIP: 0010:merge_reloc_root+0x1266/0x1650 fs/btrfs/relocation.c:1545
+Code: ffff0000 00004589 d7e9acfa ffffe8a1 79bafebe 02000000
+Call Trace:
+ merge_reloc_roots+0x295/0x890 fs/btrfs/relocation.c:1861
+ btrfs_recover_relocation+0xd6e/0x11d0 fs/btrfs/relocation.c:4195
+ btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
+ open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
+ btrfs_fill_super fs/btrfs/super.c:987 [inline]
+ btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
+ btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
+ btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
+ vfs_get_tree+0x9a/0x370 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount fs/namespace.c:3718 [inline]
+ path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
+ do_mount fs/namespace.c:4041 [inline]
+ __do_sys_mount fs/namespace.c:4229 [inline]
+ __se_sys_mount fs/namespace.c:4206 [inline]
+ __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
+ ...
+RIP: 0033:0x7f969c9a8fde
+Code: 0f1f4000 48c7c2b0 fffffff7 d8648902 b8ffffff ffc3660f
+---[ end trace 0000000000000000 ]---
 
-To fix this we clear skb2->cb[], as suggested by Oskar Kjos.
+The bug is reproducible on 7.0.0-rc2-next-20260310 with our dynamic
+metadata fuzzing tool that corrupts btrfs metadata at runtime.
 
-Also add minimal IPv4 header validation (version == 4, ihl >= 5).
+[CAUSE]
+A non-zero drop_progress.objectid means an interrupted
+btrfs_drop_snapshot() left a resume point on disk, and in that case
+drop_level must be greater than 0 because the checkpoint is only
+saved at internal node levels.
 
-Fixes: c4d3efafcc93 ("[IPV6] IP6TUNNEL: Add support to IPv4 over IPv6 tunnel.")
-Reported-by: Oskar Kjos <oskar.kjos@hotmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326155138.2429480-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Although this invariant is enforced when the kernel writes the root
+item, it is not validated when the root item is read back from disk.
+That allows on-disk corruption to provide an invalid state with
+drop_progress.objectid != 0 and drop_level == 0.
+
+When relocation recovery later processes such a root item,
+merge_reloc_root() reads drop_level and hits BUG_ON(level == 0). The
+same invalid metadata can also trigger the corresponding BUG_ON() in
+btrfs_drop_snapshot().
+
+[FIX]
+Fix this by validating the root_item invariant in tree-checker when
+reading root items from disk: if drop_progress.objectid is non-zero,
+drop_level must also be non-zero. Reject such malformed metadata with
+-EUCLEAN before it reaches merge_reloc_root() or btrfs_drop_snapshot()
+and triggers the BUG_ON.
+
+After the fix, the same corruption is correctly rejected by tree-checker
+and the BUG_ON is no longer triggered.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/btrfs/tree-checker.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index c1f39735a2367..9e2449db0bdf2 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -601,11 +601,16 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	if (!skb2)
- 		return 0;
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index 59794d726fd27..1c8f61cbbbe5b 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1260,6 +1260,23 @@ static int check_root_item(struct extent_buffer *leaf, struct btrfs_key *key,
+ 			    btrfs_root_drop_level(&ri), BTRFS_MAX_LEVEL - 1);
+ 		return -EUCLEAN;
+ 	}
++	/*
++	 * If drop_progress.objectid is non-zero, a btrfs_drop_snapshot() was
++	 * interrupted and the resume point was recorded in drop_progress and
++	 * drop_level.  In that case drop_level must be >= 1: level 0 is the
++	 * leaf level and drop_snapshot never saves a checkpoint there (it
++	 * only records checkpoints at internal node levels in DROP_REFERENCE
++	 * stage).  A zero drop_level combined with a non-zero drop_progress
++	 * objectid indicates on-disk corruption and would cause a BUG_ON in
++	 * merge_reloc_root() and btrfs_drop_snapshot() at mount time.
++	 */
++	if (unlikely(btrfs_disk_key_objectid(&ri.drop_progress) != 0 &&
++		     btrfs_root_drop_level(&ri) == 0)) {
++		generic_err(leaf, slot,
++			    "invalid root drop_level 0 with non-zero drop_progress objectid %llu",
++			    btrfs_disk_key_objectid(&ri.drop_progress));
++		return -EUCLEAN;
++	}
  
-+	/* Remove debris left by IPv6 stack. */
-+	memset(IPCB(skb2), 0, sizeof(*IPCB(skb2)));
-+
- 	skb_dst_drop(skb2);
- 
- 	skb_pull(skb2, offset);
- 	skb_reset_network_header(skb2);
- 	eiph = ip_hdr(skb2);
-+	if (eiph->version != 4 || eiph->ihl < 5)
-+		goto out;
- 
- 	/* Try to guess incoming interface */
- 	rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL, eiph->saddr,
+ 	/* Flags check */
+ 	if (unlikely(btrfs_root_flags(&ri) & ~valid_root_flags)) {
 -- 
 2.53.0
 
