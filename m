@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDa9Ldqc1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:18 +0200
+	id OIyDEh6i1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242F23C084F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF483C168C
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F8C0305FFEC
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 45374302B975
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2053D385513;
-	Wed,  8 Apr 2026 18:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C713D669E;
+	Wed,  8 Apr 2026 18:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icUUPmkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PE81m2Fy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84F6324B1F;
-	Wed,  8 Apr 2026 18:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1535E2BEFFF;
+	Wed,  8 Apr 2026 18:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672252; cv=none; b=Wgo1AEmEoa5TbbHJePJ80W3lbK1LTX5LfmVxSX+VkEiwP26uXfD7AXkSbMBa4gXKeR8ZEUIQs7lfz9aGtqL0tgDdSMgHLgUjiFDxpvQjJ2MCPHWY+O+g15nJQb5MfpV1a+ZaTlt7qTXX8D6jspw5fBtrProV7PtGuThPxmO1mzs=
+	t=1775673882; cv=none; b=t4Rl/Sf2yu7qg/uoBXyzImaxRSYh1vhIJlYucHn750M4HfJL7YtJpnCeBIGQ+VNw8gipEaH5GhsR2elwuAjAL3632byfHt2FmhNxBxpf0Ylosm3uAwEISEC9WyeFd5ishGeYqCPjMqVIDPMC3kfTZmJLGHVXw/Kidoh2sUYdxis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672252; c=relaxed/simple;
-	bh=KxSax9H9/BLWfI7R8vzBTJR2V8vhWnLrcPodeSa5Yko=;
+	s=arc-20240116; t=1775673882; c=relaxed/simple;
+	bh=5dweHuRdvT022ZfN6OLeC2hkhstfrb/vHyL/dngZqJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tV5zdoMKKRAPtYap3FjMP3pmWPKtw+Pr+qqyJy2Smb5CuZv7wppiE7DltQDXP7ZkNnPgrSEKjVzpVT5WGXpplSfkdaJTznHhrcy/TRnZEns1g1/JNbn978KYbLms9P/fW2n8pt4meH6QSHzQD1z/b9PgB3nVS2NUW9A3sAs5yRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icUUPmkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAD9C19421;
-	Wed,  8 Apr 2026 18:17:32 +0000 (UTC)
+	 MIME-Version; b=rSCDsaiGfm7fmbjn4ik4if9xR6ejVzGDfKUVH3XZPp6LWxJLbsG3VyVGoblR8M7UGO37uIGG97bHFtUX7Fp536wJ7yr8QHu0oLy39dVRSlk94HYhlEu0SiIS0wPtaxaj06f2E5f77Yw5sjr+lyaTjWBNodt9QOfap9IqGbqUU0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PE81m2Fy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05F1C19421;
+	Wed,  8 Apr 2026 18:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672252;
-	bh=KxSax9H9/BLWfI7R8vzBTJR2V8vhWnLrcPodeSa5Yko=;
+	s=korg; t=1775673882;
+	bh=5dweHuRdvT022ZfN6OLeC2hkhstfrb/vHyL/dngZqJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icUUPmkQEw10771bcljabuPq2QRQgKoLA8J12pZWL6A7NXB18b1KtUmw/03OZLtzm
-	 TzGiB1JXrovCbph2Idw+XX5gsdj1EEllmsObUKkuwp3vOf9e3/tX0I1JRXY0om4dNv
-	 yVrrKzjmkhXeUCWmUmabwcJfF6NmfInWujhdNaDQ=
+	b=PE81m2FyHa1PnIjRqoZKyVUabE/ERl8dPVQkcXnj7KZaGVg2KYrzyNAjVKsKpuJMb
+	 iBGO7uj2dZl1Yoxx67LFlA/f3Z3CsWAGIrvktkO2KrvHXH8Ue1hFBQ/OrKtwTkaZt5
+	 /ra4X33QYlTt7OgaNz2OIo/AkCKaWpoljaEt/Njg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 248/312] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 125/242] MIPS: SiByte: Bring back cache initialisation
 Date: Wed,  8 Apr 2026 20:02:45 +0200
-Message-ID: <20260408175943.009813562@linuxfoundation.org>
+Message-ID: <20260408175931.765741961@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234204-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234833-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,58 +88,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 242F23C084F
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,franken.de:email]
+X-Rspamd-Queue-Id: DCF483C168C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 101ab946b79ad83b36d5cfd47de587492a80acf0 upstream.
+commit d62cf1511743526f530a4c169424e50c757f5a5e upstream.
 
-If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
-returns an error, the COMEDI core will call the driver's "detach"
-handler function (`atmio16d_detach()`) to clean up.  This calls
-`reset_atmio16d()` unconditionally, but depending on where the error
-occurred in the attach handler, the device may not have been
-sufficiently initialized to call `reset_atmio16d()`.  It uses
-`dev->iobase` as the I/O port base address and `dev->private` as the
-pointer to the COMEDI device's private data structure.  `dev->iobase`
-may still be set to its initial value of 0, which would result in
-undesired writes to low I/O port addresses.  `dev->private` may still be
-`NULL`, which would result in null pointer dereferences.
+Bring back cache initialisation for Broadcom SiByte SB1 cores, which has
+been removed causing the kernel to hang at bootstrap right after:
 
-Fix `atmio16d_detach()` by checking that `dev->private` is valid
-(non-null) before calling `reset_atmio16d()`.  This implies that
-`dev->iobase` was set correctly since that is set up before
-`dev->private`.
+Dentry cache hash table entries: 524288 (order: 8, 4194304 bytes, linear)
+Inode-cache hash table entries: 262144 (order: 7, 2097152 bytes, linear)
 
-Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260128150011.5006-1-abbotti@mev.co.uk
+The cause of the problem is R4k cache handlers are also used by Broadcom
+SiByte SB1 cores, however with a different cache error exception handler
+and therefore not using CPU_R4K_CACHE_TLB:
+
+obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
+obj-$(CONFIG_CPU_SB1)           += c-r4k.o cerr-sb1.o cex-sb1.o tlb-r4k.o
+
+(from arch/mips/mm/Makefile).
+
+Fixes: bbe4f634f48c ("mips: fix r3k_cache_init build regression")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.8+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/ni_atmio16d.c |    3 ++-
+ arch/mips/mm/cache.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers/ni_atmio16d.c
-+++ b/drivers/comedi/drivers/ni_atmio16d.c
-@@ -698,7 +698,8 @@ static int atmio16d_attach(struct comedi
- 
- static void atmio16d_detach(struct comedi_device *dev)
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -207,7 +207,8 @@ void cpu_cache_init(void)
  {
--	reset_atmio16d(dev);
-+	if (dev->private)
-+		reset_atmio16d(dev);
- 	comedi_legacy_detach(dev);
- }
+ 	if (IS_ENABLED(CONFIG_CPU_R3000) && cpu_has_3k_cache)
+ 		r3k_cache_init();
+-	if (IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) && cpu_has_4k_cache)
++	if ((IS_ENABLED(CONFIG_CPU_R4K_CACHE_TLB) ||
++	     IS_ENABLED(CONFIG_CPU_SB1)) && cpu_has_4k_cache)
+ 		r4k_cache_init();
  
+ 	if (IS_ENABLED(CONFIG_CPU_CAVIUM_OCTEON) && cpu_has_octeon_cache)
 
 
 
