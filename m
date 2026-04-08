@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DM+LGOk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:27 +0200
+	id yI5zDYum1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693803C1E59
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DE03C24B1
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 820213010BBA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01B673039CC3
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8D62727F3;
-	Wed,  8 Apr 2026 18:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7561A3D8139;
+	Wed,  8 Apr 2026 19:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQjMg3SK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbjs8Iop"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57C1337B81;
-	Wed,  8 Apr 2026 18:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385981A683C;
+	Wed,  8 Apr 2026 19:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674198; cv=none; b=klRpXCXQuo/oI04Mb7pG6D1GDKiiJjQ1IIvdE192bFiqPhBU1gvlQTun2n0mxiIQXWWrfqTIxyWYPuq8DwBkewOd6SFNDK0IwvU/WoNUvzCSoNbsUHuMl5upkbA2usCWpVvhW+VY1TYYLK8uCFhUxDT3PIO5RUiuSFrXicmbjtk=
+	t=1775674954; cv=none; b=pqa6SQbvEEN2CMtVn6N/YjEZQPE7aKfWWmoxcSkkr2SzoJYSHM5nrVhitTcwppUo87QTGapvnx7lHHpNTsLtBj6R3QBVTv/aXFYx1FpdGtdeYjzs00W6adiJ6cZF8YphoPzzKzidL9jjhg3s01aSJ1vhHr+AW2D+hzUaGp/dLFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674198; c=relaxed/simple;
-	bh=nz8bBU9H9ygZZHEOt1JIu81GEZAgEgm7207INAfEWxE=;
+	s=arc-20240116; t=1775674954; c=relaxed/simple;
+	bh=utLumobUo32HvzDUF8ManzZuO3OJOst8tltMFJ0DiOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7CLAQZUSGceZQ1l1aZmIHdjVPeIB8dROEvPgKE6Gnae7LQMqGcd/4za3I7Ijnyn+6JtvmH2f+ibmnnAZtQ9MyHe+FF8LoHDX2dvHfnuWYjKeoRsFQCbbQaNjXliwhKPduP87jZMuOmAveli91oaPp21gwVApDjWb3cgR0u5oZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQjMg3SK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C18AC19421;
-	Wed,  8 Apr 2026 18:49:57 +0000 (UTC)
+	 MIME-Version; b=nyyYNPV+89+kOl0jebQXxNz9aNn8dbYdC8gkhjK6FPzj4Kgo3ybmFwx0sfJtUMDqPNm4NfY/YiSEr+Bh5dAiSWHlmarDQvrRPPtMvPMgQAnP2ImhBcOzvsE3ACLO0tTUCxExYCXFABFXtZzkcFwfRVwZuYjj+n4AepNnNPF8G88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbjs8Iop; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEE1C2BC87;
+	Wed,  8 Apr 2026 19:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674198;
-	bh=nz8bBU9H9ygZZHEOt1JIu81GEZAgEgm7207INAfEWxE=;
+	s=korg; t=1775674953;
+	bh=utLumobUo32HvzDUF8ManzZuO3OJOst8tltMFJ0DiOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQjMg3SKmRPQ+SCB1zGJT/UgJUXjwr2wKBHy1o4QJ33VHrOZ2c435Q+ur6CEU8QI8
-	 fSlUoRo25iO2wBUgXOTbvTKL4PdYiwztl+bHA/dZSDJOj6dj95F3RpcQ0QoqgdD+MS
-	 KuqPtTC0uBHGsMy5NmKZi5ijzX+jptQ3SpN2HwSw=
+	b=fbjs8IopOrxCE7FpDkGmJX4zP9eeRl8T00kMRkVv/0pNSAwPj1G8vb60whW3Mj6Gv
+	 R0lfIVpgFUq+drthSgBECRKOy4UaxzAZeLXd7fKWor1FcBagDG73r3WG0TlrcAlwKl
+	 NzKqrs10nTaRGy5Tbu1Vy06Bh1ejN9BNrHg06ZEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.12 240/242] bpf: Add third round of bounds deduction
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.19 280/311] cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path
 Date: Wed,  8 Apr 2026 20:04:40 +0200
-Message-ID: <20260408175936.087726108@linuxfoundation.org>
+Message-ID: <20260408175949.835204232@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +65,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234956-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,linaro.org,intel.com];
+	TAGGED_FROM(0.00)[bounces-235249-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 693803C1E59
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,linaro.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E2DE03C24B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 5dbb19b16ac498b0b7f3a8a85f9d25d6d8af397d ]
+commit 6dcf9d0064ce2f3e3dfe5755f98b93abe6a98e1e upstream.
 
-Commit d7f008738171 ("bpf: try harder to deduce register bounds from
-different numeric domains") added a second call to __reg_deduce_bounds
-in reg_bounds_sync because a single call wasn't enough to converge to a
-fixed point in terms of register bounds.
+When kobject_init_and_add() fails, cpufreq_dbs_governor_init() calls
+kobject_put(&dbs_data->attr_set.kobj).
 
-With patch "bpf: Improve bounds when s64 crosses sign boundary" from
-this series, Eduard noticed that calling __reg_deduce_bounds twice isn't
-enough anymore to converge. The first selftest added in "selftests/bpf:
-Test cross-sign 64bits range refinement" highlights the need for a third
-call to __reg_deduce_bounds. After instruction 7, reg_bounds_sync
-performs the following bounds deduction:
+The kobject release callback cpufreq_dbs_data_release() calls
+gov->exit(dbs_data) and kfree(dbs_data), but the current error path
+then calls gov->exit(dbs_data) and kfree(dbs_data) again, causing a
+double free.
 
-  reg_bounds_sync entry:          scalar(smin=-655,smax=0xeffffeee,smin32=-783,smax32=-146)
-  __update_reg_bounds:            scalar(smin=-655,smax=0xeffffeee,smin32=-783,smax32=-146)
-  __reg_deduce_bounds:
-      __reg32_deduce_bounds:      scalar(smin=-655,smax=0xeffffeee,smin32=-783,smax32=-146,umin32=0xfffffcf1,umax32=0xffffff6e)
-      __reg64_deduce_bounds:      scalar(smin=-655,smax=0xeffffeee,smin32=-783,smax32=-146,umin32=0xfffffcf1,umax32=0xffffff6e)
-      __reg_deduce_mixed_bounds:  scalar(smin=-655,smax=0xeffffeee,umin=umin32=0xfffffcf1,umax=0xffffffffffffff6e,smin32=-783,smax32=-146,umax32=0xffffff6e)
-  __reg_deduce_bounds:
-      __reg32_deduce_bounds:      scalar(smin=-655,smax=0xeffffeee,umin=umin32=0xfffffcf1,umax=0xffffffffffffff6e,smin32=-783,smax32=-146,umax32=0xffffff6e)
-      __reg64_deduce_bounds:      scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e)
-      __reg_deduce_mixed_bounds:  scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e)
-  __reg_bound_offset:             scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))
-  __update_reg_bounds:            scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))
+Keep the direct kfree(dbs_data) for the gov->init() failure path, but
+after kobject_init_and_add() has been called, let kobject_put() handle
+the cleanup through cpufreq_dbs_data_release().
 
-In particular, notice how:
-1. In the first call to __reg_deduce_bounds, __reg32_deduce_bounds
-   learns new u32 bounds.
-2. __reg64_deduce_bounds is unable to improve bounds at this point.
-3. __reg_deduce_mixed_bounds derives new u64 bounds from the u32 bounds.
-4. In the second call to __reg_deduce_bounds, __reg64_deduce_bounds
-   improves the smax and umin bounds thanks to patch "bpf: Improve
-   bounds when s64 crosses sign boundary" from this series.
-5. Subsequent functions are unable to improve the ranges further (only
-   tnums). Yet, a better smin32 bound could be learned from the smin
-   bound.
-
-__reg32_deduce_bounds is able to improve smin32 from smin, but for that
-we need a third call to __reg_deduce_bounds.
-
-As discussed in [1], there may be a better way to organize the deduction
-rules to learn the same information with less calls to the same
-functions. Such an optimization requires further analysis and is
-orthogonal to the present patchset.
-
-Link: https://lore.kernel.org/bpf/aIKtSK9LjQXB8FLY@mail.gmail.com/ [1]
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Co-developed-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/79619d3b42e5525e0e174ed534b75879a5ba15de.1753695655.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Fixes: 4ebe36c94aed ("cpufreq: Fix kobject memleak")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260401024535.1395801-1-lgs201920130244@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c                               |    1 +
- tools/testing/selftests/bpf/progs/verifier_bounds.c |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq_governor.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2292,6 +2292,7 @@ static void reg_bounds_sync(struct bpf_r
- 	/* We might have learned something about the sign bit. */
- 	__reg_deduce_bounds(reg);
- 	__reg_deduce_bounds(reg);
-+	__reg_deduce_bounds(reg);
- 	/* We might have learned some bits from the bounds. */
- 	__reg_bound_offset(reg);
- 	/* Intersecting with the old var_off might have improved our bounds
---- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-@@ -1223,7 +1223,7 @@ l0_%=:	r0 = 0;						\
- SEC("socket")
- __description("bounds deduction cross sign boundary, negative overlap")
- __success __log_level(2) __flag(BPF_F_TEST_REG_INVARIANTS)
--__msg("7: (1f) r0 -= r6 {{.*}} R0=scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))")
-+__msg("7: (1f) r0 -= r6 {{.*}} R0=scalar(smin=smin32=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,umin32=0xfffffd71,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))")
- __retval(0)
- __naked void bounds_deduct_negative_overlap(void)
- {
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -468,13 +468,13 @@ int cpufreq_dbs_governor_init(struct cpu
+ 	/* Failure, so roll back. */
+ 	pr_err("initialization failed (dbs_data kobject init error %d)\n", ret);
+ 
+-	kobject_put(&dbs_data->attr_set.kobj);
+-
+ 	policy->governor_data = NULL;
+ 
+ 	if (!have_governor_per_policy())
+ 		gov->gdbs_data = NULL;
+-	gov->exit(dbs_data);
++
++	kobject_put(&dbs_data->attr_set.kobj);
++	goto free_policy_dbs_info;
+ 
+ free_dbs_data:
+ 	kfree(dbs_data);
 
 
 
