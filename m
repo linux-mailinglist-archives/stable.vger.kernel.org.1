@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-234897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NXFKJil1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:36 +0200
+	id JJcaErWc1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2167D3C224E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C55D3C07B5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83C3B320EF3C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CBDA93032A7F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FF12727F3;
-	Wed,  8 Apr 2026 18:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF2E3D5647;
+	Wed,  8 Apr 2026 18:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RF953mct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szsKO5Ua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3402BD030;
-	Wed,  8 Apr 2026 18:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0523537FC;
+	Wed,  8 Apr 2026 18:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674045; cv=none; b=FnWtKgiaPIcxx8Mp7FbQU3xEuOjRTM4NdFcjmHL9d5n6m4CUOCJwqsN8H9p4KELggZV1L+QYp+ShgMEFjZIRpT48wM/yrc/wYYGqVuBju2Q7vqesmxbn4w4SUNIxLnCzv01blMQobgeqSJ3FMtGXPdY5VflY1T0aluOUy9LAbdQ=
+	t=1775672416; cv=none; b=g8GBtN5WcSe6XwD+JdDGBhCjxsdquNu0exsnsx8zyYY8BI1CNtQPac7AJ3n0XmctgdGzaimVHeJXlDhKsqd2dq378/MBPw9vobC1uJCzQp9o5p6fAKc/tk2VauSxhqR4bcUQtPx8iuyvt9NsSXdPuY3KaXD/jh1zWwBzG/PQhk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674045; c=relaxed/simple;
-	bh=3XlNO0orh+0ctYaVZKi6RTopgCYOHGIE+7vF5Jab3qY=;
+	s=arc-20240116; t=1775672416; c=relaxed/simple;
+	bh=v0UQLkQGudkPupIIquqz2ckH3YsWTLQDeE2pX7rp720=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTMOFxXlMS7gIRzmdE20eqhnrVvV/ZSmAIUkdQpWYTsNK55Rwp6w/1bm74du0e7y+Bz5vFZttNbMJTBTsruXPqjM3xgdnzSvkd7HW3U1vR/6voD4ktuUI1tn9KnMxKOpfi1j4TQfKrQcDuRAabf4sfwlg/4uoeO6viIzS2AebUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RF953mct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C8DC19421;
-	Wed,  8 Apr 2026 18:47:25 +0000 (UTC)
+	 MIME-Version; b=dWKMQJRyqsEM+hrEHKL089nvLP7OJdiLdTF4qkFcXfSK05bcLzHB/PHoCUO4lOIpBjEdCLGBPLerQ4wfiT8xdbUWQgliQe5S3Fiyhtzo1Vpp5j2y0j2XN03EZlW6WBX7ujsj8Xc0aOz5X0jTFftUdlwVy+ojsrtJ/Iqc1jpnXnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szsKO5Ua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248A7C19421;
+	Wed,  8 Apr 2026 18:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674045;
-	bh=3XlNO0orh+0ctYaVZKi6RTopgCYOHGIE+7vF5Jab3qY=;
+	s=korg; t=1775672416;
+	bh=v0UQLkQGudkPupIIquqz2ckH3YsWTLQDeE2pX7rp720=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RF953mct3gixLle2l1bfwOhCKO5/4mrrhxxlYiLCgoAmBVW3hEru3K3hg8Pisvo4C
-	 ozPmK3oO0aIldMCAFT1BhLQFYDoroNo+uEoCcSaTgCt4VlugNutkojvZ/6pPSXUoo3
-	 +chWkJZMpzOpmoWpC23Y7VPNrwqz6AYbvK33C0Bk=
+	b=szsKO5Ua4Y/cFuV57Bmcr4f5plKx17F7uAnx2OU2Azhq9yjQmceRpZgwBKV9LhfMU
+	 zflj3c4kZI21FUo3DlfW4579RwWR1o+FiWjMb5s/Btl+0fN6O3hdAOn/Bkq1x1zjlu
+	 odBgvXiT7FTf8WDLCT73beK3y7exgbHAF9bi1qF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	VitaliiT <vitaly.torshyn@gmail.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 189/242] cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path
+Subject: [PATCH 6.1 312/312] ACPI: EC: Evaluate orphan _REG under EC device
 Date: Wed,  8 Apr 2026 20:03:49 +0200
-Message-ID: <20260408175934.159892115@linuxfoundation.org>
+Message-ID: <20260408175945.424469618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +63,190 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,linaro.org,intel.com];
-	TAGGED_FROM(0.00)[bounces-234897-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email]
-X-Rspamd-Queue-Id: 2167D3C224E
+	TAGGED_FROM(0.00)[bounces-234267-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0C55D3C07B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 6dcf9d0064ce2f3e3dfe5755f98b93abe6a98e1e upstream.
+commit 0e6b6dedf16800df0ff73ffe2bb5066514db29c2 upstream.
 
-When kobject_init_and_add() fails, cpufreq_dbs_governor_init() calls
-kobject_put(&dbs_data->attr_set.kobj).
+After starting to install the EC address space handler at the ACPI
+namespace root, if there is an "orphan" _REG method in the EC device's
+scope, it will not be evaluated any more.  This breaks EC operation
+regions on some systems, like Asus gu605.
 
-The kobject release callback cpufreq_dbs_data_release() calls
-gov->exit(dbs_data) and kfree(dbs_data), but the current error path
-then calls gov->exit(dbs_data) and kfree(dbs_data) again, causing a
-double free.
+To address this, use a wrapper around an existing ACPICA function to
+look for an "orphan" _REG method in the EC device scope and evaluate
+it if present.
 
-Keep the direct kfree(dbs_data) for the gov->init() failure path, but
-after kobject_init_and_add() has been called, let kobject_put() handle
-the cleanup through cpufreq_dbs_data_release().
-
-Fixes: 4ebe36c94aed ("cpufreq: Fix kobject memleak")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260401024535.1395801-1-lgs201920130244@gmail.com
+Fixes: 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the namespace root")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218945
+Reported-by: VitaliiT <vitaly.torshyn@gmail.com>
+Tested-by: VitaliiT <vitaly.torshyn@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq_governor.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/acpica/acevents.h |    4 +++
+ drivers/acpi/acpica/evregion.c |    6 ----
+ drivers/acpi/acpica/evxfregn.c |   54 +++++++++++++++++++++++++++++++++++++++++
+ drivers/acpi/ec.c              |    3 ++
+ include/acpi/acpixf.h          |    4 +++
+ 5 files changed, 66 insertions(+), 5 deletions(-)
 
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -468,13 +468,13 @@ int cpufreq_dbs_governor_init(struct cpu
- 	/* Failure, so roll back. */
- 	pr_err("initialization failed (dbs_data kobject init error %d)\n", ret);
+--- a/drivers/acpi/acpica/acevents.h
++++ b/drivers/acpi/acpica/acevents.h
+@@ -191,6 +191,10 @@ void
+ acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
+ 			    acpi_adr_space_type space_id, u32 function);
  
--	kobject_put(&dbs_data->attr_set.kobj);
--
- 	policy->governor_data = NULL;
- 
- 	if (!have_governor_per_policy())
- 		gov->gdbs_data = NULL;
--	gov->exit(dbs_data);
++void
++acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *node,
++				  acpi_adr_space_type space_id);
 +
-+	kobject_put(&dbs_data->attr_set.kobj);
-+	goto free_policy_dbs_info;
+ acpi_status
+ acpi_ev_execute_reg_method(union acpi_operand_object *region_obj, u32 function);
  
- free_dbs_data:
- 	kfree(dbs_data);
+--- a/drivers/acpi/acpica/evregion.c
++++ b/drivers/acpi/acpica/evregion.c
+@@ -20,10 +20,6 @@ extern u8 acpi_gbl_default_address_space
+ 
+ /* Local prototypes */
+ 
+-static void
+-acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
+-				  acpi_adr_space_type space_id);
+-
+ static acpi_status
+ acpi_ev_reg_run(acpi_handle obj_handle,
+ 		u32 level, void *context, void **return_value);
+@@ -811,7 +807,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
+  *
+  ******************************************************************************/
+ 
+-static void
++void
+ acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
+ 				  acpi_adr_space_type space_id)
+ {
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -304,3 +304,57 @@ acpi_execute_reg_methods(acpi_handle dev
+ }
+ 
+ ACPI_EXPORT_SYMBOL(acpi_execute_reg_methods)
++
++/*******************************************************************************
++ *
++ * FUNCTION:    acpi_execute_orphan_reg_method
++ *
++ * PARAMETERS:  device          - Handle for the device
++ *              space_id        - The address space ID
++ *
++ * RETURN:      Status
++ *
++ * DESCRIPTION: Execute an "orphan" _REG method that appears under an ACPI
++ *              device. This is a _REG method that has no corresponding region
++ *              within the device's scope.
++ *
++ ******************************************************************************/
++acpi_status
++acpi_execute_orphan_reg_method(acpi_handle device, acpi_adr_space_type space_id)
++{
++	struct acpi_namespace_node *node;
++	acpi_status status;
++
++	ACPI_FUNCTION_TRACE(acpi_execute_orphan_reg_method);
++
++	/* Parameter validation */
++
++	if (!device) {
++		return_ACPI_STATUS(AE_BAD_PARAMETER);
++	}
++
++	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
++	if (ACPI_FAILURE(status)) {
++		return_ACPI_STATUS(status);
++	}
++
++	/* Convert and validate the device handle */
++
++	node = acpi_ns_validate_handle(device);
++	if (node) {
++
++		/*
++		 * If an "orphan" _REG method is present in the device's scope
++		 * for the given address space ID, run it.
++		 */
++
++		acpi_ev_execute_orphan_reg_method(node, space_id);
++	} else {
++		status = AE_BAD_PARAMETER;
++	}
++
++	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
++	return_ACPI_STATUS(status);
++}
++
++ACPI_EXPORT_SYMBOL(acpi_execute_orphan_reg_method)
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1532,6 +1532,9 @@ static int ec_install_handlers(struct ac
+ 
+ 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
+ 		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
++		if (scope_handle != ec->handle)
++			acpi_execute_orphan_reg_method(ec->handle, ACPI_ADR_SPACE_EC);
++
+ 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
+ 	}
+ 
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -669,6 +669,10 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 						     acpi_adr_space_type
+ 						     space_id))
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
++			    acpi_execute_orphan_reg_method(acpi_handle device,
++							   acpi_adr_space_type
++							   space_id))
++ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			    acpi_remove_address_space_handler(acpi_handle
+ 							      device,
+ 							      acpi_adr_space_type
 
 
 
