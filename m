@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOOgF8ac1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:58 +0200
+	id SLIzDvql1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE4D3C07FB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A19E63C22EE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D75C030386B1
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57D7530268A5
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91DE3D75C3;
-	Wed,  8 Apr 2026 18:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20EE37F8AC;
+	Wed,  8 Apr 2026 18:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlbY93mq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l51m1tak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD462DAFAA;
-	Wed,  8 Apr 2026 18:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8587132A3FD;
+	Wed,  8 Apr 2026 18:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672385; cv=none; b=bJUrVa3rGDNy0829aTFDEiT797WMP89QtVHJes57UUiOrtKJ1xHKpwzz7pJib1WMijqK7PmuCvCmA6T5rFYv8oOxBi6Kb2EH4S0daEJc9OxF+xupNuKnCXHAHDQI6dKQNhJnNGhRSIRhy8tV9MiJln6FHQ/MbIkJNfDBAHO+jpo=
+	t=1775674662; cv=none; b=Ghdq2v73mA8Rg8zNEaYfXkhKoaxHyqdb8Nw/rDOyf04spuCXic2TZpT5ejBsZWdtSYhxbuGQJY/geRLFbl7VjjjT4ZJW/F0m31zqAkEkBRMV+ny13FoudsrUuHzT5FGR91DhjT71RwUbbgWHlEQaCQsjLDRcufzR2eECcCEI3Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672385; c=relaxed/simple;
-	bh=IdFcjQL3Ka70ATCGALsTa1Ayd6FG2f58j2caq7M8ebQ=;
+	s=arc-20240116; t=1775674662; c=relaxed/simple;
+	bh=vJYfX6GIhRvpKdM1grpMN+U0yQS2t9w4KfEHfbyqirs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sibQGHNJ3nwBLr1v5RD/itpV7JIEFRlnh3mw3Xvj+c7nFdjRB9fz9em/7AgeGRjV9XiaavIll7V37kiBfNdVxaYZy1SxUG4tXMna8Ux4cBdxkHvCG+dOYg7BN+QXtAoyDneBYYhqiTXO1MbDmyg2QHaF1r6ZP4MMb19G7LJNOMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlbY93mq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF10C19421;
-	Wed,  8 Apr 2026 18:19:44 +0000 (UTC)
+	 MIME-Version; b=OX4TTOFzssfaeEOJqWi/T0ySzOXqZUO53eFUsDJzObMHaWedyuCBJrBjAKQMsfYukmV+J1BleMsuCUcRcMtRCj7MZoc/pub0p9GDAeN5DuNE10MUIRANK4+QdmObbeORtE64MXf1RsjPxCvsWSnWsNMR0Gz3MYxWTSSJBMuNuXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l51m1tak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C486BC19421;
+	Wed,  8 Apr 2026 18:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672385;
-	bh=IdFcjQL3Ka70ATCGALsTa1Ayd6FG2f58j2caq7M8ebQ=;
+	s=korg; t=1775674662;
+	bh=vJYfX6GIhRvpKdM1grpMN+U0yQS2t9w4KfEHfbyqirs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PlbY93mqUiGYSXmJR1F5/tdyin4cyLOrIK7CVvBi8Kh5UOOM+klaGe3C3qp6ithHC
-	 x4uNG1kZP52ys+KgxKAZiOXfVRESpksVJ1zpgbgGcc5bnOLgRxWE+EqN8Wd85HQzwQ
-	 dpeKMfVLjVv2dVV9VFHWBrlL+GgdcAg2ed9HiISk=
+	b=l51m1tak2wDp1gfZxgWBAdMC0qoKym0yZiAdKHvQYa7R62bxCqLpqj22qfXeLn2AZ
+	 M8CHIECaC0aU3vZgdY2nk3shUN33hA/rssGRwiprLFqZfXnJf09cOS8QYLvGroWCgp
+	 8mXuACo3ChStx2LM6aips/YMYCjVmVw4tYzSIgaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 267/312] net: enetc: fix PF !of_device_is_available() teardown path
-Date: Wed,  8 Apr 2026 20:03:04 +0200
-Message-ID: <20260408175943.720032599@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.19 185/311] MIPS: Fix the GCC version check for `__multi3 workaround
+Date: Wed,  8 Apr 2026 20:03:05 +0200
+Message-ID: <20260408175946.319551178@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +66,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234255-lists,stable=lfdr.de];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235136-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5FE4D3C07FB
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,orcam.me.uk:email,franken.de:email,gnu.org:url]
+X-Rspamd-Queue-Id: A19E63C22EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-Upstream commit e15c5506dd39 ("net: enetc: allocate vf_state during PF
-probes") was backported incorrectly to kernels where enetc_pf_probe()
-still has to manually check whether the OF node of the PCI device is
-enabled.
+commit ec8bf18814915460d9c617b556bf024efef26613 upstream.
 
-In kernels which contain commit bfce089ddd0e ("net: enetc: remove
-of_device_is_available() handling") and its dependent change, commit
-6fffbc7ae137 ("PCI: Honor firmware's device disabled status"), the
-"err_device_disabled" label has disappeared. Yet, linux-6.1.y and
-earlier still contains it.
+It was only GCC 10 that fixed a MIPS64r6 code generation issue with a
+`__multi3' libcall inefficiently produced to perform 64-bit widening
+multiplication while suitable machine instructions exist to do such a
+calculation.  The fix went in with GCC commit 48b2123f6336 ("re PR
+target/82981 (unnecessary __multi3 call for mips64r6 linux kernel)").
 
-The trouble is that upstream commit e15c5506dd39 ("net: enetc: allocate
-vf_state during PF probes"), backported as 35668e29e979 in linux-6.1.y,
-introduces new code for the err_setup_mac_addresses and err_alloc_netdev
-labels which calls kfree(pf->vf_state). This code must not execute for
-the err_device_disabled label, because at that stage, the pf structure
-has not yet been allocated, and is an uninitialized pointer.
+Adjust our code accordingly, removing build failures such as:
 
-By moving the err_device_disabled label to undo just the previous
-operation, i.e. a successful enetc_psi_create() call with
-enetc_psi_destroy(), the dereference of uninitialized pf->vf_state is
-avoided.
+mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
+div64.c:(.text+0x84): undefined reference to `__multi3'
 
-Fixes: 35668e29e979 ("net: enetc: allocate vf_state during PF probes")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/linux-patches/20260330073356.GA1017537@ax162/
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org> # build
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+with the GCC versions affected.
+
+Fixes: ebabcf17bcd7 ("MIPS: Implement __multi3 for GCC7 MIPS64r6 builds")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601140146.hMLODc6v-lkp@intel.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v4.15+
+Reviewed-by: David Laight <david.laight.linux@gmail.com.
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_pf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/lib/multi3.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-index 99422c0b4a265..8cb4c759b165e 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -1393,10 +1393,10 @@ static int enetc_pf_probe(struct pci_dev *pdev,
- 	si->ndev = NULL;
- 	free_netdev(ndev);
- err_alloc_netdev:
--err_device_disabled:
- err_setup_mac_addresses:
- 	kfree(pf->vf_state);
- err_alloc_vf_state:
-+err_device_disabled:
- 	enetc_psi_destroy(pdev);
- err_psi_create:
- 	return err;
--- 
-2.53.0
-
+--- a/arch/mips/lib/multi3.c
++++ b/arch/mips/lib/multi3.c
+@@ -4,12 +4,12 @@
+ #include "libgcc.h"
+ 
+ /*
+- * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
++ * GCC 9 & older can suboptimally generate __multi3 calls for mips64r6, so for
+  * that specific case only we implement that intrinsic here.
+  *
+  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
+  */
+-#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
++#if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 10)
+ 
+ /* multiply 64-bit values, low 64-bits returned */
+ static inline long long notrace dmulu(long long a, long long b)
+@@ -51,4 +51,4 @@ ti_type notrace __multi3(ti_type a, ti_t
+ }
+ EXPORT_SYMBOL(__multi3);
+ 
+-#endif /* 64BIT && CPU_MIPSR6 && GCC7 */
++#endif /* 64BIT && CPU_MIPSR6 && GCC9 */
 
 
 
