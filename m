@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-234516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJD1KFqf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:58 +0200
+	id 8PGcNe6m1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78083C0EEF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6126D3C25DA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C9B62302AB65
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C021830A692C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D11E26FA5A;
-	Wed,  8 Apr 2026 18:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E323D4134;
+	Wed,  8 Apr 2026 18:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6yUWRXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2imyuE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE22233F5A4;
-	Wed,  8 Apr 2026 18:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEFE3B19A3;
+	Wed,  8 Apr 2026 18:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673063; cv=none; b=FXM/cJAns3s3H+WKh7MtQyUa/1Ji6S7mqZqLqeVfPpVbkV+YBadoOr7HvNC0Y67zljuWkJANNM18Rn3I8sfZ8QOQQ0CTKee9r6N9oBmZJpPu7kmpkSjTDor9SIx/QiYXvRIGg0oJbGUk5Qo/a5rW3EUR1KBoICNs0i6thnp1/Dc=
+	t=1775673642; cv=none; b=dlJ2GtrSlaTzjd/qhIbG70DthAt73yrN4ECOMRxptD+Ys+65zm949uLjRdPRRBMgcaDwHjXJXf7EIrX3IQ3AVJ97VIJTeosXGzUtkVrvfGmw/3PBwgAkry+gs/vR+/TPh8jjZ6XU2L3QP0+qOdYl7B3VJbLvroHVYK1dvFk8QYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673063; c=relaxed/simple;
-	bh=3Tbi0Fv3W6/x3vA5DiFN0vds7LdlZcQ1Snm9n6A7eqA=;
+	s=arc-20240116; t=1775673642; c=relaxed/simple;
+	bh=Qp32owjLdkjZaO/PVZIPDIVs7S1ECyfRqMt0eYFwR2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhFB19QqJSdC/xBfP+X7lScPOJDmK0eouLSp7n1OIXdZA9IbQg/SIHwSKGJeXX5Le8STVJfgBKjCKVKoHBCWgogLmEZ737ry1vXJ7xKh6dEb2usm/0nEjZ8OCsEDJdDef+0rAgt2n6n/JjrJBBp/5teGN6hSBKG/ntyVtU6pWok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6yUWRXI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A34C19421;
-	Wed,  8 Apr 2026 18:31:02 +0000 (UTC)
+	 MIME-Version; b=bJyammYXaACZIkbyN7Tr60yeDt9hon6UuaXz86Wkio97+RZ8uYAWCDlM4hzf3GQ+L8NZJvBd+5kggnwI0umpLhOd18CBTe+osJfRZaxClQhl6VEauxDNicVgvHANEOkvs6cSlo2HoN9BS6sZ+KSH+GEOroOJkJ07u9fAyiJ/+rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2imyuE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021CFC19421;
+	Wed,  8 Apr 2026 18:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673062;
-	bh=3Tbi0Fv3W6/x3vA5DiFN0vds7LdlZcQ1Snm9n6A7eqA=;
+	s=korg; t=1775673642;
+	bh=Qp32owjLdkjZaO/PVZIPDIVs7S1ECyfRqMt0eYFwR2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6yUWRXIPg6QNVIjCJN/DKomj5Ii5Y9cPZI5d1xSmu+Gj1FpT3PpcOhtgkQt0+qCC
-	 niGM0yQr/RBq2uFqsWCRGvS91fBZdyrgyuyWKJ0CWl6M6ZsDSCd9NSiNjUBRlwsK4T
-	 tMVB7CTfgdsMYUKyRq9GQXrVkm2neNBP7rp4o0K8=
+	b=i2imyuE5AtrJ3PIoE7p2ppkkD1f7MKYtVGDoU9ShES7UcgBnwycjIiNh+IjpzkYId
+	 plB13gUVUGukymz/QWmft2ReFb0z5hGEVAY+Z6u65Mh5LTzz8oZN/Mj4HtWS9OF4RB
+	 kyGM7zjkv530CievjVmiSKjX4tjU0u1c8YMYw4/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuhang Zheng <z1652074432@gmail.com>,
-	Yucheng Lu <kanolyc@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
+	Rishon Jonathan R <mithicalaviator85@gmail.com>,
+	Vincent MORVAN <vinc@42.fr>,
+	Paul SAGE <paul.sage@42.fr>,
+	Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 087/277] net/sched: sch_netem: fix out-of-bounds access in packet corruption
+Subject: [PATCH 6.12 032/242] tg3: replace placeholder MAC address with device property
 Date: Wed,  8 Apr 2026 20:01:12 +0200
-Message-ID: <20260408175937.112956790@linuxfoundation.org>
+Message-ID: <20260408175928.274215487@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,89 +70,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234516-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,networkplumber.org,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,42.fr,broadcom.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234741-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: A78083C0EEF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,42.fr:email]
+X-Rspamd-Queue-Id: 6126D3C25DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yucheng Lu <kanolyc@gmail.com>
+From: Paul SAGE <paul.sage@42.fr>
 
-[ Upstream commit d64cb81dcbd54927515a7f65e5e24affdc73c14b ]
+[ Upstream commit e4c00ba7274b613e3ab19e27eb009f0ec2e28379 ]
 
-In netem_enqueue(), the packet corruption logic uses
-get_random_u32_below(skb_headlen(skb)) to select an index for
-modifying skb->data. When an AF_PACKET TX_RING sends fully non-linear
-packets over an IPIP tunnel, skb_headlen(skb) evaluates to 0.
+On some systems (e.g. iMac 20,1 with BCM57766), the tg3 driver reads
+a default placeholder mac address (00:10:18:00:00:00) from the
+mailbox. The correct value on those systems are stored in the
+'local-mac-address' property.
 
-Passing 0 to get_random_u32_below() takes the variable-ceil slow path
-which returns an unconstrained 32-bit random integer. Using this
-unconstrained value as an offset into skb->data results in an
-out-of-bounds memory access.
+This patch, detect the default value and tries to retrieve
+the correct address from the device_get_mac_address
+function instead.
 
-Fix this by verifying skb_headlen(skb) is non-zero before attempting
-to corrupt the linear data area. Fully non-linear packets will silently
-bypass the corruption logic.
+The patch has been tested on two different systems:
+- iMac 20,1 (BCM57766) model which use the local-mac-address property
+- iMac 13,2 (BCM57766) model which can use the mailbox,
+    NVRAM or MAC control registers
 
-Fixes: c865e5d99e25 ("[PKT_SCHED] netem: packet corruption option")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
-Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
-Link: https://patch.msgid.link/45435c0935df877853a81e6d06205ac738ec65fa.1774941614.git.kanolyc@gmail.com
+Tested-by: Rishon Jonathan R <mithicalaviator85@gmail.com>
+
+Co-developed-by: Vincent MORVAN <vinc@42.fr>
+Signed-off-by: Vincent MORVAN <vinc@42.fr>
+Signed-off-by: Paul SAGE <paul.sage@42.fr>
+Signed-off-by: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20260314215432.3589-1-atharvatiwarilinuxdev@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/tg3.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index eafc316ae319e..6f8fcc4b504ce 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -518,8 +518,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			goto finish_segs;
- 		}
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index dc170feee8ad7..288ab0e007557 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -17015,6 +17015,13 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
+ 	return err;
+ }
  
--		skb->data[get_random_u32_below(skb_headlen(skb))] ^=
--			1<<get_random_u32_below(8);
-+		if (skb_headlen(skb))
-+			skb->data[get_random_u32_below(skb_headlen(skb))] ^=
-+				1 << get_random_u32_below(8);
- 	}
++static int tg3_is_default_mac_address(u8 *addr)
++{
++	static const u8 default_mac_address[ETH_ALEN] = { 0x00, 0x10, 0x18, 0x00, 0x00, 0x00 };
++
++	return ether_addr_equal(default_mac_address, addr);
++}
++
+ static int tg3_get_device_address(struct tg3 *tp, u8 *addr)
+ {
+ 	u32 hi, lo, mac_offset;
+@@ -17086,6 +17093,10 @@ static int tg3_get_device_address(struct tg3 *tp, u8 *addr)
  
- 	if (unlikely(q->t_len >= sch->limit)) {
+ 	if (!is_valid_ether_addr(addr))
+ 		return -EINVAL;
++
++	if (tg3_is_default_mac_address(addr))
++		return device_get_mac_address(&tp->pdev->dev, addr);
++
+ 	return 0;
+ }
+ 
 -- 
 2.53.0
 
