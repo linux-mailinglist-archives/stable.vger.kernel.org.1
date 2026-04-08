@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-234207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNZEO+Oc1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:27 +0200
+	id gKWkCFyi1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E133C0871
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DCE3C1751
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B2A230AE130
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA5E3302B826
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7523AA4E4;
-	Wed,  8 Apr 2026 18:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B723D75AF;
+	Wed,  8 Apr 2026 18:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBTsEcNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuR33yCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D40B67E;
-	Wed,  8 Apr 2026 18:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82032BEFFF;
+	Wed,  8 Apr 2026 18:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672260; cv=none; b=hFniCn/MCI94HywzYu3o4EsQXlmOYMi99oKmCDTNREEjxQcQm2cmvXeMJx0yggmV9sBk5qtYPxF7NtKhoDa0b3v6Ft84YufzRj363QYS6orpvwcqwoOd4kmZ0BK0HZ5+kuCoFtCMeHsysT2yIjizwfPy87/KvHbWr4eXYAyGmik=
+	t=1775673889; cv=none; b=CosOyMFs5se4nWa42pp656U8mlwks0cNv3OjLW8KSViYfm1/UnXMqkW+xdIqERK6targsWV2PbNrAdde1ps+0ZNh0pKKjYpLOlGaeK717wS/j+htYnZJZ1sgzE3E206Dp41IUcnv0a/LgoWjBPwd9ZhkDRahsChaHSa6WGhKeiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672260; c=relaxed/simple;
-	bh=fQ5NLxFA3f/R4YeJEVZKr9s/FNJG1od2d7GA12ESX5w=;
+	s=arc-20240116; t=1775673889; c=relaxed/simple;
+	bh=8P6VAHSEagvnS0oMwIDrTHb1F2WinbGhE7QXAfofOQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6IXfiwUFELqmZUUcWeQrHbhKV6Kkwzcu0dvE0KIncJ8lSWMP0DVK7Qlx53vB/MUzTYhR7xtNeafOPhFBnqKwnXuDJ6ZHzGnm0ZIQTHrwqHEH394UIVq9VmU28SBLrH/8EAYaVQ6CzBF6+kYIKzUW3lT8T8wOsIshwmZP7MNt4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBTsEcNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287E7C19421;
-	Wed,  8 Apr 2026 18:17:40 +0000 (UTC)
+	 MIME-Version; b=ooeuJyWc6M/AO9DkNh2RSFNKI4vX+YCPLYRxk+6PgH8jx+68bwXZxVgyY0JqojIcKwnvN6eiktA7r3sKnegXGWrWJhU/46iHmVvJFvdo+9I5tr08RIBOY5IV6641IgRQwwFbjPcK1E3aGGYu4h9yRH2tguTTJTENaCXjvhRo7O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuR33yCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE23C19421;
+	Wed,  8 Apr 2026 18:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672260;
-	bh=fQ5NLxFA3f/R4YeJEVZKr9s/FNJG1od2d7GA12ESX5w=;
+	s=korg; t=1775673889;
+	bh=8P6VAHSEagvnS0oMwIDrTHb1F2WinbGhE7QXAfofOQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBTsEcNG5tskj70d99Lim0iaJ8ppKDNi25CY8Lpe1/1nTDWUaQuqkqgJ184YbJbDA
-	 g/w0K4QUC8+msrdltqFi7LtR03s5RPE2Ctu1uZVf2Jy+yVmxDyZQtN4Y5gG+1ulnxg
-	 iU6ClJZItqXqfZ5bw4UpExDWtNzZzP5rytK3ZrV4=
+	b=EuR33yCwaT+T4Te0NpofVGHLKdSKDGNyn3vIjzLFpcR8tZk+mqKC6DzfAle5WqDTA
+	 lVuDbwQW/WuS4/d2XcKL7wAF+RpitnGRLUcM4E8OQhAZtYjxneAy8+r5YL/DMQOhP5
+	 YI4rIv6GfhOHHd3FKLAThbJ84zlspUfyt7RGGGKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <dstsmallbird@foxmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 251/312] netfilter: ipset: drop logically empty buckets in mtype_del
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 128/242] mips: mm: Allocate tlb_vpn array atomically
 Date: Wed,  8 Apr 2026 20:02:48 +0200
-Message-ID: <20260408175943.119289178@linuxfoundation.org>
+Message-ID: <20260408175931.880641542@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,74 +67,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foxmail.com,nwl.cc,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-234207-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-234836-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nwl.cc:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,netfilter.org:email]
-X-Rspamd-Queue-Id: 60E133C0871
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nokia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,franken.de:email]
+X-Rspamd-Queue-Id: 94DCE3C1751
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Wu <yifanwucs@gmail.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-commit 9862ef9ab0a116c6dca98842aab7de13a252ae02 upstream.
+commit 01cc50ea5167bb14117257ec084637abe9e5f691 upstream.
 
-mtype_del() counts empty slots below n->pos in k, but it only drops the
-bucket when both n->pos and k are zero. This misses buckets whose live
-entries have all been removed while n->pos still points past deleted slots.
+Found by DEBUG_ATOMIC_SLEEP:
 
-Treat a bucket as empty when all positions below n->pos are unused and
-release it directly instead of shrinking it further.
+  BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  no locks held by swapper/1/0.
+  irq event stamp: 0
+  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+  hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+  softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
+  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
+  Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
+          800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
+          ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
+          784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
+          0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
+          ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
+          ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
+          fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
+          ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
+          0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
+          ...
+  Call Trace:
+  [<ffffffff80129fd0>] show_stack+0x60/0x158
+  [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
+  [<ffffffff8018d3c8>] __might_resched+0x268/0x288
+  [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
+  [<ffffffff80302788>] __kmalloc+0x58/0xd0
+  [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
+  [<ffffffff80143e8c>] tlb_init+0x7c/0x110
+  [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
+  [<ffffffff80133258>] start_secondary+0x28/0x128
 
-Fixes: 8af1c6fbd923 ("netfilter: ipset: Fix forceadd evaluation path")
+Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
 Cc: stable@vger.kernel.org
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <dstsmallbird@foxmail.com>
-Signed-off-by: Yifan Wu <yifanwucs@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Reviewed-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_hash_gen.h |    2 +-
+ arch/mips/mm/tlb-r4k.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -1086,7 +1086,7 @@ mtype_del(struct ip_set *set, void *valu
- 			if (!test_bit(i, n->used))
- 				k++;
- 		}
--		if (n->pos == 0 && k == 0) {
-+		if (k == n->pos) {
- 			t->hregion[r].ext_size -= ext_size(n->size, dsize);
- 			rcu_assign_pointer(hbucket(t, key), NULL);
- 			kfree_rcu(n, rcu);
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -538,7 +538,7 @@ static void __ref r4k_tlb_uniquify(void)
+ 
+ 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
+ 	tlb_vpns = (use_slab ?
+-		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
+ 		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
+ 	if (WARN_ON(!tlb_vpns))
+ 		return; /* Pray local_flush_tlb_all() is good enough. */
 
 
 
