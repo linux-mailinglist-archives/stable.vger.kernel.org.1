@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234920-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LXMOEqe1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:26 +0200
+	id AMe3F9el1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234920-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181A23C0C95
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA783C22AE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43CEE301A6BA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06906321D251
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4863D522C;
-	Wed,  8 Apr 2026 18:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7683D8905;
+	Wed,  8 Apr 2026 18:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLzWmKla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msQahyTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E34D3B0ADA;
-	Wed,  8 Apr 2026 18:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4933624B9;
+	Wed,  8 Apr 2026 18:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672857; cv=none; b=AKNsYcnXC1+0ISjyAERgOnNkSSkAQ7L6RIrD86jH01gsff+I+yLbepxsaHpwplkNBA9E1+sVTlrv8x+0pm/3tJ9ihaN4FSp9vwk/TD8hlVtKd7Qa1DES56k0EZRY5LmY5aQ+twIcSaW1ylnuBPh5AD2hBxm3GozQppAC8dS8TwY=
+	t=1775674105; cv=none; b=bGFfSyCDXFhRZw7KcNlskGvRIvyTWcbwqa2YVswHawtFy8lHpSNPTzSTMfatqg07EO11HneFP3a+OABxzc8yXvx82T49FbPUxOZdg9kXRDU/so/LrnZrsCivegqql+kfgYv88TaKpMfXTY4/l8wSID8Rc7VU+kgoshyXpyKwhZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672857; c=relaxed/simple;
-	bh=W8nF8i+5Fi0UmAJI2z/j1glgeynupNgdBrZ/c8+iNgA=;
+	s=arc-20240116; t=1775674105; c=relaxed/simple;
+	bh=dE6icxJbF6d5v/qMHYUsRZGrNOpgRC+ctj7DRVYb8oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eD+3+Bpj+9OVWdNPeKD82KqAIirJ0zw7cAdBgUNO5VgrpiAqPWfRV8Oc17dupuBQwywtmR0NtJudVWcu60V/ya57aLjrSFfd0WaDhzCwxv+TJNHuPGo9eNOFKoVD2kjn1dei3AvpzePkKcENU1E+kLsxyOeWzqi3gOt2XToFyms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLzWmKla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BECEC19421;
-	Wed,  8 Apr 2026 18:27:37 +0000 (UTC)
+	 MIME-Version; b=tTWX9lEBwMm5U90XluAL/ysXLdXj9AiE9ZHoOd+F9kKmeaNN98Z1P5Og2tyZnNDXy2sFQz+9nYSckUSXnIZ4g/LlVn81GgGQvhuGi0Ov+Oa53KAV5C0Sfsfvja/qdoyrh2M5y4w26sf+Y2dPaHHtKB8h9P4tAD7aXRGE4lMIpDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msQahyTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67D0C19421;
+	Wed,  8 Apr 2026 18:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672857;
-	bh=W8nF8i+5Fi0UmAJI2z/j1glgeynupNgdBrZ/c8+iNgA=;
+	s=korg; t=1775674105;
+	bh=dE6icxJbF6d5v/qMHYUsRZGrNOpgRC+ctj7DRVYb8oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLzWmKlawmqBjQ4OhylaP3m87RcBSs03bB3xwyX6dKlOt1lASTjRecyP6NKdNGa7x
-	 /VNBtE+/SA+oyd+T/4o0M9vP+T1lVInKSOLIIW2E2d3q7t2UzeF2SBUiErQVsUoK3p
-	 7QtyH5yXdSvTMPHnTriHaXcYPghZkopcGVj4w/0I=
+	b=msQahyTf+w67dzrfRtA860OSqaJG2mw2/RLWrk5PcjU/W93S9yhDjI7+ajPg41L9Y
+	 6yJUQBxJaise1HAxuQXylULbahvIYP7sne5683r/RhBLeEg8TejBdhOKCkftqqKa0H
+	 inhQsR2oep5R0dVYFgclfPtZTsUX+kQEKqSBB8Jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingjing Deng <xjdeng@buaa.edu.cn>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.6 132/160] misc: fastrpc: possible double-free of cctx->remote_heap
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable <stable@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 6.12 179/242] dt-bindings: connector: add pd-disable dependency
 Date: Wed,  8 Apr 2026 20:03:39 +0200
-Message-ID: <20260408175918.120799155@linuxfoundation.org>
+Message-ID: <20260408175933.784804036@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234437-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234920-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,55 +87,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,buaa.edu.cn:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: 181A23C0C95
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,microchip.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EBA783C22AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingjing Deng <micro6947@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit ba2c83167b215da30fa2aae56b140198cf8d8408 upstream.
+commit 269c26464dcf8b54b0dd9c333721c30ee44ae297 upstream.
 
-fastrpc_init_create_static_process() may free cctx->remote_heap on the
-err_map path but does not clear the pointer. Later, fastrpc_rpmsg_remove()
-frees cctx->remote_heap again if it is non-NULL, which can lead to a
-double-free if the INIT_CREATE_STATIC ioctl hits the error path and the rpmsg
-device is subsequently removed/unbound.
-Clear cctx->remote_heap after freeing it in the error path to prevent the
-later cleanup from freeing it again.
+When Power Delivery is not supported, the source is unable to obtain the
+current capability from the Source PDO. As a result, typec-power-opmode
+needs to be added to advertise such capability.
 
-This issue was found by an in-house analysis workflow that extracts AST-based
-information and runs static checks, with LLM assistance for triage, and was
-confirmed by manual code review.
-No hardware testing was performed.
-
-Fixes: 0871561055e66 ("misc: fastrpc: Add support for audiopd")
-Cc: stable@vger.kernel.org # 6.2+
-Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260129234140.410983-1-xjdeng@buaa.edu.cn
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260330063518.719345-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    1 +
+ Documentation/devicetree/bindings/connector/usb-connector.yaml |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1374,6 +1374,7 @@ err_invoke:
- 	}
- err_map:
- 	fastrpc_buf_free(fl->cctx->remote_heap);
-+	fl->cctx->remote_heap = NULL;
- err_name:
- 	kfree(name);
- err:
+--- a/Documentation/devicetree/bindings/connector/usb-connector.yaml
++++ b/Documentation/devicetree/bindings/connector/usb-connector.yaml
+@@ -254,6 +254,7 @@ properties:
+     additionalProperties: false
+ 
+ dependencies:
++  pd-disable: [typec-power-opmode]
+   sink-vdos-v1: [ sink-vdos ]
+   sink-vdos: [ sink-vdos-v1 ]
+ 
 
 
 
