@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-235005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gP+NM6Sp1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-235005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:52 +0200
+	id aNuzEt6a1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2D93C2AD5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2F93C0396
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5F873107C88
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E1CD5301C11B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E3F34AB06;
-	Wed,  8 Apr 2026 18:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C023D8917;
+	Wed,  8 Apr 2026 18:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRhFQKZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoc1TZn4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC85E25A321;
-	Wed,  8 Apr 2026 18:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0F7347517;
+	Wed,  8 Apr 2026 18:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674325; cv=none; b=tw61InOTPAurO/71ZXOid+RVp4MQfjwd44VM+Mo+HGqlYoB5rTyuTkANK3jmj1xuFOyb09W2sWGdbDjUBMqPwepkXRkaLeEArCbRMfxd7yclBvWZG4eNGzUZa3BFdEhesqrAruZle4I4pFZ6uPNNF/hw3zXcSQZYr7yh7qZAC3c=
+	t=1775671961; cv=none; b=qLpivgP6+fA9cwGIOsKrnme01RGYiL4UsdBOBEW/yMlxJbJ0sONPqO8wF33JJfDlrikj3ABoVavWFuM9lfcngxWAh/gY4PNXJwdDnAnB3mPvqzXD1TGdaCRGolu2G2eFh75e8rQ29P1Pz7QdrQzfrswhwvCB/uNcUPRzkonsRsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674325; c=relaxed/simple;
-	bh=kvMho+YHdlMb8aqVys63W0OX7xqIjRhkBuwxV1ImGtI=;
+	s=arc-20240116; t=1775671961; c=relaxed/simple;
+	bh=hzx88QJjx01GoyGEYgWsl3+cd9WpKbVn9sJHSRXd0Co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gW95AkPkezC66iYxKUh0tnWcZ3q/6/ctjvNxbstYDWIyBk7wcjOpoQuYidRThmvmziB1BzquPnDw3/hl2cJrualXmAxFS+d5sElCSWmyzoF+z+zNHDyAw+Ny2pT9J28vFZnjhCs2zwuFSY6dVxf004H4/gvqtRGGfYmDxrF3q7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRhFQKZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805F5C19421;
-	Wed,  8 Apr 2026 18:52:04 +0000 (UTC)
+	 MIME-Version; b=jLSTGwXAD2nwZkzAxOW5D8IxD7JzAu9qPnEC/u38wPtPbZrFngBO1F6wQn/G77aryWu9TnIinEm+OPIVsA1EJxYO/JH2J7/9pDmH4/+qtdmyk5pGRP7lsSVqqjN+pKHKfWjRnxQaYTMgHrUjBne1JrmPI8qxyig0I2+BnNptQbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zoc1TZn4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5377FC19421;
+	Wed,  8 Apr 2026 18:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674324;
-	bh=kvMho+YHdlMb8aqVys63W0OX7xqIjRhkBuwxV1ImGtI=;
+	s=korg; t=1775671961;
+	bh=hzx88QJjx01GoyGEYgWsl3+cd9WpKbVn9sJHSRXd0Co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRhFQKZbIQNo00cy5h1lqLoosEvwVAXp/1L5beGQwIjbxrafhJy1p7LCNH/kFC/Vp
-	 HXRKhKD35kbv+akGm0u8coNxHVuu724JhZoWhELSuZvWcuuJBKzRtutPoDj6LNJ9rc
-	 5ozcPSCHIHsuMjLFUPyXyXaMQpHHooJ1qEF/Pw3I=
+	b=zoc1TZn4LqpUuxMHUR1wVUFarcVbIFIyzNVcsD5K2NLxauAch0Ma7rsf+OHyrz7ab
+	 vXtkQNFn8zPskfYlnoJKEjhfaiHoSKjnQXa0Ui3SdzGd88y+cGme0eeDq0j0VFOLnn
+	 4vXtVTyRk2gO3q8kbKidMTWHiY4pj7u082/cIR1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 053/311] ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach()
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 136/312] tcp: Fix bind() regression for v6-only wildcard and v4-mapped-v6 non-wildcard addresses.
 Date: Wed,  8 Apr 2026 20:00:53 +0200
-Message-ID: <20260408175941.396181460@linuxfoundation.org>
+Message-ID: <20260408175938.850613225@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,101 +67,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,google.com,hotmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-235005-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-234091-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sashiko.dev:url]
-X-Rspamd-Queue-Id: 1E2D93C2AD5
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ED2F93C0396
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 86ab3e55673a7a49a841838776f1ab18d23a67b5 ]
+commit ea111449501ea32bf6da82750de860243691efc7 upstream.
 
-Sashiko AI-review observed:
+Commit 5e07e672412b ("tcp: Use bhash2 for v4-mapped-v6 non-wildcard
+address.") introduced bind() regression for v4-mapped-v6 address.
 
-  In ip6_err_gen_icmpv6_unreach(), the skb is an outer IPv4 ICMP error packet
-  where its cb contains an IPv4 inet_skb_parm. When skb is cloned into skb2
-  and passed to icmp6_send(), it uses IP6CB(skb2).
+When we bind() the following two addresses on the same port, the 2nd
+bind() should succeed but fails now.
 
-  IP6CB interprets the IPv4 inet_skb_parm as an inet6_skb_parm. The cipso
-  offset in inet_skb_parm.opt directly overlaps with dsthao in inet6_skb_parm
-  at offset 18.
+  1. [::] w/ IPV6_ONLY
+  2. ::ffff:127.0.0.1
 
-  If an attacker sends a forged ICMPv4 error with a CIPSO IP option, dsthao
-  would be a non-zero offset. Inside icmp6_send(), mip6_addr_swap() is called
-  and uses ipv6_find_tlv(skb, opt->dsthao, IPV6_TLV_HAO).
+After the chagne, v4-mapped-v6 uses bhash2 instead of bhash to
+detect conflict faster, but I forgot to add a necessary change.
 
-  This would scan the inner, attacker-controlled IPv6 packet starting at that
-  offset, potentially returning a fake TLV without checking if the remaining
-  packet length can hold the full 18-byte struct ipv6_destopt_hao.
+During the 2nd bind(), inet_bind2_bucket_match_addr_any() returns
+the tb2 bucket of [::], and inet_bhash2_conflict() finally calls
+inet_bind_conflict(), which returns true, meaning conflict.
 
-  Could mip6_addr_swap() then perform a 16-byte swap that extends past the end
-  of the packet data into skb_shared_info?
+  inet_bhash2_addr_any_conflict
+  |- inet_bind2_bucket_match_addr_any  <-- return [::] bucket
+  `- inet_bhash2_conflict
+     `- __inet_bhash2_conflict <-- checks IPV6_ONLY for AF_INET
+        |                          but not for v4-mapped-v6 address
+        `- inet_bind_conflict  <-- does not check address
 
-  Should the cb array also be cleared in ip6_err_gen_icmpv6_unreach() and
-  ip6ip6_err() to prevent this?
+inet_bind_conflict() does not check socket addresses because
+__inet_bhash2_conflict() is expected to do so.
 
-This patch implements the first suggestion.
+However, it checks IPV6_V6ONLY attribute only against AF_INET
+socket, and not for v4-mapped-v6 address.
 
-I am not sure if ip6ip6_err() needs to be changed.
-A separate patch would be better anyway.
+As a result, v4-mapped-v6 address conflicts with v6-only wildcard
+address.
 
-Fixes: ca15a078bd90 ("sit: generate icmpv6 error when receiving icmpv4 error")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Closes: https://sashiko.dev/#/patchset/20260326155138.2429480-1-edumazet%40google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Oskar Kjos <oskar.kjos@hotmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326202608.2976021-1-edumazet@google.com
+To avoid that, let's add the missing test to use bhash2 for
+v4-mapped-v6 address.
+
+Fixes: 5e07e672412b ("tcp: Use bhash2 for v4-mapped-v6 non-wildcard address.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240326204251.51301-2-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/icmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/inet_connection_sock.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 0f41ca6f3d83e..9844758252718 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -871,6 +871,9 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
- 	if (!skb2)
- 		return 1;
- 
-+	/* Remove debris left by IPv4 stack. */
-+	memset(IP6CB(skb2), 0, sizeof(*IP6CB(skb2)));
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -185,8 +185,15 @@ static bool __inet_bhash2_conflict(const
+ 				   kuid_t sk_uid, bool relax,
+ 				   bool reuseport_cb_ok, bool reuseport_ok)
+ {
+-	if (sk->sk_family == AF_INET && ipv6_only_sock(sk2))
+-		return false;
++	if (ipv6_only_sock(sk2)) {
++		if (sk->sk_family == AF_INET)
++			return false;
 +
- 	skb_dst_drop(skb2);
- 	skb_pull(skb2, nhs);
- 	skb_reset_network_header(skb2);
--- 
-2.53.0
-
++#if IS_ENABLED(CONFIG_IPV6)
++		if (ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr))
++			return false;
++#endif
++	}
+ 
+ 	return inet_bind_conflict(sk, sk2, sk_uid, relax,
+ 				  reuseport_cb_ok, reuseport_ok);
 
 
 
