@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235095-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LwsKhmb1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:49 +0200
+	id +JmWGKeq1mmOHAgAu9opvQ
+	(envelope-from <stable+bounces-235095-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A8D3C040B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95263C2CEF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AEC40301A758
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECB7531B6A69
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F177E3D902E;
-	Wed,  8 Apr 2026 18:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6554E3176E4;
+	Wed,  8 Apr 2026 18:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2Y4P+V3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ju/wf3fN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15673D4134;
-	Wed,  8 Apr 2026 18:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8DE337B81;
+	Wed,  8 Apr 2026 18:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672087; cv=none; b=TRkKBkdvLplLdx7l9vihTPwFMmw2Vzz/44jcKhG2HFVWiuzh6nrqBb93uixid3kQSGWEdWEd2+Aqe5PKeNFwwDYDmBV/dbSVWam48lRj3TTJb8NgWHaf1c2VHgNbQjTdto+ltdBcbfBfxZ5aA/oFOwP9aO9s0JfNcabSEViZT8I=
+	t=1775674557; cv=none; b=B9oUFNB9zNDsycqsYcWzYSccpx4YtWm9/Ffryjdfl5ULabToD0SareLs3Ox7rF9l5Te6UdUOVwxTO+xdLGAJwgVV5w1MF75P9Oyo7WyOVZ2LdS8khvZ4nyak47cpFKLBwM2npI3bNpfbrQqpiCeAV2jE0WUpt7V1rhyL7P3/vPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672087; c=relaxed/simple;
-	bh=Xb008G09lpJ3KlRsnJNZi5CBM2fwH1B11FwlWyacZ08=;
+	s=arc-20240116; t=1775674557; c=relaxed/simple;
+	bh=QumxolMapkAMesT9Tdj4YMFm6RSfc6F3EHqcF6l6k5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6FjfGaYVGTwLzBuQ42kOELa5ZrXFxn9W5GRPm3jyFonCiwBIYwDdJidMWYuuQXsLB3HM+uLNL/jdz2cShz/189j2O03wU7teWqD8fkO+EIfrbri0x7qynfbdNUW9fldA3DM0I4bPIkp4nZnR/ncQehZA7tUu7AZYAkYC4XRVDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2Y4P+V3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A04C19421;
-	Wed,  8 Apr 2026 18:14:47 +0000 (UTC)
+	 MIME-Version; b=RnUpFbjotX28SDEN8dbFishU2i2wAFfqJwbnXvEQ1Ws+afoC8SyHSYq928qZLYI16bkHrQZIJCsAzoojViL50yhy2qERbpqN8ld9Hai5Ldx8hT0egESVtDwj/llbHLHVa5qeXt+Ea7O/ysahusrBLZnMIiORisHk5aB4b82yiek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ju/wf3fN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4575CC19421;
+	Wed,  8 Apr 2026 18:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672087;
-	bh=Xb008G09lpJ3KlRsnJNZi5CBM2fwH1B11FwlWyacZ08=;
+	s=korg; t=1775674556;
+	bh=QumxolMapkAMesT9Tdj4YMFm6RSfc6F3EHqcF6l6k5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2Y4P+V3AzXIBQYdj7KeWNU8DhuG1TpFTs8nM8jy7dkOb+JNXD7eWTFyCNjWdxlpa
-	 7YIpKTzKmI9g94+LoRT0GOkDNPUTgUw4lKZrTMtmk+bBY89T/ZUVOmdGJvc1Wb7STX
-	 LSfeEG9bcVrUP1ZwBRK/jDK/dW930kP1l/tuQsRk=
+	b=Ju/wf3fNYPg3zIfP0/Um4iXXBKiLl5t9LhFPHwT18QFgjBDhgT5PLi8KOcoUe0NM9
+	 6vr1SJ1pbu7oLJyW4B/fhegiVM56ofSewkO+LCVtRGRySzSMDt860CfVFqOm3s1lq4
+	 5acXfWzQLxEu/ftBg0ymufFhEWLTnSda7GMSg8Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Rissanen <jonathan.rissanen@axis.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/312] net/mlx5: Avoid "No data available" when FW version queries fail
+Subject: [PATCH 6.19 101/311] Bluetooth: hci_h4: Fix race during initialization
 Date: Wed,  8 Apr 2026 20:01:41 +0200
-Message-ID: <20260408175940.634810451@linuxfoundation.org>
+Message-ID: <20260408175943.185749041@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,204 +68,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234140-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235095-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 48A8D3C040B
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,axis.com:email]
+X-Rspamd-Queue-Id: B95263C2CEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Jonathan Rissanen <jonathan.rissanen@axis.com>
 
-[ Upstream commit 10dc35f6a443d488f219d1a1e3fb8f8dac422070 ]
+[ Upstream commit 0ffac654e95c1bdfe2d4edf28fb18d6ba1f103e6 ]
 
-Avoid printing the misleading "kernel answers: No data available" devlink
-output when querying firmware or pending firmware version fails
-(e.g. MLX5 fw state errors / flash failures).
+Commit 5df5dafc171b ("Bluetooth: hci_uart: Fix another race during
+initialization") fixed a race for hci commands sent during initialization.
+However, there is still a race that happens if an hci event from one of
+these commands is received before HCI_UART_REGISTERED has been set at
+the end of hci_uart_register_dev(). The event will be ignored which
+causes the command to fail with a timeout in the log:
 
-FW can fail on loading the pending flash image and get its version due
-to various reasons, examples:
+"Bluetooth: hci0: command 0x1003 tx timeout"
 
-mlxfw: Firmware flash failed: key not applicable, err (7)
-mlx5_fw_image_pending: can't read pending fw version while fw state is 1
+This is because the hci event receive path (hci_uart_tty_receive ->
+h4_recv) requires HCI_UART_REGISTERED to be set in h4_recv(), while the
+hci command transmit path (hci_uart_send_frame -> h4_enqueue) only
+requires HCI_UART_PROTO_INIT to be set in hci_uart_send_frame().
 
-and the resulting:
-$ devlink dev info
-kernel answers: No data available
+The check for HCI_UART_REGISTERED was originally added in commit
+c2578202919a ("Bluetooth: Fix H4 crash from incoming UART packets")
+to fix a crash caused by hu->hdev being null dereferenced. That can no
+longer happen: once HCI_UART_PROTO_INIT is set in hci_uart_register_dev()
+all pointers (hu, hu->priv and hu->hdev) are valid, and
+hci_uart_tty_receive() already calls h4_recv() on HCI_UART_PROTO_INIT
+or HCI_UART_PROTO_READY.
 
-Instead, just report 0 or 0xfff.. versions in case of failure to indicate
-a problem, and let other information be shown.
+Remove the check for HCI_UART_REGISTERED in h4_recv() to fix the race
+condition.
 
-after the fix:
-$ devlink dev info
-pci/0000:00:06.0:
-  driver mlx5_core
-  serial_number xxx...
-  board.serial_number MT2225300179
-  versions:
-      fixed:
-        fw.psid MT_0000000436
-      running:
-        fw.version 22.41.0188
-        fw 22.41.0188
-      stored:
-        fw.version 255.255.65535
-        fw 255.255.65535
-
-Fixes: 9c86b07e3069 ("net/mlx5: Added fw version query command")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260330194015.53585-3-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5df5dafc171b ("Bluetooth: hci_uart: Fix another race during initialization")
+Signed-off-by: Jonathan Rissanen <jonathan.rissanen@axis.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/devlink.c |  4 +-
- drivers/net/ethernet/mellanox/mlx5/core/fw.c  | 53 ++++++++++++-------
- .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  4 +-
- 3 files changed, 37 insertions(+), 24 deletions(-)
+ drivers/bluetooth/hci_h4.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-index 64dcfac9ce724..fbeea3e539109 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-@@ -54,9 +54,7 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
- 	if (err)
- 		return err;
- 
--	err = mlx5_fw_version_query(dev, &running_fw, &stored_fw);
--	if (err)
--		return err;
-+	mlx5_fw_version_query(dev, &running_fw, &stored_fw);
- 
- 	snprintf(version_str, sizeof(version_str), "%d.%d.%04d",
- 		 mlx5_fw_ver_major(running_fw), mlx5_fw_ver_minor(running_fw),
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw.c b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-index 9e26dda93f8ee..d2e4546a1efd0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
-@@ -808,48 +808,63 @@ mlx5_fw_image_pending(struct mlx5_core_dev *dev,
- 	return 0;
- }
- 
--int mlx5_fw_version_query(struct mlx5_core_dev *dev,
--			  u32 *running_ver, u32 *pending_ver)
-+void mlx5_fw_version_query(struct mlx5_core_dev *dev,
-+			   u32 *running_ver, u32 *pending_ver)
+diff --git a/drivers/bluetooth/hci_h4.c b/drivers/bluetooth/hci_h4.c
+index ec017df8572c8..1e9e2cad9ddf6 100644
+--- a/drivers/bluetooth/hci_h4.c
++++ b/drivers/bluetooth/hci_h4.c
+@@ -109,9 +109,6 @@ static int h4_recv(struct hci_uart *hu, const void *data, int count)
  {
- 	u32 reg_mcqi_version[MLX5_ST_SZ_DW(mcqi_version)] = {};
- 	bool pending_version_exists;
- 	int component_index;
- 	int err;
+ 	struct h4_struct *h4 = hu->priv;
  
-+	*running_ver = 0;
-+	*pending_ver = 0;
-+
- 	if (!MLX5_CAP_GEN(dev, mcam_reg) || !MLX5_CAP_MCAM_REG(dev, mcqi) ||
- 	    !MLX5_CAP_MCAM_REG(dev, mcqs)) {
- 		mlx5_core_warn(dev, "fw query isn't supported by the FW\n");
--		return -EOPNOTSUPP;
-+		return;
- 	}
- 
- 	component_index = mlx5_get_boot_img_component_index(dev);
--	if (component_index < 0)
--		return component_index;
-+	if (component_index < 0) {
-+		mlx5_core_warn(dev, "fw query failed to find boot img component index, err %d\n",
-+			       component_index);
-+		return;
-+	}
- 
-+	*running_ver = U32_MAX; /* indicate failure */
- 	err = mlx5_reg_mcqi_version_query(dev, component_index,
- 					  MCQI_FW_RUNNING_VERSION,
- 					  reg_mcqi_version);
--	if (err)
--		return err;
+-	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
+-		return -EUNATCH;
 -
--	*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
--
-+	if (!err)
-+		*running_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
-+					version);
-+	else
-+		mlx5_core_warn(dev, "failed to query running version, err %d\n",
-+			       err);
-+
-+	*pending_ver = U32_MAX; /* indicate failure */
- 	err = mlx5_fw_image_pending(dev, component_index, &pending_version_exists);
--	if (err)
--		return err;
-+	if (err) {
-+		mlx5_core_warn(dev, "failed to query pending image, err %d\n",
-+			       err);
-+		return;
-+	}
- 
- 	if (!pending_version_exists) {
- 		*pending_ver = 0;
--		return 0;
-+		return;
- 	}
- 
- 	err = mlx5_reg_mcqi_version_query(dev, component_index,
- 					  MCQI_FW_STORED_VERSION,
- 					  reg_mcqi_version);
--	if (err)
--		return err;
--
--	*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version, version);
--
--	return 0;
-+	if (!err)
-+		*pending_ver = MLX5_GET(mcqi_version, reg_mcqi_version,
-+					version);
-+	else
-+		mlx5_core_warn(dev, "failed to query pending version, err %d\n",
-+			       err);
-+
-+	return;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index 07b5c86fc26a4..67c1afc1df8f5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -262,8 +262,8 @@ void mlx5_dm_cleanup(struct mlx5_core_dev *dev);
- 
- int mlx5_firmware_flash(struct mlx5_core_dev *dev, const struct firmware *fw,
- 			struct netlink_ext_ack *extack);
--int mlx5_fw_version_query(struct mlx5_core_dev *dev,
--			  u32 *running_ver, u32 *stored_ver);
-+void mlx5_fw_version_query(struct mlx5_core_dev *dev, u32 *running_ver,
-+			   u32 *stored_ver);
- 
- #ifdef CONFIG_MLX5_CORE_EN
- int mlx5e_init(void);
+ 	h4->rx_skb = h4_recv_buf(hu, h4->rx_skb, data, count,
+ 				 h4_recv_pkts, ARRAY_SIZE(h4_recv_pkts));
+ 	if (IS_ERR(h4->rx_skb)) {
 -- 
 2.53.0
 
