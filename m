@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-234647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DOIDUeh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:11 +0200
+	id SLn5E2Sl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402E83C137A
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C533C2181
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2E7E2305EE16
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11C19302231B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853343D9022;
-	Wed,  8 Apr 2026 18:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A34F348453;
+	Wed,  8 Apr 2026 18:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4Z3zJu2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohGeNSOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484173D6694;
-	Wed,  8 Apr 2026 18:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2EF2F39C2;
+	Wed,  8 Apr 2026 18:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673400; cv=none; b=BwcowiNMEDyGte1/KK5032CXbEbFfXQRPCd2sozTHeBBBOaXKeA/75YTyugMMJxTDo/Pzx5JhUGTLdaazeBrWIpHf/YKZppIYHiBb+ETdvEviEnVZM9u3Sb8GkrAi1mQPU54xrXk9WTYhMCyr1tV5FDI3aO4j15BuwIKcaMFjIU=
+	t=1775674631; cv=none; b=eChWZHGCFST0ACen+WjS+lrRUxNFQTvIEpcGy/sDlgFxlRmdN9Bph8Ze+Ey6fIxFSMPWegNyQcR0+3B6ntSH81JNdSo+muzlbEJXCuVBMMLcdFxc/zBb1agct3xC/06BJdLjIu6TeHqIP6Q8ihCN7YSE1ERvJSTu9nmmh6ML2Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673400; c=relaxed/simple;
-	bh=QNHyByrgJlcKZt98N5aPpeahC8LIUa4uydtkxxzAONs=;
+	s=arc-20240116; t=1775674631; c=relaxed/simple;
+	bh=b7ocjX8ingyJSsaJJGIqqKhyONNRNQt54EjIDrLuvMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVgpIggDE3SQut0Qvs7jaMfinFPDdSIwA+AWsv1mt8HW6QqafZHMB3XMGaeVHfhIvFvF07QuTRgfFs7Lyg+rRCLoSQn9WSTGVy2C+qbQru6TbCRiAYBhnVb08oCi4gXt5b6QuITwwgAR61PfmiB6G4i0ZRqocoxFrXf8yfioU8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4Z3zJu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34D2C19421;
-	Wed,  8 Apr 2026 18:36:39 +0000 (UTC)
+	 MIME-Version; b=mft4i93W0cv/8iz83hayyUtZvXu1X+zSk5DICdRQ9AbDa3krl3Bz6k6PVpzMN1OharRJo9d7pU8Rsw0tWvVQhNX+a3faTutv6vXKjRGrQUH7hLMEXULF0JFiB5RXPMBXvHe+FXDnvpzOqh8yfB/APDUiY0AS4oVNP+i4gU4e1AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohGeNSOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D7CC19421;
+	Wed,  8 Apr 2026 18:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673400;
-	bh=QNHyByrgJlcKZt98N5aPpeahC8LIUa4uydtkxxzAONs=;
+	s=korg; t=1775674631;
+	bh=b7ocjX8ingyJSsaJJGIqqKhyONNRNQt54EjIDrLuvMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4Z3zJu2lTtmgULegmd0T/RS4Vms3zQTHkePKhh/G21s5mFnNVcVzLh/Tiu4u1lmw
-	 uiV71JZ3PYo10hKnsfsNi4ysllrIr5bNz4UwS3FfUuvuUoNnUFuR4DCoKeOz44KYwL
-	 IepUZ1YjfQUJWdMLrrCNSmmgFwQt9qRXUlJewcmM=
+	b=ohGeNSOfTF8frU4TZpOris23pQc60kTmsw9L1TXfKJUjAAKwrGyateJ7Bp340f88U
+	 83GQY57Z5V3KfVQ835ZGrfUp+QFmtZE9Gmodl3il4wpLn6Hdenfaf52yvOdpo3tRiF
+	 aHzaqNHzvg1Jgjc0DTy7kN9qLRG8VL24InsZohpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 185/277] iio: dac: ad5770r: fix error return in ad5770r_read_raw()
-Date: Wed,  8 Apr 2026 20:02:50 +0200
-Message-ID: <20260408175940.771392033@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.19 171/311] ALSA: ctxfi: Check the error for index mapping
+Date: Wed,  8 Apr 2026 20:02:51 +0200
+Message-ID: <20260408175945.789300635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,59 +71,222 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235124-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234647-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,analog.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 402E83C137A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 63C533C2181
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit c354521708175d776d896f8bdae44b18711eccb6 upstream.
+commit 277c6960d4ddb94d16198afd70c92c3d4593d131 upstream.
 
-Return the error code from regmap_bulk_read() instead of 0 so
-that I/O failures are properly propagated.
+The ctxfi driver blindly assumed a proper value returned from
+daio_device_index(), but it's not always true.  Add a proper error
+check to deal with the error from the function.
 
-Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/87cy149n6k.wl-tiwai@suse.de
+Link: https://patch.msgid.link/20260329091240.420194-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5770r.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/ctxfi/ctdaio.c |   81 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 50 insertions(+), 31 deletions(-)
 
---- a/drivers/iio/dac/ad5770r.c
-+++ b/drivers/iio/dac/ad5770r.c
-@@ -322,7 +322,7 @@ static int ad5770r_read_raw(struct iio_d
- 				       chan->address,
- 				       st->transf_buf, 2);
- 		if (ret)
--			return 0;
-+			return ret;
+--- a/sound/pci/ctxfi/ctdaio.c
++++ b/sound/pci/ctxfi/ctdaio.c
+@@ -99,7 +99,7 @@ static const struct rsc_ops daio_in_rsc_
+ 	.output_slot	= daio_index,
+ };
  
- 		buf16 = get_unaligned_le16(st->transf_buf);
- 		*val = buf16 >> 2;
+-static unsigned int daio_device_index(enum DAIOTYP type, struct hw *hw)
++static int daio_device_index(enum DAIOTYP type, struct hw *hw)
+ {
+ 	switch (hw->chip_type) {
+ 	case ATC20K1:
+@@ -112,7 +112,9 @@ static unsigned int daio_device_index(en
+ 		case LINEO3:	return 5;
+ 		case LINEO4:	return 6;
+ 		case LINEIM:	return 7;
+-		default:	return -EINVAL;
++		default:
++			pr_err("ctxfi: Invalid type %d for hw20k1\n", type);
++			return -EINVAL;
+ 		}
+ 	case ATC20K2:
+ 		switch (type) {
+@@ -125,9 +127,12 @@ static unsigned int daio_device_index(en
+ 		case LINEIM:	return 4;
+ 		case MIC:	return 5;
+ 		case RCA:	return 3;
+-		default:	return -EINVAL;
++		default:
++			pr_err("ctxfi: Invalid type %d for hw20k2\n", type);
++			return -EINVAL;
+ 		}
+ 	default:
++		pr_err("ctxfi: Invalid chip type %d\n", hw->chip_type);
+ 		return -EINVAL;
+ 	}
+ }
+@@ -148,8 +153,11 @@ static int dao_spdif_set_spos(struct dao
+ 
+ static int dao_commit_write(struct dao *dao)
+ {
+-	dao->hw->dao_commit_write(dao->hw,
+-		daio_device_index(dao->daio.type, dao->hw), dao->ctrl_blk);
++	int idx = daio_device_index(dao->daio.type, dao->hw);
++
++	if (idx < 0)
++		return idx;
++	dao->hw->dao_commit_write(dao->hw, idx, dao->ctrl_blk);
+ 	return 0;
+ }
+ 
+@@ -287,8 +295,11 @@ static int dai_set_enb_srt(struct dai *d
+ 
+ static int dai_commit_write(struct dai *dai)
+ {
+-	dai->hw->dai_commit_write(dai->hw,
+-		daio_device_index(dai->daio.type, dai->hw), dai->ctrl_blk);
++	int idx = daio_device_index(dai->daio.type, dai->hw);
++
++	if (idx < 0)
++		return idx;
++	dai->hw->dai_commit_write(dai->hw, idx, dai->ctrl_blk);
+ 	return 0;
+ }
+ 
+@@ -367,7 +378,7 @@ static int dao_rsc_init(struct dao *dao,
+ {
+ 	struct hw *hw = mgr->mgr.hw;
+ 	unsigned int conf;
+-	int err;
++	int idx, err;
+ 
+ 	err = daio_rsc_init(&dao->daio, desc, mgr->mgr.hw);
+ 	if (err)
+@@ -386,15 +397,18 @@ static int dao_rsc_init(struct dao *dao,
+ 	if (err)
+ 		goto error2;
+ 
+-	hw->daio_mgr_dsb_dao(mgr->mgr.ctrl_blk,
+-			daio_device_index(dao->daio.type, hw));
++	idx = daio_device_index(dao->daio.type, hw);
++	if (idx < 0) {
++		err = idx;
++		goto error2;
++	}
++
++	hw->daio_mgr_dsb_dao(mgr->mgr.ctrl_blk, idx);
+ 	hw->daio_mgr_commit_write(hw, mgr->mgr.ctrl_blk);
+ 
+ 	conf = (desc->msr & 0x7) | (desc->passthru << 3);
+-	hw->daio_mgr_dao_init(hw, mgr->mgr.ctrl_blk,
+-			daio_device_index(dao->daio.type, hw), conf);
+-	hw->daio_mgr_enb_dao(mgr->mgr.ctrl_blk,
+-			daio_device_index(dao->daio.type, hw));
++	hw->daio_mgr_dao_init(hw, mgr->mgr.ctrl_blk, idx, conf);
++	hw->daio_mgr_enb_dao(mgr->mgr.ctrl_blk, idx);
+ 	hw->daio_mgr_commit_write(hw, mgr->mgr.ctrl_blk);
+ 
+ 	return 0;
+@@ -443,7 +457,7 @@ static int dai_rsc_init(struct dai *dai,
+ 			const struct daio_desc *desc,
+ 			struct daio_mgr *mgr)
+ {
+-	int err;
++	int idx, err;
+ 	struct hw *hw = mgr->mgr.hw;
+ 	unsigned int rsr, msr;
+ 
+@@ -457,6 +471,12 @@ static int dai_rsc_init(struct dai *dai,
+ 	if (err)
+ 		goto error1;
+ 
++	idx = daio_device_index(dai->daio.type, dai->hw);
++	if (idx < 0) {
++		err = idx;
++		goto error1;
++	}
++
+ 	for (rsr = 0, msr = desc->msr; msr > 1; msr >>= 1)
+ 		rsr++;
+ 
+@@ -465,8 +485,7 @@ static int dai_rsc_init(struct dai *dai,
+ 	/* default to disabling control of a SRC */
+ 	hw->dai_srt_set_ec(dai->ctrl_blk, 0);
+ 	hw->dai_srt_set_et(dai->ctrl_blk, 0); /* default to disabling SRT */
+-	hw->dai_commit_write(hw,
+-		daio_device_index(dai->daio.type, dai->hw), dai->ctrl_blk);
++	hw->dai_commit_write(hw, idx, dai->ctrl_blk);
+ 
+ 	return 0;
+ 
+@@ -581,28 +600,28 @@ static int put_daio_rsc(struct daio_mgr
+ static int daio_mgr_enb_daio(struct daio_mgr *mgr, struct daio *daio)
+ {
+ 	struct hw *hw = mgr->mgr.hw;
++	int idx = daio_device_index(daio->type, hw);
+ 
+-	if (daio->output) {
+-		hw->daio_mgr_enb_dao(mgr->mgr.ctrl_blk,
+-				daio_device_index(daio->type, hw));
+-	} else {
+-		hw->daio_mgr_enb_dai(mgr->mgr.ctrl_blk,
+-				daio_device_index(daio->type, hw));
+-	}
++	if (idx < 0)
++		return idx;
++	if (daio->output)
++		hw->daio_mgr_enb_dao(mgr->mgr.ctrl_blk, idx);
++	else
++		hw->daio_mgr_enb_dai(mgr->mgr.ctrl_blk, idx);
+ 	return 0;
+ }
+ 
+ static int daio_mgr_dsb_daio(struct daio_mgr *mgr, struct daio *daio)
+ {
+ 	struct hw *hw = mgr->mgr.hw;
++	int idx = daio_device_index(daio->type, hw);
+ 
+-	if (daio->output) {
+-		hw->daio_mgr_dsb_dao(mgr->mgr.ctrl_blk,
+-				daio_device_index(daio->type, hw));
+-	} else {
+-		hw->daio_mgr_dsb_dai(mgr->mgr.ctrl_blk,
+-				daio_device_index(daio->type, hw));
+-	}
++	if (idx < 0)
++		return idx;
++	if (daio->output)
++		hw->daio_mgr_dsb_dao(mgr->mgr.ctrl_blk, idx);
++	else
++		hw->daio_mgr_dsb_dai(mgr->mgr.ctrl_blk, idx);
+ 	return 0;
+ }
+ 
 
 
 
