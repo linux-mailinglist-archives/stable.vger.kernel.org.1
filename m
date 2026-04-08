@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kO2bE0ei1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:27 +0200
+	id IPBnFMid1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F923C171E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B195E3C0B57
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7BFDF300DA51
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:44:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7995E304DC80
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E383D9022;
-	Wed,  8 Apr 2026 18:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBAD3D8125;
+	Wed,  8 Apr 2026 18:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d29IqDJa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cb+cXide"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B43D4134;
-	Wed,  8 Apr 2026 18:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF473D7D9D;
+	Wed,  8 Apr 2026 18:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673877; cv=none; b=b+yB9WseW6o60ME+PBXsNrOLc/RuYkr9G8qiS+5tCStti2qpTeNH5vu7HKDiOailpTBJ9jHj6x4w+uwzbak5pz+9ktjOy/zSTOqcso6gO/VzpZ8s2p0e//PCCm+ZNpwX9zvEoQQiHa+kregaVyk5FgtdMWKHXdXHAd+/2jsoIUY=
+	t=1775672579; cv=none; b=UvcGCQqglSccOxzpd906ekUzLwldrTirxkRvld7px0CcYl1IagUiyh3O0nO/A9Utt4UbrP6X4CpndXCSi8nszx294kT5ECnmf2mRciJTyeJeDV3ZJtgnN3lAfhTjzGsN/lRtMkUt0O5N96ZGORIUTlI/WJXeKLCwbBP/RXaMcCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673877; c=relaxed/simple;
-	bh=VZY114+K0iJwyxr6RDEpai6VcwEvcVVWv8C7td1f+Yc=;
+	s=arc-20240116; t=1775672579; c=relaxed/simple;
+	bh=Dfm5Ks+oGD6MWEB32K+suVtGYXjX557GZSFbDXfF2Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRBccczAKQTWeHr5TKUXXPihTpoN+aWN9tuIsoQ+7QHufzcP5D2H8dr6ZjE01+XJt6yr71e1LrnhUdR2DpCqlVgOrH+O8Xz3SaKyTXdYTLx6DNiZUGNhiwbVn+ZwImRvWth1uSvyCl70G3nvzU1us0yjiXpThjLT2Wv47++g70Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d29IqDJa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8079FC19421;
-	Wed,  8 Apr 2026 18:44:36 +0000 (UTC)
+	 MIME-Version; b=NJbIiGIqCGcfNdv6VZjdjNaqHeGpvBAZf2czcCAwT5cWRw/nz/ZcbIrFSuLcjfnEfZFdVrjnnOavCHeQzz9cnhYwW+081qNYexD/SueXyn1e6rzRjmjnmkg+qZEuvaQfJlVXKYZIfHfm9y3hXRyPgMc9vxUtzd+RhlMBRShfDZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cb+cXide; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62E3C19421;
+	Wed,  8 Apr 2026 18:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673876;
-	bh=VZY114+K0iJwyxr6RDEpai6VcwEvcVVWv8C7td1f+Yc=;
+	s=korg; t=1775672579;
+	bh=Dfm5Ks+oGD6MWEB32K+suVtGYXjX557GZSFbDXfF2Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d29IqDJaxtM9yt7jfz4uCObt7cIxu4uzhG+svAzy7+N1aKCSAelyuUP9w9IDU8VWP
-	 uDCW//Q+MvlXAAXuhcw/+gAcbfNvsmT6fS3SPGu9ZHLaD82zaykqIUv6EuzfVDDYDC
-	 VWjgKNEsdXyE6GHoKHpZFv/2RPt2d8KO5LP/Y59Q=
+	b=cb+cXideVROTavbF4AtJ75IoL57v3c5SV9RTfDNVKOFwXVc7O+F5pgYWUEDMQTcXc
+	 krGQ9ssvySZquSremh0bNgvMxiat2pDt/XMETS5X5r6DeSyDTKmpEFlFg5dECTwxGk
+	 6cF+ubn52oRfbegOgvyOA0CpuSw05ATjS1+ijrBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/242] hwmon: (ltc4286) Add missing MODULE_IMPORT_NS("PMBUS")
-Date: Wed,  8 Apr 2026 20:02:26 +0200
-Message-ID: <20260408175931.051765729@linuxfoundation.org>
+Subject: [PATCH 6.6 060/160] net/sched: cls_fw: fix NULL pointer dereference on shared blocks
+Date: Wed,  8 Apr 2026 20:02:27 +0200
+Message-ID: <20260408175915.447696987@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,64 +70,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234330-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234831-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,juniper.net:email]
-X-Rspamd-Queue-Id: D6F923C171E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B195E3C0B57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit a9d2fbd3ad0e6ac588386e699beeccfe7516755f ]
+[ Upstream commit faeea8bbf6e958bf3c00cb08263109661975987c ]
 
-ltc4286.c uses PMBus core symbols exported in the PMBUS namespace,
-such as pmbus_do_probe(), but does not declare MODULE_IMPORT_NS("PMBUS").
+The old-method path in fw_classify() calls tcf_block_q() and
+dereferences q->handle.  Shared blocks leave block->q NULL, causing a
+NULL deref when an empty cls_fw filter is attached to a shared block
+and a packet with a nonzero major skb mark is classified.
 
-Add the missing namespace import to avoid modpost warnings.
+Reject the configuration in fw_change() when the old method (no
+TCA_OPTIONS) is used on a shared block, since fw_classify()'s
+old-method path needs block->q which is NULL for shared blocks.
 
-Fixes: 0c459759ca97 ("hwmon: (pmbus) Add ltc4286 driver")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260329170925.34581-5-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+The fixed null-ptr-deref calling stack:
+ KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+ RIP: 0010:fw_classify (net/sched/cls_fw.c:81)
+ Call Trace:
+  tcf_classify (./include/net/tc_wrapper.h:197 net/sched/cls_api.c:1764 net/sched/cls_api.c:1860)
+  tc_run (net/core/dev.c:4401)
+  __dev_queue_xmit (net/core/dev.c:4535 net/core/dev.c:4790)
+
+Fixes: 1abf272022cf ("net: sched: tcindex, fw, flow: use tcf_block_q helper to get struct Qdisc")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260331050217.504278-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/ltc4286.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/cls_fw.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/ltc4286.c b/drivers/hwmon/pmbus/ltc4286.c
-index aabd0bcdfeee3..8715d380784a0 100644
---- a/drivers/hwmon/pmbus/ltc4286.c
-+++ b/drivers/hwmon/pmbus/ltc4286.c
-@@ -173,3 +173,4 @@ module_i2c_driver(ltc4286_driver);
- MODULE_AUTHOR("Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>");
- MODULE_DESCRIPTION("PMBUS driver for LTC4286 and compatibles");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("PMBUS");
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index c49d6af0e0480..2e5e8df5ca55c 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -247,8 +247,18 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 	struct nlattr *tb[TCA_FW_MAX + 1];
+ 	int err;
+ 
+-	if (!opt)
+-		return handle ? -EINVAL : 0; /* Succeed if it is old method. */
++	if (!opt) {
++		if (handle)
++			return -EINVAL;
++
++		if (tcf_block_shared(tp->chain->block)) {
++			NL_SET_ERR_MSG(extack,
++				       "Must specify mark when attaching fw filter to block");
++			return -EINVAL;
++		}
++
++		return 0; /* Succeed if it is old method. */
++	}
+ 
+ 	err = nla_parse_nested_deprecated(tb, TCA_FW_MAX, opt, fw_policy,
+ 					  NULL);
 -- 
 2.53.0
 
