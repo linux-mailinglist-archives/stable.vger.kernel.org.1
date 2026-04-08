@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-234761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFY0Myin1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:16 +0200
+	id CO8cMiif1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505FE3C2656
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:06:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DB23C0E5B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C25F3114CBF
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:41:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 071E83029796
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B0D3D522C;
-	Wed,  8 Apr 2026 18:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215DC3D890F;
+	Wed,  8 Apr 2026 18:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="visbgo5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nx6RPb+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099BF32A3FD;
-	Wed,  8 Apr 2026 18:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96FF3D88F7;
+	Wed,  8 Apr 2026 18:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673694; cv=none; b=RjjuH976+zW3pdOvd9RHRbOzqIQDowXrXlomuEqmuBj0suFN1AsA9oUjr1ZyWrfTbqObvSIitZdfROdaOszqjdNRWz7A8oU/kmk11eZGwFFzNvavbtheQPQZEUcJupS0LnW+FJ3kqzMV3J+VrszxOhFLr6EB8eOz+DiFVX4x8kw=
+	t=1775673075; cv=none; b=HPDRopMc5C0V5A0ZiTmpFNj8/j4NAtJ1j2iBAaiZhU0Y4SAsN/rbF12Hvu98cepAX/g+KPM679uCvswPF7BdbsbJDWRcCTJ0V9UrA6XShvsk55IM6R1hzrmtHwpC5blDj+UKRETH98fGTXegB4OnYF/Qt5yPKcNlaDcp3eLXbNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673694; c=relaxed/simple;
-	bh=eOMQvtSnUz8VVuL3IkL/DPEp7vI4hovPeO77nPXgJXQ=;
+	s=arc-20240116; t=1775673075; c=relaxed/simple;
+	bh=+8ArF1sGdu5weelo7Pe4cF/dejnIDoejcOk/lGVK3lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hc1RZOsHF8ldVYyDm9lkfO2lPbI3J9IYkVMhk34vMEoMDqm6LrNYIzcY3dT9QQsaEBZlu1DOTOl7gz2bPb9zkJjgnXizrm8aobHp/ewQfrNyk+9AoEMPJhSPK9tr3aXJk8KOdrpO86FIOaCSV46syxSFJwURx9r0koJnmIp5emg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=visbgo5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E8BC19421;
-	Wed,  8 Apr 2026 18:41:33 +0000 (UTC)
+	 MIME-Version; b=sI2zYucaPlHEuV1nc7EZbf8BwKQvcwZX1PvCXtgsUFbb60IPdnIRbj2RowVVAAFNUfyxQWCf69CCODqOQE5HeMMtZsswmpB7Nqlu0vwftc/6yX1dc1I+BPxSY3FIajt605eB3TQexsB/TfBSD6f//33o1veQ6n1UkPs+6SEztY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nx6RPb+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37262C19425;
+	Wed,  8 Apr 2026 18:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673693;
-	bh=eOMQvtSnUz8VVuL3IkL/DPEp7vI4hovPeO77nPXgJXQ=;
+	s=korg; t=1775673075;
+	bh=+8ArF1sGdu5weelo7Pe4cF/dejnIDoejcOk/lGVK3lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=visbgo5jkz2zohkH53wtkp15IJdlAZOigbBBFb5Zm2eNnmt4MmSsWW0EtkIZTINE5
-	 PFOw12X7QpOpsMma5wlgENq6B3RXouZOggG3OJZ9rX7PbWyQP6tWBY5x9QBlBGmrfF
-	 l1g/T+5RscYXvj/MyhunapKBsd9Mp64GPsDq+e3M=
+	b=Nx6RPb+MF/YgHPAgc5LZoTWkezHG7sIZhdC0eUss8IhKtIVZjym5vPf31zXaw+ZiH
+	 ZOERvQ9G3LjUUgoUkujKsaJi1/fYrDSMj+cUkTKctvXzxIfjmImQn8Msnv3JrGZhJP
+	 hhUGcg73Aq4gFKukpDVnOM1VRqpQD1ct0FVKNMQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/242] btrfs: reserve enough transaction items for qgroup ioctls
-Date: Wed,  8 Apr 2026 20:01:16 +0200
-Message-ID: <20260408175928.423853185@linuxfoundation.org>
+Subject: [PATCH 6.18 092/277] net/mlx5: Fix switchdev mode rollback in case of failure
+Date: Wed,  8 Apr 2026 20:01:17 +0200
+Message-ID: <20260408175937.309372058@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234761-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234521-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,159 +87,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,test.sh:url,bur.io:email,qemu.org:url]
-X-Rspamd-Queue-Id: 505FE3C2656
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 71DB23C0E5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-[ Upstream commit f9a4e3015db1aeafbef407650eb8555445ca943e ]
+[ Upstream commit 403186400a1a6166efe7031edc549c15fee4723f ]
 
-Currently our qgroup ioctls don't reserve any space, they just do a
-transaction join, which does not reserve any space, neither for the quota
-tree updates nor for the delayed refs generated when updating the quota
-tree. The quota root uses the global block reserve, which is fine most of
-the time since we don't expect a lot of updates to the quota root, or to
-be too close to -ENOSPC such that other critical metadata updates need to
-resort to the global reserve.
+If for some internal reason switchdev mode fails, we rollback to legacy
+mode, before this patch, rollback will unregister the uplink netdev and
+leave it unregistered causing the below kernel bug.
 
-However this is not optimal, as not reserving proper space may result in a
-transaction abort due to not reserving space for delayed refs and then
-abusing the use of the global block reserve.
+To fix this, we need to avoid netdev unregister by setting the proper
+rollback flag 'MLX5_PRIV_FLAGS_SWITCH_LEGACY' to indicate legacy mode.
 
-For example, the following reproducer (which is unlikely to model any
-real world use case, but just to illustrate the problem), triggers such a
-transaction abort due to -ENOSPC when running delayed refs:
+devlink (431) used greatest stack depth: 11048 bytes left
+mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), \
+	necvfs(0), active vports(0)
+mlx5_core 0000:00:03.0: E-Switch: Supported tc chains and prios offload
+mlx5_core 0000:00:03.0: Loading uplink representor for vport 65535
+mlx5_core 0000:00:03.0: mlx5_cmd_out_err:816:(pid 456): \
+	QUERY_HCA_CAP(0x100) op_mod(0x0) failed, \
+	status bad parameter(0x3), syndrome (0x3a3846), err(-22)
+mlx5_core 0000:00:03.0 enp0s3np0 (unregistered): Unloading uplink \
+	representor for vport 65535
+ ------------[ cut here ]------------
+kernel BUG at net/core/dev.c:12070!
+Oops: invalid opcode: 0000 [#1] SMP NOPTI
+CPU: 2 UID: 0 PID: 456 Comm: devlink Not tainted 6.16.0-rc3+ \
+	#9 PREEMPT(voluntary)
+RIP: 0010:unregister_netdevice_many_notify+0x123/0xae0
+...
+Call Trace:
+[   90.923094]  unregister_netdevice_queue+0xad/0xf0
+[   90.923323]  unregister_netdev+0x1c/0x40
+[   90.923522]  mlx5e_vport_rep_unload+0x61/0xc6
+[   90.923736]  esw_offloads_enable+0x8e6/0x920
+[   90.923947]  mlx5_eswitch_enable_locked+0x349/0x430
+[   90.924182]  ? is_mp_supported+0x57/0xb0
+[   90.924376]  mlx5_devlink_eswitch_mode_set+0x167/0x350
+[   90.924628]  devlink_nl_eswitch_set_doit+0x6f/0xf0
+[   90.924862]  genl_family_rcv_msg_doit+0xe8/0x140
+[   90.925088]  genl_rcv_msg+0x18b/0x290
+[   90.925269]  ? __pfx_devlink_nl_pre_doit+0x10/0x10
+[   90.925506]  ? __pfx_devlink_nl_eswitch_set_doit+0x10/0x10
+[   90.925766]  ? __pfx_devlink_nl_post_doit+0x10/0x10
+[   90.926001]  ? __pfx_genl_rcv_msg+0x10/0x10
+[   90.926206]  netlink_rcv_skb+0x52/0x100
+[   90.926393]  genl_rcv+0x28/0x40
+[   90.926557]  netlink_unicast+0x27d/0x3d0
+[   90.926749]  netlink_sendmsg+0x1f7/0x430
+[   90.926942]  __sys_sendto+0x213/0x220
+[   90.927127]  ? __sys_recvmsg+0x6a/0xd0
+[   90.927312]  __x64_sys_sendto+0x24/0x30
+[   90.927504]  do_syscall_64+0x50/0x1c0
+[   90.927687]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   90.927929] RIP: 0033:0x7f7d0363e047
 
-  $ cat test.sh
-  #!/bin/bash
-
-  DEV=/dev/nullb0
-  MNT=/mnt/nullb0
-
-  umount $DEV &> /dev/null
-  # Limit device to 1G so that it's much faster to reproduce the issue.
-  mkfs.btrfs -f -b 1G $DEV
-  mount -o commit=600 $DEV $MNT
-
-  fallocate -l 800M $MNT/filler
-  btrfs quota enable $MNT
-
-  for ((i = 1; i <= 400000; i++)); do
-      btrfs qgroup create 1/$i $MNT
-  done
-
-  umount $MNT
-
-When running this, we can see in dmesg/syslog that a transaction abort
-happened:
-
-  [436.490] BTRFS error (device nullb0): failed to run delayed ref for logical 30408704 num_bytes 16384 type 176 action 1 ref_mod 1: -28
-  [436.493] ------------[ cut here ]------------
-  [436.494] BTRFS: Transaction aborted (error -28)
-  [436.495] WARNING: fs/btrfs/extent-tree.c:2247 at btrfs_run_delayed_refs+0xd9/0x110 [btrfs], CPU#4: umount/2495372
-  [436.497] Modules linked in: btrfs loop (...)
-  [436.508] CPU: 4 UID: 0 PID: 2495372 Comm: umount Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
-  [436.510] Tainted: [W]=WARN
-  [436.511] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [436.513] RIP: 0010:btrfs_run_delayed_refs+0xdf/0x110 [btrfs]
-  [436.514] Code: 0f 82 ea (...)
-  [436.518] RSP: 0018:ffffd511850b7d78 EFLAGS: 00010292
-  [436.519] RAX: 00000000ffffffe4 RBX: ffff8f120dad37e0 RCX: 0000000002040001
-  [436.520] RDX: 0000000000000002 RSI: 00000000ffffffe4 RDI: ffffffffc090fd80
-  [436.522] RBP: 0000000000000000 R08: 0000000000000001 R09: ffffffffc04d1867
-  [436.523] R10: ffff8f18dc1fffa8 R11: 0000000000000003 R12: ffff8f173aa89400
-  [436.524] R13: 0000000000000000 R14: ffff8f173aa89400 R15: 0000000000000000
-  [436.526] FS:  00007fe59045d840(0000) GS:ffff8f192e22e000(0000) knlGS:0000000000000000
-  [436.527] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [436.528] CR2: 00007fe5905ff2b0 CR3: 000000060710a002 CR4: 0000000000370ef0
-  [436.530] Call Trace:
-  [436.530]  <TASK>
-  [436.530]  btrfs_commit_transaction+0x73/0xc00 [btrfs]
-  [436.531]  ? btrfs_attach_transaction_barrier+0x1e/0x70 [btrfs]
-  [436.532]  sync_filesystem+0x7a/0x90
-  [436.533]  generic_shutdown_super+0x28/0x180
-  [436.533]  kill_anon_super+0x12/0x40
-  [436.534]  btrfs_kill_super+0x12/0x20 [btrfs]
-  [436.534]  deactivate_locked_super+0x2f/0xb0
-  [436.534]  cleanup_mnt+0xea/0x180
-  [436.535]  task_work_run+0x58/0xa0
-  [436.535]  exit_to_user_mode_loop+0xed/0x480
-  [436.536]  ? __x64_sys_umount+0x68/0x80
-  [436.536]  do_syscall_64+0x2a5/0xf20
-  [436.537]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [436.537] RIP: 0033:0x7fe5906b6217
-  [436.538] Code: 0d 00 f7 (...)
-  [436.540] RSP: 002b:00007ffcd87a61f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-  [436.541] RAX: 0000000000000000 RBX: 00005618b9ecadc8 RCX: 00007fe5906b6217
-  [436.541] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00005618b9ecb100
-  [436.542] RBP: 0000000000000000 R08: 00007ffcd87a4fe0 R09: 00000000ffffffff
-  [436.544] R10: 0000000000000103 R11: 0000000000000246 R12: 00007fe59081626c
-  [436.544] R13: 00005618b9ecb100 R14: 0000000000000000 R15: 00005618b9ecacc0
-  [436.545]  </TASK>
-  [436.545] ---[ end trace 0000000000000000 ]---
-
-Fix this by changing the qgroup ioctls to use start transaction instead of
-joining so that proper space is reserved for the delayed refs generated
-for the updates to the quota root. This way we don't get any transaction
-abort.
-
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 2a4f56fbcc47 ("net/mlx5e: Keep netdev when leave switchdev for devlink set legacy only")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260330194015.53585-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ioctl.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 9a548f2eec3af..45852dbf9dfbc 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -3861,7 +3861,8 @@ static long btrfs_ioctl_qgroup_assign(struct file *file, void __user *arg)
- 		}
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index f1585df13b732..8be0961cb6c7e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -3623,6 +3623,8 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
+ 	return 0;
  
--	trans = btrfs_join_transaction(root);
-+	/* 2 BTRFS_QGROUP_RELATION_KEY items. */
-+	trans = btrfs_start_transaction(root, 2);
- 	if (IS_ERR(trans)) {
- 		ret = PTR_ERR(trans);
- 		goto out;
-@@ -3933,7 +3934,11 @@ static long btrfs_ioctl_qgroup_create(struct file *file, void __user *arg)
- 		goto out;
- 	}
- 
--	trans = btrfs_join_transaction(root);
-+	/*
-+	 * 1 BTRFS_QGROUP_INFO_KEY item.
-+	 * 1 BTRFS_QGROUP_LIMIT_KEY item.
-+	 */
-+	trans = btrfs_start_transaction(root, 2);
- 	if (IS_ERR(trans)) {
- 		ret = PTR_ERR(trans);
- 		goto out;
-@@ -3982,7 +3987,8 @@ static long btrfs_ioctl_qgroup_limit(struct file *file, void __user *arg)
- 		goto drop_write;
- 	}
- 
--	trans = btrfs_join_transaction(root);
-+	/* 1 BTRFS_QGROUP_LIMIT_KEY item. */
-+	trans = btrfs_start_transaction(root, 1);
- 	if (IS_ERR(trans)) {
- 		ret = PTR_ERR(trans);
- 		goto out;
+ err_vports:
++	/* rollback to legacy, indicates don't unregister the uplink netdev */
++	esw->dev->priv.flags |= MLX5_PRIV_FLAGS_SWITCH_LEGACY;
+ 	mlx5_esw_offloads_rep_unload(esw, MLX5_VPORT_UPLINK);
+ err_uplink:
+ 	esw_offloads_steering_cleanup(esw);
 -- 
 2.53.0
 
