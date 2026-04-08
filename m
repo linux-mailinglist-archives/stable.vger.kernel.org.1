@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JejCLec1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:43 +0200
+	id KNMuK1ee1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C084E3C07C9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30ED23C0CAB
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8EB44302E0EC
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F7653028665
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED093D6CAE;
-	Wed,  8 Apr 2026 18:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A042494F0;
+	Wed,  8 Apr 2026 18:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGbmpOpy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfUAjOGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619802DAFAA;
-	Wed,  8 Apr 2026 18:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B267324B1F;
+	Wed,  8 Apr 2026 18:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672419; cv=none; b=WPqM5w4iNjk6ctDaoDs25+mvBdcJQX3srKWpMMICW7vOJ+YUkkXspAKExvQBJebHKN9XZp6hcM7URgyi0oLifo+nPtBdSWoFmo0IzuY+R2i1bBykvMfS9WK+F5iWclE5hd4z4FQSbRWN2adtczAhhj9hHmuL5wpWJAQpryBMUPs=
+	t=1775672757; cv=none; b=EIlAOfAMettnc34kgo0gte8IqzMevYw9KpLF2bTXIe/p33tvXqrS2x+ESDEQxN5owv2gS5UF7IT6sCdv6OARrxvJKxxqaPpIDq3k1TsUkSf/Q7xi0v5cTjwkz51W6YNiNaX+5xNQQpt1M7MJLQYasDZzrSaen5f6ejdQJWrJBtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672419; c=relaxed/simple;
-	bh=YOQJzXraDIWw5tjqfGnuAriQgTXVlaq0aWWfaOzI+js=;
+	s=arc-20240116; t=1775672757; c=relaxed/simple;
+	bh=lFci4sUtxS2yJCwmgP+zYjrxxFmb2vnC0jg7I8nMUNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oitNMQmnZy50yOSLsM8zFOo5ZYWFMgGO+Gqv2LY6qzeIFmBIsTURw21K2/Db/HmYs9ekVBwpZ/70mDZzdrPwuffopsiLD309DFTe02pqbX/nw+DOqPN97Pbi18Zw+tjnjuvrQGT5luYVhPMLTyYsTAjADIjCB+E03Kv7hPlGeb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGbmpOpy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62EBC19421;
-	Wed,  8 Apr 2026 18:20:18 +0000 (UTC)
+	 MIME-Version; b=Lu9kFUd0XQSlekRuRaGsY++r4U5brNlQNtmaIZnANOnHZMffbv7xw37eptH7kN4l8niDFpHhSTyU9rc8RWi03rIKb++MkuXh+qjl2z/Ul2VgybhBcgXxKtvb6ClChiH951Ut+TZ/yDgLKh1wwFxUNni38Jzpl5ItuHpjurX+p4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfUAjOGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285F9C19421;
+	Wed,  8 Apr 2026 18:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672419;
-	bh=YOQJzXraDIWw5tjqfGnuAriQgTXVlaq0aWWfaOzI+js=;
+	s=korg; t=1775672757;
+	bh=lFci4sUtxS2yJCwmgP+zYjrxxFmb2vnC0jg7I8nMUNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGbmpOpyFBCvMUBKPHEYBFuMtiNogzX5LPLeM6YHibYOxhcNLNpLjzo4uga5JUD8u
-	 ygrD3h6jQwVpIrac9swJfwg/5nwIEtk2FZdK+vEs0zaLT9oRO3rWhkhAtLW07aYKGk
-	 nrQ2SFeIftJjTYpBNLniLmlJ6iEVRDzJNOl0kb1c=
+	b=NfUAjOGxLkehv0beGzl81k6BZ49yHqs06m18q/wJb+7E8IiBNKx84heZ0onbIZK5l
+	 gyQO9Tn2E+6enianw2BHwk9wovhgplbs5nB8zE/Q3ky4PLr6rinSgrb+n1jIpdArdb
+	 05wc7vSu18YJMwkV+k9X8GCjTvbzT1+sU3RUqaAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Chao Yu <chao@kernel.org>,
-	Alexey Panov <apanov@astralinux.ru>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.1 298/312] erofs: fix PSI memstall accounting
-Date: Wed,  8 Apr 2026 20:03:35 +0200
-Message-ID: <20260408175944.896580830@linuxfoundation.org>
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 129/160] cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path
+Date: Wed,  8 Apr 2026 20:03:36 +0200
+Message-ID: <20260408175918.008068980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +69,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,linaro.org,intel.com];
+	TAGGED_FROM(0.00)[bounces-234399-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234268-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alibaba.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ionos.com:email,astralinux.ru:email]
-X-Rspamd-Queue-Id: C084E3C07C9
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,qualcomm.com:email,linaro.org:email]
+X-Rspamd-Queue-Id: 30ED23C0CAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 1a2180f6859c73c674809f9f82e36c94084682ba upstream.
+commit 6dcf9d0064ce2f3e3dfe5755f98b93abe6a98e1e upstream.
 
-Max Kellermann recently reported psi_group_cpu.tasks[NR_MEMSTALL] is
-incorrect in the 6.11.9 kernel.
+When kobject_init_and_add() fails, cpufreq_dbs_governor_init() calls
+kobject_put(&dbs_data->attr_set.kobj).
 
-The root cause appears to be that, since the problematic commit, bio
-can be NULL, causing psi_memstall_leave() to be skipped in
-z_erofs_submit_queue().
+The kobject release callback cpufreq_dbs_data_release() calls
+gov->exit(dbs_data) and kfree(dbs_data), but the current error path
+then calls gov->exit(dbs_data) and kfree(dbs_data) again, causing a
+double free.
 
-Reported-by: Max Kellermann <max.kellermann@ionos.com>
-Closes: https://lore.kernel.org/r/CAKPOu+8tvSowiJADW2RuKyofL_CSkm_SuyZA7ME5vMLWmL6pqw@mail.gmail.com
-Fixes: 9e2f9d34dd12 ("erofs: handle overlapped pclusters out of crafted images properly")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20241127085236.3538334-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
-Link: https://lore.kernel.org/r/20250304110558.8315-3-apanov@astralinux.ru
-Link: https://lore.kernel.org/r/20250304110558.8315-1-apanov@astralinux.ru
-[ Gao Xiang: re-address the previous Alexey's backport. ]
-CVE: CVE-2024-47736
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Keep the direct kfree(dbs_data) for the gov->init() failure path, but
+after kobject_init_and_add() has been called, let kobject_put() handle
+the cleanup through cpufreq_dbs_data_release().
+
+Fixes: 4ebe36c94aed ("cpufreq: Fix kobject memleak")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260401024535.1395801-1-lgs201920130244@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zdata.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/cpufreq/cpufreq_governor.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1574,11 +1574,10 @@ drain_io:
- 			move_to_bypass_jobqueue(pcl, qtail, owned_head);
- 	} while (owned_head != Z_EROFS_PCLUSTER_TAIL);
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -468,13 +468,13 @@ int cpufreq_dbs_governor_init(struct cpu
+ 	/* Failure, so roll back. */
+ 	pr_err("initialization failed (dbs_data kobject init error %d)\n", ret);
  
--	if (bio) {
-+	if (bio)
- 		submit_bio(bio);
--		if (memstall)
--			psi_memstall_leave(&pflags);
--	}
-+	if (memstall)
-+		psi_memstall_leave(&pflags);
+-	kobject_put(&dbs_data->attr_set.kobj);
+-
+ 	policy->governor_data = NULL;
  
- 	/*
- 	 * although background is preferred, no one is pending for submission.
+ 	if (!have_governor_per_policy())
+ 		gov->gdbs_data = NULL;
+-	gov->exit(dbs_data);
++
++	kobject_put(&dbs_data->attr_set.kobj);
++	goto free_policy_dbs_info;
+ 
+ free_dbs_data:
+ 	kfree(dbs_data);
 
 
 
