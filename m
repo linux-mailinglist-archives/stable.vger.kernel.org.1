@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-235079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIY7Jf+k1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:03 +0200
+	id mET+Bguc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC9E3C2091
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 703403C0656
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5ABBC3033D78
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:55:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF17C304753E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0043D9DA7;
-	Wed,  8 Apr 2026 18:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEA43ACA41;
+	Wed,  8 Apr 2026 18:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSH3k3ps"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xMQujKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3163D905D;
-	Wed,  8 Apr 2026 18:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A216F3859FE;
+	Wed,  8 Apr 2026 18:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674515; cv=none; b=RaqjU12g2F1ODdeTZA6kMERQiHBqVYSk/23LLrmV0MBUp+q5lO1VrS3zrpoSKBsM9c+32pkHzn4X5yyUADLAkvT7nYFgeHALpQeqnOvoEnMwUhn3A6t64/4icR73qynYXMPm/MukZXnnqgnFVvLyOqvLp+44xZ0UAr0528eLsNU=
+	t=1775672154; cv=none; b=AB40RxCTtBt5P8sAhnduvqM9jmzMxBXjdR/2pfHHwbX4eik2fkR9aewUZtZmDM+8Y9+gfGywfrgEH5grtxjgSEvIy8YECAItpFgsHI8zquzFVRMQUGpYKRyzsA/ENXxFtnBkF2nlP9X82V0giK5TJUD7dFOYwd/RGsHYmKOPu1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674515; c=relaxed/simple;
-	bh=3iU2INjtiSkTHHhiloX+pBIQ0BdhqltsrXz3WDAeiiU=;
+	s=arc-20240116; t=1775672154; c=relaxed/simple;
+	bh=E8VZkQcf8+2+RHXM9acIXX6++BywUUXX7ha1To94IGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ui3tSXKNBVEtd59Z4HkzAL8bSRsKjtdzXYIcG0ok7HqdBERDlELcs7u3bd86Mvd7ajeyNFcEIySaFqL2C9aI/oKhLJDq8o0jQmedKpbQZnl/O8GmPLEOLaMrDQkgCFNGmIN3ugGz68ZN7o6YmUeyK8U2fJ6CNkd6hPhgR/4JO5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSH3k3ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83F6C19421;
-	Wed,  8 Apr 2026 18:55:14 +0000 (UTC)
+	 MIME-Version; b=ZdPmT8iV5zw4UYIvjsnp548FRTIZ/HzmU0jDEw+qFBT/FvK9DE3fprS35hkSOHNwKqCobP3zPIpyPiBU+RaZ7KNR0gynRfGWVpOTrao7XufMib+51670FTecUmZgpGF6UFrB1Wz+GPlLifo2PiGhtFZeSSRyEdycvyuApF0q2kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xMQujKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39390C19421;
+	Wed,  8 Apr 2026 18:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674515;
-	bh=3iU2INjtiSkTHHhiloX+pBIQ0BdhqltsrXz3WDAeiiU=;
+	s=korg; t=1775672154;
+	bh=E8VZkQcf8+2+RHXM9acIXX6++BywUUXX7ha1To94IGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSH3k3psQQWfYNEDc8IGAOeFRl0VQDU6wBj5K4XROl7Fcfhs0HlfEismysqU5HfXq
-	 XZeuy1sslJKEIZMMWf5/Q338lCEJosEv8DQksDLowPHGhCG5eC+gURsXJHN4RGfOjr
-	 OtuBvKuYd6v1RemMQ8xxN6kVw/ytgZgv47IKLLfY=
+	b=0xMQujKjdzQ/onbKeFssqexCxfHVroNi9DsJI5NOJdnFg/YMWLPjKH5MwuPERQV2Q
+	 DVxx6GNEbhIE8W9q2p9YNRO9VXAewRvCb/HWJi34vPkFfFUYYzUZbOT6H9bBYIQViW
+	 GQOW2cmCRcxJ2YRnLw0LjqXZ3JCGvniX6Pbcl+nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Maarten Lankhorst <dev@lankhorst.se>
-Subject: [PATCH 6.19 127/311] Revert "drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug"
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.1 210/312] drm/ast: dp501: Fix initialization of SCU2C
 Date: Wed,  8 Apr 2026 20:02:07 +0200
-Message-ID: <20260408175944.158495361@linuxfoundation.org>
+Message-ID: <20260408175941.603231218@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,210 +64,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235079-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234166-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,ffwll.ch:email,roeck-us.net:email,lankhorst.se:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8CC9E3C2091
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.freedesktop.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 703403C0656
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <dev@lankhorst.se>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 45ebe43ea00d6b9f5b3e0db9c35b8ca2a96b7e70 upstream.
+commit 2f42c1a6161646cbd29b443459fd635d29eda634 upstream.
 
-This reverts commit 6bee098b91417654703e17eb5c1822c6dfd0c01d.
+Ast's DP501 initialization reads the register SCU2C at offset 0x1202c
+and tries to set it to source data from VGA. But writes the update to
+offset 0x0, with unknown results. Write the result to SCU instead.
 
-Den 2026-03-25 kl. 22:11, skrev Simona Vetter:
-> On Wed, Mar 25, 2026 at 10:26:40AM -0700, Guenter Roeck wrote:
->> Hi,
->>
->> On Fri, Mar 13, 2026 at 04:17:27PM +0100, Maarten Lankhorst wrote:
->>> When trying to do a rather aggressive test of igt's "xe_module_load
->>> --r reload" with a full desktop environment and game running I noticed
->>> a few OOPSes when dereferencing freed pointers, related to
->>> framebuffers and property blobs after the compositor exits.
->>>
->>> Solve this by guarding the freeing in drm_file with drm_dev_enter/exit,
->>> and immediately put the references from struct drm_file objects during
->>> drm_dev_unplug().
->>>
->>
->> With this patch in v6.18.20, I get the warning backtraces below.
->> The backtraces are gone with the patch reverted.
->
-> Yeah, this needs to be reverted, reasoning below. Maarten, can you please
-> take care of that and feed the revert through the usual channels? I don't
-> think it's critical enough that we need to fast-track this into drm.git
-> directly.
->
-> Quoting the patch here again:
->
->>  drivers/gpu/drm/drm_file.c        | 5 ++++-
->>  drivers/gpu/drm/drm_mode_config.c | 9 ++++++---
->>  2 files changed, 10 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
->> index ec820686b3021..f52141f842a1f 100644
->> --- a/drivers/gpu/drm/drm_file.c
->> +++ b/drivers/gpu/drm/drm_file.c
->> @@ -233,6 +233,7 @@ static void drm_events_release(struct drm_file *file_priv)
->>  void drm_file_free(struct drm_file *file)
->>  {
->>  	struct drm_device *dev;
->> +	int idx;
->>
->>  	if (!file)
->>  		return;
->> @@ -249,9 +250,11 @@ void drm_file_free(struct drm_file *file)
->>
->>  	drm_events_release(file);
->>
->> -	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
->> +	if (drm_core_check_feature(dev, DRIVER_MODESET) &&
->> +	    drm_dev_enter(dev, &idx)) {
->
-> This is misplaced for two reasons:
->
-> - Even if we'd want to guarantee that we hold a drm_dev_enter/exit
->   reference during framebuffer teardown, we'd need to do this
->   _consistently over all callsites. Not ad-hoc in just one place that a
->   testcase hits. This also means kerneldoc updates of the relevant hooks
->   and at least a bunch of acks from other driver people to document the
->   consensus.
->
-> - More importantly, this is driver responsibilities in general unless we
->   have extremely good reasons to the contrary. Which means this must be
->   placed in xe.
->
->>  		drm_fb_release(file);
->>  		drm_property_destroy_user_blobs(dev, file);
->> +		drm_dev_exit(idx);
->>  	}
->>
->>  	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
->> diff --git a/drivers/gpu/drm/drm_mode_config.c b/drivers/gpu/drm/drm_mode_config.c
->> index 84ae8a23a3678..e349418978f79 100644
->> --- a/drivers/gpu/drm/drm_mode_config.c
->> +++ b/drivers/gpu/drm/drm_mode_config.c
->> @@ -583,10 +583,13 @@ void drm_mode_config_cleanup(struct drm_device *dev)
->>  	 */
->>  	WARN_ON(!list_empty(&dev->mode_config.fb_list));
->>  	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
->> -		struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
->> +		if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1) {
->> +			struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
->
-> This is also wrong:
->
-> - Firstly, it's a completely independent bug, we do not smash two bugfixes
->   into one patch.
->
-> - Secondly, it's again a driver bug: drm_mode_cleanup must be called when
->   the last drm_device reference disappears (hence the existence of
->   drmm_mode_config_init), not when the driver gets unbound. The fact that
->   this shows up in a callchain from a devres cleanup means the intel
->   driver gets this wrong (like almost everyone else because historically
->   we didn't know better).
->
->   If we don't follow this rule, then we get races with this code here
->   running concurrently with drm_file fb cleanups, which just does not
->   work. Review pointed that out, but then shrugged it off with a confused
->   explanation:
->
->   https://lore.kernel.org/all/e61e64c796ccfb17ae673331a3df4b877bf42d82.camel@linux.intel.com/
->
->   Yes this also means a lot of the other drm_device teardown that drivers
->   do happens way too early. There is a massive can of worms here of a
->   magnitude that most likely is much, much bigger than what you can
->   backport to stable kernels. Hotunplug is _hard_.
+The bug only happens in ast_init_analog(). There's similar code in
+ast_init_dvo(), which works correctly.
 
-Back to the drawing board, and fixing it in the intel display driver
-instead.
-
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Fixes: 6bee098b9141 ("drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-Link: https://patch.msgid.link/20260326082217.39941-2-dev@lankhorst.se
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 83c6620bae3f ("drm/ast: initial DP501 support (v0.2)")
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.16+
+Link: https://patch.msgid.link/20260327133532.79696-2-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_file.c        |    5 +----
- drivers/gpu/drm/drm_mode_config.c |    9 +++------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/ast/ast_dp501.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_file.c
-+++ b/drivers/gpu/drm/drm_file.c
-@@ -233,7 +233,6 @@ static void drm_events_release(struct dr
- void drm_file_free(struct drm_file *file)
- {
- 	struct drm_device *dev;
--	int idx;
+--- a/drivers/gpu/drm/ast/ast_dp501.c
++++ b/drivers/gpu/drm/ast/ast_dp501.c
+@@ -426,7 +426,7 @@ static void ast_init_analog(struct drm_d
+ 	/* Finally, clear bits [17:16] of SCU2c */
+ 	data = ast_read32(ast, 0x1202c);
+ 	data &= 0xfffcffff;
+-	ast_write32(ast, 0, data);
++	ast_write32(ast, 0x1202c, data);
  
- 	if (!file)
- 		return;
-@@ -250,11 +249,9 @@ void drm_file_free(struct drm_file *file
- 
- 	drm_events_release(file);
- 
--	if (drm_core_check_feature(dev, DRIVER_MODESET) &&
--	    drm_dev_enter(dev, &idx)) {
-+	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
- 		drm_fb_release(file);
- 		drm_property_destroy_user_blobs(dev, file);
--		drm_dev_exit(idx);
- 	}
- 
- 	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
---- a/drivers/gpu/drm/drm_mode_config.c
-+++ b/drivers/gpu/drm/drm_mode_config.c
-@@ -577,13 +577,10 @@ void drm_mode_config_cleanup(struct drm_
- 	 */
- 	WARN_ON(!list_empty(&dev->mode_config.fb_list));
- 	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
--		if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1) {
--			struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
-+		struct drm_printer p = drm_dbg_printer(dev, DRM_UT_KMS, "[leaked fb]");
- 
--			drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
--			drm_framebuffer_print_info(&p, 1, fb);
--		}
--		list_del_init(&fb->filp_head);
-+		drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
-+		drm_framebuffer_print_info(&p, 1, fb);
- 		drm_framebuffer_free(&fb->base.refcount);
- 	}
- 
+ 	/* Disable DVO */
+ 	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xa3, 0xcf, 0x00);
 
 
 
