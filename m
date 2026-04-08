@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-234109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECOrMAWb1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:29 +0200
+	id cFgaJwmj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F123C03ED
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2059C3C19E9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A238302BA5D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BACBB312C116
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6666E1E5724;
-	Wed,  8 Apr 2026 18:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33263B19A3;
+	Wed,  8 Apr 2026 18:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSCBl2NX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMrhbrqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC823D9034;
-	Wed,  8 Apr 2026 18:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FCF3D8906;
+	Wed,  8 Apr 2026 18:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672008; cv=none; b=jN2eOedrFDK2wuTpgSU2t8dsb2tili95bw0VWXK5jVMFPyEs5R3M48x8G9oaYpF24Xxr/GGiXctcLHz/jvN4MDaU+AN5bs8yLB1cWpWta7JetWyjh7ZiHNxie0RXJ9w9HSLCQG+/1vHawTC60ryR2fCJe8u25dU/JN+tNlSY+5s=
+	t=1775673057; cv=none; b=sac6lwHsGO8NWZx7fwp8PVZuRZnNGlAOjAJkSPZAcP0cdBDF7qeCEhAd11LFsucGS4IDpxEkXUtj3stCbN4rz+ZAJ6jeJ1TzQUi+C1HiWtL34GfP+oRdtMa5woDgcFLksAt3aKpmkruhQWJQe4hGL4DNxCqyDaXxyOYaP10sDaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672008; c=relaxed/simple;
-	bh=0NaOwVR4uDzpPNVXYGsIUEwOPB6vTUATGEdj5a2O+8o=;
+	s=arc-20240116; t=1775673057; c=relaxed/simple;
+	bh=h93cChpdlMx0f9W4WkVT0kmF0DEMTRMcReqJQE0wQoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIKPWrp8KNb0qKc09CIiJcazTF1Iwair/njRvfxeR5HjLiuE75/4DGEbLn3jnddxYS4zvrhrxfKPXLwNslpytmPwGJgldWL2gZxt7AWodOwroBI2EqU2UL0E+DehgryQgfRrRlHIZ5fNc1RetUbfC567u/VoCenDB+vYGK2KCmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSCBl2NX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FC6C19421;
-	Wed,  8 Apr 2026 18:13:27 +0000 (UTC)
+	 MIME-Version; b=iXg6RVEw3QcfvxHGf+jg6tIsBf3SzuKX1lL7odIqK+ZfTY8RWO+eGQhLps39bjxM2OQmdWQS4r3Rq/KgK04YZuNgnc0Pw2bLo915Lica5IkPXHAgT82OGi/W11iWYn2ASwFL7NQgHPt3FtLKVxa2P0x1B+HidEUBeTr9vYXJWuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMrhbrqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3289FC19421;
+	Wed,  8 Apr 2026 18:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672008;
-	bh=0NaOwVR4uDzpPNVXYGsIUEwOPB6vTUATGEdj5a2O+8o=;
+	s=korg; t=1775673057;
+	bh=h93cChpdlMx0f9W4WkVT0kmF0DEMTRMcReqJQE0wQoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSCBl2NX+ETNlsEGvfCQ4e/Dkn/c6sKOlgRd1c5YaIRy6geCBxXXZ6YUnzKFSLRAW
-	 Z/8ZF4n4JFZPwxxZtnOon6ubEP/NzKOI+YZv0GRcG1GFhcbKcNlFpQnV3+J5S/GZbY
-	 zvIEfj1F5nCJXHElgHWmZsHIJbFV+avU6TknfPh0=
+	b=MMrhbrqSGMf2GK94nl/Pl6lexOlV8VgQFiKJ0sPuvbcH3NArAjvpN90XncNBK8Gtm
+	 Rv62miwk/QVJ7QFiTFaC7Dah3nyc930CQDhwGKQ7SNIu6dUAet8xU1Iqukf/S3/SoT
+	 hhFz6y9BoShqNCx3pJmbnnWarkKsFCPJlxaKsAOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Allison Henderson <achender@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/312] ip6_tunnel: clear skb2->cb[] in ip4ip6_err()
-Date: Wed,  8 Apr 2026 20:01:09 +0200
-Message-ID: <20260408175939.443323507@linuxfoundation.org>
+Subject: [PATCH 6.18 085/277] rds: ib: reject FRMR registration before IB connection is established
+Date: Wed,  8 Apr 2026 20:01:10 +0200
+Message-ID: <20260408175937.037803583@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,8 +76,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,google.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234109-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234514-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -93,66 +93,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 27F123C03ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2059C3C19E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 2edfa31769a4add828a7e604b21cb82aaaa05925 ]
+[ Upstream commit a54ecccfae62c5c85259ae5ea5d9c20009519049 ]
 
-Oskar Kjos reported the following problem.
+rds_ib_get_mr() extracts the rds_ib_connection from conn->c_transport_data
+and passes it to rds_ib_reg_frmr() for FRWR memory registration. On a
+fresh outgoing connection, ic is allocated in rds_ib_conn_alloc() with
+i_cm_id = NULL because the connection worker has not yet called
+rds_ib_conn_path_connect() to create the rdma_cm_id. When sendmsg() with
+RDS_CMSG_RDMA_MAP is called on such a connection, the sendmsg path parses
+the control message before any connection establishment, allowing
+rds_ib_post_reg_frmr() to dereference ic->i_cm_id->qp and crash the
+kernel.
 
-ip4ip6_err() calls icmp_send() on a cloned skb whose cb[] was written
-by the IPv6 receive path as struct inet6_skb_parm. icmp_send() passes
-IPCB(skb2) to __ip_options_echo(), which interprets that cb[] region
-as struct inet_skb_parm (IPv4). The layouts differ: inet6_skb_parm.nhoff
-at offset 14 overlaps inet_skb_parm.opt.rr, producing a non-zero rr
-value. __ip_options_echo() then reads optlen from attacker-controlled
-packet data at sptr[rr+1] and copies that many bytes into dopt->__data,
-a fixed 40-byte stack buffer (IP_OPTIONS_DATA_FIXED_SIZE).
+The existing guard in rds_ib_reg_frmr() only checks for !ic (added in
+commit 9e630bcb7701), which does not catch this case since ic is allocated
+early and is always non-NULL once the connection object exists.
 
-To fix this we clear skb2->cb[], as suggested by Oskar Kjos.
+ KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+ RIP: 0010:rds_ib_post_reg_frmr+0x50e/0x920
+ Call Trace:
+  rds_ib_post_reg_frmr (net/rds/ib_frmr.c:167)
+  rds_ib_map_frmr (net/rds/ib_frmr.c:252)
+  rds_ib_reg_frmr (net/rds/ib_frmr.c:430)
+  rds_ib_get_mr (net/rds/ib_rdma.c:615)
+  __rds_rdma_map (net/rds/rdma.c:295)
+  rds_cmsg_rdma_map (net/rds/rdma.c:860)
+  rds_sendmsg (net/rds/send.c:1363)
+  ____sys_sendmsg
+  do_syscall_64
 
-Also add minimal IPv4 header validation (version == 4, ihl >= 5).
+Add a check in rds_ib_get_mr() that verifies ic, i_cm_id, and qp are all
+non-NULL before proceeding with FRMR registration, mirroring the guard
+already present in rds_ib_post_inv(). Return -ENODEV when the connection
+is not ready, which the existing error handling in rds_cmsg_send() converts
+to -EAGAIN for userspace retry and triggers rds_conn_connect_if_down() to
+start the connection worker.
 
-Fixes: c4d3efafcc93 ("[IPV6] IP6TUNNEL: Add support to IPv4 over IPv6 tunnel.")
-Reported-by: Oskar Kjos <oskar.kjos@hotmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326155138.2429480-1-edumazet@google.com
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260330163237.2752440-2-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/rds/ib_rdma.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 8ce36fcc3dd5b..a1a2e785063c3 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -601,11 +601,16 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	if (!skb2)
- 		return 0;
+diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
+index 6585164c70595..dd08ccc4246da 100644
+--- a/net/rds/ib_rdma.c
++++ b/net/rds/ib_rdma.c
+@@ -604,8 +604,13 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned long nents,
+ 		return ibmr;
+ 	}
  
-+	/* Remove debris left by IPv6 stack. */
-+	memset(IPCB(skb2), 0, sizeof(*IPCB(skb2)));
-+
- 	skb_dst_drop(skb2);
+-	if (conn)
++	if (conn) {
+ 		ic = conn->c_transport_data;
++		if (!ic || !ic->i_cm_id || !ic->i_cm_id->qp) {
++			ret = -ENODEV;
++			goto out;
++		}
++	}
  
- 	skb_pull(skb2, offset);
- 	skb_reset_network_header(skb2);
- 	eiph = ip_hdr(skb2);
-+	if (eiph->version != 4 || eiph->ihl < 5)
-+		goto out;
- 
- 	/* Try to guess incoming interface */
- 	rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL, eiph->saddr,
+ 	if (!rds_ibdev->mr_8k_pool || !rds_ibdev->mr_1m_pool) {
+ 		ret = -ENODEV;
 -- 
 2.53.0
 
