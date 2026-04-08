@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-234997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AB+0McKj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:46 +0200
+	id kD4HNCKi1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2623C1C6C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CF73C16A1
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3AF08300B5A1
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 052AB3049E25
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21BB34B19F;
-	Wed,  8 Apr 2026 18:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEBE3D6694;
+	Wed,  8 Apr 2026 18:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzUumMBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLZwVQaD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756032727F3;
-	Wed,  8 Apr 2026 18:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B07B67E;
+	Wed,  8 Apr 2026 18:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674304; cv=none; b=vBRXa3rwh9T/oIMVAgC+w4buY+Mn3tPDtS57WJIKjZLmvsxh7H/+sMfeY3vxjY2CWZ3UeYX3NTWEisZdZmMESI1+TSewfG92h2ncM63M0ZCB+K78oGPaJfJDwjLE2aWc+HGVz+Y552AkJ/7rgTVJRihchCiwjCGZO6wsX2nB4u4=
+	t=1775673652; cv=none; b=Wp6Hb0vjyCkgdcQ7umR6QvB8GGmmPM4NmmZe4vlfhVcNne+pFid3FYZRRz/tUxLpfiPok22yewDoNUKey39VNcUEPve7auu+NnKOAj+fxmhLP0A8nS1YQYcw9sdMF03is6hM4uKBa+BtikHhQYNEHQ1uu2zOi29xuVNiHF7oQKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674304; c=relaxed/simple;
-	bh=ad4RPspniCC01YUVNoJs++PV8Ct7Dui19yd4lUir8ww=;
+	s=arc-20240116; t=1775673652; c=relaxed/simple;
+	bh=yk33URUNA8uMOwslGqi2mp+IxMqc9bMD8pAX1Sk+l+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXJyrh+P5EhlpwiFv8klK99r+UmDxS82s9xQrd7jyqUKQXdPtL5aErlm8rDLiUcYB7/DibqxIQb0eMyol6pVWeiFqBp8yMNK9vEecHLwxeklECUPI/P0NF4IX1LomGamtHV6X51EZwj/Kupg+sa+8m2TuzVmRoN3aM874jV78B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzUumMBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD553C19421;
-	Wed,  8 Apr 2026 18:51:43 +0000 (UTC)
+	 MIME-Version; b=GHr3ySKWTa+2t0W+lT6p3SvqYWphGBSdEY5b4PY7gjByXEGVdgQcwAXzCrgPfyTGTpnzChpGgWDBz2aqhoe2TZwO2Kal2P2+VFjWyuzpbVJuag/r6Tv1zZzWo0l+KXYZli3D/q30q3oXkrnJiAmR0CiAAyxktYbOznS6W8lfYI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLZwVQaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B22EC19421;
+	Wed,  8 Apr 2026 18:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674304;
-	bh=ad4RPspniCC01YUVNoJs++PV8Ct7Dui19yd4lUir8ww=;
+	s=korg; t=1775673652;
+	bh=yk33URUNA8uMOwslGqi2mp+IxMqc9bMD8pAX1Sk+l+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PzUumMBDLXU3NJE/389i25E25CplyiKEvTYbHZD79O6Dz/BAqItHZmKlfMfgrA5Fg
-	 PBARa/XT1LF1exu4PwCPUulP2Ww4MWm/W9nVCB9KRCNhFxzuCpThKl+xucPV+6ST5v
-	 SkG1eqhFiUYGCf3PA71X9c3+yFOv+nFQYxD3ctuI=
+	b=wLZwVQaD5DMk9WlejbSMIHj+budc/MyDrkuqCBoq+LsbSufD7BKHkdjZnxVYWA6ce
+	 pdXA1mnNm+Q9Og9jmid6f50oNd8A/eiGu+Q0U6nhspFjQRjX/CBgQxdzOKiJjH2UfA
+	 STdISpR0Ei+KXqeYsRdLmZhCw3v3QKuO21B1b1eU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 046/311] net: enetc: do not access non-existent registers on pseudo MAC
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 006/242] io_uring/kbuf: introduce io_kbuf_drop_legacy()
 Date: Wed,  8 Apr 2026 20:00:46 +0200
-Message-ID: <20260408175941.135431885@linuxfoundation.org>
+Message-ID: <20260408175927.310037283@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +63,142 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234997-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234745-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: 6F2623C1C6C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 10CF73C16A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit f2df9567b123145a07ee4ea7440e233f5d0232cc ]
+Commit 54e00d9a612ab93f37f612a5ccd7c0c4f8a31cea upstream.
 
-The ENETC4_PM_IEVENT and ENETC4_PM_CMD_CFG registers do not exist on the
-ENETC pseudo MAC, so the driver should prevent from accessing them.
+io_kbuf_drop() is only used for legacy provided buffers, and so
+__io_put_kbuf_list() is never called for REQ_F_BUFFER_RING. Remove the
+dead branch out of __io_put_kbuf_list(), rename it into
+io_kbuf_drop_legacy() and use it directly instead of io_kbuf_drop().
 
-Fixes: 5175c1e4adca ("net: enetc: add basic support for the ENETC with pseudo MAC for i.MX94")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Tested-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260324062121.2745033-4-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/c8cc73e2272f09a86ecbdad9ebdd8304f8e583c0.1738724373.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ io_uring/io_uring.c |    5 ++---
+ io_uring/kbuf.c     |   10 ++++++++++
+ io_uring/kbuf.h     |   24 ++----------------------
+ 3 files changed, 14 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index 6a334f2848448..993c27e342266 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -814,6 +814,9 @@ static void enetc4_mac_tx_graceful_stop(struct enetc_pf *pf)
- 	val |= POR_TXDIS;
- 	enetc_port_wr(hw, ENETC4_POR, val);
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -382,9 +382,8 @@ static bool req_need_defer(struct io_kio
  
-+	if (enetc_is_pseudo_mac(si))
+ static void io_clean_op(struct io_kiocb *req)
+ {
+-	if (req->flags & REQ_F_BUFFER_SELECTED) {
+-		io_kbuf_drop(req);
+-	}
++	if (unlikely(req->flags & REQ_F_BUFFER_SELECTED))
++		io_kbuf_drop_legacy(req);
+ 
+ 	if (req->flags & REQ_F_NEED_CLEANUP) {
+ 		const struct io_cold_def *def = &io_cold_defs[req->opcode];
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -50,6 +50,16 @@ static int io_buffer_add_list(struct io_
+ 	return xa_err(xa_store(&ctx->io_bl_xa, bgid, bl, GFP_KERNEL));
+ }
+ 
++void io_kbuf_drop_legacy(struct io_kiocb *req)
++{
++	if (WARN_ON_ONCE(!(req->flags & REQ_F_BUFFER_SELECTED)))
 +		return;
++	req->buf_index = req->kbuf->bgid;
++	req->flags &= ~REQ_F_BUFFER_SELECTED;
++	kfree(req->kbuf);
++	req->kbuf = NULL;
++}
 +
- 	enetc4_mac_wait_tx_empty(si, 0);
- 	if (si->hw_features & ENETC_SI_F_QBU)
- 		enetc4_mac_wait_tx_empty(si, 1);
-@@ -856,6 +859,9 @@ static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
- 	struct enetc_si *si = pf->si;
- 	u32 val;
+ bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags)
+ {
+ 	struct io_ring_ctx *ctx = req->ctx;
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -82,6 +82,7 @@ int io_unregister_pbuf_ring(struct io_ri
+ int io_register_pbuf_status(struct io_ring_ctx *ctx, void __user *arg);
  
-+	if (enetc_is_pseudo_mac(si))
-+		goto check_rx_busy;
-+
- 	if (si->hw_features & ENETC_SI_F_QBU) {
- 		val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(1));
- 		val &= ~PM_CMD_CFG_RX_EN;
-@@ -868,6 +874,7 @@ static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
- 	enetc_port_wr(hw, ENETC4_PM_CMD_CFG(0), val);
- 	enetc4_mac_wait_rx_empty(si, 0);
+ bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
++void io_kbuf_drop_legacy(struct io_kiocb *req);
  
-+check_rx_busy:
- 	if (read_poll_timeout(enetc_port_rd, val,
- 			      !(val & PSR_RX_BUSY),
- 			      100, 10000, false, hw,
--- 
-2.53.0
-
+ void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl);
+ struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
+@@ -169,27 +170,6 @@ static inline bool __io_put_kbuf_ring(st
+ 	return ret;
+ }
+ 
+-static inline void __io_put_kbuf_list(struct io_kiocb *req, int len)
+-{
+-	if (req->flags & REQ_F_BUFFER_RING) {
+-		__io_put_kbuf_ring(req, len, 1);
+-	} else {
+-		req->buf_index = req->kbuf->bgid;
+-		req->flags &= ~REQ_F_BUFFER_SELECTED;
+-		kfree(req->kbuf);
+-		req->kbuf = NULL;
+-	}
+-}
+-
+-static inline void io_kbuf_drop(struct io_kiocb *req)
+-{
+-	if (!(req->flags & (REQ_F_BUFFER_SELECTED|REQ_F_BUFFER_RING)))
+-		return;
+-
+-	/* len == 0 is fine here, non-ring will always drop all of it */
+-	__io_put_kbuf_list(req, 0);
+-}
+-
+ static inline unsigned int __io_put_kbufs(struct io_kiocb *req, int len,
+ 					  int nbufs, unsigned issue_flags)
+ {
+@@ -203,7 +183,7 @@ static inline unsigned int __io_put_kbuf
+ 		if (!__io_put_kbuf_ring(req, len, nbufs))
+ 			ret |= IORING_CQE_F_BUF_MORE;
+ 	} else {
+-		__io_put_kbuf_list(req, len);
++		io_kbuf_drop_legacy(req);
+ 	}
+ 	return ret;
+ }
 
 
 
