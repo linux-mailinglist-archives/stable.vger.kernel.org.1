@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-234550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QE0DGhuh1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:27 +0200
+	id aMf8N7ah1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B775E3C12EE
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:40:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 858203C1520
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B78C316EA04
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D25C302BA2E
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0233D411F;
-	Wed,  8 Apr 2026 18:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887D93D522C;
+	Wed,  8 Apr 2026 18:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="he495sLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eY5VYY3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3883F32A3FD;
-	Wed,  8 Apr 2026 18:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B76F32A3FD;
+	Wed,  8 Apr 2026 18:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673150; cv=none; b=Tb9921X5Do+ct5h20l630aIWd2tMHn4io7tQeJ5pVGA50SFyRLsJrnSr2oVbF+0elwL2ayIlfbfYTkvJww6QJriBCrUiO9UJU9LeuRg4KflvqfX/D5bcv2mIhZto6huK3HamfCy7BC9O+WkhYT08THuOsygbOlTiZizjnqiU7wA=
+	t=1775673730; cv=none; b=rnTz1nkGivPECpT+GlO8XHJEiexpJgd6XLWe+TeU/I2alltFTbsrp0heEck0MVIN3A2wC/LxYeebSzvFlS5zASR8nq25WbzPYWR3FPuz7zsmWpB08UhAKAj8o1DsmMMZDEVoRvnYNHCjfTulHmnSkPsbyditrvQoOVOAAGtyrQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673150; c=relaxed/simple;
-	bh=taYg02Dtc8e5XppYdlIf9dEznCOMYTUqsGjz5LZksIg=;
+	s=arc-20240116; t=1775673730; c=relaxed/simple;
+	bh=w+t9hBl6EFZZGh7J3bqXIIMdz4QSnj23u0IWd7dcMUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cr6ETMkvXLmICTUIhuAaVR5KTXmTKt0nUHwuYwaFckZKovARMz9NH5BrHmmC+D7DLoZbfYtZPe071ef6SFcBNXmmo1TKvCiVQyDzwOtwgwCiWe+bWHOkK1YpTheC0cBu44wW1gBKrIFVGrKyF9mg6oOdF++zWZS1BbDPoz7SGZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=he495sLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FD3C19421;
-	Wed,  8 Apr 2026 18:32:29 +0000 (UTC)
+	 MIME-Version; b=PYzvHWSTA2PoFNkcnNWzmPA91Z6RnQz/1waAdsMzbX4Myqga1D8GG/0+UPW6ZLqGYxMVQooFHNlOCh1lFJZu4YjtdGSe2cDBTI3AnAcs3oWqmVcCWHisZQ2eh0lp6cVLO0Qq/HRjOQ8pyTKdbmTrc8RhDen3DzPYTvqaslhZhjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eY5VYY3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5545C19421;
+	Wed,  8 Apr 2026 18:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673150;
-	bh=taYg02Dtc8e5XppYdlIf9dEznCOMYTUqsGjz5LZksIg=;
+	s=korg; t=1775673730;
+	bh=w+t9hBl6EFZZGh7J3bqXIIMdz4QSnj23u0IWd7dcMUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=he495sLB+uivZoNkAGyhtUCi0sxLRlHZZJ03XfKSs+fhTj4mVpVVmA7V2xEder1D1
-	 CIq8vdXv7q3dG83SdqTbYkJyaC7+5Nev2r9+vUQbHpIdgGiVLlRa8SX8JcW8DuIRBo
-	 pSKbexIcw4VnMQMp73vjWAbdXH1HlX+4+JRimNCs=
+	b=eY5VYY3ohGUOPUjtglaguzTMl72j1XmPH/ZPCtw9kmYNSiFo2+tj6WQwEQoy0DIdj
+	 nTfp92U841HBd9oZHLiHyMrYUTklAfi2ok7LQP467qjg+xurnNf5QpIdlfofvpN/fe
+	 83VOaAQL144wb55OCM5rd4U8gdMfCRxzIvGRQfSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Amery Hung <ameryhung@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 121/277] drm/sysfb: Fix efidrm error handling and memory type mismatch
+Subject: [PATCH 6.12 066/242] bpf: Fix regsafe() for pointers to packet
 Date: Wed,  8 Apr 2026 20:01:46 +0200
-Message-ID: <20260408175938.390734510@linuxfoundation.org>
+Message-ID: <20260408175929.554461261@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,125 +71,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,iogearbox.net,gmail.com];
+	TAGGED_FROM(0.00)[bounces-234775-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234550-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B775E3C12EE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,iogearbox.net:email]
+X-Rspamd-Queue-Id: 858203C1520
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit 5e77923a3eb39cce91bf08ed7670f816bf86d4af ]
+[ Upstream commit a8502a79e832b861e99218cbd2d8f4312d62e225 ]
 
-Fix incorrect error checking and memory type confusion in
-efidrm_device_create(). devm_memremap() returns error pointers, not
-NULL, and returns system memory while devm_ioremap() returns I/O memory.
-The code incorrectly passes system memory to iosys_map_set_vaddr_iomem().
+In case rold->reg->range == BEYOND_PKT_END && rcur->reg->range == N
+regsafe() may return true which may lead to current state with
+valid packet range not being explored. Fix the bug.
 
-Restructure to handle each memory type separately. Use devm_ioremap*()
-with ERR_PTR(-ENXIO) for WC/UC, and devm_memremap() with ERR_CAST() for
-WT/WB.
-
-Fixes: 32ae90c66fb6 ("drm/sysfb: Add efidrm for EFI displays")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260311064652.2903449-1-nichen@iscas.ac.cn
+Fixes: 6d94e741a8ff ("bpf: Support for pointers beyond pkt_end.")
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Amery Hung <ameryhung@gmail.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/bpf/20260331204228.26726-1-alexei.starovoitov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sysfb/efidrm.c | 46 +++++++++++++++++++++++-----------
- 1 file changed, 31 insertions(+), 15 deletions(-)
+ kernel/bpf/verifier.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/sysfb/efidrm.c b/drivers/gpu/drm/sysfb/efidrm.c
-index 1883c4a8604c2..97a3711e79337 100644
---- a/drivers/gpu/drm/sysfb/efidrm.c
-+++ b/drivers/gpu/drm/sysfb/efidrm.c
-@@ -150,7 +150,6 @@ static struct efidrm_device *efidrm_device_create(struct drm_driver *drv,
- 	struct drm_sysfb_device *sysfb;
- 	struct drm_device *dev;
- 	struct resource *mem = NULL;
--	void __iomem *screen_base = NULL;
- 	struct drm_plane *primary_plane;
- 	struct drm_crtc *crtc;
- 	struct drm_encoder *encoder;
-@@ -235,21 +234,38 @@ static struct efidrm_device *efidrm_device_create(struct drm_driver *drv,
- 
- 	mem_flags = efidrm_get_mem_flags(dev, res->start, vsize);
- 
--	if (mem_flags & EFI_MEMORY_WC)
--		screen_base = devm_ioremap_wc(&pdev->dev, mem->start, resource_size(mem));
--	else if (mem_flags & EFI_MEMORY_UC)
--		screen_base = devm_ioremap(&pdev->dev, mem->start, resource_size(mem));
--	else if (mem_flags & EFI_MEMORY_WT)
--		screen_base = devm_memremap(&pdev->dev, mem->start, resource_size(mem),
--					    MEMREMAP_WT);
--	else if (mem_flags & EFI_MEMORY_WB)
--		screen_base = devm_memremap(&pdev->dev, mem->start, resource_size(mem),
--					    MEMREMAP_WB);
--	else
-+	if (mem_flags & EFI_MEMORY_WC) {
-+		void __iomem *screen_base = devm_ioremap_wc(&pdev->dev, mem->start,
-+							    resource_size(mem));
-+
-+		if (!screen_base)
-+			return ERR_PTR(-ENXIO);
-+		iosys_map_set_vaddr_iomem(&sysfb->fb_addr, screen_base);
-+	} else if (mem_flags & EFI_MEMORY_UC) {
-+		void __iomem *screen_base = devm_ioremap(&pdev->dev, mem->start,
-+							 resource_size(mem));
-+
-+		if (!screen_base)
-+			return ERR_PTR(-ENXIO);
-+		iosys_map_set_vaddr_iomem(&sysfb->fb_addr, screen_base);
-+	} else if (mem_flags & EFI_MEMORY_WT) {
-+		void *screen_base = devm_memremap(&pdev->dev, mem->start,
-+						  resource_size(mem), MEMREMAP_WT);
-+
-+		if (IS_ERR(screen_base))
-+			return ERR_CAST(screen_base);
-+		iosys_map_set_vaddr(&sysfb->fb_addr, screen_base);
-+	} else if (mem_flags & EFI_MEMORY_WB) {
-+		void *screen_base = devm_memremap(&pdev->dev, mem->start,
-+						  resource_size(mem), MEMREMAP_WB);
-+
-+		if (IS_ERR(screen_base))
-+			return ERR_CAST(screen_base);
-+		iosys_map_set_vaddr(&sysfb->fb_addr, screen_base);
-+	} else {
- 		drm_err(dev, "invalid mem_flags: 0x%llx\n", mem_flags);
--	if (!screen_base)
--		return ERR_PTR(-ENOMEM);
--	iosys_map_set_vaddr_iomem(&sysfb->fb_addr, screen_base);
-+		return ERR_PTR(-EINVAL);
-+	}
- 
- 	/*
- 	 * Modesetting
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 68fa30852051e..9bdc19587948c 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -17562,8 +17562,13 @@ static bool regsafe(struct bpf_verifier_env *env, struct bpf_reg_state *rold,
+ 		 * since someone could have accessed through (ptr - k), or
+ 		 * even done ptr -= k in a register, to get a safe access.
+ 		 */
+-		if (rold->range > rcur->range)
++		if (rold->range < 0 || rcur->range < 0) {
++			/* special case for [BEYOND|AT]_PKT_END */
++			if (rold->range != rcur->range)
++				return false;
++		} else if (rold->range > rcur->range) {
+ 			return false;
++		}
+ 		/* If the offsets don't match, we can't trust our alignment;
+ 		 * nor can we be sure that we won't fall out of range.
+ 		 */
 -- 
 2.53.0
 
