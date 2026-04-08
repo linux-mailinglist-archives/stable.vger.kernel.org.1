@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-235184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PGiHe2r1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:37 +0200
+	id 0JfVF42g1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54FF3C2FAC
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:26:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059633C11EC
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45E923201051
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 62F5E30251B2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF783D9030;
-	Wed,  8 Apr 2026 18:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5083A36166F;
+	Wed,  8 Apr 2026 18:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YUB6iv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTxlzg+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC90A3D75AF;
-	Wed,  8 Apr 2026 18:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DDFB67E;
+	Wed,  8 Apr 2026 18:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674785; cv=none; b=KLhvIGkTyLp+G0fslpL21EcTPptgeSOIYJrpc/HjBbJTlqq0i4q0OjabCnm+Iyd5WtYcItuYkhT7bEnMRu/8OPXtQg4zk26YDmJOWUMajALSpTncDXf+rtGexv6opRGZVLPxm36fqQFuLlkTC8+mpy5fgCLyEMsH1OtJYbOvu2I=
+	t=1775673483; cv=none; b=pn2BXn5LNL/KbdOCz5b5ml/C/fEvvE7+fyjQecinsHGEy9jAy8kWgoz8KBv1Ji+5N7HAFrLVqetHx3L6dFuOgu+qPVWUj7npRDA+H2E3XKnf875wTEsWzCuL3e3QH2nPEKUNt8m8J46mBhCg+tNfjlLOzwOE5ldxAnmDSF6+C+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674785; c=relaxed/simple;
-	bh=S7fm5s8NjZBive+/qZtwt5FH4kh5iIyFppSAFCOzCxw=;
+	s=arc-20240116; t=1775673483; c=relaxed/simple;
+	bh=TuybkVLMOFNtVutZZBMSYUQW4G/v1ix8XzupsR5KB2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qIMHWhxbfs11sOJwfeMVWFL1N33CdEYFCRjNSRG9zIg/fBF9Yftve4N217oed868b9On08TGcKilepkrpO5xXCIS+4S7Vfin+t0tZQJvyH2xVF7OfMWDlBKIpI7Lg+dIFp3JUOFT5269lRaj8qWarWCjqEbJtS3UZ+kDkjgHhdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YUB6iv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496EBC19421;
-	Wed,  8 Apr 2026 18:59:45 +0000 (UTC)
+	 MIME-Version; b=GzqomxYCO3q2ks1wvcjST+pKq/hDv0ip2jZ93Du8NGoBgTr4TLUIhpEkVmXKyOslOgMqz1U6kauCcGS+YGFd4gfVGzu6qMZQf7hQvBzJ38qxi/h2bHB8DARgiKITx7Y0vHeBTWDJsG0JIzzUYgngzqvO8fSCNifR5/KGBZpYFPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTxlzg+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D657C19421;
+	Wed,  8 Apr 2026 18:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674785;
-	bh=S7fm5s8NjZBive+/qZtwt5FH4kh5iIyFppSAFCOzCxw=;
+	s=korg; t=1775673483;
+	bh=TuybkVLMOFNtVutZZBMSYUQW4G/v1ix8XzupsR5KB2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YUB6iv2aVvi3dcEidsc+8zx7jCGQWa+cF958M8cxdNzSjWt27yynrchQ75XRRhfD
-	 yGjmcWTjts7FL/ALiI2gCrqhA8XiLH6zbEIoNWIQlETK0I627A1H8yTfeJCq9YesNs
-	 gPM4QE1tiTHgFqa7YhnIfXts7EwB4UmnUsSM1ubs=
+	b=GTxlzg+L44jBuB/Z8QwcO5YqEpaKzeKqRZRT68A61GGke9KruYp36WpkUoeClfI3v
+	 /y+oa7trn5BDaK+aZKyPK9o8KfjguaL1+AFWZlwVkcQgs7vtApH5MNPaCaSrTUb77I
+	 TB4I1aUj/B57/0vZCoxevutIg/xKzpuCMpt/X/ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 232/311] iio: gyro: mpu3050: Fix irq resource leak
-Date: Wed,  8 Apr 2026 20:03:52 +0200
-Message-ID: <20260408175948.059744678@linuxfoundation.org>
+	Sebastian Urban <surban@surban.net>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.18 248/277] usb: gadget: dummy_hcd: fix premature URB completion when ZLP follows partial transfer
+Date: Wed,  8 Apr 2026 20:03:53 +0200
+Message-ID: <20260408175943.119447317@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,83 +68,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-235184-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234679-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: D54FF3C2FAC
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[harvard.edu:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 059633C11EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Sebastian Urban <surban@surban.net>
 
-commit 4216db1043a3be72ef9c2b7b9f393d7fa72496e6 upstream.
+commit f50200dd44125e445a6164e88c217472fa79cdbc upstream.
 
-The interrupt handler is setup but only a few lines down if
-iio_trigger_register() fails the function returns without properly
-releasing the handler.
+When a gadget request is only partially transferred in transfer()
+because the per-frame bandwidth budget is exhausted, the loop advances
+to the next queued request. If that next request is a zero-length
+packet (ZLP), len evaluates to zero and the code takes the
+unlikely(len == 0) path, which sets is_short = 1. This bypasses the
+bandwidth guard ("limit < ep->ep.maxpacket && limit < len") that
+lives in the else branch and would otherwise break out of the loop for
+non-zero requests. The is_short path then completes the URB before all
+data from the first request has been transferred.
 
-Add cleanup goto to resolve resource leak.
+Reproducer (bulk IN, high speed):
 
-Detected by Smatch:
-drivers/iio/gyro/mpu3050-core.c:1128 mpu3050_trigger_probe() warn:
-'irq' from request_threaded_irq() not released on lines: 1124.
+  Device side (FunctionFS with Linux AIO):
+    1. Queue a 65024-byte write via io_submit (127 * 512, i.e. a
+       multiple of the HS bulk max packet size).
+    2. Immediately queue a zero-length write (ZLP) via io_submit.
 
-Fixes: 3904b28efb2c7 ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  Host side:
+    3. Submit a 65536-byte bulk IN URB.
+
+  Expected: URB completes with actual_length = 65024.
+  Actual:   URB completes with actual_length = 53248, losing 11776
+            bytes that leak into subsequent URBs.
+
+At high speed the per-frame budget is 53248 bytes (512 * 13 * 8).
+The 65024-byte request exhausts this budget after 53248 bytes, leaving
+the request incomplete (req->req.actual < req->req.length). Neither
+the request nor the URB is finished, and rescan is 0, so the loop
+advances to the ZLP. For the ZLP, dev_len = 0, so len = min(12288, 0)
+= 0, taking the unlikely(len == 0) path and setting is_short = 1.
+The is_short handler then sets *status = 0, completing the URB with
+only 53248 of the expected 65024 bytes.
+
+Fix this by breaking out of the loop when the current request has
+remaining data (req->req.actual < req->req.length). The request
+resumes on the next timer tick, preserving correct data ordering.
+
+Signed-off-by: Sebastian Urban <surban@surban.net>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20260315151045.1155850-1-surban@surban.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/mpu3050-core.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/udc/dummy_hcd.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1129,11 +1129,16 @@ static int mpu3050_trigger_probe(struct
- 
- 	ret = iio_trigger_register(mpu3050->trig);
- 	if (ret)
--		return ret;
-+		goto err_iio_trigger;
- 
- 	indio_dev->trig = iio_trigger_get(mpu3050->trig);
- 
- 	return 0;
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -1538,6 +1538,12 @@ top:
+ 		/* rescan to continue with any other queued i/o */
+ 		if (rescan)
+ 			goto top;
 +
-+err_iio_trigger:
-+	free_irq(mpu3050->irq, mpu3050->trig);
-+
-+	return ret;
++		/* request not fully transferred; stop iterating to
++		 * preserve data ordering across queued requests.
++		 */
++		if (req->req.actual < req->req.length)
++			break;
+ 	}
+ 	return sent;
  }
- 
- int mpu3050_common_probe(struct device *dev,
 
 
 
