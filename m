@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB9nEWqk1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234961-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:34 +0200
+	id gOeAIcSa1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE433C1E7C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:54:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D673C0336
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4BEE33055294
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:50:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A0393018426
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1092E34AB06;
-	Wed,  8 Apr 2026 18:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB973D8919;
+	Wed,  8 Apr 2026 18:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="my3MQeoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWIAsDNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FE025A321;
-	Wed,  8 Apr 2026 18:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E22A37F8C2;
+	Wed,  8 Apr 2026 18:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674211; cv=none; b=jVvzDzvnwRavHeFfHylOXvqJONnLy2y9XuwN+8quGKBtPPmqzM5DvT23rBlsn2guWqaYx7/Ga3QikyiWf/XGpIGn/iMucRbh980yVsc5ZWcXY4Szb926v7rct/ODY8j37RcgsefXlmnEYcHTe4Rb7aeiyo8VpA/OxEL7GDyq2IQ=
+	t=1775671936; cv=none; b=YtE3yuNYl4rtCQNMmIMUUJzN2ROLuKhTlWYIo/iM3EO5PSO/CHNw7IGPo/Y9Df5ZmiaXgVGIgAh5jqJAW5cf+AmevL7tVRdyaPKFcPLn6n+3O8qV6ameL4XNFxKrKcb71n2B3w82Pani8BlQN9h7f3ypD5szSCDNRVlSCQIQOG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674211; c=relaxed/simple;
-	bh=q9fxxSGLlCWieFjAXxkAmoPGjq8NBa2k49qpV21s8tw=;
+	s=arc-20240116; t=1775671936; c=relaxed/simple;
+	bh=w1H0WVOJhUGZTwkhCeHNe0/dDAQcLm1rfOpGyTNatJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKg7vqpbZ5dbGeLhZsmiDdR3kfvsbENMXuAiHJSkKUsbkw2tX80yUpyFQ5XCHrVOTtd10pPLRAcFGdRr1FADRdiOb/tr+yLqnLG+XlblzlQsT4lqv44ccev4pBoHmRU9FCSKDpg/g3Xu62XBIY+d8Ht5x+3Z12oahnwBjYIVeVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=my3MQeoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0432CC19421;
-	Wed,  8 Apr 2026 18:50:10 +0000 (UTC)
+	 MIME-Version; b=S3yTfJq6SVhbZ6g4QwVPuSj3U5sNHlqkB5NAqkcIeUs9NXmVzxJrE3a5X/u5Jd2/tPUDC4M9vWyHoOWsWjQ3jsTLejai3NykwTfhxBpzm2Yau1k4ISiWZah9MY5mSGdYJqb+CbJllTqmBdBrVcHra54M6PQsTjnPFPOaB8yTtKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWIAsDNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85E8C19421;
+	Wed,  8 Apr 2026 18:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674211;
-	bh=q9fxxSGLlCWieFjAXxkAmoPGjq8NBa2k49qpV21s8tw=;
+	s=korg; t=1775671936;
+	bh=w1H0WVOJhUGZTwkhCeHNe0/dDAQcLm1rfOpGyTNatJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=my3MQeoWrv6CoCPra/TSnkvFfoBwRncMa3pypOQ3I6+Z6NaL71daZdMi1E2laow0O
-	 CVhQp5dg+n7g2K0wAyclHUyNzZdeF7mnznejDMXuBNDsZ3dpoFBXMASvfbSaUl/Esa
-	 7dENYBkrDwlAkuw5fFGudHMCNzq5RkhdrDZo564Q=
+	b=bWIAsDNT18YQXInZuznb7LJbWmTOa3r7q/rixjnzvHqb8p71ionnjJzBBo7n5nF6D
+	 yzmofQBY3lmpyWbzn15qQHFdV3fr22woNmRSaY6z6K5ninlvTOfMj5wBxkq3jtikIP
+	 RPPvKTVk2mBdos9CMoUShgfmBSdyo04md+PZNHA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Freund <adrian@freund.io>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 010/311] HID: logitech-hidpp: Enable MX Master 4 over bluetooth
+	Ali Norouzi <ali.norouzi@keysight.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 093/312] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
 Date: Wed,  8 Apr 2026 20:00:10 +0200
-Message-ID: <20260408175939.796726496@linuxfoundation.org>
+Message-ID: <20260408175937.235845430@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234961-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234081-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,50 +89,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,freund.io:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: EBE433C1E7C
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email,msgid.link:url,hartkopp.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 19D673C0336
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Freund <adrian@freund.io>
+From: Ali Norouzi <ali.norouzi@keysight.com>
 
-[ Upstream commit 70031e70ca15ede6a39db4d978e53a6cc720d454 ]
+commit b9c310d72783cc2f30d103eed83920a5a29c671a upstream.
 
-The Logitech MX Master 4 can be connected over bluetooth or through a
-Logitech Bolt receiver. This change adds support for non-standard HID
-features, such as high resolution scrolling when the mouse is connected
-over bluetooth.
-Because no Logitech Bolt receiver driver exists yet those features
-won't be available when the mouse is connected through the receiver.
+cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
 
-Signed-off-by: Adrian Freund <adrian@freund.io>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    int from = calc_idx(crc8->from_idx, cf->len);
+    int to   = calc_idx(crc8->to_idx,   cf->len);
+    int res  = calc_idx(crc8->result_idx, cf->len);
+
+    if (from < 0 || to < 0 || res < 0)
+        return;
+
+However, the loop and the result write then use the raw s8 fields directly
+instead of the computed variables:
+
+    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
+    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
+
+With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
+calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
+i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
+This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
+start of the canfd_frame on the heap.
+
+The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
+correctly throughout; fix cgw_csum_crc8_rel() to match.
+
+Confirmed with KASAN on linux-7.0-rc2:
+  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
+  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
+
+To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
+
+Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
+Cc: stable@vger.kernel.org
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260319-fix-can-gw-and-can-isotp-v2-1-c45d52c6d2d8@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/can/gw.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 02d83c3bd73d4..c3d53250a7604 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4668,6 +4668,8 @@ static const struct hid_device_id hidpp_devices[] = {
- 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb038) },
- 	{ /* Slim Solar+ K980 Keyboard over Bluetooth */
- 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb391) },
-+	{ /* MX Master 4 mouse over Bluetooth */
-+	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb042) },
- 	{}
- };
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -374,10 +374,10 @@ static void cgw_csum_crc8_rel(struct can
+ 		return;
  
--- 
-2.53.0
-
+ 	if (from <= to) {
+-		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
++		for (i = from; i <= to; i++)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	} else {
+-		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
++		for (i = from; i >= to; i--)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	}
+ 
+@@ -396,7 +396,7 @@ static void cgw_csum_crc8_rel(struct can
+ 		break;
+ 	}
+ 
+-	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
++	cf->data[res] = crc ^ crc8->final_xor_val;
+ }
+ 
+ static void cgw_csum_crc8_pos(struct canfd_frame *cf,
 
 
 
