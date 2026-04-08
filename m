@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLEnMaen1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:23 +0200
+	id kDR0MN+e1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:30:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE60D3C2779
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 131963C0D98
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:30:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 898BA31F2ED6
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95B06312BD71
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81213D75AF;
-	Wed,  8 Apr 2026 18:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B6B3B19A1;
+	Wed,  8 Apr 2026 18:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ia52a8I3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t++iHbM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93C31A285;
-	Wed,  8 Apr 2026 18:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6621C3D903F;
+	Wed,  8 Apr 2026 18:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673820; cv=none; b=DP0G/tqonnjdtyJ48f9MTRX6YbknMhN7zYDNH1bu9QdqFWpBiJbMobsemE3Ma5qtGRQsHNV/AQw4muonghvLlu/34JGd96cg8RvzII8m49YnoQhBVYfa83A4i5HDkVcLWh5CQRmAW1qZvQdDfr2KzSmGnh7HKF42URcgLkcDTjY=
+	t=1775672561; cv=none; b=N0YEeQXlk0/CYm129b4p6y+uSpjCzxo62mox1y77jsAYfG1nuvjx43iWspPxMhX+Vw0IBehZ7lJ4fEt/tNPPlmOg4d8uJx/GY9X8oyR/WvmWE36IZMw7xm9DGmCFBmVxiAXOp0t3QcJAwH2GloNZn4yKxy9NK4z+ymJw+arEdtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673820; c=relaxed/simple;
-	bh=nbrH7GJ1RLqfbA4U/lZAPWXa1drhCgbN1oXbWrR5uLs=;
+	s=arc-20240116; t=1775672561; c=relaxed/simple;
+	bh=iGjQ6UUL+Zgun3s8/waL6C54UGNE52qVsBKVOKiRAA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoxjTqCZaf0bz4cOMI2qJtMUEmeyiMrclfvVvmpfs6SSqZr49ZbrF1R9CQpEZJmzuBhLntkHmA2R1pel9GueA8SXJQSEEohnfdHSMHu6GJbsRTTqoaJZFW7rA9kkqlqMmw9fB44xgfD8ftpZCP7neiaHTcIqjwZbEYPVCk9NEUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ia52a8I3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E299C2BC87;
-	Wed,  8 Apr 2026 18:43:40 +0000 (UTC)
+	 MIME-Version; b=QI/JwBj1K/53kX6IqOTQYT4sUsq2TgwBgCxpaQBSOAjswvWNBLUSneGXt2eF39WVStSfskVkgfnSHtgHtfTZpgfYf8OUAcLhlJIetiV4hnDCgw/YrE+v2B9VA+/KdAWtJgX4x+ScXGiAAeyEpNS3uiZXT+v1bj9Ud7CRlojcslA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t++iHbM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8195C19421;
+	Wed,  8 Apr 2026 18:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673820;
-	bh=nbrH7GJ1RLqfbA4U/lZAPWXa1drhCgbN1oXbWrR5uLs=;
+	s=korg; t=1775672561;
+	bh=iGjQ6UUL+Zgun3s8/waL6C54UGNE52qVsBKVOKiRAA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ia52a8I3DHW2ax1J17Zn7JtZIapvHqR7ZJdvCQtX8jGhGnHDBBgVcTkv7ZDg3QSPp
-	 BPfr/GGGx9jsoO9nOS0IvTMufdTOniIOI/wlnzJ4AofhOKCYZ0ZksxaMplPV76/HyX
-	 2HrhQtDHwiA/ZsAbRzUPTHOlBDd8XBCH5RmDXy1Y=
+	b=t++iHbM7uZhdYo/qQ1Rimye0s7lk5Yy6LxYfE4Q0Tr4K4sBiJoJbtpG5l8kRhP1XV
+	 K7D8mBMBQyqwHlalBAYqnXo8S7KE6nHvm84WGswvhiE8oyMDfJi2OFniNzO1bifAIJ
+	 pqy/LNYCyLC+1uOWneUXILxPYN2Hj43T/KO/DoXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/242] bpf: reject direct access to nullable PTR_TO_BUF pointers
+Subject: [PATCH 6.6 054/160] net: macb: fix clk handling on PCI glue driver removal
 Date: Wed,  8 Apr 2026 20:02:21 +0200
-Message-ID: <20260408175930.865623256@linuxfoundation.org>
+Message-ID: <20260408175915.221871689@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,70 +73,151 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234810-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-234323-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: EE60D3C2779
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qemu.org:url,ispras.ru:email]
+X-Rspamd-Queue-Id: 131963C0D98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit b0db1accbc7395657c2b79db59fa9fae0d6656f3 ]
+[ Upstream commit ce8fe5287b87e24e225c342f3b0ec04f0b3680fe ]
 
-check_mem_access() matches PTR_TO_BUF via base_type() which strips
-PTR_MAYBE_NULL, allowing direct dereference without a null check.
+platform_device_unregister() may still want to use the registered clks
+during runtime resume callback.
 
-Map iterator ctx->key and ctx->value are PTR_TO_BUF | PTR_MAYBE_NULL.
-On stop callbacks these are NULL, causing a kernel NULL dereference.
+Note that there is a commit d82d5303c4c5 ("net: macb: fix use after free
+on rmmod") that addressed the similar problem of clk vs platform device
+unregistration but just moved the bug to another place.
 
-Add a type_may_be_null() guard to the PTR_TO_BUF branch, matching the
-existing PTR_TO_BTF_ID pattern.
+Save the pointers to clks into local variables for reuse after platform
+device is unregistered.
 
-Fixes: 20b2aff4bc15 ("bpf: Introduce MEM_RDONLY flag")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20260402092923.38357-2-tpluszz77@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+BUG: KASAN: use-after-free in clk_prepare+0x5a/0x60
+Read of size 8 at addr ffff888104f85e00 by task modprobe/597
+
+CPU: 2 PID: 597 Comm: modprobe Not tainted 6.1.164+ #114
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8d/0xba
+ print_report+0x17f/0x496
+ kasan_report+0xd9/0x180
+ clk_prepare+0x5a/0x60
+ macb_runtime_resume+0x13d/0x410 [macb]
+ pm_generic_runtime_resume+0x97/0xd0
+ __rpm_callback+0xc8/0x4d0
+ rpm_callback+0xf6/0x230
+ rpm_resume+0xeeb/0x1a70
+ __pm_runtime_resume+0xb4/0x170
+ bus_remove_device+0x2e3/0x4b0
+ device_del+0x5b3/0xdc0
+ platform_device_del+0x4e/0x280
+ platform_device_unregister+0x11/0x50
+ pci_device_remove+0xae/0x210
+ device_remove+0xcb/0x180
+ device_release_driver_internal+0x529/0x770
+ driver_detach+0xd4/0x1a0
+ bus_remove_driver+0x135/0x260
+ driver_unregister+0x72/0xb0
+ pci_unregister_driver+0x26/0x220
+ __do_sys_delete_module+0x32e/0x550
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ </TASK>
+
+Allocated by task 519:
+ kasan_save_stack+0x2c/0x50
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x8e/0x90
+ __clk_register+0x458/0x2890
+ clk_hw_register+0x1a/0x60
+ __clk_hw_register_fixed_rate+0x255/0x410
+ clk_register_fixed_rate+0x3c/0xa0
+ macb_probe+0x1d8/0x42e [macb_pci]
+ local_pci_probe+0xd7/0x190
+ pci_device_probe+0x252/0x600
+ really_probe+0x255/0x7f0
+ __driver_probe_device+0x1ee/0x330
+ driver_probe_device+0x4c/0x1f0
+ __driver_attach+0x1df/0x4e0
+ bus_for_each_dev+0x15d/0x1f0
+ bus_add_driver+0x486/0x5e0
+ driver_register+0x23a/0x3d0
+ do_one_initcall+0xfd/0x4d0
+ do_init_module+0x18b/0x5a0
+ load_module+0x5663/0x7950
+ __do_sys_finit_module+0x101/0x180
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Freed by task 597:
+ kasan_save_stack+0x2c/0x50
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x2a/0x50
+ __kasan_slab_free+0x106/0x180
+ __kmem_cache_free+0xbc/0x320
+ clk_unregister+0x6de/0x8d0
+ macb_remove+0x73/0xc0 [macb_pci]
+ pci_device_remove+0xae/0x210
+ device_remove+0xcb/0x180
+ device_release_driver_internal+0x529/0x770
+ driver_detach+0xd4/0x1a0
+ bus_remove_driver+0x135/0x260
+ driver_unregister+0x72/0xb0
+ pci_unregister_driver+0x26/0x220
+ __do_sys_delete_module+0x32e/0x550
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fixes: d82d5303c4c5 ("net: macb: fix use after free on rmmod")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20260330184542.626619-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 9bdc19587948c..ff16bc2bff589 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7224,7 +7224,8 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
- 	} else if (reg->type == CONST_PTR_TO_MAP) {
- 		err = check_ptr_to_map_access(env, regs, regno, off, size, t,
- 					      value_regno);
--	} else if (base_type(reg->type) == PTR_TO_BUF) {
-+	} else if (base_type(reg->type) == PTR_TO_BUF &&
-+		   !type_may_be_null(reg->type)) {
- 		bool rdonly_mem = type_is_rdonly_mem(reg->type);
- 		u32 *max_access;
+diff --git a/drivers/net/ethernet/cadence/macb_pci.c b/drivers/net/ethernet/cadence/macb_pci.c
+index f66d22de5168d..4dd0cec2e5423 100644
+--- a/drivers/net/ethernet/cadence/macb_pci.c
++++ b/drivers/net/ethernet/cadence/macb_pci.c
+@@ -110,10 +110,12 @@ static void macb_remove(struct pci_dev *pdev)
+ {
+ 	struct platform_device *plat_dev = pci_get_drvdata(pdev);
+ 	struct macb_platform_data *plat_data = dev_get_platdata(&plat_dev->dev);
++	struct clk *pclk = plat_data->pclk;
++	struct clk *hclk = plat_data->hclk;
  
+-	clk_unregister(plat_data->pclk);
+-	clk_unregister(plat_data->hclk);
+ 	platform_device_unregister(plat_dev);
++	clk_unregister(pclk);
++	clk_unregister(hclk);
+ }
+ 
+ static const struct pci_device_id dev_id_table[] = {
 -- 
 2.53.0
 
