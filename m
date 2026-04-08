@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-235064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wB2wHFCq1mmKHAgAu9opvQ
-	(envelope-from <stable+bounces-235064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:44 +0200
+	id AE2yN26j1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23033C2C65
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 435EC3C1B8D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6857307C884
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9BBC130DFC07
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4078C3D9031;
-	Wed,  8 Apr 2026 18:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296543624B0;
+	Wed,  8 Apr 2026 18:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKzzJPnL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJgcyER3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031523D8912;
-	Wed,  8 Apr 2026 18:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E127932A3FD;
+	Wed,  8 Apr 2026 18:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674477; cv=none; b=d46RjPVx2umxwDt5mfEj19pR50/6ZbgKQLqOFEbJFVaAxNfp6ho+IQUDLAXV33eQVUoZnA3+l5+dEvZwzKzucCOOwdfIuZdh+/moq0tEY2XtwR5aMAwGQ04su9ayP/cOezhPmoDmYk/B70WdsoAU00AOqEH03x15AHJ6QqJNDfE=
+	t=1775673171; cv=none; b=W99zbFfqyaVk4gMR8gaseOt7E3ysZ8OfQGDEoYZjyKb6WLjnjzz4C4jXLgIif6K21HXNMsflqA5MIBn39biL7DdlxUhJB925Zgnjn9mxHQbjzrVmkFYmFZ1J5RAjzVLjfhrz789kBea0feVknTDqSNuwKqMGyihlbWpU0Rc6HvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674477; c=relaxed/simple;
-	bh=GsxTCNnWqUQQkh61ZNSYACfhp9jsEimRk8m7LTTQFm8=;
+	s=arc-20240116; t=1775673171; c=relaxed/simple;
+	bh=V/OXbf89/Q8FMXM0AK1eiDqS0ndRLl7Ihgbu1VGqpGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNZqzmgqS0rmoknwNrBIxUi87asGmHba+4wVNQ/A5V0UqW31geqC40qdAaJu8TRhq1qkY6MaORSnpLG3I3mI+8KIQvU9GqGqa4IsLT5yxAQr7rwV64+fdfERuTV6Zn1eGWeRm0rKCYcsNvj5yJQEhYOA6HD6L1cI8tGo3ORgPAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKzzJPnL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E2CC19421;
-	Wed,  8 Apr 2026 18:54:36 +0000 (UTC)
+	 MIME-Version; b=kayMZjF99TUpVcfhrIJu0pGnqZ/n3amRo0rQVQ3LI7T93c1RSNsinzrrYL6G5CPEMsnqA/Q5Vi9PT4jJevUZjXYaY8BPKuTmRxwT84InuXhy1N/0JASR+ssmu1a+rMmifOyMrd5ItD+I6u2qGgmp5DX6AWfo/dWqBc8GtPwPnbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJgcyER3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F06CC19421;
+	Wed,  8 Apr 2026 18:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674476;
-	bh=GsxTCNnWqUQQkh61ZNSYACfhp9jsEimRk8m7LTTQFm8=;
+	s=korg; t=1775673170;
+	bh=V/OXbf89/Q8FMXM0AK1eiDqS0ndRLl7Ihgbu1VGqpGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKzzJPnLz1V+Msw3Z/3ER9fly6m5OCsBqInYQzERqlyWzckoxoZkZuFAaQp7rBI/p
-	 YMDC0JVHWZjMAzKcYkKRfVMWa8FpAP2E3jLGE2p8HWBRu3N/9s7os+2aLHureAgCC8
-	 0pr5gMqldVDECmF45OVKLETOb6AubHXVuf/lBdVI=
+	b=rJgcyER3aJ4rrE4FIIpMvWWR4SUmLUyMFlmvz9hW8OEDstOlLE36XPgjwCKgsCeOE
+	 k2/YmpTkIfgUbDjJJXXfM5wXDuVhKuEJIht1jEEmuUV1dOmt7tvvDzDWcOMQKypyt0
+	 rJVMd8wtmzhiZ/Rx/9r8A39U+H6eWQmhjv9XICis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sunil V L <sunilvl@oss.qualcomm.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 113/311] net/mlx5: Fix switchdev mode rollback in case of failure
+Subject: [PATCH 6.18 128/277] ACPI: RIMT: Add dependency between iommu and devices
 Date: Wed,  8 Apr 2026 20:01:53 +0200
-Message-ID: <20260408175943.633675053@linuxfoundation.org>
+Message-ID: <20260408175938.654992212@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,110 +73,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235064-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234558-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email]
-X-Rspamd-Queue-Id: D23033C2C65
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 435EC3C1B8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Sunil V L <sunilvl@oss.qualcomm.com>
 
-[ Upstream commit 403186400a1a6166efe7031edc549c15fee4723f ]
+[ Upstream commit 9156585280f161fc1c3552cf1860559edb2bb7e3 ]
 
-If for some internal reason switchdev mode fails, we rollback to legacy
-mode, before this patch, rollback will unregister the uplink netdev and
-leave it unregistered causing the below kernel bug.
+EPROBE_DEFER ensures IOMMU devices are probed before the devices that
+depend on them. During shutdown, however, the IOMMU may be removed
+first, leading to issues. To avoid this, a device link is added
+which enforces the correct removal order.
 
-To fix this, we need to avoid netdev unregister by setting the proper
-rollback flag 'MLX5_PRIV_FLAGS_SWITCH_LEGACY' to indicate legacy mode.
-
-devlink (431) used greatest stack depth: 11048 bytes left
-mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), \
-	necvfs(0), active vports(0)
-mlx5_core 0000:00:03.0: E-Switch: Supported tc chains and prios offload
-mlx5_core 0000:00:03.0: Loading uplink representor for vport 65535
-mlx5_core 0000:00:03.0: mlx5_cmd_out_err:816:(pid 456): \
-	QUERY_HCA_CAP(0x100) op_mod(0x0) failed, \
-	status bad parameter(0x3), syndrome (0x3a3846), err(-22)
-mlx5_core 0000:00:03.0 enp0s3np0 (unregistered): Unloading uplink \
-	representor for vport 65535
- ------------[ cut here ]------------
-kernel BUG at net/core/dev.c:12070!
-Oops: invalid opcode: 0000 [#1] SMP NOPTI
-CPU: 2 UID: 0 PID: 456 Comm: devlink Not tainted 6.16.0-rc3+ \
-	#9 PREEMPT(voluntary)
-RIP: 0010:unregister_netdevice_many_notify+0x123/0xae0
-...
-Call Trace:
-[   90.923094]  unregister_netdevice_queue+0xad/0xf0
-[   90.923323]  unregister_netdev+0x1c/0x40
-[   90.923522]  mlx5e_vport_rep_unload+0x61/0xc6
-[   90.923736]  esw_offloads_enable+0x8e6/0x920
-[   90.923947]  mlx5_eswitch_enable_locked+0x349/0x430
-[   90.924182]  ? is_mp_supported+0x57/0xb0
-[   90.924376]  mlx5_devlink_eswitch_mode_set+0x167/0x350
-[   90.924628]  devlink_nl_eswitch_set_doit+0x6f/0xf0
-[   90.924862]  genl_family_rcv_msg_doit+0xe8/0x140
-[   90.925088]  genl_rcv_msg+0x18b/0x290
-[   90.925269]  ? __pfx_devlink_nl_pre_doit+0x10/0x10
-[   90.925506]  ? __pfx_devlink_nl_eswitch_set_doit+0x10/0x10
-[   90.925766]  ? __pfx_devlink_nl_post_doit+0x10/0x10
-[   90.926001]  ? __pfx_genl_rcv_msg+0x10/0x10
-[   90.926206]  netlink_rcv_skb+0x52/0x100
-[   90.926393]  genl_rcv+0x28/0x40
-[   90.926557]  netlink_unicast+0x27d/0x3d0
-[   90.926749]  netlink_sendmsg+0x1f7/0x430
-[   90.926942]  __sys_sendto+0x213/0x220
-[   90.927127]  ? __sys_recvmsg+0x6a/0xd0
-[   90.927312]  __x64_sys_sendto+0x24/0x30
-[   90.927504]  do_syscall_64+0x50/0x1c0
-[   90.927687]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   90.927929] RIP: 0033:0x7f7d0363e047
-
-Fixes: 2a4f56fbcc47 ("net/mlx5e: Keep netdev when leave switchdev for devlink set legacy only")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260330194015.53585-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8f7729552582 ("ACPI: RISC-V: Add support for RIMT")
+Signed-off-by: Sunil V L <sunilvl@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260303061605.722949-1-sunilvl@oss.qualcomm.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/riscv/rimt.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index 166a88988904e..31e4eb6bd685b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3761,6 +3761,8 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
- 	return 0;
+diff --git a/drivers/acpi/riscv/rimt.c b/drivers/acpi/riscv/rimt.c
+index 7f423405e5ef0..8eaa8731bddd6 100644
+--- a/drivers/acpi/riscv/rimt.c
++++ b/drivers/acpi/riscv/rimt.c
+@@ -263,6 +263,13 @@ static int rimt_iommu_xlate(struct device *dev, struct acpi_rimt_node *node, u32
+ 	if (!rimt_fwnode)
+ 		return -EPROBE_DEFER;
  
- err_vports:
-+	/* rollback to legacy, indicates don't unregister the uplink netdev */
-+	esw->dev->priv.flags |= MLX5_PRIV_FLAGS_SWITCH_LEGACY;
- 	mlx5_esw_offloads_rep_unload(esw, MLX5_VPORT_UPLINK);
- err_uplink:
- 	esw_offloads_steering_cleanup(esw);
++	/*
++	 * EPROBE_DEFER ensures IOMMU is probed before the devices that
++	 * depend on them. During shutdown, however, the IOMMU may be removed
++	 * first, leading to issues. To avoid this, a device link is added
++	 * which enforces the correct removal order.
++	 */
++	device_link_add(dev, rimt_fwnode->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+ 	return acpi_iommu_fwspec_init(dev, deviceid, rimt_fwnode);
+ }
+ 
 -- 
 2.53.0
 
