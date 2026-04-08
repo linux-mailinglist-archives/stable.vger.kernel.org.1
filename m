@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-234337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAx7G9+d1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234337-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:39 +0200
+	id wB2wHFCq1mmKHAgAu9opvQ
+	(envelope-from <stable+bounces-235064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80423C0B81
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23033C2C65
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3912308A060
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6857307C884
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3FB3D9DB5;
-	Wed,  8 Apr 2026 18:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4078C3D9031;
+	Wed,  8 Apr 2026 18:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJzG7fxI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKzzJPnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D7E3D9DBB;
-	Wed,  8 Apr 2026 18:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031523D8912;
+	Wed,  8 Apr 2026 18:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672598; cv=none; b=QEHapzxCEztmIkvYIkpbm2KP2Mv0XOYmnMqllwgLO1xPuiSGL50oMi5K9EDrFt9IK2sTh7rAPHlxUiAWCk+/xYD4TjNsFW1Gfxp1bxUByGRNJxMhaC5mhcQjyM+Mzmk8ZexlX+Q14LioJ3OfYeTqPYJz+W5H8uaMUmbpsaFDPYM=
+	t=1775674477; cv=none; b=d46RjPVx2umxwDt5mfEj19pR50/6ZbgKQLqOFEbJFVaAxNfp6ho+IQUDLAXV33eQVUoZnA3+l5+dEvZwzKzucCOOwdfIuZdh+/moq0tEY2XtwR5aMAwGQ04su9ayP/cOezhPmoDmYk/B70WdsoAU00AOqEH03x15AHJ6QqJNDfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672598; c=relaxed/simple;
-	bh=XOeCy5jYLYQeXQNJ3PdgIgSFqoMQwJQFtt6YpKcW4Vs=;
+	s=arc-20240116; t=1775674477; c=relaxed/simple;
+	bh=GsxTCNnWqUQQkh61ZNSYACfhp9jsEimRk8m7LTTQFm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWW8FKcQmnHf3YL74Im2YBur2F6ABqw58Df9THHhio1z9I/23Y8cUtj0Wvo5BO66IOCuNeQwfNkffJG/GXFQu+Jkve23r4aQArT4EE7cOscxjtA53vmt7Ky5vVx44hDuN8QW7g5AcOIfrdXeEwZ8qPhHz1TpGwNE4XWIS2OT/0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJzG7fxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A210C19421;
-	Wed,  8 Apr 2026 18:23:17 +0000 (UTC)
+	 MIME-Version; b=lNZqzmgqS0rmoknwNrBIxUi87asGmHba+4wVNQ/A5V0UqW31geqC40qdAaJu8TRhq1qkY6MaORSnpLG3I3mI+8KIQvU9GqGqa4IsLT5yxAQr7rwV64+fdfERuTV6Zn1eGWeRm0rKCYcsNvj5yJQEhYOA6HD6L1cI8tGo3ORgPAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKzzJPnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E2CC19421;
+	Wed,  8 Apr 2026 18:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672597;
-	bh=XOeCy5jYLYQeXQNJ3PdgIgSFqoMQwJQFtt6YpKcW4Vs=;
+	s=korg; t=1775674476;
+	bh=GsxTCNnWqUQQkh61ZNSYACfhp9jsEimRk8m7LTTQFm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJzG7fxI2O5cgttzAjiqzuKJbQ5mPUfuwoOXTBaak8KcFbzVp3MYcpHTxQcssJhFL
-	 iutxPvi28h4rdx+3Z6XIt4gxY74qOPVYgZAo0kpexNVov1LQN6rPMEqIFXbWN+tsh/
-	 kWJcj9KBY3LRJY0gl6vQkltJPYae/q5HRV5HlB18=
+	b=KKzzJPnLz1V+Msw3Z/3ER9fly6m5OCsBqInYQzERqlyWzckoxoZkZuFAaQp7rBI/p
+	 YMDC0JVHWZjMAzKcYkKRfVMWa8FpAP2E3jLGE2p8HWBRu3N/9s7os+2aLHureAgCC8
+	 0pr5gMqldVDECmF45OVKLETOb6AubHXVuf/lBdVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/160] net/sched: sch_hfsc: fix divide-by-zero in rtsc_min()
+Subject: [PATCH 6.19 113/311] net/mlx5: Fix switchdev mode rollback in case of failure
 Date: Wed,  8 Apr 2026 20:01:53 +0200
-Message-ID: <20260408175914.186503534@linuxfoundation.org>
+Message-ID: <20260408175943.633675053@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,92 +70,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234337-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235064-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mojatatu.com:email]
-X-Rspamd-Queue-Id: D80423C0B81
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email]
+X-Rspamd-Queue-Id: D23033C2C65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-[ Upstream commit 4576100b8cd03118267513cafacde164b498b322 ]
+[ Upstream commit 403186400a1a6166efe7031edc549c15fee4723f ]
 
-m2sm() converts a u32 slope to a u64 scaled value.  For large inputs
-(e.g. m1=4000000000), the result can reach 2^32.  rtsc_min() stores
-the difference of two such u64 values in a u32 variable `dsm` and
-uses it as a divisor.  When the difference is exactly 2^32 the
-truncation yields zero, causing a divide-by-zero oops in the
-concave-curve intersection path:
+If for some internal reason switchdev mode fails, we rollback to legacy
+mode, before this patch, rollback will unregister the uplink netdev and
+leave it unregistered causing the below kernel bug.
 
-  Oops: divide error: 0000
-  RIP: 0010:rtsc_min (net/sched/sch_hfsc.c:601)
-  Call Trace:
-   init_ed (net/sched/sch_hfsc.c:629)
-   hfsc_enqueue (net/sched/sch_hfsc.c:1569)
-   [...]
+To fix this, we need to avoid netdev unregister by setting the proper
+rollback flag 'MLX5_PRIV_FLAGS_SWITCH_LEGACY' to indicate legacy mode.
 
-Widen `dsm` to u64 and replace do_div() with div64_u64() so the full
-difference is preserved.
+devlink (431) used greatest stack depth: 11048 bytes left
+mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), \
+	necvfs(0), active vports(0)
+mlx5_core 0000:00:03.0: E-Switch: Supported tc chains and prios offload
+mlx5_core 0000:00:03.0: Loading uplink representor for vport 65535
+mlx5_core 0000:00:03.0: mlx5_cmd_out_err:816:(pid 456): \
+	QUERY_HCA_CAP(0x100) op_mod(0x0) failed, \
+	status bad parameter(0x3), syndrome (0x3a3846), err(-22)
+mlx5_core 0000:00:03.0 enp0s3np0 (unregistered): Unloading uplink \
+	representor for vport 65535
+ ------------[ cut here ]------------
+kernel BUG at net/core/dev.c:12070!
+Oops: invalid opcode: 0000 [#1] SMP NOPTI
+CPU: 2 UID: 0 PID: 456 Comm: devlink Not tainted 6.16.0-rc3+ \
+	#9 PREEMPT(voluntary)
+RIP: 0010:unregister_netdevice_many_notify+0x123/0xae0
+...
+Call Trace:
+[   90.923094]  unregister_netdevice_queue+0xad/0xf0
+[   90.923323]  unregister_netdev+0x1c/0x40
+[   90.923522]  mlx5e_vport_rep_unload+0x61/0xc6
+[   90.923736]  esw_offloads_enable+0x8e6/0x920
+[   90.923947]  mlx5_eswitch_enable_locked+0x349/0x430
+[   90.924182]  ? is_mp_supported+0x57/0xb0
+[   90.924376]  mlx5_devlink_eswitch_mode_set+0x167/0x350
+[   90.924628]  devlink_nl_eswitch_set_doit+0x6f/0xf0
+[   90.924862]  genl_family_rcv_msg_doit+0xe8/0x140
+[   90.925088]  genl_rcv_msg+0x18b/0x290
+[   90.925269]  ? __pfx_devlink_nl_pre_doit+0x10/0x10
+[   90.925506]  ? __pfx_devlink_nl_eswitch_set_doit+0x10/0x10
+[   90.925766]  ? __pfx_devlink_nl_post_doit+0x10/0x10
+[   90.926001]  ? __pfx_genl_rcv_msg+0x10/0x10
+[   90.926206]  netlink_rcv_skb+0x52/0x100
+[   90.926393]  genl_rcv+0x28/0x40
+[   90.926557]  netlink_unicast+0x27d/0x3d0
+[   90.926749]  netlink_sendmsg+0x1f7/0x430
+[   90.926942]  __sys_sendto+0x213/0x220
+[   90.927127]  ? __sys_recvmsg+0x6a/0xd0
+[   90.927312]  __x64_sys_sendto+0x24/0x30
+[   90.927504]  do_syscall_64+0x50/0x1c0
+[   90.927687]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   90.927929] RIP: 0033:0x7f7d0363e047
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260326204310.1549327-1-xmei5@asu.edu
+Fixes: 2a4f56fbcc47 ("net/mlx5e: Keep netdev when leave switchdev for devlink set legacy only")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260330194015.53585-4-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 751b1e2c35b3f..1ac51d0249919 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -555,7 +555,7 @@ static void
- rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
- {
- 	u64 y1, y2, dx, dy;
--	u32 dsm;
-+	u64 dsm;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index 166a88988904e..31e4eb6bd685b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -3761,6 +3761,8 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
+ 	return 0;
  
- 	if (isc->sm1 <= isc->sm2) {
- 		/* service curve is convex */
-@@ -598,7 +598,7 @@ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
- 	 */
- 	dx = (y1 - y) << SM_SHIFT;
- 	dsm = isc->sm1 - isc->sm2;
--	do_div(dx, dsm);
-+	dx = div64_u64(dx, dsm);
- 	/*
- 	 * check if (x, y1) belongs to the 1st segment of rtsc.
- 	 * if so, add the offset.
+ err_vports:
++	/* rollback to legacy, indicates don't unregister the uplink netdev */
++	esw->dev->priv.flags |= MLX5_PRIV_FLAGS_SWITCH_LEGACY;
+ 	mlx5_esw_offloads_rep_unload(esw, MLX5_VPORT_UPLINK);
+ err_uplink:
+ 	esw_offloads_steering_cleanup(esw);
 -- 
 2.53.0
 
