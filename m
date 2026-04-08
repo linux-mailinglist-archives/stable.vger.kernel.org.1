@@ -1,174 +1,211 @@
-Return-Path: <stable+bounces-233761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COo0Adfr1Wkd/QcAu9opvQ
-	(envelope-from <stable+bounces-233761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 07:47:03 +0200
+	id kDXuLa/x1WmL/gcAu9opvQ
+	(envelope-from <stable+bounces-233762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:11:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E483B75B3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 07:47:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6235E3B77A6
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 08:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E9CA43030D15
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 05:46:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 233E6302732B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 06:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7BD342CB1;
-	Wed,  8 Apr 2026 05:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ErwHqYpb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8B335CB8B;
+	Wed,  8 Apr 2026 06:11:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C41EB5C2;
-	Wed,  8 Apr 2026 05:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9337833B95C
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 06:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775627215; cv=none; b=XCfTsZVp7HH6nZ7BDEYxlKl+nr+SfiynTT4T6zsDdx+yAN5oP6n0xxen28tvz5ARF27DXJlQwTDqgQg1jJAipTtYWJJjRVRH+syokOkuTWHQVWW5N8nOrQK+xBwEOvNNwsWLPUbVxICqEaruBR2WVV0sV7SUe62kS75wj//sWhc=
+	t=1775628711; cv=none; b=antuUuSDa1Qh6n3Pz44ktmiyTUbzL7g4sO7frjOUJMTHR6ObN7cRUFAN1GpGxS5M5LGYWlfuddVwKchwKZuu4lJj37Y9kcQwvkN+lND7xsmUJYOG6NXMDZgqfKoaG/p6n5uRSyTJWbsitfY+kEzI0rMer48Kw+JpMS/kTGXmIWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775627215; c=relaxed/simple;
-	bh=VL1LgjlwyVlXEU5Va58s7183yT4IePlmOBYPJ676uGA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DtEO2MSLLaeJzn04bLn6PxuNmsndt089++GDmHhkiEAdnCOD6I2gnGUrOpa9HEcjlE2ijX41cDX7NcWdVQsm90f/ATDqjBBlzs90NOZVRdgi4B7uXKOBzI2L0vTqSOqj7UV6BQyG7AFL/W4znBNKw1HjY4wAgxQY4XxKEBMdaJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ErwHqYpb; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775627209; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=8HxFDS85wN9rvHZG9v5M3rk30ZGnshODqB3BJaGAY/w=;
-	b=ErwHqYpbrN+98Eh0VrWiJvF+CfPfB7WUsZ+kOHzeKmr6sampwVBaK70MoI6pcBtwaihpB+fN3JwtW0BrIcnfBdF02tSgAkqPI9iLEtSrIAvfFX9K32CqhAYd1PhiCDzZXPBIBD2eSYjzO55tpOu4fyk6G/shdFzTInwiXX7aSIo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X0dlaHW_1775627208;
-Received: from 30.221.145.30(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0X0dlaHW_1775627208 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 08 Apr 2026 13:46:48 +0800
-Message-ID: <214f9901-a153-47d8-a099-847fb2c97aa4@linux.alibaba.com>
-Date: Wed, 8 Apr 2026 13:46:47 +0800
+	s=arc-20240116; t=1775628711; c=relaxed/simple;
+	bh=PE/7KOQTUUI4eFe1WC1G6sJrqh0+D5Qk7KgGxUkU91A=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sDsYyVXZB2tPJHnId+qTHCK9gDC6GpjJwRJJSKUNXT8EPTbgcEpJ73xhFRDqzGlQJdBXHZ0MlFibrpfuXWrJEbTtRwB58PrCs+pDra8lEwPt0rLyrp2gAqcT3RYBJrGFeGEtQWFrx4fKyLKVoHpuc63SoFlEVCw9aIQ5MG6QBpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43cfb723698so5009252f8f.3
+        for <stable@vger.kernel.org>; Tue, 07 Apr 2026 23:11:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775628708; x=1776233508;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+aQ7qZB62vw22URUg0yl7/bcBDdLQ6KVExRcwvTyWNM=;
+        b=GisejcwQhTLO/MTdC1Qu+mASFGILK2/OLhp09xqRS9J5/RUgakKdYOJXnUe3T6qtyd
+         k2bz2Krwu3n2r3VsVYpFpxW22ScgZfyMb3anC+rgoAXTyvFW2ktRpfYygUA3twloZ6Ha
+         HSwufKgNdbhLCiOWNTKsX8lxxwBiNfbduE7slS4tYZyK8mS8kjUz+tRA0ws4+PajzyjB
+         JyC+n3K6qFJkiu8G27i05I4WVv6JIh+mZk6hH87NZXpRFOWGPBdNRudCH8MCZqUwuRpf
+         /VCojTzigwzcP0MBGMX1t1PduXrrhjkUMI5VH+FbrO8fNsXP624AOx5x4eRv1KZU915/
+         FkOg==
+X-Gm-Message-State: AOJu0YwJZOOEESmf3v9l+raHBKbM/5XmAEPDGmIQvGsdDZ6xMTan5HIU
+	phkD989cs6zBcsg0CQrFEfcQ9/VazoOjhndJAmG3avah+T389bb23reiVrC2DFt6/xA=
+X-Gm-Gg: AeBDiev7kmInaq+N0LynG3YmJkxCkWiAZJdHfxmFiHwhT0bptBUXPS9JYgEu22BT9fw
+	zbVFtz3E8l1sIEaEmy9aVWTVbDeKd66pOICkUZIPx/OPhhe5B+3iZUS1CJIrUG2kHJ04RVf2CBH
+	4gx3JoHobd0gE8g7OksdDqOk06902MikDE71kytMItJKT9uthB80PZdKVytD1VzlUW2zX1xMyoh
+	3U/KkAfoeNOYhnIn6RgEI4+0gMS++9rk7IDD4bSgCzujINI57Ihfu5/o2F17SNScM8b+eS2Wm9X
+	A3c98iSkZlMnu2eyjqKOriE9zzgTZkYt8KpgKyCGDudFHj0larzg+A6FhAUSyVSNmTNCS8QBbDb
+	Axcq0mfIuXa5Tcn1pZtmWluwujFd214m3D3/VQrhpBgjIUPy9ETCm/i2A3CHI09LgR8kB5+T638
+	kea9EDuF/2Q/BlJAVkX48vk5mEsWddfLSuBRfHjq0j49iWsph2NYRpJA==
+X-Received: by 2002:a05:6000:400a:b0:43d:4c:229f with SMTP id ffacd0b85a97d-43d292e27admr28657828f8f.44.1775628707632;
+        Tue, 07 Apr 2026 23:11:47 -0700 (PDT)
+Received: from hackbase (95-24-76-124.broadband.corbina.ru. [95.24.76.124])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4f843dsm53745270f8f.37.2026.04.07.23.11.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 23:11:47 -0700 (PDT)
+From: Alexander Popov <alex.popov@linux.com>
+To: stable@vger.kernel.org,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Alexander Popov <alex.popov@linux.com>
+Subject: [PATCH] wifi: virt_wifi: remove SET_NETDEV_DEV to avoid use-after-free
+Date: Wed,  8 Apr 2026 09:10:52 +0300
+Message-ID: <20260408061057.30531-1-alex.popov@linux.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026040715-good-overture-8018@gregkh>
+References: <2026040715-good-overture-8018@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] ocfs2: fix use-after-free in ocfs2_fault() when
- VM_FAULT_RETRY
-To: tejas bharambe <tejas.bharambe@outlook.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Tejas Bharambe <thbharam@gmail.com>,
- "ocfs2-devel@lists.linux.dev" <ocfs2-devel@lists.linux.dev>,
- "mark@fasheh.com" <mark@fasheh.com>, "jlbec@evilplan.org"
- <jlbec@evilplan.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com"
- <syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20260403035333.136824-1-tejas.bharambe@outlook.com>
- <20260403122947.2afc337b5333fb1990a78a65@linux-foundation.org>
- <JH0PR06MB66320ABCFAD8F239FE5112B2895CA@JH0PR06MB6632.apcprd06.prod.outlook.com>
- <20260404175040.40a746040ddb0cb5ce347fe3@linux-foundation.org>
- <JH0PR06MB6632F1A4381AB798FED980CE895BA@JH0PR06MB6632.apcprd06.prod.outlook.com>
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-In-Reply-To: <JH0PR06MB6632F1A4381AB798FED980CE895BA@JH0PR06MB6632.apcprd06.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[linux.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233761-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com,linux-foundation.org];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,lists.linux.dev,fasheh.com,evilplan.org,vger.kernel.org,syzkaller.appspotmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-233762-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[alex.popov@linux.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joseph.qi@linux.alibaba.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:email,fasheh.com:email]
-X-Rspamd-Queue-Id: 46E483B75B3
+	NEURAL_HAM(-0.00)[-0.941];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,intel.com:email]
+X-Rspamd-Queue-Id: 6235E3B77A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Currently we execute `SET_NETDEV_DEV(dev, &priv->lowerdev->dev)` for
+the virt_wifi net devices. However, unregistering a virt_wifi device in
+netdev_run_todo() can happen together with the device referenced by
+SET_NETDEV_DEV().
 
+It can result in use-after-free during the ethtool operations performed
+on a virt_wifi device that is currently being unregistered. Such a net
+device can have the `dev.parent` field pointing to the freed memory,
+but ethnl_ops_begin() calls `pm_runtime_get_sync(dev->dev.parent)`.
 
-On 4/8/26 11:50 AM, tejas bharambe wrote:
-> Hi Andrew,
-> 
-> You're right, I missed that scenario.
-> 
-> The inode can be freed if the file descriptor is closed after mmap() and munmap() races with the fault handler.
-> 
-> I can do one of the following:
-> 1. I can skip the trace firing when VM_FAULT_RETRY is set as I did in v1. It was changed to v4 after Joseph's suggestion to keep traces.
-> 2. If we want to keep traces, we can use ihold()/iput() as shown below:
-> 
-> ihold(inode);   //pin inode
-> ret = filemap_fault(vmf);
-> trace_ocfs2_fault(OCFS2_I(inode)->ip_blkno, ...);  // safe, refcount held
-> iput(inode);  //release inode
-> 
-> 
-> Which approach do you prefer?
-> 
-It seems theoretically possible.
-Since we only want to trace ip_blkno here, not inode itself, we can
-simply save it at first.
+Let's remove SET_NETDEV_DEV for virt_wifi to avoid bugs like this:
 
-Thanks,
-Joseph
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in __pm_runtime_resume+0xe2/0xf0
+ Read of size 2 at addr ffff88810cfc46f8 by task pm/606
 
-> Thanks,
-> Tejas
-> ________________________________________
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Sent: Saturday, April 4, 2026 5:50 PM
-> To: tejas bharambe <tejas.bharambe@outlook.com>
-> Cc: Tejas Bharambe <thbharam@gmail.com>; ocfs2-devel@lists.linux.dev <ocfs2-devel@lists.linux.dev>; mark@fasheh.com <mark@fasheh.com>; jlbec@evilplan.org <jlbec@evilplan.org>; joseph.qi@linux.alibaba.com <joseph.qi@linux.alibaba.com>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>; syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com <syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com>; stable@vger.kernel.org <stable@vger.kernel.org>
-> Subject: Re: [PATCH v4] ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
-> 
-> On Sun, 5 Apr 2026 00:30:14 +0000 tejas bharambe <tejas.bharambe@outlook.com> wrote:
-> 
->> Following is my response for question posted on https://sashiko.dev/#/patchset/20260403035333.136824-1-tejas.bharambe%40outlook.com
->>
->>
->> No. For ocfs2_fault() to be executing, the file must be open and
->> the process holds an active file descriptor. The inode's lifetime
->> is tied to the file's reference count, which remains held by the
->> file descriptor for the duration of the fault handler. munmap()
->> can free the VMA (decrementing vm_file's refcount) but cannot
->> free the inode as long as the file descriptor is open. The faulting
->> thread cannot call close() while it is inside the fault handler,
->> so the inode is guaranteed to outlive the trace call.
-> 
-> I don't think that's the scenario which Sashiko is suggesting.
-> 
-> Suppose userspace does
-> 
->         fd = open(...);
->         p = mmap(fd, ...);
->         close(fd);
-> 
-> Now, that mmap is the only ref against fd.
-> 
-> Now, suppose that userspace does munmap() while another thread is in
-> the fault handler.
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4d/0x70
+  print_report+0x170/0x4f3
+  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+  kasan_report+0xda/0x110
+  ? __pm_runtime_resume+0xe2/0xf0
+  ? __pm_runtime_resume+0xe2/0xf0
+  __pm_runtime_resume+0xe2/0xf0
+  ethnl_ops_begin+0x49/0x270
+  ethnl_set_features+0x23c/0xab0
+  ? __pfx_ethnl_set_features+0x10/0x10
+  ? kvm_sched_clock_read+0x11/0x20
+  ? local_clock_noinstr+0xf/0xf0
+  ? local_clock+0x10/0x30
+  ? kasan_save_track+0x25/0x60
+  ? __kasan_kmalloc+0x7f/0x90
+  ? genl_family_rcv_msg_attrs_parse.isra.0+0x150/0x2c0
+  genl_family_rcv_msg_doit+0x1e7/0x2c0
+  ? __pfx_genl_family_rcv_msg_doit+0x10/0x10
+  ? __pfx_cred_has_capability.isra.0+0x10/0x10
+  ? stack_trace_save+0x8e/0xc0
+  genl_rcv_msg+0x411/0x660
+  ? __pfx_genl_rcv_msg+0x10/0x10
+  ? __pfx_ethnl_set_features+0x10/0x10
+  netlink_rcv_skb+0x121/0x380
+  ? __pfx_genl_rcv_msg+0x10/0x10
+  ? __pfx_netlink_rcv_skb+0x10/0x10
+  ? __pfx_down_read+0x10/0x10
+  genl_rcv+0x23/0x30
+  netlink_unicast+0x60f/0x830
+  ? __pfx_netlink_unicast+0x10/0x10
+  ? __pfx___alloc_skb+0x10/0x10
+  netlink_sendmsg+0x6ea/0xbc0
+  ? __pfx_netlink_sendmsg+0x10/0x10
+  ? __futex_queue+0x10b/0x1f0
+  ____sys_sendmsg+0x7a2/0x950
+  ? copy_msghdr_from_user+0x26b/0x430
+  ? __pfx_____sys_sendmsg+0x10/0x10
+  ? __pfx_copy_msghdr_from_user+0x10/0x10
+  ___sys_sendmsg+0xf8/0x180
+  ? __pfx____sys_sendmsg+0x10/0x10
+  ? __pfx_futex_wait+0x10/0x10
+  ? fdget+0x2e4/0x4a0
+  __sys_sendmsg+0x11f/0x1c0
+  ? __pfx___sys_sendmsg+0x10/0x10
+  do_syscall_64+0xe2/0x570
+  ? exc_page_fault+0x66/0xb0
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  </TASK>
+
+This fix may be combined with another one in the ethtool subsystem:
+https://lore.kernel.org/all/20260322075917.254874-1-alex.popov@linux.com/T/#u
+
+Fixes: d43c65b05b848e0b ("ethtool: runtime-resume netdev parent in ethnl_ops_begin")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260324224607.374327-1-alex.popov@linux.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+(cherry picked from commit 789b06f9f39cdc7e895bdab2c034e39c41c8f8d6)
+---
+ drivers/net/wireless/virtual/virt_wifi.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
+index 4eae89376feb..cd6b66242bff 100644
+--- a/drivers/net/wireless/virtual/virt_wifi.c
++++ b/drivers/net/wireless/virtual/virt_wifi.c
+@@ -557,7 +557,6 @@ static int virt_wifi_newlink(struct net_device *dev,
+ 	eth_hw_addr_inherit(dev, priv->lowerdev);
+ 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
+ 
+-	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
+ 	dev->ieee80211_ptr = kzalloc(sizeof(*dev->ieee80211_ptr), GFP_KERNEL);
+ 
+ 	if (!dev->ieee80211_ptr) {
+-- 
+2.53.0
 
 
