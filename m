@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFctOkue1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:27 +0200
+	id EPrlD3uh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A5F3C0C9C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 474B03C141E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A7B83019440
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D59293067D2D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6DF3ACF11;
-	Wed,  8 Apr 2026 18:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BFA3D4134;
+	Wed,  8 Apr 2026 18:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G51+Dinl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQtJCM6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9262C2494F0;
-	Wed,  8 Apr 2026 18:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD1636166F;
+	Wed,  8 Apr 2026 18:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672747; cv=none; b=Pnl9A2iywmEvK0ckyCCBeOK8NkMbLFjoCPuBxqoG9S+D60Bvq/k3vI9R4x2o/6A4VSjRwwAf42fWNl/TCMM0decHrAO51+qDK90GZctgQzl7ZPAvE0eJ8JtAVtJSNldglEiC/FGWMyTnWvsipwe61dc7VSrrqd7G1H9oDllfKl4=
+	t=1775673426; cv=none; b=uaZzIzZ76c8IURhlNOHBoGP6HZdWkmHJ6hIN9vEQYXGU5eomEWWTKXRi/jipFZU7u2BhY3NnZ4xfDrfjxPS/jxEDoHsaipFhuX7bT5XWASDEd63n90/FNkafmy6JXb1jfytAtGgDwNlHN4Zy51zmgPj5J+GtqxiL++QYVW5Bx2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672747; c=relaxed/simple;
-	bh=bOQ7tz9ENutelXLrp68LWBHkOYQCKkZepSFg6iM3YaQ=;
+	s=arc-20240116; t=1775673426; c=relaxed/simple;
+	bh=hz3gd9/g2E6oCRvZiCLMzBrNbYzevVRssLVwrK9QOTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RouTisNyYQs7gjUBaq/KUrY6qudO83HUNDQmOt2YWbDKm24wmkZ3fZuLeveHZ4w4YThuTqXWzR5fk+QP3drTg1frm8NoxyepaDj+gd4PAyQf1qL/ryRe7zFLgdhebLpfHRbi/ZoBGbWIZlaOULCzApbMfDyZv+/TuEdiNkwyxJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G51+Dinl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5761C19421;
-	Wed,  8 Apr 2026 18:25:46 +0000 (UTC)
+	 MIME-Version; b=pe/2xMz9AwLYI9aCJF12zq7cmfRSz/s64c601mExJBEPw2RqJn5hL2OeiqoYc5pdV0oBlgbzrw0/28ffpoSjUxLFvFUYR7B7vGDYDbl2juZTWWfsVUL5DpKlG4ooehFYs1UqjcOoV5+HZH/z3NbzPqjDPDmSr99kOi6CNB/g3rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQtJCM6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBFCC19421;
+	Wed,  8 Apr 2026 18:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672747;
-	bh=bOQ7tz9ENutelXLrp68LWBHkOYQCKkZepSFg6iM3YaQ=;
+	s=korg; t=1775673426;
+	bh=hz3gd9/g2E6oCRvZiCLMzBrNbYzevVRssLVwrK9QOTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G51+DinlBF92lqdYfNSkuMlU75lW91KBciRi4elsC99IWT5MyfcO2Eyz+QHSPb7Qg
-	 RqKKBvwjslFhxkGBXPIc1KggWlVoFiWPU5QinGaWcZ+Qp7OkDRa0MoROYTEdCDmind
-	 tu3+38pckI19W9aB0XNsp/8eOSBwhgsSpUiXXksA=
+	b=FQtJCM6po8Mwx6oezpNcPcNvjSYNX3CC8e4a/ydaNMkDX46btbw8ESNg+g/4+YCIs
+	 P+fWV5p1nV5xAFsm1gKLfhPb/UGEH/ZHASCo+R1Tjl/HTxPg4JwaRfSOFuGB9p596r
+	 Tfi6mS/ZEwzJuOPa9b8D+/rADh20mtnVv++cnQwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.6 126/160] counter: rz-mtu3-cnt: do not use struct rz_mtu3_channels dev member
+	stable <stable@kernel.org>,
+	Nicolas Pitre <nico@fluxnic.net>
+Subject: [PATCH 6.18 228/277] vt: resize saved unicode buffer on alt screen exit after resize
 Date: Wed,  8 Apr 2026 20:03:33 +0200
-Message-ID: <20260408175917.895382004@linuxfoundation.org>
+Message-ID: <20260408175942.373064733@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234395-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234657-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,247 +88,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,renesas.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A1A5F3C0C9C
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,fluxnic.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 474B03C141E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: Nicolas Pitre <nico@fluxnic.net>
 
-commit 2932095c114b98cbb40ccf34fc00d613cb17cead upstream.
+commit 3ddbea7542ae529c1a88ef9a8b1ce169126211f6 upstream.
 
-The counter driver can use HW channels 1 and 2, while the PWM driver can
-use HW channels 0, 1, 2, 3, 4, 6, 7.
+Instead of discarding the saved unicode buffer when the console was
+resized while in the alternate screen, resize it to the current
+dimensions using vc_uniscr_copy_area() to preserve its content. This
+properly restores the unicode screen on alt screen exit rather than
+lazily rebuilding it from a lossy reverse glyph translation.
 
-The dev member is assigned both by the counter driver and the PWM driver
-for channels 1 and 2, to their own struct device instance, overwriting
-the previous value.
+On allocation failure the stale buffer is freed and vc_uni_lines is
+set to NULL so it gets lazily rebuilt via vc_uniscr_check() when next
+needed.
 
-The sub-drivers race to assign their own struct device pointer to the
-same struct rz_mtu3_channel's dev member.
-
-The dev member of struct rz_mtu3_channel is used by the counter
-sub-driver for runtime PM.
-
-Depending on the probe order of the counter and PWM sub-drivers, the
-dev member may point to the wrong struct device instance, causing the
-counter sub-driver to do runtime PM actions on the wrong device.
-
-To fix this, use the parent pointer of the counter, which is assigned
-during probe to the correct struct device, not the struct device pointer
-inside the shared struct rz_mtu3_channel.
-
-Cc: stable@vger.kernel.org
-Fixes: 0be8907359df ("counter: Add Renesas RZ/G2L MTU3a counter driver")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Link: https://lore.kernel.org/r/20260130122353.2263273-6-cosmin-gabriel.tanislav.xa@renesas.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Fixes: 40014493cece ("vt: discard stale unicode buffer on alt screen exit after resize")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nicolas Pitre <nico@fluxnic.net>
+Link: https://patch.msgid.link/3nsr334n-079q-125n-7807-n4nq818758ns@syhkavp.arg
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/rz-mtu3-cnt.c |   55 ++++++++++++++++++++----------------------
- 1 file changed, 27 insertions(+), 28 deletions(-)
+ drivers/tty/vt/vt.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/drivers/counter/rz-mtu3-cnt.c
-+++ b/drivers/counter/rz-mtu3-cnt.c
-@@ -107,9 +107,9 @@ static bool rz_mtu3_is_counter_invalid(s
- 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
- 	unsigned long tmdr;
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -1907,7 +1907,6 @@ static void leave_alt_screen(struct vc_d
+ 	unsigned int rows = min(vc->vc_saved_rows, vc->vc_rows);
+ 	unsigned int cols = min(vc->vc_saved_cols, vc->vc_cols);
+ 	u16 *src, *dest;
+-	bool uni_lines_stale;
  
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	if (id == RZ_MTU3_32_BIT_CH && test_bit(RZ_MTU3_TMDR3_LWA, &tmdr))
- 		return false;
-@@ -165,12 +165,12 @@ static int rz_mtu3_count_read(struct cou
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		*val = rz_mtu3_32bit_ch_read(ch, RZ_MTU3_TCNTLW);
- 	else
- 		*val = rz_mtu3_16bit_ch_read(ch, RZ_MTU3_TCNT);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -187,26 +187,26 @@ static int rz_mtu3_count_write(struct co
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		rz_mtu3_32bit_ch_write(ch, RZ_MTU3_TCNTLW, val);
- 	else
- 		rz_mtu3_16bit_ch_write(ch, RZ_MTU3_TCNT, val);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
- }
- 
- static int rz_mtu3_count_function_read_helper(struct rz_mtu3_channel *const ch,
--					      struct rz_mtu3_cnt *const priv,
-+					      struct counter_device *const counter,
- 					      enum counter_function *function)
- {
- 	u8 timer_mode;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	timer_mode = rz_mtu3_8bit_ch_read(ch, RZ_MTU3_TMDR1);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	switch (timer_mode & RZ_MTU3_TMDR1_PH_CNT_MODE_MASK) {
- 	case RZ_MTU3_TMDR1_PH_CNT_MODE_1:
-@@ -240,7 +240,7 @@ static int rz_mtu3_count_function_read(s
- 	if (ret)
- 		return ret;
- 
--	ret = rz_mtu3_count_function_read_helper(ch, priv, function);
-+	ret = rz_mtu3_count_function_read_helper(ch, counter, function);
- 	mutex_unlock(&priv->lock);
- 
- 	return ret;
-@@ -279,9 +279,9 @@ static int rz_mtu3_count_function_write(
- 		return -EINVAL;
+ 	if (vc->vc_saved_screen == NULL)
+ 		return; /* Not inside an alt-screen */
+@@ -1918,16 +1917,23 @@ static void leave_alt_screen(struct vc_d
  	}
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TMDR1, timer_mode);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -300,9 +300,9 @@ static int rz_mtu3_count_direction_read(
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tsr = rz_mtu3_8bit_ch_read(ch, RZ_MTU3_TSR);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	*direction = (tsr & RZ_MTU3_TSR_TCFD) ?
- 		COUNTER_COUNT_DIRECTION_FORWARD : COUNTER_COUNT_DIRECTION_BACKWARD;
-@@ -377,14 +377,14 @@ static int rz_mtu3_count_ceiling_write(s
- 		return -EINVAL;
- 	}
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		rz_mtu3_32bit_ch_write(ch, RZ_MTU3_TGRALW, ceiling);
- 	else
- 		rz_mtu3_16bit_ch_write(ch, RZ_MTU3_TGRA, ceiling);
- 
- 	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TCR, RZ_MTU3_TCR_CCLR_TGRA);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -495,7 +495,6 @@ static int rz_mtu3_count_enable_read(str
- static int rz_mtu3_count_enable_write(struct counter_device *counter,
- 				      struct counter_count *count, u8 enable)
- {
--	struct rz_mtu3_channel *const ch = rz_mtu3_get_ch(counter, count->id);
- 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
- 	int ret = 0;
- 
-@@ -505,14 +504,14 @@ static int rz_mtu3_count_enable_write(st
- 		goto exit;
- 
- 	if (enable) {
--		pm_runtime_get_sync(ch->dev);
-+		pm_runtime_get_sync(counter->parent);
- 		ret = rz_mtu3_initialize_counter(counter, count->id);
- 		if (ret == 0)
- 			priv->count_is_enabled[count->id] = true;
- 	} else {
- 		rz_mtu3_terminate_counter(counter, count->id);
- 		priv->count_is_enabled[count->id] = false;
--		pm_runtime_put(ch->dev);
-+		pm_runtime_put(counter->parent);
- 	}
- 
- exit:
-@@ -544,9 +543,9 @@ static int rz_mtu3_cascade_counts_enable
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	*cascade_enable = test_bit(RZ_MTU3_TMDR3_LWA, &tmdr);
- 	mutex_unlock(&priv->lock);
- 
-@@ -563,10 +562,10 @@ static int rz_mtu3_cascade_counts_enable
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_shared_reg_update_bit(priv->ch, RZ_MTU3_TMDR3,
- 				      RZ_MTU3_TMDR3_LWA, cascade_enable);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -583,9 +582,9 @@ static int rz_mtu3_ext_input_phase_clock
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	*ext_input_phase_clock_select = test_bit(RZ_MTU3_TMDR3_PHCKSEL, &tmdr);
- 	mutex_unlock(&priv->lock);
- 
-@@ -602,11 +601,11 @@ static int rz_mtu3_ext_input_phase_clock
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_shared_reg_update_bit(priv->ch, RZ_MTU3_TMDR3,
- 				      RZ_MTU3_TMDR3_PHCKSEL,
- 				      ext_input_phase_clock_select);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -644,7 +643,7 @@ static int rz_mtu3_action_read(struct co
- 	if (ret)
- 		return ret;
- 
--	ret = rz_mtu3_count_function_read_helper(ch, priv, &function);
-+	ret = rz_mtu3_count_function_read_helper(ch, counter, &function);
- 	if (ret) {
- 		mutex_unlock(&priv->lock);
- 		return ret;
+ 	/*
+ 	 * If the console was resized while in the alternate screen,
+-	 * vc_saved_uni_lines was allocated for the old dimensions.
+-	 * Restoring it would cause out-of-bounds accesses. Discard it
+-	 * and let the unicode screen be lazily rebuilt.
++	 * resize the saved unicode buffer to the current dimensions.
++	 * On allocation failure new_uniscr is NULL, causing the old
++	 * buffer to be freed and vc_uni_lines to be lazily rebuilt
++	 * via vc_uniscr_check() when next needed.
+ 	 */
+-	uni_lines_stale = vc->vc_saved_rows != vc->vc_rows ||
+-			  vc->vc_saved_cols != vc->vc_cols;
+-	if (uni_lines_stale)
++	if (vc->vc_saved_uni_lines &&
++	    (vc->vc_saved_rows != vc->vc_rows ||
++	     vc->vc_saved_cols != vc->vc_cols)) {
++		u32 **new_uniscr = vc_uniscr_alloc(vc->vc_cols, vc->vc_rows);
++
++		if (new_uniscr)
++			vc_uniscr_copy_area(new_uniscr, vc->vc_cols, vc->vc_rows,
++					    vc->vc_saved_uni_lines, cols, 0, rows);
+ 		vc_uniscr_free(vc->vc_saved_uni_lines);
+-	else
+-		vc_uniscr_set(vc, vc->vc_saved_uni_lines);
++		vc->vc_saved_uni_lines = new_uniscr;
++	}
++	vc_uniscr_set(vc, vc->vc_saved_uni_lines);
+ 	vc->vc_saved_uni_lines = NULL;
+ 	restore_cur(vc);
+ 	/* Update the entire screen */
 
 
 
