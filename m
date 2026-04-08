@@ -1,59 +1,70 @@
-Return-Path: <stable+bounces-235234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBnSIGKm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:58 +0200
+	id IPXZLnOm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EB23C241F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA463C2461
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECC9D30565AE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:01:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F68E31428FF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860223019BA;
-	Wed,  8 Apr 2026 19:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234DB3ACF16;
+	Wed,  8 Apr 2026 18:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iweOMYOH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7VjgiJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470AB331A44;
-	Wed,  8 Apr 2026 19:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6B1B67E;
+	Wed,  8 Apr 2026 18:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674915; cv=none; b=DO9PhgpG+5/pRnncwf9c0HWrxSOkUSfdfmGnKOmDAizr6p5bkNqMUVSDNwToSylw+AwVv13oB6jxuKaHuqL1We6paeLF+/zgUV7V7c0jZb11h5TjQoAxw/vnUxKpRWACbOU3pM8v35Y8VZwFAid5+dTGSrrShywJ9X5PdSUbRf8=
+	t=1775673518; cv=none; b=O2xDjDm81I9DrTGZPwBuIHnqrTGoFMaZJHYdpTfoK6cxxcKQtU6XII98ABUIT/yZDQH3fIPvY9/++ELcruA/ceATO3PI2I3qAEhjZFEei5YSBZYO1vLP4ni8dEksF/L8KRSN2hpURoaZFhOzoK17SS9lQaNJyB43i50S0dr+R9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674915; c=relaxed/simple;
-	bh=rBAePdOoMyhsJBQfDWwpRPUi8UoGfuqzp/AbcQpP1jM=;
+	s=arc-20240116; t=1775673518; c=relaxed/simple;
+	bh=2vmZi6jwP1+7bmG58mpa192Na3SAB8Q4lI4SIky4qPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/LEwd4P+ABB3dMv+tl/9RzYN361kKqFSMqbJXZ8fMDRzyXof74rdfR9UMH4GjyIAX78cxyU3A3RO1nU9unANNyn7nDXOzrSMTBpPX98nZP9sbLH1rolDjl4vn2iD+Ij/plFAX9dXUbyfgnP7wPsRUctO5PfhmbNxGfr/MkO0Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iweOMYOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0032C19421;
-	Wed,  8 Apr 2026 19:01:54 +0000 (UTC)
+	 MIME-Version; b=iHPwbJ6SzibpwUzAjan4SfhKqv7WwqcBf5rghQv7sl/WVj5vc6zADEacjtpetUbBXMHmrD6RFQPeAlzvBVcZu6sK+zmLdzNeF/IshOYRdRcDKfPkcS+0L3NcUaZn7bouHZhICvbHF2VHs1ryTSbBGtWEy9KlJKXufPQfNqbNKcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7VjgiJK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49791C19421;
+	Wed,  8 Apr 2026 18:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674915;
-	bh=rBAePdOoMyhsJBQfDWwpRPUi8UoGfuqzp/AbcQpP1jM=;
+	s=korg; t=1775673518;
+	bh=2vmZi6jwP1+7bmG58mpa192Na3SAB8Q4lI4SIky4qPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iweOMYOHq+6GvGfvRlSJkf8s0Xa92NQeIivB3hiM5s3aDp5tve5Wbhi5Li+vIEj+V
-	 dhLiad69Zlf67FfqvK79ZspVu/OrLlgIIx5Uh0069LRpHIItOIDA6tWyH4KCFW4zEn
-	 A+HyrMADo53zzZIhSvQN2MWQmdfrW/9RkvigJdlQ=
+	b=G7VjgiJKk5KE5Nf2xL1l67pEogTQz3CF5si78zWC/JaMsAzDm8nWflTW6/f8O5nYt
+	 GUKqJ6YLhUSrc9zz/+qB3qtRRMw5Zn4s6FzGE6jIuyS5PLy2/YxWqNxxBYwtoGGXho
+	 JwJf6xwXSawzfK+BnMRgH6XO84rtvvqconI3rJTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 249/311] io_uring: protect remaining lockless ctx->rings accesses with RCU
+	Petr Mladek <pmladek@suse.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkman <daniel@iogearbox.net>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	Marc Rutland <mark.rutland@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 264/277] kallsyms: clean up modname and modbuildid initialization in kallsyms_lookup_buildid()
 Date: Wed,  8 Apr 2026 20:04:09 +0200
-Message-ID: <20260408175948.688178590@linuxfoundation.org>
+Message-ID: <20260408175943.716012815@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,292 +75,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235234-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-234693-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,atomlin.com,kernel.org,iogearbox.net,samsung.com,gmail.com,arm.com,google.com,goodmis.org,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel.dk:email]
-X-Rspamd-Queue-Id: 12EB23C241F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3AA463C2461
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Petr Mladek <pmladek@suse.com>
 
-Commit 61a11cf4812726aceaee17c96432e1c08f6ed6cb upstream.
+commit fda024fb64769e9d6b3916d013c78d6b189129f8 upstream.
 
-Commit 96189080265e addressed one case of ctx->rings being potentially
-accessed while a resize is happening on the ring, but there are still
-a few others that need handling. Add a helper for retrieving the
-rings associated with an io_uring context, and add some sanity checking
-to that to catch bad uses. ->rings_rcu is always valid, as long as it's
-used within RCU read lock. Any use of ->rings_rcu or ->rings inside
-either ->uring_lock or ->completion_lock is sane as well.
+The @modname and @modbuildid optional return parameters are set only when
+the symbol is in a module.
 
-Do the minimum fix for the current kernel, but set it up such that this
-basic infra can be extended for later kernels to make this harder to
-mess up in the future.
+Always initialize them so that they do not need to be cleared when the
+module is not in a module.  It simplifies the logic and makes the code
+even slightly more safe.
 
-Thanks to Junxi Qian for finding and debugging this issue.
+Note that bpf_address_lookup() function will get updated in a separate
+patch.
 
-Cc: stable@vger.kernel.org
-Fixes: 79cfe9e59c2a ("io_uring/register: add IORING_REGISTER_RESIZE_RINGS")
-Reviewed-by: Junxi Qian <qjx1298677004@gmail.com>
-Tested-by: Junxi Qian <qjx1298677004@gmail.com>
-Link: https://lore.kernel.org/io-uring/20260330172348.89416-1-qjx1298677004@gmail.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251128135920.217303-3-pmladek@suse.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Cc: Aaron Tomlin <atomlin@atomlin.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c | 62 +++++++++++++++++++++++++++++----------------
- io_uring/io_uring.h | 34 +++++++++++++++++++++----
- 2 files changed, 69 insertions(+), 27 deletions(-)
+ kernel/kallsyms.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index ac1a5cf102870..84fb1f7b0d818 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -189,12 +189,15 @@ static void io_poison_req(struct io_kiocb *req)
- 
- static inline unsigned int __io_cqring_events(struct io_ring_ctx *ctx)
- {
--	return ctx->cached_cq_tail - READ_ONCE(ctx->rings->cq.head);
-+	struct io_rings *rings = io_get_rings(ctx);
-+	return ctx->cached_cq_tail - READ_ONCE(rings->cq.head);
- }
- 
- static inline unsigned int __io_cqring_events_user(struct io_ring_ctx *ctx)
- {
--	return READ_ONCE(ctx->rings->cq.tail) - READ_ONCE(ctx->rings->cq.head);
-+	struct io_rings *rings = io_get_rings(ctx);
-+
-+	return READ_ONCE(rings->cq.tail) - READ_ONCE(rings->cq.head);
- }
- 
- static inline void req_fail_link_node(struct io_kiocb *req, int res)
-@@ -2536,12 +2539,15 @@ static enum hrtimer_restart io_cqring_min_timer_wakeup(struct hrtimer *timer)
- 	if (io_has_work(ctx))
- 		goto out_wake;
- 	/* got events since we started waiting, min timeout is done */
--	if (iowq->cq_min_tail != READ_ONCE(ctx->rings->cq.tail))
--		goto out_wake;
--	/* if we have any events and min timeout expired, we're done */
--	if (io_cqring_events(ctx))
--		goto out_wake;
-+	scoped_guard(rcu) {
-+		struct io_rings *rings = io_get_rings(ctx);
- 
-+		if (iowq->cq_min_tail != READ_ONCE(rings->cq.tail))
-+			goto out_wake;
-+		/* if we have any events and min timeout expired, we're done */
-+		if (io_cqring_events(ctx))
-+			goto out_wake;
-+	}
- 	/*
- 	 * If using deferred task_work running and application is waiting on
- 	 * more than one request, ensure we reset it now where we are switching
-@@ -2652,9 +2658,9 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 			  struct ext_arg *ext_arg)
- {
- 	struct io_wait_queue iowq;
--	struct io_rings *rings = ctx->rings;
-+	struct io_rings *rings;
- 	ktime_t start_time;
--	int ret;
-+	int ret, nr_wait;
- 
- 	min_events = min_t(int, min_events, ctx->cq_entries);
- 
-@@ -2667,15 +2673,23 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 
- 	if (unlikely(test_bit(IO_CHECK_CQ_OVERFLOW_BIT, &ctx->check_cq)))
- 		io_cqring_do_overflow_flush(ctx);
--	if (__io_cqring_events_user(ctx) >= min_events)
-+
-+	rcu_read_lock();
-+	rings = io_get_rings(ctx);
-+	if (__io_cqring_events_user(ctx) >= min_events) {
-+		rcu_read_unlock();
- 		return 0;
-+	}
- 
- 	init_waitqueue_func_entry(&iowq.wq, io_wake_function);
- 	iowq.wq.private = current;
- 	INIT_LIST_HEAD(&iowq.wq.entry);
- 	iowq.ctx = ctx;
--	iowq.cq_tail = READ_ONCE(ctx->rings->cq.head) + min_events;
--	iowq.cq_min_tail = READ_ONCE(ctx->rings->cq.tail);
-+	iowq.cq_tail = READ_ONCE(rings->cq.head) + min_events;
-+	iowq.cq_min_tail = READ_ONCE(rings->cq.tail);
-+	nr_wait = (int) iowq.cq_tail - READ_ONCE(rings->cq.tail);
-+	rcu_read_unlock();
-+	rings = NULL;
- 	iowq.nr_timeouts = atomic_read(&ctx->cq_timeouts);
- 	iowq.hit_timeout = 0;
- 	iowq.min_timeout = ext_arg->min_time;
-@@ -2706,14 +2720,6 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 	trace_io_uring_cqring_wait(ctx, min_events);
- 	do {
- 		unsigned long check_cq;
--		int nr_wait;
--
--		/* if min timeout has been hit, don't reset wait count */
--		if (!iowq.hit_timeout)
--			nr_wait = (int) iowq.cq_tail -
--					READ_ONCE(ctx->rings->cq.tail);
--		else
--			nr_wait = 1;
- 
- 		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN) {
- 			atomic_set(&ctx->cq_wait_nr, nr_wait);
-@@ -2764,13 +2770,22 @@ static int io_cqring_wait(struct io_ring_ctx *ctx, int min_events, u32 flags,
- 			break;
- 		}
- 		cond_resched();
-+
-+		/* if min timeout has been hit, don't reset wait count */
-+		if (!iowq.hit_timeout)
-+			scoped_guard(rcu)
-+				nr_wait = (int) iowq.cq_tail -
-+						READ_ONCE(io_get_rings(ctx)->cq.tail);
-+		else
-+			nr_wait = 1;
- 	} while (1);
- 
- 	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
- 		finish_wait(&ctx->cq_wait, &iowq.wq);
- 	restore_saved_sigmask_unless(ret == -EINTR);
- 
--	return READ_ONCE(rings->cq.head) == READ_ONCE(rings->cq.tail) ? ret : 0;
-+	guard(rcu)();
-+	return READ_ONCE(io_get_rings(ctx)->cq.head) == READ_ONCE(io_get_rings(ctx)->cq.tail) ? ret : 0;
- }
- 
- static void io_rings_free(struct io_ring_ctx *ctx)
-@@ -2954,7 +2969,9 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -362,6 +362,14 @@ static int kallsyms_lookup_buildid(unsig
+ 	 * or empty string.
  	 */
- 	poll_wait(file, &ctx->poll_wq, wait);
+ 	namebuf[0] = 0;
++	/*
++	 * Initialize the module-related return values. They are not set
++	 * when the symbol is in vmlinux or it is a bpf address.
++	 */
++	if (modname)
++		*modname = NULL;
++	if (modbuildid)
++		*modbuildid = NULL;
  
--	if (!io_sqring_full(ctx))
-+	rcu_read_lock();
-+
-+	if (!__io_sqring_full(ctx))
- 		mask |= EPOLLOUT | EPOLLWRNORM;
+ 	if (is_ksym_addr(addr)) {
+ 		unsigned long pos;
+@@ -370,10 +378,6 @@ static int kallsyms_lookup_buildid(unsig
+ 		/* Grab name */
+ 		kallsyms_expand_symbol(get_symbol_offset(pos),
+ 				       namebuf, KSYM_NAME_LEN);
+-		if (modname)
+-			*modname = NULL;
+-		if (modbuildid)
+-			*modbuildid = NULL;
  
- 	/*
-@@ -2974,6 +2991,7 @@ static __poll_t io_uring_poll(struct file *file, poll_table *wait)
- 	if (__io_cqring_events_user(ctx) || io_has_work(ctx))
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
-+	rcu_read_unlock();
- 	return mask;
- }
- 
-diff --git a/io_uring/io_uring.h b/io_uring/io_uring.h
-index 0f096f44d34bf..6ee49991cec8b 100644
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -132,16 +132,28 @@ struct io_wait_queue {
- #endif
- };
- 
-+static inline struct io_rings *io_get_rings(struct io_ring_ctx *ctx)
-+{
-+	return rcu_dereference_check(ctx->rings_rcu,
-+			lockdep_is_held(&ctx->uring_lock) ||
-+			lockdep_is_held(&ctx->completion_lock));
-+}
-+
- static inline bool io_should_wake(struct io_wait_queue *iowq)
- {
- 	struct io_ring_ctx *ctx = iowq->ctx;
--	int dist = READ_ONCE(ctx->rings->cq.tail) - (int) iowq->cq_tail;
-+	struct io_rings *rings;
-+	int dist;
-+
-+	guard(rcu)();
-+	rings = io_get_rings(ctx);
- 
- 	/*
- 	 * Wake up if we have enough events, or if a timeout occurred since we
- 	 * started waiting. For timeouts, we always want to return to userspace,
- 	 * regardless of event count.
- 	 */
-+	dist = READ_ONCE(rings->cq.tail) - (int) iowq->cq_tail;
- 	return dist >= 0 || atomic_read(&ctx->cq_timeouts) != iowq->nr_timeouts;
- }
- 
-@@ -432,9 +444,9 @@ static inline void io_cqring_wake(struct io_ring_ctx *ctx)
- 	__io_wq_wake(&ctx->cq_wait);
- }
- 
--static inline bool io_sqring_full(struct io_ring_ctx *ctx)
-+static inline bool __io_sqring_full(struct io_ring_ctx *ctx)
- {
--	struct io_rings *r = ctx->rings;
-+	struct io_rings *r = io_get_rings(ctx);
- 
- 	/*
- 	 * SQPOLL must use the actual sqring head, as using the cached_sq_head
-@@ -446,9 +458,15 @@ static inline bool io_sqring_full(struct io_ring_ctx *ctx)
- 	return READ_ONCE(r->sq.tail) - READ_ONCE(r->sq.head) == ctx->sq_entries;
- }
- 
--static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
-+static inline bool io_sqring_full(struct io_ring_ctx *ctx)
- {
--	struct io_rings *rings = ctx->rings;
-+	guard(rcu)();
-+	return __io_sqring_full(ctx);
-+}
-+
-+static inline unsigned int __io_sqring_entries(struct io_ring_ctx *ctx)
-+{
-+	struct io_rings *rings = io_get_rings(ctx);
- 	unsigned int entries;
- 
- 	/* make sure SQ entry isn't read before tail */
-@@ -509,6 +527,12 @@ static inline void io_tw_lock(struct io_ring_ctx *ctx, io_tw_token_t tw)
- 	lockdep_assert_held(&ctx->uring_lock);
- }
- 
-+static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
-+{
-+	guard(rcu)();
-+	return __io_sqring_entries(ctx);
-+}
-+
- /*
-  * Don't complete immediately but use deferred completion infrastructure.
-  * Protected by ->uring_lock and can only be used either with
--- 
-2.53.0
-
+ 		return strlen(namebuf);
+ 	}
 
 
 
