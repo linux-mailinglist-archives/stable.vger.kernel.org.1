@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-234102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UF3CIcaa1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:26 +0200
+	id aP55M8mp1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8653C0344
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDF63C2B2E
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D41823014D9A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACC71311FA6F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A803D88E1;
-	Wed,  8 Apr 2026 18:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C13C337B81;
+	Wed,  8 Apr 2026 18:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRe5pUkI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+xjCIhS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6D43D47A5;
-	Wed,  8 Apr 2026 18:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE9825A321;
+	Wed,  8 Apr 2026 18:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671990; cv=none; b=pE5ELBrcubGN8z8xFXho4lBBAJ6R5j8gRv1BJVodUrJpU+hU5wx5NiJ41DC8/V14U6D33httAxHH/RyUl1FUsZzLZ82DoDsNpl9oDotOmNH5iD1KQVlD2BdqjMflTCvaiVBjv5/+o8Wkg5DKbIUMi2qLu+wV/m2c8R8ZZFRArGc=
+	t=1775674353; cv=none; b=efW+ofbPneZcEZ2S3YgfgZcaoU1mMif2RClpKOQMX76FkVAHjgtU2P3ouDNvQLpvTBc+xzu1+1LvlH1HP4vN+6ZhUsrzB0rN+zA0PAEMg9mdo3WQkNtpuWFmph7SGqMuPAmaLIi9tEfWHUlSWuEI98qPMDFl+tTBPGVtYB2uJLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671990; c=relaxed/simple;
-	bh=mRC7O/ocqJ/DbVKn83QQpSyeUvamC4WtpW1td3lImAg=;
+	s=arc-20240116; t=1775674353; c=relaxed/simple;
+	bh=cQwh2KMflZFAOwtEyM/oZ7UjkNUqUGDsWFAqRYYNNwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okicTejiynJASlVfdBGQRQE39t9wY20pSOhiaL8rkKyo5z/K5ni4bS+nXuJZTBOhMj2NKYoqexRSDqiHO2h7GPCV6xK9psULBhL4j67w9V+PXG4XgNiByVm0zkf0KNGBw3fbws+fw5MUOglEuogDCn7MK+8LnA/CJqYGdyghtF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRe5pUkI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB113C19421;
-	Wed,  8 Apr 2026 18:13:09 +0000 (UTC)
+	 MIME-Version; b=XvyTpowTDuAZ8zSwBhv3e/f31K1CALqccsKU1yIdAmy67YrHSO3NNZoL0ry4u8+sIh4Jzxn1lMgHdojpTXVmtteJYlvFkggR4Iyh3rZmLjNthNL0bbHyOYsIRWZ0aLW9HMkcHMLXhdeC47dOh5jx1WPfZqaWupygMxDl5+2PMAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+xjCIhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9516C19421;
+	Wed,  8 Apr 2026 18:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671990;
-	bh=mRC7O/ocqJ/DbVKn83QQpSyeUvamC4WtpW1td3lImAg=;
+	s=korg; t=1775674353;
+	bh=cQwh2KMflZFAOwtEyM/oZ7UjkNUqUGDsWFAqRYYNNwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRe5pUkIlcHN7MsSR44NtXCPkXf/5IxTL30EA2DCSvBsV4lRRtwbMHTvY1oZU4YPT
-	 cq+ADkTJ2FVC8sG4VzKfgNCLIJeeb3IZOiLPCNUzoNRaMOtCeOlZ3iMecV1n990Rjg
-	 aPiZnx7TE9x1vNT8hQqWftVpyBag2vi2oJjHWZOY=
+	b=S+xjCIhSh2nnTbYm8quf7UGuYvqSdNZid7m/+oBdnjLtiJZuO4YJCaCO3LECVUObg
+	 s5hF/sLT4hYZw2l1oVPqdMUjldwzJDizrWzZtnBcVacDmwQ31OoPLSuhnqpT4x++vx
+	 TmOEIuqROJCW5VMBmqesm04r7wQcVV9HBixEZAKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/312] crypto: af-alg - fix NULL pointer dereference in scatterwalk
+Subject: [PATCH 6.19 063/311] ipv6: prevent possible UaF in addrconf_permanent_addr()
 Date: Wed,  8 Apr 2026 20:01:03 +0200
-Message-ID: <20260408175939.223339800@linuxfoundation.org>
+Message-ID: <20260408175941.769086164@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234102-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235016-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,56 +89,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email]
-X-Rspamd-Queue-Id: 7B8653C0344
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3CDF63C2B2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 62397b493e14107ae82d8b80938f293d95425bcb ]
+[ Upstream commit fd63f185979b047fb22a0dfc6bd94d0cab6a6a70 ]
 
-The AF_ALG interface fails to unmark the end of a Scatter/Gather List (SGL)
-when chaining a new af_alg_tsgl structure. If a sendmsg() fills an SGL
-exactly to MAX_SGL_ENTS, the last entry is marked as the end. A subsequent
-sendmsg() allocates a new SGL and chains it, but fails to clear the end
-marker on the previous SGL's last data entry.
+The mentioned helper try to warn the user about an exceptional
+condition, but the message is delivered too late, accessing the ipv6
+after its possible deletion.
 
-This causes the crypto scatterwalk to hit a premature end, returning NULL
-on sg_next() and leading to a kernel panic during dereference.
+Reorder the statement to avoid the possible UaF; while at it, place the
+warning outside the idev->lock as it needs no protection.
 
-Fix this by explicitly unmarking the end of the previous SGL when
-performing sg_chain() in af_alg_alloc_tsgl().
-
-Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://sashiko.dev/#/patchset/8c8bfe2e1a324e501f0e15fef404a77443fd8caf.1774365668.git.pabeni%40redhat.com
+Fixes: f1705ec197e7 ("net: ipv6: Make address flushing on ifdown optional")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/ef973c3a8cb4f8f1787ed469f3e5391b9fe95aa0.1774601542.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv6/addrconf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 4b7a7d9e198e1..1bb0ab702c98d 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -512,8 +512,10 @@ static int af_alg_alloc_tsgl(struct sock *sk)
- 		sg_init_table(sgl->sg, MAX_SGL_ENTS + 1);
- 		sgl->cur = 0;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 3dcfa4b3094a8..272dd1a0acd0e 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3621,12 +3621,12 @@ static void addrconf_permanent_addr(struct net *net, struct net_device *dev)
+ 		if ((ifp->flags & IFA_F_PERMANENT) &&
+ 		    fixup_permanent_addr(net, idev, ifp) < 0) {
+ 			write_unlock_bh(&idev->lock);
+-			in6_ifa_hold(ifp);
+-			ipv6_del_addr(ifp);
+-			write_lock_bh(&idev->lock);
  
--		if (sg)
-+		if (sg) {
-+			sg_unmark_end(sg + MAX_SGL_ENTS - 1);
- 			sg_chain(sg, MAX_SGL_ENTS + 1, sgl->sg);
-+		}
- 
- 		list_add_tail(&sgl->list, &ctx->tsgl_list);
+ 			net_info_ratelimited("%s: Failed to add prefix route for address %pI6c; dropping\n",
+ 					     idev->dev->name, &ifp->addr);
++			in6_ifa_hold(ifp);
++			ipv6_del_addr(ifp);
++			write_lock_bh(&idev->lock);
+ 		}
  	}
+ 
 -- 
 2.53.0
 
