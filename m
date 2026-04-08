@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-234129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEbSJ2ab1mnDGggAu9opvQ
-	(envelope-from <stable+bounces-234129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:06 +0200
+	id iBUFDW2f1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F148E3C04D6
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5993C0F13
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC1E1304B2A8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6BF43032F68
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4493D75AF;
-	Wed,  8 Apr 2026 18:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB373A16A0;
+	Wed,  8 Apr 2026 18:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHvNq2QL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sw433arz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C3C3D3D06;
-	Wed,  8 Apr 2026 18:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02D7B67E;
+	Wed,  8 Apr 2026 18:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672059; cv=none; b=D2viwuaV9/9ELwieJMEZLVFPrNtbDaVFC/UWfzF+mc/ElLIkwtRdzQgGDNp03irw3koPkXrOMqzgmYf6Pcqcxuu4qqj4e6KY5X8rVkstNxwUs0sBdjK8uVl9TyGnN/p9u37m/wImGbXCoDY7YXnKd+o1gvpcyN/dwV292CpCdn4=
+	t=1775672491; cv=none; b=GqVHDE3tghrYIRGDx/ixGQJIKAvTKz8VaGc3XsVFYZNr4hwq57PNzqQisjXwS9aQKaQVr1gQ8WhXEGcDuiCyHWZ87qmGYvs080e0ghu0XEc/mHLTTVB9aSAoox0PJ7Mjcs1xEQLzqZaIN5LQocbyvLOz57807HE6wA1vCY/B3GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672059; c=relaxed/simple;
-	bh=MJRZZyHoT8CsCoZEpzlnP3diI3Ko/Uf8ey9HW+v9TMo=;
+	s=arc-20240116; t=1775672491; c=relaxed/simple;
+	bh=pr2hXuPucGcgql+upvjvfzoxk8YqW9lfEVRg89MScdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z93XMcs9nym3NH+wy92FsOYtiLBsem813SpOAGSd0z5wRM5R/Z/n5eRIxP+5hGdIm3EdwFG5Y5X/SvSqrPyp75dABz7WTBT6eFrGXT1CglnD2F5JEIpBkUNB1ib0mzqQ2uKiS4EextYm+8xyqwlGeQjAqa+yQulvgcbThyd3B3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHvNq2QL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0772DC19421;
-	Wed,  8 Apr 2026 18:14:18 +0000 (UTC)
+	 MIME-Version; b=YOcIJNW/ka5Q49qPpQifhb9cmomNBO/NHrvxaoihHzxx3Geu0YEq9amg0H94Hdi4NIGaTbKkcY4VZLJObxGUDYH27HkalA7tjLG+gywqtvMN4iqVzwEnFqNWUCiEWedJ7w7XTa1zW6EUTgr2GqRiXrzpENdPah533b5b7ZfcyNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sw433arz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BA4C19421;
+	Wed,  8 Apr 2026 18:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672059;
-	bh=MJRZZyHoT8CsCoZEpzlnP3diI3Ko/Uf8ey9HW+v9TMo=;
+	s=korg; t=1775672491;
+	bh=pr2hXuPucGcgql+upvjvfzoxk8YqW9lfEVRg89MScdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHvNq2QLTiyYkXSJbwAFfQGdI5Ds8yTGEYrl2cu6rUoSfF31SydVWydPkzhpFQDhd
-	 ACbz7fLaUkJVXAb+k+n3GkvNPfUBmuknrXmX6JJfvZ2scENM0Z1XnmplJpXu5LH/ds
-	 zfF2b4uxxVGdxRCjOEdMTKIWa/Wy145Hs8MlCYAc=
+	b=Sw433arzAYlbifkK87KOr/BP5mJdnnrKgYGe/TtLpuvNITf23x4BzPmRrYUN7fwip
+	 qASdp2tRdCnJ8tcNMu7tsjcZyL0w1Yuk5S/7kJRlaAbpGao8W5lA5WdJBr4JS4bUf9
+	 eGfV5woHXcvzLXiOEAmC3CuDHtWOu8at6yLz93gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/312] netfilter: x_tables: restrict xt_check_match/xt_check_target extensions for NFPROTO_ARP
+Subject: [PATCH 6.6 004/160] btrfs: dont take device_list_mutex when querying zone info
 Date: Wed,  8 Apr 2026 20:01:31 +0200
-Message-ID: <20260408175940.263415448@linuxfoundation.org>
+Message-ID: <20260408175913.348462471@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234129-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234296-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,110 +89,206 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
-X-Rspamd-Queue-Id: F148E3C04D6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wdc.com:email]
+X-Rspamd-Queue-Id: CD5993C0F13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 3d5d488f11776738deab9da336038add95d342d1 ]
+[ Upstream commit 77603ab10429fe713a03345553ca8dbbfb1d91c6 ]
 
-Weiming Shi says:
+Shin'ichiro reported sporadic hangs when running generic/013 in our CI
+system. When enabling lockdep, there is a lockdep splat when calling
+btrfs_get_dev_zone_info_all_devices() in the mount path that can be
+triggered by i.e. generic/013:
 
-xt_match and xt_target structs registered with NFPROTO_UNSPEC can be
-loaded by any protocol family through nft_compat. When such a
-match/target sets .hooks to restrict which hooks it may run on, the
-bitmask uses NF_INET_* constants. This is only correct for families
-whose hook layout matches NF_INET_*: IPv4, IPv6, INET, and bridge
-all share the same five hooks (PRE_ROUTING ... POST_ROUTING).
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  7.0.0-rc1+ #355 Not tainted
+  ------------------------------------------------------
+  mount/1043 is trying to acquire lock:
+  ffff8881020b5470 (&vblk->vdev_mutex){+.+.}-{4:4}, at: virtblk_report_zones+0xda/0x430
 
-ARP only has three hooks (IN=0, OUT=1, FORWARD=2) with different
-semantics. Because NF_ARP_OUT == 1 == NF_INET_LOCAL_IN, the .hooks
-validation silently passes for the wrong reasons, allowing matches to
-run on ARP chains where the hook assumptions (e.g. state->in being
-set on input hooks) do not hold. This leads to NULL pointer
-dereferences; xt_devgroup is one concrete example:
+  but task is already holding lock:
+  ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
 
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000044: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000220-0x0000000000000227]
- RIP: 0010:devgroup_mt+0xff/0x350
- Call Trace:
-  <TASK>
-  nft_match_eval (net/netfilter/nft_compat.c:407)
-  nft_do_chain (net/netfilter/nf_tables_core.c:285)
-  nft_do_chain_arp (net/netfilter/nft_chain_filter.c:61)
-  nf_hook_slow (net/netfilter/core.c:623)
-  arp_xmit (net/ipv4/arp.c:666)
-  </TASK>
- Kernel panic - not syncing: Fatal exception in interrupt
+  which lock already depends on the new lock.
 
-Fix it by restricting arptables to NFPROTO_ARP extensions only.
-Note that arptables-legacy only supports:
+  the existing dependency chain (in reverse order) is:
 
-- arpt_CLASSIFY
-- arpt_mangle
-- arpt_MARK
+  -> #4 (&fs_devs->device_list_mutex){+.+.}-{4:4}:
+	 __mutex_lock+0xa3/0x1360
+	 btrfs_create_pending_block_groups+0x1f4/0x9d0
+	 __btrfs_end_transaction+0x3e/0x2e0
+	 btrfs_zoned_reserve_data_reloc_bg+0x2f8/0x390
+	 open_ctree+0x1934/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-that provide explicit NFPROTO_ARP match/target declarations.
+  -> #3 (btrfs_trans_num_extwriters){++++}-{0:0}:
+	 join_transaction+0xc2/0x5c0
+	 start_transaction+0x17c/0xbc0
+	 btrfs_zoned_reserve_data_reloc_bg+0x2b4/0x390
+	 open_ctree+0x1934/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 9291747f118d ("netfilter: xtables: add device group match")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  -> #2 (btrfs_trans_num_writers){++++}-{0:0}:
+	 lock_release+0x163/0x4b0
+	 __btrfs_end_transaction+0x1c7/0x2e0
+	 btrfs_dirty_inode+0x6f/0xd0
+	 touch_atime+0xe5/0x2c0
+	 btrfs_file_mmap_prepare+0x65/0x90
+	 __mmap_region+0x4b9/0xf00
+	 mmap_region+0xf7/0x120
+	 do_mmap+0x43d/0x610
+	 vm_mmap_pgoff+0xd6/0x190
+	 ksys_mmap_pgoff+0x7e/0xc0
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #1 (&mm->mmap_lock){++++}-{4:4}:
+	 __might_fault+0x68/0xa0
+	 _copy_to_user+0x22/0x70
+	 blkdev_copy_zone_to_user+0x22/0x40
+	 virtblk_report_zones+0x282/0x430
+	 blkdev_report_zones_ioctl+0xfd/0x130
+	 blkdev_ioctl+0x20f/0x2c0
+	 __x64_sys_ioctl+0x86/0xd0
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #0 (&vblk->vdev_mutex){+.+.}-{4:4}:
+	 __lock_acquire+0x1522/0x2680
+	 lock_acquire+0xd5/0x2f0
+	 __mutex_lock+0xa3/0x1360
+	 virtblk_report_zones+0xda/0x430
+	 blkdev_report_zones_cached+0x162/0x190
+	 btrfs_get_dev_zones+0xdc/0x2e0
+	 btrfs_get_dev_zone_info+0x219/0xe80
+	 btrfs_get_dev_zone_info_all_devices+0x62/0x90
+	 open_ctree+0x1200/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  other info that might help us debug this:
+
+  Chain exists of:
+    &vblk->vdev_mutex --> btrfs_trans_num_extwriters --> &fs_devs->device_list_mutex
+
+   Possible unsafe locking scenario:
+
+	 CPU0                    CPU1
+	 ----                    ----
+    lock(&fs_devs->device_list_mutex);
+				 lock(btrfs_trans_num_extwriters);
+				 lock(&fs_devs->device_list_mutex);
+    lock(&vblk->vdev_mutex);
+
+   *** DEADLOCK ***
+
+  3 locks held by mount/1043:
+   #0: ffff88811063e878 (&fc->uapi_mutex){+.+.}-{4:4}, at: __do_sys_fsconfig+0x2ae/0x680
+   #1: ffff88810cb9f0e8 (&type->s_umount_key#31/1){+.+.}-{4:4}, at: alloc_super+0xc0/0x3e0
+   #2: ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
+
+  stack backtrace:
+  CPU: 2 UID: 0 PID: 1043 Comm: mount Not tainted 7.0.0-rc1+ #355 PREEMPT(full)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/10/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5b/0x80
+   print_circular_bug.cold+0x18d/0x1d8
+   check_noncircular+0x10d/0x130
+   __lock_acquire+0x1522/0x2680
+   ? vmap_small_pages_range_noflush+0x3ef/0x820
+   lock_acquire+0xd5/0x2f0
+   ? virtblk_report_zones+0xda/0x430
+   ? lock_is_held_type+0xcd/0x130
+   __mutex_lock+0xa3/0x1360
+   ? virtblk_report_zones+0xda/0x430
+   ? virtblk_report_zones+0xda/0x430
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   ? virtblk_report_zones+0xda/0x430
+   virtblk_report_zones+0xda/0x430
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   blkdev_report_zones_cached+0x162/0x190
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   btrfs_get_dev_zones+0xdc/0x2e0
+   btrfs_get_dev_zone_info+0x219/0xe80
+   btrfs_get_dev_zone_info_all_devices+0x62/0x90
+   open_ctree+0x1200/0x23db
+   btrfs_get_tree.cold+0x105/0x26c
+   ? rcu_is_watching+0x18/0x50
+   vfs_get_tree+0x28/0xb0
+   __do_sys_fsconfig+0x324/0x680
+   do_syscall_64+0x92/0x4f0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f615e27a40e
+  RSP: 002b:00007fff11b18fb8 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+  RAX: ffffffffffffffda RBX: 000055572e92ab10 RCX: 00007f615e27a40e
+  RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+  RBP: 00007fff11b19100 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 000055572e92bc40 R14: 00007f615e3faa60 R15: 000055572e92bd08
+   </TASK>
+
+Don't hold the device_list_mutex while calling into
+btrfs_get_dev_zone_info() in btrfs_get_dev_zone_info_all_devices() to
+mitigate the issue. This is safe, as no other thread can touch the device
+list at the moment of execution.
+
+Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/x_tables.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ fs/btrfs/zoned.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index c842ec693dad4..650cb725ba271 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -501,6 +501,17 @@ int xt_check_match(struct xt_mtchk_param *par,
- 				    par->match->table, par->table);
- 		return -EINVAL;
- 	}
-+
-+	/* NFPROTO_UNSPEC implies NF_INET_* hooks which do not overlap with
-+	 * NF_ARP_IN,OUT,FORWARD, allow explicit extensions with NFPROTO_ARP
-+	 * support.
-+	 */
-+	if (par->family == NFPROTO_ARP &&
-+	    par->match->family != NFPROTO_ARP) {
-+		pr_info_ratelimited("%s_tables: %s match: not valid for this family\n",
-+				    xt_prefix[par->family], par->match->name);
-+		return -EINVAL;
-+	}
- 	if (par->match->hooks && (par->hook_mask & ~par->match->hooks) != 0) {
- 		char used[64], allow[64];
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index 6e8b8c46ba18f..dabbfc3b7d776 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -342,7 +342,10 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
+ 	if (!btrfs_fs_incompat(fs_info, ZONED))
+ 		return 0;
  
-@@ -1016,6 +1027,18 @@ int xt_check_target(struct xt_tgchk_param *par,
- 				    par->target->table, par->table);
- 		return -EINVAL;
- 	}
-+
-+	/* NFPROTO_UNSPEC implies NF_INET_* hooks which do not overlap with
-+	 * NF_ARP_IN,OUT,FORWARD, allow explicit extensions with NFPROTO_ARP
-+	 * support.
+-	mutex_lock(&fs_devices->device_list_mutex);
++	/*
++	 * No need to take the device_list mutex here, we're still in the mount
++	 * path and devices cannot be added to or removed from the list yet.
 +	 */
-+	if (par->family == NFPROTO_ARP &&
-+	    par->target->family != NFPROTO_ARP) {
-+		pr_info_ratelimited("%s_tables: %s target: not valid for this family\n",
-+				    xt_prefix[par->family], par->target->name);
-+		return -EINVAL;
-+	}
-+
- 	if (par->target->hooks && (par->hook_mask & ~par->target->hooks) != 0) {
- 		char used[64], allow[64];
+ 	list_for_each_entry(device, &fs_devices->devices, dev_list) {
+ 		/* We can skip reading of zone info for missing devices */
+ 		if (!device->bdev)
+@@ -352,7 +355,6 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
+ 		if (ret)
+ 			break;
+ 	}
+-	mutex_unlock(&fs_devices->device_list_mutex);
  
+ 	return ret;
+ }
 -- 
 2.53.0
 
