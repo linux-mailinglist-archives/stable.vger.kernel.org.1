@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-234339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANQFHOWd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:45 +0200
+	id cHpVOL2c1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33F73C0B8F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:26:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406703C07E4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66654308B520
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:23:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB98F3038526
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F99D3D9DC0;
-	Wed,  8 Apr 2026 18:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C893A16A0;
+	Wed,  8 Apr 2026 18:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Og239uWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElIK0J5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9543D9DB9;
-	Wed,  8 Apr 2026 18:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070B23537FC;
+	Wed,  8 Apr 2026 18:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672603; cv=none; b=KZlrXmZO1UICPxs8FnGtHF7ePezX7imoN3hNE/ZlskXoIkVh30byYf/nwCVJZs0fv7tfLX68dhnC5TlQhH+zw/gFQktfFb8Z8TX4hr4HyQtugxJDZujzKadX07mIrnadKzBhB/aDtgkhepXpWjYRQ4xDOsV1Epi85dD3tQ4mb3U=
+	t=1775672232; cv=none; b=DKhSr//7+6HKqdDmvXV0Dhb7QQcUnw/lbor9VTWApvJvdHx/KlQZWjenYOnEZpOYRzUGN1K2Emx8ZZXWUa9z3Bj45HTUr3OP6TLQoYK0/CxV/y01DspowRKc9Peau05uPm/R3yv92eptwUT2CsIhh8zqdGYjeddr53e5csN8Co4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672603; c=relaxed/simple;
-	bh=WSwL3g6f4zZHQ70gr80pMGb7jGT5ykUrxawm440uQZ8=;
+	s=arc-20240116; t=1775672232; c=relaxed/simple;
+	bh=KMSpmPuGbwzDW2UuSpJb4E/VfPhSZ9LGjnEvu3qGKf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWsG+AIoZUcBGR3zCEBUV1u/Xe/bM0M66TgE9sur8qJDPvvA+/y+emzQhyXvUQNqWIL2bxmRafgy/4ThNr0LpkRbjyQ3sBXSeX5EUz8hRshvKDKP8/lGu8KhN0qIZfcY7lQ3Gf+h7akuiAe30YEexDzvHewjQ78qn1PkpJkhBVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Og239uWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28D0C19421;
-	Wed,  8 Apr 2026 18:23:22 +0000 (UTC)
+	 MIME-Version; b=dkYXbk82B+/aLzA9JFwtar8iabFEyZo5l2dPOFVsOmcbVelRJCzeggmSraC3mDnwFMgGB68qoLy64K3jO0ax7bklRP6jHUXItInqr7Hblw1QIJdH5yxF1Igt7uFjxlgZjMHeuriCrYezzd8CRmG0dpSN9Vnc9zhvZpwoYD7MLMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElIK0J5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B3BC19421;
+	Wed,  8 Apr 2026 18:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672603;
-	bh=WSwL3g6f4zZHQ70gr80pMGb7jGT5ykUrxawm440uQZ8=;
+	s=korg; t=1775672231;
+	bh=KMSpmPuGbwzDW2UuSpJb4E/VfPhSZ9LGjnEvu3qGKf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Og239uWCvJb2xIkadMcoDea8S2ooZC2wC2nmS+YKJ48GJkIQr4/oDxQhCFWCesnzI
-	 YHPzUcErzgxVCuDdERcSv0ufg4U/1DhcyY6QG6sdCqXXjPUs2AE3YtPZIX7cdgMFXI
-	 nVGJDJDaSRN06YdXkdC01RRGtAkbd7122RnIKhOI=
+	b=ElIK0J5eYjVhcnYVTpe6zMbbXxyW9kWXqwBBp9Yux+/V4jua32w3854eKkyQk86dx
+	 aU3md2LbC3vSQ43oP8BK4WPcl1+dJwaNBrLb1b/WTuXo4cNf9Q86ceO2SZbmoFPteQ
+	 6ZvuomS/LZ3Ux0YnSLE8sanvb0h9f8s0KBQsuc50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mieczyslaw Nalewaj <namiltd@yahoo.com>,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/160] mips: ralink: update CPU clock index
+Subject: [PATCH 6.1 241/312] Revert "ext4: get rid of ppath in ext4_ext_create_new_leaf()"
 Date: Wed,  8 Apr 2026 20:02:38 +0200
-Message-ID: <20260408175915.852997742@linuxfoundation.org>
+Message-ID: <20260408175942.751705560@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +62,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234339-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yahoo.com,outlook.com,gmail.com,alpha.franken.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234196-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E33F73C0B8F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 406703C07E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+This reverts commit 15908fc35056e9a6fd71552eda884a353496e6c7.
 
-[ Upstream commit 43985a62bab9d35e5e9af41118ce2f44c01b97d2 ]
-
-Update CPU clock index to match the clock driver changes.
-
-Fixes: d34db686a3d7 ("clk: ralink: mtmips: fix clocks probe order in oldest ralink SoCs")
-Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/ralink/clk.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/extents.c | 43 +++++++++++++++++++++----------------------
+ 1 file changed, 21 insertions(+), 22 deletions(-)
 
-diff --git a/arch/mips/ralink/clk.c b/arch/mips/ralink/clk.c
-index 9db73fcac522e..5c1eb46ef5d07 100644
---- a/arch/mips/ralink/clk.c
-+++ b/arch/mips/ralink/clk.c
-@@ -21,16 +21,16 @@ static const char *clk_cpu(int *idx)
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index eda6f92a42330..a58f415f882b2 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1392,12 +1392,13 @@ static int ext4_ext_grow_indepth(handle_t *handle, struct inode *inode,
+  * finds empty index and adds new leaf.
+  * if no free index is found, then it requests in-depth growing.
+  */
+-static struct ext4_ext_path *
+-ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+-			 unsigned int mb_flags, unsigned int gb_flags,
+-			 struct ext4_ext_path *path,
+-			 struct ext4_extent *newext)
++static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
++				    unsigned int mb_flags,
++				    unsigned int gb_flags,
++				    struct ext4_ext_path **ppath,
++				    struct ext4_extent *newext)
  {
- 	switch (ralink_soc) {
- 	case RT2880_SOC:
--		*idx = 0;
-+		*idx = 1;
- 		return "ralink,rt2880-sysc";
- 	case RT3883_SOC:
--		*idx = 0;
-+		*idx = 1;
- 		return "ralink,rt3883-sysc";
- 	case RT305X_SOC_RT3050:
--		*idx = 0;
-+		*idx = 1;
- 		return "ralink,rt3050-sysc";
- 	case RT305X_SOC_RT3052:
--		*idx = 0;
-+		*idx = 1;
- 		return "ralink,rt3052-sysc";
- 	case RT305X_SOC_RT3350:
- 		*idx = 1;
++	struct ext4_ext_path *path = *ppath;
+ 	struct ext4_ext_path *curp;
+ 	int depth, i, err = 0;
+ 
+@@ -1418,25 +1419,28 @@ ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 		 * entry: create all needed subtree and add new leaf */
+ 		err = ext4_ext_split(handle, inode, mb_flags, path, newext, i);
+ 		if (err)
+-			goto errout;
++			goto out;
+ 
+ 		/* refill path */
+ 		path = ext4_find_extent(inode,
+ 				    (ext4_lblk_t)le32_to_cpu(newext->ee_block),
+ 				    path, gb_flags);
+-		return path;
++		if (IS_ERR(path))
++			err = PTR_ERR(path);
+ 	} else {
+ 		/* tree is full, time to grow in depth */
+ 		err = ext4_ext_grow_indepth(handle, inode, mb_flags);
+ 		if (err)
+-			goto errout;
++			goto out;
+ 
+ 		/* refill path */
+ 		path = ext4_find_extent(inode,
+ 				   (ext4_lblk_t)le32_to_cpu(newext->ee_block),
+ 				    path, gb_flags);
+-		if (IS_ERR(path))
+-			return path;
++		if (IS_ERR(path)) {
++			err = PTR_ERR(path);
++			goto out;
++		}
+ 
+ 		/*
+ 		 * only first (depth 0 -> 1) produces free space;
+@@ -1448,11 +1452,9 @@ ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 			goto repeat;
+ 		}
+ 	}
+-	return path;
+-
+-errout:
+-	ext4_free_ext_path(path);
+-	return ERR_PTR(err);
++out:
++	*ppath = IS_ERR(path) ? NULL : path;
++	return err;
+ }
+ 
+ /*
+@@ -2095,14 +2097,11 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
+ 	 */
+ 	if (gb_flags & EXT4_GET_BLOCKS_METADATA_NOFAIL)
+ 		mb_flags |= EXT4_MB_USE_RESERVED;
+-	path = ext4_ext_create_new_leaf(handle, inode, mb_flags, gb_flags,
+-					path, newext);
+-	if (IS_ERR(path)) {
+-		*ppath = NULL;
+-		err = PTR_ERR(path);
++	err = ext4_ext_create_new_leaf(handle, inode, mb_flags, gb_flags,
++				       ppath, newext);
++	if (err)
+ 		goto cleanup;
+-	}
+-	*ppath = path;
++	path = *ppath;
+ 	depth = ext_depth(inode);
+ 	eh = path[depth].p_hdr;
+ 
 -- 
 2.53.0
 
