@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-234477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AhpApii1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:48 +0200
+	id MLESJaCp1mlmHAgAu9opvQ
+	(envelope-from <stable+bounces-235002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899343C17EC
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA7C3C2AC7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C4B330F6F2C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3F3632579BF
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDCA3D47AC;
-	Wed,  8 Apr 2026 18:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C823D890F;
+	Wed,  8 Apr 2026 18:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBekEBUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jEdyxlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C555737F01B;
-	Wed,  8 Apr 2026 18:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E48337B81;
+	Wed,  8 Apr 2026 18:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672961; cv=none; b=Paj8aOlg4UCO3IFAjaFSxt38T3y7WAHHqUZ2/kqzQx0DEacYNw7k6jFU7AUe5izYvYAbxTTUEY6IW+zbuLyHeeeMgc919+/7Y8pWclN+2QU3+EOn2Tz/PNUWzWXlYI0S5MIR5Wk1B2xqzt40WhnID3NEU0pNaewCtA8EqOtD+BE=
+	t=1775674317; cv=none; b=b/dFFnVMAGF6msru/xWlW0Hl4bam08rw+qiEpMourRPQ710EN0IH6aRtpdgNzPU4EFY6vQs/DmueNIameszzwKl35t0R4vCUA9XEQQHfjgQjulThrb7O0U5iM1H9hHToNBp80F8MLAyNgNnpymmepfuhoFU1JHUuUdjOCLeuw5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672961; c=relaxed/simple;
-	bh=0zIhdvrZr5uAGoGn0Ibw0NerucdenRVBeVDxP64CsE8=;
+	s=arc-20240116; t=1775674317; c=relaxed/simple;
+	bh=rYnwl9ozbcRDsExaEKFrD/dV4o7dreV5JI01LEfOIVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXKkr/RFr5ta6ABMRFl2wgAsjbsnfT5bqWvM3pQPr0JbeYPG+qLTZpJclOTXMnH/92owaJA9BM5VdMfePl1gWJHmsGIDYXkd3sSbwBWhX+6w/TnquWS1I7SEvNJTyLWpUL6LgHGdeH6VPIm9sl/DwKwX6IqXrwCi6GJwSPA2Dyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBekEBUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1DFC19421;
-	Wed,  8 Apr 2026 18:29:21 +0000 (UTC)
+	 MIME-Version; b=bTuwACv1nhlP2sBFyxplycZ5ln4LnD5FYXqEC5h1J55Pd58Lr8GAyXQXWqMbNpWewTQePruJFhL/XGjOlEiiFOpwZZB3yvuYMDJYOpN5SVwBdyKvLJ3jyEIjvlAUdwApSbzvGF0NvE07hbU2Jnz6YwKV5Ss559zRHhg/LiudsNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jEdyxlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0EFC19421;
+	Wed,  8 Apr 2026 18:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672961;
-	bh=0zIhdvrZr5uAGoGn0Ibw0NerucdenRVBeVDxP64CsE8=;
+	s=korg; t=1775674316;
+	bh=rYnwl9ozbcRDsExaEKFrD/dV4o7dreV5JI01LEfOIVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBekEBUYSwAgDTZJa44MFrEPKchBfGVvUbqPhLVwoJ1UcB+UWUjbEU/LgctV+d7GM
-	 pM6le4/Di7owoSmT5mlmPBXdUPLDxc7dn0QzcsOOTuD6Quilgpq5F8ud/1NYOP8B7u
-	 5b9a3enHcHYOK0Q0+Wp+ebaKoWs0S4ssXidOjgDo=
+	b=1jEdyxlxCpyr6cD6qU7WLd0DNcH34/R0aG6mCHFRpdhkdMA6S3u4XQrt0kXoZjw8F
+	 A0RNgUhLNnv5p9yGIK/rpTWY6vKKTMxmKSxGNk1jdEEjbuGW5fzKs2JTzT8ieQlaik
+	 +k+Cku3DGoN5r/xzEndM+smXe6P2/rRWqwrFMI6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Madhur Agrawal <Madhur.Agrawal@airoha.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Tejun Heo <tj@kernel.org>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Michal Koutny <mkoutny@suse.com>,
+	cgroups@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 048/277] net: airoha: Add missing cleanup bits in airoha_qdma_cleanup_rx_queue()
+Subject: [PATCH 6.19 033/311] cgroup: Wait for dying tasks to leave on rmdir
 Date: Wed,  8 Apr 2026 20:00:33 +0200
-Message-ID: <20260408175935.651003414@linuxfoundation.org>
+Message-ID: <20260408175940.650588610@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,90 +77,209 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linutronix.de,kernel.org,web.de,suse.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-235002-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234477-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,airoha.com:email]
-X-Rspamd-Queue-Id: 899343C17EC
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linutronix.de:email,intel.com:email]
+X-Rspamd-Queue-Id: 0BA7C3C2AC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 514aac3599879a7ed48b7dc19e31145beb6958ac ]
+[ Upstream commit 1b164b876c36c3eb5561dd9b37702b04401b0166 ]
 
-In order to properly cleanup hw rx QDMA queues and bring the device to
-the initial state, reset rx DMA queue head/tail index. Moreover, reset
-queued DMA descriptor fields.
+a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup") hid PF_EXITING
+tasks from cgroup.procs so that systemd doesn't see tasks that have already
+been reaped via waitpid(). However, the populated counter (nr_populated_csets)
+is only decremented when the task later passes through cgroup_task_dead() in
+finish_task_switch(). This means cgroup.procs can appear empty while the
+cgroup is still populated, causing rmdir to fail with -EBUSY.
 
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Tested-by: Madhur Agrawal <Madhur.Agrawal@airoha.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260327-airoha_qdma_cleanup_rx_queue-fix-v1-1-369d6ab1511a@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by making cgroup_rmdir() wait for dying tasks to fully leave. If the
+cgroup is populated but all remaining tasks have PF_EXITING set (the task
+iterator returns none due to the existing filter), wait for a kick from
+cgroup_task_dead() and retry. The wait is brief as tasks are removed from the
+cgroup's css_set between PF_EXITING assertion in do_exit() and
+cgroup_task_dead() in finish_task_switch().
+
+v2: cgroup_is_populated() true to false transition happens under css_set_lock
+    not cgroup_mutex, so retest under css_set_lock before sleeping to avoid
+    missed wakeups (Sebastian).
+
+Fixes: a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202603222104.2c81684e-lkp@intel.com
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Bert Karwatzki <spasswolf@web.de>
+Cc: Michal Koutny <mkoutny@suse.com>
+Cc: cgroups@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ include/linux/cgroup-defs.h |  3 ++
+ kernel/cgroup/cgroup.c      | 86 +++++++++++++++++++++++++++++++++++--
+ 2 files changed, 86 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index b16b9ae7d3311..4fc6bd282b465 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -806,18 +806,34 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
+index f7cc60de00583..2bff3e2be0d3b 100644
+--- a/include/linux/cgroup-defs.h
++++ b/include/linux/cgroup-defs.h
+@@ -609,6 +609,9 @@ struct cgroup {
+ 	/* used to wait for offlining of csses */
+ 	wait_queue_head_t offline_waitq;
  
- static void airoha_qdma_cleanup_rx_queue(struct airoha_queue *q)
- {
--	struct airoha_eth *eth = q->qdma->eth;
-+	struct airoha_qdma *qdma = q->qdma;
-+	struct airoha_eth *eth = qdma->eth;
-+	int qid = q - &qdma->q_rx[0];
- 
- 	while (q->queued) {
- 		struct airoha_queue_entry *e = &q->entry[q->tail];
-+		struct airoha_qdma_desc *desc = &q->desc[q->tail];
- 		struct page *page = virt_to_head_page(e->buf);
- 
- 		dma_sync_single_for_cpu(eth->dev, e->dma_addr, e->dma_len,
- 					page_pool_get_dma_dir(q->page_pool));
- 		page_pool_put_full_page(q->page_pool, page, false);
-+		/* Reset DMA descriptor */
-+		WRITE_ONCE(desc->ctrl, 0);
-+		WRITE_ONCE(desc->addr, 0);
-+		WRITE_ONCE(desc->data, 0);
-+		WRITE_ONCE(desc->msg0, 0);
-+		WRITE_ONCE(desc->msg1, 0);
-+		WRITE_ONCE(desc->msg2, 0);
-+		WRITE_ONCE(desc->msg3, 0);
++	/* used by cgroup_rmdir() to wait for dying tasks to leave */
++	wait_queue_head_t dying_populated_waitq;
 +
- 		q->tail = (q->tail + 1) % q->ndesc;
- 		q->queued--;
- 	}
-+
-+	q->head = q->tail;
-+	airoha_qdma_rmw(qdma, REG_RX_DMA_IDX(qid), RX_RING_DMA_IDX_MASK,
-+			FIELD_PREP(RX_RING_DMA_IDX_MASK, q->tail));
+ 	/* used to schedule release agent */
+ 	struct work_struct release_agent_work;
+ 
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 3f9e4bcd71988..257d1ddea1ada 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -2126,6 +2126,7 @@ static void init_cgroup_housekeeping(struct cgroup *cgrp)
+ #endif
+ 
+ 	init_waitqueue_head(&cgrp->offline_waitq);
++	init_waitqueue_head(&cgrp->dying_populated_waitq);
+ 	INIT_WORK(&cgrp->release_agent_work, cgroup1_release_agent);
  }
  
- static int airoha_qdma_init_rx(struct airoha_qdma *qdma)
+@@ -6224,6 +6225,76 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
+ 	return 0;
+ };
+ 
++/**
++ * cgroup_drain_dying - wait for dying tasks to leave before rmdir
++ * @cgrp: the cgroup being removed
++ *
++ * The PF_EXITING filter in css_task_iter_advance() hides exiting tasks from
++ * cgroup.procs so that userspace (e.g. systemd) doesn't see tasks that have
++ * already been reaped via waitpid(). However, the populated counter
++ * (nr_populated_csets) is only decremented when the task later passes through
++ * cgroup_task_dead() in finish_task_switch(). This creates a window where
++ * cgroup.procs appears empty but cgroup_is_populated() is still true, causing
++ * rmdir to fail with -EBUSY.
++ *
++ * This function bridges that gap. If the cgroup is populated but all remaining
++ * tasks have PF_EXITING set, we wait for cgroup_task_dead() to process them.
++ * Tasks are removed from the cgroup's css_set in cgroup_task_dead() called from
++ * finish_task_switch(). As the window between PF_EXITING and cgroup_task_dead()
++ * is short, the number of PF_EXITING tasks on the list is small and the wait
++ * is brief.
++ *
++ * Each cgroup_task_dead() kicks the waitqueue via cset->cgrp_links, and we
++ * retry the full check from scratch.
++ *
++ * Must be called with cgroup_mutex held.
++ */
++static int cgroup_drain_dying(struct cgroup *cgrp)
++	__releases(&cgroup_mutex) __acquires(&cgroup_mutex)
++{
++	struct css_task_iter it;
++	struct task_struct *task;
++	DEFINE_WAIT(wait);
++
++	lockdep_assert_held(&cgroup_mutex);
++retry:
++	if (!cgroup_is_populated(cgrp))
++		return 0;
++
++	/* Same iterator as cgroup.threads - if any task is visible, it's busy */
++	css_task_iter_start(&cgrp->self, 0, &it);
++	task = css_task_iter_next(&it);
++	css_task_iter_end(&it);
++
++	if (task)
++		return -EBUSY;
++
++	/*
++	 * All remaining tasks are PF_EXITING and will pass through
++	 * cgroup_task_dead() shortly. Wait for a kick and retry.
++	 *
++	 * cgroup_is_populated() can't transition from false to true while
++	 * we're holding cgroup_mutex, but the true to false transition
++	 * happens under css_set_lock (via cgroup_task_dead()). We must
++	 * retest and prepare_to_wait() under css_set_lock. Otherwise, the
++	 * transition can happen between our first test and
++	 * prepare_to_wait(), and we sleep with no one to wake us.
++	 */
++	spin_lock_irq(&css_set_lock);
++	if (!cgroup_is_populated(cgrp)) {
++		spin_unlock_irq(&css_set_lock);
++		return 0;
++	}
++	prepare_to_wait(&cgrp->dying_populated_waitq, &wait,
++			TASK_UNINTERRUPTIBLE);
++	spin_unlock_irq(&css_set_lock);
++	mutex_unlock(&cgroup_mutex);
++	schedule();
++	finish_wait(&cgrp->dying_populated_waitq, &wait);
++	mutex_lock(&cgroup_mutex);
++	goto retry;
++}
++
+ int cgroup_rmdir(struct kernfs_node *kn)
+ {
+ 	struct cgroup *cgrp;
+@@ -6233,9 +6304,12 @@ int cgroup_rmdir(struct kernfs_node *kn)
+ 	if (!cgrp)
+ 		return 0;
+ 
+-	ret = cgroup_destroy_locked(cgrp);
+-	if (!ret)
+-		TRACE_CGROUP_PATH(rmdir, cgrp);
++	ret = cgroup_drain_dying(cgrp);
++	if (!ret) {
++		ret = cgroup_destroy_locked(cgrp);
++		if (!ret)
++			TRACE_CGROUP_PATH(rmdir, cgrp);
++	}
+ 
+ 	cgroup_kn_unlock(kn);
+ 	return ret;
+@@ -6995,6 +7069,7 @@ void cgroup_task_exit(struct task_struct *tsk)
+ 
+ static void do_cgroup_task_dead(struct task_struct *tsk)
+ {
++	struct cgrp_cset_link *link;
+ 	struct css_set *cset;
+ 	unsigned long flags;
+ 
+@@ -7008,6 +7083,11 @@ static void do_cgroup_task_dead(struct task_struct *tsk)
+ 	if (thread_group_leader(tsk) && atomic_read(&tsk->signal->live))
+ 		list_add_tail(&tsk->cg_list, &cset->dying_tasks);
+ 
++	/* kick cgroup_drain_dying() waiters, see cgroup_rmdir() */
++	list_for_each_entry(link, &cset->cgrp_links, cgrp_link)
++		if (waitqueue_active(&link->cgrp->dying_populated_waitq))
++			wake_up(&link->cgrp->dying_populated_waitq);
++
+ 	if (dl_task(tsk))
+ 		dec_dl_tasks_cs(tsk);
+ 
 -- 
 2.53.0
 
