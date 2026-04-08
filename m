@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +J3SAKOi1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:59 +0200
+	id CNFHAqSr1mmmHAgAu9opvQ
+	(envelope-from <stable+bounces-235160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE6A3C181F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A483C2F1A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D8674302E19E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 851AC3196C3C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAF933121F;
-	Wed,  8 Apr 2026 18:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FEF3C5552;
+	Wed,  8 Apr 2026 18:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEVqtxYb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbFJa3xS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B623624B2;
-	Wed,  8 Apr 2026 18:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26DB3176E4;
+	Wed,  8 Apr 2026 18:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673914; cv=none; b=Pkkk+nwGO86X4dUJsrwo46WtYF8YzP7ugGZ5F+EwccacaUS6sUM+WKHuOGaWOa+vTL+7vo3ucEPVUCL2N6e8M1GjL5K0BgxvPJuA0YmjXW0+65/5QD7JzpSOJKNFC2PNMddGywvhw/r+Le4rGmPn5/1aB+gZHqwiteeNDJl4M/E=
+	t=1775674723; cv=none; b=C8PgKPCodPJ06frwS4NClawZbu6m7l0O6RL8H+F0DkPhUr6KY0XEuaSYH9NmGs+fw5purIxRH6aKPc2Uxt2LzpCPNSs04v7t2huh/E5J1ucTmkPr+ZbmSPyCuGoZFmm//AJgJKPnEB2ILXm+77Ijo4F0q8DQeKf0NKfKEZK6HuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673914; c=relaxed/simple;
-	bh=VNILRe/sabgVSrZ9TiRwzrZLAIfRkux3Vaa/xKMnGO8=;
+	s=arc-20240116; t=1775674723; c=relaxed/simple;
+	bh=c0MIJWZ9ljO5DVuk6ES4XN2xq+28VXvHvD9ToHf+09Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HFrC0myQvRUC95It8XGpl0Dps1tUTMb9vgwyY/k2LBWXUmYn+1EHYWKH4bkzL34+4oTe2KOUai+DtoWd5ONJdoEi7DrWSEHQkmJVjsuMEpVzwUTtJE736IPFMFKZ+R8hC2VIQWPO/7d0OXMtV1JqOIKpppem6mA0QrIleHyzMTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEVqtxYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34AEC19421;
-	Wed,  8 Apr 2026 18:45:13 +0000 (UTC)
+	 MIME-Version; b=H8uNVr4sgxbM4807nQYPEnoDy6nNSNndU0qA/PQjSe1yM8jcPs2OUXhkq6WxdykaXg5kl8igj7TiP/9ktT5XqBbe7fccrgBUmFNpBKe1aX4gYHaLKkpPNddn3IOj9sc4hjdF2p9WYXpM6R2x/iyV4mJ3okIanaK1dI/TjM9q+Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbFJa3xS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579E5C19421;
+	Wed,  8 Apr 2026 18:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673914;
-	bh=VNILRe/sabgVSrZ9TiRwzrZLAIfRkux3Vaa/xKMnGO8=;
+	s=korg; t=1775674723;
+	bh=c0MIJWZ9ljO5DVuk6ES4XN2xq+28VXvHvD9ToHf+09Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEVqtxYb9Y8Vx+q+HAkjAJ/DKzA9aBDfvRnHae22AFSxAuKKpcyggx/3O1s4Cdklv
-	 ajxeosuhl43e56RSNxCu7A3a+eBu6wLkyCaNwYqMC4HOo/kw2DLhB6RrZnoBgYTSK2
-	 kwFjSY4hoH82F0rYRijaG6ePE6ywCLR2liFZYvMY=
+	b=fbFJa3xS+IFM0BncxLpu+eejzzLX92JUmk/Z7tG5zOdQtqRpSOCZb/19q8LQ/raCw
+	 HxWgB+zEW2Uw2bvMR0CK9kEWOcjWz7IIAI6mMqwbnj+Z3Y8vtZjG6Z0gJxYS0RXSxF
+	 FviHTp5XeD1nsFXUKP7mIsaRYd0ESaVhyQol3o1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.12 136/242] drm/i915/dsi: Dont do DSC horizontal timing adjustments in command mode
+	Sourav Nayak <nonameblank007@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.19 176/311] ALSA: hda/realtek: add quirk for HP Victus 15-fb0xxx
 Date: Wed,  8 Apr 2026 20:02:56 +0200
-Message-ID: <20260408175932.179531832@linuxfoundation.org>
+Message-ID: <20260408175945.977322366@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234845-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235160-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 0AE6A3C181F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 71A483C2F1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Sourav Nayak <nonameblank007@gmail.com>
 
-commit 4dfce79e098915d8e5fc2b9e1d980bc3251dd32c upstream.
+commit 1fbf85dbf02c96c318e056fb5b8fc614758fee3c upstream.
 
-Stop adjusting the horizontal timing values based on the
-compression ratio in command mode. Bspec seems to be telling
-us to do this only in video mode, and this is also how the
-Windows driver does things.
+This adds a mute led quirck for HP Victus 15-fb0xxx (103c:8a3d) model
 
-This should also fix a div-by-zero on some machines because
-the adjusted htotal ends up being so small that we end up with
-line_time_us==0 when trying to determine the vtotal value in
-command mode.
+- As it used 0x8(full bright)/0x7f(little dim) for mute led on and other
+  values as 0ff (0x0, 0x4, ...)
 
-Note that this doesn't actually make the display on the
-Huawei Matebook E work, but at least the kernel no longer
-explodes when the driver loads.
+- So, use ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT insted for safer approach
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12045
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260326111814.9800-2-ville.syrjala@linux.intel.com
-Fixes: 53693f02d80e ("drm/i915/dsi: account for DSC in horizontal timings")
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 0b475e91ecc2313207196c6d7fd5c53e1a878525)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Sourav Nayak <nonameblank007@gmail.com>
+Link: https://patch.msgid.link/20260327142805.17139-1-nonameblank007@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/icl_dsi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/hda/codecs/realtek/alc269.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/i915/display/icl_dsi.c
-+++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-@@ -869,7 +869,7 @@ gen11_dsi_set_transcoder_timings(struct
- 	 * non-compressed link speeds, and simplifies down to the ratio between
- 	 * compressed and non-compressed bpp.
- 	 */
--	if (crtc_state->dsc.compression_enable) {
-+	if (is_vid_mode(intel_dsi) && crtc_state->dsc.compression_enable) {
- 		mul = fxp_q4_to_int(crtc_state->dsc.compressed_bpp_x16);
- 		div = mipi_dsi_pixel_format_to_bpp(intel_dsi->pixel_format);
- 	}
-@@ -1477,7 +1477,7 @@ static void gen11_dsi_get_timings(struct
- 	struct drm_display_mode *adjusted_mode =
- 					&pipe_config->hw.adjusted_mode;
- 
--	if (pipe_config->dsc.compressed_bpp_x16) {
-+	if (is_vid_mode(intel_dsi) && pipe_config->dsc.compressed_bpp_x16) {
- 		int div = fxp_q4_to_int(pipe_config->dsc.compressed_bpp_x16);
- 		int mul = mipi_dsi_pixel_format_to_bpp(intel_dsi->pixel_format);
- 
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6981,6 +6981,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8a30, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a31, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a34, "HP Pavilion x360 2-in-1 Laptop 14-ek0xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
++	SND_PCI_QUIRK(0x103c, 0x8a3d, "HP Victus 15-fb0xxx (MB 8A3D)", ALC245_FIXUP_HP_MUTE_LED_V2_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a4f, "HP Victus 15-fa0xxx (MB 8A4F)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a6e, "HP EDNA 360", ALC287_FIXUP_CS35L41_I2C_4),
+ 	SND_PCI_QUIRK(0x103c, 0x8a74, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
