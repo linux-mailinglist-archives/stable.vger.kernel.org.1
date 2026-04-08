@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMoVM0qg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:58 +0200
+	id OHhnM3ei1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8F93C1127
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:36:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 072DE3C178B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A4EBD302EECA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:36:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D2E21300B536
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C85A3B19A3;
-	Wed,  8 Apr 2026 18:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F633D564E;
+	Wed,  8 Apr 2026 18:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJ+Obhvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRF3hMFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101FC2BD030;
-	Wed,  8 Apr 2026 18:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAA23624B0;
+	Wed,  8 Apr 2026 18:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673408; cv=none; b=nD8tOqcC1ZFt/h5MEGJSUGLFmiCfiT7gJzRcx46DDrT6qohey9thWlBt8y/5epwiqDfjxcs7Igc72r1qpu81nWpS3KRLytMysSEEgCJCPf/oL1p8G9FGfJeFs3EwXghPxvRqupXj20NKGxthi6XVz//nW82DEl3q7b0aG54C/G4=
+	t=1775673902; cv=none; b=tux3Lhpdjzv32JZdyTsq6OAfqDn1GahT3ZuD29jSah5A6qRUuZvfVJKgmPdFHA9Aasfg6KhwU02Tv4fuRIPP2HWIc9nhXZxMv7KOmFrno0GiyyHsOgwXcgSLODTfWiMAcnV0gs0DpU2NsdtcBCMSLiJ9O3GFUcMCLrCuhHDX1Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673408; c=relaxed/simple;
-	bh=eqXoi9ncWsWForYeSrpIpyXdTE7SyWQgQNcl9/gZCCQ=;
+	s=arc-20240116; t=1775673902; c=relaxed/simple;
+	bh=mazdgVNQfl+W8y9Y+p/tKW+3zis3WsRX/autgB31b8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WUuaZcOJaAuVOKaXMAMPypbyEQ4cJX7eR9lG1Ta2SxX3jUbE8zXxLEfB5t5b3/9RkjxReiZFfkvJp9GhFm/6uxqzJ7+uNQv8GG0VkklOZZTJVWWqpkWItZFTxzPqwuqQi+uiNEMj0DrkjMFNZNSpAXmorbZcrbhPaE9uHh0fLM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJ+Obhvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A185C19421;
-	Wed,  8 Apr 2026 18:36:47 +0000 (UTC)
+	 MIME-Version; b=fjP0PTgtfirF1HA2287OqmlbeieLfex62F6NmkIKyA8SlCLDNrjf4cXjW+6epiWeMiGnNqTGLtdUDq0cyteyIBT5JvYA3c26StztI/RLvli7MmRsQOw6Tlux4YtOBgFZCumURiXYqPPi8AyVgQ/ivKp3QcMpgnKqG/DxXu325Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRF3hMFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582CDC2BCB4;
+	Wed,  8 Apr 2026 18:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673407;
-	bh=eqXoi9ncWsWForYeSrpIpyXdTE7SyWQgQNcl9/gZCCQ=;
+	s=korg; t=1775673902;
+	bh=mazdgVNQfl+W8y9Y+p/tKW+3zis3WsRX/autgB31b8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UJ+Obhvq+u+Lq3IPOU9GiBoTNwg7XzSFCOmFyqz42VcJLV6U6UTZnThPNlWNwzKw0
-	 80S3nPSLg43M9t8JwjgqUNe4onoSWE9idTTxh2kMR+s28nlCv/mmocCtHZyOvHmbkS
-	 X+ulTVnbEFDejZIVxT3DX4ZghBZW3JXlyjd7LBsk=
+	b=zRF3hMFRHqf4RiMWA07MnapzfbSxSGQs7IGyukZdJtuAI2pvrqbSIUkByYdYU1RJO
+	 YU4LGoFjyg0o1P6o9hW58trUMH8su8x9JN7oZoZ0pYfO6ZZCtA88S1DKfT1Jzeq0ud
+	 EF3G8ZlfQ67fIyY/MMmG+Dyb2aZJs1PiMlyxnUHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aldo Conte <aldocontelk@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 188/277] iio: light: veml6070: fix veml6070_read() return value
+Subject: [PATCH 6.12 133/242] iio: adc: ti-ads1119: Reinit completion before wait_for_completion_timeout()
 Date: Wed,  8 Apr 2026 20:02:53 +0200
-Message-ID: <20260408175940.884137349@linuxfoundation.org>
+Message-ID: <20260408175932.067070754@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +64,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,vger.kernel.org,huawei.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234650-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234841-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,toradex.com,vger.kernel.org,huawei.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 8E8F93C1127
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,toradex.com:email]
+X-Rspamd-Queue-Id: 072DE3C178B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aldo Conte <aldocontelk@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit d0b224cf9ab12e86a4d1ca55c760dfaa5c19cbe7 upstream.
+commit 2f168094177f8553a36046afce139001801ca917 upstream.
 
-veml6070_read() computes the sensor value in ret but
-returns 0 instead of the actual result. This causes
-veml6070_read_raw() to always report 0.
+The completion is not reinit before wait_for_completion_timeout(),
+so wait_for_completion_timeout() will return immediately after
+the first successful completion.
 
-Return the computed value instead of 0.
-
-Running make W=1 returns no errors. I was unable
-to test the patch because I do not have the hardware.
-Found by code inspection.
-
-Fixes: fc38525135dd ("iio: light: veml6070: use guard to handle mutex")
-Signed-off-by: Aldo Conte <aldocontelk@gmail.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/veml6070.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/iio/adc/ti-ads1119.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/light/veml6070.c
-+++ b/drivers/iio/light/veml6070.c
-@@ -134,9 +134,7 @@ static int veml6070_read(struct veml6070
- 	if (ret < 0)
- 		return ret;
+--- a/drivers/iio/adc/ti-ads1119.c
++++ b/drivers/iio/adc/ti-ads1119.c
+@@ -280,6 +280,9 @@ static int ads1119_single_conversion(str
+ 	if (ret)
+ 		goto pdown;
  
--	ret = (msb << 8) | lsb;
--
--	return 0;
-+	return (msb << 8) | lsb;
- }
- 
- static const struct iio_chan_spec veml6070_channels[] = {
++	if (st->client->irq)
++		reinit_completion(&st->completion);
++
+ 	ret = i2c_smbus_write_byte(st->client, ADS1119_CMD_START_SYNC);
+ 	if (ret)
+ 		goto pdown;
 
 
 
