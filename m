@@ -1,175 +1,198 @@
-Return-Path: <stable+bounces-233826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EfwLvYr1mkUBggAu9opvQ
-	(envelope-from <stable+bounces-233826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 12:20:38 +0200
+	id OAllLLot1mkUBggAu9opvQ
+	(envelope-from <stable+bounces-233827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 12:28:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692593BA712
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 12:20:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5833BA837
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 12:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DBFC13026CD0
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 10:19:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E80543011C7A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 10:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E913B636C;
-	Wed,  8 Apr 2026 10:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8up+Rj+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1A43314D0;
+	Wed,  8 Apr 2026 10:25:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429963B52F4
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 10:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882E93B4E88;
+	Wed,  8 Apr 2026 10:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775643566; cv=none; b=VjqkEHmcl0sEmq3OAq9+DIw9mClcFnKgnFtCY7MKvCi06GtxeZLWYr3DD0ii0VatCoYvgwcT3vzdyAJd2snhXv25RpBL71CsX6DJ1IpNF3t0uWGuFWppy7O+zwDYQIN0pf5iSfQW9WrPgw5LjVvKEbfyKin9GrurCjN7/C2YNTs=
+	t=1775643931; cv=none; b=nbV+5DA8lo0/gugygi2QKfS14l7ATENcfoNxwQPihJ6euEW93vSZJLnwtzXVYB2IfUcNX3vAysJCv271OYXe1pwK/pk0XxiAul0wTJa6Ycu174ma2dk0pry20AuqIzLfWclKheuDyit1JVCCwZG2/8NEJvikO0vCmpnzXIYQ0/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775643566; c=relaxed/simple;
-	bh=Yf3zc3v1e4y/GH6eAmt1wi2qeH0aR4z9qqbrXRsv4js=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qn/AtQhW5b9qTyFf42eRMydoZJd8Q0j0uLbAl+y1rkvHKlbp9TFoH7ycppS2BUmIomLHSwSUaMzm1WbQv3uknCYC89Vgq3GVHng8Ex4e7Q31/G7ZWso/On3odXDQqYwWwShQ43hE8zVz7rGX1I5EHpPI6BfDrNpM9K2qY6ld/7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8up+Rj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D9FC4AF09
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 10:19:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775643565;
-	bh=Yf3zc3v1e4y/GH6eAmt1wi2qeH0aR4z9qqbrXRsv4js=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=d8up+Rj+//U82WLElSWULoJphjfrKPM/5B9I4/T+lZfcha4Tgdf91penMzLNkJ2Rq
-	 yxnWQWM9tXZc6UU980CzlBt0dQnBjW3/pyA8bdeJYM5Y1XY6t4jagpWd7vH3oxM/Pp
-	 t6JRDpdg9DuliYFZorKiA4E/Szj5Fk81tP1VB6m2wtdCd3cWzr0XtUPJrVxf+k2erw
-	 UVkZbckAtO8omBOn785tCMJqhd4vHDVVN5uCkrsXTrUxtpQMtmHGqaIt7QDlL6VpUu
-	 WBXsKFIJmHzr68KjxgJ+LiygBz9+qETSiY1EyyDmMsUIBi6p8hBaMheJsdF8WmiSda
-	 Fa2Gg7L2GRoAQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-38dd9c6840aso38174351fa.0
-        for <stable@vger.kernel.org>; Wed, 08 Apr 2026 03:19:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXPRoaKU77RId4ICiJfIlOyD8juek6clhYF5BFbsg3r/t1m4Iyf+Fyt0jz3Rt8L18s6aH42TGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyja88yc4+nqv8H9XjsPfbYg7x5yLRxtHflsJGnVxcWeqU621LQ
-	uAXpaD5zwd6cSKUABbc7kdj/f9UIpwJ2RQDca4qt/8GPese7V+pPcVdqgzcII4Sgm11wKpBrB1o
-	O/qGEXATRyv617mX2+EdK74KuogDAgXU=
-X-Received: by 2002:a05:651c:23c3:10b0:387:799:17f8 with SMTP id
- 38308e7fff4ca-38d91bef49bmr44696691fa.16.1775643564298; Wed, 08 Apr 2026
- 03:19:24 -0700 (PDT)
+	s=arc-20240116; t=1775643931; c=relaxed/simple;
+	bh=AOUKX/Kpqxmge+VcST9+k1v1uMnqhVqVyIHwQEbIztQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rSnVrnuaTXtCjMA+Ao/XnT0pjCyDX9fJ7cqgaEZ1I2C3OTtIrn8zNkSyubBEW42kfJyIHCXw5jNu8iGL2utq/YlasvbdVUuwh4vhKaykXNYNBTawWRsLY/Sofa7ecFx195dUzFdaRYKqPw3CCIkGbsyh2eQ/hMBAuoMGfuwlcPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-05 (Coremail) with SMTP id zQCowADXZQkNLdZp36DuDA--.59696S2;
+	Wed, 08 Apr 2026 18:25:18 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: kabel@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] bus: moxtet: fix use-after-free in of_register_moxtet_devices()
+Date: Wed,  8 Apr 2026 10:25:16 +0000
+Message-Id: <20260408102516.360357-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
- <20260406111531.779571d7@gandalf.local.home> <CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
- <20260406123232.3dacbe94@gandalf.local.home> <adTqIepV2W6M_Q2o@pathway.suse.cz>
- <CAJ-ks9nPvGaYPKj5Py0OPrU1E8JgDrLNM29d+iwc3c2U6KZ0kg@mail.gmail.com> <adYAsnyZMykg3y9f@pathway.suse.cz>
-In-Reply-To: <adYAsnyZMykg3y9f@pathway.suse.cz>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Wed, 8 Apr 2026 06:18:47 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9ni9bth243ciTynDXGWG20sSbz52jSYHPsiVdxixkncPQ@mail.gmail.com>
-X-Gm-Features: AQROBzCOryPxyn0QH4broMgYgPInfrSwibuvKoeAY_wT-FaIyygJgoCooJ5Cny4
-Message-ID: <CAJ-ks9ni9bth243ciTynDXGWG20sSbz52jSYHPsiVdxixkncPQ@mail.gmail.com>
-Subject: Re: [PATCH] printf: mark errptr() noinline
-To: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowADXZQkNLdZp36DuDA--.59696S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxur4xWrWUuw1DCFykCryxuFg_yoW5CFyfpa
+	1rWasxtrW8Wa18ur4qyayrJa4Fqrn5tw48Cr1xGwnak3s0yry8t34UJFy7C3sYyFyrZa43
+	tF1Utr1jka1UGr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUka14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW8twCF
+	04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
+	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vI
+	r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
+	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
+	x4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUgiSdUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkLA2nWHcA6NAAAsq
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233826-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233827-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.904];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 692593BA712
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
+X-Rspamd-Queue-Id: 0D5833BA837
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 8, 2026 at 3:16=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
-:
->
-> On Tue 2026-04-07 09:34:57, Tamir Duberstein wrote:
-> > On Tue, Apr 7, 2026 at 7:27=E2=80=AFAM Petr Mladek <pmladek@suse.com> w=
-rote:
-> > >
-> > > On Mon 2026-04-06 12:32:32, Steven Rostedt wrote:
-> > > > On Mon, 6 Apr 2026 11:21:39 -0400
-> > > > Tamir Duberstein <tamird@kernel.org> wrote:
-> > > >
-> > > > > Thanks Steve. IMO that is a very big hammer and not warranted in =
-this
-> > > > > case. There's been talk of encouraging distros to enable CONFIG_K=
-UNIT
-> > > > > by default [0], which would probably interact poorly with the cha=
-nge
-> > > > > you propose.
-> > > > >
-> > > >
-> > > > Branch profiling is really just a niche that is enabled specificall=
-y for
-> > > > seeing all branches taken in the kernel. It hooks to all "if" state=
-ments!
-> > > > As you can imagine, it causes a rather large overhead in performanc=
-e.
-> > > >
-> > > > This option is only used by developers doing special analysis of th=
-eir code
-> > > > (namely me ;-).
-> > > >
-> > > > The only real concern I would have is if the kunit test developers =
-would
-> > > > want to use the branch profiling on their code, in which case my su=
-ggestion
-> > > > would prevent that.
-> > >
-> > > I wonder if it might be possible to disable the branch profiling just
-> > > for the printf_kunit.c as a compromise.
-> > >
-> > > Would "#undef if" in printf_kunit.c help?
-> > >
-> > > Or I see that DISABLE_BRANCH_PROFILING is an official
-> > > way to disable the feature.
-> > >
-> > > I wonder if the following change would solve the problem.
-> > > I am sorry, I could not test it easily.
-> >
-> > Yes, we can disable it for the whole file. I decided against that
-> > because narrow workarounds are better than broad ones IMO, but it is
-> > ultimately up to your preference.
->
-> I might be wrong but I think that nobody would want to
-> profile/optimize this kunit test. So, this looks like the best
-> solution because it is straightforward. The variant adding
-> "noinline" looks too hacky to me.
->
-> > FWIW I did test that this patch fixes the problem in GCC 8.5.0.
->
-> Thanks for testing.
->
-> Would you like to prepare a proper patch or should I do so?
+In of_register_moxtet_device(), one error paths release the device
+node via of_node_put(nc) before returning an error pointer. However,
+the caller of_register_moxtet_devices() continues to access the node
+when it clears the OF_POPULATED flag on error, leading to a
+use-after-free condition.
 
-Please go ahead with your preferred approach.
+Fix this by moving the OF_POPULATED flag clearing into the callee's
+error paths, before the of_node_put() is performed. Remove the
+redundant error handling and warning in the caller, which is no longer
+needed after the change.
+
+Fixes: 5bc7f990cd98 ("bus: Add support for Moxtet bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/bus/moxtet.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/bus/moxtet.c b/drivers/bus/moxtet.c
+index 0d68c1a9f493..dc6b41cb4e2f 100644
+--- a/drivers/bus/moxtet.c
++++ b/drivers/bus/moxtet.c
+@@ -212,6 +212,7 @@ of_register_moxtet_device(struct moxtet *moxtet, struct device_node *nc)
+ 	if (!dev) {
+ 		dev_err(moxtet->dev,
+ 			"Moxtet device alloc error for %pOF\n", nc);
++		of_node_clear_flag(nc, OF_POPULATED);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+@@ -219,7 +220,7 @@ of_register_moxtet_device(struct moxtet *moxtet, struct device_node *nc)
+ 	if (ret) {
+ 		dev_err(moxtet->dev, "%pOF has no valid 'reg' property (%d)\n",
+ 			nc, ret);
+-		goto err_put;
++		goto err_clean;
+ 	}
+ 
+ 	dev->idx = val;
+@@ -228,7 +229,7 @@ of_register_moxtet_device(struct moxtet *moxtet, struct device_node *nc)
+ 		dev_err(moxtet->dev, "%pOF Moxtet address 0x%x out of range\n",
+ 			nc, dev->idx);
+ 		ret = -EINVAL;
+-		goto err_put;
++		goto err_clean;
+ 	}
+ 
+ 	dev->id = moxtet->modules[dev->idx];
+@@ -237,7 +238,7 @@ of_register_moxtet_device(struct moxtet *moxtet, struct device_node *nc)
+ 		dev_err(moxtet->dev, "%pOF Moxtet address 0x%x is empty\n", nc,
+ 			dev->idx);
+ 		ret = -ENODEV;
+-		goto err_put;
++		goto err_clean;
+ 	}
+ 
+ 	of_node_get(nc);
+@@ -247,12 +248,15 @@ of_register_moxtet_device(struct moxtet *moxtet, struct device_node *nc)
+ 	if (ret) {
+ 		dev_err(moxtet->dev,
+ 			"Moxtet device register error for %pOF\n", nc);
++		of_node_clear_flag(nc, OF_POPULATED);
+ 		of_node_put(nc);
+ 		goto err_put;
+ 	}
+ 
+ 	return dev;
+ 
++err_clean:
++	of_node_clear_flag(nc, OF_POPULATED);
+ err_put:
+ 	put_device(&dev->dev);
+ 	return ERR_PTR(ret);
+@@ -260,7 +264,6 @@ of_register_moxtet_device(struct moxtet *moxtet, struct device_node *nc)
+ 
+ static void of_register_moxtet_devices(struct moxtet *moxtet)
+ {
+-	struct moxtet_device *dev;
+ 	struct device_node *nc;
+ 
+ 	if (!moxtet->dev->of_node)
+@@ -269,13 +272,7 @@ static void of_register_moxtet_devices(struct moxtet *moxtet)
+ 	for_each_available_child_of_node(moxtet->dev->of_node, nc) {
+ 		if (of_node_test_and_set_flag(nc, OF_POPULATED))
+ 			continue;
+-		dev = of_register_moxtet_device(moxtet, nc);
+-		if (IS_ERR(dev)) {
+-			dev_warn(moxtet->dev,
+-				 "Failed to create Moxtet device for %pOF\n",
+-				 nc);
+-			of_node_clear_flag(nc, OF_POPULATED);
+-		}
++		of_register_moxtet_device(moxtet, nc);
+ 	}
+ }
+ 
+-- 
+2.34.1
+
 
