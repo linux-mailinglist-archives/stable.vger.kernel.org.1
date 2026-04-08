@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMUBM0Gj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:37 +0200
+	id oJTNKs2p1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305FC3C1AD4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314043C2B35
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48E5A3158BFE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60E40312510C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A883D75AF;
-	Wed,  8 Apr 2026 18:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A78355F30;
+	Wed,  8 Apr 2026 18:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybv0CsbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDFBB033"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D1836166F;
-	Wed,  8 Apr 2026 18:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3D72727F3;
+	Wed,  8 Apr 2026 18:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673124; cv=none; b=NoKSVHf2U6vzBiyplxgadjlzo11OylKmol74q6wFWF1Ofc72ULO96zAw8EPSOJzyHgIgmFgaFEoSnXHeh7CwY8iEv3sdzzUT7CYPC8zzMByYHCc4VCXYSCwUPpqXv031DF+rhewVFtaMWTJB6dQkDsmanKQAC44Vg9Cu5skFpxU=
+	t=1775674355; cv=none; b=hHV7VqOaXmtN+gKcTiJAD8Gu1pwsZ+B5qBdVKjdHXc7wu9vOfc1rPleRJrw2TsDTMCHHdBNKYCUSo98qznS4/8Xrw2uFdB34iKRY+N8A/H2eozlZCGOl0RqzZaZRxJkjwknxMdDCAwJvpv7r7zggTxaxQ61tddDaJCUMbcP3jmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673124; c=relaxed/simple;
-	bh=zoAOOSX2BCKQY+nNsWg6ytpZYNpnIkGOc5Vx9xMf/3c=;
+	s=arc-20240116; t=1775674355; c=relaxed/simple;
+	bh=rIKMcHQ+J3XufiN/IsinPKCsIPFWo5q6DeRjsQ4vAiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ifg+4zMbtc7RsjtXeJ+tRGk1JPppVAuRhykdK2lUAmoGZ26pGWTVdz1/V39n3v9H4HdIlT4Qm5cE0fHZ83g8E5oDyctzs2r/WqXGvfFdfQlHLFhTTsdHND5vvdgXpDraCp24Ugyl0//9Jr+XpdCXhtGcTH4VDaFjzObW3pdHJi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybv0CsbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B058C2BCB0;
-	Wed,  8 Apr 2026 18:32:03 +0000 (UTC)
+	 MIME-Version; b=h1t7w4Xo05FSPTrwMAT+B3Tt5pRlKDVFJrneWuLP1/xsZX3QBNa2RlcN0ixBoL38N/L5GY7tP00Dt+7aI6ZnVMdM0J654aOZ55NePZiVBFXkLUpgZRn8hqaxAtwrHqnXqmv7RZ1zCnGtMmI11BbYryG8+zUVSE3+D4s7PUZIOEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDFBB033; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D2DC19421;
+	Wed,  8 Apr 2026 18:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673124;
-	bh=zoAOOSX2BCKQY+nNsWg6ytpZYNpnIkGOc5Vx9xMf/3c=;
+	s=korg; t=1775674355;
+	bh=rIKMcHQ+J3XufiN/IsinPKCsIPFWo5q6DeRjsQ4vAiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybv0CsbKhgZuVX+i9PJbpV4VtgOX4Gn334W7AZac6cQY20rLGey/+ppJ04WmdWLfy
-	 dmJ70A7xVvqGkicWcvWYvzX3/pKdZQXFiGpQyx4y0MjB6KNpyD7PoTZVVR91F05We8
-	 p9WzcerPbvNuKysJ9fSysEI53rVSsXBE6yZwk0tA=
+	b=uDFBB033/g8AtKUASaHLv8xiKRv2MTaYK2vY0b8LvlWC07ptx/U6lNNf7wYIp7Klr
+	 txf4zTDXYMIHGcWSo4wFbnetdDPyGvLoOlIcm0P8qTLsEMBmOQPp5w1lgDmHXERVOJ
+	 D3gUa41VlQKwjL6SvTpdL6a+OpihmXjSz4xjS70E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Madhur Agrawal <Madhur.Agrawal@airoha.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 078/277] Bluetooth: hci_sync: call destroy in hci_cmd_sync_run if immediate
-Date: Wed,  8 Apr 2026 20:01:03 +0200
-Message-ID: <20260408175936.777474026@linuxfoundation.org>
+Subject: [PATCH 6.19 064/311] net: airoha: Add missing cleanup bits in airoha_qdma_cleanup_rx_queue()
+Date: Wed,  8 Apr 2026 20:01:04 +0200
+Message-ID: <20260408175941.807207778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +69,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235017-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234540-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 305FC3C1AD4
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,airoha.com:email]
+X-Rspamd-Queue-Id: 314043C2B35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit a834a0b66ec6fb743377201a0f4229bb2503f4ce ]
+[ Upstream commit 514aac3599879a7ed48b7dc19e31145beb6958ac ]
 
-hci_cmd_sync_run() may run the work immediately if called from existing
-sync work (otherwise it queues a new sync work). In this case it fails
-to call the destroy() function.
+In order to properly cleanup hw rx QDMA queues and bring the device to
+the initial state, reset rx DMA queue head/tail index. Moreover, reset
+queued DMA descriptor fields.
 
-On immediate run, make it behave same way as if item was queued
-successfully: call destroy, and return 0.
-
-The only callsite is hci_abort_conn() via hci_cmd_sync_run_once(), and
-this changes its return value. However, its return value is not used
-except as the return value for hci_disconnect(), and nothing uses the
-return value of hci_disconnect(). Hence there should be no behavior
-change anywhere.
-
-Fixes: c898f6d7b093b ("Bluetooth: hci_sync: Introduce hci_cmd_sync_run/hci_cmd_sync_run_once")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Tested-by: Madhur Agrawal <Madhur.Agrawal@airoha.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260327-airoha_qdma_cleanup_rx_queue-fix-v1-1-369d6ab1511a@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index e94b62844e1ef..635ce5929dc5d 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -801,8 +801,15 @@ int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 		return -ENETDOWN;
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index c37a1b86180f3..454d7dcf198d9 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -794,18 +794,34 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
  
- 	/* If on cmd_sync_work then run immediately otherwise queue */
--	if (current_work() == &hdev->cmd_sync_work)
--		return func(hdev, data);
-+	if (current_work() == &hdev->cmd_sync_work) {
-+		int err;
-+
-+		err = func(hdev, data);
-+		if (destroy)
-+			destroy(hdev, data, err);
-+
-+		return 0;
-+	}
+ static void airoha_qdma_cleanup_rx_queue(struct airoha_queue *q)
+ {
+-	struct airoha_eth *eth = q->qdma->eth;
++	struct airoha_qdma *qdma = q->qdma;
++	struct airoha_eth *eth = qdma->eth;
++	int qid = q - &qdma->q_rx[0];
  
- 	return hci_cmd_sync_submit(hdev, func, data, destroy);
+ 	while (q->queued) {
+ 		struct airoha_queue_entry *e = &q->entry[q->tail];
++		struct airoha_qdma_desc *desc = &q->desc[q->tail];
+ 		struct page *page = virt_to_head_page(e->buf);
+ 
+ 		dma_sync_single_for_cpu(eth->dev, e->dma_addr, e->dma_len,
+ 					page_pool_get_dma_dir(q->page_pool));
+ 		page_pool_put_full_page(q->page_pool, page, false);
++		/* Reset DMA descriptor */
++		WRITE_ONCE(desc->ctrl, 0);
++		WRITE_ONCE(desc->addr, 0);
++		WRITE_ONCE(desc->data, 0);
++		WRITE_ONCE(desc->msg0, 0);
++		WRITE_ONCE(desc->msg1, 0);
++		WRITE_ONCE(desc->msg2, 0);
++		WRITE_ONCE(desc->msg3, 0);
++
+ 		q->tail = (q->tail + 1) % q->ndesc;
+ 		q->queued--;
+ 	}
++
++	q->head = q->tail;
++	airoha_qdma_rmw(qdma, REG_RX_DMA_IDX(qid), RX_RING_DMA_IDX_MASK,
++			FIELD_PREP(RX_RING_DMA_IDX_MASK, q->tail));
  }
+ 
+ static int airoha_qdma_init_rx(struct airoha_qdma *qdma)
 -- 
 2.53.0
 
