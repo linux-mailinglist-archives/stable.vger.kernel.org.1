@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDYyHZWf1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:57 +0200
+	id WCoKMu2k1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5F83C0FA6
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C993C2044
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BD9D930091D3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0507B315F51C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C87826FA5A;
-	Wed,  8 Apr 2026 18:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBC63D4134;
+	Wed,  8 Apr 2026 18:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgDVd1mV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2VL77Nn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D433224B28;
-	Wed,  8 Apr 2026 18:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D27B67E;
+	Wed,  8 Apr 2026 18:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673121; cv=none; b=mlZcolev4fNh+Tr8wsRWyaRi7PaqjeuZu+g20adbTRs53yM43hCSPFve9+FqJa9Rzdab/6gxe5mfd+E/exOgZBCUxfuEX+ghyOv6+pFt5D0lAxli138hlmHqXnh2s68hTN4dFtcBDfNIDw4cDVH5mrF0n4WXmUPBQoh7YFAgMMg=
+	t=1775673614; cv=none; b=Ie1mEBadwfjXD5lMUEK4Wd++KWfZHtNeI9Ow85EucRyVoKz8oAZalIkHFU56uz9ddbFJsUno26dS72WaoA0rJGGRWz0ibmKz41LeuqmHBLVx8gRnQmu5f+BDngFiAxvgwP6H0nuoFoALGUWsCBkXftvci8W/SjUhgZEb1dwph78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673121; c=relaxed/simple;
-	bh=72S+h/l5nr2pw7pHyKzhY9JgNw9CmHkC6s1+b/vosYw=;
+	s=arc-20240116; t=1775673614; c=relaxed/simple;
+	bh=kgPXMPsX2sWukcZ82JUDJHcjRktSM5S3TeW9rICTlAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPuZ9uywiNK3iZoxIAUI+lwPF1uUkYmr5sOMviIuwIbfstEx3oieLY5QVu7+KsxqImmnWy8RR55RP5hg3Ezg14XR96FY+xuadQW/Ql9YXGeiFTpjQ3SDtJYNxWleewbz6Opv06jkJIR/K2qXYwNQaWzuQhzpL/jJRMwSIKRVttE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgDVd1mV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B65DC19421;
-	Wed,  8 Apr 2026 18:32:01 +0000 (UTC)
+	 MIME-Version; b=XpjRKst2w0YLimwDUxdblcasg369FB9Geuz6CfWzSgUjhli5VfFznlxFo4A0O4D61hHbadn1jD748uQHYwehqjckzNgHAGIWgOkev9se5ov9w9TX+cMcGEy300DDWtBgV+cPx4r1moa1up58xoOaMnS4IVMwcGI2ahTFh7SFvOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2VL77Nn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C14AC19421;
+	Wed,  8 Apr 2026 18:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673121;
-	bh=72S+h/l5nr2pw7pHyKzhY9JgNw9CmHkC6s1+b/vosYw=;
+	s=korg; t=1775673613;
+	bh=kgPXMPsX2sWukcZ82JUDJHcjRktSM5S3TeW9rICTlAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgDVd1mVBzOpLOq1lPUAiDzW1pnFavde1jQrsbev1HmOmzY64gzC8zJZtdKWlTjbL
-	 JHVIbCwH9gnezR9tJlw+fDctHtBzp/Jha8n5GpzD3r2mHUHWuID4nyVMNVbEg7koJD
-	 FgZrtXat6KaREhmlRDknjvhdyf6hNA+sfBttQWGg=
+	b=j2VL77Nn8Z1akLWkg1oyPAVG6rzuVkFleo+cN++Y5dBX/xPxuel336av7zZHw4tVY
+	 4VkXI+qHBMSWmdb7k94DzoEY4qwZgbq8FYKZNsWLTRLm6qkbWDGxulOebIa/h3Oedd
+	 kymo3hyukOyCC3CZsY7FTnvXhkrDBZsRv2/ecujQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 077/277] netfilter: nf_tables: reject immediate NF_QUEUE verdict
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 022/242] io_uring/kbuf: use READ_ONCE() for userspace-mapped memory
 Date: Wed,  8 Apr 2026 20:01:02 +0200
-Message-ID: <20260408175936.740713722@linuxfoundation.org>
+Message-ID: <20260408175927.902568786@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +66,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234730-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,purestorage.com,gmail.com,kernel.dk];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234539-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BD5F83C0FA6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,purestorage.com:email]
+X-Rspamd-Queue-Id: 41C993C2044
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit da107398cbd4bbdb6bffecb2ce86d5c9384f4cec ]
+Commit 78385c7299f7514697d196b3233a91bd5e485591 upstream.
 
-nft_queue is always used from userspace nftables to deliver the NF_QUEUE
-verdict. Immediately emitting an NF_QUEUE verdict is never used by the
-userspace nft tools, so reject immediate NF_QUEUE verdicts.
+The struct io_uring_buf elements in a buffer ring are in a memory region
+accessible from userspace. A malicious/buggy userspace program could
+therefore write to them at any time, so they should be accessed with
+READ_ONCE() in the kernel. Commit 98b6fa62c84f ("io_uring/kbuf: always
+use READ_ONCE() to read ring provided buffer lengths") already switched
+the reads of the len field to READ_ONCE(). Do the same for bid and addr.
 
-The arp family does not provide queue support, but such an immediate
-verdict is still reachable. Globally reject NF_QUEUE immediate verdicts
-to address this issue.
-
-Fixes: f342de4e2f33 ("netfilter: nf_tables: reject QUEUE/DROP verdict parameters")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Fixes: c7fb19428d67 ("io_uring: add support for ring mapped supplied buffers")
+Cc: Joanne Koong <joannelkoong@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ io_uring/kbuf.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a6a7fe216396d..5b25b032e285d 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -11833,8 +11833,6 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
- 	switch (data->verdict.code) {
- 	case NF_ACCEPT:
- 	case NF_DROP:
--	case NF_QUEUE:
--		break;
- 	case NFT_CONTINUE:
- 	case NFT_BREAK:
- 	case NFT_RETURN:
-@@ -11869,6 +11867,11 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -44,7 +44,7 @@ static bool io_kbuf_inc_commit(struct io
+ 		buf_len -= this_len;
+ 		/* Stop looping for invalid buffer length of 0 */
+ 		if (buf_len || !this_len) {
+-			buf->addr += this_len;
++			buf->addr = READ_ONCE(buf->addr) + this_len;
+ 			buf->len = buf_len;
+ 			return false;
+ 		}
+@@ -185,9 +185,9 @@ static struct io_br_sel io_ring_buffer_s
+ 	if (*len == 0 || *len > buf_len)
+ 		*len = buf_len;
+ 	req->flags |= REQ_F_BUFFER_RING | REQ_F_BUFFERS_COMMIT;
+-	req->buf_index = buf->bid;
++	req->buf_index = READ_ONCE(buf->bid);
+ 	sel.buf_list = bl;
+-	sel.addr = u64_to_user_ptr(buf->addr);
++	sel.addr = u64_to_user_ptr(READ_ONCE(buf->addr));
  
- 		data->verdict.chain = chain;
- 		break;
-+	case NF_QUEUE:
-+		/* The nft_queue expression is used for this purpose, an
-+		 * immediate NF_QUEUE verdict should not ever be seen here.
-+		 */
-+		fallthrough;
- 	default:
- 		return -EINVAL;
- 	}
--- 
-2.53.0
-
+ 	if (issue_flags & IO_URING_F_UNLOCKED || !io_file_can_poll(req)) {
+ 		/*
+@@ -278,7 +278,7 @@ static int io_ring_buffers_peek(struct i
+ 	if (!arg->max_len)
+ 		arg->max_len = INT_MAX;
+ 
+-	req->buf_index = buf->bid;
++	req->buf_index = READ_ONCE(buf->bid);
+ 	do {
+ 		u32 len = READ_ONCE(buf->len);
+ 
+@@ -293,7 +293,7 @@ static int io_ring_buffers_peek(struct i
+ 			}
+ 		}
+ 
+-		iov->iov_base = u64_to_user_ptr(buf->addr);
++		iov->iov_base = u64_to_user_ptr(READ_ONCE(buf->addr));
+ 		iov->iov_len = len;
+ 		iov++;
+ 
 
 
 
