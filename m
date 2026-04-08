@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-235123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HcUDEyr1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235123-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:56 +0200
+	id oO2eHg2e1mkEGwgAu9opvQ
+	(envelope-from <stable+bounces-234352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90A93C2E4B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEFF3C0C06
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 136DA301BF4D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C1D8830960C9
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646103624B9;
-	Wed,  8 Apr 2026 18:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AE53D7D74;
+	Wed,  8 Apr 2026 18:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJn8pmkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPt/euwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252BC2F39C2;
-	Wed,  8 Apr 2026 18:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E8A2494F0;
+	Wed,  8 Apr 2026 18:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674629; cv=none; b=AF8AH+zE5t6t8/m5+AJ5zaVHQX9PPcQ50gS+NkHWpSRcmDYPI1x7G5hR5Eusp1W5a2wDE1ubWZpCX77EF2ky+5Hoq4ZEe5vfaCW+I43bztVcf4biaV3mgr+7Y4MWhDE3d5HrIBU4nGGzhqwci937X4TVFvdVhA7CUmM1pWu3wAo=
+	t=1775672636; cv=none; b=kaGcaXdGzl3J0HtZHUcegJHqCEctPkcCrcRZK4ct+BazDWkO7qsHlU8nT+Ae0y0l4I25xAtsYXNFEEvg1vkJJOcy0gbzfDVxlwuwg/rsYPbk5SrdxlMKHUrXNy0QXMBvbBkjsD1IF4YNTO6CpPH6dUpxAjrU3gvbnlBPLhaJNfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674629; c=relaxed/simple;
-	bh=eQkBce7aDlPN8yKmzw762A8o5zXliHjK9D1Rg3nTMrk=;
+	s=arc-20240116; t=1775672636; c=relaxed/simple;
+	bh=or+dDt0d64sW/TylVI/65N70qr953U5kTCsjFupO8pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwCSqSGNX/fpNyBKZCNdldKMiNLWQcnfjEesxNsx87jBs5KbH5h5UYRd8ttPs9jRPwUjCi9iPPtnFiqZ3iXaimqiqkjDb+UmBBYQw+qLkQVDU6xPZNRSJ7hsZRPgB/TBss7Ygf/pv+Sodc4ky1N6R8HUHLP2/+vOyEYTL14q9K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJn8pmkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACC0C19421;
-	Wed,  8 Apr 2026 18:57:08 +0000 (UTC)
+	 MIME-Version; b=lN3lrf36UivP/C6mcUON7VxNSwlkhOMZHu8Bt4PC7HKzBl2N2peWqlA5I3e0xZjOirrDzcH857LOKP2DXgg27S/73o10kvscKH6H4G/yUQN0GKktKQgy/3Y3uj0nT0nxGWmEPfbS3EoLH838k74s9K4EJ9Kc9eKwanjbW2ZKUlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPt/euwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1A8C19421;
+	Wed,  8 Apr 2026 18:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674628;
-	bh=eQkBce7aDlPN8yKmzw762A8o5zXliHjK9D1Rg3nTMrk=;
+	s=korg; t=1775672636;
+	bh=or+dDt0d64sW/TylVI/65N70qr953U5kTCsjFupO8pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJn8pmkq9LXyme6T/4jAVjJGJGT8yTfA9Rh1rbhSzTTdzuXuNdSBSjzCZGbq3wMn0
-	 LWqSGfULdjqrkTs46QRhHgBd8sBDHy26pz+Hb+NRG96Nj3adm120EMm6flLkwHMyOc
-	 RJM3mzmvg10lfEy6KvsKlKgR4XHlF7KS4yKsAN6c=
+	b=BPt/euwUcX8JrJubeFQaTPrhJfZkHfGObvPnF/UbWD6opwTY/BCz12EQo5l7KVZv/
+	 g84XJQUEtodPRTOpH1WYJXeVzjmQ1OA8sMAtxMUdpIYcunJSQX1sFQYzhhPOguj0kw
+	 dcTuXtIWcA0a/emLrOOZYtvZOVuiZeWAzOL6T+Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 170/311] ALSA: caiaq: fix stack out-of-bounds read in init_card
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 083/160] mips: mm: Allocate tlb_vpn array atomically
 Date: Wed,  8 Apr 2026 20:02:50 +0200
-Message-ID: <20260408175945.752387522@linuxfoundation.org>
+Message-ID: <20260408175916.296463122@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +65,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235123-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234352-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: B90A93C2E4B
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nokia.com:email,franken.de:email]
+X-Rspamd-Queue-Id: 0BEFF3C0C06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-commit 45424e871abf2a152e247a9cff78359f18dd95c0 upstream.
+commit 01cc50ea5167bb14117257ec084637abe9e5f691 upstream.
 
-The loop creates a whitespace-stripped copy of the card shortname
-where `len < sizeof(card->id)` is used for the bounds check. Since
-sizeof(card->id) is 16 and the local id buffer is also 16 bytes,
-writing 16 non-space characters fills the entire buffer,
-overwriting the terminating nullbyte.
+Found by DEBUG_ATOMIC_SLEEP:
 
-When this non-null-terminated string is later passed to
-snd_card_set_id() -> copy_valid_id_string(), the function scans
-forward with `while (*nid && ...)` and reads past the end of the
-stack buffer, reading the contents of the stack.
+  BUG: sleeping function called from invalid context at /include/linux/sched/mm.h:306
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  no locks held by swapper/1/0.
+  irq event stamp: 0
+  hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+  hardirqs last disabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+  softirqs last  enabled at (0): [<ffffffff801477fc>] copy_process+0x75c/0x1b68
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
+  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.119-d79e757675ec-fct #1
+  Stack : 800000000290bad8 0000000000000000 0000000000000008 800000000290bae8
+          800000000290bae8 800000000290bc78 0000000000000000 0000000000000000
+          ffffffff80c80000 0000000000000001 ffffffff80d8dee8 ffffffff810d09c0
+          784bb2a7ec10647d 0000000000000010 ffffffff80a6fd60 8000000001d8a9c0
+          0000000000000000 0000000000000000 ffffffff80d90000 0000000000000000
+          ffffffff80c9e0e8 0000000007ffffff 0000000000000cc0 0000000000000400
+          ffffffffffffffff 0000000000000001 0000000000000002 ffffffffc0149ed8
+          fffffffffffffffe 8000000002908000 800000000290bae0 ffffffff80a81b74
+          ffffffff80129fb0 0000000000000000 0000000000000000 0000000000000000
+          0000000000000000 0000000000000000 ffffffff80129fd0 0000000000000000
+          ...
+  Call Trace:
+  [<ffffffff80129fd0>] show_stack+0x60/0x158
+  [<ffffffff80a7f894>] dump_stack_lvl+0x88/0xbc
+  [<ffffffff8018d3c8>] __might_resched+0x268/0x288
+  [<ffffffff803648b0>] __kmem_cache_alloc_node+0x2e0/0x330
+  [<ffffffff80302788>] __kmalloc+0x58/0xd0
+  [<ffffffff80a81b74>] r4k_tlb_uniquify+0x7c/0x428
+  [<ffffffff80143e8c>] tlb_init+0x7c/0x110
+  [<ffffffff8012bdb4>] per_cpu_trap_init+0x16c/0x1d0
+  [<ffffffff80133258>] start_secondary+0x28/0x128
 
-A USB device with a product name containing many non-ASCII, non-space
-characters (e.g. multibyte UTF-8) will reliably trigger this as follows:
-
-  BUG: KASAN: stack-out-of-bounds in copy_valid_id_string
-       sound/core/init.c:696 [inline]
-  BUG: KASAN: stack-out-of-bounds in snd_card_set_id_no_lock+0x698/0x74c
-       sound/core/init.c:718
-
-The off-by-one has been present since commit bafeee5b1f8d ("ALSA:
-snd_usb_caiaq: give better shortname") from June 2009 (v2.6.31-rc1),
-which first introduced this whitespace-stripping loop. The original
-code never accounted for the null terminator when bounding the copy.
-
-Fix this by changing the loop bound to `sizeof(card->id) - 1`,
-ensuring at least one byte remains as the null terminator.
-
-Fixes: bafeee5b1f8d ("ALSA: snd_usb_caiaq: give better shortname")
+Fixes: 231ac951faba ("MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
 Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260329133825.581585-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/device.c |    2 +-
+ arch/mips/mm/tlb-r4k.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -488,7 +488,7 @@ static int init_card(struct snd_usb_caia
- 		memset(id, 0, sizeof(id));
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -536,7 +536,7 @@ static void __ref r4k_tlb_uniquify(void)
  
- 		for (c = card->shortname, len = 0;
--			*c && len < sizeof(card->id); c++)
-+			*c && len < sizeof(card->id) - 1; c++)
- 			if (*c != ' ')
- 				id[len++] = *c;
- 
+ 	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
+ 	tlb_vpns = (use_slab ?
+-		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    kmalloc(tlb_vpn_size, GFP_ATOMIC) :
+ 		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
+ 	if (WARN_ON(!tlb_vpns))
+ 		return; /* Pray local_flush_tlb_all() is good enough. */
 
 
 
