@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEJrCBaf1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:50 +0200
+	id ECOrMAWb1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BE33C0E03
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:31:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F123C03ED
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A08FF301C90D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A238302BA5D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EA63D75C3;
-	Wed,  8 Apr 2026 18:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6666E1E5724;
+	Wed,  8 Apr 2026 18:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1vJp7kA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSCBl2NX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A6826FA5A;
-	Wed,  8 Apr 2026 18:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC823D9034;
+	Wed,  8 Apr 2026 18:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673055; cv=none; b=YOKHFghTMC7OGz+yMWnMYNgMwzBCiApOtONGnFkgEuVJ76zQX3/zppag2pzquRxFtfcALYOldiH0v2hThAbgOBRGyCzw6Qwvvp12fZguC/XezT1LLhoIM3/mGdyDBAcPe9vsNkRh1NQqllxnINDxjKXgXpjP5L1+21AVn6nFu0U=
+	t=1775672008; cv=none; b=jN2eOedrFDK2wuTpgSU2t8dsb2tili95bw0VWXK5jVMFPyEs5R3M48x8G9oaYpF24Xxr/GGiXctcLHz/jvN4MDaU+AN5bs8yLB1cWpWta7JetWyjh7ZiHNxie0RXJ9w9HSLCQG+/1vHawTC60ryR2fCJe8u25dU/JN+tNlSY+5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673055; c=relaxed/simple;
-	bh=IcDF6XzaFfZYE8B0Hd7cmtQJP1w00kCAZXgeSZG/v8c=;
+	s=arc-20240116; t=1775672008; c=relaxed/simple;
+	bh=0NaOwVR4uDzpPNVXYGsIUEwOPB6vTUATGEdj5a2O+8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgwC2+WWB1on8FOgXSJBSRrUrxEpi/9Wx68kojA1HnnXZdKaAfnK9vIuoRWN4w7QSaA5i8CGSMWFun50KhLy/d+tmUEeTwfNEOHJ43/kfIs2tLLdPT6g1Pu3N2z64ZN1Xb5b/Tqg4/KHDNwQO2pROhpiUdmXIJvOIQeEqBzFIPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1vJp7kA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D66C19421;
-	Wed,  8 Apr 2026 18:30:54 +0000 (UTC)
+	 MIME-Version; b=UIKPWrp8KNb0qKc09CIiJcazTF1Iwair/njRvfxeR5HjLiuE75/4DGEbLn3jnddxYS4zvrhrxfKPXLwNslpytmPwGJgldWL2gZxt7AWodOwroBI2EqU2UL0E+DehgryQgfRrRlHIZ5fNc1RetUbfC567u/VoCenDB+vYGK2KCmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSCBl2NX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FC6C19421;
+	Wed,  8 Apr 2026 18:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673054;
-	bh=IcDF6XzaFfZYE8B0Hd7cmtQJP1w00kCAZXgeSZG/v8c=;
+	s=korg; t=1775672008;
+	bh=0NaOwVR4uDzpPNVXYGsIUEwOPB6vTUATGEdj5a2O+8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1vJp7kAsUy/hhtr6Iqq4KNXkCheLQR0iZ69Fm6dFVnI3CcwIeB0mJ46l/SrQNqNZ
-	 t6AFADqJ3GsS0lWPM/nbpxOEJb/O1bUcJfOetkslCDGAOlwiRJ/YVnu3BO9LElao2K
-	 5vWGL0M1zYvBhf+2124/B5gjBgsLf+gnFXACDqXo=
+	b=vSCBl2NX+ETNlsEGvfCQ4e/Dkn/c6sKOlgRd1c5YaIRy6geCBxXXZ6YUnzKFSLRAW
+	 Z/8ZF4n4JFZPwxxZtnOon6ubEP/NzKOI+YZv0GRcG1GFhcbKcNlFpQnV3+J5S/GZbY
+	 zvIEfj1F5nCJXHElgHWmZsHIJbFV+avU6TknfPh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Oskar Kjos <oskar.kjos@hotmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 084/277] Bluetooth: MGMT: validate mesh send advertising payload length
+Subject: [PATCH 6.1 152/312] ip6_tunnel: clear skb2->cb[] in ip4ip6_err()
 Date: Wed,  8 Apr 2026 20:01:09 +0200
-Message-ID: <20260408175937.000279604@linuxfoundation.org>
+Message-ID: <20260408175939.443323507@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +68,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234513-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,google.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234109-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: D1BE33C0E03
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 27F123C03ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bda93eec78cdbfe5cda00785cefebd443e56b88b ]
+[ Upstream commit 2edfa31769a4add828a7e604b21cb82aaaa05925 ]
 
-mesh_send() currently bounds MGMT_OP_MESH_SEND by total command
-length, but it never verifies that the bytes supplied for the
-flexible adv_data[] array actually match the embedded adv_data_len
-field. MGMT_MESH_SEND_SIZE only covers the fixed header, so a
-truncated command can still pass the existing 20..50 byte range
-check and later drive the async mesh send path past the end of the
-queued command buffer.
+Oskar Kjos reported the following problem.
 
-Keep rejecting zero-length and oversized advertising payloads, but
-validate adv_data_len explicitly and require the command length to
-exactly match the flexible array size before queueing the request.
+ip4ip6_err() calls icmp_send() on a cloned skb whose cb[] was written
+by the IPv6 receive path as struct inet6_skb_parm. icmp_send() passes
+IPCB(skb2) to __ip_options_echo(), which interprets that cb[] region
+as struct inet_skb_parm (IPv4). The layouts differ: inet6_skb_parm.nhoff
+at offset 14 overlaps inet_skb_parm.opt.rr, producing a non-zero rr
+value. __ip_options_echo() then reads optlen from attacker-controlled
+packet data at sptr[rr+1] and copies that many bytes into dopt->__data,
+a fixed 40-byte stack buffer (IP_OPTIONS_DATA_FIXED_SIZE).
 
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+To fix this we clear skb2->cb[], as suggested by Oskar Kjos.
+
+Also add minimal IPv4 header validation (version == 4, ihl >= 5).
+
+Fixes: c4d3efafcc93 ("[IPV6] IP6TUNNEL: Add support to IPv4 over IPv6 tunnel.")
+Reported-by: Oskar Kjos <oskar.kjos@hotmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260326155138.2429480-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ net/ipv6/ip6_tunnel.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index d3df358cbe139..9065a864bc65d 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2466,6 +2466,7 @@ static int mesh_send(struct sock *sk, struct hci_dev *hdev, void *data, u16 len)
- 	struct mgmt_mesh_tx *mesh_tx;
- 	struct mgmt_cp_mesh_send *send = data;
- 	struct mgmt_rp_mesh_read_features rp;
-+	u16 expected_len;
- 	bool sending;
- 	int err = 0;
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 8ce36fcc3dd5b..a1a2e785063c3 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -601,11 +601,16 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 	if (!skb2)
+ 		return 0;
  
-@@ -2473,12 +2474,19 @@ static int mesh_send(struct sock *sk, struct hci_dev *hdev, void *data, u16 len)
- 	    !hci_dev_test_flag(hdev, HCI_MESH_EXPERIMENTAL))
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
- 				       MGMT_STATUS_NOT_SUPPORTED);
--	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED) ||
--	    len <= MGMT_MESH_SEND_SIZE ||
--	    len > (MGMT_MESH_SEND_SIZE + 31))
-+	if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
-+				       MGMT_STATUS_REJECTED);
++	/* Remove debris left by IPv6 stack. */
++	memset(IPCB(skb2), 0, sizeof(*IPCB(skb2)));
 +
-+	if (!send->adv_data_len || send->adv_data_len > 31)
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
- 				       MGMT_STATUS_REJECTED);
+ 	skb_dst_drop(skb2);
  
-+	expected_len = struct_size(send, adv_data, send->adv_data_len);
-+	if (expected_len != len)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
-+				       MGMT_STATUS_INVALID_PARAMS);
-+
- 	hci_dev_lock(hdev);
+ 	skb_pull(skb2, offset);
+ 	skb_reset_network_header(skb2);
+ 	eiph = ip_hdr(skb2);
++	if (eiph->version != 4 || eiph->ihl < 5)
++		goto out;
  
- 	memset(&rp, 0, sizeof(rp));
+ 	/* Try to guess incoming interface */
+ 	rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL, eiph->saddr,
 -- 
 2.53.0
 
