@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFFhJh6b1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:54 +0200
+	id CO8KNdWc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6157F3C0412
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1373C0836
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BE24C3014690
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28FBB3028C5B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5883D902E;
-	Wed,  8 Apr 2026 18:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09304386550;
+	Wed,  8 Apr 2026 18:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y591DEIm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFq77OfT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DAA3D891A;
-	Wed,  8 Apr 2026 18:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFA5324B1F;
+	Wed,  8 Apr 2026 18:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672092; cv=none; b=TVLx46u2MZdSqka4NH/2t9oh+3bgAOn7xZWXiGl5Af0vBSoWctG/F9B9A/CZjNyTz3tNSB1vH+YWPLCXVY/UwI3bQbkNcnDzO51Q8kQNxIbSoLgj8VUpZqAxMVQSPcftoBaJgb2OZlRi/whVJu3BEuvJP/NYlprZIk7s7aY2kgc=
+	t=1775672457; cv=none; b=SyaRAGLBOrL/q3xEet3lVXbbCuX66JAaNkAX6gwvhWpROAe5Rt6LNvC3K5kZ+9iiPS4OiK3lI70Ib3pSfnENPZpVrWHssE+3y66bx6afmuuTnDVlPnLadgRnKfFCoJepGcPgViql+Hg5DqAHytLiugHTOMJouy8mmTooZdXxQJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672092; c=relaxed/simple;
-	bh=6UYqquU68xWU7IyskGoTzDPKNqXvpIVBJeQBDngW0Iw=;
+	s=arc-20240116; t=1775672457; c=relaxed/simple;
+	bh=ua/0RKBdpOCe7I1xV4r7fGqGd6SgmUdWIxxyrbqRgXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFwM1XOBXkzz2pTm21ZfDZ60K9aA8NEH4fECPM04u1V4nKB+k9HfcHa4c3zc8CZyjbIfKOHIRUxkUJxt8BGjZscdcHsibdbgPvE3gysBzub0OzVd+soe1ktJdRlLH6b4youhEPUAC0TZYgZ8H2f4QMgenkpbDmNGBU2fqgZFWNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y591DEIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E98C19421;
-	Wed,  8 Apr 2026 18:14:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fgNG48eMO1ur5K5BRjv1rEdbMJls2DQY+Egjg/hBpUNehM2fRMeMwpuY5DF24VIoYkqA6jfjBCOzJlbQlBTiKPcWTNO96x4ZnNIyR16Gtr3rnNCF4G14vBfkypK/XF+SmY7T/UkSleLFDKjyE48Po7MapWPKovmkNaJw0Da8SxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFq77OfT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AA7C19421;
+	Wed,  8 Apr 2026 18:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672092;
-	bh=6UYqquU68xWU7IyskGoTzDPKNqXvpIVBJeQBDngW0Iw=;
+	s=korg; t=1775672457;
+	bh=ua/0RKBdpOCe7I1xV4r7fGqGd6SgmUdWIxxyrbqRgXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y591DEImc8eNo0buSeKNKLWoe5XFTy7FomM//wss2dMwMFBnfoa25drU+e8mVOK5h
-	 +j5LXSWcVUzldmj1peEU98pCYYYJCazA2shKG84iCpniunBXHyx8LRfO/2kkP7+I8O
-	 yJjSF5ZCctv3YH3/2t+slT30Wd+86wAhyLXw8V88=
+	b=bFq77OfTAgax9rCI50JHXSrzNQrKATwq5Mrkv+w77uCzHVqytJ5/x+Ws96i+FaPiz
+	 Bkm2wPmI0FQiRUIagsYCEaSkwPG0HQK3ZbuijGMNYA2VIec7N4IAZv28L8m8DnkSX3
+	 9NU59pQ77vN4NKcif3zfoPoz6xognt77sXM+LaNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Schiller <ms@dev.tdt.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Paul Bunyan <pbunyan@redhat.com>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/312] net/x25: Fix potential double free of skb
+Subject: [PATCH 6.6 015/160] crypto: caam - fix DMA corruption on long hmac keys
 Date: Wed,  8 Apr 2026 20:01:42 +0200
-Message-ID: <20260408175940.672003793@linuxfoundation.org>
+Message-ID: <20260408175913.765309702@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-234283-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234142-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6157F3C0412
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7A1373C0836
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: Horia Geantă <horia.geanta@nxp.com>
 
-[ Upstream commit d10a26aa4d072320530e6968ef945c8c575edf61 ]
+[ Upstream commit 5ddfdcbe10dc5f97afc4e46ca22be2be717e8caf ]
 
-When alloc_skb fails in x25_queue_rx_frame it calls kfree_skb(skb) at
-line 48 and returns 1 (error).
-This error propagates back through the call chain:
+When a key longer than block size is supplied, it is copied and then
+hashed into the real key.  The memory allocated for the copy needs to
+be rounded to DMA cache alignment, as otherwise the hashed key may
+corrupt neighbouring memory.
 
-x25_queue_rx_frame returns 1
-    |
-    v
-x25_state3_machine receives the return value 1 and takes the else
-branch at line 278, setting queued=0 and returning 0
-    |
-    v
-x25_process_rx_frame returns queued=0
-    |
-    v
-x25_backlog_rcv at line 452 sees queued=0 and calls kfree_skb(skb)
-again
+The rounding was performed, but never actually used for the allocation.
+Fix this by replacing kmemdup with kmalloc for a larger buffer,
+followed by memcpy.
 
-This would free the same skb twice. Looking at x25_backlog_rcv:
-
-net/x25/x25_in.c:x25_backlog_rcv() {
-    ...
-    queued = x25_process_rx_frame(sk, skb);
-    ...
-    if (!queued)
-        kfree_skb(skb);
-}
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Link: https://patch.msgid.link/20260331-x25_fraglen-v4-1-3e69f18464b4@dev.tdt.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 199354d7fb6e ("crypto: caam - Remove GFP_DMA and add DMA alignment padding")
+Reported-by: Paul Bunyan <pbunyan@redhat.com>
+Signed-off-by: Horia Geantă <horia.geanta@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/x25/x25_in.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/crypto/caam/caamhash.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
-index b981a4828d08c..0dbc73efab1cb 100644
---- a/net/x25/x25_in.c
-+++ b/net/x25/x25_in.c
-@@ -44,10 +44,9 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
- 	if (x25->fraglen > 0) {	/* End of fragment */
- 		int len = x25->fraglen + skb->len;
+diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
+index 65785dc5b73b2..30cc46c4c33af 100644
+--- a/drivers/crypto/caam/caamhash.c
++++ b/drivers/crypto/caam/caamhash.c
+@@ -441,9 +441,10 @@ static int ahash_setkey(struct crypto_ahash *ahash,
+ 		if (aligned_len < keylen)
+ 			return -EOVERFLOW;
  
--		if ((skbn = alloc_skb(len, GFP_ATOMIC)) == NULL){
--			kfree_skb(skb);
-+		skbn = alloc_skb(len, GFP_ATOMIC);
-+		if (!skbn)
- 			return 1;
--		}
- 
- 		skb_queue_tail(&x25->fragment_queue, skb);
- 
+-		hashed_key = kmemdup(key, keylen, GFP_KERNEL);
++		hashed_key = kmalloc(aligned_len, GFP_KERNEL);
+ 		if (!hashed_key)
+ 			return -ENOMEM;
++		memcpy(hashed_key, key, keylen);
+ 		ret = hash_digest_key(ctx, &keylen, hashed_key, digestsize);
+ 		if (ret)
+ 			goto bad_free_key;
 -- 
 2.53.0
 
