@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-234426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kO6kDk+g1mkzGwgAu9opvQ
-	(envelope-from <stable+bounces-234426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:03 +0200
+	id MHtiLmim1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7EA3C112F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48ED03C243D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DB0930C8394
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B69503119B6D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7887C3D4134;
-	Wed,  8 Apr 2026 18:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A8B36166F;
+	Wed,  8 Apr 2026 18:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZ6rfGlo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLJdlFxh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDE53ACF13;
-	Wed,  8 Apr 2026 18:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D11B67E;
+	Wed,  8 Apr 2026 18:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672827; cv=none; b=Qq0ZnLXW8p+BewXKa8qqlRhJvTopEuswp/sOdLPQXmxmbBiRo+wXoGgkCRFk8B7DxkzUYaXR4lzNURDUctcBtSoh4vdkvt/xiv/F0skJwc7HivDcT8cIv3L6AWfq82OCXqpzOKlFpqKHxc0t/W/hZvpf82qRev85vTqySvg44iE=
+	t=1775673506; cv=none; b=rDTlzfSqZ/kH5JdXLPUbzQQgan1OlwVDfJ5E49jkFzYf9UC0RXlUi96VBIkY/klozmEnSoUedlzEgWAJUJaH+drOLfujWYJH20PMHmSpZeEdYJZeKmner4dEjXO6BHwb9fh/W/CuW8fYutvOMAKM8PZ9IZNKMyUKd1+ChhKHGUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672827; c=relaxed/simple;
-	bh=fFDGMXFfeSBbcV6QZ+4SnGMfm0gMfeOELttuZilbbkg=;
+	s=arc-20240116; t=1775673506; c=relaxed/simple;
+	bh=chxcFuUYQEwELD3AoZJ88LEqYF4BUg9YHozU5frpayA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2YYyRNI+PDppWzbO5awA6WiPiC/mUhzBa9w55+02DcVFyRQfYqsQsSGkEZp5cMegu8YEbwgAfSe/3i9nfH7nci1nbJlb+6NjxtxKnZCKBdaV7eaOvb+Y/FMJvEmE/4fO/Zj97LzC14CSO3SgUunt1NLhLkXicxAYFWC9XXUm5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZ6rfGlo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8832C19421;
-	Wed,  8 Apr 2026 18:27:06 +0000 (UTC)
+	 MIME-Version; b=FRGxgBUPuD06NorcFPxFuVl6SweKZ3LNcR7E2KMlMLyy5gA5ycx8tMe9HWRngfvO8z8bKi+pijxwlPxLxAyBFrD4t7fBHxZjl0qe252LaWWqNFX2YXpkdxz7EoKOrCdsiMAm959UrRWjoEf8lbsT4+6d15d9VAl8pZT1e5Sb7wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLJdlFxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17BDC19421;
+	Wed,  8 Apr 2026 18:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672827;
-	bh=fFDGMXFfeSBbcV6QZ+4SnGMfm0gMfeOELttuZilbbkg=;
+	s=korg; t=1775673506;
+	bh=chxcFuUYQEwELD3AoZJ88LEqYF4BUg9YHozU5frpayA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZ6rfGloCPY074ujk4GyJDFLM6zM2aDh9g5YuuHbJRS/beWm4ZRI5JbXaFp7iI2td
-	 YDyseKwwInYCwLUvpZAiD1DsoBz1xolreySZBh1JkHRsw8zHQmwCzicjDebnaLiMOC
-	 x8EjiZHsqY7u5cdUY1tPvCyNdyzswre7g0uI+Z8M=
+	b=CLJdlFxhwTxd0KcYTylPj/auGp9Wnv8RcQZGjQlR/T+16JEhtgaEc2Y/9h3UWCz+7
+	 3NHtiHXmyjwwrPBKQLaFkgUji3wDajFT54iufrhG9NB1uZaokrTQtDnb59HcM1VOPQ
+	 sAFN3d8VDh8f2yJylekmGUo8N3mCOaNU3YUDb4BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <me@linux.beauty>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/160] ext4: publish jinode after initialization
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.18 259/277] usb: gadget: f_subset: Fix net_device lifecycle with device_move
 Date: Wed,  8 Apr 2026 20:04:04 +0200
-Message-ID: <20260408175919.066572155@linuxfoundation.org>
+Message-ID: <20260408175943.525905186@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,176 +71,220 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234426-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234688-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,linux.beauty:email]
-X-Rspamd-Queue-Id: 8D7EA3C112F
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 48ED03C243D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <me@linux.beauty>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 1aec30021edd410b986c156f195f3d23959a9d11 ]
+commit 06524cd1c9011bee141a87e43ab878641ed3652b upstream.
 
-ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
-It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
-allowing a reader to observe a non-NULL jinode with i_vfs_inode
-still unset.
+The net_device is allocated during function instance creation and
+registered during the bind phase with the gadget device as its sysfs
+parent. When the function unbinds, the parent device is destroyed, but
+the net_device survives, resulting in dangling sysfs symlinks:
 
-The fast commit flush path can then pass this jinode to
-jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
-may crash.
+  console:/ # ls -l /sys/class/net/usb0
+  lrwxrwxrwx ... /sys/class/net/usb0 ->
+  /sys/devices/platform/.../gadget.0/net/usb0
+  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
+  ls: .../gadget.0/net/usb0: No such file or directory
 
-Below is the crash I observe:
-```
-BUG: unable to handle page fault for address: 000000010beb47f4
-PGD 110e51067 P4D 110e51067 PUD 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
-RIP: 0010:xas_find_marked+0x3d/0x2e0
-Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
-RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
-RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
-RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
-RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
-R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
-R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
-FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
-<TASK>
-filemap_get_folios_tag+0x87/0x2a0
-__filemap_fdatawait_range+0x5f/0xd0
-? srso_alias_return_thunk+0x5/0xfbef5
-? __schedule+0x3e7/0x10c0
-? srso_alias_return_thunk+0x5/0xfbef5
-? srso_alias_return_thunk+0x5/0xfbef5
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-? cap_safe_nice+0x37/0x70
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-filemap_fdatawait_range_keep_errors+0x12/0x40
-ext4_fc_commit+0x697/0x8b0
-? ext4_file_write_iter+0x64b/0x950
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-? vfs_write+0x356/0x480
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-ext4_sync_file+0xf7/0x370
-do_fsync+0x3b/0x80
-? syscall_trace_enter+0x108/0x1d0
-__x64_sys_fdatasync+0x16/0x20
-do_syscall_64+0x62/0x2c0
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-...
-```
+Use device_move() to reparent the net_device between the gadget device
+tree and /sys/devices/virtual across bind and unbind cycles. During the
+final unbind, calling device_move(NULL) moves the net_device to the
+virtual device tree before the gadget device is destroyed. On rebinding,
+device_move() reparents the device back under the new gadget, ensuring
+proper sysfs topology and power management ordering.
 
-Fix this by initializing the jbd2_inode first.
-Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
-initialization. Readers use READ_ONCE() to fetch the pointer.
+To maintain compatibility with legacy composite drivers (e.g., multi.c),
+the bound flag is used to indicate whether the network device is shared
+and pre-registered during the legacy driver's bind phase.
 
-Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
+Fixes: 8cedba7c73af ("usb: gadget: f_subset: convert to new function interface with backward compatibility")
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Chen <me@linux.beauty>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260225082617.147957-1-me@linux.beauty
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ adapted READ_ONCE(ei->jinode) to use pos->jinode ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-6-4886b578161b@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fast_commit.c |    4 ++--
- fs/ext4/inode.c       |   15 +++++++++++----
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/function/f_subset.c |   57 ++++++++++++++++-----------------
+ drivers/usb/gadget/function/u_gether.h |   22 ++++++++----
+ 2 files changed, 44 insertions(+), 35 deletions(-)
 
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -997,7 +997,7 @@ static int ext4_fc_submit_inode_data_all
- 			finish_wait(&ei->i_fc_wait, &wait);
- 		}
- 		spin_unlock(&sbi->s_fc_lock);
--		ret = jbd2_submit_inode_data(journal, ei->jinode);
-+		ret = jbd2_submit_inode_data(journal, READ_ONCE(ei->jinode));
- 		if (ret)
- 			return ret;
- 		spin_lock(&sbi->s_fc_lock);
-@@ -1022,7 +1022,7 @@ static int ext4_fc_wait_inode_data_all(j
- 			continue;
- 		spin_unlock(&sbi->s_fc_lock);
+--- a/drivers/usb/gadget/function/f_subset.c
++++ b/drivers/usb/gadget/function/f_subset.c
+@@ -299,25 +299,22 @@ geth_bind(struct usb_configuration *c, s
+ 	struct usb_ep		*ep;
  
--		ret = jbd2_wait_inode_data(journal, pos->jinode);
-+		ret = jbd2_wait_inode_data(journal, READ_ONCE(pos->jinode));
- 		if (ret)
- 			return ret;
- 		spin_lock(&sbi->s_fc_lock);
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -123,6 +123,8 @@ void ext4_inode_csum_set(struct inode *i
- static inline int ext4_begin_ordered_truncate(struct inode *inode,
- 					      loff_t new_size)
- {
-+	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
+ 	struct f_gether_opts	*gether_opts;
++	struct net_device	*net __free(detach_gadget) = NULL;
+ 
+ 	gether_opts = container_of(f->fi, struct f_gether_opts, func_inst);
+ 
+-	/*
+-	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
+-	 * configurations are bound in sequence with list_for_each_entry,
+-	 * in each configuration its functions are bound in sequence
+-	 * with list_for_each_entry, so we assume no race condition
+-	 * with regard to gether_opts->bound access
+-	 */
+-	if (!gether_opts->bound) {
+-		mutex_lock(&gether_opts->lock);
+-		gether_set_gadget(gether_opts->net, cdev->gadget);
+-		status = gether_register_netdev(gether_opts->net);
+-		mutex_unlock(&gether_opts->lock);
+-		if (status)
+-			return status;
+-		gether_opts->bound = true;
+-	}
++	scoped_guard(mutex, &gether_opts->lock)
++		if (gether_opts->bind_count == 0 && !gether_opts->bound) {
++			if (!device_is_registered(&gether_opts->net->dev)) {
++				gether_set_gadget(gether_opts->net, cdev->gadget);
++				status = gether_register_netdev(gether_opts->net);
++			} else
++				status = gether_attach_gadget(gether_opts->net, cdev->gadget);
 +
- 	trace_ext4_begin_ordered_truncate(inode, new_size);
- 	/*
- 	 * If jinode is zero, then we never opened the file for
-@@ -130,10 +132,10 @@ static inline int ext4_begin_ordered_tru
- 	 * jbd2_journal_begin_ordered_truncate() since there's no
- 	 * outstanding writes we need to flush.
++			if (status)
++				return status;
++			net = gether_opts->net;
++		}
+ 
+ 	us = usb_gstrings_attach(cdev, geth_strings,
+ 				 ARRAY_SIZE(geth_string_defs));
+@@ -330,20 +327,18 @@ geth_bind(struct usb_configuration *c, s
+ 	/* allocate instance-specific interface IDs */
+ 	status = usb_interface_id(c, f);
+ 	if (status < 0)
+-		goto fail;
++		return status;
+ 	subset_data_intf.bInterfaceNumber = status;
+ 
+-	status = -ENODEV;
+-
+ 	/* allocate instance-specific endpoints */
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_in_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	geth->port.in_ep = ep;
+ 
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_out_desc);
+ 	if (!ep)
+-		goto fail;
++		return -ENODEV;
+ 	geth->port.out_ep = ep;
+ 
+ 	/* support all relevant hardware speeds... we expect that when
+@@ -361,21 +356,19 @@ geth_bind(struct usb_configuration *c, s
+ 	status = usb_assign_descriptors(f, fs_eth_function, hs_eth_function,
+ 			ss_eth_function, ss_eth_function);
+ 	if (status)
+-		goto fail;
++		return status;
+ 
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+ 	 * until we're activated via set_alt().
  	 */
--	if (!EXT4_I(inode)->jinode)
-+	if (!jinode)
- 		return 0;
- 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
--						   EXT4_I(inode)->jinode,
-+						   jinode,
- 						   new_size);
+ 
++	gether_opts->bind_count++;
++	retain_and_null_ptr(net);
++
+ 	DBG(cdev, "CDC Subset: IN/%s OUT/%s\n",
+ 			geth->port.in_ep->name, geth->port.out_ep->name);
+ 	return 0;
+-
+-fail:
+-	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
+-
+-	return status;
  }
  
-@@ -4160,8 +4162,13 @@ int ext4_inode_attach_jinode(struct inod
- 			spin_unlock(&inode->i_lock);
- 			return -ENOMEM;
- 		}
--		ei->jinode = jinode;
--		jbd2_journal_init_jbd_inode(ei->jinode, inode);
-+		jbd2_journal_init_jbd_inode(jinode, inode);
-+		/*
-+		 * Publish ->jinode only after it is fully initialized so that
-+		 * readers never observe a partially initialized jbd2_inode.
-+		 */
-+		smp_wmb();
-+		WRITE_ONCE(ei->jinode, jinode);
- 		jinode = NULL;
- 	}
- 	spin_unlock(&inode->i_lock);
+ static inline struct f_gether_opts *to_f_gether_opts(struct config_item *item)
+@@ -418,7 +411,7 @@ static void geth_free_inst(struct usb_fu
+ 	struct f_gether_opts *opts;
+ 
+ 	opts = container_of(f, struct f_gether_opts, func_inst);
+-	if (opts->bound)
++	if (device_is_registered(&opts->net->dev))
+ 		gether_cleanup(netdev_priv(opts->net));
+ 	else
+ 		free_netdev(opts->net);
+@@ -462,8 +455,16 @@ static void geth_free(struct usb_functio
+ 
+ static void geth_unbind(struct usb_configuration *c, struct usb_function *f)
+ {
++	struct f_gether_opts *opts;
++
++	opts = container_of(f->fi, struct f_gether_opts, func_inst);
++
+ 	geth_string_defs[0].id = 0;
+ 	usb_free_all_descriptors(f);
++
++	opts->bind_count--;
++	if (opts->bind_count == 0 && !opts->bound)
++		gether_detach_gadget(opts->net);
+ }
+ 
+ static struct usb_function *geth_alloc(struct usb_function_instance *fi)
+--- a/drivers/usb/gadget/function/u_gether.h
++++ b/drivers/usb/gadget/function/u_gether.h
+@@ -15,17 +15,25 @@
+ 
+ #include <linux/usb/composite.h>
+ 
++/**
++ * struct f_gether_opts - subset function options
++ * @func_inst: USB function instance.
++ * @net: The net_device associated with the subset function.
++ * @bound: True if the net_device is shared and pre-registered during the
++ *         legacy composite driver's bind phase (e.g., multi.c). If false,
++ *         the subset function will register the net_device during its own
++ *         bind phase.
++ * @bind_count: Tracks the number of configurations the subset function is
++ *              bound to, preventing double-registration of the @net device.
++ * @lock: Protects the data from concurrent access by configfs read/write
++ *        and create symlink/remove symlink operations.
++ * @refcnt: Reference counter for the function instance.
++ */
+ struct f_gether_opts {
+ 	struct usb_function_instance	func_inst;
+ 	struct net_device		*net;
+ 	bool				bound;
+-
+-	/*
+-	 * Read/write access to configfs attributes is handled by configfs.
+-	 *
+-	 * This is to protect the data from concurrent access by read/write
+-	 * and create symlink/remove symlink.
+-	 */
++	int				bind_count;
+ 	struct mutex			lock;
+ 	int				refcnt;
+ };
 
 
 
