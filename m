@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJTrEymj1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234878-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:13 +0200
+	id wCARLG+l1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D304E3C1A5F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BE63C21A7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04BC3300650C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:46:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2E483009F25
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40516355F30;
-	Wed,  8 Apr 2026 18:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC543AEF5F;
+	Wed,  8 Apr 2026 18:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwcN8yW9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVh/gCQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029073D9035;
-	Wed,  8 Apr 2026 18:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13DC32A3FD;
+	Wed,  8 Apr 2026 18:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673997; cv=none; b=VTeNf5YLAQXiuY48CXTclfFdBVjSBxMOd6FgzRMw+CDBpMzxbxR4tOYRuQumq02fw21Oilp7NOO9IbDQBa54zuAi/rQQQ4WAtOvx9HCzSME7rZMUP8YLn/2Z6CGhIEOzMiZ3KkiP7RtIDuCXNwEuCV9MybOjvssrabRfTpp7CFU=
+	t=1775674654; cv=none; b=LglxmIL/QIcrEkVhZZzGrYG2CKVJO5l5n71TtoOjcF38sbLirSbpW5PEE2OlvLDeezGyu8sp7gFsMdj9iA3sSTvyKdACNZKmDi+T/HpzK+v57ijmYbPukLTwjgs0Xr7FZWJE4P+lWCBa5nRqaFmY9Dmz8Oy/iYSEcIO9l+IOAcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673997; c=relaxed/simple;
-	bh=AhRCQIhS6zOxK4C5lApY2k+fycPAGZHzT3fsDhzKVtw=;
+	s=arc-20240116; t=1775674654; c=relaxed/simple;
+	bh=uKNwwG2ItmOidRFblPZxRaZTZYl15nTKo5k/iO6lScQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EynbMJOlEunz/TTBZl3dDYtTOYe0m5vZbPNefj0FRVYhLqHffmfRC3HvyDFFlI2Zc5yohlurbMx85VPookqZ+EaMgL5wyI3zaB0W6EKF9xPqQjYdz68jfvvrKA9YjgasTS77rYRFaBeNMNfPs/m8fCBf7cxmLWe8y1y8nDSetZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwcN8yW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8509BC2BCB0;
-	Wed,  8 Apr 2026 18:46:36 +0000 (UTC)
+	 MIME-Version; b=rXelPWtVOtYdsLkAHrj8CqvE2KvC4I774MF8jKI24poXOezlAVjixhsOKGyE0YhEhDKqzoeAnDneuFi4clLXRhuBOfsgwca7HdZuwL8Tut2x/dyY6k/AsjyYty1vOMn7eNpRUNP96/d7GabbGz+XRXKRxvr8rF7V9Ap0vLw376Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVh/gCQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F19EC19421;
+	Wed,  8 Apr 2026 18:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673996;
-	bh=AhRCQIhS6zOxK4C5lApY2k+fycPAGZHzT3fsDhzKVtw=;
+	s=korg; t=1775674654;
+	bh=uKNwwG2ItmOidRFblPZxRaZTZYl15nTKo5k/iO6lScQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwcN8yW9hE/QEip/JWQvQCuKMa8kfrvtYkR0+rp6KbmmZ9K0rEXqqcD8WT9hL0wjj
-	 R1jCtBIzgezWU4EWTLAPZy05UN5BbMXMrBJx0BjNzrTX0SbW/5GsvCUTi9k4kN84Jf
-	 UJjvvwiWnZ6PG3Scij5N5GiCoJ/27gRYX0zzib/8=
+	b=VVh/gCQfTOcE87E8wkXI+htN3Wh53HiUvHRfas00B3CEADWlRfIErJZp+3uD21VLz
+	 KJWME/Tz5tL2jp7HAex1UqaiNvOUGag21bWs1cnPidFW5IWWpaAded4yUipOn4Dg6r
+	 XzewKV3E2XciE8V+Oqj9Jv4zp29iItTi6OQUVteM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	JP Hein <jp@jphein.com>
-Subject: [PATCH 6.12 142/242] USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
+	Oleh Konko <security@1seal.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.19 182/311] Bluetooth: hci_event: move wake reason storage into validated event handlers
 Date: Wed,  8 Apr 2026 20:03:02 +0200
-Message-ID: <20260408175932.403295614@linuxfoundation.org>
+Message-ID: <20260408175946.206839782@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234878-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-235133-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,61 +88,250 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,jphein.com:email,launchpad.net:url]
-X-Rspamd-Queue-Id: D304E3C1A5F
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,1seal.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D2BE63C21A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Hein <jp@jphein.com>
+From: Oleh Konko <security@1seal.org>
 
-commit 8b7a42ecdcdeb55580d9345412f7f8fc5aca3f6c upstream.
+commit 2b2bf47cd75518c36fa2d41380e4a40641cc89cd upstream.
 
-The Razer Kiyo Pro (1532:0e05) is a USB 3.0 UVC webcam whose firmware
-does not handle USB Link Power Management transitions reliably. When LPM
-is active, the device can enter a state where it fails to respond to
-control transfers, producing EPIPE (-32) errors on UVC probe control
-SET_CUR requests. In the worst case, the stalled endpoint triggers an
-xHCI stop-endpoint command that times out, causing the host controller
-to be declared dead and every USB device on the bus to be disconnected.
+hci_store_wake_reason() is called from hci_event_packet() immediately
+after stripping the HCI event header but before hci_event_func()
+enforces the per-event minimum payload length from hci_ev_table.
+This means a short HCI event frame can reach bacpy() before any bounds
+check runs.
 
-This has been reported as Ubuntu Launchpad Bug #2061177. The failure
-mode is:
+Rather than duplicating skb parsing and per-event length checks inside
+hci_store_wake_reason(), move wake-address storage into the individual
+event handlers after their existing event-length validation has
+succeeded. Convert hci_store_wake_reason() into a small helper that only
+stores an already-validated bdaddr while the caller holds hci_dev_lock().
+Use the same helper after hci_event_func() with a NULL address to
+preserve the existing unexpected-wake fallback semantics when no
+validated event handler records a wake address.
 
-  1. UVC probe control SET_CUR returns -32 (EPIPE)
-  2. xHCI host not responding to stop endpoint command
-  3. xHCI host controller not responding, assume dead
-  4. All USB devices on the affected xHCI controller disconnect
+Annotate the helper with __must_hold(&hdev->lock) and add
+lockdep_assert_held(&hdev->lock) so future call paths keep the lock
+contract explicit.
 
-Disabling LPM prevents the firmware from entering the problematic low-
-power states that precede the stall. This is the same approach used for
-other webcams with similar firmware issues (e.g., Logitech HD Webcam C270).
+Call the helper from hci_conn_request_evt(), hci_conn_complete_evt(),
+hci_sync_conn_complete_evt(), le_conn_complete_evt(),
+hci_le_adv_report_evt(), hci_le_ext_adv_report_evt(),
+hci_le_direct_adv_report_evt(), hci_le_pa_sync_established_evt(), and
+hci_le_past_received_evt().
 
-Cc: stable <stable@kernel.org>
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2061177
-Signed-off-by: JP Hein <jp@jphein.com>
-Link: https://patch.msgid.link/20260331003806.212565-2-jp@jphein.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f20216c1d6f ("Bluetooth: Emit controller suspend and resume events")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleh Konko <security@1seal.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_event.c |   94 +++++++++++++++++-----------------------------
+ 1 file changed, 35 insertions(+), 59 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -490,6 +490,8 @@ static const struct usb_device_id usb_qu
- 	/* Razer - Razer Blade Keyboard */
- 	{ USB_DEVICE(0x1532, 0x0116), .driver_info =
- 			USB_QUIRK_LINEAR_UFRAME_INTR_BINTERVAL },
-+	/* Razer - Razer Kiyo Pro Webcam */
-+	{ USB_DEVICE(0x1532, 0x0e05), .driver_info = USB_QUIRK_NO_LPM },
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -80,6 +80,10 @@ static void *hci_le_ev_skb_pull(struct h
+ 	return data;
+ }
  
- 	/* Lenovo ThinkPad OneLink+ Dock twin hub controllers (VIA Labs VL812) */
- 	{ USB_DEVICE(0x17ef, 0x1018), .driver_info = USB_QUIRK_RESET_RESUME },
++static void hci_store_wake_reason(struct hci_dev *hdev,
++				  const bdaddr_t *bdaddr, u8 addr_type)
++	__must_hold(&hdev->lock);
++
+ static u8 hci_cc_inquiry_cancel(struct hci_dev *hdev, void *data,
+ 				struct sk_buff *skb)
+ {
+@@ -3111,6 +3115,7 @@ static void hci_conn_complete_evt(struct
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", status);
+ 
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, BDADDR_BREDR);
+ 
+ 	/* Check for existing connection:
+ 	 *
+@@ -3274,6 +3279,10 @@ static void hci_conn_request_evt(struct
+ 
+ 	bt_dev_dbg(hdev, "bdaddr %pMR type 0x%x", &ev->bdaddr, ev->link_type);
+ 
++	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, BDADDR_BREDR);
++	hci_dev_unlock(hdev);
++
+ 	/* Reject incoming connection from device with same BD ADDR against
+ 	 * CVE-2020-26555
+ 	 */
+@@ -5021,6 +5030,7 @@ static void hci_sync_conn_complete_evt(s
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", status);
+ 
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, BDADDR_BREDR);
+ 
+ 	conn = hci_conn_hash_lookup_ba(hdev, ev->link_type, &ev->bdaddr);
+ 	if (!conn) {
+@@ -5713,6 +5723,7 @@ static void le_conn_complete_evt(struct
+ 	int err;
+ 
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, bdaddr, bdaddr_type);
+ 
+ 	/* All controllers implicitly stop advertising in the event of a
+ 	 * connection, so ensure that the state bit is cleared.
+@@ -6005,6 +6016,7 @@ static void hci_le_past_received_evt(str
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
+ 
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, ev->bdaddr_type);
+ 
+ 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
+ 
+@@ -6403,6 +6415,8 @@ static void hci_le_adv_report_evt(struct
+ 					info->length + 1))
+ 			break;
+ 
++		hci_store_wake_reason(hdev, &info->bdaddr, info->bdaddr_type);
++
+ 		if (info->length <= max_adv_len(hdev)) {
+ 			rssi = info->data[info->length];
+ 			process_adv_report(hdev, info->type, &info->bdaddr,
+@@ -6491,6 +6505,8 @@ static void hci_le_ext_adv_report_evt(st
+ 					info->length))
+ 			break;
+ 
++		hci_store_wake_reason(hdev, &info->bdaddr, info->bdaddr_type);
++
+ 		evt_type = __le16_to_cpu(info->type) & LE_EXT_ADV_EVT_TYPE_MASK;
+ 		legacy_evt_type = ext_evt_type_to_legacy(hdev, evt_type);
+ 
+@@ -6536,6 +6552,7 @@ static void hci_le_pa_sync_established_e
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
+ 
+ 	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, &ev->bdaddr, ev->bdaddr_type);
+ 
+ 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
+ 
+@@ -6841,6 +6858,8 @@ static void hci_le_direct_adv_report_evt
+ 	for (i = 0; i < ev->num; i++) {
+ 		struct hci_ev_le_direct_adv_info *info = &ev->info[i];
+ 
++		hci_store_wake_reason(hdev, &info->bdaddr, info->bdaddr_type);
++
+ 		process_adv_report(hdev, info->type, &info->bdaddr,
+ 				   info->bdaddr_type, &info->direct_addr,
+ 				   info->direct_addr_type, HCI_ADV_PHY_1M, 0,
+@@ -7509,73 +7528,29 @@ static bool hci_get_cmd_complete(struct
+ 	return true;
+ }
+ 
+-static void hci_store_wake_reason(struct hci_dev *hdev, u8 event,
+-				  struct sk_buff *skb)
++static void hci_store_wake_reason(struct hci_dev *hdev,
++				  const bdaddr_t *bdaddr, u8 addr_type)
++	__must_hold(&hdev->lock)
+ {
+-	struct hci_ev_le_advertising_info *adv;
+-	struct hci_ev_le_direct_adv_info *direct_adv;
+-	struct hci_ev_le_ext_adv_info *ext_adv;
+-	const struct hci_ev_conn_complete *conn_complete = (void *)skb->data;
+-	const struct hci_ev_conn_request *conn_request = (void *)skb->data;
+-
+-	hci_dev_lock(hdev);
++	lockdep_assert_held(&hdev->lock);
+ 
+ 	/* If we are currently suspended and this is the first BT event seen,
+ 	 * save the wake reason associated with the event.
+ 	 */
+ 	if (!hdev->suspended || hdev->wake_reason)
+-		goto unlock;
++		return;
++
++	if (!bdaddr) {
++		hdev->wake_reason = MGMT_WAKE_REASON_UNEXPECTED;
++		return;
++	}
+ 
+ 	/* Default to remote wake. Values for wake_reason are documented in the
+ 	 * Bluez mgmt api docs.
+ 	 */
+ 	hdev->wake_reason = MGMT_WAKE_REASON_REMOTE_WAKE;
+-
+-	/* Once configured for remote wakeup, we should only wake up for
+-	 * reconnections. It's useful to see which device is waking us up so
+-	 * keep track of the bdaddr of the connection event that woke us up.
+-	 */
+-	if (event == HCI_EV_CONN_REQUEST) {
+-		bacpy(&hdev->wake_addr, &conn_request->bdaddr);
+-		hdev->wake_addr_type = BDADDR_BREDR;
+-	} else if (event == HCI_EV_CONN_COMPLETE) {
+-		bacpy(&hdev->wake_addr, &conn_complete->bdaddr);
+-		hdev->wake_addr_type = BDADDR_BREDR;
+-	} else if (event == HCI_EV_LE_META) {
+-		struct hci_ev_le_meta *le_ev = (void *)skb->data;
+-		u8 subevent = le_ev->subevent;
+-		u8 *ptr = &skb->data[sizeof(*le_ev)];
+-		u8 num_reports = *ptr;
+-
+-		if ((subevent == HCI_EV_LE_ADVERTISING_REPORT ||
+-		     subevent == HCI_EV_LE_DIRECT_ADV_REPORT ||
+-		     subevent == HCI_EV_LE_EXT_ADV_REPORT) &&
+-		    num_reports) {
+-			adv = (void *)(ptr + 1);
+-			direct_adv = (void *)(ptr + 1);
+-			ext_adv = (void *)(ptr + 1);
+-
+-			switch (subevent) {
+-			case HCI_EV_LE_ADVERTISING_REPORT:
+-				bacpy(&hdev->wake_addr, &adv->bdaddr);
+-				hdev->wake_addr_type = adv->bdaddr_type;
+-				break;
+-			case HCI_EV_LE_DIRECT_ADV_REPORT:
+-				bacpy(&hdev->wake_addr, &direct_adv->bdaddr);
+-				hdev->wake_addr_type = direct_adv->bdaddr_type;
+-				break;
+-			case HCI_EV_LE_EXT_ADV_REPORT:
+-				bacpy(&hdev->wake_addr, &ext_adv->bdaddr);
+-				hdev->wake_addr_type = ext_adv->bdaddr_type;
+-				break;
+-			}
+-		}
+-	} else {
+-		hdev->wake_reason = MGMT_WAKE_REASON_UNEXPECTED;
+-	}
+-
+-unlock:
+-	hci_dev_unlock(hdev);
++	bacpy(&hdev->wake_addr, bdaddr);
++	hdev->wake_addr_type = addr_type;
+ }
+ 
+ #define HCI_EV_VL(_op, _func, _min_len, _max_len) \
+@@ -7822,14 +7797,15 @@ void hci_event_packet(struct hci_dev *hd
+ 
+ 	skb_pull(skb, HCI_EVENT_HDR_SIZE);
+ 
+-	/* Store wake reason if we're suspended */
+-	hci_store_wake_reason(hdev, event, skb);
+-
+ 	bt_dev_dbg(hdev, "event 0x%2.2x", event);
+ 
+ 	hci_event_func(hdev, event, skb, &opcode, &status, &req_complete,
+ 		       &req_complete_skb);
+ 
++	hci_dev_lock(hdev);
++	hci_store_wake_reason(hdev, NULL, 0);
++	hci_dev_unlock(hdev);
++
+ 	if (req_complete) {
+ 		req_complete(hdev, status, opcode);
+ 	} else if (req_complete_skb) {
 
 
 
