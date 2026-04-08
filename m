@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COwVFG2g1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:33 +0200
+	id KGq6Ifyi1mlqGwgAu9opvQ
+	(envelope-from <stable+bounces-234888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C663C1185
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C3B3C1983
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE70330305CE
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E682302F4AD
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA133D4134;
-	Wed,  8 Apr 2026 18:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28553D9034;
+	Wed,  8 Apr 2026 18:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7GFvYec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2432133"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602DD3D411F;
-	Wed,  8 Apr 2026 18:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FE13D8125;
+	Wed,  8 Apr 2026 18:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672783; cv=none; b=a6g3IAEBJIUdzITjcDW8JAGSkMNCcl4SiatId36t4l/T11uGP4lAFJxsOqd8l0t4t5m/SE+qxzVTRLlSrnEOrnweNoehjyGnxVBHco7P5RZy4y9X9xRKvyVS9xGm5Dc50VyY0gkE1AtuP//gIvhtyintK7kaPcDQGe+nqa1vPHk=
+	t=1775674022; cv=none; b=VC1miQxvQJXyxdLK690FPgrX7eojTnx7biekq/qgkF6jEPUvqLG6gVbfF4TRkz22sJ55+J3HQhLztRYXCBH4hbVQz3qjcT0Kua8zY0rCPKZhHm5HXD8X61L+3ehJv+eYGXCOzLk4XttWBtau0MOE/4FTkfnN3YgJxCKY86sis5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672783; c=relaxed/simple;
-	bh=QW8eyjumPUWKY6m70eGwzBTuGeZ+iBmBJNQzgDbcYEs=;
+	s=arc-20240116; t=1775674022; c=relaxed/simple;
+	bh=30qu4f4U+4ZkD+7bnRDbf7PPncSUcfOXIWMEbtXRtfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=St7ATvfb34nNMqQZOq07PuazlN87Dad8TirbdouUeXsjwwycxvFzn9fxkXoBeLLeSOskW3oIKACXKNOMnK2ZnIkzZx/JAU4tFyvKu1e7hmkyZZd6FDDkYQNnTyCnTIYJahow71wjbryZOz5/Oqg6AH2P9p5jFgsXCtY5YkS8Jeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7GFvYec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA40CC19421;
-	Wed,  8 Apr 2026 18:26:22 +0000 (UTC)
+	 MIME-Version; b=swscDLboPJCXz5MQEfOOl/HwjJmKUTZZXywzAh8ICRlbPoG5+BBFwmCnJOzi/qeJyNpWQJRF/pSxTEnx8MxUeODEDN03+lLANiAQduazfY24xvcvkNpTK0eTLhzwJ5Q/v5zSP/ra0nN1ectoatEU1+8Um5KGbh/GWk3Of+uSMWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2432133; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3978BC19421;
+	Wed,  8 Apr 2026 18:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672783;
-	bh=QW8eyjumPUWKY6m70eGwzBTuGeZ+iBmBJNQzgDbcYEs=;
+	s=korg; t=1775674022;
+	bh=30qu4f4U+4ZkD+7bnRDbf7PPncSUcfOXIWMEbtXRtfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7GFvYecGEAddG1Pyys/cvUuDrZ1ocPIlQDct9qqL/WMfG3QKzhBp01lQ157YfIrv
-	 QWNhnPJNaISrQoZEWfsMKgQ6bCc+P8Oi6vUGXo+m3nTkDJVeoGkchb+R+9EjP3vrN+
-	 Lldk9FmOZ8FVr/FHHhmZhxlIcDqVRnSBXu86NRY8=
+	b=j2432133Vp7HVY0nJFN2ikhp3rHewsT5Y+sE+tIrmEUUfxB8sv48YAvAZ0LkvCeHE
+	 qxU1LtesTSbYDrVSDD27kuj8OoC1m4T1vXXwnlzhLzdintNGVRHFy8AdVZ6tL6HeNy
+	 HazzTGuTabTmrTVqbFhaLcl3Loz56HyzZRDucxSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 133/160] thunderbolt: Fix property read in nhi_wake_supported()
+	Christian Eggers <ceggers@arri.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 180/242] nvmem: imx: assign nvmem_cell_info::raw_len
 Date: Wed,  8 Apr 2026 20:03:40 +0200
-Message-ID: <20260408175918.158231735@linuxfoundation.org>
+Message-ID: <20260408175933.821835548@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234888-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arri.de,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234409-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,intel.com:email]
-X-Rspamd-Queue-Id: E1C663C1185
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arri.de:email]
+X-Rspamd-Queue-Id: 41C3B3C1983
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Christian Eggers <ceggers@arri.de>
 
-commit 73a505dc48144ec72e25874e2b2a72487b02d3bc upstream.
+commit 48b5163c957548f5854f14c90bfdedc33afbea3c upstream.
 
-device_property_read_foo() returns 0 on success and only then modifies
-'val'. Currently, val is left uninitialized if the aforementioned
-function returns non-zero, making nhi_wake_supported() return true
-almost always (random != 0) if the property is not present in device
-firmware.
+Avoid getting error messages at startup like the following on i.MX6ULL:
 
-Invert the check to make it make sense.
+nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
+nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
 
-Fixes: 3cdb9446a117 ("thunderbolt: Add support for Intel Ice Lake")
+This shouldn't cause any functional change as this alignment would
+otherwise be done in nvmem_cell_info_to_nvmem_cell_entry_nodup().
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260327131645.3025781-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/imx-ocotp-ele.c |    1 +
+ drivers/nvmem/imx-ocotp.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1010,7 +1010,7 @@ static bool nhi_wake_supported(struct pc
- 	 * If power rails are sustainable for wakeup from S4 this
- 	 * property is set by the BIOS.
- 	 */
--	if (device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
-+	if (!device_property_read_u8(&pdev->dev, "WAKE_SUPPORTED", &val))
- 		return !!val;
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -131,6 +131,7 @@ static int imx_ocotp_cell_pp(void *conte
+ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
+ 					 struct nvmem_cell_info *cell)
+ {
++	cell->raw_len = round_up(cell->bytes, 4);
+ 	cell->read_post_process = imx_ocotp_cell_pp;
+ }
  
- 	return true;
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -589,6 +589,7 @@ MODULE_DEVICE_TABLE(of, imx_ocotp_dt_ids
+ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
+ 					 struct nvmem_cell_info *cell)
+ {
++	cell->raw_len = round_up(cell->bytes, 4);
+ 	cell->read_post_process = imx_ocotp_cell_pp;
+ }
+ 
 
 
 
