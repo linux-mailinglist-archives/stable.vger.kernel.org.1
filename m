@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGsMAAGj1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:33 +0200
+	id 8DfJCaSc1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23D83C199F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA243C0797
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D387C30464AC
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B131530314A4
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF3F3D6689;
-	Wed,  8 Apr 2026 18:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3B23D9DB5;
+	Wed,  8 Apr 2026 18:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9qIrqeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoH5pDaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E71333121F;
-	Wed,  8 Apr 2026 18:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FAD3D9DA7;
+	Wed,  8 Apr 2026 18:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674033; cv=none; b=kc9pi/+0q/BFbSLJjB4PlnSRFgYdZjjzmK7yDDeWlAXiwhL8NeASYE+YmFfmTfGmXaY3avpE/8Mkl6EZRUBYKxdfpNGoJfZ9lq0UnaHugdgbn2TI2nJugksguayITonQBQ0R9ym9/hQbtsHpsqVJR/ZSdW6ymMFOZxE/SyNoAI8=
+	t=1775672403; cv=none; b=itZQseSN+ryHp63R7rviRE3PhVoZXVLCYP25BLdBqHG7M1xASpVpi+IGKlyqYECah1Q2DIQvFS45dO5dr45s7wCQI3ap0A9KwZ3aYjD5tyXgzhois62gqoToMCZloh0cPy05rZcI5tnXxFpuIdXDGUTLe28hwqmky75oqFuZ2ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674033; c=relaxed/simple;
-	bh=DpwIjvT6UQUZQftdL2Fm+dYwZuxeiRfiKixifQA5e54=;
+	s=arc-20240116; t=1775672403; c=relaxed/simple;
+	bh=uI2vlLrQ0QOXLZmv6fIP68H4puduWcXRcvaNFswxDVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BT+YHlwxcmOutc6bMevAvDYDzyWxeVnZtke+F3kduRLA0ZoxlMeGeYmicvFukZZbYQUc4rWPJEzrxMtT0G0sUJLwq3rQlyaRI3YKBmFoXnjYwvvGsoMdlfFi+4y2tRgF8om880rQi3WtUfEI3VeuczCsWfktUva7K2SKHS4EwXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9qIrqeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A92EC19421;
-	Wed,  8 Apr 2026 18:47:12 +0000 (UTC)
+	 MIME-Version; b=G+r44Jmej46q7noDiPjKNKaP/4yKUNmi6elchKq7ZpSbhZumNf6EMQgR13k2YInEqXnbT0I3KqD8vqGfuEevxDHSXwsQkCxeriyUSdC1Gir2n+Y2JKyClJsk1ID3FuSP3t33nouj8r6Sxq1c/DqM59OlLzOMfjDGJfMVDVrE4x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoH5pDaJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477BCC2BCC9;
+	Wed,  8 Apr 2026 18:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674032;
-	bh=DpwIjvT6UQUZQftdL2Fm+dYwZuxeiRfiKixifQA5e54=;
+	s=korg; t=1775672403;
+	bh=uI2vlLrQ0QOXLZmv6fIP68H4puduWcXRcvaNFswxDVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9qIrqeB37qovJhnK4LahX6TSflaQHv/qEiS1/7s9I7HOknjaJLaRkbiHjcgGY1kE
-	 /19CTp8Gn0M8nQdSbDMuowuQm3w1At1IbEN8tYnBy/3wuMFR0tVAWw0xPkch+a5TwV
-	 Z42sWXNPajJVFdmXl0C9rBcXQsvbiQz/mM1MWMIY=
+	b=RoH5pDaJuH4f7r9X8UDLFg/h2ZKPbiHugJIsW4HgiOVuGd4mn7OBVDza9gUKN4uyW
+	 CN8XrwMnJUZSf8VcC31s5B2DSYzYkAXcpjAYpHReWiw1xRSW50FBx10mfTwA/cQKaD
+	 k/IvR0QqnBDtIq8GYhSCkmFPdReOqCVoEoQlfTbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.12 184/242] counter: rz-mtu3-cnt: do not use struct rz_mtu3_channels dev member
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 307/312] selftests: mptcp: join: check removing signal+subflow endp
 Date: Wed,  8 Apr 2026 20:03:44 +0200
-Message-ID: <20260408175933.969421460@linuxfoundation.org>
+Message-ID: <20260408175945.241199916@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234892-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234262-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,249 +87,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,renesas.com:email]
-X-Rspamd-Queue-Id: B23D83C199F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BCA243C0797
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 2932095c114b98cbb40ccf34fc00d613cb17cead upstream.
+commit 1777f349ff41b62dfe27454b69c27b0bc99ffca5 upstream.
 
-The counter driver can use HW channels 1 and 2, while the PWM driver can
-use HW channels 0, 1, 2, 3, 4, 6, 7.
+This validates the previous commit: endpoints with both the signal and
+subflow flags should always be marked as used even if it was not
+possible to create new subflows due to the MPTCP PM limits.
 
-The dev member is assigned both by the counter driver and the PWM driver
-for channels 1 and 2, to their own struct device instance, overwriting
-the previous value.
+For this test, an extra endpoint is created with both the signal and the
+subflow flags, and limits are set not to create extra subflows. In this
+case, an ADD_ADDR is sent, but no subflows are created. Still, the local
+endpoint is marked as used, and no warning is fired when removing the
+endpoint, after having sent a RM_ADDR.
 
-The sub-drivers race to assign their own struct device pointer to the
-same struct rz_mtu3_channel's dev member.
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-The dev member of struct rz_mtu3_channel is used by the counter
-sub-driver for runtime PM.
-
-Depending on the probe order of the counter and PWM sub-drivers, the
-dev member may point to the wrong struct device instance, causing the
-counter sub-driver to do runtime PM actions on the wrong device.
-
-To fix this, use the parent pointer of the counter, which is assigned
-during probe to the correct struct device, not the struct device pointer
-inside the shared struct rz_mtu3_channel.
-
+Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
 Cc: stable@vger.kernel.org
-Fixes: 0be8907359df ("counter: Add Renesas RZ/G2L MTU3a counter driver")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Link: https://lore.kernel.org/r/20260130122353.2263273-6-cosmin-gabriel.tanislav.xa@renesas.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-5-4b5462b6f016@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ No conflicts, but in this kernel version 'run_tests' doesn't support
+  parameters set via env vars: positional parameters need to be used.
+  See commit 595ef566a2ef ("selftests: mptcp: drop addr_nr_ns1/2
+  parameters") and commit e571fb09c893 ("selftests: mptcp: add speed env
+  var") which are not in this kernel version. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/rz-mtu3-cnt.c |   55 ++++++++++++++++++++----------------------
- 1 file changed, 27 insertions(+), 28 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/counter/rz-mtu3-cnt.c
-+++ b/drivers/counter/rz-mtu3-cnt.c
-@@ -107,9 +107,9 @@ static bool rz_mtu3_is_counter_invalid(s
- 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
- 	unsigned long tmdr;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2407,6 +2407,18 @@ remove_tests()
+ 		chk_rst_nr 0 0
+ 	fi
  
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	if (id == RZ_MTU3_32_BIT_CH && test_bit(RZ_MTU3_TMDR3_LWA, &tmdr))
- 		return false;
-@@ -165,12 +165,12 @@ static int rz_mtu3_count_read(struct cou
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		*val = rz_mtu3_32bit_ch_read(ch, RZ_MTU3_TCNTLW);
- 	else
- 		*val = rz_mtu3_16bit_ch_read(ch, RZ_MTU3_TCNT);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -187,26 +187,26 @@ static int rz_mtu3_count_write(struct co
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		rz_mtu3_32bit_ch_write(ch, RZ_MTU3_TCNTLW, val);
- 	else
- 		rz_mtu3_16bit_ch_write(ch, RZ_MTU3_TCNT, val);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
- }
- 
- static int rz_mtu3_count_function_read_helper(struct rz_mtu3_channel *const ch,
--					      struct rz_mtu3_cnt *const priv,
-+					      struct counter_device *const counter,
- 					      enum counter_function *function)
- {
- 	u8 timer_mode;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	timer_mode = rz_mtu3_8bit_ch_read(ch, RZ_MTU3_TMDR1);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	switch (timer_mode & RZ_MTU3_TMDR1_PH_CNT_MODE_MASK) {
- 	case RZ_MTU3_TMDR1_PH_CNT_MODE_1:
-@@ -240,7 +240,7 @@ static int rz_mtu3_count_function_read(s
- 	if (ret)
- 		return ret;
- 
--	ret = rz_mtu3_count_function_read_helper(ch, priv, function);
-+	ret = rz_mtu3_count_function_read_helper(ch, counter, function);
- 	mutex_unlock(&priv->lock);
- 
- 	return ret;
-@@ -279,9 +279,9 @@ static int rz_mtu3_count_function_write(
- 		return -EINVAL;
- 	}
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TMDR1, timer_mode);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -300,9 +300,9 @@ static int rz_mtu3_count_direction_read(
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tsr = rz_mtu3_8bit_ch_read(ch, RZ_MTU3_TSR);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 
- 	*direction = (tsr & RZ_MTU3_TSR_TCFD) ?
- 		COUNTER_COUNT_DIRECTION_FORWARD : COUNTER_COUNT_DIRECTION_BACKWARD;
-@@ -377,14 +377,14 @@ static int rz_mtu3_count_ceiling_write(s
- 		return -EINVAL;
- 	}
- 
--	pm_runtime_get_sync(ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	if (count->id == RZ_MTU3_32_BIT_CH)
- 		rz_mtu3_32bit_ch_write(ch, RZ_MTU3_TGRALW, ceiling);
- 	else
- 		rz_mtu3_16bit_ch_write(ch, RZ_MTU3_TGRA, ceiling);
- 
- 	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TCR, RZ_MTU3_TCR_CCLR_TGRA);
--	pm_runtime_put(ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -495,7 +495,6 @@ static int rz_mtu3_count_enable_read(str
- static int rz_mtu3_count_enable_write(struct counter_device *counter,
- 				      struct counter_count *count, u8 enable)
- {
--	struct rz_mtu3_channel *const ch = rz_mtu3_get_ch(counter, count->id);
- 	struct rz_mtu3_cnt *const priv = counter_priv(counter);
- 	int ret = 0;
- 
-@@ -505,14 +504,14 @@ static int rz_mtu3_count_enable_write(st
- 		goto exit;
- 
- 	if (enable) {
--		pm_runtime_get_sync(ch->dev);
-+		pm_runtime_get_sync(counter->parent);
- 		ret = rz_mtu3_initialize_counter(counter, count->id);
- 		if (ret == 0)
- 			priv->count_is_enabled[count->id] = true;
- 	} else {
- 		rz_mtu3_terminate_counter(counter, count->id);
- 		priv->count_is_enabled[count->id] = false;
--		pm_runtime_put(ch->dev);
-+		pm_runtime_put(counter->parent);
- 	}
- 
- exit:
-@@ -544,9 +543,9 @@ static int rz_mtu3_cascade_counts_enable
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	*cascade_enable = test_bit(RZ_MTU3_TMDR3_LWA, &tmdr);
- 	mutex_unlock(&priv->lock);
- 
-@@ -563,10 +562,10 @@ static int rz_mtu3_cascade_counts_enable
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_shared_reg_update_bit(priv->ch, RZ_MTU3_TMDR3,
- 				      RZ_MTU3_TMDR3_LWA, cascade_enable);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -583,9 +582,9 @@ static int rz_mtu3_ext_input_phase_clock
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	tmdr = rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	*ext_input_phase_clock_select = test_bit(RZ_MTU3_TMDR3_PHCKSEL, &tmdr);
- 	mutex_unlock(&priv->lock);
- 
-@@ -602,11 +601,11 @@ static int rz_mtu3_ext_input_phase_clock
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_get_sync(priv->ch->dev);
-+	pm_runtime_get_sync(counter->parent);
- 	rz_mtu3_shared_reg_update_bit(priv->ch, RZ_MTU3_TMDR3,
- 				      RZ_MTU3_TMDR3_PHCKSEL,
- 				      ext_input_phase_clock_select);
--	pm_runtime_put(priv->ch->dev);
-+	pm_runtime_put(counter->parent);
- 	mutex_unlock(&priv->lock);
- 
- 	return 0;
-@@ -644,7 +643,7 @@ static int rz_mtu3_action_read(struct co
- 	if (ret)
- 		return ret;
- 
--	ret = rz_mtu3_count_function_read_helper(ch, priv, &function);
-+	ret = rz_mtu3_count_function_read_helper(ch, counter, &function);
- 	if (ret) {
- 		mutex_unlock(&priv->lock);
- 		return ret;
++	# signal+subflow with limits, remove
++	if reset "remove signal+subflow with limits"; then
++		pm_nl_set_limits $ns1 0 0
++		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,subflow
++		pm_nl_set_limits $ns2 0 0
++		run_tests $ns1 $ns2 10.0.1.1 0 -1 0 slow
++		chk_join_nr 0 0 0
++		chk_add_nr 1 1
++		chk_rm_nr 1 0 invert
++		chk_rst_nr 0 0
++	fi
++
+ 	# addresses remove
+ 	if reset "remove addresses"; then
+ 		pm_nl_set_limits $ns1 3 3
 
 
 
