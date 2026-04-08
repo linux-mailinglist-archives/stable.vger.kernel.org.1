@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qO66JmSd1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:36 +0200
+	id OG33A5Wh1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3185F3C0A3C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 128DA3C1495
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC06B30297B8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 034203023589
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4248137F01B;
-	Wed,  8 Apr 2026 18:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DDA3D4134;
+	Wed,  8 Apr 2026 18:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+BZ15Er"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVFj29fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DB7B67E;
-	Wed,  8 Apr 2026 18:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C5127979A;
+	Wed,  8 Apr 2026 18:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672349; cv=none; b=bj3QC6RfFAjY+X+udRujJh0sL5KiW3KS7SCjOXf6j0IKdy2y1hGppaCpWgPHum2y2Knq+RKmAGpoxRNub7rlHttmnzoQTjrGhq5F6GvkDnXHmMYFS6lKQrB9pkmn+obOTUXsalQGylyjVJX+qRUE/Mg6h0NROwsApdEgzlVJIpE=
+	t=1775673470; cv=none; b=OjFnVzwGkeDX4N6mCfokgV05qM45yfo6a1vBD3pOqOwno4JXV76BpY4luLIZHuJJTbTfhAr65cZXcJM5sohX80ZeEtsctW6wUORzHlGCoDQBxHtF7ye1pBlU+Hj+r9PE4SA4dHE7qvZZudkKqgnmgJGqVgElL3+jxwNXa875KF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672349; c=relaxed/simple;
-	bh=4k6KRG+cUobYdv34MuRGwzUNpFQfCaG8G5SfY2rhGAg=;
+	s=arc-20240116; t=1775673470; c=relaxed/simple;
+	bh=H+4w+ySpAoGw1p8com/dP/Wn8c5OXOODcBkICVn/0HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mas3pvoXtrKUB1KWWGKZs8wTtoZnn3EImo9aylNKGLj8PA+U1DP/NMltRq3LS3FTXIysuAAj5Z/8plpEZkhTeLfV7g9yulwugQgDp8uqt1gQNYld8giC8u7RYT20ZzJD3OePKw8xRJZ2M4u98UNOOOF5cOz/ZM6gvaPJTGu3iuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+BZ15Er; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B08C19421;
-	Wed,  8 Apr 2026 18:19:08 +0000 (UTC)
+	 MIME-Version; b=Y8k5jdQk0unRNljvDNetUZxj55LvVrnMzxCiK4kh78th3FX8/cLvlcFgqWlBlwpPdYDsF8rFnJxYci3Z156gfVjpU7TwII3skMT+7hoP6V5mSsVCMB2icTWiSbijEtPE+AcpnnpFmm1mFlVBH+lEH6bzhahJ6KdTSqCEKpC5+r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVFj29fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87664C19421;
+	Wed,  8 Apr 2026 18:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672348;
-	bh=4k6KRG+cUobYdv34MuRGwzUNpFQfCaG8G5SfY2rhGAg=;
+	s=korg; t=1775673470;
+	bh=H+4w+ySpAoGw1p8com/dP/Wn8c5OXOODcBkICVn/0HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+BZ15ErLu7+yHe1/H74y0KblKKwRncf2FPAgnSKPd+gWrW0ndlAkUhMxqzHRkvau
-	 o6DdC1wYUTMsW9dpXZzhtatWzHso1ILBUkWWPv5m1cHk/tJyhHzNFYtClkq9xuB7kK
-	 P2gaxY6O4kxEgbTJCNo1nBXbhjPq4Fm5AsRZVzJU=
+	b=uVFj29fkFFBFuaBHpbahlfWOj2GeXMel3Hn3KBpYHbfN/TOUbnP4tW0e/K0rFFioW
+	 Up0kspN/w0/rE78paSNYFx+qRW49GHaQdvebB8sNlrUdW2HG9lMLwj30KfuWyGb1uV
+	 e3L/0BrwQQ7NpuZaJeuk9po9Sp/AI5YiOgUTsaZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 285/312] hwmon: (pmbus/isl68137) Add mutex protection for AVS enable sysfs attributes
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.18 217/277] comedi: me4000: Fix potential overrun of firmware buffer
 Date: Wed,  8 Apr 2026 20:03:22 +0200
-Message-ID: <20260408175944.402460955@linuxfoundation.org>
+Message-ID: <20260408175941.963134276@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234241-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234674-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,102 +86,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3185F3C0A3C
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mev.co.uk:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 128DA3C1495
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 3075a3951f7708da5a8ab47b0b7d068a32f69e58 ]
+commit 3fb43a7a5b44713f892c58ead2e5f3a1bc9f4ee7 upstream.
 
-The custom avs0_enable and avs1_enable sysfs attributes access PMBus
-registers through the exported API helpers (pmbus_read_byte_data,
-pmbus_read_word_data, pmbus_write_word_data, pmbus_update_byte_data)
-without holding the PMBus update_lock mutex. These exported helpers do
-not acquire the mutex internally, unlike the core's internal callers
-which hold the lock before invoking them.
+`me4000_xilinx_download()` loads the firmware that was requested by
+`request_firmware()`.  It is possible for it to overrun the source
+buffer because it blindly trusts the file format.  It reads a data
+stream length from the first 4 bytes into variable `file_length` and
+reads the data stream contents of length `file_length` from offset 16
+onwards.
 
-The store callback is especially vulnerable: it performs a multi-step
-read-modify-write sequence (read VOUT_COMMAND, write VOUT_COMMAND, then
-update OPERATION) where concurrent access from another thread could
-interleave and corrupt the register state.
+Add a test to ensure that the supplied firmware is long enough to
+contain the header and the data stream.  On failure, log an error and
+return `-EINVAL`.
 
-Add pmbus_lock_interruptible()/pmbus_unlock() around both the show and
-store callbacks to serialize PMBus register access with the rest of the
-driver.
+Note: The firmware loading was totally broken before commit ac584af59945
+("staging: comedi: me4000: fix firmware downloading"), but that is the
+most sensible target for this fix.
 
-Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260319173055.125271-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ac584af59945 ("staging: comedi: me4000: fix firmware downloading")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260205133949.71722-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/isl68137.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/comedi/drivers/me4000.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/hwmon/pmbus/isl68137.c
-+++ b/drivers/hwmon/pmbus/isl68137.c
-@@ -78,7 +78,15 @@ static ssize_t isl68137_avs_enable_show_
- 					     int page,
- 					     char *buf)
- {
--	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
-+	int val;
+--- a/drivers/comedi/drivers/me4000.c
++++ b/drivers/comedi/drivers/me4000.c
+@@ -315,6 +315,18 @@ static int me4000_xilinx_download(struct
+ 	unsigned int val;
+ 	unsigned int i;
+ 
++	/* Get data stream length from header. */
++	if (size >= 4) {
++		file_length = (((unsigned int)data[0] & 0xff) << 24) +
++			      (((unsigned int)data[1] & 0xff) << 16) +
++			      (((unsigned int)data[2] & 0xff) << 8) +
++			      ((unsigned int)data[3] & 0xff);
++	}
++	if (size < 16 || file_length > size - 16) {
++		dev_err(dev->class_dev, "Firmware length inconsistency\n");
++		return -EINVAL;
++	}
 +
-+	val = pmbus_lock_interruptible(client);
-+	if (val)
-+		return val;
-+
-+	val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
-+
-+	pmbus_unlock(client);
+ 	if (!xilinx_iobase)
+ 		return -ENODEV;
  
- 	if (val < 0)
- 		return val;
-@@ -100,6 +108,10 @@ static ssize_t isl68137_avs_enable_store
+@@ -346,10 +358,6 @@ static int me4000_xilinx_download(struct
+ 	outl(val, devpriv->plx_regbase + PLX9052_CNTRL);
  
- 	op_val = result ? ISL68137_VOUT_AVS : 0;
+ 	/* Download Xilinx firmware */
+-	file_length = (((unsigned int)data[0] & 0xff) << 24) +
+-		      (((unsigned int)data[1] & 0xff) << 16) +
+-		      (((unsigned int)data[2] & 0xff) << 8) +
+-		      ((unsigned int)data[3] & 0xff);
+ 	usleep_range(10, 1000);
  
-+	rc = pmbus_lock_interruptible(client);
-+	if (rc)
-+		return rc;
-+
- 	/*
- 	 * Writes to VOUT setpoint over AVSBus will persist after the VRM is
- 	 * switched to PMBus control. Switching back to AVSBus control
-@@ -111,17 +123,20 @@ static ssize_t isl68137_avs_enable_store
- 		rc = pmbus_read_word_data(client, page, 0xff,
- 					  PMBUS_VOUT_COMMAND);
- 		if (rc < 0)
--			return rc;
-+			goto unlock;
- 
- 		rc = pmbus_write_word_data(client, page, PMBUS_VOUT_COMMAND,
- 					   rc);
- 		if (rc < 0)
--			return rc;
-+			goto unlock;
- 	}
- 
- 	rc = pmbus_update_byte_data(client, page, PMBUS_OPERATION,
- 				    ISL68137_VOUT_AVS, op_val);
- 
-+unlock:
-+	pmbus_unlock(client);
-+
- 	return (rc < 0) ? rc : count;
- }
- 
+ 	for (i = 0; i < file_length; i++) {
 
 
 
