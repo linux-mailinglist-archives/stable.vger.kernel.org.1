@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-235102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOyGIyeq1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-235102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:03 +0200
+	id kKGbIwuo1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E1D3C2C03
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 090D73C2836
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75EF131C584D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69DB730851CB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7672F39C2;
-	Wed,  8 Apr 2026 18:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC4138911C;
+	Wed,  8 Apr 2026 18:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE12jli7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vf4jk6qH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F7535B658;
-	Wed,  8 Apr 2026 18:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AD033121F;
+	Wed,  8 Apr 2026 18:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674574; cv=none; b=kkQSlMOq8gLGF/ARfh/AVWXIjF80w9IzhRPB+l4waDFA2N2mdc6WQ9CYRYUCoLQcoEMpyoLN3iBQFoiR/o04OPwv9UpEPyXMjxPI1kX5qG5wTCb2LEO7VGbndEusBd24c3O4Hk/l5z3uvj312dUak1gff/ZBtnf4az/LW1qRrRk=
+	t=1775673930; cv=none; b=bPtddJrhs4Pd45XzTabMQXgXqSX/UOI+RoNAfJRbUHsN9t2HgbuCZLoJ0xiMGi++LxxWC2iuMAeaSEhwXzzUzg9hHJGqq/LX0StEdeLOukoIlwP3k7wgpFXhfsd/E5Ux8sttTIknZ8rXZKB0kZztuNNMRVwyybqBuCP992OrA/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674574; c=relaxed/simple;
-	bh=Ubfd1RdePg9AcF9UvMAD5O0x1lxyMqymjWbQxeRHnGI=;
+	s=arc-20240116; t=1775673930; c=relaxed/simple;
+	bh=pKgmOuFKGeuCyjwAevWhhPfP+8GN38cFWTMViNjA+zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b0PdKHC0HXvuGbNgtDcYOIQdAq09HwGPsAN2ivYeXkUrQ94hVkMmdfBhGe//HrL0YDGANr5j8pEYH8wto88WRj2+0jyOamIaU05kk+XppZw1YSjtnvA5r6ewCFNuYPY/nG61knisOh6TAldNqSrySd0w1mBYsstrZ6DjSxQ1hhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE12jli7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3E4C19421;
-	Wed,  8 Apr 2026 18:56:14 +0000 (UTC)
+	 MIME-Version; b=Jr3GEdsxp4/cDcuiMJuiBakYkHHF5+QfK5/NYrM5zqKxuUmmmfrJ+y/jvj/XVKrfrShZY0GnY0sPNMqBjMa+aetw2DZ1YFuKBi9VZ15zducO4uGlhouzyUM70cqp5bu2O12nN/fdoxSoCnMy1HvrNWWT45qZo+whW3b34S3oM2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vf4jk6qH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DCAC19421;
+	Wed,  8 Apr 2026 18:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674574;
-	bh=Ubfd1RdePg9AcF9UvMAD5O0x1lxyMqymjWbQxeRHnGI=;
+	s=korg; t=1775673929;
+	bh=pKgmOuFKGeuCyjwAevWhhPfP+8GN38cFWTMViNjA+zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zE12jli7rDfRIkWF9j/MgDg5w0gJ9lbq8a5EzHyHxNbMcNaBpbtWmeg287DiHWKDh
-	 9X7MYi3/skf7oUkm34sB5D1ctsKe7PV3NVKhIAypzCexVClYp+ib6h6FbxBHghfpWN
-	 wcsWPAMHIIhcPgjow7WXTHv5ExaGnAcyS6Ncstig=
+	b=Vf4jk6qHHpeDCdEij1KeE/lR8e58RI/RONJU0j9SoRn9EcWgTgbXhIfHCm3Hz6vX6
+	 +CtO/JgBWq8nTgCk8psYC9O4IGRTFH48E/rdYeK3IQWChT27oCiwe0BnlK/VpRvoM4
+	 5mZNyDtlv+INGnmR7fOu0p9JglTojxNBcLBqmlnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Liu <liu.xuemei1@zte.com.cn>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Dhaval Giani (AMD)" <dhaval@gianis.ca>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 151/311] irqchip/riscv-aplic: Restrict genpd notifier to device tree only
+Subject: [PATCH 6.12 111/242] sched/fair: Use protect_slice() instead of direct comparison
 Date: Wed,  8 Apr 2026 20:02:31 +0200
-Message-ID: <20260408175945.046433136@linuxfoundation.org>
+Message-ID: <20260408175931.241700518@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +64,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-235102-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234851-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zte.com.cn:email]
-X-Rspamd-Queue-Id: F2E1D3C2C03
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 090D73C2836
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Liu <liu.xuemei1@zte.com.cn>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit af416cd9b3fb9d17ac7f4cfa12d1ea83dfd0e4be ]
+[ Upstream commit 9cdb4fe20cd239c848b5c3f5753d83a9443ba329 ]
 
-On ACPI systems, the aplic's pm_domain is set to acpi_general_pm_domain,
-which provides its own power management callbacks (e.g., runtime_suspend
-via acpi_subsys_runtime_suspend).
+Replace the test by the relevant protect_slice() function.
 
-aplic_pm_add() unconditionally calls dev_pm_genpd_add_notifier() when
-dev->pm_domain is non‑NULL, leading to a comparison between runtime_suspend
-and genpd_runtime_suspend. This results in the following errors when ACPI
-is enabled:
-
-  riscv-aplic RSCV0002:00: failed to create APLIC context
-  riscv-aplic RSCV0002:00: error -ENODEV: failed to setup APLIC in MSI mode
-
-Fix this by checking for dev->of_node before adding or removing the genpd
-notifier, ensuring it is only used for device tree based systems.
-
-Fixes: 95a8ddde3660 ("irqchip/riscv-aplic: Preserve APLIC states across suspend/resume")
-Signed-off-by: Jessica Liu <liu.xuemei1@zte.com.cn>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260331093029749vRpdH-0qoEqjS0Wnn9M4x@zte.com.cn
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dhaval Giani (AMD) <dhaval@gianis.ca>
+Link: https://lkml.kernel.org/r/20250708165630.1948751-2-vincent.guittot@linaro.org
+Stable-dep-of: 1319ea57529e ("sched/fair: Fix zero_vruntime tracking fix")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-aplic-main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-main.c b/drivers/irqchip/irq-riscv-aplic-main.c
-index 9f53979b69625..d9afb6ae98cf5 100644
---- a/drivers/irqchip/irq-riscv-aplic-main.c
-+++ b/drivers/irqchip/irq-riscv-aplic-main.c
-@@ -150,7 +150,7 @@ static void aplic_pm_remove(void *data)
- 	struct device *dev = priv->dev;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index efd3cbefb5a22..fff27f3378cbf 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1181,7 +1181,7 @@ static inline bool did_preempt_short(struct cfs_rq *cfs_rq, struct sched_entity
+ 	if (!sched_feat(PREEMPT_SHORT))
+ 		return false;
  
- 	list_del(&priv->head);
--	if (dev->pm_domain)
-+	if (dev->pm_domain && dev->of_node)
- 		dev_pm_genpd_remove_notifier(dev);
- }
+-	if (curr->vlag == curr->deadline)
++	if (protect_slice(curr))
+ 		return false;
  
-@@ -165,7 +165,7 @@ static int aplic_pm_add(struct device *dev, struct aplic_priv *priv)
- 
- 	priv->saved_hw_regs.srcs = srcs;
- 	list_add(&priv->head, &aplics);
--	if (dev->pm_domain) {
-+	if (dev->pm_domain && dev->of_node) {
- 		priv->genpd_nb.notifier_call = aplic_pm_notifier;
- 		ret = dev_pm_genpd_add_notifier(dev, &priv->genpd_nb);
- 		if (ret)
+ 	return !entity_eligible(cfs_rq, curr);
 -- 
 2.53.0
 
