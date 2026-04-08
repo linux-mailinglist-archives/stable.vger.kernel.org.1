@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234808-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOaKIbGj1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:29 +0200
+	id kLVdEaWn1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234808-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5533C1C46
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2B73C2771
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F4A331866A2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E34631F29C9
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5B23B0AFC;
-	Wed,  8 Apr 2026 18:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6C33D9022;
+	Wed,  8 Apr 2026 18:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjSy8Klr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5nKjdwC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C95835B653;
-	Wed,  8 Apr 2026 18:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17081A285;
+	Wed,  8 Apr 2026 18:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673236; cv=none; b=Q7kCShyrxehlQVR8LoH3on4MBmV4PlJNzYDC9jcC206pN1purk52mMDtVC6d3vdwY6qFNfKcjBThxDu+MTj2PnxCU+5dgop2976NlDtXxI+gZaDcuZAsuM8LjGPnc7jtVqllNxXBJPLvPN9Fau+8rHzL8gojvSYYo8BQBy8mqBk=
+	t=1775673815; cv=none; b=a+UwXO/fAS9dAP9qM0ldthl/QjT84hmuhA5BFMYjVI5K3cQVYQwKu0/+7/nxk9/vhU5cxxNdwzf2YdJdObh/4PVGitNevajVEIo2SQUTVF+97NFBQl0mHyjrbT4clJRiBvtcgHyN3Rq6CnNwU91bk4+mvyF1nrVR7GE8XE39Kik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673236; c=relaxed/simple;
-	bh=fnvgDp/Kdj24jGcDwpYXXvHOeoz2Nc32bSNCZfd10Gg=;
+	s=arc-20240116; t=1775673815; c=relaxed/simple;
+	bh=ACDSK6YFo/5f/2NQk9hKPIesCb6wG4dxyOKoDtW6GdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9zm3weMT2+xr758crmECTikZDNg6gZv/8mIuxqufTGVSIVKZqM2ab5L8ckmsSpDjkK5HV2jnY+Bg2uhZQw+hGs/SX/d8zGlxoVdQ7bnsGGlnLMrQPnnYORy+KLVE4nvIBeSGphPvfXPO8xAzSTOqcxjIRJwNmDD6SZT4XIWX00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjSy8Klr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A4BC19421;
-	Wed,  8 Apr 2026 18:33:55 +0000 (UTC)
+	 MIME-Version; b=B2ou5Eg1U8z1ZT/6v32E5f2iAmZmh0b+a635NEcZLNPTIulyz1acpBKF46NvkXaSh6Lo7oLqgDuCDfIUn3suISSvB8uOJd8oa5Xul/w2sb+aSO3Zqvm/daag7mXFpfuP40lDEUnadWkLB4KgLJ/CEAboocYzJLDHGZJzf9858OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5nKjdwC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF17C19421;
+	Wed,  8 Apr 2026 18:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673235;
-	bh=fnvgDp/Kdj24jGcDwpYXXvHOeoz2Nc32bSNCZfd10Gg=;
+	s=korg; t=1775673815;
+	bh=ACDSK6YFo/5f/2NQk9hKPIesCb6wG4dxyOKoDtW6GdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjSy8KlrbolJQR4x0NALZ0Kcywzqv7cQeXaxiabgk87Exgh/+RnL9LaILbqDXeWkf
-	 GjPUSlqjZfleJT37O80d0vPNv0ixKsDJfzY/CpgeaHUFa6S1i9VrGZt6/IODHXGA96
-	 6wzqbthKFAQOUP1pt8Wur7klZmjNCAp2LCDsFxoo=
+	b=l5nKjdwCMkmuO/EdPcbwE+cZ9PEgnKXXsoaQkgGpdY7CfHfoARSXRvzenYUhmy+TS
+	 1kdr0G+A9G04tCO8Yl0AcByTQAzoTzp8ewPspkYXO6QSce3udVw97YScBCvRkNP1iv
+	 aJG869yRnbgdZgqO44FTC2BpYbxjuV43Kjc8V1ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lixu Zhang <lixu.zhang@intel.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 154/277] iio: orientation: hid-sensor-rotation: fix quaternion alignment
+	Luka Gejak <luka.gejak@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 099/242] net: hsr: fix VLAN add unwind on slave errors
 Date: Wed,  8 Apr 2026 20:02:19 +0200
-Message-ID: <20260408175939.622220617@linuxfoundation.org>
+Message-ID: <20260408175930.789681124@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,66 +73,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234583-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234808-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,baylibre.com:email,intel.com:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CE5533C1C46
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 6D2B73C2771
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Luka Gejak <luka.gejak@linux.dev>
 
-commit 50d4cc74b8a720a9682a9c94f7e62a5de6b2ed3a upstream.
+[ Upstream commit 2e3514e63bfb0e972b1f19668547a455d0129e88 ]
 
-Restore the alignment of sampled_vals to 16 bytes by using
-IIO_DECLARE_QUATERNION(). This field contains a quaternion value which
-has scan_type.repeat = 4 and storagebits = 32. So the alignment must
-be 16 bytes to match the assumptions of iio_storage_bytes_for_si() and
-also to not break userspace.
+When vlan_vid_add() fails for a secondary slave, the error path calls
+vlan_vid_del() on the failing port instead of the peer slave that had
+already succeeded. This results in asymmetric VLAN state across the HSR
+pair.
 
-Reported-by: Lixu Zhang <lixu.zhang@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221077
-Fixes: b31a74075cb4 ("iio: orientation: hid-sensor-rotation: remove unnecessary alignment")
-Tested-by: Lixu Zhang <lixu.zhang@intel.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by switching to a centralized unwind path that removes the VID
+from any slave device that was already programmed.
+
+Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Link: https://patch.msgid.link/20260401092243.52121-3-luka.gejak@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/orientation/hid-sensor-rotation.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/hsr/hsr_device.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
---- a/drivers/iio/orientation/hid-sensor-rotation.c
-+++ b/drivers/iio/orientation/hid-sensor-rotation.c
-@@ -19,7 +19,7 @@ struct dev_rot_state {
- 	struct hid_sensor_common common_attributes;
- 	struct hid_sensor_hub_attribute_info quaternion;
- 	struct {
--		s32 sampled_vals[4];
-+		IIO_DECLARE_QUATERNION(s32, sampled_vals);
- 		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index acbd77ce6afce..fddc80c4bd24d 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -531,8 +531,8 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
+ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+ 				   __be16 proto, u16 vid)
+ {
+-	bool is_slave_a_added = false;
+-	bool is_slave_b_added = false;
++	struct net_device *slave_a_dev = NULL;
++	struct net_device *slave_b_dev = NULL;
+ 	struct hsr_port *port;
+ 	struct hsr_priv *hsr;
+ 	int ret = 0;
+@@ -548,33 +548,35 @@ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+ 		switch (port->type) {
+ 		case HSR_PT_SLAVE_A:
+ 			if (ret) {
+-				/* clean up Slave-B */
+ 				netdev_err(dev, "add vid failed for Slave-A\n");
+-				if (is_slave_b_added)
+-					vlan_vid_del(port->dev, proto, vid);
+-				return ret;
++				goto unwind;
+ 			}
+-
+-			is_slave_a_added = true;
++			slave_a_dev = port->dev;
+ 			break;
+-
+ 		case HSR_PT_SLAVE_B:
+ 			if (ret) {
+-				/* clean up Slave-A */
+ 				netdev_err(dev, "add vid failed for Slave-B\n");
+-				if (is_slave_a_added)
+-					vlan_vid_del(port->dev, proto, vid);
+-				return ret;
++				goto unwind;
+ 			}
+-
+-			is_slave_b_added = true;
++			slave_b_dev = port->dev;
+ 			break;
+ 		default:
++			if (ret)
++				goto unwind;
+ 			break;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++unwind:
++	if (slave_a_dev)
++		vlan_vid_del(slave_a_dev, proto, vid);
++
++	if (slave_b_dev)
++		vlan_vid_del(slave_b_dev, proto, vid);
++
++	return ret;
+ }
+ 
+ static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
+-- 
+2.53.0
+
 
 
 
