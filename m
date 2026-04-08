@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKanLiuj1mlqGwgAu9opvQ
-	(envelope-from <stable+bounces-234529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:15 +0200
+	id oKFiOD6b1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478793C1A6E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 555513C0483
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EF05314336E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B476B3019C96
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D403D522C;
-	Wed,  8 Apr 2026 18:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ECB3D4134;
+	Wed,  8 Apr 2026 18:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibKlNttW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yER1C+5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2968828C87C;
-	Wed,  8 Apr 2026 18:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899431E5724;
+	Wed,  8 Apr 2026 18:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673096; cv=none; b=oSst+gEkyhCEdKpdbZnP1TNPLUMfjY18uKo1XOS6QXxYwZSGA7ILZWGSudsgOYM60CwDufcDD0qX3d3Nn+LnjXXffdKLGQd90yRm1QotngnUwvjCLySEwgqzNJqE58jMH1rmdoI5bIvTuSTea7VbSV9rbMGAZSmm7bNc0SVpgT8=
+	t=1775672041; cv=none; b=B+SJIddJr71SXwcjYYem1ayCo0dtJfknIx+kK0QYCoTp6f448laXkjSCgaZX20duAjR4ZDfq/4U8kRssMjzYWBoiALHqCm0p8Jp+KDGyPwKgdztnVVeydkaNCRVxQ1/MBNaO1e/Qav96r1ZhNpDNqUASdYmg+hPzT6hSVmXll4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673096; c=relaxed/simple;
-	bh=P15Y4P+1lHik7yGvp8Ud2yivwDMwQn6ikSzs9CVYOsM=;
+	s=arc-20240116; t=1775672041; c=relaxed/simple;
+	bh=GCqqhM/tmRFuEolEKj/5SmNRRNfDHmwiADgFKdmIaB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJnyHvy9PIE7AzdKOp3FnSUX6UW7CeOTI2oRx53KPfsEbdz3sahOZEHgU1W4sFWPVDfLNTaG/dYFLCOIwazt5Cokiq2bJ1xc6JS/mj0HbjtSkOBOFRSv2u2YKmkffSyr3m1vezw2Ns/dun/SWhOZh68MCQE8bbPEOVzSg7Cw+tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibKlNttW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD900C19421;
-	Wed,  8 Apr 2026 18:31:35 +0000 (UTC)
+	 MIME-Version; b=OUghthLhfwe2f9tjr2DqfGVkZoAftjZ9py4sMDHeHBSgqnNpOuEmeoHhIL6ew2ZuFq2YCc94ZMye4gLkVtbZsA6pwmMgKgLWdDckLTwT7B1HEQXRbD92iiqxMj+539VjyKhp4hkC9fjmjew6/yfYyz+7JBO+UjTlpr9puU4JGHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yER1C+5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089ABC19421;
+	Wed,  8 Apr 2026 18:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673096;
-	bh=P15Y4P+1lHik7yGvp8Ud2yivwDMwQn6ikSzs9CVYOsM=;
+	s=korg; t=1775672041;
+	bh=GCqqhM/tmRFuEolEKj/5SmNRRNfDHmwiADgFKdmIaB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibKlNttWBlPuiUhMPJU+8KiuOJW7+IuNZ+yugk8dmeybsXeDxVK3UYsc0R2HFx5LL
-	 O5UD4A73Hf2JTwkie/WT54kU4lPKVUTzKl0HLoYkEnpJz9HwLA+sZRYhJV6R44bCHn
-	 S/7foWmrUQgAj1JibhLujbCW389Wcio5KubjfPys=
+	b=yER1C+5uZkWsVJh/79SAMKzAti9jcGaAiftE1nfdoYTk8f+XZc0XqiY/RKdq+97Yr
+	 gQOhKlaA9yAMYGtv4E6uppDpJy7Lda1Ocl4dHmoGb7CGaSCEK6k5ZaIPBC2oSDn/GJ
+	 NiiJ/E4AGbieTY1y0FK+JkO1Mc+xT/EHkMnLXGe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 099/277] ipv6: avoid overflows in ip6_datagram_send_ctl()
+Subject: [PATCH 6.1 167/312] netfilter: nf_conntrack_helper: pass helper to expect cleanup
 Date: Wed,  8 Apr 2026 20:01:24 +0200
-Message-ID: <20260408175937.570444311@linuxfoundation.org>
+Message-ID: <20260408175940.002063007@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,21 +69,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234529-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nwl.cc,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234122-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,196 +92,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 478793C1A6E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nwl.cc:email]
+X-Rspamd-Queue-Id: 555513C0483
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Qi Tang <tpluszz77@gmail.com>
 
-[ Upstream commit 4e453375561fc60820e6b9d8ebeb6b3ee177d42e ]
+[ Upstream commit a242a9ae58aa46ff7dae51ce64150a93957abe65 ]
 
-Yiming Qian reported :
-<quote>
- I believe I found a locally triggerable kernel bug in the IPv6 sendmsg
- ancillary-data path that can panic the kernel via `skb_under_panic()`
- (local DoS).
+nf_conntrack_helper_unregister() calls nf_ct_expect_iterate_destroy()
+to remove expectations belonging to the helper being unregistered.
+However, it passes NULL instead of the helper pointer as the data
+argument, so expect_iter_me() never matches any expectation and all
+of them survive the cleanup.
 
- The core issue is a mismatch between:
+After unregister returns, nfnl_cthelper_del() frees the helper
+object immediately.  Subsequent expectation dumps or packet-driven
+init_conntrack() calls then dereference the freed exp->helper,
+causing a use-after-free.
 
- - a 16-bit length accumulator (`struct ipv6_txoptions::opt_flen`, type
- `__u16`) and
- - a pointer to the *last* provided destination-options header (`opt->dst1opt`)
+Pass the actual helper pointer so expectations referencing it are
+properly destroyed before the helper object is freed.
 
- when multiple `IPV6_DSTOPTS` control messages (cmsgs) are provided.
+  BUG: KASAN: slab-use-after-free in string+0x38f/0x430
+  Read of size 1 at addr ffff888003b14d20 by task poc/103
+  Call Trace:
+   string+0x38f/0x430
+   vsnprintf+0x3cc/0x1170
+   seq_printf+0x17a/0x240
+   exp_seq_show+0x2e5/0x560
+   seq_read_iter+0x419/0x1280
+   proc_reg_read+0x1ac/0x270
+   vfs_read+0x179/0x930
+   ksys_read+0xef/0x1c0
+  Freed by task 103:
+  The buggy address is located 32 bytes inside of
+   freed 192-byte region [ffff888003b14d00, ffff888003b14dc0)
 
- - `include/net/ipv6.h`:
-   - `struct ipv6_txoptions::opt_flen` is `__u16` (wrap possible).
- (lines 291-307, especially 298)
- - `net/ipv6/datagram.c:ip6_datagram_send_ctl()`:
-   - Accepts repeated `IPV6_DSTOPTS` and accumulates into `opt_flen`
- without rejecting duplicates. (lines 909-933)
- - `net/ipv6/ip6_output.c:__ip6_append_data()`:
-   - Uses `opt->opt_flen + opt->opt_nflen` to compute header
- sizes/headroom decisions. (lines 1448-1466, especially 1463-1465)
- - `net/ipv6/ip6_output.c:__ip6_make_skb()`:
-   - Calls `ipv6_push_frag_opts()` if `opt->opt_flen` is non-zero.
- (lines 1930-1934)
- - `net/ipv6/exthdrs.c:ipv6_push_frag_opts()` / `ipv6_push_exthdr()`:
-   - Push size comes from `ipv6_optlen(opt->dst1opt)` (based on the
- pointed-to header). (lines 1179-1185 and 1206-1211)
-
- 1. `opt_flen` is a 16-bit accumulator:
-
- - `include/net/ipv6.h:298` defines `__u16 opt_flen; /* after fragment hdr */`.
-
- 2. `ip6_datagram_send_ctl()` accepts *repeated* `IPV6_DSTOPTS` cmsgs
- and increments `opt_flen` each time:
-
- - In `net/ipv6/datagram.c:909-933`, for `IPV6_DSTOPTS`:
-   - It computes `len = ((hdr->hdrlen + 1) << 3);`
-   - It checks `CAP_NET_RAW` using `ns_capable(net->user_ns,
- CAP_NET_RAW)`. (line 922)
-   - Then it does:
-     - `opt->opt_flen += len;` (line 927)
-     - `opt->dst1opt = hdr;` (line 928)
-
- There is no duplicate rejection here (unlike the legacy
- `IPV6_2292DSTOPTS` path which rejects duplicates at
- `net/ipv6/datagram.c:901-904`).
-
- If enough large `IPV6_DSTOPTS` cmsgs are provided, `opt_flen` wraps
- while `dst1opt` still points to a large (2048-byte)
- destination-options header.
-
- In the attached PoC (`poc.c`):
-
- - 32 cmsgs with `hdrlen=255` => `len = (255+1)*8 = 2048`
- - 1 cmsg with `hdrlen=0` => `len = 8`
- - Total increment: `32*2048 + 8 = 65544`, so `(__u16)opt_flen == 8`
- - The last cmsg is 2048 bytes, so `dst1opt` points to a 2048-byte header.
-
- 3. The transmit path sizes headers using the wrapped `opt_flen`:
-
-- In `net/ipv6/ip6_output.c:1463-1465`:
-  - `headersize = sizeof(struct ipv6hdr) + (opt ? opt->opt_flen +
- opt->opt_nflen : 0) + ...;`
-
- With wrapped `opt_flen`, `headersize`/headroom decisions underestimate
- what will be pushed later.
-
- 4. When building the final skb, the actual push length comes from
- `dst1opt` and is not limited by wrapped `opt_flen`:
-
- - In `net/ipv6/ip6_output.c:1930-1934`:
-   - `if (opt->opt_flen) proto = ipv6_push_frag_opts(skb, opt, proto);`
- - In `net/ipv6/exthdrs.c:1206-1211`, `ipv6_push_frag_opts()` pushes
- `dst1opt` via `ipv6_push_exthdr()`.
- - In `net/ipv6/exthdrs.c:1179-1184`, `ipv6_push_exthdr()` does:
-   - `skb_push(skb, ipv6_optlen(opt));`
-   - `memcpy(h, opt, ipv6_optlen(opt));`
-
- With insufficient headroom, `skb_push()` underflows and triggers
- `skb_under_panic()` -> `BUG()`:
-
- - `net/core/skbuff.c:2669-2675` (`skb_push()` calls `skb_under_panic()`)
- - `net/core/skbuff.c:207-214` (`skb_panic()` ends in `BUG()`)
-
- - The `IPV6_DSTOPTS` cmsg path requires `CAP_NET_RAW` in the target
- netns user namespace (`ns_capable(net->user_ns, CAP_NET_RAW)`).
- - Root (or any task with `CAP_NET_RAW`) can trigger this without user
- namespaces.
- - An unprivileged `uid=1000` user can trigger this if unprivileged
- user namespaces are enabled and it can create a userns+netns to obtain
- namespaced `CAP_NET_RAW` (the attached PoC does this).
-
- - Local denial of service: kernel BUG/panic (system crash).
- - Reproducible with a small userspace PoC.
-</quote>
-
-This patch does not reject duplicated options, as this might break
-some user applications.
-
-Instead, it makes sure to adjust opt_flen and opt_nflen to correctly
-reflect the size of the current option headers, preventing the overflows
-and the potential for panics.
-
-This applies to IPV6_DSTOPTS, IPV6_HOPOPTS, and IPV6_RTHDR.
-
-Specifically:
-
-When a new IPV6_DSTOPTS is processed, the length of the old opt->dst1opt
-is subtracted from opt->opt_flen before adding the new length.
-
-When a new IPV6_HOPOPTS is processed, the length of the old opt->dst0opt
-is subtracted from opt->opt_nflen.
-
-When a new Routing Header (IPV6_RTHDR or IPV6_2292RTHDR) is processed,
-the length of the old opt->srcrt is subtracted from opt->opt_nflen.
-
-In the special case within IPV6_2292RTHDR handling where dst1opt is moved
-to dst0opt, the length of the old opt->dst0opt is subtracted from
-opt->opt_nflen before the new one is added.
-
-Fixes: 333fad5364d6 ("[IPV6]: Support several new sockopt / ancillary data in Advanced API (RFC3542).")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAL_bE8JNzawgr5OX5m+3jnQDHry2XxhQT5=jThW1zDPtUikRYA@mail.gmail.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260401154721.3740056-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ac7b84839003 ("netfilter: expect: add and use nf_ct_expect_iterate helpers")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/datagram.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/netfilter/nf_conntrack_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
-index 33ebe93d80e3c..8933fa4c3dd50 100644
---- a/net/ipv6/datagram.c
-+++ b/net/ipv6/datagram.c
-@@ -762,6 +762,7 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- {
- 	struct in6_pktinfo *src_info;
- 	struct cmsghdr *cmsg;
-+	struct ipv6_rt_hdr *orthdr;
- 	struct ipv6_rt_hdr *rthdr;
- 	struct ipv6_opt_hdr *hdr;
- 	struct ipv6_txoptions *opt = ipc6->opt;
-@@ -923,9 +924,13 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- 				goto exit_f;
- 			}
- 			if (cmsg->cmsg_type == IPV6_DSTOPTS) {
-+				if (opt->dst1opt)
-+					opt->opt_flen -= ipv6_optlen(opt->dst1opt);
- 				opt->opt_flen += len;
- 				opt->dst1opt = hdr;
- 			} else {
-+				if (opt->dst0opt)
-+					opt->opt_nflen -= ipv6_optlen(opt->dst0opt);
- 				opt->opt_nflen += len;
- 				opt->dst0opt = hdr;
- 			}
-@@ -968,12 +973,17 @@ int ip6_datagram_send_ctl(struct net *net, struct sock *sk,
- 				goto exit_f;
- 			}
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index 5545016c107db..2a15176731fe8 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -422,7 +422,7 @@ void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
+ 	 */
+ 	synchronize_rcu();
  
-+			orthdr = opt->srcrt;
-+			if (orthdr)
-+				opt->opt_nflen -= ((orthdr->hdrlen + 1) << 3);
- 			opt->opt_nflen += len;
- 			opt->srcrt = rthdr;
- 
- 			if (cmsg->cmsg_type == IPV6_2292RTHDR && opt->dst1opt) {
- 				int dsthdrlen = ((opt->dst1opt->hdrlen+1)<<3);
- 
-+				if (opt->dst0opt)
-+					opt->opt_nflen -= ipv6_optlen(opt->dst0opt);
- 				opt->opt_nflen += dsthdrlen;
- 				opt->dst0opt = opt->dst1opt;
- 				opt->dst1opt = NULL;
+-	nf_ct_expect_iterate_destroy(expect_iter_me, NULL);
++	nf_ct_expect_iterate_destroy(expect_iter_me, me);
+ 	nf_ct_iterate_destroy(unhelp, me);
+ }
+ EXPORT_SYMBOL_GPL(nf_conntrack_helper_unregister);
 -- 
 2.53.0
 
