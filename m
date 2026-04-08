@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-234700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJYME4am1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:34 +0200
+	id KKoyKNyl1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AD13C249C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:03:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0973C22B5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C086C30ED8A6
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 263FA3034561
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D543D6694;
-	Wed,  8 Apr 2026 18:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC3D337B81;
+	Wed,  8 Apr 2026 18:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1lrv1nd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8YRNgma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B3727979A;
-	Wed,  8 Apr 2026 18:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41592727F3;
+	Wed,  8 Apr 2026 18:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673537; cv=none; b=kHOFetzxmTAd3WMIvDxbyyG+ydVVi8NVzh/IXpri2pn2kUJUluhBt4PTE9TT5VzZV4Onw2yFm25U/o+onPk7/aHqt5kHew8+20ycF1qDBc0Q+0vsQ9q827iHy3eOiWmICkhZXKtgkXXyMZssvHt3/U44fC10KXwI6ujy3T+ji7A=
+	t=1775674112; cv=none; b=oZ0QvwytU2TpiB7poHrJNPQ8nEOJxEbWyFCnWRw6iQNrMhqXYh/yvQ4/mUNnS+gDk038yldPTqw9IchAEb/BwYEIGXbzUaWPinTbqALIdyEJ3ct66Bc5CCi5daLbd1JGEJ2bA7NNY1Phb6G7lzKGepQXWgvJjY2UPxJmsts5YZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673537; c=relaxed/simple;
-	bh=0UcbJQomOFHIMEJzK8bla3h6cE5TjyQIRiNtGfloZpw=;
+	s=arc-20240116; t=1775674112; c=relaxed/simple;
+	bh=A8Yq6J+QruGxV7QpNZnLxUXPcDfVEWWysJmPpDfjdns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aure05r5k7wvsjdsa2ZVfuqV4r54Sn/VVDUtK+QYBSqibzoiJ+62eaBn4doS+M52zCzTh0GIkPHUU51X05rWvBWP06DGJFpis31BAwjhN4G701pf8JgX9xO42s1N3PkKvIykaGz4i4U/5if0djrI1IB2kt31q7ysL+Eybs9v9U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1lrv1nd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94356C19421;
-	Wed,  8 Apr 2026 18:38:56 +0000 (UTC)
+	 MIME-Version; b=r3TjVba7OKZV6RGH+HjDIN6QKuLLbsvOmWt8G9U5PE84IvzxzK/OiOTK8em+L+y/CXHRgygRUlsjc4qyInjkYepsPDkeFrdp0JHbpnXIP+Iea+WZyyeDY3IrgA0GCtjPmUWLPTs1oXjgowf8M5i0Cp7cZgN6LGtE2r1tCrPM9Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8YRNgma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A240C19421;
+	Wed,  8 Apr 2026 18:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673536;
-	bh=0UcbJQomOFHIMEJzK8bla3h6cE5TjyQIRiNtGfloZpw=;
+	s=korg; t=1775674112;
+	bh=A8Yq6J+QruGxV7QpNZnLxUXPcDfVEWWysJmPpDfjdns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1lrv1ndjLLWpdl4OIOpnbyUlEkpolXA5tPz9k3DxNHnJiK4AFkRyZQxyQPZUcZ3q
-	 gmhCgRETRJjtBj68muk0fkM0MfmUelTbitzif0vPgLY/hHjwukOQfPEbW0gWwgb1TC
-	 9AvMFu+/Fe+McJ56Ulqv95kyUYPUay61DhydJFBc=
+	b=O8YRNgmaLf4j18DLs7SqviNSgON3ixCnkGzYqjUGoK+uLg8kyhd36E6s/NuMCJn/3
+	 nzAwxPinNtE0PWGvxGQ465HGTyRq35qgAZuVF0yZAIzoiBsXXD6mZtGFpQP91sQeqB
+	 JEOQ7Ifm20dyuy7D7sZvhDuWkEaf+sxJwCfIzmhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Guangshuo Li <lgs201920130244@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 270/277] net: mana: fix use-after-free in add_adev() error path
+Subject: [PATCH 6.12 215/242] net: mana: fix use-after-free in add_adev() error path
 Date: Wed,  8 Apr 2026 20:04:15 +0200
-Message-ID: <20260408175943.947242329@linuxfoundation.org>
+Message-ID: <20260408175935.127265019@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,21 +69,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234700-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234923-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,12 +92,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D8AD13C249C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2E0973C22B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -131,7 +131,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
 +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3302,6 +3302,7 @@ static int add_adev(struct gdma_dev *gd,
+@@ -2823,6 +2823,7 @@ static int add_adev(struct gdma_dev *gd)
  	struct auxiliary_device *adev;
  	struct mana_adev *madev;
  	int ret;
@@ -139,7 +139,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
  	if (!madev)
-@@ -3311,7 +3312,8 @@ static int add_adev(struct gdma_dev *gd,
+@@ -2832,7 +2833,8 @@ static int add_adev(struct gdma_dev *gd)
  	ret = mana_adev_idx_alloc();
  	if (ret < 0)
  		goto idx_fail;
@@ -147,9 +147,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +	id = ret;
 +	adev->id = id;
  
- 	adev->name = name;
+ 	adev->name = "rdma";
  	adev->dev.parent = gd->gdma_context->dev;
-@@ -3337,7 +3339,7 @@ add_fail:
+@@ -2856,7 +2858,7 @@ add_fail:
  	auxiliary_device_uninit(adev);
  
  init_fail:
