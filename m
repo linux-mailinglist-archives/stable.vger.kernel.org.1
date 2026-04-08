@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-234108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wN6wKOua1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:03 +0200
+	id 2MsiDN+m1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA273C03B9
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:14:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9449D3C25AD
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08214300F12C
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D85BB30A7D2C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA323D9022;
-	Wed,  8 Apr 2026 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54153D522C;
+	Wed,  8 Apr 2026 18:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEJqZlnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2CCsr1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6CF3D8918;
-	Wed,  8 Apr 2026 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F97B67E;
+	Wed,  8 Apr 2026 18:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672005; cv=none; b=YE8Oq8d9p2n0pz2zNDX8qBhzUx2/MlHQzjDvrOgrVHB4VXxN7d5Ft0L2lbaAWfpZKUt2KcEn4RGUPinwuBwr1tQZ6/d+seGZAOEIPJdkKGpA0SBXB5+wdCV806yJ+EydfEFqEGvnRYpwY9DZzjkGfTjs8N/PNErbdgK4HHwtXvI=
+	t=1775673629; cv=none; b=f++crXlhyqEl4INSUKrAtAbSG182Pe6bK75+PZRVjWrC5hOlBvf+xIsGCuz3K5Fn8tPzfs/lls/Qf4j2FaJXUipjA/RVqqrlLdX9Pg2QzRWGzOH59McLJn/KcnUwWBS6C+Bhkf2rONw+O06vU4qVUQTdLuZrWbXO7BqJJNGkHO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672005; c=relaxed/simple;
-	bh=ICIcgYwO3bIvWoKAQvH29DLZFtEus5wCDxDSL5FPpiA=;
+	s=arc-20240116; t=1775673629; c=relaxed/simple;
+	bh=A/cDTU/G3ZskOnsMjBKikO3ly12YuRfYpBcaJPMMgSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCWhFd8baq8F+b3S8SR1nnYSC71K+nsf/O8NI5i6u2/jHnzaZsAKHOIq3cEeCP+6+1SNkYa9P+gJaXpxQfjqqdAiaM7zs4/tHuxcJJVLXtvLVgpLaU4aduDkNmpbks6HVYesNr1jqe2FmHAbX/3KMW3DZQjv+AtcjoNQMhnL7Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEJqZlnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2138FC19425;
-	Wed,  8 Apr 2026 18:13:24 +0000 (UTC)
+	 MIME-Version; b=pWIYU5etFa2xIA+lJCGeoCbzKDMvbzcU2tFC662JBQmg71J+Kp6GUbe2vzb3XIZy1MGei+vYPKxDVfBjMg1uRjwf5WjAfiIj1J6WR3kMtnaLJkIOHgxYmjEnQ5q7gvY7aHJ5aB4IiBeYiz+X+yFn782HL7UPtUHTRrnFkVYoDAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2CCsr1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2C2C19421;
+	Wed,  8 Apr 2026 18:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672005;
-	bh=ICIcgYwO3bIvWoKAQvH29DLZFtEus5wCDxDSL5FPpiA=;
+	s=korg; t=1775673629;
+	bh=A/cDTU/G3ZskOnsMjBKikO3ly12YuRfYpBcaJPMMgSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEJqZlnIWxQT3hUpnxNVHpy/77St+oL4xv8mwSxgv5q6xlPWd/7aoKI/tN1rJAJv7
-	 HT5rL8nhus66uNurR1GUoFyBnwgY71cseBGBfJ+wKZTucCR6/Op30n2YvLinAULExb
-	 /NavgxtWNI4qR8py+nu//ii4Ekjo+WpGRzd+xyoo=
+	b=d2CCsr1CGtf1Pvhzx9RyC8xFMteLC5Jirvz57VkNQPXRFB8wnnGW7VfGvJHr8Wj9P
+	 ZGA4tkJ3tI7HVwToKFPUXVuCcC+ODjdx6vrH26OpJUVj2SktpB3p70FrC5qbs2C2p+
+	 61ZIkMtDqzDL5tz1rJwX1Cik4KZ02DGyAULXlyI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Oskar Kjos <oskar.kjos@hotmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/312] ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach()
+Subject: [PATCH 6.12 028/242] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
 Date: Wed,  8 Apr 2026 20:01:08 +0200
-Message-ID: <20260408175939.406138996@linuxfoundation.org>
+Message-ID: <20260408175928.123582495@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +66,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,google.com,hotmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-234108-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234736-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,sipsolutions.net,gmail.com,intel.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,56b6a844a4ea74487b7b];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email]
-X-Rspamd-Queue-Id: 0CA273C03B9
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,syzkaller.appspot.com:url,sipsolutions.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 9449D3C25AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 86ab3e55673a7a49a841838776f1ab18d23a67b5 ]
+[ Upstream commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b ]
 
-Sashiko AI-review observed:
+When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
+station exists but not whether it is actually a TDLS station. This
+allows the operation to proceed for non-TDLS stations, causing
+unintended side effects like modifying channel context and HT
+protection before failing.
 
-  In ip6_err_gen_icmpv6_unreach(), the skb is an outer IPv4 ICMP error packet
-  where its cb contains an IPv4 inet_skb_parm. When skb is cloned into skb2
-  and passed to icmp6_send(), it uses IP6CB(skb2).
+Add a check for sta->sta.tdls early in the ENABLE_LINK case, before
+any side effects occur, to ensure the operation is only allowed for
+actual TDLS peers.
 
-  IP6CB interprets the IPv4 inet_skb_parm as an inet6_skb_parm. The cipso
-  offset in inet_skb_parm.opt directly overlaps with dsthao in inet6_skb_parm
-  at offset 18.
-
-  If an attacker sends a forged ICMPv4 error with a CIPSO IP option, dsthao
-  would be a non-zero offset. Inside icmp6_send(), mip6_addr_swap() is called
-  and uses ipv6_find_tlv(skb, opt->dsthao, IPV6_TLV_HAO).
-
-  This would scan the inner, attacker-controlled IPv6 packet starting at that
-  offset, potentially returning a fake TLV without checking if the remaining
-  packet length can hold the full 18-byte struct ipv6_destopt_hao.
-
-  Could mip6_addr_swap() then perform a 16-byte swap that extends past the end
-  of the packet data into skb_shared_info?
-
-  Should the cb array also be cleared in ip6_err_gen_icmpv6_unreach() and
-  ip6ip6_err() to prevent this?
-
-This patch implements the first suggestion.
-
-I am not sure if ip6ip6_err() needs to be changed.
-A separate patch would be better anyway.
-
-Fixes: ca15a078bd90 ("sit: generate icmpv6 error when receiving icmpv4 error")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Closes: https://sashiko.dev/#/patchset/20260326155138.2429480-1-edumazet%40google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Oskar Kjos <oskar.kjos@hotmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260326202608.2976021-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=56b6a844a4ea74487b7b
+Tested-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260313092417.520807-1-kartikey406@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/icmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/tdls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index ea1cdacbdcf1b..80eabb22d144f 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -677,6 +677,9 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
- 	if (!skb2)
- 		return 1;
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index 1cb42c5b9b04b..92ab7be3d4824 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1448,7 +1448,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 		}
  
-+	/* Remove debris left by IPv4 stack. */
-+	memset(IP6CB(skb2), 0, sizeof(*IP6CB(skb2)));
-+
- 	skb_dst_drop(skb2);
- 	skb_pull(skb2, nhs);
- 	skb_reset_network_header(skb2);
+ 		sta = sta_info_get(sdata, peer);
+-		if (!sta)
++		if (!sta || !sta->sta.tdls)
+ 			return -ENOLINK;
+ 
+ 		iee80211_tdls_recalc_chanctx(sdata, sta);
 -- 
 2.53.0
 
