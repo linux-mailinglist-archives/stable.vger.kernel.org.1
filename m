@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-235001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCD1K5yp1mlmHAgAu9opvQ
-	(envelope-from <stable+bounces-235001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:44 +0200
+	id 0AF2K1Wh1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFFE3C2AC0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:16:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 513583C13B3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5484130FB7F8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AD7373014120
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DAE25A321;
-	Wed,  8 Apr 2026 18:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80773D6694;
+	Wed,  8 Apr 2026 18:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0simvHt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXJYHBBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF792727F3;
-	Wed,  8 Apr 2026 18:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8F73B19A3;
+	Wed,  8 Apr 2026 18:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674314; cv=none; b=EmRAa0IVat67N42Vy+kEyVF6T5g9j7y5orPRYOn7+z915ayFy7JdkxZ5PCUK3Kk7BOENGAqL/3T1Vam9LYmP4aU/VXEXCV3wCgPPMbzoyZXAOLs8uQ281Nt3Y88GfyHHOSDJ59YoZlB9PSHjT/MkPeXYRysY+E94/ghQW5M6nEs=
+	t=1775673580; cv=none; b=UMh4AhA6JYYlrvtNl57c2rs57GTN3bz5ha94FCNRTfFHkuflVXL/Ri1y1sGywviSpUQnT5a2RDyeekeKsiXUDlgkl1xVCbAm1VJ2xRhLPhdl8ABi0LwirAPhP5bhS6iRhnvztrA7swR0ox+6Cf5c11mWzAh9OWC96tuJ+qGeeQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674314; c=relaxed/simple;
-	bh=pyHSqcepAbbpPku7mx/Ti1WaYNesVW2DQ7TO8rs8ddE=;
+	s=arc-20240116; t=1775673580; c=relaxed/simple;
+	bh=4b1CPu98VSplhXE9btOtRDwRpp703E+dZFsxxSWTITU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7IACJWmH0VlJWUqn4gKBsvQN+J3p+P6C6jlbhHwXJkQ8xpeKUnMCh60wZUIAtYQBU3IEeAlVTrEx+J0NORFU6Iy1fVJnLJIpCddnmDUDtCXo8F6ymVdeLKBgbfCjeq6MgafOq4IqLvJr5xCQQJiVtVFqzWWJHwejkeD9MgNNFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0simvHt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DDAC19421;
-	Wed,  8 Apr 2026 18:51:53 +0000 (UTC)
+	 MIME-Version; b=MmQ0mITFxn6p3j7xnU0/z0+4CvH78KLl+TPZ9pesmfWEyaAr+LLEJgHe2Eu5wd3D9WKVOft3/RPTfWnyzyRuSqyQpbrqZMRXxeWzDEoMZHW+q5jpEzparUUxDzJXYwFPGr4c7XA3f2EOKm/BF5ATEUhvsN1AlK1tIaKv156Diyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXJYHBBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD49C19421;
+	Wed,  8 Apr 2026 18:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674314;
-	bh=pyHSqcepAbbpPku7mx/Ti1WaYNesVW2DQ7TO8rs8ddE=;
+	s=korg; t=1775673580;
+	bh=4b1CPu98VSplhXE9btOtRDwRpp703E+dZFsxxSWTITU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0simvHt+2rajIz9yTtWrc5w8dF1Sv3lOBJeSbughV9Rr0G1Y2ASWmE8Vix4mP6RFG
-	 mtBN/uzW1deKghVpwESZsRTXmGLDQFRubxVMYJxaXITVKQwPFLFXgMY1Io4X4hfKCM
-	 i4byYjg2gdTRPgCpfxA4ztlBwiULs42zh1BEq7io=
+	b=IXJYHBBGf6WzVn27iTON108PEyym5T5pBWlhyAthoGS0+CR4rlaBMhhxF7/1OnW0I
+	 nd1Jrvshvj71WarsJDrhfb7AjLb/KBXLDFMCxzDrhRt3oK7nrIU3trtx03C3lhGX+J
+	 JyWAy4v3azAx7yApcOn4d1Wplcb320VHxomrnorM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 050/311] net/ipv6: ioam6: prevent schema length wraparound in trace fill
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 010/242] io_uring/net: clarify io_recv_buf_select() return value
 Date: Wed,  8 Apr 2026 20:00:50 +0200
-Message-ID: <20260408175941.283743462@linuxfoundation.org>
+Message-ID: <20260408175927.458274341@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +62,64 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-235001-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,gmail.com,davemloft.net,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234717-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,davemloft.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 0DFFE3C2AC0
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 513583C13B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 5e67ba9bb531e1ec6599a82a065dea9040b9ce50 ]
+Commit b22743f29b7d3dc68c68f9bd39a1b2600ec6434e upstream.
 
-ioam6_fill_trace_data() stores the schema contribution to the trace
-length in a u8. With bit 22 enabled and the largest schema payload,
-sclen becomes 1 + 1020 / 4, wraps from 256 to 0, and bypasses the
-remaining-space check. __ioam6_fill_trace_data() then positions the
-write cursor without reserving the schema area but still copies the
-4-byte schema header and the full schema payload, overrunning the trace
-buffer.
+It returns 0 on success, less than zero on error.
 
-Keep sclen in an unsigned int so the remaining-space check and the write
-cursor calculation both see the full schema length.
-
-Fixes: 8c6f6fa67726 ("ipv6: ioam: IOAM Generic Netlink API")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ioam6.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/net.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
-index 08b7ac8c99b7e..8db7f965696aa 100644
---- a/net/ipv6/ioam6.c
-+++ b/net/ipv6/ioam6.c
-@@ -708,7 +708,7 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
- 				    struct ioam6_namespace *ns,
- 				    struct ioam6_trace_hdr *trace,
- 				    struct ioam6_schema *sc,
--				    u8 sclen, bool is_input)
-+				    unsigned int sclen, bool is_input)
- {
- 	struct net_device *dev = skb_dst_dev(skb);
- 	struct timespec64 ts;
-@@ -939,7 +939,7 @@ void ioam6_fill_trace_data(struct sk_buff *skb,
- 			   bool is_input)
- {
- 	struct ioam6_schema *sc;
--	u8 sclen = 0;
-+	unsigned int sclen = 0;
- 
- 	/* Skip if Overflow flag is set
- 	 */
--- 
-2.53.0
-
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1192,7 +1192,7 @@ int io_recv(struct io_kiocb *req, unsign
+ retry_multishot:
+ 	if (io_do_buffer_select(req)) {
+ 		ret = io_recv_buf_select(req, kmsg, &len, issue_flags);
+-		if (unlikely(ret)) {
++		if (unlikely(ret < 0)) {
+ 			kmsg->msg.msg_inq = -1;
+ 			goto out_free;
+ 		}
 
 
 
