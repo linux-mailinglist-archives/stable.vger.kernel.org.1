@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-234047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8J0zNHqa1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:10 +0200
+	id ADbAHR2a1mmgGggAu9opvQ
+	(envelope-from <stable+bounces-234014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352443C0294
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F25AB3C012B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A9B7303DA8D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 04A77304D1C8
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9330F3D8912;
-	Wed,  8 Apr 2026 18:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9B33D890E;
+	Wed,  8 Apr 2026 18:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wuqf4kpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvvJmnjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543B93D47A5;
-	Wed,  8 Apr 2026 18:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1A53D4134;
+	Wed,  8 Apr 2026 18:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671848; cv=none; b=KNhwSWCsbM5JZkmx6dMSI89P9q/27e9yOtAlpmiaZ1RjLLyQo4WrzUUCb4CP8y7jnoDf8HmFUBgmygoEPquji7RK+GV1ORhdy9ZSrVrhpDWxLIxPEoTwjVoRKYX0yrZrGUEZJQ6A0MZDwkBZYWsoNpj3CLGEja9upjd9jYr0KPQ=
+	t=1775671763; cv=none; b=oa9mKECVgX4C7JroMeXVeoWbjjFM/7tX61V2hC9wKeN0OmruCn+wRJ0m8FhpNO6kOgpGhkY6e/phI/klFJWOMMzgbe6rgpz43yN+eOaDzt7a0tpUKYHYXw+b7R7bSPPnGD4QkLoHPsHHK7EcxVOk4uFxvGYPx9sKMrmP2XJK0zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671848; c=relaxed/simple;
-	bh=Yg93voCzoAprbqWdnHWMnTZxBX3/lpdqp2yWn0YhaPg=;
+	s=arc-20240116; t=1775671763; c=relaxed/simple;
+	bh=CjkrcT//t4qFdV4JwCbJxHOhNcE+Qve9QyM1mNh/Fjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZiG8OaEoughWd0bi1yXsGwtEULL2a+IJIZU/op0etJ1QVVr/F2ACzjgoj4HSkqIF5HNQsDGh9Z9gcV8YCfTookURN+tMta4v2D5YmqlwkOb1QUnGsDfRz2fOO9mGRQKsBqaQlk3gztW1d7epVef5CXKWZR/QVdwQS6AYPBfclw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wuqf4kpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBDFC19421;
-	Wed,  8 Apr 2026 18:10:47 +0000 (UTC)
+	 MIME-Version; b=AUKpP+d5oI01hHfRUqrZv+M5dmLITtdo5VZcoG/KpgTP/zQmlUieXALJOQsGR1n8ZKGiZvV26sWjw79x9JuWP6FVvDwvZYTiIgNil6QUiPQZucddqiKY4iiODrPMIwKyje8nqskvkAvCKJBqKvRzphjE4dtoCGec3eqe+uZBr2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvvJmnjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C94C19421;
+	Wed,  8 Apr 2026 18:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671848;
-	bh=Yg93voCzoAprbqWdnHWMnTZxBX3/lpdqp2yWn0YhaPg=;
+	s=korg; t=1775671763;
+	bh=CjkrcT//t4qFdV4JwCbJxHOhNcE+Qve9QyM1mNh/Fjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wuqf4kpMvfx1+hXYmXaMIzeeX809+OsiSV6yPC+HVJY6RY7g3AqCQ0eTP6KlMsCUk
-	 YyFwL4G/+oiPisQzzrhAtxLuMyZaxzwYjoT1Ns22VEXgRLnO0g2DSJKGB1Dy70SrgN
-	 w/AxTJSHn+CBL9sImtqsYBfC0uTdEN1gSZLx2t8U=
+	b=YvvJmnjLsMXKnO3cqvzfFwSlYQvr9M82rpNxgj4jnu6WVbTiyr0C/7cud7aqt/kwY
+	 GpAQFgS8ip9cFfTlsXmzG60YLOb8E3zEKvg+X6AxaEtmphgeQ/oDYEckBDTP7pz+7m
+	 b9doIC5gxa7XpdRP1+04QF46nI0n0zWkBdHWOE70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuhang Zheng <z1652074432@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
 	Florian Westphal <fw@strlen.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/312] netfilter: ip6t_rt: reject oversized addrnr in rt_mt6_check()
-Date: Wed,  8 Apr 2026 19:59:35 +0200
-Message-ID: <20260408175935.904270397@linuxfoundation.org>
+Subject: [PATCH 6.1 059/312] netfilter: nf_conntrack_expect: skip expectations in other netns via proc
+Date: Wed,  8 Apr 2026 19:59:36 +0200
+Message-ID: <20260408175935.941946664@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -72,33 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234047-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234014-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email,netfilter.org:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 352443C0294
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: F25AB3C012B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -106,46 +99,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ren Wei <n05ec@lzu.edu.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 9d3f027327c2fa265f7f85ead41294792c3296ed ]
+[ Upstream commit 3db5647984de03d9cae0dcddb509b058351f0ee4 ]
 
-Reject rt match rules whose addrnr exceeds IP6T_RT_HOPS.
+Skip expectations that do not reside in this netns.
 
-rt_mt6() expects addrnr to stay within the bounds of rtinfo->addrs[].
-Validate addrnr during rule installation so malformed rules are rejected
-before the match logic can use an out-of-range value.
+Similar to e77e6ff502ea ("netfilter: conntrack: do not dump other netns's
+conntrack entries via proc").
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Yuhang Zheng <z1652074432@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Fixes: 9b03f38d0487 ("netfilter: netns nf_conntrack: per-netns expectations")
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/ip6t_rt.c | 4 ++++
+ net/netfilter/nf_conntrack_expect.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv6/netfilter/ip6t_rt.c b/net/ipv6/netfilter/ip6t_rt.c
-index 4ad8b2032f1f9..5561bd9cea818 100644
---- a/net/ipv6/netfilter/ip6t_rt.c
-+++ b/net/ipv6/netfilter/ip6t_rt.c
-@@ -157,6 +157,10 @@ static int rt_mt6_check(const struct xt_mtchk_param *par)
- 		pr_debug("unknown flags %X\n", rtinfo->invflags);
- 		return -EINVAL;
- 	}
-+	if (rtinfo->addrnr > IP6T_RT_HOPS) {
-+		pr_debug("too many addresses specified\n");
-+		return -EINVAL;
-+	}
- 	if ((rtinfo->flags & (IP6T_RT_RES | IP6T_RT_FST_MASK)) &&
- 	    (!(rtinfo->flags & IP6T_RT_TYP) ||
- 	     (rtinfo->rt_type != 0) ||
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index 81ca348915c98..7bc64eb89bac4 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -627,11 +627,15 @@ static int exp_seq_show(struct seq_file *s, void *v)
+ {
+ 	struct nf_conntrack_expect *expect;
+ 	struct nf_conntrack_helper *helper;
++	struct net *net = seq_file_net(s);
+ 	struct hlist_node *n = v;
+ 	char *delim = "";
+ 
+ 	expect = hlist_entry(n, struct nf_conntrack_expect, hnode);
+ 
++	if (!net_eq(nf_ct_exp_net(expect), net))
++		return 0;
++
+ 	if (expect->timeout.function)
+ 		seq_printf(s, "%ld ", timer_pending(&expect->timeout)
+ 			   ? (long)(expect->timeout.expires - jiffies)/HZ : 0);
 -- 
 2.51.0
 
