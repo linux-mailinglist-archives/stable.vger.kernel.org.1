@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-234020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEqFGi2a1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234020-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:53 +0200
+	id eJr+OeiZ1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96D93C014E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:10:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B79183C00BE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0437F30157F3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1EDC130078A1
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171D63D88FE;
-	Wed,  8 Apr 2026 18:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E363D813D;
+	Wed,  8 Apr 2026 18:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4iAc+w0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H//7ulbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE75F37F8C2;
-	Wed,  8 Apr 2026 18:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679DF347517;
+	Wed,  8 Apr 2026 18:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671778; cv=none; b=Le95U5uuazEl+LdFrJ3JcztUeiyQ4Mk5bs0obZul0WhkeQvHXZPOeedVWqzfZWHlnDQZS/kRshMR5nH7abzS1+sNkCb4Byli9rVzOwWHL2/HDKaC5gKghB5LtffckbEBcdPRLMvacx6gI3IEpZh5CDKj7dFqMESnd2sk49yHXVc=
+	t=1775671781; cv=none; b=RmVyKFOoRhRThb5vJtTNu1X0zwVs/3nh2GbjGyLMFy5w69nVymPJpsf4q4bg0qa219rw0Ted8D1N7ToBTrNgQVbvLSe79rrTuW5HhXxxM90BM8Cy3wcMb23Gqg0/Lx9TqPhpQrglJtkGKkNxMXEQDfxn5d65XDZxixNigmf38pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671778; c=relaxed/simple;
-	bh=xli/prbwVqbPgCWfKb6+rcAF+Jaa+bPO99jkxr7cwi8=;
+	s=arc-20240116; t=1775671781; c=relaxed/simple;
+	bh=81JLeFVzgryrS+/2+HzSs2OJqg72gCWq/HUnpzMczKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+90TmJHjyUafkHNIp8y6yUl9xAsekb/CWNohYCthuliE+Z9dpr6Zv1OZhxnVydUVu3n+8YpCfGcI+Zo5V6JsB5nl3NbgaTeOwBX4Ol0miHFJwUl6wPaq+qZHg8L/9uFwuFJ/vVfoCxJuBsC3lqOgS6P/LbtRq8D415YIfWoPas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4iAc+w0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649ECC19421;
-	Wed,  8 Apr 2026 18:09:38 +0000 (UTC)
+	 MIME-Version; b=BltjAq//6SVeL1nHgzrn07FmXIf9zk4ibF/55Utn/w3S29+B9HLcNahHcJ7LUQMSabOjZmsTr2BsDUd2VxpOlc9Snk/wrHD3EOga2RKOktuz4w1uPqNOXfTRgsnZ3R0aKFC3Z5jV7YZtt9RgjPeY9O0xV5B/G6gk1E2HkZXSsXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H//7ulbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1595C19421;
+	Wed,  8 Apr 2026 18:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671778;
-	bh=xli/prbwVqbPgCWfKb6+rcAF+Jaa+bPO99jkxr7cwi8=;
+	s=korg; t=1775671781;
+	bh=81JLeFVzgryrS+/2+HzSs2OJqg72gCWq/HUnpzMczKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4iAc+w0dg7GMzYYcCkiPKXNaTqTKzV2cN1J23/nkekYga6iP+xArTC9mqKUtUNTo
-	 s67Z6zESTTvEkRKBr3rfpf8+pGT0OxFqvgbQbRjEaFGkgE88iq6ZJLUQWlET9vhhiw
-	 MdT1gu+uC1X0Wmae/DH6bYrOt6X3PzbZF5eLy7G4=
+	b=H//7ulbdHwEepO9l1vRW2CL5o1FqAg+U6XVLY9vFa4xDytsVsyDOe/tCHePgjcUsS
+	 gRTSgw7xFJXvj1acBxTWVqnM4nHjygChThcsOhcHVRqpuJqV+O39UP/fVtxsuhRz9J
+	 z1MoytkF1oj6lwkK1dsokYRzCmZfGhsWEXY5SgMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Jacob Moroni <jmoroni@google.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/312] RDMA/rw: Fall back to direct SGE on MR pool exhaustion
-Date: Wed,  8 Apr 2026 19:59:42 +0200
-Message-ID: <20260408175936.167518176@linuxfoundation.org>
+Subject: [PATCH 6.1 066/312] RDMA/irdma: Initialize free_qp completion before using it
+Date: Wed,  8 Apr 2026 19:59:43 +0200
+Message-ID: <20260408175936.204872125@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234020-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234021-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email]
-X-Rspamd-Queue-Id: E96D93C014E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B79183C00BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,85 +100,44 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit 00da250c21b074ea9494c375d0117b69e5b1d0a4 ]
+[ Upstream commit 11a95521fb93c91e2d4ef9d53dc80ef0a755549b ]
 
-When IOMMU passthrough mode is active, ib_dma_map_sgtable_attrs()
-produces no coalescing: each scatterlist page maps 1:1 to a DMA
-entry, so sgt.nents equals the raw page count. A 1 MB transfer
-yields 256 DMA entries. If that count exceeds the device's
-max_sgl_rd threshold (an optimization hint from mlx5 firmware),
-rdma_rw_io_needs_mr() steers the operation into the MR
-registration path. Each such operation consumes one or more MRs
-from a pool sized at max_rdma_ctxs -- roughly one MR per
-concurrent context. Under write-intensive workloads that issue
-many concurrent RDMA READs, the pool is rapidly exhausted,
-ib_mr_pool_get() returns NULL, and rdma_rw_init_one_mr() returns
--EAGAIN. Upper layer protocols treat this as a fatal DMA mapping
-failure and tear down the connection.
+In irdma_create_qp, if ib_copy_to_udata fails, it will call
+irdma_destroy_qp to clean up which will attempt to wait on
+the free_qp completion, which is not initialized yet. Fix this
+by initializing the completion before the ib_copy_to_udata call.
 
-The max_sgl_rd check is a performance optimization, not a
-correctness requirement: the device can handle large SGE counts
-via direct posting, just less efficiently than with MR
-registration. When the MR pool cannot satisfy a request, falling
-back to the direct SGE (map_wrs) path avoids the connection
-reset while preserving the MR optimization for the common case
-where pool resources are available.
-
-Add a fallback in rdma_rw_ctx_init() so that -EAGAIN from
-rdma_rw_init_mr_wrs() triggers direct SGE posting instead of
-propagating the error. iWARP devices, which mandate MR
-registration for RDMA READs, and force_mr debug mode continue
-to treat -EAGAIN as terminal.
-
-Fixes: 00bd1439f464 ("RDMA/rw: Support threshold for registration vs scattering to local pages")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260313194201.5818-2-cel@kernel.org
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/rw.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/irdma/verbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/rw.c b/drivers/infiniband/core/rw.c
-index 2522ff1cc462c..49fbfe1cef689 100644
---- a/drivers/infiniband/core/rw.c
-+++ b/drivers/infiniband/core/rw.c
-@@ -326,14 +326,29 @@ int rdma_rw_ctx_init(struct rdma_rw_ctx *ctx, struct ib_qp *qp, u32 port_num,
- 	if (rdma_rw_io_needs_mr(qp->device, port_num, dir, sg_cnt)) {
- 		ret = rdma_rw_init_mr_wrs(ctx, qp, port_num, sg, sg_cnt,
- 				sg_offset, remote_addr, rkey, dir);
--	} else if (sg_cnt > 1) {
-+		/*
-+		 * If MR init succeeded or failed for a reason other
-+		 * than pool exhaustion, that result is final.
-+		 *
-+		 * Pool exhaustion (-EAGAIN) from the max_sgl_rd
-+		 * optimization is recoverable: fall back to
-+		 * direct SGE posting. iWARP and force_mr require
-+		 * MRs unconditionally, so -EAGAIN is terminal.
-+		 */
-+		if (ret != -EAGAIN ||
-+		    rdma_protocol_iwarp(qp->device, port_num) ||
-+		    unlikely(rdma_rw_force_mr))
-+			goto out;
-+	}
-+
-+	if (sg_cnt > 1)
- 		ret = rdma_rw_init_map_wrs(ctx, qp, sg, sg_cnt, sg_offset,
- 				remote_addr, rkey, dir);
--	} else {
-+	else
- 		ret = rdma_rw_init_single_wr(ctx, qp, sg, sg_offset,
- 				remote_addr, rkey, dir);
--	}
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index d0139a696d437..2f5299c9d9ed3 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -1005,6 +1005,7 @@ static int irdma_create_qp(struct ib_qp *ibqp,
+ 	spin_lock_init(&iwqp->sc_qp.pfpdu.lock);
+ 	iwqp->sig_all = (init_attr->sq_sig_type == IB_SIGNAL_ALL_WR) ? 1 : 0;
+ 	rf->qp_table[qp_num] = iwqp;
++	init_completion(&iwqp->free_qp);
  
-+out:
- 	if (ret < 0)
- 		goto out_unmap_sg;
- 	return ret;
+ 	if (rdma_protocol_roce(&iwdev->ibdev, 1)) {
+ 		if (dev->ws_add(&iwdev->vsi, 0)) {
+@@ -1039,7 +1040,6 @@ static int irdma_create_qp(struct ib_qp *ibqp,
+ 		}
+ 	}
+ 
+-	init_completion(&iwqp->free_qp);
+ 	return 0;
+ 
+ error:
 -- 
 2.53.0
 
