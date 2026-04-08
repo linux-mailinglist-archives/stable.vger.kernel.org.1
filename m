@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AI0mFQOk1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:51 +0200
+	id qBcYBVWe1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA313C1D12
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6093C0CA3
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B7C03303D890
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:48:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 25B2D3025F58
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12115337B81;
-	Wed,  8 Apr 2026 18:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4595C3D411F;
+	Wed,  8 Apr 2026 18:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORzeEnEp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPXjNOFj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89112727F3;
-	Wed,  8 Apr 2026 18:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D903ACA41;
+	Wed,  8 Apr 2026 18:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674094; cv=none; b=BcFqTMVLHq9zCmLOvxY0A3VcEcOzi4vVHAad4c6Sz9ViqgO+xLVrKLFUlgA4kKoGd4cECfDSKyi5bGndK7Dchbf6vA3gaiCvU8KWhhDh8/bpAnYSBytF+4fjUtyUUgFAuRoEofJtYCvvzEi9parqggNxO/CiyXW3LPlEAUj40Wk=
+	t=1775672755; cv=none; b=vC+0sZ/J8NFw07RO7EkcAoy3YfYd+k98HLRs2G+sN7QCZG7u2oA64+JASMBujBzWGUranf26NDbuxK5DH/Tc5J6lKBT+WpNXx7Bz1jY3tRvqRhMoXdrtI5XCR4DMXBixEeVZ5SzMJmTy+3G9e/c+9N6nH4YogLL8kIxdbZJHNTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674094; c=relaxed/simple;
-	bh=gWtP7ShVdlANpD7DUaF1B8RjvlaUzQTnDouru8Kn7OA=;
+	s=arc-20240116; t=1775672755; c=relaxed/simple;
+	bh=440NII2QoyUDe4LmYD761m//rr9jHIC+2+4mt+VVCRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASi21/fy09wzxLbRktbzK0LeGVD4VRSBrYQNK6Vhz8gbRPUzXGr7EAlJWr9BMT0AqMcsRV68c71/FSH/IPMv9e5kG2FNyTfnAU84COiX99Bk8h51EetwfcpIfFcni8dnIWxbgHVsDPgfetBe4awqTC+RJ5LCmxogkYqwq3Y9Wrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORzeEnEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F52AC19421;
-	Wed,  8 Apr 2026 18:48:14 +0000 (UTC)
+	 MIME-Version; b=DYAguOg6vfVYZH6dMXvUBX2zJNx3MR86L6d02lekK7p68bQby8xIEzxyWCyKV7eqXBHuwauVCp3Y+eUSNPzt/neOPqzWLmdGFLP158Vmwr7sf+4ATihNpkc3cu3nJ32h7vlGaxz6fEBZSdHieJBSaodo0IjtnHbYlqu+eEREYPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPXjNOFj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929C3C19421;
+	Wed,  8 Apr 2026 18:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674094;
-	bh=gWtP7ShVdlANpD7DUaF1B8RjvlaUzQTnDouru8Kn7OA=;
+	s=korg; t=1775672754;
+	bh=440NII2QoyUDe4LmYD761m//rr9jHIC+2+4mt+VVCRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORzeEnEpgtVvQkfGbla0PUw3AwMBeER9AkwpOXmob8fBhrvM7pQZIXWoPBlWJ8loo
-	 vtWQ2LODwYXa0JIK8e+O8xQrPs5COo06Y+6/OJHFd2HolYVo9SMU5JtEgNu8u6crbD
-	 nrVJVDLFXJQpJZBBU3yzB/fM1rcbQWbBH90UaDtM=
+	b=iPXjNOFjyTXKpB7QgQ3QXnnPmjUw6dYU9IEinrBGXVRhnl1J7v6zNanTVp02Eopd7
+	 Tg++OpR0YREuOttkeoeY19pIEsPR8SANpu2kU2FGXS1giaBO3BiMHbC3U5MfGVvrhz
+	 8q2cHKlmGl6Rd/ojvniMK8ZkvP9FXU2vDwCdytjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.12 175/242] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
+	Yufan Chen <yufan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 128/160] net: ftgmac100: fix ring allocation unwind on open failure
 Date: Wed,  8 Apr 2026 20:03:35 +0200
-Message-ID: <20260408175933.636488860@linuxfoundation.org>
+Message-ID: <20260408175917.970052774@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234916-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234398-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,57 +89,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,mev.co.uk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BDA313C1D12
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email]
+X-Rspamd-Queue-Id: 8B6093C0CA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Yufan Chen <yufan.chen@linux.dev>
 
-commit 101ab946b79ad83b36d5cfd47de587492a80acf0 upstream.
+commit c0fd0fe745f5e8c568d898cd1513d0083e46204a upstream.
 
-If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
-returns an error, the COMEDI core will call the driver's "detach"
-handler function (`atmio16d_detach()`) to clean up.  This calls
-`reset_atmio16d()` unconditionally, but depending on where the error
-occurred in the attach handler, the device may not have been
-sufficiently initialized to call `reset_atmio16d()`.  It uses
-`dev->iobase` as the I/O port base address and `dev->private` as the
-pointer to the COMEDI device's private data structure.  `dev->iobase`
-may still be set to its initial value of 0, which would result in
-undesired writes to low I/O port addresses.  `dev->private` may still be
-`NULL`, which would result in null pointer dereferences.
+ftgmac100_alloc_rings() allocates rx_skbs, tx_skbs, rxdes, txdes, and
+rx_scratch in stages. On intermediate failures it returned -ENOMEM
+directly, leaking resources allocated earlier in the function.
 
-Fix `atmio16d_detach()` by checking that `dev->private` is valid
-(non-null) before calling `reset_atmio16d()`.  This implies that
-`dev->iobase` was set correctly since that is set up before
-`dev->private`.
+Rework the failure path to use staged local unwind labels and free
+allocated resources in reverse order before returning -ENOMEM. This
+matches common netdev allocation cleanup style.
 
-Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260128150011.5006-1-abbotti@mev.co.uk
+Fixes: d72e01a0430f ("ftgmac100: Use a scratch buffer for failed RX allocations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yufan Chen <yufan.chen@linux.dev>
+Link: https://patch.msgid.link/20260328163257.60836-1-yufan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/ni_atmio16d.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/faraday/ftgmac100.c |   28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
---- a/drivers/comedi/drivers/ni_atmio16d.c
-+++ b/drivers/comedi/drivers/ni_atmio16d.c
-@@ -698,7 +698,8 @@ static int atmio16d_attach(struct comedi
+--- a/drivers/net/ethernet/faraday/ftgmac100.c
++++ b/drivers/net/ethernet/faraday/ftgmac100.c
+@@ -934,19 +934,19 @@ static int ftgmac100_alloc_rings(struct
+ 	priv->tx_skbs = kcalloc(MAX_TX_QUEUE_ENTRIES, sizeof(void *),
+ 				GFP_KERNEL);
+ 	if (!priv->tx_skbs)
+-		return -ENOMEM;
++		goto err_free_rx_skbs;
  
- static void atmio16d_detach(struct comedi_device *dev)
- {
--	reset_atmio16d(dev);
-+	if (dev->private)
-+		reset_atmio16d(dev);
- 	comedi_legacy_detach(dev);
+ 	/* Allocate descriptors */
+ 	priv->rxdes = dma_alloc_coherent(priv->dev,
+ 					 MAX_RX_QUEUE_ENTRIES * sizeof(struct ftgmac100_rxdes),
+ 					 &priv->rxdes_dma, GFP_KERNEL);
+ 	if (!priv->rxdes)
+-		return -ENOMEM;
++		goto err_free_tx_skbs;
+ 	priv->txdes = dma_alloc_coherent(priv->dev,
+ 					 MAX_TX_QUEUE_ENTRIES * sizeof(struct ftgmac100_txdes),
+ 					 &priv->txdes_dma, GFP_KERNEL);
+ 	if (!priv->txdes)
+-		return -ENOMEM;
++		goto err_free_rxdes;
+ 
+ 	/* Allocate scratch packet buffer */
+ 	priv->rx_scratch = dma_alloc_coherent(priv->dev,
+@@ -954,9 +954,29 @@ static int ftgmac100_alloc_rings(struct
+ 					      &priv->rx_scratch_dma,
+ 					      GFP_KERNEL);
+ 	if (!priv->rx_scratch)
+-		return -ENOMEM;
++		goto err_free_txdes;
+ 
+ 	return 0;
++
++err_free_txdes:
++	dma_free_coherent(priv->dev,
++			  MAX_TX_QUEUE_ENTRIES *
++			  sizeof(struct ftgmac100_txdes),
++			  priv->txdes, priv->txdes_dma);
++	priv->txdes = NULL;
++err_free_rxdes:
++	dma_free_coherent(priv->dev,
++			  MAX_RX_QUEUE_ENTRIES *
++			  sizeof(struct ftgmac100_rxdes),
++			  priv->rxdes, priv->rxdes_dma);
++	priv->rxdes = NULL;
++err_free_tx_skbs:
++	kfree(priv->tx_skbs);
++	priv->tx_skbs = NULL;
++err_free_rx_skbs:
++	kfree(priv->rx_skbs);
++	priv->rx_skbs = NULL;
++	return -ENOMEM;
  }
  
+ static void ftgmac100_init_rings(struct ftgmac100 *priv)
 
 
 
