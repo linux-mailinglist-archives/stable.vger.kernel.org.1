@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPIhCuec1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:31 +0200
+	id 8Bk+IWSb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68D73C0878
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:22:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728653C04CE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:16:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF0E53015D1D
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 838133026743
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84B33AF646;
-	Wed,  8 Apr 2026 18:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E453D75AF;
+	Wed,  8 Apr 2026 18:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7B7yyN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n83zfWS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC72DB67E;
-	Wed,  8 Apr 2026 18:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15E51A683C;
+	Wed,  8 Apr 2026 18:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672488; cv=none; b=RvncnOUipzKkT2H74iPL7dJGbdj2yo/WhcGh4Pj/mPsEl8GrYf5gYSYjD4L+MvDWY+bbY9YHdY8d7FI1EzOL6UgD29FBd00CuJzgBLzOlqRtImStZeFUjG+bpYGly7adotW6COVefp2Q1icBdVeJAnVTx9x/JTJ1cOfzCBM+8Sg=
+	t=1775672057; cv=none; b=TScw9TXAfFV75KzFqY+vqdQgu1WUzKF2yMY+RiFFucFBoTIWawnQQ84riayvN49ei3ebgquFwVi3zd3zdgLp9RsOt/7X/ZHkoghdkNWAcuj5UdkVma5TGz1xmWkxFTJkdMeeM0pfdI1Tfd7C9JWyC+/6Rywo802nyQFuYtcaKHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672488; c=relaxed/simple;
-	bh=N3JVmbOFNXhQAac/Z1Wi75H2S+/DskL/g7lAZ3SFpDc=;
+	s=arc-20240116; t=1775672057; c=relaxed/simple;
+	bh=884UM9YgBfYocomV8A/17XzkTD08MeXI9G6BcywJHJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmkFnHCWabKf05rvV/6yfGF7lyYAo04g/RLUOh7v4P8el9fzc0ZlwQEH1z8unpr93cJgn36Gvx9U+AgIlgrwrqOPiO9U/0Jg6xDu4rGT9JAZmuPtPgcQWyaJumooeMwDHswlKp9yGE7hmjJ7wbwaCu/XABQ7TlNFHCwKmhLhG/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7B7yyN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACE3C2BC87;
-	Wed,  8 Apr 2026 18:21:28 +0000 (UTC)
+	 MIME-Version; b=mbTe5bbj/cckpuaMfCBkZBbZ3L8JrsHj3x9M5iDK47Xm3lNcoSKZ2DhkbtVptSUg5UYTVt/VviuBxE5hLppojZom8CPLnG1DalLWvholEWR7gpRgSIvCIjZDm83d2SRfU9DeDemHC5DJ2G2NBHqY4cYAQ3uEh5NpMXZen+vfMJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n83zfWS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BC3C19421;
+	Wed,  8 Apr 2026 18:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672488;
-	bh=N3JVmbOFNXhQAac/Z1Wi75H2S+/DskL/g7lAZ3SFpDc=;
+	s=korg; t=1775672056;
+	bh=884UM9YgBfYocomV8A/17XzkTD08MeXI9G6BcywJHJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7B7yyN/ZRbmcc+vlevE+ziFSVw4TmGOkQ1IaPEzW0R4CfW0U3kaehy6q2PPgM/UX
-	 XS1XDaHKHO3COgBLEIEb0srh2kaXn01RJU8mP6ovHEeyVTU3TuI/0KPmYH8FWammau
-	 rT1GUGiLh3Nwp/WfDgNPTVBQN1RF8O+TNR45BXlw=
+	b=n83zfWS2s0xya1lTT+5jzbXrn/QzKEUGcZ0Tk1ZOJnDEfnHd0JBtqxzkW9czjmNyF
+	 AAUkFx2g2atpVdDFJ/eSQ5jYDwwW8DHGvVUi6K+breMgddxQBmXJUnKYE3oxcZ5ArX
+	 i2oDXW0TieL6iefGD5dSlfk2jxQkF04Yr3zKlINM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f50072212ab792c86925@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/160] atm: lec: fix use-after-free in sock_def_readable()
+Subject: [PATCH 6.1 173/312] netfilter: ctnetlink: ignore explicit helper on new expectations
 Date: Wed,  8 Apr 2026 20:01:30 +0200
-Message-ID: <20260408175913.311719828@linuxfoundation.org>
+Message-ID: <20260408175940.225625450@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,272 +64,202 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234128-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234295-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,google.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,f50072212ab792c86925];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email]
-X-Rspamd-Queue-Id: B68D73C0878
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 728653C04CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 922814879542c2e397b0e9641fd36b8202a8e555 ]
+[ Upstream commit 917b61fa2042f11e2af4c428e43f08199586633a ]
 
-A race condition exists between lec_atm_close() setting priv->lecd
-to NULL and concurrent access to priv->lecd in send_to_lecd(),
-lec_handle_bridge(), and lec_atm_send(). When the socket is freed
-via RCU while another thread is still using it, a use-after-free
-occurs in sock_def_readable() when accessing the socket's wait queue.
+Use the existing master conntrack helper, anything else is not really
+supported and it just makes validation more complicated, so just ignore
+what helper userspace suggests for this expectation.
 
-The root cause is that lec_atm_close() clears priv->lecd without
-any synchronization, while callers dereference priv->lecd without
-any protection against concurrent teardown.
+This was uncovered when validating CTA_EXPECT_CLASS via different helper
+provided by userspace than the existing master conntrack helper:
 
-Fix this by converting priv->lecd to an RCU-protected pointer:
-- Mark priv->lecd as __rcu in lec.h
-- Use rcu_assign_pointer() in lec_atm_close() and lecd_attach()
-  for safe pointer assignment
-- Use rcu_access_pointer() for NULL checks that do not dereference
-  the pointer in lec_start_xmit(), lec_push(), send_to_lecd() and
-  lecd_attach()
-- Use rcu_read_lock/rcu_dereference/rcu_read_unlock in send_to_lecd(),
-  lec_handle_bridge() and lec_atm_send() to safely access lecd
-- Use rcu_assign_pointer() followed by synchronize_rcu() in
-  lec_atm_close() to ensure all readers have completed before
-  proceeding. This is safe since lec_atm_close() is called from
-  vcc_release() which holds lock_sock(), a sleeping lock.
-- Remove the manual sk_receive_queue drain from lec_atm_close()
-  since vcc_destroy_socket() already drains it after lec_atm_close()
-  returns.
+  BUG: KASAN: slab-out-of-bounds in nf_ct_expect_related_report+0x2479/0x27c0
+  Read of size 4 at addr ffff8880043fe408 by task poc/102
+  Call Trace:
+   nf_ct_expect_related_report+0x2479/0x27c0
+   ctnetlink_create_expect+0x22b/0x3b0
+   ctnetlink_new_expect+0x4bd/0x5c0
+   nfnetlink_rcv_msg+0x67a/0x950
+   netlink_rcv_skb+0x120/0x350
 
-v2: Switch from spinlock + sock_hold/put approach to RCU to properly
-    fix the race. The v1 spinlock approach had two issues pointed out
-    by Eric Dumazet:
-    1. priv->lecd was still accessed directly after releasing the
-       lock instead of using a local copy.
-    2. The spinlock did not prevent packets being queued after
-       lec_atm_close() drains sk_receive_queue since timer and
-       workqueue paths bypass netif_stop_queue().
+Allowing to read kernel memory bytes off the expectation boundary.
 
-Note: Syzbot patch testing was attempted but the test VM terminated
-    unexpectedly with "Connection to localhost closed by remote host",
-    likely due to a QEMU AHCI emulation issue unrelated to this fix.
-    Compile testing with "make W=1 net/atm/lec.o" passes cleanly.
+CTA_EXPECT_HELP_NAME is still used to offer the helper name to userspace
+via netlink dump.
 
-Reported-by: syzbot+f50072212ab792c86925@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f50072212ab792c86925
-Link: https://lore.kernel.org/all/20260309093614.502094-1-kartikey406@gmail.com/T/ [v1]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260309155908.508768-1-kartikey406@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bd0779370588 ("netfilter: nfnetlink_queue: allow to attach expectations to conntracks")
+Reported-by: Qi Tang <tpluszz77@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/lec.c | 72 +++++++++++++++++++++++++++++++++------------------
- net/atm/lec.h |  2 +-
- 2 files changed, 48 insertions(+), 26 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 54 +++++-----------------------
+ 1 file changed, 9 insertions(+), 45 deletions(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index 0d4b8e5936dcf..d8ab969625790 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -154,10 +154,19 @@ static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
- 					/* 0x01 is topology change */
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 2661441d91faa..89cec02de68ba 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -2628,7 +2628,6 @@ static const struct nla_policy exp_nla_policy[CTA_EXPECT_MAX+1] = {
  
- 		priv = netdev_priv(dev);
--		atm_force_charge(priv->lecd, skb2->truesize);
--		sk = sk_atm(priv->lecd);
--		skb_queue_tail(&sk->sk_receive_queue, skb2);
--		sk->sk_data_ready(sk);
-+		struct atm_vcc *vcc;
-+
-+		rcu_read_lock();
-+		vcc = rcu_dereference(priv->lecd);
-+		if (vcc) {
-+			atm_force_charge(vcc, skb2->truesize);
-+			sk = sk_atm(vcc);
-+			skb_queue_tail(&sk->sk_receive_queue, skb2);
-+			sk->sk_data_ready(sk);
-+		} else {
-+			dev_kfree_skb(skb2);
-+		}
-+		rcu_read_unlock();
- 	}
- }
- #endif /* IS_ENABLED(CONFIG_BRIDGE) */
-@@ -216,7 +225,7 @@ static netdev_tx_t lec_start_xmit(struct sk_buff *skb,
- 	int is_rdesc;
+ static struct nf_conntrack_expect *
+ ctnetlink_alloc_expect(const struct nlattr *const cda[], struct nf_conn *ct,
+-		       struct nf_conntrack_helper *helper,
+ 		       struct nf_conntrack_tuple *tuple,
+ 		       struct nf_conntrack_tuple *mask);
  
- 	pr_debug("called\n");
--	if (!priv->lecd) {
-+	if (!rcu_access_pointer(priv->lecd)) {
- 		pr_info("%s:No lecd attached\n", dev->name);
- 		dev->stats.tx_errors++;
- 		netif_stop_queue(dev);
-@@ -449,10 +458,19 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
- 				break;
- 			skb2->len = sizeof(struct atmlec_msg);
- 			skb_copy_to_linear_data(skb2, mesg, sizeof(*mesg));
--			atm_force_charge(priv->lecd, skb2->truesize);
--			sk = sk_atm(priv->lecd);
--			skb_queue_tail(&sk->sk_receive_queue, skb2);
--			sk->sk_data_ready(sk);
-+			struct atm_vcc *vcc;
-+
-+			rcu_read_lock();
-+			vcc = rcu_dereference(priv->lecd);
-+			if (vcc) {
-+				atm_force_charge(vcc, skb2->truesize);
-+				sk = sk_atm(vcc);
-+				skb_queue_tail(&sk->sk_receive_queue, skb2);
-+				sk->sk_data_ready(sk);
-+			} else {
-+				dev_kfree_skb(skb2);
-+			}
-+			rcu_read_unlock();
- 		}
- 	}
- #endif /* IS_ENABLED(CONFIG_BRIDGE) */
-@@ -468,23 +486,16 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
- 
- static void lec_atm_close(struct atm_vcc *vcc)
+@@ -2857,7 +2856,6 @@ ctnetlink_glue_attach_expect(const struct nlattr *attr, struct nf_conn *ct,
  {
--	struct sk_buff *skb;
- 	struct net_device *dev = (struct net_device *)vcc->proto_data;
- 	struct lec_priv *priv = netdev_priv(dev);
+ 	struct nlattr *cda[CTA_EXPECT_MAX+1];
+ 	struct nf_conntrack_tuple tuple, mask;
+-	struct nf_conntrack_helper *helper = NULL;
+ 	struct nf_conntrack_expect *exp;
+ 	int err;
  
--	priv->lecd = NULL;
-+	rcu_assign_pointer(priv->lecd, NULL);
-+	synchronize_rcu();
- 	/* Do something needful? */
+@@ -2871,17 +2869,8 @@ ctnetlink_glue_attach_expect(const struct nlattr *attr, struct nf_conn *ct,
+ 	if (err < 0)
+ 		return err;
  
- 	netif_stop_queue(dev);
- 	lec_arp_destroy(priv);
- 
--	if (skb_peek(&sk_atm(vcc)->sk_receive_queue))
--		pr_info("%s closing with messages pending\n", dev->name);
--	while ((skb = skb_dequeue(&sk_atm(vcc)->sk_receive_queue))) {
--		atm_return(vcc, skb->truesize);
--		dev_kfree_skb(skb);
+-	if (cda[CTA_EXPECT_HELP_NAME]) {
+-		const char *helpname = nla_data(cda[CTA_EXPECT_HELP_NAME]);
+-
+-		helper = __nf_conntrack_helper_find(helpname, nf_ct_l3num(ct),
+-						    nf_ct_protonum(ct));
+-		if (helper == NULL)
+-			return -EOPNOTSUPP;
 -	}
 -
- 	pr_info("%s: Shut down!\n", dev->name);
- 	module_put(THIS_MODULE);
- }
-@@ -510,12 +521,14 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
- 	     const unsigned char *mac_addr, const unsigned char *atm_addr,
- 	     struct sk_buff *data)
+ 	exp = ctnetlink_alloc_expect((const struct nlattr * const *)cda, ct,
+-				     helper, &tuple, &mask);
++				     &tuple, &mask);
+ 	if (IS_ERR(exp))
+ 		return PTR_ERR(exp);
+ 
+@@ -3510,11 +3499,11 @@ ctnetlink_parse_expect_nat(const struct nlattr *attr,
+ 
+ static struct nf_conntrack_expect *
+ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+-		       struct nf_conntrack_helper *helper,
+ 		       struct nf_conntrack_tuple *tuple,
+ 		       struct nf_conntrack_tuple *mask)
  {
-+	struct atm_vcc *vcc;
- 	struct sock *sk;
- 	struct sk_buff *skb;
- 	struct atmlec_msg *mesg;
+ 	struct net *net = read_pnet(&ct->ct_net);
++	struct nf_conntrack_helper *helper;
+ 	struct nf_conntrack_expect *exp;
+ 	struct nf_conn_help *help;
+ 	u32 class = 0;
+@@ -3524,7 +3513,11 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 	if (!help)
+ 		return ERR_PTR(-EOPNOTSUPP);
  
--	if (!priv || !priv->lecd)
-+	if (!priv || !rcu_access_pointer(priv->lecd))
- 		return -1;
+-	if (cda[CTA_EXPECT_CLASS] && helper) {
++	helper = rcu_dereference(help->helper);
++	if (!helper)
++		return ERR_PTR(-EOPNOTSUPP);
 +
- 	skb = alloc_skb(sizeof(struct atmlec_msg), GFP_ATOMIC);
- 	if (!skb)
- 		return -1;
-@@ -532,18 +545,27 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
- 	if (atm_addr)
- 		memcpy(&mesg->content.normal.atm_addr, atm_addr, ATM_ESA_LEN);
++	if (cda[CTA_EXPECT_CLASS]) {
+ 		class = ntohl(nla_get_be32(cda[CTA_EXPECT_CLASS]));
+ 		if (class > helper->expect_class_max)
+ 			return ERR_PTR(-EINVAL);
+@@ -3558,8 +3551,6 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ #ifdef CONFIG_NF_CONNTRACK_ZONES
+ 	exp->zone = ct->zone;
+ #endif
+-	if (!helper)
+-		helper = rcu_dereference(help->helper);
+ 	rcu_assign_pointer(exp->helper, helper);
+ 	exp->tuple = *tuple;
+ 	exp->mask.src.u3 = mask->src.u3;
+@@ -3591,7 +3582,6 @@ ctnetlink_create_expect(struct net *net,
+ {
+ 	struct nf_conntrack_tuple tuple, mask, master_tuple;
+ 	struct nf_conntrack_tuple_hash *h = NULL;
+-	struct nf_conntrack_helper *helper = NULL;
+ 	struct nf_conntrack_expect *exp;
+ 	struct nf_conn *ct;
+ 	int err;
+@@ -3617,33 +3607,7 @@ ctnetlink_create_expect(struct net *net,
+ 	ct = nf_ct_tuplehash_to_ctrack(h);
  
--	atm_force_charge(priv->lecd, skb->truesize);
--	sk = sk_atm(priv->lecd);
-+	rcu_read_lock();
-+	vcc = rcu_dereference(priv->lecd);
-+	if (!vcc) {
-+		rcu_read_unlock();
-+		kfree_skb(skb);
-+		return -1;
-+	}
+ 	rcu_read_lock();
+-	if (cda[CTA_EXPECT_HELP_NAME]) {
+-		const char *helpname = nla_data(cda[CTA_EXPECT_HELP_NAME]);
+-
+-		helper = __nf_conntrack_helper_find(helpname, u3,
+-						    nf_ct_protonum(ct));
+-		if (helper == NULL) {
+-			rcu_read_unlock();
+-#ifdef CONFIG_MODULES
+-			if (request_module("nfct-helper-%s", helpname) < 0) {
+-				err = -EOPNOTSUPP;
+-				goto err_ct;
+-			}
+-			rcu_read_lock();
+-			helper = __nf_conntrack_helper_find(helpname, u3,
+-							    nf_ct_protonum(ct));
+-			if (helper) {
+-				err = -EAGAIN;
+-				goto err_rcu;
+-			}
+-			rcu_read_unlock();
+-#endif
+-			err = -EOPNOTSUPP;
+-			goto err_ct;
+-		}
+-	}
+-
+-	exp = ctnetlink_alloc_expect(cda, ct, helper, &tuple, &mask);
++	exp = ctnetlink_alloc_expect(cda, ct, &tuple, &mask);
+ 	if (IS_ERR(exp)) {
+ 		err = PTR_ERR(exp);
+ 		goto err_rcu;
+@@ -3653,8 +3617,8 @@ ctnetlink_create_expect(struct net *net,
+ 	nf_ct_expect_put(exp);
+ err_rcu:
+ 	rcu_read_unlock();
+-err_ct:
+ 	nf_ct_put(ct);
 +
-+	atm_force_charge(vcc, skb->truesize);
-+	sk = sk_atm(vcc);
- 	skb_queue_tail(&sk->sk_receive_queue, skb);
- 	sk->sk_data_ready(sk);
- 
- 	if (data != NULL) {
- 		pr_debug("about to send %d bytes of data\n", data->len);
--		atm_force_charge(priv->lecd, data->truesize);
-+		atm_force_charge(vcc, data->truesize);
- 		skb_queue_tail(&sk->sk_receive_queue, data);
- 		sk->sk_data_ready(sk);
- 	}
- 
-+	rcu_read_unlock();
- 	return 0;
+ 	return err;
  }
  
-@@ -618,7 +640,7 @@ static void lec_push(struct atm_vcc *vcc, struct sk_buff *skb)
- 
- 		atm_return(vcc, skb->truesize);
- 		if (*(__be16 *) skb->data == htons(priv->lecid) ||
--		    !priv->lecd || !(dev->flags & IFF_UP)) {
-+		    !rcu_access_pointer(priv->lecd) || !(dev->flags & IFF_UP)) {
- 			/*
- 			 * Probably looping back, or if lecd is missing,
- 			 * lecd has gone down
-@@ -753,12 +775,12 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
- 		priv = netdev_priv(dev_lec[i]);
- 	} else {
- 		priv = netdev_priv(dev_lec[i]);
--		if (priv->lecd)
-+		if (rcu_access_pointer(priv->lecd))
- 			return -EADDRINUSE;
- 	}
- 	lec_arp_init(priv);
- 	priv->itfnum = i;	/* LANE2 addition */
--	priv->lecd = vcc;
-+	rcu_assign_pointer(priv->lecd, vcc);
- 	vcc->dev = &lecatm_dev;
- 	vcc_insert_socket(sk_atm(vcc));
- 
-diff --git a/net/atm/lec.h b/net/atm/lec.h
-index be0e2667bd8c3..ec85709bf8185 100644
---- a/net/atm/lec.h
-+++ b/net/atm/lec.h
-@@ -91,7 +91,7 @@ struct lec_priv {
- 						 */
- 	spinlock_t lec_arp_lock;
- 	struct atm_vcc *mcast_vcc;		/* Default Multicast Send VCC */
--	struct atm_vcc *lecd;
-+	struct atm_vcc __rcu *lecd;
- 	struct delayed_work lec_arp_work;	/* C10 */
- 	unsigned int maximum_unknown_frame_count;
- 						/*
 -- 
 2.53.0
 
