@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-235168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sF5RIsCr1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:52 +0200
+	id sPhsNWGg1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D68C3C2F59
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:25:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899DD3C1162
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C3FA3201B54
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B3F883012B62
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35ED3C5552;
-	Wed,  8 Apr 2026 18:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14113C5552;
+	Wed,  8 Apr 2026 18:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvRGDCC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNJTRpKy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767A73176E4;
-	Wed,  8 Apr 2026 18:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84103331A44;
+	Wed,  8 Apr 2026 18:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674744; cv=none; b=HFn2M3ljdzsZ4fC0gely7WLTG5+/mN5QjIcfoRGf7Wt0tIiGFgxuBaffLetb2vVevHcl6fyEQmaC3d2GeITOo+TV0muFTmEIX0FVT9EVlusepbJcSATYQ6MhcYTsBbTGjJDBw4+E20dio7080Bbcx25hVtgk4XdaLjKL9u83tAI=
+	t=1775673436; cv=none; b=ebHEgmTAxjJlhkO2C6hqWuA46TCtsHkr8abCgKMJDTqeniqb0mH/etncMZ34D8JtDqZxS8iXNRTk5rBYhUKH6RGkj6fjrJFx78eN4x8BSAaz3UFrJjngmBag9nOxsSohdun2MHdfR3p5c86g86GkTodOM+Ep5tqEDux2OKvAzlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674744; c=relaxed/simple;
-	bh=D1Ao+C2LKcBpYRQQafRPHKvcS3fJbLuTAEOApojuBNQ=;
+	s=arc-20240116; t=1775673436; c=relaxed/simple;
+	bh=TloRW3vMGEQniJyPC+qRmm2C0/OsiGsGt5BZpNfhhUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dboq/0d+i/U2t4yTplJ5nygeT4VIYbFSxxOJyaH6R9w3Bl1npTItlQyATPDKTPM33S0RgjZAeMfT0aEjuDCx0LRXqAbFERCmqO1OSAKqS7y3lk3n9dVlKSaxHBCShifNkrmqYOUZbeQPyqylW03p6f1GwVGVpLa/DHhkodN1vZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvRGDCC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAAFC19421;
-	Wed,  8 Apr 2026 18:59:03 +0000 (UTC)
+	 MIME-Version; b=nThLNgpVqEVuWU8De7GnzUpR29yE0vuxvg7lgw7ZBUlE/3lpwvoAvq0HCpROTvJeVS41RjqjYtpjtIyxqyAj3Y7YCZL8RNssQoUrc2GtM927aaqTM2x+jOlDlLQ5yLAtPXcmPRaEWLCl2Zdl7JnPWLpyq4jjOStbnREKzNTt0DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNJTRpKy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F62C19421;
+	Wed,  8 Apr 2026 18:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674744;
-	bh=D1Ao+C2LKcBpYRQQafRPHKvcS3fJbLuTAEOApojuBNQ=;
+	s=korg; t=1775673436;
+	bh=TloRW3vMGEQniJyPC+qRmm2C0/OsiGsGt5BZpNfhhUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvRGDCC0MA4LV27HIYr3LyPFmQQe6cBFR8CMtZ6naSD8xYXo57GVenzYAQvj/8M3/
-	 aOBIFbUvieU92PdY02Wf7cV0kkgnonXYwa/3+ZS/txAVCm7JcKcrpQGwyjOrAZ4Pdx
-	 caKVnRj9AT8w4W+wtnGea9YpWNsr8Agr3z/AhwBE=
+	b=jNJTRpKytcxFE3hcrbHe9aAXuFuqHXEz+mmAs6tKhyDXHsMF+u9BSMpa+kINzsxdo
+	 Y0ttLOjjpYBCE+vqdQFv1HOP8G/Zv8P8+VI91CM6H7+JT9wj4UpltKzCGI1Yax/uao
+	 7qwdz+Jk8A8j6HzkPCdhKDPSNyPg5QXkMjvEl0AA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 217/311] iio: adc: ade9000: fix wrong return type in streaming push
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 232/277] vxlan: validate ND option lengths in vxlan_na_create
 Date: Wed,  8 Apr 2026 20:03:37 +0200
-Message-ID: <20260408175947.506547771@linuxfoundation.org>
+Message-ID: <20260408175942.519887879@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +73,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,vger.kernel.org,huawei.com];
-	TAGGED_FROM(0.00)[bounces-235168-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234661-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 0D68C3C2F59
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,blackwall.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,outlook.com:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 899DD3C1162
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-commit 57b207e38d414a27fda9fff638a0d3e7ef16b917 upstream.
+commit afa9a05e6c4971bd5586f1b304e14d61fb3d9385 upstream.
 
-The else branch of ade9000_iio_push_streaming() incorrectly returns
-IRQ_HANDLED on regmap_write failure. This function returns int (0 on
-success, negative errno on failure), so IRQ_HANDLED (1) would be
-misinterpreted as a non-error by callers.
+vxlan_na_create() walks ND options according to option-provided
+lengths. A malformed option can make the parser advance beyond the
+computed option span or use a too-short source LLADDR option payload.
 
-Return ret instead, consistent with every other error path in the
-function.
+Validate option lengths against the remaining NS option area before
+advancing, and only read source LLADDR when the option is large enough
+for an Ethernet address.
 
-Fixes: 81de7b4619fc ("iio: adc: add ade9000 support")
-Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-Reviewed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 4b29dba9c085 ("vxlan: fix nonfunctional neigh_reduce()")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
+Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260326034441.2037420-4-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ade9000.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/ade9000.c
-+++ b/drivers/iio/adc/ade9000.c
-@@ -787,7 +787,7 @@ static int ade9000_iio_push_streaming(st
- 				   ADE9000_MIDDLE_PAGE_BIT);
- 		if (ret) {
- 			dev_err_ratelimited(dev, "IRQ0 WFB write fail");
--			return IRQ_HANDLED;
-+			return ret;
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1965,12 +1965,14 @@ static struct sk_buff *vxlan_na_create(s
+ 	ns_olen = request->len - skb_network_offset(request) -
+ 		sizeof(struct ipv6hdr) - sizeof(*ns);
+ 	for (i = 0; i < ns_olen-1; i += (ns->opt[i+1]<<3)) {
+-		if (!ns->opt[i + 1]) {
++		if (!ns->opt[i + 1] || i + (ns->opt[i + 1] << 3) > ns_olen) {
+ 			kfree_skb(reply);
+ 			return NULL;
  		}
- 
- 		ade9000_configure_scan(indio_dev, ADE9000_REG_WF_BUFF);
+ 		if (ns->opt[i] == ND_OPT_SOURCE_LL_ADDR) {
+-			daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
++			if ((ns->opt[i + 1] << 3) >=
++			    sizeof(struct nd_opt_hdr) + ETH_ALEN)
++				daddr = ns->opt + i + sizeof(struct nd_opt_hdr);
+ 			break;
+ 		}
+ 	}
 
 
 
