@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBiAL12m1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:53 +0200
+	id +Lw5Klud1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2A13C2409
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6DA3C0A0F
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92F2F30F88A3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACF2330B1C3F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D5536166F;
-	Wed,  8 Apr 2026 18:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8123F3A6B6B;
+	Wed,  8 Apr 2026 18:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D27+tVTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FidDQTTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2DBB67E;
-	Wed,  8 Apr 2026 18:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4481AB67E;
+	Wed,  8 Apr 2026 18:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673501; cv=none; b=Ql4NA4ePG41iw+tQBb1po5vfPfbP5qrNd+35ivuJcjbVxBxpJAZacYLoVYXPYWrl4BRwHD1ziMEUlvSp8VNpWN7wqWoEDEhT/110h2BN7hYoofxANmReeQZ1pliEkJThfyyDD9TAnHhqTwmlkqfIiBAxY4e6w86DU1UAQqWczFQ=
+	t=1775672341; cv=none; b=dI+fxMlFW/qbu4L2wdCU3vzQZpZ3c9NMAoWsDsMDBzG/jyAw9pel5typ83KGiD7/HfOIoCEGwPgYuoUanU1hkZhwt90u8EgaNCjd0SsKClR9jBriLQfaLnsmoW/cFhkENiRLqvdivg2oQaUMqaOgJYYp0hc4quuSEYHjllmQqKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673501; c=relaxed/simple;
-	bh=DKqiNRwFZA9QKxJDpe9m/UqPhAT3f82JZvsZCpPIZz4=;
+	s=arc-20240116; t=1775672341; c=relaxed/simple;
+	bh=hGt42Ty8Jr9ju+Glfai443DReADmjUUsjMjYZR6ZS2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7GwOYl9Wl9zVdYmEy9OlEL+vlnsGmROXi95/FsEB9kXIhzg3IiQlYds+pT8tHKgtKrOFU+tZfJcfb3ijGtejqMWmzCU9QfCZm3KqQm78Tivmh0Ssbf4WmomD0oQ1YJLLmzifX3Vo18eGWws/E+uQYuXmSdSK1xCt8qJzLkmSsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D27+tVTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816A7C19421;
-	Wed,  8 Apr 2026 18:38:20 +0000 (UTC)
+	 MIME-Version; b=hHjUSM1JEajLcSu2s5GFTYiZdk3TC+KYnz1OfeYWVcxbtKOJO43khj/BSKabVzBctMbgwZSoqIfFgABFG+hPc+cht0lQu1gxfAmBYvwFltJ2rKwEurds+O7ZV9/+bR2qYAL0C8cXY17KgG8RNEIshb8rWOzhDusqz9tlj7AkVTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FidDQTTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01B5C19421;
+	Wed,  8 Apr 2026 18:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673500;
-	bh=DKqiNRwFZA9QKxJDpe9m/UqPhAT3f82JZvsZCpPIZz4=;
+	s=korg; t=1775672341;
+	bh=hGt42Ty8Jr9ju+Glfai443DReADmjUUsjMjYZR6ZS2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D27+tVTJ5h/pVuM54/qBWvMFY0FC/IFSdBWL+Lfj/+8sfVG3fGHCfxwbtMxO1x0u2
-	 5TuYY+KAIBrbS6Xm7/Y2pYeAwr8VFsOg7x2pPX34dNvCJb7W3V0Y4lxCB9ILYQ+tO2
-	 bI0aEEnYRA6a7zSHDpyObmifqUXA+rF36yM6ba1Q=
+	b=FidDQTTlwTTAZyoUz5Nhjfuhrec8WyeumKuNkTb/kgiLxR3dGQGsfhBth4X/2PT+4
+	 sJoTsq2yTP8BSIhoZer/EVFIwyDNpM6fx2tuFnEjomoqIe1j/cAblQCVJEpWOvJcvY
+	 fA+6twRKmb9fUUm+2prqnre9GbQGXGolNumD1iDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.18 214/277] comedi: Reinit dev->spinlock between attachments to low-level drivers
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 282/312] ksmbd: fix potencial OOB in get_file_all_info() for compound requests
 Date: Wed,  8 Apr 2026 20:03:19 +0200
-Message-ID: <20260408175941.852374818@linuxfoundation.org>
+Message-ID: <20260408175944.287288354@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +65,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234686-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234238-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,cc9f7f4a7df09f53c4a4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,mev.co.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 1F2A13C2409
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,pm.me:email]
+X-Rspamd-Queue-Id: 0C6DA3C0A0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 4b9a9a6d71e3e252032f959fb3895a33acb5865c upstream.
+[ Upstream commit beef2634f81f1c086208191f7228bce1d366493d ]
 
-`struct comedi_device` is the main controlling structure for a COMEDI
-device created by the COMEDI subsystem.  It contains a member `spinlock`
-containing a spin-lock that is initialized by the COMEDI subsystem, but
-is reserved for use by a low-level driver attached to the COMEDI device
-(at least since commit 25436dc9d84f ("Staging: comedi: remove RT
-code")).
+When a compound request consists of QUERY_DIRECTORY + QUERY_INFO
+(FILE_ALL_INFORMATION) and the first command consumes nearly the entire
+max_trans_size, get_file_all_info() would blindly call smbConvertToUTF16()
+with PATH_MAX, causing out-of-bounds write beyond the response buffer.
+In get_file_all_info(), there was a missing validation check for
+the client-provided OutputBufferLength before copying the filename into
+FileName field of the smb2_file_all_info structure.
+If the filename length exceeds the available buffer space, it could lead to
+potential buffer overflows or memory corruption during smbConvertToUTF16
+conversion. This calculating the actual free buffer size using
+smb2_calc_max_out_buf_len() and returning -EINVAL if the buffer is
+insufficient and updating smbConvertToUTF16 to use the actual filename
+length (clamped by PATH_MAX) to ensure a safe copy operation.
 
-Some COMEDI devices (those created on initialization of the COMEDI
-subsystem when the "comedi.comedi_num_legacy_minors" parameter is
-non-zero) can be attached to different low-level drivers over their
-lifetime using the `COMEDI_DEVCONFIG` ioctl command.  This can result in
-inconsistent lock states being reported when there is a mismatch in the
-spin-lock locking levels used by each low-level driver to which the
-COMEDI device has been attached.  Fix it by reinitializing
-`dev->spinlock` before calling the low-level driver's `attach` function
-pointer if `CONFIG_LOCKDEP` is enabled.
-
-Reported-by: syzbot+cc9f7f4a7df09f53c4a4@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cc9f7f4a7df09f53c4a4
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260225132427.86578-1-abbotti@mev.co.uk
+Cc: stable@vger.kernel.org
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Reported-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted variable declarations ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/smb/server/smb2pdu.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/comedi/drivers.c
-+++ b/drivers/comedi/drivers.c
-@@ -1001,6 +1001,14 @@ int comedi_device_attach(struct comedi_d
- 		ret = -EIO;
- 		goto out;
- 	}
-+	if (IS_ENABLED(CONFIG_LOCKDEP)) {
-+		/*
-+		 * dev->spinlock is for private use by the attached low-level
-+		 * driver.  Reinitialize it to stop lock-dependency tracking
-+		 * between attachments to different low-level drivers.
-+		 */
-+		spin_lock_init(&dev->spinlock);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4606,6 +4606,8 @@ static int get_file_all_info(struct ksmb
+ 	int conv_len;
+ 	char *filename;
+ 	u64 time;
++	int buf_free_len, filename_len;
++	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
+ 
+ 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
+ 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
+@@ -4617,6 +4619,16 @@ static int get_file_all_info(struct ksmb
+ 	if (IS_ERR(filename))
+ 		return PTR_ERR(filename);
+ 
++	filename_len = strlen(filename);
++	buf_free_len = smb2_calc_max_out_buf_len(work,
++			offsetof(struct smb2_query_info_rsp, Buffer) +
++			offsetof(struct smb2_file_all_info, FileName),
++			le32_to_cpu(req->OutputBufferLength));
++	if (buf_free_len < (filename_len + 1) * 2) {
++		kfree(filename);
++		return -EINVAL;
 +	}
- 	dev->driver = driv;
- 	dev->board_name = dev->board_ptr ? *(const char **)dev->board_ptr
- 					 : dev->driver->driver_name;
++
+ 	inode = file_inode(fp->filp);
+ 	generic_fillattr(file_mnt_user_ns(fp->filp), inode, &stat);
+ 
+@@ -4648,7 +4660,8 @@ static int get_file_all_info(struct ksmb
+ 	file_info->Mode = fp->coption;
+ 	file_info->AlignmentRequirement = 0;
+ 	conv_len = smbConvertToUTF16((__le16 *)file_info->FileName, filename,
+-				     PATH_MAX, conn->local_nls, 0);
++				     min(filename_len, PATH_MAX),
++				     conn->local_nls, 0);
+ 	conv_len *= 2;
+ 	file_info->FileNameLength = cpu_to_le32(conv_len);
+ 	rsp->OutputBufferLength =
 
 
 
