@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKHTNhCe1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:28 +0200
+	id cJHfD5Ol1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-235177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7E83C0C14
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:27:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13DDA3C2238
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 31B463004D24
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6F55E3026CFC
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BA43ACF13;
-	Wed,  8 Apr 2026 18:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E903176E4;
+	Wed,  8 Apr 2026 18:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRjhYsi3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCmtZs6l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C543537EF;
-	Wed,  8 Apr 2026 18:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D213537DF;
+	Wed,  8 Apr 2026 18:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672847; cv=none; b=O5RRc32ZLXW+Fs+beTV9ybeYzSQOe+ZORHXip+hAgNYek2xPws9nF9cUc6COee0vNHJPEgmLkMsRjvhuQu66w4ERIBgVc5bBRIZqt4fvn9CAUnqxQVhm9xYxiijw247Z0fdOrqSKyen82WkeJETWqzLAXHHLqhZtxJDzNPcFxkc=
+	t=1775674767; cv=none; b=RAwT80wzZzWe3JKqgZZU6aQr/tNMwvFUDpiJve/JNntVoJHuN3p6Uyv5NmIiydVTL1DGrp2YmjwmySLMn56ugc28YrZJlLiJv2fb88SgplZwdVHMOcIE0W2S1j+fJh6llO50VKWSHYUxBRuBEFKEJPO9WNTG2gM8VZbJa4FE8ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672847; c=relaxed/simple;
-	bh=U2A31IbOPW8OInylNJrBR78nMfiteBg6c4ZUk9JJE1c=;
+	s=arc-20240116; t=1775674767; c=relaxed/simple;
+	bh=//OCpITQNO4WiZIBfY1Mgv6S2FkjcgwyPupFadpXcXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fE/YQuulcCV1wUoM+GtJWnIst7RlecL6rGw7n/gyQ77oIfmh41cCBxeudH94/F7e2YsIDBhyMavaNJtU3K+cmxTg0yqFZQa4UVITOIdlCu7f3Rzwuy26P0Msat0g5SA+WW5YdcTBPANFLIxcqU9Hu4IEYNJZdmuze3WtIUdsRVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRjhYsi3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BA2C19421;
-	Wed,  8 Apr 2026 18:27:26 +0000 (UTC)
+	 MIME-Version; b=Tl+w12+8JpNQ6BSxWQZXJW5W2Gcr0ELM5e8cIo8N24+41TCwdJBdvWbWB42Lcnb4dBB2gUpEe+OvcBhyZEL3W+iQ+1CBsqJ/PUn7SiJQUDH99icyu7d2B4GSTgemyKgdfjUA84VuGAuYOYBWeJLEbkN1NReri45y/2r2wJRYpTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCmtZs6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6F5C19421;
+	Wed,  8 Apr 2026 18:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672847;
-	bh=U2A31IbOPW8OInylNJrBR78nMfiteBg6c4ZUk9JJE1c=;
+	s=korg; t=1775674767;
+	bh=//OCpITQNO4WiZIBfY1Mgv6S2FkjcgwyPupFadpXcXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRjhYsi3zXJtfk4z6deawsCiYqVTxOvSMKw7ZJreQmqeOp3/CTq/JjpTLJXB0MT3w
-	 cB13/pf/qCIhM8ji0fYXEgnAjywSyNP52Xr9LkNX4AWzPwqGj+7PFVHJwcwuBY1Joy
-	 v+UrAAUf26COaB1cRt7gdQtrf9P7jO6LI9yJGuUo=
+	b=BCmtZs6l1gQD0RMhbrohGBnM43MJ+cHV0CKO49xTYrbWYEQkFKzFb/Rx3f3MEO7KM
+	 c0iXPL/E2wHYn5t+e/BQAo3aHdiO3NniA6i4J0ZU10IJSOS+bcC1dqAKkc3x4BjPJM
+	 TmvFs0vxuHEoktWIa0yDMEkffKlnk6G1fRNK6s4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/160] btrfs: do not free data reservation in fallback from inline due to -ENOSPC
-Date: Wed,  8 Apr 2026 20:03:45 +0200
-Message-ID: <20260408175918.339844807@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 226/311] iio: light: vcnl4035: fix scan buffer on big-endian
+Date: Wed,  8 Apr 2026 20:03:46 +0200
+Message-ID: <20260408175947.838715268@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
-References: <20260408175913.177092714@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,78 +68,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234433-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235177-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: CA7E83C0C14
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,baylibre.com:email]
+X-Rspamd-Queue-Id: 13DDA3C2238
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit f8da41de0bff9eb1d774a7253da0c9f637c4470a ]
+commit fdc7aa54a5d44c05880a4aad7cfb41aacfd16d7b upstream.
 
-If we fail to create an inline extent due to -ENOSPC, we will attempt to
-go through the normal COW path, reserve an extent, create an ordered
-extent, etc. However we were always freeing the reserved qgroup data,
-which is wrong since we will use data. Fix this by freeing the reserved
-qgroup data in __cow_file_range_inline() only if we are not doing the
-fallback (ret is <= 0).
+Rework vcnl4035_trigger_consumer_handler() so that we are not passing
+what should be a u16 value as an int * to regmap_read(). This won't
+work on bit endian systems.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead, add a new unsigned int variable to pass to regmap_read(). Then
+copy that value into the buffer struct.
+
+The buffer array is replaced with a struct since there is only one value
+being read. This allows us to use the correct u16 data type and has a
+side-effect of simplifying the alignment specification.
+
+Also fix the endianness of the scan format from little-endian to CPU
+endianness. Since we are using regmap to read the value, it will be
+CPU-endian.
+
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iio/light/vcnl4035.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 28625e504972e..46df425ab7bae 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -691,8 +691,12 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode, u64 size,
- 	 * it won't count as data extent, free them directly here.
- 	 * And at reserve time, it's always aligned to page size, so
- 	 * just free one page here.
-+	 *
-+	 * If we fallback to non-inline (ret == 1) due to -ENOSPC, then we need
-+	 * to keep the data reservation.
- 	 */
--	btrfs_qgroup_free_data(inode, NULL, 0, fs_info->sectorsize, NULL);
-+	if (ret <= 0)
-+		btrfs_qgroup_free_data(inode, NULL, 0, fs_info->sectorsize, NULL);
- 	btrfs_free_path(path);
- 	if (trans)
- 		btrfs_end_transaction(trans);
--- 
-2.53.0
-
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -103,17 +103,23 @@ static irqreturn_t vcnl4035_trigger_cons
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct vcnl4035_data *data = iio_priv(indio_dev);
+ 	/* Ensure naturally aligned timestamp */
+-	u8 buffer[ALIGN(sizeof(u16), sizeof(s64)) + sizeof(s64)]  __aligned(8) = { };
++	struct {
++		u16 als_data;
++		aligned_s64 timestamp;
++	} buffer = { };
++	unsigned int val;
+ 	int ret;
+ 
+-	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, (int *)buffer);
++	ret = regmap_read(data->regmap, VCNL4035_ALS_DATA, &val);
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev,
+ 			"Trigger consumer can't read from sensor.\n");
+ 		goto fail_read;
+ 	}
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+-					iio_get_time_ns(indio_dev));
++
++	buffer.als_data = val;
++	iio_push_to_buffers_with_timestamp(indio_dev, &buffer,
++					   iio_get_time_ns(indio_dev));
+ 
+ fail_read:
+ 	iio_trigger_notify_done(indio_dev->trig);
+@@ -381,7 +387,7 @@ static const struct iio_chan_spec vcnl40
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_LE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ 	{
+@@ -395,7 +401,7 @@ static const struct iio_chan_spec vcnl40
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_LE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ };
 
 
 
