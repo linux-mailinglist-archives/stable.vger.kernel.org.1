@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGZYNsmg1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:05 +0200
+	id CA03GFKa1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2213C1280
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B59173C01C7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86A9C30EEC57
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:29:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DEE0302D94B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D23C3D8904;
-	Wed,  8 Apr 2026 18:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE7F3D47A5;
+	Wed,  8 Apr 2026 18:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W68u96/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUWRr2VI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601813D411F;
-	Wed,  8 Apr 2026 18:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4049347517;
+	Wed,  8 Apr 2026 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672946; cv=none; b=lGIEEG8jZDeDq+hShhhA+Pq+Axsn8RcIe5imfxm3i7FmfAHyCffp5B/oPzJiMMkTBXmEgf2DWwo1wO73mzgPahFrl05WesD9qk+AFWxHyOmfvI4z/zP2U6LooIekGRbPcDAX3neU9j2Rj/T0KhgF7nk578e49zJ8DJoddmxq7Kc=
+	t=1775671820; cv=none; b=g0mwNzqsgHw5hpIcj9aAo16AxymLmdOMaIjDsD/WFc4ohnzZQ4tnOmbOrm85LQQ98ONcisadKnWWi+MJyTUJyldzhWopNBMdvkPWsff8WS1CuuUqx5R67mWnWmsvyfckOTyvU5G1HJWpg/yvR7sBeJfDHaUwMpDzNptSFX13oUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672946; c=relaxed/simple;
-	bh=8enPmp2WT4ugWxww+xcvMZ9HRbxpvnuDI3thK1cle+c=;
+	s=arc-20240116; t=1775671820; c=relaxed/simple;
+	bh=YjtnsapL4pAlDElDfRO74DsDjHj2fm0ovoeEd0vpnNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcW5zx3A/RlxKZNPu4CDI/oon8vIr1jPDQc79/3Mja/Yycq1/9qB3fBSYuMJzAvyR0kDAD51PwiYUEgBWGzVr/QmRsoKYOGTsYDF7axX5uSwKy55DQfeLBlC8Mu0tS6R25jdL2R9P5hlPHAufhD4XH5u1fViMskvffc31kdQh90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W68u96/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27D2C19425;
-	Wed,  8 Apr 2026 18:29:05 +0000 (UTC)
+	 MIME-Version; b=Gchds9pLQ9zFHqyNalcZbGyGuYB3Qyf7WZMO8RO5Ua9SArRC46Nf9f/wd3wyczSC+fqBDS5hrX6PC+p36C6w5oZPycm/6Qm6HjW5NkeGnYPTM6XlUTF0Xl+fJcKvhZtoVKMJu/8xbES2N4pCSxnXFJ7zdufmfkboe4aO+dteyKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUWRr2VI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE58C19421;
+	Wed,  8 Apr 2026 18:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672946;
-	bh=8enPmp2WT4ugWxww+xcvMZ9HRbxpvnuDI3thK1cle+c=;
+	s=korg; t=1775671819;
+	bh=YjtnsapL4pAlDElDfRO74DsDjHj2fm0ovoeEd0vpnNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W68u96/XdRAoFseIKBUfQrCpXw0fjgmYyYgMIvw5eAPb2WmE2m/c9oi+OpQATQUn1
-	 cmzvTMBeBGACIgGdFkySWuEc9paHZgujN2GvmXhxVZ5q13EJ2i72v35Mqp36q2S+RM
-	 NUcStbxiZVO7l5t1o6uR4FjXxBRC51Ui/JJ628wE=
+	b=ZUWRr2VIG+ymfoB/PohIDruqN0me9BAPEE0R8IxJkcYqEi4nrYkwkOjwKZvbGNPsG
+	 j7rfDy6Rumd15TQSaG/MCAdP3LKDFxE6l+yHAtW/r5T6qzRM46AQIzC4SjwVlgrTvM
+	 dY35D0MEGdw4RumJBZZZoFS3fSERLN4Z8zCBgzw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 010/277] HID: core: Mitigate potential OOB by removing bogus memset()
-Date: Wed,  8 Apr 2026 19:59:55 +0200
-Message-ID: <20260408175934.230129845@linuxfoundation.org>
+Subject: [PATCH 6.1 079/312] ACPI: EC: Fix EC address space handler unregistration
+Date: Wed,  8 Apr 2026 19:59:56 +0200
+Message-ID: <20260408175936.695176334@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,74 +74,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234036-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234471-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7D2213C1280
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B59173C01C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 0a3fe972a7cb1404f693d6f1711f32bc1d244b1c ]
+[ Upstream commit a5072078dbfaa9d70130805766dfa34bbb7bf2a7 ]
 
-The memset() in hid_report_raw_event() has the good intention of
-clearing out bogus data by zeroing the area from the end of the incoming
-data string to the assumed end of the buffer.  However, as we have
-previously seen, doing so can easily result in OOB reads and writes in
-the subsequent thread of execution.
+When an ECDT table is present the EC address space handler gets registered
+on the root node. So to unregister it properly the unregister call also
+must be done on the root node.
 
-The current suggestion from one of the HID maintainers is to remove the
-memset() and simply return if the incoming event buffer size is not
-large enough to fill the associated report.
+Store the ACPI handle used for the acpi_install_address_space_handler()
+call and use te same handle for the acpi_remove_address_space_handler()
+call.
 
-Suggested-by Benjamin Tissoires <bentiss@kernel.org>
-
-Signed-off-by: Lee Jones <lee@kernel.org>
-[bentiss: changed the return value]
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Reported-by: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: f6484cadbcaf ("ACPI: EC: clean up handlers on probe failure in acpi_ec_setup()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/acpi/ec.c       | 4 +++-
+ drivers/acpi/internal.h | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index a5b3a8ca2fcbc..f5587b786f875 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2057,9 +2057,10 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
- 		rsize = max_buffer_size;
- 
- 	if (csize < rsize) {
--		dbg_hid("report %d is too short, (%d < %d)\n", report->id,
--				csize, rsize);
--		memset(cdata + csize, 0, rsize - csize);
-+		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %d)\n",
-+				     report->id, rsize, csize);
-+		ret = -EINVAL;
-+		goto out;
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 15148513b050d..cecc521e2d30f 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1524,6 +1524,7 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
+ 			return -ENODEV;
+ 		}
+ 		set_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
++		ec->address_space_handler_holder = ec->handle;
  	}
  
- 	if ((hid->claimed & HID_CLAIMED_HIDDEV) && hid->hiddev_report_event)
+ 	if (!device)
+@@ -1575,7 +1576,8 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device)
+ static void ec_remove_handlers(struct acpi_ec *ec)
+ {
+ 	if (test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
+-		if (ACPI_FAILURE(acpi_remove_address_space_handler(ec->handle,
++		if (ACPI_FAILURE(acpi_remove_address_space_handler(
++					ec->address_space_handler_holder,
+ 					ACPI_ADR_SPACE_EC, &acpi_ec_space_handler)))
+ 			pr_err("failed to remove space handler\n");
+ 		clear_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index 219c02df9a08c..ec584442fb298 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -173,6 +173,7 @@ enum acpi_ec_event_state {
+ 
+ struct acpi_ec {
+ 	acpi_handle handle;
++	acpi_handle address_space_handler_holder;
+ 	int gpe;
+ 	int irq;
+ 	unsigned long command_addr;
 -- 
 2.53.0
 
