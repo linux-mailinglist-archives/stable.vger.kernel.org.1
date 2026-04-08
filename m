@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EH0aHEOa1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:15 +0200
+	id kPImFTyi1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E507A3C018F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B143C1701
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6AE230511D2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:09:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE4E330D2D93
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801383D47A5;
-	Wed,  8 Apr 2026 18:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6403B0ADA;
+	Wed,  8 Apr 2026 18:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lwImlom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuHeKlH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D31347517;
-	Wed,  8 Apr 2026 18:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51479324B1F;
+	Wed,  8 Apr 2026 18:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671794; cv=none; b=mKOs+glZjU1N7rVbToF2xmtr53sy1EPqgAvJXIHSqS/CuQj/rtT0aoG6zMBBINorpgGKigFziLkKeZ2cbWC8MYIvPjxFaCJDRGiiOOwEnNZHh3FM+tWQQRLSb0HURE1NfkLONXd7VomNBauX3oiKteg2sA88WRrRhwyR9xrr3y8=
+	t=1775672865; cv=none; b=QWkVfNYgpHhg3ywmlZLru8wWRNLoMiRipr5WBBwxVChR/tjm2E2kLWPX5ovEywSaM3EsQwfCucxgNytbCEjLhdGD6RyyiHAMBsf6hvdsZxESRntpmKCMWXH1fyP7BYCH4/riaeXUhjrq2aXvBPcl+5OP6haLUP4UNcLB9flhxWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671794; c=relaxed/simple;
-	bh=AggdHI+Znr7zTQreb9Nlw5j3IQDJVrRdP5nOcoLq3Bc=;
+	s=arc-20240116; t=1775672865; c=relaxed/simple;
+	bh=0r1L7yfvhikfu3Drdb38DfLFXl8FokmfIrF6v1k3eJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RN7hc+czhlASaQ3L21X7Wi2G0T6C6XMBELjmnHZf9D5yRjziFtppFyE5DRaUf79SMiU/ukJvDFNzYtqkNUaMvabJTgOwsOR2w1eTEbSlVgMOUtzxfxTBGuVVOZGFxvosOb4P0qWxQToduRsKjdi26BHjTkx1VMTVilGKndpzSRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lwImlom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5DEC19421;
-	Wed,  8 Apr 2026 18:09:53 +0000 (UTC)
+	 MIME-Version; b=MvSgfZEBVltzrAPJoN2hByQ6CNT0nvpdZF+ItX/XMvM9l3g5i/o+dX+o0qVTGX4mAI3QKU+qGvEW/+6d2dtJjXMnBy5TeJIplV6ljSHcxATMiNQupSIA4eOmYO4m207oNYF7xsyzNVKql8ztS2yjzu8EfbGG3vEYdxqWsHXLukk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuHeKlH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5DAC19421;
+	Wed,  8 Apr 2026 18:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671794;
-	bh=AggdHI+Znr7zTQreb9Nlw5j3IQDJVrRdP5nOcoLq3Bc=;
+	s=korg; t=1775672865;
+	bh=0r1L7yfvhikfu3Drdb38DfLFXl8FokmfIrF6v1k3eJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lwImlomkphGpCDvWOIFPvWtcBBpWCHdxqA/V8Spqb6mbkq9DeefVZlh6RmI6ikPv
-	 ncZyl+Pt5S+MbhfqOdifk4vqZNqKl+sYwI1YeuY5v8rswVkWwYkAzDVGmlXY1M8yWX
-	 W9iRlpUzPeISUtoWlLDvO5q3ptI5lOsXdUIc6GOQ=
+	b=TuHeKlH75O8fJ9RNKgi6mq7p3rVzOaAG6qV6Sxj36CBbRblbBSEbHAkTt2/Y1LJE7
+	 OfeST3c3RWu5sBEbkOKXq3o/IBzXOJfZE3qoxB/XErWhIRKYnPVC+BJ0wwyem3anef
+	 7vRhkgcUDkhZbolP909wY/fhxtjYt9p1bZa7rU0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/312] RDMA/irdma: Remove reset check from irdma_modify_qp_to_err()
-Date: Wed,  8 Apr 2026 19:59:47 +0200
-Message-ID: <20260408175936.355113199@linuxfoundation.org>
+Subject: [PATCH 6.18 003/277] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
+Date: Wed,  8 Apr 2026 19:59:48 +0200
+Message-ID: <20260408175933.970903561@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +66,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234026-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234440-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,sipsolutions.net,gmail.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,56b6a844a4ea74487b7b];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E507A3C018F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url]
+X-Rspamd-Queue-Id: B2B143C1701
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit c45c6ebd693b944f1ffe429fdfb6cc1674c237be ]
+[ Upstream commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b ]
 
-During reset, irdma_modify_qp() to error should be called to disconnect
-the QP. Without this fix, if not preceded by irdma_modify_qp() to error, the
-API call irdma_destroy_qp() gets stuck waiting for the QP refcount to go
-to zero, because the cm_node associated with this QP isn't disconnected.
+When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
+station exists but not whether it is actually a TDLS station. This
+allows the operation to proceed for non-TDLS stations, causing
+unintended side effects like modifying channel context and HT
+protection before failing.
 
-Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Add a check for sta->sta.tdls early in the ENABLE_LINK case, before
+any side effects occur, to ensure the operation is only allowed for
+actual TDLS peers.
+
+Reported-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=56b6a844a4ea74487b7b
+Tested-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260313092417.520807-1-kartikey406@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/utils.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/mac80211/tdls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
-index d236e4a27ca92..98a3849c39bf0 100644
---- a/drivers/infiniband/hw/irdma/utils.c
-+++ b/drivers/infiniband/hw/irdma/utils.c
-@@ -2456,8 +2456,6 @@ void irdma_modify_qp_to_err(struct irdma_sc_qp *sc_qp)
- 	struct irdma_qp *qp = sc_qp->qp_uk.back_qp;
- 	struct ib_qp_attr attr;
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index ba5fbacbeeda6..1536cd71878c7 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1449,7 +1449,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 		}
  
--	if (qp->iwdev->rf->reset)
--		return;
- 	attr.qp_state = IB_QPS_ERR;
+ 		sta = sta_info_get(sdata, peer);
+-		if (!sta)
++		if (!sta || !sta->sta.tdls)
+ 			return -ENOLINK;
  
- 	if (rdma_protocol_roce(qp->ibqp.device, 1))
+ 		iee80211_tdls_recalc_chanctx(sdata, sta);
 -- 
 2.53.0
 
