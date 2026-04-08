@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-234267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id JJcaErWc1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:41 +0200
+	id 6M4WD2ig1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C55D3C07B5
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:21:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A933C1170
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CBDA93032A7F
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:20:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E74D03051ABB
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF2E3D5647;
-	Wed,  8 Apr 2026 18:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE333D411F;
+	Wed,  8 Apr 2026 18:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szsKO5Ua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpP/W6wV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0523537FC;
-	Wed,  8 Apr 2026 18:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F70A3ACF11;
+	Wed,  8 Apr 2026 18:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672416; cv=none; b=g8GBtN5WcSe6XwD+JdDGBhCjxsdquNu0exsnsx8zyYY8BI1CNtQPac7AJ3n0XmctgdGzaimVHeJXlDhKsqd2dq378/MBPw9vobC1uJCzQp9o5p6fAKc/tk2VauSxhqR4bcUQtPx8iuyvt9NsSXdPuY3KaXD/jh1zWwBzG/PQhk8=
+	t=1775672786; cv=none; b=jrbBJYpZGOg4vkw06/ZAvi/0WP5jUkqagiNnUVwbIouzlGejfdBdbdSCrCcuvBNLg5owSGToFSwHGsRKw9Tmm6xt4J/7udBYiJeQ4MDH1FwAJV/Lyr03fVPo818QUfoYpqGNJGohQsGDUoZrVry54mIWnn5kYIoi1nF1iYaLeg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672416; c=relaxed/simple;
-	bh=v0UQLkQGudkPupIIquqz2ckH3YsWTLQDeE2pX7rp720=;
+	s=arc-20240116; t=1775672786; c=relaxed/simple;
+	bh=HZJpHZ7BMu/AbksjlAzynqiTnrSJpJtlbtbFeq5IwJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWKMQJRyqsEM+hrEHKL089nvLP7OJdiLdTF4qkFcXfSK05bcLzHB/PHoCUO4lOIpBjEdCLGBPLerQ4wfiT8xdbUWQgliQe5S3Fiyhtzo1Vpp5j2y0j2XN03EZlW6WBX7ujsj8Xc0aOz5X0jTFftUdlwVy+ojsrtJ/Iqc1jpnXnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szsKO5Ua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248A7C19421;
-	Wed,  8 Apr 2026 18:20:15 +0000 (UTC)
+	 MIME-Version; b=Y/2GGqy0HcHbKwnCK5cFTg15LB7Op7aSyuarVKUzTFcsdVWMgBRLByoxJzWE5mY/AjQiXj56AkPO4zerPOF0H27kQxKOyPwRXfIantjy+iXrvWrjtQGXGxjiS8G15OzPg22qdz6cwu4OCKvUufzfRSjg9Fy3RbHpEhYXMkeueL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpP/W6wV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE4CC19421;
+	Wed,  8 Apr 2026 18:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672416;
-	bh=v0UQLkQGudkPupIIquqz2ckH3YsWTLQDeE2pX7rp720=;
+	s=korg; t=1775672785;
+	bh=HZJpHZ7BMu/AbksjlAzynqiTnrSJpJtlbtbFeq5IwJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szsKO5Ua4Y/cFuV57Bmcr4f5plKx17F7uAnx2OU2Azhq9yjQmceRpZgwBKV9LhfMU
-	 zflj3c4kZI21FUo3DlfW4579RwWR1o+FiWjMb5s/Btl+0fN6O3hdAOn/Bkq1x1zjlu
-	 odBgvXiT7FTf8WDLCT73beK3y7exgbHAF9bi1qF8=
+	b=mpP/W6wVYb9hUcNdqxFEul16Ugg3Q0qP7iGX1WMt67NNoxq4Xf3INmjY+F1F5cmTd
+	 0FzuG/seiuue6mZk/elCewtdcuEy/oRUUV2bRYrK4qCQBA1Y0kDhMiIP571OMpqmhd
+	 OShgtcCWtKJ3CPlv7/XUP6jIbV9YSyMW5mLJIXUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	VitaliiT <vitaly.torshyn@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 312/312] ACPI: EC: Evaluate orphan _REG under EC device
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.6 142/160] usb: gadget: u_ether: Fix race between gether_disconnect and eth_stop
 Date: Wed,  8 Apr 2026 20:03:49 +0200
-Message-ID: <20260408175945.424469618@linuxfoundation.org>
+Message-ID: <20260408175918.495787254@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,190 +63,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234267-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234410-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0C55D3C07B5
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 97A933C1170
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 0e6b6dedf16800df0ff73ffe2bb5066514db29c2 upstream.
+commit e1eabb072c75681f78312c484ccfffb7430f206e upstream.
 
-After starting to install the EC address space handler at the ACPI
-namespace root, if there is an "orphan" _REG method in the EC device's
-scope, it will not be evaluated any more.  This breaks EC operation
-regions on some systems, like Asus gu605.
+A race condition between gether_disconnect() and eth_stop() leads to a
+NULL pointer dereference. Specifically, if eth_stop() is triggered
+concurrently while gether_disconnect() is tearing down the endpoints,
+eth_stop() attempts to access the cleared endpoint descriptor, causing
+the following NPE:
 
-To address this, use a wrapper around an existing ACPICA function to
-look for an "orphan" _REG method in the EC device scope and evaluate
-it if present.
+  Unable to handle kernel NULL pointer dereference
+  Call trace:
+   __dwc3_gadget_ep_enable+0x60/0x788
+   dwc3_gadget_ep_enable+0x70/0xe4
+   usb_ep_enable+0x60/0x15c
+   eth_stop+0xb8/0x108
 
-Fixes: 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the namespace root")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218945
-Reported-by: VitaliiT <vitaly.torshyn@gmail.com>
-Tested-by: VitaliiT <vitaly.torshyn@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Because eth_stop() crashes while holding the dev->lock, the thread
+running gether_disconnect() fails to acquire the same lock and spins
+forever, resulting in a hardlockup:
+
+  Core - Debugging Information for Hardlockup core(7)
+  Call trace:
+   queued_spin_lock_slowpath+0x94/0x488
+   _raw_spin_lock+0x64/0x6c
+   gether_disconnect+0x19c/0x1e8
+   ncm_set_alt+0x68/0x1a0
+   composite_setup+0x6a0/0xc50
+
+The root cause is that the clearing of dev->port_usb in
+gether_disconnect() is delayed until the end of the function.
+
+Move the clearing of dev->port_usb to the very beginning of
+gether_disconnect() while holding dev->lock. This cuts off the link
+immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+safely bail out.
+
+Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/acevents.h |    4 +++
- drivers/acpi/acpica/evregion.c |    6 ----
- drivers/acpi/acpica/evxfregn.c |   54 +++++++++++++++++++++++++++++++++++++++++
- drivers/acpi/ec.c              |    3 ++
- include/acpi/acpixf.h          |    4 +++
- 5 files changed, 66 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/function/u_ether.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/acpi/acpica/acevents.h
-+++ b/drivers/acpi/acpica/acevents.h
-@@ -191,6 +191,10 @@ void
- acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
- 			    acpi_adr_space_type space_id, u32 function);
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1200,6 +1200,11 @@ void gether_disconnect(struct gether *li
  
-+void
-+acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *node,
-+				  acpi_adr_space_type space_id);
+ 	DBG(dev, "%s\n", __func__);
+ 
++	spin_lock(&dev->lock);
++	dev->port_usb = NULL;
++	link->is_suspend = false;
++	spin_unlock(&dev->lock);
 +
- acpi_status
- acpi_ev_execute_reg_method(union acpi_operand_object *region_obj, u32 function);
+ 	netif_stop_queue(dev->net);
+ 	netif_carrier_off(dev->net);
  
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -20,10 +20,6 @@ extern u8 acpi_gbl_default_address_space
- 
- /* Local prototypes */
- 
--static void
--acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
--				  acpi_adr_space_type space_id);
+@@ -1237,11 +1242,6 @@ void gether_disconnect(struct gether *li
+ 	dev->header_len = 0;
+ 	dev->unwrap = NULL;
+ 	dev->wrap = NULL;
 -
- static acpi_status
- acpi_ev_reg_run(acpi_handle obj_handle,
- 		u32 level, void *context, void **return_value);
-@@ -811,7 +807,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
-  *
-  ******************************************************************************/
- 
--static void
-+void
- acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
- 				  acpi_adr_space_type space_id)
- {
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -304,3 +304,57 @@ acpi_execute_reg_methods(acpi_handle dev
+-	spin_lock(&dev->lock);
+-	dev->port_usb = NULL;
+-	link->is_suspend = false;
+-	spin_unlock(&dev->lock);
  }
+ EXPORT_SYMBOL_GPL(gether_disconnect);
  
- ACPI_EXPORT_SYMBOL(acpi_execute_reg_methods)
-+
-+/*******************************************************************************
-+ *
-+ * FUNCTION:    acpi_execute_orphan_reg_method
-+ *
-+ * PARAMETERS:  device          - Handle for the device
-+ *              space_id        - The address space ID
-+ *
-+ * RETURN:      Status
-+ *
-+ * DESCRIPTION: Execute an "orphan" _REG method that appears under an ACPI
-+ *              device. This is a _REG method that has no corresponding region
-+ *              within the device's scope.
-+ *
-+ ******************************************************************************/
-+acpi_status
-+acpi_execute_orphan_reg_method(acpi_handle device, acpi_adr_space_type space_id)
-+{
-+	struct acpi_namespace_node *node;
-+	acpi_status status;
-+
-+	ACPI_FUNCTION_TRACE(acpi_execute_orphan_reg_method);
-+
-+	/* Parameter validation */
-+
-+	if (!device) {
-+		return_ACPI_STATUS(AE_BAD_PARAMETER);
-+	}
-+
-+	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
-+	if (ACPI_FAILURE(status)) {
-+		return_ACPI_STATUS(status);
-+	}
-+
-+	/* Convert and validate the device handle */
-+
-+	node = acpi_ns_validate_handle(device);
-+	if (node) {
-+
-+		/*
-+		 * If an "orphan" _REG method is present in the device's scope
-+		 * for the given address space ID, run it.
-+		 */
-+
-+		acpi_ev_execute_orphan_reg_method(node, space_id);
-+	} else {
-+		status = AE_BAD_PARAMETER;
-+	}
-+
-+	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
-+	return_ACPI_STATUS(status);
-+}
-+
-+ACPI_EXPORT_SYMBOL(acpi_execute_orphan_reg_method)
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1532,6 +1532,9 @@ static int ec_install_handlers(struct ac
- 
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
- 		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
-+		if (scope_handle != ec->handle)
-+			acpi_execute_orphan_reg_method(ec->handle, ACPI_ADR_SPACE_EC);
-+
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
- 	}
- 
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -669,6 +669,10 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 						     acpi_adr_space_type
- 						     space_id))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_execute_orphan_reg_method(acpi_handle device,
-+							   acpi_adr_space_type
-+							   space_id))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_remove_address_space_handler(acpi_handle
- 							      device,
- 							      acpi_adr_space_type
 
 
 
