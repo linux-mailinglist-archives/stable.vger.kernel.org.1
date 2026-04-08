@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kA4/LGud1mnlGggAu9opvQ
-	(envelope-from <stable+bounces-234243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:43 +0200
+	id UDaLDD6f1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6E03C0A51
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9573C3C0E97
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C049A304D276
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D871D30C1038
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7214D3A6B6B;
-	Wed,  8 Apr 2026 18:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872763ACF11;
+	Wed,  8 Apr 2026 18:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dSBh5X1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyIJ6ZjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3521B2494F0;
-	Wed,  8 Apr 2026 18:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1EC324B1F;
+	Wed,  8 Apr 2026 18:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672354; cv=none; b=Ax3XTXsnHga1uDmBf62XhqvvQTuWN8l6j9ohaE/Mewig1T8WMUhwT34qUPnr2ItyGfTi3osUSGponrDtW0v4TsiEqHhMwRSa/Hl8jkCgQnzDdnDEbqBPbdwt4Vzdo3NTrcFpjB7R4gEWTtH8RS9Am0hJDLou9Xo+rgroD41MtRQ=
+	t=1775672724; cv=none; b=bTjHe24OrDfq4y1/+F/BI2SMSxnsfn1+uGmnMLF9J6cay6Mu1B/kZvJMyP7jwlcOxAhv6/GoxktynPurlHk/8lZjZChbGWWoROI2Dbi8qlbinJzmiQaIGSjLbrK/8I84IuJ1i+pbbZ8zCqut7csDttBZJYr1bWEOPBU6bi17Z1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672354; c=relaxed/simple;
-	bh=rB5oS2MqWUgukJ4ZKLyIDbW0noMxlLx5wUw8/T2jLFI=;
+	s=arc-20240116; t=1775672724; c=relaxed/simple;
+	bh=9wOXWwg09q4kFVSkJCS1wlxAk69q3LudumK2QW97doU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAelC9N8J+lHrrlnOeJZGNCNIuMsDzaYDmAmTLfpVhJfWND+FJlAbtKZCUhL9OsdlLm3yUzmI2uxDpgJYRd2p8y02tvnNy/aW4pJ4VfoMJlDBQdgp2AmknLXRVu5rSv8MRJux1pNPvboWrjKosoeMHyj8s3GSemOwvL4vbTXzcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dSBh5X1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9CDC19421;
-	Wed,  8 Apr 2026 18:19:13 +0000 (UTC)
+	 MIME-Version; b=jqoj8caIjEQAmcOkTaP66YqxLILdenO6ztiaoV1CxtUOVCtmMW07jp+z4Zm9pxTMWgd6UabNozIWX1vwsFr54wA4wjewSgCMGoJrMScQs3EuItJuplRjeURVjej114WtTFyUTXOi+01UZcgswxWwZSPu7qqB9vust/3rUmtUyF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyIJ6ZjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D437DC19425;
+	Wed,  8 Apr 2026 18:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672354;
-	bh=rB5oS2MqWUgukJ4ZKLyIDbW0noMxlLx5wUw8/T2jLFI=;
+	s=korg; t=1775672724;
+	bh=9wOXWwg09q4kFVSkJCS1wlxAk69q3LudumK2QW97doU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0dSBh5X1L6xmCZSjLhSYIgXO4H13zL1sVoHNmJQnHZGdr35r/L4AZ7faouJORTuUW
-	 gOxNrxwRG4TqPmfhyH2246EqY/pDFP4KelNPuKlnp24cvMdRxOX1A23AbgVTDeB7Q0
-	 raB4//qDg865oKFDXVFtvwUVOgSbFbdgkrRaEUPQ=
+	b=EyIJ6ZjHSLIpjbIAsM5/kHe9Ecl6t6fYwuC0Gns8XC5oUrfRdXdl6HiT+FfEGFkd3
+	 AuIve/CZvwM4t3LLgOFKFRfKtcJv09tgZmIx0p4ws88uOlpxgE0H8F2Ic1OYahiZLQ
+	 GUGAvd2fGz4U6nlObJE0SgTrqJ/cBmtL4amySok8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Yan <yanaijie@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 287/312] ext4: use ext4_group_desc_free() in ext4_put_super() to save some duplicated code
+	syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: [PATCH 6.6 117/160] comedi: dt2815: add hardware detection to prevent crash
 Date: Wed,  8 Apr 2026 20:03:24 +0200
-Message-ID: <20260408175944.477823070@linuxfoundation.org>
+Message-ID: <20260408175917.561392060@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +65,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234243-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234386-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,mev.co.uk,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,72f94b474d6e50b71ffc];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3F6E03C0A51
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mev.co.uk:email,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 9573C3C0E97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Yan <yanaijie@huawei.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 6ef684988816fdfa29ceff260c97d725a489a942 ]
+commit 93853512f565e625df2397f0d8050d6aafd7c3ad upstream.
 
-The only difference here is that ->s_group_desc and ->s_flex_groups share
-the same rcu read lock here but it is not necessary. In other places they
-do not share the lock at all.
+The dt2815 driver crashes when attached to I/O ports without actual
+hardware present. This occurs because syzkaller or users can attach
+the driver to arbitrary I/O addresses via COMEDI_DEVCONFIG ioctl.
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
-Link: https://lore.kernel.org/r/20230323140517.1070239-4-yanaijie@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 496bb99b7e66 ("ext4: fix the might_sleep() warnings in kvfree()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When no hardware exists at the specified port, inb() operations return
+0xff (floating bus), but outb() operations can trigger page faults due
+to undefined behavior, especially under race conditions:
+
+  BUG: unable to handle page fault for address: 000000007fffff90
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  RIP: 0010:dt2815_attach+0x6e0/0x1110
+
+Add hardware detection by reading the status register before attempting
+any write operations. If the read returns 0xff, assume no hardware is
+present and fail the attach with -ENODEV. This prevents crashes from
+outb() operations on non-existent hardware.
+
+Reported-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=72f94b474d6e50b71ffc
+Tested-by: syzbot+72f94b474d6e50b71ffc@syzkaller.appspotmail.com
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/]
+Link: [https://lore.kernel.org/all/20260126070458.10974-1-kartikey406@gmail.com/T/
+Link: https://patch.msgid.link/20260309104859.503529-1-kartikey406@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |   32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ drivers/comedi/drivers/dt2815.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1236,11 +1236,23 @@ static void ext4_percpu_param_destroy(st
- 	percpu_free_rwsem(&sbi->s_writepages_rwsem);
- }
+--- a/drivers/comedi/drivers/dt2815.c
++++ b/drivers/comedi/drivers/dt2815.c
+@@ -175,6 +175,18 @@ static int dt2815_attach(struct comedi_d
+ 		    ? current_range_type : voltage_range_type;
+ 	}
  
-+static void ext4_group_desc_free(struct ext4_sb_info *sbi)
-+{
-+	struct buffer_head **group_desc;
-+	int i;
++	/*
++	 * Check if hardware is present before attempting any I/O operations.
++	 * Reading 0xff from status register typically indicates no hardware
++	 * on the bus (floating bus reads as all 1s).
++	 */
++	if (inb(dev->iobase + DT2815_STATUS) == 0xff) {
++		dev_err(dev->class_dev,
++			"No hardware detected at I/O base 0x%lx\n",
++			dev->iobase);
++		return -ENODEV;
++	}
 +
-+	rcu_read_lock();
-+	group_desc = rcu_dereference(sbi->s_group_desc);
-+	for (i = 0; i < sbi->s_gdb_count; i++)
-+		brelse(group_desc[i]);
-+	kvfree(group_desc);
-+	rcu_read_unlock();
-+}
-+
- static void ext4_put_super(struct super_block *sb)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	struct ext4_super_block *es = sbi->s_es;
--	struct buffer_head **group_desc;
- 	struct flex_groups **flex_groups;
- 	int aborted = 0;
- 	int i, err;
-@@ -1290,11 +1302,8 @@ static void ext4_put_super(struct super_
- 	if (!sb_rdonly(sb))
- 		ext4_commit_super(sb);
- 
-+	ext4_group_desc_free(sbi);
- 	rcu_read_lock();
--	group_desc = rcu_dereference(sbi->s_group_desc);
--	for (i = 0; i < sbi->s_gdb_count; i++)
--		brelse(group_desc[i]);
--	kvfree(group_desc);
- 	flex_groups = rcu_dereference(sbi->s_flex_groups);
- 	if (flex_groups) {
- 		for (i = 0; i < sbi->s_flex_groups_allocated; i++)
-@@ -4770,19 +4779,6 @@ static int ext4_geometry_check(struct su
- 	return 0;
- }
- 
--static void ext4_group_desc_free(struct ext4_sb_info *sbi)
--{
--	struct buffer_head **group_desc;
--	int i;
--
--	rcu_read_lock();
--	group_desc = rcu_dereference(sbi->s_group_desc);
--	for (i = 0; i < sbi->s_gdb_count; i++)
--		brelse(group_desc[i]);
--	kvfree(group_desc);
--	rcu_read_unlock();
--}
--
- static int ext4_group_desc_init(struct super_block *sb,
- 				struct ext4_super_block *es,
- 				ext4_fsblk_t logical_sb_block,
+ 	/* Init the 2815 */
+ 	outb(0x00, dev->iobase + DT2815_STATUS);
+ 	for (i = 0; i < 100; i++) {
 
 
 
