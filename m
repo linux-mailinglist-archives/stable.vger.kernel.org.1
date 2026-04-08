@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-234739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEkJHumm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:13 +0200
+	id 8GExNjGb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6F63C25C4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF3C3C044B
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96FA430E0533
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E950530185B2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EE43D522C;
-	Wed,  8 Apr 2026 18:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B161537F8C2;
+	Wed,  8 Apr 2026 18:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Af+jNbKa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSqv53JB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A69B67E;
-	Wed,  8 Apr 2026 18:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D2B3D3D06;
+	Wed,  8 Apr 2026 18:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673637; cv=none; b=YgwdpfQyGxXKmFJP42N3YCjkzKZ9TtWq8EGAcR24v553WUqTV6shhsfasj726QD6Urx5CPEEbVthqP9JrWxquqNtsOolBKJ0kMl6lsDwOIoFjqZXuhgPDF6dnyqijzyWJhrkr10yZ+9uZi1nEdzHhNIzn2SRkK8+R3p/o/usPGA=
+	t=1775672013; cv=none; b=Dzi3DFB2X+7EaMc8ETV3mLAJOavhAkz7R+z3uRkRw7jZ8Gl1bfU8hWTbG5IbTbhCpKvEhQ1EmEkFmA7lp61dRCjDEpsLhPkzRhoKNaSYgmTz6gXbxm1LVrPD9tmzowq5i+rqp0rCtEfhfJ2kFwQ5Ikxc1ft3YD4avThXiXioJCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673637; c=relaxed/simple;
-	bh=hwkQ2dk6b177gWeYhSzRlv8vdl4nvetbKFA77oF6yq8=;
+	s=arc-20240116; t=1775672013; c=relaxed/simple;
+	bh=dE+4CUakmjqriWrFhic/Pzih7lB0VWoqJUQIX3QjtZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDz7VRx4RkJA6w3M2o/rhqj5CmOw9v3VCHPV9dMoXsrcKtVzzfhuzN8WgU1dOx0c5dEIUUUUX1wwEP4aUsXpB9kzoX3RsCkGSkQf4W+Gx9ylf7HNpt+Yhodrg3PXbDRlnwcCNpeB8hxCyU0gYciGbedv5uoBpM4GRDE4VumNcvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Af+jNbKa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9331C19425;
-	Wed,  8 Apr 2026 18:40:36 +0000 (UTC)
+	 MIME-Version; b=rRrfK7WHN3pRSIHBci9YL0inTaV7ID93uX6h8jMr/wSD2H1HyziIBD1wmjd1sjME+/GOIBU2fvcJ/MNqGuecTzQoCcW/Fvahumr3cDVex5xZA8rKZ4C6Dq+6S3pKEZtdR0K7ra2QGMe9CfgmUXZE5p1Zsma8jMy3Qni5NnXt7AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSqv53JB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CFFC19421;
+	Wed,  8 Apr 2026 18:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673637;
-	bh=hwkQ2dk6b177gWeYhSzRlv8vdl4nvetbKFA77oF6yq8=;
+	s=korg; t=1775672013;
+	bh=dE+4CUakmjqriWrFhic/Pzih7lB0VWoqJUQIX3QjtZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Af+jNbKangiw8pyjnFqU+fhV1JxmklDyEn7kNCFDXY6npw+yP/7BHhMxaOOTVze9J
-	 vZ85m4tVnmBd+jkocTlJr4STIzqGPu9LZ5oOR0BY85mBLxgTor5tlmSTE54EfivdAM
-	 jXSX3csLqYXxzXHlf9LgsdEhy9TCLro9UVZiY6iQ=
+	b=CSqv53JBD0yR+k4FxF2g4kfWsbgToZEBMkOEnU7gOs0vsMipZ1adiSmjycaJf+Tau
+	 ogXt+975dGzNvxDuKcwKkfCNYversR9WozJ3BJT7oxGG6mMf47rPSXUdv5lafIy93D
+	 g0kIN6cPLj8koe160a33LXwa7QjchHZZBI74rEK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f50072212ab792c86925@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/242] atm: lec: fix use-after-free in sock_def_readable()
-Date: Wed,  8 Apr 2026 20:01:10 +0200
-Message-ID: <20260408175928.199405747@linuxfoundation.org>
+Subject: [PATCH 6.1 154/312] net/sched: sch_hfsc: fix divide-by-zero in rtsc_min()
+Date: Wed,  8 Apr 2026 20:01:11 +0200
+Message-ID: <20260408175939.517036773@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,272 +66,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-234739-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,google.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,mojatatu.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234111-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,f50072212ab792c86925];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 0C6F63C25C4
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,asu.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6CF3C3C044B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 922814879542c2e397b0e9641fd36b8202a8e555 ]
+[ Upstream commit 4576100b8cd03118267513cafacde164b498b322 ]
 
-A race condition exists between lec_atm_close() setting priv->lecd
-to NULL and concurrent access to priv->lecd in send_to_lecd(),
-lec_handle_bridge(), and lec_atm_send(). When the socket is freed
-via RCU while another thread is still using it, a use-after-free
-occurs in sock_def_readable() when accessing the socket's wait queue.
+m2sm() converts a u32 slope to a u64 scaled value.  For large inputs
+(e.g. m1=4000000000), the result can reach 2^32.  rtsc_min() stores
+the difference of two such u64 values in a u32 variable `dsm` and
+uses it as a divisor.  When the difference is exactly 2^32 the
+truncation yields zero, causing a divide-by-zero oops in the
+concave-curve intersection path:
 
-The root cause is that lec_atm_close() clears priv->lecd without
-any synchronization, while callers dereference priv->lecd without
-any protection against concurrent teardown.
+  Oops: divide error: 0000
+  RIP: 0010:rtsc_min (net/sched/sch_hfsc.c:601)
+  Call Trace:
+   init_ed (net/sched/sch_hfsc.c:629)
+   hfsc_enqueue (net/sched/sch_hfsc.c:1569)
+   [...]
 
-Fix this by converting priv->lecd to an RCU-protected pointer:
-- Mark priv->lecd as __rcu in lec.h
-- Use rcu_assign_pointer() in lec_atm_close() and lecd_attach()
-  for safe pointer assignment
-- Use rcu_access_pointer() for NULL checks that do not dereference
-  the pointer in lec_start_xmit(), lec_push(), send_to_lecd() and
-  lecd_attach()
-- Use rcu_read_lock/rcu_dereference/rcu_read_unlock in send_to_lecd(),
-  lec_handle_bridge() and lec_atm_send() to safely access lecd
-- Use rcu_assign_pointer() followed by synchronize_rcu() in
-  lec_atm_close() to ensure all readers have completed before
-  proceeding. This is safe since lec_atm_close() is called from
-  vcc_release() which holds lock_sock(), a sleeping lock.
-- Remove the manual sk_receive_queue drain from lec_atm_close()
-  since vcc_destroy_socket() already drains it after lec_atm_close()
-  returns.
+Widen `dsm` to u64 and replace do_div() with div64_u64() so the full
+difference is preserved.
 
-v2: Switch from spinlock + sock_hold/put approach to RCU to properly
-    fix the race. The v1 spinlock approach had two issues pointed out
-    by Eric Dumazet:
-    1. priv->lecd was still accessed directly after releasing the
-       lock instead of using a local copy.
-    2. The spinlock did not prevent packets being queued after
-       lec_atm_close() drains sk_receive_queue since timer and
-       workqueue paths bypass netif_stop_queue().
-
-Note: Syzbot patch testing was attempted but the test VM terminated
-    unexpectedly with "Connection to localhost closed by remote host",
-    likely due to a QEMU AHCI emulation issue unrelated to this fix.
-    Compile testing with "make W=1 net/atm/lec.o" passes cleanly.
-
-Reported-by: syzbot+f50072212ab792c86925@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f50072212ab792c86925
-Link: https://lore.kernel.org/all/20260309093614.502094-1-kartikey406@gmail.com/T/ [v1]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260309155908.508768-1-kartikey406@gmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260326204310.1549327-1-xmei5@asu.edu
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/lec.c | 72 +++++++++++++++++++++++++++++++++------------------
- net/atm/lec.h |  2 +-
- 2 files changed, 48 insertions(+), 26 deletions(-)
+ net/sched/sch_hfsc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index 4a8ca2d7ff595..4f236dd7d34ba 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -154,10 +154,19 @@ static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
- 					/* 0x01 is topology change */
- 
- 		priv = netdev_priv(dev);
--		atm_force_charge(priv->lecd, skb2->truesize);
--		sk = sk_atm(priv->lecd);
--		skb_queue_tail(&sk->sk_receive_queue, skb2);
--		sk->sk_data_ready(sk);
-+		struct atm_vcc *vcc;
-+
-+		rcu_read_lock();
-+		vcc = rcu_dereference(priv->lecd);
-+		if (vcc) {
-+			atm_force_charge(vcc, skb2->truesize);
-+			sk = sk_atm(vcc);
-+			skb_queue_tail(&sk->sk_receive_queue, skb2);
-+			sk->sk_data_ready(sk);
-+		} else {
-+			dev_kfree_skb(skb2);
-+		}
-+		rcu_read_unlock();
- 	}
- }
- #endif /* IS_ENABLED(CONFIG_BRIDGE) */
-@@ -216,7 +225,7 @@ static netdev_tx_t lec_start_xmit(struct sk_buff *skb,
- 	int is_rdesc;
- 
- 	pr_debug("called\n");
--	if (!priv->lecd) {
-+	if (!rcu_access_pointer(priv->lecd)) {
- 		pr_info("%s:No lecd attached\n", dev->name);
- 		dev->stats.tx_errors++;
- 		netif_stop_queue(dev);
-@@ -449,10 +458,19 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
- 				break;
- 			skb2->len = sizeof(struct atmlec_msg);
- 			skb_copy_to_linear_data(skb2, mesg, sizeof(*mesg));
--			atm_force_charge(priv->lecd, skb2->truesize);
--			sk = sk_atm(priv->lecd);
--			skb_queue_tail(&sk->sk_receive_queue, skb2);
--			sk->sk_data_ready(sk);
-+			struct atm_vcc *vcc;
-+
-+			rcu_read_lock();
-+			vcc = rcu_dereference(priv->lecd);
-+			if (vcc) {
-+				atm_force_charge(vcc, skb2->truesize);
-+				sk = sk_atm(vcc);
-+				skb_queue_tail(&sk->sk_receive_queue, skb2);
-+				sk->sk_data_ready(sk);
-+			} else {
-+				dev_kfree_skb(skb2);
-+			}
-+			rcu_read_unlock();
- 		}
- 	}
- #endif /* IS_ENABLED(CONFIG_BRIDGE) */
-@@ -468,23 +486,16 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
- 
- static void lec_atm_close(struct atm_vcc *vcc)
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index 302413e0aceff..a01ff859cc03b 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -556,7 +556,7 @@ static void
+ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
  {
--	struct sk_buff *skb;
- 	struct net_device *dev = (struct net_device *)vcc->proto_data;
- 	struct lec_priv *priv = netdev_priv(dev);
+ 	u64 y1, y2, dx, dy;
+-	u32 dsm;
++	u64 dsm;
  
--	priv->lecd = NULL;
-+	rcu_assign_pointer(priv->lecd, NULL);
-+	synchronize_rcu();
- 	/* Do something needful? */
- 
- 	netif_stop_queue(dev);
- 	lec_arp_destroy(priv);
- 
--	if (skb_peek(&sk_atm(vcc)->sk_receive_queue))
--		pr_info("%s closing with messages pending\n", dev->name);
--	while ((skb = skb_dequeue(&sk_atm(vcc)->sk_receive_queue))) {
--		atm_return(vcc, skb->truesize);
--		dev_kfree_skb(skb);
--	}
--
- 	pr_info("%s: Shut down!\n", dev->name);
- 	module_put(THIS_MODULE);
- }
-@@ -510,12 +521,14 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
- 	     const unsigned char *mac_addr, const unsigned char *atm_addr,
- 	     struct sk_buff *data)
- {
-+	struct atm_vcc *vcc;
- 	struct sock *sk;
- 	struct sk_buff *skb;
- 	struct atmlec_msg *mesg;
- 
--	if (!priv || !priv->lecd)
-+	if (!priv || !rcu_access_pointer(priv->lecd))
- 		return -1;
-+
- 	skb = alloc_skb(sizeof(struct atmlec_msg), GFP_ATOMIC);
- 	if (!skb)
- 		return -1;
-@@ -532,18 +545,27 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
- 	if (atm_addr)
- 		memcpy(&mesg->content.normal.atm_addr, atm_addr, ATM_ESA_LEN);
- 
--	atm_force_charge(priv->lecd, skb->truesize);
--	sk = sk_atm(priv->lecd);
-+	rcu_read_lock();
-+	vcc = rcu_dereference(priv->lecd);
-+	if (!vcc) {
-+		rcu_read_unlock();
-+		kfree_skb(skb);
-+		return -1;
-+	}
-+
-+	atm_force_charge(vcc, skb->truesize);
-+	sk = sk_atm(vcc);
- 	skb_queue_tail(&sk->sk_receive_queue, skb);
- 	sk->sk_data_ready(sk);
- 
- 	if (data != NULL) {
- 		pr_debug("about to send %d bytes of data\n", data->len);
--		atm_force_charge(priv->lecd, data->truesize);
-+		atm_force_charge(vcc, data->truesize);
- 		skb_queue_tail(&sk->sk_receive_queue, data);
- 		sk->sk_data_ready(sk);
- 	}
- 
-+	rcu_read_unlock();
- 	return 0;
- }
- 
-@@ -618,7 +640,7 @@ static void lec_push(struct atm_vcc *vcc, struct sk_buff *skb)
- 
- 		atm_return(vcc, skb->truesize);
- 		if (*(__be16 *) skb->data == htons(priv->lecid) ||
--		    !priv->lecd || !(dev->flags & IFF_UP)) {
-+		    !rcu_access_pointer(priv->lecd) || !(dev->flags & IFF_UP)) {
- 			/*
- 			 * Probably looping back, or if lecd is missing,
- 			 * lecd has gone down
-@@ -753,12 +775,12 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
- 		priv = netdev_priv(dev_lec[i]);
- 	} else {
- 		priv = netdev_priv(dev_lec[i]);
--		if (priv->lecd)
-+		if (rcu_access_pointer(priv->lecd))
- 			return -EADDRINUSE;
- 	}
- 	lec_arp_init(priv);
- 	priv->itfnum = i;	/* LANE2 addition */
--	priv->lecd = vcc;
-+	rcu_assign_pointer(priv->lecd, vcc);
- 	vcc->dev = &lecatm_dev;
- 	vcc_insert_socket(sk_atm(vcc));
- 
-diff --git a/net/atm/lec.h b/net/atm/lec.h
-index be0e2667bd8c3..ec85709bf8185 100644
---- a/net/atm/lec.h
-+++ b/net/atm/lec.h
-@@ -91,7 +91,7 @@ struct lec_priv {
- 						 */
- 	spinlock_t lec_arp_lock;
- 	struct atm_vcc *mcast_vcc;		/* Default Multicast Send VCC */
--	struct atm_vcc *lecd;
-+	struct atm_vcc __rcu *lecd;
- 	struct delayed_work lec_arp_work;	/* C10 */
- 	unsigned int maximum_unknown_frame_count;
- 						/*
+ 	if (isc->sm1 <= isc->sm2) {
+ 		/* service curve is convex */
+@@ -599,7 +599,7 @@ rtsc_min(struct runtime_sc *rtsc, struct internal_sc *isc, u64 x, u64 y)
+ 	 */
+ 	dx = (y1 - y) << SM_SHIFT;
+ 	dsm = isc->sm1 - isc->sm2;
+-	do_div(dx, dsm);
++	dx = div64_u64(dx, dsm);
+ 	/*
+ 	 * check if (x, y1) belongs to the 1st segment of rtsc.
+ 	 * if so, add the offset.
 -- 
 2.53.0
 
