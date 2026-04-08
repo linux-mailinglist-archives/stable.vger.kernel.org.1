@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-234680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPhlAVKm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:42 +0200
+	id kA4/LGud1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779933C23CF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6E03C0A51
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2050313E93E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:38:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C049A304D276
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92D83ACF16;
-	Wed,  8 Apr 2026 18:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7214D3A6B6B;
+	Wed,  8 Apr 2026 18:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpvBi8Zq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dSBh5X1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D695B67E;
-	Wed,  8 Apr 2026 18:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3521B2494F0;
+	Wed,  8 Apr 2026 18:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673485; cv=none; b=Zjy1OJ8/5ww/wjkZe/F+PL9FlYYNZWFNsD92Hc5R1mAHvgbpS1veppV+YUAlxLWPjTePk9CHhpnemgTygktW6cK4b0xgE3yTgN4v/9iBtsOsNh5pxhFgY+eiyk8oMToyoU7zEbOj1UsvKc0COAsWigyOMqLucc2DXlDIEmgxp5Y=
+	t=1775672354; cv=none; b=Ax3XTXsnHga1uDmBf62XhqvvQTuWN8l6j9ohaE/Mewig1T8WMUhwT34qUPnr2ItyGfTi3osUSGponrDtW0v4TsiEqHhMwRSa/Hl8jkCgQnzDdnDEbqBPbdwt4Vzdo3NTrcFpjB7R4gEWTtH8RS9Am0hJDLou9Xo+rgroD41MtRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673485; c=relaxed/simple;
-	bh=gD10WxfGRO0461q69dC2AYTAy+/JKl3/z5gpDi0TqlM=;
+	s=arc-20240116; t=1775672354; c=relaxed/simple;
+	bh=rB5oS2MqWUgukJ4ZKLyIDbW0noMxlLx5wUw8/T2jLFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=antYnhNAdaiJCbDhMOAOYjGFU8H9dxAfewpd1Snxt2KcCVlpqoHX6yYcwwTsQC7Ml3ml1FZq141fw/NCuYFfWzQv257ImDgX6A6L+cD9jFo82GbO/eWq6V/gA8J5lcSHAZkYYLON8rIpXhg0G8aLdj6ed7Yp9ih/5UzcKSsSa5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpvBi8Zq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B45C19421;
-	Wed,  8 Apr 2026 18:38:05 +0000 (UTC)
+	 MIME-Version; b=TAelC9N8J+lHrrlnOeJZGNCNIuMsDzaYDmAmTLfpVhJfWND+FJlAbtKZCUhL9OsdlLm3yUzmI2uxDpgJYRd2p8y02tvnNy/aW4pJ4VfoMJlDBQdgp2AmknLXRVu5rSv8MRJux1pNPvboWrjKosoeMHyj8s3GSemOwvL4vbTXzcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dSBh5X1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9CDC19421;
+	Wed,  8 Apr 2026 18:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673485;
-	bh=gD10WxfGRO0461q69dC2AYTAy+/JKl3/z5gpDi0TqlM=;
+	s=korg; t=1775672354;
+	bh=rB5oS2MqWUgukJ4ZKLyIDbW0noMxlLx5wUw8/T2jLFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UpvBi8Zq79l5SnSJ4CuiqcP2/K3gEySJZYC0gEWLqu4sRpGgm/Y4J9DRYLlfCnE+G
-	 8qlmGTAmdjQThA5rH+qnEdWhqEUV2bMaHyGVrC2dFwKwj+9BLlrChArUyJq/5fWFEn
-	 Zdqtj+5tZnWHpYD++/3IVLxqr3Pb38LKZCs2mPCA=
+	b=0dSBh5X1L6xmCZSjLhSYIgXO4H13zL1sVoHNmJQnHZGdr35r/L4AZ7faouJORTuUW
+	 gOxNrxwRG4TqPmfhyH2246EqY/pDFP4KelNPuKlnp24cvMdRxOX1A23AbgVTDeB7Q0
+	 raB4//qDg865oKFDXVFtvwUVOgSbFbdgkrRaEUPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.18 218/277] firmware: microchip: fail auto-update probe if no flash found
-Date: Wed,  8 Apr 2026 20:03:23 +0200
-Message-ID: <20260408175941.999803071@linuxfoundation.org>
+	Jason Yan <yanaijie@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 287/312] ext4: use ext4_group_desc_free() in ext4_put_super() to save some duplicated code
+Date: Wed,  8 Apr 2026 20:03:24 +0200
+Message-ID: <20260408175944.477823070@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +68,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234680-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234243-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 779933C23CF
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3F6E03C0A51
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Jason Yan <yanaijie@huawei.com>
 
-commit c7596f9001e2b83293e3658e4e1addde69bb335d upstream.
+[ Upstream commit 6ef684988816fdfa29ceff260c97d725a489a942 ]
 
-There's no point letting the driver probe if there is no flash, as
-trying to do a firmware upload will fail. Move the code that attempts
-to get the flash from firmware upload to probe, and let it emit a
-message to users stating why auto-update is not supported.
-The code currently could have a problem if there's a flash in
-devicetree, but the system controller driver fails to get a pointer to
-it from the mtd subsystem, which will cause
-mpfs_sys_controller_get_flash() to return an error. Check for errors and
-null, instead of just null, in the new clause.
+The only difference here is that ->s_group_desc and ->s_flex_groups share
+the same rcu read lock here but it is not necessary. In other places they
+do not share the lock at all.
 
-CC: stable@vger.kernel.org
-Fixes: ec5b0f1193ad4 ("firmware: microchip: add PolarFire SoC Auto Update support")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+Link: https://lore.kernel.org/r/20230323140517.1070239-4-yanaijie@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 496bb99b7e66 ("ext4: fix the might_sleep() warnings in kvfree()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/microchip/mpfs-auto-update.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/ext4/super.c |   32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
---- a/drivers/firmware/microchip/mpfs-auto-update.c
-+++ b/drivers/firmware/microchip/mpfs-auto-update.c
-@@ -113,10 +113,6 @@ static enum fw_upload_err mpfs_auto_upda
- 	 * be added here.
- 	 */
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1236,11 +1236,23 @@ static void ext4_percpu_param_destroy(st
+ 	percpu_free_rwsem(&sbi->s_writepages_rwsem);
+ }
  
--	priv->flash = mpfs_sys_controller_get_flash(priv->sys_controller);
--	if (!priv->flash)
--		return FW_UPLOAD_ERR_HW_ERROR;
--
- 	erase_size = round_up(erase_size, (u64)priv->flash->erasesize);
- 
- 	/*
-@@ -427,6 +423,12 @@ static int mpfs_auto_update_probe(struct
- 		return dev_err_probe(dev, PTR_ERR(priv->sys_controller),
- 				     "Could not register as a sub device of the system controller\n");
- 
-+	priv->flash = mpfs_sys_controller_get_flash(priv->sys_controller);
-+	if (IS_ERR_OR_NULL(priv->flash)) {
-+		dev_dbg(dev, "No flash connected to the system controller, auto-update not supported\n");
-+		return -ENODEV;
-+	}
++static void ext4_group_desc_free(struct ext4_sb_info *sbi)
++{
++	struct buffer_head **group_desc;
++	int i;
 +
- 	priv->dev = dev;
- 	platform_set_drvdata(pdev, priv);
++	rcu_read_lock();
++	group_desc = rcu_dereference(sbi->s_group_desc);
++	for (i = 0; i < sbi->s_gdb_count; i++)
++		brelse(group_desc[i]);
++	kvfree(group_desc);
++	rcu_read_unlock();
++}
++
+ static void ext4_put_super(struct super_block *sb)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+-	struct buffer_head **group_desc;
+ 	struct flex_groups **flex_groups;
+ 	int aborted = 0;
+ 	int i, err;
+@@ -1290,11 +1302,8 @@ static void ext4_put_super(struct super_
+ 	if (!sb_rdonly(sb))
+ 		ext4_commit_super(sb);
  
++	ext4_group_desc_free(sbi);
+ 	rcu_read_lock();
+-	group_desc = rcu_dereference(sbi->s_group_desc);
+-	for (i = 0; i < sbi->s_gdb_count; i++)
+-		brelse(group_desc[i]);
+-	kvfree(group_desc);
+ 	flex_groups = rcu_dereference(sbi->s_flex_groups);
+ 	if (flex_groups) {
+ 		for (i = 0; i < sbi->s_flex_groups_allocated; i++)
+@@ -4770,19 +4779,6 @@ static int ext4_geometry_check(struct su
+ 	return 0;
+ }
+ 
+-static void ext4_group_desc_free(struct ext4_sb_info *sbi)
+-{
+-	struct buffer_head **group_desc;
+-	int i;
+-
+-	rcu_read_lock();
+-	group_desc = rcu_dereference(sbi->s_group_desc);
+-	for (i = 0; i < sbi->s_gdb_count; i++)
+-		brelse(group_desc[i]);
+-	kvfree(group_desc);
+-	rcu_read_unlock();
+-}
+-
+ static int ext4_group_desc_init(struct super_block *sb,
+ 				struct ext4_super_block *es,
+ 				ext4_fsblk_t logical_sb_block,
 
 
 
