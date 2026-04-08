@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-233978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCldGoGZ1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-233978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:01 +0200
+	id QLVMBJWZ1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-233989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152303BFF8F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:07:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CBF3BFFBB
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DFF5F3012CA8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:07:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1AD41300A31D
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847FC3D8912;
-	Wed,  8 Apr 2026 18:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECA83D47A5;
+	Wed,  8 Apr 2026 18:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2wDM7cX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgDvz30n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465A83D813D;
-	Wed,  8 Apr 2026 18:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D963446CA;
+	Wed,  8 Apr 2026 18:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671670; cv=none; b=SgjidcEIlZo1Y6Ie+S5/ZitGolBA6mATAZIt4W0SVZ0+2UjGni2xO1ONAY4PyhzWW/Iy3WhH4+QxGwWB1tHIFzllSomThYV4PeSJH8c+KSrBgmf/MG5xbByLf0AHrzvF3FQQDY3rIhgAawCgXQ30RnYAfGnYdRy+A6OOBlj4OCU=
+	t=1775671699; cv=none; b=X8SQpPwPrnTTBdPVez8Mjk0/r0b9ebZnD0U4+uub0SxTW5mQLHXvru7ZATqI9kYhMpdRCkBAWtJLO+KL3lVN/fq6pnuN0Xk/iv7st8EWxGlEjteDIAlytU8OzeLNtn4cFQa/kC1AxjaWVAW8xflPYlWsa9hvkAscIAg+sBdAAIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671670; c=relaxed/simple;
-	bh=Rmh9Yqkx8IKpY/Km5qR8Y9/donU/l3NPdl3uyDePtIw=;
+	s=arc-20240116; t=1775671699; c=relaxed/simple;
+	bh=CMyqyxTUE4UcnEFECNL2ghx2E5Bp6NXMgMky7PMx5y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFmRUyzCDICJ+vapifxlpqw6lfsX1qoZaQJmPgd9i5GpmPa0SEkjtfbKhfJ8Q5qOWA7HBuaH0HorqqapxbiaESjhF5DPHhqiW4yZV+8SO4HHHJOJDIlFevTJay4o2Wpwxt0FacsBza2cPRPUW/UbBwEZDaMHmBUqg6G0Mdx08SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2wDM7cX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AFAC19421;
-	Wed,  8 Apr 2026 18:07:49 +0000 (UTC)
+	 MIME-Version; b=kProzeTM95HHnQM7RCmrlSQEcDWDah4m4ZLl395BKY+TvOL01dH7d+gt9AOqHfVyZsfImUUl3wAhXWmRP1GvQBnr9huB3KxJJSsGa+BMcP7/LUWExo35bYEO4g/HBcrUZ3xt6eNMoYgaWH5Phr03DKNgczYCr3D+8Cyc1Y9i+HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgDvz30n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD76C19421;
+	Wed,  8 Apr 2026 18:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671670;
-	bh=Rmh9Yqkx8IKpY/Km5qR8Y9/donU/l3NPdl3uyDePtIw=;
+	s=korg; t=1775671698;
+	bh=CMyqyxTUE4UcnEFECNL2ghx2E5Bp6NXMgMky7PMx5y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x2wDM7cXtO/GwlWZ7eYDFuiKLJm1LOCc0f6k+a8MlmbIvbLPEOl1LDY/tDwbRm/ct
-	 88ehAsKDMGPcKCr7HjkO6MaL1+b6oWg/uSxX+gU6morqcodq3G80AWnuJyMuUArsrR
-	 96SxA5WAKPoKiUQfoztX5OFONcH9xzBihDuYqpf4=
+	b=VgDvz30n+4Clx1Rsa4OXMOZGWwhGtYCHc9HR//wyfJk9pQEeg96RL3AhFpmntEwFd
+	 boHNSf10qEwi85KgcnbYKO2AwJrg+uhr0v2VYg7lVB9EeFWNBJy/pPxs05FtvE8Mrc
+	 cBXIb8FoZW4dPxJddm/9m72LwTuz1YjdSlWQy4Wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/312] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_set_reg()
-Date: Wed,  8 Apr 2026 19:58:52 +0200
-Message-ID: <20260408175934.300545612@linuxfoundation.org>
+Subject: [PATCH 6.1 016/312] ASoC: fsl_easrc: Fix event generation in fsl_easrc_iec958_put_bits()
+Date: Wed,  8 Apr 2026 19:58:53 +0200
+Message-ID: <20260408175934.337395346@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233978-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233989-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 152303BFF8F
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B5CBF3BFFBB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,48 +100,45 @@ X-Rspamd-Server: lfdr
 
 From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 31ddc62c1cd92e51b9db61d7954b85ae2ec224da ]
+[ Upstream commit 54a86cf48eaa6d1ab5130d756b718775e81e1748 ]
 
 ALSA controls should return 1 if the value in the control changed but the
-control put operation fsl_easrc_set_reg() only returns 0 or a negative
-error code, causing ALSA to not generate any change events. Add a suitable
-check by using regmap_update_bits_check() with the underlying regmap, this
-is more clearly and simply correct than trying to verify that one of the
-generic ops is exactly equivalent to this one.
+control put operation fsl_easrc_iec958_put_bits() unconditionally returns
+0, causing ALSA to not generate any change events. This is detected by
+mixer-test with large numbers of messages in the form:
+
+    No event generated for Context 3 IEC958 CS5
+    Context 3 IEC958 CS5.0 orig 5224 read 5225, is_volatile 0
+
+Add a suitable check.
 
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-2-39d4c766918b@kernel.org
+Link: https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-1-39d4c766918b@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/fsl/fsl_easrc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index 210ca7199adab..8cf414ab1295b 100644
+index 8cf414ab1295b..cbe1f48a58d23 100644
 --- a/sound/soc/fsl/fsl_easrc.c
 +++ b/sound/soc/fsl/fsl_easrc.c
-@@ -93,14 +93,17 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
- 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+@@ -52,10 +52,13 @@ static int fsl_easrc_iec958_put_bits(struct snd_kcontrol *kcontrol,
  	struct soc_mreg_control *mc =
  		(struct soc_mreg_control *)kcontrol->private_value;
-+	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
  	unsigned int regval = ucontrol->value.integer.value[0];
-+	bool changed;
- 	int ret;
++	int ret;
++
++	ret = (easrc_priv->bps_iec958[mc->regbase] != regval);
  
--	ret = snd_soc_component_write(component, mc->regbase, regval);
--	if (ret < 0)
-+	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
-+				       GENMASK(31, 0), regval, &changed);
-+	if (ret != 0)
- 		return ret;
+ 	easrc_priv->bps_iec958[mc->regbase] = regval;
  
 -	return 0;
-+	return changed;
++	return ret;
  }
  
- #define SOC_SINGLE_REG_RW(xname, xreg) \
+ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
 -- 
 2.51.0
 
