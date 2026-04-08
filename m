@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-235118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNm9M0Kr1mmZHAgAu9opvQ
-	(envelope-from <stable+bounces-235118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:46 +0200
+	id GOaKIbGj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9FD3C2E34
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5533C1C46
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CC3730A5058
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:57:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F4A331866A2
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF713C5552;
-	Wed,  8 Apr 2026 18:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5B23B0AFC;
+	Wed,  8 Apr 2026 18:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xELsbM0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjSy8Klr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10E7337B81;
-	Wed,  8 Apr 2026 18:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C95835B653;
+	Wed,  8 Apr 2026 18:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674615; cv=none; b=Z/ZNK4KRjCLHmHJ2ZW+XYXS1QAe5bzvwzZ88SyJ/oXkew1ZUzDAiIVhiRnVcC8YXeg97BQNPgxt1yTT+mDd2oRTzRpxFsiuLssSCAJnYwuHx6he6WWE71Q5Bb/qRasQY9exBRmT9q3D+46H4wZyVoEZr1RUuWFI18/7dEjnjDF0=
+	t=1775673236; cv=none; b=Q7kCShyrxehlQVR8LoH3on4MBmV4PlJNzYDC9jcC206pN1purk52mMDtVC6d3vdwY6qFNfKcjBThxDu+MTj2PnxCU+5dgop2976NlDtXxI+gZaDcuZAsuM8LjGPnc7jtVqllNxXBJPLvPN9Fau+8rHzL8gojvSYYo8BQBy8mqBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674615; c=relaxed/simple;
-	bh=VgFTSPOUV6/JPMIMl8Ur/ZZc/qr9fcBscTc0MNk6yJM=;
+	s=arc-20240116; t=1775673236; c=relaxed/simple;
+	bh=fnvgDp/Kdj24jGcDwpYXXvHOeoz2Nc32bSNCZfd10Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAJuZYbJ894QEImk1WI15SKLWSlPul7Ybtvp5zkmyRzi8GgSAbNSBEaTx1GRM/rw79DaEHo7wlMiW/ohg+YLpwCjArfF7ZO3vrHcH/evMk36jq9l1qUSpLmNkYypQMB1mDKUABn+94iPJYzAN6qbdBLLnamhSVCgJ4DegX8vwFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xELsbM0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4604FC19421;
-	Wed,  8 Apr 2026 18:56:55 +0000 (UTC)
+	 MIME-Version; b=Y9zm3weMT2+xr758crmECTikZDNg6gZv/8mIuxqufTGVSIVKZqM2ab5L8ckmsSpDjkK5HV2jnY+Bg2uhZQw+hGs/SX/d8zGlxoVdQ7bnsGGlnLMrQPnnYORy+KLVE4nvIBeSGphPvfXPO8xAzSTOqcxjIRJwNmDD6SZT4XIWX00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjSy8Klr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A4BC19421;
+	Wed,  8 Apr 2026 18:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674615;
-	bh=VgFTSPOUV6/JPMIMl8Ur/ZZc/qr9fcBscTc0MNk6yJM=;
+	s=korg; t=1775673235;
+	bh=fnvgDp/Kdj24jGcDwpYXXvHOeoz2Nc32bSNCZfd10Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xELsbM0bClCP5l6M3fnvbSSMvoM+caF75/Hs/gzhR/nAdu1eThxg79rYYmpnCU5Qf
-	 tMX8R5X+zwmrs60SsJGOEknsvG+lkGlRoRzi4hYGxIFf0N/L79thj9ZoDzDlEqMLyc
-	 Yz8x8HZ5n4gDbB3CP2YpWNpAqPODe+3r3489w7/U=
+	b=rjSy8KlrbolJQR4x0NALZ0Kcywzqv7cQeXaxiabgk87Exgh/+RnL9LaILbqDXeWkf
+	 GjPUSlqjZfleJT37O80d0vPNv0ixKsDJfzY/CpgeaHUFa6S1i9VrGZt6/IODHXGA96
+	 6wzqbthKFAQOUP1pt8Wur7klZmjNCAp2LCDsFxoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 139/311] hwmon: (ltc4286) Add missing MODULE_IMPORT_NS("PMBUS")
+	Lixu Zhang <lixu.zhang@intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 154/277] iio: orientation: hid-sensor-rotation: fix quaternion alignment
 Date: Wed,  8 Apr 2026 20:02:19 +0200
-Message-ID: <20260408175944.603329184@linuxfoundation.org>
+Message-ID: <20260408175939.622220617@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,62 +75,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234583-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235118-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,wiwynn.com:email,juniper.net:email]
-X-Rspamd-Queue-Id: 0F9FD3C2E34
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,baylibre.com:email,intel.com:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CE5533C1C46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit a9d2fbd3ad0e6ac588386e699beeccfe7516755f ]
+commit 50d4cc74b8a720a9682a9c94f7e62a5de6b2ed3a upstream.
 
-ltc4286.c uses PMBus core symbols exported in the PMBUS namespace,
-such as pmbus_do_probe(), but does not declare MODULE_IMPORT_NS("PMBUS").
+Restore the alignment of sampled_vals to 16 bytes by using
+IIO_DECLARE_QUATERNION(). This field contains a quaternion value which
+has scan_type.repeat = 4 and storagebits = 32. So the alignment must
+be 16 bytes to match the assumptions of iio_storage_bytes_for_si() and
+also to not break userspace.
 
-Add the missing namespace import to avoid modpost warnings.
-
-Fixes: 0c459759ca97 ("hwmon: (pmbus) Add ltc4286 driver")
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260329170925.34581-5-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Lixu Zhang <lixu.zhang@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221077
+Fixes: b31a74075cb4 ("iio: orientation: hid-sensor-rotation: remove unnecessary alignment")
+Tested-by: Lixu Zhang <lixu.zhang@intel.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/ltc4286.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/orientation/hid-sensor-rotation.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/pmbus/ltc4286.c b/drivers/hwmon/pmbus/ltc4286.c
-index aabd0bcdfeee3..8715d380784a0 100644
---- a/drivers/hwmon/pmbus/ltc4286.c
-+++ b/drivers/hwmon/pmbus/ltc4286.c
-@@ -173,3 +173,4 @@ module_i2c_driver(ltc4286_driver);
- MODULE_AUTHOR("Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>");
- MODULE_DESCRIPTION("PMBUS driver for LTC4286 and compatibles");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("PMBUS");
--- 
-2.53.0
-
+--- a/drivers/iio/orientation/hid-sensor-rotation.c
++++ b/drivers/iio/orientation/hid-sensor-rotation.c
+@@ -19,7 +19,7 @@ struct dev_rot_state {
+ 	struct hid_sensor_common common_attributes;
+ 	struct hid_sensor_hub_attribute_info quaternion;
+ 	struct {
+-		s32 sampled_vals[4];
++		IIO_DECLARE_QUATERNION(s32, sampled_vals);
+ 		aligned_s64 timestamp;
+ 	} scan;
+ 	int scale_pre_decml;
 
 
 
