@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-233886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNGzOvNO1mm8DQgAu9opvQ
-	(envelope-from <stable+bounces-233886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:49:55 +0200
+	id qEQkITBQ1mm8DQgAu9opvQ
+	(envelope-from <stable+bounces-233887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:55:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F853BC636
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:49:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE3E3BC6FA
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3450300D692
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:47:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A21FD3005332
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3533BA235;
-	Wed,  8 Apr 2026 12:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F783B582F;
+	Wed,  8 Apr 2026 12:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NjsOpPUB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bf0w2cZ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C598A344DAB
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679923BC66C
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775652464; cv=none; b=CE3Cw5EEZBSIHuSCGPK9bKQzT8pzqn7Sp1rQLYTK+OWJN/IocUb+XnGJhd80IUZ6dQ5ZeBAvxd0F+me8EteKc3hMJUpxEjEpyy14Jcqt0uBzlwjyyyxjlh5DQ1sUwF8j5H7loI2iVn+RiQQJZ7QBZ9qka9/4h+K0xkrfly7po0g=
+	t=1775652469; cv=none; b=WNz5Ma69V2Unfrp2DsYSsN20eA7rQkttToUxFbZbUkqYKb2WfRcry66adW3BFAq/FAAEbvnbt+LruUa3syee11ibOXLVWNg3FhQNY+LinEF+cOfaD+ADwdHGIpxxUqMlnKmJFuOI7BEPsqDaLWN2lgWGoHbEptyIeg9L2ZNaj1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775652464; c=relaxed/simple;
-	bh=2a4CpDt8SqTwQ4sYH2PmZvTwouMdotWFT++9c0/ZYkU=;
+	s=arc-20240116; t=1775652469; c=relaxed/simple;
+	bh=hXL9PSy2T9OidFXlN7I43y7vcFLJto4rSFdeRqMTNq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYjE+IyX098jJHYmeL35/B3MsiSZ0HU5RBbyPjGLtyYiPRFgY3Y7H9EE1oFxX5bbhyG/NXr6LJMD8tXt7LeuU62glkND3sSZc2UPYJlBUjKGBiAHeC7HT59pqSYK6SASGBF1R/R5moHX29FcVlWRI0ZtaZReC6VF33jFWjLIdDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjsOpPUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C0FC2BCB1;
-	Wed,  8 Apr 2026 12:47:43 +0000 (UTC)
+	 MIME-Version; b=nVAGXL6OHfKR8RWHr/FDfvbNPOZC0D1vkmo1ASlze1NPheiiUW8luiuX1drkGgdzr92ilekX5mCCC57hkNgK+n03GuRqqxSaQUXGkkkUuXKJPiXc1diBvnJ+lkVKcIIksUdFFd23z75sf7g9Xxrhg7ds6k+90CoVEYY9c3TRxsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bf0w2cZ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5492C19421;
+	Wed,  8 Apr 2026 12:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775652464;
-	bh=2a4CpDt8SqTwQ4sYH2PmZvTwouMdotWFT++9c0/ZYkU=;
+	s=k20201202; t=1775652469;
+	bh=hXL9PSy2T9OidFXlN7I43y7vcFLJto4rSFdeRqMTNq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjsOpPUBBUJyUOIQVDk73IKpm6KX5xJ5EYdpTNeQR3vGJAZ5SFMMowkTpvxu6Bm2E
-	 agvfUVnT9Vt7sob6hrHyUUKYwWyF1P1zPAXG0H6qnaNY7jYTPmndEm7g7bJ/8rqVJo
-	 NuDMY6FAmqBlNRDxqGWititqRBVY4VjN5ZUL7kCf8YcSojg3EmSxR77PdygsbI7VaV
-	 fANzIY2/L11icUxw2zwrP4XQLbVaaT9EsjMAPJAmEH2twT5THR8fZ2ivMWiB+O6hJR
-	 Z9U8Dr1+taPmIMnpqHn9D+A4gWU5eTH/LXLU4fax7IcZyiPslfJFH5pPH8JALlG3wq
-	 zBIrUOU47qxVw==
+	b=Bf0w2cZ7hIDIzZp88y5oDUOv3cpl3tcFKWa6mvmMxhd/+E7W3lw+imfqxBW+8mFAr
+	 zejZcKvoSUYo8aKaMHr6SXNhTzKPiJLf9zZf5AvcvLfgc4rkg3lWlFXy2iwbaEgPux
+	 oVNf1iQ1hsCWnoJaQeEmxSVs3yam8I8y+S/n1K570+jqeKKu2iVmbOQGSHvb3Oa9zT
+	 e/pqJIiDW076Uq1S7fwC8hwkbXpTSSqFWaMtjj/AE7ddvEWyjD16yWmIWP0mrTTg+1
+	 myKyXTYLA/TC2c0VScwVmqwZOzJ6mPcAT08ryFilL+uvYUNx8Ibqt3Qd95LXpMrIyB
+	 RDbCQ+hjSI4Rw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Andrea Righi <arighi@nvidia.com>,
-	Daniel Hodges <hodgesd@meta.com>,
-	Patrick Somaru <patsomaru@meta.com>,
-	Tejun Heo <tj@kernel.org>,
+Cc: Liao Chang <liaochang1@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] sched_ext: Fix stale direct dispatch state in ddsp_dsq_id
-Date: Wed,  8 Apr 2026 08:47:41 -0400
-Message-ID: <20260408124741.1019690-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] cpufreq: governor: Free dbs_data directly when gov->init() fails
+Date: Wed,  8 Apr 2026 08:47:46 -0400
+Message-ID: <20260408124747.1019894-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408124741.1019690-1-sashal@kernel.org>
-References: <2026040839-sprang-trembling-2810@gregkh>
- <20260408124741.1019690-1-sashal@kernel.org>
+In-Reply-To: <2026040816-myth-cleft-0c71@gregkh>
+References: <2026040816-myth-cleft-0c71@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233886-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-233887-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -90,179 +88,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,meta.com:email]
-X-Rspamd-Queue-Id: 78F853BC636
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linaro.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 8CE3E3BC6FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Liao Chang <liaochang1@huawei.com>
 
-[ Upstream commit 7e0ffb72de8aa3b25989c2d980e81b829c577010 ]
+[ Upstream commit 916f13884042f615cfbfc0b42cc68dadee826f2a ]
 
-@p->scx.ddsp_dsq_id can be left set (non-SCX_DSQ_INVALID) triggering a
-spurious warning in mark_direct_dispatch() when the next wakeup's
-ops.select_cpu() calls scx_bpf_dsq_insert(), such as:
+Due to the kobject embedded in the dbs_data doest not has a release()
+method yet, it needs to use kfree() to free dbs_data directly when
+governor fails to allocate the tunner field of dbs_data.
 
- WARNING: kernel/sched/ext.c:1273 at scx_dsq_insert_commit+0xcd/0x140
-
-The root cause is that ddsp_dsq_id was only cleared in dispatch_enqueue(),
-which is not reached in all paths that consume or cancel a direct dispatch
-verdict.
-
-Fix it by clearing it at the right places:
-
- - direct_dispatch(): cache the direct dispatch state in local variables
-   and clear it before dispatch_enqueue() on the synchronous path. For
-   the deferred path, the direct dispatch state must remain set until
-   process_ddsp_deferred_locals() consumes them.
-
- - process_ddsp_deferred_locals(): cache the dispatch state in local
-   variables and clear it before calling dispatch_to_local_dsq(), which
-   may migrate the task to another rq.
-
- - do_enqueue_task(): clear the dispatch state on the enqueue path
-   (local/global/bypass fallbacks), where the direct dispatch verdict is
-   ignored.
-
- - dequeue_task_scx(): clear the dispatch state after dispatch_dequeue()
-   to handle both the deferred dispatch cancellation and the holding_cpu
-   race, covering all cases where a pending direct dispatch is
-   cancelled.
-
- - scx_disable_task(): clear the direct dispatch state when
-   transitioning a task out of the current scheduler. Waking tasks may
-   have had the direct dispatch state set by the outgoing scheduler's
-   ops.select_cpu() and then been queued on a wake_list via
-   ttwu_queue_wakelist(), when SCX_OPS_ALLOW_QUEUED_WAKEUP is set. Such
-   tasks are not on the runqueue and are not iterated by scx_bypass(),
-   so their direct dispatch state won't be cleared. Without this clear,
-   any subsequent SCX scheduler that tries to direct dispatch the task
-   will trigger the WARN_ON_ONCE() in mark_direct_dispatch().
-
-Fixes: 5b26f7b920f7 ("sched_ext: Allow SCX_DSQ_LOCAL_ON for direct dispatches")
-Cc: stable@vger.kernel.org # v6.12+
-Cc: Daniel Hodges <hodgesd@meta.com>
-Cc: Patrick Somaru <patsomaru@meta.com>
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Liao Chang <liaochang1@huawei.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 6dcf9d0064ce ("cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 49 +++++++++++++++++++++++++++++++++-------------
- 1 file changed, 35 insertions(+), 14 deletions(-)
+ drivers/cpufreq/cpufreq_governor.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 083370667e521..ee031ba877d9c 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -1025,15 +1025,6 @@ static void dispatch_enqueue(struct scx_sched *sch, struct scx_dispatch_q *dsq,
- 	dsq_mod_nr(dsq, 1);
- 	p->scx.dsq = dsq;
+diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
+index c8bca3e77bcea..1a7fcaf39cc9b 100644
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -440,7 +440,7 @@ int cpufreq_dbs_governor_init(struct cpufreq_policy *policy)
  
--	/*
--	 * scx.ddsp_dsq_id and scx.ddsp_enq_flags are only relevant on the
--	 * direct dispatch path, but we clear them here because the direct
--	 * dispatch verdict may be overridden on the enqueue path during e.g.
--	 * bypass.
--	 */
--	p->scx.ddsp_dsq_id = SCX_DSQ_INVALID;
--	p->scx.ddsp_enq_flags = 0;
--
+ 	ret = gov->init(dbs_data);
+ 	if (ret)
+-		goto free_policy_dbs_info;
++		goto free_dbs_data;
+ 
  	/*
- 	 * We're transitioning out of QUEUEING or DISPATCHING. store_release to
- 	 * match waiters' load_acquire.
-@@ -1176,12 +1167,34 @@ static void mark_direct_dispatch(struct scx_sched *sch,
- 	p->scx.ddsp_enq_flags = enq_flags;
- }
- 
-+/*
-+ * Clear @p direct dispatch state when leaving the scheduler.
-+ *
-+ * Direct dispatch state must be cleared in the following cases:
-+ *  - direct_dispatch(): cleared on the synchronous enqueue path, deferred
-+ *    dispatch keeps the state until consumed
-+ *  - process_ddsp_deferred_locals(): cleared after consuming deferred state,
-+ *  - do_enqueue_task(): cleared on enqueue fallbacks where the dispatch
-+ *    verdict is ignored (local/global/bypass)
-+ *  - dequeue_task_scx(): cleared after dispatch_dequeue(), covering deferred
-+ *    cancellation and holding_cpu races
-+ *  - scx_disable_task(): cleared for queued wakeup tasks, which are excluded by
-+ *    the scx_bypass() loop, so that stale state is not reused by a subsequent
-+ *    scheduler instance
-+ */
-+static inline void clear_direct_dispatch(struct task_struct *p)
-+{
-+	p->scx.ddsp_dsq_id = SCX_DSQ_INVALID;
-+	p->scx.ddsp_enq_flags = 0;
-+}
+ 	 * The sampling interval should not be less than the transition latency
+@@ -475,6 +475,8 @@ int cpufreq_dbs_governor_init(struct cpufreq_policy *policy)
+ 	if (!have_governor_per_policy())
+ 		gov->gdbs_data = NULL;
+ 	gov->exit(dbs_data);
 +
- static void direct_dispatch(struct scx_sched *sch, struct task_struct *p,
- 			    u64 enq_flags)
- {
- 	struct rq *rq = task_rq(p);
- 	struct scx_dispatch_q *dsq =
- 		find_dsq_for_dispatch(sch, rq, p->scx.ddsp_dsq_id, p);
-+	u64 ddsp_enq_flags;
++free_dbs_data:
+ 	kfree(dbs_data);
  
- 	touch_core_sched_dispatch(rq, p);
- 
-@@ -1222,8 +1235,10 @@ static void direct_dispatch(struct scx_sched *sch, struct task_struct *p,
- 		return;
- 	}
- 
--	dispatch_enqueue(sch, dsq, p,
--			 p->scx.ddsp_enq_flags | SCX_ENQ_CLEAR_OPSS);
-+	ddsp_enq_flags = p->scx.ddsp_enq_flags;
-+	clear_direct_dispatch(p);
-+
-+	dispatch_enqueue(sch, dsq, p, ddsp_enq_flags | SCX_ENQ_CLEAR_OPSS);
- }
- 
- static bool scx_rq_online(struct rq *rq)
-@@ -1329,6 +1344,7 @@ static void do_enqueue_task(struct rq *rq, struct task_struct *p, u64 enq_flags,
- 	 */
- 	touch_core_sched(rq, p);
- 	refill_task_slice_dfl(sch, p);
-+	clear_direct_dispatch(p);
- 	dispatch_enqueue(sch, dsq, p, enq_flags);
- }
- 
-@@ -1496,6 +1512,7 @@ static bool dequeue_task_scx(struct rq *rq, struct task_struct *p, int deq_flags
- 	sub_nr_running(rq, 1);
- 
- 	dispatch_dequeue(rq, p);
-+	clear_direct_dispatch(p);
- 	return true;
- }
- 
-@@ -2236,13 +2253,15 @@ static void process_ddsp_deferred_locals(struct rq *rq)
- 				struct task_struct, scx.dsq_list.node))) {
- 		struct scx_sched *sch = scx_root;
- 		struct scx_dispatch_q *dsq;
-+		u64 dsq_id = p->scx.ddsp_dsq_id;
-+		u64 enq_flags = p->scx.ddsp_enq_flags;
- 
- 		list_del_init(&p->scx.dsq_list.node);
-+		clear_direct_dispatch(p);
- 
--		dsq = find_dsq_for_dispatch(sch, rq, p->scx.ddsp_dsq_id, p);
-+		dsq = find_dsq_for_dispatch(sch, rq, dsq_id, p);
- 		if (!WARN_ON_ONCE(dsq->id != SCX_DSQ_LOCAL))
--			dispatch_to_local_dsq(sch, rq, dsq, p,
--					      p->scx.ddsp_enq_flags);
-+			dispatch_to_local_dsq(sch, rq, dsq, p, enq_flags);
- 	}
- }
- 
-@@ -2881,6 +2900,8 @@ static void scx_disable_task(struct task_struct *p)
- 	lockdep_assert_rq_held(rq);
- 	WARN_ON_ONCE(scx_get_task_state(p) != SCX_TASK_ENABLED);
- 
-+	clear_direct_dispatch(p);
-+
- 	if (SCX_HAS_OP(sch, disable))
- 		SCX_CALL_OP_TASK(sch, SCX_KF_REST, disable, rq, p);
- 	scx_set_task_state(p, SCX_TASK_READY);
+ free_policy_dbs_info:
 -- 
 2.53.0
 
