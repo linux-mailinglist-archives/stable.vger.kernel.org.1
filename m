@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-233983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Cp4H4WZ1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-233983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:05 +0200
+	id oEYnM6GZ1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-233984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD6C3BFF9F
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ECD83BFFE7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7C544300B452
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:08:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 531DF300FB4F
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CD03D890E;
-	Wed,  8 Apr 2026 18:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843933D88FE;
+	Wed,  8 Apr 2026 18:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwcPkues"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smuvenbs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946513D88FE;
-	Wed,  8 Apr 2026 18:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482113D4134;
+	Wed,  8 Apr 2026 18:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671683; cv=none; b=typYGlNB9CiiSme245yQSx75/9cCHQci0U2QPxk+LlGdbxLi7STXOV8KS9p2PUPlkFLu6rNWwOq+mtLFuYZc5MTgifThCyXp8MNAZW+wUmER+INKvO21HS0O8n7IGFQjklzk/epPE+7gQR/0gzqVRH2SzPTTigJgFGT6uO0kqig=
+	t=1775671686; cv=none; b=pU4lDD807uikjXGT1ZvLdDe7Ob25Qe6U1vsqhqiYtHcpLvQxAqBtJ8o7ml16YMqJzdswuCl+ElBwpY2+StE/Gk/LC1yFALLRO/qjDupaM42ILuy0sRcIh9w4/J2VHaBjY259aQzw1VkKIuRrmcsCrZ2mHnWczcEE6W/MzbZfh7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671683; c=relaxed/simple;
-	bh=yyP1Xu6zgqh5fzyJrn7BQVMvXg9aRUatxf92oPyOaFs=;
+	s=arc-20240116; t=1775671686; c=relaxed/simple;
+	bh=QHulYtB3A25Hq/U6ZWQoT5KIYL0r5HIZvi86gTtb80A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mO5/uNfDt4TQMEVQO3cPI1V/6GbViUlZyEjOp5Pno68hPwmrDo65CEdfJKjFMdmEV4Fe5UuPwGZkNq7Jft5WTW5r4tWOL1Kk+2BKoZ1KJEHeLB0mQqzHCu5mQd9JY917v5fypn7mrNE6tZMfl67Ooe/K3TfqRsdCrVXzFXoXss4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwcPkues; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E24C19421;
-	Wed,  8 Apr 2026 18:08:02 +0000 (UTC)
+	 MIME-Version; b=Eb1VTgLA8O/IAWaOtv9Hd33p2mOih8YRmggaeyI1fGS2W4wdWFMnTrmeyieQLrVL3M1DlYhXpCm+1bFrycI2Ty9N8RoJ6Fot13n8ZOr2pZ/GZVD7ZK8Aksw5Pqx6Oy5rXw3qnvES1+h8MuECSA+c0hrD0hNT6ha8+1YL7itpTrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smuvenbs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85978C19421;
+	Wed,  8 Apr 2026 18:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671683;
-	bh=yyP1Xu6zgqh5fzyJrn7BQVMvXg9aRUatxf92oPyOaFs=;
+	s=korg; t=1775671685;
+	bh=QHulYtB3A25Hq/U6ZWQoT5KIYL0r5HIZvi86gTtb80A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwcPkuesCzIYw1n46TcJaO/V/SlfGfWQqXe6OcKl9G/rlrWHaGe6jxzm+l31EGe3f
-	 jYxslgJCOXur4OCRYD+5m9dlNUiNHgIXvIhIxgh0vVR6KPq6VEV0pr1gHGfK2prhu3
-	 UfWmbXtsKIHlsaLNQvrG+GZF7em5iBx9r9+8K2Cc=
+	b=smuvenbsXPjzEYi+O+w1QB5JdEoAzvdwUI8AicYOa+hDeOOBKVjbTnnXY0sLRueG6
+	 EWLXJ3LrOjvzb9+qYWFqUSHTazVZ0s4pcDQrdMv1TF4MnWJ0w470m3cepGjOzv7pqG
+	 8wwaIK8skoj1VAwudYwbQlji2tD4qA/QfHVTkvCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/312] can: statistics: add missing atomic access in hot path
-Date: Wed,  8 Apr 2026 19:59:05 +0200
-Message-ID: <20260408175934.779068077@linuxfoundation.org>
+Subject: [PATCH 6.1 029/312] Bluetooth: L2CAP: Validate PDU length before reading SDU length in l2cap_ecred_data_rcv()
+Date: Wed,  8 Apr 2026 19:59:06 +0200
+Message-ID: <20260408175934.815899741@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -66,32 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-233984-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-233983-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,hartkopp.net:email]
-X-Rspamd-Queue-Id: 1BD6C3BFF9F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 4ECD83BFFE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,73 +100,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 46eee1661aa9b49966e6c43d07126fe408edda57 ]
+[ Upstream commit c65bd945d1c08c3db756821b6bf9f1c4a77b29c6 ]
 
-Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
-fixed a KCSAN issue in can_receive() but missed to convert the 'matches'
-variable used in can_rcv_filter().
+l2cap_ecred_data_rcv() reads the SDU length field from skb->data using
+get_unaligned_le16() without first verifying that skb contains at least
+L2CAP_SDULEN_SIZE (2) bytes. When skb->len is less than 2, this reads
+past the valid data in the skb.
 
-Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260318173413.28235-1-socketcan@hartkopp.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The ERTM reassembly path correctly calls pskb_may_pull() before reading
+the SDU length (l2cap_reassemble_sdu, L2CAP_SAR_START case). Apply the
+same validation to the Enhanced Credit Based Flow Control data path.
+
+Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/af_can.c | 4 ++--
- net/can/af_can.h | 2 +-
- net/can/proc.c   | 3 ++-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ net/bluetooth/l2cap_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index bbd8e959137d9..851d2c90901c5 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -468,7 +468,7 @@ int can_rx_register(struct net *net, struct net_device *dev, canid_t can_id,
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 3dfaf7044eddc..38e46f5175dad 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7708,6 +7708,11 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 	if (!chan->sdu) {
+ 		u16 sdu_len;
  
- 	rcv->can_id = can_id;
- 	rcv->mask = mask;
--	rcv->matches = 0;
-+	atomic_long_set(&rcv->matches, 0);
- 	rcv->func = func;
- 	rcv->data = data;
- 	rcv->ident = ident;
-@@ -572,7 +572,7 @@ EXPORT_SYMBOL(can_rx_unregister);
- static inline void deliver(struct sk_buff *skb, struct receiver *rcv)
- {
- 	rcv->func(skb, rcv->data);
--	rcv->matches++;
-+	atomic_long_inc(&rcv->matches);
- }
- 
- static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buff *skb)
-diff --git a/net/can/af_can.h b/net/can/af_can.h
-index 22f3352c77fec..87887014f5628 100644
---- a/net/can/af_can.h
-+++ b/net/can/af_can.h
-@@ -52,7 +52,7 @@ struct receiver {
- 	struct hlist_node list;
- 	canid_t can_id;
- 	canid_t mask;
--	unsigned long matches;
-+	atomic_long_t matches;
- 	void (*func)(struct sk_buff *skb, void *data);
- 	void *data;
- 	char *ident;
-diff --git a/net/can/proc.c b/net/can/proc.c
-index 25fdf060e30d0..2f78ea8ac30b0 100644
---- a/net/can/proc.c
-+++ b/net/can/proc.c
-@@ -196,7 +196,8 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
- 			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
- 
- 		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
--				r->func, r->data, r->matches, r->ident);
-+			   r->func, r->data, atomic_long_read(&r->matches),
-+			   r->ident);
- 	}
- }
++		if (!pskb_may_pull(skb, L2CAP_SDULEN_SIZE)) {
++			err = -EINVAL;
++			goto failed;
++		}
++
+ 		sdu_len = get_unaligned_le16(skb->data);
+ 		skb_pull(skb, L2CAP_SDULEN_SIZE);
  
 -- 
 2.51.0
