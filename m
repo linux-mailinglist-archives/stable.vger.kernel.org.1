@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-235054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPFMLGOl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:43 +0200
+	id CEkJHumm1ml9GwgAu9opvQ
+	(envelope-from <stable+bounces-234739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D8263C2180
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:58:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6F63C25C4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF4F330031E4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:54:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96FA430E0533
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58E03D8918;
-	Wed,  8 Apr 2026 18:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EE43D522C;
+	Wed,  8 Apr 2026 18:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5gsbuy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Af+jNbKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E353D75C9;
-	Wed,  8 Apr 2026 18:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A69B67E;
+	Wed,  8 Apr 2026 18:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674451; cv=none; b=QKgyi0SHJ1yBn0XJMhLllBHnaxbYsxO/UpFbzEm0Iv9EzhO3bEI7KUEuhr4sz+d0xRvDLbgKX9YITz2UCs54rPAXnv4CLwClWqBgJkBGps7B85t8yv/x1ZfaJtVpxfDaGWiQOHiI9MmFkKWxCAiylfErc4LjpdyXOBsBHjSOJWg=
+	t=1775673637; cv=none; b=YgwdpfQyGxXKmFJP42N3YCjkzKZ9TtWq8EGAcR24v553WUqTV6shhsfasj726QD6Urx5CPEEbVthqP9JrWxquqNtsOolBKJ0kMl6lsDwOIoFjqZXuhgPDF6dnyqijzyWJhrkr10yZ+9uZi1nEdzHhNIzn2SRkK8+R3p/o/usPGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674451; c=relaxed/simple;
-	bh=VNw/ELLYAHcPX5+2Rm3zsV5nRTsaIcRiBJJw+4JRYCs=;
+	s=arc-20240116; t=1775673637; c=relaxed/simple;
+	bh=hwkQ2dk6b177gWeYhSzRlv8vdl4nvetbKFA77oF6yq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTbH1vJ82l1tkDzVxk/jGCpdH0arSEvlefTk1sxBegr5pmTejXkkaTb+fCDWN/K9KPUtrmdow/5v/5mi2JTr+fs684wierosQzLP9AgKD7VEWH83JAjpi0JKVDrdGi6nM2VKgz9UJZDfxpQ1ois5Qr/SsaO0/qIbbrDH4cAI970=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5gsbuy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DECDC19421;
-	Wed,  8 Apr 2026 18:54:10 +0000 (UTC)
+	 MIME-Version; b=EDz7VRx4RkJA6w3M2o/rhqj5CmOw9v3VCHPV9dMoXsrcKtVzzfhuzN8WgU1dOx0c5dEIUUUUX1wwEP4aUsXpB9kzoX3RsCkGSkQf4W+Gx9ylf7HNpt+Yhodrg3PXbDRlnwcCNpeB8hxCyU0gYciGbedv5uoBpM4GRDE4VumNcvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Af+jNbKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9331C19425;
+	Wed,  8 Apr 2026 18:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674451;
-	bh=VNw/ELLYAHcPX5+2Rm3zsV5nRTsaIcRiBJJw+4JRYCs=;
+	s=korg; t=1775673637;
+	bh=hwkQ2dk6b177gWeYhSzRlv8vdl4nvetbKFA77oF6yq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e5gsbuy+/wvpbiJhUgcbzTwdyXD7d54+0Ciiz4qeBj9E2h5SEp/G/JdbNNDkKKr9p
-	 UZurRfRDidl+PupIUlwKdLJ5HhOTxDxU6SeD76bHpaI1uRX4zm+RhvWZqQArxB23sU
-	 D1LoMo47hZDvyzEX7noFtwlRUX7+zHXCA9wV2Pcg=
+	b=Af+jNbKangiw8pyjnFqU+fhV1JxmklDyEn7kNCFDXY6npw+yP/7BHhMxaOOTVze9J
+	 vZ85m4tVnmBd+jkocTlJr4STIzqGPu9LZ5oOR0BY85mBLxgTor5tlmSTE54EfivdAM
+	 jXSX3csLqYXxzXHlf9LgsdEhy9TCLro9UVZiY6iQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taeyang Lee <0wn@theori.io>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+f50072212ab792c86925@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 070/311] crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption
+Subject: [PATCH 6.12 030/242] atm: lec: fix use-after-free in sock_def_readable()
 Date: Wed,  8 Apr 2026 20:01:10 +0200
-Message-ID: <20260408175942.027871231@linuxfoundation.org>
+Message-ID: <20260408175928.199405747@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +66,272 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235054-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234739-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,google.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,f50072212ab792c86925];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email,theori.io:email]
-X-Rspamd-Queue-Id: 2D8263C2180
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 0C6F63C25C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit e02494114ebf7c8b42777c6cd6982f113bfdbec7 ]
+[ Upstream commit 922814879542c2e397b0e9641fd36b8202a8e555 ]
 
-When decrypting data that is not in-place (src != dst), there is
-no need to save the high-order sequence bits in dst as it could
-simply be re-copied from the source.
+A race condition exists between lec_atm_close() setting priv->lecd
+to NULL and concurrent access to priv->lecd in send_to_lecd(),
+lec_handle_bridge(), and lec_atm_send(). When the socket is freed
+via RCU while another thread is still using it, a use-after-free
+occurs in sock_def_readable() when accessing the socket's wait queue.
 
-However, the data to be hashed need to be rearranged accordingly.
+The root cause is that lec_atm_close() clears priv->lecd without
+any synchronization, while callers dereference priv->lecd without
+any protection against concurrent teardown.
 
-Reported-by: Taeyang Lee <0wn@theori.io>
-Fixes: 104880a6b470 ("crypto: authencesn - Convert to new AEAD interface")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fix this by converting priv->lecd to an RCU-protected pointer:
+- Mark priv->lecd as __rcu in lec.h
+- Use rcu_assign_pointer() in lec_atm_close() and lecd_attach()
+  for safe pointer assignment
+- Use rcu_access_pointer() for NULL checks that do not dereference
+  the pointer in lec_start_xmit(), lec_push(), send_to_lecd() and
+  lecd_attach()
+- Use rcu_read_lock/rcu_dereference/rcu_read_unlock in send_to_lecd(),
+  lec_handle_bridge() and lec_atm_send() to safely access lecd
+- Use rcu_assign_pointer() followed by synchronize_rcu() in
+  lec_atm_close() to ensure all readers have completed before
+  proceeding. This is safe since lec_atm_close() is called from
+  vcc_release() which holds lock_sock(), a sleeping lock.
+- Remove the manual sk_receive_queue drain from lec_atm_close()
+  since vcc_destroy_socket() already drains it after lec_atm_close()
+  returns.
 
-Thanks,
+v2: Switch from spinlock + sock_hold/put approach to RCU to properly
+    fix the race. The v1 spinlock approach had two issues pointed out
+    by Eric Dumazet:
+    1. priv->lecd was still accessed directly after releasing the
+       lock instead of using a local copy.
+    2. The spinlock did not prevent packets being queued after
+       lec_atm_close() drains sk_receive_queue since timer and
+       workqueue paths bypass netif_stop_queue().
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Note: Syzbot patch testing was attempted but the test VM terminated
+    unexpectedly with "Connection to localhost closed by remote host",
+    likely due to a QEMU AHCI emulation issue unrelated to this fix.
+    Compile testing with "make W=1 net/atm/lec.o" passes cleanly.
+
+Reported-by: syzbot+f50072212ab792c86925@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f50072212ab792c86925
+Link: https://lore.kernel.org/all/20260309093614.502094-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260309155908.508768-1-kartikey406@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/authencesn.c | 48 +++++++++++++++++++++++++++------------------
- 1 file changed, 29 insertions(+), 19 deletions(-)
+ net/atm/lec.c | 72 +++++++++++++++++++++++++++++++++------------------
+ net/atm/lec.h |  2 +-
+ 2 files changed, 48 insertions(+), 26 deletions(-)
 
-diff --git a/crypto/authencesn.c b/crypto/authencesn.c
-index 542a978663b9e..c0a01d738d9bc 100644
---- a/crypto/authencesn.c
-+++ b/crypto/authencesn.c
-@@ -207,6 +207,7 @@ static int crypto_authenc_esn_decrypt_tail(struct aead_request *req,
- 	u8 *ohash = areq_ctx->tail;
- 	unsigned int cryptlen = req->cryptlen - authsize;
- 	unsigned int assoclen = req->assoclen;
-+	struct scatterlist *src = req->src;
- 	struct scatterlist *dst = req->dst;
- 	u8 *ihash = ohash + crypto_ahash_digestsize(auth);
- 	u32 tmp[2];
-@@ -214,23 +215,27 @@ static int crypto_authenc_esn_decrypt_tail(struct aead_request *req,
- 	if (!authsize)
- 		goto decrypt;
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index 4a8ca2d7ff595..4f236dd7d34ba 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -154,10 +154,19 @@ static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
+ 					/* 0x01 is topology change */
  
--	/* Move high-order bits of sequence number back. */
--	scatterwalk_map_and_copy(tmp, dst, 4, 4, 0);
--	scatterwalk_map_and_copy(tmp + 1, dst, assoclen + cryptlen, 4, 0);
--	scatterwalk_map_and_copy(tmp, dst, 0, 8, 1);
-+	if (src == dst) {
-+		/* Move high-order bits of sequence number back. */
-+		scatterwalk_map_and_copy(tmp, dst, 4, 4, 0);
-+		scatterwalk_map_and_copy(tmp + 1, dst, assoclen + cryptlen, 4, 0);
-+		scatterwalk_map_and_copy(tmp, dst, 0, 8, 1);
-+	} else
-+		memcpy_sglist(dst, src, assoclen);
- 
- 	if (crypto_memneq(ihash, ohash, authsize))
- 		return -EBADMSG;
- 
- decrypt:
- 
--	sg_init_table(areq_ctx->dst, 2);
-+	if (src != dst)
-+		src = scatterwalk_ffwd(areq_ctx->src, src, assoclen);
- 	dst = scatterwalk_ffwd(areq_ctx->dst, dst, assoclen);
- 
- 	skcipher_request_set_tfm(skreq, ctx->enc);
- 	skcipher_request_set_callback(skreq, flags,
- 				      req->base.complete, req->base.data);
--	skcipher_request_set_crypt(skreq, dst, dst, cryptlen, req->iv);
-+	skcipher_request_set_crypt(skreq, src, dst, cryptlen, req->iv);
- 
- 	return crypto_skcipher_decrypt(skreq);
- }
-@@ -255,6 +260,7 @@ static int crypto_authenc_esn_decrypt(struct aead_request *req)
- 	unsigned int assoclen = req->assoclen;
- 	unsigned int cryptlen = req->cryptlen;
- 	u8 *ihash = ohash + crypto_ahash_digestsize(auth);
-+	struct scatterlist *src = req->src;
- 	struct scatterlist *dst = req->dst;
- 	u32 tmp[2];
- 	int err;
-@@ -262,24 +268,28 @@ static int crypto_authenc_esn_decrypt(struct aead_request *req)
- 	if (assoclen < 8)
- 		return -EINVAL;
- 
--	cryptlen -= authsize;
--
--	if (req->src != dst)
--		memcpy_sglist(dst, req->src, assoclen + cryptlen);
-+	if (!authsize)
-+		goto tail;
- 
-+	cryptlen -= authsize;
- 	scatterwalk_map_and_copy(ihash, req->src, assoclen + cryptlen,
- 				 authsize, 0);
- 
--	if (!authsize)
--		goto tail;
--
- 	/* Move high-order bits of sequence number to the end. */
--	scatterwalk_map_and_copy(tmp, dst, 0, 8, 0);
--	scatterwalk_map_and_copy(tmp, dst, 4, 4, 1);
--	scatterwalk_map_and_copy(tmp + 1, dst, assoclen + cryptlen, 4, 1);
--
--	sg_init_table(areq_ctx->dst, 2);
--	dst = scatterwalk_ffwd(areq_ctx->dst, dst, 4);
-+	scatterwalk_map_and_copy(tmp, src, 0, 8, 0);
-+	if (src == dst) {
-+		scatterwalk_map_and_copy(tmp, dst, 4, 4, 1);
-+		scatterwalk_map_and_copy(tmp + 1, dst, assoclen + cryptlen, 4, 1);
-+		dst = scatterwalk_ffwd(areq_ctx->dst, dst, 4);
-+	} else {
-+		scatterwalk_map_and_copy(tmp, dst, 0, 4, 1);
-+		scatterwalk_map_and_copy(tmp + 1, dst, assoclen + cryptlen - 4, 4, 1);
+ 		priv = netdev_priv(dev);
+-		atm_force_charge(priv->lecd, skb2->truesize);
+-		sk = sk_atm(priv->lecd);
+-		skb_queue_tail(&sk->sk_receive_queue, skb2);
+-		sk->sk_data_ready(sk);
++		struct atm_vcc *vcc;
 +
-+		src = scatterwalk_ffwd(areq_ctx->src, src, 8);
-+		dst = scatterwalk_ffwd(areq_ctx->dst, dst, 4);
-+		memcpy_sglist(dst, src, assoclen + cryptlen - 8);
-+		dst = req->dst;
-+	}
++		rcu_read_lock();
++		vcc = rcu_dereference(priv->lecd);
++		if (vcc) {
++			atm_force_charge(vcc, skb2->truesize);
++			sk = sk_atm(vcc);
++			skb_queue_tail(&sk->sk_receive_queue, skb2);
++			sk->sk_data_ready(sk);
++		} else {
++			dev_kfree_skb(skb2);
++		}
++		rcu_read_unlock();
+ 	}
+ }
+ #endif /* IS_ENABLED(CONFIG_BRIDGE) */
+@@ -216,7 +225,7 @@ static netdev_tx_t lec_start_xmit(struct sk_buff *skb,
+ 	int is_rdesc;
  
- 	ahash_request_set_tfm(ahreq, auth);
- 	ahash_request_set_crypt(ahreq, dst, ohash, assoclen + cryptlen);
+ 	pr_debug("called\n");
+-	if (!priv->lecd) {
++	if (!rcu_access_pointer(priv->lecd)) {
+ 		pr_info("%s:No lecd attached\n", dev->name);
+ 		dev->stats.tx_errors++;
+ 		netif_stop_queue(dev);
+@@ -449,10 +458,19 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
+ 				break;
+ 			skb2->len = sizeof(struct atmlec_msg);
+ 			skb_copy_to_linear_data(skb2, mesg, sizeof(*mesg));
+-			atm_force_charge(priv->lecd, skb2->truesize);
+-			sk = sk_atm(priv->lecd);
+-			skb_queue_tail(&sk->sk_receive_queue, skb2);
+-			sk->sk_data_ready(sk);
++			struct atm_vcc *vcc;
++
++			rcu_read_lock();
++			vcc = rcu_dereference(priv->lecd);
++			if (vcc) {
++				atm_force_charge(vcc, skb2->truesize);
++				sk = sk_atm(vcc);
++				skb_queue_tail(&sk->sk_receive_queue, skb2);
++				sk->sk_data_ready(sk);
++			} else {
++				dev_kfree_skb(skb2);
++			}
++			rcu_read_unlock();
+ 		}
+ 	}
+ #endif /* IS_ENABLED(CONFIG_BRIDGE) */
+@@ -468,23 +486,16 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
+ 
+ static void lec_atm_close(struct atm_vcc *vcc)
+ {
+-	struct sk_buff *skb;
+ 	struct net_device *dev = (struct net_device *)vcc->proto_data;
+ 	struct lec_priv *priv = netdev_priv(dev);
+ 
+-	priv->lecd = NULL;
++	rcu_assign_pointer(priv->lecd, NULL);
++	synchronize_rcu();
+ 	/* Do something needful? */
+ 
+ 	netif_stop_queue(dev);
+ 	lec_arp_destroy(priv);
+ 
+-	if (skb_peek(&sk_atm(vcc)->sk_receive_queue))
+-		pr_info("%s closing with messages pending\n", dev->name);
+-	while ((skb = skb_dequeue(&sk_atm(vcc)->sk_receive_queue))) {
+-		atm_return(vcc, skb->truesize);
+-		dev_kfree_skb(skb);
+-	}
+-
+ 	pr_info("%s: Shut down!\n", dev->name);
+ 	module_put(THIS_MODULE);
+ }
+@@ -510,12 +521,14 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
+ 	     const unsigned char *mac_addr, const unsigned char *atm_addr,
+ 	     struct sk_buff *data)
+ {
++	struct atm_vcc *vcc;
+ 	struct sock *sk;
+ 	struct sk_buff *skb;
+ 	struct atmlec_msg *mesg;
+ 
+-	if (!priv || !priv->lecd)
++	if (!priv || !rcu_access_pointer(priv->lecd))
+ 		return -1;
++
+ 	skb = alloc_skb(sizeof(struct atmlec_msg), GFP_ATOMIC);
+ 	if (!skb)
+ 		return -1;
+@@ -532,18 +545,27 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
+ 	if (atm_addr)
+ 		memcpy(&mesg->content.normal.atm_addr, atm_addr, ATM_ESA_LEN);
+ 
+-	atm_force_charge(priv->lecd, skb->truesize);
+-	sk = sk_atm(priv->lecd);
++	rcu_read_lock();
++	vcc = rcu_dereference(priv->lecd);
++	if (!vcc) {
++		rcu_read_unlock();
++		kfree_skb(skb);
++		return -1;
++	}
++
++	atm_force_charge(vcc, skb->truesize);
++	sk = sk_atm(vcc);
+ 	skb_queue_tail(&sk->sk_receive_queue, skb);
+ 	sk->sk_data_ready(sk);
+ 
+ 	if (data != NULL) {
+ 		pr_debug("about to send %d bytes of data\n", data->len);
+-		atm_force_charge(priv->lecd, data->truesize);
++		atm_force_charge(vcc, data->truesize);
+ 		skb_queue_tail(&sk->sk_receive_queue, data);
+ 		sk->sk_data_ready(sk);
+ 	}
+ 
++	rcu_read_unlock();
+ 	return 0;
+ }
+ 
+@@ -618,7 +640,7 @@ static void lec_push(struct atm_vcc *vcc, struct sk_buff *skb)
+ 
+ 		atm_return(vcc, skb->truesize);
+ 		if (*(__be16 *) skb->data == htons(priv->lecid) ||
+-		    !priv->lecd || !(dev->flags & IFF_UP)) {
++		    !rcu_access_pointer(priv->lecd) || !(dev->flags & IFF_UP)) {
+ 			/*
+ 			 * Probably looping back, or if lecd is missing,
+ 			 * lecd has gone down
+@@ -753,12 +775,12 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
+ 		priv = netdev_priv(dev_lec[i]);
+ 	} else {
+ 		priv = netdev_priv(dev_lec[i]);
+-		if (priv->lecd)
++		if (rcu_access_pointer(priv->lecd))
+ 			return -EADDRINUSE;
+ 	}
+ 	lec_arp_init(priv);
+ 	priv->itfnum = i;	/* LANE2 addition */
+-	priv->lecd = vcc;
++	rcu_assign_pointer(priv->lecd, vcc);
+ 	vcc->dev = &lecatm_dev;
+ 	vcc_insert_socket(sk_atm(vcc));
+ 
+diff --git a/net/atm/lec.h b/net/atm/lec.h
+index be0e2667bd8c3..ec85709bf8185 100644
+--- a/net/atm/lec.h
++++ b/net/atm/lec.h
+@@ -91,7 +91,7 @@ struct lec_priv {
+ 						 */
+ 	spinlock_t lec_arp_lock;
+ 	struct atm_vcc *mcast_vcc;		/* Default Multicast Send VCC */
+-	struct atm_vcc *lecd;
++	struct atm_vcc __rcu *lecd;
+ 	struct delayed_work lec_arp_work;	/* C10 */
+ 	unsigned int maximum_unknown_frame_count;
+ 						/*
 -- 
 2.53.0
 
