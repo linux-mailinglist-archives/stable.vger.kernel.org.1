@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HxNO0ij1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:44 +0200
+	id 8Px6Keea1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EF53C1AE4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E46553C03A5
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D8A1317E1C8
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED52E3019531
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F3428C87C;
-	Wed,  8 Apr 2026 18:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F923D88E1;
+	Wed,  8 Apr 2026 18:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSYY4kfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zznIO1xW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00F2328B75;
-	Wed,  8 Apr 2026 18:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C1C3D4134;
+	Wed,  8 Apr 2026 18:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673134; cv=none; b=pJQZ+lITaB7llarkzp9RmjyZJ0JWMMScA7dKScGRr1m5PWt4ZBnf9kQ9sYcp9PWid2fnhbkMDSDumMlDl4btZbSBzZEID2iG4RWHg95Xxt7EDl+OWwWkLsDf5QycwMHZAWqNTXmf158Rdvn5gi6eXkxSkytaleacztbWPLaRxSE=
+	t=1775672003; cv=none; b=cJCHaWZxu0CR0homDCLl0istVxrXz6x8wtjk6M2pUmY+gWzfdLS7WDXzs/ElAyUl0z+jhFBT2yAZDu7MrEykB7bA+cKcq8M0VyFCgdhLWM/hl48yXUZSnq+E0DxOwoBB/gV7F3oYfKouu758zRwim4v6UggXAaWGE5YUvXd5a4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673134; c=relaxed/simple;
-	bh=h1Q0pStPLoWOnMWXb9SVNSMr0xt23wyhvqUp8im3T80=;
+	s=arc-20240116; t=1775672003; c=relaxed/simple;
+	bh=wXgkoOTCqTkID6ius1q7VS+XkHbsglpg2KzRgxF/KVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdL3MQkaEIzxS5f7/HTWCv0w5jLZ0qEqXOGb7oFv5QndGQOf0TBxjI4bthnZoQlUVIpQciP4NAfpjUB6TMQ+MNWH7bMDZFeCth9LzYVgrLSB6HFbcwl3yhmdSNwUEfBzPnUAuatMMEybKWvlJw1J5Zsy1chuPisOOHcxghdy4rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSYY4kfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC9DC4AF09;
-	Wed,  8 Apr 2026 18:32:14 +0000 (UTC)
+	 MIME-Version; b=XO2CfHmoptX4hEvR9xwO945yk0VdQ+8kdnybP66DVytcc2IrgNYC/wBZFurZWL8l4QP5B6+xYpRTfZPO80QejajogIxkCIBqEH1X50WpKCxhFev7KhLEZYAGXaULuCFe73X1gcGOfnli/ys6y5InEuy1Jl3LiwNAzdtBxc3AM/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zznIO1xW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDB5C19421;
+	Wed,  8 Apr 2026 18:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673134;
-	bh=h1Q0pStPLoWOnMWXb9SVNSMr0xt23wyhvqUp8im3T80=;
+	s=korg; t=1775672002;
+	bh=wXgkoOTCqTkID6ius1q7VS+XkHbsglpg2KzRgxF/KVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSYY4kfyLU1Oy2vM20gk9wUJUv3yh59qBRFMassIuZ5CDEIumtVOH5xup5Cj5AExt
-	 Xg4PTjO+HpVJ963ktSR067Elle2neFvzgszW6RrQWz8+6pX4v28IeHJ4TWjD/tinkD
-	 9rcBE3oipul29UtsLj5MuviTMOKAVvXHxKlPUf2Q=
+	b=zznIO1xWvM7PlDdaFcIxz32D1bSc+byyLGzxzDd+8MqBYxcH6y4+8CFqtP3TkgaHl
+	 Ku95NQJxubPqeP+U64HkAbk9n13Y9L5QsWcbjrxoPYHh28ALCNCZP5Fl++28lEgN14
+	 rxe9dm4VHvwg2VVvIVjATOPZg6IF5TVOHMjGngoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 082/277] Bluetooth: hci_conn: fix potential UAF in set_cig_params_sync
+Subject: [PATCH 6.1 150/312] tg3: Fix race for querying speed/duplex
 Date: Wed,  8 Apr 2026 20:01:07 +0200
-Message-ID: <20260408175936.926111040@linuxfoundation.org>
+Message-ID: <20260408175939.369539191@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,79 +74,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234107-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234544-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,iki.fi:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 64EF53C1AE4
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,davemloft.net:email,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E46553C03A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-[ Upstream commit a2639a7f0f5bf7d73f337f8f077c19415c62ed2c ]
+[ Upstream commit bb417456c7814d1493d98b7dd9c040bf3ce3b4ed ]
 
-hci_conn lookup and field access must be covered by hdev lock in
-set_cig_params_sync, otherwise it's possible it is freed concurrently.
+When driver signals carrier up via netif_carrier_on() its internal
+link_up state isn't updated immediately. This leads to inconsistent
+speed/duplex in /proc/net/bonding/bondX where the speed and duplex
+is shown as unknown while ethtool shows correct values. Fix this by
+using netif_carrier_ok() for link checking in get_ksettings function.
 
-Take hdev lock to prevent hci_conn from being deleted or modified
-concurrently.  Just RCU lock is not suitable here, as we also want to
-avoid "tearing" in the configuration.
-
-Fixes: a091289218202 ("Bluetooth: hci_conn: Fix hci_le_set_cig_params")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 84421b99cedc ("tg3: Update link_up flag for phylib devices")
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/tg3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 8906526ff32c5..24b71ec8897ff 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1826,9 +1826,13 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
- 	u8 aux_num_cis = 0;
- 	u8 cis_id;
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index e93e7d37c8262..5e8c11fc5912a 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -12217,7 +12217,7 @@ static int tg3_get_link_ksettings(struct net_device *dev,
+ 	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
+ 						advertising);
  
-+	hci_dev_lock(hdev);
-+
- 	conn = hci_conn_hash_lookup_cig(hdev, cig_id);
--	if (!conn)
-+	if (!conn) {
-+		hci_dev_unlock(hdev);
- 		return 0;
-+	}
- 
- 	qos = &conn->iso_qos;
- 	pdu->cig_id = cig_id;
-@@ -1867,6 +1871,8 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
- 	}
- 	pdu->num_cis = aux_num_cis;
- 
-+	hci_dev_unlock(hdev);
-+
- 	if (!pdu->num_cis)
- 		return 0;
- 
+-	if (netif_running(dev) && tp->link_up) {
++	if (netif_running(dev) && netif_carrier_ok(dev)) {
+ 		cmd->base.speed = tp->link_config.active_speed;
+ 		cmd->base.duplex = tp->link_config.active_duplex;
+ 		ethtool_convert_legacy_u32_to_link_mode(
 -- 
 2.53.0
 
