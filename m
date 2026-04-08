@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-234991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FMFKSOm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:55 +0200
+	id KAW3DHGa1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B9A3C232E
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:01:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEC53C026D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A83F230EAB76
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:51:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6D7323007B3B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0753B34AB06;
-	Wed,  8 Apr 2026 18:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280023D4134;
+	Wed,  8 Apr 2026 18:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzmUpTen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8bAZKwQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5C03D8912;
-	Wed,  8 Apr 2026 18:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E008E347503;
+	Wed,  8 Apr 2026 18:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674288; cv=none; b=SgsIkX4z9GDizmAx6Kg17bGLXDdQaaouV6DjoZwtmhv6buQSJDNXnoJSsyfmsb8rKnkaz/g+zE0bbRUn3I+rhf0s3aO4pY1LYrFVomXJLHtAjfh2oTH3fK/bCePLrvGZ4L+ujeafMmTtCF4f9EJR2FgqLwg8aV+k3KjgHdJ+fzY=
+	t=1775671913; cv=none; b=ZLh3r+7c7uIUqxTmgLDx8ngMmn6uOGPeb3w+HrGNa/c7J2aFum7vh0Y+V1zvg/cOi2Rf4+mVOqjIriGItvah3USA7++bt71DBJHefJnHi4RuUGx4pH8/hDYw+bhvFCL0/LVhn3+sbhUOZcHs9llkk1Kjg+L+ZmyGp+Rm2I6ma24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674288; c=relaxed/simple;
-	bh=IZ5WCsUTB5SBPraOdTDfdG/hHt5+zaIoqnETScdc5kw=;
+	s=arc-20240116; t=1775671913; c=relaxed/simple;
+	bh=JyqUrDmVluY9odbtKduui5UL+rtWP85j8ybGxxbiLVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDFV/refuKrz3FccrSfO3ysiwJaw0aZoA1aAcXcIs1QeTQtzYc0glKyPRZ4gL6ZoErMbZvrLKWMBX0wldBFNzWKhX7QneuvoricjX8adE0C5h25pVCh8i3fO7HVkb7aIGRtw/EB3/slXUhlf0PgPXT79BWd1vu+M5fe6Ka5/TJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzmUpTen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E0BC19421;
-	Wed,  8 Apr 2026 18:51:28 +0000 (UTC)
+	 MIME-Version; b=MvswreSMP1J76PMsD/WliWJpwk/uauhEdYp02Z+qKeSdj3QODAuM504vIvQ1jnJ24XCppOvxHDpr6kedl3nPSawJLP+CFHnw3kAaq36Ix2M8mwnTEulN9oKVOcDReP16sXLfJWiUFCSe1tHRmdR3U0qRpw5oX79ST1U5mKK7M4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8bAZKwQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB8DC19421;
+	Wed,  8 Apr 2026 18:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674288;
-	bh=IZ5WCsUTB5SBPraOdTDfdG/hHt5+zaIoqnETScdc5kw=;
+	s=korg; t=1775671912;
+	bh=JyqUrDmVluY9odbtKduui5UL+rtWP85j8ybGxxbiLVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzmUpTen2s1M0i77hQOt9EpEwMc2eynEe7F/rhe3YS+vd05BaY+YVb33zWizdfsLF
-	 DMeoAFwFiB66WLS1T9LoYGjPk547M1YjxQWXjBqDgPoeAbJGiStjIO5dRLgvik7vYt
-	 z1MbvAN06qRmO01OVvi/VZJOEv9AmE4KO60zrEks=
+	b=T8bAZKwQ8tGjEXS++hcAw2WdFZ+uvwEEaJ1yzwJngQwg7KTpSbSqS51bUmkcF0TZ5
+	 euNJOjRH72KdxQWg7rpyfM3Ye/Q4dGs+m4uFdU3d3UUfp195DWTnO5HSoZm+FKUju5
+	 +eT0fUhF9mHu+pqOMuWmCDVgMkzmeKoWUT+bEskg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reshma Immaculate Rajkumar <reshma.rajkumar@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 032/311] wifi: ath11k: Pass the correct value of each TID during a stop AMPDU session
+	syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com,
+	syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.1 115/312] ext4: avoid infinite loops caused by residual data
 Date: Wed,  8 Apr 2026 20:00:32 +0200
-Message-ID: <20260408175940.613995564@linuxfoundation.org>
+Message-ID: <20260408175938.064930553@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,129 +67,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234991-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-234072-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,suse.cz,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 22B9A3C232E
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,512459401510e2a9a39f,1659aaaaa8d9d11265d7];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.cz:email]
+X-Rspamd-Queue-Id: 3BEC53C026D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reshma Immaculate Rajkumar <reshma.rajkumar@oss.qualcomm.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit e225b36f83d7926c1f2035923bb0359d851fdb73 ]
+commit 5422fe71d26d42af6c454ca9527faaad4e677d6c upstream.
 
-During ongoing traffic, a request to stop an AMPDU session
-for one TID could incorrectly affect other active sessions.
-This can happen because an incorrect TID reference would be
-passed when updating the BA session state, causing the wrong
-session to be stopped. As a result, the affected session would
-be reduced to a minimal BA size, leading to a noticeable
-throughput degradation.
+On the mkdir/mknod path, when mapping logical blocks to physical blocks,
+if inserting a new extent into the extent tree fails (in this example,
+because the file system disabled the huge file feature when marking the
+inode as dirty), ext4_ext_map_blocks() only calls ext4_free_blocks() to
+reclaim the physical block without deleting the corresponding data in
+the extent tree. This causes subsequent mkdir operations to reference
+the previously reclaimed physical block number again, even though this
+physical block is already being used by the xattr block. Therefore, a
+situation arises where both the directory and xattr are using the same
+buffer head block in memory simultaneously.
 
-Fix this issue by passing the correct argument from
-ath11k_dp_rx_ampdu_stop() to ath11k_peer_rx_tid_reo_update()
-during a stop AMPDU session. Instead of passing peer->tx_tid, which
-is the base address of the array, corresponding to TID 0; pass
-the value of &peer->rx_tid[params->tid], where the different TID numbers
-are accounted for.
+The above causes ext4_xattr_block_set() to enter an infinite loop about
+"inserted" and cannot release the inode lock, ultimately leading to the
+143s blocking problem mentioned in [1].
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
+If the metadata is corrupted, then trying to remove some extent space
+can do even more harm. Also in case EXT4_GET_BLOCKS_DELALLOC_RESERVE
+was passed, remove space wrongly update quota information.
+Jan Kara suggests distinguishing between two cases:
 
-Fixes: d5c65159f2895 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Reshma Immaculate Rajkumar <reshma.rajkumar@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260319065608.2408179-1-reshma.rajkumar@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) The error is ENOSPC or EDQUOT - in this case the filesystem is fully
+consistent and we must maintain its consistency including all the
+accounting. However these errors can happen only early before we've
+inserted the extent into the extent tree. So current code works correctly
+for this case.
+
+2) Some other error - this means metadata is corrupted. We should strive to
+do as few modifications as possible to limit damage. So I'd just skip
+freeing of allocated blocks.
+
+[1]
+INFO: task syz.0.17:5995 blocked for more than 143 seconds.
+Call Trace:
+ inode_lock_nested include/linux/fs.h:1073 [inline]
+ __start_dirop fs/namei.c:2923 [inline]
+ start_dirop fs/namei.c:2934 [inline]
+
+Reported-by: syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1659aaaaa8d9d11265d7
+Tested-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Reported-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=512459401510e2a9a39f
+Tested-by: syzbot+1659aaaaa8d9d11265d7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Tested-by: syzbot+512459401510e2a9a39f@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/tencent_43696283A68450B761D76866C6F360E36705@qq.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ fs/ext4/extents.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index b9e976ddcbbf6..44eea682c297b 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/ieee80211.h>
-@@ -1110,9 +1110,8 @@ int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_peer *peer;
- 	struct ath11k_sta *arsta = ath11k_sta_to_arsta(params->sta);
-+	struct dp_rx_tid *rx_tid;
- 	int vdev_id = arsta->arvif->vdev_id;
--	dma_addr_t paddr;
--	bool active;
- 	int ret;
- 
- 	spin_lock_bh(&ab->base_lock);
-@@ -1124,15 +1123,14 @@ int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
- 		return -ENOENT;
- 	}
- 
--	paddr = peer->rx_tid[params->tid].paddr;
--	active = peer->rx_tid[params->tid].active;
-+	rx_tid = &peer->rx_tid[params->tid];
- 
--	if (!active) {
-+	if (!rx_tid->active) {
- 		spin_unlock_bh(&ab->base_lock);
- 		return 0;
- 	}
- 
--	ret = ath11k_peer_rx_tid_reo_update(ar, peer, peer->rx_tid, 1, 0, false);
-+	ret = ath11k_peer_rx_tid_reo_update(ar, peer, rx_tid, 1, 0, false);
- 	spin_unlock_bh(&ab->base_lock);
- 	if (ret) {
- 		ath11k_warn(ab, "failed to update reo for rx tid %d: %d\n",
-@@ -1141,7 +1139,8 @@ int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
- 	}
- 
- 	ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id,
--						     params->sta->addr, paddr,
-+						     params->sta->addr,
-+						     rx_tid->paddr,
- 						     params->tid, 1, 1);
- 	if (ret)
- 		ath11k_warn(ab, "failed to send wmi to delete rx tid %d\n",
--- 
-2.53.0
-
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4424,9 +4424,13 @@ got_allocated_blocks:
+ 	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
+ 	if (IS_ERR(path)) {
+ 		err = PTR_ERR(path);
+-		if (allocated_clusters) {
++		/*
++		 * Gracefully handle out of space conditions. If the filesystem
++		 * is inconsistent, we'll just leak allocated blocks to avoid
++		 * causing even more damage.
++		 */
++		if (allocated_clusters && (err == -EDQUOT || err == -ENOSPC)) {
+ 			int fb_flags = 0;
+-
+ 			/*
+ 			 * free data blocks we just allocated.
+ 			 * not a good idea to call discard here directly,
 
 
 
