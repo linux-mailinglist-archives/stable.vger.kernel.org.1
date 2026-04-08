@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-234948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAx4JwKp1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-234948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:10 +0200
+	id uMb6IW+s1mmZHAgAu9opvQ
+	(envelope-from <stable+bounces-235271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:28:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEA93C29E3
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7883C30D7
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D59F4317A60A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:49:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4673D305E309
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 19:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D61A3D75C3;
-	Wed,  8 Apr 2026 18:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72D735C1B5;
+	Wed,  8 Apr 2026 19:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4ezBdDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dg+Pr6XJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106A7337B81;
-	Wed,  8 Apr 2026 18:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9985432692B;
+	Wed,  8 Apr 2026 19:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674178; cv=none; b=UlDu54wgLzyJJegXtl/BorIVWoNbQV9xIFcC8LYPBjYD6oz3PultVMaSKqws2dkZ38Ics05FquO4Dn97IpukbxjsoaQWzDHQfu39RwbwXuVKvbeFkMBZrDM+gd/cJUbIR0lDZwM6lv6FlaH1GYZoOGcv4JoZgwhm6EpL/fSwMj8=
+	t=1775675010; cv=none; b=jRBnXnFfw/+aZhE4xFtfyNTKolrhP65u9PXYYYCq6KD2jaU34v+KPMXgM0A+ImDWgXuVswCNQTORXel4OI+E/GeZYgQUBhyqqToR94AICTRwfAQQWW1YVpBKYy0hYKSJDksuwUBkm+vl7pUN+mECVLgkuJ2Rrr7B1axHVFvUzJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674178; c=relaxed/simple;
-	bh=1ugt6zraiW+Dpbw/XOoGCVNBl/neoZN1HX+KWdgOeqo=;
+	s=arc-20240116; t=1775675010; c=relaxed/simple;
+	bh=o1xlz7N++Crd6aWIXkib9iqSXgmAHcUM9KuLTRVs9wY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yl0H6zxokoCIMSDBb4CgECQjrRG6JBdOew0rezaq7atlkqqhFaGUUcN5VU1X1ZE709RbkiKEyv/4RpK/nKCLugFXO1SlWNMNeoXU3iIGfkPMvQPt7vF09reePqYIm5D6JxsHsr1G1LcRZIUvKUHLsN6FH+ZYZtYBye548M+xIiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4ezBdDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530D5C19421;
-	Wed,  8 Apr 2026 18:49:37 +0000 (UTC)
+	 MIME-Version; b=DfRxYWdgGPPWsnUPJEJMMODMRDAHing6kRertnbaqCAsuCCBvWNi8vi99RU9It+z+7YkSxoRMnzeG0yFPoYimXcRjcN3obqywjxuvtmwIpXcAkfBcM0aVHGZ4Eh66wwrn/C7pF0PM4FRHThfy13qr7GX8RgUFX4eUtZr+AngpLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg+Pr6XJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E24C19421;
+	Wed,  8 Apr 2026 19:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674177;
-	bh=1ugt6zraiW+Dpbw/XOoGCVNBl/neoZN1HX+KWdgOeqo=;
+	s=korg; t=1775675010;
+	bh=o1xlz7N++Crd6aWIXkib9iqSXgmAHcUM9KuLTRVs9wY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4ezBdDpeMDpxlyT2tdL4wm3f2Jh1gc9an5zBP6mPX4YRfhvsot7luybah7VId+my
-	 amHvn8Q7tCTIOQY7ksjtSO8A4MO3mmmbWrAPnVYyKv2urAfi51ffwu7HeDWRfofgRv
-	 jgFsogCwNmBadUcSg1HqZ2fsqu7w5X+pfL2q3K3w=
+	b=dg+Pr6XJOQPdEPhyLeO6XVMPdkw8FSkxhK52vB3X8pCCSAslsPv9dFqYMnrAaC5IU
+	 wRqGsgm5cMuQeOmd33bzrPb8My6fDuLNWyNQz8Som4sHxesPMxG22+wi6YrmTgCc/L
+	 idjefoON1Aq3sZ/qqBeVuo0UzXYxlcPTznvu/wUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.12 238/242] selftests/bpf: Test cross-sign 64bits range refinement
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.19 278/311] iommupt: Fix short gather if the unmap goes into a large mapping
 Date: Wed,  8 Apr 2026 20:04:38 +0200
-Message-ID: <20260408175936.014486729@linuxfoundation.org>
+Message-ID: <20260408175949.760110605@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,207 +66,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234948-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-235271-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.992];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BFEA93C29E3
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: AD7883C30D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 26e5e346a52c796190e63af1c2a80a417fda261a ]
+commit ee6e69d032550687a3422504bfca3f834c7b5061 upstream.
 
-This patch adds coverage for the new cross-sign 64bits range refinement
-logic. The three tests cover the cases when the u64 and s64 ranges
-overlap (1) in the negative portion of s64, (2) in the positive portion
-of s64, and (3) in both portions.
+unmap has the odd behavior that it can unmap more than requested if the
+ending point lands within the middle of a large or contiguous IOPTE.
 
-The first test is a simplified version of a BPF program generated by
-syzkaller that caused an invariant violation [1]. It looks like
-syzkaller could not extract the reproducer itself (and therefore didn't
-report it to the mailing list), but I was able to extract it from the
-console logs of a crash.
+In this case the gather should flush everything unmapped which can be
+larger than what was requested to be unmapped. The gather was only
+flushing the range requested to be unmapped, not extending to the extra
+range, resulting in a short invalidation if the caller hits this special
+condition.
 
-The principle is similar to the invariant violation described in
-commit 6279846b9b25 ("bpf: Forget ranges when refining tnum after
-JSET"): the verifier walks a dead branch, uses the condition to refine
-ranges, and ends up with inconsistent ranges. In this case, the dead
-branch is when we fallthrough on both jumps. The new refinement logic
-improves the bounds such that the second jump is properly detected as
-always-taken and the verifier doesn't end up walking a dead branch.
+This was found by the new invalidation/gather test I am adding in
+preparation for ARMv8. Claude deduced the root cause.
 
-The second and third tests are inspired by the first, but rely on
-condition jumps to prepare the bounds instead of ALU instructions. An
-R10 write is used to trigger a verifier error when the bounds can't be
-refined.
+As far as I remember nothing relies on unmapping a large entry, so this is
+likely not a triggerable bug.
 
-Link: https://syzkaller.appspot.com/bug?extid=c711ce17dd78e5d4fdcf [1]
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/a0e17b00dab8dabcfa6f8384e7e151186efedfdd.1753695655.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 7c53f4238aa8 ("iommupt: Add unmap_pages op")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/verifier_bounds.c |  118 ++++++++++++++++++++
- 1 file changed, 118 insertions(+)
+ drivers/iommu/generic_pt/iommu_pt.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-@@ -1200,4 +1200,122 @@ l0_%=:	r0 = 0;						\
- 	: __clobber_all);
- }
+diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
+index 3e33fe64feab..7e7a6e7abdee 100644
+--- a/drivers/iommu/generic_pt/iommu_pt.h
++++ b/drivers/iommu/generic_pt/iommu_pt.h
+@@ -1057,7 +1057,7 @@ size_t DOMAIN_NS(unmap_pages)(struct iommu_domain *domain, unsigned long iova,
  
-+/* This test covers the bounds deduction on 64bits when the s64 and u64 ranges
-+ * overlap on the negative side. At instruction 7, the ranges look as follows:
-+ *
-+ * 0          umin=0xfffffcf1                 umax=0xff..ff6e  U64_MAX
-+ * |                [xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]        |
-+ * |----------------------------|------------------------------|
-+ * |xxxxxxxxxx]                                   [xxxxxxxxxxxx|
-+ * 0    smax=0xeffffeee                       smin=-655        -1
-+ *
-+ * We should therefore deduce the following new bounds:
-+ *
-+ * 0                             u64=[0xff..ffd71;0xff..ff6e]  U64_MAX
-+ * |                                              [xxx]        |
-+ * |----------------------------|------------------------------|
-+ * |                                              [xxx]        |
-+ * 0                                        s64=[-655;-146]    -1
-+ *
-+ * Without the deduction cross sign boundary, we end up with an invariant
-+ * violation error.
-+ */
-+SEC("socket")
-+__description("bounds deduction cross sign boundary, negative overlap")
-+__success __log_level(2) __flag(BPF_F_TEST_REG_INVARIANTS)
-+__msg("7: (1f) r0 -= r6 {{.*}} R0=scalar(smin=-655,smax=smax32=-146,umin=0xfffffffffffffd71,umax=0xffffffffffffff6e,smin32=-783,umin32=0xfffffcf1,umax32=0xffffff6e,var_off=(0xfffffffffffffc00; 0x3ff))")
-+__retval(0)
-+__naked void bounds_deduct_negative_overlap(void)
-+{
-+	asm volatile("			\
-+	call %[bpf_get_prandom_u32];	\
-+	w3 = w0;			\
-+	w6 = (s8)w0;			\
-+	r0 = (s8)r0;			\
-+	if w6 >= 0xf0000000 goto l0_%=;	\
-+	r0 += r6;			\
-+	r6 += 400;			\
-+	r0 -= r6;			\
-+	if r3 < r0 goto l0_%=;		\
-+l0_%=:	r0 = 0;				\
-+	exit;				\
-+"	:
-+	: __imm(bpf_get_prandom_u32)
-+	: __clobber_all);
-+}
-+
-+/* This test covers the bounds deduction on 64bits when the s64 and u64 ranges
-+ * overlap on the positive side. At instruction 3, the ranges look as follows:
-+ *
-+ * 0 umin=0                      umax=0xffffffffffffff00       U64_MAX
-+ * [xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]            |
-+ * |----------------------------|------------------------------|
-+ * |xxxxxxxx]                                         [xxxxxxxx|
-+ * 0      smax=127                                smin=-128    -1
-+ *
-+ * We should therefore deduce the following new bounds:
-+ *
-+ * 0  u64=[0;127]                                              U64_MAX
-+ * [xxxxxxxx]                                                  |
-+ * |----------------------------|------------------------------|
-+ * [xxxxxxxx]                                                  |
-+ * 0  s64=[0;127]                                              -1
-+ *
-+ * Without the deduction cross sign boundary, the program is rejected due to
-+ * the frame pointer write.
-+ */
-+SEC("socket")
-+__description("bounds deduction cross sign boundary, positive overlap")
-+__success __log_level(2) __flag(BPF_F_TEST_REG_INVARIANTS)
-+__msg("3: (2d) if r0 > r1 {{.*}} R0_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=127,var_off=(0x0; 0x7f))")
-+__retval(0)
-+__naked void bounds_deduct_positive_overlap(void)
-+{
-+	asm volatile("			\
-+	call %[bpf_get_prandom_u32];	\
-+	r0 = (s8)r0;			\
-+	r1 = 0xffffffffffffff00;	\
-+	if r0 > r1 goto l0_%=;		\
-+	if r0 < 128 goto l0_%=;		\
-+	r10 = 0;			\
-+l0_%=:	r0 = 0;				\
-+	exit;				\
-+"	:
-+	: __imm(bpf_get_prandom_u32)
-+	: __clobber_all);
-+}
-+
-+/* This test is the same as above, but the s64 and u64 ranges overlap in two
-+ * places. At instruction 3, the ranges look as follows:
-+ *
-+ * 0 umin=0                           umax=0xffffffffffffff80  U64_MAX
-+ * [xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]        |
-+ * |----------------------------|------------------------------|
-+ * |xxxxxxxx]                                         [xxxxxxxx|
-+ * 0      smax=127                                smin=-128    -1
-+ *
-+ * 0xffffffffffffff80 = (u64)-128. We therefore can't deduce anything new and
-+ * the program should fail due to the frame pointer write.
-+ */
-+SEC("socket")
-+__description("bounds deduction cross sign boundary, two overlaps")
-+__failure __flag(BPF_F_TEST_REG_INVARIANTS)
-+__msg("3: (2d) if r0 > r1 {{.*}} R0_w=scalar(smin=smin32=-128,smax=smax32=127,umax=0xffffffffffffff80)")
-+__msg("frame pointer is read only")
-+__naked void bounds_deduct_two_overlaps(void)
-+{
-+	asm volatile("			\
-+	call %[bpf_get_prandom_u32];	\
-+	r0 = (s8)r0;			\
-+	r1 = 0xffffffffffffff80;	\
-+	if r0 > r1 goto l0_%=;		\
-+	if r0 < 128 goto l0_%=;		\
-+	r10 = 0;			\
-+l0_%=:	r0 = 0;				\
-+	exit;				\
-+"	:
-+	: __imm(bpf_get_prandom_u32)
-+	: __clobber_all);
-+}
-+
- char _license[] SEC("license") = "GPL";
+ 	pt_walk_range(&range, __unmap_range, &unmap);
+ 
+-	gather_range_pages(iotlb_gather, iommu_table, iova, len,
++	gather_range_pages(iotlb_gather, iommu_table, iova, unmap.unmapped,
+ 			   &unmap.free_list);
+ 
+ 	return unmap.unmapped;
+-- 
+2.53.0
+
 
 
 
