@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-234738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBCpNPmk1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:57 +0200
+	id MCCALzWb1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA7F3C2082
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:56:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9DD3C0467
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EAFA30DF60E
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:40:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 894663011A50
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF53E3D6694;
-	Wed,  8 Apr 2026 18:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A883D891A;
+	Wed,  8 Apr 2026 18:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smedEjFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaYAJX9B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838953B0AFC;
-	Wed,  8 Apr 2026 18:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A96F3D75AF;
+	Wed,  8 Apr 2026 18:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673634; cv=none; b=NAkuyaNVwk1HV1rNsYuXIBOAO1g97H9z3q2ClSsm4V//fa7h8Bsa/FQMDRPaiNTaQeDzDkW3qn8EvXYU15FSi3OSWJw/2tmYDMn7P8mtfdpntVZOtx5fN4mVL0CGfRIPdLciWmEHeVid26goTZD1TXCnECkYav3XvXColTzRae0=
+	t=1775672021; cv=none; b=go3UTKwoyU5R9QuyfFIe2F8+Yh6Pc9zEql5k6aZoHPEHxJFBwL4wKcVGYSw0puMDscsW9vr1/jyucreKUHTP8fz5hzagJbDhZ3QHNC3CNZf7o+kPA6Uoq65hjKxHXpTbo5eauxwopoqydIgso5RVbeiZExEhMjTQWf1XPWZ+76U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673634; c=relaxed/simple;
-	bh=dGLi8KGu1Y0wmpieWa7JcgweU9nUoXc76dK+fv0DF6k=;
+	s=arc-20240116; t=1775672021; c=relaxed/simple;
+	bh=PfRK2Zhp876q/6U55JTzejJBWIwHQ9XK/IbOwK/QMOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmXoCq+gIdW3uvrWeSivv+4NEe8FaEpbwJtt6uBqv49OxXV5Q4sYuaGQuo4AFDHOBrBbuzV2W58u+ixiMnRoebFj4fQ19BiXiNZYLFV6PplgRbVlfYL3qFQBVrqYufkFx/W/RywdrpsbysUh3vkOK/q4zgxInFtHY+fSNJfkvWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smedEjFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C20C19421;
-	Wed,  8 Apr 2026 18:40:33 +0000 (UTC)
+	 MIME-Version; b=tgz818aONCjN389gSV+MaM21bAROOgz95+1nn2ikbkLEiAvy9t66YTTwQtB/8wf5o3HG/+Y0db04VqUGL03w7+yqT2t56KRY183CIGD0kSzo+Uckzwe06l4BpnI976ntv+7n0MrLiJH+baIx8uyBVWsNa/b6Bqx5UHbNZ6bfVhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaYAJX9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94669C19421;
+	Wed,  8 Apr 2026 18:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673634;
-	bh=dGLi8KGu1Y0wmpieWa7JcgweU9nUoXc76dK+fv0DF6k=;
+	s=korg; t=1775672020;
+	bh=PfRK2Zhp876q/6U55JTzejJBWIwHQ9XK/IbOwK/QMOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smedEjFHl4KR91OIA7WD/WSSG90f1hto1W3o2TtShiTJgA9if8lwL8/U+HvQe4GH+
-	 dBha500v/oTtEHGyaSbHGxwtaVY0HxH0aM/nHCYn7Lfvg9qGbjm7tHR1EgJBDz81Vs
-	 FcPZlqNMd3qEe4EZEkrdCuvM4ncUGqjsiDGDrKDc=
+	b=RaYAJX9Bnnwna4GDbm1NexOeLkjVItngAjHdiWv+c0+Tnb3+5W0axwnl6SDGu49+5
+	 iuRet+Wz36IVezLhqqIKkqA7GkX9Z4DGaTLdRKVQH9qO6bjsBp/D4SeuCKrIxGFnEb
+	 5zq0kb1F4R6+D5rf2T5Prd287AW6ISrzJXS/5pOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 003/242] io_uring/kbuf: simplify __io_put_kbuf
+	Marek Vasut <marex@nabladev.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 126/312] dmaengine: xilinx: xilinx_dma: Fix residue calculation for cyclic DMA
 Date: Wed,  8 Apr 2026 20:00:43 +0200
-Message-ID: <20260408175927.198587300@linuxfoundation.org>
+Message-ID: <20260408175938.477015696@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,143 +64,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234738-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234114-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kernel.dk:email]
-X-Rspamd-Queue-Id: 5FA7F3C2082
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nabladev.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6C9DD3C0467
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Marek Vasut <marex@nabladev.com>
 
-Commit dc39fb1093ea33019f192c93b77b863282e10162 upstream.
+[ Upstream commit f61d145999d61948a23cd436ebbfa4c3b9ab8987 ]
 
-As a preparation step remove an optimisation from __io_put_kbuf() trying
-to use the locked cache. With that __io_put_kbuf_list() is only used
-with ->io_buffers_comp, and we remove the explicit list argument.
+The cyclic DMA calculation is currently entirely broken and reports
+residue only for the first segment. The problem is twofold.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/1b7f1394ec4afc7f96b35a61f5992e27c49fd067.1738724373.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+First, when the first descriptor finishes, it is moved from active_list
+to done_list, but it is never returned back into the active_list. The
+xilinx_dma_tx_status() expects the descriptor to be in the active_list
+to report any meaningful residue information, which never happens after
+the first descriptor finishes. Fix this up in xilinx_dma_start_transfer()
+and if the descriptor is cyclic, lift it from done_list and place it back
+into active_list list.
+
+Second, the segment .status fields of the descriptor remain dirty. Once
+the DMA did one pass on the descriptor, the .status fields are populated
+with data by the DMA, but the .status fields are not cleared before reuse
+during the next cyclic DMA round. The xilinx_dma_get_residue() recognizes
+that as if the descriptor was complete and had 0 residue, which is bogus.
+Reinitialize the status field before placing the descriptor back into the
+active_list.
+
+Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260316221943.160375-1-marex@nabladev.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    2 --
- io_uring/kbuf.c     |   26 +++-----------------------
- io_uring/kbuf.h     |   11 +++++------
- 3 files changed, 8 insertions(+), 31 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -385,9 +385,7 @@ static bool req_need_defer(struct io_kio
- static void io_clean_op(struct io_kiocb *req)
- {
- 	if (req->flags & REQ_F_BUFFER_SELECTED) {
--		spin_lock(&req->ctx->completion_lock);
- 		io_kbuf_drop(req);
--		spin_unlock(&req->ctx->completion_lock);
- 	}
- 
- 	if (req->flags & REQ_F_NEED_CLEANUP) {
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -78,29 +78,9 @@ bool io_kbuf_recycle_legacy(struct io_ki
- 
- void __io_put_kbuf(struct io_kiocb *req, int len, unsigned issue_flags)
- {
--	/*
--	 * We can add this buffer back to two lists:
--	 *
--	 * 1) The io_buffers_cache list. This one is protected by the
--	 *    ctx->uring_lock. If we already hold this lock, add back to this
--	 *    list as we can grab it from issue as well.
--	 * 2) The io_buffers_comp list. This one is protected by the
--	 *    ctx->completion_lock.
--	 *
--	 * We migrate buffers from the comp_list to the issue cache list
--	 * when we need one.
--	 */
--	if (issue_flags & IO_URING_F_UNLOCKED) {
--		struct io_ring_ctx *ctx = req->ctx;
--
--		spin_lock(&ctx->completion_lock);
--		__io_put_kbuf_list(req, len, &ctx->io_buffers_comp);
--		spin_unlock(&ctx->completion_lock);
--	} else {
--		lockdep_assert_held(&req->ctx->uring_lock);
--
--		__io_put_kbuf_list(req, len, &req->ctx->io_buffers_cache);
--	}
-+	spin_lock(&req->ctx->completion_lock);
-+	__io_put_kbuf_list(req, len);
-+	spin_unlock(&req->ctx->completion_lock);
- }
- 
- static void __user *io_provided_buffer_select(struct io_kiocb *req, size_t *len,
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -171,27 +171,26 @@ static inline bool __io_put_kbuf_ring(st
- 	return ret;
- }
- 
--static inline void __io_put_kbuf_list(struct io_kiocb *req, int len,
--				      struct list_head *list)
-+static inline void __io_put_kbuf_list(struct io_kiocb *req, int len)
- {
- 	if (req->flags & REQ_F_BUFFER_RING) {
- 		__io_put_kbuf_ring(req, len, 1);
- 	} else {
- 		req->buf_index = req->kbuf->bgid;
--		list_add(&req->kbuf->list, list);
-+		list_add(&req->kbuf->list, &req->ctx->io_buffers_comp);
- 		req->flags &= ~REQ_F_BUFFER_SELECTED;
- 	}
- }
- 
- static inline void io_kbuf_drop(struct io_kiocb *req)
- {
--	lockdep_assert_held(&req->ctx->completion_lock);
--
- 	if (!(req->flags & (REQ_F_BUFFER_SELECTED|REQ_F_BUFFER_RING)))
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index ce5f4bedf059d..2d734fea053d9 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -1511,8 +1511,29 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 	if (chan->err)
  		return;
  
-+	spin_lock(&req->ctx->completion_lock);
- 	/* len == 0 is fine here, non-ring will always drop all of it */
--	__io_put_kbuf_list(req, 0, &req->ctx->io_buffers_comp);
-+	__io_put_kbuf_list(req, 0);
-+	spin_unlock(&req->ctx->completion_lock);
- }
+-	if (list_empty(&chan->pending_list))
++	if (list_empty(&chan->pending_list)) {
++		if (chan->cyclic) {
++			struct xilinx_dma_tx_descriptor *desc;
++			struct list_head *entry;
++
++			desc = list_last_entry(&chan->done_list,
++					       struct xilinx_dma_tx_descriptor, node);
++			list_for_each(entry, &desc->segments) {
++				struct xilinx_axidma_tx_segment *axidma_seg;
++				struct xilinx_axidma_desc_hw *axidma_hw;
++				axidma_seg = list_entry(entry,
++							struct xilinx_axidma_tx_segment,
++							node);
++				axidma_hw = &axidma_seg->hw;
++				axidma_hw->status = 0;
++			}
++
++			list_splice_tail_init(&chan->done_list, &chan->active_list);
++			chan->desc_pendingcount = 0;
++			chan->idle = false;
++		}
+ 		return;
++	}
  
- static inline unsigned int __io_put_kbufs(struct io_kiocb *req, int len,
+ 	if (!chan->idle)
+ 		return;
+-- 
+2.53.0
+
 
 
 
