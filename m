@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-235008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gETfLq+p1mlKHAgAu9opvQ
-	(envelope-from <stable+bounces-235008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:03 +0200
+	id iIzRAOea1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F213C2B01
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:17:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E3D3C03A4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8667B318798B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:52:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E5263022540
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91B825A321;
-	Wed,  8 Apr 2026 18:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5563D47A5;
+	Wed,  8 Apr 2026 18:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PF9F4Bm/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVg0yMqR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3B7337B81;
-	Wed,  8 Apr 2026 18:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CFC347517;
+	Wed,  8 Apr 2026 18:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674332; cv=none; b=plFfDekNpmkhraz0Mg92skLvKLqlooxjiL3RGaU97nHIbeQcEZlLdLosDY/u6jSfUBRDdkgT8rEX56VQ0TUMOLLGvl+G07JclAeR6Izl9p1rC6R20XZNmENwIeYSkw7GknDCUDJ6XPCvN+HYi7S5r359u+E/DHkJKsJuYYIHGos=
+	t=1775671969; cv=none; b=puLqEqC8AqzUU6Jsr8fbF7lmYxtVyl/oXCaIJJ0qcunezq6QK0vC7WwDmiDinkCpPx7PpaeIMRGm2bam5jMzCywtqHvNPHYDwc+X3oq3ucDQyHjiO1YO//PnGr+F0bKnlfyRXd5ckvNvHDw0IvzsSpfzoxPPmpLNd+W4oBeL6OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674332; c=relaxed/simple;
-	bh=RNbaFmPXLu24EYppzBSsEwcvZvqa7ZPWsC1tPCgv5io=;
+	s=arc-20240116; t=1775671969; c=relaxed/simple;
+	bh=NaEd1LFpvXv67SuTGLaMZwMfzun3hTdjQ9hmVE6dE3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlKqQ4MvCdosdx61q22dq4EO8AdZLsh9hYtxZIhQGneyoMbdxRT1r02aaPuhVzQ+b+u2KAr7zRcdqMJWHEU3CXod3PrPtWeRTc5lFd3c4KHLs8LtQhHWA9M3vKllRXRSrOoSzuz9x9KfN1UK9DkRqFIE+zQ7RhDlFmagBhpXQJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PF9F4Bm/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4077AC19421;
-	Wed,  8 Apr 2026 18:52:12 +0000 (UTC)
+	 MIME-Version; b=Oen9vd2VUQaqblL09e1/xGA4G3151sV71kqER//ckpvr9nmGcG4p3fg3U04773TaOuI5VahsbcY7PN79MSh5sE8oTkbjcW6rSI2JWjFBKza5PrAkh4/pZeqmSpIwFsPTMef93xHm2+ukIaDyv273jBiS8IeNenc6pem1taoADsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVg0yMqR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE07C19421;
+	Wed,  8 Apr 2026 18:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674332;
-	bh=RNbaFmPXLu24EYppzBSsEwcvZvqa7ZPWsC1tPCgv5io=;
+	s=korg; t=1775671969;
+	bh=NaEd1LFpvXv67SuTGLaMZwMfzun3hTdjQ9hmVE6dE3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PF9F4Bm/dOyCFb0YVywXglNMUHPWF3AuwL9YW6ElONfbBhxY2ZKyOASR4STGcm/69
-	 Nbd/mABLtMZ9WGSaiFtTcdrj7V1FjS+T3i6lNYpfjEiwhVaAO7dw4EWtOj98XMWOSb
-	 Ya1nNm9ma38w7b/1Qsd5ffbXU0rPew97sao3imFE=
+	b=gVg0yMqRxz4KAjhpKP39vALIhdtcDdUasRIN/2vJrYdnhojMLxUfUgM9cMO/epmg9
+	 m1vlVTM3MDX9xlV9v0ErtLsNVMhx6imeQHeB6GxVxX4QHCQPb9VneV/qs4/cGf6WYr
+	 2lZR54pkY9DorlajvBGUuCkRlHmMnH3Ll8nsak/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 056/311] bridge: br_nd_send: linearize skb before parsing ND options
+Subject: [PATCH 6.1 139/312] btrfs: dont take device_list_mutex when querying zone info
 Date: Wed,  8 Apr 2026 20:00:56 +0200
-Message-ID: <20260408175941.507660243@linuxfoundation.org>
+Message-ID: <20260408175938.962377107@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,120 +68,227 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-235008-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,outlook.com,nvidia.com,blackwall.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234094-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,blackwall.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,msgid.link:url,outlook.com:email]
-X-Rspamd-Queue-Id: 16F213C2B01
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,wdc.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 96E3D3C03A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit a01aee7cafc575bb82f5529e8734e7052f9b16ea ]
+[ Upstream commit 77603ab10429fe713a03345553ca8dbbfb1d91c6 ]
 
-br_nd_send() parses neighbour discovery options from ns->opt[] and
-assumes that these options are in the linear part of request.
+Shin'ichiro reported sporadic hangs when running generic/013 in our CI
+system. When enabling lockdep, there is a lockdep splat when calling
+btrfs_get_dev_zone_info_all_devices() in the mount path that can be
+triggered by i.e. generic/013:
 
-Its callers only guarantee that the ICMPv6 header and target address
-are available, so the option area can still be non-linear. Parsing
-ns->opt[] in that case can access data past the linear buffer.
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  7.0.0-rc1+ #355 Not tainted
+  ------------------------------------------------------
+  mount/1043 is trying to acquire lock:
+  ffff8881020b5470 (&vblk->vdev_mutex){+.+.}-{4:4}, at: virtblk_report_zones+0xda/0x430
 
-Linearize request before option parsing and derive ns from the linear
-network header.
+  but task is already holding lock:
+  ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
 
-Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Tested-by: Ao Zhou <n05ec@lzu.edu.cn>
-Co-developed-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260326034441.2037420-2-n05ec@lzu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  which lock already depends on the new lock.
+
+  the existing dependency chain (in reverse order) is:
+
+  -> #4 (&fs_devs->device_list_mutex){+.+.}-{4:4}:
+	 __mutex_lock+0xa3/0x1360
+	 btrfs_create_pending_block_groups+0x1f4/0x9d0
+	 __btrfs_end_transaction+0x3e/0x2e0
+	 btrfs_zoned_reserve_data_reloc_bg+0x2f8/0x390
+	 open_ctree+0x1934/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #3 (btrfs_trans_num_extwriters){++++}-{0:0}:
+	 join_transaction+0xc2/0x5c0
+	 start_transaction+0x17c/0xbc0
+	 btrfs_zoned_reserve_data_reloc_bg+0x2b4/0x390
+	 open_ctree+0x1934/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #2 (btrfs_trans_num_writers){++++}-{0:0}:
+	 lock_release+0x163/0x4b0
+	 __btrfs_end_transaction+0x1c7/0x2e0
+	 btrfs_dirty_inode+0x6f/0xd0
+	 touch_atime+0xe5/0x2c0
+	 btrfs_file_mmap_prepare+0x65/0x90
+	 __mmap_region+0x4b9/0xf00
+	 mmap_region+0xf7/0x120
+	 do_mmap+0x43d/0x610
+	 vm_mmap_pgoff+0xd6/0x190
+	 ksys_mmap_pgoff+0x7e/0xc0
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #1 (&mm->mmap_lock){++++}-{4:4}:
+	 __might_fault+0x68/0xa0
+	 _copy_to_user+0x22/0x70
+	 blkdev_copy_zone_to_user+0x22/0x40
+	 virtblk_report_zones+0x282/0x430
+	 blkdev_report_zones_ioctl+0xfd/0x130
+	 blkdev_ioctl+0x20f/0x2c0
+	 __x64_sys_ioctl+0x86/0xd0
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  -> #0 (&vblk->vdev_mutex){+.+.}-{4:4}:
+	 __lock_acquire+0x1522/0x2680
+	 lock_acquire+0xd5/0x2f0
+	 __mutex_lock+0xa3/0x1360
+	 virtblk_report_zones+0xda/0x430
+	 blkdev_report_zones_cached+0x162/0x190
+	 btrfs_get_dev_zones+0xdc/0x2e0
+	 btrfs_get_dev_zone_info+0x219/0xe80
+	 btrfs_get_dev_zone_info_all_devices+0x62/0x90
+	 open_ctree+0x1200/0x23db
+	 btrfs_get_tree.cold+0x105/0x26c
+	 vfs_get_tree+0x28/0xb0
+	 __do_sys_fsconfig+0x324/0x680
+	 do_syscall_64+0x92/0x4f0
+	 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+  other info that might help us debug this:
+
+  Chain exists of:
+    &vblk->vdev_mutex --> btrfs_trans_num_extwriters --> &fs_devs->device_list_mutex
+
+   Possible unsafe locking scenario:
+
+	 CPU0                    CPU1
+	 ----                    ----
+    lock(&fs_devs->device_list_mutex);
+				 lock(btrfs_trans_num_extwriters);
+				 lock(&fs_devs->device_list_mutex);
+    lock(&vblk->vdev_mutex);
+
+   *** DEADLOCK ***
+
+  3 locks held by mount/1043:
+   #0: ffff88811063e878 (&fc->uapi_mutex){+.+.}-{4:4}, at: __do_sys_fsconfig+0x2ae/0x680
+   #1: ffff88810cb9f0e8 (&type->s_umount_key#31/1){+.+.}-{4:4}, at: alloc_super+0xc0/0x3e0
+   #2: ffff888102a738e0 (&fs_devs->device_list_mutex){+.+.}-{4:4}, at: btrfs_get_dev_zone_info_all_devices+0x45/0x90
+
+  stack backtrace:
+  CPU: 2 UID: 0 PID: 1043 Comm: mount Not tainted 7.0.0-rc1+ #355 PREEMPT(full)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/10/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5b/0x80
+   print_circular_bug.cold+0x18d/0x1d8
+   check_noncircular+0x10d/0x130
+   __lock_acquire+0x1522/0x2680
+   ? vmap_small_pages_range_noflush+0x3ef/0x820
+   lock_acquire+0xd5/0x2f0
+   ? virtblk_report_zones+0xda/0x430
+   ? lock_is_held_type+0xcd/0x130
+   __mutex_lock+0xa3/0x1360
+   ? virtblk_report_zones+0xda/0x430
+   ? virtblk_report_zones+0xda/0x430
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   ? virtblk_report_zones+0xda/0x430
+   virtblk_report_zones+0xda/0x430
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   blkdev_report_zones_cached+0x162/0x190
+   ? __pfx_copy_zone_info_cb+0x10/0x10
+   btrfs_get_dev_zones+0xdc/0x2e0
+   btrfs_get_dev_zone_info+0x219/0xe80
+   btrfs_get_dev_zone_info_all_devices+0x62/0x90
+   open_ctree+0x1200/0x23db
+   btrfs_get_tree.cold+0x105/0x26c
+   ? rcu_is_watching+0x18/0x50
+   vfs_get_tree+0x28/0xb0
+   __do_sys_fsconfig+0x324/0x680
+   do_syscall_64+0x92/0x4f0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f615e27a40e
+  RSP: 002b:00007fff11b18fb8 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+  RAX: ffffffffffffffda RBX: 000055572e92ab10 RCX: 00007f615e27a40e
+  RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+  RBP: 00007fff11b19100 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 000055572e92bc40 R14: 00007f615e3faa60 R15: 000055572e92bd08
+   </TASK>
+
+Don't hold the device_list_mutex while calling into
+btrfs_get_dev_zone_info() in btrfs_get_dev_zone_info_all_devices() to
+mitigate the issue. This is safe, as no other thread can touch the device
+list at the moment of execution.
+
+Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_arp_nd_proxy.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/btrfs/zoned.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index 1e2b51769eec8..af3d1e33f50b8 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -251,12 +251,12 @@ struct nd_msg *br_is_nd_neigh_msg(const struct sk_buff *skb, struct nd_msg *msg)
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index ba03ea17a10f7..4e2ed51297ea1 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -332,7 +332,10 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
+ 	if (!btrfs_fs_incompat(fs_info, ZONED))
+ 		return 0;
  
- static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 		       struct sk_buff *request, struct neighbour *n,
--		       __be16 vlan_proto, u16 vlan_tci, struct nd_msg *ns)
-+		       __be16 vlan_proto, u16 vlan_tci)
- {
- 	struct net_device *dev = request->dev;
- 	struct net_bridge_vlan_group *vg;
-+	struct nd_msg *na, *ns;
- 	struct sk_buff *reply;
--	struct nd_msg *na;
- 	struct ipv6hdr *pip6;
- 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
- 	int ns_olen;
-@@ -264,7 +264,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 	u8 *daddr;
- 	u16 pvid;
+-	mutex_lock(&fs_devices->device_list_mutex);
++	/*
++	 * No need to take the device_list mutex here, we're still in the mount
++	 * path and devices cannot be added to or removed from the list yet.
++	 */
+ 	list_for_each_entry(device, &fs_devices->devices, dev_list) {
+ 		/* We can skip reading of zone info for missing devices */
+ 		if (!device->bdev)
+@@ -342,7 +345,6 @@ int btrfs_get_dev_zone_info_all_devices(struct btrfs_fs_info *fs_info)
+ 		if (ret)
+ 			break;
+ 	}
+-	mutex_unlock(&fs_devices->device_list_mutex);
  
--	if (!dev)
-+	if (!dev || skb_linearize(request))
- 		return;
- 
- 	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
-@@ -281,6 +281,8 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 	skb_set_mac_header(reply, 0);
- 
- 	daddr = eth_hdr(request)->h_source;
-+	ns = (struct nd_msg *)(skb_network_header(request) +
-+			       sizeof(struct ipv6hdr));
- 
- 	/* Do we need option processing ? */
- 	ns_olen = request->len - (skb_network_offset(request) +
-@@ -472,9 +474,9 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- 				if (vid != 0)
- 					br_nd_send(br, p, skb, n,
- 						   skb->vlan_proto,
--						   skb_vlan_tag_get(skb), msg);
-+						   skb_vlan_tag_get(skb));
- 				else
--					br_nd_send(br, p, skb, n, 0, 0, msg);
-+					br_nd_send(br, p, skb, n, 0, 0);
- 				replied = true;
- 			}
- 
+ 	return ret;
+ }
 -- 
 2.53.0
 
