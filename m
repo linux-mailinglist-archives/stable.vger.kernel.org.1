@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-234677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJXyCUum1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:35 +0200
+	id 8PRdNdaj1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8430F3C23AB
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:02:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0C03C1CA8
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC63A313586B
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:37:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CC84030C6319
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0B53ACF16;
-	Wed,  8 Apr 2026 18:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C129A3D9DA9;
+	Wed,  8 Apr 2026 18:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvc+z2JQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaAjmlki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C697AB67E;
-	Wed,  8 Apr 2026 18:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F2C2BD030;
+	Wed,  8 Apr 2026 18:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673477; cv=none; b=EHwFffqCSFUkt8XRooqllUaKO8iHEJirGSOpYxo1RrBJi6BX8wg6V7UFCYMHOQ/aFa9vu1K3UBfyS5zU3GrGbc5xKEEnAz/eiQkHRM4qQH7OhY6VTf97Qs7QabjKCvDgnPWLI0Zs4txovrxMrlE0W8gY71DXhm1l3kp7Buh+ezM=
+	t=1775674056; cv=none; b=mXOgQU6HZI84TxLsBzAx4wLG7Hpp8NaZzIqv7LlDR7guQ85x4YXio7gpVbJ/w60EgVqMMYZKk9NImFMrfzcCW/85zQ16d3r+gUBb0PmLPJ+DsiSOxDSQ/t5eeKvYhXCmMG4ft1KyOwpBz2X/71SIXyn6C/MgTaCdyHYLpYYn9lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673477; c=relaxed/simple;
-	bh=sX+5U6MOpH6wZWsJrP3qPJ0+lkruYa+Nmn5NkqlCzfI=;
+	s=arc-20240116; t=1775674056; c=relaxed/simple;
+	bh=Qb5qlRwDv0yEui/fk01kppDFmp2xrk3J5130zlmS7hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEGprkOT8o9keAHSAL3BHbb2gKxKW5Ix41v8IR58a2bTtSv4WbG1ZnVWdSIojqelk7A9uvZl0H6urEDrE5alOYOVEmfSV+IHIzFRz2QHeVauXQsV8Njz93NXr0XDmLSTJP1ayOXoeCTIMmBDUj7Ekjv1/0EWrnp70FR+6AGHqGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvc+z2JQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9DFC19425;
-	Wed,  8 Apr 2026 18:37:57 +0000 (UTC)
+	 MIME-Version; b=GmkMTZTyvOcuIzwgjnuSFxr2SN0Y3lanD50/XL/Kv9+qq4ObiwY59I+bwFHxoJYEnZT1MeC7udjNH6SHzGKI8Fmmv4PjxApA+jXBOjTK/PE3gOq5kJauWj/bOmBa0SjFS1pbp0nXUaYXPPt3T25JdFA5G3Tly5Ixxm0ARZ6dKO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaAjmlki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6ACEC19421;
+	Wed,  8 Apr 2026 18:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673477;
-	bh=sX+5U6MOpH6wZWsJrP3qPJ0+lkruYa+Nmn5NkqlCzfI=;
+	s=korg; t=1775674056;
+	bh=Qb5qlRwDv0yEui/fk01kppDFmp2xrk3J5130zlmS7hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvc+z2JQLiwZDMxz4NSBHwRUJZ0XrbDSTpRrEGctZL0FrhKQh9mS6IqH1nstUgVjO
-	 X5kFSLTIypOMR0n/wOg+7XSf+6tVTNth7lFTHKPY5V3CWBNblYAOud0jiCnAfHCJPb
-	 ZzEkVVMVm3bKQNWRWetyUYqajN/LovBzxzHEZW0M=
+	b=uaAjmlkih5dohfFgw3z4z7fHll0tw3UakTsrsg4dTHqd5PIl5CGMotHLb+GX8Ln2x
+	 UIfFTz9LUuBK4KDkdVSgShWYnbOtiaK4hC1zgd9slZieotpYk8K9fXsD7koF1qJ4dj
+	 cP9jrn84+qCphfV1gaGDka+6CsHJsYhHKbaZxo6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+19bed92c97bee999e5db@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 246/277] USB: dummy-hcd: Fix locking/synchronization error
-Date: Wed,  8 Apr 2026 20:03:51 +0200
-Message-ID: <20260408175943.044040541@linuxfoundation.org>
+	Xingjing Deng <xjdeng@buaa.edu.cn>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.12 192/242] misc: fastrpc: possible double-free of cctx->remote_heap
+Date: Wed,  8 Apr 2026 20:03:52 +0200
+Message-ID: <20260408175934.270467005@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
+References: <20260408175927.064985309@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +63,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-234677-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234901-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,19bed92c97bee999e5db];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8430F3C23AB
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,buaa.edu.cn:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: 5E0C03C1CA8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Xingjing Deng <micro6947@gmail.com>
 
-commit 616a63ff495df12863692ab3f9f7b84e3fa7a66d upstream.
+commit ba2c83167b215da30fa2aae56b140198cf8d8408 upstream.
 
-Syzbot testing was able to provoke an addressing exception and crash
-in the usb_gadget_udc_reset() routine in
-drivers/usb/gadgets/udc/core.c, resulting from the fact that the
-routine was called with a second ("driver") argument of NULL.  The bad
-caller was set_link_state() in dummy_hcd.c, and the problem arose
-because of a race between a USB reset and driver unbind.
+fastrpc_init_create_static_process() may free cctx->remote_heap on the
+err_map path but does not clear the pointer. Later, fastrpc_rpmsg_remove()
+frees cctx->remote_heap again if it is non-NULL, which can lead to a
+double-free if the INIT_CREATE_STATIC ioctl hits the error path and the rpmsg
+device is subsequently removed/unbound.
+Clear cctx->remote_heap after freeing it in the error path to prevent the
+later cleanup from freeing it again.
 
-These sorts of races were not supposed to be possible; commit
-7dbd8f4cabd9 ("USB: dummy-hcd: Fix erroneous synchronization change"),
-along with a few followup commits, was written specifically to prevent
-them.  As it turns out, there are (at least) two errors remaining in
-the code.  Another patch will address the second error; this one is
-concerned with the first.
+This issue was found by an in-house analysis workflow that extracts AST-based
+information and runs static checks, with LLM assistance for triage, and was
+confirmed by manual code review.
+No hardware testing was performed.
 
-The error responsible for the syzbot crash occurred because the
-stop_activity() routine will sometimes drop and then re-acquire the
-dum->lock spinlock.  A call to stop_activity() occurs in
-set_link_state() when handling an emulated USB reset, after the test
-of dum->ints_enabled and before the increment of dum->callback_usage.
-This allowed another thread (doing a driver unbind) to sneak in and
-grab the spinlock, and then clear dum->ints_enabled and dum->driver.
-Normally this other thread would have to wait for dum->callback_usage
-to go down to 0 before it would clear dum->driver, but in this case it
-didn't have to wait since dum->callback_usage had not yet been
-incremented.
-
-The fix is to increment dum->callback_usage _before_ calling
-stop_activity() instead of after.  Then the thread doing the unbind
-will not clear dum->driver until after the call to
-usb_gadget_udc_reset() safely returns and dum->callback_usage has been
-decremented again.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-by: syzbot+19bed92c97bee999e5db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/68fc7c9c.050a0220.346f24.023c.GAE@google.com/
-Tested-by: syzbot+19bed92c97bee999e5db@syzkaller.appspotmail.com
-Fixes: 7dbd8f4cabd9 ("USB: dummy-hcd: Fix erroneous synchronization change")
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/46135f42-fdbe-46b5-aac0-6ca70492af15@rowland.harvard.edu
+Fixes: 0871561055e66 ("misc: fastrpc: Add support for audiopd")
+Cc: stable@vger.kernel.org # 6.2+
+Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260129234140.410983-1-xjdeng@buaa.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -462,8 +462,13 @@ static void set_link_state(struct dummy_
- 
- 		/* Report reset and disconnect events to the driver */
- 		if (dum->ints_enabled && (disconnect || reset)) {
--			stop_activity(dum);
- 			++dum->callback_usage;
-+			/*
-+			 * stop_activity() can drop dum->lock, so it must
-+			 * not come between the dum->ints_enabled test
-+			 * and the ++dum->callback_usage.
-+			 */
-+			stop_activity(dum);
- 			spin_unlock(&dum->lock);
- 			if (reset)
- 				usb_gadget_udc_reset(&dum->gadget, dum->driver);
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1373,6 +1373,7 @@ err_invoke:
+ 	}
+ err_map:
+ 	fastrpc_buf_free(fl->cctx->remote_heap);
++	fl->cctx->remote_heap = NULL;
+ err_name:
+ 	kfree(name);
+ err:
 
 
 
