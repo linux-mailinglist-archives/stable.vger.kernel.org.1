@@ -1,131 +1,168 @@
-Return-Path: <stable+bounces-233922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4H4/FpRk1mnIEwgAu9opvQ
-	(envelope-from <stable+bounces-233922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 16:22:12 +0200
+	id AK4FJM5j1mnwEwgAu9opvQ
+	(envelope-from <stable+bounces-233923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 16:18:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A533BD99C
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 16:22:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F463BD90D
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 16:18:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A8A5302D5EB
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 14:15:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 53902300CA03
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 14:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51181274B46;
-	Wed,  8 Apr 2026 14:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D0B3D092A;
+	Wed,  8 Apr 2026 14:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rbohu23N"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="KkOo6rDz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140542A1CF
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 14:15:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366F124DD15;
+	Wed,  8 Apr 2026 14:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775657750; cv=none; b=M/ULmnFpqYH/9HhUOzXD8nEDWTeUjn1cCGl0wawAG9wjVigStXnXaAnt5Xyc6sEftuIZ7AEGO1KolggKUH5c7o/O42GN8crcVtlC8qEfVkX0ly7qxV42iLhZCOuMflQ9IqhdCCYcydvjJ17UpF06z/4iOAwLQZ69768EZL3B8sc=
+	t=1775657929; cv=none; b=KcP7UsJrWmfvkRGtEXIIeRmlDGDqybv/eQ0UL5ChM+tygpbz4K0aN7QrfyAmobCVBfpy0n67OA0IsbeT9mA8CJtTaNfu64/pgB7vFN/BrM217dUB8GJI04My9XFdMbMkTup0XmiJgyY4ZUs01xf1NU63zfVu3z1DNguWn2Ye2iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775657750; c=relaxed/simple;
-	bh=rnq0U7JY8qE6zrOwZEEcxoG+R8aASn9t9dJfsz2jTFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mTTk2F2Kh0MJjhqhHw6mwHH/ie9W61di3y+wdpD7ukCvvaF57VcZgVnxhqa6iANPxskVnZql90Sgg7bgCo0BmUB7Bec2uxMoDPQVzQY/s1C+nC5m3FJ04sOUVj3tREKuIoXeblDqnihxHUaVzHwWsSepWQHJRd56PIQC2wdqN+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rbohu23N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A15BC19421;
-	Wed,  8 Apr 2026 14:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775657749;
-	bh=rnq0U7JY8qE6zrOwZEEcxoG+R8aASn9t9dJfsz2jTFE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rbohu23NXjmSQzWdaFQ0JmWx8JAwZKoLn5IqPIxXR75QI1m3IGsOFxkr4PQmBlv/d
-	 G4EBFFNreWNwrwKaqF8ocMYol+yoGXoB8INTeXWkmZXakXoJPrJl0g2leWuhsRMv8R
-	 V/vf5PaaEVwXxd636R/21MnJx+WX2OfkB2MwUKIWXt7vG06xMpO2faj12I9nIupDD5
-	 d7xuCu/Ja+7i08GPIhaMlnc5Pfe0tGcdX06W2K3wvyEPjY2vl24UCfWojRrMqYnG/B
-	 YpbsMN2mX6o2rFBjl9cd7fx1KFsvH1xYSsmvzhhCtiprpLf4GrtSFhNzYf/N1qXh98
-	 kF7b2mc5kVoBQ==
-Date: Wed, 8 Apr 2026 10:15:48 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: stable@vger.kernel.org, Srujana Challa <schalla@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 6.1.y] virtio_net: clamp rss_max_key_size to
- NETDEV_RSS_KEY_LEN
-Message-ID: <adZjFGvv3VAPLV3I@laps>
-References: <2026040856-ploy-antiviral-fecc@gregkh>
- <20260408134351.1100654-1-sashal@kernel.org>
- <20260408095309-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1775657929; c=relaxed/simple;
+	bh=jOCV1s/IbPPoj1IwL4TUX1Sx8qvm/V48B+YWPfEy04E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i61C8kCLNT4mIltyFQFvnQZpOgcV6vJpVy4yakqB3HsEwIaNMc3hvNv/UeixxMVhwuauuKo5lsVX4NDkmSlZ2sKw+VCJjNWelqQC60WaSXreEsQvKIPwUt/Mv04rd2hOue1BLOw6V9S7MzA1XNv2QTefCjukBAhGDCAP7UzqQQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=KkOo6rDz; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from debian.intra.ispras.ru (unknown [10.10.165.28])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 6C47745F7988;
+	Wed,  8 Apr 2026 14:18:45 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6C47745F7988
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1775657925;
+	bh=ac+ld7PBnDtntUMS9S8A9+sf8tF7fABnrLxBZdtfty8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KkOo6rDzgOhzmt/Dv2vYogRIIsqUNDCEo1aBqC06+JlxEM7oF8ShhurODjlhSnhiO
+	 8Gc5YQxtPgh9priKaqEXx32AGIIOFoPduVUoOh8SjzvOQ9W+6tKlcNU4dxlOoaiB4I
+	 Zx+p18z7AqSXSL1VrJzTPLlanaWSPAsQ+9NEoGH8=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	"Heyne, Maximilian" <mheyne@amazon.de>,
+	asahi@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-nvme@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] nvme-apple: drop invalid put of admin queue reference count
+Date: Wed,  8 Apr 2026 17:18:14 +0300
+Message-ID: <20260408141815.375695-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260408095309-mutt-send-email-mst@kernel.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-233922-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233923-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ispras.ru:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,marvell.com:email]
-X-Rspamd-Queue-Id: C2A533BD99C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ispras.ru:dkim,ispras.ru:email,ispras.ru:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 31F463BD90D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 08, 2026 at 09:54:33AM -0400, Michael S. Tsirkin wrote:
->On Wed, Apr 08, 2026 at 09:43:51AM -0400, Sasha Levin wrote:
->> From: Srujana Challa <schalla@marvell.com>
->>
->> [ Upstream commit b4e5f04c58a29c499faa85d12952ca9a4faf1cb9 ]
->>
->> rss_max_key_size in the virtio spec is the maximum key size supported by
->> the device, not a mandatory size the driver must use. Also the value 40
->> is a spec minimum, not a spec maximum.
->>
->> The current code rejects RSS and can fail probe when the device reports a
->> larger rss_max_key_size than the driver buffer limit. Instead, clamp the
->> effective key length to min(device rss_max_key_size, NETDEV_RSS_KEY_LEN)
->> and keep RSS enabled.
->>
->> This keeps probe working on devices that advertise larger maximum key sizes
->> while respecting the netdev RSS key buffer size limit.
->>
->> Fixes: 3f7d9c1964fc ("virtio_net: Add hash_key_length check")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Srujana Challa <schalla@marvell.com>
->> Acked-by: Michael S. Tsirkin <mst@redhat.com>
->> Link: https://patch.msgid.link/20260326142344.1171317-1-schalla@marvell.com
->> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->> [ changed clamp target from NETDEV_RSS_KEY_LEN to VIRTIO_NET_RSS_MAX_KEY_SIZE ]
->
->Does this not make the subject and the commit log misleading?
+Commit 03b3bcd319b3 ("nvme: fix admin request_queue lifetime") moved the
+admin queue reference ->put call into nvme_free_ctrl() - a controller
+device release callback performed for every nvme driver doing
+nvme_init_ctrl().
 
-Probably, but changing the commit subject will just create more confusion.
+nvme-apple sets refcount of the admin queue to 1 at allocation during the
+probe function and then puts it twice now:
 
+nvme_free_ctrl()
+  blk_put_queue(ctrl->admin_q) // #1
+  ->free_ctrl()
+    apple_nvme_free_ctrl()
+      blk_put_queue(anv->ctrl.admin_q) // #2
+
+Note that there is a commit 941f7298c70c ("nvme-apple: remove an extra
+queue reference") which intended to drop taking an extra admin queue
+reference.  Looks like at that moment it accidentally fixed a refcount
+leak, which existed since the driver's introduction.  There were two ->get
+calls at driver's probe function and a single ->put inside
+apple_nvme_free_ctrl().
+
+However now after commit 03b3bcd319b3 ("nvme: fix admin request_queue
+lifetime") the refcount is imbalanced again.  Fix it by removing extra
+->put call from apple_nvme_free_ctrl().  anv->dev and ctrl->dev point to
+the same device, so use ctrl->dev directly for simplification.  Compile
+tested only.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+
+v2: use ctrl->dev directly for simplification (Jens Axboe)
+link to v1: https://lore.kernel.org/linux-nvme/20260403202701.991276-1-pchelkin@ispras.ru/
+
+ drivers/nvme/host/apple.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
+index ed61b97fde59..423c9c628e7b 100644
+--- a/drivers/nvme/host/apple.c
++++ b/drivers/nvme/host/apple.c
+@@ -1267,11 +1267,7 @@ static int apple_nvme_get_address(struct nvme_ctrl *ctrl, char *buf, int size)
+ 
+ static void apple_nvme_free_ctrl(struct nvme_ctrl *ctrl)
+ {
+-	struct apple_nvme *anv = ctrl_to_apple_nvme(ctrl);
+-
+-	if (anv->ctrl.admin_q)
+-		blk_put_queue(anv->ctrl.admin_q);
+-	put_device(anv->dev);
++	put_device(ctrl->dev);
+ }
+ 
+ static const struct nvme_ctrl_ops nvme_ctrl_ops = {
 -- 
-Thanks,
-Sasha
+2.53.0
+
 
