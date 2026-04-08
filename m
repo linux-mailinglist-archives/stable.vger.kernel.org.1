@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iO91F3if1mkLGwgAu9opvQ
-	(envelope-from <stable+bounces-234570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:28 +0200
+	id mJjADnOd1mnlGggAu9opvQ
+	(envelope-from <stable+bounces-234306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FB63C0F40
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF1D3C0A66
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5553F30201BA
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:33:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 856853037189
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973813D890E;
-	Wed,  8 Apr 2026 18:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B4A3ACA41;
+	Wed,  8 Apr 2026 18:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCn46VF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aI/uPnHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6533D8134;
-	Wed,  8 Apr 2026 18:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5A2324B1F;
+	Wed,  8 Apr 2026 18:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673202; cv=none; b=TBzo7wV+futmaIrPkKoFJFFdYLjT/s6nA69TAMns+1b7L1unV+qN8W+s2VrNn3eEPaD2kPxziKGAqlNiWOtSsoyPoVzMIcW4Ty/m+J1fOr/rJQHPhb0Ajg0DQaLphlb7nCPvw6jLebDeE3VylfN1tDpBtMs2pjdcvY+2d6+zvhs=
+	t=1775672517; cv=none; b=Z7s8ayLYxjDuAG5NJlbxCvmlKlvBTfkiXxX8kSzmcPK0DVeX8PvcSni5/z/HFI96WwhqXM3v+6U/8NvglZqNy0RVQpWC7OHyhiYidCDP0OfajJ+qBhEJL6MYpkBNiuOm/lf+9W4jeTv3YkPfuYxLjm5zGPGGHrrLf4eNK5nMcUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673202; c=relaxed/simple;
-	bh=HOa31KTSDjQCMZnvQrEIpc+kcbe64I/WgixEn8YLO4w=;
+	s=arc-20240116; t=1775672517; c=relaxed/simple;
+	bh=d5FKFN8IGk2RMXlMsekPxuyy+VHd2JkXBhigb1yKnGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUqHFeotq/q3wBSd5wRX//Ndu9BJKMFneLj4JbvRcdUr5c6QQLaiFkFo4M0S1UhwQ3t8Ee5jQ/6UtZDhTqI8zO4tlJ6tlJVD30k/S3/FV+NrwMu9J0ReY9OY6H97KtRsIboyGvJaoH+whmxpMocigz9rZLO3qSd02zjZpcyKMyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCn46VF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42C8C19425;
-	Wed,  8 Apr 2026 18:33:21 +0000 (UTC)
+	 MIME-Version; b=iG/8cBsruemiFt3m0XrFrVE7gq+fnzhpMGxCRY7DIE6tsvbH05yB4c1JZ0Jg68eyQfJdkyOdXVIb23XxYVoTETAeDgu/vfhfbpgOt8AfccTeosO1+HImu6oaFxRwICyjGy8OSUlP9aSiggtMMlS0WFf6n+KOT8z3yFDpoWaxs60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aI/uPnHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34DBC19421;
+	Wed,  8 Apr 2026 18:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673202;
-	bh=HOa31KTSDjQCMZnvQrEIpc+kcbe64I/WgixEn8YLO4w=;
+	s=korg; t=1775672517;
+	bh=d5FKFN8IGk2RMXlMsekPxuyy+VHd2JkXBhigb1yKnGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCn46VF9gSwQBIdzXZdGYvrGd6UQh4V6QQ7eIQ9fe9EL1+gBFLwGHA1sm2gilvY8f
-	 UrMA+8piYg6xLv0+IPDFBh6f0Fa/QVySf8u5/HvIWaPNVUom+/ohFMoC2cXYl6tJHW
-	 9RpgGLf40Cy7h6s7geikjSyG8KLCjdM272sxSHPM=
+	b=aI/uPnHATnCj5QfjgUOvYnKZUblI0hi2zf36Q/bgKikgDHJi/6WE5nytzbgvaGYQN
+	 3RitnVLxKEL4jOc96Ns3r1qHEckPCU0dhcfIhMfeVDoSABRdYv/elXYU/h/Kw/WMOF
+	 ZnkZOpgWX6nNBISV8ECeK/Ak50GEuXNLDCJzh4w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 139/277] ALSA: hda/realtek: Add quirk for ASUS ROG Strix SCAR 15
-Date: Wed,  8 Apr 2026 20:02:04 +0200
-Message-ID: <20260408175939.065974282@linuxfoundation.org>
+	Qi Tang <tpluszz77@gmail.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 038/160] netfilter: nf_conntrack_helper: pass helper to expect cleanup
+Date: Wed,  8 Apr 2026 20:02:05 +0200
+Message-ID: <20260408175914.632950635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,64 +69,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nwl.cc,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234306-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234570-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: F1FB63C0F40
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,netfilter.org:email,nwl.cc:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3BF1D3C0A66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Qi Tang <tpluszz77@gmail.com>
 
-commit f1af71d568e55536d9297bfa7907ad497108cf30 upstream.
+[ Upstream commit a242a9ae58aa46ff7dae51ce64150a93957abe65 ]
 
-ASUS ROG Strix SCAR 15, like the Strix G15, requires the
-ALC285_FIXUP_ASUS_G533Z_PINS quirk to work properly.
+nf_conntrack_helper_unregister() calls nf_ct_expect_iterate_destroy()
+to remove expectations belonging to the helper being unregistered.
+However, it passes NULL instead of the helper pointer as the data
+argument, so expect_iter_me() never matches any expectation and all
+of them survive the cleanup.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221247
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260330075334.50962-2-zhangheng@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After unregister returns, nfnl_cthelper_del() frees the helper
+object immediately.  Subsequent expectation dumps or packet-driven
+init_conntrack() calls then dereference the freed exp->helper,
+causing a use-after-free.
+
+Pass the actual helper pointer so expectations referencing it are
+properly destroyed before the helper object is freed.
+
+  BUG: KASAN: slab-use-after-free in string+0x38f/0x430
+  Read of size 1 at addr ffff888003b14d20 by task poc/103
+  Call Trace:
+   string+0x38f/0x430
+   vsnprintf+0x3cc/0x1170
+   seq_printf+0x17a/0x240
+   exp_seq_show+0x2e5/0x560
+   seq_read_iter+0x419/0x1280
+   proc_reg_read+0x1ac/0x270
+   vfs_read+0x179/0x930
+   ksys_read+0xef/0x1c0
+  Freed by task 103:
+  The buggy address is located 32 bytes inside of
+   freed 192-byte region [ffff888003b14d00, ffff888003b14dc0)
+
+Fixes: ac7b84839003 ("netfilter: expect: add and use nf_ct_expect_iterate helpers")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_conntrack_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7067,6 +7067,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301VV/VQ/VU/VJ/VA/VC/VE/VVC/VQC/VUC/VJC/VEC/VCC", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1584, "ASUS UM3406GA ", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1602, "ASUS ROG Strix SCAR 15", ALC285_FIXUP_ASUS_G533Z_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1652, "ASUS ROG Zephyrus Do 15 SE", ALC289_FIXUP_ASUS_ZEPHYRUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZI/ZJ/ZQ/ZU/ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index 10f72b5b4e1ad..01d125fa2f76e 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -424,7 +424,7 @@ void nf_conntrack_helper_unregister(struct nf_conntrack_helper *me)
+ 	 */
+ 	synchronize_rcu();
+ 
+-	nf_ct_expect_iterate_destroy(expect_iter_me, NULL);
++	nf_ct_expect_iterate_destroy(expect_iter_me, me);
+ 	nf_ct_iterate_destroy(unhelp, me);
+ }
+ EXPORT_SYMBOL_GPL(nf_conntrack_helper_unregister);
+-- 
+2.53.0
+
 
 
 
