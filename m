@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-234780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAmgMhCl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:20 +0200
+	id cCLDNn2f1mkLGwgAu9opvQ
+	(envelope-from <stable+bounces-234525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE063C20D4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087723C0F57
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2A3F31AAEE2
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:42:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8A4F630350A4
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69FA3D75AF;
-	Wed,  8 Apr 2026 18:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D713347BA9;
+	Wed,  8 Apr 2026 18:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RymwhKDa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEdAIMmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6977A32A3FD;
-	Wed,  8 Apr 2026 18:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E391A28980F;
+	Wed,  8 Apr 2026 18:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673743; cv=none; b=tK2j+vQp5vV3e1j5kdZyeDfwIHIKqCDVd45hpyj4hW+D3i8OiDlG9ZFTFjtnGDdY72oH/oOBUMxpIq3zeoZFKKAfuimUE3ZeFCebUkhHKeZb738NcSqWmBlxO+NcuF2y0FnTj1ycJiRsqUvLSZKAysIzWCk36CUdrJGIKoV78EQ=
+	t=1775673086; cv=none; b=m8zXw2+oVdXqoDqcCuhD6ev3wSkVpmHcI8zCcwMeFGLod6DASPLTPtjY77z3uvFLLX3CjLCQjR1kFDfzQNZbVQ99l4oYeEqZa1enwPICNz5R333C3b4HpS8U8gPMlxcLOjv3EWGm7IQRnxS4Ybid/CN5KdQVjd8KbfHBJPcMiTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673743; c=relaxed/simple;
-	bh=80akKGS4EHtlGwKTCAMsA1l5BViND3OAfO8DOvuRYhI=;
+	s=arc-20240116; t=1775673086; c=relaxed/simple;
+	bh=HNIcpr9S8K5dfDaZeDWAgf6oKnDh7R599RA8wkmqel0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzZxUg158dTvWIZJRQyKdqyl+aZGxwl6gTiuugtSA5PGBt63+V7DlMmU6OvlCeWjd3H+ufJx1p5zF0IdO5DbqDv2ZhkdFy2CHsq6HAaEuKHJGOc5QKeei3J/8p9JSDNjhN5snQ/g6V96IlIKMXBvG2/eTyiOoh0RvMCGORY3gtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RymwhKDa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A672FC19421;
-	Wed,  8 Apr 2026 18:42:22 +0000 (UTC)
+	 MIME-Version; b=qc255eDB+6rl3TvtykPRnFiluR6qGrcH5UTo64CFP9xDDJpGgGL6obXDrTofNK9PAxMOCRoQq/F78pDyxbBvFAYXclvx31tohZfRWg4dWhcebmEVUP/WUybRhqKe20TnsnAagWblpMDzn1gYgOpqM/krpLY6aJzBibcAZVGvl64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEdAIMmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7983AC2BCB0;
+	Wed,  8 Apr 2026 18:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673743;
-	bh=80akKGS4EHtlGwKTCAMsA1l5BViND3OAfO8DOvuRYhI=;
+	s=korg; t=1775673085;
+	bh=HNIcpr9S8K5dfDaZeDWAgf6oKnDh7R599RA8wkmqel0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RymwhKDatnuEDaCP+mYqixV7NFEYY1c7iTQd2coUVNJnSI8pJiWRkqRgi79oYDlDD
-	 aHOrczhrGn52TraiNsfhVjw1R8LxHd6AKaoEoJ3jbbdsVvM5JjkoeSgpAU81cLH4I9
-	 2rHMgY+nw0PJ3b6bMW1+TuKsoXZeHxhigTXOYKmQ=
+	b=wEdAIMmQWTaR4lh/ZlcFuZ5hG8GTgEGqIr1Kxnuu3cPUAAYg05al/QQvs7Mo2ZcwK
+	 TJxCPxS5l8AfQN+7nwFkQ+SUw1pyE0+dLXPL24fq9WBnvGTHcBeCxxPSmtJp13f2gz
+	 y3kmLHDlxE4BrokJpzemGzfOucBgmPl8Q0M52Jok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Martin Schiller <ms@dev.tdt.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/242] dt-bindings: auxdisplay: ht16k33: Use unevaluatedProperties to fix common property warning
+Subject: [PATCH 6.18 095/277] net/x25: Fix overflow when accumulating packets
 Date: Wed,  8 Apr 2026 20:01:20 +0200
-Message-ID: <20260408175928.572313942@linuxfoundation.org>
+Message-ID: <20260408175937.421497928@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175927.064985309@linuxfoundation.org>
-References: <20260408175927.064985309@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +69,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,dev.tdt.de,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234525-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234780-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,devicetree.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,nxp.com:email,0.0.0.70:email]
-X-Rspamd-Queue-Id: 2EE063C20D4
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tdt.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 087723C0F57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Martin Schiller <ms@dev.tdt.de>
 
-[ Upstream commit 398c0c8bbc8f5a9d2f43863275a427a9d3720b6f ]
+[ Upstream commit a1822cb524e89b4cd2cf0b82e484a2335496a6d9 ]
 
-Change additionalProperties to unevaluatedProperties because it refs to
-/schemas/input/matrix-keymap.yaml.
+Add a check to ensure that `x25_sock.fraglen` does not overflow.
 
-Fix below CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dtb: keypad@70 (holtek,ht16k33): 'keypad,num-columns', 'keypad,num-rows' do not match any of the regexes: '^pinctrl-[0-9]+$'
-        from schema $id: http://devicetree.org/schemas/auxdisplay/holtek,ht16k33.yaml#
+The `fraglen` also needs to be resetted when purging `fragment_queue` in
+`x25_clear_queues()`.
 
-Fixes: f12b457c6b25c ("dt-bindings: auxdisplay: ht16k33: Convert to json-schema")
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+Link: https://patch.msgid.link/20260331-x25_fraglen-v4-2-3e69f18464b4@dev.tdt.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/auxdisplay/holtek,ht16k33.yaml          | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/x25/x25_in.c   | 4 ++++
+ net/x25/x25_subr.c | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml b/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
-index b90eec2077b4b..fe1272e86467e 100644
---- a/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
-+++ b/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
-@@ -66,7 +66,7 @@ then:
-   required:
-     - refresh-rate-hz
+diff --git a/net/x25/x25_in.c b/net/x25/x25_in.c
+index 0dbc73efab1cb..e47ebd8acd21b 100644
+--- a/net/x25/x25_in.c
++++ b/net/x25/x25_in.c
+@@ -34,6 +34,10 @@ static int x25_queue_rx_frame(struct sock *sk, struct sk_buff *skb, int more)
+ 	struct sk_buff *skbo, *skbn = skb;
+ 	struct x25_sock *x25 = x25_sk(sk);
  
--additionalProperties: false
-+unevaluatedProperties: false
++	/* make sure we don't overflow */
++	if (x25->fraglen + skb->len > USHRT_MAX)
++		return 1;
++
+ 	if (more) {
+ 		x25->fraglen += skb->len;
+ 		skb_queue_tail(&x25->fragment_queue, skb);
+diff --git a/net/x25/x25_subr.c b/net/x25/x25_subr.c
+index 0285aaa1e93c1..159708d9ad20c 100644
+--- a/net/x25/x25_subr.c
++++ b/net/x25/x25_subr.c
+@@ -40,6 +40,7 @@ void x25_clear_queues(struct sock *sk)
+ 	skb_queue_purge(&x25->interrupt_in_queue);
+ 	skb_queue_purge(&x25->interrupt_out_queue);
+ 	skb_queue_purge(&x25->fragment_queue);
++	x25->fraglen = 0;
+ }
  
- examples:
-   - |
+ 
 -- 
 2.53.0
 
