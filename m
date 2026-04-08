@@ -1,186 +1,302 @@
-Return-Path: <stable+bounces-233877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-233878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPhZFnFG1mkFCwgAu9opvQ
-	(envelope-from <stable+bounces-233877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:13:37 +0200
+	id uNZ1FEdH1mkFCwgAu9opvQ
+	(envelope-from <stable+bounces-233878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:17:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16653BBD69
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:13:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08053BBDFF
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 14:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5F703057AB9
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:12:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0DA77300D17C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 12:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B779F3BED78;
-	Wed,  8 Apr 2026 12:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106BD3C2769;
+	Wed,  8 Apr 2026 12:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kqZF0DCl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TB1AbPDM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1561E3BED5F
-	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0A03C1995
+	for <stable@vger.kernel.org>; Wed,  8 Apr 2026 12:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775650354; cv=none; b=kKxvREo2Azfiq8XDT7hRnDog1RZYFwia6zO8tWF/R3EBzr5f+7NNgga+8yBBEKGHh0obJe5wfxSqLqB86felcL3ND5Z6DCNttiWQ33B7poAxgvXh5nZs/DcaM/L7YKUhiHih403q/dDJ1i/OqH/phvDRUsfGGP4E5afMGugxHWg=
+	t=1775650416; cv=none; b=Mf29FgcpjnSyNhx8AYEqL3XsnJ3mPB0QU+i/XZLHTR8Uu++XN0rWFz/sYNECHcdP7JV2syDNe+xL/iFo74hN5oIJdYIgIZ9MT4r2uggGaLj9tUDnttwvNZMGjcy/kJupVdNYad6MqrKG2XEGB+JwWcz7cQS/JxbjUzj7pahquVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775650354; c=relaxed/simple;
-	bh=+t3ECGfjDU3Jm0nOVmjqUwvL7N6is01X1rzceLr0rf0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ted9af9KmkmVlxPjsO650W6lDCFJz8/6AaqKRs9dCMPBS6eLTtENSJJz7OuetG/p5qG0dl77SNxOmRjuPdh2KWRF/qbfQ7o21fkLPhc384Txi7zgnKZHjyF351GQncZU8qZKg3YvJzc3q3nZRns9O81pucWyI8FMm2NOtUKNX2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kqZF0DCl; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488b0046078so33171705e9.1
-        for <stable@vger.kernel.org>; Wed, 08 Apr 2026 05:12:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775650351; x=1776255151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6MEtYTVC/R8o3JeFzzDEI2ox+DEqWpYaAESHBwT9e4w=;
-        b=kqZF0DCl2nIhn7zH0CpamGOrShtHfr6LUNCKPYMWWVR2UH8tEXQC2j1S0Nk3NxaBvd
-         7MtyLW3+S3f2x5yPBXbbvFvW0MT+1capZiZLDVNsDgcAVZEJAvNMPO0setkycQA1NKuA
-         2t0WZWO/R/tyx5b6fJMPOKKFB3WKnN3vx0RtLz+JC9WvlT8ppT00YSNIuQFFrfGKxrcs
-         w6dF73UUvpyd3xaf6h4DF00kHkpIyYmqMQRqFSwPU/kXrPpmCAQLmwoh93jKX2xdsrAg
-         fZbytHd+OkcEpwXq1QnNjJgzWQK9nD2K0buZOxV5L8sQ7vXltymtZmThZPQlbsMdLZH8
-         8pqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775650351; x=1776255151;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6MEtYTVC/R8o3JeFzzDEI2ox+DEqWpYaAESHBwT9e4w=;
-        b=g6TOncvxcBR4MN5rt0+LLoSN6JBNy3uwTFwA2kbGHmcsx+JGZ4UvGC2DlYbsRnUE5V
-         Ae3PHP8dNAi8PpN8XaTFvQh6kx82TGWAf/81HAsnJOqxO54JjUHYaz1zHjZMNUAESMNj
-         nVWGdEiqwwYyOJuqmCp+S9Uj6npHBudzR34ChxUJK7USVbmUMh3iM1BPU3suWAre5VvL
-         FSOct+K8eNtWYvNiPBqEGLnwWDB/+B2ursBt/jA/SzpOPH3RCcHmAjhNCPcpQ7/WCjJC
-         v8Oa1zqKlMbEvKViuDqRBWzKqAhEzaVzTVdd81nq1rkr+fQGrZWSHzce7SFt9JJugGNv
-         bgCg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvusOPKmST8s/5LmxTqEl4IQ3B2hn70L1Guh4qhz8xlfCgGNk/JgjafpGIQLxKEZHrPBUT57o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMS9nVeXRYMMqrsxu1FgQrL5LN6RCLCCX9WYCKJAhiJsvLX/go
-	bgWVZ1tlFI6A3M2urxi5KC4h8R9iZNUsZeo6W4VF3GTSrAt9DJqh/Zb9bH7bK2WT
-X-Gm-Gg: AeBDievKFAKYHs0TKtR72WIFJWHt8QKOAU9vKhKlxZv8GsJeVHB0XocIwSpfQ3ZGUTv
-	RdHPgfmw+7NM75FgGqrP8bZDAavTQmHsiVjpJKhHu3rd5Stnawl8j7oYKviE2o4Ki7A7UHXmoxu
-	4qzbAKcLtE6c2IRuwTht6fqFH1WdVGmsvYsZGZNyjYJNIuDI4LJc/pMf52ccQFI6PSGqeuzJTws
-	p+NZZFca9Uekgs29BnqIDcWdJ6n7vim6xyxkBFFyT1I1LIpsxjqebIMfB6W2EQGqS0H1TGByZ5k
-	OdE4EC5zwrQ3vNe062Y6Dn9+LWIyGseP3cK1DLaiLBQZPB6ePWHyOQJhyk86ttXd0Tj0pemsJ2h
-	W9hVGanOD2ZWySxs82N+3CZFKPxylKVuYIIKznzI/vlSMo0/EZNKQk2C0/eewhfEQOI52oDEUkl
-	4zvvUT/nnUXS4gRNslK3AE52CIVpGlH2I7KGtcTc44eAqfvP0V2G7TT/bz5E975UPZzeeJZrKKu
-	FU=
-X-Received: by 2002:a05:600c:48a8:b0:488:a4d6:69ad with SMTP id 5b1f17b1804b1-488a4d66b42mr108205515e9.27.1775650351364;
-        Wed, 08 Apr 2026 05:12:31 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c530910csm19148255e9.2.2026.04.08.05.12.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 05:12:30 -0700 (PDT)
-Date: Wed, 8 Apr 2026 13:12:27 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Tamir Duberstein <tamird@kernel.org>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel test robot
- <lkp@intel.com>
-Subject: Re: [PATCH] printf: mark errptr() noinline
-Message-ID: <20260408131227.0824c330@pumpkin>
-In-Reply-To: <adY8N2sofhMz-6ih@ashevche-desk.local>
-References: <20260405-printf-test-old-gcc-v1-1-76d24d9bb60e@kernel.org>
-	<20260406111531.779571d7@gandalf.local.home>
-	<CAJ-ks9n+cX=+97=HN76L=WF6jzfLiHZEvL6zM1-P47XORTBz5A@mail.gmail.com>
-	<20260406123232.3dacbe94@gandalf.local.home>
-	<20260407160809.48d5fe2a@pumpkin>
-	<adYCyvTlIoTdnKcL@pathway.suse.cz>
-	<20260408100425.7231966a@pumpkin>
-	<adY8N2sofhMz-6ih@ashevche-desk.local>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1775650416; c=relaxed/simple;
+	bh=I2RC7PPay9nqAR12YGgysg7i/gb1ANLf71aHBA3SxB8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lKw4hxsdOH+4u1yOF933+xyPi9iLwrKgYjyxWePYXavtVT64q9FqG5i53XsgtkGb47tG7B4W4UrXyYQReNce3eCZSj9A3v4Pp/GN/bfSqrqoctr4S6YMJMSA7C9E6prudcrXnOCJC8GnYVDw3EDaFvIaqj7cSs/j0CJbdhwunTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TB1AbPDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763D3C2BCB1;
+	Wed,  8 Apr 2026 12:13:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775650415;
+	bh=I2RC7PPay9nqAR12YGgysg7i/gb1ANLf71aHBA3SxB8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=TB1AbPDMx5Xn470wublUAwsFnQs0nXGW5QYbQD/HTzqKo847UIWYg90kxsfkE98so
+	 YP6oQY17lgXZBPN5CqdAOyFraXBp31pAnXlq+Jns7YuSjrpA+KZN9uJegY5nA85geA
+	 u7TNOx7RK9ZOFcMajm2zYSmc02rJmOWSxdCvLUJk=
+Subject: FAILED: patch "[PATCH] usb: gadget: f_rndis: Fix net_device lifecycle with" failed to apply to 6.1-stable tree
+To: khtsai@google.com,gregkh@linuxfoundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 08 Apr 2026 14:13:33 +0200
+Message-ID: <2026040833-able-unknotted-4c6d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-233877-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-233878-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,suse.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C16653BBD69
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email]
+X-Rspamd-Queue-Id: B08053BBDFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 8 Apr 2026 14:29:59 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On Wed, Apr 08, 2026 at 10:04:25AM +0100, David Laight wrote:
-> > On Wed, 8 Apr 2026 09:24:58 +0200
-> > Petr Mladek <pmladek@suse.com> wrote:  
-> > > On Tue 2026-04-07 16:08:09, David Laight wrote:  
-> > > > On Mon, 6 Apr 2026 12:32:32 -0400
-> > > > Steven Rostedt <rostedt@goodmis.org> wrote:  
-> > > > > On Mon, 6 Apr 2026 11:21:39 -0400
-> > > > > Tamir Duberstein <tamird@kernel.org> wrote:  
-> 
-> ...
-> 
-> > > > Even having the KASAN/KMSAN code compiled into allmodconfig is a PITA
-> > > > when you are trying to check that code compiles to something sensible.    
-> > > 
-> > > This does not look like a good idea. KASAN/KMSAN are very useful
-> > > features. People will want to keep them working. Removing them from
-> > > randconfig would just postpone detection of the problem. We would
-> > > need to deal with it sooner or later anyway.  
-> > 
-> > True, but when I build an allmodconfig build to check how the asm looks
-> > I really don't want them.  
-> 
-> Isn't easy to disable that in the command line to `make`?
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-It is a config option, and I think you need to reset it every time you
-rerun 'make allmodconfig' to pick up config changes.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-You can enable -Werror with W=e, but not disable it if you want
-to set W=1.
-I did have a patch that let you use W=1-e which is useful.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x e367599529dc42578545a7f85fde517b35b3cda7
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026040833-able-unknotted-4c6d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-	David
+Possible dependencies:
 
-> 
-> > For the 'bot' builds you also want to know whether they are defined.
-> > Changes to how things are built rather than what is built can throw
-> > up unexpected warnings that are very hard to pin down.
-> > 
-> > It is bad enough finding things that affect one obscure architecture
-> > with a specific compiler version when the compiler just makes slightly
-> > different decisions, without having unusual compilation/config options
-> > is the mix to muddy the waters further.  
-> 
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e367599529dc42578545a7f85fde517b35b3cda7 Mon Sep 17 00:00:00 2001
+From: Kuen-Han Tsai <khtsai@google.com>
+Date: Fri, 20 Mar 2026 16:54:50 +0800
+Subject: [PATCH] usb: gadget: f_rndis: Fix net_device lifecycle with
+ device_move
+
+The net_device is allocated during function instance creation and
+registered during the bind phase with the gadget device as its sysfs
+parent. When the function unbinds, the parent device is destroyed, but
+the net_device survives, resulting in dangling sysfs symlinks:
+
+  console:/ # ls -l /sys/class/net/usb0
+  lrwxrwxrwx ... /sys/class/net/usb0 ->
+  /sys/devices/platform/.../gadget.0/net/usb0
+  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
+  ls: .../gadget.0/net/usb0: No such file or directory
+
+Use device_move() to reparent the net_device between the gadget device
+tree and /sys/devices/virtual across bind and unbind cycles. During the
+final unbind, calling device_move(NULL) moves the net_device to the
+virtual device tree before the gadget device is destroyed. On rebinding,
+device_move() reparents the device back under the new gadget, ensuring
+proper sysfs topology and power management ordering.
+
+To maintain compatibility with legacy composite drivers (e.g., multi.c),
+the borrowed_net flag is used to indicate whether the network device is
+shared and pre-registered during the legacy driver's bind phase.
+
+Fixes: f466c6353819 ("usb: gadget: f_rndis: convert to new function interface with backward compatibility")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-7-4886b578161b@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/gadget/function/f_rndis.c b/drivers/usb/gadget/function/f_rndis.c
+index 521b4619d6be..7de1c5f8e326 100644
+--- a/drivers/usb/gadget/function/f_rndis.c
++++ b/drivers/usb/gadget/function/f_rndis.c
+@@ -666,6 +666,7 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	struct f_rndis_opts *rndis_opts;
+ 	struct usb_os_desc_table        *os_desc_table __free(kfree) = NULL;
++	struct net_device		*net __free(detach_gadget) = NULL;
+ 	struct usb_request		*request __free(free_usb_request) = NULL;
+ 
+ 	if (!can_support_rndis(c))
+@@ -683,21 +684,18 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 		rndis_iad_descriptor.bFunctionClass = rndis_opts->class;
+ 		rndis_iad_descriptor.bFunctionSubClass = rndis_opts->subclass;
+ 		rndis_iad_descriptor.bFunctionProtocol = rndis_opts->protocol;
+-	}
+ 
+-	/*
+-	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
+-	 * configurations are bound in sequence with list_for_each_entry,
+-	 * in each configuration its functions are bound in sequence
+-	 * with list_for_each_entry, so we assume no race condition
+-	 * with regard to rndis_opts->bound access
+-	 */
+-	if (!rndis_opts->bound) {
+-		gether_set_gadget(rndis_opts->net, cdev->gadget);
+-		status = gether_register_netdev(rndis_opts->net);
+-		if (status)
+-			return status;
+-		rndis_opts->bound = true;
++		if (rndis_opts->bind_count == 0 && !rndis_opts->borrowed_net) {
++			if (!device_is_registered(&rndis_opts->net->dev)) {
++				gether_set_gadget(rndis_opts->net, cdev->gadget);
++				status = gether_register_netdev(rndis_opts->net);
++			} else
++				status = gether_attach_gadget(rndis_opts->net, cdev->gadget);
++
++			if (status)
++				return status;
++			net = rndis_opts->net;
++		}
+ 	}
+ 
+ 	us = usb_gstrings_attach(cdev, rndis_strings,
+@@ -796,6 +794,9 @@ rndis_bind(struct usb_configuration *c, struct usb_function *f)
+ 	}
+ 	rndis->notify_req = no_free_ptr(request);
+ 
++	rndis_opts->bind_count++;
++	retain_and_null_ptr(net);
++
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+ 	 * until we're activated via set_alt().
+@@ -812,11 +813,11 @@ void rndis_borrow_net(struct usb_function_instance *f, struct net_device *net)
+ 	struct f_rndis_opts *opts;
+ 
+ 	opts = container_of(f, struct f_rndis_opts, func_inst);
+-	if (opts->bound)
++	if (device_is_registered(&opts->net->dev))
+ 		gether_cleanup(netdev_priv(opts->net));
+ 	else
+ 		free_netdev(opts->net);
+-	opts->borrowed_net = opts->bound = true;
++	opts->borrowed_net = true;
+ 	opts->net = net;
+ }
+ EXPORT_SYMBOL_GPL(rndis_borrow_net);
+@@ -874,7 +875,7 @@ static void rndis_free_inst(struct usb_function_instance *f)
+ 
+ 	opts = container_of(f, struct f_rndis_opts, func_inst);
+ 	if (!opts->borrowed_net) {
+-		if (opts->bound)
++		if (device_is_registered(&opts->net->dev))
+ 			gether_cleanup(netdev_priv(opts->net));
+ 		else
+ 			free_netdev(opts->net);
+@@ -943,6 +944,9 @@ static void rndis_free(struct usb_function *f)
+ static void rndis_unbind(struct usb_configuration *c, struct usb_function *f)
+ {
+ 	struct f_rndis		*rndis = func_to_rndis(f);
++	struct f_rndis_opts	*rndis_opts;
++
++	rndis_opts = container_of(f->fi, struct f_rndis_opts, func_inst);
+ 
+ 	kfree(f->os_desc_table);
+ 	f->os_desc_n = 0;
+@@ -950,6 +954,10 @@ static void rndis_unbind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	kfree(rndis->notify_req->buf);
+ 	usb_ep_free_request(rndis->notify, rndis->notify_req);
++
++	rndis_opts->bind_count--;
++	if (rndis_opts->bind_count == 0 && !rndis_opts->borrowed_net)
++		gether_detach_gadget(rndis_opts->net);
+ }
+ 
+ static struct usb_function *rndis_alloc(struct usb_function_instance *fi)
+diff --git a/drivers/usb/gadget/function/u_rndis.h b/drivers/usb/gadget/function/u_rndis.h
+index a8c409b2f52f..4e64619714dc 100644
+--- a/drivers/usb/gadget/function/u_rndis.h
++++ b/drivers/usb/gadget/function/u_rndis.h
+@@ -15,12 +15,34 @@
+ 
+ #include <linux/usb/composite.h>
+ 
++/**
++ * struct f_rndis_opts - RNDIS function options
++ * @func_inst: USB function instance.
++ * @vendor_id: Vendor ID.
++ * @manufacturer: Manufacturer string.
++ * @net: The net_device associated with the RNDIS function.
++ * @bind_count: Tracks the number of configurations the RNDIS function is
++ *              bound to, preventing double-registration of the @net device.
++ * @borrowed_net: True if the net_device is shared and pre-registered during
++ *                the legacy composite driver's bind phase (e.g., multi.c).
++ *                If false, the RNDIS function will register the net_device
++ *                during its own bind phase.
++ * @rndis_interf_group: ConfigFS group for RNDIS interface.
++ * @rndis_os_desc: USB OS descriptor for RNDIS.
++ * @rndis_ext_compat_id: Extended compatibility ID.
++ * @class: USB class.
++ * @subclass: USB subclass.
++ * @protocol: USB protocol.
++ * @lock: Protects the data from concurrent access by configfs read/write
++ *        and create symlink/remove symlink operations.
++ * @refcnt: Reference counter for the function instance.
++ */
+ struct f_rndis_opts {
+ 	struct usb_function_instance	func_inst;
+ 	u32				vendor_id;
+ 	const char			*manufacturer;
+ 	struct net_device		*net;
+-	bool				bound;
++	int				bind_count;
+ 	bool				borrowed_net;
+ 
+ 	struct config_group		*rndis_interf_group;
+@@ -30,13 +52,6 @@ struct f_rndis_opts {
+ 	u8				class;
+ 	u8				subclass;
+ 	u8				protocol;
+-
+-	/*
+-	 * Read/write access to configfs attributes is handled by configfs.
+-	 *
+-	 * This is to protect the data from concurrent access by read/write
+-	 * and create symlink/remove symlink.
+-	 */
+ 	struct mutex			lock;
+ 	int				refcnt;
+ };
 
 
