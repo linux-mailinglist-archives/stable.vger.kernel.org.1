@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-234235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMAzHlCd1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:16 +0200
+	id cBvyHZSd1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E245C3C09E4
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:24:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B8A3C0AA9
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A25A630480E4
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:18:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D180530270B5
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3A937C10F;
-	Wed,  8 Apr 2026 18:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012203B0AFC;
+	Wed,  8 Apr 2026 18:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXI3N7UH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weIGx8OJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E247B67E;
-	Wed,  8 Apr 2026 18:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84BE3D9030;
+	Wed,  8 Apr 2026 18:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672333; cv=none; b=WwEtOMtPogh6tfV46rlcLiASGVNa2o5vgRo8w9l+iR/IIZmYrKI89hYGonbeCTWHZGkG+S5mUtBwJ9F4tfcDSGZv1b+tCfu/h5ZVrvAAyKrk3Jif3grOgXEK0VoscgrDmVBdTICu16AonVlGiQKCyGiNh0j78t6+BQ2yhRdZu3A=
+	t=1775672703; cv=none; b=e6+BDMPV850JwWemNpJVeMuCtELff8SfpY8gIJBWIFgUZ8TcGDSc246oDdHpkZPjQXmPp4UvvOfGrO0HCDvaoVeRR6m2eDNx6Z30TBjIgi/Yz1MRsTOb2K1y/LQwicXHSKaSDNtOwmR4+3NQbaBiMDWKosft1Np5qkKADa9SCo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672333; c=relaxed/simple;
-	bh=oGKIDIOa38/GNnqUwOcIQI+mHMY2tq6JHpX4P+12arc=;
+	s=arc-20240116; t=1775672703; c=relaxed/simple;
+	bh=nb1QB949U8MLkllMPlQlWV7z4ZTywN7rFryxOEoyxAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ST863V0xibbBFkj/ayjj7yKk7x0U1ucc26uBMjwOGD6dj9aSgwmLcUzqAswVffk85VeNfvJov3kPXdorR5J2EQHnv0oCkd/kzxnfLYzYNx2eKva+TpUbD5gLTkSLlDvznBm1ONzOi34sQ2HwP9Ga+ddjUx0kWOVXAUDGNg1Bq6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXI3N7UH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3436C19421;
-	Wed,  8 Apr 2026 18:18:52 +0000 (UTC)
+	 MIME-Version; b=TOSRm3kjs+Jyt4aU2/ClSyBcttJgNK7EIwvPOmdoEGVRGY7eczBBs3n6Sl80LDz8/GgapcOG9zygYAxPGQPm29O3RyuLcSIRSfiZIHfCQiMfkYk+SrHc39zwumeWGeJXr+NBuFLGPC9vbhZ+yHkseeLTB+qJ8IXhp0fIqALzMHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weIGx8OJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBA2C19425;
+	Wed,  8 Apr 2026 18:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672333;
-	bh=oGKIDIOa38/GNnqUwOcIQI+mHMY2tq6JHpX4P+12arc=;
+	s=korg; t=1775672703;
+	bh=nb1QB949U8MLkllMPlQlWV7z4ZTywN7rFryxOEoyxAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXI3N7UHjpvx42BLAMZEQjBXlEuk7OuQ6Lwy+IgpqcDGf+mUnpD4McazqTyJ4Hhiw
-	 qCGOrKFWCoX1B/sRsPpoyuMYN8Us40cHshTb77ZzmyP3U3vhndcz7AYNL0oDvSl6K7
-	 YsHGbDsi4m0cHg0LzyKpiPVvNPN6Tp6Fm+nS520M=
+	b=weIGx8OJZr9Kh1rU5aaaaUtrBp+vcftU3ZwROdoMAee6o/wJcOSHhLjdTOkOb9Oot
+	 Pb1cB3W8EjUYaDuZerDwdYwVqA7mBPz0uGGisOa/eDmeESdIvBTgECHieFGwRfDRHc
+	 /LkFLR1LuGlT5M8yqxmwbm6qe+nH9r3Q2//NABno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 280/312] x86/cpu: Enable FSGSBASE early in cpu_init_exception_handling()
+	stable <stable@kernel.org>,
+	Yongchao Wu <yongchao.wu@autochips.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.6 110/160] usb: cdns3: gadget: fix state inconsistency on gadget init failure
 Date: Wed,  8 Apr 2026 20:03:17 +0200
-Message-ID: <20260408175944.211202523@linuxfoundation.org>
+Message-ID: <20260408175917.287994658@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,171 +68,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234235-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-234378-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,amd.com:email,alien8.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E245C3C09E4
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,autochips.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 28B8A3C0AA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikunj A Dadhania <nikunj@amd.com>
+From: Yongchao Wu <yongchao.wu@autochips.com>
 
-[ Upstream commit 05243d490bb7852a8acca7b5b5658019c7797a52 ]
+commit c32f8748d70c8fc77676ad92ed76cede17bf2c48 upstream.
 
-Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handling()
-to ensure it is enabled before any exceptions can occur on both boot and
-secondary CPUs.
+When cdns3_gadget_start() fails, the DRD hardware is left in gadget mode
+while software state remains INACTIVE, creating hardware/software state
+inconsistency.
 
-== Background ==
+When switching to host mode via sysfs:
+  echo host > /sys/class/usb_role/13180000.usb-role-switch/role
 
-Exception entry code (paranoid_entry()) uses ALTERNATIVE patching based on
-X86_FEATURE_FSGSBASE to decide whether to use RDGSBASE/WRGSBASE instructions
-or the slower RDMSR/SWAPGS sequence for saving/restoring GSBASE.
+The role state is not set to CDNS_ROLE_STATE_ACTIVE due to the error,
+so cdns_role_stop() skips cleanup because state is still INACTIVE.
+This violates the DRD controller design specification (Figure22),
+which requires returning to idle state before switching roles.
 
-On boot CPU, ALTERNATIVE patching happens after enabling FSGSBASE in CR4.
-When the feature is available, the code is permanently patched to use
-RDGSBASE/WRGSBASE, which require CR4.FSGSBASE=1 to execute without triggering
+This leads to a synchronous external abort in xhci_gen_setup() when
+setting up the host controller:
 
-== Boot Sequence ==
-
-Boot CPU (with CR pinning enabled):
-  trap_init()
-    cpu_init()                   <- Uses unpatched code (RDMSR/SWAPGS)
-      x2apic_setup()
-  ...
-  arch_cpu_finalize_init()
-    identify_boot_cpu()
-      identify_cpu()
-        cr4_set_bits(X86_CR4_FSGSBASE)  # Enables the feature
-	# This becomes part of cr4_pinned_bits
+[  516.440698] configfs-gadget 13180000.usb: failed to start g1: -19
+[  516.442035] cdns-usb3 13180000.usb: Failed to add gadget
+[  516.443278] cdns-usb3 13180000.usb: set role 2 has failed
+...
+[ 1301.375722] xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
+[ 1301.377716] Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+[ 1301.382485] pc : xhci_gen_setup+0xa4/0x408
+[ 1301.393391] backtrace:
     ...
-    alternative_instructions()   <- Patches code to use RDGSBASE/WRGSBASE
-
-Secondary CPUs (with CR pinning enabled):
-  start_secondary()
-    cr4_init()                   <- Code already patched, CR4.FSGSBASE=1
-                                    set implicitly via cr4_pinned_bits
-
-    cpu_init()                   <- exceptions work because FSGSBASE is
-                                    already enabled
-
-Secondary CPU (with CR pinning disabled):
-  start_secondary()
-    cr4_init()                   <- Code already patched, CR4.FSGSBASE=0
-    cpu_init()
-      x2apic_setup()
-        rdmsrq(MSR_IA32_APICBASE)  <- Triggers #VC in SNP guests
-          exc_vmm_communication()
-            paranoid_entry()       <- Uses RDGSBASE with CR4.FSGSBASE=0
-                                      (patched code)
+    xhci_gen_setup+0xa4/0x408    <-- CRASH
+    xhci_plat_setup+0x44/0x58
+    usb_add_hcd+0x284/0x678
     ...
-    ap_starting()
-      identify_secondary_cpu()
-        identify_cpu()
-	  cr4_set_bits(X86_CR4_FSGSBASE)  <- Enables the feature, which is
-                                             too late
+    cdns_role_set+0x9c/0xbc        <-- Role switch
 
-== CR Pinning ==
+Fix by calling cdns_drd_gadget_off() in the error path to properly
+clean up the DRD gadget state.
 
-Currently, for secondary CPUs, CR4.FSGSBASE is set implicitly through
-CR-pinning: the boot CPU sets it during identify_cpu(), it becomes part of
-cr4_pinned_bits, and cr4_init() applies those pinned bits to secondary CPUs.
-This works but creates an undocumented dependency between cr4_init() and the
-pinning mechanism.
-
-== Problem ==
-
-Secondary CPUs boot after alternatives have been applied globally. They
-execute already-patched paranoid_entry() code that uses RDGSBASE/WRGSBASE
-instructions, which require CR4.FSGSBASE=1. Upcoming changes to CR pinning
-behavior will break the implicit dependency, causing secondary CPUs to
-generate #UD.
-
-This issue manifests itself on AMD SEV-SNP guests, where the rdmsrq() in
-x2apic_setup() triggers a #VC exception early during cpu_init(). The #VC
-handler (exc_vmm_communication()) executes the patched paranoid_entry() path.
-Without CR4.FSGSBASE enabled, RDGSBASE instructions trigger #UD.
-
-== Fix ==
-
-Enable FSGSBASE explicitly in cpu_init_exception_handling() before loading
-exception handlers. This makes the dependency explicit and ensures both
-boot and secondary CPUs have FSGSBASE enabled before paranoid_entry()
-executes.
-
-Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Suggested-by: Sohil Mehta <sohil.mehta@intel.com>
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20260318075654.1792916-2-nikunj@amd.com
-[ adapted to cpu_init_exception_handling(void) lacking FRED and LASS support ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20260401001000.5761-1-yongchao.wu@autochips.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1992,12 +1992,6 @@ static void identify_cpu(struct cpuinfo_
- 	setup_smap(c);
- 	setup_umip(c);
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -3431,6 +3431,7 @@ static int __cdns3_gadget_init(struct cd
+ 	ret = cdns3_gadget_start(cdns);
+ 	if (ret) {
+ 		pm_runtime_put_sync(cdns->dev);
++		cdns_drd_gadget_off(cdns);
+ 		return ret;
+ 	}
  
--	/* Enable FSGSBASE instructions if available. */
--	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
--		cr4_set_bits(X86_CR4_FSGSBASE);
--		elf_hwcap2 |= HWCAP2_FSGSBASE;
--	}
--
- 	/*
- 	 * The vendor-specific functions might have changed features.
- 	 * Now we do "generic changes."
-@@ -2384,6 +2378,18 @@ void cpu_init_exception_handling(void)
- 	/* GHCB needs to be setup to handle #VC. */
- 	setup_ghcb();
- 
-+	/*
-+	 * On CPUs with FSGSBASE support, paranoid_entry() uses
-+	 * ALTERNATIVE-patched RDGSBASE/WRGSBASE instructions. Secondary CPUs
-+	 * boot after alternatives are patched globally, so early exceptions
-+	 * execute patched code that depends on FSGSBASE. Enable the feature
-+	 * before any exceptions occur.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_FSGSBASE)) {
-+		cr4_set_bits(X86_CR4_FSGSBASE);
-+		elf_hwcap2 |= HWCAP2_FSGSBASE;
-+	}
-+
- 	/* Finally load the IDT */
- 	load_current_idt();
- }
 
 
 
