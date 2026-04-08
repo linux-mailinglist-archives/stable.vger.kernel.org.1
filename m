@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-234042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UK4vGGia1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:52 +0200
+	id kBlTF2ya1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE653C0246
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB39E3C0258
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E80030398A1
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC976303A84C
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46FB347517;
-	Wed,  8 Apr 2026 18:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4106F3D88E1;
+	Wed,  8 Apr 2026 18:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNJUxUgT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCqfz4hJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BDF37F8C2;
-	Wed,  8 Apr 2026 18:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048823D4134;
+	Wed,  8 Apr 2026 18:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671835; cv=none; b=YNcKqsytoblra0WURajaVGpnO8xkgBiq1Myiq833juWZV3IeJWTIHn5ANVhRjvwOusBLMQifCrPcjtq08E5KbqXy4IlMT9TAAQ6KheQJe5nzVzc4PDO2ZUhsJmfH4u5RBJbHzPxO+8q+u5z1v6XY0hHqGjHOPN7vpmBpM+q3+r4=
+	t=1775671838; cv=none; b=M3+BYQVLvMhwt/qOFixzW92cBMH+Shwbbyt9KEqAcTOdeiOcpKhG0Rl7/k/Becd+myrk+0SHQXdFnSEIKMU9qIUE/qTeGFZXZEAqIl7ONOV6llapLEJjLvOVdDX5etimYo8fUHBTIin4hoC9isg3bjl3T7lWQ9ySvLT32JG1bLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671835; c=relaxed/simple;
-	bh=dzwQAg7jizIcF+ziVeSWqf540WQbNwHHmKHOE7//Myc=;
+	s=arc-20240116; t=1775671838; c=relaxed/simple;
+	bh=j010iThkCw5yqEkDrG0hCZUX8QvnDzrn9izthVTn2Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHSIQrZ1adl0/IN0WpJfGsGLw3nupaBbmD3uQ4UlAwMHNDi/n6+AlsIX/A3XcLpu/9oFTW32AAHt72zMUa8lcEmD4srRz1NrGoBGkIzdhUQo5V9e3JYZ8suplc+UYVh2TniJfP8u46dM5MDcA2OidFmWi94X5h+0WzqIcUJUTJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNJUxUgT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A15C19421;
-	Wed,  8 Apr 2026 18:10:34 +0000 (UTC)
+	 MIME-Version; b=YBunONIVc3X4Zszacu9AhkvOtJZnQvI94RDidmOx3Rz//9CrZNdzx1+9j29OwZ9JdfTb4Oj16V36wT0vBygd3S/ZLo7Z4A+o+iA9IgdlpZDajiJu/YSTidxh4EMQs47IYoctwuwmAIr7AUrN2EpGjoJ7LgO0LQ3fUEG63+cAJds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCqfz4hJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E61C19421;
+	Wed,  8 Apr 2026 18:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671835;
-	bh=dzwQAg7jizIcF+ziVeSWqf540WQbNwHHmKHOE7//Myc=;
+	s=korg; t=1775671837;
+	bh=j010iThkCw5yqEkDrG0hCZUX8QvnDzrn9izthVTn2Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNJUxUgT7MjO23IfHTLnpnnE95bNZVoBZa5A1ciQwTKprwnemswLm2azuiRqGDGkB
-	 hHFms27+3oUuFN+n9AIUBo9linVRgpImyNdU6I6C0C8R6Es0b+YABu9XI5j9M9n1sn
-	 b+T3utyYGBoqnMGTcNvNpd1JW0kt4Cq2nbYrQBoU=
+	b=XCqfz4hJoaL/1H5nYJ4RLIHrIcvASAILPu6YySjdZdEAUH6czYtc0qgR50OKhi7y9
+	 MRwzvYIhcGnJeLOx/759mbhwI26CrY9EZEopWKKIdeF4kSSDOR61nPZdvS6bYf/q9T
+	 Fkq0pAYhtb0ma5i1+sTkZWemDzBjFKL/R3cO318Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Chen <zhangchen01@kylinos.cn>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/312] Bluetooth: L2CAP: Fix send LE flow credits in ACL link
-Date: Wed,  8 Apr 2026 19:59:30 +0200
-Message-ID: <20260408175935.717118970@linuxfoundation.org>
+Subject: [PATCH 6.1 054/312] Bluetooth: L2CAP: Fix ERTM re-init and zero pdu_len infinite loop
+Date: Wed,  8 Apr 2026 19:59:31 +0200
+Message-ID: <20260408175935.754521779@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
 References: <20260408175933.715315542@linuxfoundation.org>
@@ -66,32 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-234043-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234042-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: CCE653C0246
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EB39E3C0258
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,48 +100,77 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Zhang Chen <zhangchen01@kylinos.cn>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit f39f905e55f529b036321220af1ba4f4085564a5 ]
+[ Upstream commit 25f420a0d4cfd61d3d23ec4b9c56d9f443d91377 ]
 
-When the L2CAP channel mode is L2CAP_MODE_ERTM/L2CAP_MODE_STREAMING,
-l2cap_publish_rx_avail will be called and le flow credits will be sent in
-l2cap_chan_rx_avail, even though the link type is ACL.
+l2cap_config_req() processes CONFIG_REQ for channels in BT_CONNECTED
+state to support L2CAP reconfiguration (e.g. MTU changes). However,
+since both CONF_INPUT_DONE and CONF_OUTPUT_DONE are already set from
+the initial configuration, the reconfiguration path falls through to
+l2cap_ertm_init(), which re-initializes tx_q, srej_q, srej_list, and
+retrans_list without freeing the previous allocations and sets
+chan->sdu to NULL without freeing the existing skb. This leaks all
+previously allocated ERTM resources.
 
-The logs in question as follows:
-> ACL Data RX: Handle 129 flags 0x02 dlen 12
-      L2CAP: Unknown (0x16) ident 4 len 4
-        40 00 ed 05
-< ACL Data TX: Handle 129 flags 0x00 dlen 10
-      L2CAP: Command Reject (0x01) ident 4 len 2
-        Reason: Command not understood (0x0000)
+Additionally, l2cap_parse_conf_req() does not validate the minimum
+value of remote_mps derived from the RFC max_pdu_size option. A zero
+value propagates to l2cap_segment_sdu() where pdu_len becomes zero,
+causing the while loop to never terminate since len is never
+decremented, exhausting all available memory.
 
-Bluetooth: Unknown BR/EDR signaling command 0x16
-Bluetooth: Wrong link type (-22)
+Fix the double-init by skipping l2cap_ertm_init() and
+l2cap_chan_ready() when the channel is already in BT_CONNECTED state,
+while still allowing the reconfiguration parameters to be updated
+through l2cap_parse_conf_req(). Also add a pdu_len zero check in
+l2cap_segment_sdu() as a safeguard.
 
-Fixes: ce60b9231b66 ("Bluetooth: compute LE flow credits based on recvbuf space")
-Signed-off-by: Zhang Chen <zhangchen01@kylinos.cn>
+Fixes: 96298f640104 ("Bluetooth: L2CAP: handle l2cap config request during open state")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/bluetooth/l2cap_core.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 38e46f5175dad..35cac683d4f02 100644
+index 35cac683d4f02..8a2d36f5cf33b 100644
 --- a/net/bluetooth/l2cap_core.c
 +++ b/net/bluetooth/l2cap_core.c
-@@ -7625,6 +7625,10 @@ static void l2cap_chan_le_send_credits(struct l2cap_chan *chan)
- 	struct l2cap_le_credits pkt;
- 	u16 return_credits = l2cap_le_rx_credits(chan);
+@@ -2565,6 +2565,9 @@ static int l2cap_segment_sdu(struct l2cap_chan *chan,
+ 	/* Remote device may have requested smaller PDUs */
+ 	pdu_len = min_t(size_t, pdu_len, chan->remote_mps);
  
-+	if (chan->mode != L2CAP_MODE_LE_FLOWCTL &&
-+	    chan->mode != L2CAP_MODE_EXT_FLOWCTL)
-+		return;
++	if (!pdu_len)
++		return -EINVAL;
 +
- 	if (chan->rx_credits >= return_credits)
- 		return;
+ 	if (len <= pdu_len) {
+ 		sar = L2CAP_SAR_UNSEGMENTED;
+ 		sdu_len = 0;
+@@ -4539,14 +4542,16 @@ static inline int l2cap_config_req(struct l2cap_conn *conn,
+ 	if (test_bit(CONF_INPUT_DONE, &chan->conf_state)) {
+ 		set_default_fcs(chan);
  
+-		if (chan->mode == L2CAP_MODE_ERTM ||
+-		    chan->mode == L2CAP_MODE_STREAMING)
+-			err = l2cap_ertm_init(chan);
++		if (chan->state != BT_CONNECTED) {
++			if (chan->mode == L2CAP_MODE_ERTM ||
++			    chan->mode == L2CAP_MODE_STREAMING)
++				err = l2cap_ertm_init(chan);
+ 
+-		if (err < 0)
+-			l2cap_send_disconn_req(chan, -err);
+-		else
+-			l2cap_chan_ready(chan);
++			if (err < 0)
++				l2cap_send_disconn_req(chan, -err);
++			else
++				l2cap_chan_ready(chan);
++		}
+ 
+ 		goto unlock;
+ 	}
 -- 
 2.51.0
 
