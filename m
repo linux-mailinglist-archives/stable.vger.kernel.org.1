@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-234065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCp3Ilma1mmTGggAu9opvQ
-	(envelope-from <stable+bounces-234065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:37 +0200
+	id ICLtNOGg1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F0B3C01F7
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 465143C12A4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:39:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 82490300D777
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB39E300A747
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1503D4134;
-	Wed,  8 Apr 2026 18:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95FF3859FE;
+	Wed,  8 Apr 2026 18:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ji9hyBg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOoXbqN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D121C347503;
-	Wed,  8 Apr 2026 18:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC277357A20;
+	Wed,  8 Apr 2026 18:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671894; cv=none; b=GzsIUQeO1hZh9HCUAopY0VbRNC2FggaZrQ/MrBzb6nvnrRVH+iNW7+DGi2dWvmqA56K/QLPPmqaTQWXcb4GrXBNPXRUuqjKyuUZBwBYwSPHdMh7XtsjUfiTWtmzaDfFnPkCPMWrjeTFeIkBwJrbbcDcs8MBTs0uqmiYqNN1pBOY=
+	t=1775673031; cv=none; b=eNAmg9a/BISDETQ2Au9SYY2mcbPvwSy1ZWFUnJY7cxMU4VuNsyqNkg9zIWwVeG5g9p4zHOeqNKSHbV6YOpTx+0B88Ypo0Mm+cY8CVl+w7//i8/dJwKTPS4TXrs723c+AqOokBGSzhyO5p6b+Ua/Q2HxOc0DZC/IfdvYJprdXoiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671894; c=relaxed/simple;
-	bh=xbxF11FvUogAO/N0hxb6ws70HCb3za140qdYxklfVio=;
+	s=arc-20240116; t=1775673031; c=relaxed/simple;
+	bh=9Neg9evD9hr01IB0M2OCMj9kq3bk/umRppM0237nFOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=myYaN5xDjbBPDMnytF+Jx8aQlDTQXKcKgBGJM1pqanLL2PtU6eXSyjtYSdDkhg9V52mAYxmVmrmcbZzbbzDs632yB5/xJgDBvnWxf786TIMJOM1866D3fLzutjqD2/E6J6A0pFgM4PfoPTcBrgaRPTTZU5UsK+oRgkVJAkH1xaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ji9hyBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65890C19421;
-	Wed,  8 Apr 2026 18:11:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y7QnZiK0X4zyrylP7w37xPsjDXWpS9RIK2Gq7RW3YyUNDeAKSzjMKiwNfkjr7uPHLZsH+MAokbLf/lcmP4li3XAgUwWFJQSfwbnVz8Biqi+i6qX4Sm0ws6TrRxCasRxrAG4Tp4jCnOrqsfK8iu7NpXR811dEdjN1id7D0DKW3V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOoXbqN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C3BC19421;
+	Wed,  8 Apr 2026 18:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775671894;
-	bh=xbxF11FvUogAO/N0hxb6ws70HCb3za140qdYxklfVio=;
+	s=korg; t=1775673031;
+	bh=9Neg9evD9hr01IB0M2OCMj9kq3bk/umRppM0237nFOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Ji9hyBgeu9tI3a2uSY+IbooKKfDJoNkJM1zoZ4Dqr9iWyHSQf9ZmT+5NRChD2Jz5
-	 P80JdhcQPx4y8YiJXhtsbQ6CybQ0Nmf6QpUaWJFVAdP/o7lu58unn1RdQBVN5DD36/
-	 XMnE2NuEhUCFlGuUQH6ImACDvNE3LoiICJqermbE=
+	b=TOoXbqN047MPmm/W83ZjNNOXxRe7i28B+nudUaqhOpMmWyrLNApTLaLa8GOesPWQg
+	 Y8ttJBZeZoYTWgEIQjV4bhZSCzpxpQLYOeEN/mNPJM9kcXbEoAlITtJxRS2YclL7i7
+	 KJsRUXymXHSO5FvjmV7ToMNr4OTiq2h9OnW6dQPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianhai Wu <wuqianhai@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 109/312] LoongArch: Workaround LS2K/LS7A GPU DMA hang bug
-Date: Wed,  8 Apr 2026 20:00:26 +0200
-Message-ID: <20260408175937.834059847@linuxfoundation.org>
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 042/277] net: sfp: Fix Ubiquiti U-Fiber Instant SFP module on mvneta
+Date: Wed,  8 Apr 2026 20:00:27 +0200
+Message-ID: <20260408175935.428125247@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
-References: <20260408175933.715315542@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,168 +64,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234065-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234504-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 28F0B3C01F7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[armlinux.org.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 465143C12A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Marek Behún <kabel@kernel.org>
 
-commit 95db0c9f526d583634cddb2e5914718570fbac87 upstream.
+[ Upstream commit eeee5a710f26ce57807024ef330fe5a850eaecd8 ]
 
-1. Hardware limitation: GPU, DC and VPU are typically PCI device 06.0,
-06.1 and 06.2. They share some hardware resources, so when configure the
-PCI 06.0 device BAR1, DMA memory access cannot be performed through this
-BAR, otherwise it will cause hardware abnormalities.
+In commit 8110633db49d7de2 ("net: sfp-bus: allow SFP quirks to override
+Autoneg and pause bits") we moved the setting of Autoneg and pause bits
+before the call to SFP quirk when parsing SFP module support.
 
-2. In typical scenarios of reboot or S3/S4, DC access to memory through
-BAR is not prohibited, resulting in GPU DMA hangs.
+Since the quirk for Ubiquiti U-Fiber Instant SFP module zeroes the
+support bits and sets 1000baseX_Full only, the above mentioned commit
+changed the overall computed support from
+  1000baseX_Full, Autoneg, Pause, Asym_Pause
+to just
+  1000baseX_Full.
 
-3. Workaround method: When configuring the 06.0 device BAR1, turn off
-the memory access of DC, GPU and VPU (via DC's CRTC registers).
+This broke the SFP module for mvneta, which requires Autoneg for
+1000baseX since commit c762b7fac1b249a9 ("net: mvneta: deny disabling
+autoneg for 802.3z modes").
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Qianhai Wu <wuqianhai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by setting back the Autoneg, Pause and Asym_Pause bits in the
+quirk.
+
+Fixes: 8110633db49d7de2 ("net: sfp-bus: allow SFP quirks to override Autoneg and pause bits")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20260326122038.2489589-1-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/pci/pci.c |   80 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 80 insertions(+)
+ drivers/net/phy/sfp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/pci/pci.c
-+++ b/arch/loongarch/pci/pci.c
-@@ -6,9 +6,11 @@
- #include <linux/export.h>
- #include <linux/init.h>
- #include <linux/acpi.h>
-+#include <linux/delay.h>
- #include <linux/types.h>
- #include <linux/pci.h>
- #include <linux/vgaarb.h>
-+#include <linux/io-64-nonatomic-lo-hi.h>
- #include <asm/cacheflush.h>
- #include <asm/loongson.h>
- 
-@@ -16,6 +18,9 @@
- #define PCI_DEVICE_ID_LOONGSON_DC1      0x7a06
- #define PCI_DEVICE_ID_LOONGSON_DC2      0x7a36
- #define PCI_DEVICE_ID_LOONGSON_DC3      0x7a46
-+#define PCI_DEVICE_ID_LOONGSON_GPU1     0x7a15
-+#define PCI_DEVICE_ID_LOONGSON_GPU2     0x7a25
-+#define PCI_DEVICE_ID_LOONGSON_GPU3     0x7a35
- 
- int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
- 						int reg, int len, u32 *val)
-@@ -100,3 +105,78 @@ static void pci_fixup_vgadev(struct pci_
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC1, pci_fixup_vgadev);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC2, pci_fixup_vgadev);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC3, pci_fixup_vgadev);
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index ca09925335725..7a85b758fb1e6 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -480,11 +480,16 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
+ {
+ 	/* Ubiquiti U-Fiber Instant module claims that support all transceiver
+ 	 * types including 10G Ethernet which is not truth. So clear all claimed
+-	 * modes and set only one mode which module supports: 1000baseX_Full.
++	 * modes and set only one mode which module supports: 1000baseX_Full,
++	 * along with the Autoneg and pause bits.
+ 	 */
+ 	linkmode_zero(caps->link_modes);
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT,
+ 			 caps->link_modes);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, caps->link_modes);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, caps->link_modes);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, caps->link_modes);
 +
-+#define CRTC_NUM_MAX		2
-+#define CRTC_OUTPUT_ENABLE	0x100
-+
-+static void loongson_gpu_fixup_dma_hang(struct pci_dev *pdev, bool on)
-+{
-+	u32 i, val, count, crtc_offset, device;
-+	void __iomem *crtc_reg, *base, *regbase;
-+	static u32 crtc_status[CRTC_NUM_MAX] = { 0 };
-+
-+	base = pdev->bus->ops->map_bus(pdev->bus, pdev->devfn + 1, 0);
-+	device = readw(base + PCI_DEVICE_ID);
-+
-+	regbase = ioremap(readq(base + PCI_BASE_ADDRESS_0) & ~0xffull, SZ_64K);
-+	if (!regbase) {
-+		pci_err(pdev, "Failed to ioremap()\n");
-+		return;
-+	}
-+
-+	switch (device) {
-+	case PCI_DEVICE_ID_LOONGSON_DC2:
-+		crtc_reg = regbase + 0x1240;
-+		crtc_offset = 0x10;
-+		break;
-+	case PCI_DEVICE_ID_LOONGSON_DC3:
-+		crtc_reg = regbase;
-+		crtc_offset = 0x400;
-+		break;
-+	}
-+
-+	for (i = 0; i < CRTC_NUM_MAX; i++, crtc_reg += crtc_offset) {
-+		val = readl(crtc_reg);
-+
-+		if (!on)
-+			crtc_status[i] = val;
-+
-+		/* No need to fixup if the status is off at startup. */
-+		if (!(crtc_status[i] & CRTC_OUTPUT_ENABLE))
-+			continue;
-+
-+		if (on)
-+			val |= CRTC_OUTPUT_ENABLE;
-+		else
-+			val &= ~CRTC_OUTPUT_ENABLE;
-+
-+		mb();
-+		writel(val, crtc_reg);
-+
-+		for (count = 0; count < 40; count++) {
-+			val = readl(crtc_reg) & CRTC_OUTPUT_ENABLE;
-+			if ((on && val) || (!on && !val))
-+				break;
-+			udelay(1000);
-+		}
-+
-+		pci_info(pdev, "DMA hang fixup at reg[0x%lx]: 0x%x\n",
-+				(unsigned long)crtc_reg & 0xffff, readl(crtc_reg));
-+	}
-+
-+	iounmap(regbase);
-+}
-+
-+static void pci_fixup_dma_hang_early(struct pci_dev *pdev)
-+{
-+	loongson_gpu_fixup_dma_hang(pdev, false);
-+}
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU2, pci_fixup_dma_hang_early);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU3, pci_fixup_dma_hang_early);
-+
-+static void pci_fixup_dma_hang_final(struct pci_dev *pdev)
-+{
-+	loongson_gpu_fixup_dma_hang(pdev, true);
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU2, pci_fixup_dma_hang_final);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_GPU3, pci_fixup_dma_hang_final);
+ 	phy_interface_zero(caps->interfaces);
+ 	__set_bit(PHY_INTERFACE_MODE_1000BASEX, caps->interfaces);
+ }
+-- 
+2.53.0
+
 
 
 
