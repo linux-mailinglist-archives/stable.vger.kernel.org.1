@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-234615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-235107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKvMG/if1mmyGggAu9opvQ
-	(envelope-from <stable+bounces-234615-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:36 +0200
+	id 4AdmOSmq1mlKHAgAu9opvQ
+	(envelope-from <stable+bounces-235107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2D03C106D
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:35:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848B73C2C0A
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6EE9C301CC64
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:35:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06DD2315BF2B
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527DE3624B0;
-	Wed,  8 Apr 2026 18:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA88C35B658;
+	Wed,  8 Apr 2026 18:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifp1gQvJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRW4mj9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1691C331A44;
-	Wed,  8 Apr 2026 18:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F0E3176E4;
+	Wed,  8 Apr 2026 18:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673318; cv=none; b=l8ibsPmvXtTtguUd6Mt1ZNfgodYPI2RFeESts2k8Dmx2U/zwIDlyfmq301xIeh751RS2QrXpop8+V8nfACxdAZnoBAAihQXn8GwtGSF6hDcq6sI+NYJgSeXrQQPSFB0rRHPigeJ1mzyu1cHPozKBBVJpYCcg8wOlXbengvrz5uo=
+	t=1775674587; cv=none; b=JZF6cEJk7RaDT66LeiYKLNVIIEif17FGeDk0OZsxQxAzYfOna1Gk7ji8YMasKoVvcAszJGx0Utt0aeuwCTkj+xQJsUNcaO9csaPkHsKkP1ZpULjEFNDSsSUpkwWITvL7BaOoT9qiKbc53M9Zn8tpE3PbMcRqmX6dvpTy5rOMs+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673318; c=relaxed/simple;
-	bh=sTjnLvwRp+RL8INqBgO9Rp8928g6r66VSFPFhKfK00A=;
+	s=arc-20240116; t=1775674587; c=relaxed/simple;
+	bh=FAuPJAEqal5+y9jaAilGIfu3Ofl56/PjssXGXCk8FC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZjyUa6plqD/K/1/8bqZ4nGa2FshOzPCONQKaNCrYMHDSE8v1BBEC7x8BbuaQdal/+ZcyHTgmNbS6IUbOek/tP2r3N5cgZ1h9i4pvngJ/PwDFlOboiaoPfNsIPuw1ZummUTnKY1MSyXckzxmdmd64sVk/kbXLtRXBPRgtvYEBCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifp1gQvJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9A4C19421;
-	Wed,  8 Apr 2026 18:35:17 +0000 (UTC)
+	 MIME-Version; b=Oo3nsipI4uqurA7YtS3KAscThxt93CvXJ4nF6Hz092K8+qbaywSOjPMbehg7mSAIGoZX3mAoMwfQBHxFeCkMOg19Ew6RuhSW78KBLRLRWe9t3g1bDCItm7ppAnrsSuAwcMi5OnMoY9Q4Xk6PxZ/SCJURfTqiVDnlJ/HUzCSdvxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRW4mj9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D90C19421;
+	Wed,  8 Apr 2026 18:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673318;
-	bh=sTjnLvwRp+RL8INqBgO9Rp8928g6r66VSFPFhKfK00A=;
+	s=korg; t=1775674587;
+	bh=FAuPJAEqal5+y9jaAilGIfu3Ofl56/PjssXGXCk8FC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifp1gQvJM65fmLaBQfZPNsWh6oA5DppbJDtbYW12fWvUs1S18DIzaeqg29RBCaCL/
-	 BOU9E3TvIQLbXseBdDjjK6KHaxkcizTlzlZLFsyD5DwMoy774Og9AgWPfeYM0SQyJC
-	 EEa2uM4/96T4iWHqffmZSzE2Pc1Ue+Fkh+IlcubQ=
+	b=YRW4mj9p9c1N9olEDTNsGGshxSewQ+TU2uWcK9TZVOdxfLN1u1zDR0SEq2wEjQVv6
+	 hHcgDX2a/tABeWz5CSepdW+1xuxXdpRc8c4/QmFFuSbZUoyeYuHNdrYiDQN33VXEkq
+	 KyJWY5AjWWmyC2G57kXChJ+pAQSQNIG6AKGzJRKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 153/277] iio: add IIO_DECLARE_QUATERNION() macro
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 138/311] hwmon: (pxe1610) Check return value of page-select write in probe
 Date: Wed,  8 Apr 2026 20:02:18 +0200
-Message-ID: <20260408175939.585329955@linuxfoundation.org>
+Message-ID: <20260408175944.566299581@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
+References: <20260408175939.393281918@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +68,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234615-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-235107-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,baylibre.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DB2D03C106D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 848B73C2C0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 56bd57e7b161f75535df91b229b0b2c64c6e5581 upstream.
+[ Upstream commit ccf70c41e562b29d1c05d1bbf53391785e09c6fb ]
 
-Add a new IIO_DECLARE_QUATERNION() macro that is used to declare the
-field in an IIO buffer struct that contains a quaternion vector.
+pxe1610_probe() writes PMBUS_PAGE to select page 0 but does not check
+the return value. If the write fails, subsequent register reads operate
+on an indeterminate page, leading to silent misconfiguration.
 
-Quaternions are currently the only IIO data type that uses the .repeat
-feature of struct iio_scan_type. This has an implicit rule that the
-element in the buffer must be aligned to the entire size of the repeated
-element. This macro will make that requirement explicit. Since this is
-the only user, we just call the macro IIO_DECLARE_QUATERNION() instead
-of something more generic.
+Check the return value and propagate the error using dev_err_probe(),
+which also handles -EPROBE_DEFER correctly without log spam.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 344757bac526 ("hwmon: (pmbus) Add Infineon PXE1610 VR driver")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260329170925.34581-4-sanman.pradhan@hpe.com
+[groeck: Fix "Fixes" SHA]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/iio/iio.h |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/hwmon/pmbus/pxe1610.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -816,6 +816,18 @@ static inline void *iio_device_get_drvda
- #define IIO_DECLARE_DMA_BUFFER_WITH_TS(type, name, count) \
- 	__IIO_DECLARE_BUFFER_WITH_TS(type, name, count) __aligned(IIO_DMA_MINALIGN)
+diff --git a/drivers/hwmon/pmbus/pxe1610.c b/drivers/hwmon/pmbus/pxe1610.c
+index 6a4a978eca7e8..24c1f961c7668 100644
+--- a/drivers/hwmon/pmbus/pxe1610.c
++++ b/drivers/hwmon/pmbus/pxe1610.c
+@@ -104,7 +104,10 @@ static int pxe1610_probe(struct i2c_client *client)
+ 	 * By default this device doesn't boot to page 0, so set page 0
+ 	 * to access all pmbus registers.
+ 	 */
+-	i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
++	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
++	if (ret < 0)
++		return dev_err_probe(&client->dev, ret,
++				     "Failed to set page 0\n");
  
-+/**
-+ * IIO_DECLARE_QUATERNION() - Declare a quaternion element
-+ * @type: element type of the individual vectors
-+ * @name: identifier name
-+ *
-+ * Quaternions are a vector composed of 4 elements (W, X, Y, Z). Use this macro
-+ * to declare a quaternion element in a struct to ensure proper alignment in
-+ * an IIO buffer.
-+ */
-+#define IIO_DECLARE_QUATERNION(type, name) \
-+	type name[4] __aligned(sizeof(type) * 4)
-+
- struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv);
- 
- /* The information at the returned address is guaranteed to be cacheline aligned */
+ 	/* Read Manufacturer id */
+ 	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, buf);
+-- 
+2.53.0
+
 
 
 
