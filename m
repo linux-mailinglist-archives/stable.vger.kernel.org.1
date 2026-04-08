@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-234714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCqvBqOm1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-234714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:03 +0200
+	id MBToHvih1mlUGwgAu9opvQ
+	(envelope-from <stable+bounces-234425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A183E3C24E0
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 21:04:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62793C15FC
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C6A8312F526
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:39:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E42130C9932
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374143D4134;
-	Wed,  8 Apr 2026 18:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD1D3B0ADA;
+	Wed,  8 Apr 2026 18:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZV0Yy08z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9a6sNx5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCF52BEFFF;
-	Wed,  8 Apr 2026 18:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EAF3537EF;
+	Wed,  8 Apr 2026 18:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775673573; cv=none; b=IyOqCvCR6vIJouzve68d/JtZSDuQ2vwW3NRmXlxExbrpmL2702yq8wHpaOk5N6EYVHT86G1R0+i6FqJjpw3DLCAWrqTEMz0BEeULI4K4JNC3xmVS60zlh+sa+gNmGhbFJqMHUp6G6EMPw1jqi68QNHQ88dFBBCcy38ghhawt9Wg=
+	t=1775672824; cv=none; b=NDJG6NdEzFvj+qtyJmDocBbLKDS0lJxs0V56FNdn8Z25ayC8Fqzek1LDGSLXfzP8u782kpbeDTwfBHBnpRnrBMKvu1RxAN+/DfO4ush5sLzCQ2McmkXZG/hLsUbSfM0jfKRJS1bsP0IMuAj+xMathpGODMiIE8LHzxFzuuuVshg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775673573; c=relaxed/simple;
-	bh=f00MLjaSPGuTfRYJBECyfWz2UVVQNDyYVusvwUAKx1s=;
+	s=arc-20240116; t=1775672824; c=relaxed/simple;
+	bh=i74bwffvYDm4lfyypdi2kBdj3+cIF4xSElw4K0cqaQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHFNGjf+vISbcBfZltExjHANYzTpJOU28mmlbITF4RelV7AR5R9VdW/UxEQ5gzw0pexQHHEkcrUmRZ2c64PT76hdSVoEc/u65a0zmFbC8gaMVa8x0Y2zWys0hRGjgOai2kSJFmo5xoPFjlPP4tv0yXS64O1u9phBH2SO5WqV3qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZV0Yy08z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE63C19421;
-	Wed,  8 Apr 2026 18:39:32 +0000 (UTC)
+	 MIME-Version; b=K2aFffmv0M1QD9t67Rj+nIjkrf85QnjqiS/R+r1Zk+Vf06Jntw17uSXKqe49EGOTW579nqIrYJ0kwI1JhuPgJH8C/8h5I8SdFdagPfm8SA2EbJZ/peRlZ4RL78S2W4pK+RZ6gRIaM/TOWUsTXlbPphLo5WzI/xaSfDFtSh+r6Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9a6sNx5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472E2C19421;
+	Wed,  8 Apr 2026 18:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775673572;
-	bh=f00MLjaSPGuTfRYJBECyfWz2UVVQNDyYVusvwUAKx1s=;
+	s=korg; t=1775672824;
+	bh=i74bwffvYDm4lfyypdi2kBdj3+cIF4xSElw4K0cqaQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZV0Yy08z73En4GRXQmkQRgJgTWKV5XzLEy0mvjiEkklcHJT1CtiFsxqpxmNI4TUOE
-	 KBYjR1HEMLu6RaadkJ4zYtOR4D77ru4QyAXiLcyF15Gc3h6SHwkrNxOSXU71tHPZhR
-	 0pyiY6UCv8LsVbToCBaeER0EShkj/23NQYHsq13g=
+	b=R9a6sNx5BFAhZdpoC7pT3u/Tc2iqdrUpEuh6PL4yl6LnQmI/18p2B3hwdm6VzJ6Zt
+	 Bv/oYpHF4zGFcf56OxsQ9I1HhXQj2dYR6eyHNq/xxYhcPdLv1iiPWsGeoZnCnz3j6F
+	 BDRy1mvsyLC7VMseycPV2Mtp64TUHz5SDb27Zmwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.18 258/277] usb: gadget: f_eem: Fix net_device lifecycle with device_move
+	Joy Zou <joy.zou@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 156/160] dmaengine: fsl-edma: fix channel parameter config for fixed channel requests
 Date: Wed,  8 Apr 2026 20:04:03 +0200
-Message-ID: <20260408175943.488857264@linuxfoundation.org>
+Message-ID: <20260408175919.026836901@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175913.177092714@linuxfoundation.org>
+References: <20260408175913.177092714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,230 +69,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-234714-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-234425-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A183E3C24E0
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: E62793C15FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Joy Zou <joy.zou@nxp.com>
 
-commit d9270c9a8118c1535409db926ac1e2545dc97b81 upstream.
+[ Upstream commit 2e7b5cf72e51c9cf9c8b75190189c757df31ddd9 ]
 
-The net_device is allocated during function instance creation and
-registered during the bind phase with the gadget device as its sysfs
-parent. When the function unbinds, the parent device is destroyed, but
-the net_device survives, resulting in dangling sysfs symlinks:
+Configure only the requested channel when a fixed channel is specified
+to avoid modifying other channels unintentionally.
 
-console:/ # ls -l /sys/class/net/usb0
-lrwxrwxrwx ... /sys/class/net/usb0 ->
-/sys/devices/platform/.../gadget.0/net/usb0
-console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
-ls: .../gadget.0/net/usb0: No such file or directory
+Fix parameter configuration when a fixed DMA channel is requested on
+i.MX9 AON domain and i.MX8QM/QXP/DXL platforms. When a client requests
+a fixed channel (e.g., channel 6), the driver traverses channels 0-5
+and may unintentionally modify their configuration if they are unused.
 
-Use device_move() to reparent the net_device between the gadget device
-tree and /sys/devices/virtual across bind and unbind cycles. During the
-final unbind, calling device_move(NULL) moves the net_device to the
-virtual device tree before the gadget device is destroyed. On rebinding,
-device_move() reparents the device back under the new gadget, ensuring
-proper sysfs topology and power management ordering.
+This leads to issues such as setting the `is_multi_fifo` flag unexpectedly,
+causing memcpy tests to fail when using the dmatest tool.
 
-To maintain compatibility with legacy composite drivers (e.g., multi.c),
-the bound flag is used to indicate whether the network device is shared
-and pre-registered during the legacy driver's bind phase.
+Only affect edma memcpy test when the channel is fixed.
 
-Fixes: b29002a15794 ("usb: gadget: f_eem: convert to new function interface with backward compatibility")
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Joy Zou <joy.zou@nxp.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260320-usb-net-lifecycle-v1-5-4886b578161b@google.com
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250917-b4-edma-chanconf-v1-1-886486e02e91@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_eem.c |   59 ++++++++++++++++++------------------
- drivers/usb/gadget/function/u_eem.h |   21 +++++++++---
- 2 files changed, 46 insertions(+), 34 deletions(-)
+ drivers/dma/fsl-edma-main.c |   26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/gadget/function/f_eem.c
-+++ b/drivers/usb/gadget/function/f_eem.c
-@@ -7,6 +7,7 @@
-  * Copyright (C) 2009 EF Johnson Technologies
-  */
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -152,10 +152,8 @@ static struct dma_chan *fsl_edma3_xlate(
+ 		fsl_chan = to_fsl_edma_chan(chan);
+ 		i = fsl_chan - fsl_edma->chans;
  
-+#include <linux/cleanup.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
-@@ -251,24 +252,22 @@ static int eem_bind(struct usb_configura
- 	struct usb_ep		*ep;
+-		fsl_chan->priority = dma_spec->args[1];
+-		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
+-		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
+-		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
++		if (!b_chmux && i != dma_spec->args[0])
++			continue;
  
- 	struct f_eem_opts	*eem_opts;
-+	struct net_device	*net __free(detach_gadget) = NULL;
+ 		if ((dma_spec->args[2] & FSL_EDMA_EVEN_CH) && (i & 0x1))
+ 			continue;
+@@ -163,17 +161,15 @@ static struct dma_chan *fsl_edma3_xlate(
+ 		if ((dma_spec->args[2] & FSL_EDMA_ODD_CH) && !(i & 0x1))
+ 			continue;
  
- 	eem_opts = container_of(f->fi, struct f_eem_opts, func_inst);
--	/*
--	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
--	 * configurations are bound in sequence with list_for_each_entry,
--	 * in each configuration its functions are bound in sequence
--	 * with list_for_each_entry, so we assume no race condition
--	 * with regard to eem_opts->bound access
--	 */
--	if (!eem_opts->bound) {
--		mutex_lock(&eem_opts->lock);
--		gether_set_gadget(eem_opts->net, cdev->gadget);
--		status = gether_register_netdev(eem_opts->net);
--		mutex_unlock(&eem_opts->lock);
--		if (status)
--			return status;
--		eem_opts->bound = true;
--	}
+-		if (!b_chmux && i == dma_spec->args[0]) {
+-			chan = dma_get_slave_channel(chan);
+-			chan->device->privatecnt++;
+-			return chan;
+-		} else if (b_chmux && !fsl_chan->srcid) {
+-			/* if controller support channel mux, choose a free channel */
+-			chan = dma_get_slave_channel(chan);
+-			chan->device->privatecnt++;
+-			fsl_chan->srcid = dma_spec->args[0];
+-			return chan;
+-		}
++		fsl_chan->srcid = dma_spec->args[0];
++		fsl_chan->priority = dma_spec->args[1];
++		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
++		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
++		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
 +
-+	scoped_guard(mutex, &eem_opts->lock)
-+		if (eem_opts->bind_count == 0 && !eem_opts->bound) {
-+			if (!device_is_registered(&eem_opts->net->dev)) {
-+				gether_set_gadget(eem_opts->net, cdev->gadget);
-+				status = gether_register_netdev(eem_opts->net);
-+			} else
-+				status = gether_attach_gadget(eem_opts->net, cdev->gadget);
-+
-+			if (status)
-+				return status;
-+			net = eem_opts->net;
-+		}
- 
- 	us = usb_gstrings_attach(cdev, eem_strings,
- 				 ARRAY_SIZE(eem_string_defs));
-@@ -279,21 +278,19 @@ static int eem_bind(struct usb_configura
- 	/* allocate instance-specific interface IDs */
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
--		goto fail;
-+		return status;
- 	eem->ctrl_id = status;
- 	eem_intf.bInterfaceNumber = status;
- 
--	status = -ENODEV;
--
- 	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &eem_fs_in_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	eem->port.in_ep = ep;
- 
- 	ep = usb_ep_autoconfig(cdev->gadget, &eem_fs_out_desc);
- 	if (!ep)
--		goto fail;
-+		return -ENODEV;
- 	eem->port.out_ep = ep;
- 
- 	/* support all relevant hardware speeds... we expect that when
-@@ -309,16 +306,14 @@ static int eem_bind(struct usb_configura
- 	status = usb_assign_descriptors(f, eem_fs_function, eem_hs_function,
- 			eem_ss_function, eem_ss_function);
- 	if (status)
--		goto fail;
-+		return status;
-+
-+	eem_opts->bind_count++;
-+	retain_and_null_ptr(net);
- 
- 	DBG(cdev, "CDC Ethernet (EEM): IN/%s OUT/%s\n",
- 			eem->port.in_ep->name, eem->port.out_ep->name);
- 	return 0;
--
--fail:
--	ERROR(cdev, "%s: can't bind, err %d\n", f->name, status);
--
--	return status;
++		chan = dma_get_slave_channel(chan);
++		chan->device->privatecnt++;
++		return chan;
+ 	}
+ 	return NULL;
  }
- 
- static void eem_cmd_complete(struct usb_ep *ep, struct usb_request *req)
-@@ -597,7 +592,7 @@ static void eem_free_inst(struct usb_fun
- 	struct f_eem_opts *opts;
- 
- 	opts = container_of(f, struct f_eem_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -640,9 +635,17 @@ static void eem_free(struct usb_function
- 
- static void eem_unbind(struct usb_configuration *c, struct usb_function *f)
- {
-+	struct f_eem_opts *opts;
-+
- 	DBG(c->cdev, "eem unbind\n");
- 
-+	opts = container_of(f->fi, struct f_eem_opts, func_inst);
-+
- 	usb_free_all_descriptors(f);
-+
-+	opts->bind_count--;
-+	if (opts->bind_count == 0 && !opts->bound)
-+		gether_detach_gadget(opts->net);
- }
- 
- static struct usb_function *eem_alloc(struct usb_function_instance *fi)
---- a/drivers/usb/gadget/function/u_eem.h
-+++ b/drivers/usb/gadget/function/u_eem.h
-@@ -15,17 +15,26 @@
- 
- #include <linux/usb/composite.h>
- 
-+/**
-+ * struct f_eem_opts - EEM function options
-+ * @func_inst: USB function instance.
-+ * @net: The net_device associated with the EEM function.
-+ * @bound: True if the net_device is shared and pre-registered during the
-+ *         legacy composite driver's bind phase (e.g., multi.c). If false,
-+ *         the EEM function will register the net_device during its own
-+ *         bind phase.
-+ * @bind_count: Tracks the number of configurations the EEM function is
-+ *              bound to, preventing double-registration of the @net device.
-+ * @lock: Protects the data from concurrent access by configfs read/write
-+ *        and create symlink/remove symlink operations.
-+ * @refcnt: Reference counter for the function instance.
-+ */
- struct f_eem_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
- 	bool				bound;
-+	int				bind_count;
- 
--	/*
--	 * Read/write access to configfs attributes is handled by configfs.
--	 *
--	 * This is to protect the data from concurrent access by read/write
--	 * and create symlink/remove symlink.
--	 */
- 	struct mutex			lock;
- 	int				refcnt;
- };
 
 
 
