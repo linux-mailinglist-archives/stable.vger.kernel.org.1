@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-235046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234546-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kH79JQyl1ml9GwgAu9opvQ
-	(envelope-from <stable+bounces-235046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:16 +0200
+	id sMpMC6Gf1mmyGggAu9opvQ
+	(envelope-from <stable+bounces-234546-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF7F3C20BF
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:57:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 494C43C0FC4
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EFE0B30A1A4A
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:53:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B9ACF301CC70
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8793D9DAA;
-	Wed,  8 Apr 2026 18:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4003B19A3;
+	Wed,  8 Apr 2026 18:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkg7C9eo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSWWCmcI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE733D9041;
-	Wed,  8 Apr 2026 18:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71E224B28;
+	Wed,  8 Apr 2026 18:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775674430; cv=none; b=lvEinvVUNo/KVAc6V/exwwP8SiIWPcRcosoZ18jbz7AuzgIHkgjtwqLl8SiprDqLKEH8b1zUQcNgSL04w2Zj8rn7iYRFEeBuST8o2i3thLaO7VhxRrcwuARCS0LNcp0HPqEGwyWUeEhzKXkyz480kjckL65BypRuE6zYkxctPNc=
+	t=1775673139; cv=none; b=ho5ucDuIOkLrmKaIks4c979ABKjHyKFcpHxd7DlmfUROl4HpLnAH+y7NJp3O6e4lj0djEVvfED0795AS85wjWKk/KI5MeFLm3KfzW7iIL1Sy0bLbHUB3Vfmdzl9OaX0xfn7Ym32DzF01BRbLHmj89EkAKA3j+zkmpj8n/3w1jaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775674430; c=relaxed/simple;
-	bh=q6ZEkMyzwMeh5jan9I3KzzXvpOtTSVh5MbY6muRloLE=;
+	s=arc-20240116; t=1775673139; c=relaxed/simple;
+	bh=7v+uiWUVnCNKuiLB5op0U9IoqH22caWB8ctZRCY91dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOqp9vzas7GOp2Ey/mLz6RrJHuIQALV6dJwJrIkPJHx006PELg+x1yPRQ8C6NL5h+/MUgIVL80yxZ4LoguULngCHCz3DKFPSeFzrD2u1h/0+puLQxEJkbSU5O+b5heJc/s6n79c+0RYHoGup9/PwTnmE5a0hgkt19ZWBqhifixM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkg7C9eo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459C9C19421;
-	Wed,  8 Apr 2026 18:53:50 +0000 (UTC)
+	 MIME-Version; b=uTqe8uh0wPny5N5lFUhrvXS5anlqqWZzUf+qHCFwGJuhzx3P7bsvabDQiSOeQzMZCX5ualgRfCdaLvLOtYh87Pwc95mcHLgR6YTX8m7v+5caWDrtUm8u35yK2BbCn4UsT2To67Y0kIo5mKya+uold+PAJ9kVrRy1UOXP0jDol4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSWWCmcI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C610C19421;
+	Wed,  8 Apr 2026 18:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775674430;
-	bh=q6ZEkMyzwMeh5jan9I3KzzXvpOtTSVh5MbY6muRloLE=;
+	s=korg; t=1775673139;
+	bh=7v+uiWUVnCNKuiLB5op0U9IoqH22caWB8ctZRCY91dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kkg7C9eonEtfb1PXHMdBA1qSAlTZmHf7m24Fcl70e/w8F7rk0BiiATK8vhJdP1joR
-	 v5qrrAC1NJ2ka/ZiVq4oeBFoEP623EgzvRlzS/BrjnlGYT2h3H/7My7UhP3n3nulYj
-	 Q6O3uuz0rsN546iA3X0fDqgDVhDvE9sk3UzvcM0g=
+	b=bSWWCmcIZZgOV1aWPxQeuLb6/Hv1LrxB4IMOgXVDlA/pz0wkKXtPczVjs3UWY03++
+	 0bgY1dj8c5Sjs67La1ugnjoEpQvhU0jtd+YCwlVDz/uo1Lv8LsMPt7+w8vgwXUnMRW
+	 PVs9Sl9nQed6PeRNTfUicujcVY3jZACAxY1um68I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 094/311] netfilter: nf_tables: reject immediate NF_QUEUE verdict
+Subject: [PATCH 6.18 109/277] hwmon: (tps53679) Fix array access with zero-length block read
 Date: Wed,  8 Apr 2026 20:01:34 +0200
-Message-ID: <20260408175942.924858648@linuxfoundation.org>
+Message-ID: <20260408175937.944568416@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175939.393281918@linuxfoundation.org>
-References: <20260408175939.393281918@linuxfoundation.org>
+In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
+References: <20260408175933.836769063@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-235046-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-234546-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,62 +87,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4EF7F3C20BF
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 494C43C0FC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit da107398cbd4bbdb6bffecb2ce86d5c9384f4cec ]
+[ Upstream commit 0e211f6aaa6a00fd0ee0c1eea5498f168c6725e6 ]
 
-nft_queue is always used from userspace nftables to deliver the NF_QUEUE
-verdict. Immediately emitting an NF_QUEUE verdict is never used by the
-userspace nft tools, so reject immediate NF_QUEUE verdicts.
+i2c_smbus_read_block_data() can return 0, indicating a zero-length
+read. When this happens, tps53679_identify_chip() accesses buf[ret - 1]
+which is buf[-1], reading one byte before the buffer on the stack.
 
-The arp family does not provide queue support, but such an immediate
-verdict is still reachable. Globally reject NF_QUEUE immediate verdicts
-to address this issue.
+Fix by changing the check from "ret < 0" to "ret <= 0", treating a
+zero-length read as an error (-EIO), which prevents the out-of-bounds
+array access.
 
-Fixes: f342de4e2f33 ("netfilter: nf_tables: reject QUEUE/DROP verdict parameters")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Also fix a typo in the adjacent comment: "if present" instead of
+duplicate "if".
+
+Fixes: 75ca1e5875fe ("hwmon: (pmbus/tps53679) Add support for TPS53685")
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260329170925.34581-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/tps53679.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index fdbb1e20499bd..0349787e18465 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -11667,8 +11667,6 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
- 	switch (data->verdict.code) {
- 	case NF_ACCEPT:
- 	case NF_DROP:
--	case NF_QUEUE:
--		break;
- 	case NFT_CONTINUE:
- 	case NFT_BREAK:
- 	case NFT_RETURN:
-@@ -11703,6 +11701,11 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
- 
- 		data->verdict.chain = chain;
- 		break;
-+	case NF_QUEUE:
-+		/* The nft_queue expression is used for this purpose, an
-+		 * immediate NF_QUEUE verdict should not ever be seen here.
-+		 */
-+		fallthrough;
- 	default:
- 		return -EINVAL;
+diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
+index ca2bfa25eb04c..3bca543817a60 100644
+--- a/drivers/hwmon/pmbus/tps53679.c
++++ b/drivers/hwmon/pmbus/tps53679.c
+@@ -103,10 +103,10 @@ static int tps53679_identify_chip(struct i2c_client *client,
  	}
+ 
+ 	ret = i2c_smbus_read_block_data(client, PMBUS_IC_DEVICE_ID, buf);
+-	if (ret < 0)
+-		return ret;
++	if (ret <= 0)
++		return ret < 0 ? ret : -EIO;
+ 
+-	/* Adjust length if null terminator if present */
++	/* Adjust length if null terminator is present */
+ 	buf_len = (buf[ret - 1] != '\x00' ? ret : ret - 1);
+ 
+ 	id_len = strlen(id);
 -- 
 2.53.0
 
