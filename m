@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-234448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234060-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKMRHFei1mlUGwgAu9opvQ
-	(envelope-from <stable+bounces-234448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:43 +0200
+	id oJosG1ia1mmTGggAu9opvQ
+	(envelope-from <stable+bounces-234060-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C363C173B
-	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:45:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8723C01EE
+	for <lists+stable@lfdr.de>; Wed, 08 Apr 2026 20:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B64C30DB8A3
-	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:28:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 78CFD300A26A
+	for <lists+stable@lfdr.de>; Wed,  8 Apr 2026 18:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E813D4129;
-	Wed,  8 Apr 2026 18:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432013D47A5;
+	Wed,  8 Apr 2026 18:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzwKiIhy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcqKIXnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7913ACF13;
-	Wed,  8 Apr 2026 18:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F34347517;
+	Wed,  8 Apr 2026 18:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775672886; cv=none; b=isYuA8OXaSmrTgRsFmjlVLd55HaMspUKNXotD+MUlHNE3vhxWH5Nrc5Zl+AB6ci/iLWAvsfaLM56z8BWeKgCRCZw2h69neSZ1VDFMYE29yYelljJoB8MzOTqTFEx4vk50xGlsfAjEApzuawZW7IYUSK5Nwx0q2UXpPAlKdl7Ibw=
+	t=1775671882; cv=none; b=COW61KDAqtCSKq3yAniic6BBRD+ZUUlto8sIqGVZPxBr/EzprcQvihLMwvkWm+AuvZUA0/S8fAUYGSoqPuGLmLpToURn/MfXUFIl0ccmVMWBsXGKNrPfyLjPpeis0RgsP5jCYU9kolM9NMyP1dXTfksar70mBXEduoL14r3X3ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775672886; c=relaxed/simple;
-	bh=GWfL1YQadqIKVi3pkr4wYkpx6mFu7mZskQeEKUWn0rk=;
+	s=arc-20240116; t=1775671882; c=relaxed/simple;
+	bh=hpQ0s08QH4LXcQg1WrqwAgWvNMXxgNV2upHDjUwkkig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGq9FpmmBCXIdWVP26VD4rLUGqRIfHsfzRvDahd49wx2/8ex/Qtda2HVxhLgNC9b4bgQKJFzYpcajK1DEN3Z5b4kcRbSEmzBFeJ2Zfoz0ppWfx1209LjWlpRI8oms+JS7NKNHQJaDguQVgHoQGQHlqiYwyBLRVN9WOWpwmsr11Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzwKiIhy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D92C19421;
-	Wed,  8 Apr 2026 18:28:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ANJXD6TBCN6g/BcIETWi9fOTASZggiwJ9FcPJuAP/7M6YOecyWTgykuL32rVCGJUhesMONAKLFCYVQ3qe6utZMZ/XYwPD+vIkVfRoEmEQLJ1EcTb28kJFavavpRzK0frd4ZVxeudVAOmi+2lqroIyhndpx4yCwiSaELEpy7ky9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcqKIXnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885C1C19421;
+	Wed,  8 Apr 2026 18:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775672886;
-	bh=GWfL1YQadqIKVi3pkr4wYkpx6mFu7mZskQeEKUWn0rk=;
+	s=korg; t=1775671881;
+	bh=hpQ0s08QH4LXcQg1WrqwAgWvNMXxgNV2upHDjUwkkig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzwKiIhyDqm1VHvyFp2v+g4agjEwxydKEENQg+kZ7L8SPas82WIwOMWPOMU//rqQ0
-	 u4LuHfOquCG7EREndbykqIC19Dz1VZLg9czc987kKzyX49iPc0HmnRIejfxrqFzTxC
-	 IK4J96s5Fg5R0/ZSnNWowkXogfShPf8lFnT83wy4=
+	b=KcqKIXnTLdMMtD2lrZf4WyUXex/Q0NWSfPZLOb5Q0EMoBIvxgRKqpZGY8j32bEE2Z
+	 lOkzn6bJ3YswEUfOPakIFrkaeT0ojboX3VRo3xMJa1thvFbfzVLupgtRa38D+xRrSG
+	 BtWwSMA7HnfL7b5BdbMjwiUa4muMRoY2fCi0nQxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 019/277] wifi: iwlwifi: mld: Fix MLO scan timing
+Subject: [PATCH 6.1 087/312] ASoC: adau1372: Fix clock leak on PLL lock failure
 Date: Wed,  8 Apr 2026 20:00:04 +0200
-Message-ID: <20260408175934.570992705@linuxfoundation.org>
+Message-ID: <20260408175936.996076032@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408175933.836769063@linuxfoundation.org>
-References: <20260408175933.836769063@linuxfoundation.org>
+In-Reply-To: <20260408175933.715315542@linuxfoundation.org>
+References: <20260408175933.715315542@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,267 +64,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-234060-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-234448-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: C6C363C173B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7E8723C01EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit ec66ec6a5a8f53e7c70085749e8d68f4431c630f ]
+[ Upstream commit bfe6a264effcb6fe99ad7ceaf9e8c7439fc9555b ]
 
-Calculate MLO scan start time based on actual
-scan start notification from firmware instead of recording
-time when scan command is sent.
+adau1372_enable_pll() was a void function that logged a dev_err() on
+PLL lock timeout but did not propagate the error. As a result,
+adau1372_set_power() would continue with adau1372->enabled set to true
+despite the PLL being unlocked, and the mclk left enabled with no
+corresponding disable on the error path.
 
-Currently, MLO scan start time was captured immediately
-after sending the scan command to firmware. However, the
-actual scan start time may differ due to the FW being busy
-with a previous scan.
+Convert adau1372_enable_pll() to return int, using -ETIMEDOUT on lock
+timeout and propagating regmap errors directly. In adau1372_set_power(),
+check the return value and unwind in reverse order: restore regcache to
+cache-only mode, reassert GPIO power-down, and disable the clock before
+returning the error.
 
-In that case, the link selection code will think that the MLO
-scan is too old, and will warn.
-
-To fix it, Implement start scan notification handling to
-capture the precise moment when firmware begins the scan
-operation.
-
-Fixes: 9324731b9985 ("wifi: iwlwifi: mld: avoid selecting bad links")
-Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260324113316.4c56b8bac533.I6e656d8cc30bb82c96aabadedd62bd67f4c46bf9@changeid
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Fixes: 6cd4c6459e47 ("ASoC: Add ADAU1372 audio CODEC support")
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20260325210704.76847-3-jihed.chaibi.dev@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/intel/iwlwifi/fw/api/commands.h  |  5 ++++
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 10 +++++++
- drivers/net/wireless/intel/iwlwifi/mld/mld.c  |  1 +
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |  4 +--
- .../net/wireless/intel/iwlwifi/mld/notif.c    |  5 ++++
- drivers/net/wireless/intel/iwlwifi/mld/scan.c | 30 +++++++++++++++++--
- drivers/net/wireless/intel/iwlwifi/mld/scan.h |  9 ++++--
- 7 files changed, 56 insertions(+), 8 deletions(-)
+ sound/soc/codecs/adau1372.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-index 997b0c9ce9840..6b3e7c614e54c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-@@ -296,6 +296,11 @@ enum iwl_legacy_cmds {
- 	 */
- 	SCAN_OFFLOAD_UPDATE_PROFILES_CMD = 0x6E,
- 
-+	/**
-+	 * @SCAN_START_NOTIFICATION_UMAC: uses &struct iwl_umac_scan_start
-+	 */
-+	SCAN_START_NOTIFICATION_UMAC = 0xb2,
-+
- 	/**
- 	 * @MATCH_FOUND_NOTIFICATION: scan match found
- 	 */
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-index 60f0a4924ddfb..46fcc32608e34 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-@@ -1156,6 +1156,16 @@ enum iwl_umac_scan_abort_status {
- 	IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND,
- };
- 
-+/**
-+ * struct iwl_umac_scan_start - scan start notification
-+ * @uid: scan id, &enum iwl_umac_scan_uid_offsets
-+ * @reserved: for future use
-+ */
-+struct iwl_umac_scan_start {
-+	__le32 uid;
-+	__le32 reserved;
-+} __packed; /* SCAN_START_UMAC_API_S_VER_1 */
-+
- /**
-  * struct iwl_umac_scan_complete - scan complete notification
-  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index a6962256bdd12..3cfe1bcb7d4e5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -171,6 +171,7 @@ static const struct iwl_hcmd_names iwl_mld_legacy_names[] = {
- 	HCMD_NAME(MISSED_BEACONS_NOTIFICATION),
- 	HCMD_NAME(MAC_PM_POWER_TABLE),
- 	HCMD_NAME(MFUART_LOAD_NOTIFICATION),
-+	HCMD_NAME(SCAN_START_NOTIFICATION_UMAC),
- 	HCMD_NAME(RSS_CONFIG_CMD),
- 	HCMD_NAME(SCAN_ITERATION_COMPLETE_UMAC),
- 	HCMD_NAME(REPLY_RX_MPDU_CMD),
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-index bf70e71aa5143..836f15dc54b52 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-@@ -732,7 +732,7 @@ iwl_mld_set_link_sel_data(struct iwl_mld *mld,
- 
- 		/* Ignore any BSS that was not seen in the last MLO scan */
- 		if (ktime_before(link_conf->bss->ts_boottime,
--				 mld->scan.last_mlo_scan_time))
-+				 mld->scan.last_mlo_scan_start_time))
- 			continue;
- 
- 		data[n_data].link_id = link_id;
-@@ -939,7 +939,7 @@ static void _iwl_mld_select_links(struct iwl_mld *mld,
- 	if (!mld_vif->authorized || hweight16(usable_links) <= 1)
- 		return;
- 
--	if (WARN(ktime_before(mld->scan.last_mlo_scan_time,
-+	if (WARN(ktime_before(mld->scan.last_mlo_scan_start_time,
- 			      ktime_sub_ns(ktime_get_boottime_ns(),
- 					   5ULL * NSEC_PER_SEC)),
- 		"Last MLO scan was too long ago, can't select links\n"))
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/notif.c b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-index 884973d0b3440..a3fd0b7387d69 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-@@ -284,6 +284,8 @@ static void iwl_mld_handle_beacon_notification(struct iwl_mld *mld,
-  * at least enough bytes to cover the structure listed in the CMD_VER_ENTRY.
-  */
- 
-+CMD_VERSIONS(scan_start_notif,
-+	     CMD_VER_ENTRY(1, iwl_umac_scan_start))
- CMD_VERSIONS(scan_complete_notif,
- 	     CMD_VER_ENTRY(1, iwl_umac_scan_complete))
- CMD_VERSIONS(scan_iter_complete_notif,
-@@ -355,6 +357,7 @@ DEFINE_SIMPLE_CANCELLATION(datapath_monitor, iwl_datapath_monitor_notif,
- 			   link_id)
- DEFINE_SIMPLE_CANCELLATION(roc, iwl_roc_notif, activity)
- DEFINE_SIMPLE_CANCELLATION(scan_complete, iwl_umac_scan_complete, uid)
-+DEFINE_SIMPLE_CANCELLATION(scan_start, iwl_umac_scan_start, uid)
- DEFINE_SIMPLE_CANCELLATION(probe_resp_data, iwl_probe_resp_data_notif,
- 			   mac_id)
- DEFINE_SIMPLE_CANCELLATION(uapsd_misbehaving_ap, iwl_uapsd_misbehaving_ap_notif,
-@@ -397,6 +400,8 @@ const struct iwl_rx_handler iwl_mld_rx_handlers[] = {
- 			     RX_HANDLER_SYNC)
- 	RX_HANDLER_NO_OBJECT(LEGACY_GROUP, BA_NOTIF, compressed_ba_notif,
- 			     RX_HANDLER_SYNC)
-+	RX_HANDLER_OF_SCAN(LEGACY_GROUP, SCAN_START_NOTIFICATION_UMAC,
-+			   scan_start_notif)
- 	RX_HANDLER_OF_SCAN(LEGACY_GROUP, SCAN_COMPLETE_UMAC,
- 			   scan_complete_notif)
- 	RX_HANDLER_NO_OBJECT(LEGACY_GROUP, SCAN_ITERATION_COMPLETE_UMAC,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.c b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-index fd1022ddc9122..76ac6fd5f9ff3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-@@ -473,6 +473,9 @@ iwl_mld_scan_get_cmd_gen_flags(struct iwl_mld *mld,
- 	    params->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ)
- 		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_TRIGGER_UHB_SCAN;
- 
-+	if (scan_status == IWL_MLD_SCAN_INT_MLO)
-+		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_NTF_START;
-+
- 	if (params->enable_6ghz_passive)
- 		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN;
- 
-@@ -1817,9 +1820,6 @@ static void iwl_mld_int_mlo_scan_start(struct iwl_mld *mld,
- 	ret = _iwl_mld_single_scan_start(mld, vif, req, &ies,
- 					 IWL_MLD_SCAN_INT_MLO);
- 
--	if (!ret)
--		mld->scan.last_mlo_scan_time = ktime_get_boottime_ns();
--
- 	IWL_DEBUG_SCAN(mld, "Internal MLO scan: ret=%d\n", ret);
+diff --git a/sound/soc/codecs/adau1372.c b/sound/soc/codecs/adau1372.c
+index 79446c4458cc6..1a4ab7c993d28 100644
+--- a/sound/soc/codecs/adau1372.c
++++ b/sound/soc/codecs/adau1372.c
+@@ -761,7 +761,7 @@ static int adau1372_startup(struct snd_pcm_substream *substream, struct snd_soc_
+ 	return 0;
  }
  
-@@ -1904,6 +1904,30 @@ void iwl_mld_handle_match_found_notif(struct iwl_mld *mld,
- 	ieee80211_sched_scan_results(mld->hw);
- }
- 
-+void iwl_mld_handle_scan_start_notif(struct iwl_mld *mld,
-+				     struct iwl_rx_packet *pkt)
-+{
-+	struct iwl_umac_scan_complete *notif = (void *)pkt->data;
-+	u32 uid = le32_to_cpu(notif->uid);
-+
-+	if (IWL_FW_CHECK(mld, uid >= ARRAY_SIZE(mld->scan.uid_status),
-+			 "FW reports out-of-range scan UID %d\n", uid))
-+		return;
-+
-+	if (IWL_FW_CHECK(mld, !(mld->scan.uid_status[uid] & mld->scan.status),
-+			 "FW reports scan UID %d we didn't trigger\n", uid))
-+		return;
-+
-+	IWL_DEBUG_SCAN(mld, "Scan started: uid=%u type=%u\n", uid,
-+		       mld->scan.uid_status[uid]);
-+	if (IWL_FW_CHECK(mld, mld->scan.uid_status[uid] != IWL_MLD_SCAN_INT_MLO,
-+			 "FW reports scan start notification %d we didn't trigger\n",
-+			 mld->scan.uid_status[uid]))
-+		return;
-+
-+	mld->scan.last_mlo_scan_start_time = ktime_get_boottime_ns();
-+}
-+
- void iwl_mld_handle_scan_complete_notif(struct iwl_mld *mld,
- 					struct iwl_rx_packet *pkt)
+-static void adau1372_enable_pll(struct adau1372 *adau1372)
++static int adau1372_enable_pll(struct adau1372 *adau1372)
  {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.h b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-index 69110f0cfc8e2..de5620e7f463b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-@@ -27,6 +27,9 @@ int iwl_mld_sched_scan_start(struct iwl_mld *mld,
- void iwl_mld_handle_match_found_notif(struct iwl_mld *mld,
- 				      struct iwl_rx_packet *pkt);
+ 	unsigned int val, timeout = 0;
+ 	int ret;
+@@ -777,8 +777,12 @@ static void adau1372_enable_pll(struct adau1372 *adau1372)
+ 		timeout++;
+ 	} while (!(val & 1) && timeout < 3);
  
-+void iwl_mld_handle_scan_start_notif(struct iwl_mld *mld,
-+				     struct iwl_rx_packet *pkt);
+-	if (ret < 0 || !(val & 1))
++	if (ret < 0 || !(val & 1)) {
+ 		dev_err(adau1372->dev, "Failed to lock PLL\n");
++		return ret < 0 ? ret : -ETIMEDOUT;
++	}
 +
- void iwl_mld_handle_scan_complete_notif(struct iwl_mld *mld,
- 					struct iwl_rx_packet *pkt);
++	return 0;
+ }
  
-@@ -114,8 +117,8 @@ enum iwl_mld_traffic_load {
-  *	in jiffies.
-  * @last_start_time_jiffies: stores the last start time in jiffies
-  *	(interface up/reset/resume).
-- * @last_mlo_scan_time: start time of the last MLO scan in nanoseconds since
-- *	boot.
-+ * @last_mlo_scan_start_time: start time of the last MLO scan in nanoseconds
-+ * since boot.
-  */
- struct iwl_mld_scan {
- 	/* Add here fields that need clean up on restart */
-@@ -136,7 +139,7 @@ struct iwl_mld_scan {
- 	void *cmd;
- 	unsigned long last_6ghz_passive_jiffies;
- 	unsigned long last_start_time_jiffies;
--	u64 last_mlo_scan_time;
-+	u64 last_mlo_scan_start_time;
- };
+ static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
+@@ -806,7 +810,14 @@ static int adau1372_set_power(struct adau1372 *adau1372, bool enable)
+ 		 * accessed.
+ 		 */
+ 		if (adau1372->use_pll) {
+-			adau1372_enable_pll(adau1372);
++			ret = adau1372_enable_pll(adau1372);
++			if (ret) {
++				regcache_cache_only(adau1372->regmap, true);
++				if (adau1372->pd_gpio)
++					gpiod_set_value(adau1372->pd_gpio, 1);
++				clk_disable_unprepare(adau1372->mclk);
++				return ret;
++			}
+ 			clk_ctrl |= ADAU1372_CLK_CTRL_CLKSRC;
+ 		}
  
- /**
 -- 
 2.53.0
 
